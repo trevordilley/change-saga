@@ -8,9 +8,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
+	"unicode"
+	"unicode/utf8"
 )
 
 type entry struct {
@@ -58,6 +62,113 @@ func Write(output string, epoch int64, stage, binary string) (err error) {
 		return err
 	}
 	return os.Rename(tempName, output)
+}
+
+// WriteTreeZip creates a deterministic ZIP containing the regular files below
+// source under one top-level archive directory. Files are sorted, timestamps
+// are pinned to epoch, and modes are normalized so the result does not depend
+// on the builder. Links and other special files are rejected rather than
+// publishing an archive whose extraction could escape or vary by platform.
+func WriteTreeZip(output string, epoch int64, source, archiveRoot string) (err error) {
+	if path.Clean(archiveRoot) != archiveRoot || archiveRoot == "." || archiveRoot == ".." ||
+		strings.Contains(archiveRoot, "/") || strings.Contains(archiveRoot, `\`) || !safeArchiveRoot(archiveRoot) {
+		return fmt.Errorf("unsafe archive root %q", archiveRoot)
+	}
+
+	var entries []entry
+	err = filepath.WalkDir(source, func(filePath string, item os.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		relative, err := filepath.Rel(source, filePath)
+		if err != nil {
+			return err
+		}
+		if relative == "." {
+			if item.Type()&os.ModeSymlink != 0 || !item.IsDir() {
+				return fmt.Errorf("release tree root %q is not a directory", source)
+			}
+			return nil
+		}
+		if item.IsDir() {
+			return nil
+		}
+		if item.Type()&os.ModeSymlink != 0 {
+			return fmt.Errorf("release tree input %q is a symbolic link", filePath)
+		}
+		info, err := item.Info()
+		if err != nil {
+			return err
+		}
+		if !info.Mode().IsRegular() {
+			return fmt.Errorf("release tree input %q is not a regular file", filePath)
+		}
+		relative = filepath.ToSlash(relative)
+		if !safeArchiveRelative(relative) {
+			return fmt.Errorf("release tree input %q has a non-portable archive path", filePath)
+		}
+		name := path.Join(archiveRoot, relative)
+		if !strings.HasPrefix(name, archiveRoot+"/") {
+			return fmt.Errorf("release tree input %q escapes archive root", filePath)
+		}
+		entries = append(entries, entry{name: name, path: filePath, mode: 0o644})
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	if len(entries) == 0 {
+		return fmt.Errorf("release tree %q contains no regular files", source)
+	}
+	sort.Slice(entries, func(i, j int) bool { return entries[i].name < entries[j].name })
+
+	temp, err := os.CreateTemp(filepath.Dir(output), ".release-tree-archive-*")
+	if err != nil {
+		return err
+	}
+	tempName := temp.Name()
+	defer func() {
+		temp.Close()
+		if err != nil {
+			os.Remove(tempName)
+		}
+	}()
+	if err = temp.Chmod(0o644); err != nil {
+		return err
+	}
+	if err = writeZip(temp, time.Unix(epoch, 0).UTC(), entries); err != nil {
+		return err
+	}
+	if err = temp.Close(); err != nil {
+		return err
+	}
+	return os.Rename(tempName, output)
+}
+
+func safeArchiveRoot(name string) bool {
+	for index, char := range []byte(name) {
+		if char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z' || char >= '0' && char <= '9' {
+			continue
+		}
+		if index > 0 && (char == '.' || char == '_' || char == '-') {
+			continue
+		}
+		return false
+	}
+	return name != ""
+}
+
+func safeArchiveRelative(name string) bool {
+	if !utf8.ValidString(name) || path.Clean(name) != name || path.IsAbs(name) ||
+		strings.Contains(name, `\`) || strings.ContainsAny(name, `:*?<>|"`) {
+		return false
+	}
+	for _, segment := range strings.Split(name, "/") {
+		if segment == "" || segment == "." || segment == ".." {
+			return false
+		}
+	}
+	return strings.IndexFunc(name, unicode.IsControl) < 0
 }
 
 func writeTarGzip(output io.Writer, stamp time.Time, entries []entry) error {

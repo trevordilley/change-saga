@@ -68,6 +68,87 @@ func TestWriteIsDeterministicAndCanonical(t *testing.T) {
 	}
 }
 
+func TestWriteTreeZipIsDeterministicAndCanonical(t *testing.T) {
+	source := t.TempDir()
+	files := map[string]string{
+		"saga.json":               "saga bytes",
+		"___features/a/file.json": "feature bytes",
+		"assets/example.svg":      "svg bytes",
+	}
+	for name, contents := range files {
+		fullPath := filepath.Join(source, filepath.FromSlash(name))
+		if err := os.MkdirAll(filepath.Dir(fullPath), 0o700); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(fullPath, []byte(contents), 0o600); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	const epoch = int64(1_700_000_000)
+	first := filepath.Join(t.TempDir(), "example.saga.zip")
+	second := filepath.Join(t.TempDir(), "example.saga.zip")
+	if err := WriteTreeZip(first, epoch, source, "app.saga"); err != nil {
+		t.Fatal(err)
+	}
+	future := time.Unix(epoch+1000, 0)
+	for name := range files {
+		fullPath := filepath.Join(source, filepath.FromSlash(name))
+		if err := os.Chtimes(fullPath, future, future); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Chmod(fullPath, 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := WriteTreeZip(second, epoch, source, "app.saga"); err != nil {
+		t.Fatal(err)
+	}
+	if fileHash(t, first) != fileHash(t, second) {
+		t.Fatal("tree archives differ after source metadata changed")
+	}
+
+	got := inspectArchive(t, first)
+	want := []archiveEntry{
+		{name: "app.saga/___features/a/file.json", mode: 0o644, stamp: epoch, body: files["___features/a/file.json"]},
+		{name: "app.saga/assets/example.svg", mode: 0o644, stamp: epoch, body: files["assets/example.svg"]},
+		{name: "app.saga/saga.json", mode: 0o644, stamp: epoch, body: files["saga.json"]},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("archive entries = %#v, want %#v", got, want)
+	}
+}
+
+func TestWriteTreeZipRejectsUnsafeInputs(t *testing.T) {
+	source := t.TempDir()
+	if err := os.WriteFile(filepath.Join(source, "saga.json"), []byte("{}"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	for _, root := range []string{"", ".", "..", "../app.saga", "/app.saga", `app\saga`, "nested/app.saga", "app\nsaga", "-app.saga"} {
+		if err := WriteTreeZip(filepath.Join(t.TempDir(), "bad.zip"), 1_700_000_000, source, root); err == nil {
+			t.Fatalf("WriteTreeZip accepted unsafe archive root %q", root)
+		}
+	}
+
+	if runtime.GOOS == "windows" {
+		t.Skip("symbolic-link creation is not reliably available on Windows")
+	}
+	if err := os.Symlink(filepath.Join(source, "saga.json"), filepath.Join(source, "linked.json")); err != nil {
+		t.Fatal(err)
+	}
+	if err := WriteTreeZip(filepath.Join(t.TempDir(), "linked.zip"), 1_700_000_000, source, "app.saga"); err == nil {
+		t.Fatal("WriteTreeZip accepted a symbolic link")
+	}
+
+	unsafeSource := t.TempDir()
+	if err := os.WriteFile(filepath.Join(unsafeSource, "bad\nname.json"), []byte("{}"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := WriteTreeZip(filepath.Join(t.TempDir(), "unsafe-name.zip"), 1_700_000_000, unsafeSource, "app.saga"); err == nil {
+		t.Fatal("WriteTreeZip accepted a control character in an archive path")
+	}
+}
+
 type archiveEntry struct {
 	name  string
 	mode  int64

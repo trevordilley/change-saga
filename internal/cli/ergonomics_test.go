@@ -229,14 +229,15 @@ func TestTopLevelHelpRecommendsTheAuthoringSkill(t *testing.T) {
 	}
 }
 
-// The help teaches incremental adoption: a first change is init, cover, and
-// status, and everything else is growth that never blocks.
+// The help teaches scope-sensitive adoption: requirements-first and
+// implementation-first are both valid when they match the user's work.
 func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 	var output bytes.Buffer
 	PrintHelp(&output)
 	text := output.String()
 	for _, want := range []string{
-		"one app Saga", "Start small", "implementation deck", "cover",
+		"one app Saga", "Do what the user asks", "smallest scope", "focused code review",
+		"valuable user stories", "implementation evidence", "implementation change", "cover",
 		"status --against main", "no verdict", "check --covers implementation",
 		"Product:", "prototype", "user stories",
 		"Design:", "UX, UI, and technical design",
@@ -247,10 +248,10 @@ func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 			t.Fatalf("top-level help omitted workflow guidance %q:\n%s", want, text)
 		}
 	}
-	if strings.Index(text, "A first change:") > strings.Index(text, "Growing the Saga") {
-		t.Fatalf("the first change comes before growth:\n%s", text)
+	if strings.Index(text, "A focused change:") > strings.Index(text, "Growing the Saga") {
+		t.Fatalf("the focused change comes before growth:\n%s", text)
 	}
-	for _, unwanted := range []string{"big change", "starts with the big work", "Choose the workflow", "normal PR may be enough", "--mode", "upgrade"} {
+	for _, unwanted := range []string{"The one thing asked", "never asked for up front", "big change", "starts with the big work", "Choose the workflow", "normal PR may be enough", "--mode", "upgrade"} {
 		if strings.Contains(text, unwanted) {
 			t.Fatalf("top-level help still offers %q:\n%s", unwanted, text)
 		}

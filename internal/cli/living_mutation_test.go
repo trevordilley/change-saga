@@ -219,9 +219,8 @@ func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
 	}
 }
 
-// The installed skill teaches one Saga for a big change, driven by status next
-// actions. It must never offer a lighter mode for small changes or treat
-// requirements and design as optional.
+// The installed skill teaches one Saga whose authoring scope follows the
+// user's work, from a focused review to a complete product lifecycle.
 func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 	var output bytes.Buffer
 	if err := InstallSkill(nil, &output); err != nil {
@@ -235,8 +234,12 @@ func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 		"The Saga is documentation",
 		"This is not a waterfall",
 		"Parallel authoring is a core property",
-		"The one thing asked of a change is that its implementation covers it",
-		"Everything else is growth, not debt",
+		"Follow the user's scope",
+		"Do what the user asks, at the smallest scope",
+		"For a simple code review",
+		"For a user story",
+		"does not require inventing all the others",
+		"Never expand a small task",
 		"never invent a story",
 		"What exists must stay healthy",
 		"Drive the work with status",
@@ -247,8 +250,8 @@ func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 		}
 	}
 	for _, retired := range []string{
-		"Choose the workflow", "choose a workflow", "small focused change", "small change may not need",
-		"remain optional historical", "requirements are optional", "Requirements are optional",
+		"The one thing asked of a change", "Everything else is growth, not debt",
+		"requirements are optional", "Requirements are optional",
 	} {
 		if strings.Contains(text, retired) {
 			t.Fatalf("installed skill still offers a retired workflow: %q", retired)

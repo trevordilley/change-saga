@@ -53,6 +53,11 @@ expect_failure "invalid commit overrides are rejected" "CHANGE_SAGA_COMMIT must 
 expect_failure "invalid source epochs are rejected" "SOURCE_DATE_EPOCH must be" \
 	env SOURCE_DATE_EPOCH=not-a-number \
 	"$repo_root/scripts/build-release.sh" 1.2.3 linux amd64 "$work/dist"
+expect_failure "example Saga packaging rejects extra arguments" "usage:" \
+	"$repo_root/scripts/build-example-saga.sh" "$work/example-dist" extra
+expect_failure "example Saga packaging rejects invalid source epochs" "SOURCE_DATE_EPOCH must be" \
+	env SOURCE_DATE_EPOCH=not-a-number \
+	"$repo_root/scripts/build-example-saga.sh" "$work/example-dist"
 
 echo "== checksum edge cases"
 expect_failure "sha256 requires at least one file" "usage:" "$repo_root/scripts/sha256.sh"

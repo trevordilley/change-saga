@@ -9,6 +9,7 @@ publishing a release is a tag push and nothing else.
 | `.github/workflows/ci.yml` | Unsigned tests, lint, workflow-policy checks, and cross-platform build. Runs on every pull request, including forks. |
 | `.github/workflows/release.yml` | Tag-push publication or manual rehearsal, optional macOS signing/notarization, checksums, provenance, and the GitHub Release. |
 | `scripts/build-release.sh` | Builds and archives one `GOOS/GOARCH` target. Used by both workflows. |
+| `scripts/build-example-saga.sh` | Packages the repository's validated `app.saga` as one reproducible, platform-neutral download. |
 | `scripts/build-macos-standalone-installer.sh` | Wraps an Apple Silicon archive in one self-contained `.command` file for direct handoff. |
 | `scripts/install.sh` | The `curl \| sh` installer for macOS and Linux. |
 | `scripts/install.ps1` | The `irm \| iex` installer for Windows PowerShell. |
@@ -28,9 +29,10 @@ publishing a release is a tag push and nothing else.
    ```
 
 3. The `Release` workflow validates the tag, re-runs the full CI matrix, builds
-   six artifacts, signs and notarizes the macOS pair when the corresponding
-   Apple credentials are configured, generates `SHA256SUMS`, attaches build
-   provenance to every published asset, and publishes the GitHub Release.
+   six platform artifacts, signs and notarizes the macOS pair when the
+   corresponding Apple credentials are configured, packages and validates the
+   example Saga, generates `SHA256SUMS`, attaches build provenance to every
+   published asset, and publishes the GitHub Release.
 
 Tags must be `v<major>.<minor>.<patch>` with an optional prerelease suffix and
 must point to a commit on the default branch. A suffix (`v0.3.0-rc.1`) publishes
@@ -134,10 +136,11 @@ change-saga_<version>_linux_amd64.tar.gz
 change-saga_<version>_linux_arm64.tar.gz
 change-saga_<version>_windows_amd64.zip
 change-saga_<version>_windows_arm64.zip
+change-saga-example.saga.zip
 SHA256SUMS
 ```
 
-Each archive is flat and contains only the platform binary, `LICENSE`, and
+Each platform archive is flat and contains only the binary, `LICENSE`, and
 `README.md`; extract it into an empty directory when unpacking by hand. The
 binary is mode `0755` and both documents are `0644`, regardless of the builder's
 umask. Builds use `CGO_ENABLED=0` and `-trimpath`, so users do not need a
@@ -147,6 +150,17 @@ where the operating system requires them. `Version`, `Commit`, and `BuildDate`
 in `internal/cli` are injected with `-ldflags -X`;
 `change-saga version` prints all three. `Commit` is the first 12 characters of
 the tagged revision's object ID, and `BuildDate` is UTC.
+
+`change-saga-example.saga.zip` is platform-neutral and expands into one
+`app.saga` directory. The release workflow validates both the source Saga and
+the packaged copy with the release binary before publication. Its entries are
+sorted, timestamped from `SOURCE_DATE_EPOCH`, normalized to mode `0644`, and
+restricted to regular files under the archive's `app.saga/` root. The stable
+asset name makes the latest release directly downloadable from:
+
+```text
+https://github.com/twentyideas/changesaga/releases/latest/download/change-saga-example.saga.zip
+```
 
 For a direct Apple Silicon handoff, wrap the archive in a single installer:
 
@@ -163,11 +177,12 @@ machines, and installs atomically without `sudo`. It installs the `change-saga`
 command. Zip the one file when sending it through a service that does not
 preserve executable permissions.
 
-`SHA256SUMS` is generated in an unprivileged preparation job from the artifacts
-as downloaded, after each one is re-checked against the checksum its build job
-recorded. That catches corruption between the build and the release, not just at
-build time. Only a tag-push run starts the separate job with `contents`,
-`id-token`, and `attestations` write permissions; it attests the six archives and
+`SHA256SUMS` is generated in an unprivileged preparation job from the six
+platform artifacts as downloaded plus the example Saga built from the same
+tagged checkout. Every asset is first checked against its checksum sidecar.
+That catches corruption between build and publication, not just at build time.
+Only a tag-push run starts the separate job with `contents`, `id-token`, and
+`attestations` write permissions; it attests all seven archives and
 `SHA256SUMS` before publishing them.
 
 Users can verify a download two ways:

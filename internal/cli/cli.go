@@ -216,23 +216,25 @@ design, quality, and implementation deck. Every link is pinned, so when a
 story or the code changes, whatever relied on the old version goes visibly
 stale.
 
-Start small. The one thing asked of a change is that its implementation deck
-explains every changed line. Stories, personas, design, and test cases are
-never asked for up front: status reports them as growth, suggests the next
-step with the practice it teaches, and never blocks.
+Do what the user asks, at the smallest scope that completely satisfies the
+request. New product work often begins with personas, valuable user stories,
+and pass/fail criteria. An existing change or focused code review may begin
+with its implementation evidence. Neither path requires inventing the whole
+product model up front.
 
-A first change:
-  1. "init" the app Saga.
-  2. Cover the change: "add-deck", "add-slide", and "add-item" explain it,
-     and "cover" references every changed line from the Item that explains
-     it. The first command that needs a feature creates one named after the
-     branch (or pass --feature); with one feature, --feature is implied.
+A focused change:
+  1. "init" the app Saga when the repository does not have one.
+  2. Author the requested part of the lifecycle. For an implementation change,
+     "add-deck", "add-slide", and "add-item" explain it, and "cover" references
+     every changed line from the Item that explains it. The first command that
+     needs a feature creates one named after the branch (or pass --feature);
+     with one feature, --feature is implied.
   3. "status --against main" reports coverage by area (implementation,
      stories, personas, design, quality, health) with what is and is not
      covered. It has no verdict: it exits 0 whenever the report can be
      trusted, and non-zero only for a malformed Saga or a mismatched checkout.
-  4. "check --covers implementation --against main" answers one question
-     with its exit code; name more areas when your team wants them.
+  4. "check --covers implementation --against main" answers one scoped
+     question with its exit code; name only the areas the work requires.
 
 Growing the Saga, a step at a time and only when it helps:
   - Product: write user stories with acceptance criteria ("story",

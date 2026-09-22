@@ -76,6 +76,19 @@ itself. After installing Change Saga, open it from a source checkout with:
 change-saga open app.saga
 ```
 
+Or download the same validated Saga without cloning the repository:
+
+```sh
+curl -fL https://github.com/twentyideas/changesaga/releases/latest/download/change-saga-example.saga.zip \
+  -o change-saga-example.saga.zip
+unzip change-saga-example.saga.zip
+change-saga open app.saga
+```
+
+[Download the example Saga](https://github.com/twentyideas/changesaga/releases/latest/download/change-saga-example.saga.zip)
+directly from the latest stable release. The archive is platform-neutral and
+expands into one `app.saga` directory.
+
 For one concrete path through it, inspect the reviewer story **Trace a
 requirement to current evidence and back** and its pass/fail criterion **Each
 criterion shows its current code path**:

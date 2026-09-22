@@ -246,11 +246,33 @@ jobs:
           ref: ${{ needs.meta.outputs.commit }}
           persist-credentials: false
 
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: .go-version
+          cache: true
+
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           pattern: release-change-saga-*
           merge-multiple: true
           path: dist
+
+      - name: package and validate the example Saga
+        env:
+          EXPECTED_VERSION: ${{ needs.meta.outputs.version }}
+          CHANGE_SAGA_COMMIT: ${{ needs.meta.outputs.commit }}
+          SOURCE_DATE_EPOCH: ${{ needs.meta.outputs.source_date_epoch }}
+        run: |
+          set -euo pipefail
+          ./scripts/build-example-saga.sh dist
+          check="$(mktemp -d)"
+          trap 'rm -rf "$check"' EXIT
+          tar -xOzf "dist/change-saga_${EXPECTED_VERSION}_linux_amd64.tar.gz" change-saga > "$check/change-saga"
+          chmod 0755 "$check/change-saga"
+          "$check/change-saga" validate app.saga
+          mkdir "$check/example"
+          unzip -q dist/change-saga-example.saga.zip -d "$check/example"
+          "$check/change-saga" validate "$check/example/app.saga"
 
       - name: verify per-artifact checksums and build SHA256SUMS
         working-directory: dist
@@ -264,18 +286,18 @@ jobs:
           # here proves the artifact survived the upload/download round trip
           # before it becomes the published SHA256SUMS entry.
           archive_count="$(find . -maxdepth 1 -type f \( -name 'change-saga_*.tar.gz' -o -name 'change-saga_*.zip' \) | wc -l)"
-          sidecar_count="$(find . -maxdepth 1 -type f -name 'change-saga_*.sha256' | wc -l)"
-          if [ "$archive_count" -ne 6 ] || [ "$sidecar_count" -ne 6 ]; then
-            echo "::error::expected six archives and six checksum sidecars; found $archive_count and $sidecar_count"
+          sidecar_count="$(find . -maxdepth 1 -type f -name '*.sha256' | wc -l)"
+          if [ "$archive_count" -ne 6 ] || [ ! -f change-saga-example.saga.zip ] || [ "$sidecar_count" -ne 7 ]; then
+            echo "::error::expected six platform archives, one example Saga, and seven checksum sidecars; found $archive_count platform archives and $sidecar_count sidecars"
             find . -maxdepth 1 -type f -print | sort
             exit 1
           fi
-          for sidecar in change-saga_*.sha256; do
+          for sidecar in change-saga_*.sha256 change-saga-example.saga.zip.sha256; do
             sha256sum -c "$sidecar"
           done
           rm -f SHA256SUMS
-          sha256sum change-saga_*.tar.gz change-saga_*.zip | sort -k2 > SHA256SUMS
-          expected=6
+          sha256sum change-saga_*.tar.gz change-saga_*.zip change-saga-example.saga.zip | sort -k2 > SHA256SUMS
+          expected=7
           actual="$(grep -c . SHA256SUMS)"
           if [ "$actual" -ne "$expected" ]; then
             echo "::error::expected $expected release archives, found $actual"
@@ -326,6 +348,10 @@ jobs:
             echo "\$env:CHANGE_SAGA_VERSION='$TAG'; irm https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$TAG/scripts/install.ps1 | iex"
             echo '```'
             echo
+            echo "## Example Saga"
+            echo
+            echo "Download [\`change-saga-example.saga.zip\`](https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/change-saga-example.saga.zip), extract it, and run \`change-saga open app.saga\`. It is the validated, self-hosting Saga used by this repository."
+            echo
             echo "## Verify manually"
             echo
             echo '```sh'
@@ -358,6 +384,7 @@ jobs:
             dist/SHA256SUMS
             dist/change-saga_*.tar.gz
             dist/change-saga_*.zip
+            dist/change-saga-example.saga.zip
           if-no-files-found: error
 
       - name: rehearsal summary
@@ -392,6 +419,7 @@ jobs:
             dist/SHA256SUMS
             dist/change-saga_*.tar.gz
             dist/change-saga_*.zip
+            dist/change-saga-example.saga.zip
 
       - name: create the GitHub Release
         env:
@@ -420,4 +448,5 @@ jobs:
           gh release create "$TAG" "${flags[@]}" \
             dist/SHA256SUMS \
             dist/change-saga_*.tar.gz \
-            dist/change-saga_*.zip
+            dist/change-saga_*.zip \
+            dist/change-saga-example.saga.zip

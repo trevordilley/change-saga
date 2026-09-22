@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Contents and permissions test for scripts/build-release.sh.
+# Contents and permissions test for release archives.
 #
-# Builds real archives for the host platform and for windows/amd64, then
-# asserts the shape a release consumer depends on: exactly three flat entries,
-# every one a regular file, an executable binary alongside world-readable docs,
-# a checksum sidecar `sha256sum -c` can consume, and a version stamp that
-# honours SOURCE_DATE_EPOCH.
+# Builds real archives for the host platform, windows/amd64, and the example
+# Saga. It asserts the shapes release consumers depend on: flat executable
+# bundles for each platform, one rooted app.saga tree for the example, checksum
+# sidecars `sha256sum -c` can consume, and timestamps that honor
+# SOURCE_DATE_EPOCH.
 #
 # Modes are read from the archive listing rather than from an extraction.
 # Extraction applies the extracting user's umask, so a wrong mode inside the
@@ -202,6 +202,50 @@ win_unpack="$work/unpack-windows"
 mkdir -p "$win_unpack"
 unzip -q "$win_dist/$win_archive" -d "$win_unpack"
 assert_eq "windows payload is a PE image" "MZ" "$(head -c 2 "$win_unpack/change-saga.exe")"
+
+echo
+echo "== downloadable example Saga"
+example_dist="$work/dist-example"
+example_archive="change-saga-example.saga.zip"
+"$repo_root/scripts/build-example-saga.sh" "$example_dist" >/dev/null
+unzip -Z1 "$example_dist/$example_archive" > "$work/example-names"
+
+expected_example_files="$(find "$repo_root/app.saga" -type f | wc -l | tr -d ' ')"
+actual_example_files="$(wc -l < "$work/example-names" | tr -d ' ')"
+assert_eq "example archive includes every Saga file" "$expected_example_files" "$actual_example_files"
+if awk '
+	index($0, "app.saga/") != 1 ||
+	$0 ~ /(^|\/)\.\.?($|\/)/ ||
+	substr($0, length($0), 1) == "/" { bad = 1 }
+	END { exit bad }
+' "$work/example-names"; then
+	record "example archive stays under one app.saga directory" 0
+else
+	record "example archive stays under one app.saga directory" 1
+fi
+if grep -Fx 'app.saga/saga.json' "$work/example-names" >/dev/null; then
+	record "example archive contains its Saga manifest" 0
+else
+	record "example archive contains its Saga manifest" 1
+fi
+duplicate_example_entries="$(LC_ALL=C sort "$work/example-names" | uniq -d | tr '\n' ' ')"
+assert_eq "example archive has no duplicate paths" "" "$duplicate_example_entries"
+assert_sidecar "example archive" "$example_dist" "$example_archive"
+
+example_unpack="$work/unpack-example"
+mkdir -p "$example_unpack"
+unzip -q "$example_dist/$example_archive" -d "$example_unpack"
+if "$unpack/change-saga" validate "$example_unpack/app.saga" >/dev/null; then
+	record "released binary validates the downloaded example Saga" 0
+else
+	record "released binary validates the downloaded example Saga" 1
+fi
+
+second_example_dist="$work/dist-example-second"
+"$repo_root/scripts/build-example-saga.sh" "$second_example_dist" >/dev/null
+assert_eq "example archive is reproducible" \
+	"$("$repo_root/scripts/sha256.sh" "$example_dist/$example_archive" | awk '{print $1}')" \
+	"$("$repo_root/scripts/sha256.sh" "$second_example_dist/$example_archive" | awk '{print $1}')"
 
 echo
 echo "== permissions do not depend on the builder's umask"
