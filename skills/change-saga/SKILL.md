@@ -38,6 +38,10 @@ does not require inventing all the others.
 - For a user story, capture a persona-focused outcome that delivers real value
   and observable, pass/fail acceptance criteria. Do not require a design,
   implementation deck, or test plan unless the user asks to continue the work.
+  A proposed story may stay criterion-free while it is uncertain, but an
+  accepted story must have at least one criterion. Add the narrowest criterion
+  directly implied by confirmed intent; never invent broader behavior merely
+  to make acceptance valid.
 - For new work whose requirements and implementation are in scope, begin with
   personas, user stories, and acceptance criteria; develop the relevant design
   and quality plan; then connect implementation evidence as the work is built.
@@ -149,6 +153,11 @@ for a complete lifecycle, those areas are part of the requested work rather
 than optional growth. Recover product intent from the source material and the
 user; never invent a story, criterion, persona, or definition merely to fill a
 gap.
+
+Before moving a story to `accepted`, ensure every current revision head has at
+least one independent, observable pass/fail criterion. If the confirmed story
+implies only one obligation, add exactly that narrow criterion. Leave the story
+proposed when no criterion can be stated without guessing.
 
 Documenting existing code needs no change: run `status` without `--against`.
 There is no change to cover, so the queue is growth alone, the overview and
@@ -329,7 +338,8 @@ an authoring task unless it is explicitly justified.
 Product, Design, and Quality grow with the same commands the next actions
 name: `prototype add-html`, `prototype add-external`, and `prototype annotate`
 for prototypes; `story add`, `story revise`, and the `criterion` commands for
-stories with explicit acceptance criteria; `persona add` for the people who
+stories with explicit acceptance criteria (accepted stories require at least
+one; use the narrowest confirmed pass/fail obligation); `persona add` for the people who
 get value from the app (never the tools or agents that operate it); `citation
 add` for where a story or decision came from; the `design` and `quality` commands; and `relation add`
 to connect them (a test case `verifies` a criterion; a design or deck target

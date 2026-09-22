@@ -237,7 +237,8 @@ func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 	text := output.String()
 	for _, want := range []string{
 		"one app Saga", "Do what the user asks", "smallest scope", "focused code review",
-		"valuable user stories", "implementation evidence", "implementation change", "cover",
+		"valuable user stories", "accepted", "at least\none pass/fail criterion", "narrowest obligation",
+		"implementation evidence", "implementation change", "cover",
 		"status --against main", "no verdict", "check --covers implementation",
 		"Product:", "prototype", "user stories",
 		"Design:", "UX, UI, and technical design",
@@ -274,6 +275,16 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 			_ = Story(context.Background(), []string{"add", "-h"}, &output)
 			return output.String()
 		}, want: []string{"acceptance-criteria", "evolve alongside"}},
+		{name: "story set-state", run: func() string {
+			var output bytes.Buffer
+			_ = Story(context.Background(), []string{"set-state", "-h"}, &output)
+			return output.String()
+		}, want: []string{"Before setting accepted", "at least one pass/fail criterion", "narrowest"}},
+		{name: "criterion add", run: func() string {
+			var output bytes.Buffer
+			_ = Criterion(context.Background(), []string{"add", "-h"}, &output)
+			return output.String()
+		}, want: []string{"independent pass/fail criterion", "narrowest", "confirmed intent"}},
 		{name: "plan add-wave", run: func() string {
 			var output bytes.Buffer
 			_ = Plan(context.Background(), []string{"add-wave", "-h"}, &output)

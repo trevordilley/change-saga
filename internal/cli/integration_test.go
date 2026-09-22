@@ -137,6 +137,7 @@ func TestInstallSkillPrintsPortableAuthoringContract(t *testing.T) {
 		"change-saga query mappings --sort scrutiny", "change-saga add-claim", "change-saga verify-claim",
 		"--against REV", "**Affected**", "change-saga sync", "change-saga overview set-pitch", "change-saga term add",
 		"first read the code diff independently", "Coverage is an omission check, not proof",
+		"accepted story must have at least one criterion", "narrowest criterion",
 		"Storyboard visual questions", "system-context diagram", "state machine", "entity-relationship diagram",
 		"Silhouette test", "Relationship test", "Surprise test", "Contact-sheet test", "Do not use cards as a universal container",
 		"reasonable reviewer expectation", "callout Item attached", "Do not manufacture novelty",

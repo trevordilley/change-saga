@@ -44,6 +44,11 @@ only when it genuinely applies to every criterion in that revision. Do not
 repeat story prose in slide metadata. Before handoff, look up evidence in
 reverse and offer a story for what has none:
 
+An accepted story has at least one independent, observable pass/fail
+criterion. When the user has confirmed the story but only one obligation is
+known, record the narrowest criterion directly implied by that intent. Keep
+the story proposed if acceptance would require inventing broader behavior.
+
 ```sh
 change-saga query traceability --saga app.saga --ref '<commit>:<path>#L<start>-L<end>'
 change-saga query traceability --saga app.saga --commit '<commit>'

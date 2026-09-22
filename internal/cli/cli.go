@@ -221,7 +221,9 @@ Do what the user asks, at the smallest scope that completely satisfies the
 request. New product work often begins with personas, valuable user stories,
 and pass/fail criteria. An existing change or focused code review may begin
 with its implementation evidence. Neither path requires inventing the whole
-product model up front.
+product model up front. Before a story becomes accepted, it must have at least
+one pass/fail criterion; add only the narrowest obligation supported by the
+confirmed intent rather than inventing behavior to satisfy the format.
 
 A focused change:
   1. "init" the app Saga when the repository does not have one.
@@ -239,7 +241,9 @@ A focused change:
 
 Growing the Saga, a step at a time and only when it helps:
   - Product: write user stories with acceptance criteria ("story",
-    "criterion") and relate the slides that implement them ("relation");
+    "criterion"). An accepted story has at least one criterion; use the
+    narrowest pass/fail obligation confirmed by the user. Relate the slides
+    that implement them ("relation");
     prototype the experience ("prototype"); cite sources ("citation").
   - People: name who gets value from the app ("persona"), the "As a ..." of a
     user story and never a tool or agent that operates it; a story names the
@@ -334,12 +338,12 @@ var commandDescription = map[string]string{
 	"quality evidence add":        "Record immutable evidence. test_implementation code references join global changed-source\naccounting; implementation_under_test references name the code the test exercises;\nexecution_artifact cites verifications or citations. --batch validates the whole set before the\nfirst write.",
 	"quality run":                 "Record what executed and what happened.",
 	"quality run record":          "Append an immutable run/result event pinned to a test revision, the code commit it ran against\n(--commit, default HEAD of --repo), and evidence.\nName every current run head: a failed or concurrent run stays visible and is only succeeded by a\nlater run. The command is recorded, never executed.",
-	"story":                       "Create and append revisions or lifecycle events to user stories and acceptance\ncriteria. Stories may lead, follow, or evolve alongside prototypes; cite their source\nand revise them as the feature is clarified.",
-	"story add":                   "Add a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one.",
+	"story":                       "Create and append revisions or lifecycle events to user stories and acceptance\ncriteria. Stories may lead, follow, or evolve alongside prototypes; cite their source\nand revise them as the feature is clarified. An accepted story must have at least one\nindependent pass/fail criterion. Add the narrowest obligation supported by confirmed\nintent; never invent broader behavior merely to make a lifecycle transition valid.",
+	"story add":                   "Add a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one. A proposed story\nmay remain without criteria while its behavior is unknown; do not invent them.",
 	"story revise":                "Append a complete story revision as requirements or prototypes evolve. Naming one\nparent inherits every field you leave out, so revising a title keeps the criteria,\ncitations, and personas; remove a criterion with `criterion remove`. Name every\ncurrent parent head when reconciling concurrent edits; prior revisions remain history.",
-	"story set-state":             "Append a lifecycle decision without rewriting the story. Acceptance records intent,\nnot implementation completion or peer-review approval.",
-	"criterion":                   "Add, revise, or remove one acceptance criterion by creating a complete immutable\nstory revision from an explicit current parent head.",
-	"criterion add":               "Add one explicitly identified acceptance criterion. Historical criterion IDs are\nnever reusable, including after removal.",
+	"story set-state":             "Append a lifecycle decision without rewriting the story. Acceptance records intent,\nnot implementation completion or peer-review approval. Before setting accepted, ensure\nevery current revision head has at least one pass/fail criterion; add only the narrowest\ncriterion implied by confirmed intent.",
+	"criterion":                   "Add, revise, or remove one acceptance criterion by creating a complete immutable\nstory revision from an explicit current parent head. Each criterion is one independent,\nobservable pass/fail obligation, no broader than the confirmed story requires.",
+	"criterion add":               "Add one explicitly identified, independent pass/fail criterion. Use the narrowest\nobligation supported by confirmed intent. Historical criterion IDs are never reusable,\nincluding after removal.",
 	"criterion revise":            "Revise one criterion's wording without changing its stable identity. Use --edit to\ninspect the complete proposed story revision in $EDITOR.",
 	"criterion remove":            "Remove one criterion through a complete story revision. The required reason is\nreturned as commit guidance; no mutable tombstone is stored.",
 	"citation":                    "Create immutable provenance records for requirements and design decisions.",

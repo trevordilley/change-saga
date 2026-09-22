@@ -57,7 +57,11 @@ Stories must be persona-focused and deliver observable value. Keep technical
 detail out unless it is essential to the requirement. Acceptance criteria are
 independent, pass/fail one-liners. Agent-drafted stories and criteria remain
 drafts until the user confirms them; user-requested or user-confirmed stories
-are authoritative product requirements even when no code exists.
+are authoritative product requirements even when no code exists. Before
+marking a confirmed story accepted, give it at least one criterion. When only
+one obligation is known, add the narrowest pass/fail criterion directly
+implied by the confirmed story; do not invent broader behavior merely to make
+the lifecycle transition valid.
 
 Do not present a long questionnaire all at once. Summarize each short round
 and let the answer determine the next useful question.

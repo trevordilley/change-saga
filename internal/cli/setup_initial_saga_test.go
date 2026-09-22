@@ -19,6 +19,8 @@ func TestSetupInitialSagaPrintsOneTimeWorkflowWhenNoSagaExists(t *testing.T) {
 		"no .saga directory was found",
 		"Use this workflow only once",
 		"Stories added solely at the user's request are fully valid requirements",
+		"marking a confirmed story accepted, give it at least one criterion",
+		"do not invent broader behavior merely to make",
 		"Interview the user in short rounds",
 		"Offer a feature-led parallel code deep dive",
 		"one lane per feature",
