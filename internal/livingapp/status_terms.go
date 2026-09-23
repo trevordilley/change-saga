@@ -39,20 +39,22 @@ type OverviewPart struct {
 // of the code it references, viewed at the head. A stale reference names
 // exactly the term to update after a rename.
 type TermStatus struct {
-	Term            string     `json:"term"`
-	ID              string     `json:"id"`
-	Name            string     `json:"name,omitempty"`
-	Definition      string     `json:"definition,omitempty"`
-	Aliases         []string   `json:"aliases"`
-	State           string     `json:"state"`
-	Stories         []string   `json:"stories"`
-	Records         []string   `json:"records"`
-	Code            []TermCode `json:"code"`
-	Stale           bool       `json:"stale"`
-	RevisionHeads   []string   `json:"revision_heads"`
-	LifecycleHeads  []string   `json:"lifecycle_heads"`
-	CurrentRevision string     `json:"current_revision,omitempty"`
-	LifecycleHead   string     `json:"lifecycle_head,omitempty"`
+	Term                   string                              `json:"term"`
+	ID                     string                              `json:"id"`
+	Name                   string                              `json:"name,omitempty"`
+	Definition             string                              `json:"definition,omitempty"`
+	DefinitionMaturity     requirements.DefinitionMaturity     `json:"definition_maturity"`
+	ImplementationEvidence requirements.ImplementationEvidence `json:"implementation_evidence"`
+	Aliases                []string                            `json:"aliases"`
+	State                  string                              `json:"state"`
+	Stories                []string                            `json:"stories"`
+	Records                []string                            `json:"records"`
+	Code                   []TermCode                          `json:"code"`
+	Stale                  bool                                `json:"stale"`
+	RevisionHeads          []string                            `json:"revision_heads"`
+	LifecycleHeads         []string                            `json:"lifecycle_heads"`
+	CurrentRevision        string                              `json:"current_revision,omitempty"`
+	LifecycleHead          string                              `json:"lifecycle_head,omitempty"`
 }
 
 // TermCode is one of a term's code references viewed at the head: current
@@ -143,10 +145,13 @@ func termStatuses(sagaID string, terms []requirements.Term, code map[string]code
 		urn, _ := requirements.TermURN(sagaID, term.Identity.ID)
 		row := TermStatus{
 			Term: urn, ID: term.Identity.ID, State: "conflicted", Aliases: []string{}, Stories: []string{}, Records: []string{}, Code: []TermCode{},
+			DefinitionMaturity: requirements.DefinitionMaturityUnknown, ImplementationEvidence: requirements.ImplementationEvidenceUnknown,
 			RevisionHeads: copyStrings(term.RevisionHeads), LifecycleHeads: copyStrings(term.LifecycleHeads),
 		}
 		if revision := term.CurrentRevision; revision != nil {
 			row.Name, row.Definition = revision.Name, revision.Definition
+			row.DefinitionMaturity = revision.EffectiveDefinitionMaturity()
+			row.ImplementationEvidence = revision.EffectiveImplementationEvidence()
 			row.Aliases = append(row.Aliases, revision.Aliases...)
 			row.Stories = append(row.Stories, revision.Stories...)
 			row.Records = append(row.Records, revision.Records...)

@@ -36,13 +36,15 @@ const (
 
 // TermRevision is a complete term snapshot.
 type TermRevision struct {
-	Schema     string   `json:"$schema"`
-	Version    int      `json:"version"`
-	ID         string   `json:"id"`
-	Term       string   `json:"term"`
-	Parents    []string `json:"parents"`
-	Name       string   `json:"name"`
-	Definition string   `json:"definition"`
+	Schema                 string                  `json:"$schema"`
+	Version                int                     `json:"version"`
+	ID                     string                  `json:"id"`
+	Term                   string                  `json:"term"`
+	Parents                []string                `json:"parents"`
+	Name                   string                  `json:"name"`
+	Definition             string                  `json:"definition"`
+	DefinitionMaturity     *DefinitionMaturity     `json:"definition_maturity,omitempty"`
+	ImplementationEvidence *ImplementationEvidence `json:"implementation_evidence,omitempty"`
 	// Aliases are other spellings the team uses for the same thing.
 	Aliases []string `json:"aliases,omitempty"`
 	// Stories are the canonical URNs of the stories the term belongs to.
@@ -212,6 +214,7 @@ func validateTermRevision(value TermRevision, sagaID, termID, expectedID string)
 	if strings.TrimSpace(value.Definition) == "" {
 		problems.add("definition is required")
 	}
+	validateTermSemantics(&problems, value)
 	if len(value.Aliases) > MaxTermAliases {
 		problems.add("a term has at most %d aliases", MaxTermAliases)
 	}

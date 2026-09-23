@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -33,9 +34,11 @@ func newTermSaga(t *testing.T, repo string) string {
 
 func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
 	repo, commit := sourceRepo(t, map[string]string{"kinds.go": kindsGo})
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	root := newTermSaga(t, repo)
 	var output bytes.Buffer
 	if err := Term(context.Background(), []string{"add", "--id", "testtaker", "--name", "Testtaker", "--definition", "One sitting of an assessment.",
+		"--definition-maturity", "accepted", "--implementation-evidence", "present",
 		"--alias", "test taker", "--story", "sit-assessment", "--ref", "HEAD:kinds.go#L6", "--repo", repo, "--json", root}, &output); err != nil {
 		t.Fatalf("term add: %v\n%s", err, output.String())
 	}
@@ -46,7 +49,9 @@ func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
 	}
 	term := document.FindTerm("testtaker")
 	if term == nil || len(term.CurrentRevision.Code) != 1 || term.CurrentRevision.Code[0].Commit != commit ||
-		term.CurrentRevision.Stories[0] != "urn:change-saga:atomic:story:sit-assessment" {
+		term.CurrentRevision.Stories[0] != "urn:change-saga:atomic:story:sit-assessment" ||
+		term.CurrentRevision.EffectiveDefinitionMaturity() != requirements.DefinitionMaturityAccepted ||
+		term.CurrentRevision.EffectiveImplementationEvidence() != requirements.ImplementationEvidencePresent {
 		t.Fatalf("term = %#v", term.CurrentRevision)
 	}
 
@@ -73,6 +78,10 @@ func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
 	if result.Stale != 1 || result.References[0].Owner != "urn:change-saga:atomic:term:testtaker" {
 		t.Fatalf("a renamed constant must stale the term that names it: %#v", result)
 	}
+	status := queryData(t, "terms", "--saga", root, "--repo", repo, "--term", "testtaker")["terms"].([]any)[0].(map[string]any)
+	if status["implementation_evidence"] != "present" || status["definition_maturity"] != "accepted" || status["stale"] != true {
+		t.Fatalf("stale evidence changed the authored semantic axes: %#v", status)
+	}
 	// Revising the term at the renamed line makes it current again.
 	output.Reset()
 	if err := Term(context.Background(), []string{"revise", "--term", "urn:change-saga:atomic:term:testtaker", "--revision", "r2",
@@ -85,6 +94,53 @@ func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
 	}
 	if err := Term(context.Background(), []string{"add", "--id", "bad", "--name", "Bad", "--definition", "x", "--ref", "nope:kinds.go#L1", "--repo", repo, root}, &bytes.Buffer{}); err == nil {
 		t.Fatal("an unknown revision must be refused")
+	}
+}
+
+func TestIntentOnlyTermAndSemanticAxisValidation(t *testing.T) {
+	repo, _ := sourceRepo(t, map[string]string{"kinds.go": kindsGo})
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	root := newTermSaga(t, repo)
+	if err := Term(context.Background(), []string{
+		"add", "--id", "review-annotation", "--name", "Review annotation",
+		"--definition", "A note pinned to an exact review Item.",
+		"--definition-maturity", "accepted", "--implementation-evidence", "absent",
+		"--story", "sit-assessment", root,
+	}, &bytes.Buffer{}); err != nil {
+		t.Fatalf("intent-only term: %v", err)
+	}
+	status := queryData(t, "terms", "--saga", root, "--repo", repo, "--term", "review-annotation")["terms"].([]any)[0].(map[string]any)
+	if status["definition_maturity"] != "accepted" || status["implementation_evidence"] != "absent" || len(status["code"].([]any)) != 0 || status["stale"] != false {
+		t.Fatalf("intent-only status = %#v", status)
+	}
+	for _, args := range [][]string{
+		{"add", "--id", "bad-maturity", "--name", "Bad", "--definition", "Bad", "--definition-maturity", "settled", root},
+		{"add", "--id", "bad-evidence", "--name", "Bad", "--definition", "Bad", "--implementation-evidence", "implemented", root},
+	} {
+		if err := Term(context.Background(), args, &bytes.Buffer{}); err == nil {
+			t.Fatalf("invalid semantic axis was accepted: %v", args)
+		}
+	}
+	termURN := "urn:change-saga:atomic:term:review-annotation"
+	if _, err := requirements.ReviseTerm(root, "atomic", requirements.ReviseTermInput{Term: termURN, ID: "r2", Parents: []string{termURN + ":revision:r1"},
+		TermDefinition: requirements.TermDefinition{Name: "Review annotation", Definition: "One competing meaning.", DefinitionMaturity: requirements.DefinitionMaturityProposed, ImplementationEvidence: requirements.ImplementationEvidencePartial}}); err != nil {
+		t.Fatal(err)
+	}
+	r2Path := filepath.Join(root, "___overview", "terms", "review-annotation.term", "revisions", "r2.json")
+	data, err := os.ReadFile(r2Path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	r3 := strings.Replace(string(data), `"id": "r2"`, `"id": "r3"`, 1)
+	if err := os.WriteFile(filepath.Join(filepath.Dir(r2Path), "r3.json"), []byte(r3), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	conflicted := queryData(t, "terms", "--saga", root, "--repo", repo, "--term", "review-annotation")["terms"].([]any)[0].(map[string]any)
+	if conflicted["definition_maturity"] != "unknown" || conflicted["implementation_evidence"] != "unknown" || len(conflicted["revision_heads"].([]any)) != 2 {
+		t.Fatalf("conflicted semantic projection = %#v", conflicted)
+	}
+	if _, current := conflicted["current_revision"]; current {
+		t.Fatalf("a conflicted term must not claim a current revision: %#v", conflicted)
 	}
 }
 
@@ -184,6 +240,10 @@ func TestAComparisonSuggestsNewTerminologyWithoutBlocking(t *testing.T) {
 	}
 	if strings.Join(inputs, ",") != "revision,ref" {
 		t.Fatalf("a stale term's revision is prefilled except its new id and code: %v", inputs)
+	}
+	argv := strings.Join(stale[0].Command.Argv, " ")
+	if !strings.Contains(argv, "--definition-maturity unknown") || !strings.Contains(argv, "--implementation-evidence unknown") {
+		t.Fatalf("a stale-term revision must carry both semantic axes: %s", argv)
 	}
 }
 

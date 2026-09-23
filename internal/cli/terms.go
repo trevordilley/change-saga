@@ -36,16 +36,18 @@ func Term(ctx context.Context, args []string, out io.Writer) error {
 
 // termDefinitionFlags registers the complete content of a term revision.
 type termDefinitionFlags struct {
-	name, definition, repo *string
-	aliases, stories       stringList
-	records, refs          stringList
+	name, definition, definitionMaturity, implementationEvidence, repo *string
+	aliases, stories                                                   stringList
+	records, refs                                                      stringList
 }
 
 func registerTermDefinition(flags *flag.FlagSet) *termDefinitionFlags {
 	value := &termDefinitionFlags{
-		name:       flags.String("name", "", "the term as the team says it"),
-		definition: flags.String("definition", "", "what the term means in this project"),
-		repo:       flags.String("repo", "", "code checkout when the Saga lives in a separate repository"),
+		name:                   flags.String("name", "", "the term as the team says it"),
+		definition:             flags.String("definition", "", "what the term means in this project"),
+		definitionMaturity:     flags.String("definition-maturity", "unknown", "unknown, proposed, or accepted; independent of implementation evidence"),
+		implementationEvidence: flags.String("implementation-evidence", "unknown", "unknown, absent, partial, or present; availability is not proof of implementation"),
+		repo:                   flags.String("repo", "", "code checkout when the Saga lives in a separate repository"),
 	}
 	flags.Var(&value.aliases, "alias", "another spelling the team uses; repeatable")
 	flags.Var(&value.stories, "story", "story URN or ID the term belongs to; repeatable")
@@ -69,8 +71,11 @@ func (value *termDefinitionFlags) resolve(ctx context.Context, root, sagaID stri
 		return requirements.TermDefinition{}, err
 	}
 	return requirements.TermDefinition{
-		Name: *value.name, Definition: *value.definition, Aliases: value.aliases,
-		Stories: stories, Records: value.records, Code: code,
+		Name: *value.name, Definition: *value.definition,
+		DefinitionMaturity:     requirements.DefinitionMaturity(*value.definitionMaturity),
+		ImplementationEvidence: requirements.ImplementationEvidence(*value.implementationEvidence),
+		Aliases:                value.aliases,
+		Stories:                stories, Records: value.records, Code: code,
 	}, nil
 }
 
