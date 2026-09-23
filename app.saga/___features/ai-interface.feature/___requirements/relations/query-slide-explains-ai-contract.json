@@ -8,6 +8,7 @@
   "scope": "descendants",
   "rationale": "The command grammar and query envelopes provide bounded discovery and stable structured responses for AI callers.",
   "to_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-22T23:41:07.19118Z"
+  "state": "superseded",
+  "created_at": "2026-09-22T23:41:07.19118Z",
+  "superseded_at": "2026-09-23T16:39:34.176757Z"
 }
