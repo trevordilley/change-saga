@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:slide",
+  "parents": [],
+  "name": "Slide",
+  "definition": "One ordered visual argument inside a deck, with an intent, layout, takeaway, and SVG, raster-image, or sandboxed HTML asset. It groups semantic Items; comments and decisions apply only when the slide belongs to a pull-request review.",
+  "aliases": [
+    "visual slide"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:visual-technical-explanation",
+    "urn:change-saga:change-saga:story:visual-deck-navigation"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/model.go",
+      "start": 60,
+      "end": 73,
+      "digest": "sha256:34fc8341ddffdc504ea8b42cf3da4ed53460bbed97ee539e20d8cbcc2f5104ce"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/review.go",
+      "start": 18,
+      "end": 28,
+      "digest": "sha256:8c514530d8f9bb851c3163aea86ff79fbc101592dbc4647b36386103e0010c15"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:08.512482Z"
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:implementation-deck",
+  "parents": [],
+  "name": "Implementation deck",
+  "definition": "A feature's living deck of ordered visual explanations for its current implementation. Its Items own exact code evidence. It is documentation, not a pull-request review: it is not scoped to one change range and does not receive comments or review decisions.",
+  "aliases": [
+    "feature implementation deck"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:visual-technical-explanation",
+    "urn:change-saga:change-saga:story:visual-deck-navigation"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/app.go",
+      "start": 34,
+      "end": 41,
+      "digest": "sha256:efcf347e31d8ff5cece1ea63dec1402d64a6ff4751d9cfb38c5a5ac44e9b36d7"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/slides.go",
+      "start": 413,
+      "end": 440,
+      "digest": "sha256:6bffb3aa91c38c07f19d716ab0d45d224494a29b35b99e30857b84e19cf5dbca"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:08.329755Z"
+}

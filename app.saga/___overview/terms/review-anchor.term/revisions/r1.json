@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:review-anchor",
+  "parents": [],
+  "name": "Review anchor",
+  "definition": "The canonical review slide or Slide Item target that keeps a comment thread attached to its context. A reply inherits the root comment's target, so discussion stays anchored without inventing a separate spatial marker.",
+  "aliases": [
+    "review target",
+    "comment target"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:contextual-comments",
+    "urn:change-saga:change-saga:story:review-thread-lifecycle"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/review.go",
+      "start": 107,
+      "end": 121,
+      "digest": "sha256:cf16c522c2d3c6d3efaf453ed99e472516613b1b548e05bd57ad550e9046f0f0"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 188,
+      "end": 208,
+      "digest": "sha256:28910706dc6dfd31da69d1802b3a04a6b2607f1d6d42a03158c9eb15b572a2f8"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 259,
+      "end": 274,
+      "digest": "sha256:f2b08993cd878f77fd4a1e74a03f52fee5169f02ef609b99bff6ea35bd7765ba"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:09.058631Z"
+}

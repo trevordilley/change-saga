@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:reviewer-identity",
+  "parents": [],
+  "name": "Reviewer identity",
+  "definition": "The declared human-or-AI seat attached to a review action, paired with the Git-derived author who recorded it. A human seat carries no AI fields; an AI seat requires its own stable name, agent, and exact model so direct and delegated actions remain distinct.",
+  "aliases": [
+    "reviewer seat"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:delegated-ai-attribution",
+    "urn:change-saga:change-saga:story:review-decision"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/model.go",
+      "start": 256,
+      "end": 266,
+      "digest": "sha256:a567bece3e0d6185a82956bed3abfc76b284af60e216197f220885a55cb9e999"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/reviews.go",
+      "start": 8,
+      "end": 26,
+      "digest": "sha256:7f9ce08f703f0a0e5e9d2e3228bebcf1338e7165597d2944cc0c1ff96c8480ab"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 190,
+      "end": 202,
+      "digest": "sha256:4ce8dd3fec17b0df1cd2534047708b916cb28c14cea4c54fbd47490abd518e07"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:09.365188Z"
+}

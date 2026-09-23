@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:slide-item",
+  "parents": [],
+  "name": "Slide Item",
+  "definition": "An addressable semantic element within a slide, such as a node, edge, region, transition, statement, risk, metric, example, or callout. Its selector binds the explanation to the visual, its description is the non-visual equivalent, and it is the narrowest allowed owner of code evidence.",
+  "aliases": [
+    "Item",
+    "semantic Item"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:visual-technical-explanation",
+    "urn:change-saga:change-saga:story:diagram-element-intent"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/slides.go",
+      "start": 22,
+      "end": 25,
+      "digest": "sha256:4dd1a6998f41838a2ead78bca93e297793c9cc63d4585d45ab80df1766ce1af1"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/model.go",
+      "start": 76,
+      "end": 92,
+      "digest": "sha256:3524ad25d56fad7aef41ff29b0f8a4d832802c1060a5379e4ad3ba2a0e0eb93c"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/cli/cover.go",
+      "start": 542,
+      "end": 550,
+      "digest": "sha256:b3044b6ab0fcb676fc54cfa109100c65a702725e6504944bb8a2797f034d9213"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:08.700664Z"
+}
