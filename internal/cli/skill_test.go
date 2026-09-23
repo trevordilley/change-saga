@@ -232,7 +232,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"setup-initial-saga": func(_ context.Context, args []string, out io.Writer) error { return SetupInitialSaga(args, out) },
 	"flag":               FeatureFlag, "prototype": Prototype, "story": Story, "criterion": Criterion, "citation": Citation,
 	"relation": Relation, "plan": Plan, "design": Design, "quality": Quality, "add-deck": AddDeck,
-	"add-slide": AddSlide, "set-slide-content": SetSlideContent, "add-item": AddItem, "add-section": AddSection,
+	"add-slide": AddSlide, "apply-slide": ApplySlide, "set-slide-content": SetSlideContent, "add-item": AddItem, "add-section": AddSection,
 	"add-chapter": AddChapter, "add-fragment": AddFragment, "set-fragment-content": SetFragmentContent,
 	"add-landmark": AddLandmark, "revise-deck": ReviseDeck, "remove-deck": RemoveDeck, "revise-slide": ReviseSlide, "remove-slide": RemoveSlide, "revise-item": ReviseItem, "remove-item": RemoveItem, "revise-chapter": ReviseChapter, "remove-chapter": RemoveChapter, "revise-section": ReviseSection, "remove-section": RemoveSection, "revise-fragment": ReviseFragment, "remove-fragment": RemoveFragment, "cover": Cover, "remove-coverage": RemoveCoverage,
 	"replace-coverage": ReplaceCoverage, "references": References, "repin": Repin, "sync": Sync,
