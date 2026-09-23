@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "query-failure-boundaries",
+  "deck": "ai-interface",
+  "title": "Stable failures stop at explicit boundaries",
+  "rank": 40,
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b78f822402de-0040-efa48987bd6a.svg",
+  "takeaway": "Invalid inputs fail before session open; domain errors keep stable codes, while unexpected details collapse to internal.",
+  "reading_order": [
+    "request-gate",
+    "invalid-request",
+    "open-boundary",
+    "domain-result",
+    "stable-domain-error",
+    "unexpected-error"
+  ]
+}

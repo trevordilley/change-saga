@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "structured-query",
+  "deck": "ai-interface",
+  "title": "One implemented transport, two application projections",
+  "rank": 10,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b78f822402de-0010-e4164f19c3ef.svg",
+  "takeaway": "AI reads are CLI-only today; the adapter opens review and living projections while HTTP query and MCP adapters remain unimplemented.",
+  "reading_order": [
+    "caller",
+    "query",
+    "session",
+    "living-session",
+    "missing-adapters"
+  ]
+}

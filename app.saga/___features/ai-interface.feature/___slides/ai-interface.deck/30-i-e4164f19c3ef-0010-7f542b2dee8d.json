@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "caller",
+  "slide": "structured-query",
+  "rank": 10,
+  "kind": "node",
+  "label": "Published query grammar",
+  "description": "The AI invokes one published query operation through the command line; no daemon or filesystem scraping is required.",
+  "selector": {
+    "type": "element",
+    "element_id": "caller"
+  }
+}

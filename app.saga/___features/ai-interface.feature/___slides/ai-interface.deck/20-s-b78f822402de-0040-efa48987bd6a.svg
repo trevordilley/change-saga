@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Query failure boundaries and stable exits</title>
+  <desc id="desc">A branching decision flow showing pre-open rejection, snapshot-opening failures, domain errors, success, and unexpected failures normalized into a stable envelope and exit code.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#0d1721"/><stop offset="1" stop-color="#172530"/></linearGradient>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#7895aa"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="56" y="62" font-family="Inter,system-ui,sans-serif" font-size="34" font-weight="750" fill="#f7fbff">Failures are contained before they reach the AI</text>
+  <text x="56" y="96" font-family="Inter,system-ui,sans-serif" font-size="18" fill="#a7bdcc">Every ordinary outcome stays one JSON value on stdout; exit status carries the same stable category.</text>
+
+  <g id="request-gate">
+    <rect x="64" y="155" width="224" height="96" rx="24" fill="#1b3850" stroke="#65c9ed" stroke-width="3"/>
+    <text x="176" y="193" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="700" fill="#fff">Parse request</text>
+    <text x="176" y="225" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#c2e8f5">operation · flags · limits</text>
+    <path d="M288 203H389" stroke="#7895aa" stroke-width="4" marker-end="url(#a)"/>
+  </g>
+
+  <g id="invalid-request">
+    <path d="M389 203L455 145L521 203L455 261Z" fill="#342537" stroke="#ff8297" stroke-width="3"/>
+    <text x="455" y="195" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="17" font-weight="700" fill="#fff">valid?</text>
+    <text x="455" y="218" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#ffc5cf">before open</text>
+    <path d="M455 261V337" stroke="#ff8297" stroke-width="4" marker-end="url(#a)"/>
+    <text x="475" y="302" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#ffc5cf">no</text>
+    <rect x="341" y="337" width="228" height="92" rx="22" fill="#492936" stroke="#ff8297" stroke-width="3"/>
+    <text x="455" y="374" text-anchor="middle" font-family="ui-monospace,monospace" font-size="18" font-weight="700" fill="#fff">invalid_argument</text>
+    <text x="455" y="405" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffc5cf">exit 2 · session unopened</text>
+  </g>
+
+  <g id="open-boundary">
+    <path d="M521 203H626" stroke="#7895aa" stroke-width="4" marker-end="url(#a)"/>
+    <text x="566" y="190" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#b8cedd">yes</text>
+    <rect x="626" y="155" width="224" height="96" rx="24" fill="#26334d" stroke="#9c90f4" stroke-width="3"/>
+    <text x="738" y="193" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="700" fill="#fff">Open snapshot</text>
+    <text x="738" y="225" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#d4cffb">Saga · repo · comparison</text>
+    <path d="M738 251V337" stroke="#ffad55" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="618" y="337" width="240" height="92" rx="22" fill="#47341f" stroke="#ffad55" stroke-width="3"/>
+    <text x="738" y="372" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="17" font-weight="700" fill="#fff">invalid_saga · not_found</text>
+    <text x="738" y="397" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffd7a8">source_unavailable</text>
+    <text x="738" y="418" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#ffd7a8">exits 3 / 5 / 7</text>
+  </g>
+
+  <g id="domain-result">
+    <path d="M850 203H954" stroke="#7895aa" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="954" y="155" width="250" height="96" rx="24" fill="#234138" stroke="#61d7aa" stroke-width="3"/>
+    <text x="1079" y="193" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="700" fill="#fff">Project domain result</text>
+    <text x="1079" y="225" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#c2f4e1">data page or typed error</text>
+    <path d="M1079 251V337" stroke="#61d7aa" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="960" y="337" width="238" height="92" rx="22" fill="#21463b" stroke="#61d7aa" stroke-width="3"/>
+    <text x="1079" y="374" text-anchor="middle" font-family="ui-monospace,monospace" font-size="18" font-weight="700" fill="#fff">ok: true</text>
+    <text x="1079" y="405" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#bef4df">exit 0 · snapshot returned</text>
+  </g>
+
+  <g id="stable-domain-error">
+    <path d="M1204 203C1242 203 1242 443 1079 500" fill="none" stroke="#ff8297" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="829" y="500" width="250" height="116" rx="22" fill="#492936" stroke="#ff8297" stroke-width="3"/>
+    <text x="954" y="538" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="19" font-weight="700" fill="#fff">Known domain error</text>
+    <text x="954" y="570" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffc5cf">code + retryable + details</text>
+    <text x="954" y="594" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffc5cf">mapped exit 2–7</text>
+  </g>
+
+  <g id="unexpected-error">
+    <path d="M850 203C900 270 731 476 699 500" fill="none" stroke="#cda0ff" stroke-width="4" stroke-dasharray="8 7" marker-end="url(#a)"/>
+    <rect x="569" y="500" width="238" height="116" rx="22" fill="#382b4b" stroke="#cda0ff" stroke-width="3"/>
+    <text x="688" y="538" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="19" font-weight="700" fill="#fff">Unexpected error</text>
+    <text x="688" y="570" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#e5cfff">normalized to “internal”</text>
+    <text x="688" y="594" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#e5cfff">details suppressed · exit 1</text>
+  </g>
+
+  <rect x="64" y="645" width="1140" height="39" rx="18" fill="#112934"/>
+  <text x="634" y="671" text-anchor="middle" font-family="ui-monospace,monospace" font-size="16" fill="#c6e8f2">stdout: exactly one {schema, ok, data|error, page?} value · stderr remains empty</text>
+</svg>

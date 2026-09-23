@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "cmd/change-saga/main_test.go",
+      "start": 11,
+      "end": 42,
+      "digest": "sha256:05f08a26f1214f49af674880d501b659646e40301d37f519c8c6f83f0c446f41",
+      "note": "Proves query success and failure keep stderr empty and stdout to exactly one JSON value."
+    }
+  ]
+}

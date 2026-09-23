@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "complete",
+  "slide": "cursor-state",
+  "rank": 60,
+  "kind": "transition",
+  "label": "Complete pagination",
+  "description": "When the page reaches the filtered total, has_more is false and no continuation token is returned.",
+  "selector": {
+    "type": "element",
+    "element_id": "complete"
+  }
+}

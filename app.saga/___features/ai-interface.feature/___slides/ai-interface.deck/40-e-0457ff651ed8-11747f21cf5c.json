@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query_integration_test.go",
+      "start": 181,
+      "end": 185,
+      "digest": "sha256:3bda9aa8c781634b6c8b2fc8fb90545c2ed7af476d520abedba6953978e87bc1",
+      "note": "Proves that advancing the Saga snapshot turns an otherwise valid cursor into retryable stale_snapshot."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "missing-adapters",
+  "slide": "structured-query",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Deferred transports",
+  "description": "The HTTP query adapter and stdio MCP adapter are not implemented runtime paths; only the CLI query transport exists.",
+  "selector": {
+    "type": "element",
+    "element_id": "missing-adapters"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "query-runtime",
+  "deck": "ai-interface",
+  "title": "One query, one process-bounded transaction",
+  "rank": 20,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b78f822402de-0020-119479016884.svg",
+  "takeaway": "Each request parses, opens a validated snapshot, projects one domain result, emits exactly one JSON value, and exits.",
+  "reading_order": [
+    "invoke",
+    "dispatch",
+    "open-snapshot",
+    "project",
+    "envelope",
+    "exit"
+  ]
+}

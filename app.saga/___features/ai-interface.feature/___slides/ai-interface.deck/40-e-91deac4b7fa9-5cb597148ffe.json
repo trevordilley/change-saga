@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 769,
+      "end": 801,
+      "digest": "sha256:dbcedc8cd1cc31d7c88bfd8925184268a6ad11eb035a9194d198f9984e7c34fb",
+      "note": "Encodes success and failure as the single versioned JSON envelope written by every ordinary query outcome."
+    }
+  ]
+}
