@@ -51,6 +51,7 @@ func (s *session) audit(filters Filters) (AuditReport, error) {
 	relevantRelations := 0
 	intentByItem := map[string][]string{}
 	exactExplanation := map[string]bool{}
+	requirementTargets := s.auditRequirementTargets()
 	for _, relation := range s.requirements.Relations {
 		relationURN, _ := livingid.Relation(s.requirements.SagaID, relation.ID)
 		fromFeature, toFeature := owners[relation.From], owners[relation.To]
@@ -88,20 +89,26 @@ func (s *session) audit(filters Filters) (AuditReport, error) {
 		features := uniqueSorted(nonempty(relation.Feature, fromFeature, toFeature))
 		if relation.State == requirements.RelationActive && len(features) > 1 {
 			report.Findings = append(report.Findings, AuditFinding{
-				ID: relationURN, Severity: "warning", Code: "cross_feature_unassigned_link",
-				Reason:  "the relation crosses feature ownership and no separate persisted handoff assignment resolves that boundary",
+				ID: relationURN, Severity: "info", Code: "cross_feature_context",
+				Reason:  "the relation crosses feature ownership; review both feature contexts during handoff",
 				Related: []string{relation.From, relation.To}, Features: features,
 			})
 		}
 
-		if !current || relation.Type != requirements.RelationExplains || !strings.Contains(relation.From, ":item:") {
+		if current && relation.Type == requirements.RelationExplains && auditRequirementTarget(relation.To) && !requirementTargets[relation.To] {
+			report.Findings = append(report.Findings, AuditFinding{
+				ID: relationURN, Severity: "error", Code: "inactive_requirement_endpoint",
+				Reason:  "the exact explains relation targets a requirement that has no single current proposed or accepted definition",
+				Related: []string{relation.From, relation.To},
+			})
+		}
+
+		if !current || relation.Type != requirements.RelationExplains || !auditItemTarget(relation.From) || owners[relation.From] == "" || !requirementTargets[relation.To] {
 			continue
 		}
-		if owners[relation.From] == featureID && owners[relation.To] == featureID && auditRequirementTarget(relation.To) {
-			intentByItem[relation.From] = append(intentByItem[relation.From], relation.To)
-			if _, exists := criteria[relation.To]; exists {
-				exactExplanation[relation.To] = true
-			}
+		intentByItem[relation.From] = append(intentByItem[relation.From], relation.To)
+		if _, exists := criteria[relation.To]; exists {
+			exactExplanation[relation.To] = true
 		}
 	}
 
@@ -345,6 +352,23 @@ func (s *session) auditOwners() map[string]string {
 	return owners
 }
 
+func (s *session) auditRequirementTargets() map[string]bool {
+	targets := map[string]bool{}
+	for index := range s.requirements.Stories {
+		story := &s.requirements.Stories[index]
+		if story.CurrentRevision == nil || story.CurrentLifecycle == nil || story.CurrentLifecycle.State != requirements.StateAccepted && story.CurrentLifecycle.State != requirements.StateProposed {
+			continue
+		}
+		storyURN, _ := livingid.Story(s.requirements.SagaID, story.Identity.ID)
+		targets[storyURN] = true
+		for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
+			criterionURN, _ := livingid.Criterion(s.requirements.SagaID, story.Identity.ID, criterion.ID)
+			targets[criterionURN] = true
+		}
+	}
+	return targets
+}
+
 func auditItemHasEvidence(item *saga.Item) bool {
 	for _, file := range item.Code {
 		if len(file.References) > 0 {
@@ -362,6 +386,11 @@ func auditBroadVisual(target string) bool {
 func auditRequirementTarget(target string) bool {
 	parsed, err := sagaref.ParseTarget(target)
 	return err == nil && (parsed.Kind == sagaref.TargetStory || parsed.Kind == sagaref.TargetCriterion)
+}
+
+func auditItemTarget(target string) bool {
+	parsed, err := sagaref.ParseTarget(target)
+	return err == nil && parsed.Kind == sagaref.TargetItem
 }
 
 func auditCriteriaForStory(criteria map[string]auditCriterion, story string) []string {
@@ -451,7 +480,7 @@ func finalizeAudit(report *AuditReport) {
 		}
 	}
 	report.Complete = len(report.Conflicts) == 0
-	report.Ready = report.Complete && len(report.Findings) == 0
+	report.Ready = report.Complete && report.Summary.Errors == 0 && report.Summary.Warnings == 0
 	switch {
 	case !report.Complete:
 		report.Status = "incomplete"
