@@ -184,8 +184,8 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	secondCriterionURN, _ := livingid.Criterion("decks", "checkout", "fast")
 	revisionURN, _ := livingid.Revision("decks", "checkout", "r1")
 	proposedURN, _ := requirements.StoryEventURN("decks", "checkout", "proposed")
-	if err := Relation(context.Background(), []string{"add", "--feature", testFeature, "--id", "flow-explains-checkout", "--type", "explains", "--from", document.Decks[0].Slides[0].Target, "--to", storyURN, "--to-revision", revisionURN, "--rationale", "The visual implementation breakdown demonstrates this user story.", root}, &output); err != nil {
-		t.Fatalf("link slide to story: %v", err)
+	if err := Relation(context.Background(), []string{"add", "--feature", testFeature, "--id", "flow-explains-checkout", "--type", "explains", "--from", item.Target, "--to", storyURN, "--to-revision", revisionURN, "--rationale", "The visual implementation element demonstrates this user story.", root}, &output); err != nil {
+		t.Fatalf("link Item to story: %v", err)
 	}
 	traceOutput.Reset()
 	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--against", "main", "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {

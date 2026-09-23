@@ -169,8 +169,8 @@ func TestV5RelationMatrixAndScope(t *testing.T) {
 	}
 	explains := AddRelationInput{Feature: "core", ID: "deck-explains", Type: RelationExplains, From: "urn:change-saga:test:deck:flow", To: v5Criterion,
 		Rationale: "The deck walks the flow.", ToRevision: v5StoryR1, Scope: ScopeDescendants}
-	if _, err := AddRelation(root, "test", explains); err != nil {
-		t.Fatalf("deck descendants explains: %v", err)
+	if _, err := AddRelation(root, "test", explains); err == nil || !strings.Contains(err.Error(), "slide Item") {
+		t.Fatalf("new deck relation must require an Item: %v", err)
 	}
 	supersedes := AddRelationInput{Feature: "core", ID: "tc-supersedes", Type: RelationSupersedes, From: v5TestCase, To: "urn:change-saga:test:test-case:old-path", Rationale: "Replaces the old case."}
 	if _, err := AddRelation(root, "test", supersedes); err != nil {

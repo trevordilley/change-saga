@@ -381,13 +381,13 @@ func TestTypedRelationPinsExposeStaleInputsAndSupersede(t *testing.T) {
 	}
 }
 
-func TestExplainsRelationLinksSlideToPinnedCriterion(t *testing.T) {
+func TestExplainsRelationLinksItemToPinnedCriterion(t *testing.T) {
 	root := newSaga(t)
 	_, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "safe", Statement: "Preserves validated state"}}))
 	if err != nil {
 		t.Fatal(err)
 	}
-	slide := "urn:change-saga:test:slide:checkout-flow"
+	slide := "urn:change-saga:test:slide:checkout-flow:item:validated-state"
 	criterion := "urn:change-saga:test:story:checkout:criterion:safe"
 	revision := "urn:change-saga:test:story:checkout:revision:r1"
 	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core",

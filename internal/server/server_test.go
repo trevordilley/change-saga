@@ -101,7 +101,7 @@ func TestWorkspaceTabsAndClosedDrawerCarryAccessibleSemantics(t *testing.T) {
 		"openFragmentDrawer(fragmentDrawerLink.dataset.openFragment, fragmentDrawerLink)",
 		"hydrateTargetCode(targetCodeButton)",
 		"data-target-code-response",
-		"const labels = {fragment:'Related explanation', history:'History', code:'Linked code'}",
+		"const labels = {fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'}",
 		"openHistoryDrawer(historyButton.dataset.historyHref, historyButton)",
 	} {
 		if !strings.Contains(appJavaScript, fragment) {

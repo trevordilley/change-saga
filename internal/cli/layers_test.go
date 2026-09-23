@@ -174,8 +174,8 @@ func addQueueSlide(t *testing.T, root, id, title string) {
 	writeFile(t, visual, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><text>`+title+`</text></svg>`+"\n")
 	mustRun(t, AddSlide, "--deck", "urn:change-saga:shop:deck:impl", "--id", id, "--title", title, "--intent", "explain", "--layout", "diagram", "--source", visual, "--takeaway", title, root, id)
 	mustRun(t, AddItem, "--slide", "urn:change-saga:shop:slide:"+id, "--id", id+"-item", "--kind", "node", "--label", title, "--description", title, "--region", "0,0,1,1", root)
-	mustRun(t, Relation, "add", "--feature", "checkout", "--id", id+"-charged", "--type", "explains", "--from", "urn:change-saga:shop:slide:"+id,
-		"--to", "urn:change-saga:shop:story:pay:criterion:charged", "--scope", "descendants", "--rationale", "How the charge reaches fulfilment", root)
+	mustRun(t, Relation, "add", "--feature", "checkout", "--id", id+"-charged", "--type", "explains", "--from", "urn:change-saga:shop:slide:"+id+":item:"+id+"-item",
+		"--to", "urn:change-saga:shop:story:pay:criterion:charged", "--scope", "self", "--rationale", "How the charge reaches fulfilment", root)
 }
 
 // removeSlides deletes every slide and Item of the implementation deck.
