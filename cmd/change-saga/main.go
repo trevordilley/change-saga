@@ -133,6 +133,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Check(ctx, args[1:], stdout)
 	case "query":
 		err = cli.Query(ctx, args[1:], stdout)
+	case "visual-qa":
+		err = cli.VisualQA(ctx, args[1:], stdout)
 	case "serve", "open":
 		err = cli.Serve(ctx, args[1:], stdout, args[0] == "open")
 	case "install-skill":
