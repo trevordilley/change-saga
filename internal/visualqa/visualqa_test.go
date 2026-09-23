@@ -2,6 +2,7 @@ package visualqa
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -79,6 +80,73 @@ func TestOutputPathSafety(t *testing.T) {
 	writeFixtureFile(t, filepath.Join(unmanaged, "keep.txt"), "user data")
 	if _, err := safeOutputPath(root, "visual", unmanaged); err == nil || !strings.Contains(err.Error(), "not created by visual-qa") {
 		t.Fatalf("unmanaged output error = %v", err)
+	}
+	symlinkParent := filepath.Join(t.TempDir(), "saga-link")
+	if err := os.Symlink(root, symlinkParent); err != nil {
+		t.Skipf("symlinks unavailable: %v", err)
+	}
+	nested := filepath.Join(symlinkParent, "missing", "nested", "qa")
+	if _, err := safeOutputPath(root, "visual", nested); err == nil || !strings.Contains(err.Error(), "outside the Saga") {
+		t.Fatalf("nested path beneath Saga symlink error = %v", err)
+	}
+	if _, err := os.Lstat(filepath.Join(symlinkParent, "missing")); !os.IsNotExist(err) {
+		t.Fatalf("path safety check mutated nonexistent output ancestors: %v", err)
+	}
+}
+
+func TestInstallOutputRestoresPriorReportWhenPublishFails(t *testing.T) {
+	parent := t.TempDir()
+	output := filepath.Join(parent, "report")
+	stage := filepath.Join(parent, "stage")
+	writeFixtureFile(t, filepath.Join(output, ".change-saga-visual-qa"), "managed output\n")
+	writeFixtureFile(t, filepath.Join(output, "old.txt"), "old report")
+	writeFixtureFile(t, filepath.Join(stage, ".change-saga-visual-qa"), "managed output\n")
+	writeFixtureFile(t, filepath.Join(stage, "new.txt"), "new report")
+
+	calls := 0
+	err := installOutputWithRename(stage, output, func(from, to string) error {
+		calls++
+		if calls == 2 {
+			return errors.New("injected publish failure")
+		}
+		return os.Rename(from, to)
+	})
+	if err == nil || !strings.Contains(err.Error(), "prior output restored") {
+		t.Fatalf("publish failure = %v", err)
+	}
+	if value, readErr := os.ReadFile(filepath.Join(output, "old.txt")); readErr != nil || string(value) != "old report" {
+		t.Fatalf("prior report was not restored: value=%q err=%v", value, readErr)
+	}
+	if _, statErr := os.Stat(filepath.Join(stage, "new.txt")); statErr != nil {
+		t.Fatalf("failed stage should remain recoverable: %v", statErr)
+	}
+}
+
+func TestInstallOutputReportsRecoverableBackupWhenRestoreFails(t *testing.T) {
+	parent := t.TempDir()
+	output := filepath.Join(parent, "report")
+	stage := filepath.Join(parent, "stage")
+	writeFixtureFile(t, filepath.Join(output, ".change-saga-visual-qa"), "managed output\n")
+	writeFixtureFile(t, filepath.Join(output, "old.txt"), "old report")
+	writeFixtureFile(t, filepath.Join(stage, ".change-saga-visual-qa"), "managed output\n")
+
+	calls := 0
+	err := installOutputWithRename(stage, output, func(from, to string) error {
+		calls++
+		if calls >= 2 {
+			return fmt.Errorf("injected rename failure %d", calls)
+		}
+		return os.Rename(from, to)
+	})
+	if err == nil || !strings.Contains(err.Error(), "restore prior output from") || !strings.Contains(err.Error(), "injected rename failure 3") {
+		t.Fatalf("restore failure = %v", err)
+	}
+	backups, globErr := filepath.Glob(filepath.Join(parent, ".change-saga-visual-qa-backup-*"))
+	if globErr != nil || len(backups) != 1 {
+		t.Fatalf("recoverable backup = %v err=%v", backups, globErr)
+	}
+	if value, readErr := os.ReadFile(filepath.Join(backups[0], "old.txt")); readErr != nil || string(value) != "old report" {
+		t.Fatalf("backup did not preserve prior report: value=%q err=%v", value, readErr)
 	}
 }
 

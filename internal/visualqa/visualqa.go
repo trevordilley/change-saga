@@ -293,8 +293,14 @@ func safeOutputPath(sagaRoot, sagaID, requested string) (string, error) {
 	if home, _ := os.UserHomeDir(); home != "" && samePath(output, home) {
 		return "", errors.New("visual QA output cannot replace the home directory")
 	}
-	rootReal := realPathOrClean(sagaRoot)
-	outputReal := realPathOrClean(output)
+	rootReal, err := realPathFromExistingAncestor(sagaRoot)
+	if err != nil {
+		return "", fmt.Errorf("resolve Saga path: %w", err)
+	}
+	outputReal, err := realPathFromExistingAncestor(output)
+	if err != nil {
+		return "", fmt.Errorf("resolve visual QA output path: %w", err)
+	}
 	if within(outputReal, rootReal) || within(rootReal, outputReal) {
 		return "", errors.New("visual QA output must be outside the Saga and cannot contain it")
 	}
@@ -312,6 +318,11 @@ func safeOutputPath(sagaRoot, sagaID, requested string) (string, error) {
 }
 
 func installOutput(stage, output string) error {
+	return installOutputWithRename(stage, output, os.Rename)
+}
+
+func installOutputWithRename(stage, output string, rename func(string, string) error) error {
+	backup := ""
 	if info, err := os.Lstat(output); err == nil {
 		if info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
 			return errors.New("visual QA output changed and is no longer a real directory")
@@ -320,14 +331,33 @@ func installOutput(stage, output string) error {
 		if markerErr != nil || marker.Mode()&os.ModeSymlink != 0 || !marker.Mode().IsRegular() {
 			return errors.New("visual QA output changed and no longer has a regular managed marker")
 		}
-		if err := os.RemoveAll(output); err != nil {
-			return fmt.Errorf("replace prior visual QA output: %w", err)
+		placeholder, err := os.MkdirTemp(filepath.Dir(output), ".change-saga-visual-qa-backup-")
+		if err != nil {
+			return fmt.Errorf("reserve prior visual QA output backup: %w", err)
+		}
+		if err := os.Remove(placeholder); err != nil {
+			return fmt.Errorf("prepare prior visual QA output backup: %w", err)
+		}
+		backup = placeholder
+		if err := rename(output, backup); err != nil {
+			return fmt.Errorf("preserve prior visual QA output: %w", err)
 		}
 	} else if !os.IsNotExist(err) {
 		return err
 	}
-	if err := os.Rename(stage, output); err != nil {
-		return fmt.Errorf("publish visual QA output: %w", err)
+	if err := rename(stage, output); err != nil {
+		if backup == "" {
+			return fmt.Errorf("publish visual QA output: %w", err)
+		}
+		if restoreErr := rename(backup, output); restoreErr != nil {
+			return fmt.Errorf("publish visual QA output: %w; restore prior output from %s: %v", err, backup, restoreErr)
+		}
+		return fmt.Errorf("publish visual QA output: %w; prior output restored", err)
+	}
+	if backup != "" {
+		if err := os.RemoveAll(backup); err != nil {
+			return fmt.Errorf("published visual QA output but could not remove recoverable prior-output backup %s: %w", backup, err)
+		}
 	}
 	return nil
 }
@@ -365,15 +395,31 @@ func within(path, parent string) bool {
 	return err == nil && rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator))
 }
 
-func realPathOrClean(path string) string {
-	if value, err := filepath.EvalSymlinks(path); err == nil {
-		return filepath.Clean(value)
+func realPathFromExistingAncestor(path string) (string, error) {
+	path = filepath.Clean(path)
+	ancestor := path
+	suffix := []string{}
+	for {
+		value, err := filepath.EvalSymlinks(ancestor)
+		if err == nil {
+			parts := append([]string{filepath.Clean(value)}, suffix...)
+			return filepath.Join(parts...), nil
+		}
+		if info, statErr := os.Lstat(ancestor); statErr == nil {
+			if info.Mode()&os.ModeSymlink != 0 {
+				return "", fmt.Errorf("cannot resolve symlink %s: %w", ancestor, err)
+			}
+			return "", fmt.Errorf("cannot resolve existing path %s: %w", ancestor, err)
+		} else if !os.IsNotExist(statErr) {
+			return "", statErr
+		}
+		parent := filepath.Dir(ancestor)
+		if parent == ancestor {
+			return "", err
+		}
+		suffix = append([]string{filepath.Base(ancestor)}, suffix...)
+		ancestor = parent
 	}
-	parent, base := filepath.Dir(path), filepath.Base(path)
-	if value, err := filepath.EvalSymlinks(parent); err == nil {
-		return filepath.Join(value, base)
-	}
-	return filepath.Clean(path)
 }
 
 func samePath(left, right string) bool {
