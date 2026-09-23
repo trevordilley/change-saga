@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/terms.go",
+      "start": 48,
+      "end": 55,
+      "digest": "sha256:a858ba3dce23f88d0d51d6e6880b4179fd24334457b6459445889066e08eabd9",
+      "note": "Pins term links to stories, records, and code and proves reverse lookup from either a source line or story."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/terms_test.go",
+      "start": 214,
+      "end": 237,
+      "digest": "sha256:5dee4b5f98243ac500384a14ab2137a38a84568630052923db4425edbf6f44b9",
+      "note": "Pins term links to stories, records, and code and proves reverse lookup from either a source line or story."
+    }
+  ]
+}

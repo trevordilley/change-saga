@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "lifecycle-graph",
+  "slide": "story-lifecycle-runtime",
+  "rank": 10,
+  "kind": "region",
+  "label": "Lifecycle DAG",
+  "description": "Proposed, accepted, deferred, rejected, and retired events form a separate append-only graph from story meaning.",
+  "selector": {
+    "type": "element",
+    "element_id": "lifecycle-graph"
+  }
+}

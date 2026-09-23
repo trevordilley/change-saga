@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 83,
+      "end": 142,
+      "digest": "sha256:5434bb16fffdcc446b1afc43275e3eeaebda672e02f59724ffae56ae8a5cd6e5",
+      "note": "Collects cross-domain endpoint and conflict facts while leaving pin evaluation in the requirements owner."
+    }
+  ]
+}

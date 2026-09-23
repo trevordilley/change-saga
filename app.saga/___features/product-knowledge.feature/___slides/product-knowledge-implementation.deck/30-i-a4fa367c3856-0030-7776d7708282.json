@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "head-resolution",
+  "slide": "vocabulary-runtime",
+  "rank": 30,
+  "kind": "node",
+  "label": "Code pin at head",
+  "description": "Each defining-code reference is resolved at the observed head and reports current, moved, or stale state.",
+  "selector": {
+    "type": "element",
+    "element_id": "head-resolution"
+  }
+}

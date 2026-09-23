@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "feature-ownership-gap",
+  "slide": "product-knowledge-ownership",
+  "rank": 60,
+  "kind": "callout",
+  "label": "Feature ownership missing",
+  "description": "The requirement response type and row projection omit the story Feature field, so callers cannot feature-scope this query directly.",
+  "selector": {
+    "type": "element",
+    "element_id": "feature-ownership-gap"
+  },
+  "about": "query-contract",
+  "body": "Missing: requirement rows do not return owning feature.",
+  "placement": "bottom",
+  "leader": "line"
+}

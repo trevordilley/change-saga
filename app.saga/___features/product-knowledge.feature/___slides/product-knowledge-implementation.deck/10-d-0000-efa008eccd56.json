@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "product-knowledge-implementation",
+  "title": "Product knowledge implementation",
+  "role": "change",
+  "rank": 0,
+  "objective": "Explain how product knowledge is stored, projected, traced to code, and prevented from becoming silently current."
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/mutation.go",
+      "start": 55,
+      "end": 80,
+      "digest": "sha256:40122a9eb7cd02ba9de1bdb03c02f033f733eeb647735a9cd7ce3169906f7065",
+      "note": "Copies HTML into an immutable revision package, verifies its digest on load, and proves source edits cannot mutate it."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/load.go",
+      "start": 261,
+      "end": 266,
+      "digest": "sha256:d4df106bc382a0d0ae156a5ad5840f19ad98927ac57d48f9326171d289b1d09a",
+      "note": "Copies HTML into an immutable revision package, verifies its digest on load, and proves source edits cannot mutate it."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 38,
+      "end": 75,
+      "digest": "sha256:fb5fe8fcb3949d4c1e4b76226da1d93621783a62ac1b5ba981eaaa5c6dcfa04b",
+      "note": "Copies HTML into an immutable revision package, verifies its digest on load, and proves source edits cannot mutate it."
+    }
+  ]
+}

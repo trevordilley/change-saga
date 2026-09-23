@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "evidence-head",
+  "slide": "quality-evidence-runtime",
+  "rank": 10,
+  "kind": "node",
+  "label": "Evidence head",
+  "description": "Evidence pins a current test revision and names implementation/test code or manual artifacts; supersession advances explicit evidence heads.",
+  "selector": {
+    "type": "element",
+    "element_id": "evidence-head"
+  }
+}

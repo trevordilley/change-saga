@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">One relation graph supports forward evidence and reverse impact</title>
+  <desc id="desc">A butterfly diagram centers on acceptance criteria. The right wing derives design, work, implementation Items, code, tests, and immutable evidence; the left wing maps changed source back through evidence owners. Stale links are filtered. A dashed red edge marks that direct Item-to-design correlation is not implemented.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06151d"/><stop offset="1" stop-color="#153248"/></linearGradient>
+    <marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#60a5fa"/></marker>
+    <marker id="green" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#34d399"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="70" fill="#f6fbff" font-family="Inter,system-ui,sans-serif" font-size="30" font-weight="700">The same graph answers “where is it?” and “what did this affect?”</text>
+  <text x="64" y="102" fill="#a7c0d3" font-family="Inter,system-ui,sans-serif" font-size="16">Only active, current relations contribute; missing and stale paths remain explicit blockers.</text>
+
+  <g id="active-relation-filter">
+    <rect x="486" y="135" width="308" height="60" rx="30" fill="#17364a" stroke="#67e8f9" stroke-width="2"/>
+    <text x="640" y="161" text-anchor="middle" fill="#67e8f9" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">RUNTIME FILTER</text>
+    <text x="640" y="182" text-anchor="middle" fill="#d5f7fa" font-family="Inter,system-ui,sans-serif" font-size="13">active ∧ not stale</text>
+    <path d="M640 195V254" stroke="#67e8f9" stroke-width="3" marker-end="url(#blue)"/>
+  </g>
+  <g id="criterion-hub">
+    <circle cx="640" cy="340" r="92" fill="#173c4d" stroke="#67e8f9" stroke-width="3"/>
+    <text x="640" y="322" text-anchor="middle" fill="#67e8f9" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">ACCEPTED</text>
+    <text x="640" y="352" text-anchor="middle" fill="#f6fbff" font-family="Inter,system-ui,sans-serif" font-size="23" font-weight="700">criterion</text>
+    <text x="640" y="379" text-anchor="middle" fill="#a7c0d3" font-family="Inter,system-ui,sans-serif" font-size="13">stable URN + revision pin</text>
+  </g>
+
+  <g id="forward-projection">
+    <path d="M712 282C810 205 878 195 1010 220" fill="none" stroke="#60a5fa" stroke-width="4" marker-end="url(#blue)"/>
+    <path d="M730 340C842 340 902 340 1010 340" fill="none" stroke="#60a5fa" stroke-width="4" marker-end="url(#blue)"/>
+    <path d="M712 398C810 475 878 485 1010 460" fill="none" stroke="#60a5fa" stroke-width="4" marker-end="url(#blue)"/>
+    <rect x="1010" y="176" width="210" height="88" rx="17" fill="#142e4c" stroke="#60a5fa"/><text x="1036" y="211" fill="#f6fbff" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">Design</text><text x="1036" y="238" fill="#b8d7ff" font-family="Inter,system-ui,sans-serif" font-size="13">addresses</text>
+    <rect x="1010" y="296" width="210" height="88" rx="17" fill="#142e4c" stroke="#60a5fa"/><text x="1036" y="331" fill="#f6fbff" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">Implementation Item</text><text x="1036" y="358" fill="#b8d7ff" font-family="Inter,system-ui,sans-serif" font-size="13">explains → exact code</text>
+    <rect x="1010" y="416" width="210" height="88" rx="17" fill="#142e4c" stroke="#60a5fa"/><text x="1036" y="451" fill="#f6fbff" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">Test + run</text><text x="1036" y="478" fill="#b8d7ff" font-family="Inter,system-ui,sans-serif" font-size="13">verifies → immutable proof</text>
+  </g>
+
+  <g id="reverse-source-lookup">
+    <rect x="60" y="176" width="210" height="88" rx="17" fill="#113c38" stroke="#34d399"/><text x="86" y="211" fill="#f6fbff" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">Source location</text><text x="86" y="238" fill="#b7f7dc" font-family="Inter,system-ui,sans-serif" font-size="13">exact / remapped lines</text>
+    <rect x="60" y="296" width="210" height="88" rx="17" fill="#113c38" stroke="#34d399"/><text x="86" y="331" fill="#f6fbff" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">Evidence owner</text><text x="86" y="358" fill="#b7f7dc" font-family="Inter,system-ui,sans-serif" font-size="13">Item or test case</text>
+    <rect x="60" y="416" width="210" height="88" rx="17" fill="#113c38" stroke="#34d399"/><text x="86" y="451" fill="#f6fbff" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">Changed atom</text><text x="86" y="478" fill="#b7f7dc" font-family="Inter,system-ui,sans-serif" font-size="13">direct / contextual / unowned</text>
+    <path d="M270 220C399 198 465 220 568 284" fill="none" stroke="#34d399" stroke-width="4" marker-end="url(#green)"/>
+    <path d="M270 340H548" fill="none" stroke="#34d399" stroke-width="4" marker-end="url(#green)"/>
+    <path d="M270 460C399 482 465 460 568 396" fill="none" stroke="#34d399" stroke-width="4" marker-end="url(#green)"/>
+  </g>
+
+  <g id="unlinked-evidence">
+    <rect x="60" y="574" width="390" height="82" rx="17" fill="#332515" stroke="#fbbf24" stroke-width="2"/>
+    <text x="86" y="604" fill="#fbbf24" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">ORPHAN BOUNDARY</text>
+    <text x="86" y="631" fill="#fde9b0" font-family="Inter,system-ui,sans-serif" font-size="14">Code evidence without a current explains relation</text>
+  </g>
+  <g id="impact-analysis">
+    <rect x="466" y="574" width="348" height="82" rx="17" fill="#123a35" stroke="#34d399" stroke-width="2"/>
+    <text x="492" y="604" fill="#34d399" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">IMPACT RESULT</text>
+    <text x="492" y="631" fill="#c8f9e8" font-family="Inter,system-ui,sans-serif" font-size="14">owned changes propagate; unowned stay visible</text>
+  </g>
+  <g id="missing-direct-edge">
+    <path d="M1115 264V296" stroke="#fb7185" stroke-width="3" stroke-dasharray="6 6"/>
+    <rect x="830" y="574" width="390" height="82" rx="17" fill="#3d1b2a" stroke="#fb7185" stroke-width="2" stroke-dasharray="8 6"/>
+    <text x="856" y="604" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">MISSING DIRECT EDGE</text>
+    <text x="856" y="631" fill="#fbd5dc" font-family="Inter,system-ui,sans-serif" font-size="14">Item ↛ design landmark; both meet at criterion</text>
+  </g>
+</svg>

@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/model.go",
+      "start": 56,
+      "end": 74,
+      "digest": "sha256:ed72b674dabd9975f3a373921bb63805fbf70484bac1fb0d5b55515011d809f5",
+      "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/model.go",
+      "start": 91,
+      "end": 105,
+      "digest": "sha256:248327511f42a679deedd1f20ed6bdc5e4457bd589a2b607a989da1efd62bd6b",
+      "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/model.go",
+      "start": 132,
+      "end": 172,
+      "digest": "sha256:170c24e5ee8f1d3b2e21ea497a9f4b26bb42090350bfbd56544b8e33fb2aff80",
+      "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 82,
+      "end": 97,
+      "digest": "sha256:e30602aaefc2465eb2fda52bdfcd7a171d277398cb5d323d7cd5cf7481e8b848",
+      "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 128,
+      "end": 172,
+      "digest": "sha256:dcd014e05cfb459927f1dec6637ed6e3d41f4f6d4e08db40181d842c0f5900f1",
+      "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 192,
+      "end": 211,
+      "digest": "sha256:b9d8ffe421c35b3112050b184ccdafba65f2f7858c2de5f7f353287d61b557fe",
+      "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
+    }
+  ]
+}

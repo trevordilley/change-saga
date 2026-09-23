@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "prototype-annotation-runtime",
+  "deck": "product-knowledge-implementation",
+  "title": "Prototype annotation sequence",
+  "rank": 30,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-efa008eccd56-0030-ff120d8a7485.svg",
+  "takeaway": "Prototype annotations can precede their endpoints; composition later exposes current links, stale pins, and unresolved gaps without retargeting.",
+  "reading_order": [
+    "author-command",
+    "immutable-package",
+    "pinned-annotation",
+    "composition-runtime",
+    "stale-boundary",
+    "embed-failure"
+  ]
+}

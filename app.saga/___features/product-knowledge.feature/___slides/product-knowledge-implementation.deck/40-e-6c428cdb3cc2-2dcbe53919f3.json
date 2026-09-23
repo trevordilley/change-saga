@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_terms.go",
+      "start": 176,
+      "end": 272,
+      "digest": "sha256:d5877611bd9dd2d9ce52274fed47f61f42f378d62dfe285c8f8fd6bf9983c760",
+      "note": "Detects added vocabulary declarations while excluding known names and renames, and proves suggestions remain growth rather than blockers."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/terms_test.go",
+      "start": 110,
+      "end": 170,
+      "digest": "sha256:72b6c4cb12c3815a19c5441026e2ab377ad5fb725823806726300bbfcf909725",
+      "note": "Detects added vocabulary declarations while excluding known names and renames, and proves suggestions remain growth rather than blockers."
+    }
+  ]
+}

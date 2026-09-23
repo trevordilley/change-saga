@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 146,
+      "end": 172,
+      "digest": "sha256:17a319c7372554690bcfd28b4d39f5b186a5c446ca6617a31240b8ab25eaf492",
+      "note": "Appends immutable run events that must name every current head, retaining failed and concurrent results through reconciliation."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 465,
+      "end": 520,
+      "digest": "sha256:a09b962ad283c4ac7c086b88a28f44df50b22efe04ab5668a53c6489a8927230",
+      "note": "Appends immutable run events that must name every current head, retaining failed and concurrent results through reconciliation."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 275,
+      "end": 326,
+      "digest": "sha256:08c480b20ebdbf6a4c585ed57ac805135c6df8190eca00f3a0b0f84cd8bae140",
+      "note": "Appends immutable run events that must name every current head, retaining failed and concurrent results through reconciliation."
+    }
+  ]
+}

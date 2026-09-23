@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/relation_v5.go",
+      "start": 59,
+      "end": 88,
+      "digest": "sha256:ec4ee065a56f2c03c10eb9e6befe842f701d6603d91bd73d3ab4c8a6f2d59002",
+      "note": "The frozen relation matrix allows visual-to-requirement and work-item-to-design edges but implements no visual Item-to-design edge."
+    }
+  ]
+}

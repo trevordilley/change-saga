@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "quality-evidence-runtime",
+  "deck": "product-knowledge-implementation",
+  "title": "Quality evidence state machine",
+  "rank": 50,
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-efa008eccd56-0050-8c81e99873c5.svg",
+  "takeaway": "Pass currency follows test and evidence pins, evidence code references, source repository identity, and relation pins—not source commit versus HEAD.",
+  "reading_order": [
+    "test-definition",
+    "evidence-head",
+    "immutable-run",
+    "quality-states",
+    "stale-pass-transition",
+    "policy-branch",
+    "progress-boundary"
+  ]
+}

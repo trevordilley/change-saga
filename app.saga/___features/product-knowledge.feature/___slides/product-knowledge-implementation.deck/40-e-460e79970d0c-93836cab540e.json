@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 475,
+      "end": 505,
+      "digest": "sha256:6eaebfa25403e647675299e4511f1b2df7908ec78760e7ef5c503f42fa6c965e",
+      "note": "Adds an immutable-evidence blocker when progress has no proof and proves only integrated evidence completes the delivery path."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session_test.go",
+      "start": 58,
+      "end": 116,
+      "digest": "sha256:58b36a3221110e498d249c45bb95a0bd485abb0d38865719c281338ce0f84b37",
+      "note": "Adds an immutable-evidence blocker when progress has no proof and proves only integrated evidence completes the delivery path."
+    }
+  ]
+}

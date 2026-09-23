@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/coverage.go",
+      "start": 5,
+      "end": 18,
+      "digest": "sha256:76f26d6527b78ae131fb3ec59b9fc00fff55d213629595448b29206e4463fa87",
+      "note": "Joins prototype annotations to requirement heads and proves one current edge projects in both navigation directions."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/coverage.go",
+      "start": 36,
+      "end": 132,
+      "digest": "sha256:85b22caa3be3622876e62c8e7b3b21e82a51b8610e5e49e94ab5f82f7e5163bc",
+      "note": "Joins prototype annotations to requirement heads and proves one current edge projects in both navigation directions."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 106,
+      "end": 140,
+      "digest": "sha256:dba49154e0ef6629456c427d62b256b2360e003e8f022955feacc3aa03e6b435",
+      "note": "Joins prototype annotations to requirement heads and proves one current edge projects in both navigation directions."
+    }
+  ]
+}

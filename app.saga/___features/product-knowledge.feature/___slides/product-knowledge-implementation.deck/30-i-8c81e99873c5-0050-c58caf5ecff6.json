@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "policy-branch",
+  "slide": "quality-evidence-runtime",
+  "rank": 50,
+  "kind": "node",
+  "label": "Policy-required kinds",
+  "description": "A criterion policy classifies each required coverage kind as satisfied, missing, or explicitly excluded with authoritative context.",
+  "selector": {
+    "type": "element",
+    "element_id": "policy-branch"
+  }
+}

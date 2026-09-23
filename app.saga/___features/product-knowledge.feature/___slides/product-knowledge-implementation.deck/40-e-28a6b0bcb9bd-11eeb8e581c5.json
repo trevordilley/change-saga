@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 120,
+      "end": 144,
+      "digest": "sha256:710d95da4f1162d754a7d767bc96668b8c479669fc476cd47064151918c06c2f",
+      "note": "Adds evidence against current test heads, supersedes explicit evidence heads, and proves batch preflight and write rollback are atomic."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 380,
+      "end": 463,
+      "digest": "sha256:cb7326b3a4f467abd3cba6711d17b618604cd34e22230efcd7b8c0802f894b14",
+      "note": "Adds evidence against current test heads, supersedes explicit evidence heads, and proves batch preflight and write rollback are atomic."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 237,
+      "end": 273,
+      "digest": "sha256:b8baeea1b64c97b67433d52a276bdc39faf53135ae4561cc050004625fe567fa",
+      "note": "Adds evidence against current test heads, supersedes explicit evidence heads, and proves batch preflight and write rollback are atomic."
+    }
+  ]
+}

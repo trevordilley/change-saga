@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Story meaning and lifecycle are independent append-only graphs</title>
+  <desc id="desc">Two swimlanes show a definition revision graph and a lifecycle event graph. Concurrent heads become an explicit conflict state and must be reconciled. Acceptance is guarded by at least one criterion. Relation currency is judged against criterion meaning.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071c24"/><stop offset="1" stop-color="#113244"/></linearGradient>
+    <marker id="aqua" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#5eead4"/></marker>
+    <marker id="gold" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#fbbf24"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="70" fill="#f8fffe" font-family="Inter,system-ui,sans-serif" font-size="30" font-weight="700">A story has two histories—and neither silently wins</text>
+  <text x="64" y="102" fill="#a9c7cc" font-family="Inter,system-ui,sans-serif" font-size="16">Definition and lifecycle evolve independently; each graph exposes conflicts until one successor names every head.</text>
+
+  <g id="definition-graph">
+    <rect x="64" y="148" width="1152" height="198" rx="24" fill="#0d2934" stroke="#347885" stroke-width="2"/>
+    <text x="88" y="179" fill="#5eead4" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800" letter-spacing="2">DEFINITION GRAPH</text>
+    <g fill="#153e48" stroke="#5eead4" stroke-width="2">
+      <circle cx="226" cy="252" r="44"/><circle cx="472" cy="222" r="44"/><circle cx="472" cy="292" r="44"/><circle cx="775" cy="252" r="50"/>
+    </g>
+    <text x="226" y="258" text-anchor="middle" fill="#f8fffe" font-family="ui-monospace,monospace" font-size="18">r1</text>
+    <text x="472" y="228" text-anchor="middle" fill="#f8fffe" font-family="ui-monospace,monospace" font-size="18">r2-a</text>
+    <text x="472" y="298" text-anchor="middle" fill="#f8fffe" font-family="ui-monospace,monospace" font-size="18">r2-b</text>
+    <text x="775" y="258" text-anchor="middle" fill="#f8fffe" font-family="ui-monospace,monospace" font-size="18">r3</text>
+    <path d="M270 244L424 225M270 263L424 287M516 223L724 246M516 291L724 260" stroke="#5eead4" stroke-width="3" marker-end="url(#aqua)"/>
+    <text x="908" y="231" fill="#d7eeee" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="700">Complete snapshots</text>
+    <text x="908" y="260" fill="#a9c7cc" font-family="Inter,system-ui,sans-serif" font-size="14">No inherited omitted fields</text>
+    <text x="908" y="289" fill="#a9c7cc" font-family="Inter,system-ui,sans-serif" font-size="14">Criteria keep stable IDs</text>
+  </g>
+
+  <g id="lifecycle-graph">
+    <rect x="64" y="378" width="1152" height="174" rx="24" fill="#12283a" stroke="#d49b2f" stroke-width="2"/>
+    <text x="88" y="410" fill="#fbbf24" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800" letter-spacing="2">LIFECYCLE GRAPH</text>
+    <g fill="#3d321c" stroke="#fbbf24" stroke-width="2">
+      <circle cx="226" cy="473" r="44"/><circle cx="472" cy="445" r="44"/><circle cx="472" cy="505" r="44"/><circle cx="775" cy="473" r="50"/>
+    </g>
+    <text x="226" y="479" text-anchor="middle" fill="#fff9e9" font-family="Inter,system-ui,sans-serif" font-size="15">proposed</text>
+    <text x="472" y="451" text-anchor="middle" fill="#fff9e9" font-family="Inter,system-ui,sans-serif" font-size="14">accepted</text>
+    <text x="472" y="511" text-anchor="middle" fill="#fff9e9" font-family="Inter,system-ui,sans-serif" font-size="14">rejected</text>
+    <text x="775" y="479" text-anchor="middle" fill="#fff9e9" font-family="Inter,system-ui,sans-serif" font-size="14">reconciled</text>
+    <path d="M270 481L424 501M516 446L724 468M516 504L724 480" stroke="#fbbf24" stroke-width="3" marker-end="url(#gold)"/>
+  </g>
+
+  <g id="conflict-state">
+    <path d="M472 320V365" stroke="#fb7185" stroke-width="2" stroke-dasharray="6 6"/>
+    <rect x="390" y="333" width="164" height="40" rx="20" fill="#45202c" stroke="#fb7185"/>
+    <text x="472" y="359" text-anchor="middle" fill="#fecdd3" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="700">2 heads → no current</text>
+  </g>
+  <g id="reconcile-transition">
+    <rect x="895" y="423" width="285" height="87" rx="16" fill="#18364b" stroke="#5eead4"/>
+    <text x="919" y="453" fill="#5eead4" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">RECONCILE EXPLICITLY</text>
+    <text x="919" y="480" fill="#d7eeee" font-family="Inter,system-ui,sans-serif" font-size="15">successor parents = every head</text>
+  </g>
+  <g id="acceptance-guard">
+    <path d="M270 465L306 460M394 454L424 449" stroke="#fbbf24" stroke-width="3" marker-end="url(#gold)"/>
+    <polygon points="350,436 394,455 350,474 306,455" fill="#49371c" stroke="#fbbf24" stroke-width="2"/>
+    <text x="350" y="459" text-anchor="middle" fill="#fff9e9" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="800">≥1 criterion</text>
+    <text x="350" y="489" text-anchor="middle" fill="#fbd987" font-family="Inter,system-ui,sans-serif" font-size="11">0 → reject accepted write</text>
+  </g>
+  <g id="relation-currency">
+    <rect x="64" y="596" width="1152" height="76" rx="18" fill="#102b37" stroke="#5eead4" stroke-width="2"/>
+    <text x="90" y="626" fill="#5eead4" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">RELATION CURRENCY</text>
+    <text x="90" y="653" fill="#d7eeee" font-family="Inter,system-ui,sans-serif" font-size="15">unchanged criterion statement carries forward • changed bytes or removed criterion become stale</text>
+  </g>
+</svg>

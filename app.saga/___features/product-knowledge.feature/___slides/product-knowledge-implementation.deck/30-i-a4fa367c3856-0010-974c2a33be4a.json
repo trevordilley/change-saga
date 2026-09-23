@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "term-record",
+  "slide": "vocabulary-runtime",
+  "rank": 10,
+  "kind": "node",
+  "label": "Versioned term record",
+  "description": "A term revision stores name, definition, aliases, linked stories and records, and commit-pinned defining code.",
+  "selector": {
+    "type": "element",
+    "element_id": "term-record"
+  }
+}

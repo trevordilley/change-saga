@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "stale-boundary",
+  "slide": "prototype-annotation-runtime",
+  "rank": 40,
+  "kind": "callout",
+  "label": "No silent retargeting",
+  "description": "Moved prototype or story pins, endpoint conflicts, and incompatible selectors remain stale or gaps rather than following a new head.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-boundary"
+  },
+  "about": "composition-runtime",
+  "body": "Changed endpoints never retarget an annotation silently.",
+  "placement": "bottom",
+  "leader": "arrow"
+}

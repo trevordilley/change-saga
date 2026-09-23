@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pinned-annotation",
+  "slide": "prototype-annotation-runtime",
+  "rank": 20,
+  "kind": "edge",
+  "label": "Pinned annotation edge",
+  "description": "An annotation persists a selector plus prototype and story-revision pins, even before either endpoint can be resolved.",
+  "selector": {
+    "type": "element",
+    "element_id": "pinned-annotation"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "quality-states",
+  "slide": "quality-evidence-runtime",
+  "rank": 30,
+  "kind": "region",
+  "label": "Quality state projection",
+  "description": "The quality projection distinguishes covered, not run, failed, stale, missing, and excluded rather than reducing them to a boolean.",
+  "selector": {
+    "type": "element",
+    "element_id": "quality-states"
+  }
+}

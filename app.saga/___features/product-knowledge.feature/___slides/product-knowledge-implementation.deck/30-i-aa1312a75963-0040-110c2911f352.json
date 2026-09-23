@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "livingapp-composer",
+  "slide": "product-knowledge-ownership",
+  "rank": 40,
+  "kind": "node",
+  "label": "Living application session",
+  "description": "Opening a session validates the Saga, loads quality, composes the living graph, and binds the projection to one snapshot.",
+  "selector": {
+    "type": "element",
+    "element_id": "livingapp-composer"
+  }
+}
