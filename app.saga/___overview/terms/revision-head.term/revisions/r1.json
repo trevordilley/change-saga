@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:revision-head",
+  "parents": [],
+  "name": "Revision head",
+  "definition": "A revision in an append-only definition graph that no later revision names as a parent. One head is the current definition; several heads are an explicit semantic conflict until a successor names all of them. This is not Git HEAD, a branch tip, or a commit.",
+  "stories": [
+    "urn:change-saga:change-saga:story:recover-competing-heads"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/validate.go",
+      "start": 562,
+      "end": 576,
+      "digest": "sha256:93619530aebeb8f3bbe2fd1ace80c502ceba987dc1d162942bdd620a56ad4d45"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/validate.go",
+      "start": 378,
+      "end": 386,
+      "digest": "sha256:4c76f66dd02d2b2eb3b9e80c70a43a35ccc18a62c0f837006161f3bccac040be"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/mutation.go",
+      "start": 137,
+      "end": 142,
+      "digest": "sha256:265bdf53fbff769be73f5fbc9b6cac578da5061b24d643473d784235d076a420"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:02.091844Z"
+}

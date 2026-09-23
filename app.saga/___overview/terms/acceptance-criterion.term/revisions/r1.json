@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:acceptance-criterion",
+  "parents": [],
+  "name": "Acceptance criterion",
+  "definition": "A stable-ID, observable pass/fail obligation within a user story revision. An accepted story must have at least one criterion on every current revision head, and changing or removing a criterion can make links to that obligation stale.",
+  "aliases": [
+    "criterion"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:product-intent-lifecycle",
+    "urn:change-saga:change-saga:story:criterion-quality-readiness"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/model.go",
+      "start": 43,
+      "end": 46,
+      "digest": "sha256:deda2ddd87c14cae1460ca53d24efe19450d5df9b59e4c106a6e4cbb30df0325"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/validate.go",
+      "start": 430,
+      "end": 438,
+      "digest": "sha256:3f87ac8013c07e3e7ea471b53fdd59a14069bfe3cb48561040ab72f76bb58c77"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:01.668257Z"
+}
