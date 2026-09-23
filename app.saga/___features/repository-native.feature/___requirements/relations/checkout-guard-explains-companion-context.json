@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "checkout-guard-explains-companion-context",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:companion-sync-sequence:item:verify-checkout",
+  "to": "urn:change-saga:change-saga:story:source-checkout-context:criterion:companion-checkout",
+  "scope": "self",
+  "rationale": "The identity guard shows a supplied companion source checkout verified against the Saga manifest before source state is used.",
+  "to_revision": "urn:change-saga:change-saga:story:source-checkout-context:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:41:18.402199Z"
+}

@@ -8,6 +8,7 @@
   "scope": "descendants",
   "rationale": "The sequence traces the guarded write that resolves and records the exact documented source commit.",
   "to_revision": "urn:change-saga:change-saga:story:source-or-companion:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-23T03:25:07.599605Z"
+  "state": "superseded",
+  "created_at": "2026-09-23T03:25:07.599605Z",
+  "superseded_at": "2026-09-23T16:41:27.077614Z"
 }
