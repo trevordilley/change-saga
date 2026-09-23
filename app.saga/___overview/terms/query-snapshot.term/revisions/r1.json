@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:query-snapshot",
+  "parents": [],
+  "name": "Query snapshot",
+  "definition": "A deterministic SHA-256 identity for the exact Saga tree and source comparison read by a query. Clients keep the same value while paging; if the underlying snapshot changes, an old cursor fails instead of mixing states. It is a read fingerprint, not a stored comparison or a Git commit.",
+  "stories": [
+    "urn:change-saga:change-saga:story:bounded-query-pagination",
+    "urn:change-saga:change-saga:story:structured-ai-contract"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewapp/session.go",
+      "start": 834,
+      "end": 847,
+      "digest": "sha256:ac35136705b0aff7348eab71f9ccead6d0df3b1306880932b4bc4ca6f4681e0c"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewapp/session.go",
+      "start": 892,
+      "end": 896,
+      "digest": "sha256:6f04119cdfdfeca1c5b9951c8877a72e1478b38096ccadf1075b7e843bd3a3db"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewapp/session.go",
+      "start": 938,
+      "end": 940,
+      "digest": "sha256:d420e057098300a6b78ca88a8ea6e2b300779683757d46635b7ab35a063d548e"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:00.589743Z",
+  "request_id": "vocab-query-snapshot-r1"
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:pagination-cursor",
+  "parents": [],
+  "name": "Pagination cursor",
+  "definition": "An opaque continuation token for the next page of one query. It binds the operation, normalized filter key, query snapshot, and next offset; malformed or reused tokens are rejected, and a changed snapshot returns a retryable stale-snapshot error. Its checksum detects corruption but is not an authorization credential.",
+  "aliases": [
+    "continuation token"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:bounded-query-pagination",
+    "urn:change-saga:change-saga:story:structured-ai-contract"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewapp/session.go",
+      "start": 901,
+      "end": 915,
+      "digest": "sha256:7acd2f60249a73ba8f8de75517ed4670a83e6170afaf680c42d836eda594075d"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewapp/session.go",
+      "start": 917,
+      "end": 958,
+      "digest": "sha256:c71e7f588bb0bb4f6eaa11ecde31a11ae316bc9537e8e2487018a9eb413a3a84"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:00.863904Z",
+  "request_id": "vocab-pagination-cursor-r1"
+}

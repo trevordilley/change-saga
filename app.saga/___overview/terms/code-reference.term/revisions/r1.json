@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:code-reference",
+  "parents": [],
+  "name": "Code reference",
+  "definition": "A persisted pointer to a repository path and optional inclusive line range at a full Git commit, plus a SHA-256 digest of the exact selected bytes. It lets evidence follow content-preserving moves while detecting edits. Unlike a relation, it connects a documentation target to source code.",
+  "stories": [
+    "urn:change-saga:change-saga:story:visual-technical-explanation",
+    "urn:change-saga:change-saga:story:reverse-impact"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/coderef/coderef.go",
+      "start": 24,
+      "end": 51,
+      "digest": "sha256:8624348a8bb7b90692615e74c106bdc2f79a81e69d4311894d4dbafecb8f062b"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 96,
+      "end": 111,
+      "digest": "sha256:0c3eff46af6b77201d2417c688f049c6674a720b90fcc03fc75b6d840c1818d9"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:59.540986Z",
+  "request_id": "vocab-code-reference-r1"
+}

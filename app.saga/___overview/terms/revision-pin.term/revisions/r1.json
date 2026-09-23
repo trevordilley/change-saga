@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:revision-pin",
+  "parents": [],
+  "name": "Revision pin",
+  "definition": "The exact immutable revision of a mutable relation endpoint that the relation was last confirmed against. It preserves what the author read: an unchanged criterion or story obligation can carry forward visibly, while a changed obligation makes the relation stale until it is repinned. It is not a Git commit pin.",
+  "stories": [
+    "urn:change-saga:change-saga:story:design-usage-path",
+    "urn:change-saga:change-saga:story:product-intent-path"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/model.go",
+      "start": 149,
+      "end": 164,
+      "digest": "sha256:e0cb18bdb95fc1ad649f276b901916cc0d1b987c6cc393c4948c955972b99d88"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/currency.go",
+      "start": 280,
+      "end": 294,
+      "digest": "sha256:879074710ea684ea70d980a14ed8d4f5672bf0cacd070fa84d87df2ad84ebf32"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:58.685284Z",
+  "request_id": "vocab-revision-pin-r1"
+}

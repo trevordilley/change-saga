@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:documentation-coverage",
+  "parents": [],
+  "name": "Documentation coverage",
+  "definition": "A factual omission report across six separate areas: implementation, stories, personas, design, quality, and health. Each area shows what is in scope and what is covered or missing. Coverage helps authors find gaps; it does not decide whether a change is correct or approved.",
+  "stories": [
+    "urn:change-saga:change-saga:story:documentation-gaps-visible",
+    "urn:change-saga:change-saga:story:scoped-coverage-check"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/areas/areas.go",
+      "start": 20,
+      "end": 38,
+      "digest": "sha256:0b3ac458053df5aa20b70084e487ea39cb32bbbacdce38838dedb05cf301ba71"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/areas/areas.go",
+      "start": 133,
+      "end": 163,
+      "digest": "sha256:46b254248635ee3f950e92175c68f34d01d6a785ec7034c2a4a3888bacd51183"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:00.064905Z",
+  "request_id": "vocab-documentation-coverage-r1"
+}
