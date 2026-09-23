@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "complete-item-explains-complete-traversal",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:cursor-state:item:complete",
+  "to": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:complete-traversal",
+  "scope": "self",
+  "rationale": "The terminal Item explains exhaustion: has_more becomes false and no continuation remains after the final records.",
+  "to_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:25.946565Z"
+}
