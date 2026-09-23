@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "selector-gate",
+  "slide": "authoring-sequence",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Selector gate",
+  "description": "The Item is refused unless its element ID or region resolves against the current slide content.",
+  "selector": {
+    "type": "element",
+    "element_id": "selector-gate"
+  }
+}

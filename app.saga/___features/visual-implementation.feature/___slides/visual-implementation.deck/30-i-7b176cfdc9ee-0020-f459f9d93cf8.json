@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "evidenced-state",
+  "slide": "slide-state",
+  "rank": 20,
+  "kind": "node",
+  "label": "Evidenced state",
+  "description": "Item-owned evidence adds commit, path, range, and content digest without changing the visual's identity.",
+  "selector": {
+    "type": "element",
+    "element_id": "evidenced-state"
+  }
+}

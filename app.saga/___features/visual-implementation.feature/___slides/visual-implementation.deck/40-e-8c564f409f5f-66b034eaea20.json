@@ -7,7 +7,7 @@
       "start": 51,
       "end": 118,
       "digest": "sha256:7c30d67c0a547a3ab08ca92beda62f7dc6b60a5178a5c37df80aa94c50cbadb8",
-      "note": "Deck, slide, and Item domain records"
+      "note": "Defines the Deck, Slide, Item, and Item-owned code records represented inside the flat bundle."
     }
   ]
 }

@@ -3,9 +3,9 @@
   "id": "bundle",
   "slide": "visual-pipeline",
   "rank": 10,
-  "kind": "node",
-  "label": "Evidence bundle",
-  "description": "Stores visual Items and their commit-pinned code-reference records.",
+  "kind": "region",
+  "label": "Flat Git bundle",
+  "description": "Compact deck, slide, Item, asset, and evidence records keep authorship mergeable while stable URNs carry meaning.",
   "selector": {
     "type": "element",
     "element_id": "bundle"

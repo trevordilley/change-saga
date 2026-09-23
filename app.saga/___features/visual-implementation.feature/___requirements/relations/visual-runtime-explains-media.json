@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "visual-runtime-explains-media",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:reviewer-runtime",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+  "scope": "descendants",
+  "rationale": "The runtime branch shows the supported SVG, HTML, and raster rendering paths and their common semantic overlay.",
+  "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:24:22.926989Z"
+}

@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "reviewer-runtime",
+  "deck": "visual-implementation",
+  "title": "Runtime branches by media, not by evidence",
+  "rank": 30,
+  "section": "Review runtime",
+  "intent": "trace",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-0d89b27ce0b8-0030-1a08177427c7.svg",
+  "takeaway": "SVG and HTML use a script-only sandbox, raster images use img, and both receive the same Item overlay and lazy linked-code path.",
+  "reading_order": [
+    "projector",
+    "media-switch",
+    "iframe-branch",
+    "image-branch",
+    "item-overlay",
+    "code-drawer"
+  ]
+}

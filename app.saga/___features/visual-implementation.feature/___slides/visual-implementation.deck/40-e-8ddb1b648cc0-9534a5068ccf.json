@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/design_digest_test.go",
+      "start": 207,
+      "end": 229,
+      "digest": "sha256:13b3c46a7b9f8ec61d6c477390ce34afa72b72947f6bf06c3452804442e0eab6",
+      "note": "Proves Item code, claims, and verifications do not change visual content digests or relation currency."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/design_digest.go",
+      "start": 257,
+      "end": 280,
+      "digest": "sha256:fe45ff4a26a1135abacf606c29ee3e91b90a76134211b130c521a6c936349920",
+      "note": "Refuses missing, non-regular, symlinked, or oversized visual entrypoints instead of producing a misleading digest."
+    }
+  ]
+}

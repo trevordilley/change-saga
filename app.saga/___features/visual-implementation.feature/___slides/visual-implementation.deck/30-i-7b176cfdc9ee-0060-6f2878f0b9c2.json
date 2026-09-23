@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "invalid-outcome",
+  "slide": "slide-state",
+  "rank": 60,
+  "kind": "risk",
+  "label": "Invalid outcome",
+  "description": "A selector mismatch leaves the Saga structurally invalid and blocks trustworthy rendering until repaired.",
+  "selector": {
+    "type": "element",
+    "element_id": "invalid-outcome"
+  }
+}

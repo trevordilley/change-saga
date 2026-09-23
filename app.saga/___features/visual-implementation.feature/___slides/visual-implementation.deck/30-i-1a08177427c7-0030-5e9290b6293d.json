@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "image-branch",
+  "slide": "reviewer-runtime",
+  "rank": 30,
+  "kind": "node",
+  "label": "Raster branch",
+  "description": "PNG, JPEG, and WebP slides render as images through the same confined asset route.",
+  "selector": {
+    "type": "element",
+    "element_id": "image-branch"
+  }
+}

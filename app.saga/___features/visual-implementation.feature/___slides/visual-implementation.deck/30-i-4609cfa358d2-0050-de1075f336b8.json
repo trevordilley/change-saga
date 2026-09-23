@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cover-pin",
+  "slide": "authoring-sequence",
+  "rank": 50,
+  "kind": "transition",
+  "label": "Pin exact evidence",
+  "description": "cover resolves commit locations and digests for every record before taking the lock and writing evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "cover-pin"
+  }
+}

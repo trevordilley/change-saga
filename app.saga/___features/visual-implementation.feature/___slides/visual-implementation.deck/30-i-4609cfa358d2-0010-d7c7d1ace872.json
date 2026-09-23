@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "asset-write",
+  "slide": "authoring-sequence",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Publish visual and manifest",
+  "description": "The command atomically writes the visual asset, then the Slide manifest, removing the asset if manifest creation fails.",
+  "selector": {
+    "type": "element",
+    "element_id": "asset-write"
+  }
+}

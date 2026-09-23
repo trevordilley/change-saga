@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "flat-bundle-boundary",
+  "slide": "failure-boundaries",
+  "rank": 0,
+  "kind": "region",
+  "label": "Storage boundary",
+  "description": "The loader accepts only the compact flat record contract and reconstructs parentage from stable target keys.",
+  "selector": {
+    "type": "element",
+    "element_id": "flat-bundle-boundary"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "regular-file-gate",
+  "slide": "failure-boundaries",
+  "rank": 10,
+  "kind": "risk",
+  "label": "Regular-file gate",
+  "description": "Symlinks, nested packages, unknown assets, and evidence for unknown Items are rejected during load.",
+  "selector": {
+    "type": "element",
+    "element_id": "regular-file-gate"
+  }
+}

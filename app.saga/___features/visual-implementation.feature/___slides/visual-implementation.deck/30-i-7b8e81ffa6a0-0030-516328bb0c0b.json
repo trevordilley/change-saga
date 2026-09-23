@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "loader",
+  "slide": "visual-pipeline",
+  "rank": 30,
+  "kind": "node",
+  "label": "Loader projection",
+  "description": "The loader reconstructs Deck, Slide, and Item records and projects Slides as Fragments and Items as Landmarks.",
+  "selector": {
+    "type": "element",
+    "element_id": "loader"
+  }
+}

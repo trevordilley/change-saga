@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "item-overlay",
+  "slide": "reviewer-runtime",
+  "rank": 40,
+  "kind": "region",
+  "label": "Semantic overlay",
+  "description": "Item selectors become focusable overlay affordances independent of the underlying media branch.",
+  "selector": {
+    "type": "element",
+    "element_id": "item-overlay"
+  }
+}
