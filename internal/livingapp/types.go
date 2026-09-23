@@ -34,6 +34,10 @@ type Query struct {
 }
 
 type Filters struct {
+	// Omitting empty feature-context fields preserves the normalized cursor key
+	// of every pre-existing living query.
+	Feature     string `json:"Feature,omitempty"`
+	Expand      string `json:"Expand,omitempty"`
 	Requirement string
 	State       string
 	Kind        string
@@ -77,6 +81,7 @@ type RequirementPage struct {
 type Requirement struct {
 	Requirement       string                       `json:"requirement"`
 	ID                string                       `json:"id"`
+	Feature           string                       `json:"feature"`
 	CreatedAt         time.Time                    `json:"created_at"`
 	RevisionHeads     []string                     `json:"revision_heads"`
 	LifecycleHeads    []string                     `json:"lifecycle_heads"`

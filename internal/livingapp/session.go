@@ -144,6 +144,12 @@ func crossDomainInputs(document requirements.Document, plan workplan.Plan, doc *
 func (s *session) Snapshot() string { return s.snapshot }
 
 func (s *session) Query(_ context.Context, query Query) (Result, error) {
+	if err := s.validateFeatureFilter(&query.Filters); err != nil {
+		return Result{}, err
+	}
+	if query.Operation == "context" {
+		return s.featureContextResult(query)
+	}
 	var rows any
 	var key string
 	switch query.Operation {
