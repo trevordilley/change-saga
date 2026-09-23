@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/integration_test.go",
+      "start": 187,
+      "end": 254,
+      "digest": "sha256:9447ae108f30ffff11abe0ba15ed63ab7259def14ce74539ecc58e8394f6dba6",
+      "note": "Exercises portable-identity requirements, credential stripping, mismatch rejection, and explicit local opt-in."
+    }
+  ]
+}

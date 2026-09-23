@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Companion synchronization sequence</title>
+  <desc id="desc">An author invokes sync; the command rejects in-repository placement, verifies the source checkout, resolves a full commit, and atomically writes the companion cursor.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker>
+    <style>.t{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;fill:#172033}.title{font-size:34px;font-weight:750}.sub{font-size:17px;fill:#536174}.h{font-size:18px;font-weight:720}.b{font-size:15px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}.tag{font-size:13px;font-weight:750;letter-spacing:.7px}.life{stroke:#94a3b8;stroke-width:2;stroke-dasharray:8 8}.msg{stroke:#334155;stroke-width:3;fill:none;marker-end:url(#arrow)}.ret{stroke:#dc2626;stroke-width:3;stroke-dasharray:8 6;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text class="t title" x="54" y="56">Companion sync is a guarded, explicit write</text>
+  <text class="t sub" x="54" y="86">No cursor is mutated until placement, repository identity, and commit resolution succeed.</text>
+
+  <g id="author"><rect x="58" y="122" width="150" height="54" rx="14" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><text class="t h" x="100" y="155">Author</text><path class="life" d="M133 176 V650"/></g>
+  <g id="sync-command"><rect x="270" y="122" width="190" height="54" rx="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text class="t h" x="296" y="145">sync command</text><text class="t mono" x="296" y="165">--repo · --commit</text><path class="life" d="M365 176 V650"/></g>
+  <g id="placement-guard"><rect x="520" y="122" width="180" height="54" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/><text class="t h" x="547" y="155">Placement guard</text><path class="life" d="M610 176 V650"/></g>
+  <g id="verify-checkout"><rect x="760" y="122" width="180" height="54" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><text class="t h" x="788" y="155">Source checkout</text><path class="life" d="M850 176 V650"/></g>
+  <g id="write-cursor"><rect x="1000" y="122" width="218" height="54" rx="14" fill="#fff7ed" stroke="#d97706" stroke-width="2"/><text class="t h" x="1030" y="145">Cursor store</text><text class="t mono" x="1030" y="165">sync.json</text><path class="life" d="M1109 176 V650"/></g>
+
+  <path class="msg" d="M133 224 H365"/><text class="t b" x="172" y="215">1 · sync --repo source app.saga</text>
+  <path class="msg" d="M365 286 H610"/><text class="t b" x="404" y="277">2 · locate Saga repository</text>
+  <rect x="512" y="304" width="196" height="48" rx="12" fill="#fee2e2" stroke="#dc2626"/><text class="t b" x="530" y="326">same checkout?</text><text class="t tag" x="530" y="344" fill="#b91c1c">RETURN: NO CURSOR MODE</text>
+  <path class="ret" d="M610 352 H365"/>
+  <path class="msg" d="M365 400 H850"/><text class="t b" x="492" y="391">3 · verify origin/path against manifest identity</text>
+  <path class="ret" d="M850 438 H365"/><text class="t b" x="505" y="430" fill="#b91c1c">mismatch ⇒ stop; cursor unchanged</text>
+  <g id="resolve-commit"><path class="msg" d="M365 486 H850"/><text class="t b" x="520" y="477">4 · resolve requested revision</text><path class="msg" d="M850 524 H365"/><text class="t mono" x="520" y="516">full 40-char commit OID</text></g>
+  <path class="msg" d="M365 574 H1109"/><text class="t b" x="575" y="565">5 · locked write: previous → resolved commit</text>
+  <path class="msg" d="M1109 618 H133"/><text class="t b" x="500" y="609">6 · “Saga documents &lt;commit&gt;”</text>
+</svg>

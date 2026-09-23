@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/layers_test.go",
+      "start": 379,
+      "end": 384,
+      "digest": "sha256:a57c0a9f0d423f37976d8bc36db683e73758404358d2c9664b26e599c76f901e",
+      "note": "Verifies that in-repository synchronization is refused as an invalid cursor operation."
+    }
+  ]
+}

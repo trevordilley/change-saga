@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "no-cursor",
+  "slide": "cursor-state-boundaries",
+  "rank": 10,
+  "kind": "node",
+  "label": "Missing cursor",
+  "description": "A companion with no cursor cannot match source history; the comparison reports the gap and treats records conservatively.",
+  "selector": {
+    "type": "element",
+    "element_id": "no-cursor"
+  }
+}

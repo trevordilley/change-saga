@@ -4,8 +4,8 @@
   "slide": "repository-placement",
   "rank": 20,
   "kind": "node",
-  "label": "Companion cursor",
-  "description": "Moves the documented-source commit alongside companion Saga updates.",
+  "label": "Companion source version",
+  "description": "When normalized roots differ, sync.json names the exact source commit the companion Saga documents.",
   "selector": {
     "type": "element",
     "element_id": "cursor"

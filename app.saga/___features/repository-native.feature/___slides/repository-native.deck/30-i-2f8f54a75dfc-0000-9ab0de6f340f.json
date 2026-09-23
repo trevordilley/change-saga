@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "repo-root",
+  "slide": "repository-identity-gate",
+  "rank": 0,
+  "kind": "node",
+  "label": "Checkout root",
+  "description": "Git resolves the physical source repository root before identity is selected.",
+  "selector": {
+    "type": "element",
+    "element_id": "repo-root"
+  }
+}

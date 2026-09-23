@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/companion_relocation_test.go",
+      "start": 13,
+      "end": 72,
+      "digest": "sha256:b61a692c21b25d66f64dd4262f73177b6e808a23c4ea750341ead5ce60b80a32",
+      "note": "Proves evidence remains current when a companion Saga is moved into its source repository."
+    }
+  ]
+}

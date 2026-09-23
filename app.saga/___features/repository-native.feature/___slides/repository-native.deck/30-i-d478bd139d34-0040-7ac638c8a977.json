@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "invalid-cursor",
+  "slide": "cursor-state-boundaries",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Invalid cursor",
+  "description": "A cursor with the wrong schema version or a non-full commit identifier fails Saga loading.",
+  "selector": {
+    "type": "element",
+    "element_id": "invalid-cursor"
+  }
+}

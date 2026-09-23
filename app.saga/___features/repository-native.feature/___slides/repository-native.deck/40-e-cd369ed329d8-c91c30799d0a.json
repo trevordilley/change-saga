@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/sync.go",
+      "start": 24,
+      "end": 28,
+      "digest": "sha256:71276540b53747440b554b1125bbbda042e857bdf59fa35ab72962c42b042366",
+      "note": "Defines the in-repository invariant: the read commit is documented implicitly and no cursor exists."
+    }
+  ]
+}

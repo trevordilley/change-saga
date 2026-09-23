@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reject",
+  "slide": "repository-identity-gate",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Admission failures",
+  "description": "Missing, local-without-opt-in, malformed, noncanonical, or mismatched identities stop creation before the Saga is published.",
+  "selector": {
+    "type": "element",
+    "element_id": "reject"
+  }
+}

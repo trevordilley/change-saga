@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "placement-guard",
+  "slide": "companion-sync-sequence",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Placement guard",
+  "description": "Sync returns without writing when the Saga already lives in the source repository.",
+  "selector": {
+    "type": "element",
+    "element_id": "placement-guard"
+  }
+}

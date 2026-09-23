@@ -4,8 +4,8 @@
   "slide": "repository-placement",
   "rank": 0,
   "kind": "node",
-  "label": "Canonical source",
-  "description": "Discovers, normalizes, and verifies the portable repository identity.",
+  "label": "Canonical source identity",
+  "description": "The canonical repository URI validates whether a checkout represents the documented source, independent of local placement.",
   "selector": {
     "type": "element",
     "element_id": "source"

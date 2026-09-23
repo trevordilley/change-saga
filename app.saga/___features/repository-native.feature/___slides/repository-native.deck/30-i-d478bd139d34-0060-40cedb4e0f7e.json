@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "base-fallback",
+  "slide": "cursor-state-boundaries",
+  "rank": 60,
+  "kind": "transition",
+  "label": "Conservative base fallback",
+  "description": "Comparison uses an exact cursor match, then an ancestor approximation, and otherwise an empty base that treats records as added.",
+  "selector": {
+    "type": "element",
+    "element_id": "base-fallback"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/cursor.go",
+      "start": 13,
+      "end": 28,
+      "digest": "sha256:3b04d3d9403db265316ba2d22b10594219916fee66ccd4e3137e37a68746568e",
+      "note": "Defines sync.json as the companion-owned record of the documented source commit."
+    }
+  ]
+}

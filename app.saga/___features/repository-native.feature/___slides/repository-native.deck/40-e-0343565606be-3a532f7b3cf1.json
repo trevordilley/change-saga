@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store.go",
+      "start": 110,
+      "end": 142,
+      "digest": "sha256:2181a823aa530501508f3f43fe03f8c3bc19261485dfaa2466b1239786ab03ca",
+      "note": "Publishes a staged directory by exclusive rename and removes it again if durable parent sync fails."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Repository identity admission gate</title>
+  <desc id="desc">Initialization selects an explicit repository or origin, canonicalizes it, verifies it against the checkout, rejects unsafe ambiguity, and persists only accepted identity.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker>
+    <style>.t{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;fill:#172033}.title{font-size:34px;font-weight:750}.sub{font-size:17px;fill:#536174}.h{font-size:20px;font-weight:720}.b{font-size:16px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px}.tag{font-size:13px;font-weight:750;letter-spacing:.8px}.edge{stroke:#334155;stroke-width:4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text class="t title" x="58" y="58">Identity is admitted, not guessed</text>
+  <text class="t sub" x="58" y="88">Every route ends in a canonical, verified URI—or a deliberate error/override boundary.</text>
+
+  <g id="repo-root">
+    <rect x="58" y="142" width="212" height="88" rx="18" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/>
+    <text class="t tag" x="82" y="171" fill="#0369a1">CHECKOUT</text><text class="t h" x="82" y="201">git top-level</text>
+  </g>
+  <path class="edge" d="M270 186 H330"/>
+  <g id="identity-source">
+    <path d="M420 126 L510 186 L420 246 L330 186 Z" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
+    <text class="t h" x="372" y="181">Explicit?</text><text class="t b" x="375" y="205">else origin</text>
+    <text class="t tag" x="330" y="276" fill="#6d28d9">NO SILENT LOCAL FALLBACK</text>
+  </g>
+  <path class="edge" d="M510 186 H578"/>
+  <g id="canonicalize">
+    <rect x="578" y="132" width="252" height="108" rx="20" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text class="t h" x="604" y="168">Canonicalize URI</text>
+    <text class="t b" x="604" y="197">lowercase host · strip userinfo</text>
+    <text class="t b" x="604" y="222">clean path · remove default port</text>
+  </g>
+  <path class="edge" d="M830 186 H896"/>
+  <g id="verify">
+    <path d="M994 126 L1090 186 L994 246 L898 186 Z" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+    <text class="t h" x="947" y="181">Matches</text><text class="t b" x="936" y="205">checkout identity?</text>
+  </g>
+
+  <path class="edge" d="M994 246 V334 H822"/>
+  <text class="t tag" x="1008" y="292" fill="#b91c1c">NO</text>
+  <g id="reject">
+    <rect x="548" y="314" width="274" height="132" rx="20" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/>
+    <text class="t h" x="574" y="352">Stop before creation</text>
+    <text class="t b" x="574" y="382">missing origin · local URI without opt-in</text>
+    <text class="t b" x="574" y="408">mismatch · malformed/noncanonical URI</text>
+    <text class="t tag" x="574" y="431" fill="#b91c1c">EXPLICIT OVERRIDES ARE VISIBLE FLAGS</text>
+  </g>
+
+  <path class="edge" d="M1090 186 H1168 V512 H1004"/>
+  <text class="t tag" x="1108" y="170" fill="#15803d">YES</text>
+  <g id="persist">
+    <rect x="704" y="484" width="300" height="144" rx="22" fill="#ecfdf5" stroke="#059669" stroke-width="3"/>
+    <text class="t h" x="730" y="520">Persist saga.json</text>
+    <text class="t mono" x="730" y="550">source.repository = URI</text>
+    <text class="t b" x="730" y="580">stage complete tree</text>
+    <text class="t b" x="730" y="606">atomic rename or cleanup</text>
+  </g>
+  <path class="edge" stroke-dasharray="9 7" d="M548 380 H438 V556 H704"/>
+  <text class="t b" x="122" y="540">Only an explicit, named opt-in can cross</text>
+  <text class="t b" x="122" y="564">the local or mismatch boundary.</text>
+</svg>

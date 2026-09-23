@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "author",
+  "slide": "companion-sync-sequence",
+  "rank": 0,
+  "kind": "node",
+  "label": "Explicit invocation",
+  "description": "The author deliberately invokes sync with the source checkout and optional revision.",
+  "selector": {
+    "type": "element",
+    "element_id": "author"
+  }
+}

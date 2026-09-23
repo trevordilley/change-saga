@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Source cursor state and failure boundaries</title>
+  <desc id="desc">In-repository Sagas use implicit Git state. Companion Sagas move among missing, aligned, behind, and invalid cursor states. Comparison reports drift and uses exact, ancestor, or empty-base historical lookup without mutating the cursor.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#334155"/></marker>
+    <style>.t{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;fill:#172033}.light{fill:#fff}.title{font-size:31px;font-weight:750}.sub{font-size:16px;fill:#536174}.h{font-size:19px;font-weight:720}.b{font-size:14px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.tag{font-size:12px;font-weight:750;letter-spacing:.7px}.edge{stroke:#334155;stroke-width:4;fill:none;marker-end:url(#arrow)}.dash{stroke-dasharray:9 7}</style>
+  </defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text class="t title" x="50" y="54">Cursor drift is visible; comparison diagnoses but does not auto-repair it</text>
+  <text class="t sub" x="50" y="82">Companion history lookup is exact when possible, conservative when not, and never a hidden write.</text>
+
+  <g id="in-repo">
+    <rect x="50" y="132" width="260" height="122" rx="21" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+    <text class="t tag" x="74" y="163" fill="#15803d">IN-REPOSITORY · TERMINAL MODE</text>
+    <text class="t h" x="74" y="196">Implicitly aligned</text>
+    <text class="t b" x="74" y="222">read commit = documented commit</text>
+    <text class="t b" x="74" y="244">sync rejected · no cursor file</text>
+  </g>
+
+  <text class="t tag" x="352" y="128" fill="#6d28d9">COMPANION STATE MACHINE</text>
+  <g id="no-cursor">
+    <rect x="352" y="146" width="220" height="108" rx="21" fill="#fff7ed" stroke="#d97706" stroke-width="3"/>
+    <text class="t h" x="378" y="183">No cursor</text><text class="t b" x="378" y="211">head: “no sync cursor”</text><text class="t b" x="378" y="234">base: records treated added</text>
+  </g>
+  <g id="aligned">
+    <rect x="706" y="146" width="220" height="108" rx="21" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text class="t h" x="732" y="183">Aligned</text><text class="t mono" x="732" y="211">cursor == source HEAD</text><text class="t b" x="732" y="234">working Saga is head snapshot</text>
+  </g>
+  <g id="behind">
+    <rect x="706" y="380" width="220" height="108" rx="21" fill="#fef3c7" stroke="#ca8a04" stroke-width="3"/>
+    <text class="t h" x="732" y="417">Behind</text><text class="t mono" x="732" y="445">cursor != source HEAD</text><text class="t b" x="732" y="468">diagnostic asks author to sync</text>
+  </g>
+  <g id="invalid-cursor">
+    <rect x="352" y="380" width="220" height="108" rx="21" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/>
+    <text class="t h" x="378" y="417">Invalid cursor</text><text class="t b" x="378" y="445">wrong schema version or OID</text><text class="t b" x="378" y="468">Saga load fails validation</text>
+  </g>
+
+  <path class="edge" d="M572 200 H706"/><text class="t b" x="608" y="188">manual sync</text>
+  <path class="edge" d="M816 254 V380"/><text class="t b" x="830" y="324">source advances</text>
+  <path class="edge" d="M706 434 H650 V292 H816 V258"/><text class="t b" x="608" y="420">manual sync</text>
+  <path class="edge dash" d="M462 380 V310 H462 V258"/><text class="t b" x="350" y="294">fix record, then reload</text>
+
+  <g id="auto-sync-gap">
+    <rect x="966" y="132" width="264" height="356" rx="22" fill="#fff1f2" stroke="#e11d48" stroke-width="3" stroke-dasharray="10 7"/>
+    <text class="t tag" x="994" y="164" fill="#be123c">MISSING FROM ORDINARY AUTHORING</text>
+    <text class="t h" x="994" y="198">No automatic</text>
+    <text class="t h" x="994" y="224">cursor advance</text>
+    <text class="t h" x="994" y="250">after Saga edits</text>
+    <path d="M994 272 H1202" stroke="#fda4af" stroke-width="2"/>
+    <text class="t b" x="994" y="300">Implemented recovery</text>
+    <text class="t mono" x="994" y="324">change-saga sync --repo …</text>
+    <text class="t b" x="994" y="352">Landing-time update</text>
+    <text class="t mono" x="994" y="376">change-saga repin …</text>
+    <text class="t b" x="994" y="408">Comparison only reports:</text>
+    <text class="t b" x="994" y="432">missing cursor · behind head</text>
+    <text class="t b" x="994" y="456">ancestor approximation</text>
+    <text class="t tag" x="994" y="478" fill="#be123c">NO MUTATION DURING READ</text>
+  </g>
+
+  <g id="base-fallback">
+    <rect x="50" y="550" width="1180" height="120" rx="18" fill="#172033"/>
+    <text class="t tag" x="76" y="582" fill="#93c5fd">HISTORICAL COMPANION LOOKUP · NEWEST CURSOR RECORDS FIRST</text>
+    <text class="t light b" x="76" y="612">1 · Exact merge-base cursor → matching Saga commit.  2 · Otherwise newest cursor ancestor → approximation diagnostic.</text>
+    <text class="t light b" x="76" y="640">3 · No cursor ancestor → empty base snapshot, so every record is treated as added rather than falsely paired.</text>
+  </g>
+</svg>

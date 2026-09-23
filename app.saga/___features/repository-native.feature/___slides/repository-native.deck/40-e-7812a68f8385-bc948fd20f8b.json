@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 1013,
+      "end": 1022,
+      "digest": "sha256:24311a5b78890bcbe4f46a6b15e88689cfd4242da0cb38b7af7532eb0059dac7",
+      "note": "Reports missing or behind cursors and instructs the author to run sync instead of repairing state automatically."
+    }
+  ]
+}

@@ -4,8 +4,8 @@
   "slide": "repository-placement",
   "rank": 10,
   "kind": "node",
-  "label": "Placement detection",
-  "description": "Distinguishes a Saga inside its source checkout from a companion repository.",
+  "label": "Normalized-root placement",
+  "description": "Placement compares symlink-resolved Git top-level roots; same-origin distinct worktrees therefore count as companion placement.",
   "selector": {
     "type": "element",
     "element_id": "saga"
