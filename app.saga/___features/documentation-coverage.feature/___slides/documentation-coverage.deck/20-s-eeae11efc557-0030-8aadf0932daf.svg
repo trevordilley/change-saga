@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">A reference becomes ownership only when it is current</title>
+  <desc id="desc">A state machine resolves pinned evidence at each comparison side, rejects stale evidence, and classifies every diff atom by the aggregate count of current assignments.</desc>
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d1220"/><stop offset="1" stop-color="#1c1324"/></linearGradient>
+    <marker id="a3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#a9b8cc"/></marker>
+    <style>.t{font:700 35px system-ui;fill:#f7f8fb}.s{font:500 17px system-ui;fill:#aab7ca}.h{font:700 20px system-ui;fill:#fff}.b{font:500 15px system-ui;fill:#d2d9e5}.m{font:650 13px system-ui;fill:#9fb0c8}.e{stroke:#a9b8cc;stroke-width:3;fill:none;marker-end:url(#a3)}.guard{font:700 13px system-ui;fill:#f0c987}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg3)"/>
+  <text class="t" x="56" y="60">A reference becomes ownership only when it is current</text>
+  <text class="s" x="56" y="90">Line shifts may remap; content edits stop the reference before it can claim an atom.</text>
+  <g id="reference-resolution">
+    <circle cx="108" cy="274" r="54" fill="#1d3455" stroke="#5788c2" stroke-width="3"/>
+    <text class="h" text-anchor="middle" x="108" y="270">Pinned</text><text class="b" text-anchor="middle" x="108" y="293">commit + digest</text>
+    <rect x="228" y="216" width="238" height="116" rx="26" fill="#242a3d" stroke="#8394ac" stroke-width="3"/>
+    <text class="h" x="258" y="258">Resolve at HEAD</text><text class="b" x="258" y="283">and merge-base</text><text class="m" x="258" y="312">deduplicate current locations</text><path class="e" d="M162 274H228"/>
+  </g>
+  <g id="current-reference">
+    <rect x="538" y="166" width="220" height="112" rx="24" fill="#17372c" stroke="#49b47f" stroke-width="3"/>
+    <text class="h" x="566" y="210">CURRENT</text><text class="b" x="566" y="239">exact or remapped</text><text class="m" x="566" y="262">contributes assignments</text>
+    <text class="guard" x="862" y="122">PER DIFF ATOM · AGGREGATE OWNER COUNT</text>
+  </g>
+  <path class="e" d="M466 252L538 222"/><text class="guard" x="478" y="220">digest matches</text>
+  <g id="stale-reference">
+    <rect x="538" y="340" width="220" height="112" rx="24" fill="#451f2b" stroke="#ed6a8c" stroke-width="3"/>
+    <text class="h" x="566" y="384">STALE</text><text class="b" x="566" y="413">reason retained</text><text class="m" x="566" y="436">claims zero atoms</text>
+  </g>
+  <path class="e" d="M466 294L538 382"/><text class="guard" x="458" y="348">current nowhere</text>
+  <g id="uncovered-state"><rect x="862" y="140" width="296" height="92" rx="22" fill="#3d2220" stroke="#df745f" stroke-width="3"/><text class="h" x="892" y="178">0 owners · UNCOVERED</text><text class="b" x="892" y="207">atom remains explicit work</text></g>
+  <g id="covered-state"><rect x="862" y="272" width="296" height="92" rx="22" fill="#17372c" stroke="#49b47f" stroke-width="3"/><text class="h" x="892" y="310">1 owner · COVERED</text><text class="b" x="892" y="339">one focused explanation</text></g>
+  <g id="overlap-state"><rect x="862" y="404" width="296" height="112" rx="22" fill="#40331a" stroke="#e2af47" stroke-width="3"/><text class="h" x="892" y="442">2+ owners · OVERLAP</text><text class="b" x="892" y="471">still covered, but surfaced</text><text class="m" x="892" y="495">requires scrutiny, not auto-failure</text></g>
+  <path class="e" d="M758 200H812Q832 200 832 186H862"/><path class="e" d="M758 222H812Q832 222 832 318H862"/><path class="e" d="M758 244H802Q832 244 832 460H862"/>
+  <text class="guard" x="772" y="180">count = 0</text><text class="guard" x="774" y="302">count = 1</text><text class="guard" x="772" y="444">count &gt; 1</text>
+  <g id="completion-rule"><rect x="228" y="568" width="930" height="76" rx="20" fill="#171f2d" stroke="#6f819a" stroke-width="2"/><text class="h" x="260" y="600">Complete = schema valid AND no uncovered atoms AND no stale references</text><text class="b" x="260" y="627">Overlap is reported independently; whole-file events never cover changed lines.</text></g>
+</svg>

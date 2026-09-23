@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Criterion coverage preserves every failure reason</title>
+  <desc id="desc">A branching decision flow projects each accepted criterion onto six axes, applies deterministic precedence, and emits linked, excluded, or gap while explicitly marking the unimplemented UI reference resource.</desc>
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fbfaf7"/><stop offset="1" stop-color="#f2f4f8"/></linearGradient>
+    <marker id="a4" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#536579"/></marker>
+    <style>.t{font:700 35px system-ui;fill:#162333}.s{font:500 17px system-ui;fill:#526274}.h{font:700 19px system-ui;fill:#172536}.b{font:500 15px system-ui;fill:#435366}.m{font:700 13px system-ui;fill:#66778a}.e{stroke:#536579;stroke-width:2.5;fill:none;marker-end:url(#a4)}.dash{stroke:#b04a64;stroke-width:3;fill:none;stroke-dasharray:8 7}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg4)"/>
+  <text class="t" x="56" y="58">Criterion coverage preserves every failure reason</text>
+  <text class="s" x="56" y="87">The public three-state result never erases stale, invalid, conflicted, or unsatisfied detail.</text>
+
+  <g id="criterion-input">
+    <rect x="54" y="186" width="210" height="124" rx="24" fill="#dce9f5" stroke="#4f789d" stroke-width="2"/>
+    <text class="m" x="80" y="216">ONE ACCEPTED CRITERION</text><text class="h" x="80" y="254">Current revision</text><text class="b" x="80" y="282">links + exceptions</text>
+  </g>
+  <g id="six-axis-fanout">
+    <rect x="326" y="136" width="236" height="226" rx="24" fill="#ede6f8" stroke="#8061ad" stroke-width="2"/>
+    <text class="m" x="352" y="168">SIX REQUIRED AXES</text>
+    <g font-family="system-ui" font-size="16" font-weight="650" fill="#34254c"><text x="352" y="204">prototype</text><text x="352" y="234">ux</text><text x="352" y="264">ui</text><text x="450" y="204">technical</text><text x="450" y="234">quality</text><text x="450" y="264">implementation</text></g>
+    <text class="b" x="352" y="312">Each axis is evaluated</text><text class="b" x="352" y="336">independently.</text>
+  </g>
+  <path class="e" d="M264 248H326"/>
+
+  <g id="state-precedence">
+    <path d="M616 118h240a24 24 0 0 1 24 24v240a24 24 0 0 1-24 24H616a24 24 0 0 1-24-24V142a24 24 0 0 1 24-24z" fill="#fff" stroke="#71849a" stroke-width="2"/>
+    <text class="m" x="622" y="151">DETERMINISTIC PRECEDENCE</text>
+    <g font-family="system-ui" font-size="17" font-weight="650" fill="#27384b"><text x="622" y="190">1 conflicted</text><text x="622" y="220">2 invalid</text><text x="622" y="250">3 covered direct</text><text x="622" y="280">4 covered broad</text><text x="622" y="310">5 excluded</text><text x="622" y="340">6 stale</text><text x="622" y="370">7 gap</text></g>
+  </g>
+  <path class="e" d="M562 248H592"/>
+
+  <g id="linked-resolution">
+    <rect x="956" y="128" width="250" height="88" rx="20" fill="#d9f1e5" stroke="#3e9a69" stroke-width="2"/>
+    <text class="h" x="986" y="163">LINKED</text><text class="b" x="986" y="190">direct or broad remains visible</text>
+  </g>
+  <g id="excluded-resolution">
+    <rect x="956" y="250" width="250" height="88" rx="20" fill="#fff0cf" stroke="#c48b26" stroke-width="2"/>
+    <text class="h" x="986" y="285">EXCLUDED</text><text class="b" x="986" y="312">current cited exception only</text>
+  </g>
+  <g id="gap-resolution">
+    <rect x="956" y="372" width="250" height="104" rx="20" fill="#f8dfe5" stroke="#b84964" stroke-width="2"/>
+    <text class="h" x="986" y="407">GAP</text><text class="b" x="986" y="434">reason names conflict, invalidity,</text><text class="b" x="986" y="458">staleness, or missing evidence</text>
+    <rect x="956" y="530" width="250" height="96" rx="20" fill="#233246"/>
+    <text x="986" y="565" font-family="system-ui" font-size="19" font-weight="700" fill="#fff">No blended score</text>
+    <text x="986" y="594" font-family="system-ui" font-size="15" fill="#d9e2ec">named counts and reasons</text>
+  </g>
+  <path class="e" d="M880 190H956"/><path class="e" d="M880 276H930Q944 276 944 294H956"/><path class="e" d="M880 350H922Q944 350 944 424H956"/>
+
+  <g id="ui-missing-resource">
+    <rect x="326" y="500" width="554" height="126" rx="22" fill="#fff6f8" stroke="#b84964" stroke-width="3" stroke-dasharray="9 7"/>
+    <text class="m" x="356" y="532" fill="#9f3450">MISSING IMPLEMENTATION — CURRENT VERSION</text>
+    <text class="h" x="356" y="569">No UI reference resource is recorded.</text>
+    <text class="b" x="356" y="594">Every UI cell stays a named gap.</text>
+    <text class="b" x="356" y="616">Only an explicit UI exception resolves it.</text>
+  </g>
+  <path class="dash" d="M433 362V500"/>
+
+</svg>

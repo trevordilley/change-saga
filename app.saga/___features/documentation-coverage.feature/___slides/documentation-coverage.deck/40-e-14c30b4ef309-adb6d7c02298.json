@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/nextaction/nextaction.go",
+      "start": 46,
+      "end": 76,
+      "digest": "sha256:856211a3eb14d0ad51e249d5b34a4b113841ea7e50da58b51fc22aa72b4c6a78",
+      "note": "Defines the health-first action-category ordering and optional growth tail."
+    }
+  ]
+}

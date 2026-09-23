@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reference-resolution",
+  "slide": "reference-state",
+  "rank": 0,
+  "kind": "transition",
+  "label": "Resolve pinned evidence",
+  "description": "A commit-and-digest reference is resolved at HEAD and merge-base; current locations are deduplicated and may be remapped.",
+  "selector": {
+    "type": "element",
+    "element_id": "reference-resolution"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "current-reference",
+  "slide": "reference-state",
+  "rank": 10,
+  "kind": "node",
+  "label": "Current reference",
+  "description": "Current references contribute assignments; each diff atom is classified only after aggregating all current assignments that contain it.",
+  "selector": {
+    "type": "element",
+    "element_id": "current-reference"
+  }
+}

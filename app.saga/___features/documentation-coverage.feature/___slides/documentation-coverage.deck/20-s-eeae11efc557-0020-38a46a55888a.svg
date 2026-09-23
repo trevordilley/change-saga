@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Status computes facts before policy</title>
+  <desc id="desc">A sequence diagram traces one status request from CLI parsing through comparison, record loading, projections, and output; check reuses the report and applies caller-selected policy.</desc>
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f7f3ea"/><stop offset="1" stop-color="#ece7dc"/></linearGradient>
+    <marker id="a2" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#26384a"/></marker>
+    <style>.t{font:700 35px system-ui;fill:#172536}.s{font:500 17px system-ui;fill:#526274}.lane{font:700 16px system-ui;fill:#172536}.step{font:700 17px system-ui;fill:#172536}.note{font:500 15px system-ui;fill:#445466}.lifeline{stroke:#a7b0ba;stroke-width:2;stroke-dasharray:7 8}.msg{stroke:#26384a;stroke-width:2.5;fill:none;marker-end:url(#a2)}.ret{stroke:#65788d;stroke-width:2;stroke-dasharray:7 6;fill:none;marker-end:url(#a2)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg2)"/>
+  <text class="t" x="56" y="58">Status computes facts before policy</text>
+  <text class="s" x="56" y="88">One immutable snapshot flows through read-only stages; output choice happens last.</text>
+
+  <g id="status-entry">
+    <rect x="58" y="124" width="150" height="52" rx="14" fill="#d8e7f5" stroke="#406c93" stroke-width="2"/>
+    <text class="lane" x="94" y="157">CLI caller</text><path class="lifeline" d="M133 176V655"/>
+    <text class="step" x="74" y="220">status / check</text>
+  </g>
+  <g id="comparison-read">
+    <rect x="260" y="124" width="170" height="52" rx="14" fill="#d7eadf" stroke="#3d7c5b" stroke-width="2"/>
+    <text class="lane" x="290" y="157">comparison</text><path class="lifeline" d="M345 176V655"/>
+    <path class="msg" d="M133 238H345"/><rect x="326" y="228" width="38" height="68" rx="8" fill="#6aa57f"/>
+    <text class="note" x="162" y="231">read Saga + Git range</text>
+    <path class="ret" d="M345 300H133"/><text class="note" x="170" y="322">document, atoms, mapping report</text>
+  </g>
+  <g id="living-load">
+    <rect x="482" y="124" width="170" height="52" rx="14" fill="#e6dcf5" stroke="#7858a6" stroke-width="2"/>
+    <text class="lane" x="518" y="157">living records</text><path class="lifeline" d="M567 176V655"/>
+    <path class="msg" d="M133 354H567"/><rect x="548" y="344" width="38" height="66" rx="8" fill="#9b7ac6"/>
+    <text class="note" x="240" y="347">strict read-only load</text>
+    <path class="ret" d="M567 414H133"/><text class="note" x="264" y="437">stories, relations, tests, exceptions</text>
+  </g>
+  <g id="living-assemble">
+    <rect x="704" y="124" width="170" height="52" rx="14" fill="#f4e3c9" stroke="#aa742f" stroke-width="2"/>
+    <text class="lane" x="731" y="157">axis projector</text><path class="lifeline" d="M789 176V655"/>
+    <path class="msg" d="M567 456H789"/><rect x="770" y="446" width="38" height="70" rx="8" fill="#cf9850"/>
+    <text class="note" x="608" y="449">Assemble facts</text>
+    <path class="ret" d="M789 520H133"/><text class="note" x="466" y="543">current / excluded / gap + reasons</text>
+  </g>
+  <g id="area-projection">
+    <rect x="926" y="124" width="170" height="52" rx="14" fill="#f6d9df" stroke="#a74760" stroke-width="2"/>
+    <text class="lane" x="964" y="157">area report</text><path class="lifeline" d="M1011 176V655"/>
+    <path class="msg" d="M133 566H1011"/><rect x="992" y="556" width="38" height="58" rx="8" fill="#c86379"/>
+    <text class="note" x="520" y="559">join mappings + graph into six areas</text>
+    <path class="ret" d="M1011 618H133"/>
+  </g>
+  <g id="output-policy">
+    <rect x="1128" y="124" width="96" height="52" rx="14" fill="#dfe4ea" stroke="#68788b" stroke-width="2"/>
+    <text class="lane" x="1149" y="157">output</text><path class="lifeline" d="M1176 176V655"/>
+    <path class="msg" d="M1011 642H1176"/>
+    <rect x="900" y="658" width="324" height="42" rx="12" fill="#26384a"/>
+    <text x="918" y="684" font-family="system-ui" font-size="14" font-weight="650" fill="#fff">status: descriptive · check: named gate</text>
+  </g>
+</svg>

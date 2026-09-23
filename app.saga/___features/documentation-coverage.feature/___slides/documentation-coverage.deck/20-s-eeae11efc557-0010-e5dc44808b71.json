@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "coverage-ownership",
+  "deck": "documentation-coverage",
+  "title": "Three ownership planes, one report",
+  "rank": 10,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-eeae11efc557-0010-e5dc44808b71.svg",
+  "takeaway": "Exact source mapping, lifecycle coverage, and public areas are separate projections joined only after their facts are computed.",
+  "reading_order": [
+    "source-snapshot",
+    "mapping-plane",
+    "lifecycle-plane",
+    "public-areas",
+    "fact-join",
+    "action-queue",
+    "policy-boundary"
+  ]
+}

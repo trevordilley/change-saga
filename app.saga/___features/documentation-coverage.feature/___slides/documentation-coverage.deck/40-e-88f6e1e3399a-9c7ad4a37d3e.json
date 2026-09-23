@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status.go",
+      "start": 93,
+      "end": 107,
+      "digest": "sha256:0a827d907f7f177b009901db8b4d3f5cff62700042d378176e5bc8e9c158c2db",
+      "note": "Forces every UI axis to remain unsatisfied because this version records no UI reference resource."
+    }
+  ]
+}

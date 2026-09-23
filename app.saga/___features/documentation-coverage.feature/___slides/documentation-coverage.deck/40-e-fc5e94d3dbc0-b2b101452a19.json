@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coverage/coverage.go",
+      "start": 117,
+      "end": 128,
+      "digest": "sha256:c5cf6c24266c63f745fea727a5f5d43d4ade040177f671eaa5e8f96636ae8cba",
+      "note": "Places atoms with zero assignments in the uncovered collection."
+    }
+  ]
+}

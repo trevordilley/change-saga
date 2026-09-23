@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "public-areas",
+  "slide": "coverage-ownership",
+  "rank": 30,
+  "kind": "node",
+  "label": "Public coverage areas",
+  "description": "The public report joins mapping and lifecycle facts into six independently inspectable areas.",
+  "selector": {
+    "type": "element",
+    "element_id": "public-areas"
+  }
+}

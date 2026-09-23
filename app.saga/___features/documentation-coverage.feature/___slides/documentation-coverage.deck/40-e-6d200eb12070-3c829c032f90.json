@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 966,
+      "end": 995,
+      "digest": "sha256:d13fc3a4413c7f0626b706cb44bf6f5317ce0640ee6b841819eee3be9324d44a",
+      "note": "Parses status inputs, builds one report, and exits successfully when it is trustworthy."
+    }
+  ]
+}

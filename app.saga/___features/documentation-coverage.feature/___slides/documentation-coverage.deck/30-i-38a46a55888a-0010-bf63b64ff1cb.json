@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "comparison-read",
+  "slide": "status-runtime",
+  "rank": 10,
+  "kind": "node",
+  "label": "Comparison read",
+  "description": "The Saga, Git range, resolver, and mapping report are loaded as one comparison snapshot.",
+  "selector": {
+    "type": "element",
+    "element_id": "comparison-read"
+  }
+}

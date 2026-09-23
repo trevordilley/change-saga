@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "source-snapshot",
+  "slide": "coverage-ownership",
+  "rank": 0,
+  "kind": "region",
+  "label": "Source snapshot",
+  "description": "The exact Git comparison and loaded Saga graph are the shared immutable inputs.",
+  "selector": {
+    "type": "element",
+    "element_id": "source-snapshot"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_load.go",
+      "start": 50,
+      "end": 130,
+      "digest": "sha256:325e81f608c576b2311acda83085d574438c1b7faab7c0fa933a95a24368b536",
+      "note": "Strictly loads living records, resolves quality evidence, and performs no writes or test execution."
+    }
+  ]
+}
