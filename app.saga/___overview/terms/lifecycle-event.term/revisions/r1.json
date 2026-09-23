@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:lifecycle-event",
+  "parents": [],
+  "name": "Lifecycle event",
+  "definition": "An append-only decision that changes a user story's product state without rewriting the story's definition. Events form their own parent graph across proposed, accepted, deferred, rejected, and retired states; competing heads remain visible until explicitly reconciled.",
+  "aliases": [
+    "story event"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:product-intent-lifecycle",
+    "urn:change-saga:change-saga:story:auditable-requirement-history"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/model.go",
+      "start": 71,
+      "end": 90,
+      "digest": "sha256:906c7ef75ec9080105e553a23f0ab7d8b3b54b814a2086e341410f6dab027fdc"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/requirements/validate.go",
+      "start": 416,
+      "end": 432,
+      "digest": "sha256:a9d772fa858987a156924e608a460a115c3ca63e0c689bfa78495f5fa46a1d7c"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:02.259081Z"
+}
