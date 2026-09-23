@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:merge-unit",
+  "parents": [],
+  "name": "merge unit",
+  "definition": "A planned integration boundary inside a work item: one repository, source branch, target branch, and whether that integration is required. Append-only merge events track its state and exact head, merge, and revert commits; only a current integrated event with a merge commit contributes immutable delivery evidence.",
+  "stories": [
+    "urn:change-saga:change-saga:story:track-work-delivery",
+    "urn:change-saga:change-saga:story:dependency-aware-work-plan"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/workplan/model.go",
+      "start": 114,
+      "end": 120,
+      "digest": "sha256:59181019ff89a92818461c0d81f22ef4fc8c7489423fab5813345aff2b9f4fe3"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/workplan/model.go",
+      "start": 210,
+      "end": 218,
+      "digest": "sha256:f1220b91a8a05dfc0f62c9336136e7cb82abbb8b0ae385cde9ac8f054e080dd9"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/livingapp/compose.go",
+      "start": 664,
+      "end": 680,
+      "digest": "sha256:50ace4dbf9e007bce6db556c57dff44aca873baa90087038aebeb05815d032c1"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:23.947008Z"
+}

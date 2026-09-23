@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:delivery-readiness",
+  "parents": [],
+  "name": "delivery readiness",
+  "definition": "A per-criterion projection that keeps requirement, plan, and delivery coverage separate. A criterion is delivered only when it has current immutable evidence and no delivery or transitive dependency blockers; the app is peer-review ready only when every accepted criterion is delivered. Work progress, including done, never counts as proof, and readiness is not an approval verdict.",
+  "stories": [
+    "urn:change-saga:change-saga:story:track-work-delivery",
+    "urn:change-saga:change-saga:story:criterion-quality-readiness"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/readiness/readiness.go",
+      "start": 60,
+      "end": 81,
+      "digest": "sha256:efdcd3b7c674ec7acb62b2cb48eb7da9c4530c95623978c1972be6193e005f0e"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/readiness/readiness.go",
+      "start": 84,
+      "end": 100,
+      "digest": "sha256:3b8d041d4bfd6ba1efecb37c259a888a5077795ba00a216d2b63a3415cd7edfd"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/livingapp/compose.go",
+      "start": 469,
+      "end": 473,
+      "digest": "sha256:877c1233b6bb3a102c8912680db1aaafed7c9a7b9c43adf6fc35e8471a10142a"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/livingapp/compose.go",
+      "start": 489,
+      "end": 503,
+      "digest": "sha256:0284d0a4f4f21be0ad0119b5f5f0fdd52a6309bb7cd48bc65c785d4139254800"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:24.32051Z"
+}
