@@ -81,6 +81,108 @@ func TestInstallSkillPrintsTheSkillFilesVerbatim(t *testing.T) {
 	}
 }
 
+// A routed skill is useful only if an installed copy sends a realistic task
+// to the smallest complete set of references and every routed file ships with
+// it. Build a temporary installed fixture rather than reading repository files
+// so this covers the same package users receive from install-skill.
+func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
+	root := t.TempDir()
+	for _, file := range skills.ChangeSaga() {
+		path := filepath.Join(root, filepath.FromSlash(file.Path))
+		if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, []byte(file.Content), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	entrypoint, err := os.ReadFile(filepath.Join(root, "SKILL.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	rows := strings.Split(normalizeSkillNewlines(string(entrypoint)), "\n")
+	referenceLink := regexp.MustCompile(`\]\((references/[^)]+)\)`)
+
+	tests := []struct {
+		name     string
+		fixture  string
+		rowHint  string
+		want     []string
+		unwanted []string
+	}{
+		{
+			name: "diagram for a changed request flow", fixture: "Draw a request-flow diagram and attach each Item to the exact changed code.",
+			rowHint: "Author diagrams", want: []string{"references/query.md", "references/diagrams.md"},
+			unwanted: []string{"references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
+			name: "accepted story with provenance", fixture: "Add an accepted customer story with one confirmed criterion and its source citation.",
+			rowHint: "Author or revise personas", want: []string{"references/query.md", "references/stories.md"},
+			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
+			name: "term rename", fixture: "Revise the Retention Window term after its defining constant was renamed.",
+			rowHint: "Author or revise the overview", want: []string{"references/query.md", "references/terms.md"},
+			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/integration.md", "references/ci.md"},
+		},
+		{
+			name: "comparison recovery handoff", fixture: "Reconcile stale evidence after a branch update and hand off the remaining conflicting heads.",
+			rowHint: "Reconcile a comparison", want: []string{"references/query.md", "references/integration.md"},
+			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/ci.md"},
+		},
+		{
+			name: "pull request review visual", fixture: "Prepare this pull request's review deck and explain its retry path with exact evidence.",
+			rowHint: "Prepare or update a pull-request review artifact", want: []string{"references/query.md", "references/integration.md", "references/diagrams.md"},
+			unwanted: []string{"references/stories.md", "references/terms.md", "references/ci.md"},
+		},
+		{
+			name: "CI policy only", fixture: "Make CI require implementation and health coverage for this repository.",
+			rowHint: "Define a CI acceptance rule", want: []string{"references/ci.md", "references/query.md"},
+			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/integration.md"},
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if strings.TrimSpace(test.fixture) == "" {
+				t.Fatal("realistic fixture is empty")
+			}
+			var row string
+			for _, candidate := range rows {
+				if strings.HasPrefix(candidate, "|") && strings.Contains(candidate, test.rowHint) {
+					row = candidate
+					break
+				}
+			}
+			if row == "" {
+				t.Fatalf("installed SKILL.md has no route for %q", test.rowHint)
+			}
+			links := map[string]bool{}
+			for _, match := range referenceLink.FindAllStringSubmatch(row, -1) {
+				links[match[1]] = true
+				if _, err := os.Stat(filepath.Join(root, filepath.FromSlash(match[1]))); err != nil {
+					t.Errorf("route links to an unshipped reference %q: %v", match[1], err)
+				}
+			}
+			for _, want := range test.want {
+				if !links[want] {
+					t.Errorf("route for fixture %q omitted %s: %s", test.fixture, want, row)
+				}
+			}
+			for _, unwanted := range test.unwanted {
+				if links[unwanted] {
+					t.Errorf("route for fixture %q preloads unrelated %s: %s", test.fixture, unwanted, row)
+				}
+			}
+		})
+	}
+
+	if _, err := os.Stat(filepath.Join(root, "references", "authoring.md")); !os.IsNotExist(err) {
+		t.Fatalf("legacy blanket authoring reference remains in installed fixture: err=%v", err)
+	}
+}
+
 // renderQueryOperations is the operation list references/query.md must carry,
 // generated from the table the query command dispatches on.
 func renderQueryOperations() string {

@@ -120,28 +120,28 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	}
 }
 
-func TestInstallSkillPrintsPortableAuthoringContract(t *testing.T) {
+func TestInstallSkillPrintsPortableRoutedAuthoringContract(t *testing.T) {
 	var output bytes.Buffer
 	if err := InstallSkill(nil, &output); err != nil {
 		t.Fatal(err)
 	}
 	text := strings.Join(strings.Fields(output.String()), " ")
 	for _, expected := range []string{
-		"project-local agent skill", "Do not create a Change Saga as part of installation", "existing PR-authoring processes",
-		"the thing to be reviewed, not the review itself", "do not record review decisions or comments",
-		"Only enter reviewer mode when the user explicitly asks",
-		"The installed `change-saga` CLI is the source of truth", "change-saga --help", "change-saga status --json",
-		"change-saga add-landmark", "SVG diagram", "interactive HTML", "data flows", "data models",
-		"Reference exactly the code each Item explains", "Never make a reference wider merely to reach 100%",
-		"citation-free implementation narrative", "SVG element bounds become on-canvas links automatically",
-		"change-saga query mappings --sort scrutiny", "change-saga add-claim", "change-saga verify-claim",
-		"--against REV", "**Affected**", "change-saga sync", "change-saga overview set-pitch", "change-saga term add",
-		"first read the code diff independently", "Coverage is an omission check, not proof",
-		"accepted story must have at least one criterion", "narrowest criterion",
-		"Storyboard visual questions", "system-context diagram", "state machine", "entity-relationship diagram",
-		"Silhouette test", "Relationship test", "Surprise test", "Contact-sheet test", "Do not use cards as a universal container",
-		"reasonable reviewer expectation", "callout Item attached", "Do not manufacture novelty",
-		"change-saga review create", "review list --uncovered", "every changed line of the review's range",
+		"project-local agent skill", "Do not create a Change Saga as part of installation", "existing PR templates",
+		"Author the thing submitted for human review, not the review verdict",
+		"Read real Saga metadata only through `change-saga query`",
+		"Revisions and lifecycle events are immutable", "Preserve competing heads and reported conflicts",
+		"Preserve provenance", "Keep evidence exact", "coverage as an omission check, not proof",
+		"Do not preload every reference", "stories and provenance", "overview and terms",
+		"diagrams and evidence", "integration and recovery", "CI rules", "Format quick reference",
+		"reasonable maintainer expectation", "exact evidence", "Do not manufacture novelty",
+		"system context", "state machine", "entity-relationship", "Silhouette", "Contact sheet",
+		"Requirement citations are immutable provenance records", "append-only events with explicit parents",
+		"Preserve concurrent heads, stale relations, and explicit work conflicts",
+		"definition maturity is `unknown`, `proposed`, or `accepted`",
+		"implementation evidence is `unknown`, `absent`, `partial`, or `present`",
+		"Evidence availability never proves", "omit `current_revision`", "carries the current values of both axes forward",
+		"first inspect the code diff independently", "Never turn an AI result into a human decision",
 	} {
 		if !strings.Contains(text, expected) {
 			t.Errorf("install-skill output omitted %q", expected)
