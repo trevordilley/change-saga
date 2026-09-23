@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "composite-provenance-explains-decision-author",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:review-decision-ownership:item:authority-gap",
+  "to": "urn:change-saga:change-saga:story:review-decision:criterion:identifies-author",
+  "scope": "self",
+  "rationale": "Composite provenance shows the Git or local actor that recorded the decision together with the declared reviewer seat.",
+  "to_revision": "urn:change-saga:change-saga:story:review-decision:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:42:43.611963Z"
+}

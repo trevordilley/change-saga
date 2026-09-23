@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "last-state-explains-resolve-reopen",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:thread-lifecycle:item:last-state-wins",
+  "to": "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:resolve-reopen",
+  "scope": "self",
+  "rationale": "The latest explicit open or resolved event determines the thread state and therefore the open-thread count.",
+  "to_revision": "urn:change-saga:change-saga:story:review-thread-lifecycle:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:42:45.165584Z"
+}
