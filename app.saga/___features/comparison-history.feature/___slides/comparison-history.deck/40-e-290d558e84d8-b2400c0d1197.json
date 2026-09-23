@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/layers.go",
+      "start": 273,
+      "end": 300,
+      "digest": "sha256:b0af2ca38f14306622a4f8e414c07c4a0d847f867c44f34f4eab555af5d573ad",
+      "note": "Seeds impact from changed code and terms, excludes records already Changed, then propagates pin and traceability-chain causes upward."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/layers.go",
+      "start": 382,
+      "end": 485,
+      "digest": "sha256:851c040cacace3b674845cd4660d3c4b4f5c2d43fb997c16d7104433c7681bad",
+      "note": "Seeds impact from changed code and terms, excludes records already Changed, then propagates pin and traceability-chain causes upward."
+    }
+  ]
+}

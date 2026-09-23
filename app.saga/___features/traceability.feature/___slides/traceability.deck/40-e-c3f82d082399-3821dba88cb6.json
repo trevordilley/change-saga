@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 264,
+      "end": 275,
+      "digest": "sha256:25c23c4ebe43b320c71e4bc85dd5569eba0ae5f306fb38abe5fb6838348df27e",
+      "note": "Records changed criterion obligations, story obligations, revisions, and content digests as explicit stale reasons."
+    }
+  ]
+}

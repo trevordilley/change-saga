@@ -176,6 +176,13 @@ func Build(root string, document *saga.Saga, inputs livingapp.StatusInputs) *Inv
 		case "addresses", "explains", "verifies", "implements":
 			if from := builder.inventory.Nodes[relation.Explains[0]]; from != nil {
 				from.Targets = append(from.Targets, relation.Explains[1])
+				// A slide's replacement identity summarizes its Items' intent.
+				// Never inherit a container's targets down onto its elements.
+				if from.Kind == KindItem {
+					if slide := builder.inventory.Nodes[from.Parent]; slide != nil && slide.Kind == KindSlide {
+						slide.Targets = append(slide.Targets, relation.Explains[1])
+					}
+				}
 			}
 		case "supersedes":
 			builder.inventory.Supersedes[relation.Explains[0]] = append(builder.inventory.Supersedes[relation.Explains[0]], relation.Explains[1])

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 88,
+      "end": 99,
+      "digest": "sha256:aeeb50e6891c6c4753ffcfa7492d4ca1304b10ba843a0921cdd65ec9bfc2d52a",
+      "note": "Proves missing slides, incomplete AI seats, invalid reviewer kinds, and mutations on merged reviews are rejected."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/reviews_test.go",
+      "start": 14,
+      "end": 25,
+      "digest": "sha256:83b8baeca68fd64715eee7878aaa31cd92db7207f1baa9371c6528056f4465a7",
+      "note": "Proves missing slides, incomplete AI seats, invalid reviewer kinds, and mutations on merged reviews are rejected."
+    }
+  ]
+}

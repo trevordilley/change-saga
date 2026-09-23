@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "superseded-state",
+  "slide": "relation-currency",
+  "rank": 60,
+  "kind": "node",
+  "label": "Superseded",
+  "description": "An explicitly inactive relation is a terminal historical record and no longer participates in the graph.",
+  "selector": {
+    "type": "element",
+    "element_id": "superseded-state"
+  }
+}

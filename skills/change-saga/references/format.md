@@ -55,14 +55,17 @@ Intents are `orient`, `explain`, `compare`, `trace`, `prove`, `risk`, and
 `evidence`, `risk`, and `custom`. Item kinds are `node`, `edge`, `region`,
 `transition`, `statement`, `risk`, `metric`, `example`, and `callout`.
 
-Link a deck, slide, or Item to a story or criterion with a relation pinned to
-the revision it relied on (an omitted pin defaults to the current head):
+Link a specific slide Item to a story or criterion with a relation pinned to
+the revision it relied on (an omitted pin defaults to the current head).
+New deck/slide-level story links are rejected; the slide summary aggregates
+its Items' links. Historical container links remain readable but are shown
+separately as needing element assignment, not inherited by every element:
 
 ```sh
 change-saga relation add --feature checkout --id retry-explains-safe-write --type explains \
-  --from urn:change-saga:app:slide:retry-sequence \
+  --from urn:change-saga:app:slide:retry-sequence:item:hidden-retry \
   --to urn:change-saga:app:story:safe-write:criterion:no-duplicate \
-  --rationale "The sequence explains how the criterion is implemented." app.saga
+  --scope self --rationale "The retry element explains how the criterion is implemented." app.saga
 ```
 
 ## Commands

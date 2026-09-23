@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_test.go",
+      "start": 463,
+      "end": 468,
+      "digest": "sha256:8af4c4b5cd7e0dc042ac4cc9b82729e21b9a57073448394e04201200713ba220",
+      "note": "Proves the missing UI resource is reported as a named gap, never silent coverage."
+    }
+  ]
+}

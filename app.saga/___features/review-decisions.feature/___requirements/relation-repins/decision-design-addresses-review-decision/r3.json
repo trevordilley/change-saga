@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r3",
+  "relation": "urn:change-saga:change-saga:relation:decision-design-addresses-review-decision",
+  "from_content_digest": "sha256:763b76f9c81cd6b75da2a051bf9e13dfedd285db68f014f0ff220ba7d0316152",
+  "rationale": "The revised fragment still explains append-only decisions, latest-seat projection, and independent currency.",
+  "created_at": "2026-09-23T03:45:35.798543Z"
+}

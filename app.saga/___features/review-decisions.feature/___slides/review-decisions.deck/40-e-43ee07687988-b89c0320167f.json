@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews_test.go",
+      "start": 116,
+      "end": 119,
+      "digest": "sha256:70a12957f504982531d7ad19c93ee75bc319af9092c24c4afe98c6ff77615283",
+      "note": "Proves a token-authorized approval completes with a redirect after the decision is stored."
+    }
+  ]
+}

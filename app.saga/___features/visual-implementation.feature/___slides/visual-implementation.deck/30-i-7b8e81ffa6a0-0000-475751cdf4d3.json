@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "author",
+  "slide": "visual-pipeline",
+  "rank": 0,
+  "kind": "node",
+  "label": "Authoring boundary",
+  "description": "CLI commands create the deck, visual slide, and addressable semantic Items under the Saga writer lock.",
+  "selector": {
+    "type": "element",
+    "element_id": "author"
+  }
+}

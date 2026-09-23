@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "head-validation",
+  "slide": "story-mutation-sequence",
+  "rank": 30,
+  "kind": "node",
+  "label": "Current-head guard",
+  "description": "After locking and reloading, the mutation requires the submitted parents to equal every current graph head.",
+  "selector": {
+    "type": "element",
+    "element_id": "head-validation"
+  }
+}

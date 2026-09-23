@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 273,
+      "end": 287,
+      "digest": "sha256:70b532c8c6f08a355637f699f9bedd13e8eec91bf238c07c30409e5dcf36d357",
+      "note": "Locates the checkout, canonicalizes the declared repository, and refuses a mismatched source identity before reading revisions."
+    }
+  ]
+}

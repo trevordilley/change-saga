@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "coverage-evaluation",
+  "deck": "documentation-coverage",
+  "title": "Coverage reports facts, never a verdict",
+  "rank": 0,
+  "intent": "prove",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-eeae11efc557-0000-29a210287365.svg",
+  "takeaway": "Diff atoms and exact evidence produce independent coverage states that teams can evaluate.",
+  "reading_order": [
+    "diff",
+    "evaluate",
+    "report"
+  ]
+}

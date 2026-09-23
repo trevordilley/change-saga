@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "history-response",
+  "slide": "record-history-sequence",
+  "rank": 60,
+  "kind": "node",
+  "label": "Response reconnects history to inspection",
+  "description": "The result includes events, replacement identity, uncommitted state, related reviews, and an open command for each original comparison.",
+  "selector": {
+    "type": "element",
+    "element_id": "history-response"
+  }
+}

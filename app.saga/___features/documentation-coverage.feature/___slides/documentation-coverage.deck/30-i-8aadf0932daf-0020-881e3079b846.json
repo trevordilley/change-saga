@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-reference",
+  "slide": "reference-state",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Stale reference",
+  "description": "Evidence current at neither comparison side retains its reason but accounts for no changed atom.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-reference"
+  }
+}

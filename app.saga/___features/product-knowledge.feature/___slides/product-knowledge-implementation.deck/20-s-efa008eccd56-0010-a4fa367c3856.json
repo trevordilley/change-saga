@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "vocabulary-runtime",
+  "deck": "product-knowledge-implementation",
+  "title": "Vocabulary anchored to code",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-efa008eccd56-0010-a4fa367c3856.svg",
+  "takeaway": "Terms connect project language to intent and defining code; renames stale the term, while new-word suggestions remain optional growth.",
+  "reading_order": [
+    "overview-frontdoor",
+    "term-record",
+    "bidirectional-links",
+    "head-resolution",
+    "rename-failure",
+    "optional-growth"
+  ]
+}

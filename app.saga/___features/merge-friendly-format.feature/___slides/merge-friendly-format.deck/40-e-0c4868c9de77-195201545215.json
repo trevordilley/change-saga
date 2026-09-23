@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store.go",
+      "start": 44,
+      "end": 70,
+      "digest": "sha256:92e677c261f8c98e0df8019925e8b895af8de73e0040f19137b695e374f4eed2",
+      "note": "Writes staged bytes, fsyncs the file, and closes it before publication."
+    }
+  ]
+}

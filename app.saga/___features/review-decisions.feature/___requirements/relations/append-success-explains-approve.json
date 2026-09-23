@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "append-success-explains-approve",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:decision-failure-boundaries:item:append-success",
+  "to": "urn:change-saga:change-saga:story:review-decision:criterion:approve",
+  "scope": "self",
+  "rationale": "The successful branch shows that a validated approved state is appended before success is returned.",
+  "to_revision": "urn:change-saga:change-saga:story:review-decision:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:33:23.204601Z"
+}

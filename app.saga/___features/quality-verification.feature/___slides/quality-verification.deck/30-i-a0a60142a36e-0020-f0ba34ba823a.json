@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "quality-domain",
+  "slide": "quality-ownership",
+  "rank": 20,
+  "kind": "region",
+  "label": "Isolated quality domain",
+  "description": "The quality package owns strict loading, validation, append-only mutation, and current-head projection without depending on the central CLI or server.",
+  "selector": {
+    "type": "element",
+    "element_id": "quality-domain"
+  }
+}

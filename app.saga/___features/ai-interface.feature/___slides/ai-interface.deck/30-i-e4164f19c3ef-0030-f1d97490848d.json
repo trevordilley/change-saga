@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "session",
+  "slide": "structured-query",
+  "rank": 30,
+  "kind": "node",
+  "label": "Review/source projection",
+  "description": "Reviewapp owns validated Saga and Git-comparison loading plus fragments, coverage, code ownership, and bounded review projections.",
+  "selector": {
+    "type": "element",
+    "element_id": "session"
+  }
+}

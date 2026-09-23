@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/design_digest.go",
+      "start": 170,
+      "end": 255,
+      "digest": "sha256:c89a1de21dd2735eb78f10ddfb4217e77f2544d0c3a72edc5006c4526d4f6ea3",
+      "note": "Hashes deck and slide manifests, visual bytes, and rank-ordered Item manifests into hierarchical authored-content digests."
+    }
+  ]
+}

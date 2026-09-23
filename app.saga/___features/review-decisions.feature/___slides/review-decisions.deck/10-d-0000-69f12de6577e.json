@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "review-decisions",
+  "title": "Review decision architecture",
+  "role": "change",
+  "rank": 0,
+  "objective": "Understand decision history, currency, and the current attribution boundary."
+}

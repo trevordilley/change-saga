@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store_test.go",
+      "start": 127,
+      "end": 183,
+      "digest": "sha256:33a0d62e20541e2b7f0a0223856da6061b52ea4c923fb36524537f7c08de34fc",
+      "note": "Exercises lock timeout and proves only one supported writer enters at a time."
+    }
+  ]
+}

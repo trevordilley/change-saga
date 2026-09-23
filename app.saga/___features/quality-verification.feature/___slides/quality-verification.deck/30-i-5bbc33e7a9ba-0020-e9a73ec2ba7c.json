@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "verifies-path",
+  "slide": "criterion-quality-gate",
+  "rank": 20,
+  "kind": "edge",
+  "label": "Current verifies relation",
+  "description": "An active verifies relation connects a test case revision to the criterion; stale or conflicted relation pins remain visible.",
+  "selector": {
+    "type": "element",
+    "element_id": "verifies-path"
+  }
+}

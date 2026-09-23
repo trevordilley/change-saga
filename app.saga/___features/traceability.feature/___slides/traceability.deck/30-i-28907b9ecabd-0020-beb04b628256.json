@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "explanation",
+  "slide": "pinned-graph",
+  "rank": 20,
+  "kind": "node",
+  "label": "Impact projection",
+  "description": "Traverses persisted edges from evidence owners to requirements and tests.",
+  "selector": {
+    "type": "element",
+    "element_id": "explanation"
+  }
+}

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Traceability query runtime</title>
+  <desc id="desc">A sequence diagram from CLI request through a shared snapshot, living graph composition, optional code-reference remapping, criterion path composition, and a paginated envelope.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#334155"/></marker>
+    <marker id="purple-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#7c3aed"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text x="58" y="62" font-family="system-ui" font-size="36" font-weight="750" fill="#0f172a">One snapshot drives every traceability answer</text>
+  <text x="58" y="96" font-family="system-ui" font-size="18" fill="#475569">The optional --ref path remaps pins before the living composer filters and joins the graph.</text>
+
+  <g id="cli-request">
+    <rect x="48" y="130" width="170" height="62" rx="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <text x="133" y="156" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="700" fill="#1e3a8a">CLI query</text>
+    <text x="133" y="179" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="#1e40af">traceability [--ref]</text>
+    <path d="M133 192V646" stroke="#93c5fd" stroke-width="2" stroke-dasharray="7 7"/>
+  </g>
+
+  <g id="shared-snapshot">
+    <rect x="275" y="130" width="180" height="62" rx="14" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="365" y="156" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="700" fill="#312e81">Review snapshot</text>
+    <text x="365" y="179" text-anchor="middle" font-family="system-ui" font-size="14" fill="#4338ca">source + Saga identity</text>
+    <path d="M365 192V646" stroke="#a5b4fc" stroke-width="2" stroke-dasharray="7 7"/>
+  </g>
+
+  <g id="living-graph">
+    <rect x="515" y="130" width="180" height="62" rx="14" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+    <text x="605" y="156" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="700" fill="#4c1d95">Living graph</text>
+    <text x="605" y="179" text-anchor="middle" font-family="system-ui" font-size="14" fill="#6d28d9">relations + currency</text>
+    <path d="M605 192V646" stroke="#c4b5fd" stroke-width="2" stroke-dasharray="7 7"/>
+  </g>
+
+  <g id="criterion-composer">
+    <rect x="755" y="130" width="180" height="62" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="845" y="156" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="700" fill="#14532d">Criterion composer</text>
+    <text x="845" y="179" text-anchor="middle" font-family="system-ui" font-size="14" fill="#15803d">paths + blockers</text>
+    <path d="M845 192V646" stroke="#86efac" stroke-width="2" stroke-dasharray="7 7"/>
+  </g>
+
+  <g id="paged-envelope">
+    <rect x="995" y="130" width="225" height="62" rx="14" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="1107" y="156" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="700" fill="#78350f">JSON envelope</text>
+    <text x="1107" y="179" text-anchor="middle" font-family="system-ui" font-size="14" fill="#92400e">snapshot + page cursor</text>
+    <path d="M1107 192V646" stroke="#fcd34d" stroke-width="2" stroke-dasharray="7 7"/>
+  </g>
+
+  <g id="sequence-flow" font-family="system-ui" font-size="16" fill="#334155">
+    <path d="M133 235H352" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/><text x="170" y="226">open summary session</text>
+    <path d="M365 292H592" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/><text x="402" y="283">reuse snapshot hash</text>
+    <path d="M605 350H832" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/><text x="646" y="341">current relations only</text>
+    <path d="M845 505H1094" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/><text x="890" y="496">criteria, paths, blockers</text>
+    <path d="M1107 565H146" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/><text x="525" y="555">deterministic page + retryable stale-snapshot error</text>
+  </g>
+
+  <g id="ref-remap">
+    <rect x="500" y="390" width="210" height="82" rx="16" fill="#faf5ff" stroke="#7c3aed" stroke-width="3" stroke-dasharray="8 6"/>
+    <text x="605" y="420" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="700" fill="#581c87">Only when --ref is present</text>
+    <text x="605" y="447" text-anchor="middle" font-family="system-ui" font-size="15" fill="#6b21a8">resolve each pin at requested commit</text>
+    <path d="M133 462H487" stroke="#7c3aed" stroke-width="3" marker-end="url(#purple-arrow)"/>
+    <path d="M710 462H832" stroke="#7c3aed" stroke-width="3" marker-end="url(#purple-arrow)"/>
+  </g>
+
+  <rect x="48" y="655" width="1172" height="38" rx="12" fill="#0f172a"/>
+  <text x="634" y="680" text-anchor="middle" font-family="system-ui" font-size="17" font-weight="650" fill="#f8fafc">No second graph is inferred: code lookup is the same persisted graph, filtered through remapped evidence.</text>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "readiness-consequence",
+  "slide": "quality-trust-gaps",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Readiness consequence",
+  "description": "A caller-supplied passed result can satisfy quality when the implemented relation, revision, evidence, and repository checks are current.",
+  "selector": {
+    "type": "element",
+    "element_id": "readiness-consequence"
+  },
+  "about": "recorded-run",
+  "body": "Current code treats a recorded pass as proof once the implemented pins resolve."
+}

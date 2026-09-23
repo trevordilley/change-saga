@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/mutation.go",
+      "start": 137,
+      "end": 159,
+      "digest": "sha256:ad78a0dc031d041c0a7436d5d449488b73666b2781f92958090dc5b688fc2ec7",
+      "note": "Returns before publication when the submitted parents are stale or incomplete."
+    }
+  ]
+}

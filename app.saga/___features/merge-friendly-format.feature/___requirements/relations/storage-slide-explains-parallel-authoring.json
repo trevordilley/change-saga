@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "storage-slide-explains-parallel-authoring",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:partitioned-storage",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring",
+  "scope": "descendants",
+  "rationale": "Partitioned immutable records, atomic publication, and explicit graph heads are the implemented merge-friendly mechanism.",
+  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:07.238589Z"
+}

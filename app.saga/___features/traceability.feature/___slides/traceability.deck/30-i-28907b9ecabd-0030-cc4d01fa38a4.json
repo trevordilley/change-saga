@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "evidence",
+  "slide": "pinned-graph",
+  "rank": 30,
+  "kind": "node",
+  "label": "Reverse lookup",
+  "description": "Queries current code locations for the traceability paths that reach them.",
+  "selector": {
+    "type": "element",
+    "element_id": "evidence"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store.go",
+      "start": 127,
+      "end": 142,
+      "digest": "sha256:736ef0484f409c73cb10a0febf4197efe087c8fd4f61c85806d26d661d168b04",
+      "note": "After entity-directory rename, a parent sync error removes the published tree and resyncs the parent."
+    }
+  ]
+}

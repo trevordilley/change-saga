@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "quality-verification",
+  "title": "Quality verification",
+  "description": "Define test intent, evidence, policies, executions, and exceptions that show whether acceptance criteria are actually verified.",
+  "created_at": "2026-09-22T23:25:20.181314Z"
+}

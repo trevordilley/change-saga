@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "composition-runtime",
+  "slide": "prototype-annotation-runtime",
+  "rank": 30,
+  "kind": "node",
+  "label": "Late composition",
+  "description": "Composition joins annotations to a requirements snapshot and projects the same edge bidirectionally when every pin and selector is current.",
+  "selector": {
+    "type": "element",
+    "element_id": "composition-runtime"
+  }
+}

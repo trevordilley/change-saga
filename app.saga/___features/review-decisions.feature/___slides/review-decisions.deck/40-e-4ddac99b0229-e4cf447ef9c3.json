@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/reviews.go",
+      "start": 102,
+      "end": 120,
+      "digest": "sha256:dada1708bbc347298b8a0836af5a6437fe8b0b35318e2368b5b09cadbc9fff13",
+      "note": "Requires the CLI caller to declare either a direct human seat or a fully named AI seat."
+    }
+  ]
+}

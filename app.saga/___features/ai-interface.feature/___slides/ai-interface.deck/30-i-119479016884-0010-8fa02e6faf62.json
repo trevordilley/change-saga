@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "invoke",
+  "slide": "query-runtime",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Invoke operation",
+  "description": "The AI starts a new process with one named query operation and its arguments.",
+  "selector": {
+    "type": "element",
+    "element_id": "invoke"
+  }
+}

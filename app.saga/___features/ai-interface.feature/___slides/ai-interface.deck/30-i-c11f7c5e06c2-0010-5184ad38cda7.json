@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "first-page",
+  "slide": "cursor-state",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Start at zero",
+  "description": "A request without a cursor starts at offset zero using the default or validated page limit.",
+  "selector": {
+    "type": "element",
+    "element_id": "first-page"
+  }
+}

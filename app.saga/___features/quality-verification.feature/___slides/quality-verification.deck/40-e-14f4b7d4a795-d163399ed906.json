@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/quality.go",
+      "start": 18,
+      "end": 27,
+      "digest": "sha256:e037fb659bafd730983cab43c993c829d2ba43c790bc2e294be3799d02f5d09a",
+      "note": "Enumerates the quality authoring operations and resolves caller-named code locations into digested evidence inputs."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/quality.go",
+      "start": 370,
+      "end": 382,
+      "digest": "sha256:13a4a3138b7776f9956581641932ec7c21e3a6c82f3707e4d84cd9aba68ac863",
+      "note": "Enumerates the quality authoring operations and resolves caller-named code locations into digested evidence inputs."
+    }
+  ]
+}

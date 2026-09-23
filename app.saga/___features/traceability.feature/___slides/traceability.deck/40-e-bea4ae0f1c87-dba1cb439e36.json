@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact.go",
+      "start": 222,
+      "end": 227,
+      "digest": "sha256:f74d2d909d740a3419805dfe350d6fd6e8c29b2a16b0691a609a60579ce5a682",
+      "note": "Emits a baseline-incomplete diagnostic instead of claiming the impact projection is exhaustive."
+    }
+  ]
+}

@@ -9,6 +9,17 @@ const appJavaScript = `(() => {
   let drawerRestore = null;
   const slideDiffPreviewReasons = new WeakMap();
 
+  const slideStoryPreviewReasons = new WeakMap();
+  function setSlideStoryPreview(target, reason, visible) {
+    const button = target?.closest?.('[data-open-stories]');
+    const fragment = button?.closest('.fragment');
+    if (!fragment?.closest('[data-deck-slide]') || button.closest('.fragment-head')?.parentElement !== fragment) return;
+    let reasons = slideStoryPreviewReasons.get(fragment);
+    if (!reasons) { reasons = new Set(); slideStoryPreviewReasons.set(fragment, reasons); }
+    if (visible) reasons.add(reason); else reasons.delete(reason);
+    fragment.classList.toggle('preview-linked-stories', reasons.size > 0);
+  }
+
   function slideDiffSummaryButton(node) {
     const button = node?.closest?.('.diff-button');
     const fragment = button?.closest?.('.fragment');
@@ -38,6 +49,7 @@ const appJavaScript = `(() => {
     if (!visual) return;
     const ownsCode = landmarkOwnsDiffs(target);
     visual.dataset.landmarkHasDiffs = String(ownsCode);
+    visual.dataset.landmarkHasStories = String(Boolean(q('[data-landmark-affordance-template]', target)?.content.querySelector('[data-open-stories]')));
   }
 
   function activateLandmarkCode(visual) {
@@ -65,6 +77,10 @@ const appJavaScript = `(() => {
     const slides = deckViewerSlides();
     if (!slides.length) return;
     qa('.fragment.preview-linked-items').forEach(fragment => fragment.classList.remove('preview-linked-items'));
+    qa('.fragment.preview-linked-stories').forEach(fragment => {
+      fragment.classList.remove('preview-linked-stories');
+      slideStoryPreviewReasons.delete(fragment);
+    });
     const bounded = Math.max(0, Math.min(slides.length - 1, index));
     slides.forEach((slide, current) => {
       const active = current === bounded;
@@ -1165,8 +1181,8 @@ const appJavaScript = `(() => {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     drawer.dataset.drawerMode = mode;
-    const labels = {fragment:'Related explanation', history:'History', code:'Linked code'};
-    const icons = {fragment:'#i-book', history:'#i-clock', code:'#i-diff'};
+    const labels = {fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
+    const icons = {fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
     const label = labels[mode] || labels.code;
     drawer.setAttribute('aria-label', label);
     const heading = q('.drawer-head strong', drawer);
@@ -1219,6 +1235,15 @@ const appJavaScript = `(() => {
     configureDrawer('code', attached?.dataset.attachedTitle ? 'Linked code · ' + attached.dataset.attachedTitle : 'Linked code');
     highlightCode(body);
     showDrawer(returnOpener);
+  }
+
+  function openStoriesDrawer(button) {
+    const source = document.getElementById(button.dataset.openStories);
+    if (!source) return;
+    restoreDrawerContent();
+    q('.drawer-body').innerHTML = source.innerHTML;
+    configureDrawer('stories', 'Linked stories');
+    showDrawer(button);
   }
 
   // A record's history opens in the review drawer: when it was introduced,
@@ -1897,6 +1922,7 @@ const appJavaScript = `(() => {
   }
 
   document.addEventListener('pointerover', event => {
+    if (event.pointerType !== 'touch') setSlideStoryPreview(event.target, 'pointer', true);
     const slideDiffButton = slideDiffSummaryButton(event.target);
     if (event.pointerType !== 'touch' && slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
       setSlideDiffPreview(slideDiffButton, 'pointer', true);
@@ -1909,6 +1935,8 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('pointerout', event => {
+    const storyButton = event.target.closest?.('[data-open-stories]');
+    if (event.pointerType !== 'touch' && storyButton && !(event.relatedTarget instanceof Node && storyButton.contains(event.relatedTarget))) setSlideStoryPreview(storyButton, 'pointer', false);
     const slideDiffButton = slideDiffSummaryButton(event.target);
     if (event.pointerType !== 'touch' && slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
       setSlideDiffPreview(slideDiffButton, 'pointer', false);
@@ -1920,6 +1948,7 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('focusin', event => {
+    setSlideStoryPreview(event.target, 'focus', true);
     const slideDiffButton = slideDiffSummaryButton(event.target);
     if (slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
       setSlideDiffPreview(slideDiffButton, 'focus', true);
@@ -1930,6 +1959,8 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('focusout', event => {
+    const storyButton = event.target.closest?.('[data-open-stories]');
+    if (storyButton && !(event.relatedTarget instanceof Node && storyButton.contains(event.relatedTarget))) setSlideStoryPreview(storyButton, 'focus', false);
     const slideDiffButton = slideDiffSummaryButton(event.target);
     if (slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
       setSlideDiffPreview(slideDiffButton, 'focus', false);
@@ -2054,6 +2085,8 @@ const appJavaScript = `(() => {
     const layout = event.target.closest('button[data-layout]');
     if (layout) { applyDiffLayout(layout.dataset.layout, {remember:true}); return; }
     const targetCodeButton = event.target.closest('[data-target-code-href]');
+    const storiesButton = event.target.closest('[data-open-stories]');
+    if (storiesButton) { event.preventDefault(); openStoriesDrawer(storiesButton); return; }
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }

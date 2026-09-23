@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "atomic-publish",
+  "slide": "story-mutation-sequence",
+  "rank": 40,
+  "kind": "node",
+  "label": "Immutable append",
+  "description": "A validated revision is created exclusively so an existing record cannot be replaced.",
+  "selector": {
+    "type": "element",
+    "element_id": "atomic-publish"
+  }
+}

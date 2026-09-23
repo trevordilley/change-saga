@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "failure-cleanup",
+  "slide": "atomic-failure-boundaries",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Failure containment",
+  "description": "Pre-publication failures keep the destination unchanged and deferred cleanup removes staging state.",
+  "selector": {
+    "type": "element",
+    "element_id": "failure-cleanup"
+  }
+}

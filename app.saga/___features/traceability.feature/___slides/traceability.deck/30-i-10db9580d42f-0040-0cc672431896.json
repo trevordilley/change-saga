@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "delivery-evidence-gap",
+  "slide": "readiness-boundary",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Delivery proof missing",
+  "description": "No integrated merge, passing verification, or other immutable evidence completes any criterion's delivery path.",
+  "selector": {
+    "type": "element",
+    "element_id": "delivery-evidence-gap"
+  }
+}

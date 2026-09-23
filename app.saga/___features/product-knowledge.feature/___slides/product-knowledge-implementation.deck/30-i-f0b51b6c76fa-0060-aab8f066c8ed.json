@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "missing-direct-edge",
+  "slide": "traceability-runtime",
+  "rank": 60,
+  "kind": "callout",
+  "label": "Direct design correlation missing",
+  "description": "The implemented relation matrix cannot link an implementation Item directly to a design landmark; both can only meet through a shared criterion.",
+  "selector": {
+    "type": "element",
+    "element_id": "missing-direct-edge"
+  },
+  "about": "forward-projection",
+  "body": "Missing: Item → design-landmark relation.",
+  "placement": "bottom",
+  "leader": "line"
+}

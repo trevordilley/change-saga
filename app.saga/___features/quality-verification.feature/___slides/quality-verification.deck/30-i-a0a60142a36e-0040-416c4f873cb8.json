@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "readiness-consumers",
+  "slide": "quality-ownership",
+  "rank": 40,
+  "kind": "node",
+  "label": "Read-only consumers",
+  "description": "Status, coverage, traceability, and reviewer views consume the projected quality graph without running tests.",
+  "selector": {
+    "type": "element",
+    "element_id": "readiness-consumers"
+  }
+}

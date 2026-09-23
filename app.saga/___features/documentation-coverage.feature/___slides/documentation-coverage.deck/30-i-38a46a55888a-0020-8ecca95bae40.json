@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "living-load",
+  "slide": "status-runtime",
+  "rank": 20,
+  "kind": "node",
+  "label": "Living-record load",
+  "description": "Stories, relations, quality records, exceptions, and code-backed facts are loaded strictly and read-only.",
+  "selector": {
+    "type": "element",
+    "element_id": "living-load"
+  }
+}

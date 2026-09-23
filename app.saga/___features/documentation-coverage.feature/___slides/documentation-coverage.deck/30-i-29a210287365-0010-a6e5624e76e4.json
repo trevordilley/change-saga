@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "evaluate",
+  "slide": "coverage-evaluation",
+  "rank": 10,
+  "kind": "node",
+  "label": "Evidence resolution",
+  "description": "Resolves pinned source evidence, remapping moved lines and detecting stale or overlapping ownership.",
+  "selector": {
+    "type": "element",
+    "element_id": "evaluate"
+  }
+}

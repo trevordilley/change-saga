@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "excluded-resolution",
+  "slide": "axis-failures",
+  "rank": 40,
+  "kind": "node",
+  "label": "Excluded resolution",
+  "description": "Only one current, cited, unsuperseded exception resolves an axis as excluded.",
+  "selector": {
+    "type": "element",
+    "element_id": "excluded-resolution"
+  }
+}

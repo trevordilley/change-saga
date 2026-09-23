@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Quality currency follows test and evidence pins, not the observed Git HEAD</title>
+  <desc id="desc">A state-and-failure diagram follows a versioned test definition to evidence heads and immutable runs. A pass becomes stale when its test revision or referenced evidence is no longer current, an evidence code reference is stale, or the source repository differs. The recorded source commit is provenance and is not compared with observed HEAD.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#161006"/><stop offset="1" stop-color="#3a260e"/></linearGradient>
+    <marker id="gold" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#fbbf24"/></marker>
+    <marker id="red" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#fb7185"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="70" fill="#fffaf0" font-family="Inter,system-ui,sans-serif" font-size="30" font-weight="700">A green run follows revision and evidence currency</text>
+  <text x="64" y="102" fill="#d7c4a4" font-family="Inter,system-ui,sans-serif" font-size="16">Source commit is recorded provenance; no freshness check compares it with the observed Git HEAD.</text>
+
+  <g id="test-definition">
+    <rect x="64" y="154" width="220" height="148" rx="22" fill="#3a2a13" stroke="#fbbf24" stroke-width="2"/>
+    <text x="90" y="188" fill="#fbbf24" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">TEST REVISION</text>
+    <text x="90" y="224" fill="#fffaf0" font-family="Inter,system-ui,sans-serif" font-size="19" font-weight="700">ordered steps</text>
+    <text x="90" y="253" fill="#ead8b7" font-family="Inter,system-ui,sans-serif" font-size="14">coverage kinds</text>
+    <text x="90" y="278" fill="#ead8b7" font-family="Inter,system-ui,sans-serif" font-size="14">expected result</text>
+  </g>
+  <path d="M284 228H367" stroke="#fbbf24" stroke-width="4" marker-end="url(#gold)"/>
+  <g id="evidence-head">
+    <rect x="375" y="154" width="220" height="148" rx="22" fill="#302614" stroke="#f59e0b" stroke-width="2"/>
+    <text x="401" y="188" fill="#f59e0b" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">EVIDENCE HEAD</text>
+    <text x="401" y="224" fill="#fffaf0" font-family="Inter,system-ui,sans-serif" font-size="19" font-weight="700">test / system code</text>
+    <text x="401" y="253" fill="#ead8b7" font-family="Inter,system-ui,sans-serif" font-size="14">manual artifact citation</text>
+    <text x="401" y="278" fill="#ead8b7" font-family="Inter,system-ui,sans-serif" font-size="14">atomic batch + supersedes</text>
+  </g>
+  <path d="M595 228H678" stroke="#fbbf24" stroke-width="4" marker-end="url(#gold)"/>
+  <g id="immutable-run">
+    <rect x="686" y="154" width="220" height="148" rx="22" fill="#302614" stroke="#f59e0b" stroke-width="2"/>
+    <text x="712" y="188" fill="#f59e0b" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">IMMUTABLE RUN</text>
+    <text x="712" y="224" fill="#fffaf0" font-family="Inter,system-ui,sans-serif" font-size="19" font-weight="700">result + command</text>
+    <text x="712" y="253" fill="#ead8b7" font-family="Inter,system-ui,sans-serif" font-size="14">source repository + commit</text>
+    <text x="712" y="278" fill="#ead8b7" font-family="Inter,system-ui,sans-serif" font-size="14">parents = all run heads</text>
+  </g>
+
+  <g id="quality-states">
+    <rect x="966" y="140" width="250" height="300" rx="24" fill="#22291e" stroke="#6ee7b7" stroke-width="2"/>
+    <text x="1091" y="177" text-anchor="middle" fill="#6ee7b7" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">CURRENT PROJECTION</text>
+    <g font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="700">
+      <rect x="997" y="200" width="188" height="35" rx="17" fill="#164e3c"/><text x="1091" y="223" text-anchor="middle" fill="#d1fae5">covered</text>
+      <rect x="997" y="244" width="188" height="35" rx="17" fill="#463718"/><text x="1091" y="267" text-anchor="middle" fill="#fde68a">not_run</text>
+      <rect x="997" y="288" width="188" height="35" rx="17" fill="#521f2b"/><text x="1091" y="311" text-anchor="middle" fill="#fecdd3">failed</text>
+      <rect x="997" y="332" width="188" height="35" rx="17" fill="#4a294f"/><text x="1091" y="355" text-anchor="middle" fill="#f5d0fe">stale</text>
+      <rect x="997" y="376" width="90" height="35" rx="17" fill="#3a342e"/><text x="1042" y="399" text-anchor="middle" fill="#e7e5e4">missing</text>
+      <rect x="1095" y="376" width="90" height="35" rx="17" fill="#273547"/><text x="1140" y="399" text-anchor="middle" fill="#dbeafe">excluded</text>
+    </g>
+    <path d="M906 228H958" stroke="#6ee7b7" stroke-width="4" marker-end="url(#gold)"/>
+  </g>
+
+  <g id="stale-pass-transition">
+    <path d="M796 302C785 386 717 397 594 397" fill="none" stroke="#fb7185" stroke-width="3" stroke-dasharray="7 6" marker-end="url(#red)"/>
+    <rect x="348" y="344" width="392" height="102" rx="18" fill="#431b27" stroke="#fb7185" stroke-width="2"/>
+    <text x="374" y="374" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">PASS → STALE PIN</text>
+    <text x="374" y="401" fill="#fbd5dc" font-family="Inter,system-ui,sans-serif" font-size="13">test revision moved • referenced evidence is non-current</text>
+    <text x="374" y="424" fill="#fbd5dc" font-family="Inter,system-ui,sans-serif" font-size="13">evidence code ref stale • source repository differs</text>
+  </g>
+  <g id="policy-branch">
+    <path d="M1091 440V507" stroke="#60a5fa" stroke-width="3" marker-end="url(#gold)"/>
+    <rect x="846" y="505" width="370" height="86" rx="18" fill="#17283d" stroke="#60a5fa" stroke-width="2"/>
+    <text x="872" y="536" fill="#60a5fa" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">POLICY BRANCH</text>
+    <text x="872" y="564" fill="#dbeafe" font-family="Inter,system-ui,sans-serif" font-size="14">required kinds → satisfied | missing | excluded</text>
+  </g>
+  <g id="progress-boundary">
+    <rect x="64" y="505" width="700" height="150" rx="22" fill="#2f1a20" stroke="#fb7185" stroke-width="2" stroke-dasharray="9 6"/>
+    <text x="92" y="542" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">PROOF BOUNDARY</text>
+    <text x="92" y="582" fill="#fff1f2" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="700">“done” work is not delivery evidence</text>
+    <text x="92" y="615" fill="#f5c8d0" font-family="Inter,system-ui,sans-serif" font-size="15">A current passing run, verification, or integrated immutable evidence</text>
+    <text x="92" y="638" fill="#f5c8d0" font-family="Inter,system-ui,sans-serif" font-size="15">can close the criterion path; completed work alone cannot.</text>
+  </g>
+</svg>

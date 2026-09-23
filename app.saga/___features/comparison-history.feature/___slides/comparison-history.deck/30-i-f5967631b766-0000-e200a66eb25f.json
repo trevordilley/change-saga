@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "repository-router",
+  "slide": "saga-snapshot-ownership",
+  "rank": 0,
+  "kind": "node",
+  "label": "Saga location selects ownership",
+  "description": "The change view first locates the Saga's Git repository and decides whether documentation history shares the source checkout.",
+  "selector": {
+    "type": "element",
+    "element_id": "repository-router"
+  }
+}

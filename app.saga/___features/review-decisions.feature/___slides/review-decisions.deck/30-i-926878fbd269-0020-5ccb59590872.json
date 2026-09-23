@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "validation-failure",
+  "slide": "decision-failure-boundaries",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Payload validation failure",
+  "description": "Invalid states, reviewer seats, head commits, oversized notes, and empty change requests are rejected before persistence.",
+  "selector": {
+    "type": "element",
+    "element_id": "validation-failure"
+  }
+}

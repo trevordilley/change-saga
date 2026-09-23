@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "companion-remap",
+  "slide": "record-history-sequence",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Companion history remaps through sync cursors",
+  "description": "When the Saga lives separately, the Saga event's commits are translated to the code commits named by their sync cursors.",
+  "selector": {
+    "type": "element",
+    "element_id": "companion-remap"
+  }
+}

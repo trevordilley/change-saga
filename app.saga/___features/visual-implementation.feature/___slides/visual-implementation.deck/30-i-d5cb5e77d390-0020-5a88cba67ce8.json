@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "path-confinement",
+  "slide": "failure-boundaries",
+  "rank": 20,
+  "kind": "region",
+  "label": "Path confinement",
+  "description": "The asset route cleans the requested path, resolves symlinks, and forbids files that escape the slide bundle.",
+  "selector": {
+    "type": "element",
+    "element_id": "path-confinement"
+  }
+}

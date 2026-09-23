@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "ai-interface",
+  "title": "AI-first authoring and querying",
+  "description": "Expose tools and APIs that help AI systems author, manage, and navigate large volumes of documentation and code evidence.",
+  "created_at": "2026-09-22T23:12:24.278626Z"
+}

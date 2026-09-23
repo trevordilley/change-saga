@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "change-saga-pitch",
+  "title": "Elevator pitch",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 10
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "code-groups",
+  "slide": "comparison-three-layers",
+  "rank": 30,
+  "kind": "region",
+  "label": "Code is grouped by semantic owner",
+  "description": "Changed atoms are grouped under current evidence owners, merge-base impact targets, and terminology records, with their Changed or Affected layer retained.",
+  "selector": {
+    "type": "element",
+    "element_id": "code-groups"
+  }
+}

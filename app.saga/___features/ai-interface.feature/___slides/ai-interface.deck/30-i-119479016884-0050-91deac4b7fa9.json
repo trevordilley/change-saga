@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "envelope",
+  "slide": "query-runtime",
+  "rank": 50,
+  "kind": "statement",
+  "label": "Encode one envelope",
+  "description": "The CLI combines schema, success state, snapshot, data, and optional pagination into one JSON response.",
+  "selector": {
+    "type": "element",
+    "element_id": "envelope"
+  }
+}

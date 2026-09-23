@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "covered-state",
+  "slide": "reference-state",
+  "rank": 40,
+  "kind": "node",
+  "label": "Singly owned atom",
+  "description": "A changed atom with exactly one current assignment is covered by one focused explanation.",
+  "selector": {
+    "type": "element",
+    "element_id": "covered-state"
+  }
+}

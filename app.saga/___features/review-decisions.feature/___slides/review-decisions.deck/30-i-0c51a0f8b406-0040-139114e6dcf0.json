@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "success-response",
+  "slide": "decision-write-path",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Return after persistence",
+  "description": "The browser redirects to the reviewed slide only after the append-only write succeeds.",
+  "selector": {
+    "type": "element",
+    "element_id": "success-response"
+  }
+}

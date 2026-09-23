@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "review-decisions",
+  "title": "Review decisions and attribution",
+  "description": "Record contextual comments, approvals, change requests, reviewer identity, and whether an AI acted independently or for a human.",
+  "created_at": "2026-09-22T23:12:24.359125Z"
+}

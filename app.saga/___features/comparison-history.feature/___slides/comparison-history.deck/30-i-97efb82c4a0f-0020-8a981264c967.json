@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "identity-guard",
+  "slide": "observe-compare-state",
+  "rank": 20,
+  "kind": "node",
+  "label": "Repository and revisions are verified",
+  "description": "Compare canonicalizes the declared repository, checks the checkout identity, and resolves base and head revisions before reading a diff.",
+  "selector": {
+    "type": "element",
+    "element_id": "identity-guard"
+  }
+}

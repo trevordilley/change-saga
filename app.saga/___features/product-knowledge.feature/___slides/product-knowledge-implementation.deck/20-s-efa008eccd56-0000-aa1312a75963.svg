@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Product knowledge has leaf owners and one composed read boundary</title>
+  <desc id="desc">An ownership diagram shows requirements, prototypes, and quality as independent record owners, composed by livingapp and exposed through snapshot-bound queries. A red callout marks that requirement rows omit feature ownership.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081426"/><stop offset="1" stop-color="#122747"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#66d9ef"/></marker>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".22"/></filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <path d="M0 610C220 555 345 690 585 630S1010 520 1280 600V720H0Z" fill="#0d1c34" opacity=".8"/>
+  <text x="64" y="70" fill="#f8fbff" font-family="Inter,system-ui,sans-serif" font-size="30" font-weight="700">Product knowledge is composed, not centralized</text>
+  <text x="64" y="102" fill="#9fb4ce" font-family="Inter,system-ui,sans-serif" font-size="16">Leaf domains own durable records; livingapp owns the cross-domain projection.</text>
+
+  <g id="leaf-boundary" filter="url(#shadow)">
+    <rect x="64" y="145" width="710" height="410" rx="26" fill="#0c1d35" stroke="#45698e" stroke-width="2"/>
+    <text x="90" y="181" fill="#89a7c8" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="700" letter-spacing="2">WRITE OWNERSHIP</text>
+  </g>
+  <g id="requirements-owner">
+    <rect x="96" y="214" width="198" height="276" rx="20" fill="#17345c" stroke="#66d9ef" stroke-width="2"/>
+    <circle cx="124" cy="248" r="9" fill="#66d9ef"/>
+    <text x="145" y="254" fill="#f8fbff" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700">Requirements</text>
+    <text x="118" y="300" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">stories + criteria</text>
+    <text x="118" y="331" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">personas + terms</text>
+    <text x="118" y="362" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">typed relations</text>
+    <path d="M118 397H268" stroke="#45698e"/>
+    <text x="118" y="430" fill="#66d9ef" font-family="ui-monospace,monospace" font-size="13">append-only DAGs</text>
+  </g>
+  <g id="prototype-quality-owners">
+    <rect x="320" y="214" width="422" height="276" rx="20" fill="#112944" stroke="#6ee7b7" stroke-width="2"/>
+    <path d="M531 235V469" stroke="#355a70" stroke-width="2"/>
+    <text x="347" y="254" fill="#f8fbff" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700">Prototypes</text>
+    <text x="347" y="300" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">immutable packages</text>
+    <text x="347" y="331" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">pinned annotations</text>
+    <text x="558" y="254" fill="#f8fbff" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700">Quality</text>
+    <text x="558" y="300" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">test definitions</text>
+    <text x="558" y="331" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">evidence + runs</text>
+    <text x="347" y="430" fill="#6ee7b7" font-family="ui-monospace,monospace" font-size="13">no dependency on central loader</text>
+  </g>
+
+  <path id="composition-flow" d="M774 350H858" stroke="#66d9ef" stroke-width="4" marker-end="url(#arrow)"/>
+  <g id="livingapp-composer" filter="url(#shadow)">
+    <rect x="866" y="214" width="340" height="190" rx="24" fill="#1b3154" stroke="#fbbf24" stroke-width="2"/>
+    <text x="896" y="254" fill="#fbbf24" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="700" letter-spacing="2">COMPOSE</text>
+    <text x="896" y="294" fill="#f8fbff" font-family="Inter,system-ui,sans-serif" font-size="24" font-weight="700">livingapp session</text>
+    <text x="896" y="329" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">validates all domains</text>
+    <text x="896" y="356" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">judges cross-domain currency</text>
+  </g>
+  <g id="query-contract">
+    <rect x="866" y="438" width="340" height="117" rx="20" fill="#10213a" stroke="#66d9ef" stroke-width="2"/>
+    <text x="896" y="478" fill="#f8fbff" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700">Snapshot-bound query API</text>
+    <text x="896" y="510" fill="#b8c8da" font-family="Inter,system-ui,sans-serif" font-size="15">deterministic pages • typed operations</text>
+    <path d="M1036 404V438" stroke="#66d9ef" stroke-width="4" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="feature-ownership-gap">
+    <rect x="746" y="592" width="460" height="76" rx="16" fill="#401c2b" stroke="#fb7185" stroke-width="2" stroke-dasharray="8 6"/>
+    <text x="770" y="621" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">MISSING IMPLEMENTATION</text>
+    <text x="770" y="648" fill="#fbd5dc" font-family="Inter,system-ui,sans-serif" font-size="15">Requirement query rows omit the story’s owning feature.</text>
+  </g>
+  <text x="64" y="648" fill="#9fb4ce" font-family="Inter,system-ui,sans-serif" font-size="14">Invariant: storage feature is placement; stable URNs remain app-global.</text>
+</svg>

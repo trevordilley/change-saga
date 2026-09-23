@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pin-authenticity",
+  "slide": "code-reference-resolution",
+  "rank": 0,
+  "kind": "node",
+  "label": "Verify pin",
+  "description": "Separates commit existence from digest authentication: only an absent commit may enter digest fallback; a digest mismatch becomes stale.",
+  "selector": {
+    "type": "element",
+    "element_id": "pin-authenticity"
+  }
+}

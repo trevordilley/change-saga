@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "relation-currency",
+  "slide": "story-lifecycle-runtime",
+  "rank": 50,
+  "kind": "statement",
+  "label": "Criterion-level currency",
+  "description": "Relations survive unrelated story edits when criterion bytes are unchanged, but rewording or removing that criterion makes the pin stale.",
+  "selector": {
+    "type": "element",
+    "element_id": "relation-currency"
+  }
+}

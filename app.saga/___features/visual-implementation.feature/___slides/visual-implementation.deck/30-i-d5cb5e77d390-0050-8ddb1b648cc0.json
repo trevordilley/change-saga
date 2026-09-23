@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "evidence-overlay",
+  "slide": "failure-boundaries",
+  "rank": 50,
+  "kind": "callout",
+  "label": "Evidence is outside the digest",
+  "description": "Code evidence, claims, and verifications are review overlays, so changing them does not stale the authored visual relation.",
+  "selector": {
+    "type": "element",
+    "element_id": "evidence-overlay"
+  },
+  "about": "authored-digest",
+  "body": "Evidence can evolve without pretending the diagram itself changed.",
+  "placement": "bottom",
+  "leader": "line"
+}

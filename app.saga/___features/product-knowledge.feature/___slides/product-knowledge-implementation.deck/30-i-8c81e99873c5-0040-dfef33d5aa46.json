@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-pass-transition",
+  "slide": "quality-evidence-runtime",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Passing run becomes stale",
+  "description": "An earlier pass becomes stale when its test revision changes, referenced evidence is no longer current, an evidence code reference is stale, or the run names another repository; the recorded source commit is not compared with observed HEAD.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-pass-transition"
+  }
+}

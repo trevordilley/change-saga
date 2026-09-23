@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "report-projection",
+  "slide": "review-ownership",
+  "rank": 20,
+  "kind": "node",
+  "label": "Read projection",
+  "description": "reviewstate resolves the review range and derives slide reports and comment threads without mutating the Saga.",
+  "selector": {
+    "type": "element",
+    "element_id": "report-projection"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve_test.go",
+      "start": 105,
+      "end": 135,
+      "digest": "sha256:0fb3d56727455cba7f1c11668d98ad262abc713ea4dd1dfb944e00087aa5a8ba",
+      "note": "Verifies unique digest recovery after the original commit becomes unavailable."
+    }
+  ]
+}

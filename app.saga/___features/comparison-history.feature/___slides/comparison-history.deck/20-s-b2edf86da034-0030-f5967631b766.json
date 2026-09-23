@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "saga-snapshot-ownership",
+  "deck": "comparison-history",
+  "title": "Code OIDs do not always name Saga commits",
+  "rank": 30,
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b2edf86da034-0030-f5967631b766.svg",
+  "takeaway": "In-repo snapshots align by Git OID; companion snapshots join through sync cursors and expose every approximation as a diagnostic.",
+  "reading_order": [
+    "repository-router",
+    "same-repo-lane",
+    "companion-lane",
+    "selected-sides",
+    "degraded-history",
+    "history-unavailable"
+  ]
+}

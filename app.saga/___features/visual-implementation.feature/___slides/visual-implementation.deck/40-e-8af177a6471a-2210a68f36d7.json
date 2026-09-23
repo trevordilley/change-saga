@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/template.go",
+      "start": 359,
+      "end": 375,
+      "digest": "sha256:32b9cacfddadcd82a7ecf9d00334f46c9eddc8639d24499d702f0d0ad7353746",
+      "note": "Turns Item-owned code into a lazy linked-code affordance beside the rendered slide, completing the identity path."
+    }
+  ]
+}

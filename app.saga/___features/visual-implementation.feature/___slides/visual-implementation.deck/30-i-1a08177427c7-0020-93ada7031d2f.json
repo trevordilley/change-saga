@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "iframe-branch",
+  "slide": "reviewer-runtime",
+  "rank": 20,
+  "kind": "node",
+  "label": "Sandboxed interactive branch",
+  "description": "HTML and SVG render in an iframe that grants scripts but not same-origin capability.",
+  "selector": {
+    "type": "element",
+    "element_id": "iframe-branch"
+  }
+}

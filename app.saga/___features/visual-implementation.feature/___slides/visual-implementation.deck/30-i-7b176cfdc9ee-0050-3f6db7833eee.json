@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "repair-transition",
+  "slide": "slide-state",
+  "rank": 50,
+  "kind": "transition",
+  "label": "Repair path",
+  "description": "revise-item updates a selector in place while preserving Item identity and existing code evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "repair-transition"
+  }
+}

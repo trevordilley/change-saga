@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store_test.go",
+      "start": 41,
+      "end": 71,
+      "digest": "sha256:618dff9438bd356434e2ddb767e381cbf139975e770b0a8b5e5b08f67b94cb5d",
+      "note": "Injects a pre-commit failure and verifies the old destination and no temporary residue remain."
+    }
+  ]
+}

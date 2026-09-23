@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "overlap-state",
+  "slide": "reference-state",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Overlapping atom",
+  "description": "Multiple current assignments keep the atom covered but surface an overlap for scrutiny.",
+  "selector": {
+    "type": "element",
+    "element_id": "overlap-state"
+  }
+}

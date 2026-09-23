@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "requirements-owner",
+  "slide": "product-knowledge-ownership",
+  "rank": 10,
+  "kind": "node",
+  "label": "Requirements owner",
+  "description": "The requirements domain owns stories, criteria, personas, terms, and typed relations with app-global stable identities.",
+  "selector": {
+    "type": "element",
+    "element_id": "requirements-owner"
+  }
+}

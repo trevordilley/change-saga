@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews.go",
+      "start": 519,
+      "end": 522,
+      "digest": "sha256:79933fa8a7e0b4e2e075871a82b07d956aeaba69bdec13b2350433366bda0d3b",
+      "note": "Defines the browser mutation boundary as the human user's own review action before shared decision storage."
+    }
+  ]
+}

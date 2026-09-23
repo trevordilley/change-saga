@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/slides.go",
+      "start": 354,
+      "end": 389,
+      "digest": "sha256:43d944b8ec60dc604a4624e7b44df19d9f8b3be7955695b854429efa3f123703",
+      "note": "Enforces the complete, non-duplicated reading order and validates callout references across the slide's Items."
+    }
+  ]
+}

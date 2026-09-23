@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "mobility-boundary",
+  "slide": "storage-ownership",
+  "rank": 40,
+  "kind": "statement",
+  "label": "Move without re-identifying",
+  "description": "Feature membership may change while the record URN and relation endpoints remain stable.",
+  "selector": {
+    "type": "element",
+    "element_id": "mobility-boundary"
+  }
+}

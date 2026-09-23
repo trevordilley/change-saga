@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "composite-key-explains-human-provenance",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:decision-currency:item:attribution-gap",
+  "to": "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:human",
+  "scope": "self",
+  "rationale": "The composite reviewer key includes the Git or local actor, so direct human actions remain attributed to that human and distinct from AI-mediated actions.",
+  "to_revision": "urn:change-saga:change-saga:story:delegated-ai-attribution:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:45:45.820054Z"
+}

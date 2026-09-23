@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "slide-state",
+  "deck": "visual-implementation",
+  "title": "Content and selectors form a state machine",
+  "rank": 20,
+  "section": "State and repair",
+  "intent": "risk",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-0d89b27ce0b8-0020-7b176cfdc9ee.svg",
+  "takeaway": "Replacing a visual can break existing element selectors; validation makes the break explicit until the Items are repaired.",
+  "reading_order": [
+    "draft-state",
+    "addressable-state",
+    "evidenced-state",
+    "drift-transition",
+    "validation-boundary",
+    "repair-transition",
+    "invalid-outcome"
+  ]
+}

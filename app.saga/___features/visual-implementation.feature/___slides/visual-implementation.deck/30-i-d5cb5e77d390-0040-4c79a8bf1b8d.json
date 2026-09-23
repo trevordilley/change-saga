@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "authored-digest",
+  "slide": "failure-boundaries",
+  "rank": 40,
+  "kind": "node",
+  "label": "Authored-content digest",
+  "description": "Deck, slide, asset, and ordered Item manifests determine the visual content digest used for relation currency.",
+  "selector": {
+    "type": "element",
+    "element_id": "authored-digest"
+  }
+}

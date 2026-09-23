@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reload-thread",
+  "slide": "comment-round-trip",
+  "rank": 50,
+  "kind": "transition",
+  "label": "Reload visible thread",
+  "description": "A 303 redirect returns to the review, where ordered comment events are regrouped into a visible thread.",
+  "selector": {
+    "type": "element",
+    "element_id": "reload-thread"
+  }
+}

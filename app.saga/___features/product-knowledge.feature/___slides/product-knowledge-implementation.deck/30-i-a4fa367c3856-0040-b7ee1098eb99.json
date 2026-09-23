@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "rename-failure",
+  "slide": "vocabulary-runtime",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Rename stales the term",
+  "description": "Changing a defining declaration makes the pinned bytes stale and identifies the exact term revision that needs attention.",
+  "selector": {
+    "type": "element",
+    "element_id": "rename-failure"
+  },
+  "about": "head-resolution",
+  "body": "A rename is stale history, not an inferred new term.",
+  "placement": "bottom",
+  "leader": "arrow"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "ui-missing-resource",
+  "slide": "axis-failures",
+  "rank": 60,
+  "kind": "risk",
+  "label": "UI resource missing",
+  "description": "This Change Saga version records no UI reference resource, so UI remains a named gap unless an explicit UI exception applies.",
+  "selector": {
+    "type": "element",
+    "element_id": "ui-missing-resource"
+  }
+}

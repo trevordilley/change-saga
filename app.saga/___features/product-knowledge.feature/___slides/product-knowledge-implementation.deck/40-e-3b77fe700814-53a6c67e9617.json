@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 372,
+      "end": 388,
+      "digest": "sha256:2463d67605dd32eb420df209d8ccca9d1a61fd4e86f84f6093f750b3b39ab184",
+      "note": "Starts trace rows only from criteria in the unique current revision of accepted stories."
+    }
+  ]
+}

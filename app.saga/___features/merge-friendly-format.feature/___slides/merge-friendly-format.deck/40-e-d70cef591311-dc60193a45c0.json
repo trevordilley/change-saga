@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/mutation.go",
+      "start": 572,
+      "end": 582,
+      "digest": "sha256:02845a5c5c843c2dcce4c55d645713889165ae5bec7baaadf6f7a3f888e510e4",
+      "note": "Validates once before locking and reloads under the lock before any requirements mutation."
+    }
+  ]
+}

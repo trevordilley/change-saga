@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reading-order-write",
+  "slide": "authoring-sequence",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Commit Item and order",
+  "description": "The Item record is created and its ID appended to reading_order; failure to rewrite the slide removes the new Item.",
+  "selector": {
+    "type": "element",
+    "element_id": "reading-order-write"
+  }
+}

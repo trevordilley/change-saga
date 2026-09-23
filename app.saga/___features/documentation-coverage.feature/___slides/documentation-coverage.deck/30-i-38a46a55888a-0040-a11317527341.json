@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "area-projection",
+  "slide": "status-runtime",
+  "rank": 40,
+  "kind": "node",
+  "label": "Area projection",
+  "description": "Mapping ownership and the living graph are joined into implementation, story, persona, design, quality, and health areas.",
+  "selector": {
+    "type": "element",
+    "element_id": "area-projection"
+  }
+}

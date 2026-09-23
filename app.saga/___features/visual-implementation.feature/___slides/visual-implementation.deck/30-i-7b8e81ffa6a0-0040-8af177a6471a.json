@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "evidence-edge",
+  "slide": "visual-pipeline",
+  "rank": 40,
+  "kind": "edge",
+  "label": "Identity and evidence path",
+  "description": "The Item target survives projection and remains the owner of its commit-pinned code references.",
+  "selector": {
+    "type": "element",
+    "element_id": "evidence-edge"
+  }
+}

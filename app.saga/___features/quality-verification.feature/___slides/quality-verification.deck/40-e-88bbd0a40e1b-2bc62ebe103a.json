@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 343,
+      "end": 389,
+      "digest": "sha256:3eddb054228f3ff924708d74fe2a6545a18734a0897eb4e69ee47aa8d8d1a6d9",
+      "note": "Builds the run/evidence path and marks stale or absent run evidence before accepting an outcome."
+    }
+  ]
+}

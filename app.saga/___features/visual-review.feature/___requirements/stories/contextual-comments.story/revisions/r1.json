@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:contextual-comments",
+  "parents": [],
+  "title": "Discuss a review element",
+  "statement": "As a developer reviewing a change, I can comment on a specific review element so discussion stays connected to its context.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [],
+  "created_at": "2026-09-22T23:13:17.462478Z"
+}

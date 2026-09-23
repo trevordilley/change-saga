@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "projector",
+  "slide": "reviewer-runtime",
+  "rank": 0,
+  "kind": "node",
+  "label": "Slide projection",
+  "description": "Slides become fragment views; Items become landmark views carrying selectors and linked-code state.",
+  "selector": {
+    "type": "element",
+    "element_id": "projector"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "visual-pipeline",
+  "deck": "visual-implementation",
+  "title": "Ownership survives every projection",
+  "rank": 0,
+  "section": "Architecture",
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-0d89b27ce0b8-0000-7b8e81ffa6a0.svg",
+  "takeaway": "Stable Deck, Slide, and Item identities cross storage and rendering boundaries; exact code remains owned by the Item.",
+  "reading_order": [
+    "author",
+    "bundle",
+    "reviewer",
+    "loader",
+    "evidence-edge"
+  ]
+}

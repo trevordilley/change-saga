@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coverage/axes.go",
+      "start": 267,
+      "end": 327,
+      "digest": "sha256:a8f51df399879b96e467a03fa6cf215b6cf9f5ac99e38c230426445beac54e87",
+      "note": "Documents and executes deterministic state precedence for every criterion-axis cell."
+    }
+  ]
+}

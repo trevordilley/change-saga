@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 42,
+      "end": 60,
+      "digest": "sha256:8e3d9e765eb761ba6acf1e689b56207f92c7d72cfc53976a3bfa6441db5e1618",
+      "note": "Defines the commit-pinned ChangeSet and prepares it by verifying the checkout, resolving revisions, and computing the merge base."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 273,
+      "end": 306,
+      "digest": "sha256:c32128793d1860efe5eba52c8216bf3dc930f077c0e90ba50e476b0817f60c16",
+      "note": "Defines the commit-pinned ChangeSet and prepares it by verifying the checkout, resolving revisions, and computing the merge base."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 208,
+      "end": 277,
+      "digest": "sha256:703b3b303b6061cd2c8623237c88044f96742aa7688a950f940dc697e1b0212a",
+      "note": "Judges relation pins by criterion meaning, carries unchanged criteria forward, and stales reworded obligations."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 280,
+      "end": 320,
+      "digest": "sha256:08115944e61af56934c329bb3d22ebf916e89009dd73debc6aa3836bccd27552",
+      "note": "Judges relation pins by criterion meaning, carries unchanged criteria forward, and stales reworded obligations."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/relation_carry_forward_test.go",
+      "start": 9,
+      "end": 88,
+      "digest": "sha256:2b3150ce62465e1791e9a78e2050aa0ebefb2601f506a937899a07f6f3ae425c",
+      "note": "Judges relation pins by criterion meaning, carries unchanged criteria forward, and stales reworded obligations."
+    }
+  ]
+}

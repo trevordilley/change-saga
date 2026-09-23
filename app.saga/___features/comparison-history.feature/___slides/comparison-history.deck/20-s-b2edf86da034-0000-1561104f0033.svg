@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Comparison architecture</title>
+  <desc id="desc">An ephemeral range becomes a commit-pinned Git comparison, then evidence and impact projections, then query and review surfaces.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#091525"/><stop offset="1" stop-color="#102b3f"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".28"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#58d7e8"/></marker>
+    <style>
+      .t{font-family:Inter,system-ui,sans-serif;fill:#f5fbff}.muted{fill:#9fb7c7}.eyebrow{font-size:15px;font-weight:700;letter-spacing:2px;fill:#58d7e8}.h1{font-size:34px;font-weight:750}.label{font-size:22px;font-weight:720}.small{font-size:15px}.box{fill:#102d42;stroke:#2a6079;stroke-width:2}.hot{fill:#153a4d;stroke:#58d7e8;stroke-width:2}.accent{fill:#ffb766}.edge{fill:none;stroke:#58d7e8;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="52" class="t eyebrow">COMPARISON HISTORY · SYSTEM MODEL</text>
+  <text x="64" y="96" class="t h1">One ephemeral range, four durable projections</text>
+  <text x="64" y="126" class="t muted small">The range is never stored; every consumer shares the same commit identity.</text>
+
+  <g id="range" filter="url(#shadow)">
+    <rect x="64" y="210" width="188" height="190" rx="22" class="hot"/>
+    <text x="88" y="250" class="t eyebrow">OPENING</text>
+    <text x="88" y="286" class="t label">Range</text>
+    <text x="88" y="320" class="t small">against?</text>
+    <text x="88" y="344" class="t small">head = HEAD</text>
+    <path d="M88 366h136" stroke="#2a6079"/>
+    <text x="88" y="390" class="t small accent">not persisted</text>
+  </g>
+  <path d="M252 305H320" class="edge"/>
+
+  <g id="gitdiff" filter="url(#shadow)">
+    <rect x="320" y="182" width="220" height="246" rx="22" class="box"/>
+    <text x="346" y="222" class="t eyebrow">SOURCE BOUNDARY</text>
+    <text x="346" y="258" class="t label">gitdiff</text>
+    <text x="346" y="294" class="t small">verify repository</text>
+    <text x="346" y="322" class="t small">resolve commits</text>
+    <text x="346" y="350" class="t small">merge-base..head</text>
+    <rect x="346" y="376" width="164" height="30" rx="15" fill="#0a1d2b"/>
+    <text x="428" y="397" text-anchor="middle" class="t small">ChangeSet atoms</text>
+  </g>
+  <path d="M540 305H606" class="edge"/>
+
+  <g id="evidence" filter="url(#shadow)">
+    <rect x="606" y="182" width="224" height="246" rx="22" class="box"/>
+    <text x="632" y="222" class="t eyebrow">EVIDENCE</text>
+    <text x="632" y="258" class="t label">Resolver + coverage</text>
+    <text x="632" y="294" class="t small">current owners</text>
+    <text x="632" y="322" class="t small">stale selectors</text>
+    <text x="632" y="350" class="t small">uncovered atoms</text>
+    <text x="632" y="388" class="t small accent">one ownership index</text>
+  </g>
+
+  <path d="M830 260C875 260 875 220 920 220" class="edge"/>
+  <path d="M830 348C875 348 875 420 920 420" class="edge"/>
+
+  <g id="query-session" filter="url(#shadow)">
+    <rect x="920" y="158" width="294" height="142" rx="22" class="hot"/>
+    <text x="946" y="198" class="t eyebrow">READ API</text>
+    <text x="946" y="234" class="t label">reviewapp session</text>
+    <text x="946" y="264" class="t small">snapshot · pagination · stable errors</text>
+  </g>
+
+  <g id="change-layers" filter="url(#shadow)">
+    <rect x="920" y="352" width="294" height="142" rx="22" class="hot"/>
+    <text x="946" y="392" class="t eyebrow">IMPACT MODEL</text>
+    <text x="946" y="428" class="t label">changeview layers</text>
+    <text x="946" y="458" class="t small">Changed · Affected · Code</text>
+  </g>
+
+  <g id="surfaces">
+    <path d="M1067 300V352" class="edge"/>
+    <rect x="344" y="548" width="870" height="92" rx="24" fill="#0a1d2b" stroke="#2a6079" stroke-width="2"/>
+    <text x="380" y="584" class="t eyebrow">SURFACES</text>
+    <text x="380" y="615" class="t label">CLI JSON</text>
+    <text x="586" y="615" class="t label">Review browser</text>
+    <text x="856" y="615" class="t label">History links</text>
+  </g>
+</svg>

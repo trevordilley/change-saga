@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/nextaction/nextaction.go",
+      "start": 156,
+      "end": 216,
+      "digest": "sha256:2e93e9da5278b5406e920c609d2a4c055f148281b30acee2db550e26046731ce",
+      "note": "Derives and deterministically sorts the actionable work queue."
+    }
+  ]
+}

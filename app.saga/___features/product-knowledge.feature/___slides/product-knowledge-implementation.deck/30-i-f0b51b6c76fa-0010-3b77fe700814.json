@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "criterion-hub",
+  "slide": "traceability-runtime",
+  "rank": 10,
+  "kind": "node",
+  "label": "Accepted criterion hub",
+  "description": "Every traceability row begins at a criterion in the unique current revision of an accepted story.",
+  "selector": {
+    "type": "element",
+    "element_id": "criterion-hub"
+  }
+}

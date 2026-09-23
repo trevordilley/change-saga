@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "graph-slide-explains-reverse-impact",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:pinned-graph",
+  "to": "urn:change-saga:change-saga:story:reverse-impact",
+  "scope": "descendants",
+  "rationale": "The impact graph and session query evidence explain how code targets project back to intent and surface stale blockers.",
+  "to_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:07.086551Z"
+}

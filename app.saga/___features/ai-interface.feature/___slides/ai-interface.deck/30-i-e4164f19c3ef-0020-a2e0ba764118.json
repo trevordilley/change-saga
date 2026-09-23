@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "query",
+  "slide": "structured-query",
+  "rank": 20,
+  "kind": "node",
+  "label": "CLI query adapter",
+  "description": "Parses and validates one request, opens a snapshot, routes it, normalizes failures, and emits one versioned JSON envelope.",
+  "selector": {
+    "type": "element",
+    "element_id": "query"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "criterion-obligation",
+  "slide": "criterion-quality-gate",
+  "rank": 0,
+  "kind": "node",
+  "label": "Accepted criterion obligation",
+  "description": "Every accepted criterion enters the quality axis with positive coverage required by default.",
+  "selector": {
+    "type": "element",
+    "element_id": "criterion-obligation"
+  }
+}

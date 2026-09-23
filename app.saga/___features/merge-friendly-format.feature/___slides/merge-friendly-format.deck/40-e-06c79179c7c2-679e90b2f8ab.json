@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 7,
+      "end": 15,
+      "digest": "sha256:ce4246d89cce62b1147944a2a9c74afb7a03ab28e57f6e52f3806d0d5918f39b",
+      "note": "Shows the missing Windows directory fsync: the adapter validates openability and closes without syncing directory entries."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve_test.go",
+      "start": 85,
+      "end": 103,
+      "digest": "sha256:20606930f75b722a28463338cdd0717e46f93b85908a52aae3b0a295d05c2544",
+      "note": "Verifies changed selected lines, tampered digests, and changed binary files do not resolve current."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve_test.go",
+      "start": 121,
+      "end": 125,
+      "digest": "sha256:9cda18011069b6bf8a652715f1d33b20d164ff3290d18df9d034307d15616d9b",
+      "note": "Verifies changed selected lines, tampered digests, and changed binary files do not resolve current."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "append-record",
+  "slide": "comment-round-trip",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Append comment event",
+  "description": "The store locks, reloads, validates, resolves the target, and exclusively writes one comment event.",
+  "selector": {
+    "type": "element",
+    "element_id": "append-record"
+  }
+}

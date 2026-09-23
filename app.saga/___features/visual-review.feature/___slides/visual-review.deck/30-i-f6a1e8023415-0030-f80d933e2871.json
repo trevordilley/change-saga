@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "gate-current-head",
+  "slide": "comment-round-trip",
+  "rank": 30,
+  "kind": "risk",
+  "label": "Current-head gate",
+  "description": "Invalid authority, a frozen review, or an unreadable review head stops the mutation before storage.",
+  "selector": {
+    "type": "element",
+    "element_id": "gate-current-head"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/model.go",
+      "start": 1,
+      "end": 4,
+      "digest": "sha256:d9505902e38fe69acd10352cfc2dc89ed3c7d294e68bce7c3b5bb3dd37706a2a",
+      "note": "Defines three independently owned leaf documents that the composed product-knowledge read model consumes."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/model.go",
+      "start": 165,
+      "end": 172,
+      "digest": "sha256:b173fd4771c4811f7bcc502eb12d4381dee2dfc39ad825b04b8a4eaaa46fec06",
+      "note": "Defines three independently owned leaf documents that the composed product-knowledge read model consumes."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 227,
+      "end": 230,
+      "digest": "sha256:00f635b8c7aae8802094fe1efe79d5c96e8db83c255380f5cdeb0452c4469d68",
+      "note": "Defines three independently owned leaf documents that the composed product-knowledge read model consumes."
+    }
+  ]
+}

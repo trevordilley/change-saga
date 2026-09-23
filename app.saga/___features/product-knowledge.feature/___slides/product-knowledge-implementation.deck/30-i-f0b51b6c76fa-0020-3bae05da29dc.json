@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "forward-projection",
+  "slide": "traceability-runtime",
+  "rank": 20,
+  "kind": "edge",
+  "label": "Forward evidence paths",
+  "description": "Addresses, implements, explains, and verifies relations derive design, work, review Item, code, and passing-test paths without persisted long links.",
+  "selector": {
+    "type": "element",
+    "element_id": "forward-projection"
+  }
+}

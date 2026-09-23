@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "writer-lock",
+  "slide": "story-mutation-sequence",
+  "rank": 20,
+  "kind": "node",
+  "label": "Bounded writer lock",
+  "description": "Supported writers serialize on the Saga root and fail with a bounded busy error instead of waiting forever.",
+  "selector": {
+    "type": "element",
+    "element_id": "writer-lock"
+  }
+}

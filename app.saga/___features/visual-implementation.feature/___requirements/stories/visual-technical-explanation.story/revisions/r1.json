@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "parents": [],
+  "title": "Explain technical work visually",
+  "statement": "As an architect, I can explain technical work through ordered visual slides whose semantic elements reference exact code so reviewers can understand the system without reconstructing it from a file diff.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "media",
+      "statement": "A deck accepts SVG, raster-image, and sandboxed HTML slides."
+    },
+    {
+      "id": "evidence",
+      "statement": "An addressable slide element can reference an exact source location pinned to a commit."
+    }
+  ],
+  "created_at": "2026-09-22T23:26:17.209936Z"
+}

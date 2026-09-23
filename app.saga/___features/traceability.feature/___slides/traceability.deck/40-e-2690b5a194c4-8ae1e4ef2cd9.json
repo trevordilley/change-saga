@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 158,
+      "end": 194,
+      "digest": "sha256:5abd3e6b1bdac95f4c57075e02a2699936c97c48fd02909b918075aaf45d8f0f",
+      "note": "Remaps ranges across hunks outside the selection and rejects insertions or replacements inside it."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coverage/coverage.go",
+      "start": 228,
+      "end": 270,
+      "digest": "sha256:0eba6e2ea97ae0144474cdda67634b94e36be1a6a3c3b4661978368fad7931a3",
+      "note": "Resolves evidence at both comparison sides, retains remaps, and rejects evidence current nowhere."
+    }
+  ]
+}

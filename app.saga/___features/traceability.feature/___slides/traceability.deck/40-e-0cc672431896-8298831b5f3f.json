@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 489,
+      "end": 503,
+      "digest": "sha256:0284d0a4f4f21be0ad0119b5f5f0fdd52a6309bb7cd48bc65c785d4139254800",
+      "note": "Accepts integrated merge evidence and emits immutable-evidence-missing when a criterion has no delivery proof."
+    }
+  ]
+}

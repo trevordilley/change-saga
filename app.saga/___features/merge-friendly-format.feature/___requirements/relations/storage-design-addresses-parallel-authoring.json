@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "storage-design-addresses-parallel-authoring",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:partitioned-storage-design",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring",
+  "scope": "self",
+  "rationale": "Partitioned immutable records and atomic local publication support parallel authorship without silent overwrite.",
+  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
+  "from_content_digest": "sha256:2fa6185531fe645079bdc09da17f9a5a1e2d9e8adc4773df679bcc11a0e18945",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.827821Z"
+}

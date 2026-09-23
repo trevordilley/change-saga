@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "author-command",
+  "slide": "prototype-annotation-runtime",
+  "rank": 0,
+  "kind": "node",
+  "label": "Authoring entrypoint",
+  "description": "Prototype creation and annotation are separate mutations, allowing feedback artifacts to precede settled requirements.",
+  "selector": {
+    "type": "element",
+    "element_id": "author-command"
+  }
+}

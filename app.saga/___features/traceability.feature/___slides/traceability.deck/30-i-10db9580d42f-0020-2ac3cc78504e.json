@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "implementation-present",
+  "slide": "readiness-boundary",
+  "rank": 20,
+  "kind": "node",
+  "label": "Source evidence present",
+  "description": "Implementation slides and commit-pinned source and test references make the runtime paths inspectable.",
+  "selector": {
+    "type": "element",
+    "element_id": "implementation-present"
+  }
+}

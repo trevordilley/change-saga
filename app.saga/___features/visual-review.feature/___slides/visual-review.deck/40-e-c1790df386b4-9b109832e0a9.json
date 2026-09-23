@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews_test.go",
+      "start": 110,
+      "end": 126,
+      "digest": "sha256:0907908cf79ad6ed467daf67fc8b8806ec4a8a1b33adf7c25a26500b64486500",
+      "note": "Checks forbidden writes leave no record, successful comments redirect, and non-review targets fail."
+    }
+  ]
+}

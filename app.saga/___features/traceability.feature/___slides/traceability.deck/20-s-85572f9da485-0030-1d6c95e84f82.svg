@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Commit-pinned code reference resolution</title>
+  <desc id="desc">A decision flow separating commit existence, digest authentication, same-commit lookup, tree remapping, unique digest fallback, and stale outcomes.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#334155"/></marker>
+    <marker id="green-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#059669"/></marker>
+    <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#dc2626"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text x="42" y="54" font-family="system-ui" font-size="34" font-weight="750" fill="#0f172a">A pin survives movement, never changed content</text>
+  <text x="42" y="86" font-family="system-ui" font-size="17" fill="#475569">Commit absence invokes digest fallback; digest mismatch never does. Every success and failure route is explicit.</text>
+
+  <g id="pin-authenticity">
+    <path d="M150 130L270 200L150 270L30 200Z" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="150" y="185" text-anchor="middle" font-family="system-ui" font-size="19" font-weight="750" fill="#312e81">Pinned commit</text>
+    <text x="150" y="212" text-anchor="middle" font-family="system-ui" font-size="16" fill="#4338ca">exists?</text>
+
+    <path d="M410 130L535 200L410 270L285 200Z" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
+    <text x="410" y="179" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="750" fill="#4c1d95">Stored digest matches</text>
+    <text x="410" y="207" text-anchor="middle" font-family="system-ui" font-size="16" fill="#6d28d9">the pinned bytes?</text>
+    <path d="M270 200H272" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="275" y="185" font-family="system-ui" font-size="13" font-weight="700" fill="#334155">YES</text>
+  </g>
+
+  <g id="same-commit">
+    <path d="M680 130L800 200L680 270L560 200Z" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+    <text x="680" y="185" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="750" fill="#14532d">Viewed commit</text>
+    <text x="680" y="212" text-anchor="middle" font-family="system-ui" font-size="16" fill="#166534">equals the pin?</text>
+    <path d="M535 200H547" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="537" y="184" font-family="system-ui" font-size="13" font-weight="700" fill="#334155">YES</text>
+  </g>
+
+  <g id="tree-diff">
+    <path d="M850 290L975 360L850 430L725 360Z" fill="#fef3c7" stroke="#d97706" stroke-width="3"/>
+    <text x="850" y="337" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="750" fill="#78350f">Selected bytes survive</text>
+    <text x="850" y="365" text-anchor="middle" font-family="system-ui" font-size="15" fill="#92400e">tree changes, shifts,</text>
+    <text x="850" y="389" text-anchor="middle" font-family="system-ui" font-size="15" fill="#92400e">or a rename?</text>
+    <path d="M680 270V317H713" fill="none" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="692" y="300" font-family="system-ui" font-size="13" font-weight="700" fill="#334155">NO</text>
+  </g>
+
+  <g id="remap-current">
+    <rect x="1030" y="130" width="220" height="320" rx="24" fill="#d1fae5" stroke="#059669" stroke-width="4"/>
+    <text x="1140" y="173" text-anchor="middle" font-family="system-ui" font-size="23" font-weight="800" fill="#065f46">CURRENT</text>
+    <line x1="1054" y1="192" x2="1226" y2="192" stroke="#6ee7b7" stroke-width="2"/>
+    <text x="1140" y="226" text-anchor="middle" font-family="system-ui" font-size="15" font-weight="700" fill="#047857">same commit</text>
+    <text x="1140" y="252" text-anchor="middle" font-family="system-ui" font-size="14" fill="#047857">original location</text>
+    <text x="1140" y="299" text-anchor="middle" font-family="system-ui" font-size="15" font-weight="700" fill="#047857">tree remap</text>
+    <text x="1140" y="325" text-anchor="middle" font-family="system-ui" font-size="14" fill="#047857">line shift or rename</text>
+    <text x="1140" y="372" text-anchor="middle" font-family="system-ui" font-size="15" font-weight="700" fill="#047857">unique fallback</text>
+    <text x="1140" y="398" text-anchor="middle" font-family="system-ui" font-size="14" fill="#047857">digest recovered</text>
+    <text x="1140" y="428" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="#047857">Moved = true when relocated</text>
+    <path d="M800 180H1017" stroke="#059669" stroke-width="3" marker-end="url(#green-arrow)"/>
+    <text x="900" y="165" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#047857">YES · original</text>
+    <path d="M975 360H1017" stroke="#059669" stroke-width="3" marker-end="url(#green-arrow)"/>
+    <text x="993" y="345" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#047857">YES</text>
+  </g>
+
+  <g id="digest-fallback">
+    <path d="M170 455L305 535L170 615L35 535Z" fill="#f3e8ff" stroke="#9333ea" stroke-width="3" stroke-dasharray="9 6"/>
+    <text x="170" y="508" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="750" fill="#581c87">Exactly one digest match</text>
+    <text x="170" y="536" text-anchor="middle" font-family="system-ui" font-size="15" fill="#6b21a8">at requested view</text>
+    <text x="170" y="562" text-anchor="middle" font-family="system-ui" font-size="14" fill="#7e22ce">on the same path?</text>
+    <path d="M150 270V442" stroke="#334155" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="163" y="354" font-family="system-ui" font-size="13" font-weight="700" fill="#334155">NO · COMMIT ABSENT</text>
+    <path d="M170 615V669H1005V420H1017" fill="none" stroke="#059669" stroke-width="3" marker-end="url(#green-arrow)"/>
+    <text x="420" y="657" font-family="system-ui" font-size="13" font-weight="700" fill="#047857">YES · UNIQUE MATCH → RECOVERED CURRENT</text>
+  </g>
+
+  <g id="stale-boundary">
+    <rect x="535" y="485" width="455" height="160" rx="24" fill="#fee2e2" stroke="#dc2626" stroke-width="4"/>
+    <text x="762" y="524" text-anchor="middle" font-family="system-ui" font-size="23" font-weight="800" fill="#991b1b">STALE — accounts for nothing</text>
+    <text x="762" y="557" text-anchor="middle" font-family="system-ui" font-size="15" fill="#b91c1c">digest mismatch · selected bytes changed · file deleted</text>
+    <text x="762" y="585" text-anchor="middle" font-family="system-ui" font-size="15" fill="#b91c1c">binary or mode change · zero or multiple fallback matches</text>
+    <text x="762" y="617" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="650" fill="#7f1d1d">Only exact, unambiguous content remains current.</text>
+    <path d="M410 270V455H522V525" fill="none" stroke="#dc2626" stroke-width="3" marker-end="url(#red-arrow)"/>
+    <text x="424" y="443" font-family="system-ui" font-size="13" font-weight="700" fill="#b91c1c">NO · DIGEST MISMATCH</text>
+    <path d="M850 430V472" stroke="#dc2626" stroke-width="3" marker-end="url(#red-arrow)"/>
+    <text x="864" y="462" font-family="system-ui" font-size="13" font-weight="700" fill="#b91c1c">NO</text>
+    <path d="M305 535H522" stroke="#dc2626" stroke-width="3" marker-end="url(#red-arrow)"/>
+    <text x="402" y="520" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="700" fill="#b91c1c">NO · 0 OR MANY</text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "preflight-load",
+  "slide": "story-mutation-sequence",
+  "rank": 10,
+  "kind": "node",
+  "label": "Preflight load",
+  "description": "Mutation refuses to start when the Saga cannot already be loaded and validated.",
+  "selector": {
+    "type": "element",
+    "element_id": "preflight-load"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "bidirectional-links",
+  "slide": "vocabulary-runtime",
+  "rank": 20,
+  "kind": "edge",
+  "label": "Intent links",
+  "description": "Term links let stories and other app records expose the project vocabulary that names them.",
+  "selector": {
+    "type": "element",
+    "element_id": "bidirectional-links"
+  }
+}

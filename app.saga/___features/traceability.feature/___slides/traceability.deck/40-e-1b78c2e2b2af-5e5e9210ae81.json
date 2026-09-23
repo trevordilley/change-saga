@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 400,
+      "end": 423,
+      "digest": "sha256:f50745bcad3dfca09bd297a360d9f9983bae9924b14ded0075f629638cfabbfd",
+      "note": "Installs a cached locator that resolves every pinned reference at the requested code-location commit."
+    }
+  ]
+}

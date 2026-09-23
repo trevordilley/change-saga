@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "authorize",
+  "slide": "decision-write-path",
+  "rank": 0,
+  "kind": "transition",
+  "label": "Authorize mutation",
+  "description": "The browser bounds the form, validates the session token, rejects frozen reviews, and resolves the review's current head.",
+  "selector": {
+    "type": "element",
+    "element_id": "authorize"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "collaboration-addresses-comments",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:review-annotation-design",
+  "to": "urn:change-saga:change-saga:story:contextual-comments",
+  "scope": "self",
+  "rationale": "The review-side model anchors discussion to slides and semantic Items.",
+  "to_revision": "urn:change-saga:change-saga:story:contextual-comments:revision:r2",
+  "from_content_digest": "sha256:00c67e643f3df3d125df5c647cc5d0f187bd12eba57da146df3dc94821bfa311",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.859435Z"
+}

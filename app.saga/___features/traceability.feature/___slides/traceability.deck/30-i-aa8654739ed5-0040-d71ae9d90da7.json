@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "graph-projection",
+  "slide": "reverse-impact",
+  "rank": 40,
+  "kind": "edge",
+  "label": "Recorded graph projection",
+  "description": "Follows active addresses, explains, and verifies relations, including descendant scope from a deck or slide to its Items.",
+  "selector": {
+    "type": "element",
+    "element_id": "graph-projection"
+  }
+}

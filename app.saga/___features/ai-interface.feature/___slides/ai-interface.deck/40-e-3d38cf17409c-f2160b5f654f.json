@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "cmd/change-saga/main.go",
+      "start": 148,
+      "end": 164,
+      "digest": "sha256:ef12ef853b5357b2b779797299a022eec8af62ba9eeb2f788852e3486bde50e4",
+      "note": "Returns the already-rendered structured status without printing a second error for StatusError outcomes."
+    }
+  ]
+}

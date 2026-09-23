@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#12213a"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#94a3b8"/></marker>
+    <style>
+      .title{font:700 34px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#f8fafc}.eyebrow{font:700 13px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#41d3bd;letter-spacing:2px}.h{font:700 18px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#f8fafc}.b{font:500 14px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#cbd5e1}.small{font:600 12px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#94a3b8}.take{font:600 18px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#dbeafe}
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text class="eyebrow" x="70" y="52">QUALITY VERIFICATION · OWNERSHIP MAP</text>
+  <text class="title" x="70" y="96">Quality is a recorded proof graph — not a test runner</text>
+
+  <g id="external-executor">
+    <rect x="60" y="178" width="205" height="268" rx="22" fill="#172033" stroke="#f5b942" stroke-width="2"/>
+    <text class="small" x="84" y="210">OUTSIDE CHANGE SAGA</text>
+    <circle cx="162" cy="271" r="42" fill="#f5b942" opacity=".15" stroke="#f5b942"/>
+    <path d="M139 272 l15 15 31-35" fill="none" stroke="#f5b942" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <text class="h" x="91" y="342">CI or human</text>
+    <text class="b" x="91" y="370">executes the command</text>
+    <text class="b" x="91" y="393">and observes a result</text>
+  </g>
+
+  <g id="cli-adapter">
+    <rect x="330" y="205" width="205" height="214" rx="22" fill="#132b3a" stroke="#41d3bd" stroke-width="2"/>
+    <text class="small" x="354" y="237">INPUT ADAPTER</text>
+    <text class="h" x="354" y="276">quality CLI</text>
+    <text class="b" x="354" y="310">strict JSON / flags</text>
+    <text class="b" x="354" y="334">code digests</text>
+    <text class="b" x="354" y="358">commit resolution</text>
+    <path d="M285 312 H320" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="quality-domain">
+    <rect x="600" y="150" width="275" height="322" rx="26" fill="#211a3d" stroke="#8b5cf6" stroke-width="2"/>
+    <text class="small" x="628" y="184">ISOLATED DOMAIN</text>
+    <text class="h" x="628" y="222">internal/quality</text>
+    <rect x="628" y="249" width="219" height="54" rx="12" fill="#8b5cf6" opacity=".14"/>
+    <text class="b" x="648" y="282">strict load + graph validation</text>
+    <rect x="628" y="319" width="219" height="54" rx="12" fill="#8b5cf6" opacity=".14"/>
+    <text class="b" x="648" y="352">append-only mutation</text>
+    <rect x="628" y="389" width="219" height="54" rx="12" fill="#8b5cf6" opacity=".14"/>
+    <text class="b" x="648" y="422">current-head projection</text>
+    <path d="M555 312 H590" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="feature-storage">
+    <path d="M935 191 h230 v216 h-230 z" fill="#10293a" stroke="#60a5fa" stroke-width="2"/>
+    <path d="M935 191 h82 l18 20 h130" fill="none" stroke="#60a5fa" stroke-width="2"/>
+    <text class="small" x="960" y="239">FEATURE-OWNED RECORDS</text>
+    <text class="h" x="960" y="277">___quality/</text>
+    <text class="b" x="960" y="312">policies/</text>
+    <text class="b" x="960" y="340">test-cases/</text>
+    <text class="b" x="980" y="368">revisions · evidence · runs</text>
+    <path d="M895 312 H925" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="readiness-consumers">
+    <rect x="410" y="505" width="620" height="92" rx="20" fill="#0f2532" stroke="#41d3bd" stroke-width="1.5"/>
+    <text class="small" x="438" y="535">READ-ONLY CONSUMERS</text>
+    <text class="h" x="438" y="568">status · coverage axes · traceability · reviewer UI</text>
+    <path d="M738 482 V495" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M1050 427 V480 Q1050 505 1024 505" fill="none" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="executor-gap">
+    <rect x="77" y="470" width="266" height="112" rx="16" fill="#3a1822" stroke="#fb7185" stroke-width="2"/>
+    <text class="small" x="98" y="498" fill="#fb7185">BOUNDARY</text>
+    <text class="b" x="98" y="524">No execution API exists here.</text>
+    <text class="b" x="98" y="547">The caller submits the</text>
+    <text class="b" x="98" y="570">observed result.</text>
+  </g>
+
+  <line x1="70" y1="638" x2="1210" y2="638" stroke="#334155"/>
+  <text class="take" x="70" y="676">The package owns durable evidence and derived readiness; execution remains outside its trust boundary.</text>
+</svg>

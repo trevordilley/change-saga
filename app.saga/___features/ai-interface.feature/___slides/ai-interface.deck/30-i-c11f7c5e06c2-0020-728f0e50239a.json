@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "issue-cursor",
+  "slide": "cursor-state",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Issue continuation",
+  "description": "When more rows remain, the session encodes a token containing operation, filters, snapshot, next offset, and an unkeyed checksum; this is not a signature or authorization credential.",
+  "selector": {
+    "type": "element",
+    "element_id": "issue-cursor"
+  }
+}

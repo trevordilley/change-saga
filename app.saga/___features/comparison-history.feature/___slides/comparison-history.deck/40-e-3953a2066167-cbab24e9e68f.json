@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/layers_test.go",
+      "start": 313,
+      "end": 377,
+      "digest": "sha256:91989806835c259718476f3ff94d3e5803d20f840ed29ad216717c19d184b34a",
+      "note": "Exercises the companion join end to end, separating the code repository's delta from the Saga repository's documented delta."
+    }
+  ]
+}

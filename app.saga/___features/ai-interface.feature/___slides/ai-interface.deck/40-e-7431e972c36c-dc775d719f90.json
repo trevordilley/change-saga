@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 275,
+      "end": 287,
+      "digest": "sha256:b702bf2bb0a5eed65ba56d67c213f244f93f6feb474a183074cac4e14602e25a",
+      "note": "Marks the terminal page with has_more false and omits next_cursor when the filtered total has been reached."
+    }
+  ]
+}

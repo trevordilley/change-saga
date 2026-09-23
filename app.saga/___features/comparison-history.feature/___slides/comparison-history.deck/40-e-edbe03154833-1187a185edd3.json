@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/layers_test.go",
+      "start": 110,
+      "end": 137,
+      "digest": "sha256:8b4bc25186d1ab063003db8af13a65b968f2fd7dd42548d7cbc9e395664806a6",
+      "note": "Proves an uncommitted Saga revision can appear as the working-tree head while its base remains a committed Git snapshot."
+    }
+  ]
+}

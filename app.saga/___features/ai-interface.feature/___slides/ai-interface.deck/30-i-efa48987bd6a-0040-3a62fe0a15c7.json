@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "domain-result",
+  "slide": "query-failure-boundaries",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Return domain result",
+  "description": "A successful domain projection returns data and the session snapshot in an ok envelope with exit 0.",
+  "selector": {
+    "type": "element",
+    "element_id": "domain-result"
+  }
+}

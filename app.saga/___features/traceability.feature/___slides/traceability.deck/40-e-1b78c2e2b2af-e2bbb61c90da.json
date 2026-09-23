@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 553,
+      "end": 587,
+      "digest": "sha256:b5de5186a34ce832ac2372a836c3080ba4ff2f103d73e0ab02f21aea64e32196",
+      "note": "Rejects stale resolutions and matches only overlapping commit, path, and line ranges after remapping."
+    }
+  ]
+}

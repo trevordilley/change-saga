@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "product-knowledge-ownership",
+  "deck": "product-knowledge-implementation",
+  "title": "Domain ownership and composition",
+  "rank": 0,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-efa008eccd56-0000-aa1312a75963.svg",
+  "takeaway": "Requirements, prototypes, and quality own their records; livingapp composes them, but requirement queries currently omit feature ownership.",
+  "reading_order": [
+    "leaf-boundary",
+    "requirements-owner",
+    "prototype-quality-owners",
+    "composition-flow",
+    "livingapp-composer",
+    "query-contract",
+    "feature-ownership-gap"
+  ]
+}

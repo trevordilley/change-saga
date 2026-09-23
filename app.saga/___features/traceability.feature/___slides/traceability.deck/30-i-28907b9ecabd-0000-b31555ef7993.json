@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "requirement",
+  "slide": "pinned-graph",
+  "rank": 0,
+  "kind": "node",
+  "label": "Requirement revisions",
+  "description": "Stable stories and criteria evolve through immutable complete revisions.",
+  "selector": {
+    "type": "element",
+    "element_id": "requirement"
+  }
+}

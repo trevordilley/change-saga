@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 190,
+      "end": 217,
+      "digest": "sha256:78c62c1b786ca5137bf506e146ca767fbbeaf16630d535ff8da0905658ea4f91",
+      "note": "Projects only the latest event for each slide, Git author, and declared reviewer seat while preserving earlier files."
+    }
+  ]
+}

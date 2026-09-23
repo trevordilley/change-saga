@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "current-state",
+  "slide": "relation-currency",
+  "rank": 10,
+  "kind": "node",
+  "label": "Current",
+  "description": "A current relation has no blocking currency reasons and may participate in coverage and traceability.",
+  "selector": {
+    "type": "element",
+    "element_id": "current-state"
+  }
+}

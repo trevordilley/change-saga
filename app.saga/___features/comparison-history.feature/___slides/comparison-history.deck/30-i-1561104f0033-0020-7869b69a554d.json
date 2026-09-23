@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "evidence",
+  "slide": "comparison-architecture",
+  "rank": 20,
+  "kind": "node",
+  "label": "Evidence ownership projection",
+  "description": "Code resolution and coverage convert source atoms plus stored references into owners, stale selectors, overlaps, and uncovered atoms.",
+  "selector": {
+    "type": "element",
+    "element_id": "evidence"
+  }
+}

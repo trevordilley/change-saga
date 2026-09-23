@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 219,
+      "end": 267,
+      "digest": "sha256:e0d85c887c6ed01cdd6b44e3244c9ec5845d1cfc73cfd8742849979355b8f91e",
+      "note": "Regroups the freshly loaded ordered events into the visible root-and-replies thread."
+    }
+  ]
+}

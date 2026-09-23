@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Terms connect human vocabulary to stories, records, and defining code</title>
+  <desc id="desc">A radial data-flow diagram shows the overview leading to a versioned term record, with links to stories and other records and commit-pinned code resolved at the head. A branch shows optional comparison suggestions and a rename becoming stale.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b1022"/><stop offset="1" stop-color="#1b1640"/></linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a78bfa"/></marker>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#67e8f9"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="70" fill="#fafaff" font-family="Inter,system-ui,sans-serif" font-size="30" font-weight="700">Vocabulary stays anchored to intent and code</text>
+  <text x="64" y="102" fill="#b5afd3" font-family="Inter,system-ui,sans-serif" font-size="16">The overview is optional orientation; each term is a versioned record with independently checked code pins.</text>
+
+  <g id="overview-frontdoor">
+    <path d="M66 200Q66 158 108 158H325Q367 158 367 200V520Q367 562 325 562H108Q66 562 66 520Z" fill="#151d3e" stroke="#64748b" stroke-width="2"/>
+    <text x="100" y="202" fill="#c4b5fd" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800" letter-spacing="2">OVERVIEW</text>
+    <text x="100" y="246" fill="#fafaff" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="700">Name</text>
+    <text x="100" y="294" fill="#d2cdec" font-family="Inter,system-ui,sans-serif" font-size="18">Pitch</text>
+    <text x="100" y="337" fill="#d2cdec" font-family="Inter,system-ui,sans-serif" font-size="18">Description</text>
+    <text x="100" y="380" fill="#67e8f9" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">Terms</text>
+    <text x="100" y="488" fill="#8f8aaa" font-family="Inter,system-ui,sans-serif" font-size="14">Absent parts are growth,</text>
+    <text x="100" y="510" fill="#8f8aaa" font-family="Inter,system-ui,sans-serif" font-size="14">never a readiness error.</text>
+  </g>
+  <path d="M367 360H472" stroke="#67e8f9" stroke-width="4" marker-end="url(#arr2)"/>
+  <g id="term-record">
+    <circle cx="638" cy="360" r="142" fill="#231c50" stroke="#a78bfa" stroke-width="3"/>
+    <circle cx="638" cy="360" r="118" fill="none" stroke="#4c3c83" stroke-width="1" stroke-dasharray="5 8"/>
+    <text x="638" y="318" text-anchor="middle" fill="#c4b5fd" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800" letter-spacing="2">TERM REVISION</text>
+    <text x="638" y="356" text-anchor="middle" fill="#fafaff" font-family="Inter,system-ui,sans-serif" font-size="26" font-weight="700">name + definition</text>
+    <text x="638" y="390" text-anchor="middle" fill="#d2cdec" font-family="Inter,system-ui,sans-serif" font-size="16">aliases</text>
+    <text x="638" y="420" text-anchor="middle" fill="#d2cdec" font-family="Inter,system-ui,sans-serif" font-size="16">append-only history</text>
+  </g>
+
+  <g id="bidirectional-links">
+    <path d="M766 300C835 235 871 216 940 210" stroke="#a78bfa" stroke-width="3" marker-end="url(#arr)"/>
+    <path d="M940 245C870 254 832 274 779 321" stroke="#a78bfa" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="940" y="166" width="260" height="98" rx="18" fill="#171f42" stroke="#a78bfa" stroke-width="2"/>
+    <text x="969" y="205" fill="#fafaff" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700">Stories + records</text>
+    <text x="969" y="235" fill="#b5afd3" font-family="Inter,system-ui,sans-serif" font-size="15">navigable in both directions</text>
+  </g>
+
+  <g id="head-resolution">
+    <path d="M775 406C839 454 872 472 940 482" stroke="#67e8f9" stroke-width="3" marker-end="url(#arr2)"/>
+    <rect x="940" y="438" width="260" height="98" rx="18" fill="#14243f" stroke="#67e8f9" stroke-width="2"/>
+    <text x="969" y="477" fill="#fafaff" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700">Defining code</text>
+    <text x="969" y="507" fill="#b8dfe5" font-family="Inter,system-ui,sans-serif" font-size="15">pinned commit → head resolution</text>
+  </g>
+
+  <g id="rename-failure">
+    <path d="M1070 536V596" stroke="#fb7185" stroke-width="3" stroke-dasharray="7 6" marker-end="url(#arr)"/>
+    <rect x="884" y="594" width="316" height="72" rx="16" fill="#401c39" stroke="#fb7185" stroke-width="2"/>
+    <text x="910" y="623" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">RENAME FAILURE BOUNDARY</text>
+    <text x="910" y="649" fill="#f6d5e1" font-family="Inter,system-ui,sans-serif" font-size="14">Changed defining bytes → stale term owner.</text>
+  </g>
+
+  <g id="optional-growth">
+    <path d="M638 218V150" stroke="#fbbf24" stroke-width="2" stroke-dasharray="6 6"/>
+    <rect x="486" y="118" width="304" height="68" rx="34" fill="#3b2d17" stroke="#fbbf24" stroke-width="2"/>
+    <text x="638" y="147" text-anchor="middle" fill="#fbbf24" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">COMPARE-ONLY SUGGESTION</text>
+    <text x="638" y="169" text-anchor="middle" fill="#f8e4af" font-family="Inter,system-ui,sans-serif" font-size="13">new declarations are optional growth</text>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "thread-lifecycle",
+  "deck": "visual-review",
+  "title": "Thread state is derived from events",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-ed2fee3f2da5-0020-0742010aeaf6.svg",
+  "takeaway": "Open and resolved are projections of ordered comments; the last explicit state wins without mutating earlier records.",
+  "reading_order": [
+    "root-open",
+    "reply-threading",
+    "last-state-wins",
+    "invalid-target",
+    "append-only-ledger"
+  ]
+}

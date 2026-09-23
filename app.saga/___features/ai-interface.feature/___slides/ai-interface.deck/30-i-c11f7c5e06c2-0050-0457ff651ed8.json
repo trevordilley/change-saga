@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-snapshot",
+  "slide": "cursor-state",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Reject stale snapshot",
+  "description": "A structurally valid token for a different snapshot fails as retryable stale_snapshot instead of mixing pages.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-snapshot"
+  }
+}

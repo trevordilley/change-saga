@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "living-assemble",
+  "slide": "status-runtime",
+  "rank": 30,
+  "kind": "node",
+  "label": "Axis assembly",
+  "description": "The pure assembler projects accepted criteria and all current or failing paths into deterministic axis cells.",
+  "selector": {
+    "type": "element",
+    "element_id": "living-assemble"
+  }
+}

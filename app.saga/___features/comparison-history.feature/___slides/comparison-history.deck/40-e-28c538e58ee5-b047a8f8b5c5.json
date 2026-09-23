@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/layers.go",
+      "start": 487,
+      "end": 538,
+      "digest": "sha256:f6d161bb22cb10c0ce1b40965783491e38b64a794e70bc596b6009492f81e421",
+      "note": "Groups changed atoms under current owners, merge-base impact targets, and terms while retaining each owner's Changed or Affected classification."
+    }
+  ]
+}

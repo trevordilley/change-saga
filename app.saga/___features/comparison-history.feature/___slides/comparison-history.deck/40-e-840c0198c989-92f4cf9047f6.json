@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 394,
+      "end": 409,
+      "digest": "sha256:4f3eaad7529ac7e209d4dbccf90d0730ac7232e33808ee404d23cfb8cc00feb5",
+      "note": "Pins the Git diff algorithm, rename behavior, prefixes, and transform settings so atom parsing is reproducible."
+    }
+  ]
+}

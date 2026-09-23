@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/review.go",
+      "start": 23,
+      "end": 28,
+      "digest": "sha256:6520234573a4ea3d3e09c1879df90bfa2ea7dfc823c476bde051b661397a8564",
+      "note": "Defines append-only approval files and the immutable fields captured by each decision event."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/review.go",
+      "start": 88,
+      "end": 105,
+      "digest": "sha256:e8b4ad489f6912a874571316d1f8c082fbb475262976992c74fda53243798ed2",
+      "note": "Defines append-only approval files and the immutable fields captured by each decision event."
+    }
+  ]
+}

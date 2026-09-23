@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "partitioned-storage",
+  "deck": "merge-friendly-format",
+  "title": "Partition locally and reconcile explicitly",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-2dea4605310f-0000-bebabeb72a7f.svg",
+  "takeaway": "Immutable resource records reduce overlap while atomic writers prevent partial local state.",
+  "reading_order": [
+    "record",
+    "writer",
+    "git"
+  ]
+}

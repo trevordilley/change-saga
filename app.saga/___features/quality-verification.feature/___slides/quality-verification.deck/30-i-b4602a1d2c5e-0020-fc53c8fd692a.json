@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "execution-gap",
+  "slide": "quality-trust-gaps",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Missing execution API",
+  "description": "No quality command executes the recorded command or captures its exit status and output; run record only persists supplied facts.",
+  "selector": {
+    "type": "element",
+    "element_id": "execution-gap"
+  }
+}

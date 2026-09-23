@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "accepted-criteria",
+  "slide": "readiness-boundary",
+  "rank": 0,
+  "kind": "node",
+  "label": "Accepted criteria",
+  "description": "The traceability feature has three accepted stories with six current acceptance criteria.",
+  "selector": {
+    "type": "element",
+    "element_id": "accepted-criteria"
+  }
+}

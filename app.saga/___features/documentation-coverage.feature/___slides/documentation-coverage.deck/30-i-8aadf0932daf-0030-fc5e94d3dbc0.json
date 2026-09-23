@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "uncovered-state",
+  "slide": "reference-state",
+  "rank": 30,
+  "kind": "node",
+  "label": "Uncovered atom",
+  "description": "A changed atom with no current owner is reported as explicit uncovered work.",
+  "selector": {
+    "type": "element",
+    "element_id": "uncovered-state"
+  }
+}

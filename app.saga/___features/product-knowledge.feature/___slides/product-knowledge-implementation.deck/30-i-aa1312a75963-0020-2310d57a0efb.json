@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "prototype-quality-owners",
+  "slide": "product-knowledge-ownership",
+  "rank": 20,
+  "kind": "region",
+  "label": "Prototype and quality owners",
+  "description": "Prototype packages and quality records retain independent schemas, histories, and validation boundaries.",
+  "selector": {
+    "type": "element",
+    "element_id": "prototype-quality-owners"
+  }
+}

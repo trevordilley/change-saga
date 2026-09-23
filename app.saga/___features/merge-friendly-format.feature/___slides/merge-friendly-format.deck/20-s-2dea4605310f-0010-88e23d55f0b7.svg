@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Physical ownership and app-wide identity</title>
+  <desc id="desc">Feature directories own physical records, while stable URNs omit feature membership and an app-wide index rejects duplicate IDs.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#23324b"/></marker>
+    <style>
+      .t{font-family:Inter,system-ui,sans-serif;fill:#17233b}.h{font-size:38px;font-weight:750}.sh{font-size:24px;font-weight:700}.b{font-size:20px}.sm{font-size:17px;fill:#46546c}.mono{font-family:ui-monospace,SFMono-Regular,monospace;font-size:18px}.edge{stroke:#23324b;stroke-width:4;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="#f7f5ef"/>
+  <text class="t h" x="64" y="68">Ownership is physical; identity is app-wide</text>
+  <g id="feature-boundary">
+    <rect x="62" y="118" width="602" height="480" rx="28" fill="#e8f1ff" stroke="#315ca8" stroke-width="4"/>
+    <text class="t sh" x="94" y="162">___features/checkout.feature/</text>
+    <text class="t sm" x="94" y="192">one merge-local product domain</text>
+  </g>
+  <g id="physical-partitions">
+    <rect x="104" y="226" width="510" height="244" rx="20" fill="#fff" stroke="#6d87b5" stroke-width="3"/>
+    <text class="t mono" x="136" y="272">___requirements/stories/pay.story/</text>
+    <rect x="142" y="304" width="180" height="112" rx="14" fill="#f2f7ff" stroke="#91a9cf"/>
+    <text class="t b" x="162" y="338">story.json</text><text class="t sm" x="162" y="370">immutable identity</text>
+    <rect x="342" y="304" width="232" height="112" rx="14" fill="#f2f7ff" stroke="#91a9cf"/>
+    <text class="t b" x="362" y="338">revisions/*.json</text><text class="t sm" x="362" y="370">append-only snapshots</text>
+  </g>
+  <g id="stable-urn">
+    <rect x="742" y="142" width="472" height="126" rx="22" fill="#e8f7ec" stroke="#2f7a4f" stroke-width="4"/>
+    <text class="t sh" x="776" y="188">Stable logical identity</text>
+    <text class="t mono" x="776" y="228">urn:change-saga:app:story:pay</text>
+  </g>
+  <path class="edge" d="M614 350 C700 350 690 226 742 218"/>
+  <g id="uniqueness-guard">
+    <path d="M902 270V354" stroke="#2f7a4f" stroke-width="5" marker-end="url(#arrow)"/>
+    <polygon points="874,326 930,326 952,374 908,420 852,386" fill="#fff0d8" stroke="#a86516" stroke-width="4"/>
+    <text class="t sh" x="814" y="468">App-wide ID claim</text>
+    <text class="t sm" x="754" y="499">same story ID in two features → reject load</text>
+  </g>
+  <g id="mobility-boundary">
+    <path d="M696 548H1188" stroke="#c34840" stroke-width="3" stroke-dasharray="11 9"/>
+    <text class="t b" x="742" y="584">Moving a story changes its holder, not its URN</text>
+    <text class="t sm" x="742" y="616">Relations remain addressable across feature moves.</text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "range",
+  "slide": "comparison-architecture",
+  "rank": 0,
+  "kind": "node",
+  "label": "Ephemeral opening range",
+  "description": "The caller selects an optional against revision and a head; this opening state is derived per invocation and is never persisted in the Saga.",
+  "selector": {
+    "type": "element",
+    "element_id": "range"
+  }
+}

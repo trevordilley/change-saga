@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "ai-interface",
+  "title": "AI-facing query architecture",
+  "role": "change",
+  "rank": 0,
+  "objective": "Explain the implemented one-shot AI query boundary, its domain ownership, snapshot and pagination state, stable failures, and explicitly deferred transports."
+}

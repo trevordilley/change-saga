@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/mutation.go",
+      "start": 19,
+      "end": 50,
+      "digest": "sha256:086cc0320c37fde55a7392be27f2bc35cb756d79bf2d7099ab6d6872c10179ca",
+      "note": "Separates prototype creation from annotation creation while keeping each mutation validated and replay-safe."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/mutation.go",
+      "start": 255,
+      "end": 300,
+      "digest": "sha256:8815d2bdce1a6719a82afd724b6f173c1d195a7729bbb10e49092ead92c89488",
+      "note": "Separates prototype creation from annotation creation while keeping each mutation validated and replay-safe."
+    }
+  ]
+}

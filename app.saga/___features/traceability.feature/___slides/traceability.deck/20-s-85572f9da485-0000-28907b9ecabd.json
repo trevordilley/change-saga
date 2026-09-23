@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "pinned-graph",
+  "deck": "traceability",
+  "title": "Persist adjacent links and derive long paths",
+  "rank": 0,
+  "intent": "trace",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-85572f9da485-0000-28907b9ecabd.svg",
+  "takeaway": "Pinned relations make forward traceability, reverse impact, and staleness the same graph problem.",
+  "reading_order": [
+    "requirement",
+    "relations",
+    "explanation",
+    "evidence"
+  ]
+}

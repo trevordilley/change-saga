@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 18,
+      "end": 47,
+      "digest": "sha256:32aafd44ec5181cda4d5a7d044cb4a72c002f2ef73b03c81a4304de49be65bce",
+      "note": "Constructs two concurrent children of one parent to simulate a clean Git merge of independently authored records."
+    }
+  ]
+}

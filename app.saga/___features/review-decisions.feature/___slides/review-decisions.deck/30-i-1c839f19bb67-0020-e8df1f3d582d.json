@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "write-path",
+  "slide": "review-decision-ownership",
+  "rank": 20,
+  "kind": "edge",
+  "label": "Validated write path",
+  "description": "Both entry surfaces converge on the same validated append-only decision mutation.",
+  "selector": {
+    "type": "element",
+    "element_id": "write-path"
+  }
+}

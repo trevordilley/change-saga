@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/living_requirements.go",
+      "start": 170,
+      "end": 266,
+      "digest": "sha256:b82c94eab9e97832c02c905dfe8bb8edfac91f23aca5694017a6c48907ffaf9e",
+      "note": "Builds a complete revise request, inherits only from one current parent, and hands it to the requirements writer."
+    }
+  ]
+}

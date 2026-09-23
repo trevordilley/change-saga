@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "durable-append",
+  "slide": "mutation-guardrails",
+  "rank": 50,
+  "kind": "region",
+  "label": "Durable critical section",
+  "description": "The write occurs under the Saga lock after a fresh valid reload and uses exclusive JSON publication.",
+  "selector": {
+    "type": "element",
+    "element_id": "durable-append"
+  }
+}
