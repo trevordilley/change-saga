@@ -1,0 +1,48 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:review-decision",
+  "parents": [],
+  "name": "Review decision",
+  "definition": "One reviewer's append-only decision on one review slide: approved, changes requested, or none to withdraw. It records the review head and slide digest; only the latest event for that reviewer seat is presented, with currency recomputed when the slide or its referenced code changes. It is not an app-wide verdict and does not apply to documentation slides.",
+  "aliases": [
+    "slide decision"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:review-decision",
+    "urn:change-saga:change-saga:story:review-decision-freshness",
+    "urn:change-saga:change-saga:story:withdraw-review-decision"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/review.go",
+      "start": 42,
+      "end": 47,
+      "digest": "sha256:14d608c23a7df004f6aca0f070b30a6318abff3e34934394adc4e8495c3c23b1"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/saga/review.go",
+      "start": 88,
+      "end": 105,
+      "digest": "sha256:e8b4ad489f6912a874571316d1f8c082fbb475262976992c74fda53243798ed2"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 190,
+      "end": 217,
+      "digest": "sha256:78c62c1b786ca5137bf506e146ca767fbbeaf16630d535ff8da0905658ea4f91"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 270,
+      "end": 312,
+      "digest": "sha256:90be92f142b073d71f25533ad3b6469d77658a74b55b654947ac399f5f589abb"
+    }
+  ],
+  "created_at": "2026-09-23T20:20:09.22444Z"
+}
