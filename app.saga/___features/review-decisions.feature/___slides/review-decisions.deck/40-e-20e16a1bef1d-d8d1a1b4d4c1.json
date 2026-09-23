@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 270,
+      "end": 313,
+      "digest": "sha256:e1f081c34702a04a0c06d0bb39fc370e9a296db79e81a6b222e57a6925b2a74e",
+      "note": "Classifies a decision as current, out of date, or unknown from slide digest, review head, commit presence, and referenced code."
+    }
+  ]
+}

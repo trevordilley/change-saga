@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "decision-currency",
+  "deck": "review-decisions",
+  "title": "A decision changes state without losing history",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-69f12de6577e-0020-a284ad4b9687.svg",
+  "takeaway": "The latest event replaces only one reviewer seat; currency is recomputed independently from slide and referenced-code changes.",
+  "reading_order": [
+    "decision",
+    "currency",
+    "attribution-gap"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "decision-failure-boundaries",
+  "deck": "review-decisions",
+  "title": "Failures stop before the event store",
+  "rank": 30,
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-69f12de6577e-0030-926878fbd269.svg",
+  "takeaway": "Token, range, frozen-state, and payload failures produce no event; attribution later degrades visibly when history or local identity is unavailable.",
+  "reading_order": [
+    "token-failure",
+    "history-failure",
+    "validation-failure",
+    "append-success",
+    "principal-bypass"
+  ]
+}

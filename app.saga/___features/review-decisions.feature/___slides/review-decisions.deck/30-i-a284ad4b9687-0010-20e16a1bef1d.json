@@ -3,9 +3,9 @@
   "id": "currency",
   "slide": "decision-currency",
   "rank": 10,
-  "kind": "node",
-  "label": "Decision currency",
-  "description": "Projects the latest event per reviewer seat and explains why it is current or out of date.",
+  "kind": "transition",
+  "label": "Currency transitions",
+  "description": "A projected decision is current, out of date, or unknown according to slide digest, referenced code, and commit availability.",
   "selector": {
     "type": "element",
     "element_id": "currency"

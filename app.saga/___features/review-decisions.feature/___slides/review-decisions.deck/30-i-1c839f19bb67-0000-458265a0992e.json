@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "browser-human",
+  "slide": "review-decision-ownership",
+  "rank": 0,
+  "kind": "node",
+  "label": "Browser human",
+  "description": "The browser mutation surface records the session user's decision as a human reviewer seat.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser-human"
+  }
+}

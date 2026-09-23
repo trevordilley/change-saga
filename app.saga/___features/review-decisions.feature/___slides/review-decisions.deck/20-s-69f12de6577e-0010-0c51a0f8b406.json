@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "decision-write-path",
+  "deck": "review-decisions",
+  "title": "One decision becomes one immutable event",
+  "rank": 10,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-69f12de6577e-0010-0c51a0f8b406.svg",
+  "takeaway": "A decision is authorized, pinned to the current head and slide digest, then atomically appended before the caller sees success.",
+  "reading_order": [
+    "authorize",
+    "capture-head",
+    "snapshot-decision",
+    "append-event",
+    "success-response"
+  ]
+}

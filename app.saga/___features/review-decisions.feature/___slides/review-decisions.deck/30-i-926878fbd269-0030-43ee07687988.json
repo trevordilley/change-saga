@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "append-success",
+  "slide": "decision-failure-boundaries",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Successful append",
+  "description": "Only a fully validated decision reaches the create-only event write and success response.",
+  "selector": {
+    "type": "element",
+    "element_id": "append-success"
+  }
+}

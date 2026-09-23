@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli-seat",
+  "slide": "review-decision-ownership",
+  "rank": 10,
+  "kind": "node",
+  "label": "CLI reviewer seat",
+  "description": "The CLI requires an explicit human or named AI reviewer identity before recording a decision.",
+  "selector": {
+    "type": "element",
+    "element_id": "cli-seat"
+  }
+}

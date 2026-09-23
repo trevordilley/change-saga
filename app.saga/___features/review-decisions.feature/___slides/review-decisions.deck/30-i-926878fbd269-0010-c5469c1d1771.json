@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "history-failure",
+  "slide": "decision-failure-boundaries",
+  "rank": 10,
+  "kind": "risk",
+  "label": "Frozen or unresolved review",
+  "description": "A landed review or unreadable review head rejects the mutation and keeps historical review data read-only.",
+  "selector": {
+    "type": "element",
+    "element_id": "history-failure"
+  }
+}
