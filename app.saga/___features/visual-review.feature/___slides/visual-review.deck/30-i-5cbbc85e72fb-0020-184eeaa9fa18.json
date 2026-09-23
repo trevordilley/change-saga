@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "risk",
   "label": "Spatial annotation gap",
-  "description": "No persisted review overlay or drawing toolbox currently implements freehand marks, shapes, or text annotations.",
+  "description": "No PR-review overlay record or drawing toolbox implements freehand marks, shapes, or text; prototype requirement annotations are separate traceability edges.",
   "selector": {
     "type": "element",
     "element_id": "annotation-gap"

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/server.go",
+      "start": 361,
+      "end": 368,
+      "digest": "sha256:55c4422187208635f5f02f5839754a8d91061661e26f148b902f64e112096319",
+      "note": "Review route registration has no endpoint for freehand, shape, or text annotation persistence."
+    }
+  ]
+}

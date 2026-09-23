@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "bounded-input",
+  "slide": "mutation-guardrails",
+  "rank": 0,
+  "kind": "node",
+  "label": "Bounded form input",
+  "description": "The server caps the request body and rejects a malformed form before loading review state.",
+  "selector": {
+    "type": "element",
+    "element_id": "bounded-input"
+  }
+}

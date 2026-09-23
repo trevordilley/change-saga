@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews.go",
+      "start": 532,
+      "end": 540,
+      "digest": "sha256:ce965cf21681a5f2c1c2b0ff0c10844ef61a43fde47c22d32b9073118249378b",
+      "note": "Stops when the Saga is invalid or the requested review does not exist."
+    }
+  ]
+}

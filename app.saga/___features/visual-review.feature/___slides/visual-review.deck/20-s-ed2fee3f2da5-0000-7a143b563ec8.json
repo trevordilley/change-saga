@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "review-ownership",
+  "deck": "visual-review",
+  "title": "Who owns visual review collaboration",
+  "rank": 0,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-ed2fee3f2da5-0000-7a143b563ec8.svg",
+  "takeaway": "Review reads are projected, comment writes are locked appends, and PR-review spatial overlays have no implementation owner; prototype requirement annotations are separate.",
+  "reading_order": [
+    "browser-surface",
+    "http-adapter",
+    "report-projection",
+    "locked-writer",
+    "git-storage",
+    "missing-overlay"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 170,
+      "end": 223,
+      "digest": "sha256:383d6ce919f7dd3c5d52abd9108c616b9052623ff448e223b636abf4056a1886",
+      "note": "Resolves a reply or slide/Item target and publishes one append-only comment JSON event."
+    }
+  ]
+}

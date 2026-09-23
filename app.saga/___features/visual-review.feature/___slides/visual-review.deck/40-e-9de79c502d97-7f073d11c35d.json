@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/model.go",
+      "start": 107,
+      "end": 150,
+      "digest": "sha256:19f0d09798b225402c1697ddc39b80efe87063d47a7e094862b59ec2d822bf64",
+      "note": "Prototype annotations are separate persisted prototype-to-requirement edges with element, text, region, or provider selectors; they do not implement PR-review drawing overlays."
+    }
+  ]
+}
