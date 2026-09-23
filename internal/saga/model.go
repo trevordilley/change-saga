@@ -112,9 +112,12 @@ type Item struct {
 	Path      string `json:"path"`
 	Directory string `json:"-"`
 	ItemManifest
-	Target  string     `json:"target"`
-	Code    []CodeFile `json:"code,omitempty"`
-	HasCode bool       `json:"-"`
+	Target string     `json:"target"`
+	Code   []CodeFile `json:"code,omitempty"`
+	// CriterionLinks are present only for complete-slide transaction records.
+	// They are exact Item-level links pinned to one story revision.
+	CriterionLinks []CriterionLink `json:"criterion_links,omitempty"`
+	HasCode        bool            `json:"-"`
 }
 
 // Source names the code repository a Saga documents. It holds no

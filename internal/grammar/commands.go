@@ -54,6 +54,17 @@ func repeatable(name, value, description string, isRequired bool) Flag {
 // and that every declared flag is accepted by the real flag set.
 var commands = []Command{
 	{
+		Name: "apply-slide", Status: StatusImplemented, Mutates: true,
+		Writes:  []string{"slide-transaction", "slide-asset", "item", "code-evidence", "criterion-link"},
+		Usage:   "change-saga apply-slide --from FILE|- [--repo PATH] [--dry-run] [--json] <saga>",
+		Summary: "atomically publish one complete implementation slide, its visual, semantic Items, exact code evidence, and pinned Item-level criterion links",
+		Flags: []Flag{
+			required("from", "FILE|-", "complete versioned JSON request"), optional("repo", "PATH", "code checkout used to verify exact evidence digests"),
+			{Name: "dry-run", Description: "validate and return the semantic diff without publishing"}, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "feature add", Status: StatusImplemented, Mutates: true, Writes: []string{"feature"},
 		Usage:   "change-saga feature add --id ID --title TEXT [--description TEXT] [flags] <saga>",
 		Summary: "add a durable product domain; it holds its own stories, design, quality, work plan, and implementation deck",
