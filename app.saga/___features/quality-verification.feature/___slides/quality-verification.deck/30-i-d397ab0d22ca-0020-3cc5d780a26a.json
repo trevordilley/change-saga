@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "evidence-dag",
+  "slide": "quality-state-graphs",
+  "rank": 20,
+  "kind": "region",
+  "label": "Evidence supersession DAG",
+  "description": "Evidence remains current only when unsuperseded and pinned to the unique current test revision.",
+  "selector": {
+    "type": "element",
+    "element_id": "evidence-dag"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "outcome-reducer",
+  "slide": "criterion-quality-gate",
+  "rank": 50,
+  "kind": "transition",
+  "label": "Outcome reduction",
+  "description": "A current pass covers the kind, while a failing current test outranks another pass so failure cannot be hidden.",
+  "selector": {
+    "type": "element",
+    "element_id": "outcome-reducer"
+  }
+}

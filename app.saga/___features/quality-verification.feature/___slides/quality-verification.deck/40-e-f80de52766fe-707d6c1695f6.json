@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/quality.go",
+      "start": 485,
+      "end": 527,
+      "digest": "sha256:e8839f12f1be786fe9268816fd9bf46aa1e289500cc039213354d636b40bd520",
+      "note": "Parses the run-record command and its caller-authored result fields without executing the command string."
+    }
+  ]
+}

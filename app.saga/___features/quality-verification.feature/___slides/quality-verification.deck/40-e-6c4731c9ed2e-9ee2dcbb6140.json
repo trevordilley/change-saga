@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 178,
+      "end": 232,
+      "digest": "sha256:5841cb05a8b1c2ba2fb70ec02340009278ad2c1a7df3b781d1d61023198de150",
+      "note": "Resolves one policy head for the current story revision, retains stale required kinds conservatively, and tests explicit supersession."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 357,
+      "end": 398,
+      "digest": "sha256:040c53388fdb58612b600f7b469c03dde42289d2188b4ef2f963d81d59bdb3a3",
+      "note": "Resolves one policy head for the current story revision, retains stale required kinds conservatively, and tests explicit supersession."
+    }
+  ]
+}

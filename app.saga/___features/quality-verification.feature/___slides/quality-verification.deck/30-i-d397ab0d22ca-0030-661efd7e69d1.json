@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "run-dag",
+  "slide": "quality-state-graphs",
+  "rank": 30,
+  "kind": "region",
+  "label": "Run history DAG",
+  "description": "Runs are immutable successor events; failed and concurrent results remain visible after later reconciliation.",
+  "selector": {
+    "type": "element",
+    "element_id": "run-dag"
+  }
+}

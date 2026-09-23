@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 122,
+      "end": 175,
+      "digest": "sha256:3609c91c730cb0c4dd8f6e32637ba5765fb42d983ec8c2fb6e36602f554380f6",
+      "note": "Starts every accepted criterion with positive required by default and records a gap for each required kind not covered."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-consumers-explain-reverse-test-path",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:quality-ownership:item:readiness-consumers",
+  "to": "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path",
+  "scope": "self",
+  "rationale": "Current test-code evidence is projected into the impact graph so a source location can reach its verifying test case and criterion.",
+  "to_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:26:47.589319Z"
+}

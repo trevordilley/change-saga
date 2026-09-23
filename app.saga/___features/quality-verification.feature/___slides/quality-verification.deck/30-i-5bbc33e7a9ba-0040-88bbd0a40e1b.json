@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "freshness-gate",
+  "slide": "criterion-quality-gate",
+  "rank": 40,
+  "kind": "node",
+  "label": "Freshness gate",
+  "description": "The test must have one current run head whose test revision and referenced evidence remain current.",
+  "selector": {
+    "type": "element",
+    "element_id": "freshness-gate"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 308,
+      "end": 394,
+      "digest": "sha256:b93c7be74a3d82adab582cdbdd07f232d345b7dcdb4099349d5ab9ca08c0a97c",
+      "note": "Treats a current recorded pass as criterion evidence after implemented pin checks, which makes caller-asserted execution consequential."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 365,
+      "end": 370,
+      "digest": "sha256:47db225ee04779754b3c305adcd36cf08c2f1665b3f0670fb1f7322a197d8616",
+      "note": "Treats a current recorded pass as criterion evidence after implemented pin checks, which makes caller-asserted execution consequential."
+    }
+  ]
+}

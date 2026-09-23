@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/validate.go",
+      "start": 294,
+      "end": 329,
+      "digest": "sha256:a89951c2c2b8ddd90d9fb24833689cd7d1b89e8d7c0de29bf332221decce1cc5",
+      "note": "Computes revision heads from an acyclic graph and tests that concurrent heads remain unresolved until a successor names both."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 110,
+      "end": 148,
+      "digest": "sha256:5c3173431d766cbe6b985115b624a8445a0c997efcd428780c08773b0caecad9",
+      "note": "Computes revision heads from an acyclic graph and tests that concurrent heads remain unresolved until a successor names both."
+    }
+  ]
+}

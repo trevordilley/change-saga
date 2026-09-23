@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "criterion-quality-gate",
+  "deck": "quality-verification",
+  "title": "A criterion is covered only through every current pin",
+  "rank": 30,
+  "intent": "trace",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-f125510cc52d-0030-5bbc33e7a9ba.svg",
+  "takeaway": "Policy, relation, test definition, evidence, and run must all resolve to one current passing path.",
+  "reading_order": [
+    "criterion-obligation",
+    "policy-gate",
+    "verifies-path",
+    "definition-gate",
+    "freshness-gate",
+    "outcome-reducer",
+    "visible-gaps"
+  ]
+}

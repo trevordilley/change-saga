@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "lock-refresh",
+  "slide": "run-record-sequence",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Lock and refresh",
+  "description": "Mutation validates before locking, then reloads under the Saga lock so the operation sees the freshest committed heads.",
+  "selector": {
+    "type": "element",
+    "element_id": "mutation-guard"
+  }
+}

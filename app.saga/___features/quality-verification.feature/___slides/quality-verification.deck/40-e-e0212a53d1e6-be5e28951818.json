@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/quality.go",
+      "start": 488,
+      "end": 494,
+      "digest": "sha256:787e4a297262b00ad78a923130f4f0973fdf45c80a96dff9a407f633822afc4e",
+      "note": "States explicitly that the command is recorded rather than executed and that status never executes tests."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_load.go",
+      "start": 50,
+      "end": 52,
+      "digest": "sha256:2a8968900453d3d70d1c9b3a4ef96c7753b326f8cd0963f515f2c3f891f62044",
+      "note": "States explicitly that the command is recorded rather than executed and that status never executes tests."
+    }
+  ]
+}

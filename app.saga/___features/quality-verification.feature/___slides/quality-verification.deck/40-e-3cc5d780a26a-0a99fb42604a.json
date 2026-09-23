@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/validate.go",
+      "start": 378,
+      "end": 439,
+      "digest": "sha256:8ddeb08ddfad0463245f18daba21a3d78e6914727d0a51a1d0d46f5351cf014c",
+      "note": "Computes evidence supersession heads and marks evidence current only when it is unsuperseded and pinned to the current test revision."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 197,
+      "end": 235,
+      "digest": "sha256:f298670131b191e1f9d0a5c1a3a5292fd5f0e4e2be778a33180e86b93fae45f7",
+      "note": "Computes evidence supersession heads and marks evidence current only when it is unsuperseded and pinned to the current test revision."
+    }
+  ]
+}

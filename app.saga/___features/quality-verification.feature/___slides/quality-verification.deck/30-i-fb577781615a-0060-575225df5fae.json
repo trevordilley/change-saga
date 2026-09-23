@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "result-return",
+  "slide": "run-record-sequence",
+  "rank": 60,
+  "kind": "edge",
+  "label": "Return new head",
+  "description": "The mutation returns the new run URN, record path, and current head set to the caller.",
+  "selector": {
+    "type": "element",
+    "element_id": "result-return"
+  }
+}

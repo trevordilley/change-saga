@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "conflict-rule",
+  "slide": "quality-state-graphs",
+  "rank": 40,
+  "kind": "statement",
+  "label": "Unique-head projection",
+  "description": "The loader projects a current revision, lifecycle, evidence set, or run only when its graph has one valid current head.",
+  "selector": {
+    "type": "element",
+    "element_id": "conflict-rule"
+  }
+}

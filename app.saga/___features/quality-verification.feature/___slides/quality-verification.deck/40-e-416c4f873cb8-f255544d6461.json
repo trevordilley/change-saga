@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/impact_graph.go",
+      "start": 15,
+      "end": 65,
+      "digest": "sha256:888bb34a0bea43275ce77fe424327f4fb135136d66b01ad4a7a38e8f56141334",
+      "note": "Projects current test evidence and active verifies relations back from source locations to test cases and criteria."
+    }
+  ]
+}

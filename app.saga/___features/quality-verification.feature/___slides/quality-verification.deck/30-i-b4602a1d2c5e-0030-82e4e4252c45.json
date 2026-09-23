@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "commit-freshness-gap",
+  "slide": "quality-trust-gaps",
+  "rank": 30,
+  "kind": "risk",
+  "label": "Missing run-commit freshness",
+  "description": "Run currency validates commit shape and repository identity but does not compare the recorded commit with the observed source HEAD.",
+  "selector": {
+    "type": "element",
+    "element_id": "commit-freshness-gap"
+  }
+}

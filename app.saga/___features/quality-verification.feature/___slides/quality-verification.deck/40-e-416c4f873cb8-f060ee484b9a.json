@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_load.go",
+      "start": 50,
+      "end": 57,
+      "digest": "sha256:a8ac08b2dcccc7851c11e4d439a7a5486d455242dcd65030536afe7cb1019aa8",
+      "note": "Builds read-only status and reduces policy, relations, tests, runs, and evidence into criterion quality facts."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 122,
+      "end": 175,
+      "digest": "sha256:3609c91c730cb0c4dd8f6e32637ba5765fb42d983ec8c2fb6e36602f554380f6",
+      "note": "Builds read-only status and reduces policy, relations, tests, runs, and evidence into criterion quality facts."
+    }
+  ]
+}
