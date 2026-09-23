@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/load.go",
+      "start": 30,
+      "end": 35,
+      "digest": "sha256:f1eeba7947b4c9fc75a95b5c3626bd874f5674c68204b2b0469fac4755dcdd6c",
+      "note": "Bounds the quality filesystem, rejects unsafe JSON and symlinks, and rolls back partially created immutable records."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/load.go",
+      "start": 388,
+      "end": 433,
+      "digest": "sha256:94c614c32d3824c3675a391c7047b4ab1c60ad6a1f9ba2f6d25dbbb44b3fa095",
+      "note": "Bounds the quality filesystem, rejects unsafe JSON and symlinks, and rolls back partially created immutable records."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 769,
+      "end": 821,
+      "digest": "sha256:9ad38e717f397ff02438f9736917f1e067faf7daebe2034da313c2ad3fb5da68",
+      "note": "Bounds the quality filesystem, rejects unsafe JSON and symlinks, and rolls back partially created immutable records."
+    }
+  ]
+}

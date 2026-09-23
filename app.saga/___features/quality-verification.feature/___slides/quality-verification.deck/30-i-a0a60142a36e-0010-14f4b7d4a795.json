@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli-adapter",
+  "slide": "quality-ownership",
+  "rank": 10,
+  "kind": "node",
+  "label": "Quality CLI adapter",
+  "description": "The CLI parses strict input, resolves source commits, and authors exact code evidence before calling the quality domain.",
+  "selector": {
+    "type": "element",
+    "element_id": "cli-adapter"
+  }
+}

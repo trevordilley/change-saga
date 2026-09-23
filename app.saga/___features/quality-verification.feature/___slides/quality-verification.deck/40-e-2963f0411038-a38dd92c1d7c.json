@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 45,
+      "end": 50,
+      "digest": "sha256:100ca8c277441e1aa900137681e812003234ac5ab668b033f69e6e10b9c532c5",
+      "note": "Defines and constructs the durable run facts: exact source identity, claimed outcome, command text, and evidence references."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 155,
+      "end": 172,
+      "digest": "sha256:19e5960efc5fb2816fa7fe1499d3fa978fc8d46d21a508a322aa51615a32f8b1",
+      "note": "Defines and constructs the durable run facts: exact source identity, claimed outcome, command text, and evidence references."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 479,
+      "end": 484,
+      "digest": "sha256:8c74131445316221d214a0d3582a77e9a6059e68697b579ab1d55c0819f18506",
+      "note": "Defines and constructs the durable run facts: exact source identity, claimed outcome, command text, and evidence references."
+    }
+  ]
+}

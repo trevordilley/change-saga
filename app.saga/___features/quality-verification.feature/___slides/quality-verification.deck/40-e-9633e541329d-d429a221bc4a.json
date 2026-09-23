@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 234,
+      "end": 248,
+      "digest": "sha256:d0f87d4b2c710ae34553b77bcf206d557126e153896dc20e0601ac3025aa6eb1",
+      "note": "Rejects disallowed automation, unresolved definitions, conflicting heads, and non-active lifecycle states before coverage."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 308,
+      "end": 342,
+      "digest": "sha256:d2a737971108171cb47488c9e7566e35d024dfe4cb37a4eddf744aff5f8bf471",
+      "note": "Rejects disallowed automation, unresolved definitions, conflicting heads, and non-active lifecycle states before coverage."
+    }
+  ]
+}

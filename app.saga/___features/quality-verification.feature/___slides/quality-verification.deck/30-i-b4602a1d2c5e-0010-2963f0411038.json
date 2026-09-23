@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "recorded-run",
+  "slide": "quality-trust-gaps",
+  "rank": 10,
+  "kind": "node",
+  "label": "Recorded run facts",
+  "description": "A run stores the caller-provided result, command, source commit, and evidence references.",
+  "selector": {
+    "type": "element",
+    "element_id": "recorded-run"
+  }
+}

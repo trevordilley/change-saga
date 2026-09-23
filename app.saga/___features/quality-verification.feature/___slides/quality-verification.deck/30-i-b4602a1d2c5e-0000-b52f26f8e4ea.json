@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "strict-loader",
+  "slide": "quality-trust-gaps",
+  "rank": 0,
+  "kind": "region",
+  "label": "Strict storage boundary",
+  "description": "The loader rejects unsafe or ambiguous filesystem shapes and mutations publish complete immutable records or roll back.",
+  "selector": {
+    "type": "element",
+    "element_id": "strict-loader"
+  }
+}

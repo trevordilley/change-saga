@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "runner-caller",
+  "slide": "run-record-sequence",
+  "rank": 0,
+  "kind": "node",
+  "label": "Caller already ran the test",
+  "description": "The caller supplies a result, summary, command string, and evidence after execution outside Change Saga.",
+  "selector": {
+    "type": "element",
+    "element_id": "runner-caller"
+  }
+}

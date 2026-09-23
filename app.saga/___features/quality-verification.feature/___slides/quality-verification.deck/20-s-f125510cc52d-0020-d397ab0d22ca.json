@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "quality-state-graphs",
+  "deck": "quality-verification",
+  "title": "Append-only heads preserve ambiguity instead of guessing",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-f125510cc52d-0020-d397ab0d22ca.svg",
+  "takeaway": "Each graph exposes competing heads; current state exists only after one successor explicitly reconciles them.",
+  "reading_order": [
+    "lifecycle-state",
+    "revision-dag",
+    "evidence-dag",
+    "run-dag",
+    "conflict-rule"
+  ]
+}

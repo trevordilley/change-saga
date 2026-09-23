@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "visible-gaps",
+  "slide": "criterion-quality-gate",
+  "rank": 60,
+  "kind": "region",
+  "label": "Explicit gap states",
+  "description": "Missing kinds, stale pins, conflicts, inactivity, unsupported automation, absent runs, and nonpassing results remain distinct facts.",
+  "selector": {
+    "type": "element",
+    "element_id": "visible-gaps"
+  }
+}

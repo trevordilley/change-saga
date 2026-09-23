@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "policy-gate",
+  "slide": "criterion-quality-gate",
+  "rank": 10,
+  "kind": "node",
+  "label": "Policy gate",
+  "description": "A unique current policy can require positive, negative, and edge kinds and restrict automation; stale policy kinds remain required.",
+  "selector": {
+    "type": "element",
+    "element_id": "policy-gate"
+  }
+}

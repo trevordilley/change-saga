@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "feature-storage",
+  "slide": "quality-ownership",
+  "rank": 30,
+  "kind": "region",
+  "label": "Feature-owned storage",
+  "description": "Policies and test-case packages live under the owning feature while app-wide IDs remain unique.",
+  "selector": {
+    "type": "element",
+    "element_id": "feature-storage"
+  }
+}

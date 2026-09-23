@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#12213a"/></linearGradient>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9Z" fill="#94a3b8"/></marker>
+    <style>.title{font:700 34px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#f8fafc}.eyebrow{font:700 13px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#41d3bd;letter-spacing:2px}.h{font:700 15px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#f8fafc}.b{font:500 13px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#cbd5e1}.small{font:600 11px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#94a3b8}.take{font:600 18px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#dbeafe}.edge{fill:none;stroke:#94a3b8;stroke-width:2.2;marker-end:url(#arr)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text class="eyebrow" x="70" y="52">READINESS · DECISION FLOW</text>
+  <text class="title" x="70" y="96">A criterion is covered only through every current pin</text>
+
+  <g id="criterion-obligation"><rect x="62" y="222" width="170" height="92" rx="46" fill="#12303a" stroke="#41d3bd" stroke-width="2"/><text class="small" x="115" y="245">ACCEPTED</text><text class="small" x="113" y="259">CRITERION</text><text class="h" x="111" y="287">quality axis</text></g>
+  <g id="policy-gate"><path d="M319 203 l76 65 -76 65 -76-65z" fill="#251d42" stroke="#8b5cf6" stroke-width="2"/><text class="small" x="288" y="257">POLICY</text><text class="h" x="280" y="280">required kinds</text><text class="small" x="269" y="351">default: positive</text></g>
+  <g id="verifies-path"><path d="M505 203 l76 65 -76 65 -76-65z" fill="#172b46" stroke="#60a5fa" stroke-width="2"/><text class="small" x="472" y="257">RELATION</text><text class="h" x="470" y="280">verifies</text><text class="small" x="444" y="351">current revision pins</text></g>
+  <g id="definition-gate"><path d="M691 203 l76 65 -76 65 -76-65z" fill="#172b46" stroke="#60a5fa" stroke-width="2"/><text class="small" x="660" y="246">TEST</text><text class="h" x="652" y="270">active + kind</text><text class="small" x="641" y="291">automation allowed</text></g>
+  <g id="freshness-gate"><path d="M877 203 l76 65 -76 65 -76-65z" fill="#172b46" stroke="#60a5fa" stroke-width="2"/><text class="small" x="838" y="246">FRESHNESS</text><text class="h" x="833" y="270">one run head</text><text class="small" x="829" y="291">current evidence</text></g>
+  <g id="outcome-reducer"><path d="M1063 203 l76 65 -76 65 -76-65z" fill="#3a2b16" stroke="#f5b942" stroke-width="2"/><text class="small" x="1021" y="246">OUTCOME</text><text class="h" x="1024" y="270">passed?</text><text class="small" x="1005" y="291">failure outranks pass</text></g>
+  <path class="edge" d="M232 268 H238"/><path class="edge" d="M395 268 H424"/><path class="edge" d="M581 268 H610"/><path class="edge" d="M767 268 H796"/><path class="edge" d="M953 268 H982"/>
+
+  <g id="covered-result"><rect x="995" y="394" width="210" height="72" rx="20" fill="#10372f" stroke="#41d3bd" stroke-width="2"/><text class="small" x="1065" y="421">YES</text><text class="h" x="1040" y="448">covered</text><path class="edge" d="M1090 334 V383"/></g>
+
+  <g id="visible-gaps">
+    <rect x="238" y="403" width="652" height="113" rx="20" fill="#3a1822" stroke="#fb7185" stroke-width="2"/>
+    <text class="small" x="262" y="431">ANY “NO” STAYS EXPLICIT</text>
+    <text class="b" x="262" y="463">missing_kind · stale · conflicted · inactive · automation_not_allowed</text>
+    <text class="b" x="262" y="491">not_run · failed · blocked · skipped · invalid</text>
+    <path d="M319 333 V393 M505 333 V393 M691 333 V393 M877 333 V393 M1063 333 V393" stroke="#fb7185" stroke-width="2" stroke-dasharray="6 5"/>
+  </g>
+
+  <g id="stale-policy-rule"><rect x="238" y="544" width="967" height="68" rx="16" fill="#251d42" stroke="#8b5cf6"/><text class="h" x="266" y="573">Story revision changed?</text><text class="b" x="454" y="573">Old policy kinds are retained and reported stale — a story edit cannot silently weaken quality.</text><text class="small" x="266" y="595">CONSERVATIVE FAILURE</text></g>
+
+  <line x1="70" y1="640" x2="1210" y2="640" stroke="#334155"/>
+  <text class="take" x="70" y="680">A pass is usable only when relation, definition, policy, evidence, and run all resolve to one current path.</text>
+</svg>

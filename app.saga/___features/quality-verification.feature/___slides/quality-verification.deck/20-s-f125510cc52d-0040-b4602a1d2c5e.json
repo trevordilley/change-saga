@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "quality-trust-gaps",
+  "deck": "quality-verification",
+  "title": "Storage truth is hard; execution truth is caller-asserted",
+  "rank": 40,
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-f125510cc52d-0040-b4602a1d2c5e.svg",
+  "takeaway": "No executor or observed-HEAD run-freshness check exists; a caller-supplied pass can satisfy quality when other pins are current.",
+  "reading_order": [
+    "strict-loader",
+    "recorded-run",
+    "execution-gap",
+    "commit-freshness-gap",
+    "readiness-consequence"
+  ]
+}

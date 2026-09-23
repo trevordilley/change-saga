@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/quality.go",
+      "start": 529,
+      "end": 545,
+      "digest": "sha256:ef8087a6a4c7df54ca22299aea82d3b0c9cec4195ed8d296f7a6595ec0318097",
+      "note": "Resolves a symbolic source revision to a full commit ID and builds the recorded source identity."
+    }
+  ]
+}

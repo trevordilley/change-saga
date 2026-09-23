@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "revision-dag",
+  "slide": "quality-state-graphs",
+  "rank": 10,
+  "kind": "region",
+  "label": "Definition revision DAG",
+  "description": "Complete test definitions append as revisions; concurrent children create competing heads until a successor names them all.",
+  "selector": {
+    "type": "element",
+    "element_id": "revision-dag"
+  }
+}

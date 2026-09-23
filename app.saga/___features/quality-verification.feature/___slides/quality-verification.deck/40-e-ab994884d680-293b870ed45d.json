@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 465,
+      "end": 525,
+      "digest": "sha256:fc97efa9acd9b3cb5c9b43f6667e9c66fc3b3e05f560c664572c794f73e7e028",
+      "note": "Requires every current run head, preserves failed history, refuses overwrite, and tests explicit conflict reconciliation."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 275,
+      "end": 325,
+      "digest": "sha256:860a55deb689f21b08fe1a46026d868472011245bbb2bc87f638652047492d0f",
+      "note": "Requires every current run head, preserves failed history, refuses overwrite, and tests explicit conflict reconciliation."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "executor-gap",
+  "slide": "quality-ownership",
+  "rank": 50,
+  "kind": "callout",
+  "label": "Execution boundary",
+  "description": "The implemented authoring surface records a result but has no test-execution operation.",
+  "selector": {
+    "type": "element",
+    "element_id": "executor-gap"
+  },
+  "about": "external-executor",
+  "body": "Execution happens elsewhere; Change Saga records the caller’s observed result."
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "graph-guard",
+  "slide": "run-record-sequence",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Require every head",
+  "description": "A new run must name every current run head, preserving failures and conflicts rather than overwriting them.",
+  "selector": {
+    "type": "element",
+    "element_id": "graph-guard"
+  }
+}

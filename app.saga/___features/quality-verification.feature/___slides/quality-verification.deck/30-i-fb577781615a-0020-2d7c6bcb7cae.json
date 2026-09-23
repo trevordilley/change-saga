@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "source-pin",
+  "slide": "run-record-sequence",
+  "rank": 20,
+  "kind": "edge",
+  "label": "Resolve source commit",
+  "description": "A symbolic source reference is resolved to a full commit object ID and paired with the repository identity.",
+  "selector": {
+    "type": "element",
+    "element_id": "resolve-source"
+  }
+}

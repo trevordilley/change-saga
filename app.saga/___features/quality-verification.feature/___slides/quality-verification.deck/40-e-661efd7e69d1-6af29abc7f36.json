@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/validate.go",
+      "start": 441,
+      "end": 517,
+      "digest": "sha256:ac9aec90b73bc21342ed55b64851c545da4a1ecc0404293464e622672c9f5547",
+      "note": "Projects immutable run heads, withholds current state on conflicts, and preserves failures after explicit reconciliation."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 275,
+      "end": 325,
+      "digest": "sha256:860a55deb689f21b08fe1a46026d868472011245bbb2bc87f638652047492d0f",
+      "note": "Projects immutable run heads, withholds current state on conflicts, and preserves failures after explicit reconciliation."
+    }
+  ]
+}

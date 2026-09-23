@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "run-record-sequence",
+  "deck": "quality-verification",
+  "title": "Recording a run is a guarded append",
+  "rank": 10,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-f125510cc52d-0010-fb577781615a.svg",
+  "takeaway": "Run writes are serialized, immutable, and required to name every current head before a successor lands.",
+  "reading_order": [
+    "runner-caller",
+    "cli-parse",
+    "source-pin",
+    "lock-refresh",
+    "graph-guard",
+    "immutable-append",
+    "result-return"
+  ]
+}
