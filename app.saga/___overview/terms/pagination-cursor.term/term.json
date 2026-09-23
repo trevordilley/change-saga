@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term.schema.json",
+  "version": 5,
+  "id": "pagination-cursor",
+  "created_at": "2026-09-23T20:21:00.863904Z",
+  "request_id": "vocab-pagination-cursor-r1"
+}

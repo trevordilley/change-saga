@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:affected-record",
+  "parents": [],
+  "name": "Affected record",
+  "definition": "A Saga record that a comparison did not edit but may have invalidated. It is listed separately from Changed records and carries causes from changed code, a changed revision pin, or propagation through the traceability chain, so downstream review work stays visible without calling the record directly changed.",
+  "stories": [
+    "urn:change-saga:change-saga:story:change-impact-layers"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/changeview/layers.go",
+      "start": 122,
+      "end": 137,
+      "digest": "sha256:8c69da31cc1dded09fe839bae98e991b6c165e6d9e83a6da6c37a2cf73af45d4"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/changeview/layers.go",
+      "start": 273,
+      "end": 300,
+      "digest": "sha256:b0af2ca38f14306622a4f8e414c07c4a0d847f867c44f34f4eab555af5d573ad"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:01.560736Z",
+  "request_id": "vocab-affected-record-r1"
+}

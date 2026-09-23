@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:coverage-overlap",
+  "parents": [],
+  "name": "Coverage overlap",
+  "definition": "A changed source atom owned by more than one current code reference. The atom remains covered, and overlap alone does not make coverage incomplete, but it is surfaced so authors can scrutinize ambiguous or overly broad ownership.",
+  "stories": [
+    "urn:change-saga:change-saga:story:changed-code-explained"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/coverage/coverage.go",
+      "start": 38,
+      "end": 41,
+      "digest": "sha256:7ae659a2463d46084eb6d8ded296d340aea8f0cba933b3d7415e8efda1e66e0f"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/coverage/coverage.go",
+      "start": 117,
+      "end": 141,
+      "digest": "sha256:9f906d4defed1f803ed355072cc91e1c92cdbb7b14fc909200a6d1d9db3f3e1d"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/coverage/coverage.go",
+      "start": 208,
+      "end": 215,
+      "digest": "sha256:cab1aca49f3cd53761e234cb2f2500e88d0263bb69e2a18c69f091f02616a6d1"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:00.30775Z",
+  "request_id": "vocab-coverage-overlap-r1"
+}

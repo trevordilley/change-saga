@@ -1,0 +1,42 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:comparison",
+  "parents": [],
+  "name": "Comparison",
+  "definition": "The read mode used with an against revision. It evaluates the reproducible Git range from the actual merge base of against and head through the committed head, then derives coverage and the Changed, Affected, and Code layers. A worktree head is refused, and the range is not stored in the Saga.",
+  "aliases": [
+    "compare mode"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:comparison-context",
+    "urn:change-saga:change-saga:story:change-impact-layers",
+    "urn:change-saga:change-saga:story:record-change-history"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/gitdiff/opening.go",
+      "start": 5,
+      "end": 18,
+      "digest": "sha256:1a874433f5a2d334171cc54ca4eebd7a50e01b491df6f4a0bcd5c4b44a77f558"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 288,
+      "end": 306,
+      "digest": "sha256:9592caad73ddd1dc359204e0ba276c21a15b18cc0d919a75adcd1e8cfacfee64"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/changeview/layers.go",
+      "start": 42,
+      "end": 58,
+      "digest": "sha256:a341dd0321b4f95865f7bfb0a770c68b0098586bf61bca8140f7d7c9b7782641"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:01.347318Z",
+  "request_id": "vocab-comparison-r1"
+}
