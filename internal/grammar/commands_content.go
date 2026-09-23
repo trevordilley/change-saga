@@ -516,6 +516,18 @@ var contentCommands = []Command{
 		Positionals: []string{"<saga>"},
 	},
 	{
+		Name: "visual-qa", Status: StatusImplemented,
+		Usage:   "change-saga visual-qa [--feature ID] [--deck TARGET] [--slide TARGET] [--output DIR] [--repo PATH] [--playwright-dir DIR] [--json] <saga>",
+		Summary: "render selected slide assets and the actual reviewer at two standard viewports, with a contact sheet and mechanical findings",
+		Flags: []Flag{
+			optional("feature", "ID", "feature id or URN; use onboarding for the app onboarding deck"),
+			optional("deck", "TARGET", "deck id or URN"), optional("slide", "TARGET", "slide id or URN"),
+			optional("output", "DIR", "managed output directory"), optional("repo", "PATH", "source repository checkout when separate"),
+			optional("playwright-dir", "DIR", "directory containing the installed Playwright node_modules"), jsonFlag,
+		},
+		Positionals: []string{"<saga>"},
+	},
+	{
 		Name: "set-fragment-content", Status: StatusImplemented, Mutates: true, Writes: []string{"fragment"},
 		Usage:   "change-saga set-fragment-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
 		Summary: "replace a fragment entrypoint through the supported authoring API",
