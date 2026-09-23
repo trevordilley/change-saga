@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "report-item-explains-no-verdict",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:coverage-evaluation:item:report",
+  "to": "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict",
+  "scope": "self",
+  "rationale": "The report Item distinguishes descriptive coverage facts from caller-selected check policy.",
+  "to_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:49.191263Z"
+}

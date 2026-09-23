@@ -8,6 +8,7 @@
   "scope": "descendants",
   "rationale": "The state machine distinguishes uncovered, singly covered, overlapping, and stale evidence from exact resolution outcomes.",
   "to_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-23T03:25:05.845905Z"
+  "state": "superseded",
+  "created_at": "2026-09-23T03:25:05.845905Z",
+  "superseded_at": "2026-09-23T16:40:03.206627Z"
 }

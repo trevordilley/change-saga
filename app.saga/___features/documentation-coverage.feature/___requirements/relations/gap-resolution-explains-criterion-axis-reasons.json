@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "gap-resolution-explains-criterion-axis-reasons",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:axis-failures:item:gap-resolution",
+  "to": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:criterion-axis-reasons",
+  "scope": "self",
+  "rationale": "The gap-resolution Item shows that every gap retains concrete stale, invalid, conflict, unsatisfied, or missing-evidence reasons.",
+  "to_revision": "urn:change-saga:change-saga:story:documentation-gaps-visible:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:50.164611Z"
+}

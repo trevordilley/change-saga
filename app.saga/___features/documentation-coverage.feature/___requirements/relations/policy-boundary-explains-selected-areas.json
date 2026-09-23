@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "policy-boundary-explains-selected-areas",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:coverage-ownership:item:policy-boundary",
+  "to": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-areas",
+  "scope": "self",
+  "rationale": "The policy-boundary Item shows that check applies policy only to areas explicitly named by its caller.",
+  "to_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:50.441911Z"
+}
