@@ -138,7 +138,7 @@ var resources = []Resource{
 	{
 		Kind: "story-event", URN: "urn:change-saga:<saga>:story:<story>:event:<event>", Storage: "___features/<feature>.feature/___requirements/stories/<story>.story/events/<event>.json",
 		Schema: schemaBase + "v3/story-event.schema.json", Versions: []int{5}, History: "append-only lifecycle graph with parent heads",
-		Lifecycle: []string{"proposed", "accepted", "deferred", "rejected", "retired"}, Writers: []string{"story add", "story set-state"},
+		Lifecycle: []string{"proposed", "accepted", "deferred", "rejected", "retired"}, Writers: []string{"story add", "story set-state", "story withdraw", "story consolidate"},
 	},
 	{
 		Kind: "criterion", URN: "urn:change-saga:<saga>:story:<story>:criterion:<criterion>", Storage: "inside every story revision's acceptance_criteria",

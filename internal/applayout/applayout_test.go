@@ -8,6 +8,17 @@ import (
 	"time"
 )
 
+func TestFeatureQualifiedID(t *testing.T) {
+	if got := FeatureQualifiedID("Checkout Flow", "System Context"); got != "checkout-flow--system-context" {
+		t.Fatalf("qualified id = %q", got)
+	}
+	got := FeatureQualifiedID(strings.Repeat("f", 120), strings.Repeat("local", 20))
+	other := FeatureQualifiedID(strings.Repeat("f", 119)+"g", strings.Repeat("local", 20))
+	if len(got) > 128 || !ValidID(got) || !strings.Contains(got, "--") || got == other {
+		t.Fatalf("bounded qualified id = %q (%d bytes)", got, len(got))
+	}
+}
+
 func TestFeaturesListValidatesAndResolves(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "app.saga")
 	if err := os.Mkdir(root, 0o755); err != nil {

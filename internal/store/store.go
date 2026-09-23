@@ -21,6 +21,129 @@ var (
 	faultHook  func(string, string) error
 )
 
+type WriteBatchEntry struct {
+	Path      string
+	Data      []byte
+	Exclusive bool
+}
+
+// WriteBatch prepares every file before publishing any of them, then commits
+// the set while the caller holds its domain lock. If a commit step returns an
+// error, already-published entries are restored before WriteBatch returns.
+// This gives multi-record domain mutations all-or-none behavior for ordinary
+// I/O failures while retaining each file's atomic replacement semantics.
+func WriteBatch(entries []WriteBatchEntry) (err error) {
+	type prepared struct {
+		WriteBatchEntry
+		temp      string
+		old       []byte
+		oldMode   fs.FileMode
+		hadOld    bool
+		committed bool
+	}
+	values := make([]prepared, len(entries))
+	seen := map[string]bool{}
+	defer func() {
+		for i := range values {
+			if values[i].temp != "" {
+				_ = os.Remove(values[i].temp)
+			}
+		}
+	}()
+	for index, entry := range entries {
+		path, absErr := filepath.Abs(entry.Path)
+		if absErr != nil {
+			return absErr
+		}
+		if seen[path] {
+			return fmt.Errorf("batch writes %s more than once", filepath.Base(path))
+		}
+		seen[path] = true
+		values[index].WriteBatchEntry = entry
+		values[index].Path = path
+		info, statErr := os.Lstat(path)
+		if statErr == nil {
+			if entry.Exclusive {
+				return fs.ErrExist
+			}
+			if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
+				return fmt.Errorf("batch destination %s must be a regular file", filepath.Base(path))
+			}
+			values[index].old, err = os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			values[index].oldMode, values[index].hadOld = info.Mode().Perm(), true
+		} else if !errors.Is(statErr, fs.ErrNotExist) {
+			return statErr
+		} else if !entry.Exclusive {
+			return statErr
+		}
+		dir := filepath.Dir(path)
+		parent, parentErr := os.Stat(dir)
+		if parentErr != nil {
+			return parentErr
+		}
+		if !parent.IsDir() {
+			return fmt.Errorf("batch destination parent is not a directory")
+		}
+		temp, createErr := os.CreateTemp(dir, ".change-saga-batch-*")
+		if createErr != nil {
+			return createErr
+		}
+		values[index].temp = temp.Name()
+		if err = temp.Chmod(0o644); err == nil {
+			_, err = temp.Write(entry.Data)
+		}
+		if err == nil {
+			err = temp.Sync()
+		}
+		closeErr := temp.Close()
+		if err == nil {
+			err = closeErr
+		}
+		if err != nil {
+			return err
+		}
+	}
+	rollback := func(last int) {
+		for index := last; index >= 0; index-- {
+			value := &values[index]
+			if !value.committed {
+				continue
+			}
+			if value.hadOld {
+				_ = WriteFile(value.Path, value.old, value.oldMode, false)
+			} else {
+				_ = os.Remove(value.Path)
+				_ = SyncDir(filepath.Dir(value.Path))
+			}
+		}
+	}
+	for index := range values {
+		value := &values[index]
+		if err = injectFault("before-batch-commit", value.Path); err != nil {
+			rollback(index - 1)
+			return err
+		}
+		if value.Exclusive {
+			err = os.Link(value.temp, value.Path)
+		} else {
+			err = os.Rename(value.temp, value.Path)
+			value.temp = ""
+		}
+		if err == nil {
+			value.committed = true
+			err = SyncDir(filepath.Dir(value.Path))
+		}
+		if err != nil {
+			rollback(index)
+			return err
+		}
+	}
+	return nil
+}
+
 // WriteJSON writes one complete JSON record without exposing a partially
 // written destination. The destination's parent directory must already exist.
 func WriteJSON(path string, value any, exclusive bool) error {
