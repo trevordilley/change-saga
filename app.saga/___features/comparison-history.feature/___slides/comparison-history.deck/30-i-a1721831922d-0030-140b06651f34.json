@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "comparison-mapping",
+  "slide": "record-history-sequence",
+  "rank": 30,
+  "kind": "node",
+  "label": "Each event gets an opening range",
+  "description": "Merge records provide a landed base; otherwise the first parent is used so every committed event can reopen the comparison where it occurred.",
+  "selector": {
+    "type": "element",
+    "element_id": "comparison-mapping"
+  }
+}

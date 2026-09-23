@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 251,
+      "end": 270,
+      "digest": "sha256:3aebb20d619b11c7364e2d9a4ccda2ead833ed606761b84613b9dc195cad7a6f",
+      "note": "Classifies parsed atoms and assigns added content to head while deleted content remains located at the merge base."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 309,
+      "end": 324,
+      "digest": "sha256:598e21549e946971533afdfc84d8e75c96c647e761601a87d20ea0570d6d794d",
+      "note": "Classifies parsed atoms and assigns added content to head while deleted content remains located at the merge base."
+    }
+  ]
+}

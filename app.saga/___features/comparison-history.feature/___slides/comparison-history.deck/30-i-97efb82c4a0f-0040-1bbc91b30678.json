@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "merge-base",
+  "slide": "observe-compare-state",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Actual merge base defines the delta",
+  "description": "The declared base is not diffed directly; Git resolves its common ancestor with head and the comparison becomes merge-base through head.",
+  "selector": {
+    "type": "element",
+    "element_id": "merge-base"
+  }
+}

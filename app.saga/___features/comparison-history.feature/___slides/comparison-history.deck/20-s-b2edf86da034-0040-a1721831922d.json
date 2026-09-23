@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "record-history-sequence",
+  "deck": "comparison-history",
+  "title": "History reconstructs the comparison where change happened",
+  "rank": 40,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b2edf86da034-0040-a1721831922d.svg",
+  "takeaway": "Record history joins file commits, merge metadata, cursors, and reviews to emit commands that reopen each original comparison.",
+  "reading_order": [
+    "history-request",
+    "record-inventory",
+    "git-history",
+    "comparison-mapping",
+    "companion-remap",
+    "review-join",
+    "history-response"
+  ]
+}

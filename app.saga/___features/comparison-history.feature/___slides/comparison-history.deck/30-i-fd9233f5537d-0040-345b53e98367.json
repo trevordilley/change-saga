@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unreferenced",
+  "slide": "comparison-three-layers",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Unreferenced code stays visible",
+  "description": "Atoms with no evidence owner are emitted separately instead of being absorbed into a record group or hidden by aggregate counts.",
+  "selector": {
+    "type": "element",
+    "element_id": "unreferenced"
+  }
+}

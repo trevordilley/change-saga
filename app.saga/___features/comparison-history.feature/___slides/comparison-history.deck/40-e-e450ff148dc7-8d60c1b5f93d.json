@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/layers.go",
+      "start": 339,
+      "end": 361,
+      "digest": "sha256:85b971ec0746de861ef269320cda33e897de5dc9cb80d4f70b6924b13ca7d0d8",
+      "note": "Classifies stable record identities as added, revised, retired, or removed by comparing base and head inventories."
+    }
+  ]
+}

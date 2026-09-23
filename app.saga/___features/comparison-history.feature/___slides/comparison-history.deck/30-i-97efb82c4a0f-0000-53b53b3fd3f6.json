@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "range-decision",
+  "slide": "observe-compare-state",
+  "rank": 0,
+  "kind": "node",
+  "label": "Against decides the mode",
+  "description": "An empty against value selects observe mode; any explicit against value selects compare mode.",
+  "selector": {
+    "type": "element",
+    "element_id": "range-decision"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "query-session",
+  "slide": "comparison-architecture",
+  "rank": 30,
+  "kind": "node",
+  "label": "Bounded query session",
+  "description": "The query read API packages the Saga, source identity, evidence indexes, snapshots, stable errors, and pagination into deterministic responses.",
+  "selector": {
+    "type": "element",
+    "element_id": "query-session"
+  }
+}

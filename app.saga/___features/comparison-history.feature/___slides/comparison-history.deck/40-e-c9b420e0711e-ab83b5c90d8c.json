@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/opening.go",
+      "start": 5,
+      "end": 67,
+      "digest": "sha256:9d64fc878596078399ed3a7e338f7d59d45895ab83032cc4f4318053dd63f9e8",
+      "note": "Defines the ephemeral observe/compare range and maps it to a source comparison without persisting the selection."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Saga snapshot ownership</title>
+  <desc id="desc">The change view chooses documentation snapshots differently for an in-repository Saga and a companion Saga, with explicit diagnostics for missing history or lagging cursors.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17111e"/><stop offset="1" stop-color="#202a35"/></linearGradient>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#e7a3ff"/></marker>
+    <style>.t{font-family:Inter,system-ui,sans-serif;fill:#fff8ff}.ey{font-size:15px;font-weight:700;letter-spacing:2px;fill:#e7a3ff}.h{font-size:34px;font-weight:760}.l{font-size:21px;font-weight:730}.s{font-size:15px;fill:#cfbfce}.box{fill:#2a2030;stroke:#79527f;stroke-width:2}.lane{fill:#181a26;stroke:#51445b;stroke-width:2}.ok{fill:#17333a;stroke:#55d2c4;stroke-width:2}.warn{fill:#402b23;stroke:#ffb35d;stroke-width:2}.edge{fill:none;stroke:#e7a3ff;stroke-width:3;marker-end:url(#a)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="52" class="t ey">DOCUMENTATION SNAPSHOTS · OWNERSHIP</text>
+  <text x="64" y="96" class="t h">Code OIDs do not always name Saga commits</text>
+  <text x="64" y="126" class="t s">In-repo history aligns directly; companion history is joined through sync cursors and can degrade honestly.</text>
+
+  <g id="repository-router"><rect x="64" y="272" width="198" height="156" rx="24" class="box"/><text x="90" y="314" class="t ey">ROUTER</text><text x="90" y="352" class="t l">Saga location</text><text x="90" y="384" class="t s">same repository?</text></g>
+  <path d="M262 312H350" class="edge"/><path d="M262 390H350" class="edge"/>
+
+  <g id="same-repo-lane"><rect x="350" y="166" width="520" height="196" rx="24" class="lane"/><text x="378" y="206" class="t ey">IN-REPOSITORY</text><text x="378" y="244" class="t l">baseOID → Git snapshot</text><text x="378" y="278" class="t l">headOID → Git snapshot or working tree</text><text x="378" y="316" class="t s">checked-out head keeps uncommitted Saga authoring visible</text></g>
+
+  <g id="companion-lane"><rect x="350" y="396" width="520" height="214" rx="24" class="lane"/><text x="378" y="436" class="t ey">COMPANION REPOSITORY</text><text x="378" y="474" class="t l">cursor history joins code ↔ Saga</text><text x="378" y="508" class="t s">exact base cursor; else newest documented ancestor</text><text x="378" y="540" class="t s">working cursor may stand in for head</text><text x="378" y="574" class="t s">otherwise a matching Saga commit is selected</text></g>
+
+  <path d="M870 264H982" class="edge"/><path d="M870 430C920 430 938 420 982 420" class="edge"/>
+  <g id="selected-sides"><rect x="982" y="252" width="234" height="196" rx="24" class="ok"/><text x="1008" y="294" class="t ey" fill="#55d2c4">SELECTED SIDES</text><text x="1008" y="334" class="t l">Base inventory</text><text x="1008" y="370" class="t l">Head inventory</text><text x="1008" y="408" class="t s">feed the same Compute path</text></g>
+
+  <g id="degraded-history"><rect x="902" y="506" width="314" height="126" rx="22" class="warn"/><text x="928" y="548" class="t ey" fill="#ffb35d">DEGRADED, NOT HIDDEN</text><text x="928" y="582" class="t s">missing base → all records added</text><text x="928" y="608" class="t s">cursor behind → diagnostic + sync action</text></g>
+  <path d="M870 570H902" class="edge"/>
+
+  <g id="history-unavailable"><rect x="64" y="500" width="244" height="112" rx="22" class="warn"/><text x="90" y="542" class="t l">No Saga Git history</text><text x="90" y="574" class="t s">diagnostic; treat records added</text></g>
+  <path d="M164 428V500" class="edge"/>
+</svg>

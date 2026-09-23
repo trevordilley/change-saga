@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "inputs",
+  "slide": "comparison-three-layers",
+  "rank": 0,
+  "kind": "node",
+  "label": "Two Saga snapshots plus one source delta",
+  "description": "Layer computation loads base and head documentation inventories alongside source atoms, coverage ownership, and impact projection.",
+  "selector": {
+    "type": "element",
+    "element_id": "inputs"
+  }
+}

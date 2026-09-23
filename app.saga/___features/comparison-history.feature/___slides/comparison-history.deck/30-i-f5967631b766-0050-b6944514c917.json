@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "history-unavailable",
+  "slide": "saga-snapshot-ownership",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Missing Saga Git history is not fabricated",
+  "description": "If the Saga cannot be located in Git, layer computation continues from the opened Saga and reports that historical comparison is unavailable.",
+  "selector": {
+    "type": "element",
+    "element_id": "history-unavailable"
+  }
+}

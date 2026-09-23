@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff_test.go",
+      "start": 416,
+      "end": 445,
+      "digest": "sha256:2d4f008e7a466ae294e96cd349e606c0adb6ac9a45207f8c9882192f2b0b799a",
+      "note": "Tests both actual merge-base selection and the intentionally unsupported uncommitted source comparison path."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "degraded-history",
+  "slide": "saga-snapshot-ownership",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Cursor gaps degrade explicitly",
+  "description": "Missing or lagging companion cursors produce diagnostics; an absent base means every current record is treated as added.",
+  "selector": {
+    "type": "element",
+    "element_id": "degraded-history"
+  }
+}

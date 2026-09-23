@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "observe",
+  "slide": "observe-compare-state",
+  "rank": 10,
+  "kind": "node",
+  "label": "Observe has no changed atoms",
+  "description": "Observe compares the selected head to itself, so evidence is judged at one commit and no change layers exist.",
+  "selector": {
+    "type": "element",
+    "element_id": "observe"
+  }
+}
