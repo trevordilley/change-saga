@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-evidence-dag-explains-provenance",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:quality-state-graphs:item:evidence-dag",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:evidence-provenance",
+  "scope": "self",
+  "rationale": "The evidence DAG records role and exact references while supersession and pin currency determine which evidence remains current.",
+  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:40:47.049501Z"
+}
