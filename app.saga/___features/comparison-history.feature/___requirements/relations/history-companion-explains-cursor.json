@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "history-companion-explains-cursor",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:record-history-sequence:item:companion-remap",
+  "to": "urn:change-saga:change-saga:story:source-or-companion:criterion:companion-cursor",
+  "scope": "self",
+  "rationale": "The history remap uses stored companion cursors to translate Saga events back to exact source commits.",
+  "to_revision": "urn:change-saga:change-saga:story:source-or-companion:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:41.82376Z"
+}
