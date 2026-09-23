@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "writer-lock-explains-serialized-writes",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:story-mutation-sequence:item:writer-lock",
+  "to": "urn:change-saga:change-saga:story:safe-concurrent-authoring:criterion:serialized-writes",
+  "scope": "self",
+  "rationale": "This Item explains serialized supported mutations and the bounded busy outcome under contention.",
+  "to_revision": "urn:change-saga:change-saga:story:safe-concurrent-authoring:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:26.255345Z"
+}

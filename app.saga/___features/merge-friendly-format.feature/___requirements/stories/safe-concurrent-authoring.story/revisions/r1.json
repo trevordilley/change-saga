@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:safe-concurrent-authoring",
+  "parents": [],
+  "title": "Author safely alongside concurrent writers",
+  "statement": "As a developer collaborating in parallel, I can submit a Saga mutation without overwriting another writer's newer work so concurrent edits remain recoverable.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "serialized-writes",
+      "statement": "When two supported writers overlap, one completes its persisted mutation before the other changes Saga state; a writer that cannot proceed within the configured timeout returns a busy error."
+    },
+    {
+      "id": "stale-parent-rejected",
+      "statement": "A revision whose submitted parent set differs from the current head set is rejected without creating the revision and identifies the expected heads."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:41.677172Z"
+}
