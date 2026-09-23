@@ -152,10 +152,11 @@ func flagsDirectory(graph *appGraph, query string) *directoryView {
 func termsDirectory(document requirements.Document, places map[string][]termPlace, query string) *directoryView {
 	view := &directoryView{
 		ID: "terms", Title: "Terms and vocabulary", Action: "/terms",
-		Lede:  "The words this project uses in its own way, what each one means here, and the code that defines it.",
+		Lede:  "The words this project uses in its own way, how mature each meaning is, and what implementation evidence has been observed. Evidence availability does not prove implementation.",
 		Label: "Filter terms", Noun: "term", Nouns: "terms",
 		Columns: []directoryColumn{
 			{Title: "Term"}, {Title: "Also"}, {Title: "Definition", Wide: true},
+			{Title: "Definition maturity"}, {Title: "Implementation evidence"},
 			{Title: "Defined in code"}, {Title: "Reference"},
 		},
 		Empty:   "No terms yet.",
@@ -181,10 +182,27 @@ func termsDirectory(document requirements.Document, places map[string][]termPlac
 		default:
 			reference = textCell("current")
 		}
+		maturity := textCell(item.DefinitionMaturity)
+		if item.RevisionConflicted {
+			maturity = gapCell("unknown — revision conflict")
+		} else if item.DefinitionMaturity == string(requirements.DefinitionMaturityUnknown) {
+			maturity = gapCell("unknown — not assessed")
+		}
+		evidence := textCell(item.ImplementationEvidence)
+		switch {
+		case item.RevisionConflicted:
+			evidence = gapCell("unknown — revision conflict")
+		case item.ImplementationEvidence == string(requirements.ImplementationEvidenceUnknown):
+			evidence = gapCell("unknown — unverified")
+		case item.ImplementationEvidence == string(requirements.ImplementationEvidenceAbsent):
+			evidence = gapCell("absent — observed gap")
+		}
 		view.addRow(directoryRow{Key: item.ID, Cells: []directoryCell{
 			name,
 			listCell(item.Aliases, "no aliases"),
 			textCell(summarise(item.Definition, 160)),
+			maturity,
+			evidence,
 			listCell(locations, "not linked to code yet"),
 			reference,
 		}})

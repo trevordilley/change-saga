@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://changesaga.dev/schema/v5/term-revision.schema.json",
   "title": "App Saga complete term revision",
-  "description": "A term is the project's own vocabulary: a name, a definition, any aliases, and what it names: the stories it belongs to, other app records, and the code that defines it, pinned at a commit.",
+  "description": "A term is the project's own vocabulary: a name, a definition, independent definition maturity and implementation-evidence availability, any aliases, and what it names. Omitted maturity/evidence fields on older records mean unknown.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -43,6 +43,16 @@
     "definition": {
       "type": "string",
       "minLength": 1
+    },
+    "definition_maturity": {
+      "type": "string",
+      "enum": ["unknown", "proposed", "accepted"],
+      "description": "Maturity of the term's meaning, independent of implementation-evidence availability. Omission means unknown for backward compatibility."
+    },
+    "implementation_evidence": {
+      "type": "string",
+      "enum": ["unknown", "absent", "partial", "present"],
+      "description": "Observed availability of implementation evidence. Evidence availability is not proof of implementation; unknown is unverified, while absent records an observed gap. Omission means unknown."
     },
     "aliases": {
       "type": "array",

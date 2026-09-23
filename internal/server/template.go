@@ -157,7 +157,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 {{define "terms-page"}}<section class="terms-page" data-terms-page>{{if .Index}}<header class="requirements-header">
 <h1>Terms and vocabulary</h1>
 </header>
-<p class="terms-lede">The words this project uses in its own way, what each one means here, and the code that defines it.</p>
+<p class="terms-lede">The words this project uses in its own way, how mature each meaning is, and what implementation evidence has been observed. Evidence availability does not prove implementation.</p>
 {{template "directory" .Directory}}{{else}}{{with .Term}}<nav class="requirements-breadcrumbs" aria-label="Term breadcrumb">
 <a href="/terms">Terms and vocabulary</a>
 <span>/</span>
@@ -168,8 +168,14 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <h1>{{.Name}}</h1>{{if .Retired}}<p class="term-state">Retired: the project no longer uses this term.</p>{{end}}
 </div>
 </header>
+{{if .RevisionConflicted}}<div class="alert" role="alert" data-term-revision-conflict><span><strong>Conflicting term revisions</strong> Definition maturity and implementation-evidence availability are unknown until the competing heads are reconciled.</span></div>{{end}}
+<dl class="feature-summary term-semantics" data-term-semantics>
+<div><dt>Definition maturity</dt><dd>{{.DefinitionMaturity}}{{if eq .DefinitionMaturity "unknown"}} — not assessed{{end}}</dd></div>
+<div><dt>Implementation evidence</dt><dd>{{.ImplementationEvidence}}</dd></div>
+</dl>
+<p class="trace-note" data-term-evidence-note>{{.EvidenceNote}}</p>
 <section class="term-definition">
-<p>{{.Definition}}</p>
+{{if .Definition}}<p>{{.Definition}}</p>{{else}}<p class="term-empty">No current definition is available.</p>{{end}}
 </section>{{if .Aliases}}
 <section class="term-aliases">
 <h2>Also called</h2>

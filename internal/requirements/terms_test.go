@@ -22,6 +22,7 @@ func testtakerInput() AddTermInput {
 	return AddTermInput{ID: "testtaker", RevisionID: "r1", EventID: "active", CreatedAt: testTime, RequestID: "add-testtaker",
 		TermDefinition: TermDefinition{
 			Name: "Testtaker", Definition: "One sitting of an assessment, not the person taking it.",
+			DefinitionMaturity: DefinitionMaturityAccepted, ImplementationEvidence: ImplementationEvidencePresent,
 			Aliases: []string{"test taker", "sitting"}, Stories: []string{testStoryURN},
 			Records: []string{"urn:change-saga:test:persona:buyer"}, Code: []coderef.Reference{testtakerCode()},
 		}}
@@ -48,7 +49,8 @@ func TestATermIsALivingRecordThatNamesItsStoriesRecordsAndCode(t *testing.T) {
 		t.Fatal(err)
 	}
 	term := document.FindTerm("testtaker")
-	if term == nil || !term.Active() || term.CurrentRevision == nil || term.CurrentRevision.Name != "Testtaker" || len(term.CurrentRevision.Code) != 1 {
+	if term == nil || !term.Active() || term.CurrentRevision == nil || term.CurrentRevision.Name != "Testtaker" || len(term.CurrentRevision.Code) != 1 ||
+		term.CurrentRevision.EffectiveDefinitionMaturity() != DefinitionMaturityAccepted || term.CurrentRevision.EffectiveImplementationEvidence() != ImplementationEvidencePresent {
 		t.Fatalf("term = %+v", term)
 	}
 	naming := document.TermsNaming()
@@ -97,6 +99,14 @@ func TestATermRefusesLinksThatDoNotExistAndMalformedContent(t *testing.T) {
 		"definition is required": func(input *AddTermInput) {
 			input.Definition = " "
 		},
+		"definition_maturity must be": func(input *AddTermInput) {
+			input.Stories, input.Records = nil, nil
+			input.DefinitionMaturity = "settled"
+		},
+		"implementation_evidence must be": func(input *AddTermInput) {
+			input.Stories, input.Records = nil, nil
+			input.ImplementationEvidence = "implemented"
+		},
 		"canonical persona, feature, flag, or term URN": func(input *AddTermInput) {
 			input.Stories, input.Records = nil, []string{"urn:change-saga:test:story:checkout"}
 		},
@@ -121,6 +131,46 @@ func TestATermRefusesLinksThatDoNotExistAndMalformedContent(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(root, "___overview", "terms", "testtaker.term")); !os.IsNotExist(err) {
 		t.Fatalf("a refused term left a package behind: %v", err)
+	}
+}
+
+func TestLegacyTermSemanticAxesDefaultToUnknown(t *testing.T) {
+	root := newSaga(t)
+	input := testtakerInput()
+	input.Stories, input.Records, input.Code = nil, nil, nil
+	input.DefinitionMaturity, input.ImplementationEvidence = "", ""
+	if _, err := AddTerm(root, "test", input); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(root, filepath.FromSlash(TermPackagePath("testtaker")), "revisions", "r1.json")
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Simulate a pre-feature record by removing both optional properties.
+	legacy := string(data)
+	legacy = strings.Replace(legacy, "  \"definition_maturity\": \"unknown\",\n", "", 1)
+	legacy = strings.Replace(legacy, "  \"implementation_evidence\": \"unknown\",\n", "", 1)
+	if legacy == string(data) {
+		t.Fatalf("writer did not persist explicit unknown defaults:\n%s", data)
+	}
+	if err := os.WriteFile(path, []byte(legacy), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	revision := document.FindTerm("testtaker").CurrentRevision
+	if revision.EffectiveDefinitionMaturity() != DefinitionMaturityUnknown || revision.EffectiveImplementationEvidence() != ImplementationEvidenceUnknown {
+		t.Fatalf("legacy defaults = %q, %q", revision.EffectiveDefinitionMaturity(), revision.EffectiveImplementationEvidence())
+	}
+	invalid := strings.Replace(legacy, "  \"definition\":", "  \"definition_maturity\": \"\",\n  \"definition\":", 1)
+	if err := os.WriteFile(path, []byte(invalid), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "definition_maturity") {
+		t.Fatalf("an explicit empty maturity must not masquerade as an omitted legacy field: %v", err)
 	}
 }
 

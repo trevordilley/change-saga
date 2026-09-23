@@ -46,6 +46,7 @@ func termSaga(t *testing.T) (root, repo string) {
 	}
 	if _, err := requirements.AddTerm(root, "test", requirements.AddTermInput{ID: "testtaker", RevisionID: "r1", EventID: "active", CreatedAt: created,
 		TermDefinition: requirements.TermDefinition{Name: "Testtaker", Definition: "One sitting of an assessment, not the person taking it.",
+			DefinitionMaturity: requirements.DefinitionMaturityAccepted, ImplementationEvidence: requirements.ImplementationEvidencePresent,
 			Aliases: []string{"sitting"}, Stories: []string{"urn:change-saga:test:story:sit"},
 			Code: []coderef.Reference{{Commit: commit, Path: "kinds.go", Start: 6, End: 6, Digest: digest}}}}); err != nil {
 		t.Fatal(err)
@@ -83,6 +84,7 @@ func TestATermPageShowsItsDefinitionStoriesAndCode(t *testing.T) {
 	html := termPage(t, root, repo, "/terms/testtaker")
 	for _, want := range []string{
 		"<h1>Testtaker</h1>", "One sitting of an assessment, not the person taking it.", "sitting",
+		"Definition maturity", "accepted", "Implementation evidence", "present", "does not prove the concept is implemented", "linked code evidence is current",
 		`href="/requirements/sit"`, "Sit an assessment",
 		`data-file-path="kinds.go"`, `<tr class="referenced"><th scope="row">6</th><td><code data-code>	KindTesttaker Kind = &#34;testtaker&#34;</code>`,
 	} {
@@ -111,6 +113,67 @@ func TestATermPageShowsItsDefinitionStoriesAndCode(t *testing.T) {
 	stale := termPage(t, root, repo, "/terms/testtaker")
 	if !strings.Contains(stale, `class="term-code stale"`) || !strings.Contains(stale, "KindTesttaker") || !strings.Contains(stale, "changed after the term was written") {
 		t.Fatalf("a renamed constant must show the term's code as stale:\n%s", stale)
+	}
+	if !strings.Contains(stale, "linked code evidence is stale") || !strings.Contains(stale, ">present<") {
+		t.Fatalf("stale code must not rewrite evidence availability:\n%s", stale)
+	}
+}
+
+func TestTermPagesDistinguishObservedGapsUnknownsAndRevisionConflicts(t *testing.T) {
+	root, repo := termSaga(t)
+	created := time.Date(2026, 9, 2, 0, 0, 0, 0, time.UTC)
+	if _, err := requirements.AddTerm(root, "test", requirements.AddTermInput{ID: "review-annotation", RevisionID: "r1", EventID: "active", CreatedAt: created,
+		TermDefinition: requirements.TermDefinition{Name: "Review annotation", Definition: "A note pinned to an exact review Item.",
+			DefinitionMaturity: requirements.DefinitionMaturityAccepted, ImplementationEvidence: requirements.ImplementationEvidenceAbsent,
+			Stories: []string{"urn:change-saga:test:story:sit"}}}); err != nil {
+		t.Fatal(err)
+	}
+	intent := termPage(t, root, repo, "/terms/review-annotation")
+	for _, want := range []string{"accepted", ">absent<", "Observed implementation gap", "No code references this term yet"} {
+		if !strings.Contains(intent, want) {
+			t.Fatalf("intent-only term is missing %q:\n%s", want, intent)
+		}
+	}
+	if index := termPage(t, root, repo, "/terms"); !strings.Contains(index, "absent — observed gap") {
+		t.Fatalf("term directory does not distinguish the observed gap:\n%s", index)
+	}
+	if _, err := requirements.AddTerm(root, "test", requirements.AddTermInput{ID: "legacy-meaning", RevisionID: "r1", EventID: "active", CreatedAt: created,
+		TermDefinition: requirements.TermDefinition{Name: "Legacy meaning", Definition: "A definition from before semantic axes existed."}}); err != nil {
+		t.Fatal(err)
+	}
+	unknown := termPage(t, root, repo, "/terms/legacy-meaning")
+	if !strings.Contains(unknown, "unknown — not assessed") || !strings.Contains(unknown, "Unverified: no implementation-evidence assessment") || strings.Contains(unknown, "Observed implementation gap") {
+		t.Fatalf("unknown must remain unverified, not an observed gap:\n%s", unknown)
+	}
+
+	termURN := "urn:change-saga:test:term:review-annotation"
+	if _, err := requirements.ReviseTerm(root, "test", requirements.ReviseTermInput{Term: termURN, ID: "r2", Parents: []string{termURN + ":revision:r1"}, CreatedAt: created,
+		TermDefinition: requirements.TermDefinition{Name: "Review annotation", Definition: "A proposed competing meaning.", DefinitionMaturity: requirements.DefinitionMaturityProposed, ImplementationEvidence: requirements.ImplementationEvidencePartial}}); err != nil {
+		t.Fatal(err)
+	}
+	r2Path := filepath.Join(root, "___overview", "terms", "review-annotation.term", "revisions", "r2.json")
+	data, err := os.ReadFile(r2Path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	r3 := strings.Replace(string(data), `"id": "r2"`, `"id": "r3"`, 1)
+	if r3 == string(data) {
+		t.Fatalf("could not derive competing revision from:\n%s", data)
+	}
+	if err := os.WriteFile(filepath.Join(filepath.Dir(r2Path), "r3.json"), []byte(r3), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	conflict := termPage(t, root, repo, "/terms/review-annotation")
+	for _, want := range []string{"Conflicting term revisions", "unknown — not assessed", "competing revision heads must be reconciled", "No current definition is available"} {
+		if !strings.Contains(conflict, want) {
+			t.Fatalf("conflicted term is missing %q:\n%s", want, conflict)
+		}
+	}
+	index := termPage(t, root, repo, "/terms")
+	for _, want := range []string{"Definition maturity", "Implementation evidence", "unknown — revision conflict", "unknown — unverified"} {
+		if !strings.Contains(index, want) {
+			t.Fatalf("term directory is missing %q:\n%s", want, index)
+		}
 	}
 }
 

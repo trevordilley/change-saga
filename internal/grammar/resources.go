@@ -84,7 +84,7 @@ var resources = []Resource{
 		Kind: "term-revision", URN: "urn:change-saga:<saga>:term:<term>:revision:<revision>", Storage: "___overview/terms/<term>.term/revisions/<revision>.json",
 		Schema: schemaBase + "v5/term-revision.schema.json", Versions: []int{5}, History: "append-only complete snapshots with parent heads; multiple heads are a conflict",
 		Writers: []string{"term add", "term revise"},
-		Notes:   "name, definition, aliases, the stories and records it names, and code references pinned at a commit; the code is watched for renames and never counts toward changed-line coverage",
+		Notes:   "name and definition with independent definition maturity (unknown, proposed, accepted) and implementation-evidence availability (unknown, absent, partial, present), plus aliases, named records, and optional exact code pins; evidence availability never proves implementation, omitted legacy axes mean unknown, and code health stays separate",
 	},
 	{
 		Kind: "term-event", URN: "urn:change-saga:<saga>:term:<term>:event:<event>", Storage: "___overview/terms/<term>.term/events/<event>.json",

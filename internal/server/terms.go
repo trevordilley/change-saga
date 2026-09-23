@@ -16,9 +16,10 @@ import (
 )
 
 // The overview's Terms and vocabulary: the project's own words, each with its
-// definition, aliases, the stories it belongs to, and the code that defines
-// it, rendered as that code reads at the head. The documentation carries no
-// approvals or comments, so neither page offers them.
+// definition, independent definition maturity and implementation-evidence
+// availability, aliases, stories, and exact code links rendered at the head.
+// Evidence availability does not prove implementation. The documentation
+// carries no approvals or comments, so neither page offers them.
 
 var errTermNotFound = errors.New("term not found")
 
@@ -32,17 +33,21 @@ type termsPageView struct {
 }
 
 type termView struct {
-	ID         string
-	Target     string
-	Href       string
-	Name       string
-	Definition string
-	Aliases    []string
-	Retired    bool
-	Stale      bool
-	Stories    []termLinkView
-	Records    []termLinkView
-	Code       []*termCodeView
+	ID                     string
+	Target                 string
+	Href                   string
+	Name                   string
+	Definition             string
+	DefinitionMaturity     string
+	ImplementationEvidence string
+	EvidenceNote           string
+	RevisionConflicted     bool
+	Aliases                []string
+	Retired                bool
+	Stale                  bool
+	Stories                []termLinkView
+	Records                []termLinkView
+	Code                   []*termCodeView
 }
 
 type termLinkView struct {
@@ -104,18 +109,28 @@ func (a *app) makeTermsPage(ctx context.Context, document requirements.Document,
 		for _, code := range page.Term.Code {
 			page.Term.Stale = page.Term.Stale || code.Stale
 		}
+		page.Term.EvidenceNote = implementationEvidenceNote(term.CurrentRevision.EffectiveImplementationEvidence(), len(term.CurrentRevision.Code), page.Term.Stale, false)
 	}
 	return page, nil
 }
 
 func makeTermView(document requirements.Document, term requirements.Term, stories map[string]string) *termView {
 	urn, _ := requirements.TermURN(document.SagaID, term.Identity.ID)
-	view := &termView{ID: term.Identity.ID, Target: urn, Href: termHref(term.Identity.ID), Name: term.Identity.ID, Retired: !term.Active()}
+	view := &termView{
+		ID: term.Identity.ID, Target: urn, Href: termHref(term.Identity.ID), Name: term.Identity.ID,
+		DefinitionMaturity: string(requirements.DefinitionMaturityUnknown), ImplementationEvidence: string(requirements.ImplementationEvidenceUnknown),
+		RevisionConflicted: len(term.RevisionHeads) > 1,
+		Retired:            term.CurrentLifecycle != nil && term.CurrentLifecycle.State == requirements.TermRetired,
+	}
 	revision := term.CurrentRevision
 	if revision == nil {
+		view.EvidenceNote = implementationEvidenceNote(requirements.ImplementationEvidenceUnknown, 0, false, view.RevisionConflicted)
 		return view
 	}
 	view.Name, view.Definition, view.Aliases = revision.Name, revision.Definition, revision.Aliases
+	view.DefinitionMaturity = string(revision.EffectiveDefinitionMaturity())
+	view.ImplementationEvidence = string(revision.EffectiveImplementationEvidence())
+	view.EvidenceNote = implementationEvidenceNote(revision.EffectiveImplementationEvidence(), len(revision.Code), false, false)
 	for _, story := range revision.Stories {
 		ref, err := livingid.Parse(story)
 		if err != nil {
@@ -131,6 +146,30 @@ func makeTermView(document requirements.Document, term requirements.Term, storie
 		view.Records = append(view.Records, recordLink(document, record))
 	}
 	return view
+}
+
+// implementationEvidenceNote keeps the authored availability assessment
+// separate from the health of exact code links. In particular, unknown is an
+// unverified inference, while absent is an explicitly observed gap.
+func implementationEvidenceNote(value requirements.ImplementationEvidence, linked int, stale, conflicted bool) string {
+	if conflicted {
+		return "Unavailable: competing revision heads must be reconciled before a current assessment exists."
+	}
+	switch value {
+	case requirements.ImplementationEvidenceAbsent:
+		return "Observed implementation gap: no implementation evidence is available."
+	case requirements.ImplementationEvidencePartial, requirements.ImplementationEvidencePresent:
+		note := "Evidence availability is recorded, but it does not prove the concept is implemented."
+		if linked == 0 {
+			return note + " No exact code reference links that evidence."
+		}
+		if stale {
+			return note + " The linked code evidence is stale."
+		}
+		return note + " The linked code evidence is current."
+	default:
+		return "Unverified: no implementation-evidence assessment is recorded."
+	}
 }
 
 // recordLink names another record a term references and links it when the

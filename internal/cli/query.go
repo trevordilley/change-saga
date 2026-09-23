@@ -244,7 +244,7 @@ var queryPurpose = map[string]string{
 	"readiness":           "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 	"audit":               "a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts",
 	"history":             "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
-	"terms":               "the project's vocabulary: each term's definition, aliases, stories, records, and code health at the head; filter by term, by story, or by a code location at any commit to find the terms a line of code defines",
+	"terms":               "the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation",
 	"layers":              "one comparison's Changed records (each with before and after), Affected records (with why), and Code (hunks grouped under the records that reference them, plus unreferenced lines)",
 }
 

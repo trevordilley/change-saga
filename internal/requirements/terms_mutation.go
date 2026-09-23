@@ -15,11 +15,13 @@ import (
 
 // TermDefinition is the complete content of one term revision.
 type TermDefinition struct {
-	Name       string
-	Definition string
-	Aliases    []string
-	Stories    []string
-	Records    []string
+	Name                   string
+	Definition             string
+	DefinitionMaturity     DefinitionMaturity
+	ImplementationEvidence ImplementationEvidence
+	Aliases                []string
+	Stories                []string
+	Records                []string
 	// Code references are authored by the caller, which reads each one's
 	// digest from the code repository.
 	Code []coderef.Reference
@@ -68,8 +70,16 @@ func termRevision(urn, id string, parents []string, definition TermDefinition, c
 	if len(code) == 0 {
 		code = nil
 	}
+	if definition.DefinitionMaturity == "" {
+		definition.DefinitionMaturity = DefinitionMaturityUnknown
+	}
+	if definition.ImplementationEvidence == "" {
+		definition.ImplementationEvidence = ImplementationEvidenceUnknown
+	}
+	definitionMaturity, implementationEvidence := definition.DefinitionMaturity, definition.ImplementationEvidence
 	return TermRevision{Schema: TermRevisionSchemaURL, Version: AppRecordVersion, ID: id, Term: urn, Parents: copyStrings(parents),
 		Name: strings.TrimSpace(definition.Name), Definition: strings.TrimSpace(definition.Definition),
+		DefinitionMaturity: &definitionMaturity, ImplementationEvidence: &implementationEvidence,
 		Aliases: trimmed(definition.Aliases), Stories: trimmed(definition.Stories), Records: trimmed(definition.Records), Code: code,
 		CreatedAt: createdAt, RequestID: requestID}
 }

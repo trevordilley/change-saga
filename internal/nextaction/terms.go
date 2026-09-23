@@ -18,7 +18,10 @@ func (b *builder) terms() {
 		if !term.Stale || term.State != "active" || len(term.RevisionHeads) != 1 {
 			continue
 		}
-		values := []grammar.Value{grammar.V("term", term.Term), grammar.V("revision", ""), grammar.V("name", term.Name), grammar.V("definition", term.Definition)}
+		values := []grammar.Value{
+			grammar.V("term", term.Term), grammar.V("revision", ""), grammar.V("name", term.Name), grammar.V("definition", term.Definition),
+			grammar.V("definition-maturity", string(term.DefinitionMaturity)), grammar.V("implementation-evidence", string(term.ImplementationEvidence)),
+		}
 		values = append(values, parents(term.RevisionHeads)...)
 		for _, alias := range term.Aliases {
 			values = append(values, grammar.V("alias", alias))

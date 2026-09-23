@@ -30,6 +30,8 @@ var reviewDecisionFlags = []Flag{
 func termDefinitionFlags() []Flag {
 	return []Flag{
 		required("name", "TEXT", "the term as the team says it"), required("definition", "TEXT", "what the term means in this project"),
+		optional("definition-maturity", "STATE", "unknown, proposed, or accepted; defaults to unknown and is independent of implementation evidence"),
+		optional("implementation-evidence", "STATE", "unknown, absent, partial, or present; defaults to unknown and never proves implementation"),
 		repeatable("alias", "TEXT", "another spelling the team uses", false), repeatable("story", "URN", "story URN or ID the term belongs to", false),
 		repeatable("record", "URN", "persona, feature, flag, or term URN the term names", false),
 		repeatable("ref", "LOCATION", "code that defines the term, <commit>:<path>#L<start>[-L<end>]; the commit may be any revision", false),
@@ -85,16 +87,16 @@ var commands = []Command{
 	},
 	{
 		Name: "term add", Status: StatusImplemented, Mutates: true, Writes: []string{"term", "term-revision", "term-event"},
-		Usage:   "change-saga term add --id ID --name TEXT --definition TEXT [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
-		Summary: "define a term in the project's vocabulary and reference the stories and code it names; a rename of that code makes the reference stale",
+		Usage:   "change-saga term add --id ID --name TEXT --definition TEXT [--definition-maturity STATE] [--implementation-evidence STATE] [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
+		Summary: "define a term with independent definition maturity and implementation-evidence availability; intent-only terms need no code reference",
 		Flags: append([]Flag{required("id", "ID", "stable term id")}, append(termDefinitionFlags(),
 			optional("revision", "ID", "initial revision id; defaults to r1"), optional("event", "ID", "initial active-event id; defaults to active"), requestIDFlag, jsonFlag)...),
 		Positionals: sagaOnly,
 	},
 	{
 		Name: "term revise", Status: StatusImplemented, Mutates: true, Writes: []string{"term-revision"},
-		Usage:   "change-saga term revise --term URN --revision ID --parent URN... --name TEXT --definition TEXT [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
-		Summary: "append a complete term revision, such as pointing a stale code reference at renamed code; several --parent values reconcile competing heads",
+		Usage:   "change-saga term revise --term URN --revision ID --parent URN... --name TEXT --definition TEXT [--definition-maturity STATE] [--implementation-evidence STATE] [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
+		Summary: "append a complete term revision including both independent maturity/evidence axes; several --parent values reconcile competing heads",
 		Flags: append([]Flag{required("term", "URN", "canonical term URN"), required("revision", "ID", "new revision id"), repeatable("parent", "URN", "current revision head URN", true)},
 			append(termDefinitionFlags(), requestIDFlag, jsonFlag)...),
 		Positionals: sagaOnly,
