@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "reply-threading-explains-reply-context",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:thread-lifecycle:item:reply-threading",
+  "to": "urn:change-saga:change-saga:story:review-thread-lifecycle:criterion:reply-context",
+  "scope": "self",
+  "rationale": "Reply links are followed to the root so every reply remains in the thread anchored to the original review element.",
+  "to_revision": "urn:change-saga:change-saga:story:review-thread-lifecycle:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:42:44.955971Z"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "currency-explains-out-of-date",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:decision-currency:item:currency",
+  "to": "urn:change-saga:change-saga:story:review-decision-freshness:criterion:out-of-date",
+  "scope": "self",
+  "rationale": "The out-of-date transition names slide-digest or referenced-code changes as reasons to revisit the decision.",
+  "to_revision": "urn:change-saga:change-saga:story:review-decision-freshness:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:42:44.363785Z"
+}

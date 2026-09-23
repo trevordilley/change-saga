@@ -1,0 +1,20 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:withdraw-review-decision",
+  "parents": [],
+  "title": "Withdraw a review decision",
+  "statement": "As a developer reviewing a change, I can withdraw my decision on a slide so the current review no longer presents a position I have retracted.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "withdraw-current",
+      "statement": "After a reviewer withdraws a decision on a slide, that reviewer seat has no current decision on the slide and the earlier decision remains in history."
+    }
+  ],
+  "created_at": "2026-09-23T16:39:33.867738Z"
+}
