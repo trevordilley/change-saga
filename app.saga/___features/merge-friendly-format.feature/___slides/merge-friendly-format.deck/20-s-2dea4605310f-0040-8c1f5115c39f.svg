@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Atomic publication and failure boundaries</title>
+  <desc id="desc">Supported writers serialize and stage data before an atomic publish point. Pre-publish failures leave the destination unchanged. After publish, sync failures roll back exclusive files and entity directories, but replacement files may remain visible. Windows does not implement directory-entry fsync.</desc>
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#26344d"/></marker>
+    <marker id="red-a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#b64a42"/></marker>
+    <style>.t{font-family:Inter,system-ui,sans-serif;fill:#17233b}.h{font-size:36px;font-weight:750}.sh{font-size:20px;font-weight:700}.b{font-size:17px}.sm{font-size:15px;fill:#46546c}.e{stroke:#26344d;stroke-width:4;fill:none;marker-end:url(#a)}.fail{stroke:#b64a42;stroke-width:3;fill:none;stroke-dasharray:9 7;marker-end:url(#red-a)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="#f7f5ef"/>
+  <text class="t h" x="54" y="62">Atomic publish: before and after have different guarantees</text>
+  <g id="lock-boundary">
+    <rect x="44" y="112" width="182" height="116" rx="20" fill="#fff0d8" stroke="#a86516" stroke-width="4"/>
+    <text class="t sh" x="82" y="153">Writer lock</text><text class="t sm" x="73" y="183">supported processes</text><text class="t sm" x="82" y="207">2s bounded wait</text>
+  </g>
+  <path class="e" d="M226 170H274"/>
+  <g id="same-dir-stage">
+    <rect x="274" y="112" width="182" height="116" rx="20" fill="#e8f1ff" stroke="#315ca8" stroke-width="4"/>
+    <text class="t sh" x="307" y="153">Same-dir temp</text><text class="t sm" x="313" y="183">hidden file / dir</text><text class="t sm" x="303" y="207">deferred cleanup</text>
+  </g>
+  <path class="e" d="M456 170H504"/>
+  <g id="content-sync">
+    <rect x="504" y="112" width="182" height="116" rx="20" fill="#efe8ff" stroke="#7356a8" stroke-width="4"/>
+    <text class="t sh" x="548" y="153">Byte sync</text><text class="t sm" x="595" y="183" text-anchor="middle">write → file fsync</text><text class="t sm" x="595" y="207" text-anchor="middle">close before commit</text>
+  </g>
+  <path class="e" d="M686 170H734"/>
+  <g id="atomic-commit">
+    <rect x="734" y="112" width="202" height="116" rx="20" fill="#e8f7ec" stroke="#2f7a4f" stroke-width="4"/>
+    <text class="t sh" x="778" y="153">PUBLISH POINT</text><text class="t sm" x="757" y="183">link: create-only file</text><text class="t sm" x="770" y="207">rename: replace / entity</text>
+  </g>
+  <path class="e" d="M936 170H984"/>
+  <g id="directory-sync">
+    <rect x="984" y="112" width="246" height="116" rx="20" fill="#e8f7ec" stroke="#2f7a4f" stroke-width="4"/>
+    <text class="t sh" x="1030" y="153">Directory sync</text><text class="t sm" x="1014" y="183">persist published name</text><text class="t sm" x="1009" y="207">error branches by write kind</text>
+    <path class="fail" d="M1107 228V310"/>
+    <rect x="692" y="310" width="538" height="162" rx="22" fill="#fff0ef" stroke="#b64a42" stroke-width="3"/>
+    <text class="t sh" x="724" y="348">SYNC ERROR AFTER PUBLISH</text>
+    <text class="t b" x="724" y="382">Exclusive file add</text><text class="t sm" x="1004" y="382">remove new path + resync</text>
+    <text class="t b" x="724" y="414">Complete entity dir</text><text class="t sm" x="1004" y="414">remove final tree + resync</text>
+    <text class="t b" x="724" y="446">Replacement file</text><text class="t sm" x="972" y="438">not rolled back; new bytes</text><text class="t sm" x="972" y="460">may remain visible</text>
+  </g>
+  <g id="failure-cleanup">
+    <path d="M365 228V276H480M595 228V276H480" stroke="#b64a42" stroke-width="3" fill="none" stroke-dasharray="9 7"/>
+    <path class="fail" d="M480 276V310"/>
+    <rect x="52" y="310" width="570" height="162" rx="22" fill="#fff" stroke="#b64a42" stroke-width="3"/>
+    <text class="t sh" x="86" y="348">FAILURE BEFORE PUBLISH</text>
+    <text class="t b" x="86" y="384">Destination remains unchanged.</text>
+    <text class="t sm" x="86" y="414">Temporary file or staged directory is removed.</text>
+    <text class="t sm" x="86" y="442">No final record name becomes visible.</text>
+  </g>
+  <g id="windows-gap">
+    <rect x="174" y="528" width="932" height="128" rx="22" fill="#fff" stroke="#b64a42" stroke-width="4" stroke-dasharray="12 8"/>
+    <text class="t sh" x="214" y="567" fill="#a5302a">MISSING PORTABILITY GUARANTEE</text>
+    <text class="t b" x="214" y="603">Windows opens and closes the parent directory; it does not fsync the directory entry.</text>
+    <text class="t sm" x="214" y="631">File bytes are synced before rename, but the POSIX directory-durability step has no Windows equivalent here.</text>
+  </g>
+</svg>

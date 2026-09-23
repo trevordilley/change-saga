@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store.go",
+      "start": 167,
+      "end": 203,
+      "digest": "sha256:e50358d76a6e6e998e32302b125f6290f735460d5f09a4dd7ca96e309536259f",
+      "note": "Serializes supported writers on the Saga root with a two-second bounded acquisition loop."
+    }
+  ]
+}

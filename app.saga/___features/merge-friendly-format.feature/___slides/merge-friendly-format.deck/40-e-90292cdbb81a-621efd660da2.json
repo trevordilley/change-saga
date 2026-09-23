@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 49,
+      "end": 56,
+      "digest": "sha256:e68a24ffb89e3dfb335d3bcf01bb3ac31906d461610af2701d699ec8959a824b",
+      "note": "Verifies two heads remain a conflict and no current revision is synthesized."
+    }
+  ]
+}

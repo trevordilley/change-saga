@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "feature-boundary",
+  "slide": "storage-ownership",
+  "rank": 0,
+  "kind": "region",
+  "label": "Feature boundary",
+  "description": "The feature directory is the physical ownership and merge-locality boundary for its product records.",
+  "selector": {
+    "type": "element",
+    "element_id": "feature-boundary"
+  }
+}

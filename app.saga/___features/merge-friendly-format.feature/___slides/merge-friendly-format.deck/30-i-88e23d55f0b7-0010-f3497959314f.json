@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "physical-partitions",
+  "slide": "storage-ownership",
+  "rank": 10,
+  "kind": "node",
+  "label": "Partitioned records",
+  "description": "A story package separates immutable identity, complete revisions, and lifecycle events into independently mergeable records.",
+  "selector": {
+    "type": "element",
+    "element_id": "physical-partitions"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/applayout/applayout.go",
+      "start": 282,
+      "end": 305,
+      "digest": "sha256:30c01a38e29a9d001e2753de0ea9d98e8a9f1d7db740b7c76ab6472db24837dc",
+      "note": "Claims record IDs across the app and rejects a second feature owner for the same logical identity."
+    }
+  ]
+}

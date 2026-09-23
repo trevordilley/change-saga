@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "directory-sync",
+  "slide": "atomic-failure-boundaries",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Directory durability",
+  "description": "After publication, a directory-sync error rolls back exclusive file adds and complete entity directories; replacement files are not rolled back and may remain visible.",
+  "selector": {
+    "type": "element",
+    "element_id": "directory-sync"
+  }
+}

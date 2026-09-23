@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/model.go",
+      "start": 181,
+      "end": 197,
+      "digest": "sha256:e6d83a00f3ab6775608ba83bfae9f16fb1647edd1b0e06be6df8b3c8435c8927",
+      "note": "Keeps feature membership outside the story identity while graph status is projected from immutable heads."
+    }
+  ]
+}

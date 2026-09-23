@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Story mutation runtime sequence</title>
+  <desc id="desc">The CLI normalizes input, loads before and after a bounded writer lock, checks current graph heads, and atomically publishes an immutable record.</desc>
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#26344d"/></marker>
+    <style>.t{font-family:Inter,system-ui,sans-serif;fill:#17233b}.h{font-size:38px;font-weight:750}.p{font-size:21px;font-weight:700}.b{font-size:18px}.sm{font-size:16px;fill:#46546c}.life{stroke:#9aa6b8;stroke-width:2;stroke-dasharray:7 7}.msg{stroke:#26344d;stroke-width:3;marker-end:url(#a)}.ret{stroke:#55708f;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#a)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="#f7f5ef"/>
+  <text class="t h" x="58" y="62">Validate twice, append once</text>
+  <g id="cli-request"><rect x="44" y="104" width="190" height="62" rx="14" fill="#e8f1ff" stroke="#315ca8" stroke-width="3"/><text class="t p" x="86" y="143">CLI request</text></g>
+  <g id="preflight-load"><rect x="292" y="104" width="190" height="62" rx="14" fill="#fff" stroke="#6d7b91" stroke-width="3"/><text class="t p" x="338" y="143">Load #1</text></g>
+  <g id="writer-lock"><rect x="540" y="104" width="190" height="62" rx="14" fill="#fff0d8" stroke="#a86516" stroke-width="3"/><text class="t p" x="581" y="143">Saga lock</text></g>
+  <g id="head-validation"><rect x="788" y="104" width="190" height="62" rx="14" fill="#efe8ff" stroke="#7356a8" stroke-width="3"/><text class="t p" x="816" y="143">Graph guard</text></g>
+  <g id="atomic-publish"><rect x="1036" y="104" width="190" height="62" rx="14" fill="#e8f7ec" stroke="#2f7a4f" stroke-width="3"/><text class="t p" x="1074" y="143">Record store</text></g>
+  <path class="life" d="M139 166V648M387 166V648M635 166V648M883 166V648M1131 166V648"/>
+  <path class="msg" d="M139 214H387"/><text class="t b" x="188" y="204">parse flags / structured JSON</text>
+  <path class="msg" d="M387 274H635"/><text class="t b" x="432" y="264">valid Saga?</text>
+  <path class="msg" d="M635 334H387"/><text class="t b" x="432" y="324">lock acquired → reload</text>
+  <path class="msg" d="M387 394H883"/><text class="t b" x="536" y="384">current heads + referenced records</text>
+  <path class="msg" d="M883 466H1131"/><text class="t b" x="920" y="456">parents == every head</text>
+  <path class="ret" d="M1131 542H139"/><text class="t b" x="482" y="532">new immutable revision URN + current head</text>
+  <g id="stale-parent-return"><rect x="752" y="586" width="444" height="62" rx="14" fill="#fff0ef" stroke="#c34840" stroke-width="3"/><text class="t b" x="778" y="613">stale / partial parent set → error, no record</text><text class="t sm" x="778" y="636">lock releases; caller reloads the visible heads</text></g>
+</svg>

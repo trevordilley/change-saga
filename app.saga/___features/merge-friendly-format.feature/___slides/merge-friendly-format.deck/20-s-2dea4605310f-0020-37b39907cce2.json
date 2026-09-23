@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "story-mutation-sequence",
+  "deck": "merge-friendly-format",
+  "title": "One mutation, two loads, one append",
+  "rank": 20,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-2dea4605310f-0020-37b39907cce2.svg",
+  "takeaway": "Supported writers reload under a bounded lock, reject stale heads, then publish one immutable record.",
+  "reading_order": [
+    "cli-request",
+    "preflight-load",
+    "writer-lock",
+    "head-validation",
+    "atomic-publish",
+    "stale-parent-return"
+  ]
+}
