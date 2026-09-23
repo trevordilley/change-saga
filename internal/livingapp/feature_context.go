@@ -76,17 +76,19 @@ type FeatureContextRelationLink struct {
 }
 
 type FeatureContextTerm struct {
-	Term              string              `json:"term"`
-	Name              string              `json:"name,omitempty"`
-	State             string              `json:"state"`
-	RevisionHeads     []string            `json:"revision_heads"`
-	LifecycleHeads    []string            `json:"lifecycle_heads"`
-	RevisionConflict  bool                `json:"revision_conflict"`
-	LifecycleConflict bool                `json:"lifecycle_conflict"`
-	Aliases           []string            `json:"aliases,omitempty"`
-	Definition        string              `json:"definition,omitempty"`
-	Stories           []string            `json:"stories,omitempty"`
-	Code              []coderef.Reference `json:"code,omitempty"`
+	Term                   string                              `json:"term"`
+	Name                   string                              `json:"name,omitempty"`
+	State                  string                              `json:"state"`
+	DefinitionMaturity     requirements.DefinitionMaturity     `json:"definition_maturity"`
+	ImplementationEvidence requirements.ImplementationEvidence `json:"implementation_evidence"`
+	RevisionHeads          []string                            `json:"revision_heads"`
+	LifecycleHeads         []string                            `json:"lifecycle_heads"`
+	RevisionConflict       bool                                `json:"revision_conflict"`
+	LifecycleConflict      bool                                `json:"lifecycle_conflict"`
+	Aliases                []string                            `json:"aliases,omitempty"`
+	Definition             string                              `json:"definition,omitempty"`
+	Stories                []string                            `json:"stories,omitempty"`
+	Code                   []coderef.Reference                 `json:"code,omitempty"`
 }
 
 type FeatureContextSlide struct {
@@ -337,37 +339,64 @@ func (s *session) contextTerms(feature string, endpoints map[string]bool, expand
 	featureURN := applayout.FeatureURN(s.requirements.SagaID, feature)
 	rows := []FeatureContextTerm{}
 	for _, term := range s.requirements.Terms {
-		if term.CurrentRevision == nil {
+		if !contextTermMatches(s.requirements.SagaID, term, featureURN, endpoints) {
 			continue
 		}
 		revision := term.CurrentRevision
-		matches := contains(revision.Records, featureURN)
-		for _, story := range revision.Stories {
-			matches = matches || endpoints[story]
-		}
-		if !matches {
-			continue
-		}
 		termURN, _ := requirements.TermURN(s.requirements.SagaID, term.Identity.ID)
 		state := "conflicted"
 		if term.CurrentLifecycle != nil {
 			state = string(term.CurrentLifecycle.State)
 		}
 		row := FeatureContextTerm{
-			Term: termURN, Name: revision.Name, State: state,
+			Term: termURN, State: state,
+			DefinitionMaturity: requirements.DefinitionMaturityUnknown, ImplementationEvidence: requirements.ImplementationEvidenceUnknown,
 			RevisionHeads: copyStrings(term.RevisionHeads), LifecycleHeads: copyStrings(term.LifecycleHeads),
 			RevisionConflict: len(term.RevisionHeads) > 1, LifecycleConflict: len(term.LifecycleHeads) > 1,
 		}
-		if expanded {
-			row.Aliases = copyStrings(revision.Aliases)
-			row.Definition = revision.Definition
-			row.Stories = copyStrings(revision.Stories)
-			row.Code = append([]coderef.Reference{}, revision.Code...)
+		if revision != nil {
+			row.Name = revision.Name
+			row.DefinitionMaturity = revision.EffectiveDefinitionMaturity()
+			row.ImplementationEvidence = revision.EffectiveImplementationEvidence()
+			if expanded {
+				row.Aliases = copyStrings(revision.Aliases)
+				row.Definition = revision.Definition
+				row.Stories = copyStrings(revision.Stories)
+				row.Code = append([]coderef.Reference{}, revision.Code...)
+			}
 		}
 		rows = append(rows, row)
 	}
 	sort.Slice(rows, func(i, j int) bool { return rows[i].Term < rows[j].Term })
 	return rows
+}
+
+func contextTermMatches(sagaID string, term requirements.Term, featureURN string, endpoints map[string]bool) bool {
+	matches := func(revision requirements.TermRevision) bool {
+		if contains(revision.Records, featureURN) {
+			return true
+		}
+		for _, story := range revision.Stories {
+			if endpoints[story] {
+				return true
+			}
+		}
+		return false
+	}
+	if term.CurrentRevision != nil {
+		return matches(*term.CurrentRevision)
+	}
+	heads := map[string]bool{}
+	for _, head := range term.RevisionHeads {
+		heads[head] = true
+	}
+	for _, revision := range term.Revisions {
+		urn, _ := requirements.TermRevisionURN(sagaID, term.Identity.ID, revision.ID)
+		if heads[urn] && matches(revision) {
+			return true
+		}
+	}
+	return false
 }
 
 func (s *session) contextVisuals(endpoints map[string]bool, relations []Relation, expanded bool) []FeatureContextSlide {

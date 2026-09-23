@@ -148,11 +148,88 @@ func TestFeatureAuditReportsStaleCrossFeatureLinksAndConflicts(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !auditHasFinding(report, "urn:change-saga:test:relation:cross", "stale_or_dangling_pin") ||
-		!auditHasFinding(report, "urn:change-saga:test:relation:cross", "cross_feature_unassigned_link") {
+		!auditHasFinding(report, "urn:change-saga:test:relation:cross", "cross_feature_context") {
 		t.Fatalf("relation findings = %#v", report.Findings)
 	}
 	if report.Complete || report.Status != "incomplete" || len(report.Conflicts) == 0 {
 		t.Fatalf("conflicted report = %#v", report)
+	}
+}
+
+func TestFeatureAuditAcceptsCurrentCrossFeatureItemIntentAndExplanation(t *testing.T) {
+	s := auditFixture(t, true)
+	checkoutStory := "urn:change-saga:test:story:checkout"
+	catalogStory := "urn:change-saga:test:story:catalog"
+	foreignItem := saga.ItemTarget("test", "catalog-flow", "shared-handler")
+	localItem := saga.ItemTarget("test", "flow", "handler")
+	s.requirements.Stories = append(s.requirements.Stories, auditStory("catalog", "catalog", requirements.StateAccepted))
+	foreignDeck := &saga.Deck{Target: saga.DeckTarget("test", "catalog-implementation"), DeckManifest: saga.DeckManifest{ID: "catalog-implementation", Role: saga.DeckRoleChange}}
+	foreignDeck.Slides = []*saga.Slide{{Target: saga.SlideTarget("test", "catalog-flow"), Items: []*saga.Item{{Target: foreignItem}}}}
+	s.saga.Features = append(s.saga.Features, &saga.Feature{ID: "catalog", Target: "urn:change-saga:test:feature:catalog", Decks: []*saga.Deck{foreignDeck}})
+	relations := []requirements.Relation{
+		auditRelation("local-shared-intent", requirements.RelationExplains, localItem, catalogStory),
+		auditRelation("foreign-explains-fast", requirements.RelationExplains, foreignItem, checkoutStory+":criterion:fast"),
+		auditRelation("foreign-explains-safe", requirements.RelationExplains, foreignItem, checkoutStory+":criterion:safe"),
+	}
+	s.requirements.Relations = relations
+	s.currency = auditCurrency(relations)
+
+	report, err := s.audit(Filters{Feature: "checkout"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if auditHasFinding(report, localItem, "item_intent_missing") || auditHasFinding(report, checkoutStory+":criterion:fast", "criterion_explanation_missing") || auditHasFinding(report, checkoutStory+":criterion:safe", "criterion_explanation_missing") {
+		t.Fatalf("cross-feature exact links did not satisfy the audit: %#v", report.Findings)
+	}
+	for _, relation := range relations {
+		if !auditHasFinding(report, "urn:change-saga:test:relation:"+relation.ID, "cross_feature_context") {
+			t.Errorf("missing cross-feature context for %s", relation.ID)
+		}
+	}
+	if !report.Ready || !report.Complete || report.Status != "pass" || report.ExitCode != 0 || report.Summary.Warnings != 0 || report.Summary.Errors != 0 {
+		t.Fatalf("cross-feature context blocked readiness: %#v", report)
+	}
+}
+
+func TestFeatureAuditRejectsUnresolvedAndRetiredCrossFeatureIntent(t *testing.T) {
+	tests := []struct {
+		name       string
+		story      requirements.Story
+		currency   requirements.Currency
+		reason     requirements.CurrencyReason
+		relationID string
+		wantCode   string
+		incomplete bool
+	}{
+		{name: "unresolved endpoint", story: requirements.Story{}, currency: requirements.CurrencyInvalid, reason: requirements.CurrencyReason{Code: requirements.ReasonEndpointMissing, Message: "to endpoint is missing"}, relationID: "missing", wantCode: "stale_or_dangling_pin"},
+		{name: "retired story", story: auditStory("catalog", "catalog", requirements.StateRetired), currency: requirements.CurrencyCurrent, relationID: "retired", wantCode: "inactive_requirement_endpoint"},
+		{name: "conflicting endpoint", story: auditStory("catalog", "catalog", requirements.StateAccepted), currency: requirements.CurrencyConflicted, reason: requirements.CurrencyReason{Code: requirements.ReasonMultipleRevisionHeads, Message: "to endpoint has multiple revision heads", Current: []string{"urn:change-saga:test:story:catalog:revision:r1", "urn:change-saga:test:story:catalog:revision:r2"}}, relationID: "conflicted", wantCode: "conflicted_relation", incomplete: true},
+	}
+	for _, testCase := range tests {
+		t.Run(testCase.name, func(t *testing.T) {
+			s := auditFixture(t, true)
+			item := saga.ItemTarget("test", "flow", "handler")
+			to := "urn:change-saga:test:story:catalog"
+			if testCase.story.Identity.ID != "" {
+				s.requirements.Stories = append(s.requirements.Stories, testCase.story)
+			}
+			relation := auditRelation(testCase.relationID, requirements.RelationExplains, item, to)
+			s.requirements.Relations = []requirements.Relation{relation}
+			s.currency = []requirements.RelationCurrency{{Relation: "urn:change-saga:test:relation:" + testCase.relationID, Type: relation.Type, From: relation.From, To: relation.To, Status: testCase.currency, Reasons: nonemptyCurrencyReason(testCase.reason)}}
+			report, err := s.audit(Filters{Feature: "checkout"})
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !auditHasFinding(report, item, "item_intent_missing") || !auditHasFinding(report, "urn:change-saga:test:relation:"+testCase.relationID, testCase.wantCode) {
+				t.Fatalf("invalid cross-feature intent findings = %#v", report.Findings)
+			}
+			if report.Ready || report.ExitCode != auditFindingsExitCode {
+				t.Fatalf("invalid cross-feature intent passed: %#v", report)
+			}
+			if testCase.incomplete && (report.Complete || len(report.Conflicts) == 0) {
+				t.Fatalf("conflicting relation was not preserved as incomplete: %#v", report)
+			}
+		})
 	}
 }
 
@@ -200,6 +277,22 @@ func auditFixture(t *testing.T, evidence bool) *session {
 
 func auditRelation(id string, kind requirements.RelationType, from, to string) requirements.Relation {
 	return requirements.Relation{ID: id, Type: kind, From: from, To: to, State: requirements.RelationActive, Feature: "checkout"}
+}
+
+func auditStory(feature, id string, state requirements.LifecycleState) requirements.Story {
+	story := "urn:change-saga:test:story:" + id
+	revision := story + ":revision:r1"
+	lifecycle := story + ":event:" + string(state)
+	definition := requirements.Revision{ID: "r1", Story: story, AcceptanceCriteria: []requirements.Criterion{{ID: "works", Statement: "It works."}}}
+	event := requirements.LifecycleEvent{ID: string(state), Story: story, State: state}
+	return requirements.Story{Feature: feature, Identity: requirements.StoryIdentity{ID: id}, Revisions: []requirements.Revision{definition}, Events: []requirements.LifecycleEvent{event}, RevisionHeads: []string{revision}, LifecycleHeads: []string{lifecycle}, CurrentRevision: &definition, CurrentLifecycle: &event}
+}
+
+func nonemptyCurrencyReason(reason requirements.CurrencyReason) []requirements.CurrencyReason {
+	if reason.Code == "" {
+		return []requirements.CurrencyReason{}
+	}
+	return []requirements.CurrencyReason{reason}
 }
 
 func auditCurrency(relations []requirements.Relation) []requirements.RelationCurrency {
