@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "pk-stale-transition-explains-required-proof",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:stale-pass-transition",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-readiness:criterion:required-proof",
+  "scope": "self",
+  "rationale": "The stale-pass transition enumerates how a formerly passing run fails the current-proof requirement without silently retaining covered status.",
+  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-readiness:revision:r2",
+  "state": "active",
+  "created_at": "2026-09-23T19:49:49.046898Z"
+}
