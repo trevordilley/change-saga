@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "workplan-conflicts-explain-explicit-heads",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:explicit-plan-conflicts",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts",
+  "scope": "descendants",
+  "rationale": "The state diagram explains how competing heads remain explicit and are reconciled by an append-only join event.",
+  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:25:10.713662Z",
+  "request_id": "workplan-conflicts-explain-explicit-heads"
+}

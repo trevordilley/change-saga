@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 179,
+      "end": 222,
+      "digest": "sha256:7159329955a263c7aaba978890cc09ce7dad481d5ebfce861460b500b9397e84",
+      "note": "Builds a work item with its initial planned event and validates the candidate graph before selecting a final path."
+    }
+  ]
+}

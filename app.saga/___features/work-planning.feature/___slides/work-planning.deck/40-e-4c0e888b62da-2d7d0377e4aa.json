@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/workplan_test.go",
+      "start": 18,
+      "end": 49,
+      "digest": "sha256:32c045358866b51d4eb04af4288e17cedfb9ca6a365f34002ca3e83acbbf4257",
+      "note": "Exercises cycle rejection and verifies that the invalid dependency package never becomes visible."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 457,
+      "end": 615,
+      "digest": "sha256:4d724034f954f20710236f5d5dcdc2b7362f33455cd44e22f622abcd60aa5847",
+      "note": "Implements append-only writers for progress, workspace assignment, merge events, and contract lifecycle events."
+    }
+  ]
+}

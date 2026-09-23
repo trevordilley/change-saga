@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Progress state machine and concurrent-head reconciliation</title>
+  <desc id="desc">Legal progress transitions form a state machine, while concurrent append-only heads become an explicit blocking conflict until a new event names every head.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#08111f"/><stop offset="1" stop-color="#172554"/></linearGradient><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L8 3 0 6Z" fill="#94a3b8"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="62" y="66" fill="#f8fafc" font-family="system-ui" font-size="34" font-weight="750">Time never chooses a winner</text>
+  <text x="62" y="100" fill="#94a3b8" font-family="system-ui" font-size="18">Transitions append facts; concurrent heads remain visible until one event joins them.</text>
+  <g id="progress-machine" font-family="system-ui">
+    <rect x="54" y="142" width="700" height="500" rx="30" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+    <text x="88" y="185" fill="#cbd5e1" font-size="17" font-weight="700">LEGAL PROGRESS TRANSITIONS</text>
+    <g fill="#134e4a" stroke="#2dd4bf" stroke-width="2"><rect x="105" y="242" width="150" height="66" rx="33"/><rect x="330" y="242" width="150" height="66" rx="33"/><rect x="555" y="242" width="150" height="66" rx="33"/></g>
+    <g fill="#ecfeff" font-size="17" font-weight="700" text-anchor="middle"><text x="180" y="283">planned</text><text x="405" y="283">ready</text><text x="630" y="283">in progress</text></g>
+    <g fill="#3b2b12" stroke="#fbbf24" stroke-width="2"><rect x="218" y="430" width="150" height="66" rx="33"/></g>
+    <g fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"><rect x="443" y="430" width="150" height="66" rx="33"/></g>
+    <g fill="#3b1d28" stroke="#fb7185" stroke-width="2"><rect x="555" y="548" width="150" height="58" rx="29"/></g>
+    <g fill="#fff" font-size="17" font-weight="700" text-anchor="middle"><text x="293" y="471">blocked</text><text x="518" y="471">done</text><text x="630" y="584">cancelled</text></g>
+    <g fill="none" stroke="#94a3b8" stroke-width="3" marker-end="url(#a)"><path d="M255 275H330"/><path d="M480 275H555"/><path d="M615 308L335 430"/><path d="M615 308L530 430"/><path d="M630 308V548"/><path d="M368 463H443"/><path d="M293 430L389 310"/><path d="M518 430L610 310"/></g>
+  </g>
+  <g id="concurrent-heads" font-family="system-ui">
+    <circle cx="887" cy="254" r="32" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+    <text x="887" y="260" fill="#fff" font-size="15" text-anchor="middle">parent</text>
+    <path d="M912 273L997 348M912 235L997 190" fill="none" stroke="#fb7185" stroke-width="4"/>
+    <rect x="997" y="151" width="190" height="70" rx="18" fill="#3b1d28" stroke="#fb7185"/><text x="1092" y="181" fill="#fff1f2" font-size="17" font-family="system-ui" font-weight="700" text-anchor="middle">blocked</text><text x="1092" y="205" fill="#fecdd3" font-size="13" font-family="system-ui" text-anchor="middle">head A</text>
+    <rect x="997" y="322" width="190" height="70" rx="18" fill="#3b1d28" stroke="#fb7185"/><text x="1092" y="352" fill="#fff1f2" font-size="17" font-family="system-ui" font-weight="700" text-anchor="middle">cancelled</text><text x="1092" y="376" fill="#fecdd3" font-size="13" font-family="system-ui" text-anchor="middle">head B</text>
+  </g>
+  <g id="conflict-blocks" font-family="system-ui">
+    <rect x="850" y="425" width="372" height="70" rx="18" fill="#7f1d1d" stroke="#f87171" stroke-width="2"/>
+    <text x="1036" y="455" fill="#fef2f2" font-size="18" font-weight="800" text-anchor="middle">CONFLICT · no CurrentProgress</text>
+    <text x="1036" y="480" fill="#fecaca" font-size="14" text-anchor="middle">readiness gates fail closed</text>
+  </g>
+  <g id="reconcile-event" font-family="system-ui">
+    <path d="M1187 186H1240V558H1174M1187 357H1218V590H1174" fill="none" stroke="#2dd4bf" stroke-width="3"/>
+    <rect x="898" y="535" width="276" height="78" rx="24" fill="#134e4a" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="1036" y="566" fill="#ecfeff" font-size="18" font-weight="800" text-anchor="middle">reconcile event</text>
+    <text x="1036" y="591" fill="#99f6e4" font-size="14" text-anchor="middle">parents = [head A, head B]</text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store.go",
+      "start": 97,
+      "end": 142,
+      "digest": "sha256:e7129895c7539a1b25d57563395b85d4bd79a9794c7f089f1ad0dadab83156cd",
+      "note": "Builds the complete package in a hidden sibling directory and exposes it with one rename followed by directory sync."
+    }
+  ]
+}

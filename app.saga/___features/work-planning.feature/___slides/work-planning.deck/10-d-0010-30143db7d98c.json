@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "work-planning",
+  "title": "Work-planning implementation",
+  "role": "change",
+  "rank": 10,
+  "objective": "Explain the implemented ownership model, mutation path, state conflicts, dependency gates, and currently missing public surfaces."
+}

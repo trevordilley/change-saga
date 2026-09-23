@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "gate-outcome",
+  "slide": "dependency-facts",
+  "rank": 50,
+  "kind": "statement",
+  "label": "Structured outcome",
+  "description": "Returns success or a stable reason such as progress_conflicted, merge_not_integrated, or contract_revision_stale.",
+  "selector": {
+    "type": "element",
+    "element_id": "gate-outcome"
+  }
+}

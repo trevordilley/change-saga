@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "atomic-publish",
+  "slide": "atomic-plan-mutation",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Atomic publication",
+  "description": "Stages a complete resource tree and publishes it with one rename and directory synchronization.",
+  "selector": {
+    "type": "element",
+    "element_id": "atomic-publish"
+  }
+}

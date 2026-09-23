@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 27,
+      "end": 75,
+      "digest": "sha256:b83cdb8bf19ff370c118ff05bd24631f2f8244dc5c1c7107c3d8509529d0c99a",
+      "note": "Opens one application session over Saga, requirements, quality, and plan state, then routes read operations to projections."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 146,
+      "end": 180,
+      "digest": "sha256:b8e5ae2cb8bb4a5cd27cb04dc2ebe962281e3e2a7e5a8340d2bfd73f80e3b982",
+      "note": "Opens one application session over Saga, requirements, quality, and plan state, then routes read operations to projections."
+    }
+  ]
+}

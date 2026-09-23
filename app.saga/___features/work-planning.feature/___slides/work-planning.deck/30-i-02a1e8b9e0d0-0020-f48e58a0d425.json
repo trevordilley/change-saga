@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "conflict-blocks",
+  "slide": "explicit-plan-conflicts",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Conflict blocks projection",
+  "description": "A multi-head stream has no current progress value and becomes a blocking work-plan conflict.",
+  "selector": {
+    "type": "element",
+    "element_id": "conflict-blocks"
+  }
+}

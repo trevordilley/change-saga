@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "missing-contract-cli",
+  "slide": "work-plan-boundary",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Missing contract-state CLI",
+  "description": "The core contract-state writer exists, but the plan command registry and dispatcher expose no contract-state operation.",
+  "selector": {
+    "type": "element",
+    "element_id": "missing-contract-cli"
+  }
+}

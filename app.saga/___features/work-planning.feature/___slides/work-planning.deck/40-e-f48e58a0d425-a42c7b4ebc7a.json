@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/workplan_test.go",
+      "start": 84,
+      "end": 107,
+      "digest": "sha256:20cec0bfb6d06791d8ec50f399f53a79a3601758ec566eb538a751fc5218ca8f",
+      "note": "Proves two concurrent progress heads clear CurrentProgress and surface a blocking conflict until reconciled."
+    }
+  ]
+}

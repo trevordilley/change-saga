@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "lock-reload",
+  "slide": "atomic-plan-mutation",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Lock and recheck",
+  "description": "Acquires the bounded Saga writer lock, reloads the plan, and rejects mutation of invalid state.",
+  "selector": {
+    "type": "element",
+    "element_id": "lock-reload"
+  }
+}

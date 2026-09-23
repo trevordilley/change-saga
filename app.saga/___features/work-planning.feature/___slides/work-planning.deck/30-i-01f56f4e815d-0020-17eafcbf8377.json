@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "progress-gate",
+  "slide": "dependency-facts",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Progress gate",
+  "description": "Succeeds only when the prerequisite has one progress head in the done state.",
+  "selector": {
+    "type": "element",
+    "element_id": "progress-gate"
+  }
+}

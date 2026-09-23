@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "contract-gate",
+  "slide": "dependency-facts",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Pinned contract gate",
+  "description": "Succeeds only when the named contract revision remains current and its event graph has one fulfilled head.",
+  "selector": {
+    "type": "element",
+    "element_id": "contract-gate"
+  }
+}

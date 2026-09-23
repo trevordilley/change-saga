@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "query-projection",
+  "slide": "plan-ownership",
+  "rank": 20,
+  "kind": "node",
+  "label": "Query projection",
+  "description": "Projects waves, work items, append-only events, conflicts, traceability, and readiness for read clients.",
+  "selector": {
+    "type": "element",
+    "element_id": "query-projection"
+  }
+}

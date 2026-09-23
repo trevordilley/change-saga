@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/model.go",
+      "start": 122,
+      "end": 142,
+      "digest": "sha256:585df0030100699435d4079ea5cf46cf609840f52d2449ac4df3ca8f18477856",
+      "note": "Models a dependency as a prerequisite-to-dependent edge with one explicit satisfaction condition and rationale."
+    }
+  ]
+}

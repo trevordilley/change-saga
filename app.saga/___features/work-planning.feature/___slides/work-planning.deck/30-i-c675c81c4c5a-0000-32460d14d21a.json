@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli-adapter",
+  "slide": "plan-ownership",
+  "rank": 0,
+  "kind": "node",
+  "label": "CLI adapter",
+  "description": "Parses bounded plan commands and delegates mutations to the work-plan package.",
+  "selector": {
+    "type": "element",
+    "element_id": "cli-adapter"
+  }
+}

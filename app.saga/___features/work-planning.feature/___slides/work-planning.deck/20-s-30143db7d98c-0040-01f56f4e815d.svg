@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Dependency satisfaction branches</title>
+  <desc id="desc">A dependency selects one persisted fact gate: done progress, integrated required merges, or a fulfilled exact contract revision; wave order is never a gate and cycles are rejected.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07101d"/><stop offset="1" stop-color="#1e293b"/></linearGradient><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L8 3 0 6Z" fill="#7dd3fc"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="60" y="65" fill="#f8fafc" font-family="system-ui" font-size="34" font-weight="750">Only persisted facts open a dependency gate</text>
+  <g id="dependency-edge" font-family="system-ui">
+    <rect x="62" y="257" width="190" height="100" rx="24" fill="#172554" stroke="#60a5fa" stroke-width="2"/>
+    <text x="157" y="297" fill="#eff6ff" font-size="20" font-weight="750" text-anchor="middle">dependency</text>
+    <text x="157" y="327" fill="#bfdbfe" font-size="14" text-anchor="middle">prerequisite → dependent</text>
+    <path d="M252 307H350" stroke="#7dd3fc" stroke-width="4" marker-end="url(#a)"/>
+  </g>
+  <g id="condition-branch" font-family="system-ui">
+    <path d="M425 225l95 82-95 82-95-82Z" fill="#3b2b12" stroke="#fbbf24" stroke-width="2"/>
+    <text x="425" y="300" fill="#fffbeb" font-size="17" font-weight="750" text-anchor="middle">condition</text>
+    <text x="425" y="324" fill="#fde68a" font-size="13" text-anchor="middle">exactly one kind</text>
+  </g>
+  <g id="progress-gate" font-family="system-ui">
+    <path d="M500 260H614" stroke="#7dd3fc" stroke-width="3" marker-end="url(#a)"/>
+    <rect x="614" y="154" width="246" height="96" rx="20" fill="#0f2e32" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="737" y="188" fill="#ccfbf1" font-size="18" font-weight="750" text-anchor="middle">progress_done</text>
+    <text x="737" y="216" fill="#99f6e4" font-size="14" text-anchor="middle">1 head · state = done</text>
+  </g>
+  <g id="merge-gate" font-family="system-ui">
+    <path d="M520 307H614" stroke="#7dd3fc" stroke-width="3" marker-end="url(#a)"/>
+    <rect x="614" y="272" width="246" height="96" rx="20" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+    <text x="737" y="306" fill="#e0f2fe" font-size="18" font-weight="750" text-anchor="middle">merge_integrated</text>
+    <text x="737" y="334" fill="#bae6fd" font-size="14" text-anchor="middle">all required units integrated</text>
+  </g>
+  <g id="contract-gate" font-family="system-ui">
+    <path d="M500 354H614" stroke="#7dd3fc" stroke-width="3" marker-end="url(#a)"/>
+    <rect x="614" y="390" width="246" height="108" rx="20" fill="#3b1d28" stroke="#fb7185" stroke-width="2"/>
+    <text x="737" y="424" fill="#fff1f2" font-size="18" font-weight="750" text-anchor="middle">contract_fulfilled</text>
+    <text x="737" y="452" fill="#fecdd3" font-size="14" text-anchor="middle">exact revision still current</text>
+    <text x="737" y="475" fill="#fecdd3" font-size="14" text-anchor="middle">1 head · fulfilled</text>
+  </g>
+  <g id="gate-outcome" font-family="system-ui">
+    <path d="M860 202L960 307M860 320H960M860 444L960 330" fill="none" stroke="#7dd3fc" stroke-width="3" marker-end="url(#a)"/>
+    <rect x="960" y="252" width="250" height="112" rx="24" fill="#134e4a" stroke="#2dd4bf" stroke-width="2"/>
+    <text x="1085" y="293" fill="#ecfeff" font-size="21" font-weight="800" text-anchor="middle">SATISFIED</text>
+    <text x="1085" y="325" fill="#99f6e4" font-size="14" text-anchor="middle">else: structured blocker reason</text>
+  </g>
+  <g id="wave-and-cycle-boundary" font-family="system-ui">
+    <rect x="62" y="574" width="1148" height="86" rx="22" fill="#1e293b" stroke="#64748b" stroke-dasharray="8 7"/>
+    <text x="98" y="610" fill="#fbbf24" font-size="18" font-weight="800">WAVE ORDER ≠ DEPENDENCY</text>
+    <text x="98" y="638" fill="#cbd5e1" font-size="15">reverse-order and cross-wave edges are valid</text>
+    <path d="M620 590l32 54M652 590l-32 54" stroke="#fb7185" stroke-width="6"/>
+    <text x="690" y="610" fill="#fb7185" font-size="18" font-weight="800">CYCLES FAIL BEFORE PUBLISH</text>
+    <text x="690" y="638" fill="#cbd5e1" font-size="15">the closing dependency package never becomes visible</text>
+  </g>
+</svg>

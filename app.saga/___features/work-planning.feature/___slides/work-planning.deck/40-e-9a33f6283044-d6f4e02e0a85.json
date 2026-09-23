@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 623,
+      "end": 640,
+      "digest": "sha256:635f6d6101a8e264a77e61cf83f5f4e178099d77ae13bbd6a6cd1de6c64edc07",
+      "note": "Rejects invalid plans before and again inside the bounded writer lock, closing the time-of-check gap."
+    }
+  ]
+}
