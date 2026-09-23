@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 43,
+      "end": 71,
+      "digest": "sha256:c8554189c8db8ceb2009cd28020d450a8360f380863a12a15b4321d31f89a802",
+      "note": "Resolves a live review's followed ref to its full head and merge-base, or its frozen post-merge range."
+    }
+  ]
+}

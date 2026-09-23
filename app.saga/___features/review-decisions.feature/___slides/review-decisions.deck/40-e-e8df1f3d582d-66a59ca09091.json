@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews.go",
+      "start": 553,
+      "end": 562,
+      "digest": "sha256:318aedcdbd52030056ac89bcf0e349449af9b515165de522c02455c202ba4e2e",
+      "note": "Both browser and CLI entry points construct the same reviewstore decision request."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/reviews.go",
+      "start": 171,
+      "end": 177,
+      "digest": "sha256:845bd26421338b2d60f53b344d1da58c832ae97d260f3bf2ab7fde3459a8266b",
+      "note": "Both browser and CLI entry points construct the same reviewstore decision request."
+    }
+  ]
+}

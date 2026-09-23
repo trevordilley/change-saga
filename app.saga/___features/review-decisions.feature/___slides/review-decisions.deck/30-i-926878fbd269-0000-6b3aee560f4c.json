@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "token-failure",
+  "slide": "decision-failure-boundaries",
+  "rank": 0,
+  "kind": "risk",
+  "label": "Token failure",
+  "description": "A missing or invalid browser mutation token returns forbidden before any approval event is written.",
+  "selector": {
+    "type": "element",
+    "element_id": "token-failure"
+  }
+}

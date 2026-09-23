@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitattribution/gitattribution.go",
+      "start": 15,
+      "end": 28,
+      "digest": "sha256:7798fdbcc32071c823a68f9c826bba79d80535552104e5e04c0e8419d5b4da31",
+      "note": "Attribution distinguishes committed and uncommitted files and explicitly reports rewritten or unavailable history."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitattribution/gitattribution.go",
+      "start": 95,
+      "end": 115,
+      "digest": "sha256:8655da1fdd24cf35588a7375eb2be1a1d3a598068e22b9b8b04e7e5022e5c242",
+      "note": "Attribution distinguishes committed and uncommitted files and explicitly reports rewritten or unavailable history."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitattribution/gitattribution.go",
+      "start": 204,
+      "end": 217,
+      "digest": "sha256:fddb902e28b730eaf41f5ba3a9424c20d570dcf98e44eefd29e3a327d5a29cb8",
+      "note": "Attribution distinguishes committed and uncommitted files and explicitly reports rewritten or unavailable history."
+    }
+  ]
+}

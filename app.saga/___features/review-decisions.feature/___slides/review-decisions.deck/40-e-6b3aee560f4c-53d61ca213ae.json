@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews_test.go",
+      "start": 106,
+      "end": 115,
+      "digest": "sha256:dc16ec8555a0ae15680e712f628cb36c13e12b797010b58760073e7815bd4a89",
+      "note": "Proves a missing browser mutation token returns forbidden and leaves the approvals directory empty."
+    }
+  ]
+}

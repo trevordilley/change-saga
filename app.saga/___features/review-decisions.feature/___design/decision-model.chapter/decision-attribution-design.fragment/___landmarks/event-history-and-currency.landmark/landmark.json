@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "event-history-and-currency",
+  "label": "Event history and currency",
+  "description": "Append-only decision events, per-seat projection, and independent currency evaluation.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "event-history-and-currency"
+  },
+  "target": ""
+}

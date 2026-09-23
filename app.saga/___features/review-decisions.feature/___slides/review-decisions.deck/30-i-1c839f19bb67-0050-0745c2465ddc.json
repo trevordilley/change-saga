@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "authority-gap",
+  "slide": "review-decision-ownership",
+  "rank": 50,
+  "kind": "node",
+  "label": "Composite provenance",
+  "description": "A named AI seat combines with the Git committer—or local Git user while uncommitted—to identify both the AI reviewer and human actor.",
+  "selector": {
+    "type": "element",
+    "element_id": "authority-gap"
+  }
+}

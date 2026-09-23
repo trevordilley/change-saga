@@ -3,9 +3,9 @@
   "id": "decision",
   "slide": "decision-currency",
   "rank": 0,
-  "kind": "node",
-  "label": "Decision event",
-  "description": "Records a per-slide approval, change request, or withdrawal at one head and slide digest.",
+  "kind": "transition",
+  "label": "Latest event per seat",
+  "description": "Approved, changes-requested, and withdrawal events remain stored; only the latest event for the same Git author and declared seat is projected.",
   "selector": {
     "type": "element",
     "element_id": "decision"

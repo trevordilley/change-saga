@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "append-event",
+  "slide": "decision-write-path",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Append event",
+  "description": "A new event file is created with the state, reviewer identity, head commit, slide digest, body, and timestamp.",
+  "selector": {
+    "type": "element",
+    "element_id": "append-event"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r4",
+  "relation": "urn:change-saga:change-saga:relation:decision-design-addresses-delegated-attribution",
+  "from_content_digest": "sha256:739630fc7fe4712e3687c35ed3ddeddcc1407cd8c663f7333ffa8e811abd3ec2",
+  "rationale": "The design plus landmark evidence explains how Git or local actor attribution combines with named AI seat metadata to identify both actors, while distinguishing degraded history from delegation authentication.",
+  "created_at": "2026-09-23T03:46:15.729117Z"
+}

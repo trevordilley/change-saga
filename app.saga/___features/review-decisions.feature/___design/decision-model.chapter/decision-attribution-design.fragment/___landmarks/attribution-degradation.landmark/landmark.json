@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "attribution-degradation",
+  "label": "Attribution degradation",
+  "description": "Visible rewritten, history-unavailable, and uncommitted local-identity limitations.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "attribution-degradation"
+  },
+  "target": ""
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "read-projection",
+  "slide": "review-decision-ownership",
+  "rank": 40,
+  "kind": "node",
+  "label": "Read projection",
+  "description": "Review state is derived at read time from the latest event per reviewer seat and its currency against the current head.",
+  "selector": {
+    "type": "element",
+    "element_id": "read-projection"
+  }
+}
