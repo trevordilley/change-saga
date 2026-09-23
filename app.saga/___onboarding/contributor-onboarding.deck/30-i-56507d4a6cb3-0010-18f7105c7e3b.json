@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "models",
+  "slide": "onboard-runtime",
+  "rank": 10,
+  "kind": "region",
+  "label": "Shared read models",
+  "description": "Domain packages load records; livingapp composes product state, while reviewapp provides bounded queries and source resolution.",
+  "selector": {
+    "type": "element",
+    "element_id": "models"
+  },
+  "hotspot": {
+    "x": 0.360938,
+    "y": 0.308333,
+    "width": 0.263281,
+    "height": 0.302778
+  },
+  "record": "urn:change-saga:change-saga:feature:ai-interface"
+}

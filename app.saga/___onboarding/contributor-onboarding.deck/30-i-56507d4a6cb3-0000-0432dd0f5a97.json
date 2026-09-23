@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "inputs",
+  "slide": "onboard-runtime",
+  "rank": 0,
+  "kind": "region",
+  "label": "Git-native inputs",
+  "description": "The Saga and Git checkout are local inputs; a companion repository can provide the Saga separately with explicit source context.",
+  "selector": {
+    "type": "element",
+    "element_id": "inputs"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.259722,
+    "width": 0.23125,
+    "height": 0.405556
+  },
+  "record": "urn:change-saga:change-saga:feature:repository-native"
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "onboard-iterate",
+  "deck": "contributor-onboarding",
+  "title": "Edit → test → rebuild → restart",
+  "rank": 70,
+  "section": "Iterate",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0070-4d1827632266.svg",
+  "takeaway": "There is no automatic Go hot reload: a new binary on disk does not replace the process already serving your browser.",
+  "reading_order": [
+    "edit",
+    "test",
+    "rebuild",
+    "restart",
+    "boundary"
+  ]
+}

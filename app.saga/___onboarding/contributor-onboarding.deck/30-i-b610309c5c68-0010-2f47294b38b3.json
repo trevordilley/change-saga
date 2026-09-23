@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "feature",
+  "slide": "onboard-map",
+  "rank": 10,
+  "kind": "statement",
+  "label": "Feature boundary",
+  "description": "A feature groups product, design, quality and implementation as a durable domain rather than a temporary change.",
+  "selector": {
+    "type": "element",
+    "element_id": "feature"
+  },
+  "hotspot": {
+    "x": 0.069531,
+    "y": 0.421835,
+    "width": 0.315454,
+    "height": 0.038247
+  },
+  "record": "urn:change-saga:change-saga:story:requirements-feature-scope"
+}

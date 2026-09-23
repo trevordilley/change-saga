@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "writer",
+  "slide": "onboard-maintain",
+  "rank": 40,
+  "kind": "statement",
+  "label": "Use the supported authoring API",
+  "description": "Use query for reading, and CLI writers such as revise-item, set-slide-content, replace-coverage, term revise and relation repin for edits. Onboarding Items link to records rather than code.",
+  "selector": {
+    "type": "element",
+    "element_id": "writer"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.809353,
+    "width": 0.747973,
+    "height": 0.036568
+  },
+  "record": "urn:change-saga:change-saga:story:structured-ai-contract"
+}

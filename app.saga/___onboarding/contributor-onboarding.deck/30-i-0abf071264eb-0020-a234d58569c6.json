@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "gap",
+  "slide": "onboard-modes",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Spatial review is still a gap",
+  "description": "Contextual comments exist, but the current implementation does not provide freehand, shape or text review overlays. Do not confuse prototype annotations with implemented review markup.",
+  "selector": {
+    "type": "element",
+    "element_id": "gap"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.756944,
+    "width": 0.9,
+    "height": 0.0875
+  },
+  "record": "urn:change-saga:change-saga:feature:visual-review"
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "element",
+  "slide": "onboard-links",
+  "rank": 10,
+  "kind": "region",
+  "label": "Exact element ownership",
+  "description": "The Stories and Code controls on a diagram element expose separate intent links and implementation evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "element"
+  },
+  "hotspot": {
+    "x": 0.383594,
+    "y": 0.266667,
+    "width": 0.230469,
+    "height": 0.234722
+  },
+  "record": "urn:change-saga:change-saga:story:diagram-element-intent"
+}

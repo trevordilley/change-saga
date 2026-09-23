@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "design",
+  "slide": "onboard-map",
+  "rank": 30,
+  "kind": "region",
+  "label": "Design",
+  "description": "Design records explain the intended experience or technical shape and address product criteria.",
+  "selector": {
+    "type": "element",
+    "element_id": "design"
+  },
+  "hotspot": {
+    "x": 0.291406,
+    "y": 0.486111,
+    "width": 0.196875,
+    "height": 0.290278
+  },
+  "record": "urn:change-saga:change-saga:story:design-usage-path"
+}

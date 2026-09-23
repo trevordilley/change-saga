@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "onboard-checks",
+  "deck": "contributor-onboarding",
+  "title": "Use the cheapest check that tells the truth",
+  "rank": 80,
+  "section": "Iterate",
+  "intent": "prove",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0080-8daf5fbeb2ff.svg",
+  "takeaway": "Focused tests shorten the loop; the full Go and browser suites still matter before a behavioral change is ready.",
+  "reading_order": [
+    "focused",
+    "go",
+    "browser",
+    "honest"
+  ]
+}

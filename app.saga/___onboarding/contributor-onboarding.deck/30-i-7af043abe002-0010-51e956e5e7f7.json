@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "locate",
+  "slide": "onboard-exercise",
+  "rank": 10,
+  "kind": "region",
+  "label": "Find the template",
+  "description": "In internal/server/template.go locate the terms-page template and its term-code-list section; avoid replacing unrelated Code headings.",
+  "selector": {
+    "type": "element",
+    "element_id": "locate"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.413889,
+    "width": 0.425,
+    "height": 0.179167
+  },
+  "record": "urn:change-saga:change-saga:story:shared-product-language"
+}

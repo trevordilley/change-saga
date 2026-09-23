@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "changed",
+  "slide": "onboard-links",
+  "rank": 40,
+  "kind": "region",
+  "label": "Changed code",
+  "description": "Edits to selected bytes make evidence stale and prompt a targeted documentation update.",
+  "selector": {
+    "type": "element",
+    "element_id": "changed"
+  },
+  "hotspot": {
+    "x": 0.383594,
+    "y": 0.622222,
+    "width": 0.230469,
+    "height": 0.177778
+  },
+  "record": "urn:change-saga:change-saga:story:changed-code-explained"
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "assert",
+  "slide": "onboard-exercise",
+  "rank": 20,
+  "kind": "region",
+  "label": "Assert the changed output",
+  "description": "Extend TestATermPageShowsItsDefinitionStoriesAndCode in internal/server/terms_test.go to expect the new heading. Run it before the implementation edit to see the intended failure, then after to see it pass.",
+  "selector": {
+    "type": "element",
+    "element_id": "assert"
+  },
+  "hotspot": {
+    "x": 0.525,
+    "y": 0.413889,
+    "width": 0.425,
+    "height": 0.179167
+  },
+  "record": "urn:change-saga:change-saga:story:shared-product-language"
+}

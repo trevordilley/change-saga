@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "commands",
+  "slide": "onboard-maintain",
+  "rank": 30,
+  "kind": "example",
+  "label": "Inspect and validate",
+  "description": "Run the displayed commands on a feature branch. Use the actual PR base if it differs from main; validation is structural, while references and status expose currency and gaps.",
+  "selector": {
+    "type": "element",
+    "element_id": "commands"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.4875,
+    "width": 0.9,
+    "height": 0.293056
+  },
+  "record": "urn:change-saga:change-saga:feature:documentation-coverage"
+}

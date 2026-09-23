@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "implementation",
+  "slide": "onboard-map",
+  "rank": 50,
+  "kind": "region",
+  "label": "Implementation",
+  "description": "A feature implementation deck explains current code through semantic slide Items.",
+  "selector": {
+    "type": "element",
+    "element_id": "implementation"
+  },
+  "hotspot": {
+    "x": 0.735156,
+    "y": 0.486111,
+    "width": 0.195313,
+    "height": 0.290278
+  },
+  "record": "urn:change-saga:change-saga:feature:visual-implementation"
+}

@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "onboard-links",
+  "deck": "contributor-onboarding",
+  "title": "A link has an owner—and a version",
+  "rank": 20,
+  "section": "Understand",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0020-b1f74050c0d0.svg",
+  "takeaway": "Follow an element’s Stories and Code controls separately; a link is not proof that a requirement is satisfied.",
+  "reading_order": [
+    "intent",
+    "element",
+    "code",
+    "same",
+    "changed",
+    "meaning"
+  ]
+}

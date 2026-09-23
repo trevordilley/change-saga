@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "contributor-onboarding",
+  "title": "Start here: understand, run, iterate",
+  "role": "onboarding",
+  "rank": 0,
+  "objective": "A contributor can explain Change Saga, run it locally, make a focused change, and maintain its linked documentation."
+}

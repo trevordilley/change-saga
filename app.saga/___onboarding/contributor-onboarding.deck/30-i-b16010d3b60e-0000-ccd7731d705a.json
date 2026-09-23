@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "commit",
+  "slide": "onboard-maintain",
+  "rank": 0,
+  "kind": "region",
+  "label": "Commit before evidence",
+  "description": "Inspect and commit only your intended code/test changes before authoring commit-pinned evidence. Uncommitted source edits are not part of a committed comparison.",
+  "selector": {
+    "type": "element",
+    "element_id": "commit"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.245833,
+    "width": 0.266406,
+    "height": 0.183333
+  },
+  "record": "urn:change-saga:change-saga:story:comparison-context"
+}

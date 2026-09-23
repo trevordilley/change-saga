@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "focused",
+  "slide": "onboard-checks",
+  "rank": 0,
+  "kind": "example",
+  "label": "Fast package check",
+  "description": "go test ./internal/coderef is a small smoke check verified during deck authoring. For a real change select the specific affected package or test.",
+  "selector": {
+    "type": "element",
+    "element_id": "focused"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.241667,
+    "width": 0.9,
+    "height": 0.145833
+  },
+  "record": "urn:change-saga:change-saga:feature:quality-verification"
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "managed",
+  "slide": "onboard-serve",
+  "rank": 30,
+  "kind": "example",
+  "label": "Managed reading session",
+  "description": "The open command starts or reuses a managed background viewer. ./bin/change-saga serve status app.saga reports it; ./bin/change-saga serve stop app.saga stops managed viewers for that Saga.",
+  "selector": {
+    "type": "element",
+    "element_id": "managed"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.785742,
+    "width": 0.524711,
+    "height": 0.079606
+  },
+  "record": "urn:change-saga:change-saga:feature:repository-native"
+}

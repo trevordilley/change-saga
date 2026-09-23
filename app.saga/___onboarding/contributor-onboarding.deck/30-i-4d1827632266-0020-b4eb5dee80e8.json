@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "rebuild",
+  "slide": "onboard-iterate",
+  "rank": 20,
+  "kind": "example",
+  "label": "Recompile UI assets",
+  "description": "The server template, CSS and JavaScript are Go constants. Build the executable again after changing them.",
+  "selector": {
+    "type": "element",
+    "element_id": "rebuild"
+  },
+  "hotspot": {
+    "x": 0.604688,
+    "y": 0.593056,
+    "width": 0.345313,
+    "height": 0.240278
+  },
+  "record": "urn:change-saga:change-saga:feature:visual-implementation"
+}

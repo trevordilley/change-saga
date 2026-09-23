@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "serve",
+  "slide": "onboard-serve",
+  "rank": 0,
+  "kind": "example",
+  "label": "Start a foreground server",
+  "description": "From the repo root, start the local server at an explicit loopback port and leave that terminal attached. Under DevSwarm run services through hivecontrol exec service -- followed by this command.",
+  "selector": {
+    "type": "element",
+    "element_id": "serve"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.238889,
+    "width": 0.9,
+    "height": 0.1625
+  },
+  "record": "urn:change-saga:change-saga:feature:repository-native"
+}

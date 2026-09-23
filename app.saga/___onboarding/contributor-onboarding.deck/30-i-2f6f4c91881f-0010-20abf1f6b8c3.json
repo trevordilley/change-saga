@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "build",
+  "slide": "onboard-build",
+  "rank": 10,
+  "kind": "example",
+  "label": "Build and validate",
+  "description": "From the repository root, check Go, build ./cmd/change-saga into ./bin/change-saga, inspect help, then validate app.saga. GOTOOLCHAIN=local can enforce the installed toolchain.",
+  "selector": {
+    "type": "element",
+    "element_id": "build"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.372222,
+    "width": 0.9,
+    "height": 0.2875
+  },
+  "record": "urn:change-saga:change-saga:story:structured-ai-contract"
+}

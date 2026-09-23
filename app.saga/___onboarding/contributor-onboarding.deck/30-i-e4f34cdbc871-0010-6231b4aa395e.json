@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "run",
+  "slide": "onboard-ready",
+  "rank": 10,
+  "kind": "region",
+  "label": "Own the local loop",
+  "description": "A contributor should be able to build and run the app and distinguish source edits, binary rebuilds and process restarts.",
+  "selector": {
+    "type": "element",
+    "element_id": "run"
+  },
+  "hotspot": {
+    "x": 0.363281,
+    "y": 0.255556,
+    "width": 0.274219,
+    "height": 0.241667
+  },
+  "record": "urn:change-saga:change-saga:feature:repository-native"
+}

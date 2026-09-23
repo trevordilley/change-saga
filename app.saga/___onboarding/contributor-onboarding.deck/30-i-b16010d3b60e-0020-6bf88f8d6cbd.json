@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "repair",
+  "slide": "onboard-maintain",
+  "rank": 20,
+  "kind": "region",
+  "label": "Repair the narrow owner",
+  "description": "Read the changed obligation or source, update its explanation, then replace or repin only the affected evidence or relations. A clean warning is not a substitute for a correct explanation.",
+  "selector": {
+    "type": "element",
+    "element_id": "repair"
+  },
+  "hotspot": {
+    "x": 0.684375,
+    "y": 0.245833,
+    "width": 0.265625,
+    "height": 0.183333
+  },
+  "record": "urn:change-saga:change-saga:story:changed-code-explained"
+}

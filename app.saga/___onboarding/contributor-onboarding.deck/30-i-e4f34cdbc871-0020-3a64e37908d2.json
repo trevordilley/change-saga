@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "prove",
+  "slide": "onboard-ready",
+  "rank": 20,
+  "kind": "region",
+  "label": "Verify and trace impact",
+  "description": "Use the smallest truthful test and an actual browser check; reconcile changes to affected stories, definitions, diagrams and evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "prove"
+  },
+  "hotspot": {
+    "x": 0.675,
+    "y": 0.255556,
+    "width": 0.275,
+    "height": 0.241667
+  },
+  "record": "urn:change-saga:change-saga:feature:quality-verification"
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "browser",
+  "slide": "onboard-checks",
+  "rank": 20,
+  "kind": "example",
+  "label": "Real-browser tests",
+  "description": "Use the Node version in e2e/.node-version. In e2e install locked dependencies and Chromium, then npm test. The fixture builds the real Go binary and starts isolated servers; use test:all-browsers for Firefox and WebKit too.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser"
+  },
+  "hotspot": {
+    "x": 0.508594,
+    "y": 0.445833,
+    "width": 0.441406,
+    "height": 0.331944
+  },
+  "record": "urn:change-saga:change-saga:feature:visual-implementation"
+}

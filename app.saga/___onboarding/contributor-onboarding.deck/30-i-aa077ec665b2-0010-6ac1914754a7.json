@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "designer",
+  "slide": "onboard-why",
+  "rank": 10,
+  "kind": "region",
+  "label": "Designer",
+  "description": "Designers translate product intent into experience and inspect how designs are used.",
+  "selector": {
+    "type": "element",
+    "element_id": "designer"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.572222,
+    "width": 0.230469,
+    "height": 0.201389
+  },
+  "record": "urn:change-saga:change-saga:persona:designer"
+}

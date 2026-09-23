@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "tools",
+  "slide": "onboard-build",
+  "rank": 0,
+  "kind": "statement",
+  "label": "Toolchain prerequisites",
+  "description": "Use Git and the Go version pinned by .go-version, currently 1.26.1. Browser tests additionally use e2e/.node-version, currently Node 22.22.3.",
+  "selector": {
+    "type": "element",
+    "element_id": "tools"
+  },
+  "hotspot": {
+    "x": 0.051562,
+    "y": 0.237201,
+    "width": 0.627705,
+    "height": 0.087904
+  },
+  "record": "urn:change-saga:change-saga:feature:repository-native"
+}

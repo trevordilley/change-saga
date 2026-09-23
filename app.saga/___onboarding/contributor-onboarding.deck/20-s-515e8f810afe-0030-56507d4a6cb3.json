@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "onboard-runtime",
+  "deck": "contributor-onboarding",
+  "title": "Local inputs, shared models, two surfaces",
+  "rank": 30,
+  "section": "Understand",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0030-56507d4a6cb3.svg",
+  "takeaway": "The Go executable supplies both the CLI and browser UI; Node is needed for browser tests, not for serving the app.",
+  "reading_order": [
+    "inputs",
+    "models",
+    "cli",
+    "browser",
+    "writes"
+  ]
+}

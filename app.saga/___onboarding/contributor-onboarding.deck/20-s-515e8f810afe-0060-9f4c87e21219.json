@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "onboard-serve",
+  "deck": "contributor-onboarding",
+  "title": "Start the app and find your way around",
+  "rank": 60,
+  "section": "Run",
+  "intent": "explain",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0060-9f4c87e21219.svg",
+  "takeaway": "Use a foreground server for development so you can see errors and stop the process you started.",
+  "reading_order": [
+    "serve",
+    "browse",
+    "control",
+    "managed"
+  ]
+}

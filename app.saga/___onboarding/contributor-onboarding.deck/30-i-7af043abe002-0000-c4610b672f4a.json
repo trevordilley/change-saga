@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "scope",
+  "slide": "onboard-exercise",
+  "rank": 0,
+  "kind": "example",
+  "label": "Bounded practice task",
+  "description": "Create a fresh practice branch and change only the term-detail Code heading to Defining code. This is an optional contributor exercise, not a product requirement or a change made by this deck.",
+  "selector": {
+    "type": "element",
+    "element_id": "scope"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.240278,
+    "width": 0.9,
+    "height": 0.126389
+  },
+  "record": "urn:change-saga:change-saga:story:shared-product-language"
+}

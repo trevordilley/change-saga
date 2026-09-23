@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "meaning",
+  "slide": "onboard-links",
+  "rank": 50,
+  "kind": "region",
+  "label": "Changed requirement meaning",
+  "description": "Changing the linked obligation can stale a relation; repinning means confirming the new meaning, not clearing a warning blindly.",
+  "selector": {
+    "type": "element",
+    "element_id": "meaning"
+  },
+  "hotspot": {
+    "x": 0.717187,
+    "y": 0.622222,
+    "width": 0.232813,
+    "height": 0.177778
+  },
+  "record": "urn:change-saga:change-saga:story:design-usage-path"
+}

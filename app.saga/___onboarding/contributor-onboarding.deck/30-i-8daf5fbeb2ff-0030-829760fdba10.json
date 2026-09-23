@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "honest",
+  "slide": "onboard-checks",
+  "rank": 30,
+  "kind": "risk",
+  "label": "Interpret failures honestly",
+  "description": "The full suite is not claimed green by this deck. Compare a failure with the same test on the base before deciding whether it is a regression. Do not weaken an assertion merely to get a pass.",
+  "selector": {
+    "type": "element",
+    "element_id": "honest"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.803797,
+    "width": 0.62725,
+    "height": 0.074051
+  },
+  "record": "urn:change-saga:change-saga:story:quality-result-trust"
+}

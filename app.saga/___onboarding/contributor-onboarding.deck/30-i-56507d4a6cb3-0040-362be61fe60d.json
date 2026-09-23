@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "writes",
+  "slide": "onboard-runtime",
+  "rank": 40,
+  "kind": "edge",
+  "label": "Validated writes",
+  "description": "CLI authoring uses domain writers; structured records are validated before publication. Querying does not mutate them.",
+  "selector": {
+    "type": "element",
+    "element_id": "writes"
+  },
+  "hotspot": {
+    "x": 0.28,
+    "y": 0.168,
+    "width": 0.52,
+    "height": 0.055
+  },
+  "record": "urn:change-saga:change-saga:feature:merge-friendly-format"
+}

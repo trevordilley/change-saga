@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "product",
+  "slide": "onboard-ready",
+  "rank": 0,
+  "kind": "region",
+  "label": "Explain the user value",
+  "description": "Before changing behavior identify the relevant persona, story and criterion. Definitions in Terms and vocabulary connect language back to intent and code.",
+  "selector": {
+    "type": "element",
+    "element_id": "product"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.255556,
+    "width": 0.275781,
+    "height": 0.241667
+  },
+  "record": "urn:change-saga:change-saga:story:product-intent-path"
+}

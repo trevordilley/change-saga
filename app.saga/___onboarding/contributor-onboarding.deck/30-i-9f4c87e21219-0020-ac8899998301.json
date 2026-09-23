@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "control",
+  "slide": "onboard-serve",
+  "rank": 20,
+  "kind": "region",
+  "label": "Manage your server safely",
+  "description": "Stop the foreground server you started with Ctrl-C. If its requested port is occupied, use a different loopback port such as 7343; do not stop someone else's process.",
+  "selector": {
+    "type": "element",
+    "element_id": "control"
+  },
+  "hotspot": {
+    "x": 0.584375,
+    "y": 0.484722,
+    "width": 0.365625,
+    "height": 0.261111
+  },
+  "record": "urn:change-saga:change-saga:feature:repository-native"
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "onboard-maintain",
+  "deck": "contributor-onboarding",
+  "title": "A code change also has a knowledge impact",
+  "rank": 100,
+  "section": "Iterate",
+  "intent": "explain",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0100-b16010d3b60e.svg",
+  "takeaway": "Commit the code, derive what is affected, then update only the records and exact evidence that need to change.",
+  "reading_order": [
+    "commit",
+    "inspect",
+    "repair",
+    "commands",
+    "writer"
+  ]
+}

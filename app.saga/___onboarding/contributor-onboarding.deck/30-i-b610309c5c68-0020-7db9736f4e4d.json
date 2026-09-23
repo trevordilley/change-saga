@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "product",
+  "slide": "onboard-map",
+  "rank": 20,
+  "kind": "region",
+  "label": "Product",
+  "description": "Product records retain prototypes, persona-focused stories, and independent acceptance criteria.",
+  "selector": {
+    "type": "element",
+    "element_id": "product"
+  },
+  "hotspot": {
+    "x": 0.069531,
+    "y": 0.486111,
+    "width": 0.196875,
+    "height": 0.290278
+  },
+  "record": "urn:change-saga:change-saga:feature:product-knowledge"
+}

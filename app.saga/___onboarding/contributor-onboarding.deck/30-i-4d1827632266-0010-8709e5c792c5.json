@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "test",
+  "slide": "onboard-iterate",
+  "rank": 10,
+  "kind": "region",
+  "label": "Focused feedback",
+  "description": "Run tests for the behavior you change before broad checks. Tests and error output tell you whether your edit behaves as intended.",
+  "selector": {
+    "type": "element",
+    "element_id": "test"
+  },
+  "hotspot": {
+    "x": 0.604688,
+    "y": 0.247222,
+    "width": 0.345313,
+    "height": 0.230556
+  },
+  "record": "urn:change-saga:change-saga:feature:quality-verification"
+}

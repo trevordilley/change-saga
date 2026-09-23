@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "overview",
+  "slide": "onboard-map",
+  "rank": 0,
+  "kind": "region",
+  "label": "App overview",
+  "description": "Shared language and people live above the feature domains; use Terms and vocabulary whenever a name is unfamiliar.",
+  "selector": {
+    "type": "element",
+    "element_id": "overview"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.240278,
+    "width": 0.9,
+    "height": 0.118056
+  },
+  "record": "urn:change-saga:change-saga:story:shared-product-language"
+}

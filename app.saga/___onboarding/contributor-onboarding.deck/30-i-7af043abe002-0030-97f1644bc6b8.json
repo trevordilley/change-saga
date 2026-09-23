@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "run",
+  "slide": "onboard-exercise",
+  "rank": 30,
+  "kind": "example",
+  "label": "Run the narrow test",
+  "description": "Run the exact named test at the repository root, then rebuild and restart as shown on the iteration slide. Open /terms/pagination-cursor on your own server.",
+  "selector": {
+    "type": "element",
+    "element_id": "run"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.640278,
+    "width": 0.9,
+    "height": 0.145833
+  },
+  "record": "urn:change-saga:change-saga:feature:quality-verification"
+}

@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "onboard-map",
+  "deck": "contributor-onboarding",
+  "title": "Know where each kind of knowledge lives",
+  "rank": 10,
+  "section": "Understand",
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0010-b610309c5c68.svg",
+  "takeaway": "A feature is a durable product domain, not a branch or a pull request.",
+  "reading_order": [
+    "overview",
+    "feature",
+    "product",
+    "design",
+    "quality",
+    "implementation"
+  ]
+}

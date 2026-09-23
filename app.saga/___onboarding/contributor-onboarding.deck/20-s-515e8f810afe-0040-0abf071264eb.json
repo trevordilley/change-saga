@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "onboard-modes",
+  "deck": "contributor-onboarding",
+  "title": "Learning the app is not reviewing a change",
+  "rank": 40,
+  "section": "Understand",
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0040-0abf071264eb.svg",
+  "takeaway": "Observe current documentation to learn; compare committed revisions to understand a change.",
+  "reading_order": [
+    "docs",
+    "review",
+    "gap"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "onboard-exercise",
+  "deck": "contributor-onboarding",
+  "title": "First exercise: a tiny Terms-page change",
+  "rank": 90,
+  "section": "Iterate",
+  "intent": "explain",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0090-7af043abe002.svg",
+  "takeaway": "Practice one complete loop on a small UI label before changing a domain rule.",
+  "reading_order": [
+    "scope",
+    "locate",
+    "assert",
+    "run",
+    "finish"
+  ]
+}

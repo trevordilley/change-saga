@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "restart",
+  "slide": "onboard-iterate",
+  "rank": 30,
+  "kind": "region",
+  "label": "Restart after rebuilding",
+  "description": "Stop your attached server, rerun its serve command, then refresh. Refresh alone cannot load Go source changes into an old running process.",
+  "selector": {
+    "type": "element",
+    "element_id": "restart"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.593056,
+    "width": 0.345313,
+    "height": 0.240278
+  },
+  "record": "urn:change-saga:change-saga:feature:repository-native"
+}

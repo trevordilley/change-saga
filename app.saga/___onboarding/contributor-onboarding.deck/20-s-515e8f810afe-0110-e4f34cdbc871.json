@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "onboard-ready",
+  "deck": "contributor-onboarding",
+  "title": "Leave a trail the next person can follow",
+  "rank": 110,
+  "section": "Apply",
+  "intent": "conclude",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0110-e4f34cdbc871.svg",
+  "takeaway": "You are ready to iterate when you can explain the intent, run the app, test a change, and keep its documentation honest.",
+  "reading_order": [
+    "product",
+    "run",
+    "prove",
+    "handoff"
+  ]
+}

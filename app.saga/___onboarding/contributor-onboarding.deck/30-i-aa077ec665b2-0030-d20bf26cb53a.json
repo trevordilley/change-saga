@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "developer",
+  "slide": "onboard-why",
+  "rank": 30,
+  "kind": "region",
+  "label": "Developer",
+  "description": "Developers explain changes, inspect impact, and review code in context.",
+  "selector": {
+    "type": "element",
+    "element_id": "developer"
+  },
+  "hotspot": {
+    "x": 0.721094,
+    "y": 0.572222,
+    "width": 0.228906,
+    "height": 0.201389
+  },
+  "record": "urn:change-saga:change-saga:persona:developer"
+}

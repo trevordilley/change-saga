@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "same",
+  "slide": "onboard-links",
+  "rank": 30,
+  "kind": "region",
+  "label": "Content-preserving movement",
+  "description": "Line movement can remap a reference while its selected bytes remain current.",
+  "selector": {
+    "type": "element",
+    "element_id": "same"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.622222,
+    "width": 0.230469,
+    "height": 0.177778
+  },
+  "record": "urn:change-saga:change-saga:story:changed-code-explained"
+}

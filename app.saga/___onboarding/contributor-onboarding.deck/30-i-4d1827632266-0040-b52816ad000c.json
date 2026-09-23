@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "boundary",
+  "slide": "onboard-iterate",
+  "rank": 40,
+  "kind": "statement",
+  "label": "Compiled UI boundary",
+  "description": "This is not a separate frontend development server; Node is for the end-to-end test harness, not for normal serving.",
+  "selector": {
+    "type": "element",
+    "element_id": "boundary"
+  },
+  "hotspot": {
+    "x": 0.417187,
+    "y": 0.467757,
+    "width": 0.127064,
+    "height": 0.104536
+  },
+  "record": "urn:change-saga:change-saga:feature:visual-implementation"
+}

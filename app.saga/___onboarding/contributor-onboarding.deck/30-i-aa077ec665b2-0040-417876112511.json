@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "shared",
+  "slide": "onboard-why",
+  "rank": 40,
+  "kind": "region",
+  "label": "Shared traceability",
+  "description": "All four roles use one Git-native Saga whose linked records connect product intent to implementation.",
+  "selector": {
+    "type": "element",
+    "element_id": "shared"
+  },
+  "hotspot": {
+    "x": 0.359375,
+    "y": 0.308333,
+    "width": 0.28125,
+    "height": 0.393056
+  },
+  "record": "urn:change-saga:change-saga:feature:traceability"
+}

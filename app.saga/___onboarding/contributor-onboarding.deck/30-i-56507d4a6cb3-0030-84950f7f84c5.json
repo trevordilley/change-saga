@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "browser",
+  "slide": "onboard-runtime",
+  "rank": 30,
+  "kind": "region",
+  "label": "Local browser surface",
+  "description": "The Go server renders the UI with templates, styles and JavaScript compiled into the executable.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser"
+  },
+  "hotspot": {
+    "x": 0.707812,
+    "y": 0.544444,
+    "width": 0.242188,
+    "height": 0.209722
+  },
+  "record": "urn:change-saga:change-saga:feature:visual-implementation"
+}

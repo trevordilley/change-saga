@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "handoff",
+  "slide": "onboard-ready",
+  "rank": 30,
+  "kind": "region",
+  "label": "Commit a coherent contribution",
+  "description": "Hand off a focused commit or branch with code, tests and current explanations. Coverage reports omissions; it never approves a change on behalf of a person.",
+  "selector": {
+    "type": "element",
+    "element_id": "handoff"
+  },
+  "hotspot": {
+    "x": 0.197656,
+    "y": 0.636111,
+    "width": 0.604688,
+    "height": 0.173611
+  },
+  "record": "urn:change-saga:change-saga:feature:review-decisions"
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "code",
+  "slide": "onboard-links",
+  "rank": 20,
+  "kind": "region",
+  "label": "Code pin",
+  "description": "A code reference identifies selected source bytes at a commit; it is distinct from a requirement relation.",
+  "selector": {
+    "type": "element",
+    "element_id": "code"
+  },
+  "hotspot": {
+    "x": 0.717187,
+    "y": 0.266667,
+    "width": 0.232813,
+    "height": 0.234722
+  },
+  "record": "urn:change-saga:change-saga:story:reverse-impact"
+}

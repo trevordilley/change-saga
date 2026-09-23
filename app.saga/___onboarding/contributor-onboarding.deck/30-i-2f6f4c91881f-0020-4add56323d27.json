@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "result",
+  "slide": "onboard-build",
+  "rank": 20,
+  "kind": "statement",
+  "label": "Successful local setup",
+  "description": "Success means the build exits zero, CLI help prints, and validate --json reports a valid Saga; it is not a claim that the entire test suite passes.",
+  "selector": {
+    "type": "element",
+    "element_id": "result"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.738889,
+    "width": 0.9,
+    "height": 0.101389
+  },
+  "record": "urn:change-saga:change-saga:feature:quality-verification"
+}

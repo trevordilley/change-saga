@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "inspect",
+  "slide": "onboard-maintain",
+  "rank": 10,
+  "kind": "region",
+  "label": "Derive affected records",
+  "description": "Status and the affected layer derive downstream work from changed source and pinned links. Missing unrelated growth is not a reason to invent requirements.",
+  "selector": {
+    "type": "element",
+    "element_id": "inspect"
+  },
+  "hotspot": {
+    "x": 0.367188,
+    "y": 0.245833,
+    "width": 0.266406,
+    "height": 0.183333
+  },
+  "record": "urn:change-saga:change-saga:story:change-impact-layers"
+}

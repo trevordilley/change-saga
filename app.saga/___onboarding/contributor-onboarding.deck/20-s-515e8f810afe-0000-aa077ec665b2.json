@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "onboard-why",
+  "deck": "contributor-onboarding",
+  "title": "One shared trail from intent to code",
+  "rank": 0,
+  "section": "Understand",
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-515e8f810afe-0000-aa077ec665b2.svg",
+  "takeaway": "Stories explain why; diagrams explain how; code and tests keep the explanation checkable.",
+  "reading_order": [
+    "pm",
+    "designer",
+    "architect",
+    "developer",
+    "shared"
+  ]
+}

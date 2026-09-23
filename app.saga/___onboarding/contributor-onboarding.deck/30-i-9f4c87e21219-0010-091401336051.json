@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "browse",
+  "slide": "onboard-serve",
+  "rank": 10,
+  "kind": "region",
+  "label": "Navigate the learning path",
+  "description": "Open the printed URL, select the Overview Onboarding deck, and follow its slide thumbnails. Terms and vocabulary lets you inspect a definition, its related stories and defining code.",
+  "selector": {
+    "type": "element",
+    "element_id": "browse"
+  },
+  "hotspot": {
+    "x": 0.05,
+    "y": 0.484722,
+    "width": 0.498437,
+    "height": 0.261111
+  },
+  "record": "urn:change-saga:change-saga:story:visual-deck-navigation"
+}
