@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "dispatch",
+  "slide": "query-runtime",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Dispatch query",
+  "description": "The executable routes the query command to the structured Query entrypoint under an interruptible context.",
+  "selector": {
+    "type": "element",
+    "element_id": "dispatch"
+  }
+}

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">AI query ownership and missing adapters</title>
+  <desc id="desc">A containment diagram showing the implemented one-shot CLI adapter, its review and living application sessions, and the absent HTTP and MCP query adapters.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#081526"/><stop offset="1" stop-color="#13233c"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#77d7ff"/></marker>
+    <filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-opacity=".22"/></filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="67" font-family="Inter,system-ui,sans-serif" font-size="34" font-weight="750" fill="#f7fbff">One implemented transport, two application projections</text>
+  <text x="64" y="101" font-family="Inter,system-ui,sans-serif" font-size="18" fill="#9fb5cf">Solid = current runtime · dashed = explicitly not implemented</text>
+  <g id="caller" filter="url(#shadow)">
+    <rect x="64" y="180" width="220" height="350" rx="26" fill="#132b48" stroke="#5fbfe8" stroke-width="2"/>
+    <circle cx="174" cy="250" r="42" fill="#17395c" stroke="#77d7ff" stroke-width="3"/><path d="M151 248h46M174 225v46" stroke="#bcecff" stroke-width="5" stroke-linecap="round"/>
+    <text x="174" y="330" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="25" font-weight="700" fill="#f5fbff">AI caller</text>
+    <text x="174" y="368" text-anchor="middle" font-family="ui-monospace,monospace" font-size="17" fill="#b9d7ec">query &lt;operation&gt;</text>
+    <text x="174" y="401" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="17" fill="#9fb5cf">published grammar</text>
+    <path d="M284 355H348" stroke="#77d7ff" stroke-width="5" marker-end="url(#arrow)"/>
+  </g>
+  <g id="query" filter="url(#shadow)">
+    <rect x="348" y="146" width="300" height="418" rx="28" fill="#163353" stroke="#77d7ff" stroke-width="3"/>
+    <text x="384" y="198" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="700" letter-spacing="1.8" fill="#75dbff">IMPLEMENTED ADAPTER</text>
+    <text x="384" y="240" font-family="Inter,system-ui,sans-serif" font-size="27" font-weight="750" fill="#ffffff">CLI query boundary</text>
+    <rect x="384" y="279" width="228" height="64" rx="14" fill="#0c223b"/><text x="405" y="307" font-family="ui-monospace,monospace" font-size="16" fill="#c7eeff">parse + validate</text><text x="405" y="330" font-family="ui-monospace,monospace" font-size="16" fill="#c7eeff">open snapshot</text>
+    <rect x="384" y="362" width="228" height="64" rx="14" fill="#0c223b"/><text x="405" y="390" font-family="ui-monospace,monospace" font-size="16" fill="#c7eeff">route typed request</text><text x="405" y="413" font-family="ui-monospace,monospace" font-size="16" fill="#c7eeff">normalize errors</text>
+    <rect x="384" y="445" width="228" height="76" rx="14" fill="#0a2840" stroke="#31c5a5"/><text x="405" y="476" font-family="ui-monospace,monospace" font-size="16" fill="#a9f5df">change-saga.ai/v1</text><text x="405" y="500" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#cde7ee">exactly one JSON value</text>
+    <path d="M648 286H718" stroke="#77d7ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M648 436H718" stroke="#77d7ff" stroke-width="5" marker-end="url(#arrow)"/>
+  </g>
+  <g id="session" filter="url(#shadow)">
+    <rect x="718" y="145" width="282" height="222" rx="25" fill="#17392f" stroke="#4ed6a7" stroke-width="3"/>
+    <text x="752" y="190" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="700" letter-spacing="1.6" fill="#70e8bd">REVIEWAPP</text>
+    <text x="752" y="230" font-family="Inter,system-ui,sans-serif" font-size="24" font-weight="750" fill="#f2fff9">Review/source session</text>
+    <text x="752" y="271" font-family="Inter,system-ui,sans-serif" font-size="17" fill="#b9e8d6">validated Saga · Git comparison</text>
+    <text x="752" y="303" font-family="Inter,system-ui,sans-serif" font-size="17" fill="#b9e8d6">coverage · fragments · code owners</text>
+    <rect x="752" y="322" width="207" height="28" rx="14" fill="#0d2c24"/><text x="855" y="342" text-anchor="middle" font-family="ui-monospace,monospace" font-size="14" fill="#8ff2d1">bounded projection</text>
+  </g>
+  <g id="living-session" filter="url(#shadow)">
+    <rect x="718" y="390" width="282" height="174" rx="25" fill="#302b55" stroke="#a891ff" stroke-width="3"/>
+    <text x="752" y="435" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="700" letter-spacing="1.6" fill="#c0b3ff">LIVINGAPP</text>
+    <text x="752" y="475" font-family="Inter,system-ui,sans-serif" font-size="25" font-weight="750" fill="#f8f6ff">Product graph session</text>
+    <text x="752" y="516" font-family="Inter,system-ui,sans-serif" font-size="17" fill="#d5cff5">requirements · relations · work</text><text x="752" y="545" font-family="Inter,system-ui,sans-serif" font-size="17" fill="#d5cff5">traceability · readiness</text>
+  </g>
+  <g id="missing-adapters">
+    <rect x="1042" y="146" width="174" height="418" rx="25" fill="#271d2d" stroke="#ff8a9d" stroke-width="3" stroke-dasharray="10 9"/>
+    <text x="1129" y="190" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800" letter-spacing="1.5" fill="#ff9cac">NOT BUILT</text>
+    <rect x="1066" y="231" width="126" height="84" rx="17" fill="#3a2430"/><text x="1129" y="266" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700" fill="#ffe9ee">HTTP query</text><text x="1129" y="292" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#efb4c0">adapter</text>
+    <rect x="1066" y="346" width="126" height="84" rx="17" fill="#3a2430"/><text x="1129" y="381" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700" fill="#ffe9ee">stdio MCP</text><text x="1129" y="407" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#efb4c0">adapter</text>
+    <text x="1129" y="485" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#efb4c0">planned seams</text><text x="1129" y="510" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#efb4c0">not runtime paths</text>
+  </g>
+  <text x="64" y="650" font-family="Inter,system-ui,sans-serif" font-size="20" fill="#b8c8db">Consequence: every AI read pays process/session startup; no daemon or network listener is required.</text>
+</svg>

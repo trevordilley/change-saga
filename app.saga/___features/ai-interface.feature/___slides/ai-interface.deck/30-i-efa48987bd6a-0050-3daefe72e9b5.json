@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stable-domain-error",
+  "slide": "query-failure-boundaries",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Map known errors",
+  "description": "Known query, reviewapp, and livingapp errors retain stable codes, retryability, details, and exit mappings.",
+  "selector": {
+    "type": "element",
+    "element_id": "stable-domain-error"
+  }
+}

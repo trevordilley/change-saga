@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 275,
+      "end": 295,
+      "digest": "sha256:86dad841b85d774adeff4f8392cda63cf1334b83dc76fb3043f95dc046f87cb7",
+      "note": "Issues an opaque checksummed continuation containing the operation, normalized filters, snapshot, and next offset when rows remain."
+    }
+  ]
+}

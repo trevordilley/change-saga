@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "open-boundary",
+  "slide": "query-failure-boundaries",
+  "rank": 30,
+  "kind": "risk",
+  "label": "Contain loading failures",
+  "description": "Missing or invalid Saga state and unavailable source history fail while opening the validated snapshot with stable categories.",
+  "selector": {
+    "type": "element",
+    "element_id": "open-boundary"
+  }
+}

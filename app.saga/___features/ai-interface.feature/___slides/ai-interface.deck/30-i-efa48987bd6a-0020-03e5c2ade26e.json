@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "invalid-request",
+  "slide": "query-failure-boundaries",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Reject before open",
+  "description": "Invalid requests return invalid_argument and exit 2 before any application session is opened.",
+  "selector": {
+    "type": "element",
+    "element_id": "invalid-request"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "invalid-cursor",
+  "slide": "cursor-state",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Reject invalid cursor",
+  "description": "Malformed, noncanonical, cross-operation, cross-filter, or out-of-range tokens fail as invalid_argument; the unkeyed checksum is not authentication.",
+  "selector": {
+    "type": "element",
+    "element_id": "invalid-cursor"
+  }
+}

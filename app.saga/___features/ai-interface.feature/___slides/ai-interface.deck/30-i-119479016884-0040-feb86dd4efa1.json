@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "project",
+  "slide": "query-runtime",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Project bounded data",
+  "description": "The selected application session executes the domain query and returns a bounded result page.",
+  "selector": {
+    "type": "element",
+    "element_id": "project"
+  }
+}

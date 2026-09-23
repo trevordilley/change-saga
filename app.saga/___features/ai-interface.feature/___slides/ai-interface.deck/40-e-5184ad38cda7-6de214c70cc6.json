@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 247,
+      "end": 255,
+      "digest": "sha256:8239cd7842b921a684de055aeef318d2cba8b06bb73b6857e71ee5b477ccd37c",
+      "note": "Starts uncursored pagination at zero after applying the default or validating the supplied page limit."
+    }
+  ]
+}

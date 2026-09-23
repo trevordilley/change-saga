@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 319,
+      "end": 337,
+      "digest": "sha256:dc96bce5302ed739dcd3b08531eb85e89c954802a270873766498493933aa797",
+      "note": "Validates parsed query options and opens the application session only after the transport request is accepted."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unexpected-error",
+  "slide": "query-failure-boundaries",
+  "rank": 60,
+  "kind": "risk",
+  "label": "Suppress unexpected detail",
+  "description": "Unknown internal failures collapse to an internal error without exposing the underlying message or path.",
+  "selector": {
+    "type": "element",
+    "element_id": "unexpected-error"
+  }
+}

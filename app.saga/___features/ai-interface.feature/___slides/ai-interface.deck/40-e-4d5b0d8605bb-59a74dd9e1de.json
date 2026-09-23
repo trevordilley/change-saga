@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 256,
+      "end": 266,
+      "digest": "sha256:1c4b8dabc68cf75443314706815feed432ef945a47cdbee8679563516c69d0c4",
+      "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 270,
+      "end": 272,
+      "digest": "sha256:90f917da8a8bba7b681de504e1e75d8b22e6082209c7b4f5c759608c69c73000",
+      "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 297,
+      "end": 303,
+      "digest": "sha256:4c6e5928b779b680ca32c48b2bf40d73c8b0b4713245df10fbd258916f670802",
+      "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+    }
+  ]
+}

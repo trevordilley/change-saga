@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "exit",
+  "slide": "query-runtime",
+  "rank": 60,
+  "kind": "transition",
+  "label": "Return and exit",
+  "description": "The process writes exactly one machine-readable value to stdout and returns the mapped exit status without duplicate stderr prose.",
+  "selector": {
+    "type": "element",
+    "element_id": "exit"
+  }
+}

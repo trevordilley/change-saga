@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "docs/ai-facing-interface.md",
+      "start": 7,
+      "end": 11,
+      "digest": "sha256:e4a0653a3b0db543b421dbba7937457ee125ea8863d2f27da506d2f94543d7be",
+      "note": "States that only the structured CLI read adapter exists today while HTTP query and MCP adapters remain deferred."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "docs/ai-facing-interface.md",
+      "start": 74,
+      "end": 85,
+      "digest": "sha256:129651e6fe81adaefdd064a7eb32277bb515f505914bffb4e1f5a39380629e69",
+      "note": "States that only the structured CLI read adapter exists today while HTTP query and MCP adapters remain deferred."
+    }
+  ]
+}

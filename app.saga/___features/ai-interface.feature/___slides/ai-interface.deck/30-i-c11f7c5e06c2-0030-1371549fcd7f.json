@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "continue-page",
+  "slide": "cursor-state",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Continue same query",
+  "description": "A continuation resumes only the same operation and normalized filters on the same snapshot; a changed snapshot fails instead of mixing pages.",
+  "selector": {
+    "type": "element",
+    "element_id": "continue-page"
+  }
+}
