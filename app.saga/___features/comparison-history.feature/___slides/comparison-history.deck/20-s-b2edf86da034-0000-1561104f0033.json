@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "comparison-architecture",
+  "deck": "comparison-history",
+  "title": "One range, four projections",
+  "rank": 0,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b2edf86da034-0000-1561104f0033.svg",
+  "takeaway": "Every surface derives from one ephemeral, commit-pinned range; the Saga stores evidence, never the selected comparison.",
+  "reading_order": [
+    "range",
+    "gitdiff",
+    "evidence",
+    "query-session",
+    "change-layers",
+    "surfaces"
+  ]
+}

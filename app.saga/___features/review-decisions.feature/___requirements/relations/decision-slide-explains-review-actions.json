@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "decision-slide-explains-review-actions",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:decision-currency",
+  "to": "urn:change-saga:change-saga:story:review-decision",
+  "scope": "descendants",
+  "rationale": "The implementation stores per-slide approvals and change requests as append-only decisions and recomputes their currency.",
+  "to_revision": "urn:change-saga:change-saga:story:review-decision:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:07.326072Z"
+}

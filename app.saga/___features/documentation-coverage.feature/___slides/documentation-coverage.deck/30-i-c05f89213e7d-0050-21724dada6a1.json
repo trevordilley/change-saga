@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "gap-resolution",
+  "slide": "axis-failures",
+  "rank": 50,
+  "kind": "node",
+  "label": "Gap with reasons",
+  "description": "Stale, invalid, conflicted, unsatisfied, and absent evidence all resolve to gap without losing specific reasons or becoming a blended score.",
+  "selector": {
+    "type": "element",
+    "element_id": "gap-resolution"
+  }
+}

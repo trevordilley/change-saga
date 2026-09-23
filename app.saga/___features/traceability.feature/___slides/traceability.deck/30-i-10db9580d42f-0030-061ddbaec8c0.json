@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "work-item-gap",
+  "slide": "readiness-boundary",
+  "rank": 30,
+  "kind": "risk",
+  "label": "Work item missing",
+  "description": "No work item implements any of the six criteria, so plan coverage remains absent.",
+  "selector": {
+    "type": "element",
+    "element_id": "work-item-gap"
+  }
+}

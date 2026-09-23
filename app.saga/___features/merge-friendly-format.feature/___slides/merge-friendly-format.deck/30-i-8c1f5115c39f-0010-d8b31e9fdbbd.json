@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "same-dir-stage",
+  "slide": "atomic-failure-boundaries",
+  "rank": 10,
+  "kind": "node",
+  "label": "Same-directory staging",
+  "description": "Files and entity directories are constructed under hidden temporary names beside their final destination.",
+  "selector": {
+    "type": "element",
+    "element_id": "same-dir-stage"
+  }
+}

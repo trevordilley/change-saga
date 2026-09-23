@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "quality-verification",
+  "title": "Quality verification architecture",
+  "role": "change",
+  "rank": 0,
+  "objective": "Understand how test intent, evidence, runs, and policies become criterion-level quality facts—and where execution trust still stops."
+}

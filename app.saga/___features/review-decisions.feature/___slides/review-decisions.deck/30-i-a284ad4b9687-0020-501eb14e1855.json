@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "attribution-gap",
+  "slide": "decision-currency",
+  "rank": 20,
+  "kind": "statement",
+  "label": "Composite reviewer key",
+  "description": "Latest-decision grouping keys on Git/local author plus reviewer kind, seat name, agent, and model, keeping a human’s direct and AI-mediated actions distinct.",
+  "selector": {
+    "type": "element",
+    "element_id": "attribution-gap"
+  }
+}

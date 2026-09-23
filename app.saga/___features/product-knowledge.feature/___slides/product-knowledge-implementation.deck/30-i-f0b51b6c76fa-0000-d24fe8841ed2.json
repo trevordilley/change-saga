@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "active-relation-filter",
+  "slide": "traceability-runtime",
+  "rank": 0,
+  "kind": "node",
+  "label": "Current-edge filter",
+  "description": "Traceability derives paths only from active relations whose revision and content pins are current.",
+  "selector": {
+    "type": "element",
+    "element_id": "active-relation-filter"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "traceability-query-runtime",
+  "deck": "traceability",
+  "title": "Traceability query runtime",
+  "rank": 10,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-85572f9da485-0010-7cf4b29c8892.svg",
+  "takeaway": "A shared snapshot feeds relation currency, optional code remapping, criterion composition, and deterministic pagination.",
+  "reading_order": [
+    "cli-request",
+    "shared-snapshot",
+    "living-graph",
+    "criterion-composer",
+    "paged-envelope",
+    "sequence-flow",
+    "ref-remap"
+  ]
+}

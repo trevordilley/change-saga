@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "surfaces",
+  "slide": "comparison-architecture",
+  "rank": 50,
+  "kind": "region",
+  "label": "Human and machine surfaces",
+  "description": "CLI JSON, the review browser, and history links consume projections of the same comparison identity rather than inventing their own ranges.",
+  "selector": {
+    "type": "element",
+    "element_id": "surfaces"
+  }
+}

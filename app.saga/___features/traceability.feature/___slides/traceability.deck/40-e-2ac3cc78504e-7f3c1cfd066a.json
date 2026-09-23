@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 395,
+      "end": 425,
+      "digest": "sha256:74e508e1c68bb31f63f3d2cd50d9b54d48bc47bb29f55dd5c11f095ac3d1a13a",
+      "note": "Joins explaining visual targets to their exact Item code references and exposes those implementation paths."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 523,
+      "end": 550,
+      "digest": "sha256:db45d7e6bcb65d9e8d2ecd5e309275879ebbfdf7553c6b083b64884073bef89f",
+      "note": "Joins explaining visual targets to their exact Item code references and exposes those implementation paths."
+    }
+  ]
+}

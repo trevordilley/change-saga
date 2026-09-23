@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "living-session",
+  "slide": "structured-query",
+  "rank": 40,
+  "kind": "node",
+  "label": "Product graph projection",
+  "description": "Livingapp owns requirements, relations, work-plan, traceability, readiness, and its snapshot-bound pagination.",
+  "selector": {
+    "type": "element",
+    "element_id": "living-session"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/model.go",
+      "start": 107,
+      "end": 151,
+      "digest": "sha256:0c733d7c5cd5f6a6fd550dd7f2ebf244da5e8e56156d79f1433396c64f02a163",
+      "note": "Persists the selector and exact prototype/story pins that make one prototype state addressable before composition."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/prototypes/mutation.go",
+      "start": 255,
+      "end": 300,
+      "digest": "sha256:8815d2bdce1a6719a82afd724b6f173c1d195a7729bbb10e49092ead92c89488",
+      "note": "Persists the selector and exact prototype/story pins that make one prototype state addressable before composition."
+    }
+  ]
+}

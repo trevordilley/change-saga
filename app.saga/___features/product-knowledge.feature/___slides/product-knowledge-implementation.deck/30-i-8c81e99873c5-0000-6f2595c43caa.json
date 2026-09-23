@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "test-definition",
+  "slide": "quality-evidence-runtime",
+  "rank": 0,
+  "kind": "node",
+  "label": "Test definition revision",
+  "description": "A test revision is a complete ordered definition containing coverage kinds, automation, steps, and one expected result.",
+  "selector": {
+    "type": "element",
+    "element_id": "test-definition"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 255,
+      "end": 274,
+      "digest": "sha256:416f082476bc814c264a26b606e7e914fddd5a65df7ed79660c3074c7aff8718",
+      "note": "Accepts a continuation only after its canonical encoding, checksum, operation, filters, snapshot, and offset all match."
+    }
+  ]
+}

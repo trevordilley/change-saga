@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 529,
+      "end": 542,
+      "digest": "sha256:61e695d4117d7626ae9e79d032de89c9aa6ff8257b25ff2e8b27c519a0997063",
+      "note": "Validates before locking, reloads under the Saga writer lock, and operates on the freshest committed graph."
+    }
+  ]
+}

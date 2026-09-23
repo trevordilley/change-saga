@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "cmd/change-saga/main.go",
+      "start": 17,
+      "end": 28,
+      "digest": "sha256:b3786c657b615fdbdf2eab198ebde66445b4be1c13e503577acccd689fd8ba7b",
+      "note": "Creates a fresh process invocation and interruptible context for each command-line request."
+    }
+  ]
+}

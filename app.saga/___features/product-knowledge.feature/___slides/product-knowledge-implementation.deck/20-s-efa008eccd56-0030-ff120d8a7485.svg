@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Prototype annotations become current only during cross-domain composition</title>
+  <desc id="desc">A sequence diagram follows authoring into an immutable prototype package, a pinned annotation, and runtime composition. Missing endpoints remain valid records but project as gaps. A failure branch shows external embeds requiring an explicit matching-origin allowlist.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#120b22"/><stop offset="1" stop-color="#2a1537"/></linearGradient>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#f0abfc"/></marker>
+    <marker id="bad" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#fb7185"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="70" fill="#fff8ff" font-family="Inter,system-ui,sans-serif" font-size="30" font-weight="700">Prototype links are resolved late—and fail visibly</text>
+  <text x="64" y="102" fill="#ccb6d7" font-family="Inter,system-ui,sans-serif" font-size="16">Authoring accepts a durable edge before both endpoints exist; composition decides current, stale, or gap.</text>
+
+  <g id="author-command">
+    <rect x="55" y="145" width="210" height="72" rx="18" fill="#2d1a42" stroke="#f0abfc" stroke-width="2"/>
+    <text x="160" y="176" text-anchor="middle" fill="#f5d0fe" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">AUTHOR</text>
+    <text x="160" y="201" text-anchor="middle" fill="#fff8ff" font-family="ui-monospace,monospace" font-size="14">prototype add / annotate</text>
+    <path d="M160 217V642" stroke="#74488c" stroke-dasharray="6 7"/>
+  </g>
+  <g id="immutable-package">
+    <rect x="335" y="145" width="220" height="72" rx="18" fill="#24183e" stroke="#c084fc" stroke-width="2"/>
+    <text x="445" y="176" text-anchor="middle" fill="#d8b4fe" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">PROTOTYPE PACKAGE</text>
+    <text x="445" y="201" text-anchor="middle" fill="#fff8ff" font-family="Inter,system-ui,sans-serif" font-size="14">revision + source digest</text>
+    <path d="M445 217V642" stroke="#74488c" stroke-dasharray="6 7"/>
+    <path d="M160 267H435" stroke="#f0abfc" stroke-width="3" marker-end="url(#arr)"/>
+    <rect x="295" y="244" width="128" height="32" rx="16" fill="#4b245b"/>
+    <text x="359" y="265" text-anchor="middle" fill="#f5d0fe" font-family="Inter,system-ui,sans-serif" font-size="12">copy + hash</text>
+    <rect x="363" y="294" width="164" height="66" rx="12" fill="#30204a" stroke="#a855f7"/>
+    <text x="445" y="320" text-anchor="middle" fill="#fff8ff" font-family="Inter,system-ui,sans-serif" font-size="14">immutable HTML tree</text>
+    <text x="445" y="343" text-anchor="middle" fill="#cdb9d7" font-family="ui-monospace,monospace" font-size="12">sha256:…</text>
+  </g>
+  <g id="pinned-annotation">
+    <rect x="625" y="145" width="220" height="72" rx="18" fill="#24183e" stroke="#c084fc" stroke-width="2"/>
+    <text x="735" y="176" text-anchor="middle" fill="#d8b4fe" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">ANNOTATION</text>
+    <text x="735" y="201" text-anchor="middle" fill="#fff8ff" font-family="Inter,system-ui,sans-serif" font-size="14">two pins + selector</text>
+    <path d="M735 217V642" stroke="#74488c" stroke-dasharray="6 7"/>
+    <path d="M160 405H725" stroke="#f0abfc" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="448" y="391" text-anchor="middle" fill="#e9d5ff" font-family="Inter,system-ui,sans-serif" font-size="13">write edge even if endpoints are unresolved</text>
+    <rect x="657" y="430" width="156" height="94" rx="12" fill="#30204a" stroke="#a855f7"/>
+    <text x="735" y="457" text-anchor="middle" fill="#fff8ff" font-family="Inter,system-ui,sans-serif" font-size="13">prototype revision</text>
+    <text x="735" y="481" text-anchor="middle" fill="#fff8ff" font-family="Inter,system-ui,sans-serif" font-size="13">story revision</text>
+    <text x="735" y="505" text-anchor="middle" fill="#fff8ff" font-family="Inter,system-ui,sans-serif" font-size="13">element / region</text>
+  </g>
+  <g id="composition-runtime">
+    <rect x="915" y="145" width="310" height="72" rx="18" fill="#1f243e" stroke="#67e8f9" stroke-width="2"/>
+    <text x="1070" y="176" text-anchor="middle" fill="#67e8f9" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">COMPOSE</text>
+    <text x="1070" y="201" text-anchor="middle" fill="#fff8ff" font-family="Inter,system-ui,sans-serif" font-size="14">requirements snapshot + prototypes</text>
+    <path d="M1070 217V642" stroke="#45647d" stroke-dasharray="6 7"/>
+    <path d="M735 554H1060" stroke="#67e8f9" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="895" y="542" text-anchor="middle" fill="#bbf7fa" font-family="Inter,system-ui,sans-serif" font-size="12">resolve pins + selector</text>
+    <path d="M1070 554V576" stroke="#67e8f9" stroke-width="3" marker-end="url(#arr)"/>
+    <rect x="915" y="578" width="310" height="104" rx="18" fill="#152c42" stroke="#67e8f9"/>
+    <text x="1070" y="601" text-anchor="middle" fill="#67e8f9" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="800">PROJECTED RESULT</text>
+    <text x="1070" y="625" text-anchor="middle" fill="#bbf7fa" font-family="Inter,system-ui,sans-serif" font-size="14">current → bidirectional link</text>
+    <text x="1070" y="647" text-anchor="middle" fill="#fecdd3" font-family="Inter,system-ui,sans-serif" font-size="14">missing → quality gap</text>
+  </g>
+
+  <g id="stale-boundary">
+    <rect x="934" y="652" width="272" height="23" rx="11" fill="#411a32" stroke="#fb7185" stroke-width="2"/>
+    <text x="1070" y="668" text-anchor="middle" fill="#fbd5e4" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="700">moved pin → stale • never retarget</text>
+  </g>
+  <g id="embed-failure">
+    <rect x="55" y="608" width="790" height="66" rx="16" fill="#3b1b2e" stroke="#fb7185" stroke-width="2"/>
+    <text x="82" y="636" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">EMBED FAILURE BOUNDARY</text>
+    <text x="82" y="659" fill="#fbd5e4" font-family="Inter,system-ui,sans-serif" font-size="14">No implicit trust: embed URL requires explicit allowlist metadata and an exactly matching origin.</text>
+  </g>
+</svg>

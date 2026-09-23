@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 394,
+      "end": 397,
+      "digest": "sha256:2ed14ef75ec656f257ba859472d70ba62a77679f241c567123a8c549fc826647",
+      "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 769,
+      "end": 779,
+      "digest": "sha256:159f30cbe65fa0f649215cedc82e51f00befb2a46ba677e0e3e3adb4b58694cb",
+      "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+    }
+  ]
+}

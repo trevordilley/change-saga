@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 102,
+      "end": 151,
+      "digest": "sha256:bf863fc4c78fe483fa41143fe7f3230fbaf9340f71628a0bd5d80ce73ca70052",
+      "note": "Proves malformed targets, replies, filenames, and review entries are surfaced as validation errors."
+    }
+  ]
+}

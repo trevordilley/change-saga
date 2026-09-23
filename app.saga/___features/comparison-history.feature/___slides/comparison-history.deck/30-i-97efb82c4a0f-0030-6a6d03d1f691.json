@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "worktree-block",
+  "slide": "observe-compare-state",
+  "rank": 30,
+  "kind": "risk",
+  "label": "WORKTREE source comparison is unsupported",
+  "description": "A source head named WORKTREE is rejected because evidence references require immutable commit identities; users must commit source work before comparing it.",
+  "selector": {
+    "type": "element",
+    "element_id": "worktree-block"
+  }
+}

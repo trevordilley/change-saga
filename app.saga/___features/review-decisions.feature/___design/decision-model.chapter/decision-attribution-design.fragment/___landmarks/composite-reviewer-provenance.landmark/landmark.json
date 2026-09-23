@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "composite-reviewer-provenance",
+  "label": "Composite reviewer provenance",
+  "description": "How Git or local actor attribution combines with human or named AI reviewer metadata.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "composite-reviewer-provenance"
+  },
+  "target": ""
+}

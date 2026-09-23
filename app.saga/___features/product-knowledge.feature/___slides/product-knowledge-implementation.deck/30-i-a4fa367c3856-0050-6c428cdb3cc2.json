@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "optional-growth",
+  "slide": "vocabulary-runtime",
+  "rank": 50,
+  "kind": "node",
+  "label": "Optional terminology growth",
+  "description": "Comparison-only detection suggests added enum values or typed constants that no current term already names or references; suggestions never block.",
+  "selector": {
+    "type": "element",
+    "element_id": "optional-growth"
+  }
+}

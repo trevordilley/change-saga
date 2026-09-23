@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store.go",
+      "start": 81,
+      "end": 94,
+      "digest": "sha256:0f15614f664cca7c09e56587c5dc60c47d3d8a2dbfd75fd46cc598f08a577d7c",
+      "note": "Syncs the parent directory after publication and removes a failed exclusive destination."
+    }
+  ]
+}

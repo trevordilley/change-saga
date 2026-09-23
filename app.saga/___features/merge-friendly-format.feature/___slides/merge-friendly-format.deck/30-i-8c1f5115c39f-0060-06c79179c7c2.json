@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "windows-gap",
+  "slide": "atomic-failure-boundaries",
+  "rank": 60,
+  "kind": "callout",
+  "label": "Windows durability gap",
+  "description": "The Windows adapter does not fsync directory entries; it only opens and closes the parent directory.",
+  "selector": {
+    "type": "element",
+    "element_id": "windows-gap"
+  },
+  "about": "directory-sync",
+  "body": "Directory-entry durability is not implemented on Windows; only file contents are synced before rename.",
+  "placement": "bottom",
+  "leader": "line"
+}

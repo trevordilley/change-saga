@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 782,
+      "end": 824,
+      "digest": "sha256:b8291229abc97abb54a0446fe78bc7f4a381fbae85b93249e5311c1a671a4d0d",
+      "note": "Preserves known transport, reviewapp, and livingapp error categories and maps each stable code to a stable process exit."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 828,
+      "end": 845,
+      "digest": "sha256:92ecd89d6ab641a5bfec1ca66c8cb7047a544d8d180231d0f106d8b44ea6b109",
+      "note": "Preserves known transport, reviewapp, and livingapp error categories and maps each stable code to a stable process exit."
+    }
+  ]
+}

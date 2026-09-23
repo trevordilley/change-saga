@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "pk-filter-explains-stale-paths",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:traceability-runtime:item:active-relation-filter",
+  "to": "urn:change-saga:change-saga:story:product-intent-path:criterion:stale-paths",
+  "scope": "self",
+  "rationale": "The runtime filter prevents stale relation endpoints from being presented as current paths.",
+  "to_revision": "urn:change-saga:change-saga:story:product-intent-path:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:30:39.891272Z"
+}

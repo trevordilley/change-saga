@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews.go",
+      "start": 574,
+      "end": 588,
+      "digest": "sha256:92c89c97795566662212aa745d8e3ecc8b9b555a35d2b634bd10f8453eb84f79",
+      "note": "Returns a 303 redirect only after reviewstore reports a successful append."
+    }
+  ]
+}

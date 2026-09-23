@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/slides_test.go",
+      "start": 75,
+      "end": 99,
+      "digest": "sha256:1226aaaaabaf5755a5cc3136558fbb7f01657fa83be33a332df3a9a8d26c95c5",
+      "note": "Proves invalid roles, nested packages, and broad evidence are surfaced instead of silently accepted."
+    }
+  ]
+}

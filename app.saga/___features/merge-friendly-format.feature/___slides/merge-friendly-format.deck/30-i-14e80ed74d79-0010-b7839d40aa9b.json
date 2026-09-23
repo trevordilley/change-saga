@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "concurrent-fork",
+  "slide": "revision-conflict-state",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Concurrent children",
+  "description": "Two branch-local revisions may each descend from the same previously current parent.",
+  "selector": {
+    "type": "element",
+    "element_id": "concurrent-fork"
+  }
+}

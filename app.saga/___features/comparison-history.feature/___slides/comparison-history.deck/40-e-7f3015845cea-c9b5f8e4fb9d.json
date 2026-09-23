@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/layers_test.go",
+      "start": 139,
+      "end": 149,
+      "digest": "sha256:48f3a30d43e944adc6a4a0ba2296b68f416b09dabcee6832bed247ed568e1075",
+      "note": "Proves observe mode emits no comparison layers and accounts for no changed lines."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve_test.go",
+      "start": 15,
+      "end": 39,
+      "digest": "sha256:c7b594278656f562e98ecfab2b54d7eb9e594c787cd6eb12bec502abe0f28c4c",
+      "note": "Exercises boundary hunks, shifted lines, and same-content file renames that remain current."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve_test.go",
+      "start": 69,
+      "end": 83,
+      "digest": "sha256:e6303babade16b7c0d0d746abd896763650fd9d6b6c7dde8d3246d287ccd7752",
+      "note": "Exercises boundary hunks, shifted lines, and same-content file renames that remain current."
+    }
+  ]
+}

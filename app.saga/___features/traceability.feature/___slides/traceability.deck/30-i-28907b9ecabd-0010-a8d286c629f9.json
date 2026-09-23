@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "relations",
+  "slide": "pinned-graph",
+  "rank": 10,
+  "kind": "edge",
+  "label": "Pinned relations",
+  "description": "Typed edges pin mutable endpoints and derive explicit currency.",
+  "selector": {
+    "type": "element",
+    "element_id": "relations"
+  }
+}

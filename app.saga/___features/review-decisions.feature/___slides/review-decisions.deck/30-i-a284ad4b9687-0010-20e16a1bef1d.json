@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "currency",
+  "slide": "decision-currency",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Currency transitions",
+  "description": "A projected decision is current, out of date, or unknown according to slide digest, referenced code, and commit availability.",
+  "selector": {
+    "type": "element",
+    "element_id": "currency"
+  }
+}

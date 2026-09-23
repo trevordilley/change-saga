@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact.go",
+      "start": 354,
+      "end": 420,
+      "digest": "sha256:72ee7047d342ac7467ead229f494d8eee61d48a0987df6e95d19478668194524",
+      "note": "Projects affected owners to requirements and test cases, retains their routes, and orders must-update results first."
+    }
+  ]
+}

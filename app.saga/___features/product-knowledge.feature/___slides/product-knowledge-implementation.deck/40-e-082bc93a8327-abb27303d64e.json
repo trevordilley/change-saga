@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/mutation.go",
+      "start": 137,
+      "end": 160,
+      "digest": "sha256:93612b3fdb4798d14b4935ad64f17d6b565289909e4dc14b758164911d68d181",
+      "note": "Requires successor parents to equal every current head and proves both definition and lifecycle reconciliation paths."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 58,
+      "end": 72,
+      "digest": "sha256:0c22601714168cf3143e3238809ae0d6417042c5f9a84f0627a8f1dbf82382c4",
+      "note": "Requires successor parents to equal every current head and proves both definition and lifecycle reconciliation paths."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 295,
+      "end": 308,
+      "digest": "sha256:60606f5e90670d0a9dbfdd62e1e22b248da58774dc37fad74bad49d261d77013",
+      "note": "Requires successor parents to equal every current head and proves both definition and lifecycle reconciliation paths."
+    }
+  ]
+}

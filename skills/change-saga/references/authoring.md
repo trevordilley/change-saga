@@ -37,8 +37,11 @@ stories, prototypes, or design into slides.
 
 Requirements are where traceability ends, and they grow over time. When a story
 exists, an Item with code evidence reaches it through an active relation on the
-Item or its containing slide or deck, or transitively through the design or
-test case it implements. Pin the relation's target revision. Prefer a criterion
+Item, or transitively through the design or test case it implements. New visual
+story links must originate from a specific Item with `scope: self`, never a
+whole slide or deck. The slide's story summary is derived from its Items.
+Legacy container links remain readable but need explicit element assignment;
+do not assume they apply to every element. Pin the relation's target revision. Prefer a criterion
 target when the visual explains one acceptance criterion; use a story target
 only when it genuinely applies to every criterion in that revision. Do not
 repeat story prose in slide metadata. Before handoff, look up evidence in

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "comparison-three-layers",
+  "deck": "comparison-history",
+  "title": "One comparison, three questions",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b2edf86da034-0020-fd9233f5537d.svg",
+  "takeaway": "Changed, Affected, and Code remain distinct so edited records, invalidated knowledge, and unexplained lines cannot be conflated.",
+  "reading_order": [
+    "inputs",
+    "changed",
+    "affected",
+    "code-groups",
+    "unreferenced",
+    "summary"
+  ]
+}

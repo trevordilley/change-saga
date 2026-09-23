@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "capture-head",
+  "slide": "decision-write-path",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Capture review head",
+  "description": "The mutation pins the decision to the full head commit of the review's followed range.",
+  "selector": {
+    "type": "element",
+    "element_id": "capture-head"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "diff",
+  "slide": "coverage-evaluation",
+  "rank": 0,
+  "kind": "node",
+  "label": "Comparison atoms",
+  "description": "Decomposes a Git range into changed lines and file events.",
+  "selector": {
+    "type": "element",
+    "element_id": "diff"
+  }
+}

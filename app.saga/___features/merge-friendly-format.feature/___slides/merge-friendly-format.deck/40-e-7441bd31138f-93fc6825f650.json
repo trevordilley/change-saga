@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/mutation.go",
+      "start": 137,
+      "end": 161,
+      "digest": "sha256:d66fde10a3fa8a2b9e4415bac34caf00370450a52e4546fedd49c03298b4feff",
+      "note": "Requires a reconciliation revision to name every current head before exclusive append."
+    }
+  ]
+}

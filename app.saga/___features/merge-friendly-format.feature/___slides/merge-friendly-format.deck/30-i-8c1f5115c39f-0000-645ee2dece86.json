@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "lock-boundary",
+  "slide": "atomic-failure-boundaries",
+  "rank": 0,
+  "kind": "region",
+  "label": "Supported-writer boundary",
+  "description": "Cross-process serialization covers cooperating CLI and server writers and times out after a bounded wait.",
+  "selector": {
+    "type": "element",
+    "element_id": "lock-boundary"
+  }
+}

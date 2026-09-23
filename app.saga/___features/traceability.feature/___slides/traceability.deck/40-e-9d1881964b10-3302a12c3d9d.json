@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 228,
+      "end": 280,
+      "digest": "sha256:d47318f0a3f4d35da96a8c286842ed4db30a84a1a93f8bb4f4905b1be99109ed",
+      "note": "Slices trace rows and binds opaque cursors to the operation, filters, offset, and session snapshot."
+    }
+  ]
+}

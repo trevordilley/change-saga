@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "content-sync",
+  "slide": "atomic-failure-boundaries",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Content sync",
+  "description": "Bytes are written, synced, and closed before the destination name is published.",
+  "selector": {
+    "type": "element",
+    "element_id": "content-sync"
+  }
+}

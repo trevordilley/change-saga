@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 145,
+      "end": 160,
+      "digest": "sha256:076a7fd4469210fa85ebba8e70b1b2abcd3bbdb88c8871087a4cb9983b7ad649",
+      "note": "Marks deleted, changed whole-file, binary, or internally edited line evidence stale with a precise reason."
+    }
+  ]
+}

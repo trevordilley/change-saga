@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "contextual-addition",
+  "slide": "reverse-impact",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Contextual addition",
+  "description": "A new line beside or replacing owned code is advisory and marks the target consider-update.",
+  "selector": {
+    "type": "element",
+    "element_id": "contextual-addition"
+  }
+}

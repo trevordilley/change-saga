@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "axis-failures",
+  "deck": "documentation-coverage",
+  "title": "Axis failures remain visible",
+  "rank": 40,
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-eeae11efc557-0040-c05f89213e7d.svg",
+  "takeaway": "Every accepted criterion is projected onto six axes; broken evidence resolves to a named gap, including the currently unimplemented UI reference resource.",
+  "reading_order": [
+    "criterion-input",
+    "six-axis-fanout",
+    "state-precedence",
+    "linked-resolution",
+    "excluded-resolution",
+    "gap-resolution",
+    "ui-missing-resource"
+  ]
+}

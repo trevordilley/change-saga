@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:change-saga:relation:coverage-design-addresses-changed-code",
+  "from_content_digest": "sha256:2f4c26e0d7f258617c278d90e7c5e611810dcf3c69c9f15feabe1fb282bcc1ae",
+  "rationale": "The design meaning is unchanged; only a stable Markdown heading anchor was added.",
+  "created_at": "2026-09-22T23:42:34.809275Z"
+}

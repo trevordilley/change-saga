@@ -28,6 +28,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/quality"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/snapshotcache"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -233,12 +234,14 @@ type fragmentView struct {
 	AspectRatio   string
 	SectionTitle  string
 	LandmarkViews []*landmarkView
+	Stories       *storyLinksView
 	ChangeCount   int
 	Attached      *attachedCodeView
 }
 
 type landmarkView struct {
 	saga.Landmark
+	Stories     *storyLinksView
 	DOMID       string
 	Title       string
 	ChangeCount int
@@ -563,8 +566,20 @@ func (a *app) fragmentContent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	scope := viewScope{}
+	view := makeFragmentView(fragment, scope)
+	if strings.Contains(fragment.Target, ":slide:") {
+		records, err := requirements.Load(a.root, document.Manifest.ID)
+		if err != nil {
+			http.Error(w, "Story links could not be loaded.", http.StatusInternalServerError)
+			return
+		}
+		if err := decorateFragmentStories(document, records, view); err != nil {
+			http.Error(w, "Story links could not be resolved.", http.StatusInternalServerError)
+			return
+		}
+	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	renderHTML(w, a.template, "fragment", makeFragmentView(fragment, scope), "The explanation could not be rendered.")
+	renderHTML(w, a.template, "fragment", view, "The explanation could not be rendered.")
 }
 
 // locateAnchor answers where a page anchor lives. A permalink can name a
@@ -1078,6 +1093,14 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	}
 	if data.EmbeddedDecks {
 		data.SlideRoot = makeSectionView(slideRoot, scope)
+		storyLinks := &storyLinkDecorator{document: document, records: requirementsDocument}
+		for _, deck := range data.SlideRoot.ChildViews {
+			for _, slide := range deck.FragmentViews {
+				if err := storyLinks.decorate(slide); err != nil {
+					return nil, fmt.Errorf("story links could not be resolved: %w", err)
+				}
+			}
+		}
 		labelDeckRoles(data.SlideRoot, document)
 	}
 	return data, nil

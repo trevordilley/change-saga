@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Sequence for authoring a slide and pinning its evidence</title>
+  <desc id="desc">The author creates the visual, the CLI writes the asset and manifest, rejects missing selectors, updates reading order, and resolves exact source evidence before writing it.</desc>
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#243652"/></marker>
+    <marker id="arr-red" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#b84444"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#f4f7fb"/>
+  <text x="66" y="62" font-family="system-ui" font-size="33" font-weight="760" fill="#16243a">Authoring is ordered: picture, addressability, then proof</text>
+  <text x="66" y="96" font-family="system-ui" font-size="18" fill="#526276">A missing selector is rejected before Item state or evidence can be published.</text>
+  <g font-family="system-ui" font-size="18" font-weight="700" fill="#16243a">
+    <text x="105" y="142">Author</text><text x="340" y="142">CLI writer</text><text x="590" y="142">Bundle</text><text x="823" y="142">Validator</text><text x="1065" y="142">Git source</text>
+  </g>
+  <g stroke="#9aa8b8" stroke-width="2" stroke-dasharray="7 8"><path d="M140 160V670"/><path d="M390 160V670"/><path d="M640 160V670"/><path d="M880 160V670"/><path d="M1115 160V670"/></g>
+
+  <g id="add-slide-call">
+    <path d="M140 205H390" stroke="#243652" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="180" y="178" width="165" height="38" rx="19" fill="#fff0c7" stroke="#d89920"/>
+    <text x="200" y="203" font-family="ui-monospace,monospace" font-size="16" fill="#68480f">add-slide --source</text>
+  </g>
+  <g id="asset-write">
+    <path d="M390 280H640" stroke="#2b7656" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="450" y="247" width="170" height="54" rx="12" fill="#e5f6ed" stroke="#2b7656"/>
+    <text x="472" y="270" font-family="system-ui" font-size="15" font-weight="700" fill="#244c3b">asset first</text>
+    <text x="472" y="290" font-family="system-ui" font-size="14" fill="#405d50">then Slide manifest</text>
+  </g>
+  <g id="add-item-call">
+    <path d="M140 365H390" stroke="#243652" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="195" y="338" width="130" height="38" rx="19" fill="#e7efff" stroke="#3769b0"/>
+    <text x="216" y="363" font-family="ui-monospace,monospace" font-size="16" fill="#294f84">add-item</text>
+  </g>
+  <g id="selector-gate">
+    <path d="M390 412H830" stroke="#7057b8" stroke-width="4" marker-end="url(#arr)"/>
+    <path d="M880 377L930 412L880 447L830 412Z" fill="#f1edff" stroke="#7057b8" stroke-width="3"/>
+    <text x="846" y="417" font-family="system-ui" font-size="15" font-weight="750" fill="#51466d">ID exists?</text>
+    <path d="M830 412H640" stroke="#2b7656" stroke-width="4" marker-end="url(#arr)"/>
+    <text x="700" y="397" font-family="system-ui" font-size="14" fill="#2b7656">yes</text>
+    <path d="M880 447V480H405" fill="none" stroke="#b84444" stroke-width="4" marker-end="url(#arr-red)"/>
+    <rect x="665" y="458" width="180" height="36" rx="18" fill="#fee7e4" stroke="#b84444"/>
+    <text x="687" y="481" font-family="system-ui" font-size="14" font-weight="700" fill="#8a3030">missing → reject write</text>
+  </g>
+  <g id="reading-order-write">
+    <path d="M390 535H640" stroke="#2b7656" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="458" y="503" width="168" height="58" rx="12" fill="#e5f6ed" stroke="#2b7656"/>
+    <text x="474" y="527" font-family="system-ui" font-size="14" font-weight="700" fill="#244c3b">Item manifest</text>
+    <text x="474" y="549" font-family="system-ui" font-size="14" fill="#405d50">+ reading_order</text>
+  </g>
+  <g id="cover-pin">
+    <path d="M140 625H390" stroke="#243652" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="192" y="598" width="136" height="38" rx="19" fill="#fff0c7" stroke="#d89920"/>
+    <text x="210" y="623" font-family="ui-monospace,monospace" font-size="15" fill="#68480f">cover --ref</text>
+    <path d="M390 625H1115" stroke="#d89920" stroke-width="4" marker-end="url(#arr)"/>
+    <path d="M1115 655H640" stroke="#d89920" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="715" y="595" width="230" height="62" rx="14" fill="#fff0c7" stroke="#d89920" stroke-width="2"/>
+    <text x="738" y="620" font-family="system-ui" font-size="15" font-weight="750" fill="#68480f">resolve commit + digest</text>
+    <text x="738" y="643" font-family="system-ui" font-size="14" fill="#68480f">write only after planning</text>
+  </g>
+</svg>

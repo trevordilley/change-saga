@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/story_authoring.go",
+      "start": 55,
+      "end": 77,
+      "digest": "sha256:323392ec88d3f8155a570c033f07e53d41ff6567238b4c6627ea0da7b1015354",
+      "note": "Refuses single-parent inheritance when the named parent is not the unique current head."
+    }
+  ]
+}

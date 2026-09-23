@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/grammar/commands.go",
+      "start": 20,
+      "end": 80,
+      "digest": "sha256:ff4e02e53525dbbcb5e709683c52e4f7d9d34e5246680d4ec08458ab46dbb108",
+      "note": "Published command shapes including review operations"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/grammar/commands.go",
+      "start": 500,
+      "end": 540,
+      "digest": "sha256:3c99e3e63276aed7f05da86a3038cdb22f30f4090bf952e45f6e4dfc68d6b17b",
+      "note": "Published command shapes including review operations"
+    }
+  ]
+}

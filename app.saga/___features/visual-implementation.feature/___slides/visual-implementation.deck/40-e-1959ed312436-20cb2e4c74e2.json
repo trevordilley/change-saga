@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "e2e/tests/implementation-deck.spec.ts",
+      "start": 62,
+      "end": 79,
+      "digest": "sha256:0af17c1cd310116d305f2781304cc8bd6aa61b20d0458155ab147ad39882bac1",
+      "note": "Exercises the Item overlay, distinguishes linked from unlinked Items, and opens exact source in the linked-code drawer."
+    }
+  ]
+}

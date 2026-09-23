@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "saga-review",
+  "slide": "mutation-guardrails",
+  "rank": 20,
+  "kind": "node",
+  "label": "Saga and review gate",
+  "description": "The adapter requires a structurally valid Saga and an existing review before continuing.",
+  "selector": {
+    "type": "element",
+    "element_id": "saga-review"
+  }
+}

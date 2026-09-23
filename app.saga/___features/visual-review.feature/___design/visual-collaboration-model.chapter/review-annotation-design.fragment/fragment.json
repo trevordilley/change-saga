@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "review-annotation-design",
+  "title": "Review annotation design and current gap",
+  "media_type": "text/markdown",
+  "entrypoint": "visual-review.md"
+}

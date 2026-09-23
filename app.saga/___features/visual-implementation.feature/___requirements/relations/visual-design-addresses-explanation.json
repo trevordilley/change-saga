@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "visual-design-addresses-explanation",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:visual-evidence-design",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "self",
+  "rationale": "The design defines the visual media, semantic Item, and exact-evidence contract required by the story.",
+  "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+  "from_content_digest": "sha256:545015d03633d6f655239a4e1ca5bce4cf8432118e1ff0a0e8d72d9a852f0bbc",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.611908Z"
+}

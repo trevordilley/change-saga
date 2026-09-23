@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "conflict-state",
+  "slide": "story-lifecycle-runtime",
+  "rank": 20,
+  "kind": "node",
+  "label": "Conflict has no winner",
+  "description": "Multiple revision or lifecycle heads produce no current projection; timestamps do not select a winner.",
+  "selector": {
+    "type": "element",
+    "element_id": "conflict-state"
+  }
+}

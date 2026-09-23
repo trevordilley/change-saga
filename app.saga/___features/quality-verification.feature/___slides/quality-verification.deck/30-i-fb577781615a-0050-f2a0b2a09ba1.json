@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "immutable-append",
+  "slide": "run-record-sequence",
+  "rank": 50,
+  "kind": "node",
+  "label": "Exclusive append",
+  "description": "The store exclusively creates the immutable record and rolls back files and directories if any write fails.",
+  "selector": {
+    "type": "element",
+    "element_id": "immutable-append"
+  }
+}

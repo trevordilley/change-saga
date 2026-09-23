@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "coverage-slide-explains-changed-code",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:coverage-evaluation",
+  "to": "urn:change-saga:change-saga:story:changed-code-explained",
+  "scope": "descendants",
+  "rationale": "The coverage implementation separates changed-line facts, evidence resolution, and caller-selected policy.",
+  "to_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:07.138059Z"
+}

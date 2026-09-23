@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/validate.go",
+      "start": 331,
+      "end": 376,
+      "digest": "sha256:9847ecc955365256e2b51487953f481142e7e8d6dad93698e67faa20138f580b",
+      "note": "Projects lifecycle graph heads, enforces activation prerequisites and legal transitions, and tests retired as terminal."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/validate.go",
+      "start": 817,
+      "end": 826,
+      "digest": "sha256:606a741e3dc0b067d93504c29d8c789fd339f02f60b5752d63e254a66b62122f",
+      "note": "Projects lifecycle graph heads, enforces activation prerequisites and legal transitions, and tests retired as terminal."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 169,
+      "end": 195,
+      "digest": "sha256:0e3b832103ea3c4e0af14d6d34294587085e784eabaf0a161c50b0994dbe4f06",
+      "note": "Projects lifecycle graph heads, enforces activation prerequisites and legal transitions, and tests retired as terminal."
+    }
+  ]
+}

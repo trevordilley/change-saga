@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "principal-bypass",
+  "slide": "decision-failure-boundaries",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Attribution degradation",
+  "description": "Committed records resolve the introducing committer; uncommitted records use local Git identity; rewritten or unavailable history is exposed as a degraded status.",
+  "selector": {
+    "type": "element",
+    "element_id": "principal-bypass"
+  }
+}

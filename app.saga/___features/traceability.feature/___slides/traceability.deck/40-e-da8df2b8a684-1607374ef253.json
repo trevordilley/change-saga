@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 222,
+      "end": 225,
+      "digest": "sha256:67a6c07e854ad00e477baf26363c69ed253d46394bd567043b77e3641691f947",
+      "note": "Returns superseded immediately for an inactive relation, making it a terminal historical state."
+    }
+  ]
+}

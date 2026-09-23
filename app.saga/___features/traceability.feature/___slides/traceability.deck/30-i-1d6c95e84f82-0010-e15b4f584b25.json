@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "same-commit",
+  "slide": "code-reference-resolution",
+  "rank": 10,
+  "kind": "node",
+  "label": "Same commit",
+  "description": "At the pinned commit, an authenticated reference is current at its original location.",
+  "selector": {
+    "type": "element",
+    "element_id": "same-commit"
+  }
+}

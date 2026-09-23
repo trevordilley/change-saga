@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "conflicted-state",
+  "slide": "relation-currency",
+  "rank": 40,
+  "kind": "node",
+  "label": "Conflicted",
+  "description": "Multiple revision heads outrank ordinary staleness and prevent the relation from being treated as current.",
+  "selector": {
+    "type": "element",
+    "element_id": "conflicted-state"
+  }
+}

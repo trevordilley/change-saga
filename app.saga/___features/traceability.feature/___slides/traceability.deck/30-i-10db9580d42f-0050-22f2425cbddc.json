@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "not-delivered",
+  "slide": "readiness-boundary",
+  "rank": 50,
+  "kind": "statement",
+  "label": "Not delivered",
+  "description": "Readiness reports delivered false even though runtime source exists, because progress and implementation references are not immutable delivery proof.",
+  "selector": {
+    "type": "element",
+    "element_id": "not-delivered"
+  }
+}

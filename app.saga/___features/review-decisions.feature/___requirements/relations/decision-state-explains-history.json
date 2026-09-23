@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "decision-state-explains-history",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:decision-currency:item:decision",
+  "to": "urn:change-saga:change-saga:story:review-decision:criterion:preserves-history",
+  "scope": "self",
+  "rationale": "The state machine shows that later events replace only the current projection for one reviewer seat while earlier event files remain.",
+  "to_revision": "urn:change-saga:change-saga:story:review-decision:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:26:28.732107Z"
+}

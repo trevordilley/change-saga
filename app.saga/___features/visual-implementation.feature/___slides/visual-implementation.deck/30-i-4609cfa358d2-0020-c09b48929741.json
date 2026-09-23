@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "add-item-call",
+  "slide": "authoring-sequence",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Name a semantic Item",
+  "description": "add-item accepts exactly one selector and a non-visual description for each meaningful visual element.",
+  "selector": {
+    "type": "element",
+    "element_id": "add-item-call"
+  }
+}

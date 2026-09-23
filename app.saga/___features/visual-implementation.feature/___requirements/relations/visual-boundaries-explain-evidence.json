@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "visual-boundaries-explain-evidence",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:failure-boundaries",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
+  "scope": "descendants",
+  "rationale": "The digest boundary distinguishes authored visual content from Item-owned evidence so relation currency remains meaningful.",
+  "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:24:23.019774Z"
+}

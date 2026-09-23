@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "cursor-state",
+  "deck": "ai-interface",
+  "title": "Snapshot-bound continuation tokens",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b78f822402de-0030-c11f7c5e06c2.svg",
+  "takeaway": "Continuation tokens bind operation, normalized filters, offset, and snapshot; checksums detect corruption, while stale snapshots return a retryable error.",
+  "reading_order": [
+    "first-page",
+    "issue-cursor",
+    "continue-page",
+    "invalid-cursor",
+    "stale-snapshot",
+    "complete"
+  ]
+}

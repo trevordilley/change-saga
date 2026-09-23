@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "append-only-ledger",
+  "slide": "thread-lifecycle",
+  "rank": 40,
+  "kind": "region",
+  "label": "Append-only ledger",
+  "description": "Each action is a separately named JSON event ordered by creation time and stable event id.",
+  "selector": {
+    "type": "element",
+    "element_id": "append-only-ledger"
+  }
+}

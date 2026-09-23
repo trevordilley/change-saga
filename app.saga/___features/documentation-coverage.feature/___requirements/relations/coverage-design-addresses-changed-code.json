@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "coverage-design-addresses-changed-code",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:coverage-evaluation-design",
+  "to": "urn:change-saga:change-saga:story:changed-code-explained",
+  "scope": "self",
+  "rationale": "The evaluator keeps each coverage state independent and leaves policy to callers.",
+  "to_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+  "from_content_digest": "sha256:37b34858654a548009d9408e0fc5ef172aefb9f27faccf27b9bdb0f54397ee41",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.743605Z"
+}

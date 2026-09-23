@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "code-drawer",
+  "slide": "reviewer-runtime",
+  "rank": 50,
+  "kind": "node",
+  "label": "Linked code on demand",
+  "description": "Item evidence is lazily resolved and opened in the linked-code drawer without crowding the visual.",
+  "selector": {
+    "type": "element",
+    "element_id": "code-drawer"
+  }
+}

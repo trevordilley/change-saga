@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 192,
+      "end": 225,
+      "digest": "sha256:8ce8b884d36b174d16fef7dc816d08ab5c5e1d65ab60f516aefee973ee6a964f",
+      "note": "Exposes conflict predicates for revision, lifecycle, run, and policy graphs and tests that no current value is guessed for competing heads."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/quality_test.go",
+      "start": 93,
+      "end": 131,
+      "digest": "sha256:321c1d4fe99dfe7da8dd0892d773e819e1e3365ce42f2b810eff79ec693eae31",
+      "note": "Exposes conflict predicates for revision, lifecycle, run, and policy graphs and tests that no current value is guessed for competing heads."
+    }
+  ]
+}

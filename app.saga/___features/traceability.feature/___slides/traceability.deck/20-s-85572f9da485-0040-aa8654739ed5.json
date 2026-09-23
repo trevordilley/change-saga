@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "reverse-impact",
+  "deck": "traceability",
+  "title": "Reverse impact ownership and failure boundaries",
+  "rank": 40,
+  "intent": "trace",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-85572f9da485-0040-aa8654739ed5.svg",
+  "takeaway": "Changed code reaches requirements and tests only through exact evidence ownership and recorded relations; unowned or incomplete input stays visible.",
+  "reading_order": [
+    "incoming-atoms",
+    "pinned-index",
+    "direct-intersection",
+    "contextual-addition",
+    "graph-projection",
+    "affected-output",
+    "incomplete-boundary"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "digest-fallback",
+  "slide": "code-reference-resolution",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Digest fallback",
+  "description": "If and only if the pinned commit is unavailable, exactly one same-path digest match in the requested view recovers the location; zero or many matches are stale.",
+  "selector": {
+    "type": "element",
+    "element_id": "digest-fallback"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "lifecycle-state",
+  "slide": "quality-state-graphs",
+  "rank": 0,
+  "kind": "region",
+  "label": "Lifecycle state machine",
+  "description": "Lifecycle begins proposed, may activate or deprecate, and ends terminally at retired; multi-head reconciliation may choose any state.",
+  "selector": {
+    "type": "element",
+    "element_id": "lifecycle-state"
+  }
+}

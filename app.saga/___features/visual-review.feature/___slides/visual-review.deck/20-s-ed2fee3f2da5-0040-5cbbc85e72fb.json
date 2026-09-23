@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "contextual-review",
+  "deck": "visual-review",
+  "title": "Contextual comments exist; spatial markup does not",
+  "rank": 40,
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-ed2fee3f2da5-0040-5cbbc85e72fb.svg",
+  "takeaway": "PR-review comments persist on slides and Items; its drawing overlays are unimplemented, while prototype annotations separately pin requirements.",
+  "reading_order": [
+    "slide",
+    "comment",
+    "annotation-gap"
+  ]
+}

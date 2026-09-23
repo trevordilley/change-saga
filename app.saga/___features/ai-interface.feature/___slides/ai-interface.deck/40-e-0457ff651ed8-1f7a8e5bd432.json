@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 267,
+      "end": 269,
+      "digest": "sha256:edce36b35c44837390a121b42d2c603a88621dec8991117b37c9335e2752719f",
+      "note": "Returns retryable stale_snapshot when a valid cursor belongs to a different application snapshot."
+    }
+  ]
+}

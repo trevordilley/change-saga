@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews.go",
+      "start": 625,
+      "end": 637,
+      "digest": "sha256:88e733aba98f873742d46f9f947251e1db5fd13355d2ac96ebdef23aab23b705",
+      "note": "Renders plain HTML review and comment forms that post the target, body, and per-process token."
+    }
+  ]
+}

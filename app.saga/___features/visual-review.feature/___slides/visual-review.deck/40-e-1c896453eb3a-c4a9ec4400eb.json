@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews.go",
+      "start": 522,
+      "end": 527,
+      "digest": "sha256:415110b8045cd6a17d251123b8405f310ceaae545f2432a904c179ce6e2cdf10",
+      "note": "Caps the form body at 256 KiB and returns a client error when form parsing fails."
+    }
+  ]
+}

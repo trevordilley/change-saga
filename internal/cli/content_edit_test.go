@@ -161,7 +161,7 @@ func TestRemoveContainers(t *testing.T) {
 	if err := Story(context.Background(), []string{"add", "--feature", testFeature, "--id", "handle", "--revision", "r1", "--event", "proposed", "--title", "Handle", "--statement", "As a user I want requests handled so that I am served", "--priority", "must", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Relation(context.Background(), []string{"add", "--feature", testFeature, "--id", "flow-explains-handle", "--type", "explains", "--from", "urn:change-saga:batch:slide:flow", "--to", "urn:change-saga:batch:story:handle", "--rationale", "The slide shows it.", root}, &output); err != nil {
+	if err := Relation(context.Background(), []string{"add", "--feature", testFeature, "--id", "flow-explains-handle", "--type", "explains", "--from", "urn:change-saga:batch:slide:flow:item:handler", "--to", "urn:change-saga:batch:story:handle", "--rationale", "The handler shows it.", root}, &output); err != nil {
 		t.Fatalf("relation: %v\n%s", err, output.String())
 	}
 	result, err := runContentJSON(t, RemoveSlide, "--slide", "flow", root)

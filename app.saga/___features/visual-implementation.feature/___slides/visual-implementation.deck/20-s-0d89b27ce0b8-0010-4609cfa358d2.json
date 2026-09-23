@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "authoring-sequence",
+  "deck": "visual-implementation",
+  "title": "Authoring is a staged sequence",
+  "rank": 10,
+  "section": "Authoring",
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-0d89b27ce0b8-0010-4609cfa358d2.svg",
+  "takeaway": "The visual is written first, selectors are checked against it, and evidence is resolved and digested before any coverage record is written.",
+  "reading_order": [
+    "add-slide-call",
+    "asset-write",
+    "add-item-call",
+    "selector-gate",
+    "reading-order-write",
+    "cover-pin"
+  ]
+}

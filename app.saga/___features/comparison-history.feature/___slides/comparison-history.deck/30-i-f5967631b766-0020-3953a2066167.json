@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "companion-lane",
+  "slide": "saga-snapshot-ownership",
+  "rank": 20,
+  "kind": "region",
+  "label": "Companion snapshots join through cursors",
+  "description": "A separate Saga repository searches sync-cursor history for the source merge base and head, falling back to a documented ancestor only with a diagnostic.",
+  "selector": {
+    "type": "element",
+    "element_id": "companion-lane"
+  }
+}

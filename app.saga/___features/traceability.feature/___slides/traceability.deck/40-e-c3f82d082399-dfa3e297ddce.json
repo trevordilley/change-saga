@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/relation_carry_forward_test.go",
+      "start": 60,
+      "end": 120,
+      "digest": "sha256:b0242aa1afc44ee638a78043dcb28413f8c5a1b651706b122c82489a2379dc07",
+      "note": "Verifies criterion rewording—including cosmetic edits—crosses the stale boundary."
+    }
+  ]
+}

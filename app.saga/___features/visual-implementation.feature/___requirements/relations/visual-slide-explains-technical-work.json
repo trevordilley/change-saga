@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "visual-slide-explains-technical-work",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:visual-pipeline",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation",
+  "scope": "descendants",
+  "rationale": "The implementation deck demonstrates the authored visual, its semantic Items, and the exact code evidence attached to those Items.",
+  "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:06.920206Z"
+}

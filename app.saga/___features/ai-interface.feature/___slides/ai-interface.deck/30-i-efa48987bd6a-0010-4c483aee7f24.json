@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "request-gate",
+  "slide": "query-failure-boundaries",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Parse boundary",
+  "description": "Operation names, flags, required identifiers, offsets, and limits are validated at the transport boundary.",
+  "selector": {
+    "type": "element",
+    "element_id": "request-gate"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query_integration_test.go",
+      "start": 150,
+      "end": 180,
+      "digest": "sha256:679081b9ad9c6e564b1f324f0c7bd434479441b8ba0fdf698ce17aeab824a798",
+      "note": "Exercises valid continuation, tampering, and cross-operation reuse against the real query CLI."
+    }
+  ]
+}

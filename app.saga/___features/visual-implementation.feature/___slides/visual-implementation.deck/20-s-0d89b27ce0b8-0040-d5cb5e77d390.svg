@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Security, validity, and digest failure boundaries</title>
+  <desc id="desc">Deck loading rejects unsafe storage shapes, asset serving confines paths and applies CSP, authored visual inputs drive relation currency, and evidence overlays stay outside the visual digest.</desc>
+  <defs><marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#223650"/></marker></defs>
+  <rect width="1280" height="720" fill="#f8f5ef"/>
+  <text x="66" y="64" font-family="system-ui" font-size="33" font-weight="760" fill="#16243a">Three boundaries contain unsafe visual content</text>
+  <text x="66" y="99" font-family="system-ui" font-size="18" fill="#526276">Authored bytes invalidate explanation links; code evidence does not.</text>
+
+  <g id="flat-bundle-boundary">
+    <rect x="70" y="150" width="330" height="470" rx="34" fill="#fff" stroke="#2a7c59" stroke-width="4"/>
+    <text x="105" y="198" font-family="system-ui" font-size="22" font-weight="760" fill="#245b45">1 · Storage boundary</text>
+    <path d="M120 245H350V500H120Z" fill="#e5f6ed" stroke="#2a7c59" stroke-width="3"/>
+    <text x="152" y="290" font-family="ui-monospace,monospace" font-size="16" fill="#245b45">flat records only</text>
+    <text x="152" y="330" font-family="ui-monospace,monospace" font-size="16" fill="#245b45">known filenames</text>
+    <text x="152" y="370" font-family="ui-monospace,monospace" font-size="16" fill="#245b45">stable parent keys</text>
+    <text x="152" y="410" font-family="ui-monospace,monospace" font-size="16" fill="#245b45">≤ 7 Items</text>
+  </g>
+  <g id="regular-file-gate">
+    <path d="M235 500V565" stroke="#b84444" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="118" y="548" width="235" height="52" rx="26" fill="#fee7e4" stroke="#b84444"/>
+    <text x="148" y="580" font-family="system-ui" font-size="15" font-weight="750" fill="#8a3030">reject symlink / nested / unknown</text>
+  </g>
+
+  <g id="path-confinement">
+    <rect x="475" y="150" width="330" height="470" rx="34" fill="#fff" stroke="#3769b0" stroke-width="4"/>
+    <text x="510" y="198" font-family="system-ui" font-size="22" font-weight="760" fill="#294f84">2 · Serving boundary</text>
+    <path d="M535 255L640 220L745 255V410C745 472 696 517 640 540C584 517 535 472 535 410Z" fill="#e8f0ff" stroke="#3769b0" stroke-width="3"/>
+    <text x="584" y="310" font-family="system-ui" font-size="17" font-weight="750" fill="#294f84">clean path</text>
+    <text x="574" y="345" font-family="system-ui" font-size="16" fill="#405976">resolve symlinks</text>
+    <text x="570" y="380" font-family="system-ui" font-size="16" fill="#405976">stay inside bundle</text>
+  </g>
+  <g id="csp-boundary">
+    <rect x="535" y="556" width="210" height="46" rx="23" fill="#16243a"/>
+    <text x="567" y="585" font-family="ui-monospace,monospace" font-size="14" fill="white">connect-src 'none'</text>
+  </g>
+
+  <g id="authored-digest">
+    <rect x="880" y="150" width="330" height="215" rx="34" fill="#fff2ca" stroke="#d8951b" stroke-width="4"/>
+    <text x="918" y="198" font-family="system-ui" font-size="22" font-weight="760" fill="#68480f">3 · Currency boundary</text>
+    <text x="920" y="246" font-family="system-ui" font-size="16" fill="#68480f">deck + slide manifest</text>
+    <text x="920" y="278" font-family="system-ui" font-size="16" fill="#68480f">visual asset bytes</text>
+    <text x="920" y="310" font-family="system-ui" font-size="16" fill="#68480f">ordered Item manifests</text>
+    <path d="M1080 330L1140 330" stroke="#d8951b" stroke-width="4" marker-end="url(#arr)"/>
+  </g>
+  <g id="evidence-overlay">
+    <rect x="880" y="425" width="330" height="135" rx="28" fill="#f0ebff" stroke="#7057b8" stroke-width="4" stroke-dasharray="10 7"/>
+    <text x="918" y="469" font-family="system-ui" font-size="20" font-weight="760" fill="#51466d">Excluded overlays</text>
+    <text x="918" y="505" font-family="system-ui" font-size="16" fill="#665a82">code evidence · claims · verification</text>
+    <text x="918" y="534" font-family="system-ui" font-size="14" fill="#665a82">review metadata cannot stale the design</text>
+  </g>
+  <g id="failure-outcome">
+    <path d="M400 385H475" stroke="#223650" stroke-width="4" marker-end="url(#arr)"/>
+    <path d="M805 385H880" stroke="#223650" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="880" y="590" width="330" height="70" rx="22" fill="#fee7e4" stroke="#b84444" stroke-width="3"/>
+    <text x="919" y="619" font-family="system-ui" font-size="17" font-weight="760" fill="#8a3030">Failure is explicit</text>
+    <text x="919" y="644" font-family="system-ui" font-size="14" fill="#8a3030">validation error · 400/403 · stale relation</text>
+  </g>
+</svg>

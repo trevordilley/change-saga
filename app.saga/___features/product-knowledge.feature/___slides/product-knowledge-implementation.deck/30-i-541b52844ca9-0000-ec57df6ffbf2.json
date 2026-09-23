@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "definition-graph",
+  "slide": "story-lifecycle-runtime",
+  "rank": 0,
+  "kind": "region",
+  "label": "Definition DAG",
+  "description": "Every story revision is a complete immutable snapshot; concurrent children remain competing heads until one revision names all heads.",
+  "selector": {
+    "type": "element",
+    "element_id": "definition-graph"
+  }
+}

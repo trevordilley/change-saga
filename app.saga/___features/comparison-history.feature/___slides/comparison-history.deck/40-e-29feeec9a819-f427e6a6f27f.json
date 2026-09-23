@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query_layers.go",
+      "start": 15,
+      "end": 69,
+      "digest": "sha256:3a889a500f59d1661d02b1e07d288a95aa0f4c10b4af70396c612d12da4d5dda",
+      "note": "Exposes the layer model as a stable query response while preserving the exact source snapshot identity."
+    }
+  ]
+}

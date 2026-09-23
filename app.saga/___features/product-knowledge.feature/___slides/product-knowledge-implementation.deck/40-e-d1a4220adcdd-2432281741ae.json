@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/validate.go",
+      "start": 433,
+      "end": 438,
+      "digest": "sha256:639d4a12004bd9b844e95530e5bf6bbcdb59db202aff3ccdc81a1a62e169798a",
+      "note": "Rejects an accepted lifecycle event when current story heads contain no acceptance criterion and leaves storage unchanged."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 246,
+      "end": 263,
+      "digest": "sha256:44d5fa2748d9dea807a07f3f0745a0940f43d1b6ef3bde8144ea3b69e24b85f6",
+      "note": "Rejects an accepted lifecycle event when current story heads contain no acceptance criterion and leaves storage unchanged."
+    }
+  ]
+}

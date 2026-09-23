@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/readiness/readiness.go",
+      "start": 60,
+      "end": 101,
+      "digest": "sha256:6fe80e4d004e3b49e7c36c0c15897e6269f917de7b830815a05c6564d5f221df",
+      "note": "Keeps requirement, plan, and delivery axes separate and marks delivery true only with evidence and no delivery blocker."
+    }
+  ]
+}

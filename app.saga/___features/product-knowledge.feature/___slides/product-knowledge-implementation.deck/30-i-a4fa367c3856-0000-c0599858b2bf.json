@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "overview-frontdoor",
+  "slide": "vocabulary-runtime",
+  "rank": 0,
+  "kind": "node",
+  "label": "Overview front door",
+  "description": "Name is required, while pitch, description, and active terms are optional orientation reported as non-blocking gaps when absent.",
+  "selector": {
+    "type": "element",
+    "element_id": "overview-frontdoor"
+  }
+}

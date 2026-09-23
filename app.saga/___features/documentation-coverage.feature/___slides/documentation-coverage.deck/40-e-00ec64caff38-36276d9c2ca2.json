@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 29,
+      "end": 63,
+      "digest": "sha256:f057a45497a745602777b4c803f99419accf83d28be872c7685154746a6eead6",
+      "note": "Changed-line and file-event atom model"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 109,
+      "end": 168,
+      "digest": "sha256:a9e8e5e46bee26f68ca11ed33a588ba463880d90d05483fa39164bf646e6be7d",
+      "note": "Changed-line and file-event atom model"
+    }
+  ]
+}

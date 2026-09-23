@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "invalid-state",
+  "slide": "relation-currency",
+  "rank": 50,
+  "kind": "node",
+  "label": "Invalid",
+  "description": "A missing endpoint, removed criterion, or unresolved test head produces the highest-priority failure state.",
+  "selector": {
+    "type": "element",
+    "element_id": "invalid-state"
+  }
+}

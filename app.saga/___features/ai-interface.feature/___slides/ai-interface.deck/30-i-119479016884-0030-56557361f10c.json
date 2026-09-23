@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "open-snapshot",
+  "slide": "query-runtime",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Open snapshot",
+  "description": "The CLI parses and validates the request, then opens the review projection or the living projection on a shared snapshot.",
+  "selector": {
+    "type": "element",
+    "element_id": "open-snapshot"
+  }
+}

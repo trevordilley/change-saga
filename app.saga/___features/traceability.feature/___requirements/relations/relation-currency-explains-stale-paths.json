@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "relation-currency-explains-stale-paths",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:relation-currency",
+  "to": "urn:change-saga:change-saga:story:product-intent-path:criterion:stale-paths",
+  "scope": "descendants",
+  "rationale": "The state machine explains how changed endpoint pins become visibly stale while unchanged obligations carry forward.",
+  "to_revision": "urn:change-saga:change-saga:story:product-intent-path:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:27:54.4013Z"
+}

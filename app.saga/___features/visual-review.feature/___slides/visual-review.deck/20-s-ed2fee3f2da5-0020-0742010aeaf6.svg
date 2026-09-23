@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Comment thread state machine</title>
+  <desc id="desc">A root comment creates an open thread on a review slide or Item. Replies append to the root chain, and the last explicit open or resolved state wins. Invalid targets and replies are rejected before persistence.</desc>
+  <defs>
+    <style>.ui{font-family:Inter,system-ui,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,monospace}.h{font-size:30px;font-weight:750;fill:#10213d}.sub{font-size:15px;fill:#526178}.state{font-size:22px;font-weight:750;fill:#14233e}.small{font-size:14px;fill:#43536d}.event{font-size:13px;font-weight:650;fill:#314460}.edge{fill:none;stroke:#405f92;stroke-width:3;marker-end:url(#a)}.loop{fill:none;stroke:#7185a6;stroke-width:3;marker-end:url(#a)}.bad{fill:none;stroke:#b83b4e;stroke-width:3;stroke-dasharray:7 5;marker-end:url(#r)}</style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#405f92"/></marker>
+    <marker id="r" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#b83b4e"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text class="ui h" x="58" y="56">Thread state is reconstructed; every action stays append-only</text>
+  <text class="ui sub" x="58" y="83">There is no mutable thread row: root and replies are ordered events, and the last explicit state wins.</text>
+
+  <g id="root-open" class="ui">
+    <circle cx="132" cy="288" r="26" fill="#d7e4fa" stroke="#4d73aa" stroke-width="2"/>
+    <path class="edge" d="M158 288H324"/>
+    <text class="event" x="179" y="258">root comment</text><text class="small" x="179" y="278">target = slide or Item</text>
+    <rect x="325" y="220" width="260" height="136" rx="24" fill="#eaf8ef" stroke="#47815d" stroke-width="3"/>
+    <text class="state" x="420" y="268">OPEN</text>
+    <text class="small" x="370" y="298">default when state is empty</text>
+    <text class="mono small" x="379" y="326">root + replies[]</text>
+  </g>
+
+  <g id="reply-threading" class="ui">
+    <path class="loop" d="M392 220C350 137 559 131 522 219"/>
+    <text class="event" x="390" y="142">reply_to any comment</text>
+    <text class="small" x="390" y="166">walk parent links back to root</text>
+  </g>
+
+  <g id="last-state-wins" class="ui">
+    <path class="edge" d="M585 262H736"/><text class="event" x="605" y="247">reply with resolved</text>
+    <path class="edge" d="M736 316H585"/><text class="event" x="604" y="341">reply with open</text>
+    <rect x="738" y="220" width="260" height="136" rx="24" fill="#eef0f4" stroke="#707c91" stroke-width="3"/>
+    <text class="state" x="818" y="268">RESOLVED</text>
+    <text class="small" x="780" y="298">history remains visible</text>
+    <text class="small" x="774" y="326">later event may reopen</text>
+  </g>
+
+  <g id="invalid-target" class="ui">
+    <path class="bad" d="M324 385L193 468"/>
+    <path class="bad" d="M738 385L1018 468"/>
+    <rect x="75" y="468" width="335" height="108" rx="18" fill="#fff0f1" stroke="#b83b4e" stroke-width="2"/>
+    <text class="state" x="104" y="506" fill="#8e2737">REJECTED</text>
+    <text class="small" x="104" y="535">unknown target · empty body</text>
+    <text class="small" x="104" y="558">reply cycle · invalid state/commit</text>
+    <rect x="874" y="468" width="330" height="108" rx="18" fill="#fff0f1" stroke="#b83b4e" stroke-width="2"/>
+    <text class="state" x="903" y="506" fill="#8e2737">NO ORPHANS</text>
+    <text class="small" x="903" y="535">target must belong to this review</text>
+    <text class="small" x="903" y="558">reply must name a known comment</text>
+  </g>
+
+  <g id="append-only-ledger" class="ui">
+    <rect x="324" y="608" width="674" height="72" rx="18" fill="#f1ecff" stroke="#7259ab" stroke-width="2"/>
+    <text class="state" x="355" y="640">Append-only ledger</text>
+    <text class="mono small" x="355" y="665">comments/&lt;event-id&gt;.json  ·  ordered by created_at, then id</text>
+  </g>
+</svg>

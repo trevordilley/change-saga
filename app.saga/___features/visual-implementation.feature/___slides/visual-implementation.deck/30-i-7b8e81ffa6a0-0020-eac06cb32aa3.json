@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reviewer",
+  "slide": "visual-pipeline",
+  "rank": 20,
+  "kind": "node",
+  "label": "Reviewer surface",
+  "description": "The server projects the slide into the documentation viewer and reveals code from the focused semantic Item.",
+  "selector": {
+    "type": "element",
+    "element_id": "reviewer"
+  }
+}

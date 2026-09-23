@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "snapshot-decision",
+  "slide": "decision-write-path",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Snapshot decision",
+  "description": "The decision service validates state and identity, resolves the slide, and captures its content digest.",
+  "selector": {
+    "type": "element",
+    "element_id": "snapshot-decision"
+  }
+}

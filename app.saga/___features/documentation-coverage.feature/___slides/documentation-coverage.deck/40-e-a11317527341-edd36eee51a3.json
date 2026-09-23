@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/status_grammar.go",
+      "start": 142,
+      "end": 170,
+      "digest": "sha256:f84ea9e1b6880be762478b1dcea45c4f54d315c5e154fe0f7826a452df38a331",
+      "note": "Builds reviews, public coverage areas, and next actions after living facts are available."
+    }
+  ]
+}

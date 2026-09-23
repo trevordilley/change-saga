@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_test.go",
+      "start": 511,
+      "end": 527,
+      "digest": "sha256:98a0736b2ee8c97b3f69b852014b3b3e2dabb2614067b042bc14bca70a50d677",
+      "note": "Verifies recorded Item and test-case edges reach the criteria they explicitly name."
+    }
+  ]
+}

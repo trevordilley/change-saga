@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "locked-writer",
+  "slide": "review-ownership",
+  "rank": 30,
+  "kind": "node",
+  "label": "Locked writer",
+  "description": "reviewstore serializes comment writes, reloads a valid Saga, resolves a canonical target, and appends one record.",
+  "selector": {
+    "type": "element",
+    "element_id": "locked-writer"
+  }
+}

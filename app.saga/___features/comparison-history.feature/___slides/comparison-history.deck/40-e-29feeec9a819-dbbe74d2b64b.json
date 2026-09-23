@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/layers.go",
+      "start": 94,
+      "end": 147,
+      "digest": "sha256:24fa82446f19ac0376a30d6c8414aa6fe193ca3686227c8d66dd2673d0536d42",
+      "note": "Projects the same comparison into browser metadata and the read-only Change page rather than creating a second range model."
+    }
+  ]
+}

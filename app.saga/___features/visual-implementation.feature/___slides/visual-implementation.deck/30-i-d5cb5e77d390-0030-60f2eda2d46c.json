@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "csp-boundary",
+  "slide": "failure-boundaries",
+  "rank": 30,
+  "kind": "region",
+  "label": "Browser containment",
+  "description": "Served visual assets receive a CSP that disables network connections, objects, base URLs, and form submission.",
+  "selector": {
+    "type": "element",
+    "element_id": "csp-boundary"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "embed-failure",
+  "slide": "prototype-annotation-runtime",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Embed trust boundary",
+  "description": "External embeds require explicit allowlist metadata whose origin exactly matches the embed URL; recognizable hostnames grant no implicit permission.",
+  "selector": {
+    "type": "element",
+    "element_id": "embed-failure"
+  }
+}

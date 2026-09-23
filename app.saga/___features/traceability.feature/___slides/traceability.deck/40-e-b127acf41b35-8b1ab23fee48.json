@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact.go",
+      "start": 253,
+      "end": 269,
+      "digest": "sha256:27b5e58465b846faa624aa7d81c281834042a5e15aa87705ba3b0a845d0cd280",
+      "note": "Maps changed old lines and existing-file events directly to evidence owners."
+    }
+  ]
+}

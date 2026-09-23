@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-parent-return",
+  "slide": "story-mutation-sequence",
+  "rank": 50,
+  "kind": "transition",
+  "label": "No write on stale input",
+  "description": "A stale or incomplete parent set returns an error before publication and releases the lock.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-parent-return"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "record",
+  "slide": "partitioned-storage",
+  "rank": 0,
+  "kind": "node",
+  "label": "Partitioned records",
+  "description": "Separates durable identities, revisions, events, and relations by feature and resource.",
+  "selector": {
+    "type": "element",
+    "element_id": "record"
+  }
+}

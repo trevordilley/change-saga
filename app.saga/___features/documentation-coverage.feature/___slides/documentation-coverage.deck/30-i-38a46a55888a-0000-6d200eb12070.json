@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "status-entry",
+  "slide": "status-runtime",
+  "rank": 0,
+  "kind": "node",
+  "label": "CLI entry",
+  "description": "Status and check parse range, repository, feature, and output options before building the same status document.",
+  "selector": {
+    "type": "element",
+    "element_id": "status-entry"
+  }
+}

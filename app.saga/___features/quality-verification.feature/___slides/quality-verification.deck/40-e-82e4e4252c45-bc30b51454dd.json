@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/validate.go",
+      "start": 485,
+      "end": 516,
+      "digest": "sha256:c56eee18e16be6d66b1dcbf1d8448d2d8631cda770d338af0824b8e2d5a75059",
+      "note": "Shows the complete implemented run-currency checks and source validation: repository and commit syntax are checked, but the commit is not compared with observed HEAD."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/validate.go",
+      "start": 702,
+      "end": 710,
+      "digest": "sha256:b7066554dfa42a6d8ff9586047253bddd1c28409d3ffb521b52ef4b89b1e0699",
+      "note": "Shows the complete implemented run-currency checks and source validation: repository and commit syntax are checked, but the commit is not compared with observed HEAD."
+    }
+  ]
+}

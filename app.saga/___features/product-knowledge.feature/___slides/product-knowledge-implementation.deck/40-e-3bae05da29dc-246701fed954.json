@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 389,
+      "end": 505,
+      "digest": "sha256:b1481125b07428983a7be2fb01ca0b364ba9e9c0ca23126ef19976de9c5327db",
+      "note": "Derives review, design, work, test, code, and immutable-evidence paths from adjacent persisted relations and proves failing tests are not evidence."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/traceability_test.go",
+      "start": 15,
+      "end": 54,
+      "digest": "sha256:e32ccc0aa19f3d771723a63eb624274d89fbfb74008b1eea489c0f14f07e7deb",
+      "note": "Derives review, design, work, test, code, and immutable-evidence paths from adjacent persisted relations and proves failing tests are not evidence."
+    }
+  ]
+}

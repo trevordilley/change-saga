@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "comparison-history",
+  "title": "Observe, compare, and history",
+  "description": "Observe the documented application at a commit, compare a change from its merge base, and recover why records and their code evolved.",
+  "created_at": "2026-09-22T23:25:20.155732Z"
+}

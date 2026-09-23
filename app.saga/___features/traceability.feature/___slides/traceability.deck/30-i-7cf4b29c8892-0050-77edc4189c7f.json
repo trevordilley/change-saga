@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "sequence-flow",
+  "slide": "traceability-query-runtime",
+  "rank": 50,
+  "kind": "edge",
+  "label": "Runtime sequence",
+  "description": "Shows the ordered handoff from CLI parsing through shared snapshot construction, graph composition, and response emission.",
+  "selector": {
+    "type": "element",
+    "element_id": "sequence-flow"
+  }
+}

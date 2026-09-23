@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "composition-flow",
+  "slide": "product-knowledge-ownership",
+  "rank": 30,
+  "kind": "edge",
+  "label": "Composition boundary",
+  "description": "The transport-neutral livingapp layer loads valid leaf documents and composes cross-domain currency without moving write ownership.",
+  "selector": {
+    "type": "element",
+    "element_id": "composition-flow"
+  }
+}

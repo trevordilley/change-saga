@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli-parse",
+  "slide": "run-record-sequence",
+  "rank": 10,
+  "kind": "edge",
+  "label": "Parse claimed result",
+  "description": "The CLI accepts the caller-provided run facts; the command field is recorded and never executed.",
+  "selector": {
+    "type": "element",
+    "element_id": "already-executed"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "linked-resolution",
+  "slide": "axis-failures",
+  "rank": 30,
+  "kind": "node",
+  "label": "Linked resolution",
+  "description": "Current direct and broad links both resolve linked while preserving their precision.",
+  "selector": {
+    "type": "element",
+    "element_id": "linked-resolution"
+  }
+}

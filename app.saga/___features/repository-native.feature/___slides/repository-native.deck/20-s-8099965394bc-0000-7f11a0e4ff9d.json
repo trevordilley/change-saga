@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "repository-placement",
+  "deck": "repository-native",
+  "title": "One source identity and two repository placements",
+  "rank": 0,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8099965394bc-0000-7f11a0e4ff9d.svg",
+  "takeaway": "Canonical identity anchors evidence; companion mode adds an exact source cursor.",
+  "reading_order": [
+    "source",
+    "saga",
+    "cursor"
+  ]
+}

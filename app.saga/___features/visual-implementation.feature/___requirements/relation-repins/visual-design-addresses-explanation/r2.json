@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:change-saga:relation:visual-design-addresses-explanation",
+  "from_content_digest": "sha256:9f9f0fc51ba43f010d71fceaddd8005b2f68aae6522b3b6a8a2b519176e0046a",
+  "rationale": "The design meaning is unchanged; only a stable Markdown heading anchor was added.",
+  "created_at": "2026-09-22T23:42:35.475285Z"
+}

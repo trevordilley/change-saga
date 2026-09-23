@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "ref-remap",
+  "slide": "traceability-query-runtime",
+  "rank": 60,
+  "kind": "transition",
+  "label": "Optional ref remap",
+  "description": "When a code location is supplied, each pinned reference is resolved at that commit before overlap filtering.",
+  "selector": {
+    "type": "element",
+    "element_id": "ref-remap"
+  }
+}

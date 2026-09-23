@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "tree-diff",
+  "slide": "code-reference-resolution",
+  "rank": 20,
+  "kind": "node",
+  "label": "Inspect tree change",
+  "description": "Compares the pinned commit to the viewed commit and identifies file deletion, rename, binary change, mode change, or hunks.",
+  "selector": {
+    "type": "element",
+    "element_id": "tree-diff"
+  }
+}

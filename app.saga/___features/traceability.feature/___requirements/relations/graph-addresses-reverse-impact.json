@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "graph-addresses-reverse-impact",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:pinned-graph-design",
+  "to": "urn:change-saga:change-saga:story:reverse-impact",
+  "scope": "self",
+  "rationale": "The impact projection walks persisted links backward from code evidence to affected product knowledge.",
+  "to_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
+  "from_content_digest": "sha256:8832c0f1c7f5a126f91fd43b05967bbb008c18c38a69adce26c8046549618722",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.711735Z"
+}

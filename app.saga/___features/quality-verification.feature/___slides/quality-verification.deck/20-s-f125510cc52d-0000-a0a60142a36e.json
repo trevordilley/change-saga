@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "quality-ownership",
+  "deck": "quality-verification",
+  "title": "Quality is a recorded proof graph — not a test runner",
+  "rank": 0,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-f125510cc52d-0000-a0a60142a36e.svg",
+  "takeaway": "The quality domain records evidence and derives readiness; executing tests remains outside its trust boundary.",
+  "reading_order": [
+    "external-executor",
+    "cli-adapter",
+    "quality-domain",
+    "feature-storage",
+    "readiness-consumers",
+    "executor-gap"
+  ]
+}

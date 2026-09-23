@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "source",
+  "slide": "repository-placement",
+  "rank": 0,
+  "kind": "node",
+  "label": "Canonical source",
+  "description": "Discovers, normalizes, and verifies the portable repository identity.",
+  "selector": {
+    "type": "element",
+    "element_id": "source"
+  }
+}

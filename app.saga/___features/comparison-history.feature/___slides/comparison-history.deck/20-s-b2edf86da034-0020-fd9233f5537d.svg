@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Three comparison layers</title>
+  <desc id="desc">Saga snapshots and source atoms branch into Changed records, Affected records, and Code groups, then join in a summary without hiding unreferenced lines.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071a19"/><stop offset="1" stop-color="#122938"/></linearGradient>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#45d9b8"/></marker>
+    <style>.t{font-family:Inter,system-ui,sans-serif;fill:#f3fffb}.ey{font-size:15px;font-weight:700;letter-spacing:2px;fill:#45d9b8}.h{font-size:34px;font-weight:760}.l{font-size:22px;font-weight:730}.s{font-size:15px;fill:#a9c8c2}.box{fill:#103135;stroke:#2b6d67;stroke-width:2}.changed{fill:#243b54;stroke:#6bb4ff;stroke-width:2}.affected{fill:#342f4e;stroke:#ad91ff;stroke-width:2}.code{fill:#3b3224;stroke:#ffc66b;stroke-width:2}.edge{fill:none;stroke:#45d9b8;stroke-width:3;marker-end:url(#a)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="52" class="t ey">IMPACT MODEL · BRANCHES</text>
+  <text x="64" y="96" class="t h">One comparison answers three different questions</text>
+  <text x="64" y="126" class="t s">Edited documentation, invalidated knowledge, and changed code stay separate until the final summary.</text>
+
+  <g id="inputs"><rect x="56" y="224" width="214" height="252" rx="24" class="box"/><text x="82" y="266" class="t ey">INPUTS</text><text x="82" y="304" class="t l">Base Saga</text><text x="82" y="338" class="t l">Head Saga</text><path d="M82 360h160" stroke="#2b6d67"/><text x="82" y="396" class="t l">ChangeSet</text><text x="82" y="426" class="t s">atoms + evidence</text></g>
+  <path d="M270 276H382" class="edge"/><path d="M270 350H382" class="edge"/><path d="M270 424H382" class="edge"/>
+
+  <g id="changed"><rect x="382" y="184" width="252" height="142" rx="22" class="changed"/><text x="408" y="226" class="t ey">CHANGED</text><text x="408" y="264" class="t l">Record delta</text><text x="408" y="294" class="t s">added · revised · retired</text></g>
+  <g id="affected"><rect x="382" y="350" width="252" height="176" rx="22" class="affected"/><text x="408" y="392" class="t ey">AFFECTED</text><text x="408" y="430" class="t l">Impact propagation</text><text x="408" y="462" class="t s">code → pin → chain</text><text x="408" y="490" class="t s">Changed records are excluded</text></g>
+
+  <path d="M634 255C708 255 696 274 758 274" class="edge"/>
+  <path d="M634 438C708 438 696 356 758 356" class="edge"/>
+  <g id="code-groups"><rect x="758" y="216" width="256" height="198" rx="22" class="code"/><text x="784" y="258" class="t ey" fill="#ffc66b">CODE</text><text x="784" y="296" class="t l">Ownership groups</text><text x="784" y="328" class="t s">current references</text><text x="784" y="356" class="t s">merge-base impact</text><text x="784" y="384" class="t s">term locations</text></g>
+
+  <g id="unreferenced"><rect x="758" y="450" width="256" height="112" rx="22" fill="#48252d" stroke="#ff7185" stroke-width="2"/><text x="784" y="492" class="t l">Unreferenced</text><text x="784" y="524" class="t s">uncovered atoms remain visible</text></g>
+  <path d="M634 480H758" class="edge"/>
+
+  <path d="M1014 316H1080" class="edge"/><path d="M1014 506C1060 506 1060 392 1080 392" class="edge"/>
+  <g id="summary"><rect x="1080" y="250" width="150" height="206" rx="75" class="box"/><text x="1155" y="304" text-anchor="middle" class="t ey">SUMMARY</text><text x="1155" y="344" text-anchor="middle" class="t l">counts</text><text x="1155" y="378" text-anchor="middle" class="t s">changed</text><text x="1155" y="402" text-anchor="middle" class="t s">affected</text><text x="1155" y="426" text-anchor="middle" class="t s">unreferenced</text></g>
+</svg>

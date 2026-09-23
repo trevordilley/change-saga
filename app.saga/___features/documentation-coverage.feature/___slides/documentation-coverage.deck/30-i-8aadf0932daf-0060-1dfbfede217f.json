@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "completion-rule",
+  "slide": "reference-state",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Completion rule",
+  "description": "Mapping completes only with a valid schema, no uncovered atoms, and no stale references; file events and lines require distinct selectors.",
+  "selector": {
+    "type": "element",
+    "element_id": "completion-rule"
+  }
+}

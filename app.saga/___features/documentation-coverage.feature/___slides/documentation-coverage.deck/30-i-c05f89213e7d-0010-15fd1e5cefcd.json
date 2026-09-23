@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "six-axis-fanout",
+  "slide": "axis-failures",
+  "rank": 10,
+  "kind": "region",
+  "label": "Six required axes",
+  "description": "Prototype, UX, UI, technical, quality, and implementation are evaluated independently in stable order.",
+  "selector": {
+    "type": "element",
+    "element_id": "six-axis-fanout"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "selected-sides",
+  "slide": "saga-snapshot-ownership",
+  "rank": 30,
+  "kind": "node",
+  "label": "Selected inventories share one compute path",
+  "description": "Whichever ownership branch selects the snapshots, both inventories enter the same Changed, Affected, and Code computation.",
+  "selector": {
+    "type": "element",
+    "element_id": "selected-sides"
+  }
+}

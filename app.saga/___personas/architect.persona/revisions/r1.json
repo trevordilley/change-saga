@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/persona-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "persona": "urn:change-saga:change-saga:persona:architect",
+  "parents": [],
+  "name": "Architect",
+  "description": "Turns requirements and designs into the technical vision for a change. Needs commit-pinned context, picture-driven explanations of complex work, and direct connections from high-level design to concrete code.",
+  "created_at": "2026-09-22T23:12:24.104238Z"
+}

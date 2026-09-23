@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "event-store",
+  "slide": "review-decision-ownership",
+  "rank": 30,
+  "kind": "node",
+  "label": "Decision event store",
+  "description": "Each decision is persisted as a separate immutable record containing its slide, state, head commit, and slide digest.",
+  "selector": {
+    "type": "element",
+    "element_id": "event-store"
+  }
+}

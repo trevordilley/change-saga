@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/flat.go",
+      "start": 21,
+      "end": 79,
+      "digest": "sha256:bb13741b42cb8573166e747667f31de8541d6d2a117eaa9ef960366782c1132f",
+      "note": "Derives compact filenames from stable target identities so Git storage stays mergeable without carrying semantic titles in paths."
+    }
+  ]
+}

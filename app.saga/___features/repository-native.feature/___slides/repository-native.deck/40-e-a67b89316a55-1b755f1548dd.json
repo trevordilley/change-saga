@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/sync.go",
+      "start": 86,
+      "end": 101,
+      "digest": "sha256:aa1a5a672ecf0c236c676a95f851268eceff14cbba0ca5f59fdaa424047ec608",
+      "note": "Checkout location distinguishes in-repository from companion placement"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/model.go",
+      "start": 43,
+      "end": 49,
+      "digest": "sha256:b9cf3fcb951d40fd2eb552b97b1b24b7822bf754d87fcd0181c35460f654d71b",
+      "note": "Checkout location distinguishes in-repository from companion placement"
+    }
+  ]
+}

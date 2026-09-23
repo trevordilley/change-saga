@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "relation-currency",
+  "deck": "traceability",
+  "title": "Relation currency state machine",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-85572f9da485-0020-a10a94a6b0d2.svg",
+  "takeaway": "Only current relations join traceability; carried-forward pins remain auditable, while stale, conflicted, invalid, and superseded states stay explicit.",
+  "reading_order": [
+    "pin-check",
+    "current-state",
+    "carry-forward",
+    "stale-state",
+    "conflicted-state",
+    "invalid-state",
+    "superseded-state"
+  ]
+}

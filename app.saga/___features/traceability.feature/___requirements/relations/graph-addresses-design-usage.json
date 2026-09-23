@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "graph-addresses-design-usage",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:pinned-graph-design",
+  "to": "urn:change-saga:change-saga:story:design-usage-path",
+  "scope": "self",
+  "rationale": "The graph pins designs to requirement revisions and makes their downstream implementation paths navigable.",
+  "to_revision": "urn:change-saga:change-saga:story:design-usage-path:revision:r1",
+  "from_content_digest": "sha256:8832c0f1c7f5a126f91fd43b05967bbb008c18c38a69adce26c8046549618722",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.676966Z"
+}

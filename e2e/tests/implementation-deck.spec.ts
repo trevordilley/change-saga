@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
 import { runCLI } from "../support/fixture-builder.js";
 
-test("a Saga opens several implementation decks without paginating its documentation", async ({ page, saga }) => {
+test("a Saga opens several implementation decks without paginating its documentation", async ({ page, saga, browser, browserName }) => {
   const run = (...args: string[]): void => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, `${args[0]} failed\n${result.stdout}\n${result.stderr}`).toBe(0);
@@ -26,6 +26,17 @@ test("a Saga opens several implementation decks without paginating its documenta
     }
   }
   run("cover", "--repo", saga.sourceRepo, "--against", "main", "--target", "urn:change-saga:wave-one:slide:request-enters:item:surprise", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "request-slide-item", saga.sagaRoot);
+
+  // Code-only and story-only elements must have independent affordances.
+  const story = "urn:change-saga:wave-one:story:understand-request";
+  run("story", "add", "--feature", "wave-one", "--id", "understand-request", "--revision", "r1", "--event", "proposed",
+    "--title", "Understand a request", "--statement", "As a reviewer I can trace a request to its intent.",
+    "--criterion", "visible=The intent is visible on the element", saga.sagaRoot);
+  for (const [id, to] of [["request-story", story], ["request-criterion", `${story}:criterion:visible`]]) {
+    run("relation", "add", "--feature", "wave-one", "--id", id, "--type", "explains",
+      "--from", "urn:change-saga:wave-one:slide:request-enters:item:no-diff", "--to", to,
+      "--rationale", "This element makes the request intent explicit.", saga.sagaRoot);
+  }
 
   await page.reload();
   await waitForSettledSaga(page);
@@ -77,6 +88,39 @@ test("a Saga opens several implementation decks without paginating its documenta
   await expect(linkedCodeDrawer).toHaveAttribute("aria-hidden", "false");
   await expect(linkedCodeDrawer.getByText("src/app.go", { exact: true })).toBeVisible();
   await linkedCodeDrawer.getByRole("button", { name: "Close linked code" }).click();
+  await linkedItem.locator(".diff-button").blur();
+
+  await expect(linkedItem).toHaveAttribute("data-landmark-has-stories", "false");
+  await expect(unlinkedItem).toHaveAttribute("data-landmark-has-stories", "true");
+  const slideStories = activeSlide.locator(".fragment > .fragment-head > .fragment-actions > .stories-button");
+  await expect(slideStories).toHaveText("1"); // Two relations, one distinct story.
+  await expect(slideStories).toHaveAttribute("title", "Linked stories: Understand a request");
+  await slideStories.hover();
+  await expect(unlinkedItem).toHaveCSS("border-color", "rgb(211, 148, 24)");
+  await expect(linkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
+  await page.locator(".brand").hover();
+  await expect(unlinkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
+  await slideStories.focus();
+  await expect(unlinkedItem).toHaveCSS("border-color", "rgb(211, 148, 24)");
+  await page.keyboard.press("Enter");
+  const storiesDrawer = page.getByRole("complementary", { name: "Linked stories" });
+  await expect(storiesDrawer).toHaveAttribute("aria-hidden", "false");
+  await expect(storiesDrawer.locator("[data-story-link]")).toHaveCount(2);
+  await expect(storiesDrawer.getByRole("link", { name: "Understand a request", exact: true })).toHaveCount(2);
+  await expect(storiesDrawer.getByRole("link", { name: "The intent is visible on the element" })).toHaveAttribute("href", /understand-request.*visible/);
+  await expect(storiesDrawer.locator(".story-link-status")).toHaveText(["current", "current"]);
+  await page.keyboard.press("Escape");
+  await expect(slideStories).toBeFocused();
+  await slideStories.blur();
+  await unlinkedItem.hover();
+  const elementStories = unlinkedItem.locator(".stories-button");
+  await expect(elementStories).toBeVisible();
+  await expect(unlinkedItem.locator(".diff-button")).toHaveCount(0);
+  await elementStories.click();
+  await expect(storiesDrawer).toHaveAttribute("aria-hidden", "false");
+  await expect(storiesDrawer.locator("[data-story-link]")).toHaveCount(2);
+  await storiesDrawer.getByRole("button", { name: "Close linked stories" }).click();
+  await expect(elementStories).toBeFocused();
 
   // A deck is documentation: its slides and Items carry no approval, comment,
   // or annotation control.
@@ -84,13 +128,38 @@ test("a Saga opens several implementation decks without paginating its documenta
   await expect(page.locator(".annotation-toolbox,form[action=\"/api/thread\"]")).toHaveCount(0);
   run("validate", saga.sagaRoot);
 
+  run("relation", "add", "--feature", "wave-one", "--id", "both-story-and-code", "--type", "explains",
+    "--from", "urn:change-saga:wave-one:slide:request-enters:item:surprise", "--to", story,
+    "--rationale", "The source implements this intent.", saga.sagaRoot);
+
   const reload = await page.reload();
   expect(reload?.status()).toBe(200);
   await waitForSettledSaga(page);
   await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Request enters"]')).toBeVisible();
+  await linkedItem.hover();
+  await expect(linkedItem.locator(".stories-button")).toBeVisible();
+  await expect(linkedItem.locator(".diff-button")).toBeVisible();
+  await linkedItem.locator(".stories-button").click();
+  await expect(storiesDrawer).toHaveAttribute("aria-hidden", "false");
+  await expect(storiesDrawer.locator("[data-story-link]")).toHaveCount(1);
+  await expect(storiesDrawer.getByText("The source implements this intent.", { exact: true })).toBeVisible();
+  await expect(storiesDrawer).toHaveCSS("transform", "none");
+  await page.screenshot({ path: test.info().outputPath("element-story-links.png") });
+  await page.getByRole("button", { name: "Toggle dark mode" }).click();
+  await page.screenshot({ path: test.info().outputPath("element-story-links-dark.png") });
+  await page.getByRole("button", { name: "Toggle dark mode" }).click();
+  await storiesDrawer.getByRole("button", { name: "Close linked stories" }).click();
+  await linkedItem.locator(".diff-button").click();
+  await expect(linkedCodeDrawer).toHaveAttribute("aria-hidden", "false");
+  await linkedCodeDrawer.getByRole("button", { name: "Close linked code" }).click();
 
   await slidePanel.getByRole("button", { name: "Next slide" }).click();
   await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Response returns"]')).toBeVisible();
+  const emptyStories = slidePanel.locator('[data-deck-slide][data-slide-title="Response returns"] .fragment-head .stories-button');
+  await expect(emptyStories).toHaveText("0");
+  await emptyStories.click();
+  await expect(storiesDrawer.locator("[data-story-links-empty]")).toHaveText("No element-level story links yet.");
+  await storiesDrawer.getByRole("button", { name: "Close linked stories" }).click();
   await expect(slidePanel.locator("[data-slide-position]")).toHaveText("2 / 2");
   await expect(slidePanel.locator("[data-slide-next]")).toBeDisabled();
 
@@ -110,4 +179,24 @@ test("a Saga opens several implementation decks without paginating its documenta
   await page.keyboard.press("ArrowLeft");
   await failureDeckNode.getByRole("button", { name: "Show slide: Failure path" }).click();
   await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Failure path"]')).toBeVisible();
+
+  // Touch has no hover: story controls remain visible and can be tapped.
+  if (browserName !== "firefox") {
+    await requestSlide.click();
+    const context = await browser.newContext({ hasTouch: true, viewport: { width: 1280, height: 900 } });
+    try {
+      const touchPage = await context.newPage();
+      await touchPage.goto(page.url());
+      await waitForSettledSaga(touchPage);
+      const touchElement = touchPage.locator('[data-slide-title="Request enters"] .landmark-hotspot[data-element-id="unlinked-node"]');
+      await expect(touchElement.locator(".landmark-affordance")).toHaveCSS("opacity", "1");
+      await touchElement.locator(".stories-button").tap();
+      const touchDrawer = touchPage.getByRole("complementary", { name: "Linked stories" });
+      await expect(touchDrawer).toHaveAttribute("aria-hidden", "false");
+      await touchDrawer.getByRole("link", { name: "The intent is visible on the element" }).tap();
+      await expect(touchPage).toHaveURL(/understand-request.*visible/);
+    } finally {
+      await context.close();
+    }
+  }
 });

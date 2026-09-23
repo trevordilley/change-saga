@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unlinked-evidence",
+  "slide": "traceability-runtime",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Unlinked implementation evidence",
+  "description": "Item code evidence without a current explains relation is returned separately instead of being credited to product intent.",
+  "selector": {
+    "type": "element",
+    "element_id": "unlinked-evidence"
+  }
+}

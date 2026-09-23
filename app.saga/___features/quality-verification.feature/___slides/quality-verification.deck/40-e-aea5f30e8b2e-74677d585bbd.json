@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/load.go",
+      "start": 71,
+      "end": 104,
+      "digest": "sha256:edca7b8bcb868e3b7462e5fe570d83f76ead317888c3442f0f871a930456fbe7",
+      "note": "Loads quality roots per feature and maps policies plus test-case records to feature-owned paths."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 824,
+      "end": 840,
+      "digest": "sha256:e10ce86f9540c5102d34a6a448b882e890cacec7727374ed5ef12cf43d9f4f5e",
+      "note": "Loads quality roots per feature and maps policies plus test-case records to feature-owned paths."
+    }
+  ]
+}

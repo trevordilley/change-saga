@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/review.go",
+      "start": 23,
+      "end": 39,
+      "digest": "sha256:3d087978bab81e679c862aa60995e655bcfd3c957ec815b19b3811f4f5553628",
+      "note": "The enumerated review storage holds deck, approvals, and comments only; it defines no spatial annotation record."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "decision",
+  "slide": "decision-currency",
+  "rank": 0,
+  "kind": "transition",
+  "label": "Latest event per seat",
+  "description": "Approved, changes-requested, and withdrawal events remain stored; only the latest event for the same Git author and declared seat is projected.",
+  "selector": {
+    "type": "element",
+    "element_id": "decision"
+  }
+}

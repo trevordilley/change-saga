@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:change-saga:relation:collaboration-addresses-spatial-annotation",
+  "from_content_digest": "sha256:fa8b4ffcf19d1b2aa02416ea2607dfd75d09712f85029306bfb7f468e9c71c31",
+  "rationale": "The design meaning is unchanged; only a stable Markdown heading anchor was added.",
+  "created_at": "2026-09-22T23:42:34.663842Z"
+}

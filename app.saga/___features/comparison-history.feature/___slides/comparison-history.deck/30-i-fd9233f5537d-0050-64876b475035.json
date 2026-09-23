@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "summary",
+  "slide": "comparison-three-layers",
+  "rank": 50,
+  "kind": "metric",
+  "label": "Summary preserves separation",
+  "description": "The result counts record changes, affected records, owner groups, changed atoms, and unreferenced atoms without collapsing them into a verdict.",
+  "selector": {
+    "type": "element",
+    "element_id": "summary"
+  }
+}

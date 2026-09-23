@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/load.go",
+      "start": 197,
+      "end": 245,
+      "digest": "sha256:6dfeb8bdcf9b33a48ffd23417a795ee68d950cb0de8dea2934a0592a8cde75a6",
+      "note": "Loads one story identity plus separate immutable revision and lifecycle record directories."
+    }
+  ]
+}

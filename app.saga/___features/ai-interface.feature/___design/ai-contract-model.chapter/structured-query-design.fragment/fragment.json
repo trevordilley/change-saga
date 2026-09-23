@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "structured-query-design",
+  "title": "Structured query design",
+  "media_type": "text/markdown",
+  "entrypoint": "ai-interface.md"
+}

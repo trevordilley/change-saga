@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "success-outcome",
+  "slide": "mutation-guardrails",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Redirect after success",
+  "description": "Only a successful append redirects to the canonical review target; refused requests leave no action record.",
+  "selector": {
+    "type": "element",
+    "element_id": "success-outcome"
+  }
+}

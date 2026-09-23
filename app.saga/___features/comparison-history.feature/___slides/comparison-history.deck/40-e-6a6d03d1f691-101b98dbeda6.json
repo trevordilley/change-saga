@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 288,
+      "end": 302,
+      "digest": "sha256:46119ace9e1ce48d8252bcc0acb2b3155cd2d398e9e57c39fd2dac81647d3bdb",
+      "note": "Rejects a WORKTREE source head because immutable evidence requires a resolvable commit before merge-base calculation."
+    }
+  ]
+}

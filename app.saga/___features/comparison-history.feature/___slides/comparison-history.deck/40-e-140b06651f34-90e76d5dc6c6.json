@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/history.go",
+      "start": 93,
+      "end": 112,
+      "digest": "sha256:ff1bbf6006c73df5f438fb8d7e31e4cf3d889d9e9229c000cf8c922d5b143bc8",
+      "note": "Uses recorded merge bases or first parents to construct the against/head pair and emits the command that reopens each event."
+    }
+  ]
+}

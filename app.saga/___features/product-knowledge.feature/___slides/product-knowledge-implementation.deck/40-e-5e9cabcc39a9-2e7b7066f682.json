@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 330,
+      "end": 430,
+      "digest": "sha256:0994bc0168d113a7ebc211a6baeb02080c7649eb60b50ebcd5cfcbf60600fb43",
+      "note": "Reduces each required kind to explicit covered, missing, not-run, failed, stale, or excluded facts and proves their criterion effects."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_test.go",
+      "start": 318,
+      "end": 373,
+      "digest": "sha256:c28f3b32ee944568e3ff8fb19b0b17a1f67930a8792c02d783249197fc35d9b1",
+      "note": "Reduces each required kind to explicit covered, missing, not-run, failed, stale, or excluded facts and proves their criterion effects."
+    }
+  ]
+}

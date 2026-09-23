@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "annotation-gap",
+  "slide": "contextual-review",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Spatial annotation gap",
+  "description": "No PR-review overlay record or drawing toolbox implements freehand marks, shapes, or text; prototype requirement annotations are separate traceability edges.",
+  "selector": {
+    "type": "element",
+    "element_id": "annotation-gap"
+  }
+}

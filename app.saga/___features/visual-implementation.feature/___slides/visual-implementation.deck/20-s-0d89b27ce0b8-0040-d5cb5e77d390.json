@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "failure-boundaries",
+  "deck": "visual-implementation",
+  "title": "Three boundaries contain unsafe or stale content",
+  "rank": 40,
+  "section": "Failure boundaries",
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-0d89b27ce0b8-0040-d5cb5e77d390.svg",
+  "takeaway": "Storage shape, confined asset serving, and authored-content digests fail independently; evidence overlays never stale the visual design.",
+  "reading_order": [
+    "flat-bundle-boundary",
+    "regular-file-gate",
+    "path-confinement",
+    "csp-boundary",
+    "authored-digest",
+    "evidence-overlay",
+    "failure-outcome"
+  ]
+}

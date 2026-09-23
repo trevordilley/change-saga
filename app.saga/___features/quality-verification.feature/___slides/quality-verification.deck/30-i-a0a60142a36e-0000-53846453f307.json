@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "external-executor",
+  "slide": "quality-ownership",
+  "rank": 0,
+  "kind": "node",
+  "label": "External executor",
+  "description": "CI or a human executes the test command outside Change Saga and observes the result.",
+  "selector": {
+    "type": "element",
+    "element_id": "external-executor"
+  }
+}

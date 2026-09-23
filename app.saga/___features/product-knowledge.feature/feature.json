@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "product-knowledge",
+  "title": "Product knowledge authoring",
+  "description": "Author and evolve personas, prototypes, stories, criteria, designs, vocabulary, flags, and their provenance as durable application knowledge.",
+  "created_at": "2026-09-22T23:25:20.12719Z"
+}

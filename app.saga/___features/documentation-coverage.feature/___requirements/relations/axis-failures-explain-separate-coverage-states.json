@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "axis-failures-explain-separate-coverage-states",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:axis-failures",
+  "to": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+  "scope": "descendants",
+  "rationale": "The failure flow preserves linked, excluded, and gap resolutions with their underlying stale, invalid, conflict, and missing-resource reasons.",
+  "to_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:25:05.8931Z"
+}

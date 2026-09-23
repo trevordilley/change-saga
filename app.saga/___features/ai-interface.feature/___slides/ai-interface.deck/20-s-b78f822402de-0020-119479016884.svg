@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">One-shot query sequence</title>
+  <desc id="desc">A sequence diagram tracing a query from the AI caller through process dispatch, parsing, snapshot construction, domain projection, and one JSON response.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#071521"/><stop offset="1" stop-color="#14253a"/></linearGradient>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#69d6ff"/></marker>
+    <marker id="r" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#61e0ae"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="56" y="60" font-family="Inter,system-ui,sans-serif" font-size="34" font-weight="750" fill="#f5fbff">A query is a process-bounded transaction</text>
+  <text x="56" y="94" font-family="Inter,system-ui,sans-serif" font-size="18" fill="#9eb4ca">No retained client session: open → project → emit → exit</text>
+
+  <g font-family="Inter,system-ui,sans-serif">
+    <g><rect x="48" y="126" width="170" height="54" rx="15" fill="#173754" stroke="#5cc9f1"/><text x="133" y="160" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">AI caller</text><path d="M133 180V654" stroke="#45637b" stroke-width="2" stroke-dasharray="7 8"/></g>
+    <g><rect x="266" y="126" width="170" height="54" rx="15" fill="#173754" stroke="#5cc9f1"/><text x="351" y="160" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">main.run</text><path d="M351 180V654" stroke="#45637b" stroke-width="2" stroke-dasharray="7 8"/></g>
+    <g><rect x="484" y="126" width="170" height="54" rx="15" fill="#173754" stroke="#5cc9f1"/><text x="569" y="160" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">cli.Query</text><path d="M569 180V654" stroke="#45637b" stroke-width="2" stroke-dasharray="7 8"/></g>
+    <g><rect x="702" y="126" width="170" height="54" rx="15" fill="#193e35" stroke="#55d4a7"/><text x="787" y="160" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">session adapter</text><path d="M787 180V654" stroke="#45637b" stroke-width="2" stroke-dasharray="7 8"/></g>
+    <g><rect x="920" y="126" width="170" height="54" rx="15" fill="#2c2951" stroke="#9d8cff"/><text x="1005" y="160" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">domain session</text><path d="M1005 180V654" stroke="#45637b" stroke-width="2" stroke-dasharray="7 8"/></g>
+  </g>
+
+  <g id="invoke">
+    <path d="M133 225H351" stroke="#69d6ff" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="153" y="199" width="183" height="34" rx="10" fill="#102a40"/><text x="245" y="221" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#bceeff">query children …</text>
+  </g>
+  <g id="dispatch">
+    <path d="M351 288H569" stroke="#69d6ff" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="382" y="262" width="159" height="34" rx="10" fill="#102a40"/><text x="461" y="284" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#bceeff">dispatch “query”</text>
+  </g>
+  <g id="open-snapshot">
+    <path d="M569 357H787" stroke="#69d6ff" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="596" y="321" width="165" height="52" rx="10" fill="#102a40"/><text x="678" y="343" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#bceeff">parse flags</text><text x="678" y="363" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#bceeff">open validated state</text>
+    <path d="M787 396H1005" stroke="#69d6ff" stroke-width="4" marker-end="url(#a)"/>
+    <text x="896" y="387" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#9ed8ec">reviewapp or livingapp</text>
+  </g>
+  <g id="project">
+    <rect x="973" y="426" width="64" height="89" rx="12" fill="#423b78" stroke="#aa9cff" stroke-width="2"/>
+    <path d="M1005 515H787" stroke="#61e0ae" stroke-width="4" marker-end="url(#r)"/>
+    <text x="896" y="505" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#a8efd8">bounded domain page</text>
+  </g>
+  <g id="envelope">
+    <path d="M787 565H569" stroke="#61e0ae" stroke-width="4" marker-end="url(#r)"/>
+    <path d="M569 595H351" stroke="#61e0ae" stroke-width="4" marker-end="url(#r)"/>
+    <rect x="384" y="542" width="352" height="39" rx="11" fill="#123b35"/><text x="560" y="567" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#b4f5df">{schema, ok, snapshot, data, page}</text>
+  </g>
+  <g id="exit">
+    <path d="M351 633H133" stroke="#61e0ae" stroke-width="4" marker-end="url(#r)"/>
+    <rect x="171" y="607" width="145" height="36" rx="10" fill="#123b35"/><text x="243" y="631" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#b4f5df">stdout once · exit</text>
+  </g>
+</svg>

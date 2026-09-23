@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "storage-ownership",
+  "deck": "merge-friendly-format",
+  "title": "Physical ownership, logical identity",
+  "rank": 10,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-2dea4605310f-0010-88e23d55f0b7.svg",
+  "takeaway": "Feature directories localize merges, but app-wide stable IDs keep relations intact when records move.",
+  "reading_order": [
+    "feature-boundary",
+    "physical-partitions",
+    "stable-urn",
+    "uniqueness-guard",
+    "mobility-boundary"
+  ]
+}

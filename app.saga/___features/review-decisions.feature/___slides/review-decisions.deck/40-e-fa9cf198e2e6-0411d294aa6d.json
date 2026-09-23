@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 147,
+      "end": 154,
+      "digest": "sha256:a99bf580244a8a547e5c719f7272d067da9328759aaac9f9d78855e3ded78ccb",
+      "note": "Creates a uniquely named approval record with create-only JSON persistence after validation succeeds."
+    }
+  ]
+}

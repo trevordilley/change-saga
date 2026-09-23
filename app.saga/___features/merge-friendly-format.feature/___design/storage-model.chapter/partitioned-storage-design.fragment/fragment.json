@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "partitioned-storage-design",
+  "title": "Partitioned storage design",
+  "media_type": "text/markdown",
+  "entrypoint": "merge-friendly-format.md"
+}

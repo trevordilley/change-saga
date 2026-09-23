@@ -432,7 +432,14 @@ visual Item@current-content-digest
   -> owns_diff -> canonical current line/event diff URI
 ```
 
-or, when explicitly scoped:
+Historical records can also use an explicitly scoped container path (the
+reader contract is unchanged). New `explains`/visual `addresses` links must
+originate from an Item with `scope: self`; writers reject whole Deck/Slide
+sources. The UI summarizes each slide's Item links and keeps historical
+container links separate as needing element assignment. Container links are
+never presented as individual elements' own links.
+
+Legacy path:
 
 ```text
 accepted current criterion

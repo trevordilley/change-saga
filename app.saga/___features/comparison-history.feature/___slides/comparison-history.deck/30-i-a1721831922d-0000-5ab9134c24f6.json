@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "history-request",
+  "slide": "record-history-sequence",
+  "rank": 0,
+  "kind": "node",
+  "label": "History starts from one stable record",
+  "description": "The history query names a record URN whose current inventory entry supplies its stable identity and owned files.",
+  "selector": {
+    "type": "element",
+    "element_id": "history-request"
+  }
+}

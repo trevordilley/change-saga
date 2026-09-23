@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Relation currency state machine</title>
+  <desc id="desc">A state machine showing relation confirmation inputs and the derived current, carried-forward, stale, conflicted, invalid, and superseded outcomes.</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#475569"/></marker></defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text x="58" y="62" font-family="system-ui" font-size="36" font-weight="750" fill="#0f172a">Pins are judged once, then projected everywhere</text>
+  <text x="58" y="96" font-family="system-ui" font-size="18" fill="#475569">Whitespace-level criterion edits are intentionally judgment calls; unchanged obligations carry forward without rewriting the confirmed pin.</text>
+
+  <g id="pin-check">
+    <rect x="55" y="258" width="215" height="150" rx="26" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3"/>
+    <text x="162" y="302" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="750" fill="#312e81">Confirmed relation</text>
+    <text x="162" y="337" text-anchor="middle" font-family="ui-monospace" font-size="15" fill="#4338ca">from/to revision pins</text>
+    <text x="162" y="364" text-anchor="middle" font-family="ui-monospace" font-size="15" fill="#4338ca">content digests + scope</text>
+    <text x="162" y="391" text-anchor="middle" font-family="system-ui" font-size="14" fill="#6366f1">compare to current heads</text>
+  </g>
+
+  <g id="current-state">
+    <rect x="370" y="132" width="210" height="110" rx="55" fill="#dcfce7" stroke="#16a34a" stroke-width="4"/>
+    <text x="475" y="179" text-anchor="middle" font-family="system-ui" font-size="27" font-weight="800" fill="#14532d">CURRENT</text>
+    <text x="475" y="210" text-anchor="middle" font-family="system-ui" font-size="15" fill="#166534">eligible for coverage</text>
+    <path d="M270 290C320 290 320 188 357 188" fill="none" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="carry-forward">
+    <rect x="680" y="125" width="270" height="125" rx="18" fill="#ecfdf5" stroke="#059669" stroke-width="3" stroke-dasharray="9 6"/>
+    <text x="815" y="165" text-anchor="middle" font-family="system-ui" font-size="22" font-weight="750" fill="#065f46">CARRIED FORWARD</text>
+    <text x="815" y="197" text-anchor="middle" font-family="system-ui" font-size="15" fill="#047857">same statement or obligation</text>
+    <text x="815" y="222" text-anchor="middle" font-family="system-ui" font-size="14" fill="#047857">confirmed pin remains auditable</text>
+    <path d="M580 188H667" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="stale-state">
+    <rect x="370" y="300" width="210" height="110" rx="18" fill="#ffedd5" stroke="#ea580c" stroke-width="3"/>
+    <text x="475" y="346" text-anchor="middle" font-family="system-ui" font-size="25" font-weight="800" fill="#9a3412">STALE</text>
+    <text x="475" y="377" text-anchor="middle" font-family="system-ui" font-size="15" fill="#c2410c">revision or digest changed</text>
+    <path d="M270 333H357" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="conflicted-state">
+    <rect x="680" y="300" width="240" height="110" rx="18" fill="#fae8ff" stroke="#a21caf" stroke-width="3"/>
+    <text x="800" y="346" text-anchor="middle" font-family="system-ui" font-size="24" font-weight="800" fill="#701a75">CONFLICTED</text>
+    <text x="800" y="377" text-anchor="middle" font-family="system-ui" font-size="15" fill="#86198f">multiple revision heads</text>
+    <path d="M270 352H315V450H650V355H667" fill="none" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="invalid-state">
+    <rect x="370" y="500" width="235" height="110" rx="18" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/>
+    <text x="487" y="546" text-anchor="middle" font-family="system-ui" font-size="25" font-weight="800" fill="#991b1b">INVALID</text>
+    <text x="487" y="577" text-anchor="middle" font-family="system-ui" font-size="15" fill="#b91c1c">missing / removed / unresolved</text>
+    <path d="M270 380C320 380 320 555 357 555" fill="none" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <g id="superseded-state">
+    <rect x="680" y="500" width="240" height="110" rx="55" fill="#e2e8f0" stroke="#64748b" stroke-width="3"/>
+    <text x="800" y="546" text-anchor="middle" font-family="system-ui" font-size="23" font-weight="800" fill="#334155">SUPERSEDED</text>
+    <text x="800" y="577" text-anchor="middle" font-family="system-ui" font-size="15" fill="#475569">inactive terminal record</text>
+    <path d="M270 400H300V660H650V555H667" fill="none" stroke="#475569" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+
+  <rect x="965" y="125" width="265" height="485" rx="20" fill="#0f172a"/>
+  <text x="1097" y="166" text-anchor="middle" font-family="system-ui" font-size="20" font-weight="750" fill="#f8fafc">Precedence</text>
+  <text x="1097" y="213" text-anchor="middle" font-family="ui-monospace" font-size="17" fill="#fca5a5">invalid</text>
+  <text x="1097" y="252" text-anchor="middle" font-family="ui-monospace" font-size="17" fill="#f0abfc">conflicted</text>
+  <text x="1097" y="291" text-anchor="middle" font-family="ui-monospace" font-size="17" fill="#fdba74">stale</text>
+  <text x="1097" y="330" text-anchor="middle" font-family="ui-monospace" font-size="17" fill="#86efac">current</text>
+  <path d="M1035 355H1160" stroke="#64748b" stroke-width="2"/>
+  <text x="1097" y="396" text-anchor="middle" font-family="system-ui" font-size="14" fill="#cbd5e1">Only current participates</text>
+  <text x="1097" y="420" text-anchor="middle" font-family="system-ui" font-size="14" fill="#cbd5e1">in traceability.</text>
+  <text x="1097" y="500" text-anchor="middle" font-family="system-ui" font-size="14" fill="#cbd5e1">Every other state keeps</text>
+  <text x="1097" y="524" text-anchor="middle" font-family="system-ui" font-size="14" fill="#cbd5e1">reasons and both</text>
+  <text x="1097" y="548" text-anchor="middle" font-family="system-ui" font-size="14" fill="#cbd5e1">pin values.</text>
+</svg>

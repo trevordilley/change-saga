@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "git-history",
+  "slide": "record-history-sequence",
+  "rank": 20,
+  "kind": "node",
+  "label": "Git commits form the raw timeline",
+  "description": "Git log over the record's files yields commit reasons, introduction, uncommitted state, and the material for replacement pairing.",
+  "selector": {
+    "type": "element",
+    "element_id": "git-history"
+  }
+}

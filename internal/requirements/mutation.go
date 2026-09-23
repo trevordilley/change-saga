@@ -498,6 +498,14 @@ func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, e
 		if len(document.Relations) >= MaxRelations {
 			return fmt.Errorf("relation limit of %d reached", MaxRelations)
 		}
+		// Preserve the frozen reader contract and idempotent replays of old
+		// records, but require precise ownership for every new visual link.
+		if value.Type == RelationExplains || value.Type == RelationAddresses {
+			from, _ := parseEndpoint(value.From)
+			if from.Kind == endpointDeck || from.Kind == endpointSlide {
+				return fmt.Errorf("story links must originate from a slide Item, not a whole deck or slide; link each relevant element (scope self); the slide summary is derived from its Items")
+			}
+		}
 		feature, err := document.feature(input.Feature)
 		if err != nil {
 			return err

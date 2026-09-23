@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/layers.go",
+      "start": 219,
+      "end": 318,
+      "digest": "sha256:8a4f490562ab61df12feeb31e3367296a8d9a92f13b49090c25a3744572a705c",
+      "note": "Loads the selected Saga sides, derives Changed and Affected records, builds Code groups, and returns one shared result regardless of ownership mode."
+    }
+  ]
+}

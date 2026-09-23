@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact.go",
+      "start": 203,
+      "end": 351,
+      "digest": "sha256:99c02c4bd2f2802dc91a8825466d1ca9a0963727012f818cbea82dd0e7aae854",
+      "note": "Maps direct and contextual source changes to evidence owners, retains unowned atoms, and projects persisted reach to tests and criteria."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact_test.go",
+      "start": 73,
+      "end": 119,
+      "digest": "sha256:948af4fe3306d4502d70826fd14a2ae21885d1c7d698d8148d5d21ba63485564",
+      "note": "Maps direct and contextual source changes to evidence owners, retains unowned atoms, and projects persisted reach to tests and criteria."
+    }
+  ]
+}

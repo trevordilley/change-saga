@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 518,
+      "end": 524,
+      "digest": "sha256:9abc58c18c90f1ae977fb1eb49abc6ee86c6f0a988f2d8b74467a650eb6f2dae",
+      "note": "Returns the new immutable run URN, path, created records, and resulting head set."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation.go",
+      "start": 760,
+      "end": 761,
+      "digest": "sha256:fb4dce82553e7a073f37401cbdf804ce5400fbf53fb067d3ee64b0f68f44fdc1",
+      "note": "Returns the new immutable run URN, path, created records, and resulting head set."
+    }
+  ]
+}
