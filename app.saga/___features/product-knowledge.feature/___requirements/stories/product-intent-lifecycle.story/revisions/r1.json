@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:product-intent-lifecycle",
+  "parents": [],
+  "title": "Mature product intent safely",
+  "statement": "As a product manager, I can keep a story proposed while its success conditions are still being shaped and accept it only after observable criteria exist so draft intent is not mistaken for a commitment.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "draft-without-criteria",
+      "statement": "A story with no acceptance criteria can remain in the proposed state."
+    },
+    {
+      "id": "acceptance-requires-criterion",
+      "statement": "Attempting to record an accepted lifecycle event for a story with no acceptance criteria is rejected without creating that event."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:54.234875Z"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "pk-term-head-explains-code-currency",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:vocabulary-runtime:item:head-resolution",
+  "to": "urn:change-saga:change-saga:story:shared-product-language:criterion:code-currency",
+  "scope": "self",
+  "rationale": "The head resolver reports whether each defining code pin is current, moved, or stale.",
+  "to_revision": "urn:change-saga:change-saga:story:shared-product-language:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:41:20.853593Z"
+}
