@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "workplan-contract-gate-explains-exact-revision",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:dependency-facts:item:contract-gate",
+  "to": "urn:change-saga:change-saga:story:contract-gated-handoff:criterion:exact-revision-gate",
+  "scope": "self",
+  "rationale": "The pinned contract gate requires the named revision to remain current and uniquely fulfilled.",
+  "to_revision": "urn:change-saga:change-saga:story:contract-gated-handoff:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:41:06.665405Z",
+  "request_id": "workplan-contract-gate-explains-exact-revision"
+}

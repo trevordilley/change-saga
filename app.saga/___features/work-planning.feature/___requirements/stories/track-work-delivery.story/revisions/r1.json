@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:track-work-delivery",
+  "parents": [],
+  "title": "Track work from assignment through integration",
+  "statement": "As a developer coordinating delivery, I can record a work item’s workspace, progress, and merge evidence so collaborators can see who owns it, where it stands, and whether its required merge units landed.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "workspace-ownership",
+      "statement": "A workspace assignment exposes its portable workspace and repository identities, branch context, role, and whether it is assigned or released."
+    },
+    {
+      "id": "progress-history",
+      "statement": "Recording progress appends a parent-linked state event, and queries expose the history plus a current state only when it has one head."
+    },
+    {
+      "id": "merge-evidence",
+      "statement": "For each required merge unit, queries expose its lifecycle, and an integrated event identifies both the exact head and merge commit."
+    },
+    {
+      "id": "done-is-not-delivery",
+      "statement": "A done progress state alone does not satisfy peer-review readiness; immutable delivery evidence is still required."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:37.242106Z",
+  "request_id": "story-track-work-delivery"
+}
