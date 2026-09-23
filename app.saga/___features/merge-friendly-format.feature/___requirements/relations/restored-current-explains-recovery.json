@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "restored-current-explains-recovery",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:revision-conflict-state:item:restored-current",
+  "to": "urn:change-saga:change-saga:story:recover-competing-heads:criterion:current-restored",
+  "scope": "self",
+  "rationale": "This Item explains how a full reconciliation child becomes the sole current revision while the prior graph remains history.",
+  "to_revision": "urn:change-saga:change-saga:story:recover-competing-heads:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:26.688006Z"
+}

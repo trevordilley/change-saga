@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:auditable-requirement-history",
+  "parents": [],
+  "title": "Inspect requirement evolution",
+  "statement": "As a product manager, I can inspect the complete evolution of a story's definition and lifecycle so I can understand decisions without losing earlier intent.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "revision-history",
+      "statement": "After a story is revised, querying its requirement history returns both the prior and new complete definitions with their parent relationship."
+    },
+    {
+      "id": "lifecycle-history",
+      "statement": "After a story changes state, querying its requirement history returns both earlier and later lifecycle events, including their states, any recorded reasons, and parent relationships."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:41.752363Z"
+}

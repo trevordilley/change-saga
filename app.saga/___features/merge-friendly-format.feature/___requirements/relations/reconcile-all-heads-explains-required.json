@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "reconcile-all-heads-explains-required",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:revision-conflict-state:item:reconcile-all-heads",
+  "to": "urn:change-saga:change-saga:story:recover-competing-heads:criterion:all-heads-required",
+  "scope": "self",
+  "rationale": "This Item explains the guard that rejects partial reconciliation and requires the complete current head set.",
+  "to_revision": "urn:change-saga:change-saga:story:recover-competing-heads:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:26.597392Z"
+}
