@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/check.go",
+      "start": 27,
+      "end": 77,
+      "digest": "sha256:d4cec09eb6345f2bbcf728edfc7ff3874d450a7ddbc2f6d1e39540022eb6cdb9",
+      "note": "Applies a verdict only to caller-selected areas and uses exit 3 for reported gaps."
+    }
+  ]
+}

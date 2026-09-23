@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "lifecycle-plane",
+  "slide": "coverage-ownership",
+  "rank": 20,
+  "kind": "region",
+  "label": "Lifecycle projection",
+  "description": "The lifecycle plane projects persisted links, exceptions, tests, and pins onto criterion axes.",
+  "selector": {
+    "type": "element",
+    "element_id": "lifecycle-plane"
+  }
+}

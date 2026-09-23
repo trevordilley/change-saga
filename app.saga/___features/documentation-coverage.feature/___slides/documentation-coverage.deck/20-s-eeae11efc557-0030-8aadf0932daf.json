@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "reference-state",
+  "deck": "documentation-coverage",
+  "title": "Reference currency gates ownership",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-eeae11efc557-0030-8aadf0932daf.svg",
+  "takeaway": "Only a reference current at HEAD or merge-base can own atoms; zero, one, and multiple owners remain separate observable states.",
+  "reading_order": [
+    "reference-resolution",
+    "current-reference",
+    "stale-reference",
+    "uncovered-state",
+    "covered-state",
+    "overlap-state",
+    "completion-rule"
+  ]
+}

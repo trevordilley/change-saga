@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/areas/areas.go",
+      "start": 265,
+      "end": 282,
+      "digest": "sha256:801f03660ef098e6700c6a4d912d78fb7a1a3c69e99f8d82259d8ab47482e713",
+      "note": "Projects independent implementation, story, persona, design, quality, and health areas."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "state-precedence",
+  "slide": "axis-failures",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Deterministic precedence",
+  "description": "Conflict and invalidity outrank current evidence, followed by direct, broad, excluded, stale, and absent states.",
+  "selector": {
+    "type": "element",
+    "element_id": "state-precedence"
+  }
+}

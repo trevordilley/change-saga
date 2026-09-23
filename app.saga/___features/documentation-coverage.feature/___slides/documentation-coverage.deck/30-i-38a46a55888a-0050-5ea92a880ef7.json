@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "output-policy",
+  "slide": "status-runtime",
+  "rank": 50,
+  "kind": "statement",
+  "label": "Output and policy split",
+  "description": "Status returns a trustworthy report regardless of gaps; check evaluates only named areas and returns code 3 for uncovered ones.",
+  "selector": {
+    "type": "element",
+    "element_id": "output-policy"
+  }
+}

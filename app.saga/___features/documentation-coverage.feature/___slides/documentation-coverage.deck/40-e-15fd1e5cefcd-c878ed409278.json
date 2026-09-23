@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coverage/axes.go",
+      "start": 8,
+      "end": 21,
+      "digest": "sha256:f6fc48f91167839ce1f0ecdb553e815e2250c9fbc8484d8e9af3c5ee56fc6107",
+      "note": "Declares the six independent canonical coverage axes."
+    }
+  ]
+}

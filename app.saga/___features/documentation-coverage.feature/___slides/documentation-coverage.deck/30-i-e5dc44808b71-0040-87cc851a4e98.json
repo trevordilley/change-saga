@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "fact-join",
+  "slide": "coverage-ownership",
+  "rank": 40,
+  "kind": "edge",
+  "label": "Fact join",
+  "description": "Coverage inputs translate exact owners and living graph paths without inventing new evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "fact-join"
+  }
+}

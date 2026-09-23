@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "policy-boundary",
+  "slide": "coverage-ownership",
+  "rank": 60,
+  "kind": "statement",
+  "label": "External policy boundary",
+  "description": "Status remains descriptive; check applies policy only to the areas explicitly named by its caller.",
+  "selector": {
+    "type": "element",
+    "element_id": "policy-boundary"
+  }
+}

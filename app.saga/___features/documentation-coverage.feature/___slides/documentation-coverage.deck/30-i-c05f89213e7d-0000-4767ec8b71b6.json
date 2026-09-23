@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "criterion-input",
+  "slide": "axis-failures",
+  "rank": 0,
+  "kind": "node",
+  "label": "Accepted criterion",
+  "description": "Each current accepted criterion supplies its revision heads, persisted links, exceptions, and unsatisfied obligations.",
+  "selector": {
+    "type": "element",
+    "element_id": "criterion-input"
+  }
+}

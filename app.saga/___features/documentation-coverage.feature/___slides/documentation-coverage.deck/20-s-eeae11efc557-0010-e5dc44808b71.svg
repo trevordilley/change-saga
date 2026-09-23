@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Coverage has three independent ownership planes</title>
+  <desc id="desc">A split architecture diagram separates exact changed-source mapping, living lifecycle projection, and the public area report that joins their facts.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081426"/><stop offset="1" stop-color="#111a31"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8aa4c7"/></marker>
+    <style>.title{font:700 36px system-ui;fill:#f8fafc}.sub{font:500 18px system-ui;fill:#9fb0c9}.label{font:700 21px system-ui;fill:#f8fafc}.body{font:500 16px system-ui;fill:#c8d3e3}.micro{font:600 13px system-ui;fill:#8ea2bf;letter-spacing:1.3px}.edge{stroke:#8aa4c7;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text class="title" x="58" y="64">Coverage has three independent ownership planes</text>
+  <text class="sub" x="58" y="94">They share facts, but each answers a different question and keeps its own failure boundary.</text>
+  <g id="source-snapshot">
+    <rect x="58" y="150" width="238" height="398" rx="24" fill="#10233d" stroke="#4f7cac" stroke-width="2"/>
+    <text class="micro" x="84" y="184">SOURCE SNAPSHOT</text>
+    <circle cx="112" cy="244" r="22" fill="#4f7cac"/><text class="label" x="150" y="251">Git atoms</text>
+    <text class="body" x="84" y="290">added / deleted lines</text><text class="body" x="84" y="316">file events</text>
+    <path d="M84 346H268" stroke="#385675" stroke-width="2"/>
+    <circle cx="112" cy="400" r="22" fill="#6d5bd0"/><text class="label" x="150" y="407">Saga graph</text>
+    <text class="body" x="84" y="446">Items + code refs</text><text class="body" x="84" y="472">stories + relations</text>
+    <text class="micro" x="84" y="520">SAME COMMIT VIEW</text>
+  </g>
+  <g id="mapping-plane">
+    <rect x="354" y="150" width="316" height="174" rx="22" fill="#123329" stroke="#42b883" stroke-width="2"/>
+    <text class="micro" x="380" y="182">MAPPING PLANE</text><text class="label" x="380" y="225">coverage.Evaluate</text>
+    <text class="body" x="380" y="254">Which atoms have 0, 1,</text><text class="body" x="380" y="278">or many owners?</text>
+    <text class="body" x="380" y="306">Which pinned references are stale?</text>
+  </g>
+  <g id="lifecycle-plane">
+    <rect x="354" y="374" width="316" height="174" rx="22" fill="#28234a" stroke="#8b7cf6" stroke-width="2"/>
+    <text class="micro" x="380" y="406">LIFECYCLE PLANE</text><text class="label" x="380" y="449">livingapp.Assemble</text>
+    <text class="body" x="380" y="482">Which criteria have current links,</text><text class="body" x="380" y="510">exclusions, or explained gaps?</text>
+  </g>
+  <g id="public-areas">
+    <path d="M736 184h382a26 26 0 0 1 26 26v300a26 26 0 0 1-26 26H736a26 26 0 0 1-26-26V210a26 26 0 0 1 26-26z" fill="#2d2517" stroke="#e0a43a" stroke-width="2"/>
+    <text class="micro" x="742" y="218">PUBLIC REPORT</text><text class="label" x="742" y="260">areas.Evaluate joins facts</text>
+    <g font-family="system-ui" font-size="17" fill="#f7dfb5">
+      <text x="742" y="304">changed lines → implementation</text><text x="742" y="332">→ stories → personas</text>
+      <text x="742" y="372">stories → design</text><text x="742" y="412">criteria → quality</text><text x="742" y="452">existing records → health</text>
+    </g>
+    <rect x="742" y="476" width="344" height="42" rx="12" fill="#5a421a"/><text class="body" x="762" y="503">Counts + exact covered/uncovered entries</text>
+  </g>
+  <g id="fact-join">
+    <path class="edge" d="M296 246H354"/><path class="edge" d="M296 446H354"/><path class="edge" d="M670 237H710"/><path class="edge" d="M670 461H690Q710 461 710 441"/>
+  </g>
+  <g id="action-queue">
+    <path class="edge" d="M802 536V566Q802 580 788 592"/>
+    <rect x="354" y="592" width="454" height="70" rx="18" fill="#15263b" stroke="#5c84b1" stroke-width="2"/>
+    <text class="label" x="380" y="622">nextaction.Derive</text><text class="body" x="380" y="648">health → changed source → review → optional growth</text>
+  </g>
+  <g id="policy-boundary">
+    <rect x="842" y="592" width="302" height="70" rx="18" fill="#371c28" stroke="#e56b8f" stroke-width="2"/>
+    <text class="label" x="868" y="622">Policy stays outside</text><text class="body" x="868" y="648">check selects named areas only</text>
+  </g>
+  <path class="edge" d="M914 536V574Q914 592 896 592"/>
+</svg>

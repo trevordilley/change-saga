@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "action-queue",
+  "slide": "coverage-ownership",
+  "rank": 50,
+  "kind": "node",
+  "label": "Ordered authoring queue",
+  "description": "Derives a deterministic queue from the completed status and area facts, ordering health and changed-source repair before review and optional growth.",
+  "selector": {
+    "type": "element",
+    "element_id": "action-queue"
+  }
+}
