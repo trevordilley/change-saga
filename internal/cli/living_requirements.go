@@ -22,7 +22,7 @@ func story(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 	operation := "story"
 	var err error
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("story", []string{"add", "revise", "set-state", "move"}, out)
+		return livingFamilyHelp("story", []string{"add", "revise", "set-state", "move", "withdraw", "consolidate"}, out)
 	}
 	operation += " " + args[0]
 	switch args[0] {
@@ -34,6 +34,10 @@ func story(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 		err = storySetState(ctx, args[1:], out, stdin)
 	case "move":
 		err = storyMove(ctx, args[1:], out)
+	case "withdraw":
+		err = storyWithdraw(ctx, args[1:], out)
+	case "consolidate":
+		err = storyConsolidate(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["story"])
 	}

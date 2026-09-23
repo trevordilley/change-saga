@@ -116,6 +116,7 @@ var contentCommands = []Command{
 			optional("entrypoint", "ENTRYPOINT", "simple filename whose extension selects the compact slide asset name"),
 			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("exception-rationale", "EXCEPTION_RATIONALE", "required reason for a custom layout"),
+			optional("feature-qualified-id", "", "generate <feature>--<name> when --id is omitted"),
 			optional("id", "ID", "stable slide identifier"),
 			required("intent", "INTENT", "reviewer job: orient, explain, compare, trace, prove, risk, or conclude"),
 			required("layout", "LAYOUT", "canvas arrangement, not diagram meaning: hero, diagram, before-after, sequence, evidence, risk, or custom"),

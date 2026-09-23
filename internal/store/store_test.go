@@ -182,3 +182,32 @@ func TestSagaLockSerializesConcurrentWritersAndTimesOut(t *testing.T) {
 		t.Fatalf("maximum concurrent writers = %d, want 1", maximum)
 	}
 }
+
+func TestWriteBatchRollsBackPublishedFilesOnFailure(t *testing.T) {
+	dir := t.TempDir()
+	existing := filepath.Join(dir, "existing.json")
+	created := filepath.Join(dir, "created.json")
+	if err := os.WriteFile(existing, []byte("old\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	faultHook = func(point, path string) error {
+		if point == "before-batch-commit" && path == existing {
+			return errors.New("injected batch failure")
+		}
+		return nil
+	}
+	t.Cleanup(func() { faultHook = nil })
+	err := WriteBatch([]WriteBatchEntry{
+		{Path: created, Data: []byte("new\n"), Exclusive: true},
+		{Path: existing, Data: []byte("changed\n")},
+	})
+	if err == nil || !strings.Contains(err.Error(), "injected batch failure") {
+		t.Fatalf("batch error = %v", err)
+	}
+	if _, err := os.Stat(created); !os.IsNotExist(err) {
+		t.Fatalf("created file survived rollback: %v", err)
+	}
+	if got, err := os.ReadFile(existing); err != nil || string(got) != "old\n" {
+		t.Fatalf("existing file after rollback = %q, %v", got, err)
+	}
+}

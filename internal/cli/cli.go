@@ -90,7 +90,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
 	"init", "setup-initial-saga", "feature", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
-	"review", "validate", "status", "check", "query",
+	"review", "validate", "status", "check", "preintegrate", "query",
 	"serve", "open", "install-skill", "spec",
 }
 
@@ -120,10 +120,12 @@ var commandUsage = map[string]string{
 	"prototype add-external":      "change-saga prototype add-external --feature ID --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
 	"prototype revise":            "change-saga prototype revise --prototype URN --revision ID --parent URN... --title TEXT (--source PATH | --url URL) [flags] <saga>",
 	"prototype annotate":          "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
-	"story":                       "change-saga story <add|revise|set-state|move> [flags] <saga>",
+	"story":                       "change-saga story <add|revise|set-state|move|withdraw|consolidate> [flags] <saga>",
 	"story add":                   "change-saga story add --feature ID --id ID --revision ID --event ID --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
 	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... [--title TEXT] [--statement TEXT] [--priority TEXT] [flags] <saga>",
 	"story set-state":             "change-saga story set-state --story URN --event ID --parent URN... --state STATE [flags] <saga>",
+	"story withdraw":              "change-saga story withdraw --story URN --event ID --parent URN... --reason TEXT [flags] <saga>",
+	"story consolidate":           "change-saga story consolidate --duplicate URN --canonical URN --event ID --parent URN... --map FROM=TO... --reason TEXT [--apply] [flags] <saga>",
 	"criterion":                   "change-saga criterion <add|revise|remove> [flags] <saga>",
 	"criterion add":               "change-saga criterion add --story URN --parent REVISION --revision ID --id ID --statement TEXT [flags] <saga>",
 	"criterion revise":            "change-saga criterion revise --story URN --criterion URN --parent REVISION --revision ID (--statement TEXT|--edit) [flags] <saga>",
@@ -200,6 +202,7 @@ var commandUsage = map[string]string{
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
 	"status":                      "change-saga status [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+	"preintegrate":                "change-saga preintegrate --ref REF --ref REF [--repo PATH] [--json] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
 	"serve":                       "change-saga serve [--addr ADDR] [--repo PATH] [--open] [--detach] [--against REV [--head REV]] <saga>",
 	"open":                        "change-saga open [--addr ADDR] [--repo PATH] [--against REV [--head REV]] <saga>",
@@ -310,6 +313,7 @@ var commandDescription = map[string]string{
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
 	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check.",
 	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
+	"preintegrate":                "Read committed Saga snapshots from two or more explicit Git refs and report\nstable-ID collisions, different current heads, and deterministic text-overlap\ncandidates with exact ref/commit provenance. It is advisory and read-only: it\nnever chooses semantic equivalence, updates a ref, checks out, or merges Git.",
 	"feature":                     "Add a durable product domain. A feature holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames a feature, so a story can move between features without breaking a link.",
 	"overview":                    "Write the overview's elevator pitch and description, as Markdown. The overview\nis formal: the project's name (saga.json's title), an elevator pitch, a\ndescription (a short essay), and its terms and vocabulary (\"term\"). Every part\nis optional; an absent part is shown as a gap, never an error.",
 	"overview set-pitch":          "Write the elevator pitch: what the application is and who it is for, in a few\nsentences. The first write creates ___overview/pitch.fragment; later writes\nreplace its content.",
@@ -342,6 +346,8 @@ var commandDescription = map[string]string{
 	"story add":                   "Add a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one. A proposed story\nmay remain without criteria while its behavior is unknown; do not invent them.",
 	"story revise":                "Append a complete story revision as requirements or prototypes evolve. Naming one\nparent inherits every field you leave out, so revising a title keeps the criteria,\ncitations, and personas; remove a criterion with `criterion remove`. Name every\ncurrent parent head when reconciling concurrent edits; prior revisions remain history.",
 	"story set-state":             "Append a lifecycle decision without rewriting the story. Acceptance records intent,\nnot implementation completion or peer-review approval. Before setting accepted, ensure\nevery current revision head has at least one pass/fail criterion; add only the narrowest\ncriterion implied by confirmed intent.",
+	"story withdraw":              "Withdraw a proposed or deferred story by appending an explicit rejected lifecycle\nevent with a reason. Accepted intent cannot be withdrawn through this convenience.",
+	"story consolidate":           "Preview, then deliberately consolidate one duplicate story into a canonical existing\nstory. Every current duplicate criterion requires an exact mapping. Applying appends an\nhonest rejected (or accepted-to-retired) lifecycle event and replaces only affected\nrelations while preserving their prior records as superseded history.",
 	"criterion":                   "Add, revise, or remove one acceptance criterion by creating a complete immutable\nstory revision from an explicit current parent head. Each criterion is one independent,\nobservable pass/fail obligation, no broader than the confirmed story requires.",
 	"criterion add":               "Add one explicitly identified, independent pass/fail criterion. Use the narrowest\nobligation supported by confirmed intent. Historical criterion IDs are never reusable,\nincluding after removal.",
 	"criterion revise":            "Revise one criterion's wording without changing its stable identity. Use --edit to\ninspect the complete proposed story revision in $EDITOR.",
