@@ -16,6 +16,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -30,6 +31,8 @@ type session struct {
 	plan         workplan.Plan
 	saga         *saga.Saga
 	quality      quality.Document
+	currency     []requirements.RelationCurrency
+	exceptions   []coverage.Exception
 	adopted      bool
 }
 
@@ -72,7 +75,14 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &session{snapshot: snapshot, requirements: graph.requirements, plan: graph.plan, saga: doc, quality: qualityDocument, adopted: adopted}, nil
+	var exceptions []coverage.Exception
+	if options.Audit {
+		exceptions, err = LoadCoverageExceptions(root, doc.Manifest.ID)
+		if err != nil {
+			return nil, appError(CodeInvalidSaga, "the coverage exceptions could not be loaded", false, nil, err)
+		}
+	}
+	return &session{snapshot: snapshot, requirements: graph.requirements, plan: graph.plan, saga: doc, quality: qualityDocument, currency: graph.currency, exceptions: exceptions, adopted: adopted}, nil
 }
 
 func livingRootPresent(root, name string) bool {
@@ -178,6 +188,12 @@ func (s *session) Query(_ context.Context, query Query) (Result, error) {
 		return s.traceabilityResult(query)
 	case "readiness":
 		return s.readinessResult(query)
+	case "audit":
+		report, err := s.audit(query.Filters)
+		if err != nil {
+			return Result{}, err
+		}
+		return Result{Data: report, Page: Page{Total: 1, Returned: 1}}, nil
 	default:
 		return Result{}, appError(CodeInvalidArgument, "unknown living query operation", false, nil, nil)
 	}

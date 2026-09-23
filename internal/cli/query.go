@@ -207,6 +207,7 @@ var queryOperations = []string{
 	"work-conflicts",
 	"traceability",
 	"readiness",
+	"audit",
 	"layers",
 	"history",
 	"terms",
@@ -239,6 +240,7 @@ var queryPurpose = map[string]string{
 	"work-conflicts":      "deterministically identified work-plan conflicts and competing heads",
 	"traceability":        "current story-to-design/work/review/code/test paths (design that addresses the whole story is also listed as broad), reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit, and transitive blockers",
 	"readiness":           "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
+	"audit":               "a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts",
 	"history":             "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
 	"terms":               "the project's vocabulary: each term's definition, aliases, stories, records, and code health at the head; filter by term, by story, or by a code location at any commit to find the terms a line of code defines",
 	"layers":              "one comparison's Changed records (each with before and after), Affected records (with why), and Code (hunks grouped under the records that reference them, plus unreferenced lines)",
@@ -268,6 +270,7 @@ var queryUsage = map[string]string{
 	"work-conflicts":      "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"audit":               "change-saga query audit --saga PATH --feature ID|URN [--repo PATH] [--head REV]",
 	"history":             "change-saga query history --saga PATH --node URN",
 	"terms":               "change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--repo PATH] [--against REV [--head REV]]",
 	"layers":              "change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]",
@@ -394,7 +397,13 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	if err != nil {
 		return writeQueryFailure(out, normalizeQueryError(err))
 	}
-	return writeQuerySuccess(out, session.Snapshot(), result, responsePage)
+	if err := writeQuerySuccess(out, session.Snapshot(), result, responsePage); err != nil {
+		return err
+	}
+	if report, ok := result.(livingapp.AuditReport); ok && !report.Ready {
+		return &StatusError{Code: report.ExitCode}
+	}
+	return nil
 }
 
 // locateReferences resolves a --ref at any revision to its commit and places
@@ -472,6 +481,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"work-conflicts":      {"data.conflicts"},
 		"traceability":        {"data.criteria", "data.unlinked_code_evidence"},
 		"readiness":           {"data.summary", "data.requirements"},
+		"audit":               {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":             {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
 		"terms":               {"data.head_oid", "data.ref", "data.terms"},
 		"layers":              {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
@@ -499,7 +509,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 	pagination := queryPaginationDescription{Kind: "none"}
 	if operation == "fragment" || operation == "slide" {
 		pagination = queryPaginationDescription{Kind: "byte-offset", NextOffsetPath: "data.content.next_offset"}
-	} else if operation != "overview" && operation != "layers" && operation != "history" && operation != "terms" {
+	} else if operation != "overview" && operation != "audit" && operation != "layers" && operation != "history" && operation != "terms" {
 		pagination = queryPaginationDescription{
 			Kind: "cursor", CountedPath: countedPaths[operation], TotalPath: "page.total", ReturnedPath: "page.returned",
 			HasMorePath: "page.has_more", NextCursorPath: "page.next_cursor",
@@ -519,7 +529,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	opening := registerOpenFlags(flags)
 
 	var parent, target, ref, cursor, state, kind, sortOrder, claim string
-	var requirement, citation, relation, from, to, wave, item, criterion, commit string
+	var feature, requirement, citation, relation, from, to, wave, item, criterion, commit string
 	var offset int64
 	var limit optionalInt
 	var minimumScore optionalInt
@@ -615,6 +625,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.StringVar(&state, "status", "", "ready or blocked")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
+	case "audit":
+		flags.StringVar(&feature, "feature", "", "feature ID or canonical feature URN")
 	}
 
 	if err := flags.Parse(args); err != nil {
@@ -702,6 +714,12 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	if operation == "readiness" && state != "" && state != "ready" && state != "blocked" {
 		return nil, queryOpenOptions{}, false, errors.New("--status must be ready or blocked")
 	}
+	if operation == "audit" && strings.TrimSpace(feature) == "" {
+		return nil, queryOpenOptions{}, false, errors.New("--feature is required")
+	}
+	if operation == "audit" && strings.TrimSpace(*opening.against) != "" {
+		return nil, queryOpenOptions{}, false, errors.New("audit observes one --head; --against is not supported")
+	}
 
 	options := queryOpenOptions{SagaRoot: *sagaRoot, SourceDir: *sourceDir, Range: opening.rng()}
 	switch operation {
@@ -723,9 +741,9 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		return claimQuery{Target: target, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "verifications":
 		return verificationQuery{Claim: claim, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
-	case "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness":
+	case "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness", "audit":
 		filters := livingapp.Filters{
-			Requirement: requirement, Kind: firstNonempty(kind, criterion), Citation: citation,
+			Feature: feature, Requirement: requirement, Kind: firstNonempty(kind, criterion), Citation: citation,
 			Relation: relation, From: from, To: to, Wave: wave, Item: item, Ref: ref, Commit: commit,
 		}
 		if operation == "requirements" || operation == "relations" {
