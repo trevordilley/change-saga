@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "review-ownership-missing-overlay-explains-annotation",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:review-ownership:item:missing-overlay",
+  "to": "urn:change-saga:change-saga:story:visual-annotation",
+  "scope": "self",
+  "rationale": "The unowned boundary explicitly shows that the confirmed spatial-annotation behavior has no current implementation owner.",
+  "to_revision": "urn:change-saga:change-saga:story:visual-annotation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:27:52.265109Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "open-review",
+  "slide": "comment-round-trip",
+  "rank": 0,
+  "kind": "transition",
+  "label": "Open review",
+  "description": "A review GET loads the current Saga and asks reviewstate to build the current slide report.",
+  "selector": {
+    "type": "element",
+    "element_id": "open-review"
+  }
+}

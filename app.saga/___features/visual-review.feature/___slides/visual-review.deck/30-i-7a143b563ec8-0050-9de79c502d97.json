@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "missing-overlay",
+  "slide": "review-ownership",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Unowned spatial overlay",
+  "description": "The PR-review boundary has no freehand, shape, or text overlay record, drawing route, or writer; prototype requirement annotations are a separate capability.",
+  "selector": {
+    "type": "element",
+    "element_id": "missing-overlay"
+  }
+}

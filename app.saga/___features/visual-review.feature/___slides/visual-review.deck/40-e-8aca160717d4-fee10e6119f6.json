@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 263,
+      "end": 267,
+      "digest": "sha256:cf06e36fbf4ead888d0e9cb644c2810b507cce21e5e02b84e4f5de9c03e9b6d4",
+      "note": "Projects the thread state from the latest reply that explicitly resolves or reopens it."
+    }
+  ]
+}

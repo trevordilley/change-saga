@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "serve-visual",
+  "slide": "comment-round-trip",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Serve visual",
+  "description": "The page supplies a visual URL and the visual endpoint returns the slide asset with a restrictive CSP and no-store caching.",
+  "selector": {
+    "type": "element",
+    "element_id": "serve-visual"
+  }
+}

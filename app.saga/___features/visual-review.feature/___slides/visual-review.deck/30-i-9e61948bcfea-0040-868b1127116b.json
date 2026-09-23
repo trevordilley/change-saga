@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "domain-validation",
+  "slide": "mutation-guardrails",
+  "rank": 40,
+  "kind": "node",
+  "label": "Comment domain validation",
+  "description": "The store validates body, state, identity, commit, reply, and canonical slide-or-Item target.",
+  "selector": {
+    "type": "element",
+    "element_id": "domain-validation"
+  }
+}

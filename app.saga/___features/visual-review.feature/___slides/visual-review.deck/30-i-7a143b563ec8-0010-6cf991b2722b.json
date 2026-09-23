@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "http-adapter",
+  "slide": "review-ownership",
+  "rank": 10,
+  "kind": "node",
+  "label": "HTTP adapter",
+  "description": "Composes review pages and gates browser comment mutations before they reach storage.",
+  "selector": {
+    "type": "element",
+    "element_id": "http-adapter"
+  }
+}

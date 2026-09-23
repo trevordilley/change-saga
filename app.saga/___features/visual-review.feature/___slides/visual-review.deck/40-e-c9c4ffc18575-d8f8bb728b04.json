@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 242,
+      "end": 262,
+      "digest": "sha256:5007b6623661a1c9bbf75c2fab77f604ec1b324b2b457bc3abb863bc83785601",
+      "note": "Walks reply parent links back to the root and appends nested replies to that thread."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews.go",
+      "start": 528,
+      "end": 530,
+      "digest": "sha256:422b895a63f2b641e1f52bc8ff1f88d946a52eb8d8c5924ed94218b365c9ec30",
+      "note": "Requires the random server-process mutation token before any Saga write."
+    }
+  ]
+}

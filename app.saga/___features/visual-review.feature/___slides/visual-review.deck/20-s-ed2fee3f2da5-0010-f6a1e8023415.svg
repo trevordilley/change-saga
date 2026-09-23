@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Comment round trip sequence</title>
+  <desc id="desc">A review page is projected from the current Saga and source range. A comment POST passes a session and mutability gate, appends one JSON event under lock, then redirects to a fresh projection.</desc>
+  <defs>
+    <style>.ui{font-family:Inter,system-ui,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,monospace}.h{font-size:30px;font-weight:750;fill:#10213d}.sub{font-size:15px;fill:#526178}.actor{font-size:16px;font-weight:700;fill:#13233e}.msg{font-size:13px;fill:#263a59}.note{font-size:12px;fill:#596a82}.life{stroke:#aab6c8;stroke-width:2;stroke-dasharray:6 7}.call{stroke:#345e9c;stroke-width:2.5;fill:none;marker-end:url(#a)}.return{stroke:#4d8562;stroke-width:2.5;fill:none;stroke-dasharray:6 4;marker-end:url(#g)}.fail{stroke:#b33a4c;stroke-width:2.5;fill:none;marker-end:url(#r)}</style>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#345e9c"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#4d8562"/></marker>
+    <marker id="r" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#b33a4c"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text class="ui h" x="55" y="52">One comment is a durable event, then a fresh read</text>
+  <text class="ui sub" x="55" y="79">The redirect is intentional: the browser sees the same projection path that every later reader sees.</text>
+  <g class="ui">
+    <g><rect x="55" y="105" width="150" height="48" rx="12" fill="#e9f1ff" stroke="#507ab5"/><text class="actor" x="91" y="135">Reviewer</text></g>
+    <g><rect x="280" y="105" width="150" height="48" rx="12" fill="#e9f1ff" stroke="#507ab5"/><text class="actor" x="323" y="135">Browser</text></g>
+    <g><rect x="505" y="105" width="150" height="48" rx="12" fill="#fff5d9" stroke="#b9872f"/><text class="actor" x="544" y="135">HTTP server</text></g>
+    <g><rect x="730" y="105" width="150" height="48" rx="12" fill="#eaf8ef" stroke="#4a8661"/><text class="actor" x="759" y="135">reviewstate</text></g>
+    <g><rect x="955" y="105" width="260" height="48" rx="12" fill="#f1ecff" stroke="#7259ab"/><text class="actor" x="989" y="135">reviewstore + Git records</text></g>
+  </g>
+  <path class="life" d="M130 153V670M355 153V670M580 153V670M805 153V670M1085 153V670"/>
+
+  <g id="open-review" class="ui">
+    <rect x="47" y="176" width="850" height="76" rx="12" fill="#eef4ff" opacity=".8"/>
+    <path class="call" d="M130 201H355"/><text class="msg" x="187" y="194">open /reviews/pr-7</text>
+    <path class="call" d="M355 225H580"/><text class="msg" x="401" y="218">GET /reviews/:id</text>
+    <path class="call" d="M580 245H805"/><text class="msg" x="612" y="239">Build current report</text>
+  </g>
+  <g id="serve-visual" class="ui">
+    <path class="return" d="M805 278H580"/><text class="msg" x="614" y="271">slides + threads + range diagnostics</text>
+    <path class="return" d="M580 303H355"/><text class="msg" x="394" y="296">HTML with visual URL + tokenized forms</text>
+    <path class="call" d="M355 330H580"/><text class="msg" x="400" y="323">GET /visual/:slide</text>
+    <path class="return" d="M580 355H355"/><text class="msg" x="401" y="348">CSP-isolated asset · no-store</text>
+  </g>
+  <g id="submit-comment" class="ui">
+    <rect x="47" y="382" width="650" height="76" rx="12" fill="#fff6dc" opacity=".9"/>
+    <path class="call" d="M130 408H355"/><text class="msg" x="193" y="401">write “Index on status?”</text>
+    <path class="call" d="M355 438H580"/><text class="msg" x="386" y="431">POST target + body + session token</text>
+  </g>
+  <g id="gate-current-head" class="ui">
+    <path class="call" d="M580 482H805"/><text class="msg" x="604" y="475">resolve live review head</text>
+    <path class="fail" d="M580 505H430"/><text class="msg" x="438" y="498" fill="#9c2e40">403/409 before any write</text>
+  </g>
+  <g id="append-record" class="ui">
+    <path class="call" d="M580 536H1085"/><text class="msg" x="714" y="529">lock → reload valid Saga → resolve slide/Item → append comment JSON</text>
+    <path class="return" d="M1085 565H580"/><text class="msg" x="764" y="558">event id + canonical target</text>
+  </g>
+  <g id="reload-thread" class="ui">
+    <path class="return" d="M580 596H355"/><text class="msg" x="415" y="589">303 → #target</text>
+    <path class="call" d="M355 620H580"/><text class="msg" x="420" y="613">fresh GET</text>
+    <path class="call" d="M580 642H805"/><text class="msg" x="619" y="635">regroup append-only comments</text>
+    <path class="return" d="M805 666H130"/><text class="msg" x="394" y="659">thread is visible to every participant</text>
+  </g>
+</svg>

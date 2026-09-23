@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "git-storage",
+  "slide": "review-ownership",
+  "rank": 40,
+  "kind": "region",
+  "label": "Git-backed records",
+  "description": "Review decks and append-only comment events are durable files beneath the review directory.",
+  "selector": {
+    "type": "element",
+    "element_id": "git-storage"
+  }
+}

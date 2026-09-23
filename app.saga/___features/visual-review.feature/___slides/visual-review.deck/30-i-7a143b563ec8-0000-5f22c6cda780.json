@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "browser-surface",
+  "slide": "review-ownership",
+  "rank": 0,
+  "kind": "region",
+  "label": "Browser review surface",
+  "description": "Renders the authored slide, semantic Items, code diffs, thread forms, and per-slide collaboration state.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser-surface"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "root-open",
+  "slide": "thread-lifecycle",
+  "rank": 0,
+  "kind": "transition",
+  "label": "Root creates open thread",
+  "description": "A root comment on a review slide or Item starts an open thread when it carries no explicit state.",
+  "selector": {
+    "type": "element",
+    "element_id": "root-open"
+  }
+}

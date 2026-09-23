@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "mutation-guardrails",
+  "deck": "visual-review",
+  "title": "Mutation failures stop before persistence",
+  "rank": 30,
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-ed2fee3f2da5-0030-9e61948bcfea.svg",
+  "takeaway": "Transport, authority, lifecycle, source, and domain failures all exit before the locked JSON append.",
+  "reading_order": [
+    "bounded-input",
+    "session-token",
+    "saga-review",
+    "mutable-range",
+    "domain-validation",
+    "durable-append",
+    "success-outcome"
+  ]
+}
