@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli-request",
+  "slide": "story-mutation-sequence",
+  "rank": 0,
+  "kind": "node",
+  "label": "Normalized request",
+  "description": "The CLI builds a complete add or revise request from flags, structured JSON, or inherited single-parent fields.",
+  "selector": {
+    "type": "element",
+    "element_id": "cli-request"
+  }
+}

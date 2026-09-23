@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/mutation.go",
+      "start": 122,
+      "end": 153,
+      "digest": "sha256:104bbb60fd757ee8335e6d460e6e8439b77400d28005808fe16de385817a16b4",
+      "note": "Reloads the story and rejects a revision unless its parents equal the entire current head set."
+    }
+  ]
+}

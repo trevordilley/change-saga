@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reconcile-all-heads",
+  "slide": "revision-conflict-state",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Reconcile every head",
+  "description": "A new complete revision must name the full current head set as parents.",
+  "selector": {
+    "type": "element",
+    "element_id": "reconcile-all-heads"
+  }
+}

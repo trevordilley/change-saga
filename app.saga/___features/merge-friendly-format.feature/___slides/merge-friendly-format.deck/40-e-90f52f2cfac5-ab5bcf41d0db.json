@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/applayout/applayout_test.go",
+      "start": 64,
+      "end": 71,
+      "digest": "sha256:28750049bc8c5b50489e03079fb87199aa35100df29cde6c9d982ad4041aa84b",
+      "note": "Proves duplicate story IDs across two feature owners are rejected."
+    }
+  ]
+}

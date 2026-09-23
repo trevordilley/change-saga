@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/story_revise_inheritance_test.go",
+      "start": 131,
+      "end": 165,
+      "digest": "sha256:ff61c924f66409dcae1b323c192a629c5fdeac0a78fd83b5bd166209fcb0e3b8",
+      "note": "Proves multi-head reconciliation requires a complete definition instead of inherited fields."
+    }
+  ]
+}

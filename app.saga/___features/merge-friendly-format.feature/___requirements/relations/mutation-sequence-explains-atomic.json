@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "mutation-sequence-explains-atomic",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:story-mutation-sequence",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:atomic",
+  "scope": "descendants",
+  "rationale": "The sequence shows the lock, current-head validation, and exclusive append that prevent partial supported writes.",
+  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:22:25.83765Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "explicit-conflict",
+  "slide": "revision-conflict-state",
+  "rank": 20,
+  "kind": "node",
+  "label": "Explicit semantic conflict",
+  "description": "When more than one head exists, the loader preserves all head URNs and leaves CurrentRevision unset.",
+  "selector": {
+    "type": "element",
+    "element_id": "explicit-conflict"
+  }
+}

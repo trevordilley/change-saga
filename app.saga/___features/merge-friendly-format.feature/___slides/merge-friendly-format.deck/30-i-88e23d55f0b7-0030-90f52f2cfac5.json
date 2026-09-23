@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "uniqueness-guard",
+  "slide": "storage-ownership",
+  "rank": 30,
+  "kind": "edge",
+  "label": "App-wide uniqueness",
+  "description": "The loader claims each resource ID once across all features and rejects a second owner.",
+  "selector": {
+    "type": "element",
+    "element_id": "uniqueness-guard"
+  }
+}

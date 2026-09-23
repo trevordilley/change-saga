@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "atomic-commit",
+  "slide": "atomic-failure-boundaries",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Atomic publish point",
+  "description": "Exclusive records use a hard link; replacements and complete entities publish with rename.",
+  "selector": {
+    "type": "element",
+    "element_id": "atomic-commit"
+  }
+}

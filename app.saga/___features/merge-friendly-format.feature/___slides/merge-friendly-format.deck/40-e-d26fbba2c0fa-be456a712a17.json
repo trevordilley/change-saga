@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/syncdir_unix.go",
+      "start": 11,
+      "end": 21,
+      "digest": "sha256:9e1e3546d741f15e8cf9368cefdfcc84a0987bfdabc59c39f2875b8f9b19c9c4",
+      "note": "Implements POSIX directory-entry durability with directory File.Sync where supported."
+    }
+  ]
+}

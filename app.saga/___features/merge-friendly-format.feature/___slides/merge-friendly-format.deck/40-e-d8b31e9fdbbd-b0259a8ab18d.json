@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/store/store.go",
+      "start": 97,
+      "end": 126,
+      "digest": "sha256:88e30030dd55f1a54f0fd112d8a0739b306e269c7b8a274fff2bd25e82efbe49",
+      "note": "Builds and syncs a complete entity under a hidden same-parent staging name before the publish point."
+    }
+  ]
+}

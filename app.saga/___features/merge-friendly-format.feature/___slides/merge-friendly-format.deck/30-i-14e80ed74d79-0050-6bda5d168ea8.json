@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "restored-current",
+  "slide": "revision-conflict-state",
+  "rank": 50,
+  "kind": "node",
+  "label": "Current restored",
+  "description": "The reconciliation child becomes the only graph head and therefore the new current revision.",
+  "selector": {
+    "type": "element",
+    "element_id": "restored-current"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "revision-conflict-state",
+  "deck": "merge-friendly-format",
+  "title": "Concurrent heads remain explicit",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-2dea4605310f-0030-14e80ed74d79.svg",
+  "takeaway": "A clean Git merge can still yield semantic conflict; no current revision exists until one child names every head.",
+  "reading_order": [
+    "unique-head",
+    "concurrent-fork",
+    "explicit-conflict",
+    "shortcut-blocked",
+    "reconcile-all-heads",
+    "restored-current"
+  ]
+}

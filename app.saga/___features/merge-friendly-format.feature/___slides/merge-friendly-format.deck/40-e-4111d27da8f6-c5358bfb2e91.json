@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/mutation.go",
+      "start": 149,
+      "end": 163,
+      "digest": "sha256:1f71928919788853db65a05fc23640afad544dd01218319463079bf69b8ed9f4",
+      "note": "Validates the candidate graph and appends the new revision with exclusive create semantics."
+    }
+  ]
+}

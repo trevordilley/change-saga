@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unique-head",
+  "slide": "revision-conflict-state",
+  "rank": 0,
+  "kind": "node",
+  "label": "Unique current head",
+  "description": "Exactly one revision head is projected as the current revision.",
+  "selector": {
+    "type": "element",
+    "element_id": "unique-head"
+  }
+}

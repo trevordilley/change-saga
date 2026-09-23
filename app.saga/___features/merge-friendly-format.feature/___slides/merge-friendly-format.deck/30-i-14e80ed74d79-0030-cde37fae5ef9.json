@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "shortcut-blocked",
+  "slide": "revision-conflict-state",
+  "rank": 30,
+  "kind": "risk",
+  "label": "Inheritance disabled",
+  "description": "The convenience revise path cannot choose between competing parents or inherit a partial reconciliation.",
+  "selector": {
+    "type": "element",
+    "element_id": "shortcut-blocked"
+  }
+}

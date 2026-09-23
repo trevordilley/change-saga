@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 58,
+      "end": 64,
+      "digest": "sha256:315f07fcee749c8218f2ac02d8a5a7ffd750ea7ca41e82fc1a5a0f9d72bdaf35",
+      "note": "Reconciles both competing revision heads by naming them together as parents."
+    }
+  ]
+}

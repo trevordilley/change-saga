@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/validate.go",
+      "start": 371,
+      "end": 386,
+      "digest": "sha256:703ce588b4e57fb084db1a9cf785d4d72d996f76183d9ef940ec9ae75eaf8334",
+      "note": "Projects CurrentRevision only when graph analysis finds exactly one revision head."
+    }
+  ]
+}

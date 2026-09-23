@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 65,
+      "end": 72,
+      "digest": "sha256:74410645266769feb24ed5e3a75ae31169c4320d22ab7f5d4bac67e28711ffef",
+      "note": "Reloads the reconciled graph and verifies r3 becomes the unique current revision."
+    }
+  ]
+}
