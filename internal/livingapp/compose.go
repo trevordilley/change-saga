@@ -20,6 +20,9 @@ func (s *session) requirementRows(filters Filters) []Requirement {
 	rows := []Requirement{}
 	for i := range s.requirements.Stories {
 		story := &s.requirements.Stories[i]
+		if filters.Feature != "" && story.Feature != filters.Feature {
+			continue
+		}
 		urn, _ := livingid.Story(s.requirements.SagaID, story.Identity.ID)
 		if !resourceMatches(filters.Requirement, story.Identity.ID, urn) {
 			continue
@@ -34,12 +37,7 @@ func (s *session) requirementRows(filters Filters) []Requirement {
 		if filters.Kind != "" && filters.Kind != "story" {
 			continue
 		}
-		rows = append(rows, Requirement{
-			Requirement: urn, ID: story.Identity.ID, CreatedAt: story.Identity.CreatedAt,
-			RevisionHeads: copyStrings(story.RevisionHeads), LifecycleHeads: copyStrings(story.LifecycleHeads),
-			CurrentRevision: story.CurrentRevision, CurrentLifecycle: story.CurrentLifecycle,
-			RevisionConflict: story.RevisionConflict(), LifecycleConflict: story.LifecycleConflict(),
-		})
+		rows = append(rows, s.projectRequirement(story))
 	}
 	return rows
 }
@@ -373,6 +371,9 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 	meta := []Traceability{}
 	reviewEvidenceByTarget, _ := s.reviewEvidenceIndex()
 	for _, story := range s.requirements.Stories {
+		if filters.Feature != "" && story.Feature != filters.Feature {
+			continue
+		}
 		if story.CurrentRevision == nil || story.CurrentLifecycle == nil || story.CurrentLifecycle.State != requirements.StateAccepted {
 			continue
 		}

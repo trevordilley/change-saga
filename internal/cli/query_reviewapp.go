@@ -135,7 +135,7 @@ func queryPageFromLiving(page livingapp.Page) queryPageEnvelope {
 
 func isLivingQueryOperation(operation string) bool {
 	switch operation {
-	case "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness":
+	case "context", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness":
 		return true
 	default:
 		return false

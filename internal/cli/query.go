@@ -197,6 +197,7 @@ var queryOperations = []string{
 	"mappings",
 	"claims",
 	"verifications",
+	"context",
 	"requirements",
 	"requirement-history",
 	"citations",
@@ -229,6 +230,7 @@ var queryPurpose = map[string]string{
 	"mappings":            "coverage records ranked by breadth and justification signals so scrutiny starts at the weakest mappings",
 	"claims":              "falsifiable author assertions, exact evidence, current mapping state, and latest verification result",
 	"verifications":       "append-only verification history for author claims",
+	"context":             "a compact, bounded feature-owned index with one-story expansion for exact intent, provenance, visual Items, code links, terms, neighbors, gaps, and conflicts",
 	"requirements":        "current requirement definitions and lifecycle heads without fabricating winners for conflicts",
 	"requirement-history": "append-only revision and lifecycle history in deterministic graph order",
 	"citations":           "immutable requirement provenance records",
@@ -258,7 +260,8 @@ var queryUsage = map[string]string{
 	"mappings":            "change-saga query mappings --saga PATH [--target TARGET] [--sort scrutiny|target|path] [--minimum-score N] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"claims":              "change-saga query claims --saga PATH [--target TARGET] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"verifications":       "change-saga query verifications --saga PATH [--claim ID] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
-	"requirements":        "change-saga query requirements --saga PATH [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"context":             "change-saga query context --saga PATH --feature ID|URN [--expand STORY-ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"requirements":        "change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"requirement-history": "change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"citations":           "change-saga query citations --saga PATH [--citation ID|URN] [--requirement ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"relations":           "change-saga query relations --saga PATH [--relation ID|URN] [--type TYPE] [--from URN] [--to URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
@@ -462,6 +465,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"mappings":            {"data.mappings"},
 		"claims":              {"data.claims"},
 		"verifications":       {"data.verifications"},
+		"context":             {"data.feature", "data.projection", "data.completeness", "data.stories", "data.neighbors", "data.terms", "data.visuals", "data.gaps", "data.conflicts", "data.expanded"},
 		"requirements":        {"data.requirements"},
 		"requirement-history": {"data.events"},
 		"citations":           {"data.citations"},
@@ -485,6 +489,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"mappings":            "data.mappings",
 		"claims":              "data.claims",
 		"verifications":       "data.verifications",
+		"context":             "data.stories",
 		"requirements":        "data.requirements",
 		"requirement-history": "data.events",
 		"citations":           "data.citations",
@@ -519,7 +524,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	opening := registerOpenFlags(flags)
 
 	var parent, target, ref, cursor, state, kind, sortOrder, claim string
-	var requirement, citation, relation, from, to, wave, item, criterion, commit string
+	var feature, expand, requirement, citation, relation, from, to, wave, item, criterion, commit string
 	var offset int64
 	var limit optionalInt
 	var minimumScore optionalInt
@@ -560,7 +565,13 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.StringVar(&state, "status", "", "unverified, verified, failed, or inconclusive")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
+	case "context":
+		flags.StringVar(&feature, "feature", "", "feature ID or URN")
+		flags.StringVar(&expand, "expand", "", "story ID or URN to expand")
+		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
+		flags.Var(&limit, "limit", "page size")
 	case "requirements":
+		flags.StringVar(&feature, "feature", "", "optional feature ID or URN")
 		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
 		flags.StringVar(&state, "state", "", "optional lifecycle state")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
@@ -663,6 +674,12 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	if operation == "requirement-history" && strings.TrimSpace(requirement) == "" {
 		return nil, queryOpenOptions{}, false, errors.New("--requirement is required")
 	}
+	if operation == "context" && strings.TrimSpace(feature) == "" {
+		return nil, queryOpenOptions{}, false, errors.New("--feature is required")
+	}
+	if operation == "context" && expand != "" && cursor != "" {
+		return nil, queryOpenOptions{}, false, errors.New("--expand and --cursor are mutually exclusive")
+	}
 	if operation == "gaps" && kind != "" && kind != "uncovered" && kind != "stale" && kind != "overlap" {
 		return nil, queryOpenOptions{}, false, errors.New("--kind must be uncovered, stale, or overlap")
 	}
@@ -723,9 +740,9 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		return claimQuery{Target: target, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "verifications":
 		return verificationQuery{Claim: claim, Status: state, Cursor: cursor, Limit: limit.value}, options, false, nil
-	case "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness":
+	case "context", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness":
 		filters := livingapp.Filters{
-			Requirement: requirement, Kind: firstNonempty(kind, criterion), Citation: citation,
+			Feature: feature, Expand: expand, Requirement: requirement, Kind: firstNonempty(kind, criterion), Citation: citation,
 			Relation: relation, From: from, To: to, Wave: wave, Item: item, Ref: ref, Commit: commit,
 		}
 		if operation == "requirements" || operation == "relations" {

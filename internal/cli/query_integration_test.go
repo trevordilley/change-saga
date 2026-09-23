@@ -81,6 +81,7 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 		{name: "mappings", args: []string{"mappings", "--sort", "scrutiny"}},
 		{name: "claims", args: []string{"claims", "--status", "verified"}},
 		{name: "verifications", args: []string{"verifications", "--claim", "secure-default"}},
+		{name: "context", args: []string{"context", "--feature", querytest.Feature}},
 		{name: "requirements-not-adopted", args: []string{"requirements"}},
 		{name: "citations-not-adopted", args: []string{"citations"}},
 		{name: "relations-not-adopted", args: []string{"relations"}},
