@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 589,
+      "end": 628,
+      "digest": "sha256:5633e474bfe306b4b2e3236ee60b6c3e627340ae498e504ffebce52856d09a00",
+      "note": "Returns implementation evidence not reached by a current explains relation as a separate unlinked collection."
+    }
+  ]
+}

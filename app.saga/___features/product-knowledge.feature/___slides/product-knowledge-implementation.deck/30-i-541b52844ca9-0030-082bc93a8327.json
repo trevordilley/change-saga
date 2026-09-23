@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reconcile-transition",
+  "slide": "story-lifecycle-runtime",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Reconcile every head",
+  "description": "A valid successor explicitly names the full set of current heads, preserving both branches in history.",
+  "selector": {
+    "type": "element",
+    "element_id": "reconcile-transition"
+  }
+}

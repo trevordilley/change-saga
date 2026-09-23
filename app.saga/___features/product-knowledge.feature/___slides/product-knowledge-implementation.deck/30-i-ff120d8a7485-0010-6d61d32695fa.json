@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "immutable-package",
+  "slide": "prototype-annotation-runtime",
+  "rank": 10,
+  "kind": "node",
+  "label": "Immutable prototype package",
+  "description": "Local HTML is copied into a revision package and protected by a tree digest; later changes to the source directory do not alter it.",
+  "selector": {
+    "type": "element",
+    "element_id": "immutable-package"
+  }
+}

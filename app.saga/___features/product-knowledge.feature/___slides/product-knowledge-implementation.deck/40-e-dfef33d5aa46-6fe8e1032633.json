@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/validate.go",
+      "start": 480,
+      "end": 515,
+      "digest": "sha256:33a8670dcc52c81b666d216ebffb2c150c4c2cae6b6b3580dd4483c8bf0a9c4f",
+      "note": "Makes a prior pass non-current when the test revision, repository, or evidence changes, while preserving the historical head run."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 328,
+      "end": 355,
+      "digest": "sha256:4ffe6495164d4fe29bade17668bd565456e274bcaa3ff6ab65817864fa8cb8ae",
+      "note": "Makes a prior pass non-current when the test revision, repository, or evidence changes, while preserving the historical head run."
+    }
+  ]
+}

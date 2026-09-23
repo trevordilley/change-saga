@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "progress-boundary",
+  "slide": "quality-evidence-runtime",
+  "rank": 60,
+  "kind": "callout",
+  "label": "Progress is not proof",
+  "description": "Completed work without immutable integrated evidence or a current passing verification remains blocked for delivery readiness.",
+  "selector": {
+    "type": "element",
+    "element_id": "progress-boundary"
+  },
+  "about": "immutable-run",
+  "body": "Done work cannot substitute for current delivery evidence.",
+  "placement": "bottom",
+  "leader": "line"
+}

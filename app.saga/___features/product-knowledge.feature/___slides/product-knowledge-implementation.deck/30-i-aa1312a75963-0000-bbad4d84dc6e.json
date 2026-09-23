@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "leaf-boundary",
+  "slide": "product-knowledge-ownership",
+  "rank": 0,
+  "kind": "region",
+  "label": "Leaf write ownership",
+  "description": "Requirements, prototypes, and quality persist their own domain records rather than writing through the composed query layer.",
+  "selector": {
+    "type": "element",
+    "element_id": "leaf-boundary"
+  }
+}

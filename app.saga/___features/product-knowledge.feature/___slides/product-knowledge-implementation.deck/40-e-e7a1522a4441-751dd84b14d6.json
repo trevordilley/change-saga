@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/model.go",
+      "start": 182,
+      "end": 197,
+      "digest": "sha256:95603ec76960dc8d72830d5ac0ea101dbd0761fd268425e5caaa32dc102f552e",
+      "note": "Projects multiple revision or lifecycle heads as conflict with no fabricated current winner."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 37,
+      "end": 55,
+      "digest": "sha256:75e0bb478dc5640a05be6f82bf0a7082180acb72b23466349ea9feba88e09406",
+      "note": "Projects multiple revision or lifecycle heads as conflict with no fabricated current winner."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 279,
+      "end": 293,
+      "digest": "sha256:9d4323e1050e9ad25637c8e68db215908de88e3d0297a0f9316fb8cc14a4fed8",
+      "note": "Projects multiple revision or lifecycle heads as conflict with no fabricated current winner."
+    }
+  ]
+}

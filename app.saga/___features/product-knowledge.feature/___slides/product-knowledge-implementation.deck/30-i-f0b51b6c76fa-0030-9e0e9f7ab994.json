@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reverse-source-lookup",
+  "slide": "traceability-runtime",
+  "rank": 30,
+  "kind": "edge",
+  "label": "Reverse source lookup",
+  "description": "An exact or remapped source range resolves to evidence owners and the criteria reached by their persisted relations.",
+  "selector": {
+    "type": "element",
+    "element_id": "reverse-source-lookup"
+  }
+}

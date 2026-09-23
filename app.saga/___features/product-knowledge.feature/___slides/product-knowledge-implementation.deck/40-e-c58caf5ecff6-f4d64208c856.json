@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/model.go",
+      "start": 174,
+      "end": 225,
+      "digest": "sha256:4d0ed5919bc2e0ae2a33b2aa72fdb852acc502583e67305e2de409160fc528de",
+      "note": "Pins required coverage kinds to a criterion revision and requires explicit supersession of every current policy head."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/status_quality.go",
+      "start": 179,
+      "end": 233,
+      "digest": "sha256:62e6a1392f5e2db2b886f936e48e00ad906c134716930c28887c01aeff6878cc",
+      "note": "Pins required coverage kinds to a criterion revision and requires explicit supersession of every current policy head."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/quality/mutation_test.go",
+      "start": 357,
+      "end": 380,
+      "digest": "sha256:c677af5917f680c012a7c5dfdd8f79788219d70794ca2afb7b03eda8de50ce10",
+      "note": "Pins required coverage kinds to a criterion revision and requires explicit supersession of every current policy head."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "immutable-run",
+  "slide": "quality-evidence-runtime",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Immutable run event",
+  "description": "Each run records result, source repository and commit as provenance, command, evidence, and every prior run head; currency checks repository identity and pins, not the commit against observed HEAD.",
+  "selector": {
+    "type": "element",
+    "element_id": "immutable-run"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "acceptance-guard",
+  "slide": "story-lifecycle-runtime",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Acceptance guard",
+  "description": "The lifecycle write is rejected when an accepted story has no acceptance criterion, leaving no invalid event behind.",
+  "selector": {
+    "type": "element",
+    "element_id": "acceptance-guard"
+  }
+}

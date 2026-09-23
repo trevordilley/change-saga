@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "traceability-runtime",
+  "deck": "product-knowledge-implementation",
+  "title": "Forward evidence and reverse impact",
+  "rank": 40,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-efa008eccd56-0040-f0b51b6c76fa.svg",
+  "takeaway": "One current relation graph derives criterion-to-code paths and code-to-criterion impact; direct Item-to-design linkage is not implemented.",
+  "reading_order": [
+    "active-relation-filter",
+    "criterion-hub",
+    "forward-projection",
+    "reverse-source-lookup",
+    "unlinked-evidence",
+    "impact-analysis",
+    "missing-direct-edge"
+  ]
+}
