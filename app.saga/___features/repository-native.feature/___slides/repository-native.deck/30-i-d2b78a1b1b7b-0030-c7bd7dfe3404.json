@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "verify-checkout",
+  "slide": "companion-sync-sequence",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Identity guard",
+  "description": "The source checkout is verified against the manifest repository before a cursor can move.",
+  "selector": {
+    "type": "element",
+    "element_id": "verify-checkout"
+  }
+}

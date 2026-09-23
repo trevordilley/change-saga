@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Source identity, checkout placement, and source version ownership</title>
+  <desc id="desc">A canonical repository URI validates source identity. Placement separately compares normalized absolute checkout roots. Equal roots use implicit Git versions; different roots, including same-origin worktrees, use a companion cursor.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#26354b"/></marker>
+    <style>
+      .t{font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;fill:#172033}.light{fill:#fff}.title{font-size:32px;font-weight:760}.sub{font-size:16px;fill:#536174}.h{font-size:22px;font-weight:720}.b{font-size:16px}.small{font-size:14px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}.tag{font-size:13px;font-weight:760;letter-spacing:.8px}.edge{stroke:#26354b;stroke-width:4;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="#f6f8fc"/>
+  <text class="t title" x="58" y="56">Identity, placement, and version ownership are separate decisions</text>
+  <text class="t sub" x="58" y="84">Remote equivalence validates the source; normalized checkout roots decide whether a cursor is needed.</text>
+
+  <g id="source">
+    <rect x="58" y="124" width="1164" height="112" rx="22" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text class="t tag" x="84" y="155" fill="#1d4ed8">1 · SOURCE IDENTITY</text>
+    <text class="t h" x="84" y="190">canonical repository URI</text>
+    <text class="t mono" x="84" y="218">https://github.com/acme/app.git</text>
+    <text class="t h" x="700" y="181">Checkout validation</text>
+    <text class="t b" x="700" y="208">normalized origin/path must match this identity</text>
+  </g>
+
+  <path class="edge" d="M640 236 V274"/>
+  <g id="saga">
+    <rect x="330" y="274" width="620" height="170" rx="24" fill="#fff" stroke="#7c3aed" stroke-width="3"/>
+    <text class="t tag" x="356" y="306" fill="#6d28d9">2 · PLACEMENT DETECTION · LOCAL ROOTS, NOT REMOTES</text>
+    <rect x="356" y="326" width="260" height="66" rx="14" fill="#ede9fe"/>
+    <text class="t mono" x="376" y="352">Saga root: /wt/feature-a</text>
+    <text class="t small" x="376" y="377">git top-level → resolve symlinks</text>
+    <rect x="664" y="326" width="260" height="66" rx="14" fill="#ede9fe"/>
+    <text class="t mono" x="684" y="352">Code root: /wt/feature-b</text>
+    <text class="t small" x="684" y="377">git top-level → resolve symlinks</text>
+    <text class="t b" x="356" y="423">Same origin, different absolute worktree roots ⇒ companion placement</text>
+  </g>
+
+  <g id="in-repo-version">
+    <path class="edge" d="M470 444 V500 H320"/>
+    <text class="t tag" x="344" y="480" fill="#15803d">ROOTS EQUAL</text>
+    <rect x="58" y="500" width="410" height="110" rx="22" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/>
+    <text class="t tag" x="84" y="532" fill="#15803d">3A · IN-REPOSITORY VERSION</text>
+    <text class="t h" x="84" y="566">Git read point is authoritative</text>
+    <text class="t b" x="84" y="594">base/head OIDs are shared · no sync.json</text>
+  </g>
+
+  <g id="companion-version">
+    <path class="edge" d="M810 444 V500 H934"/>
+    <text class="t tag" x="824" y="480" fill="#b45309">ROOTS DIFFER</text>
+  </g>
+  <g id="cursor">
+    <rect x="812" y="500" width="410" height="120" rx="22" fill="#fff7ed" stroke="#d97706" stroke-width="3"/>
+    <text class="t tag" x="838" y="532" fill="#b45309">3B · COMPANION VERSION</text>
+    <text class="t h" x="838" y="566">sync.json is authoritative</text>
+    <text class="t b" x="838" y="594">explicit full source commit</text>
+    <text class="t b" x="838" y="614">advanced with Saga changes</text>
+  </g>
+
+  <g id="placement-invariant">
+    <rect x="58" y="642" width="1164" height="46" rx="14" fill="#172033"/>
+    <text class="t light b" x="82" y="671">Same source identity can span distinct worktrees; only root equality decides implicit versus cursor-owned versioning.</text>
+  </g>
+</svg>

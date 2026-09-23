@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "auto-sync-gap",
+  "slide": "cursor-state-boundaries",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Missing automatic advance",
+  "description": "Ordinary authoring has no automatic cursor advancement; manual sync is implemented, while repin moves it during landing.",
+  "selector": {
+    "type": "element",
+    "element_id": "auto-sync-gap"
+  }
+}

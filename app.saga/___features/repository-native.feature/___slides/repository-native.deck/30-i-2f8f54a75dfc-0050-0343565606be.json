@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "persist",
+  "slide": "repository-identity-gate",
+  "rank": 50,
+  "kind": "transition",
+  "label": "Atomic persistence",
+  "description": "The accepted identity is written into a staged Saga tree and atomically renamed into place, with cleanup on failure.",
+  "selector": {
+    "type": "element",
+    "element_id": "persist"
+  }
+}

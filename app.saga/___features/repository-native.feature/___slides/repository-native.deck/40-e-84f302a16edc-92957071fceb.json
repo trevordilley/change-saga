@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/sync.go",
+      "start": 58,
+      "end": 61,
+      "digest": "sha256:cd03cf1933681b1433ea68e0658fac81dfa1b9001d081b38a7a1b3b1f3e83251",
+      "note": "Requires the requested source revision to resolve before constructing the cursor result."
+    }
+  ]
+}

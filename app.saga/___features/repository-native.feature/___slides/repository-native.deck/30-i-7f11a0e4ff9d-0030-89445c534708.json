@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "in-repo-version",
+  "slide": "repository-placement",
+  "rank": 30,
+  "kind": "edge",
+  "label": "Implicit source version",
+  "description": "An in-repository Saga inherits its base and head source versions from the same Git history.",
+  "selector": {
+    "type": "element",
+    "element_id": "in-repo-version"
+  }
+}

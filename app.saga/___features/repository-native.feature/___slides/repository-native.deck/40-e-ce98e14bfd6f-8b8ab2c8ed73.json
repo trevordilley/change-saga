@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/sync.go",
+      "start": 24,
+      "end": 83,
+      "digest": "sha256:b0be90db8bda6a891732a54108c86b39f9a9da646c7e2a2ae909bd9c14454fd6",
+      "note": "Companion sync cursor records the documented source commit"
+    }
+  ]
+}

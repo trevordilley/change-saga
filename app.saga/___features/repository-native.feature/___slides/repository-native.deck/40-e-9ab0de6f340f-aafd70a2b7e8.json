@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 1298,
+      "end": 1302,
+      "digest": "sha256:213cc174bde72a064430841c6cfcc8411934d70f086aa1d819716483ef87e705",
+      "note": "Resolves the physical Git top-level before choosing a repository identity."
+    }
+  ]
+}

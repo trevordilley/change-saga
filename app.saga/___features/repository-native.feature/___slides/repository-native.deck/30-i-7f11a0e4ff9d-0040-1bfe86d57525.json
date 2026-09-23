@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "companion-version",
+  "slide": "repository-placement",
+  "rank": 40,
+  "kind": "edge",
+  "label": "Explicit source version",
+  "description": "A companion Saga owns a sync cursor that names the exact source commit it documents.",
+  "selector": {
+    "type": "element",
+    "element_id": "companion-version"
+  }
+}

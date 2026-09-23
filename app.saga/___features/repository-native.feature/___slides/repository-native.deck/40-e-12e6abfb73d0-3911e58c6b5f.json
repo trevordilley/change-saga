@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 436,
+      "end": 507,
+      "digest": "sha256:d0a4b4abf710be851e9ec1f5e680d2b9b5ca3c135d5cbab629f70885ead3d22b",
+      "note": "Initialization discovers and persists canonical source identity"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/model.go",
+      "start": 120,
+      "end": 125,
+      "digest": "sha256:d00e26a0f7e4294b61b6608a7c09271500e65741f05e1ef566fa623ee89f0da9",
+      "note": "Initialization discovers and persists canonical source identity"
+    }
+  ]
+}

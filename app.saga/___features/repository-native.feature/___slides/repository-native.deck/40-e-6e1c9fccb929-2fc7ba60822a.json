@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 1340,
+      "end": 1362,
+      "digest": "sha256:7d046b390bdd2f594fc5789d6222a7495a1435c9cfe00f59c413cc7fb35c7145",
+      "note": "Normalizes URL, SCP, native path, and relative-path repository inputs into canonical URIs."
+    }
+  ]
+}

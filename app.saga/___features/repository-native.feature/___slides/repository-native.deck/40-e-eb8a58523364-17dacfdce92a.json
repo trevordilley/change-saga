@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 1303,
+      "end": 1322,
+      "digest": "sha256:30e9827364d2cdbcdec40be4607b408e48e08aee186d773fca7188198cb5c2fd",
+      "note": "Selects an explicit URI or origin and only falls back to a local file identity after opt-in."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 1330,
+      "end": 1332,
+      "digest": "sha256:cffae08d1e3935981cd07e88473624c9e8f12768ff077be1ce2a73391fa87709",
+      "note": "Selects an explicit URI or origin and only falls back to a local file identity after opt-in."
+    }
+  ]
+}

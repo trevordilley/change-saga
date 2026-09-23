@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "companion-sync-sequence",
+  "deck": "repository-native",
+  "title": "Companion sync runtime sequence",
+  "rank": 20,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8099965394bc-0020-d2b78a1b1b7b.svg",
+  "takeaway": "sync guards placement and identity before resolving a full source commit and writing sync.json under the Saga lock.",
+  "reading_order": [
+    "author",
+    "sync-command",
+    "placement-guard",
+    "verify-checkout",
+    "resolve-commit",
+    "write-cursor"
+  ]
+}

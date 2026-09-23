@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "saga",
+  "slide": "repository-placement",
+  "rank": 10,
+  "kind": "node",
+  "label": "Normalized-root placement",
+  "description": "Placement compares symlink-resolved Git top-level roots; same-origin distinct worktrees therefore count as companion placement.",
+  "selector": {
+    "type": "element",
+    "element_id": "saga"
+  }
+}

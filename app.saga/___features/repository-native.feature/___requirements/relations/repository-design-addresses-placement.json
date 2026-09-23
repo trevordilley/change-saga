@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "repository-design-addresses-placement",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:repository-placement-design",
+  "to": "urn:change-saga:change-saga:story:source-or-companion",
+  "scope": "self",
+  "rationale": "Canonical repository identity and the companion cursor retain the exact source context regardless of Saga placement.",
+  "to_revision": "urn:change-saga:change-saga:story:source-or-companion:revision:r1",
+  "from_content_digest": "sha256:ab44baef26d5048ddc2d5b9b26be3e67833204ca1791f6a851ac8b710c5b50e4",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.988209Z"
+}

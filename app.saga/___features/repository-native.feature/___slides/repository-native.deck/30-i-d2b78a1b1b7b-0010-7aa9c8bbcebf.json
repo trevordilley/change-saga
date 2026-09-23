@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "sync-command",
+  "slide": "companion-sync-sequence",
+  "rank": 10,
+  "kind": "node",
+  "label": "Sync command",
+  "description": "The command loads the Saga manifest and parses the source checkout and commit inputs.",
+  "selector": {
+    "type": "element",
+    "element_id": "sync-command"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "verify",
+  "slide": "repository-identity-gate",
+  "rank": 30,
+  "kind": "node",
+  "label": "Checkout verification",
+  "description": "The declared identity must match the checkout path or normalized origin unless a mismatch override is explicit.",
+  "selector": {
+    "type": "element",
+    "element_id": "verify"
+  }
+}

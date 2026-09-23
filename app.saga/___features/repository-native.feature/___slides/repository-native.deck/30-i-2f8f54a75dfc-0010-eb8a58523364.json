@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "identity-source",
+  "slide": "repository-identity-gate",
+  "rank": 10,
+  "kind": "node",
+  "label": "Identity source",
+  "description": "An explicit repository URI wins; otherwise initialization reads origin and refuses a silent local fallback.",
+  "selector": {
+    "type": "element",
+    "element_id": "identity-source"
+  }
+}

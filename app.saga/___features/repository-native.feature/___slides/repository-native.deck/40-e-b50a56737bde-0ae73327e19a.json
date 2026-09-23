@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "cmd/change-saga/main.go",
+      "start": 120,
+      "end": 123,
+      "digest": "sha256:4103bfc492447e5aae34e94fa057e13b80977710a373debbf04de85808a01ca4",
+      "note": "Dispatches an explicit sync CLI invocation into the companion synchronization runtime."
+    }
+  ]
+}

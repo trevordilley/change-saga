@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/sync.go",
+      "start": 49,
+      "end": 57,
+      "digest": "sha256:edae42d47102d3181b636a9793362271de9429d2c866534e80b7edf83487b6e5",
+      "note": "Verifies the source checkout against the manifest identity unless the mismatch override is explicit."
+    }
+  ]
+}
