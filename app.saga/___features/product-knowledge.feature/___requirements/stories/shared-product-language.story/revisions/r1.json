@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:shared-product-language",
+  "parents": [],
+  "title": "Keep product language anchored",
+  "statement": "As a developer joining or changing the product, I can look up a project term with its definition, related intent, and defining code so I use the team language and notice when it drifts.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "term-context",
+      "statement": "A term exposes its name, definition, aliases, related stories and records, and defining source references."
+    },
+    {
+      "id": "code-currency",
+      "statement": "When the defining source bytes change, the term is reported stale and identifies the affected term revision."
+    },
+    {
+      "id": "optional-suggestions",
+      "statement": "Suggestions for newly added enum values or typed constants are presented as optional growth rather than required work."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:54.896057Z"
+}

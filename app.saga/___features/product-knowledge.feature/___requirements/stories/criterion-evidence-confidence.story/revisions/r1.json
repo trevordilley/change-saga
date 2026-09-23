@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:criterion-evidence-confidence",
+  "parents": [],
+  "title": "Trust current criterion evidence",
+  "statement": "As a product manager deciding whether work is ready, I can distinguish current passing evidence from failed, missing, excluded, or stale evidence so progress is not mistaken for delivery proof.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "distinct-states",
+      "statement": "Quality status distinguishes covered, not_run, failed, stale, missing, and excluded states."
+    },
+    {
+      "id": "stale-pass",
+      "statement": "A passed run is not current when its test revision changes, referenced evidence is no longer current, an evidence code reference is stale, or the source repository differs."
+    },
+    {
+      "id": "progress-not-proof",
+      "statement": "Completing a work item does not make its criterion delivery-ready without a current passing verification or integrated immutable evidence."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:55.156184Z"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "pk-stale-transition-explains-stale-pass",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:quality-evidence-runtime:item:stale-pass-transition",
+  "to": "urn:change-saga:change-saga:story:criterion-evidence-confidence:criterion:stale-pass",
+  "scope": "self",
+  "rationale": "The transition enumerates the pin, evidence-reference, and repository conditions that make a historical pass non-current.",
+  "to_revision": "urn:change-saga:change-saga:story:criterion-evidence-confidence:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:41:24.654814Z"
+}
