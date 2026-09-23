@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/template.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:9634245b500a28695f34de16638efdee1cbd7a5bc5a2a22dc0d5c39b2c22cab6",
+      "note": "The reviewer emits deck-scoped slide identities, position feedback, previous/next controls, and presentation exit."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/navigation.go",
+      "start": 125,
+      "end": 153,
+      "digest": "sha256:a3a56e898f70d37a089fc0dcc19cb60c64a0e340ececd4619cc848bc30029271",
+      "note": "Opening Implementation resolves directly to the first slide of the feature deck."
+    }
+  ]
+}

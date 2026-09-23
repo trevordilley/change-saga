@@ -10,11 +10,11 @@
       "note": "Converts Item selectors into landmark views and focusable overlay affordances layered over either media branch."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
       "path": "internal/server/template.go",
       "start": 375,
       "end": 375,
-      "digest": "sha256:a6e2c9b53e80f74bb8ff97197099156c93aba9ac03f3424d75e5f89a10941faf",
+      "digest": "sha256:86292b43e98f371ef440ce06c0d58a9196a450a7fff44b1619863bb39b959d86",
       "note": "Converts Item selectors into landmark views and focusable overlay affordances layered over either media branch."
     }
   ]

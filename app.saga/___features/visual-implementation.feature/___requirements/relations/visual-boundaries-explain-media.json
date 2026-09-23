@@ -8,6 +8,7 @@
   "scope": "descendants",
   "rationale": "The failure-boundary diagram explains how visual assets are constrained in storage and served through browser containment.",
   "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-23T03:24:22.97071Z"
+  "state": "superseded",
+  "created_at": "2026-09-23T03:24:22.97071Z",
+  "superseded_at": "2026-09-23T16:45:43.589813Z"
 }

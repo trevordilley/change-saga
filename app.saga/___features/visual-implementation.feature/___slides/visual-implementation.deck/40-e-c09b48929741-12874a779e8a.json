@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/requirements/mutation.go",
+      "start": 501,
+      "end": 507,
+      "digest": "sha256:18a33ac51818e8c46f57137f2cd44348c3b4e20b0e50bbe6f4559b4d9ca47374",
+      "note": "Relation authoring rejects new explains or addresses links owned by a deck or slide instead of an Item."
+    }
+  ]
+}
