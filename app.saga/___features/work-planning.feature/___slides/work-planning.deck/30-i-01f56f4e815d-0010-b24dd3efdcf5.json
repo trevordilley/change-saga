@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "condition-branch",
+  "slide": "dependency-facts",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Condition dispatch",
+  "description": "Evaluates exactly one supported persisted-fact condition and never infers a gate from wave order.",
+  "selector": {
+    "type": "element",
+    "element_id": "condition-branch"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/cursor.go",
+      "start": 90,
+      "end": 97,
+      "digest": "sha256:dd10adae88933e5b67154677e08a70f7254d2ea680ebad5efe40cb8995158a46",
+      "note": "Uses the working Saga or an exact historical Saga commit when its cursor equals source head."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 438,
+      "end": 471,
+      "digest": "sha256:4b814d25675dfa259ad072d0360466a6ec1626552ca4417b7dce2bf7c2fb9dde",
+      "note": "Checks a file identity against the resolved path or a remote identity against normalized origin."
+    }
+  ]
+}

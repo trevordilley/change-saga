@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/readiness.go",
+      "start": 5,
+      "end": 67,
+      "digest": "sha256:842be977cb743b94ef6e6548f2600aab5ddd1c8748004639c7dd1bcd462a900c",
+      "note": "Dispatches only persisted progress, merge, or pinned-contract facts and explicitly excludes wave and workspace inference."
+    }
+  ]
+}

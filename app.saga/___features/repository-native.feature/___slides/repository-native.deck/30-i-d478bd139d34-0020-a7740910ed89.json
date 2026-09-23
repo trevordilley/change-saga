@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "aligned",
+  "slide": "cursor-state-boundaries",
+  "rank": 20,
+  "kind": "node",
+  "label": "Aligned companion",
+  "description": "When the working cursor equals source head, the working Saga supplies the head documentation snapshot.",
+  "selector": {
+    "type": "element",
+    "element_id": "aligned"
+  }
+}

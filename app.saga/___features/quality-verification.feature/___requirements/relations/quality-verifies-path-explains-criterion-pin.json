@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-verifies-path-explains-criterion-pin",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:criterion-quality-gate:item:verifies-path",
+  "to": "urn:change-saga:change-saga:story:record-test-proof:criterion:criterion-pin",
+  "scope": "self",
+  "rationale": "The verifies-path Item shows the exact criterion-revision pin and its visible stale or conflicted state.",
+  "to_revision": "urn:change-saga:change-saga:story:record-test-proof:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:40:46.874305Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 619,
+      "end": 675,
+      "digest": "sha256:bb14f4b3326c635de7fe6e603d7a59456c723f6c3583f431c621031a12ac3a6b",
+      "note": "Validates the request ID and computes the canonical operation-and-payload digest used for replay safety."
+    }
+  ]
+}

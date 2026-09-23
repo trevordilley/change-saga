@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "dependency-edge",
+  "slide": "dependency-facts",
+  "rank": 0,
+  "kind": "edge",
+  "label": "Explicit dependency edge",
+  "description": "Connects a prerequisite work item to a dependent independently of either item’s wave.",
+  "selector": {
+    "type": "element",
+    "element_id": "dependency-edge"
+  }
+}

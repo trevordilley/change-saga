@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "workplan-concurrent-heads-explain-conflicts",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:explicit-plan-conflicts:item:concurrent-heads",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:conflicts",
+  "scope": "self",
+  "rationale": "The concurrent-heads item shows that competing work events remain visible instead of selecting a timestamp winner.",
+  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:41:07.241188Z",
+  "request_id": "workplan-concurrent-heads-explain-conflicts"
+}

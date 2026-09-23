@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "failure-boundary",
+  "slide": "atomic-plan-mutation",
+  "rank": 50,
+  "kind": "risk",
+  "label": "No partial destination",
+  "description": "Any lock, validation, write, or sync failure leaves no partially visible resource package.",
+  "selector": {
+    "type": "element",
+    "element_id": "failure-boundary"
+  }
+}

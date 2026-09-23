@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 187,
+      "end": 245,
+      "digest": "sha256:71a38411d53ed1e5a085614b36c2351d75972d8d0f20b93fd62d133972a2f186",
+      "note": "Registers and describes the shipped waves, work-items, work-events, work-conflicts, traceability, and readiness queries."
+    }
+  ]
+}

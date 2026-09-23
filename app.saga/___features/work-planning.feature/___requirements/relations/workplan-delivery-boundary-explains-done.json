@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "workplan-delivery-boundary-explains-done",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:work-plan-boundary:item:delivery-boundary",
+  "to": "urn:change-saga:change-saga:story:track-work-delivery:criterion:done-is-not-delivery",
+  "scope": "self",
+  "rationale": "The boundary states that coordination progress cannot substitute for immutable delivery evidence.",
+  "to_revision": "urn:change-saga:change-saga:story:track-work-delivery:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:40:42.368583Z",
+  "request_id": "workplan-delivery-boundary-explains-done"
+}

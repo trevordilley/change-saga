@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cover.go",
+      "start": 440,
+      "end": 445,
+      "digest": "sha256:352fead15253fb70154c020f4511bf73c918d746a17069532c4b321a7e68430a",
+      "note": "Resolves revisions specifically as commit objects and returns their full object identifiers."
+    }
+  ]
+}

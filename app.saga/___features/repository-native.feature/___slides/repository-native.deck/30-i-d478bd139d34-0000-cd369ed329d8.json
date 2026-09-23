@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "in-repo",
+  "slide": "cursor-state-boundaries",
+  "rank": 0,
+  "kind": "node",
+  "label": "Implicitly aligned",
+  "description": "An in-repository Saga documents the source commit at which it is read and has no cursor file.",
+  "selector": {
+    "type": "element",
+    "element_id": "in-repo"
+  }
+}

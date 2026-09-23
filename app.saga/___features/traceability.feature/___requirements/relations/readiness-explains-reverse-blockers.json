@@ -8,6 +8,7 @@
   "scope": "descendants",
   "rationale": "The diagram names the actual work-item and immutable-evidence blockers returned for this criterion.",
   "to_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-23T03:27:55.502317Z"
+  "state": "superseded",
+  "created_at": "2026-09-23T03:27:55.502317Z",
+  "superseded_at": "2026-09-23T16:34:55.732472Z"
 }

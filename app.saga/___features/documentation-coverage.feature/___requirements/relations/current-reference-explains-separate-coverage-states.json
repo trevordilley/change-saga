@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "current-reference-explains-separate-coverage-states",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:reference-state:item:current-reference",
+  "to": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+  "scope": "self",
+  "rationale": "The current-reference Item aggregates every current assignment per diff atom before producing covered, uncovered, or overlapping states.",
+  "to_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:43:35.67378Z"
+}

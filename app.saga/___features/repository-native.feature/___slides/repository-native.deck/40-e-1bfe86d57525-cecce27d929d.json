@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/open.go",
+      "start": 45,
+      "end": 52,
+      "digest": "sha256:16cee3c542855a9d6fe450c81969264d2fb791ee44089e11614d6f4c012f2fef",
+      "note": "Branches companion comparisons to cursor-selected Saga snapshots instead of shared repository commits."
+    }
+  ]
+}

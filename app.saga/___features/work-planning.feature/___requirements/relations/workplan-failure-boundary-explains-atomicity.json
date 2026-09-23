@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "workplan-failure-boundary-explains-atomicity",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:atomic-plan-mutation:item:failure-boundary",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:atomic",
+  "scope": "self",
+  "rationale": "The failure-boundary item shows that validation, lock, or staging errors leave no partial destination.",
+  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:41:07.010887Z",
+  "request_id": "workplan-failure-boundary-explains-atomicity"
+}

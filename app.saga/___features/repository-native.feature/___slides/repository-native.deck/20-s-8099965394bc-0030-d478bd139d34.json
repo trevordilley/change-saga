@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "cursor-state-boundaries",
+  "deck": "repository-native",
+  "title": "Cursor drift and historical comparison boundaries",
+  "rank": 30,
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8099965394bc-0030-d478bd139d34.svg",
+  "takeaway": "Companion reads report drift and choose exact, ancestor, or empty-base history without automatically advancing or repairing the cursor.",
+  "reading_order": [
+    "in-repo",
+    "no-cursor",
+    "aligned",
+    "behind",
+    "invalid-cursor",
+    "auto-sync-gap",
+    "base-fallback"
+  ]
+}

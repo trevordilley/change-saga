@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "behind",
+  "slide": "cursor-state-boundaries",
+  "rank": 30,
+  "kind": "node",
+  "label": "Behind source head",
+  "description": "When the cursor does not name source head, comparison emits a diagnostic asking the author to run sync.",
+  "selector": {
+    "type": "element",
+    "element_id": "behind"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/readiness.go",
+      "start": 17,
+      "end": 30,
+      "digest": "sha256:f988008a72056abf47672b22028aa6025de171e51c3f9ff56abcdef1b575238b",
+      "note": "Requires exactly one progress head whose state is done, with distinct reasons for conflict and incompletion."
+    }
+  ]
+}

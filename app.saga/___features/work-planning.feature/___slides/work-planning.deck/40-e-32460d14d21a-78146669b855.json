@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/living_plan.go",
+      "start": 12,
+      "end": 52,
+      "digest": "sha256:31379e038299e9664a4a7e624c57e705a7329a5525c651a4ac9087e906d8d0a9",
+      "note": "Registers the bounded plan command surface and delegates each operation through one CLI result adapter."
+    }
+  ]
+}

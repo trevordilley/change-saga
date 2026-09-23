@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "living-load-explains-criterion-axis-reasons",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:status-runtime:item:living-load",
+  "to": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:criterion-axis-reasons",
+  "scope": "self",
+  "rationale": "The living-record load supplies stories, relations, quality records, and exceptions whose current or failing state explains each axis result.",
+  "to_revision": "urn:change-saga:change-saga:story:documentation-gaps-visible:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:43:35.110492Z"
+}

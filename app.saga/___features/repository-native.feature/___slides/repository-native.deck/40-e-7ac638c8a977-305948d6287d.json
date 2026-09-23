@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/cursor.go",
+      "start": 30,
+      "end": 56,
+      "digest": "sha256:af330cd2aa3376976b398a325b8a1bde68ee66b30a2197c39f28b5e691090890",
+      "note": "Rejects non-files, malformed records, wrong schema versions, and non-full commit identifiers."
+    }
+  ]
+}

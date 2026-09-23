@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "atomic-plan-mutation",
+  "deck": "work-planning",
+  "title": "Atomic, idempotent mutation path",
+  "rank": 20,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-30143db7d98c-0020-7225465359a3.svg",
+  "takeaway": "A request is locked, replay-checked, validated, staged, and published once; failures leave no partial resource visible.",
+  "reading_order": [
+    "request-key",
+    "lock-reload",
+    "replay-branch",
+    "candidate-validation",
+    "atomic-publish",
+    "failure-boundary"
+  ]
+}

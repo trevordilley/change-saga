@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "physical-partitions-explains-partitioned",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:storage-ownership:item:physical-partitions",
+  "to": "urn:change-saga:change-saga:story:parallel-authoring:criterion:partitioned",
+  "scope": "self",
+  "rationale": "This Item shows the independently mergeable identity, revision, and lifecycle records required by the partitioning criterion.",
+  "to_revision": "urn:change-saga:change-saga:story:parallel-authoring:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:25.945903Z"
+}

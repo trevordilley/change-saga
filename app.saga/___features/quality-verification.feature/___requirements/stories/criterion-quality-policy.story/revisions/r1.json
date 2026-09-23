@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:criterion-quality-policy",
+  "parents": [],
+  "title": "Set criterion verification policy",
+  "statement": "As a product manager, I can specify the coverage kinds and automation levels required for an acceptance criterion so readiness reflects the assurance appropriate to that obligation.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "default-policy",
+      "statement": "Without an explicit quality policy, an accepted criterion requires positive coverage and does not restrict the test automation level."
+    },
+    {
+      "id": "required-kinds",
+      "statement": "A current policy can require any non-empty subset of positive, negative, and edge coverage kinds for one exact criterion revision, and quality reports each required kind separately."
+    },
+    {
+      "id": "allowed-automation",
+      "statement": "A current policy can allow any non-empty subset of manual, hybrid, and automated tests; a linked test outside that set is reported as automation not allowed and does not satisfy the criterion."
+    },
+    {
+      "id": "policy-currency",
+      "statement": "When a criterion revision changes, the previous policy is reported stale, its required kinds remain required, and the criterion stays uncovered until a current policy supersedes it."
+    }
+  ],
+  "created_at": "2026-09-23T16:39:35.556638Z"
+}

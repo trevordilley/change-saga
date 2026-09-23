@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "dependency-facts",
+  "deck": "work-planning",
+  "title": "Persisted facts—not wave order—open gates",
+  "rank": 40,
+  "intent": "trace",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-30143db7d98c-0040-01f56f4e815d.svg",
+  "takeaway": "Dependencies evaluate one persisted fact, return a precise blocker reason, and reject cycles before publication.",
+  "reading_order": [
+    "dependency-edge",
+    "condition-branch",
+    "progress-gate",
+    "merge-gate",
+    "contract-gate",
+    "gate-outcome",
+    "wave-and-cycle-boundary"
+  ]
+}

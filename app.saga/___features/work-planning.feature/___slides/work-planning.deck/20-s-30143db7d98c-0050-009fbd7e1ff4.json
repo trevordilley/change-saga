@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "work-plan-boundary",
+  "deck": "work-planning",
+  "title": "Implemented surfaces and missing paths",
+  "rank": 50,
+  "intent": "risk",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-30143db7d98c-0050-009fbd7e1ff4.svg",
+  "takeaway": "The core and query projections ship, but contract-state lacks a CLI command and explicit plan-status gating remains unimplemented.",
+  "reading_order": [
+    "core-writers",
+    "query-surfaces",
+    "missing-contract-cli",
+    "no-plan-status",
+    "delivery-boundary"
+  ]
+}

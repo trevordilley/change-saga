@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:recover-competing-heads",
+  "parents": [],
+  "title": "Reconcile competing story heads",
+  "statement": "As a developer resolving concurrent story edits, I can reconcile every competing head into one complete revision so the story becomes current without erasing either branch's history.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "all-heads-required",
+      "statement": "When a story has competing revision heads, a reconciliation that omits any current head is rejected without creating a revision."
+    },
+    {
+      "id": "current-restored",
+      "statement": "A complete revision naming every current revision head becomes the sole current revision, while the former heads remain visible in requirement history."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:41.818303Z"
+}

@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "The runtime sequence shows how one query becomes exactly one versioned JSON envelope.",
   "to_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-23T03:23:24.094017Z"
+  "state": "superseded",
+  "created_at": "2026-09-23T03:23:24.094017Z",
+  "superseded_at": "2026-09-23T16:39:34.338719Z"
 }

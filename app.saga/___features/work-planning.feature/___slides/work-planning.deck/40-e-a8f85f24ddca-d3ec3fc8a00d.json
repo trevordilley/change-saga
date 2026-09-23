@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "docs/living-saga-work-plan-api.md",
+      "start": 687,
+      "end": 691,
+      "digest": "sha256:921553054b4f079058db6596f770723b22752d21594de3a57ae78ebe3648bb6a",
+      "note": "States that plan incompleteness does not alter mapping coverage and identifies plan-status as future work rather than current behavior."
+    }
+  ]
+}

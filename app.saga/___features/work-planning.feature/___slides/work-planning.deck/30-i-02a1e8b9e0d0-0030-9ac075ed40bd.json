@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reconcile-event",
+  "slide": "explicit-plan-conflicts",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Append-only reconciliation",
+  "description": "Resolves divergent state by appending one event whose parents name every competing head.",
+  "selector": {
+    "type": "element",
+    "element_id": "reconcile-event"
+  }
+}

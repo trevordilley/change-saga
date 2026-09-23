@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 1323,
+      "end": 1329,
+      "digest": "sha256:706d52dd0d4c420516ce2c11fec1c7c1e3b7f05e37c5eca0128feb40de2b18b1",
+      "note": "Rejects local origin without opt-in and missing origin without an explicit portable repository."
+    }
+  ]
+}

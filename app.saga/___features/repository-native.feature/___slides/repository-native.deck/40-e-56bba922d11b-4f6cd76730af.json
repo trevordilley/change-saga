@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cli.go",
+      "start": 1737,
+      "end": 1747,
+      "digest": "sha256:10212aea092567ba55f6df91303743b5ba76e2d0ab40320798863d9bbf5d1cee",
+      "note": "Serializes the cursor mutation and reloads the Saga under the authoring lock before writing."
+    }
+  ]
+}

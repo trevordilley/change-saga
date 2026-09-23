@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/validate.go",
+      "start": 455,
+      "end": 501,
+      "digest": "sha256:203b701519b7bc71a3d72d890c4b83675fb1ae23fac7854c3b80856ea35d1424",
+      "note": "Computes every parentless current head in the append-only event graph instead of selecting a timestamp winner."
+    }
+  ]
+}

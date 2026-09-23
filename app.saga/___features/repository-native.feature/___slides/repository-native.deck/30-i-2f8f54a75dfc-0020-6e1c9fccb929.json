@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "canonicalize",
+  "slide": "repository-identity-gate",
+  "rank": 20,
+  "kind": "node",
+  "label": "Canonical form",
+  "description": "Repository URIs are normalized and authentication user information is discarded.",
+  "selector": {
+    "type": "element",
+    "element_id": "canonicalize"
+  }
+}

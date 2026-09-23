@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/sync.go",
+      "start": 46,
+      "end": 48,
+      "digest": "sha256:c601ea388e38125be575fe29bb51f5098535a60d04a1d7160c0f38e04baa93d0",
+      "note": "Rejects sync when the Saga and source checkout share one repository because that mode has no cursor."
+    }
+  ]
+}

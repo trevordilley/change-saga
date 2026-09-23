@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "placement-invariant",
+  "slide": "repository-placement",
+  "rank": 50,
+  "kind": "statement",
+  "label": "Relocation invariant",
+  "description": "Moving the Saga does not change canonical repository identity or commit-pinned evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "placement-invariant"
+  }
+}

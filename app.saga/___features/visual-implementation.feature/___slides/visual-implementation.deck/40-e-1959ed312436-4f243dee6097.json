@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/template.go",
+      "start": 359,
+      "end": 375,
+      "digest": "sha256:6daba927600a2efdd12fbb8a10e7b6cc0d669642158db1810017a6e47f4738e9",
+      "note": "Rendered Item affordances keep story and linked-code controls separate beside the semantic overlay."
+    }
+  ]
+}

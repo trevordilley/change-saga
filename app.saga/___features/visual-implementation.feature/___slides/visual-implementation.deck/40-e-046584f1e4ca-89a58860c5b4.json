@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/storylinks.go",
+      "start": 12,
+      "end": 47,
+      "digest": "sha256:769e3f138d5051fb222429d527320be2834204119e1e9fff8939efaa94191b40",
+      "note": "The server derives deduplicated slide summaries and Item controls only from active exact-Item links, while preserving legacy guidance and relation currency."
+    },
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/storylinks.go",
+      "start": 60,
+      "end": 155,
+      "digest": "sha256:21f3fc5c3c53bdadb52e90046d6e0d171d8899b7d52d44a7439c614feb5b8c33",
+      "note": "The server derives deduplicated slide summaries and Item controls only from active exact-Item links, while preserving legacy guidance and relation currency."
+    }
+  ]
+}

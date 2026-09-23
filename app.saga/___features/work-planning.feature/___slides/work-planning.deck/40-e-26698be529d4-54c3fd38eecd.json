@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/load.go",
+      "start": 18,
+      "end": 99,
+      "digest": "sha256:6eb2ea65889ea3ddde2e05403e13232359b33e270fd1b49e7c252285e27a81f0",
+      "note": "Loads every feature-owned work-plan subtree into one graph and enforces app-wide identity uniqueness without following symlinks."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/load.go",
+      "start": 101,
+      "end": 117,
+      "digest": "sha256:e18e24b3dd101a8bd7373a2816a07626b043cde5c19a98bc9e16fb404ed23fcf",
+      "note": "Loads every feature-owned work-plan subtree into one graph and enforces app-wide identity uniqueness without following symlinks."
+    }
+  ]
+}

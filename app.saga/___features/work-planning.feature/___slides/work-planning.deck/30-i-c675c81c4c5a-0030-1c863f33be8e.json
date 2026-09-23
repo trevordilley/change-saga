@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "ownership-flow",
+  "slide": "plan-ownership",
+  "rank": 30,
+  "kind": "edge",
+  "label": "Adapter flow",
+  "description": "Commands enter the domain core and read models leave it through explicit adapter seams.",
+  "selector": {
+    "type": "element",
+    "element_id": "ownership-flow"
+  }
+}

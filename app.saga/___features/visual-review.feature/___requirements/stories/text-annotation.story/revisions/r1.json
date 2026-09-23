@@ -1,0 +1,20 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:text-annotation",
+  "parents": [],
+  "title": "Add text to a visual review",
+  "statement": "As a developer reviewing a change, I can place text on a specific part of a slide or diagram so I can express visual feedback that a mark or shape alone cannot convey.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "text-overlay",
+      "statement": "A reviewer can place a text annotation at a chosen location over a slide or diagram."
+    }
+  ],
+  "created_at": "2026-09-23T16:37:37.476006Z"
+}

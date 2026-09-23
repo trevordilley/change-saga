@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "resolve-commit",
+  "slide": "companion-sync-sequence",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Commit resolution",
+  "description": "The requested revision resolves to a full source commit object identifier.",
+  "selector": {
+    "type": "element",
+    "element_id": "resolve-commit"
+  }
+}

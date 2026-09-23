@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "query-surfaces",
+  "slide": "work-plan-boundary",
+  "rank": 10,
+  "kind": "region",
+  "label": "Implemented query surfaces",
+  "description": "The public query API exposes waves, items, events, conflicts, traceability, and readiness projections.",
+  "selector": {
+    "type": "element",
+    "element_id": "query-surfaces"
+  }
+}

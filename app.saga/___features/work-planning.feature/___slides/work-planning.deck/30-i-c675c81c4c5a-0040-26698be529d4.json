@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "feature-storage",
+  "slide": "plan-ownership",
+  "rank": 40,
+  "kind": "region",
+  "label": "Feature-owned storage",
+  "description": "Loads each feature’s work-plan packages into one app-wide graph while keeping resource IDs unique across the app.",
+  "selector": {
+    "type": "element",
+    "element_id": "feature-storage"
+  }
+}

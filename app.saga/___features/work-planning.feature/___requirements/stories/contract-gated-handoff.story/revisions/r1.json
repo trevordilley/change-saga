@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:contract-gated-handoff",
+  "parents": [],
+  "title": "Gate dependent work on a versioned contract",
+  "statement": "As an architect coordinating parallel work, I can define a versioned provider-consumer contract and record its lifecycle so dependent work opens only against the agreed revision.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "versioned-contract",
+      "statement": "A contract revision identifies its provider and consumer, kind, statement, and observable acceptance checks."
+    },
+    {
+      "id": "exact-revision-gate",
+      "statement": "A contract dependency is satisfied only when its named revision remains current and has one fulfilled lifecycle head; another revision does not satisfy it."
+    },
+    {
+      "id": "public-contract-state",
+      "statement": "A supported public plan command appends proposed, accepted, fulfilled, violated, or waived contract state with its parent heads and exposes the event through work-event queries."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:48.824203Z",
+  "request_id": "story-contract-gated-handoff"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "visual-reviewer-explains-presentation",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:visual-pipeline:item:reviewer",
+  "to": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:presentation",
+  "scope": "self",
+  "rationale": "The reviewer surface presents the active slide and restores it when presentation ends.",
+  "to_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:45:34.65Z"
+}

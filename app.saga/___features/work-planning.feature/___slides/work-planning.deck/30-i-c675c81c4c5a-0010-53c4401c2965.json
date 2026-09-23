@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "domain-core",
+  "slide": "plan-ownership",
+  "rank": 10,
+  "kind": "region",
+  "label": "Transport-neutral core",
+  "description": "Owns work-plan resources, validation, mutation, and readiness semantics without depending on CLI, query, or server packages.",
+  "selector": {
+    "type": "element",
+    "element_id": "domain-core"
+  }
+}

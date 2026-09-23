@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "request-key",
+  "slide": "atomic-plan-mutation",
+  "rank": 0,
+  "kind": "transition",
+  "label": "Canonical request key",
+  "description": "Hashes the operation and payload and pairs the digest with a stable request ID.",
+  "selector": {
+    "type": "element",
+    "element_id": "request-key"
+  }
+}

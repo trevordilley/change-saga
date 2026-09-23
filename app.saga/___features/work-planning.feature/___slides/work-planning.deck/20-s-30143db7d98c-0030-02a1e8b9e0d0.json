@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "explicit-plan-conflicts",
+  "deck": "work-planning",
+  "title": "Concurrent heads block instead of winning by time",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-30143db7d98c-0030-02a1e8b9e0d0.svg",
+  "takeaway": "Append-only branches remain explicit conflicts until a reconciliation event names every current head.",
+  "reading_order": [
+    "progress-machine",
+    "concurrent-heads",
+    "conflict-blocks",
+    "reconcile-event"
+  ]
+}

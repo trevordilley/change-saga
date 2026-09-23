@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 783,
+      "end": 790,
+      "digest": "sha256:a90a4607ef5c5594bd9515c42628812e755b539cb8a8ddf02b3696b23f2c3d2b",
+      "note": "Encodes the legal progress, merge, and contract transition tables, including explicit reopen and recovery paths."
+    }
+  ]
+}

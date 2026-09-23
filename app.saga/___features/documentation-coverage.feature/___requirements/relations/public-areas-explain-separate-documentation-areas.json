@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "public-areas-explain-separate-documentation-areas",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:coverage-ownership:item:public-areas",
+  "to": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:separate-areas",
+  "scope": "self",
+  "rationale": "The public-areas Item names the six independently inspectable documentation coverage areas and their entries.",
+  "to_revision": "urn:change-saga:change-saga:story:documentation-gaps-visible:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:39:49.451261Z"
+}

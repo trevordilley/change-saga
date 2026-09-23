@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 223,
+      "end": 243,
+      "digest": "sha256:90622e1279bafbd918a6fa21a463307c3ebebcd53643f199c3c95c2384652773",
+      "note": "Stages identity, revision, and initial progress together through the store’s package publication primitive."
+    }
+  ]
+}
