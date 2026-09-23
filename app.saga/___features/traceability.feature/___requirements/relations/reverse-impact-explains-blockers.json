@@ -8,6 +8,7 @@
   "scope": "descendants",
   "rationale": "The failure branches preserve unowned content, stale ownership, and incomplete-baseline uncertainty rather than presenting them as current impact.",
   "to_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-23T03:27:54.833104Z"
+  "state": "superseded",
+  "created_at": "2026-09-23T03:27:54.833104Z",
+  "superseded_at": "2026-09-23T16:34:55.922574Z"
 }
