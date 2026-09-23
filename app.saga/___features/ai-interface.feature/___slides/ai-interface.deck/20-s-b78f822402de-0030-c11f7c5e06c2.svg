@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
-  <title id="title">Snapshot-bound continuation token state</title>
-  <desc id="desc">A state machine showing first-page creation, snapshot-bound continuation, normal completion, invalid token rejection, and retryable stale-snapshot rejection.</desc>
+  <title id="title">Snapshot-bound cursor state machine</title>
+  <desc id="desc">A state machine showing first-page creation, valid continuation, terminal completion, invalid cursor rejection, and retryable stale-snapshot rejection.</desc>
   <defs>
     <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#101225"/><stop offset="1" stop-color="#1c1936"/></linearGradient>
     <marker id="p" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#a99aff"/></marker>
@@ -8,37 +8,59 @@
     <marker id="x" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#ff8093"/></marker>
   </defs>
   <rect width="1280" height="720" fill="url(#bg)"/>
-  <text x="60" y="64" font-family="Inter,system-ui,sans-serif" font-size="34" font-weight="750" fill="#fbfaff">Snapshot-bound continuation tokens</text>
-  <text x="60" y="98" font-family="Inter,system-ui,sans-serif" font-size="18" fill="#b9b3da">Operation, normalized filters, offset, snapshot, and checksum are checked together.</text>
+  <text x="60" y="64" font-family="Inter,system-ui,sans-serif" font-size="34" font-weight="750" fill="#fbfaff">Continuation tokens bind pages to one query snapshot</text>
+  <text x="60" y="98" font-family="Inter,system-ui,sans-serif" font-size="18" fill="#b9b3da">Query, offset and snapshot are checked; the unkeyed checksum is not authentication.</text>
+
   <g id="first-page">
-    <circle cx="106" cy="310" r="22" fill="#aa9bff"/><path d="M128 310H232" stroke="#a99aff" stroke-width="5" marker-end="url(#p)"/>
+    <circle cx="106" cy="310" r="22" fill="#aa9bff"/>
+    <path d="M128 310H232" stroke="#a99aff" stroke-width="5" marker-end="url(#p)"/>
     <rect x="232" y="235" width="242" height="150" rx="28" fill="#2b2852" stroke="#aa9bff" stroke-width="3"/>
-    <text x="353" y="278" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="23" font-weight="700" fill="#fff">First page</text><text x="353" y="315" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="17" fill="#d9d3ff">token absent</text><text x="353" y="346" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#c4baff">start = 0</text>
+    <text x="353" y="278" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="23" font-weight="700" fill="#fff">First page</text>
+    <text x="353" y="315" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="17" fill="#d9d3ff">cursor absent</text>
+    <text x="353" y="346" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#c4baff">start = 0</text>
   </g>
+
   <g id="issue-cursor">
-    <path d="M474 310H620" stroke="#a99aff" stroke-width="5" marker-end="url(#p)"/><rect x="495" y="253" width="106" height="46" rx="12" fill="#201d42"/><text x="548" y="275" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#dcd6ff">has_more</text><text x="548" y="292" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#dcd6ff">= true</text>
+    <path d="M474 310H620" stroke="#a99aff" stroke-width="5" marker-end="url(#p)"/>
+    <rect x="495" y="253" width="106" height="46" rx="12" fill="#201d42"/>
+    <text x="548" y="275" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#dcd6ff">has_more</text>
+    <text x="548" y="292" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#dcd6ff">= true</text>
     <rect x="620" y="214" width="278" height="192" rx="28" fill="#302d59" stroke="#aa9bff" stroke-width="3"/>
-    <text x="759" y="258" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="23" font-weight="700" fill="#fff">Continuation issued</text><text x="759" y="295" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#c4baff">op + filters + snapshot</text><text x="759" y="324" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#c4baff">offset + checksum</text>
+    <text x="759" y="258" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="23" font-weight="700" fill="#fff">Continuation issued</text>
+    <text x="759" y="295" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#c4baff">op + filters + snapshot</text>
+    <text x="759" y="324" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#c4baff">offset + checksum</text>
     <rect x="667" y="350" width="184" height="32" rx="16" fill="#1d1a3c"/><text x="759" y="372" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#e1ddff">opaque base64url token</text>
   </g>
+
   <g id="continue-page">
-    <path d="M898 310H1010" stroke="#5fe0ae" stroke-width="5" marker-end="url(#g)"/>
-    <rect x="1010" y="235" width="160" height="150" rx="28" fill="#1f443c" stroke="#5fe0ae" stroke-width="3"/>
-    <text x="1090" y="278" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="23" font-weight="700" fill="#fff">Next page</text><text x="1090" y="315" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#bff5e2">same query</text><text x="1090" y="344" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#bff5e2">same snapshot</text>
-    <path d="M1090 235C1090 145 835 145 805 214" fill="none" stroke="#a99aff" stroke-width="4" marker-end="url(#p)"/><text x="952" y="153" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="14" fill="#dcd6ff">has_more = true · use next token</text>
+    <path d="M1140 235V157H759V208" fill="none" stroke="#5fe0ae" stroke-width="3" marker-end="url(#g)"/>
+    <text x="960" y="142" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#bff5e2">has_more = true · next token</text>
+    <path d="M898 310H1050" stroke="#5fe0ae" stroke-width="5" marker-end="url(#g)"/>
+    <rect x="1050" y="235" width="180" height="150" rx="28" fill="#1f443c" stroke="#5fe0ae" stroke-width="3"/>
+    <text x="1140" y="278" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="23" font-weight="700" fill="#fff">Next page</text>
+    <text x="1140" y="315" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#bff5e2">same query</text>
+    <text x="1140" y="344" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="16" fill="#bff5e2">same snapshot</text>
   </g>
+
   <g id="invalid-cursor">
-    <path d="M703 406C650 470 516 496 438 540" fill="none" stroke="#ff8093" stroke-width="4" marker-end="url(#x)"/>
-    <rect x="230" y="520" width="208" height="108" rx="23" fill="#4a2634" stroke="#ff8093" stroke-width="3"/>
-    <text x="334" y="560" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="21" font-weight="700" fill="#fff">invalid_argument</text><text x="334" y="594" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffc2cc">malformed · wrong op</text><text x="334" y="615" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffc2cc">wrong filters · bad offset</text>
+    <path d="M703 406C650 470 516 483 438 525" fill="none" stroke="#ff8093" stroke-width="4" marker-end="url(#x)"/>
+    <rect x="230" y="503" width="208" height="108" rx="23" fill="#4a2634" stroke="#ff8093" stroke-width="3"/>
+    <text x="334" y="543" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="21" font-weight="700" fill="#fff">invalid_argument</text>
+    <text x="334" y="577" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffc2cc">bad checksum · wrong op</text>
+    <text x="334" y="598" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffc2cc">wrong filters · bad offset</text>
   </g>
+
   <g id="stale-snapshot">
-    <path d="M816 406C858 470 920 492 950 540" fill="none" stroke="#ffb34f" stroke-width="4" marker-end="url(#x)"/>
-    <rect x="950" y="520" width="260" height="108" rx="23" fill="#493520" stroke="#ffb34f" stroke-width="3"/>
-    <text x="1080" y="560" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="21" font-weight="700" fill="#fff">stale_snapshot</text><text x="1080" y="594" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffd79d">snapshot changed</text><text x="1080" y="615" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffd79d">retryable = true</text>
+    <path d="M816 406C867 470 940 489 976 525" fill="none" stroke="#ffb34f" stroke-width="4" marker-end="url(#x)"/>
+    <rect x="976" y="503" width="254" height="108" rx="23" fill="#493520" stroke="#ffb34f" stroke-width="3"/>
+    <text x="1103" y="543" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="21" font-weight="700" fill="#fff">stale_snapshot</text>
+    <text x="1103" y="577" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffd79d">snapshot changed</text>
+    <text x="1103" y="598" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#ffd79d">retryable = true</text>
   </g>
+
   <g id="complete">
-    <path d="M1170 310H1215" stroke="#5fe0ae" stroke-width="5" marker-end="url(#g)"/><circle cx="1235" cy="310" r="19" fill="none" stroke="#5fe0ae" stroke-width="5"/><circle cx="1235" cy="310" r="9" fill="#5fe0ae"/>
-    <text x="1210" y="267" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="13" fill="#bff5e2">has_more</text><text x="1210" y="284" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="13" fill="#bff5e2">= false</text>
+    <path d="M1140 385H1250V654H1140" fill="none" stroke="#5fe0ae" stroke-width="5" marker-end="url(#g)"/>
+    <circle cx="1120" cy="654" r="19" fill="none" stroke="#5fe0ae" stroke-width="5"/><circle cx="1120" cy="654" r="9" fill="#5fe0ae"/>
+    <text x="968" y="659" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="15" fill="#bff5e2">has_more = false</text>
   </g>
 </svg>

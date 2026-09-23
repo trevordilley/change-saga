@@ -5,7 +5,7 @@
   "rank": 40,
   "kind": "risk",
   "label": "Reject invalid cursor",
-  "description": "Malformed, noncanonical, cross-operation, cross-filter, or out-of-range tokens fail as invalid_argument; the unkeyed checksum is not authentication.",
+  "description": "Malformed, checksum-mismatched, cross-operation, cross-filter, or out-of-range tokens fail as invalid_argument; the checksum is not a keyed authenticity check.",
   "selector": {
     "type": "element",
     "element_id": "invalid-cursor"
