@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "add-slide-call",
+  "slide": "authoring-sequence",
+  "rank": 0,
+  "kind": "transition",
+  "label": "Create slide",
+  "description": "add-slide validates media and density constraints before deriving compact manifest and asset names.",
+  "selector": {
+    "type": "element",
+    "element_id": "add-slide-call"
+  }
+}

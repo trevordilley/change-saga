@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/slides.go",
+      "start": 103,
+      "end": 113,
+      "digest": "sha256:eaf70d8e1791d2e482a1324d052060f269971fd75300cc800d743e848b1c4e71",
+      "note": "Rejects non-regular bundle entries, evidence without a known Item, and files outside the compact record contract."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/slides.go",
+      "start": 202,
+      "end": 237,
+      "digest": "sha256:603f5da75f108be6496b2e28c7df7f0225b0da163b257201312aaad2cf667455",
+      "note": "Rejects non-regular bundle entries, evidence without a known Item, and files outside the compact record contract."
+    }
+  ]
+}

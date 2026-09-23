@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "validation-boundary",
+  "slide": "slide-state",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Validation boundary",
+  "description": "Loading validates each Item selector and reading-order membership, turning missing IDs or incomplete order into errors.",
+  "selector": {
+    "type": "element",
+    "element_id": "validation-boundary"
+  }
+}

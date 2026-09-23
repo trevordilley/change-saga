@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "draft-state",
+  "slide": "slide-state",
+  "rank": 0,
+  "kind": "node",
+  "label": "Draft state",
+  "description": "A newly created slide with no Items stays loadable but receives one authoring warning.",
+  "selector": {
+    "type": "element",
+    "element_id": "draft-state"
+  }
+}

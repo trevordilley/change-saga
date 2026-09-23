@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/server.go",
+      "start": 1554,
+      "end": 1585,
+      "digest": "sha256:9e39ac50979223b52edcb374534265d6351532f545749828ec1927b8d6aa141d",
+      "note": "Cleans asset requests, resolves symlinks, and returns errors when a path is invalid, missing, or escapes its bundle."
+    }
+  ]
+}

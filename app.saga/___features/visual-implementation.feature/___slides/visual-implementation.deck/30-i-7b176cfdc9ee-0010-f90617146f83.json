@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "addressable-state",
+  "slide": "slide-state",
+  "rank": 10,
+  "kind": "node",
+  "label": "Addressable state",
+  "description": "Every Item selector resolves and every semantic Item appears once in the slide reading order.",
+  "selector": {
+    "type": "element",
+    "element_id": "addressable-state"
+  }
+}

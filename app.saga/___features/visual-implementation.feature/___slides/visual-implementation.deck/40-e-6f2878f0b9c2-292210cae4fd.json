@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/slides_test.go",
+      "start": 59,
+      "end": 71,
+      "digest": "sha256:14bd7e8edd7cb0a4e76fbbf7b7b67ca6e3a2337af8f4f6372ab5580c65b09119",
+      "note": "Proves broken semantic parent contracts make validation fail with explicit slide and Item diagnostics."
+    }
+  ]
+}

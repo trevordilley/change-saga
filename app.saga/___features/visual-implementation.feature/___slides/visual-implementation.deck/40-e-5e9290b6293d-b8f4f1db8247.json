@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/server.go",
+      "start": 1411,
+      "end": 1413,
+      "digest": "sha256:41d524356acad673a9cff35d454843033dacb8793668b84ca9356e4031460b35",
+      "note": "Marks raster media as images and emits the image branch through the same fragment template."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/template.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:a6e2c9b53e80f74bb8ff97197099156c93aba9ac03f3424d75e5f89a10941faf",
+      "note": "Marks raster media as images and emits the image branch through the same fragment template."
+    }
+  ]
+}

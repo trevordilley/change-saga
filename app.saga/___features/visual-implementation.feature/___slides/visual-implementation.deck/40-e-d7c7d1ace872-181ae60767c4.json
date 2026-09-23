@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/slides.go",
+      "start": 242,
+      "end": 260,
+      "digest": "sha256:41927611ae60aabbb63b9445a65cbd72efa40f570b2dbf5b05b98e7954b2b65a",
+      "note": "Writes the paired visual asset and Slide manifest, removing the asset if the manifest write fails."
+    }
+  ]
+}

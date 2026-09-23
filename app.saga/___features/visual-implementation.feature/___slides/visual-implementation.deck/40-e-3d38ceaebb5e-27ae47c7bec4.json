@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/server.go",
+      "start": 1392,
+      "end": 1413,
+      "digest": "sha256:0a175168021d2e526e534f1e78d2f0e361033b6da88f8c378b45d57f11c5fac9",
+      "note": "Selects interactive rendering for SVG and HTML and image rendering for the remaining image media types."
+    }
+  ]
+}

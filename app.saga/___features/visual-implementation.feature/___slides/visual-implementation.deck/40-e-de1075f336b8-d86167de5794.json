@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/cover.go",
+      "start": 205,
+      "end": 274,
+      "digest": "sha256:edad380b7e08b980f9ea1393bec29b61c1f097bfe3ad15d76c96ff76d27f9948",
+      "note": "Resolves every requested location to a commit-pinned digest before the coverage write phase begins."
+    }
+  ]
+}

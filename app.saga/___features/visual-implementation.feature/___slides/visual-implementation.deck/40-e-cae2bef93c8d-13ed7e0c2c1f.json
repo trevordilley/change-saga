@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/landmark.go",
+      "start": 199,
+      "end": 243,
+      "digest": "sha256:db4da9010397b8a5e3423f817436e138c0e67c8fda22375754c8aec253afac84",
+      "note": "Checks that element selectors exist in current SVG or HTML content and that regions are valid for image media."
+    }
+  ]
+}

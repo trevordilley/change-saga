@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">State machine for a visual slide</title>
+  <desc id="desc">A slide becomes addressable and evidenced, enters a broken state only when replacement removes a referenced selector, is reported by validation, and returns through revise-item to addressable or evidenced state.</desc>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#1f3552"/></marker>
+    <marker id="arr-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#b84444"/></marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#2a7c59"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#fbf8f1"/>
+  <text x="62" y="62" font-family="system-ui" font-size="32" font-weight="760" fill="#16243a">Only selector-breaking replacement enters BROKEN</text>
+  <text x="62" y="97" font-family="system-ui" font-size="18" fill="#526276">Validation reports the mismatch; revise-item preserves identity and chooses the truthful recovered state.</text>
+
+  <g id="draft-state">
+    <circle cx="145" cy="315" r="82" fill="#fff2c9" stroke="#d8951b" stroke-width="4"/>
+    <text x="107" y="300" font-family="system-ui" font-size="21" font-weight="760" fill="#68480f">DRAFT</text>
+    <text x="91" y="334" font-family="system-ui" font-size="14" fill="#68480f">visual exists</text>
+    <text x="83" y="357" font-family="system-ui" font-size="14" fill="#68480f">0 Items → warning</text>
+  </g>
+  <g id="addressable-state">
+    <rect x="325" y="225" width="250" height="180" rx="42" fill="#e8f0ff" stroke="#3769b0" stroke-width="4"/>
+    <text x="365" y="286" font-family="system-ui" font-size="21" font-weight="760" fill="#294f84">ADDRESSABLE</text>
+    <text x="365" y="326" font-family="system-ui" font-size="15" fill="#405976">all selectors resolve</text>
+    <text x="365" y="353" font-family="system-ui" font-size="15" fill="#405976">reading order complete</text>
+    <path d="M227 315H325" stroke="#1f3552" stroke-width="4" marker-end="url(#arr)"/>
+    <text x="244" y="296" font-family="ui-monospace,monospace" font-size="14" fill="#1f3552">add-item</text>
+  </g>
+  <g id="evidenced-state">
+    <circle cx="755" cy="315" r="91" fill="#e4f6ec" stroke="#2a7c59" stroke-width="4"/>
+    <text x="692" y="299" font-family="system-ui" font-size="20" font-weight="760" fill="#245b45">EVIDENCED</text>
+    <text x="683" y="334" font-family="system-ui" font-size="14" fill="#245b45">commit + range + digest</text>
+    <text x="699" y="358" font-family="system-ui" font-size="14" fill="#245b45">owned by the Item</text>
+    <path d="M575 315H664" stroke="#1f3552" stroke-width="4" marker-end="url(#arr)"/>
+    <text x="600" y="296" font-family="ui-monospace,monospace" font-size="14" fill="#1f3552">cover</text>
+  </g>
+  <g id="invalid-outcome">
+    <rect x="1000" y="225" width="218" height="180" rx="34" fill="#fee7e4" stroke="#b84444" stroke-width="4"/>
+    <text x="1045" y="285" font-family="system-ui" font-size="22" font-weight="800" fill="#8a3030">BROKEN</text>
+    <path d="M1046 310H1171" stroke="#b84444" stroke-width="3"/>
+    <text x="1033" y="342" font-family="system-ui" font-size="15" fill="#8a3030">selector no longer resolves</text>
+    <text x="1048" y="372" font-family="system-ui" font-size="14" font-weight="700" fill="#8a3030">not review-ready</text>
+  </g>
+  <g id="drift-transition">
+    <path d="M823 253C875 170 950 170 1018 244" fill="none" stroke="#b84444" stroke-width="4" marker-end="url(#arr-red)"/>
+    <rect x="824" y="135" width="238" height="54" rx="27" fill="#fee7e4" stroke="#b84444"/>
+    <text x="844" y="159" font-family="ui-monospace,monospace" font-size="14" fill="#8a3030">set-slide-content</text>
+    <text x="844" y="178" font-family="system-ui" font-size="13" fill="#8a3030">replacement removes selector</text>
+  </g>
+  <g id="validation-boundary">
+    <path d="M1109 405V466" stroke="#b84444" stroke-width="4" marker-end="url(#arr-red)"/>
+    <path d="M1109 466L1205 526L1109 586L1013 526Z" fill="#fff" stroke="#b84444" stroke-width="4"/>
+    <text x="1061" y="520" font-family="system-ui" font-size="17" font-weight="760" fill="#8a3030">VALIDATE</text>
+    <text x="1049" y="547" font-family="system-ui" font-size="13" fill="#8a3030">reports missing ID</text>
+  </g>
+  <g id="repair-transition">
+    <path d="M1013 526C850 650 530 650 457 406" fill="none" stroke="#2a7c59" stroke-width="4" marker-end="url(#arr-green)"/>
+    <text x="588" y="642" font-family="system-ui" font-size="14" font-weight="700" fill="#245b45">revise-item → selector fixed</text>
+    <path d="M1054 572C922 681 742 584 755 406" fill="none" stroke="#2a7c59" stroke-width="4" marker-end="url(#arr-green)"/>
+    <rect x="782" y="548" width="206" height="51" rx="25" fill="#e4f6ec" stroke="#2a7c59"/>
+    <text x="805" y="570" font-family="ui-monospace,monospace" font-size="13" fill="#245b45">revise-item</text>
+    <text x="805" y="588" font-family="system-ui" font-size="12" fill="#245b45">+ evidence still current</text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "visual-authoring-explains-evidence",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:authoring-sequence",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:evidence",
+  "scope": "descendants",
+  "rationale": "The sequence shows how an addressable Item is validated before exact commit-pinned evidence is resolved and stored.",
+  "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:24:22.836342Z"
+}

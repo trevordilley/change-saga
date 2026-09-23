@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "drift-transition",
+  "slide": "slide-state",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Content drift",
+  "description": "set-slide-content atomically replaces the asset but does not rewrite existing Item selectors.",
+  "selector": {
+    "type": "element",
+    "element_id": "drift-transition"
+  }
+}
