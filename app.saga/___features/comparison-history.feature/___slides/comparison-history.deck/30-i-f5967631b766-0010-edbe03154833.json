@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "same-repo-lane",
+  "slide": "saga-snapshot-ownership",
+  "rank": 10,
+  "kind": "region",
+  "label": "In-repository snapshots align by OID",
+  "description": "The merge-base identifies the base Saga snapshot; the checked-out head may use the working Saga so uncommitted documentation authoring remains visible.",
+  "selector": {
+    "type": "element",
+    "element_id": "same-repo-lane"
+  }
+}

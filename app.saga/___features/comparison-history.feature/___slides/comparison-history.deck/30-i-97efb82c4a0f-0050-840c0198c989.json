@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "deterministic-diff",
+  "slide": "observe-compare-state",
+  "rank": 50,
+  "kind": "node",
+  "label": "Canonical Git settings stabilize atoms",
+  "description": "The source reader fixes diff algorithm, rename detection, prefixes, submodule handling, and disables external transforms before parsing.",
+  "selector": {
+    "type": "element",
+    "element_id": "deterministic-diff"
+  }
+}

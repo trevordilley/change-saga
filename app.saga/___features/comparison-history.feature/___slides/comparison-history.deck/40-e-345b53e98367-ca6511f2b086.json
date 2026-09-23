@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/layers.go",
+      "start": 518,
+      "end": 590,
+      "digest": "sha256:a07993802215c749f809fe966bd017604bca7acf58bba469cf4404e0ffde4400",
+      "note": "Carries uncovered atoms into an explicit unreferenced hunk list and preserves file events that have no line body."
+    }
+  ]
+}

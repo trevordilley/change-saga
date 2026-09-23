@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "review-join",
+  "slide": "record-history-sequence",
+  "rank": 50,
+  "kind": "node",
+  "label": "Reviews are joined, not stored on the record",
+  "description": "A review is related when its range or landing contains a record commit, or when one of its Items explicitly points at the record.",
+  "selector": {
+    "type": "element",
+    "element_id": "review-join"
+  }
+}

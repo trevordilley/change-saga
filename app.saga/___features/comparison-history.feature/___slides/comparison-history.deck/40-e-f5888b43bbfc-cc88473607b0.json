@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/history.go",
+      "start": 123,
+      "end": 145,
+      "digest": "sha256:bd665d0875cf3a2c6bb8dea9eaaea29d11985e56377d985ac515222da1490954",
+      "note": "Translates Saga commits into source commits through validated sync cursors when record history lives in a companion repository."
+    }
+  ]
+}

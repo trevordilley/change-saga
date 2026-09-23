@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/open.go",
+      "start": 25,
+      "end": 58,
+      "digest": "sha256:c72f1f05abc08740a6a0be54354692e20571124bcf206fbe2659f58abb9057d1",
+      "note": "Locates the Saga repository and routes snapshot selection between in-repository history, companion cursor history, and unavailable history."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/changeview/open.go",
+      "start": 61,
+      "end": 70,
+      "digest": "sha256:6f0aa6ad3c02a18602d56ff5c707726a5a4f2b8d30b2f05cb94a0081a5957828",
+      "note": "Locates the Saga repository and routes snapshot selection between in-repository history, companion cursor history, and unavailable history."
+    }
+  ]
+}

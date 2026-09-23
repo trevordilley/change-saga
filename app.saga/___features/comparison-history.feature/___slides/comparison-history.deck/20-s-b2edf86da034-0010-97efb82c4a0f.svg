@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Observe and compare state machine</title>
+  <desc id="desc">An empty against value observes one commit; a set against value verifies and resolves commits, rejects worktree heads, computes the merge base, and emits code atoms.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101525"/><stop offset="1" stop-color="#251934"/></linearGradient>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#9f8cff"/></marker>
+    <style>.t{font-family:Inter,system-ui,sans-serif;fill:#fbf9ff}.ey{font-size:15px;font-weight:700;letter-spacing:2px;fill:#c3b8ff}.h{font-size:34px;font-weight:760}.l{font-size:21px;font-weight:720}.s{font-size:15px;fill:#c7c0d5}.node{fill:#211d38;stroke:#5c4f86;stroke-width:2}.ok{fill:#1e3040;stroke:#51d3c8;stroke-width:2}.bad{fill:#3c202e;stroke:#ff6b88;stroke-width:2}.e{fill:none;stroke:#9f8cff;stroke-width:3;marker-end:url(#a)}.guard{font-size:13px;fill:#dcd5ff}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="52" class="t ey">OPENING RANGE · STATE MACHINE</text>
+  <text x="64" y="96" class="t h">Observe is a zero-diff state; compare is commit-only</text>
+  <text x="64" y="126" class="t s">The surprising asymmetry: Saga authoring may be uncommitted, but source evidence may not.</text>
+
+  <g id="range-decision"><circle cx="170" cy="330" r="70" class="node"/><text x="170" y="319" text-anchor="middle" class="t l">against?</text><text x="170" y="347" text-anchor="middle" class="t s">Range</text></g>
+  <path d="M217 278C280 210 326 205 384 205" class="e"/><text x="270" y="216" class="t guard">empty</text>
+  <path d="M240 350H384" class="e"/><text x="283" y="338" class="t guard">set</text>
+
+  <g id="observe"><rect x="384" y="158" width="232" height="112" rx="56" class="ok"/><text x="500" y="202" text-anchor="middle" class="t l">Observe</text><text x="500" y="232" text-anchor="middle" class="t s">base = head · 0 atoms</text></g>
+
+  <g id="identity-guard"><rect x="384" y="304" width="232" height="112" rx="22" class="node"/><text x="408" y="346" class="t l">Verify identity</text><text x="408" y="376" class="t s">checkout ↔ repository</text><text x="408" y="400" class="t s">resolve base + head</text></g>
+  <path d="M616 360H720" class="e"/>
+
+  <g id="worktree-block"><rect x="700" y="488" width="260" height="118" rx="22" class="bad"/><text x="726" y="528" class="t ey" fill="#ff8ba3">UNSUPPORTED</text><text x="726" y="562" class="t l">WORKTREE head</text><text x="726" y="588" class="t s">commit first; references pin OIDs</text></g>
+  <path d="M655 390C692 414 718 440 746 488" class="e"/><text x="654" y="446" class="t guard">head = WORKTREE</text>
+
+  <g id="merge-base"><rect x="720" y="304" width="220" height="112" rx="22" class="node"/><text x="744" y="346" class="t l">Merge base</text><text x="744" y="376" class="t s">actual ancestor</text><text x="744" y="400" class="t s">baseOID..headOID</text></g>
+  <path d="M940 360H1032" class="e"/>
+
+  <g id="atomize"><rect x="1032" y="286" width="184" height="148" rx="74" class="ok"/><text x="1124" y="337" text-anchor="middle" class="t l">Atomize</text><text x="1124" y="368" text-anchor="middle" class="t s">new @ head</text><text x="1124" y="392" text-anchor="middle" class="t s">old @ merge-base</text><text x="1124" y="416" text-anchor="middle" class="t s">file events</text></g>
+  <g id="deterministic-diff"><path d="M830 304V218H1032" class="e"/><rect x="760" y="158" width="272" height="90" rx="20" class="node"/><text x="786" y="196" class="t l">Canonical Git diff</text><text x="786" y="222" class="t s">Myers · renames · no textconv</text></g>
+</svg>

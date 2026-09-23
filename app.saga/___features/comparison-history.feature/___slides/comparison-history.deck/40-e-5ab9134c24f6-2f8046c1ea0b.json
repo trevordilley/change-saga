@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query_layers.go",
+      "start": 71,
+      "end": 92,
+      "digest": "sha256:6aa536fb02c7e1a54502bf05371d3ff0daafe69413930a8ec5d5928ec7a89a35",
+      "note": "Implements the history query as a no-comparison read that names one record and returns a stable envelope snapshot."
+    }
+  ]
+}

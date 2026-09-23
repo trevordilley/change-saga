@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Record history reconstruction</title>
+  <desc id="desc">A history query resolves a record, follows its files through Git commits, maps companion cursors, associates reviews, and returns commands that reopen each comparison.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081725"/><stop offset="1" stop-color="#1b2540"/></linearGradient>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#65c7ff"/></marker>
+    <style>.t{font-family:Inter,system-ui,sans-serif;fill:#f5fbff}.ey{font-size:15px;font-weight:700;letter-spacing:2px;fill:#65c7ff}.h{font-size:34px;font-weight:760}.l{font-size:18px;font-weight:720}.s{font-size:14px;fill:#adc2d5}.head{fill:#153451;stroke:#4d8cb5;stroke-width:2}.edge{fill:none;stroke:#65c7ff;stroke-width:2.5;marker-end:url(#a)}.life{stroke:#526b86;stroke-width:2;stroke-dasharray:6 8}.note{fill:#17263b;stroke:#526b86;stroke-width:1.5}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="64" y="52" class="t ey">RECORD HISTORY · SEQUENCE</text>
+  <text x="64" y="96" class="t h">History is reconstructed, then turned back into comparisons</text>
+  <text x="64" y="126" class="t s">The output is not a stored timeline: it is Git history plus review and sync-cursor joins.</text>
+
+  <g id="history-request"><rect x="54" y="166" width="170" height="62" rx="18" class="head"/><text x="139" y="204" text-anchor="middle" class="t l">History query</text><path d="M139 228V646" class="life"/></g>
+  <g id="record-inventory"><rect x="268" y="166" width="170" height="62" rx="18" class="head"/><text x="353" y="204" text-anchor="middle" class="t l">Inventory</text><path d="M353 228V646" class="life"/></g>
+  <g id="git-history"><rect x="482" y="166" width="170" height="62" rx="18" class="head"/><text x="567" y="204" text-anchor="middle" class="t l">Git log</text><path d="M567 228V646" class="life"/></g>
+  <g id="comparison-mapping"><rect x="696" y="166" width="170" height="62" rx="18" class="head"/><text x="781" y="195" text-anchor="middle" class="t l">Comparison</text><text x="781" y="216" text-anchor="middle" class="t s">mapping</text><path d="M781 228V646" class="life"/></g>
+  <g id="review-join"><rect x="910" y="166" width="170" height="62" rx="18" class="head"/><text x="995" y="204" text-anchor="middle" class="t l">Reviews</text><path d="M995 228V646" class="life"/></g>
+  <g id="history-response"><rect x="1110" y="166" width="124" height="62" rx="18" class="head"/><text x="1172" y="195" text-anchor="middle" class="t l">History</text><text x="1172" y="216" text-anchor="middle" class="t s">response</text><path d="M1172 228V646" class="life"/></g>
+
+  <path d="M139 270H353" class="edge"/><text x="168" y="260" class="t s">resolve URN → record files</text>
+  <path d="M353 328H567" class="edge"/><text x="378" y="318" class="t s">git log -- files</text>
+  <path d="M567 386H781" class="edge"/><text x="590" y="376" class="t s">merge base or first parent</text>
+  <g id="companion-remap"><rect x="690" y="408" width="182" height="70" rx="14" class="note"/><text x="781" y="437" text-anchor="middle" class="t s">companion?</text><text x="781" y="461" text-anchor="middle" class="t s">Saga commits → cursors</text></g>
+  <path d="M781 478V510H995" class="edge"/><text x="815" y="500" class="t s">commit ranges + Item links</text>
+  <path d="M995 550H1172" class="edge"/><text x="1014" y="540" class="t s">review reasons</text>
+  <path d="M1172 602H139" class="edge"/><text x="480" y="592" class="t s">events + replaced + uncommitted + “open --against … --head …”</text>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/gitdiff/opening.go",
+      "start": 21,
+      "end": 48,
+      "digest": "sha256:3092e530015aea91d565b68dae500d1f5ced9fdb5c6a5428a1c713f4cfc45259",
+      "note": "Branches opening mode solely on whether against is empty and supplies HEAD when the caller omits a head."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "atomize",
+  "slide": "observe-compare-state",
+  "rank": 60,
+  "kind": "node",
+  "label": "Atoms pin each side correctly",
+  "description": "Added lines and surviving files pin to head, while deleted lines and deleted files pin to the merge base.",
+  "selector": {
+    "type": "element",
+    "element_id": "atomize"
+  }
+}

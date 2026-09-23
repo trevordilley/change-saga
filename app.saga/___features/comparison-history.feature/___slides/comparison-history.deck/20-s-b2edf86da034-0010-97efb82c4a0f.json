@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "observe-compare-state",
+  "deck": "comparison-history",
+  "title": "Observe is zero-diff; compare is commit-only",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b2edf86da034-0010-97efb82c4a0f.svg",
+  "takeaway": "Observe evaluates one commit with no atoms; compare rejects WORKTREE and diffs the actual merge-base through a committed head.",
+  "reading_order": [
+    "range-decision",
+    "observe",
+    "identity-guard",
+    "worktree-block",
+    "merge-base",
+    "deterministic-diff",
+    "atomize"
+  ]
+}

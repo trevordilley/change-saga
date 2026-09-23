@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "record-inventory",
+  "slide": "record-history-sequence",
+  "rank": 10,
+  "kind": "node",
+  "label": "Inventory resolves the record files",
+  "description": "The current validated Saga inventory maps the record to the exact metadata and content files whose Git history defines its evolution.",
+  "selector": {
+    "type": "element",
+    "element_id": "record-inventory"
+  }
+}

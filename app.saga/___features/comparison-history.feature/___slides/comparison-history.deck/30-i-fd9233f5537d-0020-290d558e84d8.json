@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "affected",
+  "slide": "comparison-three-layers",
+  "rank": 20,
+  "kind": "region",
+  "label": "Affected is invalidated knowledge",
+  "description": "Unedited records become affected through changed code, stale revision pins, or upward traversal through the traceability chain.",
+  "selector": {
+    "type": "element",
+    "element_id": "affected"
+  }
+}

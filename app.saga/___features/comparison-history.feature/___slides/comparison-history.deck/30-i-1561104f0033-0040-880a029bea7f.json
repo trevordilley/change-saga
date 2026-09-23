@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "change-layers",
+  "slide": "comparison-architecture",
+  "rank": 40,
+  "kind": "node",
+  "label": "Change impact projection",
+  "description": "The change view combines Saga snapshots, code impact, pins, and graph traversal into Changed, Affected, and Code layers.",
+  "selector": {
+    "type": "element",
+    "element_id": "change-layers"
+  }
+}

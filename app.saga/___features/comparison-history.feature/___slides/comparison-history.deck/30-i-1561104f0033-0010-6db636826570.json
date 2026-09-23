@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "gitdiff",
+  "slide": "comparison-architecture",
+  "rank": 10,
+  "kind": "node",
+  "label": "Commit-pinned source comparison",
+  "description": "The Git boundary verifies repository identity, resolves revisions, computes the merge base, and emits the comparison's atomic source changes.",
+  "selector": {
+    "type": "element",
+    "element_id": "gitdiff"
+  }
+}
