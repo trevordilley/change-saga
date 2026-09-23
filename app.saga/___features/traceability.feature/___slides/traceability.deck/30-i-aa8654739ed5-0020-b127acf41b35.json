@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "direct-intersection",
+  "slide": "reverse-impact",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Direct intersection",
+  "description": "An old changed line or file event intersecting owned evidence marks the target must-update.",
+  "selector": {
+    "type": "element",
+    "element_id": "direct-intersection"
+  }
+}

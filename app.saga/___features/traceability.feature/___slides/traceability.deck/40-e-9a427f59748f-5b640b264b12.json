@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 114,
+      "end": 124,
+      "digest": "sha256:7d793fd75b5d8452be14ebf02ea7d4d7cfaaa4c2e1ef8b35a5dfaccf2f0f8819",
+      "note": "Checks the pinned commit and verifies the stored digest against the exact pinned bytes before any remapping."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 131,
+      "end": 133,
+      "digest": "sha256:df55c9dcb0dfe3b011b68838227c99b7e4ea408796860c10dd0a468e58e91735",
+      "note": "Checks the pinned commit and verifies the stored digest against the exact pinned bytes before any remapping."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 215,
+      "end": 239,
+      "digest": "sha256:30d9834db65261e5f7fa50f01532379e251ad19de28f2393db1cb82770f91a73",
+      "note": "Checks the pinned commit and verifies the stored digest against the exact pinned bytes before any remapping."
+    }
+  ]
+}

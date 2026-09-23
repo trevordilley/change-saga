@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session_test.go",
+      "start": 58,
+      "end": 117,
+      "digest": "sha256:4a36f4d5bac7a21f3d070a91e3ad4ac980c83d1d781a4885037145b751530aa5",
+      "note": "Verifies authored progress is not proof and an integrated immutable merge completes the delivery path."
+    }
+  ]
+}

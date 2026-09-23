@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "readiness-boundary",
+  "deck": "traceability",
+  "title": "Source exists; delivery proof is missing",
+  "rank": 50,
+  "intent": "risk",
+  "layout": "risk",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-85572f9da485-0050-10db9580d42f.svg",
+  "takeaway": "The runtime path is implemented, but all six traceability criteria remain undelivered because the Saga has no work items or immutable delivery evidence.",
+  "reading_order": [
+    "accepted-criteria",
+    "design-present",
+    "implementation-present",
+    "work-item-gap",
+    "delivery-evidence-gap",
+    "not-delivered"
+  ]
+}

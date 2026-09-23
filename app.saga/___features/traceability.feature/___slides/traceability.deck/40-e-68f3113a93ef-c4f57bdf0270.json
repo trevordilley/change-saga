@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 32,
+      "end": 58,
+      "digest": "sha256:6ab1990a41dcbad683e34c84ab416b2270191e5d15a85167f955408e6067ee10",
+      "note": "Reuses the review application's snapshot when opening the living session so both query layers identify one state."
+    }
+  ]
+}

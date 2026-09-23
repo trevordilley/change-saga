@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "remap-current",
+  "slide": "code-reference-resolution",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Remap current",
+  "description": "Marks the original pin, a content-preserving line or rename remap, or one unique digest fallback match as current.",
+  "selector": {
+    "type": "element",
+    "element_id": "remap-current"
+  }
+}

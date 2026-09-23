@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "reverse-impact-explains-reverse-path",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:reverse-impact",
+  "to": "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path",
+  "scope": "descendants",
+  "rationale": "The ownership flow shows how a changed code atom follows exact evidence and persisted relations back to requirements and tests.",
+  "to_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T03:27:54.703005Z"
+}

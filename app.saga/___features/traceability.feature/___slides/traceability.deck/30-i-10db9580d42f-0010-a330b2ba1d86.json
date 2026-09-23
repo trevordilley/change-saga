@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "design-present",
+  "slide": "readiness-boundary",
+  "rank": 10,
+  "kind": "node",
+  "label": "Design present",
+  "description": "The existing pinned graph design addresses all three traceability stories.",
+  "selector": {
+    "type": "element",
+    "element_id": "design-present"
+  }
+}

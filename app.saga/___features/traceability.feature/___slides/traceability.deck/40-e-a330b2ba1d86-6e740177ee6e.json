@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 426,
+      "end": 443,
+      "digest": "sha256:7f3f0f0283b5048e7ee212db1fe67c9f5f6506a53353a63ace85885a72fa3de7",
+      "note": "Projects criterion- and story-level design relations while marking story-wide design as broad."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "affected-output",
+  "slide": "reverse-impact",
+  "rank": 50,
+  "kind": "node",
+  "label": "Affected output",
+  "description": "Emits requirements and test cases with their exact evidence routes and must-update or consider-update action.",
+  "selector": {
+    "type": "element",
+    "element_id": "affected-output"
+  }
+}

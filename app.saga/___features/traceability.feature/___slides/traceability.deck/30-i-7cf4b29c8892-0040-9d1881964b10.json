@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "paged-envelope",
+  "slide": "traceability-query-runtime",
+  "rank": 40,
+  "kind": "node",
+  "label": "Paged envelope",
+  "description": "Returns criterion rows with a snapshot-bound deterministic page cursor.",
+  "selector": {
+    "type": "element",
+    "element_id": "paged-envelope"
+  }
+}

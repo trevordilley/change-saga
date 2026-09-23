@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 253,
+      "end": 264,
+      "digest": "sha256:0171db2399ff5238b30e684522339ec242f1985dd82e5685a95c5b10878caf5a",
+      "note": "Carries unchanged criterion statements or story obligations forward while preserving the confirmed revision."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 280,
+      "end": 307,
+      "digest": "sha256:dc075fce300bbe08dbdc56b6b5f63e20a8d22985a49c0e4c0b0a95b39c5249c1",
+      "note": "Carries unchanged criterion statements or story obligations forward while preserving the confirmed revision."
+    }
+  ]
+}

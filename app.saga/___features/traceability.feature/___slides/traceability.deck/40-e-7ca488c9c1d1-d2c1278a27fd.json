@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 208,
+      "end": 221,
+      "digest": "sha256:7bdb90b079543ae34c19ed509e61fa1d84c2b4702e613d90386910fc08d134ff",
+      "note": "Evaluates confirmed pins once and applies the explicit invalid-over-conflicted-over-stale precedence."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 226,
+      "end": 234,
+      "digest": "sha256:99d99a878195fa2d9283a1963d55d5efc9ef23ccd8c95dcef7218a390705c04b",
+      "note": "Evaluates confirmed pins once and applies the explicit invalid-over-conflicted-over-stale precedence."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 323,
+      "end": 338,
+      "digest": "sha256:a75f05e73d7275aae0f9ae7a92d1d8559e43bf76a24efee10a547d46292ff3c6",
+      "note": "Evaluates confirmed pins once and applies the explicit invalid-over-conflicted-over-stale precedence."
+    }
+  ]
+}

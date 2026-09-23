@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact.go",
+      "start": 271,
+      "end": 280,
+      "digest": "sha256:8183135767a7cab5006771d53780bf92f58919d183e76507733484d645539075",
+      "note": "Indexes incoming Git atoms and their display positions without interpreting authored content."
+    }
+  ]
+}

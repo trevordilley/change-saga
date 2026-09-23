@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "criterion-composer",
+  "slide": "traceability-query-runtime",
+  "rank": 30,
+  "kind": "node",
+  "label": "Criterion composer",
+  "description": "Joins only active current relations into design, work, code, evidence, path, and blocker fields per accepted criterion.",
+  "selector": {
+    "type": "element",
+    "element_id": "criterion-composer"
+  }
+}

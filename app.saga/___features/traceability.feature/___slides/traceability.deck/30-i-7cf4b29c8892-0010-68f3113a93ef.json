@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "shared-snapshot",
+  "slide": "traceability-query-runtime",
+  "rank": 10,
+  "kind": "region",
+  "label": "Shared snapshot",
+  "description": "The review and living sessions share one snapshot identity so cursors and results describe the same Saga state.",
+  "selector": {
+    "type": "element",
+    "element_id": "shared-snapshot"
+  }
+}
