@@ -29,6 +29,9 @@ func TestFeatureContextCompactExpansionNeighborsAndExactLinks(t *testing.T) {
 	if len(page.Stories) != 1 || page.Stories[0].Requirement != "urn:change-saga:test:story:alpha" {
 		t.Fatalf("compact stories leaked prose or lost identity: %+v", page.Stories)
 	}
+	if len(page.Terms) != 1 || page.Terms[0].DefinitionMaturity != requirements.DefinitionMaturityAccepted || page.Terms[0].ImplementationEvidence != requirements.ImplementationEvidencePresent {
+		t.Fatalf("compact term semantics = %+v", page.Terms)
+	}
 	encoded, _ := json.Marshal(page)
 	if strings.Contains(string(encoded), "Alpha statement") || strings.Contains(string(encoded), "project vocabulary definition") || strings.Contains(string(encoded), strings.Repeat("a", 40)) {
 		t.Fatalf("compact projection leaked expanded prose or code: %s", encoded)
@@ -59,7 +62,7 @@ func TestFeatureContextCompactExpansionNeighborsAndExactLinks(t *testing.T) {
 	if detail.Feature.Description != "Main feature" {
 		t.Fatalf("expanded feature description = %+v", detail.Feature)
 	}
-	if len(detail.Terms) != 1 || detail.Terms[0].Definition != "project vocabulary definition" {
+	if len(detail.Terms) != 1 || detail.Terms[0].Definition != "project vocabulary definition" || detail.Terms[0].DefinitionMaturity != requirements.DefinitionMaturityAccepted || detail.Terms[0].ImplementationEvidence != requirements.ImplementationEvidencePresent {
 		t.Fatalf("expanded terms = %+v", detail.Terms)
 	}
 	if len(detail.Visuals) != 1 || len(detail.Visuals[0].Items) != 1 || len(detail.Visuals[0].Items[0].Code) != 1 {
@@ -69,6 +72,45 @@ func TestFeatureContextCompactExpansionNeighborsAndExactLinks(t *testing.T) {
 	if item.CriterionLinks[0] != "urn:change-saga:test:story:alpha:criterion:accept" || item.Code[0].Location().String() != strings.Repeat("a", 40)+":app.go#L3-L4" {
 		t.Fatalf("exact item links = %+v", item)
 	}
+}
+
+func TestFeatureContextTermSemanticsPreserveLegacyUnknownAndConflicts(t *testing.T) {
+	t.Run("legacy omitted values", func(t *testing.T) {
+		session := featureContextFixture("snapshot")
+		session.requirements.Terms[0].CurrentRevision.DefinitionMaturity = nil
+		session.requirements.Terms[0].CurrentRevision.ImplementationEvidence = nil
+		result, err := session.Query(context.Background(), Query{Operation: "context", Filters: Filters{Feature: "main"}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		term := result.Data.(FeatureContextPage).Terms[0]
+		if term.DefinitionMaturity != requirements.DefinitionMaturityUnknown || term.ImplementationEvidence != requirements.ImplementationEvidenceUnknown {
+			t.Fatalf("legacy semantics = %+v", term)
+		}
+	})
+
+	t.Run("conflicting heads", func(t *testing.T) {
+		session := featureContextFixture("snapshot")
+		term := &session.requirements.Terms[0]
+		other := *term.CurrentRevision
+		other.ID = "r2"
+		other.Name = "Competing widget"
+		proposed := requirements.DefinitionMaturityProposed
+		absent := requirements.ImplementationEvidenceAbsent
+		other.DefinitionMaturity = &proposed
+		other.ImplementationEvidence = &absent
+		term.Revisions = []requirements.TermRevision{*term.CurrentRevision, other}
+		term.RevisionHeads = []string{"urn:change-saga:test:term:widget:revision:r1", "urn:change-saga:test:term:widget:revision:r2"}
+		term.CurrentRevision = nil
+		result, err := session.Query(context.Background(), Query{Operation: "context", Filters: Filters{Feature: "main", Expand: "alpha"}})
+		if err != nil {
+			t.Fatal(err)
+		}
+		terms := result.Data.(FeatureContextPage).Terms
+		if len(terms) != 1 || !terms[0].RevisionConflict || terms[0].Name != "" || terms[0].Definition != "" || terms[0].DefinitionMaturity != requirements.DefinitionMaturityUnknown || terms[0].ImplementationEvidence != requirements.ImplementationEvidenceUnknown {
+			t.Fatalf("conflicted term semantics = %+v", terms)
+		}
+	})
 }
 
 func TestFeatureContextRejectsAmbiguousTitlesInvalidFeaturesAndCrossSnapshotCursors(t *testing.T) {
@@ -215,9 +257,11 @@ func featureContextFixture(snapshot string) *session {
 	item := &saga.Item{ItemManifest: saga.ItemManifest{ID: "control", SlideID: "flow", Label: "Control", Kind: "node"}, Target: "urn:change-saga:test:slide:flow:item:control", Code: []saga.CodeFile{{References: []coderef.Reference{ref}}}}
 	slide.Items = []*saga.Item{item}
 	deck.Slides = []*saga.Slide{slide}
-	termRevision := &requirements.TermRevision{ID: "r1", Name: "Widget", Definition: "project vocabulary definition", Stories: []string{alphaURN}, Code: []coderef.Reference{ref}}
+	accepted := requirements.DefinitionMaturityAccepted
+	present := requirements.ImplementationEvidencePresent
+	termRevision := &requirements.TermRevision{ID: "r1", Name: "Widget", Definition: "project vocabulary definition", DefinitionMaturity: &accepted, ImplementationEvidence: &present, Stories: []string{alphaURN}, Code: []coderef.Reference{ref}}
 	termLifecycle := &requirements.TermEvent{ID: "active", State: requirements.TermActive}
-	term := requirements.Term{Identity: requirements.RecordIdentity{ID: "widget"}, CurrentRevision: termRevision, CurrentLifecycle: termLifecycle, RevisionHeads: []string{"urn:change-saga:test:term:widget:revision:r1"}, LifecycleHeads: []string{"urn:change-saga:test:term:widget:event:active"}}
+	term := requirements.Term{Identity: requirements.RecordIdentity{ID: "widget"}, Revisions: []requirements.TermRevision{*termRevision}, CurrentRevision: termRevision, CurrentLifecycle: termLifecycle, RevisionHeads: []string{"urn:change-saga:test:term:widget:revision:r1"}, LifecycleHeads: []string{"urn:change-saga:test:term:widget:event:active"}}
 	return &session{
 		snapshot: snapshot,
 		requirements: requirements.Document{SagaID: "test", Features: []applayout.Feature{mainFeature, otherFeature}, Stories: []requirements.Story{alpha, beta, neighbor}, Terms: []requirements.Term{term}, Relations: []requirements.Relation{
