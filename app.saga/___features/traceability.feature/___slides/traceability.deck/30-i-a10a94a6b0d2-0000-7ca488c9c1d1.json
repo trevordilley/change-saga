@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pin-check",
+  "slide": "relation-currency",
+  "rank": 0,
+  "kind": "node",
+  "label": "Confirmed pins",
+  "description": "Evaluates the relation's confirmed revision and digest pins against current endpoint heads.",
+  "selector": {
+    "type": "element",
+    "element_id": "pin-check"
+  }
+}

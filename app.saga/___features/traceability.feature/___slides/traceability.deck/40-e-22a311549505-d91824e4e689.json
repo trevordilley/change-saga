@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact_test.go",
+      "start": 36,
+      "end": 53,
+      "digest": "sha256:2f073fae9929e6a2a9fe561571075de82faead45af54fbefdd4f075cdb6b2d47",
+      "note": "Provides concrete old-line, new-line, and new-file atoms used by the impact projection tests."
+    }
+  ]
+}

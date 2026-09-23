@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/relation_v5_test.go",
+      "start": 227,
+      "end": 231,
+      "digest": "sha256:3eca57f78f9568118db9b7b06f14430759bdb0afec1a41ee68f02c3952f7cccb",
+      "note": "Verifies multiple current test-case heads produce conflicted currency."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "carry-forward",
+  "slide": "relation-currency",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Carry forward",
+  "description": "An unchanged criterion statement or story obligation advances logically while retaining the human-confirmed revision pin.",
+  "selector": {
+    "type": "element",
+    "element_id": "carry-forward"
+  }
+}

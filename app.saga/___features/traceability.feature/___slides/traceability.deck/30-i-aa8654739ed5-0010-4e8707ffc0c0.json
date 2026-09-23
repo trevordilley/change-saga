@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pinned-index",
+  "slide": "reverse-impact",
+  "rank": 10,
+  "kind": "region",
+  "label": "Evidence ownership",
+  "description": "Resolves visual and test evidence at the incoming base commit and indexes exact owned paths and ranges.",
+  "selector": {
+    "type": "element",
+    "element_id": "pinned-index"
+  }
+}

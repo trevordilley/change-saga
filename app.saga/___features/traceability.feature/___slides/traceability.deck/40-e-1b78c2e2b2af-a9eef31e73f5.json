@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/traceability_test.go",
+      "start": 56,
+      "end": 74,
+      "digest": "sha256:b4aecfe03f995b326fd53d70744723ea838a6b066d4d0221cb6afc608fbbf1a8",
+      "note": "Proves that remapped evidence matches a later location while stale evidence does not."
+    }
+  ]
+}

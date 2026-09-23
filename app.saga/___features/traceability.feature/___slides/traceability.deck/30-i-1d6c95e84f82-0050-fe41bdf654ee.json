@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-boundary",
+  "slide": "code-reference-resolution",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Stale boundary",
+  "description": "Changed, deleted, unverifiable, binary, or ambiguously recovered content becomes stale and accounts for nothing.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-boundary"
+  }
+}

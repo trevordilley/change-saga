@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve_test.go",
+      "start": 42,
+      "end": 67,
+      "digest": "sha256:4c63156deaa2cc5633ec2b99550720cd1d6628a82b1d4c0a1b3192407846a1e7",
+      "note": "Verifies current behavior at the pin and across a Saga-only commit that leaves code unchanged."
+    }
+  ]
+}

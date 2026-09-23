@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 137,
+      "end": 157,
+      "digest": "sha256:4cf123466be2834c3e4fc4e4d5677a106edcac26a8bd137ca56dd6e9d92edace",
+      "note": "Inspects tree changes and separates unchanged, deleted, whole-file, binary, and renamed paths before line remapping."
+    }
+  ]
+}

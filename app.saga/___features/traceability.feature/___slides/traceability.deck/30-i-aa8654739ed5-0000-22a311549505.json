@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "incoming-atoms",
+  "slide": "reverse-impact",
+  "rank": 0,
+  "kind": "node",
+  "label": "Incoming atoms",
+  "description": "Represents changed old lines, new lines, and whole-file events without inferring intent from their text.",
+  "selector": {
+    "type": "element",
+    "element_id": "incoming-atoms"
+  }
+}

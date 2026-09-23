@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact.go",
+      "start": 229,
+      "end": 251,
+      "digest": "sha256:606ba5605f98e352633ccd0645a1c3a3db400902785b66273b63681ebd533d18",
+      "note": "Resolves every visual and test-evidence reference at the incoming base and indexes its exact owner range."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact.go",
+      "start": 282,
+      "end": 315,
+      "digest": "sha256:f9d19c02aa819e4e4bd55deb55b1c0bfbb13844f7c3aa5ddb67b3135fd1ee067",
+      "note": "Classifies nearby or replacement additions as consider-update and preserves unmatched atoms as new content."
+    }
+  ]
+}

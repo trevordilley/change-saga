@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/relation_v5_test.go",
+      "start": 206,
+      "end": 212,
+      "digest": "sha256:f0e995f8fa47799ecb52df92ba233875a848252bd140738589beb52fdf07f378",
+      "note": "Verifies unresolved and missing test-case endpoints are invalid rather than assumed current."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/relation_v5_test.go",
+      "start": 233,
+      "end": 237,
+      "digest": "sha256:5b4adc4927276bc33ebb7dfc0246490032572884ac7f5ea81563c43b5aacc4ba",
+      "note": "Verifies unresolved and missing test-case endpoints are invalid rather than assumed current."
+    }
+  ]
+}

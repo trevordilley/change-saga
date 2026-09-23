@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact_test.go",
+      "start": 81,
+      "end": 119,
+      "digest": "sha256:154dfb5b703abe11113befacef921dcaf362b59e9ceb093d5ca5b8c8556a7b3a",
+      "note": "Verifies a source change implicates a criterion through both Item ownership and verifying test evidence."
+    }
+  ]
+}

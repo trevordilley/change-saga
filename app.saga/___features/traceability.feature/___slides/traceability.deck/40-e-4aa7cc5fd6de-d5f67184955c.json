@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/currency.go",
+      "start": 250,
+      "end": 252,
+      "digest": "sha256:7f8e3d27e35e52b5366ac9fcc113db22b44277129cab4de2c4ed332874cddad4",
+      "note": "Emits a multiple-head reason when a pinned endpoint has competing revision heads."
+    }
+  ]
+}

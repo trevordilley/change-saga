@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli-request",
+  "slide": "traceability-query-runtime",
+  "rank": 0,
+  "kind": "node",
+  "label": "CLI request",
+  "description": "Parses a traceability query and opens the read session before dispatch.",
+  "selector": {
+    "type": "element",
+    "element_id": "cli-request"
+  }
+}

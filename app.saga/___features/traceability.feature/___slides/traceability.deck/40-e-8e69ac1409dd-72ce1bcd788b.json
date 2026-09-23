@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/relation_v5_test.go",
+      "start": 214,
+      "end": 218,
+      "digest": "sha256:d1e84810b26c98ecad94cb5e4d66ca53791a6a6ae436337a034782d5c3f19a1f",
+      "note": "Verifies matching endpoint heads yield a current v5 relation with no reasons."
+    }
+  ]
+}

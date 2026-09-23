@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-state",
+  "slide": "relation-currency",
+  "rank": 30,
+  "kind": "node",
+  "label": "Stale",
+  "description": "A changed requirement obligation, revision, or content digest keeps the relation visible but excludes it from current paths.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-state"
+  }
+}

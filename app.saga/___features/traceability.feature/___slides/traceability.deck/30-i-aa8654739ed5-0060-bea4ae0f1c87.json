@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "incomplete-boundary",
+  "slide": "reverse-impact",
+  "rank": 60,
+  "kind": "risk",
+  "label": "Explicit uncertainty",
+  "description": "Leaves unowned content unclaimed and warns that an incomplete maintained baseline may omit affected records.",
+  "selector": {
+    "type": "element",
+    "element_id": "incomplete-boundary"
+  }
+}

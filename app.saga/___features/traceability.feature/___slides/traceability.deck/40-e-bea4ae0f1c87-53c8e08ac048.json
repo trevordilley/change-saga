@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/impact/impact_test.go",
+      "start": 73,
+      "end": 79,
+      "digest": "sha256:8c3c568aaa8989791532225d8c1c742e0481462cbc1c1f2d330b15686ea3d11c",
+      "note": "Verifies incomplete baseline coverage produces the explicit caveat."
+    }
+  ]
+}
