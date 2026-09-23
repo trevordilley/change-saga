@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:change-saga:relation:quality-freshness-gate-explains-required-proof",
+  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-readiness:revision:r2",
+  "rationale": "The refined wording matches the implemented freshness gate: the passed run and every evidence record it actually references must remain current.",
+  "created_at": "2026-09-23T16:44:54.983257Z"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-execution-gap-explains-origin",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:quality-trust-gaps:item:execution-gap",
+  "to": "urn:change-saga:change-saga:story:quality-result-trust:criterion:execution-origin",
+  "scope": "self",
+  "rationale": "This gap Item documents that the proposed execution-origin distinction is absent today: the CLI records a caller-supplied result and captures no execution output.",
+  "to_revision": "urn:change-saga:change-saga:story:quality-result-trust:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:40:48.42645Z"
+}

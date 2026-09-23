@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-policy-gate-explains-required-kinds",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:criterion-quality-gate:item:policy-gate",
+  "to": "urn:change-saga:change-saga:story:criterion-quality-policy:criterion:required-kinds",
+  "scope": "self",
+  "rationale": "The policy gate expands one criterion into its separately evaluated positive, negative, and edge obligations.",
+  "to_revision": "urn:change-saga:change-saga:story:criterion-quality-policy:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-23T16:40:47.725546Z"
+}

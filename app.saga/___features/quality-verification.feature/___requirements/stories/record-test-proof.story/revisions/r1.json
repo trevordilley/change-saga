@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:record-test-proof",
+  "parents": [],
+  "title": "Record reproducible test proof",
+  "statement": "As a developer preparing a change, I can define a test for a specific acceptance criterion and append its evidence and run result so the proof is reproducible without rewriting history.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "criterion-pin",
+      "statement": "A test case can verify an exact acceptance criterion revision, and the link is reported stale when that criterion changes until the relation is repinned."
+    },
+    {
+      "id": "evidence-provenance",
+      "statement": "Each evidence record exposes its role, test revision, exact code, verification, and citation references, and superseded evidence heads; evidence ceases to be current when those pins no longer resolve."
+    },
+    {
+      "id": "run-provenance",
+      "statement": "Each recorded run exposes its immutable identity, test revision, result, summary, recorded command, execution time, source repository and commit, parent run heads, and referenced evidence."
+    },
+    {
+      "id": "guarded-run",
+      "statement": "A run is not created unless its test revision and evidence exist and are current, its source repository matches the Saga, and it names every current run head."
+    }
+  ],
+  "created_at": "2026-09-23T16:39:35.396508Z"
+}
