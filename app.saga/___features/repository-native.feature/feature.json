@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "repository-native",
+  "title": "Repository-native documentation",
+  "description": "Keep versionable Saga documents in the source repository or an adjacent documentation and review repository.",
+  "created_at": "2026-09-22T23:12:24.385442Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "attribution-gap",
+  "slide": "decision-currency",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Partial delegated attribution",
+  "description": "Git identifies the committer and metadata identifies an AI seat, but the record has no explicit human-principal field.",
+  "selector": {
+    "type": "element",
+    "element_id": "attribution-gap"
+  }
+}

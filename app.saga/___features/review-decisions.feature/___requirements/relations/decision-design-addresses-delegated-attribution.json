@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "decision-design-addresses-delegated-attribution",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:decision-attribution-design",
+  "to": "urn:change-saga:change-saga:story:delegated-ai-attribution",
+  "scope": "self",
+  "rationale": "The design separates Git actor identity, AI reviewer-seat metadata, and the still-missing explicit human principal.",
+  "to_revision": "urn:change-saga:change-saga:story:delegated-ai-attribution:revision:r1",
+  "from_content_digest": "sha256:cf28b6c9fa0a260aff1f1aac85d577d4b3d6699d38dc7e40badde13b8913f404",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.955983Z"
+}

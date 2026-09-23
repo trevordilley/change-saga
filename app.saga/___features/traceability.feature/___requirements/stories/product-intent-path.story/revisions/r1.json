@@ -1,0 +1,24 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:product-intent-path",
+  "parents": [],
+  "title": "Follow product intent into the application",
+  "statement": "As a product manager, I can follow an accepted story through design and implementation so I can verify that product intent reached the application.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "current-paths",
+      "statement": "Current relations expose every available path from a story or criterion to its design and implementation evidence."
+    },
+    {
+      "id": "stale-paths",
+      "statement": "A changed relation endpoint makes the dependent link visibly stale."
+    }
+  ],
+  "created_at": "2026-09-22T23:26:17.298191Z"
+}

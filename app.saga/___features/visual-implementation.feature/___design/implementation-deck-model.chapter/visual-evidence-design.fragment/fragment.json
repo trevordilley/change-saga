@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "visual-evidence-design",
+  "title": "Visual evidence design",
+  "media_type": "text/markdown",
+  "entrypoint": "visual-implementation.md"
+}

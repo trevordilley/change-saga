@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:review-decision",
+  "parents": [],
+  "title": "Record a review decision",
+  "statement": "As a developer reviewing a change, I can approve it or request changes so my review decision is explicit.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "approve",
+      "statement": "Choosing Approve records an approved decision."
+    },
+    {
+      "id": "request-changes",
+      "statement": "Choosing Request changes records a changes-requested decision."
+    },
+    {
+      "id": "identifies-author",
+      "statement": "The recorded decision identifies its author."
+    },
+    {
+      "id": "preserves-history",
+      "statement": "A reviewer can replace an earlier decision with a later decision without erasing its history."
+    }
+  ],
+  "created_at": "2026-09-22T23:13:45.071438Z"
+}

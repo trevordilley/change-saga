@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "decision-attribution-design",
+  "title": "Decision history, currency, and attribution",
+  "media_type": "text/markdown",
+  "entrypoint": "review-decisions.md"
+}

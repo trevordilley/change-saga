@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "graph-slide-explains-design-path",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:pinned-graph",
+  "to": "urn:change-saga:change-saga:story:design-usage-path",
+  "scope": "descendants",
+  "rationale": "The same persisted graph supports forward navigation from design and reverse navigation from implementation evidence.",
+  "to_revision": "urn:change-saga:change-saga:story:design-usage-path:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:07.028764Z"
+}

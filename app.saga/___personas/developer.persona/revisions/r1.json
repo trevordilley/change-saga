@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/persona-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "persona": "urn:change-saga:change-saga:persona:developer",
+  "parents": [],
+  "name": "Developer",
+  "description": "Implements and reviews software changes, including large changes. Needs coherent visual reviews, traceability from code to product intent, reliable impact analysis, and structured context that also helps AI tools reason from low-level changes to high-level intent.",
+  "created_at": "2026-09-22T23:12:24.151175Z"
+}

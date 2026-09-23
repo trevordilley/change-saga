@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/model.go",
+      "start": 35,
+      "end": 91,
+      "digest": "sha256:edbb5dbeb7b3796e94916eed3cb34361db1574cbab0c6c42347a57751f4dcbd9",
+      "note": "Revisioned story and lifecycle model"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/model.go",
+      "start": 182,
+      "end": 209,
+      "digest": "sha256:dbe9d9bb65868a5ad664f0022a8511499cede86ccc2ab85a42aa64998b7401ad",
+      "note": "Revisioned story and lifecycle model"
+    }
+  ]
+}

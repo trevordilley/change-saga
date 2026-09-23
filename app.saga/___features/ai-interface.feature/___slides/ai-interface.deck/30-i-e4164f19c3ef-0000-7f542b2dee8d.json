@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "caller",
+  "slide": "structured-query",
+  "rank": 0,
+  "kind": "node",
+  "label": "Published operation grammar",
+  "description": "Describes callable operations, arguments, resource kinds, and mutation behavior.",
+  "selector": {
+    "type": "element",
+    "element_id": "caller"
+  }
+}

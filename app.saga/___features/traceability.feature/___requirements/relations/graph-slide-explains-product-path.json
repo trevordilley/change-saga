@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "graph-slide-explains-product-path",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:pinned-graph",
+  "to": "urn:change-saga:change-saga:story:product-intent-path",
+  "scope": "descendants",
+  "rationale": "The implementation slide shows the persisted requirement-to-design-to-code path and its pinned evidence.",
+  "to_revision": "urn:change-saga:change-saga:story:product-intent-path:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:06.974012Z"
+}

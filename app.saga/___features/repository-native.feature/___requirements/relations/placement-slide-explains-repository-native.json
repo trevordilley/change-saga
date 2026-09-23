@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "placement-slide-explains-repository-native",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:repository-placement",
+  "to": "urn:change-saga:change-saga:story:source-or-companion",
+  "scope": "descendants",
+  "rationale": "Canonical source identity and the optional companion sync cursor implement the two supported repository placements.",
+  "to_revision": "urn:change-saga:change-saga:story:source-or-companion:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:07.432831Z"
+}

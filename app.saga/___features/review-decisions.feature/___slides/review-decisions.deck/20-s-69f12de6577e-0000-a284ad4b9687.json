@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "decision-currency",
+  "deck": "review-decisions",
+  "title": "Keep decisions and recompute their currency",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-69f12de6577e-0000-a284ad4b9687.svg",
+  "takeaway": "Append-only decisions retain history; currentness changes when their reviewed slide or code changes.",
+  "reading_order": [
+    "decision",
+    "currency",
+    "attribution-gap"
+  ]
+}

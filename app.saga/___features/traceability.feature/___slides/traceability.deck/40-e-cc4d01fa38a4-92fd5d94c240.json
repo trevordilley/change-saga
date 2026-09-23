@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session.go",
+      "start": 228,
+      "end": 298,
+      "digest": "sha256:8c6d7c22d079197b40fea2d07695d43673d3cbc00e6c9b26868aab23df24a263",
+      "note": "Bounded traceability result and snapshot-bound cursor"
+    }
+  ]
+}

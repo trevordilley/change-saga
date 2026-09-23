@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "git",
+  "slide": "partitioned-storage",
+  "rank": 20,
+  "kind": "node",
+  "label": "Explicit conflict projection",
+  "description": "Preserves competing heads for reconciliation rather than selecting a winner by time.",
+  "selector": {
+    "type": "element",
+    "element_id": "git"
+  }
+}

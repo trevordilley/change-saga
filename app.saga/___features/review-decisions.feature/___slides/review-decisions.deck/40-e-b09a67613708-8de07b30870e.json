@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/saga/review.go",
+      "start": 88,
+      "end": 105,
+      "digest": "sha256:e8b4ad489f6912a874571316d1f8c082fbb475262976992c74fda53243798ed2",
+      "note": "Per-slide decision model, append-only persistence, and browser mutation"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 102,
+      "end": 155,
+      "digest": "sha256:c8bc2bce77241f0b24368a1171840b3730c6ecced3a7cdfbe588fa546ae91577",
+      "note": "Per-slide decision model, append-only persistence, and browser mutation"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/server/reviews.go",
+      "start": 553,
+      "end": 571,
+      "digest": "sha256:1c8fd8ef67383c1b2011b3f9c26b253829b0319f589126c7650866f3256238a2",
+      "note": "Per-slide decision model, append-only persistence, and browser mutation"
+    }
+  ]
+}

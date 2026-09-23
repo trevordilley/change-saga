@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/check.go",
+      "start": 11,
+      "end": 77,
+      "digest": "sha256:73b72179df15d3f637cadce069fbb2754001acedfbdba5be40d4ca46c56b6139",
+      "note": "Caller-selected coverage policy without implicit gates"
+    }
+  ]
+}

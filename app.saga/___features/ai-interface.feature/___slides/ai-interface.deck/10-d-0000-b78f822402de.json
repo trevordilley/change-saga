@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "ai-interface",
+  "title": "AI-facing application architecture",
+  "role": "change",
+  "rank": 0,
+  "objective": "Understand the stable machine boundary over Saga domain operations."
+}

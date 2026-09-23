@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 132,
+      "end": 217,
+      "digest": "sha256:65d3c496c49530bb6945bddc81505e9cad754edf722c2de87d34ad43ee4835bf",
+      "note": "Latest-seat projection and decision currency calculation"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 270,
+      "end": 313,
+      "digest": "sha256:e1f081c34702a04a0c06d0bb39fc370e9a296db79e81a6b222e57a6925b2a74e",
+      "note": "Latest-seat projection and decision currency calculation"
+    }
+  ]
+}

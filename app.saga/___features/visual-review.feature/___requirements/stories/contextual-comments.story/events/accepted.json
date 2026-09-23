@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:contextual-comments",
+  "parents": [
+    "urn:change-saga:change-saga:story:contextual-comments:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "Confirmed during the initial product interview.",
+  "created_at": "2026-09-22T23:13:45.043419Z"
+}

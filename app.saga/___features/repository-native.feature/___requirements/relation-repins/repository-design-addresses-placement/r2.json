@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:change-saga:relation:repository-design-addresses-placement",
+  "from_content_digest": "sha256:90478f69862de1614bbc2250a89e6f82a1a1842b19e9262f728bc13247b77532",
+  "rationale": "The design meaning is unchanged; only a stable Markdown heading anchor was added.",
+  "created_at": "2026-09-22T23:42:35.309061Z"
+}

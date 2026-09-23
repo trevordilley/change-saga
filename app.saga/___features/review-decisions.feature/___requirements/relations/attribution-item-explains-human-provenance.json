@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "attribution-item-explains-human-provenance",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:decision-currency:item:attribution-gap",
+  "to": "urn:change-saga:change-saga:story:delegated-ai-attribution:criterion:human",
+  "scope": "self",
+  "rationale": "Git authorship and the human reviewer seat identify direct human actions; the sibling delegated-AI criterion intentionally remains uncovered.",
+  "to_revision": "urn:change-saga:change-saga:story:delegated-ai-attribution:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-22T23:41:07.371355Z"
+}

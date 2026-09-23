@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "writer",
+  "slide": "partitioned-storage",
+  "rank": 10,
+  "kind": "node",
+  "label": "Atomic mutation",
+  "description": "Stages complete entities and serializes supported writers without adding lock artifacts.",
+  "selector": {
+    "type": "element",
+    "element_id": "writer"
+  }
+}

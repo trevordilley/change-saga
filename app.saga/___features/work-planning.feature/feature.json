@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "work-planning",
+  "title": "Dependency-aware work planning",
+  "description": "Plan larger changes as dependency-aware waves and work items, coordinate ownership, and retain merge evidence without treating progress as proof.",
+  "created_at": "2026-09-22T23:25:20.218673Z"
+}

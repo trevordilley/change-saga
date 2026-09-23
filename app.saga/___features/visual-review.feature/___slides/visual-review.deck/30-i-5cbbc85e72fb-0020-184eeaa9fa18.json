@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "annotation-gap",
+  "slide": "contextual-review",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Spatial annotation gap",
+  "description": "No persisted review overlay or drawing toolbox currently implements freehand marks, shapes, or text annotations.",
+  "selector": {
+    "type": "element",
+    "element_id": "annotation-gap"
+  }
+}

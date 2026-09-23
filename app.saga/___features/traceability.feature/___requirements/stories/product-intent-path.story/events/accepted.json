@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:change-saga:story:product-intent-path",
+  "parents": [
+    "urn:change-saga:change-saga:story:product-intent-path:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "Confirmed after the initial implementation investigation.",
+  "created_at": "2026-09-22T23:26:17.34581Z"
+}

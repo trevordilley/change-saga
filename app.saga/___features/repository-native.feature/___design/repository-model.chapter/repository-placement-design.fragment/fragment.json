@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "id": "repository-placement-design",
+  "title": "Repository placement and synchronization",
+  "media_type": "text/markdown",
+  "entrypoint": "repository-native.md"
+}

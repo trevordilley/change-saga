@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "visual-pipeline",
+  "deck": "visual-implementation",
+  "title": "Visual explanations carry exact evidence",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-0d89b27ce0b8-0000-7b8e81ffa6a0.svg",
+  "takeaway": "Slides organize the argument; semantic Items own the exact source evidence.",
+  "reading_order": [
+    "author",
+    "bundle",
+    "reviewer"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "query-design-addresses-ai-contract",
+  "type": "addresses",
+  "from": "urn:change-saga:change-saga:fragment:structured-query-design",
+  "to": "urn:change-saga:change-saga:story:structured-ai-contract",
+  "scope": "self",
+  "rationale": "The query adapter exposes bounded domain operations through the stable machine envelope.",
+  "to_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+  "from_content_digest": "sha256:6f4349f8832d772e4c7e4c336274738b4ee678f7bf8356c0df1f00181b5aa296",
+  "state": "active",
+  "created_at": "2026-09-22T23:32:38.778967Z"
+}

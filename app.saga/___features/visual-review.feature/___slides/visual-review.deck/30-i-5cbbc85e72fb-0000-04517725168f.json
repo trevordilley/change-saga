@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "slide",
+  "slide": "contextual-review",
+  "rank": 0,
+  "kind": "node",
+  "label": "Review visual",
+  "description": "Serves a review slide and its semantic Items as the collaboration surface.",
+  "selector": {
+    "type": "element",
+    "element_id": "slide"
+  }
+}

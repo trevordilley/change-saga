@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "saga",
+  "slide": "repository-placement",
+  "rank": 10,
+  "kind": "node",
+  "label": "Placement detection",
+  "description": "Distinguishes a Saga inside its source checkout from a companion repository.",
+  "selector": {
+    "type": "element",
+    "element_id": "saga"
+  }
+}

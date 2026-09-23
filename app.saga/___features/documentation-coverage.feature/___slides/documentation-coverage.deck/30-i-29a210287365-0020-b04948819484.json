@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "report",
+  "slide": "coverage-evaluation",
+  "rank": 20,
+  "kind": "statement",
+  "label": "No-verdict report",
+  "description": "Reports independent facts; scoped check applies only caller-selected policy.",
+  "selector": {
+    "type": "element",
+    "element_id": "report"
+  }
+}

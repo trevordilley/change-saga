@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "query",
+  "slide": "structured-query",
+  "rank": 10,
+  "kind": "node",
+  "label": "JSON query adapter",
+  "description": "Emits one versioned envelope with stable errors, pagination, and snapshot identity.",
+  "selector": {
+    "type": "element",
+    "element_id": "query"
+  }
+}

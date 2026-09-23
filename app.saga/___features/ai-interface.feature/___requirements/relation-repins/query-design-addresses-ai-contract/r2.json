@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:change-saga:relation:query-design-addresses-ai-contract",
+  "from_content_digest": "sha256:0f0351884b6353d36d5f7a7924e389b03c47431db1d49ac9b7611b746f21ccc3",
+  "rationale": "The design meaning is unchanged; only a stable Markdown heading anchor was added.",
+  "created_at": "2026-09-22T23:42:35.228315Z"
+}

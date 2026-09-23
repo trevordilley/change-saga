@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/persona-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "persona": "urn:change-saga:change-saga:persona:product-manager",
+  "parents": [],
+  "name": "Product Manager",
+  "description": "Explores prototypes, conducts product research and user interviews, and drafts stories for others to consume. Needs confidence that product intent is reflected in technical design and the implemented application.",
+  "created_at": "2026-09-22T23:12:23.995122Z"
+}

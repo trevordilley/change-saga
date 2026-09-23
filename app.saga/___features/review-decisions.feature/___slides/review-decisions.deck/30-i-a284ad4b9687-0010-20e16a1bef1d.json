@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "currency",
+  "slide": "decision-currency",
+  "rank": 10,
+  "kind": "node",
+  "label": "Decision currency",
+  "description": "Projects the latest event per reviewer seat and explains why it is current or out of date.",
+  "selector": {
+    "type": "element",
+    "element_id": "currency"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewapp/session.go",
+      "start": 80,
+      "end": 180,
+      "digest": "sha256:777fb1598bdb487f9a96944e6e4c67e07c6a0636888db1eec56f02fd38a3f54f",
+      "note": "Validated application session and bounded projections"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewapp/session.go",
+      "start": 382,
+      "end": 455,
+      "digest": "sha256:41c48140330bf6190f6f9b87bff5a3a574cb6c6ccb9ff18b83a87a6c7ec9284e",
+      "note": "Validated application session and bounded projections"
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/reviewapp/session.go",
+      "start": 603,
+      "end": 680,
+      "digest": "sha256:9aa0be5ab015b12a60530c3fc5614e0f1eb1f0976d07f7da7ec0dc30335632b3",
+      "note": "Validated application session and bounded projections"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "comment",
+  "slide": "contextual-review",
+  "rank": 10,
+  "kind": "node",
+  "label": "Contextual comments",
+  "description": "Appends comments and replies to a specific review slide or Item.",
+  "selector": {
+    "type": "element",
+    "element_id": "comment"
+  }
+}
