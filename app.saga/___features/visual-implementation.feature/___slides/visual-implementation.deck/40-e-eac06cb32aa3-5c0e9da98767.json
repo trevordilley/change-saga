@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/styles.go",
+      "start": 78,
+      "end": 108,
+      "digest": "sha256:eb1de3d17ddba1452cc788580355297d0cf5b33a6e50f25b08b2e72c3b1a803c",
+      "note": "Viewer and presentation styles isolate the active slide and hide documentation chrome and Item hotspots."
+    }
+  ]
+}

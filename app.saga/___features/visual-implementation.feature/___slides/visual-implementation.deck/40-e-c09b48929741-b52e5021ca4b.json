@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/requirements/element_links_test.go",
+      "start": 11,
+      "end": 57,
+      "digest": "sha256:13e37adbbc097e600961da762a9bc386aaa7f5fb5b82c341b5d80b49187d2869",
+      "note": "Mutation tests prove broad visual links fail without mutation while Item-owned explains and addresses links succeed."
+    }
+  ]
+}

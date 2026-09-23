@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/appjs.go",
+      "start": 1240,
+      "end": 1247,
+      "digest": "sha256:09d0b516cde4cab044d154956daee293d50a12fa31e00ce5361bedb85a945fbd",
+      "note": "Story and Code controls route to independent drawer content, leaving linked-code activation distinct from story inspection."
+    },
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/appjs.go",
+      "start": 2087,
+      "end": 2094,
+      "digest": "sha256:93e902a9e369139fb0bfd590045b165c84a014fa33dcece4538500c4e63f5b8f",
+      "note": "Story and Code controls route to independent drawer content, leaving linked-code activation distinct from story inspection."
+    }
+  ]
+}

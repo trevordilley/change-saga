@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/slides_test.go",
+      "start": 17,
+      "end": 67,
+      "digest": "sha256:56c7725ed68f0687136e8a680b5a174eaebe9c2b6fcbd8de59f8bb8e4407c8a3",
+      "note": "Rendered-view tests assert deck viewer, navigation, fullscreen, and presentation isolation contracts."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/storylinks_test.go",
+      "start": 13,
+      "end": 75,
+      "digest": "sha256:b46e20973b8fad456c391733956ebc37c2c362d10db1ee9bd3b1d0d946714638",
+      "note": "Server tests assert deduplication, exact ownership, legacy exclusion, drawer content, and stale or invalid currency."
+    }
+  ]
+}
