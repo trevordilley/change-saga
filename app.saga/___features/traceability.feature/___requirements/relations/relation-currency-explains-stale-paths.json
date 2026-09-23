@@ -8,6 +8,7 @@
   "scope": "descendants",
   "rationale": "The state machine explains how changed endpoint pins become visibly stale while unchanged obligations carry forward.",
   "to_revision": "urn:change-saga:change-saga:story:product-intent-path:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-23T03:27:54.4013Z"
+  "state": "superseded",
+  "created_at": "2026-09-23T03:27:54.4013Z",
+  "superseded_at": "2026-09-23T16:34:55.875928Z"
 }
