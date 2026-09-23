@@ -489,10 +489,8 @@ func TestDocumentationPagesHaveNoApprovalOrCommentControls(t *testing.T) {
 	paths = append(paths, "/personas", "/flags", "/features", designSystemPath)
 	for _, path := range paths {
 		page := dogfoodOK(t, path)
-		for _, control := range []string{`<form method="post"`, "data-review-decision", "data-review-comment", "Approve slide", "Request changes", "<textarea"} {
-			if strings.Contains(page, control) {
-				t.Fatalf("%s carries a review control: %s", path, control)
-			}
+		if control := documentationReviewControl(page); control != "" {
+			t.Fatalf("%s carries a review control: %s", path, control)
 		}
 		// A directory's filter is the one form documentation carries, and it
 		// only ever reads: every form on a documentation page is a GET.
@@ -500,6 +498,35 @@ func TestDocumentationPagesHaveNoApprovalOrCommentControls(t *testing.T) {
 			if !strings.HasPrefix(form, ` class="directory-filter" method="get"`) {
 				t.Fatalf("%s carries a form that is not a directory filter: <form%s", path, form[:min(len(form), 80)])
 			}
+		}
+	}
+}
+
+// Documentation can explain review actions in stories and onboarding slides.
+// Their labels are ordinary prose, not evidence that an interactive review
+// control leaked onto a documentation page. The form-shape check above also
+// rejects any form other than the read-only directory filter.
+func documentationReviewControl(page string) string {
+	for _, control := range []string{`<form method="post"`, "data-review-decision", "data-review-comment", "<textarea"} {
+		if strings.Contains(page, control) {
+			return control
+		}
+	}
+	return ""
+}
+
+func TestDocumentationControlDetectionAllowsReviewActionProse(t *testing.T) {
+	if got := documentationReviewControl(`<p>Choosing Request changes records a decision; Approve slide records approval.</p>`); got != "" {
+		t.Fatalf("review-action prose was treated as a control: %s", got)
+	}
+	for _, markup := range []string{
+		`<form method="post" action="/review"><button>Approve slide</button></form>`,
+		`<button data-review-decision="approve">Approve slide</button>`,
+		`<button data-review-comment>Comment</button>`,
+		`<textarea name="comment"></textarea>`,
+	} {
+		if documentationReviewControl(markup) == "" {
+			t.Errorf("missed review control: %s", markup)
 		}
 	}
 }
