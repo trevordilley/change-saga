@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:test-run",
+  "parents": [],
+  "name": "test run",
+  "definition": "An immutable result event for one test-case revision, recording the outcome, execution time, source repository and commit, optional command, and evidence. New runs must name every current run head, so failures and concurrent results remain history; Change Saga records the caller's result and does not itself execute the command.",
+  "stories": [
+    "urn:change-saga:change-saga:story:record-test-proof",
+    "urn:change-saga:change-saga:story:quality-result-trust"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/quality/model.go",
+      "start": 146,
+      "end": 172,
+      "digest": "sha256:17a319c7372554690bcfd28b4d39f5b186a5c446ca6617a31240b8ab25eaf492"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/quality/mutation.go",
+      "start": 465,
+      "end": 483,
+      "digest": "sha256:cb273c75bef3fc192220965f88fdf4eddaa13acf82e1f291204319f5cac5c872"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/quality/mutation.go",
+      "start": 502,
+      "end": 512,
+      "digest": "sha256:5629cfccbdcff0a9679507ea0431c8eee00e5608aff8001410a1c14b4011e537"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:07.566976Z"
+}

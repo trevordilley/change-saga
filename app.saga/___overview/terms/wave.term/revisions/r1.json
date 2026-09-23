@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:wave",
+  "parents": [],
+  "name": "wave",
+  "definition": "An ordered planning cohort that groups work items around an objective and entry and exit conditions. Wave order controls presentation and coordination only; it never creates an implicit dependency or start barrier—only explicit dependency facts do.",
+  "stories": [
+    "urn:change-saga:change-saga:story:dependency-aware-work-plan"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/workplan/model.go",
+      "start": 51,
+      "end": 65,
+      "digest": "sha256:62dcfcbab34163bb289ae1e8d86491694627f385982403ac910f15697241544e"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/workplan/readiness.go",
+      "start": 5,
+      "end": 8,
+      "digest": "sha256:6904a469c65e2d126f84485c142b9af2d6495f09ea4bfaee9ed7f2ead7f7b7c8"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:21.918879Z"
+}

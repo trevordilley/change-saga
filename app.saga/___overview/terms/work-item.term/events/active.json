@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-event.schema.json",
+  "version": 5,
+  "id": "active",
+  "term": "urn:change-saga:change-saga:term:work-item",
+  "parents": [],
+  "state": "active",
+  "created_at": "2026-09-23T20:21:15.273663Z"
+}

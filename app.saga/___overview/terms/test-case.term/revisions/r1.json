@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:test-case",
+  "parents": [],
+  "name": "test case",
+  "definition": "An append-only, feature-owned definition of how to verify an acceptance criterion: its current revision names the intent, test coverage kinds, automation level, preconditions, ordered steps, and expected result, while a separate lifecycle says whether it is active. A test case describes the check; a test run records what happened when that check was performed.",
+  "stories": [
+    "urn:change-saga:change-saga:story:record-test-proof",
+    "urn:change-saga:change-saga:story:criterion-quality-readiness"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/quality/model.go",
+      "start": 82,
+      "end": 97,
+      "digest": "sha256:e30602aaefc2465eb2fda52bdfcd7a171d277398cb5d323d7cd5cf7481e8b848"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/quality/model.go",
+      "start": 192,
+      "end": 215,
+      "digest": "sha256:c1c16a6378e052da7cc2c857599b762d70edeb1ce86944d201a217044857b2a9"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:04.981316Z"
+}

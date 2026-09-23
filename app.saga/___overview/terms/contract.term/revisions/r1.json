@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:contract",
+  "parents": [],
+  "name": "contract",
+  "definition": "A versioned provider-consumer agreement between work items, with a kind, statement, and observable acceptance checks. A contract-gated dependency opens only when the named revision is still current and its lifecycle has one fulfilled head; a newer or conflicted revision does not satisfy the old gate.",
+  "stories": [
+    "urn:change-saga:change-saga:story:contract-gated-handoff",
+    "urn:change-saga:change-saga:story:dependency-aware-work-plan"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/workplan/model.go",
+      "start": 144,
+      "end": 170,
+      "digest": "sha256:66d17641af5bcd365a91edaa316bafcf55fb523c1255ca8c35df558f2bbfab07"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/workplan/readiness.go",
+      "start": 48,
+      "end": 64,
+      "digest": "sha256:b012481d9922032863e64c2bbde1d757dcaac3129927f864d0c6fd2a2add1516"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:23.552103Z"
+}

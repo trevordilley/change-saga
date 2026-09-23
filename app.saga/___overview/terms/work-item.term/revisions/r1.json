@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:change-saga:term:work-item",
+  "parents": [],
+  "name": "work item",
+  "definition": "A versioned, feature-owned unit of planned delivery: it states an objective, deliverables, linked intent, dependencies and contracts, expected touch areas, completion checks, and merge units. Its progress, workspace assignments, and merge events are separate append-only coordination streams; marking progress done is not delivery proof.",
+  "stories": [
+    "urn:change-saga:change-saga:story:dependency-aware-work-plan",
+    "urn:change-saga:change-saga:story:track-work-delivery"
+  ],
+  "code": [
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/workplan/model.go",
+      "start": 67,
+      "end": 100,
+      "digest": "sha256:661e9129162d4de7caa416a35544c9f83cb394843822528021e1405a48c2dda9"
+    },
+    {
+      "commit": "8b3036125e967a899e9fcc2dcda3e47e6acd81ee",
+      "path": "internal/readiness/readiness.go",
+      "start": 60,
+      "end": 62,
+      "digest": "sha256:2ad488a37bc31e111b134df26fba5548c1dd106f70e9f6746b341094c65a4425"
+    }
+  ],
+  "created_at": "2026-09-23T20:21:15.273663Z"
+}
