@@ -22,6 +22,7 @@ type fakeQuerySession struct {
 	snapshot string
 	called   string
 	request  any
+	data     any
 	err      error
 }
 
@@ -74,6 +75,9 @@ func (s *fakeQuerySession) Verifications(_ context.Context, request verification
 
 func (s *fakeQuerySession) Living(_ context.Context, request livingQuery) (queryPage, error) {
 	s.called, s.request = request.Operation, request
+	if s.data != nil {
+		return queryPage{Data: s.data, Page: queryPageEnvelope{Total: 1, Returned: 1}}, s.err
+	}
 	return fakePage(s.called), s.err
 }
 
@@ -158,6 +162,7 @@ func TestQueryDispatchesEveryOperationAndPreservesArguments(t *testing.T) {
 		{"work-conflicts", []string{"--item", "item-1", "--wave", "wave-1", "--kind", "progress_heads", "--cursor", "c16", "--limit", "32"}, livingQuery{Operation: "work-conflicts", Filters: livingapp.Filters{Kind: "progress_heads", Wave: "wave-1", Item: "item-1"}, Cursor: "c16", Limit: 32}},
 		{"traceability", []string{"--requirement", "story-1", "--criterion", "criterion-1", "--commit", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "--cursor", "c17", "--limit", "33"}, livingQuery{Operation: "traceability", Filters: livingapp.Filters{Requirement: "story-1", Kind: "criterion-1", Commit: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}, Cursor: "c17", Limit: 33}},
 		{"readiness", []string{"--requirement", "story-1", "--status", "blocked", "--cursor", "c18", "--limit", "34"}, livingQuery{Operation: "readiness", Filters: livingapp.Filters{Requirement: "story-1", Status: "blocked"}, Cursor: "c18", Limit: 34}},
+		{"audit", []string{"--feature", "urn:change-saga:test:feature:checkout"}, livingQuery{Operation: "audit", Filters: livingapp.Filters{Feature: "urn:change-saga:test:feature:checkout"}}},
 	}
 
 	for _, test := range tests {
@@ -256,6 +261,8 @@ func TestQueryRejectsAdversarialArgumentsBeforeOpening(t *testing.T) {
 		{"ambiguous traceability evidence", []string{"traceability", "--saga", "x", "--ref", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:app.go#L1-L2", "--commit", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},
 		{"bad work event kind", []string{"work-events", "--saga", "x", "--kind", "proof"}},
 		{"bad readiness status", []string{"readiness", "--saga", "x", "--status", "approved"}},
+		{"missing audit feature", []string{"audit", "--saga", "x"}},
+		{"audit comparison", []string{"audit", "--saga", "x", "--feature", "core", "--against", "main"}},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
@@ -268,6 +275,27 @@ func TestQueryRejectsAdversarialArgumentsBeforeOpening(t *testing.T) {
 				t.Fatalf("wrong invalid request envelope: %#v", envelope)
 			}
 		})
+	}
+}
+
+func TestQueryAuditUsesDocumentedFindingsExitWithoutTurningTheReportIntoAnError(t *testing.T) {
+	report := livingapp.AuditReport{
+		Feature: "urn:change-saga:test:feature:checkout", FeatureID: "checkout", Status: "findings",
+		Complete: true, Ready: false, ExitCode: 8, Findings: []livingapp.AuditFinding{{ID: "urn:item", Severity: "error", Code: "item_evidence_missing", Reason: "missing", Related: []string{}}},
+		Exceptions: []livingapp.AuditException{}, Risks: []livingapp.IntentionalRisk{}, Conflicts: []livingapp.AuditConflict{},
+	}
+	var out bytes.Buffer
+	err := queryWithOpener(context.Background(), []string{"audit", "--saga", "review.saga", "--feature", "checkout"}, &out,
+		openFake(&fakeQuerySession{snapshot: "sha256:test", data: report}))
+	assertStatus(t, err, 8)
+	var envelope queryEnvelope
+	decodeOneJSONValue(t, out.Bytes(), &envelope)
+	if !envelope.OK || envelope.Error != nil {
+		t.Fatalf("audit findings were encoded as an execution failure: %#v", envelope)
+	}
+	data, ok := envelope.Data.(map[string]any)
+	if !ok || data["status"] != "findings" || data["exit_code"] != float64(8) {
+		t.Fatalf("audit data = %#v", envelope.Data)
 	}
 }
 
@@ -293,7 +321,7 @@ func TestQuerySchemaDescribesEveryResponseWithoutOpeningSession(t *testing.T) {
 		"context": "data.stories", "requirements": "data.requirements", "requirement-history": "data.events", "citations": "data.citations",
 		"relations": "data.relations", "waves": "data.waves", "work-items": "data.items",
 		"work-events": "data.events", "work-conflicts": "data.conflicts", "traceability": "data.criteria",
-		"readiness": "data.requirements",
+		"readiness": "data.requirements", "audit": "data.findings",
 	}
 	for operation, wantPath := range wantCountedPaths {
 		t.Run(operation, func(t *testing.T) {
@@ -316,7 +344,7 @@ func TestQuerySchemaDescribesEveryResponseWithoutOpeningSession(t *testing.T) {
 				t.Fatalf("schema paths = %#v, want %q", paths, wantPath)
 			}
 			pagination, _ := description["pagination"].(map[string]any)
-			if operation != "overview" && operation != "fragment" {
+			if operation != "overview" && operation != "fragment" && operation != "audit" {
 				if pagination["total_path"] != "page.total" || pagination["counted_path"] != wantPath {
 					t.Fatalf("pagination contract = %#v, want counted_path %q", pagination, wantPath)
 				}

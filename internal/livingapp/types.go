@@ -24,6 +24,10 @@ type OpenOptions struct {
 	// Transport adapters that already own the established saga/source snapshot
 	// pass it here so all operations expose one public snapshot namespace.
 	Snapshot string
+	// Audit loads the exception history required by Operation "audit" into the
+	// same immutable read snapshot. Other operations keep their existing read
+	// set; an audit query on a session opened without this option is refused.
+	Audit bool
 }
 
 type Query struct {
@@ -56,6 +60,68 @@ type Filters struct {
 	// are there after remapping, or false when they changed. Without it a
 	// reference matches Ref only at its pinned commit.
 	Locate func(coderef.Reference) (coderef.Location, bool) `json:"-"`
+}
+
+// AuditReport is a deterministic, read-only feature handoff assessment. Ready
+// is false when actionable findings or unresolved conflicts remain. Complete
+// is independently false when conflicts prevent a single current feature view;
+// it never claims partial data is a complete audit.
+type AuditReport struct {
+	Feature     string            `json:"feature"`
+	FeatureID   string            `json:"feature_id"`
+	Status      string            `json:"status"`
+	Complete    bool              `json:"complete"`
+	Ready       bool              `json:"ready"`
+	ExitCode    int               `json:"exit_code"`
+	Summary     AuditSummary      `json:"summary"`
+	Findings    []AuditFinding    `json:"findings"`
+	Exceptions  []AuditException  `json:"exceptions"`
+	Risks       []IntentionalRisk `json:"intentional_risks"`
+	Conflicts   []AuditConflict   `json:"unresolved_conflicts"`
+	ItemTargets []string          `json:"-"`
+}
+
+type AuditSummary struct {
+	Stories   int `json:"stories"`
+	Criteria  int `json:"criteria"`
+	Items     int `json:"items"`
+	Relations int `json:"relations"`
+	Errors    int `json:"errors"`
+	Warnings  int `json:"warnings"`
+}
+
+type AuditFinding struct {
+	ID       string   `json:"id"`
+	Severity string   `json:"severity"`
+	Code     string   `json:"code"`
+	Reason   string   `json:"reason"`
+	Related  []string `json:"related"`
+	Features []string `json:"features,omitempty"`
+}
+
+type AuditException struct {
+	ID             string   `json:"id"`
+	Criterion      string   `json:"criterion"`
+	Axis           string   `json:"axis"`
+	State          string   `json:"state"`
+	Rationale      string   `json:"rationale"`
+	Citations      []string `json:"citations"`
+	Reasons        []string `json:"reasons"`
+	CompetingHeads []string `json:"competing_heads"`
+}
+
+type IntentionalRisk struct {
+	Item       string   `json:"item,omitempty"`
+	Criterion  string   `json:"criterion"`
+	Exceptions []string `json:"exceptions"`
+	Reason     string   `json:"reason"`
+}
+
+type AuditConflict struct {
+	ID      string   `json:"id"`
+	Kind    string   `json:"kind"`
+	Heads   []string `json:"heads"`
+	Reasons []string `json:"reasons"`
 }
 
 type Page struct {

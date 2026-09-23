@@ -38,7 +38,7 @@ func openReviewAppSession(ctx context.Context, options queryOpenOptions) (queryS
 		if err != nil {
 			return nil, err
 		}
-		session, err := livingapp.Open(ctx, livingapp.OpenOptions{SagaRoot: options.SagaRoot, Snapshot: reviewSession.Snapshot()})
+		session, err := livingapp.Open(ctx, livingapp.OpenOptions{SagaRoot: options.SagaRoot, Snapshot: reviewSession.Snapshot(), Audit: options.Operation == "audit"})
 		if err != nil {
 			return nil, err
 		}
@@ -122,6 +122,35 @@ func (s *reviewAppQuerySession) Verifications(ctx context.Context, query verific
 
 func (s *reviewAppQuerySession) Living(ctx context.Context, query livingQuery) (queryPage, error) {
 	value, err := s.livingSession.Query(ctx, livingapp.Query{Operation: query.Operation, Filters: query.Filters, Cursor: query.Cursor, Limit: query.Limit})
+	if err == nil && query.Operation == "audit" {
+		report, ok := value.Data.(livingapp.AuditReport)
+		if !ok {
+			return queryPage{}, &queryError{Code: "internal", Message: "audit returned an unexpected report"}
+		}
+		targets := map[string]bool{}
+		for _, target := range report.ItemTargets {
+			targets[target] = true
+		}
+		cursor := ""
+		for {
+			gaps, gapErr := s.session.Gaps(ctx, reviewapp.GapQuery{Kind: "stale", Cursor: cursor, Limit: maxQueryPageSize})
+			if gapErr != nil {
+				return queryPage{}, gapErr
+			}
+			for _, gap := range gaps.Gaps {
+				if gap.Stale == nil || !targets[gap.Stale.Target] {
+					continue
+				}
+				report.AddStaleSelector(gap.Stale.Target, gap.Stale.Reference.Location().String(), gap.Stale.EvidenceFile, gap.Stale.Reason)
+			}
+			if !gaps.Page.HasMore || gaps.Page.NextCursor == nil {
+				break
+			}
+			cursor = *gaps.Page.NextCursor
+		}
+		report.Finalize()
+		value.Data = report
+	}
 	return queryPage{Data: value.Data, Page: queryPageFromLiving(value.Page)}, err
 }
 
@@ -135,7 +164,7 @@ func queryPageFromLiving(page livingapp.Page) queryPageEnvelope {
 
 func isLivingQueryOperation(operation string) bool {
 	switch operation {
-	case "context", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness":
+	case "context", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness", "audit":
 		return true
 	default:
 		return false
