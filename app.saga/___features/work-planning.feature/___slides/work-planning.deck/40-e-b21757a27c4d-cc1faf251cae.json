@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 641,
+      "end": 652,
+      "digest": "sha256:184238aacc75f27da62128c9fc6913eac3948a3bbe733f417f1916e2897e2310",
+      "note": "Returns the original resource or event for an identical request and rejects payload drift under the same request ID."
+    }
+  ]
+}

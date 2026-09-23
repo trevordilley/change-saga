@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "replay-branch",
+  "slide": "atomic-plan-mutation",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Idempotent replay branch",
+  "description": "Returns the prior result for the same digest and rejects reuse of the request ID with a different payload.",
+  "selector": {
+    "type": "element",
+    "element_id": "replay-branch"
+  }
+}

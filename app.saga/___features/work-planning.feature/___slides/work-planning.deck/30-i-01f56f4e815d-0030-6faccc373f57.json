@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "merge-gate",
+  "slide": "dependency-facts",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Merge gate",
+  "description": "Succeeds only when every required merge unit has one integrated head.",
+  "selector": {
+    "type": "element",
+    "element_id": "merge-gate"
+  }
+}

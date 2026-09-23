@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Atomic and idempotent work-plan mutation sequence</title>
+  <desc id="desc">A caller request is digested, serialized by the Saga lock, replay-checked, validated, then atomically published; any earlier failure leaves no entity visible.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07101d"/><stop offset="1" stop-color="#14213b"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3 0 6Z" fill="#bae6fd"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="60" y="64" fill="#f8fafc" font-family="system-ui" font-size="34" font-weight="750">A write becomes visible only after every guard passes</text>
+  <g font-family="system-ui" text-anchor="middle">
+    <g fill="#0f2440" stroke="#38bdf8"><rect x="60" y="112" width="170" height="54" rx="15"/><text x="145" y="146" fill="#e0f2fe" font-size="19" font-weight="700">Caller</text></g>
+    <g fill="#0f2440" stroke="#38bdf8"><rect x="300" y="112" width="170" height="54" rx="15"/><text x="385" y="146" fill="#e0f2fe" font-size="19" font-weight="700">CLI</text></g>
+    <g fill="#0f2e32" stroke="#2dd4bf"><rect x="540" y="112" width="170" height="54" rx="15"/><text x="625" y="146" fill="#ccfbf1" font-size="19" font-weight="700">Mutator</text></g>
+    <g fill="#3b2b12" stroke="#fbbf24"><rect x="780" y="112" width="170" height="54" rx="15"/><text x="865" y="146" fill="#fef3c7" font-size="19" font-weight="700">Validator</text></g>
+    <g fill="#3b1d28" stroke="#fb7185"><rect x="1020" y="112" width="170" height="54" rx="15"/><text x="1105" y="146" fill="#fff1f2" font-size="19" font-weight="700">Store</text></g>
+  </g>
+  <g stroke="#475569" stroke-width="2" stroke-dasharray="7 8"><path d="M145 166V650"/><path d="M385 166V650"/><path d="M625 166V650"/><path d="M865 166V650"/><path d="M1105 166V650"/></g>
+  <g id="request-key" font-family="system-ui">
+    <path d="M145 220H610" stroke="#bae6fd" stroke-width="4" marker-end="url(#a)"/>
+    <text x="265" y="209" fill="#e0f2fe" font-size="17">operation + payload + request_id</text>
+    <text x="470" y="247" fill="#7dd3fc" font-size="15">SHA-256 request digest</text>
+  </g>
+  <g id="lock-reload" font-family="system-ui">
+    <rect x="546" y="278" width="158" height="74" rx="16" fill="#134e4a" stroke="#2dd4bf"/>
+    <text x="625" y="307" fill="#ecfeff" text-anchor="middle" font-size="17" font-weight="700">Acquire Saga lock</text>
+    <text x="625" y="333" fill="#99f6e4" text-anchor="middle" font-size="14">reload + revalidate</text>
+  </g>
+  <g id="replay-branch" font-family="system-ui">
+    <path d="M625 383l70 48-70 48-70-48Z" fill="#3b2b12" stroke="#fbbf24" stroke-width="2"/>
+    <text x="625" y="426" fill="#fef3c7" text-anchor="middle" font-size="16" font-weight="700">request seen?</text>
+    <path d="M555 431H386" stroke="#fbbf24" stroke-width="3" marker-end="url(#a)"/>
+    <text x="430" y="419" fill="#fde68a" font-size="14">same digest → replay</text>
+    <text x="430" y="447" fill="#fda4af" font-size="14">different → conflict</text>
+  </g>
+  <g id="candidate-validation" font-family="system-ui">
+    <path d="M695 431H755V523H790" fill="none" stroke="#bae6fd" stroke-width="4" marker-end="url(#a)"/>
+    <text x="708" y="416" fill="#bae6fd" font-size="14">unseen → validate</text>
+    <rect x="790" y="492" width="150" height="62" rx="15" fill="#78350f" stroke="#fbbf24"/>
+    <text x="865" y="518" fill="#fffbeb" text-anchor="middle" font-size="16" font-weight="700">validate candidate</text>
+    <text x="865" y="541" fill="#fde68a" text-anchor="middle" font-size="13">graph + schema</text>
+  </g>
+  <g id="atomic-publish" font-family="system-ui">
+    <path d="M940 523H1090" stroke="#bae6fd" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="1028" y="574" width="154" height="64" rx="15" fill="#881337" stroke="#fb7185"/>
+    <text x="1105" y="601" fill="#fff1f2" text-anchor="middle" font-size="16" font-weight="700">stage complete tree</text>
+    <text x="1105" y="624" fill="#fecdd3" text-anchor="middle" font-size="13">one rename + sync</text>
+  </g>
+  <g id="failure-boundary" font-family="system-ui">
+    <path d="M520 666H1188" stroke="#fb7185" stroke-width="3" stroke-dasharray="8 7"/>
+    <text x="520" y="695" fill="#fda4af" font-size="16" font-weight="700">FAILURE BOUNDARY · validation, lock, or staging error ⇒ no visible partial entity</text>
+  </g>
+</svg>

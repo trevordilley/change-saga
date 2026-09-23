@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "progress-machine",
+  "slide": "explicit-plan-conflicts",
+  "rank": 0,
+  "kind": "region",
+  "label": "Progress state machine",
+  "description": "Allows only explicit transitions among planned, ready, in-progress, blocked, done, and cancelled states.",
+  "selector": {
+    "type": "element",
+    "element_id": "progress-machine"
+  }
+}

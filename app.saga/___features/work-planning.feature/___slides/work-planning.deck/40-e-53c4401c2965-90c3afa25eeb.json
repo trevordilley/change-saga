@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/model.go",
+      "start": 1,
+      "end": 31,
+      "digest": "sha256:fd10715fdc4e75728f856075ca24781401edcbbf2e24882c69eda2e1fb4f86c2",
+      "note": "Defines the transport-neutral work-plan domain, its resource types, limits, and app-wide Plan aggregate."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/model.go",
+      "start": 41,
+      "end": 240,
+      "digest": "sha256:b5fb476757b7d7cee1b495a094517842652d3e3541ecaaf92da225acf754d062",
+      "note": "Defines the transport-neutral work-plan domain, its resource types, limits, and app-wide Plan aggregate."
+    }
+  ]
+}

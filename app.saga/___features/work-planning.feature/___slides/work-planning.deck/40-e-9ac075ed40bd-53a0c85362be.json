@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 457,
+      "end": 494,
+      "digest": "sha256:c22dd2c04d4a8abef75109e2e59dd612dec77fa55ab4f56e989bff785a5c121a",
+      "note": "Requires a new progress event to name the complete current-head set before appending the reconciliation fact."
+    }
+  ]
+}

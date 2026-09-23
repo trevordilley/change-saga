@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "wave-and-cycle-boundary",
+  "slide": "dependency-facts",
+  "rank": 60,
+  "kind": "risk",
+  "label": "Ordering and cycle boundary",
+  "description": "Treats wave order as display order and rejects a dependency that would close a directed cycle before it is published.",
+  "selector": {
+    "type": "element",
+    "element_id": "wave-and-cycle-boundary"
+  }
+}

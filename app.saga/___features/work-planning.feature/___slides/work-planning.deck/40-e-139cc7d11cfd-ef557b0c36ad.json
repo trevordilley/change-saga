@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/readiness.go",
+      "start": 50,
+      "end": 64,
+      "digest": "sha256:485ffb6b9149aac8f59c8a778f37d50a459b33f218a6c8514d600094477df389",
+      "note": "Requires the pinned contract revision to remain the current revision and its lifecycle to have one fulfilled head."
+    }
+  ]
+}

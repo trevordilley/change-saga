@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/mutation.go",
+      "start": 574,
+      "end": 615,
+      "digest": "sha256:435c846c70ce6f97f34b6babb7724f90974de4fa92c145ab8345e1a4a2951a77",
+      "note": "Shows the implemented core contract-state mutation that has no corresponding public plan command."
+    }
+  ]
+}

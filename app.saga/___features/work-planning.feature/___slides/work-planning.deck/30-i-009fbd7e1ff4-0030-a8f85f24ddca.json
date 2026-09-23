@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "no-plan-status",
+  "slide": "work-plan-boundary",
+  "rank": 30,
+  "kind": "risk",
+  "label": "No explicit plan-status gate",
+  "description": "Plan diagnostics may be reported, but no dedicated plan-status policy command is implemented and plan gaps do not alter mapping coverage.",
+  "selector": {
+    "type": "element",
+    "element_id": "no-plan-status"
+  }
+}

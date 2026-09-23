@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/readiness.go",
+      "start": 31,
+      "end": 49,
+      "digest": "sha256:12f52c5b67da78af627b7747a030d1d666a4f90a6a59230d539475e9f0bd6c97",
+      "note": "Requires every required merge unit to have one integrated head and rejects plans with no required delivery unit."
+    }
+  ]
+}

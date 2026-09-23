@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "candidate-validation",
+  "slide": "atomic-plan-mutation",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Candidate validation",
+  "description": "Builds and validates the proposed resource or event before any final path becomes visible.",
+  "selector": {
+    "type": "element",
+    "element_id": "candidate-validation"
+  }
+}

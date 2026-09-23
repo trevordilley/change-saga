@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "core-writers",
+  "slide": "work-plan-boundary",
+  "rank": 0,
+  "kind": "region",
+  "label": "Implemented core writers",
+  "description": "The domain implements append-only progress, workspace, merge, and contract lifecycle writers.",
+  "selector": {
+    "type": "element",
+    "element_id": "core-writers"
+  }
+}

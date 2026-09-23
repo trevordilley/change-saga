@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/workplan/workplan_test.go",
+      "start": 172,
+      "end": 194,
+      "digest": "sha256:58a87cacdbc3dc465c62e7f25072bc36ac628c287f088ad1d27dc541074a22dd",
+      "note": "Proves identical replay returns the original creation while changed payload reuse fails without duplicating the wave."
+    }
+  ]
+}

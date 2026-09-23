@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "concurrent-heads",
+  "slide": "explicit-plan-conflicts",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Concurrent heads",
+  "description": "Retains two events from the same parent as separate current heads instead of choosing by timestamp.",
+  "selector": {
+    "type": "element",
+    "element_id": "concurrent-heads"
+  }
+}

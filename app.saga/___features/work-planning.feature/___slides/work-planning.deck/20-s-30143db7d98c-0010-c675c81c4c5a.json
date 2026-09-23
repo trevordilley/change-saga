@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "plan-ownership",
+  "deck": "work-planning",
+  "title": "One graph, feature-owned records",
+  "rank": 10,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-30143db7d98c-0010-c675c81c4c5a.svg",
+  "takeaway": "Feature-local packages load into one app-wide graph; the domain core stays independent from CLI, query, and server adapters.",
+  "reading_order": [
+    "cli-adapter",
+    "domain-core",
+    "query-projection",
+    "ownership-flow",
+    "feature-storage"
+  ]
+}

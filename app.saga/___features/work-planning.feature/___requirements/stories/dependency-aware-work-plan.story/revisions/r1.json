@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:dependency-aware-work-plan",
+  "parents": [],
+  "title": "Plan work with explicit dependencies",
+  "statement": "As a product manager, I can organize work into ordered waves with explicit dependency gates so contributors can see what can start and why blocked work must wait.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:product-manager"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "ordered-waves",
+      "statement": "Queries expose the ordered wave list and each work item’s assigned wave."
+    },
+    {
+      "id": "fact-gates",
+      "statement": "Each dependency names a prerequisite item, a dependent item, and exactly one gate: completed progress, integrated required merges, or fulfillment of a specific contract revision."
+    },
+    {
+      "id": "blocker-reasons",
+      "statement": "For every unmet dependency, readiness identifies the blocking dependency and the unsatisfied or conflicted fact."
+    },
+    {
+      "id": "no-wave-barrier",
+      "statement": "With no unmet explicit dependency, a work item remains ready regardless of incomplete work in an earlier wave."
+    },
+    {
+      "id": "acyclic",
+      "statement": "An attempt to add a dependency that would create a cycle is rejected without publishing the dependency."
+    }
+  ],
+  "created_at": "2026-09-23T16:38:25.466675Z",
+  "request_id": "story-dependency-aware-work-plan"
+}

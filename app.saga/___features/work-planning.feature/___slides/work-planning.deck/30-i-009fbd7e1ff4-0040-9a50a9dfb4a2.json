@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "delivery-boundary",
+  "slide": "work-plan-boundary",
+  "rank": 40,
+  "kind": "statement",
+  "label": "Progress is not delivery",
+  "description": "A done progress event remains coordination state; readiness requires immutable delivery evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "delivery-boundary"
+  }
+}

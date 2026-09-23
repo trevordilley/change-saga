@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 127,
+      "end": 218,
+      "digest": "sha256:72a8e1797550c1dbfb2db7aeeddd33169f752d20d9970b5e7170d0fd0f87cf01",
+      "note": "Projects waves, work items, blockers, normalized events, and deterministic conflicts from the loaded plan."
+    },
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/compose.go",
+      "start": 221,
+      "end": 297,
+      "digest": "sha256:079ea94c80bb5646e1f6a7d39b7c296c645b360190120636c9a197c89b11acba",
+      "note": "Projects waves, work items, blockers, normalized events, and deterministic conflicts from the loaded plan."
+    }
+  ]
+}
