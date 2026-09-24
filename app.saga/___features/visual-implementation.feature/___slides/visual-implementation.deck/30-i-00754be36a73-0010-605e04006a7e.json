@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "resolve",
+  "slide": "pr-request-diff-reuse",
+  "rank": 10,
+  "kind": "node",
+  "label": "Resolve every exact reference",
+  "description": "Every reference independently resolves its digest and exact location against the range head. Current locations use the effective path; stale references preserve the existing diagnostic and whole-diff fallback.",
+  "selector": {
+    "type": "element",
+    "element_id": "resolve"
+  }
+}

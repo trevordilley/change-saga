@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a39e147fa2b2fe7c8f068ae32acae417c61001fe",
+      "path": "internal/server/reviewdiffs.go",
+      "start": 13,
+      "end": 36,
+      "digest": "sha256:79b7c3be129bef08511e9e8b7086aac2312731fcf9bc4292487f2ef827bf719b",
+      "note": "The helper owns one range and raw-patch map; its documented lifetime ends with the request."
+    }
+  ]
+}

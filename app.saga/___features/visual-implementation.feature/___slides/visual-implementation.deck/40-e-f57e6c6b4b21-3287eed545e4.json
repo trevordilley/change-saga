@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2cbe5d07b69f64e54a52df092e3685b800cfaec5",
+      "path": "docs/pr-request-diff-reuse-performance.md",
+      "start": 36,
+      "end": 39,
+      "digest": "sha256:f139bdab400099c1f8e541ad5fda3d8864c12a14a47921a5eed3242d32063491",
+      "note": "Records shared-host method, normalized HTML equality, five warm HTTP samples, medians and limits."
+    },
+    {
+      "commit": "2cbe5d07b69f64e54a52df092e3685b800cfaec5",
+      "path": "docs/pr-request-diff-reuse-performance.md",
+      "start": 54,
+      "end": 80,
+      "digest": "sha256:5b2e226e2fd9f6d9754fa98f1d3f9e2177a10066d7219f984927541a72c85d0d",
+      "note": "Records shared-host method, normalized HTML equality, five warm HTTP samples, medians and limits."
+    }
+  ]
+}
