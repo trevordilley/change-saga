@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "baseline",
+  "slide": "pr-code-batching",
+  "rank": 0,
+  "kind": "example",
+  "label": "Twelve smaller requests",
+  "description": "The measured 573 display rows require eleven 50-row requests and one 23-row request at the unchanged default.",
+  "selector": {
+    "type": "element",
+    "element_id": "baseline"
+  }
+}
