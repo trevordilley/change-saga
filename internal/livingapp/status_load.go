@@ -23,6 +23,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/semanticgraph"
 	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
@@ -217,6 +218,9 @@ func loadLivingGraph(root string, doc *saga.Saga, testCases map[string][]string)
 	document, err := requirements.LoadWithOptions(root, plan.SagaID, requirements.LoadOptions{StaleInputs: stale})
 	if err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "the requirements could not be loaded", false, nil, err)
+	}
+	if err := semanticgraph.ProjectSlideCriterionLinks(doc, &document); err != nil {
+		return livingGraph{}, appError(CodeInvalidSaga, "complete-slide criterion links could not be projected", false, nil, err)
 	}
 	crossDomainInputs(document, plan, doc, designDigests, &stale)
 	currency := requirements.EvaluateRelations(document, stale)

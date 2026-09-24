@@ -13,6 +13,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/semanticgraph"
 )
 
 // Observing has no change, so its Coverage is the documented code itself:
@@ -124,6 +125,9 @@ func (a *app) observeGraph() (*appGraph, []documentedCode, error) {
 	records, err := requirements.Load(a.root, document.Manifest.ID)
 	if err != nil {
 		return nil, nil, errors.New("The requirements could not be loaded. Run change-saga validate for details.")
+	}
+	if err := semanticgraph.ProjectSlideCriterionLinks(document, &records); err != nil {
+		return nil, nil, errors.New("The complete-slide criterion links could not be loaded. Run change-saga validate for details.")
 	}
 	tests, err := quality.Load(a.root)
 	if err != nil {

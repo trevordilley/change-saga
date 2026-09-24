@@ -397,6 +397,10 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	relationURN, _ := livingid.Relation(document.SagaID, *id)
+	if err := guardEmbeddedCriterionRelationMutation(root, relationURN); err != nil {
+		return err
+	}
 	input := requirements.AddRelationInput{
 		Feature: target.ID, ID: *id, Type: requirements.RelationType(*typeName), From: *from, To: *to, Rationale: *rationale,
 		FromRevision: *fromRevision, ToRevision: *toRevision, FromContentDigest: *fromDigest,
@@ -514,6 +518,9 @@ func relationSupersede(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if err := guardEmbeddedCriterionRelationMutation(root, *relation); err != nil {
+		return err
+	}
 	if err := assertRecordFeature(root, *feature, *relation); err != nil {
 		return err
 	}
@@ -553,6 +560,9 @@ func relationRepin(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if err := guardEmbeddedCriterionRelationMutation(root, *relation); err != nil {
+		return err
+	}
 	if err := assertRecordFeature(root, *feature, *relation); err != nil {
 		return err
 	}
@@ -581,6 +591,32 @@ func relationRepin(_ context.Context, args []string, out io.Writer) error {
 	}
 	for _, note := range defaulted {
 		fmt.Fprintf(out, "Re-pinned %s\n", note)
+	}
+	return nil
+}
+
+func guardEmbeddedCriterionRelationMutation(root, relationURN string) error {
+	ref, err := livingid.Parse(relationURN)
+	if err != nil || ref.Kind != livingid.KindRelation {
+		return nil
+	}
+	document, validation, err := saga.Load(root)
+	if err != nil {
+		return err
+	}
+	if !validation.Valid {
+		return fmt.Errorf("the Saga is invalid; run change-saga validate for details")
+	}
+	for _, deck := range document.Decks {
+		for _, slide := range deck.Slides {
+			for _, item := range slide.Items {
+				for _, link := range item.CriterionLinks {
+					if link.ID == ref.ID {
+						return completeSlideMutationError("relation mutation", slide.Target)
+					}
+				}
+			}
+		}
 	}
 	return nil
 }

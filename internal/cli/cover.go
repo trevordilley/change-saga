@@ -549,6 +549,17 @@ func planCoverage(document *saga.Saga, records []coverRecord, files []saga.CodeF
 			return nil, recordError(records, i, fmt.Errorf("implementation deck evidence must target an Item; deck- and slide-level coverage is refused"))
 		}
 		if isItem {
+			for _, deck := range allDecks(document) {
+				for _, slide := range deck.Slides {
+					for _, item := range slide.Items {
+						if item.Target == targetID {
+							if err := guardCompleteSlideMutation("cover", slide); err != nil {
+								return nil, recordError(records, i, err)
+							}
+						}
+					}
+				}
+			}
 			identity := strings.TrimSpace(record.Name)
 			if identity != "" {
 				identity = store.Slug(identity)

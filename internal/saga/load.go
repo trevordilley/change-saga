@@ -504,6 +504,7 @@ func LoadTargetCode(index MutationIndex, target string) ([]CodeFile, Validation,
 			return nil, validation, err
 		}
 		var diffs []CodeFile
+		transactionFound := false
 		for _, entry := range entries {
 			if entry.IsDir() || !strings.HasPrefix(entry.Name(), prefix) || !flatEvidenceName.MatchString(entry.Name()) {
 				continue
@@ -516,6 +517,45 @@ func LoadTargetCode(index MutationIndex, target string) ([]CodeFile, Validation,
 			value.Path = relativePath(index.Root, filepath.Join(recordRoot, entry.Name()))
 			validateCodeFile(value, &validation)
 			diffs = append(diffs, value)
+		}
+		// Transactional Items keep their exact evidence inside the one
+		// complete-slide commit record, so the bounded target-code seam reads
+		// only transaction records in this already-resolved deck bundle.
+		for _, entry := range entries {
+			if entry.IsDir() || !flatSlideTransactionName.MatchString(entry.Name()) {
+				continue
+			}
+			if info, infoErr := entry.Info(); infoErr != nil || info.Size() > MaxSlideTransactionBytes {
+				addIssue(&validation, "error", entry.Name(), fmt.Sprintf("slide transaction exceeds the %d-byte limit", MaxSlideTransactionBytes))
+				continue
+			}
+			var record SlideTransactionRecord
+			if err := readJSON(filepath.Join(recordRoot, entry.Name()), &record); err != nil {
+				addIssue(&validation, "error", entry.Name(), err.Error())
+				continue
+			}
+			current, currentErr := record.currentRevision()
+			if currentErr != nil {
+				addIssue(&validation, "error", entry.Name(), currentErr.Error())
+				continue
+			}
+			for _, item := range current.Items {
+				if ItemTarget(index.Manifest.ID, record.SlideID, item.Item.ID) != target {
+					continue
+				}
+				if !transactionFound {
+					// The transaction is authoritative for an Item migrated
+					// from legacy flat records. Do not combine old evidence
+					// with the current complete revision.
+					diffs = nil
+					transactionFound = true
+				}
+				for evidenceIndex, value := range item.Evidence {
+					value.Path = relativePath(index.Root, filepath.Join(recordRoot, entry.Name())) + fmt.Sprintf("#items/%s/evidence/%d", item.Item.ID, evidenceIndex)
+					validateCodeFile(value, &validation)
+					diffs = append(diffs, value)
+				}
+			}
 		}
 		sort.Slice(diffs, func(i, j int) bool { return diffs[i].Path < diffs[j].Path })
 		validation.Valid = !hasErrors(validation.Issues)

@@ -98,6 +98,8 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 	decksByKey := map[string]*Deck{}
 	slidesByKey := map[string]*Slide{}
 	itemsByKey := map[string]*Item{}
+	transactionSlides := map[string]bool{}
+	transactionItems := map[string]bool{}
 	allowedAssets := map[string]bool{}
 	regular := map[string]bool{}
 	for _, entry := range entries {
@@ -134,6 +136,70 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		decks = append(decks, deck)
 	}
 
+	// A complete-slide transaction is the authoritative representation of its
+	// slide. Legacy flat records with the same stable slide target remain as
+	// immutable migration history but are not projected after the transaction's
+	// single commit record is visible.
+	for _, entry := range entries {
+		name := entry.Name()
+		matches := flatSlideTransactionName.FindStringSubmatch(name)
+		if matches == nil || !regular[name] {
+			continue
+		}
+		deck := decksByKey[matches[1]]
+		if deck == nil {
+			addIssue(validation, "error", name, "slide transaction filename references an unknown deck key")
+			continue
+		}
+		path := filepath.Join(recordRoot, name)
+		if info, infoErr := entry.Info(); infoErr != nil || info.Size() > MaxSlideTransactionBytes {
+			addIssue(validation, "error", name, fmt.Sprintf("slide transaction exceeds the %d-byte limit", MaxSlideTransactionBytes))
+			continue
+		}
+		var record SlideTransactionRecord
+		if err := readJSON(path, &record); err != nil {
+			addIssue(validation, "error", name, err.Error())
+			continue
+		}
+		current := validateSlideTransactionRecord(root, recordRoot, name, manifestSagaID(deck.Target), deck, targets, record, validation)
+		if current == nil {
+			continue
+		}
+		for _, revision := range record.Revisions {
+			allowedAssets[revision.Asset] = true
+		}
+		heads, _ := record.Heads()
+		slide := &Slide{
+			Path: relativePath(root, path), Directory: recordRoot, SlideManifest: current.Slide, Target: targets.slide(current.Slide.ID),
+			AuthoringSnapshot: current.Snapshot, AuthoringHeads: heads, AuthoringConflict: len(heads) > 1, AuthoringCreatedAt: current.CreatedAt,
+		}
+		key := FlatTargetKey(slide.Target)
+		if matches[2] != key {
+			addIssue(validation, "error", name, "slide transaction filename key does not match its stable slide target")
+		}
+		if previous := slidesByKey[key]; previous != nil {
+			addIssue(validation, "error", name, fmt.Sprintf("slide transaction storage key collides with %s", previous.Path))
+			continue
+		}
+		transactionSlides[key] = true
+		slidesByKey[key] = slide
+		deck.Slides = append(deck.Slides, slide)
+		allowedAssets[current.Asset] = true
+		for _, transactionItem := range current.Items {
+			value := transactionItem.Item
+			item := &Item{Path: relativePath(root, path), Directory: recordRoot, ItemManifest: value, Target: targets.item(slide.ID, value.ID), CriterionLinks: append([]CriterionLink{}, transactionItem.CriterionLinks...)}
+			item.Code = append([]CodeFile{}, transactionItem.Evidence...)
+			for evidenceIndex := range item.Code {
+				item.Code[evidenceIndex].Path = relativePath(root, path) + fmt.Sprintf("#items/%s/evidence/%d", item.ID, evidenceIndex)
+			}
+			item.HasCode = len(item.Code) > 0
+			itemKey := FlatTargetKey(item.Target)
+			transactionItems[itemKey] = true
+			itemsByKey[itemKey] = item
+			slide.Items = append(slide.Items, item)
+		}
+	}
+
 	for _, entry := range entries {
 		name := entry.Name()
 		matches := flatSlideName.FindStringSubmatch(name)
@@ -154,6 +220,10 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		slide := &Slide{Path: relativePath(root, path), Directory: recordRoot, SlideManifest: value, Target: targets.slide(value.ID)}
 		validateSlideManifest(value, name, deck.ID, deck.Target, slide.Target, recordRoot, options.outline, validation)
 		key := FlatTargetKey(slide.Target)
+		if transactionSlides[key] {
+			allowedAssets[value.Entrypoint] = true
+			continue
+		}
 		if matches[3] != key {
 			addIssue(validation, "error", name, "slide filename key does not match its stable target")
 		}
@@ -174,6 +244,9 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		if matches == nil || !regular[name] {
 			continue
 		}
+		if transactionSlides[matches[1]] {
+			continue
+		}
 		path := filepath.Join(recordRoot, name)
 		var value ItemManifest
 		if err := readJSON(path, &value); err != nil {
@@ -182,6 +255,9 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		}
 		slide := slidesByKey[matches[1]]
 		if slide == nil {
+			if transactionSlides[matches[1]] {
+				continue
+			}
 			addIssue(validation, "error", name, "item filename references an unknown slide key")
 			continue
 		}
@@ -206,6 +282,9 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 			if matches == nil || !regular[name] {
 				continue
 			}
+			if transactionItems[matches[1]] {
+				continue
+			}
 			item := itemsByKey[matches[1]]
 			if item == nil {
 				addIssue(validation, "error", name, "evidence filename references an unknown Item key")
@@ -228,7 +307,7 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 
 	knownRecord := func(name string) bool {
 		contentRecord := allowedAssets[name] || flatDeckName.MatchString(name) || flatSlideName.MatchString(name) ||
-			flatItemName.MatchString(name) || flatEvidenceName.MatchString(name)
+			flatItemName.MatchString(name) || flatEvidenceName.MatchString(name) || flatSlideTransactionName.MatchString(name)
 		return contentRecord || strings.HasPrefix(name, ".change-saga-stage-") || strings.HasPrefix(name, ".change-saga-write-")
 	}
 	for _, entry := range entries {
@@ -259,10 +338,29 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 			})
 			if !options.outline {
 				validateSlideComposition(slide, validation)
+				if slide.AuthoringSnapshot == "" {
+					legacy, err := LegacySlideTransactionRevision(slide)
+					if err != nil {
+						addIssue(validation, "error", slide.Path, "compute complete-slide migration snapshot: "+err.Error())
+					} else {
+						slide.AuthoringSnapshot = legacy.Snapshot
+						slide.AuthoringHeads = []string{legacy.Snapshot}
+					}
+				}
 			}
 		}
 	}
 	return decks, nil
+}
+
+// manifestSagaID extracts the Saga ID from a canonical Deck target. Deck
+// targets are constructed by this loader, so a malformed value is impossible.
+func manifestSagaID(deckTarget string) string {
+	parts := strings.Split(deckTarget, ":")
+	if len(parts) >= 3 {
+		return parts[2]
+	}
+	return ""
 }
 
 func validateDeckManifest(value DeckManifest, path, target string, validation *Validation) {
@@ -397,10 +495,14 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 		section := &Section{Path: deck.Path, Kind: "deck", ID: deck.ID, Title: deck.Title, Order: deck.Rank, Target: deck.Target}
 		for _, slide := range deck.Slides {
 			meta := slide.SlideManifest
-			fragment := &Fragment{Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType, Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta, DeckRole: deck.Role}
+			fragment := &Fragment{
+				Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType,
+				Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta, DeckRole: deck.Role,
+				AuthoringSnapshot: slide.AuthoringSnapshot, AuthoringHeads: append([]string{}, slide.AuthoringHeads...), AuthoringConflict: slide.AuthoringConflict, AuthoringCreatedAt: slide.AuthoringCreatedAt,
+			}
 			for _, item := range slide.Items {
 				meta := item.ItemManifest
-				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Code: item.Code, HasCode: item.HasCode, ItemMeta: &meta})
+				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Code: item.Code, CriterionLinks: append([]CriterionLink{}, item.CriterionLinks...), HasCode: item.HasCode, ItemMeta: &meta})
 				fragment.HasCode = fragment.HasCode || item.HasCode
 			}
 			section.Fragments = append(section.Fragments, fragment)
