@@ -158,3 +158,55 @@ Temporary renders are under `/tmp/pr-request-reuse-saga/qa`,
 These branches are ready for the parent's integration review. Combined-source
 validation and browser regression checks still need to run after integration;
 the isolated measurements do not establish the combined latency distribution.
+
+## Integrated in the coordinator workspace, 2026-09-24
+
+The user subsequently authorized evaluation and integration into
+`perf/pr-review-loading`. All three complete child branches, including their
+Saga documentation, are now ancestors of this branch. This supersedes the
+earlier unmerged handoff status above; the parent branch remains untouched.
+
+| Child | Merge commit |
+| --- | --- |
+| Request-local patch reuse | `e25c0c8569ec5e68ae043015d7df23b8e1d0606d` |
+| Bounded Code Diff batching | `af51c381021d11bad47dd85b240679a0417f0ac4` |
+| Asynchronous feedback | `50aa12bb1694fede62b90413fe4eb14887215ebf` |
+
+Source evaluation found no blocking integration issue. Git combined
+`reviews.go` without manual conflicts; inspection confirmed the request-local
+helper and immutable shown-slide snapshot both remain. The deferred lazy
+prototype is still an experiment artifact, not active production code.
+
+At combined commit `50aa12bb`, formatting, `go vet ./...`, binary build, and
+the review/annotation/snapshot-focused race tests passed. The server selection
+took 26.506 s, reviewstore 1.519 s, and Saga 1.781 s. The same name filter
+selected no tests in coderesolve or gitdiff, so this run does not claim those
+complete suites passed. Commands ran in a tracked eight-minute one-shot:
+
+```sh
+gofmt -l cmd internal
+go vet ./...
+go build -o /tmp/change-saga-integrated ./cmd/change-saga
+go test -race ./internal/server ./internal/reviewstore ./internal/saga ./internal/coderesolve ./internal/gitdiff -run 'TestReview|Test.*Annotation|Test.*Snapshot' -count=1 -timeout 2m
+npm test --prefix e2e -- --workers=2
+```
+
+Full Chromium finished **47/48 passing in 3.1 minutes**, including all eight
+PR review cases and the bounded-diff, navigation, performance, accessibility,
+and security cases. The sole failure remains the baseline terms-table header
+expectation at `section-directories.spec.ts:32`: five expected columns versus
+seven rendered. Neither that assertion nor the terms-directory code changed
+in these merges. No new full-repository race or cross-browser pass is claimed.
+
+The merged binary validates the real Saga without issues. Public queries
+report all six performance implementation slides current and zero newly stale
+references; overall stale references fell from 65 to 56 through the authored
+repairs. The remaining baseline drift belongs to the separate reconciliation
+workstream. The advisory committed-state comparison, which executed after the
+merge queue delay, found no stable-ID collisions, competing heads, or intent
+overlap candidates between the merged commit and the three child tips.
+
+The merged binary also rendered the realistic copied fixture in an actual
+browser at `http://127.0.0.1:60391/reviews/review-ux-improvements`, served with
+the original pinned source checkout. This is a functional inspection, not a
+new combined latency distribution. No real review feedback was authored.
