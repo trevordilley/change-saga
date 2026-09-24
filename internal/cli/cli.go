@@ -27,6 +27,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/semanticgraph"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
 	"github.com/twentyideas/changesaga/internal/store"
 	"github.com/twentyideas/changesaga/skills"
@@ -870,8 +871,13 @@ func appendAppIssues(root string, document *saga.Saga, validation *saga.Validati
 	if document == nil {
 		return
 	}
-	if _, err := requirements.Load(root, document.Manifest.ID); err != nil {
+	records, err := requirements.Load(root, document.Manifest.ID)
+	if err != nil {
 		appendLoadIssues(validation, "___requirements", err)
+		return
+	}
+	if err := semanticgraph.ProjectSlideCriterionLinks(document, &records); err != nil {
+		appendLoadIssues(validation, "___requirements/relations", err)
 		return
 	}
 	for _, deck := range document.Onboarding {

@@ -4,17 +4,23 @@
   "title": "Complete slide transaction request",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "operation", "request_id", "deck", "expected_snapshot", "slide", "asset", "items"],
+  "required": ["version", "operation", "request_id", "deck", "slide", "asset", "items"],
   "properties": {
     "version": {"const": 1},
-    "operation": {"enum": ["create", "update"]},
+    "operation": {"enum": ["create", "update", "reconcile"]},
     "request_id": {"$ref": "#/$defs/stableId"},
     "deck": {"type": "string", "minLength": 1},
-    "expected_snapshot": {"type": "string", "minLength": 1},
+    "expected_snapshot": {"type": "string"},
+    "expected_snapshots": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
     "slide": {"$ref": "#/$defs/slide"},
     "asset": {"$ref": "#/$defs/asset"},
     "items": {"type": "array", "minItems": 1, "maxItems": 7, "items": {"$ref": "#/$defs/item"}}
   },
+  "allOf": [
+    {"if": {"properties": {"operation": {"const": "create"}}}, "then": {"required": ["expected_snapshot"], "properties": {"expected_snapshot": {"const": "absent"}}, "not": {"required": ["expected_snapshots"]}}},
+    {"if": {"properties": {"operation": {"const": "update"}}}, "then": {"required": ["expected_snapshot"], "properties": {"expected_snapshot": {"$ref": "#/$defs/digest"}}, "not": {"required": ["expected_snapshots"]}}},
+    {"if": {"properties": {"operation": {"const": "reconcile"}}}, "then": {"required": ["expected_snapshots"], "not": {"required": ["expected_snapshot"]}}}
+  ],
   "$defs": {
     "stableId": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
     "lowerId": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},

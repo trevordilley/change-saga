@@ -86,6 +86,31 @@ func TestWriteFileExclusiveDoesNotReplaceExisting(t *testing.T) {
 	}
 }
 
+func TestWriteFileReplacementReportsPublishedWhenDirectorySyncFails(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "record.json")
+	if err := os.WriteFile(path, []byte("old\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	faultHook = func(step, _ string) error {
+		if step == "before-directory-sync" {
+			return errors.New("injected directory sync failure")
+		}
+		return nil
+	}
+	t.Cleanup(func() { faultHook = nil })
+
+	err := WriteFile(path, []byte("new\n"), 0o644, false)
+	published, durable, known := PublicationStatus(err)
+	if err == nil || !known || !published || durable || !strings.Contains(err.Error(), "published") {
+		t.Fatalf("publication status = published:%v durable:%v known:%v err:%v", published, durable, known, err)
+	}
+	data, readErr := os.ReadFile(path)
+	if readErr != nil || string(data) != "new\n" {
+		t.Fatalf("published replacement = %q err=%v", data, readErr)
+	}
+}
+
 func TestCommitDirPublishesCompleteEntityOrNothing(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "test.saga")
 	parent := filepath.Join(root, "___review", "threads")

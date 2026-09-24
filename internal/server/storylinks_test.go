@@ -74,3 +74,29 @@ func TestSlideStorySummaryUsesOnlyItsExactItems(t *testing.T) {
 		t.Fatal("legacy links leaked into element summary")
 	}
 }
+
+func TestSlideStoryHoverProjectsEmbeddedTransactionCriterionLinks(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "visual.saga")
+	writeEmbeddedSlideFixture(t, root)
+	document, validation, err := saga.LoadNarrative(root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("fixture: %v issues=%#v", err, validation.Issues)
+	}
+	slide := document.Decks[0].Slides[0]
+	item := slide.Items[0]
+	story := "urn:change-saga:visual:story:checkout"
+	revision := story + ":revision:r1"
+	criterion := story + ":criterion:safe"
+	item.CriterionLinks = []saga.CriterionLink{{ID: "embedded-safe", Criterion: criterion, StoryRevision: revision, Rationale: "The exact Item explains safe checkout."}}
+	records := requirements.Document{SagaID: "visual", Stories: []requirements.Story{{
+		Identity: requirements.StoryIdentity{ID: "checkout"}, RevisionHeads: []string{revision},
+		CurrentRevision: &requirements.Revision{ID: "r1", Story: story, Title: "Safe checkout", AcceptanceCriteria: []requirements.Criterion{{ID: "safe", Statement: "Cart is preserved"}}},
+	}}}
+	view := makeFragmentView(findFragmentByTarget(document, slide.Target), viewScope{})
+	if err := decorateFragmentStories(document, records, view); err != nil {
+		t.Fatal(err)
+	}
+	if view.Stories.Count != 1 || len(view.Stories.Links) != 1 || view.Stories.Links[0].Criterion != "Cart is preserved" || view.Stories.Links[0].Status != requirements.CurrencyCurrent {
+		t.Fatalf("embedded hover links = %#v", view.Stories)
+	}
+}

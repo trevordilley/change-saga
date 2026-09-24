@@ -31,6 +31,7 @@ type targetEntry struct {
 	children []string
 	diffs    []saga.CodeFile
 	fragment *saga.Fragment
+	landmark *saga.Landmark
 }
 
 type selectorEntry struct {
@@ -312,7 +313,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 			landmarkEntry := &targetEntry{node: Node{
 				Kind: landmarkKind, Target: landmark.Target, Parent: fragment.Target, ID: landmark.ID, Title: landmark.Label,
 				Description: landmark.Description, Selector: landmarkValue(landmark.Selector),
-			}, diffs: landmark.Code}
+			}, diffs: landmark.Code, landmark: landmark}
 			if landmark.ItemMeta != nil {
 				landmarkEntry.node.ItemKind = landmark.ItemMeta.Kind
 				landmarkEntry.node.About = landmark.ItemMeta.About
@@ -500,11 +501,16 @@ func (s *session) ReadFragment(ctx context.Context, query FragmentQuery) (Fragme
 			continue
 		}
 		finished := s.finishNode(child, false)
-		landmarks = append(landmarks, SemanticLandmark{
+		row := SemanticLandmark{
 			Target: child, ID: finished.ID, Label: finished.Title, Description: finished.Description,
 			Selector: finished.Selector, Diffs: finished.Diffs, Kind: finished.ItemKind, About: finished.About,
 			Body: finished.Body, Placement: finished.Placement, Leader: finished.Leader,
-		})
+		}
+		if entry.fragment.SlideMeta != nil {
+			row.Evidence = append([]saga.CodeFile{}, landmark.landmark.Code...)
+			row.CriterionLinks = append([]saga.CriterionLink{}, landmark.landmark.CriterionLinks...)
+		}
+		landmarks = append(landmarks, row)
 	}
 	result := FragmentContent{Target: query.Target, ID: entry.fragment.ID, Title: entry.node.Title, MediaType: entry.fragment.MediaType, Content: chunk, Assets: append([]AssetSummary{}, value.assets...), Landmarks: landmarks}
 	if entry.fragment.SlideMeta != nil {
@@ -513,6 +519,9 @@ func (s *session) ReadFragment(ctx context.Context, query FragmentQuery) (Fragme
 		result.Section = entry.fragment.SlideMeta.Section
 		result.Takeaway = entry.fragment.SlideMeta.Takeaway
 		result.ReadingOrder = append([]string(nil), entry.fragment.SlideMeta.ReadingOrder...)
+		result.AuthoringSnapshot = entry.fragment.AuthoringSnapshot
+		result.AuthoringHeads = append([]string(nil), entry.fragment.AuthoringHeads...)
+		result.AuthoringConflict = entry.fragment.AuthoringConflict
 	}
 	return result, nil
 }

@@ -390,6 +390,9 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			if err := checkItemRecord(document, slide, *record); err != nil {
 				return err
 			}
+			if err := guardCompleteSlideMutation("add-item", slide); err != nil {
+				return err
+			}
 			target = saga.ItemTarget(document.Manifest.ID, slide.ID, *id)
 		}
 		if len(slide.Items) >= 7 && slide.Layout != "custom" {
@@ -494,6 +497,9 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 				return fmt.Errorf("--target must identify a slide")
 			}
 			if err := assertDeckFeature(document, *feature, slide.Path, slide.Target); err != nil {
+				return err
+			}
+			if err := guardCompleteSlideMutation("set-slide-content", slide); err != nil {
 				return err
 			}
 		}

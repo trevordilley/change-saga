@@ -7,6 +7,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/semanticgraph"
 )
 
 // Story links belong to Items. A slide is only a summary of those exact
@@ -48,6 +49,9 @@ func (view *storyLinksView) summarize() {
 }
 
 func decorateFragmentStories(document *saga.Saga, records requirements.Document, view *fragmentView) error {
+	if err := semanticgraph.ProjectSlideCriterionLinks(document, &records); err != nil {
+		return err
+	}
 	return (&storyLinkDecorator{document: document, records: records}).decorate(view)
 }
 

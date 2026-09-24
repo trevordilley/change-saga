@@ -456,6 +456,9 @@ func ReviseSlide(_ context.Context, args []string, out io.Writer) error {
 				if err != nil {
 					return err
 				}
+				if err := guardCompleteSlideMutation("revise-slide", slide); err != nil {
+					return err
+				}
 				deck := slideDeck(document, slide)
 				result.Resource = slide.Target
 				manifest := slide.SlideManifest
@@ -526,6 +529,9 @@ func RemoveSlide(_ context.Context, args []string, out io.Writer) error {
 				slide := findSlide(document, *slideValue)
 				if slide == nil {
 					return fmt.Errorf("--slide must identify an existing slide; a review's slides carry its approvals and comments, so they are not removed")
+				}
+				if err := guardCompleteSlideMutation("remove-slide", slide); err != nil {
+					return err
 				}
 				result.Resource = slide.Target
 				result.Removed = slideRecords(slide)
@@ -618,6 +624,9 @@ func ReviseItem(_ context.Context, args []string, out io.Writer) error {
 				if err != nil {
 					return err
 				}
+				if err := guardCompleteSlideMutation("revise-item", slide); err != nil {
+					return err
+				}
 				result.Resource = item.Target
 				manifest := item.ItemManifest
 				if flagWasSet(flags, "record") && *record != "" && *review == "" {
@@ -682,6 +691,9 @@ func RemoveItem(_ context.Context, args []string, out io.Writer) error {
 			apply: func(document *saga.Saga, edit *contentEdit, result *contentEditOutput) error {
 				slide, item, err := findEditableItem(document, "", *slideValue, *itemValue)
 				if err != nil {
+					return err
+				}
+				if err := guardCompleteSlideMutation("remove-item", slide); err != nil {
 					return err
 				}
 				for _, other := range slide.Items {

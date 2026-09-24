@@ -30,6 +30,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/semanticgraph"
 	"github.com/twentyideas/changesaga/internal/snapshotcache"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -956,6 +957,9 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 			return nil, err
 		}
 		return nil, errors.New("The requirements could not be loaded. Run change-saga validate for details.")
+	}
+	if err := semanticgraph.ProjectSlideCriterionLinks(document, &requirementsDocument); err != nil {
+		return nil, errors.New("The complete-slide criterion links could not be loaded. Run change-saga validate for details.")
 	}
 	tests, err := quality.Load(a.root)
 	if err != nil {

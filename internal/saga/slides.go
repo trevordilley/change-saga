@@ -168,7 +168,11 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		for _, revision := range record.Revisions {
 			allowedAssets[revision.Asset] = true
 		}
-		slide := &Slide{Path: relativePath(root, path), Directory: recordRoot, SlideManifest: current.Slide, Target: targets.slide(current.Slide.ID)}
+		heads, _ := record.Heads()
+		slide := &Slide{
+			Path: relativePath(root, path), Directory: recordRoot, SlideManifest: current.Slide, Target: targets.slide(current.Slide.ID),
+			AuthoringSnapshot: current.Snapshot, AuthoringHeads: heads, AuthoringConflict: len(heads) > 1, AuthoringCreatedAt: current.CreatedAt,
+		}
 		key := FlatTargetKey(slide.Target)
 		if matches[2] != key {
 			addIssue(validation, "error", name, "slide transaction filename key does not match its stable slide target")
@@ -334,6 +338,15 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 			})
 			if !options.outline {
 				validateSlideComposition(slide, validation)
+				if slide.AuthoringSnapshot == "" {
+					legacy, err := LegacySlideTransactionRevision(slide)
+					if err != nil {
+						addIssue(validation, "error", slide.Path, "compute complete-slide migration snapshot: "+err.Error())
+					} else {
+						slide.AuthoringSnapshot = legacy.Snapshot
+						slide.AuthoringHeads = []string{legacy.Snapshot}
+					}
+				}
 			}
 		}
 	}
@@ -482,10 +495,14 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 		section := &Section{Path: deck.Path, Kind: "deck", ID: deck.ID, Title: deck.Title, Order: deck.Rank, Target: deck.Target}
 		for _, slide := range deck.Slides {
 			meta := slide.SlideManifest
-			fragment := &Fragment{Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType, Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta, DeckRole: deck.Role}
+			fragment := &Fragment{
+				Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType,
+				Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta, DeckRole: deck.Role,
+				AuthoringSnapshot: slide.AuthoringSnapshot, AuthoringHeads: append([]string{}, slide.AuthoringHeads...), AuthoringConflict: slide.AuthoringConflict, AuthoringCreatedAt: slide.AuthoringCreatedAt,
+			}
 			for _, item := range slide.Items {
 				meta := item.ItemManifest
-				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Code: item.Code, HasCode: item.HasCode, ItemMeta: &meta})
+				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Code: item.Code, CriterionLinks: append([]CriterionLink{}, item.CriterionLinks...), HasCode: item.HasCode, ItemMeta: &meta})
 				fragment.HasCode = fragment.HasCode || item.HasCode
 			}
 			section.Fragments = append(section.Fragments, fragment)

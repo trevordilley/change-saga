@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 	"time"
 
@@ -50,13 +51,14 @@ type TransactionItem struct {
 // SlideTransactionRevision is one immutable complete-slide snapshot. Asset is
 // a content-addressed regular file committed before this record references it.
 type SlideTransactionRevision struct {
-	Snapshot    string            `json:"snapshot"`
-	RequestID   string            `json:"request_id"`
-	CreatedAt   time.Time         `json:"created_at"`
-	Asset       string            `json:"asset"`
-	AssetDigest string            `json:"asset_digest"`
-	Slide       SlideManifest     `json:"slide"`
-	Items       []TransactionItem `json:"items"`
+	Snapshot        string            `json:"snapshot"`
+	ParentSnapshots []string          `json:"parent_snapshots,omitempty"`
+	RequestID       string            `json:"request_id"`
+	CreatedAt       time.Time         `json:"created_at"`
+	Asset           string            `json:"asset"`
+	AssetDigest     string            `json:"asset_digest"`
+	Slide           SlideManifest     `json:"slide"`
+	Items           []TransactionItem `json:"items"`
 }
 
 // SlideTransactionRecord is the single logical publication point for a
@@ -106,6 +108,31 @@ func SlideRevisionSnapshot(revision SlideTransactionRevision) (string, error) {
 	return "sha256:" + hex.EncodeToString(digest[:]), nil
 }
 
+// LegacySlideTransactionRevision projects one flat slide into the exact root
+// revision apply-slide will preserve when it migrates that slide. This is also
+// the public authoring snapshot returned by query slide, so callers never need
+// to read compact metadata files to obtain expected_snapshot.
+func LegacySlideTransactionRevision(slide *Slide) (SlideTransactionRevision, error) {
+	assetPath := filepath.Join(slide.Directory, filepath.FromSlash(slide.Entrypoint))
+	asset, err := os.ReadFile(assetPath)
+	if err != nil {
+		return SlideTransactionRevision{}, err
+	}
+	info, err := os.Stat(assetPath)
+	if err != nil {
+		return SlideTransactionRevision{}, err
+	}
+	revision := SlideTransactionRevision{
+		ParentSnapshots: []string{}, RequestID: "legacy-" + FlatTargetKey(slide.Target), CreatedAt: info.ModTime().UTC(),
+		Asset: slide.Entrypoint, AssetDigest: coderef.DigestBytes(asset), Slide: slide.SlideManifest, Items: []TransactionItem{},
+	}
+	for _, item := range slide.Items {
+		revision.Items = append(revision.Items, TransactionItem{Item: item.ItemManifest, Evidence: append([]CodeFile{}, item.Code...), CriterionLinks: append([]CriterionLink{}, item.CriterionLinks...)})
+	}
+	revision.Snapshot, err = SlideRevisionSnapshot(revision)
+	return revision, err
+}
+
 func (record SlideTransactionRecord) currentRevision() (*SlideTransactionRevision, error) {
 	var current *SlideTransactionRevision
 	for index := range record.Revisions {
@@ -126,6 +153,57 @@ func (record SlideTransactionRecord) currentRevision() (*SlideTransactionRevisio
 // pointer.
 func (record SlideTransactionRecord) CurrentRevision() (*SlideTransactionRevision, error) {
 	return record.currentRevision()
+}
+
+// Heads returns the leaf snapshots in the immutable revision DAG. A normal
+// record has one head. More than one means Git combined divergent histories;
+// Current remains a published pointer for read compatibility, but callers
+// must surface the conflict and reconcile every head before another update.
+func (record SlideTransactionRecord) Heads() ([]string, error) {
+	known, parents := map[string]int{}, map[string]bool{}
+	for index, revision := range record.Revisions {
+		if revision.Snapshot == "" || known[revision.Snapshot] != 0 {
+			return nil, fmt.Errorf("transaction history contains a missing or duplicate snapshot")
+		}
+		known[revision.Snapshot] = index + 1
+	}
+	for revisionIndex, revision := range record.Revisions {
+		seen := map[string]bool{}
+		for _, parent := range record.revisionParents(revisionIndex) {
+			parentPosition := known[parent]
+			if parentPosition == 0 {
+				return nil, fmt.Errorf("revision %q names unknown parent snapshot %q", revision.Snapshot, parent)
+			}
+			if parentPosition > revisionIndex || seen[parent] {
+				return nil, fmt.Errorf("revision %q has an invalid or repeated parent snapshot", revision.Snapshot)
+			}
+			seen[parent], parents[parent] = true, true
+		}
+	}
+	heads := []string{}
+	for snapshot := range known {
+		if !parents[snapshot] {
+			heads = append(heads, snapshot)
+		}
+	}
+	sort.Strings(heads)
+	if len(heads) == 0 {
+		return nil, fmt.Errorf("transaction history has no revision head")
+	}
+	return heads, nil
+}
+
+// revisionParents reads the explicit DAG edge used by current writers. Records
+// produced before parent_snapshots existed remain a linear append-only list,
+// so an omitted edge after the root means the immediately preceding revision.
+func (record SlideTransactionRecord) revisionParents(index int) []string {
+	if index < 0 || index >= len(record.Revisions) {
+		return nil
+	}
+	if parents := record.Revisions[index].ParentSnapshots; len(parents) > 0 || index == 0 {
+		return parents
+	}
+	return []string{record.Revisions[index-1].Snapshot}
 }
 
 func validateSlideTransactionRecord(root, recordRoot, name, sagaID string, deck *Deck, targets deckTargets, record SlideTransactionRecord, validation *Validation) *SlideTransactionRevision {
@@ -181,6 +259,14 @@ func validateSlideTransactionRecord(root, recordRoot, name, sagaID string, deck 
 			problem("asset_digest does not match the referenced asset bytes")
 		}
 		validateTransactionalSlide(root, recordRoot, name, sagaID, deck, targets, *revision, validation)
+	}
+	heads, headsErr := record.Heads()
+	if headsErr != nil {
+		problem(headsErr.Error())
+	} else if len(heads) > 1 {
+		addIssue(validation, "warning", name, fmt.Sprintf("slide transaction has divergent revision heads %s; preserve every revision and reconcile with apply-slide operation reconcile using expected_snapshots", strings.Join(heads, ", ")))
+	} else if record.Current != heads[0] {
+		problem("current snapshot is not the unique revision head")
 	}
 	return current
 }

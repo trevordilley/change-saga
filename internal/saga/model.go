@@ -104,8 +104,12 @@ type Slide struct {
 	Path      string `json:"path"`
 	Directory string `json:"-"`
 	SlideManifest
-	Target string  `json:"target"`
-	Items  []*Item `json:"items"`
+	Target             string    `json:"target"`
+	Items              []*Item   `json:"items"`
+	AuthoringSnapshot  string    `json:"authoring_snapshot,omitempty"`
+	AuthoringHeads     []string  `json:"authoring_heads,omitempty"`
+	AuthoringConflict  bool      `json:"authoring_conflict,omitempty"`
+	AuthoringCreatedAt time.Time `json:"-"`
 }
 
 type Item struct {
@@ -167,34 +171,39 @@ type FragmentManifest struct {
 }
 
 type Fragment struct {
-	Path       string         `json:"path"`
-	Directory  string         `json:"-"`
-	ID         string         `json:"id"`
-	Title      string         `json:"title,omitempty"`
-	MediaType  string         `json:"media_type"`
-	Entrypoint string         `json:"entrypoint"`
-	Order      int            `json:"order,omitempty"`
-	Target     string         `json:"target"`
-	Code       []CodeFile     `json:"code,omitempty"`
-	HasCode    bool           `json:"-"`
-	Landmarks  []Landmark     `json:"landmarks,omitempty"`
-	SlideMeta  *SlideManifest `json:"-"`
-	DeckRole   string         `json:"-"`
+	Path               string         `json:"path"`
+	Directory          string         `json:"-"`
+	ID                 string         `json:"id"`
+	Title              string         `json:"title,omitempty"`
+	MediaType          string         `json:"media_type"`
+	Entrypoint         string         `json:"entrypoint"`
+	Order              int            `json:"order,omitempty"`
+	Target             string         `json:"target"`
+	Code               []CodeFile     `json:"code,omitempty"`
+	HasCode            bool           `json:"-"`
+	Landmarks          []Landmark     `json:"landmarks,omitempty"`
+	SlideMeta          *SlideManifest `json:"-"`
+	DeckRole           string         `json:"-"`
+	AuthoringSnapshot  string         `json:"-"`
+	AuthoringHeads     []string       `json:"-"`
+	AuthoringConflict  bool           `json:"-"`
+	AuthoringCreatedAt time.Time      `json:"-"`
 }
 
 type Landmark struct {
-	Path        string           `json:"-"`
-	Directory   string           `json:"-"`
-	Version     int              `json:"version"`
-	ID          string           `json:"id"`
-	Label       string           `json:"label"`
-	Description string           `json:"description,omitempty"`
-	Selector    LandmarkSelector `json:"selector"`
-	Hotspot     *LandmarkRegion  `json:"hotspot,omitempty"`
-	Target      string           `json:"target"`
-	Code        []CodeFile       `json:"code,omitempty"`
-	HasCode     bool             `json:"-"`
-	ItemMeta    *ItemManifest    `json:"-"`
+	Path           string           `json:"-"`
+	Directory      string           `json:"-"`
+	Version        int              `json:"version"`
+	ID             string           `json:"id"`
+	Label          string           `json:"label"`
+	Description    string           `json:"description,omitempty"`
+	Selector       LandmarkSelector `json:"selector"`
+	Hotspot        *LandmarkRegion  `json:"hotspot,omitempty"`
+	Target         string           `json:"target"`
+	Code           []CodeFile       `json:"code,omitempty"`
+	CriterionLinks []CriterionLink  `json:"criterion_links,omitempty"`
+	HasCode        bool             `json:"-"`
+	ItemMeta       *ItemManifest    `json:"-"`
 }
 
 type LandmarkSelector struct {

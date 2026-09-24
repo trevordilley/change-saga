@@ -21,6 +21,33 @@ var (
 	faultHook  func(string, string) error
 )
 
+// PublicationError reports a write that reached its atomic publication point
+// but whose containing directory could not be synced or durably rolled back.
+// Published means the value is observable or may reappear after a crash;
+// Durable is false because persistence could not be confirmed. Callers must
+// not roll back dependencies of that value.
+type PublicationError struct {
+	Path      string
+	Published bool
+	Durable   bool
+	Err       error
+}
+
+func (e *PublicationError) Error() string {
+	return fmt.Sprintf("write %s: value was published but directory durability is unknown: %v", filepath.Base(e.Path), e.Err)
+}
+
+func (e *PublicationError) Unwrap() error { return e.Err }
+
+// PublicationStatus recognizes the post-publication failure contract.
+func PublicationStatus(err error) (published, durable, known bool) {
+	var value *PublicationError
+	if !errors.As(err, &value) {
+		return false, false, false
+	}
+	return value.Published, value.Durable, true
+}
+
 // WriteJSON writes one complete JSON record without exposing a partially
 // written destination. The destination's parent directory must already exist.
 func WriteJSON(path string, value any, exclusive bool) error {
@@ -80,18 +107,29 @@ func WriteFile(path string, data []byte, perm fs.FileMode, exclusive bool) (err 
 	}
 	if err = injectFault("before-directory-sync", path); err != nil {
 		if exclusive {
-			_ = os.Remove(path)
+			return rollbackPublishedCreate(path, dir, err)
 		}
-		return err
+		return &PublicationError{Path: path, Published: true, Durable: false, Err: err}
 	}
 	if err = SyncDir(dir); err != nil {
 		if exclusive {
-			_ = os.Remove(path)
-			_ = SyncDir(dir)
+			return rollbackPublishedCreate(path, dir, err)
 		}
-		return err
+		return &PublicationError{Path: path, Published: true, Durable: false, Err: err}
 	}
 	return nil
+}
+
+func rollbackPublishedCreate(path, dir string, cause error) error {
+	if removeErr := os.Remove(path); removeErr != nil {
+		return &PublicationError{Path: path, Published: true, Durable: false, Err: errors.Join(cause, fmt.Errorf("rollback published create: %w", removeErr))}
+	}
+	if syncErr := SyncDir(dir); syncErr != nil {
+		// The name is absent now, but an unsynced removal can be lost after a
+		// crash. Preserve dependencies as though the publication still exists.
+		return &PublicationError{Path: path, Published: true, Durable: false, Err: errors.Join(cause, fmt.Errorf("sync published-create rollback: %w", syncErr))}
+	}
+	return cause
 }
 
 // CommitDir builds a complete entity in a hidden same-parent staging

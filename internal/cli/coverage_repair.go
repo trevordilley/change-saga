@@ -153,11 +153,20 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 	if clean == "." || clean == ".." || strings.HasPrefix(clean, "../") {
 		return coverageRecordLocation{}, fmt.Errorf("--record must stay within the saga")
 	}
-	var found string
+	var found, transactionTarget string
 	consider := func(files []saga.CodeFile) {
 		for _, file := range files {
 			if filepath.ToSlash(file.Path) == clean {
 				found = clean
+				if strings.Contains(clean, "#items/") {
+					for _, deck := range allDecks(document) {
+						for _, slide := range deck.Slides {
+							if strings.HasPrefix(clean, filepath.ToSlash(slide.Path)+"#items/") {
+								transactionTarget = slide.Target
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -175,6 +184,9 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 		}
 	}
 	walk(document.Section)
+	if transactionTarget != "" {
+		return coverageRecordLocation{}, completeSlideMutationError("remove-coverage or replace-coverage", transactionTarget)
+	}
 	if found == "" {
 		return coverageRecordLocation{}, fmt.Errorf("coverage record %q does not exist; use query mappings to list evidence_file values", requested)
 	}

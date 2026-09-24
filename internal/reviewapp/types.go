@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
-
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 const (
@@ -212,32 +212,37 @@ type AssetSummary struct {
 }
 
 type FragmentContent struct {
-	Target       string             `json:"target"`
-	ID           string             `json:"id"`
-	Title        string             `json:"title"`
-	MediaType    string             `json:"media_type"`
-	Content      FragmentChunk      `json:"content"`
-	Assets       []AssetSummary     `json:"assets"`
-	Landmarks    []SemanticLandmark `json:"landmarks"`
-	Intent       string             `json:"intent,omitempty"`
-	Layout       string             `json:"layout,omitempty"`
-	Section      string             `json:"section,omitempty"`
-	Takeaway     string             `json:"takeaway,omitempty"`
-	ReadingOrder []string           `json:"reading_order,omitempty"`
+	Target            string             `json:"target"`
+	ID                string             `json:"id"`
+	Title             string             `json:"title"`
+	MediaType         string             `json:"media_type"`
+	Content           FragmentChunk      `json:"content"`
+	Assets            []AssetSummary     `json:"assets"`
+	Landmarks         []SemanticLandmark `json:"landmarks"`
+	Intent            string             `json:"intent,omitempty"`
+	Layout            string             `json:"layout,omitempty"`
+	Section           string             `json:"section,omitempty"`
+	Takeaway          string             `json:"takeaway,omitempty"`
+	ReadingOrder      []string           `json:"reading_order,omitempty"`
+	AuthoringSnapshot string             `json:"authoring_snapshot,omitempty"`
+	AuthoringHeads    []string           `json:"authoring_heads,omitempty"`
+	AuthoringConflict bool               `json:"authoring_conflict,omitempty"`
 }
 
 type SemanticLandmark struct {
-	Target      string         `json:"target"`
-	ID          string         `json:"id"`
-	Label       string         `json:"label"`
-	Description string         `json:"description,omitempty"`
-	Selector    *LandmarkValue `json:"selector"`
-	Diffs       CompactDiffs   `json:"diffs"`
-	Kind        string         `json:"kind,omitempty"`
-	About       string         `json:"about,omitempty"`
-	Body        string         `json:"body,omitempty"`
-	Placement   string         `json:"placement,omitempty"`
-	Leader      string         `json:"leader,omitempty"`
+	Target         string               `json:"target"`
+	ID             string               `json:"id"`
+	Label          string               `json:"label"`
+	Description    string               `json:"description,omitempty"`
+	Selector       *LandmarkValue       `json:"selector"`
+	Diffs          CompactDiffs         `json:"diffs"`
+	Kind           string               `json:"kind,omitempty"`
+	About          string               `json:"about,omitempty"`
+	Body           string               `json:"body,omitempty"`
+	Placement      string               `json:"placement,omitempty"`
+	Leader         string               `json:"leader,omitempty"`
+	Evidence       []saga.CodeFile      `json:"evidence,omitempty"`
+	CriterionLinks []saga.CriterionLink `json:"criterion_links,omitempty"`
 }
 
 // ResolvedSelector is one persisted code reference viewed in the comparison.
