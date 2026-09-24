@@ -212,6 +212,122 @@ func TestRecordSelectorsConflictsAndCursorsUseStructuredSemantics(t *testing.T) 
 	}
 }
 
+func TestPersonaConflictDetailsAreIndependentlyBoundedAndTraversable(t *testing.T) {
+	opened := openFixture(t, livingFixture(t)).(*session)
+	opened.requirements.Stories = nil
+	opened.requirements.Terms = nil
+	opened.requirements.Relations = nil
+	opened.currency = nil
+	opened.saga.Onboarding = nil
+	opened.saga.Reviews = nil
+	for index := 0; index < 1000; index++ {
+		id := fmt.Sprintf("conflict-%04d", index)
+		urn := "urn:change-saga:test:story:" + id
+		opened.requirements.Stories = append(opened.requirements.Stories, requirements.Story{
+			Identity:      requirements.StoryIdentity{ID: id},
+			RevisionHeads: []string{urn + ":revision:a", urn + ":revision:b"},
+			Revisions: []requirements.Revision{
+				{ID: "a", Story: urn, Personas: []string{fixturePersona()}},
+				{ID: "b", Story: urn},
+			},
+		})
+	}
+
+	query := Query{Operation: "persona-references", Filters: Filters{Persona: fixturePersona()}, Limit: 1}
+	first, err := opened.Query(context.Background(), query)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data := first.Data.(ReferencePage)
+	encoded, _ := json.Marshal(data)
+	t.Logf("persona limit=1 references=%d unresolved=%d unresolved_total=%d response_data_bytes=%d", len(data.References), len(data.Completeness.UnresolvedOwners), data.Completeness.UnresolvedPage.Total, len(encoded))
+	if first.Page.Total != 0 || first.Page.Returned != 0 || len(data.References) != 0 || data.Completeness.Complete ||
+		data.Completeness.UnresolvedPage.Total != 1000 || data.Completeness.UnresolvedPage.Returned != 1 || !data.Completeness.UnresolvedPage.HasMore || len(data.Completeness.UnresolvedOwners) != 1 || len(encoded) > 5000 {
+		t.Fatalf("bounded conflict page = %#v bytes=%d", first, len(encoded))
+	}
+	conflictCursor := *data.Completeness.UnresolvedPage.NextCursor
+	all := collectUnresolved(t, opened, Query{Operation: "persona-references", Filters: Filters{Persona: fixturePersona()}, Limit: 1, ConflictLimit: 137})
+	if len(all) != 1000 {
+		t.Fatalf("traversed unresolved owners = %d", len(all))
+	}
+	seen := map[string]bool{}
+	for _, unresolved := range all {
+		if seen[unresolved.Owner] || len(unresolved.Heads) != 2 {
+			t.Fatalf("unresolved owner lost identity or heads: %#v", unresolved)
+		}
+		seen[unresolved.Owner] = true
+	}
+	if _, err := opened.Query(context.Background(), Query{Operation: "persona-references", Filters: Filters{Persona: fixturePersona()}, ConflictCursor: conflictCursor + "A", Limit: 1}); !errorHasCode(err, CodeInvalidArgument) {
+		t.Fatalf("tampered conflict cursor error = %#v", err)
+	}
+	if _, err := opened.Query(context.Background(), Query{Operation: "persona-references", Filters: Filters{Persona: fixturePersona()}, Cursor: conflictCursor, Limit: 1}); !errorHasCode(err, CodeInvalidArgument) {
+		t.Fatalf("conflict cursor used as reference cursor = %#v", err)
+	}
+	opened.snapshot = "sha256:changed"
+	if _, err := opened.Query(context.Background(), Query{Operation: "persona-references", Filters: Filters{Persona: fixturePersona()}, ConflictCursor: conflictCursor, Limit: 1}); !errorHasCode(err, CodeStaleSnapshot) {
+		t.Fatalf("stale conflict cursor error = %#v", err)
+	}
+}
+
+func TestTermConflictDetailsAreBoundedWhenNoReferencesResolve(t *testing.T) {
+	root := livingFixture(t)
+	subject := addFixtureTerm(t, root, "subject", nil, nil)
+	opened := openFixture(t, root).(*session)
+	base := *opened.requirements.FindTerm("subject")
+	opened.requirements.Terms = []requirements.Term{base}
+	opened.requirements.Stories = nil
+	opened.requirements.Relations = nil
+	opened.currency = nil
+	for index := 0; index < 1000; index++ {
+		id := fmt.Sprintf("term-conflict-%04d", index)
+		urn, _ := requirements.TermURN("test", id)
+		opened.requirements.Terms = append(opened.requirements.Terms, requirements.Term{
+			Identity:      requirements.RecordIdentity{ID: id},
+			RevisionHeads: []string{urn + ":revision:a", urn + ":revision:b"},
+			Revisions: []requirements.TermRevision{
+				{ID: "a", Term: urn, Records: []string{subject}},
+				{ID: "b", Term: urn},
+			},
+		})
+	}
+
+	query := Query{Operation: "term-references", Filters: Filters{Term: subject}, Limit: 1}
+	first, err := opened.Query(context.Background(), query)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data := first.Data.(ReferencePage)
+	encoded, _ := json.Marshal(data)
+	t.Logf("term limit=1 references=%d unresolved=%d unresolved_total=%d response_data_bytes=%d", len(data.References), len(data.Completeness.UnresolvedOwners), data.Completeness.UnresolvedPage.Total, len(encoded))
+	if first.Page.Total != 0 || len(data.References) != 0 || data.Completeness.UnresolvedPage.Total != 1000 || len(data.Completeness.UnresolvedOwners) != 1 || len(encoded) > 5000 {
+		t.Fatalf("bounded term conflict page = %#v bytes=%d", first, len(encoded))
+	}
+	all := collectUnresolved(t, opened, Query{Operation: "term-references", Filters: Filters{Term: subject}, Limit: 1, ConflictLimit: 211})
+	if len(all) != 1000 {
+		t.Fatalf("traversed term unresolved owners = %d", len(all))
+	}
+}
+
+func collectUnresolved(t *testing.T, session Session, query Query) []ReferenceUnresolved {
+	t.Helper()
+	var result []ReferenceUnresolved
+	for {
+		page, err := session.Query(context.Background(), query)
+		if err != nil {
+			t.Fatal(err)
+		}
+		completeness := page.Data.(ReferencePage).Completeness
+		if completeness.UnresolvedPage.Returned != len(completeness.UnresolvedOwners) || completeness.UnresolvedPage.Total != 1000 {
+			t.Fatalf("unresolved page metadata = %#v", completeness)
+		}
+		result = append(result, completeness.UnresolvedOwners...)
+		if !completeness.UnresolvedPage.HasMore {
+			return result
+		}
+		query.ConflictCursor = *completeness.UnresolvedPage.NextCursor
+	}
+}
+
 func addFixtureStory(t *testing.T, root, id string, personas []string) string {
 	t.Helper()
 	result, err := requirements.AddStory(root, "test", requirements.AddStoryInput{

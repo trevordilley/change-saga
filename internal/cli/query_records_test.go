@@ -205,6 +205,11 @@ func TestQuerySchemaAndSpecDiscoverRecordOperations(t *testing.T) {
 		if envelope.Data.Operation != operation || envelope.Data.Usage == "" || envelope.Data.Pagination.Kind != "cursor" {
 			t.Fatalf("schema %s = %#v", operation, envelope.Data)
 		}
+		if operation == "persona-references" || operation == "term-references" {
+			if len(envelope.Data.AdditionalPagination) != 1 || envelope.Data.AdditionalPagination[0].CountedPath != "data.completeness.unresolved_owners" || envelope.Data.AdditionalPagination[0].CursorFlag != "--conflict-cursor" || envelope.Data.AdditionalPagination[0].LimitFlag != "--conflict-limit" {
+				t.Fatalf("schema %s conflict pagination = %#v", operation, envelope.Data.AdditionalPagination)
+			}
+		}
 	}
 	var output bytes.Buffer
 	if err := Spec([]string{"--json"}, &output); err != nil {

@@ -51,7 +51,9 @@ rather than fabricating a merged state or choosing a winner.
 Use `query term-references --term ID|URN` for direct incoming and outgoing
 typed uses with exact owners and selectors. Its completeness metadata excludes
 free-form prose, embedded SVG text, history, and transitive expansion; never
-describe those classes as searched. Plain `query terms` preserves the legacy
+describe those classes as searched. Follow its independent unresolved-owner
+pages with `--conflict-cursor`, even when no primary references resolve. Plain
+`query terms` preserves the legacy
 complete collection. Add `--limit` to opt into bounded enumeration and follow
 every cursor at one snapshot.
 

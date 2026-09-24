@@ -93,7 +93,8 @@ through its public append-only operation rather than deleting its record.
 1. Query the current persona with `query personas --persona ID|URN`, inspect
    `query persona-references` when its uses matter, then query the current
    requirement, its history, relevant citations, and relations. Page fully,
-   keep one snapshot, and honor each reference result's completeness metadata.
+   keep one snapshot, and honor each reference result's completeness metadata,
+   including every independently paged unresolved owner.
 2. Confirm the persona, outcome, value, and the narrow observable obligations
    in scope. Leave uncertainty proposed instead of filling it with guesses.
 3. Use the smallest public authoring command: add, revise, criterion change,

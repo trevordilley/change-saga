@@ -31,10 +31,12 @@ type OpenOptions struct {
 }
 
 type Query struct {
-	Operation string
-	Filters   Filters
-	Cursor    string
-	Limit     int
+	Operation      string
+	Filters        Filters
+	Cursor         string
+	Limit          int
+	ConflictCursor string
+	ConflictLimit  int
 }
 
 type Filters struct {
@@ -106,6 +108,7 @@ type ReferenceCompleteness struct {
 	CoveredClasses   []string              `json:"covered_reference_classes"`
 	ExcludedClasses  []ReferenceExclusion  `json:"excluded_reference_classes"`
 	UnresolvedOwners []ReferenceUnresolved `json:"unresolved_owners"`
+	UnresolvedPage   Page                  `json:"unresolved_page"`
 }
 
 type ReferenceExclusion struct {

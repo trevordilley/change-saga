@@ -70,6 +70,16 @@ func (s *session) referenceResult(query Query) (Result, error) {
 	if err != nil {
 		return Result{}, err
 	}
+	conflictLimit := query.ConflictLimit
+	if conflictLimit == 0 {
+		conflictLimit = query.Limit
+	}
+	unresolvedStart, unresolvedEnd, unresolvedPage, err := s.page(query.Operation+"-conflicts", normalizedQueryKey(query.Filters), query.ConflictCursor, conflictLimit, len(completeness.UnresolvedOwners))
+	if err != nil {
+		return Result{}, err
+	}
+	completeness.UnresolvedOwners = completeness.UnresolvedOwners[unresolvedStart:unresolvedEnd]
+	completeness.UnresolvedPage = unresolvedPage
 	return Result{Data: ReferencePage{Subject: subject, References: rows[start:end], Counts: counts, Completeness: completeness}, Page: page}, nil
 }
 

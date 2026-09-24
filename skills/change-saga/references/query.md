@@ -76,6 +76,13 @@ and transitive classes. Each result identifies the exact owner, selector, and
 provenance. Do not claim that excluded text was searched or that a lexical
 match is a semantic dependency.
 
+Unresolved owners have their own bounded `unresolved_page`, independent of the
+primary reference page and still present when no references resolve. Follow
+`unresolved_page.next_cursor` with `--conflict-cursor` until its `has_more` is
+false; `--conflict-limit` controls that page size and otherwise inherits
+`--limit` or the default. Do not treat a complete primary reference traversal
+as complete while unresolved conflict pages remain.
+
 `query terms` without `--limit` or `--cursor` preserves the legacy complete
 term collection. Supply `--limit` to opt into bounded enumeration and follow
 the returned cursor. Persona enumeration and both reference operations are
@@ -121,7 +128,7 @@ approving dependencies.
 - `personas`: current persona definitions and lifecycle heads, selected exactly by stable ID or canonical URN.
   `change-saga query personas --saga PATH [--persona ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `persona-references`: direct explicit incoming and outgoing persona references with provenance and declared coverage.
-  `change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
+  `change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
 - `requirements`: current requirement definitions and lifecycle heads without fabricating winners for conflicts.
   `change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `requirement-history`: append-only revision and lifecycle history in deterministic graph order.
@@ -151,5 +158,5 @@ approving dependencies.
 - `terms`: the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation.
   `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `term-references`: direct explicit incoming and outgoing term references with provenance and declared coverage.
-  `change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
+  `change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
 <!-- query-operations:end -->

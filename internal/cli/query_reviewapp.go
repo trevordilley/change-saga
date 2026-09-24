@@ -124,7 +124,10 @@ func (s *reviewAppQuerySession) Verifications(ctx context.Context, query verific
 }
 
 func (s *reviewAppQuerySession) Living(ctx context.Context, query livingQuery) (queryPage, error) {
-	value, err := s.livingSession.Query(ctx, livingapp.Query{Operation: query.Operation, Filters: query.Filters, Cursor: query.Cursor, Limit: query.Limit})
+	value, err := s.livingSession.Query(ctx, livingapp.Query{
+		Operation: query.Operation, Filters: query.Filters, Cursor: query.Cursor, Limit: query.Limit,
+		ConflictCursor: query.ConflictCursor, ConflictLimit: query.ConflictLimit,
+	})
 	if err == nil && query.Operation == "audit" {
 		report, ok := value.Data.(livingapp.AuditReport)
 		if !ok {

@@ -95,10 +95,12 @@ type verificationQuery struct {
 // livingQuery is a transport-only request. The application package owns all
 // graph composition, readiness policy, and cursor validation.
 type livingQuery struct {
-	Operation string
-	Filters   livingapp.Filters
-	Cursor    string
-	Limit     int
+	Operation      string
+	Filters        livingapp.Filters
+	Cursor         string
+	Limit          int
+	ConflictCursor string
+	ConflictLimit  int
 }
 
 type queryPage struct {
@@ -158,12 +160,13 @@ type queryEnvelope struct {
 }
 
 type queryHelp struct {
-	Usage      string                      `json:"usage"`
-	Operations []string                    `json:"operations,omitempty"`
-	Operation  string                      `json:"operation,omitempty"`
-	Purpose    string                      `json:"purpose,omitempty"`
-	DataPaths  []string                    `json:"data_paths,omitempty"`
-	Pagination *queryPaginationDescription `json:"pagination,omitempty"`
+	Usage                string                       `json:"usage"`
+	Operations           []string                     `json:"operations,omitempty"`
+	Operation            string                       `json:"operation,omitempty"`
+	Purpose              string                       `json:"purpose,omitempty"`
+	DataPaths            []string                     `json:"data_paths,omitempty"`
+	Pagination           *queryPaginationDescription  `json:"pagination,omitempty"`
+	AdditionalPagination []queryPaginationDescription `json:"additional_pagination,omitempty"`
 }
 
 type queryPaginationDescription struct {
@@ -174,14 +177,17 @@ type queryPaginationDescription struct {
 	HasMorePath    string `json:"has_more_path,omitempty"`
 	NextCursorPath string `json:"next_cursor_path,omitempty"`
 	NextOffsetPath string `json:"next_offset_path,omitempty"`
+	CursorFlag     string `json:"cursor_flag,omitempty"`
+	LimitFlag      string `json:"limit_flag,omitempty"`
 }
 
 type querySchemaDescription struct {
-	Operation  string                     `json:"operation"`
-	Purpose    string                     `json:"purpose"`
-	Usage      string                     `json:"usage"`
-	DataPaths  []string                   `json:"data_paths"`
-	Pagination queryPaginationDescription `json:"pagination"`
+	Operation            string                       `json:"operation"`
+	Purpose              string                       `json:"purpose"`
+	Usage                string                       `json:"usage"`
+	DataPaths            []string                     `json:"data_paths"`
+	Pagination           queryPaginationDescription   `json:"pagination"`
+	AdditionalPagination []queryPaginationDescription `json:"additional_pagination,omitempty"`
 }
 
 var queryOperations = []string{
@@ -270,7 +276,7 @@ var queryUsage = map[string]string{
 	"verifications":       "change-saga query verifications --saga PATH [--claim ID] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"context":             "change-saga query context --saga PATH --feature ID|URN [--expand STORY-ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"personas":            "change-saga query personas --saga PATH [--persona ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
-	"persona-references":  "change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"persona-references":  "change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]",
 	"requirements":        "change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"requirement-history": "change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"citations":           "change-saga query citations --saga PATH [--citation ID|URN] [--requirement ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
@@ -284,7 +290,7 @@ var queryUsage = map[string]string{
 	"audit":               "change-saga query audit --saga PATH --feature ID|URN [--repo PATH] [--head REV]",
 	"history":             "change-saga query history --saga PATH --node URN",
 	"terms":               "change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
-	"term-references":     "change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"term-references":     "change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]",
 	"layers":              "change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]",
 }
 
@@ -466,7 +472,7 @@ func queryHelpFor(operation string) queryHelp {
 	description := querySchemaFor(operation)
 	return queryHelp{
 		Usage: queryUsage[operation], Operation: operation, Purpose: description.Purpose,
-		DataPaths: description.DataPaths, Pagination: &description.Pagination,
+		DataPaths: description.DataPaths, Pagination: &description.Pagination, AdditionalPagination: description.AdditionalPagination,
 	}
 }
 
@@ -536,10 +542,19 @@ func querySchemaFor(operation string) querySchemaDescription {
 			HasMorePath: "page.has_more", NextCursorPath: "page.next_cursor",
 		}
 	}
-	return querySchemaDescription{
+	description := querySchemaDescription{
 		Operation: operation, Purpose: queryPurpose[operation], Usage: queryUsage[operation],
 		DataPaths: append([]string(nil), paths[operation]...), Pagination: pagination,
 	}
+	if operation == "persona-references" || operation == "term-references" {
+		description.AdditionalPagination = []queryPaginationDescription{{
+			Kind: "cursor", CountedPath: "data.completeness.unresolved_owners",
+			TotalPath: "data.completeness.unresolved_page.total", ReturnedPath: "data.completeness.unresolved_page.returned",
+			HasMorePath: "data.completeness.unresolved_page.has_more", NextCursorPath: "data.completeness.unresolved_page.next_cursor",
+			CursorFlag: "--conflict-cursor", LimitFlag: "--conflict-limit",
+		}}
+	}
+	return description
 }
 
 func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, error) {
@@ -549,10 +564,11 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	sourceDir := flags.String("repo", "", "source repository checkout")
 	opening := registerOpenFlags(flags)
 
-	var parent, target, ref, cursor, state, kind, sortOrder, claim string
+	var parent, target, ref, cursor, conflictCursor, state, kind, sortOrder, claim string
 	var feature, expand, requirement, persona, term, citation, relation, from, to, wave, item, criterion, commit string
 	var offset int64
 	var limit optionalInt
+	var conflictLimit optionalInt
 	var minimumScore optionalInt
 	switch operation {
 	case "children":
@@ -604,10 +620,14 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.StringVar(&persona, "persona", "", "persona ID or canonical URN")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
+		flags.StringVar(&conflictCursor, "conflict-cursor", "", "unresolved-owner pagination cursor")
+		flags.Var(&conflictLimit, "conflict-limit", "unresolved-owner page size; defaults to --limit or 100")
 	case "term-references":
 		flags.StringVar(&term, "term", "", "term ID or canonical URN")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
+		flags.StringVar(&conflictCursor, "conflict-cursor", "", "unresolved-owner pagination cursor")
+		flags.Var(&conflictLimit, "conflict-limit", "unresolved-owner page size; defaults to --limit or 100")
 	case "requirements":
 		flags.StringVar(&feature, "feature", "", "optional feature ID or URN")
 		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
@@ -677,14 +697,20 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	if flags.NArg() != 0 {
 		return nil, queryOpenOptions{}, false, fmt.Errorf("%s accepts no positional arguments", operation)
 	}
-	cursorSet := false
+	cursorSet, conflictCursorSet := false, false
 	flags.Visit(func(value *flag.Flag) {
 		if value.Name == "cursor" {
 			cursorSet = true
 		}
+		if value.Name == "conflict-cursor" {
+			conflictCursorSet = true
+		}
 	})
 	if cursorSet && cursor == "" {
 		return nil, queryOpenOptions{}, false, errors.New("--cursor cannot be empty")
+	}
+	if conflictCursorSet && conflictCursor == "" {
+		return nil, queryOpenOptions{}, false, errors.New("--conflict-cursor cannot be empty")
 	}
 	if strings.TrimSpace(*sagaRoot) == "" {
 		return nil, queryOpenOptions{}, false, errors.New("--saga is required")
@@ -695,6 +721,9 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	}
 	if limit.set && (limit.value < 1 || limit.value > maxLimit) {
 		return nil, queryOpenOptions{}, false, fmt.Errorf("--limit must be between 1 and %d", maxLimit)
+	}
+	if conflictLimit.set && (conflictLimit.value < 1 || conflictLimit.value > maxQueryPageSize) {
+		return nil, queryOpenOptions{}, false, fmt.Errorf("--conflict-limit must be between 1 and %d", maxQueryPageSize)
 	}
 	if offset < 0 {
 		return nil, queryOpenOptions{}, false, errors.New("--offset cannot be negative")
@@ -802,7 +831,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		} else if operation == "work-items" || operation == "readiness" {
 			filters.Status = state
 		}
-		return livingQuery{Operation: operation, Filters: filters, Cursor: cursor, Limit: limit.value}, options, false, nil
+		return livingQuery{Operation: operation, Filters: filters, Cursor: cursor, Limit: limit.value, ConflictCursor: conflictCursor, ConflictLimit: conflictLimit.value}, options, false, nil
 	default:
 		return nil, queryOpenOptions{}, false, fmt.Errorf("unknown query operation %q", operation)
 	}
