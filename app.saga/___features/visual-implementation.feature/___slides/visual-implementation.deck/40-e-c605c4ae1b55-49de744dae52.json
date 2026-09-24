@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2cbe5d07b69f64e54a52df092e3685b800cfaec5",
+      "path": "docs/pr-request-diff-reuse-performance.md",
+      "start": 25,
+      "end": 32,
+      "digest": "sha256:3468e9903eb3b7679552aaa1469e23347e6a6d743ab257bc94bb86f5916ab3d0",
+      "note": "The paired benchmark deeply compares all 140 complete views before timing."
+    }
+  ]
+}

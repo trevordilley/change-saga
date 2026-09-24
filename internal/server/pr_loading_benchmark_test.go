@@ -88,11 +88,12 @@ func BenchmarkPRLoading(b *testing.B) {
 			if err != nil {
 				b.Fatal(err)
 			}
+			diffs := newReviewDiffs(repo, resolver, *report.Range)
 			for _, slide := range review.Deck.Slides {
 				for _, item := range slide.Items {
 					for _, file := range item.Code {
 						for _, ref := range file.References {
-							application.referenceDiff(ctx, resolver, ref, *report.Range)
+							diffs.referenceDiff(ctx, ref)
 						}
 					}
 				}

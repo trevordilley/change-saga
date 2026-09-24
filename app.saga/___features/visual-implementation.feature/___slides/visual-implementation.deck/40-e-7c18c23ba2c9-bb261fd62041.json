@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2cbe5d07b69f64e54a52df092e3685b800cfaec5",
+      "path": "docs/pr-request-diff-reuse-performance.md",
+      "start": 18,
+      "end": 32,
+      "digest": "sha256:31f54e1df68ea0000262fd0bfc1f12a65f0aa9d38aea065becf862cb1e3bdebd",
+      "note": "The pinned fixture and paired semantic benchmark substantiate 140 resolver calls with 19 successful patch reads."
+    }
+  ]
+}
