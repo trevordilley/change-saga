@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:erd-distinguish-proposals",
+  "parents": [],
+  "title": "Distinguish existing and proposed data in the ERD",
+  "statement": "As an Architect or Developer, I can easily distinguish existing data entities and relationships from proposed additions or changes in the ERD so I can understand the intended model without mistaking it for implemented reality.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "consistent-state",
+      "statement": "The ERD diagram, entity directory, details, and query results expose the same explicit proposal/implementation distinctions for entities and relationships."
+    },
+    {
+      "id": "visible-without-code",
+      "statement": "A proposed entity or relationship remains visible and usable in the design even before implementation code is available."
+    },
+    {
+      "id": "evidence-health",
+      "statement": "Missing, stale, or unresolved code references are reported separately from proposal/implementation status and comparison-relative newness."
+    },
+    {
+      "id": "preserved-proposal",
+      "statement": "Recording implementation with supporting code evidence retains the previous proposal and permits comparison with the committed design; it does not itself imply verification or approval."
+    }
+  ],
+  "created_at": "2026-09-24T22:22:29.962854Z"
+}

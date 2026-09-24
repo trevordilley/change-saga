@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:track-work-delivery",
+  "parents": [
+    "urn:change-saga:change-saga:story:track-work-delivery:revision:r1"
+  ],
+  "title": "Track work from assignment through integration",
+  "statement": "As an Architect or Developer coordinating delivery, I can associate specific technical entity identities with a work item's workspace, progress, and merge evidence so contributors and their AI workers can discover their assigned scope and collaborators can track it through integration.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "workspace-ownership",
+      "statement": "A workspace assignment exposes its portable workspace and repository identities, branch context, role, and whether it is assigned or released."
+    },
+    {
+      "id": "progress-history",
+      "statement": "Recording progress appends a parent-linked state event, and queries expose the history plus a current state only when it has one head."
+    },
+    {
+      "id": "merge-evidence",
+      "statement": "For each required merge unit, queries expose its lifecycle, and an integrated event identifies both the exact head and merge commit."
+    },
+    {
+      "id": "done-is-not-delivery",
+      "statement": "A done progress state alone does not satisfy peer-review readiness; immutable delivery evidence is still required."
+    },
+    {
+      "id": "technical-entity-scope",
+      "statement": "A work assignment can identify specific System, Component, or data-entity records and their relevant design context, without making the AI worker itself a persona or creating duplicate entity definitions."
+    },
+    {
+      "id": "query-assigned-entities",
+      "statement": "A worker can use public queries to retrieve its assigned entity identities, their proposal/implementation state, code evidence, and relevant design links; results distinguish assigned scope from unrelated inventory."
+    },
+    {
+      "id": "entity-reconciliation",
+      "statement": "Recording implementation evidence for an assigned entity updates the queryable entity roadmap while preserving assignment and proposal history; entity completion alone does not satisfy required integration or review evidence."
+    }
+  ],
+  "created_at": "2026-09-24T22:22:05.560189Z"
+}

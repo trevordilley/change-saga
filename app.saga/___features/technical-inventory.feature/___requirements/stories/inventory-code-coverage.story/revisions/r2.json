@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:inventory-code-coverage",
+  "parents": [
+    "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r1"
+  ],
+  "title": "Inspect code coverage by the technical inventory",
+  "statement": "As an Architect or Developer, I can report which code is accounted for by Systems, Components, and data entities and which is uncovered so I can identify gaps in the application's technical documentation.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924",
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "bounded-report",
+      "statement": "The coverage report identifies the source revision and code scope being measured and reports covered and uncovered code in that scope."
+    },
+    {
+      "id": "exact-owners",
+      "statement": "Each covered code range identifies the System, Component, or data entity references that account for it, and each uncovered range identifies the source location needing attention."
+    },
+    {
+      "id": "separate-health",
+      "statement": "Stale or unresolved references and overlapping references are reported separately from current coverage; absent evidence does not count as coverage."
+    },
+    {
+      "id": "deduplicate",
+      "statement": "Code referenced by multiple inventory entities contributes only once to the overall covered-code total."
+    }
+  ],
+  "created_at": "2026-09-24T22:21:52.936966Z"
+}

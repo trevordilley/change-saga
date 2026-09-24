@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:inventory-design-to-review",
+  "parents": [
+    "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r1"
+  ],
+  "title": "Carry technical design into implementation review",
+  "statement": "As an Architect or Developer, I can reuse the same technical entities and scoped evidence in review decks and compare the committed proposed design with delivered implementation so additions and departures remain understandable.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924",
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "review-reuse",
+      "statement": "A review deck can reference the same System, Component, and data-entity identities used in the implementation design and identify the code subset relevant to the change."
+    },
+    {
+      "id": "compare-plan",
+      "statement": "The handoff retains the committed proposed design's identity, enabling a reviewer or CLI consumer to inspect it alongside the delivered design and code."
+    },
+    {
+      "id": "visible-evolution",
+      "statement": "New entities, changed definitions, and changed code selections can be traced through the retained history without overwriting the original proposal."
+    },
+    {
+      "id": "no-implied-approval",
+      "statement": "Entity references and inherited implementation coverage do not themselves record a review approval or conceal unexplained changed code."
+    }
+  ],
+  "created_at": "2026-09-24T22:21:55.80879Z"
+}
