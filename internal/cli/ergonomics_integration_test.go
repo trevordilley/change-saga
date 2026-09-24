@@ -1,14 +1,43 @@
 package cli
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
+
+func TestQuerySlidePreservesAuthoringContract(t *testing.T) {
+	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
+	request := slideTransactionRequest(t, repo, base, commit, sagaID, "create-query-slide", "create", "absent", "worker-node")
+	created, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var output bytes.Buffer
+	if err := Query(context.Background(), []string{"slide", "--saga", root, "--repo", repo, "--target", saga.SlideTarget(sagaID, "flow")}, &output); err != nil {
+		t.Fatal(err)
+	}
+	var envelope struct {
+		OK   bool              `json:"ok"`
+		Data slideQueryContent `json:"data"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &envelope); err != nil {
+		t.Fatal(err)
+	}
+	if !envelope.OK || envelope.Data.AuthoringSnapshot != created.Snapshot || len(envelope.Data.AuthoringHeads) != 1 || envelope.Data.AuthoringConflict {
+		t.Fatalf("CLI dropped authoring state: %s", output.String())
+	}
+	if len(envelope.Data.Items) != 1 || len(envelope.Data.Items[0].Evidence) != 1 || len(envelope.Data.Items[0].CriterionLinks) != 1 {
+		t.Fatalf("CLI dropped complete Item state: %s", output.String())
+	}
+}
 
 // Exercise the actual authoring format, not a hand-built transaction record:
 // semantic consolidation must not retire intent still owned by a slide bundle.

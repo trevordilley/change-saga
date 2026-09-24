@@ -105,7 +105,8 @@ func transactionManagedSlide(slide *saga.Slide) bool {
 }
 
 func completeSlideMutationError(operation, target string) error {
-	return fmt.Errorf("%s cannot safely mutate %s because it is managed by complete-slide transaction history; read authoring_snapshot, authoring_heads, and the current Items in landmarks (including evidence and criterion_links) with `change-saga query slide --saga PATH --target %s`, then submit the complete replacement with `change-saga apply-slide --from REQUEST.json PATH`", operation, target, target)
+	slideTarget, _, _ := strings.Cut(target, ":item:")
+	return fmt.Errorf("%s cannot safely mutate %s because it is managed by complete-slide transaction history; read authoring_snapshot, authoring_heads, and items (including evidence and criterion_links) with `change-saga query slide --saga PATH --target %s`, then submit the complete replacement with `change-saga apply-slide --from REQUEST.json PATH`", operation, target, slideTarget)
 }
 
 func guardCompleteSlideMutation(operation string, slide *saga.Slide) error {

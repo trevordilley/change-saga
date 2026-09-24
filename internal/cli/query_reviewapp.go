@@ -15,18 +15,21 @@ type reviewAppQuerySession struct {
 }
 
 type slideQueryContent struct {
-	Target       string                       `json:"target"`
-	ID           string                       `json:"id"`
-	Title        string                       `json:"title"`
-	Intent       string                       `json:"intent"`
-	Layout       string                       `json:"layout"`
-	Section      string                       `json:"section,omitempty"`
-	Takeaway     string                       `json:"takeaway"`
-	MediaType    string                       `json:"media_type"`
-	Content      reviewapp.FragmentChunk      `json:"content"`
-	Assets       []reviewapp.AssetSummary     `json:"assets"`
-	Items        []reviewapp.SemanticLandmark `json:"items"`
-	ReadingOrder []string                     `json:"reading_order"`
+	Target            string                       `json:"target"`
+	ID                string                       `json:"id"`
+	Title             string                       `json:"title"`
+	Intent            string                       `json:"intent"`
+	Layout            string                       `json:"layout"`
+	Section           string                       `json:"section,omitempty"`
+	Takeaway          string                       `json:"takeaway"`
+	MediaType         string                       `json:"media_type"`
+	Content           reviewapp.FragmentChunk      `json:"content"`
+	Assets            []reviewapp.AssetSummary     `json:"assets"`
+	Items             []reviewapp.SemanticLandmark `json:"items"`
+	ReadingOrder      []string                     `json:"reading_order"`
+	AuthoringSnapshot string                       `json:"authoring_snapshot,omitempty"`
+	AuthoringHeads    []string                     `json:"authoring_heads,omitempty"`
+	AuthoringConflict bool                         `json:"authoring_conflict,omitempty"`
 }
 
 func openReviewAppSession(ctx context.Context, options queryOpenOptions) (querySession, error) {
@@ -81,7 +84,7 @@ func (s *reviewAppQuerySession) ReadFragment(ctx context.Context, query fragment
 	if value.Intent == "" {
 		return nil, &queryError{Code: "invalid_argument", Message: "slide operation target must identify a slide"}
 	}
-	return slideQueryContent{Target: value.Target, ID: value.ID, Title: value.Title, Intent: value.Intent, Layout: value.Layout, Section: value.Section, Takeaway: value.Takeaway, MediaType: value.MediaType, Content: value.Content, Assets: value.Assets, Items: value.Landmarks, ReadingOrder: value.ReadingOrder}, nil
+	return slideQueryContent{Target: value.Target, ID: value.ID, Title: value.Title, Intent: value.Intent, Layout: value.Layout, Section: value.Section, Takeaway: value.Takeaway, MediaType: value.MediaType, Content: value.Content, Assets: value.Assets, Items: value.Landmarks, ReadingOrder: value.ReadingOrder, AuthoringSnapshot: value.AuthoringSnapshot, AuthoringHeads: value.AuthoringHeads, AuthoringConflict: value.AuthoringConflict}, nil
 }
 
 func (s *reviewAppQuerySession) FragmentDiffs(ctx context.Context, query fragmentDiffQuery) (queryPage, error) {
