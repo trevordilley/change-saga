@@ -19,6 +19,10 @@ function authorReview(repositories: SagaRepositories): void {
   const { sagaRoot, sourceRepo, identity } = repositories;
   const visual = join(repositories.root, "review-slide.svg");
   writeFileSync(visual, slideSVG);
+  // A realistic Saga also has living implementation decks. They must not leak
+  // a second presentation control or slide surface into the PR review route.
+  cli(repositories, "add-deck", "--feature", "wave-one", "--id", "living-implementation", "--title", "Living implementation", "--objective", "Explain the already-delivered feature.", sagaRoot, "Living implementation");
+  cli(repositories, "add-slide", "--deck", "living-implementation", "--id", "living-overview", "--intent", "orient", "--layout", "diagram", "--title", "Living overview", "--source", visual, sagaRoot, "Living overview");
   cli(repositories, "review", "create", "--id", "pr-1", "--base", "main", "--head", "feature/wave-one", "--pr", "1", "--url", "https://example.test/acme/change-saga-demo/pull/1", "--title", "Wave one review", sagaRoot);
   for (const slide of ["greeting", "theme"]) {
     cli(repositories, "add-slide", "--review", "pr-1", "--intent", "explain", "--layout", "diagram", "--title", slide === "greeting" ? "Greeting takes a name" : "Theme colour", "--source", visual, sagaRoot, slide);
@@ -61,7 +65,10 @@ test("@critical approves slide by slide and marks a decision out of date when it
     await expect(page.locator("#review-drawer .review-line.add").filter({ hasText: `"hello, " + name` })).toHaveCount(1);
     await expect(page.locator("#review-drawer .review-line.del").filter({ hasText: `return "hello"` })).toHaveCount(1);
     await page.locator("[data-close-drawer]").last().click();
-    await greeting.getByRole("button", { name: "Open affected documentation for Feature" }).click();
+    const affectedRecord = greeting.getByRole("button", { name: "Open affected documentation for Feature" });
+    await expect(affectedRecord).toBeVisible();
+    await expect(affectedRecord).toHaveText("Affected · Feature");
+    await affectedRecord.click();
     await expect(page.locator('#review-drawer [data-review-record="urn:change-saga:wave-one:feature:wave-one"]')).toBeVisible();
     await page.locator("[data-close-drawer]").last().click();
 
@@ -127,6 +134,7 @@ test("keeps one review slide active with durable keyboard and narrow-screen navi
     await expect(slides.filter({ visible: true })).toHaveCount(1);
     await expect(page.locator("[data-slide-position]")).toContainText("1 / 2");
     await expect(page.locator(".review-top,.review-slide-details")).toHaveCount(0);
+    await expect(page.locator("[data-slide-present], #view-slides")).toHaveCount(0);
 
     await page.locator('[data-slide-thumbnail][data-slide-target$=":slide:theme"]').click();
     await expect(page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]')).toBeVisible();

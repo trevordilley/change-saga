@@ -77,7 +77,8 @@ viewer directly:
 - the deck fills the entire pane beneath the application header by default;
 - a compact thumbnail rail and one maximally fitted 16:9 slide are the only
   default review layout—there is no page heading, card, details section, or
-  intermediate “present” step;
+  intermediate “present” step. A Saga's ordinary implementation decks do not
+  leak their Present action or Slides surface into the pull-request review;
 - Code Diff and Coverage are not competing tabs on an individual review;
 - Previous/Next and unmodified Left/Right or Page Up/Page Down keys use the
   shared deck navigation, focus rules, slide position, and stable URL hashes;
