@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "outside-change",
+  "slide": "technical-inventory-selection-impact",
+  "rank": 30,
+  "kind": "region",
+  "label": "Reassess meaning without inventing byte drift",
+  "description": "Verify the selected bytes independently when other entity code changes. Keep semantic reassessment and definition-pin health separate; do not mark every Item byte-stale or bulk-repin it.",
+  "selector": {
+    "type": "element",
+    "element_id": "outside-change"
+  }
+}

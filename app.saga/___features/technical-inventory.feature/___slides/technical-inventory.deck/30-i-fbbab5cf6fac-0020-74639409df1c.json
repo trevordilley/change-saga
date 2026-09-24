@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "selected-change",
+  "slide": "technical-inventory-selection-impact",
+  "rank": 20,
+  "kind": "risk",
+  "label": "Changed selected code",
+  "description": "When selected bytes change or disappear, expose the stale selection and implicated Item. The continued existence of a System grants no current credit.",
+  "selector": {
+    "type": "element",
+    "element_id": "selected-change"
+  }
+}

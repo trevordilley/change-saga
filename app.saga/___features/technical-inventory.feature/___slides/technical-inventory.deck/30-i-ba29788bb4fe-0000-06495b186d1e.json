@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "item",
+  "slide": "technical-inventory-selected-path",
+  "rank": 0,
+  "kind": "node",
+  "label": "Proposed Item selection",
+  "description": "Proposed: retain a pinned entity path and an inspectable selected source subset. The example Item explains immutable record authoring, not the whole technical documentation System.",
+  "selector": {
+    "type": "element",
+    "element_id": "item"
+  }
+}

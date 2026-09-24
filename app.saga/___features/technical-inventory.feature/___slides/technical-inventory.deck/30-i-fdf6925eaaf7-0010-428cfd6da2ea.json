@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "inputs",
+  "slide": "technical-inventory-coverage-resolution",
+  "rank": 10,
+  "kind": "node",
+  "label": "Direct and inherited evidence inputs",
+  "description": "Direct Item evidence remains supported. Proposed inherited selections contribute through saved entity paths without duplicate independent code mappings.",
+  "selector": {
+    "type": "element",
+    "element_id": "inputs"
+  }
+}

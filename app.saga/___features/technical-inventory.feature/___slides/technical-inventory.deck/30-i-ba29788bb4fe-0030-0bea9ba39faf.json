@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "path",
+  "slide": "technical-inventory-selected-path",
+  "rank": 30,
+  "kind": "edge",
+  "label": "Pinned selection path",
+  "description": "Proposed: follow only declared pinned System-to-Component membership and selected evidence, preserving every identity and revision in returned provenance. Missing or ambiguous paths are not silently replaced.",
+  "selector": {
+    "type": "element",
+    "element_id": "path"
+  }
+}

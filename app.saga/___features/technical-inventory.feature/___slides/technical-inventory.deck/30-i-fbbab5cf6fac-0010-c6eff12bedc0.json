@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reverse-path",
+  "slide": "technical-inventory-selection-impact",
+  "rank": 10,
+  "kind": "node",
+  "label": "Proposed inventory-aware reverse usages",
+  "description": "Proposed: trace source changes to the entity revision, selected Item and feature. Return the declared path and cause; an empty path is a visibility gap, not proof of no impact.",
+  "selector": {
+    "type": "element",
+    "element_id": "reverse-path"
+  }
+}

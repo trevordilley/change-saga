@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-selection-impact-existing-queue",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selection-impact:item:existing-queue",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+  "scope": "self",
+  "rationale": "Current reconciliation separates HEAD currency from diff/review coverage and emits typed inspection/repair guidance. Linked code grounds that boundary; inventory selection integration is proposed.",
+  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-24T23:01:05.88782Z"
+}

@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "technical-inventory-coverage-resolution",
+  "deck": "technical-inventory",
+  "title": "Proposed: resolve selected coverage with provenance",
+  "rank": 90,
+  "section": "Proposed technical design",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0090-fdf6925eaaf7.svg",
+  "takeaway": "Resolve only selected evidence, count each source location once and retain all owners; report currency separately from coverage.",
+  "reading_order": [
+    "scope",
+    "inputs",
+    "resolver",
+    "current",
+    "blocked",
+    "flow",
+    "reuse"
+  ]
+}

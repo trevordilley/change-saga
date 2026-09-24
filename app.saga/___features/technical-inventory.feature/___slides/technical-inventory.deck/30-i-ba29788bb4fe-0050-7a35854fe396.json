@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "subset",
+  "slide": "technical-inventory-selected-path",
+  "rank": 50,
+  "kind": "example",
+  "label": "Narrow a real evidence range",
+  "description": "Proposed: select lines 14–40 within the saved 14–96 reference, with a digest of selected bytes. Linked code is the existing writer, not implementation of the proposed selection mechanism.",
+  "selector": {
+    "type": "element",
+    "element_id": "subset"
+  }
+}

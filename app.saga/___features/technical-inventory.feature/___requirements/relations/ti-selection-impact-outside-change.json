@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-selection-impact-outside-change",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selection-impact:item:outside-change",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:explain-impact",
+  "scope": "self",
+  "rationale": "Verify the selected bytes independently when other entity code changes. Keep semantic reassessment and definition-pin health separate; do not mark every Item byte-stale or bulk-repin it.",
+  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-24T23:01:04.77651Z"
+}

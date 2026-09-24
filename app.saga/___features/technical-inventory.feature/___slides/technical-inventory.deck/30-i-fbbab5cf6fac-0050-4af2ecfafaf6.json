@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "repair",
+  "slide": "technical-inventory-selection-impact",
+  "rank": 50,
+  "kind": "transition",
+  "label": "Author-controlled repair loop",
+  "description": "Inspect meaning; revise definitions, selections or explanations only as needed; preserve history and saved review content; recheck. No automatic approval or resolution acknowledgement.",
+  "selector": {
+    "type": "element",
+    "element_id": "repair"
+  }
+}

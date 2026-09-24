@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "current",
+  "slide": "technical-inventory-coverage-resolution",
+  "rank": 30,
+  "kind": "node",
+  "label": "Unique code total, complete owner list",
+  "description": "Count current selected locations once even when several Items or entities select them. Retain every owner path and report overlaps.",
+  "selector": {
+    "type": "element",
+    "element_id": "current"
+  }
+}

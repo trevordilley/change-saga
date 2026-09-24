@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scope",
+  "slide": "technical-inventory-coverage-resolution",
+  "rank": 0,
+  "kind": "statement",
+  "label": "Name the coverage scope",
+  "description": "Name the source revision or comparison sides, code scope and coverage kind: inventory, implementation documentation or PR review. Coverage in one does not fill another.",
+  "selector": {
+    "type": "element",
+    "element_id": "scope"
+  }
+}

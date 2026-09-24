@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-selection-impact-repair",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selection-impact:item:repair",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+  "scope": "self",
+  "rationale": "Inspect meaning; revise definitions, selections or explanations only as needed; preserve history and saved review content; recheck. No automatic approval or resolution acknowledgement.",
+  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-24T23:01:05.506461Z"
+}
