@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/reconciliation.go",
+      "digest": "sha256:b29fd6974aa1ee7628f4cfc2b48425978989f63a9bd3ebd4750ee64cac77ed81",
+      "note": "Introduces the focused workflow implementation, documentation or regression fixture file."
+    }
+  ]
+}

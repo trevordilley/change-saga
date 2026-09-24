@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "item-hotspots",
+  "slide": "exact-evidence",
+  "rank": 0,
+  "kind": "node",
+  "label": "Semantic Item controls",
+  "description": "Item selectors locate the element; focused controls and the marked-place list expose its code and record links.",
+  "selector": {
+    "type": "element",
+    "element_id": "item-hotspots"
+  }
+}

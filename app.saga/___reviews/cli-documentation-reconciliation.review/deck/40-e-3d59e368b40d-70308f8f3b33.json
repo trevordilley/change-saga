@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "docs/README.md",
+      "start": 6,
+      "end": 8,
+      "digest": "sha256:e016feb2544dff026a7441c46bb26f0743dbf15d6ecce272f5bbaeaf01c8e000",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    }
+  ]
+}

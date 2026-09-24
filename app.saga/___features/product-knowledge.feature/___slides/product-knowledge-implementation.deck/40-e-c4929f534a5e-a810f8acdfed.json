@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/livingapp/session_test.go",
+      "start": 58,
+      "end": 107,
+      "digest": "sha256:2800992fe25bcc7c357a9a69de7e96527d2b6fc8bd469353c4addd66f218dd9c",
+      "note": "Dispatches typed operations and proves pagination cursors remain deterministic and snapshot-bound."
+    }
+  ]
+}

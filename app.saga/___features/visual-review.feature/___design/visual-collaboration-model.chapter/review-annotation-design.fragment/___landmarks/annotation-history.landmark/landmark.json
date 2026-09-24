@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "annotation-history",
+  "label": "Append-only annotation history",
+  "selector": {
+    "type": "text",
+    "exact": "Review comment anchors and root validation define the durable discussion boundary."
+  },
+  "target": ""
+}

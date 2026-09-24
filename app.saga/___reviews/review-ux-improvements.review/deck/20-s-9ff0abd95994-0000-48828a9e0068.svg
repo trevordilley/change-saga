@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">The review is now the slide workspace</title>
+  <desc id="desc">A cramped review page recedes on the left. A full-area slide deck with filmstrip, active canvas, navigation, and a quiet slide decision menu fills the right.</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101927"/><stop offset="1" stop-color="#17283a"/></linearGradient><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0l10 5-10 5z" fill="#70d6ff"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="62" y="70" fill="#8ea6bf" font-family="ui-monospace,monospace" font-size="16" letter-spacing="2">REVIEW UX · SLIDE 1</text>
+  <text x="62" y="126" fill="#f7fbff" font-family="Inter,system-ui,sans-serif" font-size="42" font-weight="750">The review <tspan fill="#70d6ff">is</tspan> the slide workspace</text>
+  <text x="62" y="165" fill="#aac0d5" font-family="Inter,system-ui,sans-serif" font-size="19">No dashboard, card, or “present” step between the reviewer and the authored explanation.</text>
+  <g opacity=".56">
+    <rect x="62" y="220" width="290" height="378" rx="18" fill="#152233" stroke="#617389"/>
+    <text x="88" y="256" fill="#9eb0c3" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="700">BEFORE · PAGE AROUND A DECK</text>
+    <rect x="88" y="280" width="238" height="42" rx="7" fill="#26364a"/><rect x="88" y="340" width="238" height="106" rx="7" fill="#26364a"/>
+    <rect x="88" y="464" width="108" height="34" rx="7" fill="#26364a"/><rect x="210" y="464" width="116" height="34" rx="7" fill="#26364a"/>
+    <rect x="88" y="518" width="238" height="54" rx="7" fill="#26364a"/>
+    <text x="207" y="622" text-anchor="middle" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="16">controls compete with the change</text>
+  </g>
+  <path d="M380 408h76" stroke="#70d6ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <g id="workspace">
+    <rect x="488" y="206" width="730" height="414" rx="18" fill="#090f18" stroke="#70d6ff" stroke-width="2"/>
+    <rect x="488" y="206" width="156" height="414" rx="18" fill="#162436"/><path d="M644 206v414" stroke="#344a61"/>
+    <text x="510" y="238" fill="#70d6ff" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="800">PR AS A SLIDE DECK</text>
+    <rect x="508" y="258" width="116" height="72" rx="7" fill="#27425b" stroke="#70d6ff"/><rect x="508" y="346" width="116" height="72" rx="7" fill="#1b2d40"/><rect x="508" y="434" width="116" height="72" rx="7" fill="#1b2d40"/>
+    <text x="566" y="540" text-anchor="middle" fill="#9eb5ca" font-family="Inter,system-ui,sans-serif" font-size="12">authored order</text>
+    <rect x="674" y="248" width="514" height="289" rx="12" fill="#edf6ff"/>
+    <rect x="706" y="278" width="220" height="102" rx="12" fill="#d6eaff" stroke="#3b82f6"/><rect x="946" y="278" width="210" height="102" rx="12" fill="#dcfce7" stroke="#22a06b"/>
+    <path d="M926 329h20" stroke="#245b82" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="931" y="430" text-anchor="middle" fill="#1b3045" font-family="Inter,system-ui,sans-serif" font-size="27" font-weight="750">one active visual argument</text>
+    <text x="931" y="465" text-anchor="middle" fill="#52708b" font-family="Inter,system-ui,sans-serif" font-size="16">Items carry evidence · the slide carries the decision</text>
+  </g>
+  <g id="navigation">
+    <rect x="704" y="559" width="220" height="38" rx="19" fill="#142b3f" stroke="#70d6ff"/>
+    <text x="814" y="584" text-anchor="middle" fill="#dff6ff" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="700">←  1 / 4  → · URL hash</text>
+  </g>
+  <g id="decision"><rect x="1011" y="223" width="177" height="34" rx="17" fill="#203950" stroke="#8ea6bf"/><text x="1099" y="245" text-anchor="middle" fill="#e8f3fb" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="700">Review slide · no decision</text></g>
+  <text x="62" y="675" fill="#d7e4ef" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="650">Takeaway: the authored deck is the default review surface; state and decisions support it without replacing it.</text>
+</svg>

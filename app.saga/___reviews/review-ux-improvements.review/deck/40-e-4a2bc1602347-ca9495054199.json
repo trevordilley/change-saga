@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/renderer-ui.md",
+      "start": 31,
+      "end": 34,
+      "digest": "sha256:620e0508584a7d426bfca21f4e726b1c34693b40afe22957b71ee66ce1f88296",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/renderer-ui.md",
+      "start": 58,
+      "end": 73,
+      "digest": "sha256:1f98affe5ee65c6f138d329ca66e791350fe2b6fb32e408e96930801ee283637",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/renderer-ui.md",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:ef7a360a9925aec9ca2609684a8308d25074df116f24bfd67780b154d01b8b40",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/renderer-ui.md",
+      "start": 124,
+      "end": 134,
+      "digest": "sha256:43d1737b9ab62d0c7ce4b64c0d01714980008469de763c7e44092bcb829c9b31",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/renderer-ui.md",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:dd3a0436b53438cc6eb7aeb246214a7fa55ea01fba7cd71ac34e4329f1183768",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/renderer-ui.md",
+      "start": 157,
+      "end": 171,
+      "digest": "sha256:4ea348f75a1d5c2e80d71bf23374c90e6466ed66883180631f2bc92310c580dc",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    }
+  ]
+}

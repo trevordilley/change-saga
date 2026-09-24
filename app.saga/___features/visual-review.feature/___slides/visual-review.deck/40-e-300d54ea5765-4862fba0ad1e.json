@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9d93ba756a369f31cba7628f925d28035d7db497",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 244,
+      "end": 257,
+      "digest": "sha256:fb8910c58182bc2c8c82c370139cb85c9a93f35bb61ee8e4fc6247d75c836a4d",
+      "note": "Locks and reloads the Saga, then exclusively publishes one event file after validation succeeds."
+    }
+  ]
+}

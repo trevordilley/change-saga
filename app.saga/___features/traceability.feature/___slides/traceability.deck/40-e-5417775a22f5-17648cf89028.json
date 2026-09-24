@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/cli/query.go",
+      "start": 400,
+      "end": 419,
+      "digest": "sha256:f44e302be8dc04305addbc6c80ca4d4e4138ec7c58b709cdec550334cf7d5ab6",
+      "note": "Parses the living query, opens its session, dispatches it, and emits the versioned response envelope."
+    }
+  ]
+}

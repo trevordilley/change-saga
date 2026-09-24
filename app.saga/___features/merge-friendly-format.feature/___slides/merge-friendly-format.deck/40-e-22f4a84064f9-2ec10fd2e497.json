@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/store/store.go",
+      "start": 304,
+      "end": 350,
+      "digest": "sha256:5e661accedb71cd6a122f9fb8cf691dbe4fe092a80d5666b5412b1e29d7fe313",
+      "note": "Atomic file/entity publication and serialized writers"
+    }
+  ]
+}

@@ -8,7 +8,7 @@
   "layout": "risk",
   "media_type": "image/svg+xml",
   "entrypoint": "20-s-2dea4605310f-0040-8c1f5115c39f.svg",
-  "takeaway": "Staging contains pre-commit failures, but Windows lacks the directory-entry fsync used for POSIX durability.",
+  "takeaway": "After publication, sync failure may leave visible bytes; rollback is best effort, and publication status distinguishes visibility from durability.",
   "reading_order": [
     "lock-boundary",
     "same-dir-stage",

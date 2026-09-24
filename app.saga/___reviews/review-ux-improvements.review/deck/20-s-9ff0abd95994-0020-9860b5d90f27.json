@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "append-only-annotations",
+  "deck": "review-ux-improvements",
+  "title": "Markup is discussion with spatial truth",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-9ff0abd95994-0020-9860b5d90f27.svg",
+  "takeaway": "Normalized marks and note text persist as append-only review discussion without changing the source slide.",
+  "reading_order": [
+    "anchor-model",
+    "append-store",
+    "projection"
+  ]
+}

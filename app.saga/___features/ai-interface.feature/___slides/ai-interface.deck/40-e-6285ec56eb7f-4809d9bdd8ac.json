@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "cmd/change-saga/main.go",
+      "start": 21,
+      "end": 31,
+      "digest": "sha256:ab5a370581615c24cdbea65cb9bfbbc521c2821441e19d99c5f461a7d12793fe",
+      "note": "Dispatches the query command directly to the structured CLI entrypoint, separate from the serving path."
+    }
+  ]
+}

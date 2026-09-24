@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/cli/terms_test.go",
+      "start": 35,
+      "end": 101,
+      "digest": "sha256:2f0c5b0c82ac713b740b290f441a2d916abb62b20a23979854812cb938db5c28",
+      "note": "Proves a renamed defining declaration stales the owning term and that an explicit revision restores currency."
+    }
+  ]
+}

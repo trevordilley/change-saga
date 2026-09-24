@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "review-ux-improvements",
+  "title": "PR as a slide deck — fidelity pass",
+  "base": "main",
+  "head": "feature/review-ux-improvements",
+  "created_at": "2026-09-24T20:28:33.412997Z"
+}

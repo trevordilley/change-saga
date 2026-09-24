@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "detect-repair-recheck",
+  "deck": "cli-documentation-reconciliation",
+  "title": "Detect drift, repair it, and check again",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-40dfd3d75a22-0000-e892e5341f2a.svg",
+  "takeaway": "A single CLI queue separates review coverage from HEAD currency and turns declared impact into inspectable repair paths.",
+  "reading_order": [
+    "review",
+    "currency",
+    "impact",
+    "reassess",
+    "repair"
+  ]
+}

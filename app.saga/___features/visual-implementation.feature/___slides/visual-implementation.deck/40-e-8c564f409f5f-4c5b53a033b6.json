@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/model.go",
+      "start": 51,
+      "end": 125,
+      "digest": "sha256:d41e1cefe03d0a68cae2c2d739efa11191133f65fca1c02d4fd42638b8a9a7e7",
+      "note": "Defines the Deck, Slide, Item, and Item-owned code records represented inside the flat bundle."
+    }
+  ]
+}

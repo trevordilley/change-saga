@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 35,
+      "end": 56,
+      "digest": "sha256:724374d09eed5688240fbf304f344f0a52653581fcc45f8159a04b55a359b86d",
+      "note": "Chooses reviewapp alone or reviewapp plus livingapp and shares the authoritative snapshot across both."
+    }
+  ]
+}

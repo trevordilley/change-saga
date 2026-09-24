@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 90,
+      "end": 107,
+      "digest": "sha256:2ec16a482d46d61941b031d19623df98b5674ad09e8ed8d698f15f71d53491ed",
+      "note": "Decisions persist a slide identity, reviewer, commit and content digest through the guarded decision route."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews.go",
+      "start": 606,
+      "end": 625,
+      "digest": "sha256:ff1feb22c0f635e0701477d1280820e99790ab99252a694dd912188fad03b2d7",
+      "note": "Decisions persist a slide identity, reviewer, commit and content digest through the guarded decision route."
+    }
+  ]
+}

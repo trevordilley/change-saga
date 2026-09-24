@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/terms_mutation.go",
+      "start": 77,
+      "end": 130,
+      "digest": "sha256:c5e71a1b0027255ccb7560cc5b57716e410f30a37e2a779c8694b54d586148bd",
+      "note": "Defines and atomically creates a versioned living term with aliases, intent links, defining code, and lifecycle history."
+    }
+  ]
+}

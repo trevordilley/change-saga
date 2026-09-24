@@ -3,6 +3,9 @@
 Start with the [README](../README.md) for what Change Saga is and how to author
 your first saga. This directory holds the deeper material.
 
+Use [reconciliation.md](reconciliation.md) for the implement → verify → PR
+review deck → reconcile living documentation → check again workflow.
+
 ## The format
 
 | | |

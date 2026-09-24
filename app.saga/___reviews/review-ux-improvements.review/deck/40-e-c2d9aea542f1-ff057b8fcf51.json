@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 631,
+      "end": 637,
+      "digest": "sha256:c2bac951f5d59330937e2fb069853f399492666f4c3a196db6116d795030ff3d",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 649,
+      "end": 650,
+      "digest": "sha256:4ec8368cc6879622e8dcc41d885bf0ba9954e4610ed8474f3794985812903687",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 656,
+      "end": 660,
+      "digest": "sha256:805cc428a4483e9d6edf1d0f155b0bde24bce64c0f84d950fb2ca6b1352187d4",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 665,
+      "end": 665,
+      "digest": "sha256:ff331e273fea8984527f388bcaa858f96e6820630f8c3c260b6c8c1261823fdc",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 667,
+      "end": 668,
+      "digest": "sha256:5652018bf259d4bb841d10db5bd6a4cbcdd78f00547806b9a886bea6206c6d22",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 670,
+      "end": 673,
+      "digest": "sha256:c003118146096f27877ef01d7a541bc0a88afb70621260edb9abda7dfb27bd86",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/server/appjs.go",
+      "start": 2348,
+      "end": 2352,
+      "digest": "sha256:ed1ac15505db9b7fc41c2ca947b27d11b100e0d41f230b67f85a28207b86043b",
+      "note": "The browser palette authors marks; reload projects the current event history."
+    },
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/server/reviews.go",
+      "start": 657,
+      "end": 700,
+      "digest": "sha256:5c0c5b85bed955cb960ce2a97e14d3a627d208e8108d10cfcb14298437ba3394",
+      "note": "The browser palette authors marks; reload projects the current event history."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 162,
+      "end": 169,
+      "digest": "sha256:56db5eaf41277554f46d7bf80a9701739fb4d5ffbad3db8d339f097479783056",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:7c9f9cc97f307ef26d8b715fda2fcad51a407ef2d37bd1a77e00c291ede2937c",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 178,
+      "end": 202,
+      "digest": "sha256:b0b93983b67bcf87566b6947fc3be29cd39b906a0babcaaf8f20dfe210ffb424",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:ee06a4097bb4b6480671446931eec7fb3c9b2c5415ad8643badc2b0b2e76a83e",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 226,
+      "end": 227,
+      "digest": "sha256:6e7fe2bfd55cd0493fb81cb1c2866106a84c5975515cd7d871cbb4febbc66971",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 233,
+      "end": 235,
+      "digest": "sha256:820d92766d53afbcbe154ab4c11fdc95f8e7a58dfef708fb220f4428b947ef4d",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:8e7ccacd6bc9baefca2ca8197984c106cbb89c616a5d0c052b9f0672e5974c68",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Visual review ownership boundaries</title>
-  <desc id="desc">The browser review surface calls a thin HTTP adapter. Read projection belongs to reviewstate, serialized writes to reviewstore, and durable review records to app.saga. PR-review spatial overlays have no implementation owner; prototype annotations are a separate requirement-traceability capability.</desc>
+  <desc id="desc">The browser review surface calls a thin HTTP adapter. Read projection belongs to reviewstate, serialized writes to reviewstore, and durable review records to app.saga. Spatial annotations use the same comment writer and a projected annotation read route; prototype annotations remain separate requirement links.</desc>
   <defs>
     <style>
       .ui{font-family:Inter,system-ui,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,monospace}.h{font-size:30px;font-weight:750;fill:#10213d}.sub{font-size:15px;fill:#526178}.label{font-size:20px;font-weight:700;fill:#14233e}.small{font-size:14px;fill:#42526b}.micro{font-size:12px;fill:#5c6b82}.box{stroke-width:2}.arrow{fill:none;stroke:#60718d;stroke-width:3;marker-end:url(#arrow)}
@@ -10,7 +10,7 @@
   </defs>
   <rect width="1280" height="720" fill="#f7f9fc"/>
   <text class="ui h" x="60" y="55">Visual review is a read projection plus a locked append path</text>
-  <text class="ui sub" x="60" y="82">Comment ownership is explicit; prototype requirement pins are separate from the absent PR-review overlay.</text>
+  <text class="ui sub" x="60" y="82">Comments and spatial annotations share durable review history; prototype requirement pins remain separate.</text>
 
   <g id="browser-surface">
     <rect class="box" x="60" y="112" width="1160" height="120" rx="20" fill="#e8f1ff" stroke="#4876b8"/>
@@ -22,7 +22,7 @@
     <rect x="690" y="166" width="235" height="42" rx="10" fill="#fff" stroke="#9bb8de"/>
     <text class="ui small" x="710" y="192">thread + comment form</text>
     <rect x="951" y="166" width="241" height="42" rx="10" fill="#fff" stroke="#9bb8de"/>
-    <text class="ui small" x="971" y="192">plain POST; no script needed</text>
+    <text class="ui small" x="971" y="192">drawing tools + anchored notes</text>
   </g>
 
   <path class="arrow" d="M640 232V274"/>
@@ -58,10 +58,10 @@
   </g>
 
   <g id="missing-overlay">
-    <rect x="936" y="558" width="274" height="102" rx="18" fill="url(#missing)" stroke="#b93447" stroke-width="3" stroke-dasharray="9 7"/>
-    <text class="ui label" x="960" y="587" fill="#8f2032">PR-review gap</text>
-    <text class="ui micro" x="960" y="610" fill="#8f2032">no overlay record · route · writer</text>
-    <text class="ui micro" x="960" y="632" fill="#8f2032">prototype → requirement pins exist</text>
-    <text class="ui micro" x="960" y="651" fill="#8f2032">but are not review drawings</text>
+    <rect x="936" y="558" width="274" height="102" rx="18" fill="#eaf8ef" stroke="#45825c" stroke-width="3"/>
+    <text class="ui label" x="960" y="587" fill="#8f2032">Spatial review marks</text>
+    <text class="ui micro" x="960" y="610" fill="#8f2032">anchor on comment · locked writer</text>
+    <text class="ui micro" x="960" y="632" fill="#8f2032">create / update / delete events</text>
+    <text class="ui micro" x="960" y="651" fill="#8f2032">GET projects current geometry</text>
   </g>
 </svg>

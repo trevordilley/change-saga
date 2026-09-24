@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "term": "urn:change-saga:change-saga:term:review-anchor",
+  "parents": [
+    "urn:change-saga:change-saga:term:review-anchor:revision:r1"
+  ],
+  "name": "Review anchor",
+  "definition": "The review slide or Item target that keeps a thread attached to its context, with optional normalized drawing or note geometry. Replies inherit the root target; annotation updates and deletes append to the create root.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "aliases": [
+    "review target",
+    "comment target"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:contextual-comments",
+    "urn:change-saga:change-saga:story:review-thread-lifecycle"
+  ],
+  "code": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/review.go",
+      "start": 109,
+      "end": 157,
+      "digest": "sha256:6a4c8a389dc23b90a8b0d835228cbaa267c6be88ff5407c235188c5cbb4e8088"
+    },
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 220,
+      "end": 244,
+      "digest": "sha256:a6c7e3b400e74c5dc3223aca35f4ee158d9eaf9e72dc729f296f87a0e4381b37"
+    }
+  ],
+  "created_at": "2026-09-24T20:25:10.727147Z"
+}

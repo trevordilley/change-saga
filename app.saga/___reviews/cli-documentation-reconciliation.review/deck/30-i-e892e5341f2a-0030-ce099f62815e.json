@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reassess",
+  "slide": "detect-repair-recheck",
+  "rank": 30,
+  "kind": "node",
+  "label": "Reassessment boundary",
+  "description": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit.",
+  "selector": {
+    "type": "element",
+    "element_id": "reassess"
+  }
+}

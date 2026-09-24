@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/store/store.go",
+      "start": 276,
+      "end": 302,
+      "digest": "sha256:fb0d282da1b12a8d4532a0eb9848bc628033c2995c52119a9bc2bdaa4fa516aa",
+      "note": "Post-publication sync failure attempts cleanup, while publication errors preserve visibility and durability uncertainty."
+    }
+  ]
+}

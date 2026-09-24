@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Product knowledge has leaf owners and one composed read boundary</title>
-  <desc id="desc">An ownership diagram shows requirements, prototypes, and quality as independent record owners, composed by livingapp and exposed through snapshot-bound queries. A red callout marks that requirement rows omit feature ownership.</desc>
+  <desc id="desc">An ownership diagram shows requirements, prototypes, and quality as independent record owners, composed by livingapp and exposed through snapshot-bound queries. A callout shows feature ownership carried into requirement rows and feature-scoped queries.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081426"/><stop offset="1" stop-color="#122747"/></linearGradient>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#66d9ef"/></marker>
@@ -37,7 +37,7 @@
     <text x="347" y="430" fill="#6ee7b7" font-family="ui-monospace,monospace" font-size="13">no dependency on central loader</text>
   </g>
 
-  <path id="composition-flow" d="M774 350H858" stroke="#66d9ef" stroke-width="4" marker-end="url(#arrow)"/>
+  <g id="composition-flow"><rect x="774" y="342" width="84" height="16" fill="transparent"/><path d="M774 350H858" stroke="#66d9ef" stroke-width="4" marker-end="url(#arrow)"/></g>
   <g id="livingapp-composer" filter="url(#shadow)">
     <rect x="866" y="214" width="340" height="190" rx="24" fill="#1b3154" stroke="#fbbf24" stroke-width="2"/>
     <text x="896" y="254" fill="#fbbf24" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="700" letter-spacing="2">COMPOSE</text>
@@ -54,8 +54,8 @@
 
   <g id="feature-ownership-gap">
     <rect x="746" y="592" width="460" height="76" rx="16" fill="#401c2b" stroke="#fb7185" stroke-width="2" stroke-dasharray="8 6"/>
-    <text x="770" y="621" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">MISSING IMPLEMENTATION</text>
-    <text x="770" y="648" fill="#fbd5dc" font-family="Inter,system-ui,sans-serif" font-size="15">Requirement query rows omit the story’s owning feature.</text>
+    <text x="770" y="621" fill="#fb7185" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">FEATURE OWNERSHIP</text>
+    <text x="770" y="648" fill="#fbd5dc" font-family="Inter,system-ui,sans-serif" font-size="15">Requirement rows retain feature; queries can scope by it.</text>
   </g>
   <text x="64" y="648" fill="#9fb4ce" font-family="Inter,system-ui,sans-serif" font-size="14">Invariant: storage feature is placement; stable URNs remain app-global.</text>
 </svg>

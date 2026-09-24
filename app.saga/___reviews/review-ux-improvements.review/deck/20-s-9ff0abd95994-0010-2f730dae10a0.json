@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "exact-evidence",
+  "deck": "review-ux-improvements",
+  "title": "The picture and its proof stay connected",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-9ff0abd95994-0010-2f730dae10a0.svg",
+  "takeaway": "Semantic Item controls open exact code and affected living records independently.",
+  "reading_order": [
+    "item-hotspots",
+    "code-evidence",
+    "product-intent"
+  ]
+}

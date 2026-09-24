@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/appjs.go",
+      "start": 76,
+      "end": 145,
+      "digest": "sha256:242809a2d134e9df4ec412139da46008c9b23034c939c35453fe71ad57d5c81a",
+      "note": "Deck navigation changes active slide, retains authored order, and follows the URL hash."
+    }
+  ]
+}

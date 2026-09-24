@@ -5,7 +5,7 @@
   "rank": 50,
   "kind": "transition",
   "label": "Repair path",
-  "description": "revise-item updates a selector in place while preserving Item identity and existing code evidence.",
+  "description": "For legacy slides, revise-item changes a selector while preserving identity and code evidence. Transaction-managed slides require complete apply-slide publication using their authoring snapshot.",
   "selector": {
     "type": "element",
     "element_id": "repair-transition"

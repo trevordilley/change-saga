@@ -4,8 +4,8 @@
   "slide": "review-ownership",
   "rank": 50,
   "kind": "risk",
-  "label": "Unowned spatial overlay",
-  "description": "The PR-review boundary has no freehand, shape, or text overlay record, drawing route, or writer; prototype requirement annotations are a separate capability.",
+  "label": "Annotation ownership",
+  "description": "The comment route posts annotation actions to reviewstore for validation and append. The annotations read route projects current normalized shapes and note text.",
   "selector": {
     "type": "element",
     "element_id": "missing-overlay"

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/livingapp/compose.go",
+      "start": 348,
+      "end": 506,
+      "digest": "sha256:26276211451a77f174d24c5eef6b0cf4ed8643a40f53ecc52e45b64f1ae18e0a",
+      "note": "Filters to active current relations and assembles every accepted criterion's design, work, code, evidence, path, and blocker fields."
+    }
+  ]
+}

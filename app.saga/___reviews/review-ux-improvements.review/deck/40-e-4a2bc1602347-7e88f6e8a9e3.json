@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "docs/ux-reframe.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:59eedf758e6f022d12bca4f8a36814e580905c774c20af5b626e524ed07e63ac",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "docs/ux-reframe.md",
+      "start": 15,
+      "end": 16,
+      "digest": "sha256:4120d3f7fff09624df42b86147211ea82ca91c91729b8393276f25199f327529",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "docs/ux-reframe.md",
+      "start": 19,
+      "end": 21,
+      "digest": "sha256:f5e7a9ddb32cf60daf63d2899b3af9b4a00768ac7ebc2807b6cae96c882c0d81",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    }
+  ]
+}

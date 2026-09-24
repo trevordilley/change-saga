@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/livingapp/compose.go",
+      "start": 372,
+      "end": 391,
+      "digest": "sha256:35bcd09d33345cda53aedbca3d8554546b0e2ecd369aef2e9bb8d6671af68342",
+      "note": "Enumerates only accepted stories and their current criteria when composing traceability readiness inputs."
+    }
+  ]
+}

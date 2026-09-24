@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/model.go",
+      "start": 115,
+      "end": 125,
+      "digest": "sha256:b581798460b200e378450f8abd88aa2fdc3454e3dc60bb14dda6deb3437099aa",
+      "note": "Keeps code evidence on the Item model so adding proof does not replace the visual or its stable identity."
+    }
+  ]
+}

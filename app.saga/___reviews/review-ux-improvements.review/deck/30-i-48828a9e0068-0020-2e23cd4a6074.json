@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "decision",
+  "slide": "slide-workspace",
+  "rank": 20,
+  "kind": "node",
+  "label": "Per-slide decisions",
+  "description": "Decisions name one slide and retain reviewer identity and currency; evidence on Items does not approve a slide.",
+  "selector": {
+    "type": "element",
+    "element_id": "decision"
+  }
+}

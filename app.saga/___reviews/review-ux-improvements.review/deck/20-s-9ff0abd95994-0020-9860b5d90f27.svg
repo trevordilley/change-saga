@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Annotations are append-only review collaboration</title>
+  <desc id="desc">A normalized visual anchor creates a review comment root. Move, resize, recolor, undo, redo, and delete append events. The current projection is derived without changing the source slide.</desc>
+  <defs><linearGradient id="bg3"><stop stop-color="#111827"/><stop offset="1" stop-color="#20203a"/></linearGradient><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0l10 5-10 5z" fill="#c4b5fd"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg3)"/>
+  <text x="62" y="70" fill="#9da7c1" font-family="ui-monospace,monospace" font-size="16" letter-spacing="2">REVIEW UX · SLIDE 3</text>
+  <text x="62" y="126" fill="#fafaff" font-family="Inter,system-ui,sans-serif" font-size="40" font-weight="750">Markup is discussion with spatial truth</text>
+  <text x="62" y="164" fill="#bbbcd3" font-family="Inter,system-ui,sans-serif" font-size="19">The source visual stays unchanged; normalized anchors and replies preserve what happened.</text>
+  <g id="anchor-model">
+    <rect x="62" y="224" width="304" height="310" rx="18" fill="#f7f5ff" stroke="#a78bfa" stroke-width="2"/>
+    <text x="88" y="258" fill="#5b4a91" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">1 · CREATE ROOT</text>
+    <rect x="92" y="292" width="244" height="137" rx="12" fill="#e5e7ff"/>
+    <rect x="136" y="326" width="112" height="66" rx="6" fill="none" stroke="#dc493a" stroke-width="5"/>
+    <circle cx="248" cy="392" r="15" fill="#6d5bd0" stroke="#fff" stroke-width="3"/><text x="248" y="397" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="800">1</text>
+    <text x="92" y="465" fill="#38345c" font-family="ui-monospace,monospace" font-size="13">coordinate_space: normalized</text>
+    <text x="92" y="489" fill="#38345c" font-family="ui-monospace,monospace" font-size="13">shape + author + comment</text>
+  </g>
+  <path d="M378 377h66" stroke="#c4b5fd" stroke-width="4" marker-end="url(#a3)"/>
+  <g id="append-store">
+    <rect x="466" y="224" width="352" height="310" rx="18" fill="#17152a" stroke="#a78bfa" stroke-width="2"/>
+    <text x="492" y="258" fill="#c4b5fd" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">2 · APPEND EVENTS</text>
+    <g font-family="ui-monospace,monospace" font-size="14"><rect x="496" y="292" width="292" height="42" rx="8" fill="#2d2851"/><text x="514" y="318" fill="#f2efff">create · original anchor</text><rect x="496" y="346" width="292" height="42" rx="8" fill="#262342"/><text x="514" y="372" fill="#d8d2f0">update · moved + resized</text><rect x="496" y="400" width="292" height="42" rx="8" fill="#262342"/><text x="514" y="426" fill="#d8d2f0">update · recolored / undo</text><rect x="496" y="454" width="292" height="42" rx="8" fill="#382238"/><text x="514" y="480" fill="#f1bfda">delete · root remains</text></g>
+  </g>
+  <path d="M830 377h66" stroke="#c4b5fd" stroke-width="4" marker-end="url(#a3)"/>
+  <g id="projection">
+    <rect x="918" y="224" width="300" height="310" rx="18" fill="#effdf6" stroke="#34d399" stroke-width="2"/>
+    <text x="944" y="258" fill="#17664a" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">3 · PROJECT CURRENT STATE</text>
+    <rect x="948" y="292" width="240" height="137" rx="12" fill="#d8f7e8"/>
+    <path d="M978 392c44-95 95 45 174-68" fill="none" stroke="#0969da" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="1154" cy="326" r="15" fill="#15785a" stroke="#fff" stroke-width="3"/><text x="1154" y="331" text-anchor="middle" fill="#fff" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="800">2</text>
+    <text x="948" y="466" fill="#2e6854" font-family="Inter,system-ui,sans-serif" font-size="14">reload-safe · viewport-stable</text>
+    <text x="948" y="491" fill="#2e6854" font-family="Inter,system-ui,sans-serif" font-size="14">source visual unchanged</text>
+  </g>
+  <g transform="translate(62 570)" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="700"><rect width="94" height="34" rx="17" fill="#332d5b"/><text x="47" y="22" text-anchor="middle" fill="#ddd6fe">Highlight</text><rect x="106" width="88" height="34" rx="17" fill="#332d5b"/><text x="150" y="22" text-anchor="middle" fill="#ddd6fe">Rectangle</text><rect x="206" width="76" height="34" rx="17" fill="#332d5b"/><text x="244" y="22" text-anchor="middle" fill="#ddd6fe">Comment</text><rect x="294" width="84" height="34" rx="17" fill="#332d5b"/><text x="336" y="22" text-anchor="middle" fill="#ddd6fe">Freehand</text><rect x="390" width="70" height="34" rx="17" fill="#332d5b"/><text x="425" y="22" text-anchor="middle" fill="#ddd6fe">Sticky</text></g>
+  <text x="62" y="675" fill="#e1dff1" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="650">Takeaway: visual feedback is durable, attributable, and append-only—never baked into the slide asset.</text>
+</svg>

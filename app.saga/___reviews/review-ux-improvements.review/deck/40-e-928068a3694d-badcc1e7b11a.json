@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 110,
+      "end": 124,
+      "digest": "sha256:022b25d58c5ed30f1e8506dcfe70686f778dbf830f122fb2f28a7432a4a6ce37",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 129,
+      "end": 158,
+      "digest": "sha256:4680005da5caed6f4b8ed54c83de320ea25d70dc207437515a227bea45821bbc",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:afcf7d7743469acd1728f15a449bdc99bdfd699011b728ecd7415085c2e4149a",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:f9a05eecaafccf14da7edb622a28f018a80a488e6c7c82acd5f991ca59d89ed3",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:1a09b1bc48bede44c381377213a27c7ce0d268153f73dcd80f6abba2f395cf59",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 445,
+      "end": 445,
+      "digest": "sha256:c626bd6694db41c78b8947ee3a4daab500d2f0f15053c189d787c43b41f48807",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 453,
+      "end": 453,
+      "digest": "sha256:5d729fb14b619c3e3b99023f5fc633dbbfe926b974fe82d37a49466be31b1112",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 459,
+      "end": 472,
+      "digest": "sha256:a2afe8633e06113c69dda04c34ce64ecbe19332191820a52dd2f9fa11f7dbdc3",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 481,
+      "end": 485,
+      "digest": "sha256:6b2fdf4c3b8d1677d98b6290081f59b778cf7c1a6d4367a71ed0854ea16b85de",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/review.go",
+      "start": 489,
+      "end": 531,
+      "digest": "sha256:7cb1e734609b2f7d1368d757745c02474b6ef9afdba68d1d5882d68fadb27247",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9d93ba756a369f31cba7628f925d28035d7db497",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 173,
+      "end": 243,
+      "digest": "sha256:2000d2ef34fc71e3b7daceb59e6b5d94ac9582ae911efda3d4a02934c859f4db",
+      "note": "Validates body, state, reviewer identity, commit, reply, and canonical slide-or-Item target before publication."
+    }
+  ]
+}

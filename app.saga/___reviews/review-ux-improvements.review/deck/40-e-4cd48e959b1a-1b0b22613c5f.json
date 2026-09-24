@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews_test.go",
+      "start": 131,
+      "end": 132,
+      "digest": "sha256:68e1d46a21d0007926dce315b3e9cb677e422a99b570e3664c3bfe35a3231d66",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews_test.go",
+      "start": 135,
+      "end": 137,
+      "digest": "sha256:2fa6b6e646e639256f2b106cc7e1dc4ce75bb3d153eee5a976ef682dc303559c",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews_test.go",
+      "start": 143,
+      "end": 147,
+      "digest": "sha256:22644f232d53a33a39ca0f4103ae8ba71df1cc90f84c116a7297e8159f7ea94d",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:e21a2d214acb6075379cb7e7029daa7fb8912ebe4d3842a2af30913b1fabfe45",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    }
+  ]
+}

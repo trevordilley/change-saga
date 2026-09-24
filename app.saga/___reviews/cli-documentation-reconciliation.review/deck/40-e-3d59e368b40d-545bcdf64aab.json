@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/reconciliation.go",
+      "start": 416,
+      "end": 499,
+      "digest": "sha256:3ea8231461d9f56358e00ba69c701a93cacfa87cafd4aa89ec5c7d79ea92b890",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    }
+  ]
+}

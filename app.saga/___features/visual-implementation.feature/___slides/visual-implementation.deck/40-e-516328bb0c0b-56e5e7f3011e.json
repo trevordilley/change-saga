@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/slides.go",
+      "start": 278,
+      "end": 305,
+      "digest": "sha256:797cef9a7b0ca6d928c7d9e22ed3c117a4e9740c823b78f0b33653194e754e25",
+      "note": "Loads the flat records in dependency order and attaches evidence only after the owning Item is known."
+    }
+  ]
+}

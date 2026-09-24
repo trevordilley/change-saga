@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/review.go",
+      "start": 443,
+      "end": 489,
+      "digest": "sha256:12aca42f56f4068d3bdc52aebf724aaa631c80904936cb9becc517d9e9dc5c48",
+      "note": "Rejects malformed comment records, unknown review targets or replies, and invalid state, commit, or reviewer identity."
+    }
+  ]
+}

@@ -156,6 +156,20 @@ change-saga check --covers implementation,stories --against main app.saga
 `check` exits 0 when every named area is covered and 3 when one has a gap,
 printing only those gaps. Nothing is reduced to a score.
 
+After implementing and verifying a change, author its PR review deck, then
+reconcile the affected living documentation:
+
+```sh
+change-saga reconcile --against main --json app.saga
+change-saga validate --json app.saga
+change-saga check --covers health app.saga
+```
+
+The [reconciliation workflow](docs/reconciliation.md) separates review coverage,
+documentation diff coverage, and HEAD currency. It exposes baseline debt and
+regressions with reasons and typed repair paths. Reassess before editing, then
+check again; current pins cannot prove the explanation is correct.
+
 Saga files are built for parallel work. Separate agents can own story
 revisions, prototypes, design, test cases, and work items, then merge the Saga
 alongside the implementation as the work fans out and converges.

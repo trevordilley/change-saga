@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "annotation-projection",
+  "label": "Annotation tools and projection",
+  "selector": {
+    "type": "text",
+    "exact": "The browser tool palette and annotation projection reconstruct the current review marks."
+  },
+  "target": ""
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "navigation",
+  "slide": "slide-workspace",
+  "rank": 10,
+  "kind": "node",
+  "label": "Slide navigation",
+  "description": "Authored order, slide controls and URL anchors keep navigation attached to a specific slide.",
+  "selector": {
+    "type": "element",
+    "element_id": "navigation"
+  }
+}

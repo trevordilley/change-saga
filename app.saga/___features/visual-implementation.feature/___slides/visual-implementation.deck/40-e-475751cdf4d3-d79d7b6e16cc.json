@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/cli/slides.go",
+      "start": 95,
+      "end": 134,
+      "digest": "sha256:f8e753bbdc630fa9f1dda728afb1d2daf7e6bb32a95ea4af44a001524d6a2215",
+      "note": "Creates a feature deck under the writer lock and publishes its compact manifest, which defines the authoring boundary shown here."
+    }
+  ]
+}

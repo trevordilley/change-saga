@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/cli/query.go",
+      "start": 23,
+      "end": 24,
+      "digest": "sha256:0b6ccd9d4e7ad7df6cf3babe484891d5fff40b278510c21877b621cc62b482ed",
+      "note": "Versioned query envelope and operation discovery"
+    }
+  ]
+}

@@ -111,7 +111,12 @@ history rather than rewriting what was previously known.
 3. Use the routed reference and public commands to make the smallest complete
    change. Follow returned URNs and evidence record paths; do not reconstruct
    them from storage.
-4. Run `change-saga validate --json <saga>` and the task-relevant bounded
+4. After implementing, verifying, and preparing a PR review deck, run
+   `change-saga reconcile --against <base> --json <saga>`. Inspect the queue,
+   reassess affected living documentation, make justified repairs through
+   typed public paths, then reconcile again. Review coverage is independent
+   of HEAD documentation currency; retain baseline debt and uncertainty.
+   Run `change-saga validate --json <saga>` and the task-relevant bounded
    queries. Use `status --json` and its ordered `next_actions` as a work queue,
    not a verdict. Use
    `check --covers ...` only for the areas the user or team actually requires.

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "workspace",
+  "slide": "slide-workspace",
+  "rank": 0,
+  "kind": "node",
+  "label": "Review workspace",
+  "description": "The shell composes a full-area review deck and filmstrip around the active authored slide.",
+  "selector": {
+    "type": "element",
+    "element_id": "workspace"
+  }
+}
