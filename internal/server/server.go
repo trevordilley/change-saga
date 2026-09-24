@@ -373,6 +373,7 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /reviews/{id}/coverage", application.reviewCoverageSurface)
 	mux.HandleFunc("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
 	mux.HandleFunc("GET /reviews/{id}/annotations", application.reviewAnnotations)
+	mux.HandleFunc("GET /reviews/{id}/feedback", application.reviewFeedbackSurface)
 	mux.HandleFunc("POST /reviews/{id}/decision", application.reviewDecision)
 	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
 	mux.HandleFunc("GET /app.js", application.javascript)
