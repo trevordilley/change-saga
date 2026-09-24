@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "delivery-rule",
+  "slide": "technical-inventory-policy-decisions",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Verify original bytes and delivery currency",
+  "description": "Validate the original reference and digest, then resolve its bytes at the named delivery OID. Pure movement may pass; changed, missing or unverifiable bytes refuse the transition without publishing.",
+  "selector": {
+    "type": "element",
+    "element_id": "delivery-rule"
+  }
+}

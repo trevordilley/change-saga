@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d67ad809b6c3828046c7549b0b5e00b914327bb3",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 94,
+      "end": 166,
+      "digest": "sha256:88ef11c6a8c94f5e0f74746dbd95e9217b6897ed5ca0104560225adfffcd3c88",
+      "note": "Existing Author verifies bytes at the original commit and Resolve checks currency at a view. The implementation policy must require both, not treat historical existence as delivery evidence."
+    }
+  ]
+}

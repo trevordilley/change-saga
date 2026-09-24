@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "intent-rule",
+  "slide": "technical-inventory-policy-decisions",
+  "rank": 50,
+  "kind": "transition",
+  "label": "Entity and relationship promotion are independent",
+  "description": "Check every implemented edge's own evidence and implemented endpoint revisions. Proposed edges remain proposed; no cascading promotion, inherited approval or whole-entity completion.",
+  "selector": {
+    "type": "element",
+    "element_id": "intent-rule"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d67ad809b6c3828046c7549b0b5e00b914327bb3",
+      "path": "internal/cli/inventory.go",
+      "start": 131,
+      "end": 146,
+      "digest": "sha256:3e48d1533590f92fc6c70da1aae6a44cc377c928b1c21dc455b93b47e984a02c",
+      "note": "Existing new-link authoring admits current pins only. The saved-view admission policy is an explicit extension, not implemented by this guard."
+    }
+  ]
+}

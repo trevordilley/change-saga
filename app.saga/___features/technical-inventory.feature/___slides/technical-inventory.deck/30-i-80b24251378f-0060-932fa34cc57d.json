@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "foundation",
+  "slide": "technical-inventory-policy-decisions",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Current guards and resolvers are extension points",
+  "description": "Current code enforces current-only new pins and separately verifies original and viewed code. The new policy contract is docs/technical-inventory-policy-contract.md; public wiring is not implemented.",
+  "selector": {
+    "type": "element",
+    "element_id": "foundation"
+  }
+}

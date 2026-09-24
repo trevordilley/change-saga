@@ -4,7 +4,7 @@ Status: proposed design, not an implemented feature. The primary artifact is
 the **Proposed technical design** section of the existing `technical-inventory`
 implementation deck in `app.saga`. The user explicitly chose to develop the
 implementation deck during architecture planning. Its earlier five slides
-retain the current implementation; nine appended slides identify the proposal.
+retain the current implementation; ten appended slides identify the proposal.
 
 ## Decisions captured
 
@@ -54,11 +54,14 @@ These decisions have interview provenance and immutable story revisions:
    snapshot-bound pages, on-demand detail and a disposable reverse-usage index.
 9. `technical-inventory-rollout`: compatibility, record/authoring, shared
    consumer and end-to-end verification gates; explicit conflict handling.
+10. `technical-inventory-policy-decisions`: explicit saved-view admission,
+    original plus delivery-commit evidence validation, and independent entity/
+    relationship intent. Current guards/resolvers are linked as extension points.
 
 The diagrams use public slide/Item commands. The complete-slide transaction
 requires code evidence on every Item, so it cannot truthfully publish these
 code-free proposal Items today. No dummy mappings were added to bypass that
-constraint. Fifty-nine Item-to-criterion relations explain intent, not delivery.
+constraint. Sixty-six proposal Item-to-criterion relations explain intent, not delivery.
 
 ## Proposed selection and reconciliation contract
 
@@ -285,6 +288,11 @@ compatibility gate; this is not a silent relaxation of today's authoring rules.
   The 390px canvas still scales the diagram very small and persistent touch
   controls obscure some node text. Readable story drawers do not resolve that
   existing renderer limitation; no mobile-canvas polish is claimed here.
+- The policy-decision slide passes visual QA at both desktop sizes, with raw
+  and reviewer images inspected. Its seven criterion pins are current. Browser
+  checks pass for both exact source links, linked stories, Escape/focus return,
+  permalink reload, and a 390px touch drawer/return without horizontal overflow.
+  This verifies the explanation and navigation, not implementation of the rules.
 - `go test ./internal/coverage ./internal/coderesolve` passes for the existing
   foundations (1.012s and 1.007s respectively). This does not test the proposed
   resolver, which is not implemented.
@@ -303,3 +311,5 @@ Saga records or committed assets.
 The third slice adds `qa-record-contract/`, `qa-query-contract/`, `qa-rollout/`,
 `contract-code-desktop.png`, `contract-stories-narrow.png`, `contract-narrow.png`
 and `check-contract-preview.cjs` in the same local QA directory.
+The policy slice adds `qa-policy-decisions/`, `policy-code-desktop.png`,
+`policy-stories-narrow.png`, and `check-policy-preview.cjs`.
