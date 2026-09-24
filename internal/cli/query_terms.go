@@ -218,12 +218,15 @@ func decodeTermsCursor(cursor, key, snapshot string, total int) (int, *queryErro
 	var token termsCursorToken
 	decodeErr := json.Unmarshal(data, &token)
 	canonical, marshalErr := json.Marshal(token)
-	if decodeErr != nil || marshalErr != nil || !bytes.Equal(data, canonical) || token.Version != 1 || token.Key != key || token.Offset < 0 || token.Offset > total || len(token.Checksum) != sha256.Size*2 ||
+	if decodeErr != nil || marshalErr != nil || !bytes.Equal(data, canonical) || token.Version != 1 || token.Key != key || token.Offset < 0 || len(token.Checksum) != sha256.Size*2 ||
 		subtle.ConstantTimeCompare([]byte(token.Checksum), []byte(termsCursorChecksum(token))) != 1 {
 		return 0, invalidTermsCursor()
 	}
 	if token.Snapshot != snapshot {
 		return 0, &queryError{Code: "stale_snapshot", Message: "the cursor belongs to a different snapshot", Retryable: true, Details: map[string]any{"expected": token.Snapshot, "actual": snapshot}}
+	}
+	if token.Offset > total {
+		return 0, invalidTermsCursor()
 	}
 	return token.Offset, nil
 }
