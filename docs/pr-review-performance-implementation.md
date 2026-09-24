@@ -132,3 +132,29 @@ the follow-up is authored through public CLI commands with partitioned target
 ownership. It does not record approvals or change actual review feedback.
 No branches or workspaces were pushed, merged, archived, or deleted by this
 coordinator or its implementation children.
+
+## Saga documentation handoff
+
+The actual branch Sagas now accompany each implementation through public CLI
+authoring. No real review decisions, comments, or annotations were recorded.
+
+| Branch | Documentation commit | Scope |
+| --- | --- | --- |
+| `perf/pr-review-loading` | `f01a0c0129d85639f11bee6715d162d0e7b96c07` | Evaluation design fragment, four focused landmarks, exact baseline/method/handoff evidence and an artifact-inspection verification. |
+| `perf/pr-request-diff-reuse` | `ad0b1311ac594499f27764010d35e8a94d8ea30e` | Six-Item `pr-request-diff-reuse` slide in the existing visual implementation deck; request lifetime, independent resolution/filtering, successful patch reuse, retry behavior and measured HTTP results. |
+| `perf/pr-code-page-generation` | `81b890a07f42155a3ca88e211f789400603a1b85` | Five-Item `pr-code-batching` slide in the existing comparison history deck; matched request counts, fresh per-page work, bounds/cursors and measured browser results. |
+| `perf/pr-review-async` | `91b9966268951d8ae0b149b69eff1b0edcb056a5` | Four existing decision/comment slides updated, preserving 23 Item identities/selectors and replacing 14 exact evidence records. |
+
+All three implementation Sagas validate without issues. The new reuse and
+batching slides have zero stale selectors across their scoped mapping queries;
+their scrutiny scores are zero. Overlap between reuse and retry evidence is
+intentional: the first explains successful sharing, the second its failure
+boundary. Existing unrelated drift remains with the reconciliation owner.
+All six authored/revised implementation slides passed raw and actual-reviewer
+visual QA at 1280×720 and 1024×576, with manual relationship inspection.
+Temporary renders are under `/tmp/pr-request-reuse-saga/qa`,
+`/tmp/pr-code-batching-saga/qa`, and `/tmp/cs-pr-async-qa`.
+
+These branches are ready for the parent's integration review. Combined-source
+validation and browser regression checks still need to run after integration;
+the isolated measurements do not establish the combined latency distribution.
