@@ -28,18 +28,22 @@ type WriteBatchEntry struct {
 }
 
 // WriteBatch prepares every file before publishing any of them, then commits
-// the set while the caller holds its domain lock. If a commit step returns an
-// error, already-published entries are restored before WriteBatch returns.
-// This gives multi-record domain mutations all-or-none behavior for ordinary
-// I/O failures while retaining each file's atomic replacement semantics.
+// the set while the caller holds its domain lock. If publication fails, it
+// makes a best-effort rollback of entries already published and joins every
+// rollback failure to the publication error. Old bytes are staged separately
+// before publication and retained at the path named in the error if restoration
+// fails. This is not reader-atomic or crash-atomic across files; only each
+// individual create or replacement has the atomicity of its filesystem call.
 func WriteBatch(entries []WriteBatchEntry) (err error) {
 	type prepared struct {
 		WriteBatchEntry
-		temp      string
-		old       []byte
-		oldMode   fs.FileMode
-		hadOld    bool
-		committed bool
+		temp           string
+		recovery       string
+		old            []byte
+		oldMode        fs.FileMode
+		hadOld         bool
+		committed      bool
+		retainRecovery bool
 	}
 	values := make([]prepared, len(entries))
 	seen := map[string]bool{}
@@ -47,6 +51,9 @@ func WriteBatch(entries []WriteBatchEntry) (err error) {
 		for i := range values {
 			if values[i].temp != "" {
 				_ = os.Remove(values[i].temp)
+			}
+			if values[i].recovery != "" && !values[i].retainRecovery {
+				_ = os.Remove(values[i].recovery)
 			}
 		}
 	}()
@@ -105,40 +112,79 @@ func WriteBatch(entries []WriteBatchEntry) (err error) {
 		if err != nil {
 			return err
 		}
+		if values[index].hadOld {
+			recovery, createErr := os.CreateTemp(dir, ".change-saga-recovery-*")
+			if createErr != nil {
+				return createErr
+			}
+			values[index].recovery = recovery.Name()
+			if err = recovery.Chmod(values[index].oldMode); err == nil {
+				_, err = recovery.Write(values[index].old)
+			}
+			if err == nil {
+				err = recovery.Sync()
+			}
+			closeErr := recovery.Close()
+			if err == nil {
+				err = closeErr
+			}
+			if err != nil {
+				return err
+			}
+		}
 	}
-	rollback := func(last int) {
+	rollback := func(last int) error {
+		var rollbackErrors []error
 		for index := last; index >= 0; index-- {
 			value := &values[index]
 			if !value.committed {
 				continue
 			}
+			if rollbackErr := injectFault("before-batch-rollback", value.Path); rollbackErr != nil {
+				if value.hadOld {
+					value.retainRecovery = true
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("restore %s: %w; recovery content retained at %s", value.Path, rollbackErr, value.recovery))
+				} else {
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("remove newly published %s: %w; published content remains at %s", value.Path, rollbackErr, value.Path))
+				}
+				continue
+			}
 			if value.hadOld {
-				_ = WriteFile(value.Path, value.old, value.oldMode, false)
+				if rollbackErr := WriteFile(value.Path, value.old, value.oldMode, false); rollbackErr != nil {
+					value.retainRecovery = true
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("restore %s: %w; recovery content retained at %s", value.Path, rollbackErr, value.recovery))
+				}
 			} else {
-				_ = os.Remove(value.Path)
-				_ = SyncDir(filepath.Dir(value.Path))
+				if rollbackErr := os.Remove(value.Path); rollbackErr != nil {
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("remove newly published %s: %w; published content remains at %s", value.Path, rollbackErr, value.Path))
+					continue
+				}
+				if rollbackErr := SyncDir(filepath.Dir(value.Path)); rollbackErr != nil {
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("sync rollback removal of %s: %w", value.Path, rollbackErr))
+				}
 			}
 		}
+		return errors.Join(rollbackErrors...)
 	}
 	for index := range values {
 		value := &values[index]
 		if err = injectFault("before-batch-commit", value.Path); err != nil {
-			rollback(index - 1)
-			return err
+			return errors.Join(err, rollback(index-1))
 		}
 		if value.Exclusive {
 			err = os.Link(value.temp, value.Path)
 		} else {
 			err = os.Rename(value.temp, value.Path)
-			value.temp = ""
+			if err == nil {
+				value.temp = ""
+			}
 		}
 		if err == nil {
 			value.committed = true
 			err = SyncDir(filepath.Dir(value.Path))
 		}
 		if err != nil {
-			rollback(index)
-			return err
+			return errors.Join(err, rollback(index))
 		}
 	}
 	return nil

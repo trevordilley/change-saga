@@ -104,3 +104,74 @@ func TestCheckRequiresExplicitRefs(t *testing.T) {
 		t.Fatalf("explicit refs error = %v", err)
 	}
 }
+
+func TestVisualStableIDCollisionsUseOwnershipNotMutableManifestFields(t *testing.T) {
+	left := t.TempDir()
+	rightOwner := t.TempDir()
+	rightEdit := t.TempDir()
+	writeVisualIdentityFixture(t, left, "checkout", "implementation", "checkout-deck", "shared-slide", "Original", 10)
+	writeVisualIdentityFixture(t, rightOwner, "billing", "implementation", "checkout-deck", "shared-slide", "Different owner", 20)
+	writeVisualIdentityFixture(t, rightEdit, "checkout", "implementation", "checkout-deck", "shared-slide", "Edited title", 90)
+
+	identities := func(root string) map[string]identityRecord {
+		t.Helper()
+		result, err := immutableIdentities(root)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return result
+	}
+	report := analyze([]snapshot{
+		{Provenance: Provenance{Ref: "left", Commit: strings.Repeat("a", 40)}, Identities: identities(left)},
+		{Provenance: Provenance{Ref: "right", Commit: strings.Repeat("b", 40)}, Identities: identities(rightOwner)},
+	})
+	if !hasCollision(report.Collisions, "slide", "shared-slide") {
+		t.Fatalf("different slide owners were not reported: %#v", report.Collisions)
+	}
+	if !hasCollision(report.Collisions, "deck", "checkout-deck") {
+		t.Fatalf("different deck owners were not reported: %#v", report.Collisions)
+	}
+
+	report = analyze([]snapshot{
+		{Provenance: Provenance{Ref: "left", Commit: strings.Repeat("a", 40)}, Identities: identities(left)},
+		{Provenance: Provenance{Ref: "edit", Commit: strings.Repeat("c", 40)}, Identities: identities(rightEdit)},
+	})
+	if hasCollision(report.Collisions, "slide", "shared-slide") || hasCollision(report.Collisions, "deck", "checkout-deck") {
+		t.Fatalf("ordinary visual edits were mislabeled as identity collisions: %#v", report.Collisions)
+	}
+
+	deckMoved := t.TempDir()
+	writeVisualIdentityFixture(t, deckMoved, "billing", "implementation", "checkout-deck", "other-slide", "Moved owner", 10)
+	report = analyze([]snapshot{
+		{Provenance: Provenance{Ref: "left", Commit: strings.Repeat("a", 40)}, Identities: identities(left)},
+		{Provenance: Provenance{Ref: "moved", Commit: strings.Repeat("d", 40)}, Identities: identities(deckMoved)},
+	})
+	if !hasCollision(report.Collisions, "deck", "checkout-deck") {
+		t.Fatalf("different deck owners were not reported: %#v", report.Collisions)
+	}
+}
+
+func writeVisualIdentityFixture(t *testing.T, root, feature, bundle, deckID, slideID, title string, rank int) {
+	t.Helper()
+	directory := filepath.Join(root, "___features", feature+".feature", "___slides", bundle+".deck")
+	if err := os.MkdirAll(directory, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	deck := saga.DeckManifest{Version: saga.DeckRecordVersion, ID: deckID, Title: title, Rank: rank, Role: "change", Objective: "Explain the change"}
+	if err := store.WriteJSON(filepath.Join(directory, "10-d-0001-aaaaaaaaaaaa.json"), deck, true); err != nil {
+		t.Fatal(err)
+	}
+	slide := saga.SlideManifest{Version: saga.DeckRecordVersion, ID: slideID, DeckID: deckID, Title: title, Rank: rank, Intent: "explain", Layout: "diagram", MediaType: "image/svg+xml", Entrypoint: title + ".svg", Takeaway: "Takeaway"}
+	if err := store.WriteJSON(filepath.Join(directory, "20-s-aaaaaaaaaaaa-0001-bbbbbbbbbbbb.json"), slide, true); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func hasCollision(collisions []Collision, kind, id string) bool {
+	for _, collision := range collisions {
+		if collision.Kind == kind && collision.ID == id {
+			return true
+		}
+	}
+	return false
+}

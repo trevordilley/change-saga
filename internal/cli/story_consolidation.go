@@ -46,6 +46,13 @@ func storyConsolidate(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	input := requirements.ConsolidateInput{Duplicate: *duplicate, Canonical: *canonical, EventID: *event, Parents: parents, Reason: *reason, CriterionMap: criterionMap}
+	input.LoadCurrencyInputs = func() (requirements.StaleInputs, error) {
+		heads, err := loadRelationHeads(root)
+		if err != nil {
+			return requirements.StaleInputs{}, fmt.Errorf("load current relation pins: %w", err)
+		}
+		return heads.inputs, nil
+	}
 	var plan requirements.ConsolidationPlan
 	if *apply {
 		plan, err = requirements.ConsolidateProposal(root, sagaID, input)
@@ -67,7 +74,7 @@ func storyConsolidate(_ context.Context, args []string, out io.Writer) error {
 		fmt.Fprintf(out, "  %s -> %s: %s -> %s\n", remap.Existing, remap.Replacement, remap.From, remap.To)
 	}
 	if !plan.Applied {
-		fmt.Fprintln(out, "No files changed. Re-run with --apply to commit exactly this validated decision.")
+		fmt.Fprintln(out, "No files changed. Re-run with --apply to revalidate current Saga state and apply the decision if it is still valid.")
 	}
 	return nil
 }
@@ -103,7 +110,11 @@ func storyWithdraw(_ context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("withdrawal refuses missing or conflicted story lifecycle")
 	}
 	if story.CurrentLifecycle.State != requirements.StateProposed && story.CurrentLifecycle.State != requirements.StateDeferred {
-		return fmt.Errorf("only a proposed or deferred story can be withdrawn; %q is %s", ref.ID, story.CurrentLifecycle.State)
+		replay := *requestID != "" && story.CurrentLifecycle.State == requirements.StateRejected &&
+			story.CurrentLifecycle.ID == *event && story.CurrentLifecycle.RequestID == *requestID
+		if !replay {
+			return fmt.Errorf("only a proposed or deferred story can be withdrawn; %q is %s", ref.ID, story.CurrentLifecycle.State)
+		}
 	}
 	if err := assertRecordFeature(root, *feature, *storyURN); err != nil {
 		return err

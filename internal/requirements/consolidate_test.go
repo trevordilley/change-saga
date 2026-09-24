@@ -2,6 +2,8 @@ package requirements
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -122,4 +124,101 @@ func TestConsolidationRefusesAmbiguousMappingAndAcceptedIntentLoss(t *testing.T)
 	if after.FindStory("duplicate").CurrentLifecycle.State != StateAccepted || len(after.FindStory("duplicate").Events) != 2 {
 		t.Fatal("failed consolidation changed accepted lifecycle")
 	}
+}
+
+func TestConsolidationRequiresCurrentExternalPinsAndWritesFreshPins(t *testing.T) {
+	root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion := consolidationFixture(t)
+	item := "urn:change-saga:test:slide:flow:item:validator"
+	digest := "sha256:" + strings.Repeat("a", 64)
+	if _, err := AddRelation(root, "test", AddRelationInput{
+		Feature: "core", ID: "validator-addresses-duplicate", Type: RelationAddresses,
+		From: item, To: duplicateCriterion, FromContentDigest: digest,
+		ToRevision: duplicateURN + ":revision:r1", Rationale: "The current Item addresses this exact criterion.",
+	}); err != nil {
+		t.Fatal(err)
+	}
+	input := ConsolidateInput{
+		Duplicate: duplicateURN, Canonical: canonicalURN, EventID: "consolidated", Parents: []string{duplicateURN + ":event:proposed"}, Reason: "duplicate",
+		CriterionMap: map[string]string{duplicateCriterion: canonicalCriterion},
+	}
+	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "no supplied current value") {
+		t.Fatalf("missing digest refusal = %v", err)
+	}
+	input.CurrencyInputs.CurrentContentDigests = map[string]string{item: "sha256:" + strings.Repeat("b", 64)}
+	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "relation is stale") {
+		t.Fatalf("stale digest refusal = %v", err)
+	}
+	input.CurrencyInputs.CurrentContentDigests[item] = digest
+	if _, err := ConsolidateProposal(root, "test", input); err != nil {
+		t.Fatal(err)
+	}
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, relation := range document.Relations {
+		if relation.State == RelationActive {
+			if relation.To != canonicalCriterion || relation.ToRevision != canonicalURN+":revision:r1" || relation.FromContentDigest != digest {
+				t.Fatalf("replacement did not carry verified current pins: %#v", relation)
+			}
+		}
+	}
+}
+
+func TestConsolidationRefusesConflictedAffectedRelation(t *testing.T) {
+	root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion := consolidationFixture(t)
+	workItem := "urn:change-saga:test:work-item:implement-checkout"
+	workRevision := workItem + ":revision:r1"
+	if _, err := AddRelation(root, "test", AddRelationInput{
+		Feature: "core", ID: "work-implements-duplicate", Type: RelationImplements,
+		From: workItem, To: duplicateCriterion, FromRevision: workRevision,
+		ToRevision: duplicateURN + ":revision:r1", Rationale: "The work item implements the criterion.",
+	}); err != nil {
+		t.Fatal(err)
+	}
+	input := ConsolidateInput{
+		Duplicate: duplicateURN, Canonical: canonicalURN, EventID: "consolidated", Parents: []string{duplicateURN + ":event:proposed"}, Reason: "duplicate",
+		CriterionMap:   map[string]string{duplicateCriterion: canonicalCriterion},
+		CurrencyInputs: StaleInputs{ConflictedRevisions: map[string][]string{workItem: {workRevision, workItem + ":revision:r2"}}},
+	}
+	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "relation is conflicted") {
+		t.Fatalf("conflicted relation refusal = %v", err)
+	}
+}
+
+func TestConsolidationRefusesTransactionOwnedCriterionLinks(t *testing.T) {
+	root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion := consolidationFixture(t)
+	slides := filepath.Join(root, "___features", "core.feature", "___slides")
+	if err := os.MkdirAll(slides, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	record := fmt.Sprintf(`{"current":"sha256:current","revisions":[{"snapshot":"sha256:current","items":[{"criterion_links":[{"id":"validator-link","criterion":%q,"story_revision":%q,"rationale":"Exact link"}]}]}]}`,
+		duplicateCriterion, duplicateURN+":revision:r1")
+	path := filepath.Join(slides, "25-t-aaaaaaaaaaaa-bbbbbbbbbbbb.json")
+	if err := os.WriteFile(path, []byte(record), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	input := ConsolidateInput{
+		Duplicate: duplicateURN, Canonical: canonicalURN, EventID: "consolidated", Parents: []string{duplicateURN + ":event:proposed"}, Reason: "duplicate",
+		CriterionMap: map[string]string{duplicateCriterion: canonicalCriterion},
+	}
+	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "partial graph retirement") || !strings.Contains(err.Error(), "validator-link") || !strings.Contains(err.Error(), filepath.Base(path)) {
+		t.Fatalf("transaction-owned link refusal = %v", err)
+	}
+}
+
+func consolidationFixture(t *testing.T) (root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion string) {
+	t.Helper()
+	root = newSaga(t)
+	if _, err := AddStory(root, "test", storyInput("duplicate", "r1", "proposed", []Criterion{{ID: "works", Statement: "The flow works"}})); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := AddStory(root, "test", storyInput("canonical", "r1", "proposed", []Criterion{{ID: "completes", Statement: "The flow completes"}})); err != nil {
+		t.Fatal(err)
+	}
+	duplicateURN = "urn:change-saga:test:story:duplicate"
+	canonicalURN = "urn:change-saga:test:story:canonical"
+	duplicateCriterion = duplicateURN + ":criterion:works"
+	canonicalCriterion = canonicalURN + ":criterion:completes"
+	return
 }

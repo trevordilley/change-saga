@@ -16,6 +16,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"unicode"
@@ -29,6 +30,11 @@ const (
 	maxRefs         = 32
 	maxArchiveFiles = 100_000
 	maxArchiveBytes = 512 << 20
+)
+
+var (
+	flatDeckIdentityName  = regexp.MustCompile(`^10-d-[0-9]{4}-[0-9a-f]{12}\.json$`)
+	flatSlideIdentityName = regexp.MustCompile(`^20-s-[0-9a-f]{12}-[0-9]{4}-[0-9a-f]{12}\.json$`)
 )
 
 type Options struct {
@@ -191,7 +197,9 @@ func immutableIdentities(root string) (map[string]identityRecord, error) {
 			return nil
 		}
 		kind := kinds[entry.Name()]
-		if kind == "" {
+		flatDeck := flatDeckIdentityName.MatchString(entry.Name())
+		flatSlide := flatSlideIdentityName.MatchString(entry.Name())
+		if kind == "" && !flatDeck && !flatSlide {
 			return nil
 		}
 		data, err := os.ReadFile(path)
@@ -202,13 +210,34 @@ func immutableIdentities(root string) (map[string]identityRecord, error) {
 			return fmt.Errorf("%s exceeds the record size limit", entry.Name())
 		}
 		var identity struct {
-			ID string `json:"id"`
+			ID   string `json:"id"`
+			Deck string `json:"deck"`
 		}
 		if err := json.Unmarshal(data, &identity); err != nil || identity.ID == "" {
 			return fmt.Errorf("read %s immutable identity", entry.Name())
 		}
 		relative, _ := filepath.Rel(root, path)
-		sum := sha256.Sum256(data)
+		identityBytes := data
+		switch {
+		case flatDeck:
+			kind = "deck"
+			owner, relErr := filepath.Rel(root, filepath.Dir(path))
+			if relErr != nil {
+				return relErr
+			}
+			identityBytes = []byte("deck-owner\x00" + filepath.ToSlash(owner))
+		case flatSlide:
+			kind = "slide"
+			if identity.Deck == "" {
+				return fmt.Errorf("read %s immutable slide ownership", entry.Name())
+			}
+			owner, relErr := filepath.Rel(root, filepath.Dir(path))
+			if relErr != nil {
+				return relErr
+			}
+			identityBytes = []byte("slide-owner\x00" + filepath.ToSlash(owner) + "\x00" + identity.Deck)
+		}
+		sum := sha256.Sum256(identityBytes)
 		key := kind + "\x00" + identity.ID
 		if existing, ok := result[key]; ok {
 			return fmt.Errorf("duplicate %s id %q at %s and %s", kind, identity.ID, existing.path, filepath.ToSlash(relative))
@@ -295,7 +324,7 @@ func analyze(snapshots []snapshot) Report {
 		}
 		if len(digests) > 1 {
 			parts := strings.Split(key, "\x00")
-			report.Collisions = append(report.Collisions, Collision{Kind: parts[0], ID: parts[1], Provenance: provenance, Paths: paths, Explanation: "the same kind and stable ID has different immutable identity bytes across refs"})
+			report.Collisions = append(report.Collisions, Collision{Kind: parts[0], ID: parts[1], Provenance: provenance, Paths: paths, Explanation: "the same kind and stable ID has different immutable identity or ownership across refs"})
 		}
 	}
 

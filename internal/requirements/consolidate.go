@@ -3,11 +3,13 @@ package requirements
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -23,6 +25,13 @@ type ConsolidateInput struct {
 	Reason       string
 	CriterionMap map[string]string
 	CreatedAt    time.Time
+	// CurrencyInputs supplies current pins owned outside requirements. A
+	// remapped relation with an external revision or content-digest pin is
+	// refused unless its current value is supplied and exactly matches.
+	CurrencyInputs StaleInputs
+	// LoadCurrencyInputs, when present, refreshes cross-domain heads at the
+	// validation point. Apply invokes it while holding the Saga writer lock.
+	LoadCurrencyInputs func() (StaleInputs, error)
 }
 
 type RelationRemap struct {
@@ -58,6 +67,12 @@ func PreviewConsolidation(root, sagaID string, input ConsolidateInput) (Consolid
 	if err != nil {
 		return ConsolidationPlan{}, err
 	}
+	if input.LoadCurrencyInputs != nil {
+		input.CurrencyInputs, err = input.LoadCurrencyInputs()
+		if err != nil {
+			return ConsolidationPlan{}, err
+		}
+	}
 	prepared, err := prepareConsolidation(&document, input)
 	if err != nil {
 		return ConsolidationPlan{}, err
@@ -72,6 +87,13 @@ func PreviewConsolidation(root, sagaID string, input ConsolidateInput) (Consolid
 func ConsolidateProposal(root, sagaID string, input ConsolidateInput) (ConsolidationPlan, error) {
 	var plan ConsolidationPlan
 	err := mutate(root, sagaID, func(document *Document) error {
+		if input.LoadCurrencyInputs != nil {
+			var err error
+			input.CurrencyInputs, err = input.LoadCurrencyInputs()
+			if err != nil {
+				return err
+			}
+		}
 		prepared, err := prepareConsolidation(document, input)
 		if err != nil {
 			return err
@@ -159,6 +181,13 @@ func prepareConsolidation(document *Document, input ConsolidateInput) (preparedC
 	if err != nil {
 		return preparedConsolidation{}, err
 	}
+	transactionLinks, err := transactionOwnedCriterionLinks(document, duplicateRef.ID)
+	if err != nil {
+		return preparedConsolidation{}, err
+	}
+	if len(transactionLinks) > 0 {
+		return preparedConsolidation{}, fmt.Errorf("consolidation refuses partial graph retirement: transaction-owned criterion links must be rewritten with apply-slide first: %s", strings.Join(transactionLinks, ", "))
+	}
 	event := LifecycleEvent{Schema: LifecycleEventSchemaURL, Version: Version, ID: input.EventID, Story: input.Duplicate, Parents: copyStrings(input.Parents), State: state, Reason: strings.TrimSpace(input.Reason) + "; canonical: " + input.Canonical, CreatedAt: mutationTime(input.CreatedAt)}
 	if err := validateEvent(event, document.SagaID, duplicate.Identity.ID); err != nil {
 		return preparedConsolidation{}, err
@@ -173,7 +202,6 @@ func prepareConsolidation(document *Document, input ConsolidateInput) (preparedC
 	if err := validateStoryGraphs(&candidateStory, document.SagaID, document.citationIDs(), document.personaIDs()); err != nil {
 		return preparedConsolidation{}, err
 	}
-	canonicalRevision := canonical.RevisionHeads[0]
 	now := event.CreatedAt
 	knownRelationIDs := map[string]bool{}
 	for _, relation := range document.Relations {
@@ -190,6 +218,9 @@ func prepareConsolidation(document *Document, input ConsolidateInput) (preparedC
 		if !fromChanged && !toChanged {
 			continue
 		}
+		if err := validateConsolidationRelationCurrency(document, relation, input.CurrencyInputs); err != nil {
+			return preparedConsolidation{}, fmt.Errorf("relation %q cannot be remapped: %w", relation.ID, err)
+		}
 		replacement := relation.Confirmed()
 		replacement.ID = relationReplacementID(relation.ID, canonicalRef.ID)
 		if knownRelationIDs[replacement.ID] {
@@ -197,11 +228,17 @@ func prepareConsolidation(document *Document, input ConsolidateInput) (preparedC
 		}
 		knownRelationIDs[replacement.ID] = true
 		replacement.From, replacement.To = from, to
-		if fromChanged && requirementEndpoint(from) {
-			replacement.FromRevision = canonicalRevision
+		if requirementEndpoint(from) {
+			replacement.FromRevision, err = currentRequirementRevision(document, from)
+			if err != nil {
+				return preparedConsolidation{}, fmt.Errorf("remap relation %q source: %w", relation.ID, err)
+			}
 		}
-		if toChanged && requirementEndpoint(to) {
-			replacement.ToRevision = canonicalRevision
+		if requirementEndpoint(to) {
+			replacement.ToRevision, err = currentRequirementRevision(document, to)
+			if err != nil {
+				return preparedConsolidation{}, fmt.Errorf("remap relation %q target: %w", relation.ID, err)
+			}
 		}
 		if replacement.Type == RelationConflictsWith && replacement.To < replacement.From {
 			replacement.From, replacement.To = replacement.To, replacement.From
@@ -248,6 +285,154 @@ func prepareConsolidation(document *Document, input ConsolidateInput) (preparedC
 	sort.Slice(remaps, func(i, j int) bool { return remaps[i].Existing < remaps[j].Existing })
 	plan := ConsolidationPlan{Duplicate: input.Duplicate, Canonical: input.Canonical, CriterionMap: criterionMap, LifecycleState: state, LifecycleEvent: eventURN, RelationRemaps: remaps, PreservesIntent: preservesAccepted}
 	return preparedConsolidation{plan: plan, event: event, duplicate: duplicate, replacements: replacements, superseded: superseded}, nil
+}
+
+func validateConsolidationRelationCurrency(document *Document, relation Relation, inputs StaleInputs) error {
+	confirmed := relation.Confirmed()
+	for _, pin := range []struct {
+		name, endpoint, revision, digest string
+	}{
+		{"from", confirmed.From, confirmed.FromRevision, confirmed.FromContentDigest},
+		{"to", confirmed.To, confirmed.ToRevision, confirmed.ToContentDigest},
+	} {
+		endpoint, err := parseEndpoint(pin.endpoint)
+		if err != nil {
+			return err
+		}
+		if pin.digest != "" {
+			if _, ok := inputs.CurrentContentDigests[pin.endpoint]; !ok {
+				return fmt.Errorf("%s content digest for %s has no supplied current value", pin.name, pin.endpoint)
+			}
+		}
+		if pin.revision != "" && !isRequirement(endpoint.Kind) {
+			_, current := inputs.CurrentRevisions[pin.endpoint]
+			_, conflicted := inputs.ConflictedRevisions[pin.endpoint]
+			if !current && !conflicted {
+				return fmt.Errorf("%s revision for %s has no supplied current head", pin.name, pin.endpoint)
+			}
+		}
+	}
+	currency := EvaluateRelation(*document, relation, inputs)
+	if currency.Status != CurrencyCurrent {
+		codes := make([]string, 0, len(currency.Reasons))
+		for _, reason := range currency.Reasons {
+			codes = append(codes, reason.Endpoint+":"+reason.Code)
+		}
+		return fmt.Errorf("relation is %s (%s)", currency.Status, strings.Join(codes, ", "))
+	}
+	return nil
+}
+
+func currentRequirementRevision(document *Document, value string) (string, error) {
+	ref, err := livingid.Parse(value)
+	if err != nil || (ref.Kind != livingid.KindStory && ref.Kind != livingid.KindCriterion) {
+		return "", fmt.Errorf("%q is not a story or criterion", value)
+	}
+	storyID := ref.ID
+	if ref.Kind == livingid.KindCriterion {
+		storyID = ref.ParentID
+	}
+	story := findStory(document, storyID)
+	if story == nil || len(story.RevisionHeads) != 1 || story.CurrentRevision == nil {
+		return "", fmt.Errorf("story %q has no single current revision", storyID)
+	}
+	return story.RevisionHeads[0], nil
+}
+
+const maxSlideTransactionBytes = 8 << 20
+
+type consolidationTransactionRecord struct {
+	Current   string                             `json:"current"`
+	Revisions []consolidationTransactionRevision `json:"revisions"`
+}
+
+type consolidationTransactionRevision struct {
+	Snapshot string                         `json:"snapshot"`
+	Items    []consolidationTransactionItem `json:"items"`
+}
+
+type consolidationTransactionItem struct {
+	CriterionLinks []consolidationTransactionLink `json:"criterion_links"`
+}
+
+type consolidationTransactionLink struct {
+	ID        string `json:"id"`
+	Criterion string `json:"criterion"`
+}
+
+// transactionOwnedCriterionLinks finds current complete-slide links that the
+// requirements relation batch cannot rewrite. Consolidation refuses them
+// explicitly instead of retiring a story while leaving a partial live graph.
+func transactionOwnedCriterionLinks(document *Document, duplicateStoryID string) ([]string, error) {
+	directories := []string{filepath.Join(document.Root, applayout.OnboardingDir)}
+	for _, feature := range document.Features {
+		directories = append(directories, filepath.Join(feature.Dir, applayout.SlidesDir))
+	}
+	var affected []string
+	for _, directory := range directories {
+		info, err := os.Lstat(directory)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return nil, err
+		}
+		if info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
+			return nil, fmt.Errorf("inspect transaction-owned criterion links: %s must be a real directory", relative(document.Root, directory))
+		}
+		entries, err := os.ReadDir(directory)
+		if err != nil {
+			return nil, err
+		}
+		for _, entry := range entries {
+			if !strings.HasPrefix(entry.Name(), "25-t-") || !strings.HasSuffix(entry.Name(), ".json") {
+				continue
+			}
+			path := filepath.Join(directory, entry.Name())
+			entryInfo, err := os.Lstat(path)
+			if err != nil || entryInfo.Mode()&os.ModeSymlink != 0 || !entryInfo.Mode().IsRegular() {
+				return nil, fmt.Errorf("inspect transaction-owned criterion links: %s must be a real regular file", relative(document.Root, path))
+			}
+			if entryInfo.Size() > maxSlideTransactionBytes {
+				return nil, fmt.Errorf("inspect transaction-owned criterion links: %s exceeds %d bytes", relative(document.Root, path), maxSlideTransactionBytes)
+			}
+			data, err := os.ReadFile(path)
+			if err != nil {
+				return nil, err
+			}
+			var record consolidationTransactionRecord
+			if err := json.Unmarshal(data, &record); err != nil {
+				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: %w", relative(document.Root, path), err)
+			}
+			var current *consolidationTransactionRevision
+			for index := range record.Revisions {
+				if record.Revisions[index].Snapshot == record.Current {
+					if current != nil {
+						return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: current snapshot appears more than once", relative(document.Root, path))
+					}
+					current = &record.Revisions[index]
+				}
+			}
+			if current == nil {
+				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: current snapshot does not name a revision", relative(document.Root, path))
+			}
+			for itemIndex, item := range current.Items {
+				for linkIndex, link := range item.CriterionLinks {
+					ref, parseErr := livingid.Parse(link.Criterion)
+					if parseErr != nil || ref.Kind != livingid.KindCriterion || ref.SagaID != document.SagaID || ref.ParentID != duplicateStoryID {
+						continue
+					}
+					linkID := link.ID
+					if linkID == "" {
+						linkID = fmt.Sprintf("index-%d", linkIndex)
+					}
+					affected = append(affected, fmt.Sprintf("%s#revisions/%s/items/%d/criterion_links/%s", relative(document.Root, path), current.Snapshot, itemIndex, linkID))
+				}
+			}
+		}
+	}
+	sort.Strings(affected)
+	return affected, nil
 }
 
 func validateCriterionMap(sagaID string, duplicate, canonical *Story, given map[string]string) (map[string]string, error) {

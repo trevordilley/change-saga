@@ -22,7 +22,9 @@ extracts the Saga from each commit into temporary storage; it does not use the
 working-tree copy. The report contains:
 
 - `stable_id_collisions`: the same record kind and stable ID has different
-  immutable identity bytes in the compared refs;
+  immutable identity bytes or, for Decks and Slides, different stable owners
+  in the compared refs; ordinary title, rank, asset, or other content edits do
+  not constitute a visual identity collision;
 - `competing_heads`: a story has different revision or lifecycle heads across
   refs; and
 - `overlapping_intent_candidates`: different story IDs reach a token Jaccard
@@ -67,23 +69,41 @@ change-saga story consolidate \
 ```
 
 The preview validates the complete lifecycle and relation set and writes
-nothing. Add `--apply` to commit that decision. Applying:
+nothing. Add `--apply` to reload and revalidate current Saga state, then commit
+the decision only if it is still valid. A preview is not a persisted snapshot
+or a promise that later state will pass. Applying:
 
 1. appends `rejected` for a proposed/deferred duplicate;
 2. appends `retired` for an accepted duplicate only when the canonical story
    is also accepted, preserving accepted intent;
 3. creates replacement relations whose exact non-requirement endpoints (for
    example, slide Item URNs) are unchanged and whose story/criterion endpoints
-   and revision pins name the canonical story; and
+   and revision pins name current canonical revisions; and
 4. marks only the replaced relations superseded, retaining their original
    endpoints and pins as history.
 
 Missing mappings, many-to-one mappings, conflicted heads, terminal canonical
 stories, replacement-ID collisions, invalid resulting relations, and any
 attempt to move accepted intent into a non-accepted canonical story are
-refused before writing. The lifecycle event and all relation replacements are
-prepared and committed as one locked file batch; ordinary I/O failure is
-rolled back before the command returns.
+refused before writing. Every affected standalone relation must already be
+current. External revision and content-digest pins are reloaded at validation
+time and must exactly match; consolidation does not turn a stale, conflicted,
+or unverifiable link into an apparently confirmed replacement.
+
+Complete-slide transaction records own their embedded Item-to-criterion links.
+If a current transaction still links to the duplicate story, consolidation
+names each affected record/link and refuses the whole decision. Rewrite those
+links with `apply-slide`, including every canonical replacement, then preview
+consolidation again. This prevents a lifecycle retirement from leaving a
+partially remapped graph.
+
+The lifecycle event and standalone relation replacements are prepared and
+published as one locked file batch. Each individual file replacement is
+atomic, but the multi-file batch is not reader-atomic or crash-atomic. On a
+publication failure the writer attempts best-effort rollback, joins publication
+and restoration errors, and names a retained recovery file containing the old
+bytes whenever restoration fails. Callers must treat that error as requiring
+recovery, not as an all-or-none guarantee.
 
 The Go APIs are `requirements.PreviewConsolidation` and
 `requirements.ConsolidateProposal`.
