@@ -60,6 +60,42 @@ reported as informational context and does not by itself block readiness;
 stale, invalid, retired, or conflicted endpoints and genuine intent/evidence
 gaps still do.
 
+## Personas, terms, and their explicit references
+
+Use `query personas --persona ID|URN` for a complete current persona definition
+and `query terms --term ID|URN` for the corresponding term definition and code
+health. Selection is by stable identity only; never substitute a display name.
+Retired records remain readable. If a query reports competing heads, preserve
+them and do not infer a current definition.
+
+Use `query persona-references` or `query term-references` to inspect direct
+explicit uses. Page to completion and read `data.completeness` as part of the
+answer: it names covered typed fields and canonical relations, unresolved
+conflicted owners, and the deliberately excluded prose, SVG text, historical,
+and transitive classes. Each result identifies the exact owner, selector, and
+provenance. Do not claim that excluded text was searched or that a lexical
+match is a semantic dependency.
+
+Unresolved owners have their own bounded `unresolved_page`, independent of the
+primary reference page and still present when no references resolve. Follow
+`unresolved_page.next_cursor` with `--conflict-cursor` until its `has_more` is
+false; `--conflict-limit` controls that page size and otherwise inherits
+`--limit` or the default. Do not treat a complete primary reference traversal
+as complete while unresolved conflict pages remain.
+
+`query terms` without `--limit` or `--cursor` preserves the legacy complete
+term collection. Supply `--limit` to opt into bounded enumeration and follow
+the returned cursor. Persona enumeration and both reference operations are
+always bounded. A cursor is operation-, filter-, and snapshot-specific; restart
+the traversal after `stale_snapshot` and never reuse a cursor with another
+operation.
+
+There is no guarded name-only rename command yet. Use the existing explicit
+persona or term revision operation only when the task authorizes a deliberate
+revision and supplies the required parents and revision identity. Never emulate
+a rename by editing files, changing a URN, rewriting prose/SVG, or repinning or
+approving dependencies.
+
 ## Operations
 
 <!-- query-operations:begin -->
@@ -89,6 +125,10 @@ gaps still do.
   `change-saga query verifications --saga PATH [--claim ID] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `context`: a compact, bounded feature-owned index with one-story expansion for exact intent, provenance, visual Items, code links, terms, neighbors, gaps, and conflicts.
   `change-saga query context --saga PATH --feature ID|URN [--expand STORY-ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
+- `personas`: current persona definitions and lifecycle heads, selected exactly by stable ID or canonical URN.
+  `change-saga query personas --saga PATH [--persona ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
+- `persona-references`: direct explicit incoming and outgoing persona references with provenance and declared coverage.
+  `change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
 - `requirements`: current requirement definitions and lifecycle heads without fabricating winners for conflicts.
   `change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `requirement-history`: append-only revision and lifecycle history in deterministic graph order.
@@ -116,5 +156,7 @@ gaps still do.
 - `history`: when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison.
   `change-saga query history --saga PATH --node URN`
 - `terms`: the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation.
-  `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--repo PATH] [--against REV [--head REV]]`
+  `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
+- `term-references`: direct explicit incoming and outgoing term references with provenance and declared coverage.
+  `change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
 <!-- query-operations:end -->

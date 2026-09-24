@@ -1207,6 +1207,11 @@ func Spec(args []string, out io.Writer) error {
 				"onboarding":      applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, feature, or story record instead of code evidence",
 			},
 			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
+			"query": map[string]any{
+				"schema":     querySchema,
+				"operations": querySpecOperations(),
+				"discovery":  queryUsage["schema"],
+			},
 			"reviews": map[string]any{
 				"storage":         saga.ReviewsDir + "/<id>" + saga.ReviewSuffix + "/{" + saga.ReviewManifestName + "," + saga.ReviewDeckDir + "/," + saga.ReviewApprovalsDir + "/<event>.json," + saga.ReviewCommentsDir + "/<event>.json}",
 				"deck_role":       saga.DeckRoleReview,
@@ -1243,6 +1248,15 @@ func Spec(args []string, out io.Writer) error {
 	}
 	fmt.Fprint(out, specText)
 	return nil
+}
+
+func querySpecOperations() []querySchemaDescription {
+	operations := queryDataOperations()
+	result := make([]querySchemaDescription, 0, len(operations))
+	for _, operation := range operations {
+		result = append(result, querySchemaFor(operation))
+	}
+	return result
 }
 
 // InstallSkill prints an agent-agnostic bootstrap prompt. The active coding

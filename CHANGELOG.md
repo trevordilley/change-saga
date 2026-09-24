@@ -100,6 +100,10 @@ tool, and what they have to do about it.
 
 ### Added
 
+- `query personas`, `query persona-references`, and `query term-references`
+  provide exact current-record reads and bounded, provenance-bearing direct
+  reference inspection. `query terms --limit` adds bounded enumeration while
+  the unbounded legacy response remains compatible.
 - **`relation repin`** records that a relation still holds after what it points
   at genuinely changed. Saying so used to cost `relation supersede` plus
   `relation add` under a new id, which retired a true relation and renamed it.
