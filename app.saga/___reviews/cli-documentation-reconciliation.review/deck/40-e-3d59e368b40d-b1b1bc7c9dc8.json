@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cd01b0decc45967bdb84080fefa7ffc4f3c5df22",
+      "path": "internal/grammar/commands.go",
+      "start": 591,
+      "end": 598,
+      "digest": "sha256:b348d92827dd417632cd89bef341ec1993e93798cc36157c50fbaab80a1bbfc4",
+      "note": "The registry places read-only reconciliation beside explicit coverage checks. Full entry context disambiguates repeated syntax in the changed boundary."
+    }
+  ]
+}
