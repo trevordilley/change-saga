@@ -128,15 +128,21 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 	page := getPage(t, handler, "/reviews/pr-7")
 	body := page.Body.String()
 	for _, want := range []string{
-		`data-review-slide="queue"`, `data-decision-state="approved" data-currency="current"`, `data-review-decision-form="queue"`,
+		`data-review-deck-shell`, `data-review-deck`, `data-deck-slide`, `data-slide-target="urn:change-saga:app:review:pr-7:slide:queue"`,
+		`data-decision-state="approved" data-currency="current"`, `data-review-decision-form="queue"`,
 		`data-review-diff=`, `review-line add`, `postgres`, `review-line del`, `sqs`,
 		`data-review-record="urn:change-saga:app:feature:` + serverFeature + `"`, `Index on status?`, `/reviews/pr-7/visual/queue`,
-		`https://github.com/acme/app/pull/7`, `data-review-workspace`, `data-review-slide-link="queue"`,
-		`data-review-previous`, `data-review-next`, `data-review-reply-form=`, `<summary>Review this slide</summary>`, `<summary>Add comment</summary>`,
-		`<details class="review-slide-details"><summary><span>Slide details</span>`,
+		`https://github.com/acme/app/pull/7`, `data-slide-thumbnail`, `data-slide-previous`, `data-slide-next`,
+		`data-open-diffs="review-item-`, `data-open-stories="review-record-`, `data-review-reply-form=`,
+		`class="review-slide-menu"`, `<summary>Add comment</summary>`,
 	} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("review page is missing %q:\n%s", want, body)
+		}
+	}
+	for _, discarded := range []string{`<details class="review-slide-details"`, `data-review-workspace`, `>Code Diff</button>`, `>Coverage</button>`} {
+		if strings.Contains(body, discarded) {
+			t.Fatalf("review page still contains discarded review shell %q", discarded)
 		}
 	}
 	if visual := getPage(t, handler, "/reviews/pr-7/visual/queue"); !strings.Contains(visual.Body.String(), `<rect id="node"`) {
@@ -225,7 +231,7 @@ func TestFrozenReviewIsViewableButTakesNoDecisions(t *testing.T) {
 	}
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	body := getPage(t, handler, "/reviews/pr-7").Body.String()
-	if !strings.Contains(body, "This review is history") || strings.Contains(body, "data-review-decision-form") || !strings.Contains(body, "review-line add") {
+	if !strings.Contains(body, "Frozen at") || strings.Contains(body, "data-review-decision-form") || !strings.Contains(body, "review-line add") {
 		t.Fatalf("frozen review page:\n%s", body)
 	}
 	if refused := postReview(t, handler, "/reviews/pr-7/decision", url.Values{"token": {"review-token"}, "slide": {"queue"}, "state": {"approved"}}); refused.Code != http.StatusConflict {

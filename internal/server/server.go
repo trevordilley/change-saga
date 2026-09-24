@@ -128,6 +128,10 @@ type pageData struct {
 	PageFeature string
 	// Reviews is a review surface rendered inside the app shell.
 	Reviews template.HTML
+	// ReviewDeck makes one pull-request review use the same full-pane visual
+	// treatment as an implementation deck. The deck is the page; review actions
+	// are overlays and linked evidence opens from its exact Items.
+	ReviewDeck bool
 	// ReviewSide says the page is on the Review side of the header rather
 	// than the Documentation side. The two sides are what the header carries:
 	// Documentation is the overview and the feature set, Review the current

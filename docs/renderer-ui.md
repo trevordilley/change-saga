@@ -52,17 +52,19 @@ current deck, slide title, and position stay visible so reviewers can orient and
 resume. Fullscreen presentation hides application and review chrome without
 changing the active slide.
 
-A pull-request review deck is a separate review surface. It shows one complete
-slide at a time with a rail of exact decision currency and open-thread state;
-Previous/Next and unmodified arrow or Page keys follow authored order. Its URL
+A pull-request review uses this same native presentation as its whole default
+surface: thumbnail rail plus one maximally fitted 16:9 slide. It is not a
+document page containing a slide, and it does not require a presentation-mode
+action before the slide fills the available pane. The rail adds exact decision
+currency and open-thread state without displacing the visual.
+
+Previous/Next and unmodified arrow or Page keys follow authored order. The URL
 hash owns the active slide or Item, including after a mutation redirect. With no
 hash it starts at the authored first slide: a recorded decision is not treated
-as completion or used to invent a resume verdict.
-
-The authored slide is the primary review surface. Item evidence, code diffs,
-and discussion are secondary details under the active slide; an exact Item or
-thread permalink opens those details automatically. The separate Code Diff and
-Coverage tabs support the deck and must not displace it as the default view.
+as completion or used to invent a resume verdict. Exact slide Items project
+interactive regions over the visual; their affordances open linked diffs and
+affected living-Saga records in the existing side drawer. Code and coverage do
+not become competing top-level views on an individual review.
 
 V2/v3 remain legacy reports with their documentation tree and collapsible
 chapters. The renderer must never reinterpret their fragments as slides or
@@ -114,14 +116,15 @@ annotations, and evidence links without becoming a second approval checklist.
 Deck and Saga status are derived rollups. V2/v3 retain section/fragment controls
 and the chapter review directory in their legacy report reader.
 
-In a pull-request review, new comment, reply, and decision composers are
-explicit disclosures rather than permanently open forms. Replies use the
+In a pull-request review, slide decisions and slide discussion live in a quiet
+overlay; Item discussion lives with that Item's evidence drawer. New comment,
+reply, and decision composers are not permanently open. Replies use the
 existing append-only thread target; revealing or navigating to a slide never
 records a decision. Escape closes an open composer without submitting it and
-restores its summary control. Current pull-request review slides do not yet
-expose spatial annotation tools, so rectangle, freehand, highlight, and
-sticky-note behavior below applies only to renderer surfaces that actually
-provide those anchors.
+restores its summary control. Current pull-request review slides expose
+authored Item hit regions, but do not implement user-drawn spatial annotations;
+rectangle, freehand, highlight, and sticky-note behavior below applies only to
+renderer surfaces that actually provide those anchors.
 
 In the legacy chapter directory, each row mirrors the decision control on its target's own bar and projects
 append-only approval events into exactly `Unreviewed`, `Approved`, or `Changes requested`.

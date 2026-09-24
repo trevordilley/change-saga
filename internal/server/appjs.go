@@ -144,71 +144,6 @@ const appJavaScript = `(() => {
     activateDeckSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)));
   }
 
-  function reviewDeckSlides() { return qa('[data-review-workspace] [data-review-slide]'); }
-
-  function reviewDeckActive() {
-    const workspace = q('[data-review-workspace]');
-    const view = workspace?.closest('[data-view]');
-    return Boolean(workspace && (!view || view.classList.contains('active')));
-  }
-
-  function activateReviewSlide(index, options = {}) {
-    const slides = reviewDeckSlides();
-    if (!slides.length) return;
-    const bounded = Math.max(0, Math.min(slides.length - 1, index));
-    slides.forEach((slide, current) => {
-      const active = current === bounded;
-      slide.hidden = !active;
-      slide.classList.toggle('active', active);
-      slide.setAttribute('aria-hidden', String(!active));
-    });
-    const active = slides[bounded];
-    const workspace = active.closest('[data-review-workspace]');
-    const links = qa('[data-review-slide-link]', workspace);
-    links.forEach(link => {
-      if (link.dataset.reviewSlideLink === active.dataset.reviewSlide) link.setAttribute('aria-current', 'step');
-      else link.removeAttribute('aria-current');
-    });
-    const activeLink = links.find(link => link.dataset.reviewSlideLink === active.dataset.reviewSlide);
-    activeLink?.scrollIntoView({block:'nearest', inline:'nearest'});
-    const position = q('[data-review-position]', workspace);
-    const state = q('.review-slide-nav-state', activeLink)?.innerText?.trim().replace(/\s*\n+\s*/g, ' · ');
-    if (position) position.textContent = 'Slide ' + (bounded + 1) + ' of ' + slides.length + (state ? ' · ' + state : '');
-    const previous = q('[data-review-previous]', workspace);
-    const next = q('[data-review-next]', workspace);
-    if (previous) previous.disabled = bounded === 0;
-    if (next) next.disabled = bounded === slides.length - 1;
-    if (options.updateHash && active.id) {
-      const url = new URL(location.href);
-      url.hash = active.id;
-      history.pushState({reviewSlide:active.dataset.reviewSlide}, '', url);
-    }
-    if (options.focus) q('h2', active)?.focus({preventScroll:true});
-    const live = q('[data-review-live]', workspace);
-    if (live && options.announce !== false) live.textContent = 'Showing ' + q('h2', active)?.textContent + ', slide ' + (bounded + 1) + ' of ' + slides.length;
-  }
-
-  function stepReviewSlide(delta, focus = true) {
-    const slides = reviewDeckSlides();
-    const current = slides.findIndex(slide => !slide.hidden);
-    if (current < 0) return;
-    activateReviewSlide(current + delta, {updateHash:true, focus});
-  }
-
-  function syncReviewSlideForHash() {
-    const slides = reviewDeckSlides();
-    if (!slides.length) return;
-    const id = decodeURIComponent(location.hash.replace(/^#/, ''));
-    const destination = id ? document.getElementById(id) : null;
-    const requested = destination?.closest?.('[data-review-slide]');
-    const details = destination?.closest?.('.review-slide-details');
-    if (details) details.open = true;
-    // A decision is not a team verdict or proof of completion. Without an
-    // exact URL, start at the authored beginning instead of guessing a resume
-    // target from approval state.
-    activateReviewSlide(requested ? slides.indexOf(requested) : 0, {announce:false});
-  }
-
   function syncSlidePresentation() {
     const body = document.body;
     if (!body?.classList) return;
@@ -1177,7 +1112,7 @@ const appJavaScript = `(() => {
     const shell = q('[data-shell]');
     if (shell) {
       shell.classList.toggle('code-mode', name === 'code');
-      shell.classList.toggle('slide-mode', name === 'slides');
+      shell.classList.toggle('slide-mode', name === 'slides' || (name === 'saga' && shell.hasAttribute('data-review-deck-shell')));
     }
     const slideView = q('[data-view="slides"]') ? 'slides' : 'saga';
     qa('[data-slide-present]').forEach(button => { button.hidden = name !== slideView; });
@@ -2035,19 +1970,6 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('click', event => {
-    const reviewSlideLink = event.target.closest?.('[data-review-slide-link]');
-    if (reviewSlideLink) {
-      event.preventDefault();
-      const slides = reviewDeckSlides();
-      const index = slides.findIndex(slide => slide.dataset.reviewSlide === reviewSlideLink.dataset.reviewSlideLink);
-      if (index >= 0) activateReviewSlide(index, {updateHash:true, focus:true});
-      return;
-    }
-    const reviewDirection = event.target.closest?.('[data-review-previous],[data-review-next]');
-    if (reviewDirection) {
-      stepReviewSlide(reviewDirection.matches('[data-review-next]') ? 1 : -1);
-      return;
-    }
     const slideThumbnail = event.target.closest?.('[data-slide-thumbnail]');
     if (slideThumbnail) {
       const slides = deckViewerSlides();
@@ -2122,7 +2044,6 @@ const appJavaScript = `(() => {
       // pushState deliberately does not dispatch hashchange or perform native
       // anchor scrolling. Run the same lazy reveal, view switch, highlight,
       // and scroll path used for initial and browser-history navigation.
-      if (id) syncReviewSlideForHash();
       if (id) void activateLandmark();
       else setView('saga', false);
       return;
@@ -2249,21 +2170,16 @@ const appJavaScript = `(() => {
       syncSlidePresentation();
       return;
     }
-    const reviewDisclosure = event.target.closest?.('details.review-compose[open],details.review-decision-editor[open],details.review-source[open]');
+    const reviewDisclosure = event.target.closest?.('details.review-slide-menu[open],details.review-compose[open],details.review-decision-editor[open],details.review-source[open]');
     if (event.key === 'Escape' && reviewDisclosure) {
       event.preventDefault();
       reviewDisclosure.open = false;
       q('summary', reviewDisclosure)?.focus();
       return;
     }
-    if (['ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown'].includes(event.key) && reviewDeckActive() && reviewDeckSlides().length && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
+    if (['ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown'].includes(event.key) && deckViewerActive() && deckViewerSlides().length && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
       event.preventDefault();
-      stepReviewSlide(event.key === 'ArrowRight' || event.key === 'PageDown' ? 1 : -1);
-      return;
-    }
-    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && deckViewerActive() && deckViewerSlides().length && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
-      event.preventDefault();
-      stepDeckSlide(event.key === 'ArrowRight' ? 1 : -1);
+      stepDeckSlide(event.key === 'ArrowRight' || event.key === 'PageDown' ? 1 : -1);
       return;
     }
     const workspaceTab = event.target.closest?.('[data-view-tab]');
@@ -2310,7 +2226,6 @@ const appJavaScript = `(() => {
   const initialView = requestedView === 'code' || requestedView === 'manifest' || requestedView === 'slides' || requestedView === 'change' ? requestedView : 'saga';
   setView(initialView, false);
   setManifestMode('code');
-  syncReviewSlideForHash();
   const anchorResolving = initialView === 'saga' || initialView === 'slides'
     ? activateLandmark()
     : hydrateReviewSurface(initialView);
@@ -2326,7 +2241,6 @@ const appJavaScript = `(() => {
   positionLandmarkHotspots();
   globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
   addEventListener('hashchange', () => {
-    syncReviewSlideForHash();
     syncDeckSlideForHash();
     const view = new URL(location.href).searchParams.get('view');
     if (view === 'code' || view === 'manifest') void hydrateReviewSurface(view);
@@ -2335,6 +2249,5 @@ const appJavaScript = `(() => {
   addEventListener('popstate', () => {
     const view = new URL(location.href).searchParams.get('view');
     setView(view === 'code' || view === 'manifest' || view === 'slides' || view === 'change' ? view : 'saga', false);
-    syncReviewSlideForHash();
   });
 })();`

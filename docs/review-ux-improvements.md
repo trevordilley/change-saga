@@ -51,37 +51,36 @@ annotation recommendations therefore are not presented as current capability.
    sequence of diagram, decision form, Items, diffs, and comment forms without
    a compact way to retain deck position.
 
-## Implemented first slice
+## Implemented slice
 
-The review deck is now a focused, URL-addressable slide workspace:
+The product direction is deliberately narrow: **the pull request is a slide
+deck**. The earlier native presentation contract introduced by `c20d367`
+(`make slides the primary review surface`) and the current Implementation deck
+are the interaction model. The individual review route now uses that same deck
+viewer directly:
 
-- only one review slide is active at a time;
-- the authored visual is the dominant canvas; Item evidence, diffs, and
-  discussion live in a secondary **Slide details** disclosure that opens
-  automatically for an exact Item permalink;
-- a slide rail shows authored order, thumbnail, exact current decisions,
-  decision currency, and nonzero open-thread counts;
-- Previous/Next and unmodified Left/Right or Page Up/Page Down keys move within
-  the deck when focus is not in an editable control;
-- selecting a slide writes its stable DOM target to the URL; direct slide and
-  Item hashes reveal the owning slide before anchor navigation, so reload and
-  mutation redirects return to the exact context;
-- no-hash entry starts at the authored first slide. The UI does not infer that
-  a decision means completion, because Change Saga records decisions rather
-  than a team verdict;
-- decision, new-comment, and reply composers use explicit disclosure controls,
-  remain keyboard/touch accessible, close with Escape while restoring summary
-  focus, and retain ordinary form submission as a no-framework fallback;
-- existing discussions expose an in-place Reply action backed by the existing
-  append-only `reply_to` behavior;
-- source range/currency remains available behind a labeled disclosure;
-- below 1050 px the rail becomes a horizontal navigator, and below 720 px the
-  visual and slide decision stack into one column with full-width actions.
+- the deck fills the entire pane beneath the application header by default;
+- a compact thumbnail rail and one maximally fitted 16:9 slide are the only
+  default review layout—there is no page heading, card, details section, or
+  intermediate “present” step;
+- Code Diff and Coverage are not competing tabs on an individual review;
+- Previous/Next and unmodified Left/Right or Page Up/Page Down keys use the
+  shared deck navigation, focus rules, slide position, and stable URL hashes;
+- direct slide and Item hashes reveal the owning slide, including after a
+  decision or comment redirect and reload;
+- each semantic Item is projected onto its authored region or measured SVG
+  element. Its on-slide affordances open the exact linked diff and affected
+  living-Saga record in the existing drawer;
+- slide decision and slide-comment controls remain available in one quiet
+  overlay; Item comments and replies live with the Item evidence they discuss;
+- the rail shows decision currency and open-thread state without turning those
+  signals into a progress score or inferred completion;
+- at narrow widths the rail becomes a horizontal filmstrip while the slide
+  keeps the rest of the viewport.
 
-The implementation deliberately leaves all slides and exact Item content in
-the server response. The browser only changes presentation and URL-owned
-selection. This preserves stable targets, permalink resolution, review report
-currency, and ordinary form posts without adding a client-side review model.
+All slides, exact Item targets, evidence, discussions, and ordinary forms stay
+in the server response. The browser reuses the implementation-deck viewer and
+landmark projection rather than maintaining a second client-side slideshow.
 
 ## Preserved contracts
 
@@ -91,7 +90,7 @@ currency, and ordinary form posts without adding a client-side review model.
   pins, and one-record-per-file append behavior are unchanged.
 - A slide becoming visible never records a viewed or approval event.
 - Changes requested and out-of-date decisions remain visible in the rail and
-  on the slide; unresolved feedback is never hidden from state summaries.
+  slide overlay; unresolved feedback is never hidden from state summaries.
 - Mutation redirects keep their exact slide or Item hash. No save is inferred
   from navigation, and form text is submitted only by the form's labeled
   action.
@@ -102,8 +101,6 @@ currency, and ordinary form posts without adding a client-side review model.
 
 - Spatial annotation tools require an explicit current review anchor/storage
   design; none is implied by this presentation work.
-- Diagram-Item hit regions are not yet projected over pull-request review
-  visuals. Items remain exact, readable targets below the slide.
 - A browser-local “last location” could improve cross-session resume, but must
   be keyed to the exact review head and must not be confused with review truth.
 - Unsaved composer text survives in-slide navigation because inactive slides
@@ -112,8 +109,8 @@ currency, and ordinary form posts without adding a client-side review model.
 - Thread resolution/reopening is supported by lower layers but still needs a
   dedicated browser interaction with an explicit state-change confirmation;
   this slice adds replies only.
-- The separate Code Diff workspace retains its existing behavior and deserves
-  its own focused visual audit rather than being redesigned incidentally here.
+- Review-level coverage remains available to reports and APIs, but it is not a
+  competing view inside the individual deck experience.
 
 ## Verification record
 
