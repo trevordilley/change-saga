@@ -5,7 +5,7 @@
   "rank": 0,
   "kind": "transition",
   "label": "Authorize mutation",
-  "description": "The browser bounds the form, validates the session token, rejects frozen reviews, and resolves the review's current head.",
+  "description": "The HTTP server bounds and parses the form, validates the process token, rejects frozen reviews, and resolves the current head. The enhanced browser also submits its shown-slide snapshot.",
   "selector": {
     "type": "element",
     "element_id": "authorize"

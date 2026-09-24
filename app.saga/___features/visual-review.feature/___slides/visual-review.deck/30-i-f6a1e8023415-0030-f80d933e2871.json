@@ -4,8 +4,8 @@
   "slide": "comment-round-trip",
   "rank": 30,
   "kind": "risk",
-  "label": "Current-head gate",
-  "description": "Invalid authority, a frozen review, or an unreadable review head stops the mutation before storage.",
+  "label": "Revalidate shown content",
+  "description": "Token and current-range checks precede storage. Under the writer lock, the fresh review must be open and match the shown source, slide, Item evidence, and checkout identity.",
   "selector": {
     "type": "element",
     "element_id": "gate-current-head"

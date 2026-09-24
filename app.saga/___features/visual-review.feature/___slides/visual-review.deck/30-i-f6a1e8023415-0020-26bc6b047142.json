@@ -4,8 +4,8 @@
   "slide": "comment-round-trip",
   "rank": 20,
   "kind": "transition",
-  "label": "Submit comment",
-  "description": "The browser posts a target, body, and per-process mutation token from a plain HTML form.",
+  "label": "Submit comment or reply",
+  "description": "JavaScript posts a comment, reply, or annotation with the process token and immutable shown-slide snapshot; ordinary HTML forms retain a redirect fallback.",
   "selector": {
     "type": "element",
     "element_id": "submit-comment"

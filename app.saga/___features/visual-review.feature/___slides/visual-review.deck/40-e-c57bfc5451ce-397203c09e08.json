@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviews_test.go",
+      "start": 229,
+      "end": 240,
+      "digest": "sha256:75818033309f0ca975db14b83f46ec299caaa82970ee54b58bf60f9f5cd53f6e",
+      "note": "The frozen review remains readable, exposes no decision form, and refuses a new decision without appending an approval."
+    }
+  ]
+}

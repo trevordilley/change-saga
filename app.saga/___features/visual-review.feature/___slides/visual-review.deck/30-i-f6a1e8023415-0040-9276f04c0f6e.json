@@ -5,7 +5,7 @@
   "rank": 40,
   "kind": "transition",
   "label": "Append comment event",
-  "description": "The store locks, reloads, validates, resolves the target, and exclusively writes one comment event.",
+  "description": "Under the Saga writer lock, reload, validate the annotation or comment, resolve a reply to its canonical target, check the shown snapshot, and create one attributed event.",
   "selector": {
     "type": "element",
     "element_id": "append-record"

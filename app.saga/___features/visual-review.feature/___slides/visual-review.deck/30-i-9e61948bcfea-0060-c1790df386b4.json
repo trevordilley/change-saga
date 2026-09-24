@@ -4,8 +4,8 @@
   "slide": "mutation-guardrails",
   "rank": 60,
   "kind": "statement",
-  "label": "Redirect after success",
-  "description": "Only a successful append redirects to the canonical review target; refused requests leave no action record.",
+  "label": "Confirmed or uncertain outcome",
+  "description": "A saved receipt survives feedback projection failure. Refusals retain editable drafts. Lost receipts block writes and offer read-only feedback checks; inspect and reload before another submission.",
   "selector": {
     "type": "element",
     "element_id": "success-outcome"
