@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/appjs.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:48f12fa5d969fa534b11e22e1b88de8e512ca3f1b25bf6b6e15b8271f920b81d",
+      "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/appjs.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:b3c1c631466f306e659b2d154a9fd8f0e3adb6a2d32816713e7bd2c15f4737b7",
+      "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/appjs.go",
+      "start": 1185,
+      "end": 1186,
+      "digest": "sha256:0c90b23c8ba9d5021c82f263cd00c1cb3697c33a5c5b6a1e256db530dfd3634a",
+      "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/appjs.go",
+      "start": 1241,
+      "end": 1277,
+      "digest": "sha256:55943ce326ca10ca519db6dc59d2fc1d2958f04496592a0afa55d3df8c2739a4",
+      "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/appjs.go",
+      "start": 1945,
+      "end": 1945,
+      "digest": "sha256:dba3db0ea8bef3ba939365b64f6569e264d59f1d0b5d6a0fdc23aba5aa611805",
+      "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/appjs.go",
+      "start": 2130,
+      "end": 2132,
+      "digest": "sha256:bd190b1ca532c50cb8fb5c68da3f5eb00ca7a1d8c968c9ccd049decdd8a39015",
+      "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/appjs.go",
+      "start": 2222,
+      "end": 2222,
+      "digest": "sha256:adc4e83b76bd74ea6594ea349c8873fb4efe55d9c2719928c0e109d2410d9612",
+      "note": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning."
+    }
+  ]
+}

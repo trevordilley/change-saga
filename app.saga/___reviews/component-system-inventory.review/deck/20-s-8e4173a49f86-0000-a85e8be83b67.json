@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "technical-inventory-identity",
+  "deck": "component-system-inventory",
+  "title": "Shared identity; scoped explanation",
+  "rank": 0,
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8e4173a49f86-0000-a85e8be83b67.svg",
+  "takeaway": "One canonical definition can serve many slides; each Item still owns only the exact code it explains.",
+  "reading_order": [
+    "component",
+    "system",
+    "pin",
+    "scope"
+  ]
+}

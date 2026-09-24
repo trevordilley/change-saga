@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/cli/cli.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:c7871251cbb08a5539267663cbbee5234cb26f686c874197ad01985d3bf1bd78",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/cli/cli.go",
+      "start": 1209,
+      "end": 1209,
+      "digest": "sha256:4dd89bfb3bb8f0856dc0ca44bdbd522cefb420b1d8b8cbc57bb7aebaa51494e4",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    }
+  ]
+}

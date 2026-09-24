@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pin",
+  "slide": "technical-inventory-identity",
+  "rank": 20,
+  "kind": "node",
+  "label": "Implementation Item",
+  "description": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields.",
+  "selector": {
+    "type": "element",
+    "element_id": "pin"
+  }
+}

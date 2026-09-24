@@ -45,6 +45,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Review(ctx, args[1:], stdout)
 	case "overview":
 		err = cli.Overview(ctx, args[1:], stdout)
+	case "component", "system":
+		err = cli.Technical(ctx, args[0], args[1:], stdout)
 	case "term":
 		err = cli.Term(ctx, args[1:], stdout)
 	case "persona":

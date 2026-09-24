@@ -155,6 +155,8 @@ approving dependencies.
   `change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]`
 - `history`: when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison.
   `change-saga query history --saga PATH --node URN`
+- `inventory`: Component/System definitions, pinned graph links, exact code health and optional selected-record history.
+  `change-saga query inventory --saga PATH [--kind component|system] [--target URN [--history]] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]`
 - `terms`: the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation.
   `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `term-references`: direct explicit incoming and outgoing term references with provenance and declared coverage.

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:e89190cd1b630f65ebb5ec6ee09e27d6c0621a26c9d7bc6f17f0c777e568c2b1",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    }
+  ]
+}

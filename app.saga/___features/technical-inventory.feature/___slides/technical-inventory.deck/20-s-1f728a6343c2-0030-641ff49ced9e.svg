@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#245d8c"/></marker></defs>
+<text x="60" y="55" font-family="Arial,sans-serif" font-size="18" fill="#486173">TECHNICAL INVENTORY · IMPLEMENTATION</text>
+<text x="60" y="111" font-family="Arial,sans-serif" font-size="38" fill="#142638">Open the explanation; return to the slide</text>
+<text x="60" y="157" font-family="Arial,sans-serif" font-size="21" fill="#486173">The existing drawer opens saved definitions and code while preserving the feature slide context.</text>
+<g id="control"><rect x="60" y="235" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="78" y="271" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Contextual node</text>
+<text x="78" y="308" font-family="Arial,sans-serif" font-size="20" fill="#142638">Book control / node activation</text>
+<text x="78" y="341" font-family="Arial,sans-serif" font-size="18" fill="#486173">Same implementation deck</text>
+<path d="M390 300H850" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<g id="fetch"><rect x="850" y="235" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="868" y="271" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Saved explanation</text>
+<text x="868" y="308" font-family="Arial,sans-serif" font-size="20" fill="#142638">Lazy pin-specific request</text>
+<text x="868" y="341" font-family="Arial,sans-serif" font-size="18" fill="#486173">History and Components</text>
+<path d="M1015 365V455" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<g id="code"><rect x="850" y="455" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="868" y="491" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Exact code</text>
+<text x="868" y="528" font-family="Arial,sans-serif" font-size="20" fill="#142638">Pinned location + notes</text>
+<text x="868" y="561" font-family="Arial,sans-serif" font-size="18" fill="#486173">Interaction code loads on demand</text>
+<path d="M850 520H390" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<g id="return"><rect x="60" y="455" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="78" y="491" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Back / Escape</text>
+<text x="78" y="528" font-family="Arial,sans-serif" font-size="20" fill="#142638">Nested trail; original focus</text>
+<text x="78" y="561" font-family="Arial,sans-serif" font-size="18" fill="#486173">Slide position is preserved</text>
+<path d="M225 455V365" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<text x="445" y="406" font-family="Arial,sans-serif" font-size="21" fill="#486173">open → inspect → return</text>
+<text x="60" y="683" font-family="Arial,sans-serif" font-size="20" fill="#486173">Saved definitions never silently repin slides or approve reviews.</text>
+</svg>

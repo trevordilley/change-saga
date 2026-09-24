@@ -378,6 +378,7 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
 	mux.HandleFunc("GET /app.js", application.javascript)
 	mux.HandleFunc("GET /theme.js", application.themeScript)
+	mux.HandleFunc("GET /api/documentation", application.documentationPage)
 	mux.HandleFunc("GET /api/code", application.codePage)
 	mux.HandleFunc("GET /api/coverage", application.coveragePage)
 	mux.HandleFunc("GET /api/totals", application.coverageTotalsPage)
@@ -824,7 +825,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
 	funcs["comparing"] = func() bool { return comparing }
-	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates)
+	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates)
 }
 
 // templateFuncs is shared by the server and its rendering tests so a new

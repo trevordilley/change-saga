@@ -507,6 +507,9 @@ func (s *session) ReadFragment(ctx context.Context, query FragmentQuery) (Fragme
 			Body: finished.Body, Placement: finished.Placement, Leader: finished.Leader,
 		}
 		if entry.fragment.SlideMeta != nil {
+			if landmark.landmark.ItemMeta != nil {
+				row.Documentation = landmark.landmark.ItemMeta.Documentation
+			}
 			row.Evidence = append([]saga.CodeFile{}, landmark.landmark.Code...)
 			row.CriterionLinks = append([]saga.CriterionLink{}, landmark.landmark.CriterionLinks...)
 		}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "records",
+  "slide": "technical-inventory-verification",
+  "rank": 10,
+  "kind": "node",
+  "label": "History / evidence checks",
+  "description": "Model and CLI regressions cover immutable history, duplicate/missing targets, exact evidence, stale references and snapshot pagination.",
+  "selector": {
+    "type": "element",
+    "element_id": "records"
+  }
+}

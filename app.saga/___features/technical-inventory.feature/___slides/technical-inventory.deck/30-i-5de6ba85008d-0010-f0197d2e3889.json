@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "append",
+  "slide": "technical-inventory-history",
+  "rank": 10,
+  "kind": "node",
+  "label": "Append under lock",
+  "description": "Publication creates one complete record atomically or appends a revision; a conflicting duplicate identity is refused.",
+  "selector": {
+    "type": "element",
+    "element_id": "append"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/requirements/inventory_test.go",
+      "start": 1,
+      "end": 111,
+      "digest": "sha256:4e86272ddfba28025d3d12117b8d12576089d0f1e3dc1e41e4eee5686a7fe450",
+      "note": "Model and CLI regressions cover immutable history, duplicate/missing targets, exact evidence, stale references and snapshot pagination."
+    }
+  ]
+}

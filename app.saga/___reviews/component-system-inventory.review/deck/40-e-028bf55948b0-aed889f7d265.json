@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews.go",
+      "start": 738,
+      "end": 738,
+      "digest": "sha256:4ed318bced84522185c39414afcf9ab92c100e48d0083977e2cfbf82631451d9",
+      "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews.go",
+      "start": 749,
+      "end": 749,
+      "digest": "sha256:34f28037148f8da098adf6dbe5ec0e9ee71f55f4c42004793a74e85a09665a3c",
+      "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
+    }
+  ]
+}

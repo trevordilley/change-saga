@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/requirements/inventory.go",
+      "start": 200,
+      "end": 249,
+      "digest": "sha256:a5692bdff8e806492a7059c320fab0fca3109daf955d6f2a52cbce9cc0084edb",
+      "note": "A System pins Component revisions and explains directed interactions with exact evidence for each flow."
+    }
+  ]
+}

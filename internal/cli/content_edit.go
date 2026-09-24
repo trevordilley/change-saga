@@ -10,6 +10,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 
@@ -605,6 +606,8 @@ func ReviseItem(_ context.Context, args []string, out io.Writer) error {
 	body := flags.String("body", "", "callout body")
 	placement := flags.String("placement", "", "top, right, bottom, left, or overlay")
 	leader := flags.String("leader", "", "none, line, or arrow")
+	documentation := flags.String("documentation", "", "Component/System URN; empty clears the link with empty revision")
+	documentationRevision := flags.String("documentation-revision", "", "exact canonical definition revision URN")
 	record := flags.String("record", "", "the record the item points at")
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative item order")
@@ -644,6 +647,21 @@ func ReviseItem(_ context.Context, args []string, out io.Writer) error {
 					stringField(flags, "leader", leader, &manifest.Leader),
 					stringField(flags, "record", record, &manifest.Record),
 					intField(flags, "rank", &rank, &manifest.Rank),
+				}
+				if flagWasSet(flags, "documentation") || flagWasSet(flags, "documentation-revision") {
+					if !flagWasSet(flags, "documentation") || !flagWasSet(flags, "documentation-revision") {
+						return fmt.Errorf("provide both --documentation and --documentation-revision")
+					}
+					var pin *saga.DocumentationLink
+					if *documentation != "" || *documentationRevision != "" {
+						pin = &saga.DocumentationLink{Target: *documentation, Revision: *documentationRevision}
+						if !reflect.DeepEqual(pin, manifest.Documentation) {
+							if err := requireDocumentation(document.Root, document.Manifest.ID, pin); err != nil {
+								return err
+							}
+						}
+					}
+					changes = append(changes, fieldChange{name: "documentation", set: true, changed: !reflect.DeepEqual(pin, manifest.Documentation), apply: func() { manifest.Documentation = pin }})
 				}
 				if *elementID != "" || *region != "" {
 					selector := saga.LandmarkSelector{Type: "element", ElementID: *elementID}

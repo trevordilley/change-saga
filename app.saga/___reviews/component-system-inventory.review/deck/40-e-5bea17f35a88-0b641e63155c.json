@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/cli/slides.go",
+      "start": 462,
+      "end": 462,
+      "digest": "sha256:236035b90c2e4eae9bba37d3d084a9451b650c25c4c2a7bdf090eff6e7d1b260",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "heads",
+  "slide": "technical-inventory-history",
+  "rank": 20,
+  "kind": "node",
+  "label": "Resolve current heads",
+  "description": "Graph resolution preserves all competing heads; link status distinguishes current, stale, retired, conflicted and missing.",
+  "selector": {
+    "type": "element",
+    "element_id": "heads"
+  }
+}

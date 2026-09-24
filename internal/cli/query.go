@@ -219,6 +219,7 @@ var queryOperations = []string{
 	"audit",
 	"layers",
 	"history",
+	"inventory",
 	"terms",
 	"term-references",
 }
@@ -228,6 +229,7 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
+	"inventory":           "Component/System definitions, pinned graph links, exact code health and optional selected-record history",
 	"schema":              "the response paths and pagination contract for a query operation; no saga is required",
 	"overview":            "saga identity, source comparison, coverage summary, and the top of the hierarchy",
 	"children":            "one level of children under a target; a fragment's children are its landmarks",
@@ -261,6 +263,7 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
+	"inventory":           "change-saga query inventory --saga PATH [--kind component|system] [--target URN [--history]] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
 	"":                    "change-saga query <operation> --saga PATH [--repo PATH] [--against REV [--head REV]] [operation flags]",
 	"schema":              "change-saga query schema <operation>",
 	"overview":            "change-saga query overview --saga PATH [--repo PATH] [--against REV [--head REV]]",
@@ -323,6 +326,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 			return writeQuerySuccess(out, "", queryHelpFor(operation), nil)
 		}
 		return queryHistory(ctx, args[1:], out)
+	}
+	if operation == "inventory" {
+		return queryInventory(ctx, args[1:], out)
 	}
 	if operation == "terms" {
 		if len(args) > 1 && isHelpArg(args[1]) {
@@ -482,7 +488,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"children":            {"data.children"},
 		"fragment":            {"data.target", "data.content.data", "data.content.next_offset", "data.assets", "data.landmarks"},
 		"fragment-diffs":      {"data.selectors", "data.atoms", "data.stale"},
-		"slide":               {"data.target", "data.intent", "data.layout", "data.section", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.reading_order", "data.authoring_snapshot", "data.authoring_heads", "data.authoring_conflict"},
+		"slide":               {"data.target", "data.intent", "data.layout", "data.section", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.items[].documentation", "data.reading_order", "data.authoring_snapshot", "data.authoring_heads", "data.authoring_conflict"},
 		"slide-diffs":         {"data.selectors", "data.atoms", "data.stale"},
 		"diff-owners":         {"data.atoms", "data.atoms[].terms"},
 		"gaps":                {"data.gaps"},
@@ -504,6 +510,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"readiness":           {"data.summary", "data.requirements"},
 		"audit":               {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":             {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
+		"inventory":           {"data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history"},
 		"terms":               {"data.head_oid", "data.ref", "data.terms"},
 		"term-references":     {"data.subject", "data.references", "data.counts", "data.completeness"},
 		"layers":              {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
@@ -530,6 +537,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"work-conflicts":      "data.conflicts",
 		"traceability":        "data.criteria",
 		"readiness":           "data.requirements",
+		"inventory":           "data.records",
 		"terms":               "data.terms",
 		"term-references":     "data.references",
 	}

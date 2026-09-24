@@ -1,17 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Reviewer runtime media and evidence paths</title>
-  <desc id="desc">The media decision selects iframe or image rendering. Both rendering branches converge on one semantic Item overlay, which opens linked code on demand.</desc>
+  <desc id="desc">The media decision selects iframe or image rendering. Both rendering branches converge on one semantic Item overlay, which opens exact code or saved Component/System explanations on demand.</desc>
   <defs><marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#213650"/></marker></defs>
   <rect width="1280" height="720" fill="#f4f8f7"/>
   <text x="62" y="62" font-family="system-ui" font-size="32" font-weight="760" fill="#16243a">Two media paths converge on one semantic overlay</text>
-  <text x="62" y="97" font-family="system-ui" font-size="18" fill="#526276">Rendering differs by media type; Item focus and linked-code behavior do not.</text>
+  <text x="62" y="97" font-family="system-ui" font-size="18" fill="#526276">Rendering differs by media; Item focus opens exact code or its saved technical definition.</text>
 
   <g id="projector">
     <path d="M60 205H290V505H60Z" fill="#e8f0ff" stroke="#3769b0" stroke-width="4"/>
     <text x="95" y="252" font-family="system-ui" font-size="21" font-weight="760" fill="#294f84">Projected slide</text>
     <text x="94" y="306" font-family="system-ui" font-size="15" fill="#405976">Fragment view</text>
     <text x="94" y="338" font-family="system-ui" font-size="15" fill="#405976">Item landmarks</text>
-    <text x="94" y="370" font-family="system-ui" font-size="15" fill="#405976">HasCode signal</text>
+    <text x="94" y="370" font-family="system-ui" font-size="15" fill="#405976">Evidence + saved pin</text>
     <path d="M94 404H256" stroke="#9ab5df" stroke-width="2"/>
     <text x="94" y="442" font-family="ui-monospace,monospace" font-size="13" fill="#294f84">/f/{slide}/{asset}</text>
   </g>
@@ -47,7 +47,7 @@
   <g id="code-drawer">
     <path d="M1135 428V510" stroke="#213650" stroke-width="4" marker-end="url(#arr)"/>
     <rect x="980" y="510" width="265" height="96" rx="19" fill="#16243a"/>
-    <text x="1010" y="547" font-family="system-ui" font-size="18" font-weight="760" fill="white">Linked code drawer</text>
-    <text x="1010" y="576" font-family="system-ui" font-size="13" fill="#cfdbea">lazy target-code resolution</text>
+    <text x="1010" y="547" font-family="system-ui" font-size="18" font-weight="760" fill="white">Code or definition</text>
+    <text x="1010" y="576" font-family="system-ui" font-size="13" fill="#cfdbea">lazy fetch · saved pin</text>
   </g>
 </svg>

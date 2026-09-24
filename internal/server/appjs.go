@@ -49,11 +49,12 @@ const appJavaScript = `(() => {
     if (!visual) return;
     const ownsCode = landmarkOwnsDiffs(target);
     visual.dataset.landmarkHasDiffs = String(ownsCode);
+    visual.dataset.landmarkHasDocumentation = String(Boolean(q('[data-landmark-affordance-template]', target)?.content.querySelector('[data-documentation-target]')));
     visual.dataset.landmarkHasStories = String(Boolean(q('[data-landmark-affordance-template]', target)?.content.querySelector('[data-open-stories]')));
   }
 
   function activateLandmarkCode(visual) {
-    const control = q('[data-open-diffs],[data-target-code-href]', visual);
+    const control = q('[data-documentation-target]', visual) || q('[data-open-diffs],[data-target-code-href]', visual);
     if (!control) return false;
     control.click();
     return true;
@@ -1181,8 +1182,8 @@ const appJavaScript = `(() => {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     drawer.dataset.drawerMode = mode;
-    const labels = {fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
-    const icons = {fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
+    const labels = {documentation:'Component and system explanation', fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
+    const icons = {documentation:'#i-book', fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
     const label = labels[mode] || labels.code;
     drawer.setAttribute('aria-label', label);
     const heading = q('.drawer-head strong', drawer);
@@ -1235,6 +1236,43 @@ const appJavaScript = `(() => {
     configureDrawer('code', attached?.dataset.attachedTitle ? 'Linked code · ' + attached.dataset.attachedTitle : 'Linked code');
     highlightCode(body);
     showDrawer(returnOpener);
+  }
+
+  let documentationRequest = 0;
+  let documentationTrail = [];
+  async function openDocumentation(button, back = false) {
+    const pin = {target:button.dataset.documentationTarget, revision:button.dataset.documentationRevision};
+    const alreadyOpen = q('.diff-drawer.open')?.dataset.drawerMode === 'documentation';
+    const opener = alreadyOpen ? drawerOpener : button;
+    if (!alreadyOpen) documentationTrail = [];
+    if (!back) documentationTrail.push(pin);
+    const request = ++documentationRequest;
+    restoreDrawerContent();
+    configureDrawer('documentation', 'Component and system explanation');
+    const body = q('.drawer-body');
+    body.textContent = 'Loading explanation…';
+    showDrawer(opener);
+    const url = new URL('/api/documentation', location.origin);
+    url.searchParams.set('target', pin.target); url.searchParams.set('revision', pin.revision);
+    try {
+      const response = await fetch(url, {credentials:'same-origin'});
+      const html = await response.text();
+      if (request !== documentationRequest || q('.diff-drawer.open')?.dataset.drawerMode !== 'documentation') return;
+      if (!response.ok) throw new Error(html.trim());
+      body.innerHTML = html;
+      if (documentationTrail.length > 1) {
+        const previous = document.createElement('button');
+        previous.type = 'button'; previous.textContent = 'Back to previous explanation';
+        previous.dataset.documentationBack = 'true'; body.prepend(previous);
+      }
+      highlightCode(body);
+    } catch (error) {
+      if (request !== documentationRequest || q('.diff-drawer.open')?.dataset.drawerMode !== 'documentation') return;
+      body.textContent = error.message || 'Explanation could not be loaded.';
+      const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = 'Try again';
+      retry.dataset.documentationTarget = pin.target; retry.dataset.documentationRevision = pin.revision;
+      body.append(retry);
+    }
   }
 
   function openStoriesDrawer(button) {
@@ -1904,6 +1942,7 @@ const appJavaScript = `(() => {
   }
 
   function closeDrawer() {
+    documentationRequest++; documentationTrail = [];
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     const wasOpen = drawer.classList.contains('open');
@@ -2088,6 +2127,9 @@ const appJavaScript = `(() => {
     const storiesButton = event.target.closest('[data-open-stories]');
     if (storiesButton) { event.preventDefault(); openStoriesDrawer(storiesButton); return; }
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
+    const documentationButton = event.target.closest('[data-documentation-target]');
+    if (documentationButton) {event.preventDefault(); void openDocumentation(documentationButton); return;}
+    if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision}},true); return;}
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
     const landmarkVisual = event.target.closest?.('[data-landmark-visual]');
@@ -2177,7 +2219,7 @@ const appJavaScript = `(() => {
       q('summary', reviewDisclosure)?.focus();
       return;
     }
-    if (['ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown'].includes(event.key) && deckViewerActive() && deckViewerSlides().length && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
+    if (['ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown'].includes(event.key) && !q('.diff-drawer.open') && deckViewerActive() && deckViewerSlides().length && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
       event.preventDefault();
       stepDeckSlide(event.key === 'ArrowRight' || event.key === 'PageDown' ? 1 : -1);
       return;

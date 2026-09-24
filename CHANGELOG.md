@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — Component and System inventory
+
+- **Format:** Add opt-in v5 Component/System identities, immutable definition
+  revisions and lifecycle events, pinned Component interactions, exact scoped
+  code, and optional pinned Item `documentation` links. Existing Saga formats
+  remain readable; older readers require an upgrade to read the extension.
+- Add public authoring, paged inventory queries, reference validation, and lazy
+  in-slide canonical explanations with local code and preserved slide context.
+
+
 All notable changes to Change Saga are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 the policy in [docs/releasing.md](docs/releasing.md#versioning-policy).

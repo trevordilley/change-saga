@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "schema/v5/system.schema.json",
+      "digest": "sha256:3ce513b8357885ba14fd9cf117b2071e4647503c86a8dc2ac687bb5de9b78a66",
+      "note": "File-addition event for schema/v5/system.schema.json. The deck also retains separate exact line-range references on the Items explaining behavior; this event does not approve the implementation."
+    }
+  ]
+}

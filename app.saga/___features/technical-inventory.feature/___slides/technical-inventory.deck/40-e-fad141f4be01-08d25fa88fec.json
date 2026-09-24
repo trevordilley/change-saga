@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/requirements/inventory_json.go",
+      "start": 1,
+      "end": 81,
+      "digest": "sha256:108112a794374247e26baeed7c06351362167131757a87833fd17976b0f9f96c",
+      "note": "The loader reads a bounded inventory separately and rejects ambiguous JSON, invalid graph structure, and unsafe packages."
+    }
+  ]
+}

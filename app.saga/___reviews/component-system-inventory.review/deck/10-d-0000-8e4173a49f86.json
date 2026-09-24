@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "component-system-inventory",
+  "title": "Reusable Component and System documentation",
+  "role": "review",
+  "rank": 0,
+  "objective": "Explain the new shared technical identities, exact evidence boundaries, public APIs and contextual navigation."
+}

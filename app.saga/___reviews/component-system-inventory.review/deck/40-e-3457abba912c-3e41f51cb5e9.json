@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/saga/load.go",
+      "start": 748,
+      "end": 748,
+      "digest": "sha256:b468e0594e951a8c5916f24a4da9f9124a87d101e597caded82a4736d00e0ec1",
+      "note": "The loader reads a bounded inventory separately and rejects ambiguous JSON, invalid graph structure, and unsafe packages."
+    }
+  ]
+}

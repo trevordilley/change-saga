@@ -90,12 +90,14 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "setup-initial-saga", "feature", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "setup-initial-saga", "feature", "overview", "component", "system", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"serve", "open", "install-skill", "spec",
 }
 
 var commandUsage = map[string]string{
+	"component":                   "change-saga component <add|revise|set-state> [flags] <saga>",
+	"system":                      "change-saga system <add|revise|set-state> [flags] <saga>",
 	"init":                        "change-saga init [flags] <name.saga>",
 	"setup-initial-saga":          "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
 	"feature":                     "change-saga feature add [flags] <saga>",
@@ -317,6 +319,8 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
+	"component":                   "Define an identifiable unit of logic with exact pinned code. Use add or revise --from with a complete technical-definition JSON document; immutable revisions preserve history.",
+	"system":                      "Define a reusable interaction diagram with pinned Components, directed data flow, and exact scoped code. Implementation Items link a specific revision without inheriting coverage.",
 	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Features, stories, personas, design, and quality\nare optional and can come later.",
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
 	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
@@ -831,6 +835,7 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 	appendPrototypeIssues(flags.Arg(0), document, &validation)
 	appendQualityIssues(flags.Arg(0), document, &validation)
 	appendAppIssues(flags.Arg(0), document, &validation)
+	appendInventoryIssues(flags.Arg(0), document, &validation)
 	if *jsonOutput {
 		if err := writeJSON(out, validationOutput{Validation: validation, Fixes: fixes}); err != nil {
 			return err
@@ -1212,7 +1217,8 @@ func Spec(args []string, out io.Writer) error {
 				"feature_content": "report content (chapters and fragments) plus the feature roots; no URN names its feature, so IDs are unique across the app",
 				"onboarding":      applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, feature, or story record instead of code evidence",
 			},
-			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
+			"technical_inventory": map[string]any{"root": requirements.InventoryDir, "kinds": []string{"component", "system"}, "authoring": "component/system add|revise --id ID --from FILE --revision ID [--parent URN] PATH; set-state --event ID --state active|retired --reason TEXT --parent URN", "item_link": "documentation: {target: Component-or-System-URN, revision: Revision-URN}", "coverage": "only direct Item code; documentation never transfers coverage", "history": "immutable identity, complete revisions and lifecycle events; all heads explicit"},
+			"author_assertions":   "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
 			"query": map[string]any{
 				"schema":     querySchema,
 				"operations": querySpecOperations(),
@@ -1990,6 +1996,15 @@ Falsifiable author assertions live as independent ___claims/<id>.json records.
 Append-only ___verifications/<id>.json records mark them unverified, verified,
 failed, or inconclusive and preserve the method and reproducible command. Claim
 evidence never contributes to coverage. Git history supplies attribution.
+
+Components identify meaningful units of logic with exact pinned code. Systems
+model their interactions and data flow with pinned Component revisions and
+exact interaction evidence. They live under ___inventory and have immutable
+identity, revisions and lifecycle events. Use component/system add|revise|set-state
+and query inventory. Implementation/review Item documentation links pin {target,
+revision}; they never transfer code coverage. Existing Item.record role rules
+remain unchanged. Stale pins and history stay inspectable; no autoapproval or
+automatic repinning occurs.
 
 The Saga is documentation. Stories, designs, test cases, and decks carry no
 approvals and no comments. A pull request's review is where a change is

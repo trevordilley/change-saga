@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "query",
+  "slide": "technical-inventory-authoring",
+  "rank": 10,
+  "kind": "node",
+  "label": "Inventory query",
+  "description": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading.",
+  "selector": {
+    "type": "element",
+    "element_id": "query"
+  }
+}

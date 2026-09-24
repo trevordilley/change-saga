@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#245d8c"/></marker></defs>
+<text x="60" y="55" font-family="Arial,sans-serif" font-size="18" fill="#486173">TECHNICAL INVENTORY · CHANGE REVIEW</text>
+<text x="60" y="111" font-family="Arial,sans-serif" font-size="38" fill="#142638">Shared identity; scoped explanation</text>
+<text x="60" y="157" font-family="Arial,sans-serif" font-size="21" fill="#486173">Before: freehand vocabulary. After: shared definitions with exact revision pins.</text>
+<g id="component"><rect x="60" y="235" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="78" y="271" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Component</text>
+<text x="78" y="308" font-family="Arial,sans-serif" font-size="20" fill="#142638">Meaningful unit of logic</text>
+<text x="78" y="341" font-family="Arial,sans-serif" font-size="18" fill="#486173">Exact code + explanation</text>
+</g>
+<g id="system"><rect x="850" y="235" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="868" y="271" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">System</text>
+<text x="868" y="308" font-family="Arial,sans-serif" font-size="20" fill="#142638">Pinned Components interact</text>
+<text x="868" y="341" font-family="Arial,sans-serif" font-size="18" fill="#486173">Directed flow + exact evidence</text>
+<path d="M850 300H390" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<g id="pin"><rect x="60" y="455" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="78" y="491" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Implementation Item</text>
+<text x="78" y="528" font-family="Arial,sans-serif" font-size="20" fill="#142638">Saved target + revision</text>
+<text x="78" y="561" font-family="Arial,sans-serif" font-size="18" fill="#486173">Contextual visual stays here</text>
+<path d="M225 455V410H1015V365 M390 520H850" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<g id="scope"><rect x="850" y="455" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="868" y="491" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Scoped evidence</text>
+<text x="868" y="528" font-family="Arial,sans-serif" font-size="20" fill="#142638">Item code remains independent</text>
+<text x="868" y="561" font-family="Arial,sans-serif" font-size="18" fill="#486173">System link grants no coverage</text>
+</g>
+<text x="445" y="406" font-family="Arial,sans-serif" font-size="21" fill="#486173">pins revision</text>
+<text x="60" y="683" font-family="Arial,sans-serif" font-size="20" fill="#486173">Saved definitions never silently repin slides or approve reviews.</text>
+</svg>

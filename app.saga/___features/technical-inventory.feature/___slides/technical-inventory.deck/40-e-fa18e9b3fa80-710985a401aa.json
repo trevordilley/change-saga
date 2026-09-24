@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 98,
+      "end": 145,
+      "digest": "sha256:86bf2eff2ce5996f1cec7d79714e0a1ce0c0f2c3ed887743d5e130256b24ae5e",
+      "note": "Lifecycle events append a reason and all observed parent heads without deleting historical definitions."
+    }
+  ]
+}

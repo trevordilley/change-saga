@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "browser",
+  "slide": "technical-inventory-verification",
+  "rank": 20,
+  "kind": "node",
+  "label": "Reviewer interaction checks",
+  "description": "Server and browser regressions verify saved definitions, review rendering, desktop/narrow navigation and retained slide context.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser"
+  }
+}

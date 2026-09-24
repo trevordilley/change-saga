@@ -73,22 +73,30 @@ type SlideManifest struct {
 	ExceptionRationale string   `json:"exception_rationale,omitempty"`
 }
 
+// DocumentationLink pins a reusable Component or System definition. It never
+// transfers that record's code ownership to the linking Item.
+type DocumentationLink struct {
+	Target   string `json:"target"`
+	Revision string `json:"revision"`
+}
+
 type ItemManifest struct {
-	Version     int              `json:"version"`
-	ID          string           `json:"id"`
-	SlideID     string           `json:"slide"`
-	Rank        int              `json:"rank"`
-	Kind        string           `json:"kind"`
-	Label       string           `json:"label"`
-	Description string           `json:"description,omitempty"`
-	Selector    LandmarkSelector `json:"selector"`
-	Hotspot     *LandmarkRegion  `json:"hotspot,omitempty"`
-	About       string           `json:"about,omitempty"`
-	Body        string           `json:"body,omitempty"`
-	Placement   string           `json:"placement,omitempty"`
-	Leader      string           `json:"leader,omitempty"`
-	// Record is the persona, feature, or story URN an onboarding Item explains.
-	// Only onboarding Items carry it; implementation Items reference code.
+	Documentation *DocumentationLink `json:"documentation,omitempty"`
+	Version       int                `json:"version"`
+	ID            string             `json:"id"`
+	SlideID       string             `json:"slide"`
+	Rank          int                `json:"rank"`
+	Kind          string             `json:"kind"`
+	Label         string             `json:"label"`
+	Description   string             `json:"description,omitempty"`
+	Selector      LandmarkSelector   `json:"selector"`
+	Hotspot       *LandmarkRegion    `json:"hotspot,omitempty"`
+	About         string             `json:"about,omitempty"`
+	Body          string             `json:"body,omitempty"`
+	Placement     string             `json:"placement,omitempty"`
+	Leader        string             `json:"leader,omitempty"`
+	// Record retains the role-specific onboarding/review record link.
+	// Implementation Items use Documentation for reusable technical definitions.
 	Record string `json:"record,omitempty"`
 }
 

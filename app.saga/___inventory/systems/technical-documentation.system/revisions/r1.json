@@ -1,0 +1,88 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/system-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:system:technical-documentation",
+  "parents": [],
+  "name": "Technical documentation",
+  "explanation": "Public authors publish immutable Component/System definitions with exact evidence. Inventory queries and the slide explanation drawer read those records independently. An Item carries its saved revision pin and its own scoped evidence; opening a System transfers no coverage and never updates the Item or approves a review.",
+  "code": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/saga/model.go",
+      "start": 76,
+      "end": 83,
+      "digest": "sha256:6d91fea559116814f8d344ca7cd636f366e412c5ed521b9c2ca7822cdef39062",
+      "note": "The Item link stores canonical target and exact revision independently of its code evidence."
+    }
+  ],
+  "components": [
+    {
+      "target": "urn:change-saga:change-saga:component:technical-record-store",
+      "revision": "urn:change-saga:change-saga:component:technical-record-store:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:technical-record-author",
+      "revision": "urn:change-saga:change-saga:component:technical-record-author:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:technical-inventory-query",
+      "revision": "urn:change-saga:change-saga:component:technical-inventory-query:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "revision": "urn:change-saga:change-saga:component:technical-explanation-drawer:revision:r1"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "publish",
+      "from": "urn:change-saga:change-saga:component:technical-record-author",
+      "to": "urn:change-saga:change-saga:component:technical-record-store",
+      "description": "The author resolves source evidence before publishing an immutable revision through the locked record writer.",
+      "code": [
+        {
+          "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+          "path": "internal/cli/inventory.go",
+          "start": 80,
+          "end": 118,
+          "digest": "sha256:5f30f8b631934b20d0c7b951af42794a09d6f01c689b3ddf20e426e61596f24f",
+          "note": "Source validation, digest verification, and publication keep authored evidence exact."
+        }
+      ]
+    },
+    {
+      "id": "query",
+      "from": "urn:change-saga:change-saga:component:technical-inventory-query",
+      "to": "urn:change-saga:change-saga:component:technical-record-store",
+      "description": "The query loads inventory separately, selects one page, resolves its code health, and rejects a changed snapshot.",
+      "code": [
+        {
+          "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+          "path": "internal/cli/query_inventory.go",
+          "start": 75,
+          "end": 140,
+          "digest": "sha256:b5ae2d7b3e72640944df219f9764152be693d507cae4b72d9e0065a184cddc77",
+          "note": "Only explicit inventory reads project these records; pagination is bound to the observed snapshot."
+        }
+      ]
+    },
+    {
+      "id": "open-pin",
+      "from": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "to": "urn:change-saga:change-saga:component:technical-record-store",
+      "description": "A selected Item pin resolves the saved definition, including stale or retired history, without rewriting slide content.",
+      "code": [
+        {
+          "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+          "path": "internal/server/inventory.go",
+          "start": 37,
+          "end": 72,
+          "digest": "sha256:7868b6aa028e7cb76b1103bee49738692a78515855e24a47459aa89a05db30c4",
+          "note": "The on-demand endpoint validates the pin and resolves the exact saved revision."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-24T20:24:32.629388Z"
+}

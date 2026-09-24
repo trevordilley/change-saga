@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "e2e/support/inventory-preview.py",
+      "start": 1,
+      "end": 112,
+      "digest": "sha256:b0f6a0835ec932a9fc2509f36bf84c82f029821e464384eaf1eb13e5e666107b",
+      "note": "The public CLI fixture demonstrates shared identity across checkout and search. Full Chromium was45/46; full server race timed out in an existing dogfood test."
+    }
+  ]
+}
