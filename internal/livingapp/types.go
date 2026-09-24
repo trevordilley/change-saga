@@ -31,10 +31,12 @@ type OpenOptions struct {
 }
 
 type Query struct {
-	Operation string
-	Filters   Filters
-	Cursor    string
-	Limit     int
+	Operation      string
+	Filters        Filters
+	Cursor         string
+	Limit          int
+	ConflictCursor string
+	ConflictLimit  int
 }
 
 type Filters struct {
@@ -43,6 +45,8 @@ type Filters struct {
 	Feature     string `json:"Feature,omitempty"`
 	Expand      string `json:"Expand,omitempty"`
 	Requirement string
+	Persona     string
+	Term        string
 	State       string
 	Kind        string
 	Citation    string
@@ -60,6 +64,96 @@ type Filters struct {
 	// are there after remapping, or false when they changed. Without it a
 	// reference matches Ref only at its pinned commit.
 	Locate func(coderef.Reference) (coderef.Location, bool) `json:"-"`
+}
+
+// PersonaPage is the bounded app-level persona projection. A conflicted
+// definition or lifecycle keeps every head and omits the corresponding
+// singular current value; callers never receive a synthesized winner.
+type PersonaPage struct {
+	Personas []PersonaRecord `json:"personas"`
+}
+
+type PersonaRecord struct {
+	Persona           string                        `json:"persona"`
+	ID                string                        `json:"id"`
+	CreatedAt         time.Time                     `json:"created_at"`
+	State             string                        `json:"state"`
+	RevisionHeads     []string                      `json:"revision_heads"`
+	LifecycleHeads    []string                      `json:"lifecycle_heads"`
+	CurrentRevision   *requirements.PersonaRevision `json:"current_revision,omitempty"`
+	CurrentLifecycle  *requirements.PersonaEvent    `json:"current_lifecycle,omitempty"`
+	RevisionConflict  bool                          `json:"revision_conflict"`
+	LifecycleConflict bool                          `json:"lifecycle_conflict"`
+}
+
+// ReferencePage is a direct, domain-specific reference inspection result.
+// Counts describe the complete filtered result at the response snapshot, not
+// merely the current page.
+type ReferencePage struct {
+	Subject      string                `json:"subject"`
+	References   []RecordReference     `json:"references"`
+	Counts       ReferenceCounts       `json:"counts"`
+	Completeness ReferenceCompleteness `json:"completeness"`
+}
+
+type ReferenceCounts struct {
+	Total    int `json:"total"`
+	Incoming int `json:"incoming"`
+	Outgoing int `json:"outgoing"`
+}
+
+type ReferenceCompleteness struct {
+	Complete         bool                  `json:"complete"`
+	Scope            string                `json:"scope"`
+	CoveredClasses   []string              `json:"covered_reference_classes"`
+	ExcludedClasses  []ReferenceExclusion  `json:"excluded_reference_classes"`
+	UnresolvedOwners []ReferenceUnresolved `json:"unresolved_owners"`
+	UnresolvedPage   Page                  `json:"unresolved_page"`
+}
+
+type ReferenceExclusion struct {
+	Class  string `json:"class"`
+	Reason string `json:"reason"`
+}
+
+type ReferenceUnresolved struct {
+	Owner  string   `json:"owner"`
+	Heads  []string `json:"competing_heads"`
+	Reason string   `json:"reason"`
+}
+
+// RecordReference describes one direct explicit use. Direction is relative to
+// ReferencePage.Subject. Owner is the exact revision, Item, or relation record
+// that contains Selector.
+type RecordReference struct {
+	Source     string              `json:"source"`
+	Target     string              `json:"target"`
+	Direction  string              `json:"direction"`
+	Kind       string              `json:"kind"`
+	Owner      string              `json:"owner"`
+	Selector   string              `json:"selector"`
+	Provenance ReferenceProvenance `json:"provenance"`
+	Pins       *ReferencePins      `json:"pins,omitempty"`
+	Currency   *ReferenceCurrency  `json:"currency,omitempty"`
+	Code       *coderef.Reference  `json:"code_reference,omitempty"`
+}
+
+type ReferenceProvenance struct {
+	Class    string `json:"class"`
+	Resource string `json:"resource"`
+}
+
+type ReferencePins struct {
+	FromRevision      string `json:"from_revision,omitempty"`
+	ToRevision        string `json:"to_revision,omitempty"`
+	FromContentDigest string `json:"from_content_digest,omitempty"`
+	ToContentDigest   string `json:"to_content_digest,omitempty"`
+}
+
+type ReferenceCurrency struct {
+	Status         requirements.Currency         `json:"status"`
+	Reasons        []requirements.CurrencyReason `json:"reasons"`
+	CarriedForward []requirements.CarriedForward `json:"carried_forward,omitempty"`
 }
 
 // AuditReport is a deterministic, read-only feature handoff assessment. Ready

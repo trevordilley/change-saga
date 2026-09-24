@@ -124,7 +124,10 @@ func (s *reviewAppQuerySession) Verifications(ctx context.Context, query verific
 }
 
 func (s *reviewAppQuerySession) Living(ctx context.Context, query livingQuery) (queryPage, error) {
-	value, err := s.livingSession.Query(ctx, livingapp.Query{Operation: query.Operation, Filters: query.Filters, Cursor: query.Cursor, Limit: query.Limit})
+	value, err := s.livingSession.Query(ctx, livingapp.Query{
+		Operation: query.Operation, Filters: query.Filters, Cursor: query.Cursor, Limit: query.Limit,
+		ConflictCursor: query.ConflictCursor, ConflictLimit: query.ConflictLimit,
+	})
 	if err == nil && query.Operation == "audit" {
 		report, ok := value.Data.(livingapp.AuditReport)
 		if !ok {
@@ -167,7 +170,7 @@ func queryPageFromLiving(page livingapp.Page) queryPageEnvelope {
 
 func isLivingQueryOperation(operation string) bool {
 	switch operation {
-	case "context", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness", "audit":
+	case "context", "personas", "persona-references", "term-references", "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness", "audit":
 		return true
 	default:
 		return false

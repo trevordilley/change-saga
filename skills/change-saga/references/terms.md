@@ -48,6 +48,15 @@ them project as `unknown`. When revision heads conflict, preserve
 `revision_heads`, omit `current_revision`, and treat both axes as `unknown`
 rather than fabricating a merged state or choosing a winner.
 
+Use `query term-references --term ID|URN` for direct incoming and outgoing
+typed uses with exact owners and selectors. Its completeness metadata excludes
+free-form prose, embedded SVG text, history, and transitive expansion; never
+describe those classes as searched. Follow its independent unresolved-owner
+pages with `--conflict-cursor`, even when no primary references resolve. Plain
+`query terms` preserves the legacy
+complete collection. Add `--limit` to opt into bounded enumeration and follow
+every cursor at one snapshot.
+
 A generated stale-term revision action carries the current values of both
 axes forward while asking for the repaired code reference. Preserve those
 values unless the task also has evidence for a semantic change; repairing a
@@ -55,9 +64,10 @@ stale selector must not reset either axis to `unknown`.
 
 A rename, changed definition, or changed semantic axis creates a new immutable
 revision with explicit parentage; update its exact defining reference when
-needed rather than rewriting the old record. Preserve competing revision or
-lifecycle heads until intent is known. Do not infer a winner from timestamps,
-filenames, or branch order.
+needed rather than rewriting the old record. There is no guarded name-only
+rename command yet, so do not invent one or edit metadata directly. Preserve
+competing revision or lifecycle heads until intent is known. Do not infer a
+winner from timestamps, filenames, or branch order.
 
 Status may suggest vocabulary for added enum values or typed constants. Treat
 the suggestion as a question: confirm that the identifier represents a word

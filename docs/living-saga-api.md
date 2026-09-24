@@ -386,6 +386,10 @@ change-saga query requirements
 change-saga query requirement-history
 change-saga query citations
 change-saga query relations
+change-saga query personas
+change-saga query persona-references
+change-saga query terms
+change-saga query term-references
 change-saga query prototypes
 change-saga query prototype-annotations
 change-saga query prototype-coverage
