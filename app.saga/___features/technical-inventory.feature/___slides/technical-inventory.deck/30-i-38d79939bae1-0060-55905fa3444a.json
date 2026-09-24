@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "foundation",
+  "slide": "technical-inventory-query-contract",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Existing page-before-resolution boundary",
+  "description": "Current queryInventory selects one page before resolving its code and rejects a changed snapshot. Extend that boundary for new filters and usage detail; these extensions are not implemented.",
+  "selector": {
+    "type": "element",
+    "element_id": "foundation"
+  }
+}

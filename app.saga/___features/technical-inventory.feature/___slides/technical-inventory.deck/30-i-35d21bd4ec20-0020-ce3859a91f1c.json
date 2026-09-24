@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "consumers",
+  "slide": "technical-inventory-rollout",
+  "rank": 20,
+  "kind": "node",
+  "label": "Shared resolver and consistent consumers",
+  "description": "Use one evidence-path resolver across queries, ERD navigation, deck drawers, coverage and reconciliation so reused inventory does not silently grant full-entity coverage.",
+  "selector": {
+    "type": "element",
+    "element_id": "consumers"
+  }
+}

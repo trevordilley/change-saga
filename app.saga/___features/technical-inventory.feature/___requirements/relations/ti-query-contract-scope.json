@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-query-contract-scope",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-query-contract:item:scope",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+  "scope": "self",
+  "rationale": "Proposed design: Feature or design scope follows declared links. Newness requires a named baseline and head; selected revision pins identify which planned intent is being queried.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+  "state": "active",
+  "created_at": "2026-09-24T23:15:00.296433Z"
+}

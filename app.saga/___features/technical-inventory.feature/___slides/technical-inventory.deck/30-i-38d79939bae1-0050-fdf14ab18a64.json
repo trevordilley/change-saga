@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "flow",
+  "slide": "technical-inventory-query-contract",
+  "rank": 50,
+  "kind": "edge",
+  "label": "Bounded query and on-demand expansion",
+  "description": "Fix context, filter, page and explicitly expand. The derived index supplies declared paths, not inferred prose matches or an unbounded transitive graph.",
+  "selector": {
+    "type": "element",
+    "element_id": "flow"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "identity",
+  "slide": "technical-inventory-record-contract",
+  "rank": 0,
+  "kind": "node",
+  "label": "Stable data-entity identity",
+  "description": "One canonical data entity is reused across features, diagram nodes and the directory instead of creating feature-local copies.",
+  "selector": {
+    "type": "element",
+    "element_id": "identity"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "foundation",
+  "slide": "technical-inventory-rollout",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Existing strict reader boundary",
+  "description": "The current inventory loader rejects kinds other than Components and Systems. Adding data entities needs explicit compatibility handling, not an assumed backward-compatible folder.",
+  "selector": {
+    "type": "element",
+    "element_id": "foundation"
+  }
+}

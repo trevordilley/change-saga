@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-record-contract-foundation",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-record-contract:item:foundation",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+  "scope": "self",
+  "rationale": "Proposed design: Current TechnicalDefinition and TechnicalRevision provide code, graph pins and immutable parents. Phase and data-entity fields are proposed additions, not current capabilities.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T23:15:00.014178Z"
+}

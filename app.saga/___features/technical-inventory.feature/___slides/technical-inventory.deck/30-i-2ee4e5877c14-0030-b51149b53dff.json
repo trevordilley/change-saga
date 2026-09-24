@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "relationship",
+  "slide": "technical-inventory-record-contract",
+  "rank": 30,
+  "kind": "node",
+  "label": "Relationship meaning and pinned endpoint",
+  "description": "An outgoing relationship has a stable owner-local ID, a pinned related entity, explicit association or transformation meaning, and declared cardinality or unknown. Do not imply a foreign key from data flow.",
+  "selector": {
+    "type": "element",
+    "element_id": "relationship"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "detail",
+  "slide": "technical-inventory-query-contract",
+  "rank": 30,
+  "kind": "node",
+  "label": "Expand exact code, usages and history",
+  "description": "A consumer asks for one entity's exact code paths, incoming implementation-deck usages or retained history. Traversal limits and continuation remain explicit.",
+  "selector": {
+    "type": "element",
+    "element_id": "detail"
+  }
+}

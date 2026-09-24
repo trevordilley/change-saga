@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "page",
+  "slide": "technical-inventory-query-contract",
+  "rank": 20,
+  "kind": "node",
+  "label": "One truthful snapshot-bound page",
+  "description": "Return stable identity, revision phase, separate evidence health, scope paths and completeness. Bind cursors to snapshot and filters; expose unresolved pages as well as matching records.",
+  "selector": {
+    "type": "element",
+    "element_id": "page"
+  }
+}

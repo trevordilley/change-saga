@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "foundation",
+  "slide": "technical-inventory-record-contract",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Existing immutable definition foundation",
+  "description": "Current TechnicalDefinition and TechnicalRevision provide code, graph pins and immutable parents. Phase and data-entity fields are proposed additions, not current capabilities.",
+  "selector": {
+    "type": "element",
+    "element_id": "foundation"
+  }
+}

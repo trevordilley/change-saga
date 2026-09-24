@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-record-contract-links",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-record-contract:item:links",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+  "scope": "self",
+  "rationale": "Proposed design: Identity owns immutable revisions; diagram and directory pin a revision that in turn pins its resource and relationship endpoint.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T23:14:59.728286Z"
+}
