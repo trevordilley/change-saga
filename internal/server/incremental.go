@@ -163,6 +163,9 @@ type codePageView struct {
 	// over the review's own range, so both are given rather than assumed.
 	DiffHref  string
 	EmptyNote string
+	// DiffLimit optionally requests a batch size for the selected-file stream.
+	// Zero leaves the endpoint's ordinary default in place.
+	DiffLimit int
 	// Explanations offers the documentation that explains the selected file.
 	// A review's Code Diff does not: what explains a review's lines is its own
 	// deck, which is the tab beside it.
