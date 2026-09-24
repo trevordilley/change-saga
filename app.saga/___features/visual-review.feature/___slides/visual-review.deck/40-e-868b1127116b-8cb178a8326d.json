@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "9d93ba756a369f31cba7628f925d28035d7db497",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 170,
-      "end": 208,
-      "digest": "sha256:67d71847f3be1733d97d6a5ec8b7a625248dd1a04aed1836fc84dd292218cb1d",
+      "start": 173,
+      "end": 243,
+      "digest": "sha256:2000d2ef34fc71e3b7daceb59e6b5d94ac9582ae911efda3d4a02934c859f4db",
       "note": "Validates body, state, reviewer identity, commit, reply, and canonical slide-or-Item target before publication."
     }
   ]
