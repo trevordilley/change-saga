@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced",
+  "parents": [],
+  "title": "Reconcile entities without implementation-deck references",
+  "statement": "As an Architect or Developer, I can identify Systems and Components without implementation-deck references and decide how to reconcile them so the inventory remains connected to the application's feature implementations.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "explicit-proposal",
+      "statement": "An entity with no implementation-deck reference is accounted for only when explicitly designated new or proposed; otherwise the report identifies that entity as requiring a user decision."
+    },
+    {
+      "id": "ask-user",
+      "statement": "For an unreferenced entity not designated new/proposed, the workflow asks the user what to do rather than silently reclassify, delete, or attach it to an arbitrary feature."
+    },
+    {
+      "id": "actionable-context",
+      "statement": "The gap exposes the entity's identity, explanation, evidence state, and absence of implementation-deck usages so the user can determine where it belongs."
+    }
+  ],
+  "created_at": "2026-09-24T22:00:10.76444Z"
+}

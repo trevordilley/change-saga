@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:inventory-documentation-and-usages",
+  "parents": [],
+  "title": "Understand a technical entity and its uses",
+  "statement": "As an Architect or Developer, I can open a System or Component's detailed explanation, inspect its code references, and find the implementation decks and Items that use it so I understand both the shared entity and its feature contexts.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "explanation",
+      "statement": "The entity's documentation presents its high-level description and linked code with reference currency visible."
+    },
+    {
+      "id": "reverse-uses",
+      "statement": "The entity exposes its implementation-deck usages, identifying the feature, deck, slide, and specific referencing Item."
+    },
+    {
+      "id": "navigate-usage",
+      "statement": "Following a reported usage opens the referencing slide and Item rather than only the feature overview."
+    }
+  ],
+  "created_at": "2026-09-24T22:00:07.801337Z"
+}

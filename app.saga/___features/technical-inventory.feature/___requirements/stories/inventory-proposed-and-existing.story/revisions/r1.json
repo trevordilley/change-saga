@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:inventory-proposed-and-existing",
+  "parents": [],
+  "title": "Distinguish proposed entities from existing implementation",
+  "statement": "As an Architect or Developer, I can explicitly distinguish new or proposed technical entities from existing implementation so plans can describe future work without misleading people or AI about what exists.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "proposal-without-code",
+      "statement": "A new or proposed System or Component can be recorded and referenced in a design before it has code evidence."
+    },
+    {
+      "id": "explicit-status",
+      "statement": "Entity documentation, deck references, and CLI queries expose the explicit new/proposed designation rather than infer it solely from absent code."
+    },
+    {
+      "id": "evidence-distinction",
+      "statement": "An entity known to exist but lacking linked evidence is distinguishable from proposed work; missing, stale, or unresolved evidence remains visible and does not prove implementation."
+    },
+    {
+      "id": "history",
+      "statement": "Later addition of code evidence preserves the prior proposed definition and does not silently rewrite the committed plan."
+    }
+  ],
+  "created_at": "2026-09-24T22:00:09.350536Z"
+}
