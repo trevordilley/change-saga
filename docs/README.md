@@ -33,6 +33,10 @@ not a contract — where they disagree with the code, the code is current.
 | [requirements-design-quality-lifecycle.md](requirements-design-quality-lifecycle.md) | The plan behind the one Saga: from prototypes and requirements through design, exact implementation traceability, quality evidence, and completed review. |
 | [ai-facing-interface.md](ai-facing-interface.md) | The application boundary an AI client uses instead of walking `*.chapter` and `___review` paths directly. |
 | [ai-query-security-test-plan.md](ai-query-security-test-plan.md) | Adversarial acceptance cases and reusable fixture contract for the AI query boundary. |
+| [ergonomics-feature-context.md](ergonomics-feature-context.md) | The bounded feature-first query projection and its exact expansion contract. |
+| [ergonomics-handoff-audit.md](ergonomics-handoff-audit.md) | The read-only feature handoff audit, stable findings, and readiness semantics. |
+| [ergonomics-visual-qa.md](ergonomics-visual-qa.md) | Repeatable raw/reviewer rendering, managed output safety, and mechanical visual findings. |
+| [ergonomics-ai-instructions.md](ergonomics-ai-instructions.md) | How the shipped skill routes tasks to focused references without blanket loading. |
 
 ## Working on the project
 

@@ -112,9 +112,24 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 		unwanted []string
 	}{
 		{
+			name: "compact feature context", fixture: "Load bounded context for the checkout feature without reading the whole Saga.",
+			rowHint: "load compact feature context", want: []string{"references/query.md"},
+			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
+			name: "feature handoff audit", fixture: "Audit whether checkout has a current exact implementation handoff.",
+			rowHint: "Audit whether one feature", want: []string{"references/query.md"},
+			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
 			name: "diagram for a changed request flow", fixture: "Draw a request-flow diagram and attach each Item to the exact changed code.",
 			rowHint: "Author diagrams", want: []string{"references/query.md", "references/diagrams.md"},
 			unwanted: []string{"references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
+			name: "mechanical visual QA", fixture: "Render the checkout slides and inspect the visual QA contact sheet.",
+			rowHint: "Render slides", want: []string{"references/diagrams.md"},
+			unwanted: []string{"references/query.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "accepted story with provenance", fixture: "Add an accepted customer story with one confirmed criterion and its source citation.",
@@ -130,6 +145,11 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 			name: "comparison recovery handoff", fixture: "Reconcile stale evidence after a branch update and hand off the remaining conflicting heads.",
 			rowHint: "Reconcile a comparison", want: []string{"references/query.md", "references/integration.md"},
 			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/ci.md"},
+		},
+		{
+			name: "parallel proposal consolidation", fixture: "Compare two proposal branches, then consolidate a confirmed duplicate.",
+			rowHint: "Compare parallel proposal branches", want: []string{"references/query.md", "references/integration.md", "references/stories.md"},
+			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/ci.md"},
 		},
 		{
 			name: "pull request review visual", fixture: "Prepare this pull request's review deck and explain its retry path with exact evidence.",
@@ -178,8 +198,17 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 		})
 	}
 
-	if _, err := os.Stat(filepath.Join(root, "references", "authoring.md")); !os.IsNotExist(err) {
-		t.Fatalf("legacy blanket authoring reference remains in installed fixture: err=%v", err)
+	compatibility, err := os.ReadFile(filepath.Join(root, "references", "authoring.md"))
+	if err != nil {
+		t.Fatalf("authoring compatibility router was not installed: %v", err)
+	}
+	for _, reference := range []string{"diagrams.md", "stories.md", "terms.md", "integration.md", "query.md"} {
+		if !strings.Contains(string(compatibility), "]("+reference+")") {
+			t.Errorf("authoring compatibility router omitted %s", reference)
+		}
+	}
+	if len(strings.Fields(string(compatibility))) > 100 {
+		t.Fatalf("authoring compatibility router became a blanket manual: %d words", len(strings.Fields(string(compatibility))))
 	}
 }
 

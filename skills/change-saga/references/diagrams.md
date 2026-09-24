@@ -57,6 +57,28 @@ self-contained HTML when switching paths, stepping through states, changing an
 input, or comparing behavior materially helps. Load no network dependencies,
 and make the default state understandable without interaction.
 
+## Complete-slide publication
+
+The complete-slide transaction is an integration dependency. Use it only when
+the installed CLI lists `apply-slide`; otherwise discover and use the existing
+focused slide, Item, relation, and evidence commands without inventing the
+transaction.
+
+When available, `apply-slide --from FILE|- [--repo PATH] [--dry-run] [--json]
+<saga>` accepts one versioned, complete desired slide: the visual asset, slide
+metadata, ordered semantic Items and selectors, exact code evidence, and
+pinned Item-level criterion links. Create requires `expected_snapshot:
+"absent"`; update requires the exact snapshot from the preceding result.
+Preview with `--dry-run` before publishing. Preserve the stable `request_id`:
+an identical retry is a no-op and reuse with different content is rejected.
+
+Each Item needs a resolving selector, focused line-range evidence whose digest
+matches the named commit, and an exact criterion link with its current story
+revision and rationale. The transaction refuses whole-file evidence, broad
+Deck/Slide criterion ownership, stale criteria, unsafe asset paths, and
+selector-breaking replacements. Its atomic boundary is one slide; it does not
+atomically include story edits, another slide, a Git commit, or external work.
+
 ## Compose semantic, reviewable visuals
 
 One slide carries one intent, one takeaway of at most 180 characters, and one
@@ -106,6 +128,20 @@ and verification instead.
    relationship; unrelated slides have not collapsed into identical cards.
 
 Run these before chasing coverage. Coverage cannot rescue a generic visual.
+
+### Mechanical visual QA
+
+Run `change-saga visual-qa` after authoring or revising slides. It renders raw
+assets and the real reviewer at 1280x720 and 1024x576, then emits a contact
+sheet and `visual-qa.json`. Use selectors to narrow to the requested feature,
+deck, or slide. Keep output outside the Saga in either a new directory or an
+existing directory bearing the visual-QA managed marker.
+
+Treat missing/empty selectors, clipping, text overflow, and reviewer-surface
+failures as mechanical defects. Overlap is a warning because it can be
+intentional. The report explicitly leaves semantic arrow direction
+`not_evaluated`; inspect relationship meaning yourself. A successful render
+does not prove the diagram, evidence, or product claim is correct.
 
 ## Narrative fragments and landmarks
 

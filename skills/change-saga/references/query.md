@@ -39,6 +39,27 @@ Hierarchy nodes report inclusive `diffs.current` and `diffs.stale` totals plus
 `descendant_stale`, so evidence owned by a landmark or child is not mistaken
 for a node with no explained code.
 
+## Feature-first reads
+
+Use `query context --feature ID|URN` when the task starts from one durable
+feature. Its compact, paged projection carries owned story and criterion
+identities, one-hop neighbors, linked terms and their two semantic axes,
+visual Item links and evidence counts, gaps, and conflicts without repeating
+full prose or code references. Use `--expand STORY-ID|URN` for one owned story
+when exact prose, citations, relation records, and code evidence are needed;
+expansion and cursors are mutually exclusive. The projection is deliberately
+bounded and reports its inclusions and exclusions in `data.completeness`.
+
+Use `query audit --feature ID|URN` for the read-only feature handoff check. It
+does not accept `--against`; `--head` selects the source revision whose Item
+selectors are resolved. Exit `8` means the command produced a valid audit with
+blocking findings or unresolved conflicts, not that the query failed. Current
+canonical Item-to-requirement links may cross feature ownership and still
+satisfy exact Item intent or an owned criterion explanation. Such ownership is
+reported as informational context and does not by itself block readiness;
+stale, invalid, retired, or conflicted endpoints and genuine intent/evidence
+gaps still do.
+
 ## Operations
 
 <!-- query-operations:begin -->
@@ -66,8 +87,10 @@ for a node with no explained code.
   `change-saga query claims --saga PATH [--target TARGET] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `verifications`: append-only verification history for author claims.
   `change-saga query verifications --saga PATH [--claim ID] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
+- `context`: a compact, bounded feature-owned index with one-story expansion for exact intent, provenance, visual Items, code links, terms, neighbors, gaps, and conflicts.
+  `change-saga query context --saga PATH --feature ID|URN [--expand STORY-ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `requirements`: current requirement definitions and lifecycle heads without fabricating winners for conflicts.
-  `change-saga query requirements --saga PATH [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
+  `change-saga query requirements --saga PATH [--feature ID|URN] [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `requirement-history`: append-only revision and lifecycle history in deterministic graph order.
   `change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `citations`: immutable requirement provenance records.
@@ -86,10 +109,12 @@ for a node with no explained code.
   `change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `readiness`: independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness.
   `change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
+- `audit`: a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts.
+  `change-saga query audit --saga PATH --feature ID|URN [--repo PATH] [--head REV]`
 - `layers`: one comparison's Changed records (each with before and after), Affected records (with why), and Code (hunks grouped under the records that reference them, plus unreferenced lines).
   `change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]`
 - `history`: when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison.
   `change-saga query history --saga PATH --node URN`
-- `terms`: the project's vocabulary: each term's definition, aliases, stories, records, and code health at the head; filter by term, by story, or by a code location at any commit to find the terms a line of code defines.
+- `terms`: the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation.
   `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--repo PATH] [--against REV [--head REV]]`
 <!-- query-operations:end -->

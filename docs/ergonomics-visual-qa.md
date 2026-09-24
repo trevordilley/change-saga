@@ -51,9 +51,17 @@ The default output is
 The hidden marker identifies a managed output directory. A repeat run replaces
 only an existing directory with that marker. The CLI refuses filesystem roots,
 the home directory, symlink output targets, an output inside the Saga, an
-output that contains the Saga, and unmarked existing directories. It stages a
-complete run beside the destination and publishes it only after Playwright and
-the temporary loopback reviewer have both stopped. No Saga file is written.
+output that contains the Saga, and unmarked existing directories. Safety
+resolution walks to the nearest existing ancestor before resolving symlinks,
+so nested nonexistent directories beneath a symlink into the Saga are refused
+without creating them.
+
+The CLI stages a complete run beside the destination and publishes it only
+after Playwright and the temporary loopback reviewer have both stopped. When a
+managed report already exists, it is renamed to a recoverable sibling backup
+until the new report is installed. A failed publish restores the prior report;
+if restoration also fails, the error names the retained backup path. No Saga
+file is written.
 
 `--json` prints the same report stored in `visual-qa.json`. Exit status is 0
 when no error-severity mechanical finding exists, 3 when rendering completed

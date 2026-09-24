@@ -57,11 +57,14 @@ reference. When a task crosses rows, combine only those rows.
 
 | Requested work | Read before acting |
 | --- | --- |
-| Inspect or navigate an existing Saga; resolve current heads, conflicts, evidence, or history | [Reading through the query API](references/query.md) |
+| Inspect or navigate an existing Saga; load compact feature context; resolve current heads, conflicts, evidence, or history | [Reading through the query API](references/query.md) |
+| Audit whether one feature has a current, exact implementation handoff | [Reading through the query API](references/query.md) |
 | Author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |
-| Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, claims, or visual QA | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
+| Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
+| Render slides and run mechanical visual QA | [Diagrams and evidence](references/diagrams.md) |
 | Reconcile a comparison, work with a companion repository, repin landed evidence, recover, or hand off work without changing visuals | [Query](references/query.md), then [integration and recovery](references/integration.md) |
+| Compare parallel proposal branches or deliberately withdraw/consolidate a duplicate proposal | [Query](references/query.md), [integration](references/integration.md), and [stories](references/stories.md); use only capabilities confirmed by the installed CLI |
 | Prepare or update a pull-request review artifact, or change visuals while integrating | [Query](references/query.md), [integration](references/integration.md), and [diagrams](references/diagrams.md) |
 | Define a CI acceptance rule | [CI rules](references/ci.md); add [query](references/query.md) only when inspecting real Saga state |
 | Look up resource shapes, stable target identities, or command families | [Format quick reference](references/format.md), only when the CLI's `spec`, help, or query schema is insufficient |
