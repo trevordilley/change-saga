@@ -4,6 +4,7 @@ import (
 	"context"
 	"sort"
 	"strings"
+	"time"
 	"unicode"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
@@ -41,6 +42,7 @@ type OverviewPart struct {
 type TermStatus struct {
 	Term                   string                              `json:"term"`
 	ID                     string                              `json:"id"`
+	CreatedAt              time.Time                           `json:"created_at"`
 	Name                   string                              `json:"name,omitempty"`
 	Definition             string                              `json:"definition,omitempty"`
 	DefinitionMaturity     requirements.DefinitionMaturity     `json:"definition_maturity"`
@@ -55,6 +57,8 @@ type TermStatus struct {
 	LifecycleHeads         []string                            `json:"lifecycle_heads"`
 	CurrentRevision        string                              `json:"current_revision,omitempty"`
 	LifecycleHead          string                              `json:"lifecycle_head,omitempty"`
+	RevisionConflict       bool                                `json:"revision_conflict"`
+	LifecycleConflict      bool                                `json:"lifecycle_conflict"`
 }
 
 // TermCode is one of a term's code references viewed at the head: current
@@ -144,9 +148,10 @@ func termStatuses(sagaID string, terms []requirements.Term, code map[string]code
 	for _, term := range terms {
 		urn, _ := requirements.TermURN(sagaID, term.Identity.ID)
 		row := TermStatus{
-			Term: urn, ID: term.Identity.ID, State: "conflicted", Aliases: []string{}, Stories: []string{}, Records: []string{}, Code: []TermCode{},
+			Term: urn, ID: term.Identity.ID, CreatedAt: term.Identity.CreatedAt, State: "conflicted", Aliases: []string{}, Stories: []string{}, Records: []string{}, Code: []TermCode{},
 			DefinitionMaturity: requirements.DefinitionMaturityUnknown, ImplementationEvidence: requirements.ImplementationEvidenceUnknown,
 			RevisionHeads: copyStrings(term.RevisionHeads), LifecycleHeads: copyStrings(term.LifecycleHeads),
+			RevisionConflict: len(term.RevisionHeads) != 1, LifecycleConflict: len(term.LifecycleHeads) != 1,
 		}
 		if revision := term.CurrentRevision; revision != nil {
 			row.Name, row.Definition = revision.Name, revision.Definition

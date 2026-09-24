@@ -163,6 +163,14 @@ func (s *session) Query(_ context.Context, query Query) (Result, error) {
 	var rows any
 	var key string
 	switch query.Operation {
+	case "personas":
+		values, err := s.personaRows(query.Filters)
+		if err != nil {
+			return Result{}, err
+		}
+		rows, key = values, "personas"
+	case "persona-references", "term-references":
+		return s.referenceResult(query)
 	case "requirements":
 		values := s.requirementRows(query.Filters)
 		rows, key = values, "requirements"
@@ -215,6 +223,8 @@ func (s *session) pageRows(query Query, key string, rows any) (Result, error) {
 	sliced := sliceRange(rows, start, end)
 	var data any
 	switch key {
+	case "personas":
+		data = PersonaPage{Personas: sliced.([]PersonaRecord)}
 	case "requirements":
 		data = RequirementPage{Requirements: sliced.([]Requirement)}
 	case "events":
@@ -402,6 +412,10 @@ func sortedKeys[V any](values map[string]V) []string {
 
 func sliceLength(rows any) int {
 	switch v := rows.(type) {
+	case []PersonaRecord:
+		return len(v)
+	case []RecordReference:
+		return len(v)
 	case []Requirement:
 		return len(v)
 	case []HistoryEvent:
@@ -425,6 +439,10 @@ func sliceLength(rows any) int {
 }
 func sliceRange(rows any, start, end int) any {
 	switch v := rows.(type) {
+	case []PersonaRecord:
+		return v[start:end]
+	case []RecordReference:
+		return v[start:end]
 	case []Requirement:
 		return v[start:end]
 	case []HistoryEvent:
