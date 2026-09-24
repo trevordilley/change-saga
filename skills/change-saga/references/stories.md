@@ -38,6 +38,53 @@ accept a story, authorize a new persona, or authorize implementation. When
 authoring is requested, use the queried identities and supported typed persona
 links; never substitute prose mentions for those links.
 
+## Conversational feature discovery
+
+For a feature interview, use this sequence rather than immediately generating
+a backlog. A focused request to author a specific, already-understood story
+does not require restarting discovery.
+
+1. After identifying and confirming the existing personas, invite the user to
+   explain conversationally what they want to build. Build on what they have
+   already said; do not demand story syntax or choose a UI for them.
+2. As the conversation develops, query relevant existing stories, implementation
+   explanations, personas, and Component/System definitions when available.
+   Keep a clear distinction between the desired outcome, documented intent,
+   implemented behavior, and missing knowledge. Do not invent absent inventory
+   or assume that a documented design is implemented. Use this context to ask
+   focused follow-ups about examples, boundaries, and conflicts.
+3. When the goal is coherent, summarize your understanding for correction and
+   ask the user for a few representative user stories in their own words.
+   Then offer to draft the remaining stories and observable criteria for their
+   review. Do not present an exhaustive invented backlog as confirmed intent.
+4. Once the user has reviewed the drafts and agreed what to record, author the
+   stories in the app Saga through the public CLI, using existing persona and
+   feature identities and truthful lifecycle state. Re-query and validate the
+   records. Commit coherent documentation changes when requested or covered by
+   the working agreement; stage only the intended changes and report the commit.
+   Agreement to record a proposal does not itself make its lifecycle accepted.
+5. Adapt to the user's role and technical comfort: ask whether to discuss the
+   technical implementation next. If they want to proceed, develop an
+   implementation and architecture plan grounded in the stories and existing
+   technical design. Author and commit it in the feature's documentation as
+   the specification subsequent AI work will reference, with explicit links,
+   decisions, constraints, and open questions. Read the applicable design and
+   diagram authoring guidance before doing so. Planning is not authorization
+   to implement, and proposed architecture is not current code evidence.
+
+Use Change Saga to retrieve this context efficiently, not filesystem searches
+of Saga metadata or conversational memory alone. Discover available operations
+with CLI help and `query schema`. Start with `query context --feature ID|URN`
+when the feature is known; otherwise use `query overview` and `query children`
+to locate it. Follow returned identities into `query requirements`,
+`query personas`, and `query terms`; use `query relations` and
+`query traceability` for supported connections, `query slide` or
+`query fragment` for implementation explanations, and `query inventory` for
+Component/System definitions when supported. Expand only the records relevant
+to the next interview question and page each selected query completely. State
+missing links or unavailable query capabilities rather than assuming a complete
+cross-domain search or inventing records.
+
 ## Model the product outcome
 
 A persona is a person who gets value from the app: the "As a ..." in a user
