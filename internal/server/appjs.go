@@ -1094,8 +1094,12 @@ const appJavaScript = `(() => {
     }
   }
 
+  let reviewDeckHash = location.hash;
   function setView(name, updateURL = true) {
     if (!q('[data-view="'+name+'"]')) name = 'saga';
+    const reviewDeck = q('[data-review-deck-shell]');
+    const returningToReviewDeck = reviewDeck && name === 'saga' && !q('[data-view="saga"].active');
+    if (reviewDeck && name !== 'saga' && q('[data-view="saga"].active')) reviewDeckHash = location.hash;
     qa('[data-view]').forEach(view => view.classList.toggle('active', view.dataset.view === name));
     qa('[data-view-tab]').forEach(tab => {
       const selected = tab.dataset.viewTab === name || (name === 'slides' && tab.dataset.viewTab === 'saga');
@@ -1123,6 +1127,7 @@ const appJavaScript = `(() => {
     if (updateURL) {
       const url = new URL(location.href);
       if (name === 'saga') url.searchParams.delete('view'); else url.searchParams.set('view', name);
+      if (returningToReviewDeck) url.hash = reviewDeckHash;
       history.pushState({view: name}, '', url);
     }
     if (name === 'code' || name === 'manifest' || name === 'change') void hydrateReviewSurface(name);

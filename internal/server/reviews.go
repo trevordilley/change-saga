@@ -768,10 +768,12 @@ const reviewStyles = `
 .review-coverage.has-gap{border-color:#b45309}.review-coverage h2{margin:0 0 4px;font-size:17px}
 .review-coverage .gap,.review-summary .gap{color:#b45309;font-weight:600}.review-gap figcaption{display:flex;flex-wrap:wrap;gap:4px 8px}
 /* A pull-request review is the implementation-deck renderer with review data. */
-.review-deck-shell{grid-template-columns:minmax(0,1fr);height:calc(100vh - var(--top));min-height:0;overflow:hidden;background:#111}
-.review-deck-shell>.sidebar{display:none}
-.review-deck-shell>.content{width:100%;height:100%;padding:0;overflow:hidden}
-.review-deck-shell #view-saga{height:100%}
+.review-deck-shell:not(.code-mode){grid-template-columns:minmax(0,1fr)}
+.review-deck-shell:not(.code-mode)>.sidebar{display:none}
+.review-deck-shell.slide-mode{height:calc(100vh - var(--top));min-height:0;overflow:hidden;background:#111}
+.review-deck-shell.slide-mode>.content{width:100%;height:100%;padding:0;overflow:hidden}
+.review-deck-shell.slide-mode #view-saga{height:100%}
+.slide-present[hidden]{display:none}
 .review-deck-page{display:grid;grid-template-columns:210px minmax(0,1fr);width:100%;height:100%;min-height:0;background:#111;font:13px/1.55 var(--ui)}
 .review-deck-rail{height:100%;min-height:0;overflow:auto;padding:8px 10px 32px;background:var(--bg-subtle);border-right:1px solid var(--line);counter-reset:slide-thumbnail}
 .review-deck-rail>.sidebar-title{align-items:flex-start;margin-bottom:3px;font-size:12px;line-height:1.35}.review-deck-pr{margin:0 0 12px 22px;color:var(--faint);font-size:10.5px;overflow-wrap:anywhere}.review-deck-rail .slide-rail-deck>h2{margin:9px 0 7px 22px;color:var(--faint);font:600 9px/1.2 var(--ui);letter-spacing:.045em;text-transform:uppercase}

@@ -29,7 +29,7 @@ test("@critical every section header opens its page rather than only expanding",
   await expect(page).toHaveURL(`${saga.baseURL}/terms`);
   await waitForSettledSaga(page);
   const terms = page.locator('[data-directory="terms"]');
-  await expect(terms.getByRole("columnheader")).toHaveText(["Term", "Also", "Definition", "Defined in code", "Reference"]);
+  await expect(terms.getByRole("columnheader")).toHaveText(["Term", "Also", "Definition", "Definition maturity", "Implementation evidence", "Defined in code", "Reference"]);
   const greeting = terms.getByRole("row", { name: /Greeting/ });
   await expect(greeting).toContainText("salutation");
   await expect(greeting).toContainText("The line a caller is welcomed with");

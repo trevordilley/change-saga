@@ -128,3 +128,77 @@ The original implementation verification included:
   `.devswarm-temp/review-ux-*.png` and
   `.devswarm-temp/review-ux-screenshots/`. These uncommitted artifacts contain
   no user review records.
+
+## Child integration review — 2026-09-24
+
+The reconciliation, PR performance, and Component/System workspaces were
+independently reviewed and merged into this branch, not into `main`:
+
+- `32e35985`: CLI reconciliation and current documentation evidence.
+- `32a4f90d`: request-local diff reuse, bounded Item-code batching, and guarded
+  asynchronous review writes. Superseded synchronous implementation references
+  were removed through the public coverage API; their history remains in Git.
+- `89404fc6`: canonical, revision-pinned Component/System documentation and
+  in-slide navigation. Item documentation controls coexist with async feedback.
+
+Integration inspection found the restored deck CSS also applied to Code Diff:
+it hid the file tree and confined the diff to the sidebar column. Deck-only
+layout is now scoped to slide mode; Code Diff keeps its ordinary workspace and
+mobile file-tree overlay. Present respects its hidden state outside the deck.
+Returning from a selected diff restores the prior slide permalink as well as
+the active slide. A missing review deck also no longer causes inventory
+validation to panic: the existing missing-deck diagnostic is preserved.
+
+The integration regression navigates between two review slides and two changed
+files at 1440 px and 390 px. It checks diff geometry, file-tree controls, absence
+of page overflow, and the return permalink. Before/after screenshots are in
+`.devswarm-temp/integration-validation/`. The existing Terms directory test was
+updated for the already-shipped separate definition-maturity and implementation-
+evidence columns, without changing those contracts.
+
+### Remaining reconciliation work
+
+At integration commit `89404fc6`, the public reconciliation report found 805 of
+828 living references current (182 remapped) and 23 stale: six regressions and
+17 introduced stale references. Structural validation passed; that is **not**
+a claim that documentation is current. Remaining references include review
+ownership, contextual review, query surfaces, storage, and vocabulary records.
+Each needs semantic reassessment before replacement, not a blanket repin.
+
+The original four-slide review follows this growing integration branch. Its
+coverage consequently expands beyond the UI slice: 668 of 10,569 changed lines
+were covered at that commit, with 9,901 unexplained and 11 stale references.
+The CLI child's live review range also collapses after its base branch absorbs
+its head. Freezing that completed review needs to retain its original range;
+the current `repin` operation also rewrites living references, so it was not
+used indiscriminately against an older merge. The Component/System review at
+that point covered 2,912 of 2,912 lines with no stale references. These are
+historical integration measurements, not approvals or final branch totals.
+
+The first pass of Component/System inventory does not yet participate in every
+general reconciliation/repin path; see
+[its documented boundaries](component-system-inventory.md). No child archive
+removes these outstanding tasks or the child worktree and commit history.
+
+### Integration verification
+
+- Chromium: all 50 scenarios pass with two workers (2.0 minutes), including
+  inventory navigation, async writes, annotations, and review/source currency.
+  The final return-permalink guard and settled mobile screenshot were checked
+  again with the focused Code Diff scenario (1 passed, 13.9 s).
+- Focused race-enabled Go checks pass: reconciliation/public evidence repair
+  (CLI, 41.727 s); review/annotation/snapshot checks (server 50.835 s,
+  reviewstore 1.860 s, Saga 2.092 s); inventory, pinned documentation,
+  async/snapshot and JavaScript checks (server 4.723 s, CLI 6.007 s,
+  requirements 2.111 s). The missing-deck regression first reproduced the panic
+  and then passed with the guard (1.804 s under the race detector).
+- TypeScript type-check, CLI build and documentation links pass (221 local
+  links across 84 files). Desktop preview was also inspected in Chrome against
+  actual `app.saga`; persisted interaction tests use disposable fixtures.
+- A broader server selection timed out after 121 seconds in
+  `TestDocumentationPagesHaveNoApprovalOrCommentControls`. It is not counted
+  as a pass; the full Go suite has not completed in this integration run.
+- The first combined browser run exposed an obsolete five-column Terms test
+  expectation and a viewport assumption in the new layout test; both were
+  corrected before the passing run. The new test also reproduced the actual
+  file-tree/layout failure and lost return permalink before their fixes.

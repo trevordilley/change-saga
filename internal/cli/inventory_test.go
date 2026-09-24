@@ -152,6 +152,23 @@ func TestInventoryPublic(t *testing.T) {
 	}
 }
 
+func TestInventoryValidationPreservesMissingReviewDeckDiagnostic(t *testing.T) {
+	fixture := newReviewFixture(t)
+	document, validation, err := saga.Load(fixture.root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("fixture: %v %+v", err, validation.Issues)
+	}
+	deck := document.FindReview("pr-7").Deck.Directory
+	if err := os.Rename(deck, filepath.Join(t.TempDir(), "removed-deck")); err != nil {
+		t.Fatal(err)
+	}
+	var output bytes.Buffer
+	err = Validate(context.Background(), []string{"--json", fixture.root}, &output)
+	if err == nil || !strings.Contains(output.String(), "deck directory is missing") {
+		t.Fatalf("missing deck must report invalid Saga, not panic: %v %s", err, &output)
+	}
+}
+
 func TestInventoryQueryPaginationAndMissingTarget(t *testing.T) {
 	repo, _ := sourceRepo(t, map[string]string{"a.go": "package a\n"})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")

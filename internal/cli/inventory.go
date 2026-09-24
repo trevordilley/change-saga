@@ -194,6 +194,10 @@ func appendInventoryIssues(root string, document *saga.Saga, validation *saga.Va
 		}
 	}
 	for _, review := range document.Reviews {
+		if review.Deck == nil {
+			// Loading already reports the missing deck; keep validation diagnostic.
+			continue
+		}
 		for _, slide := range review.Deck.Slides {
 			for _, item := range slide.Items {
 				if item.Documentation != nil {

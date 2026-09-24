@@ -49,6 +49,58 @@ function freezeReview(repositories: SagaRepositories): void {
   git(repositories.sagaRepo, "commit", "-m", "Freeze merged review fixture");
 }
 
+test("Code Diff gets its own full workspace and returns to the same review slide", async ({ page, sagaRepositories }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
+    await page.getByRole("button", { name: "Show slide: Theme colour" }).click();
+    const slideHash = new URL(page.url()).hash;
+    await page.getByRole("tab", { name: "Deck", exact: true }).click();
+    expect(new URL(page.url()).hash).toBe(slideHash);
+    await page.getByRole("tab", { name: "Code Diff", exact: true }).click();
+    await expect(page.locator("#view-code [data-file-diff-status]")).toHaveText("All changed hunks");
+    await page.screenshot({ path: test.info().outputPath("review-code-desktop.png") });
+    const tree = page.getByRole("tree", { name: "Changed files" });
+    await expect(tree).toBeVisible();
+    await expect(page.locator("[data-slide-present]")).toBeHidden();
+    const diff = page.locator("#view-code .file-diff");
+    const desktop = await diff.boundingBox();
+    expect(desktop!.width).toBeGreaterThan(800);
+    expect(desktop!.x).toBeGreaterThanOrEqual(270);
+    await tree.locator('[data-tree-path="src/app.go"]').click();
+    await expect(diff).toHaveAttribute("data-file-path", "src/app.go");
+    await expect(diff.locator("[data-file-diff-status]")).toHaveText("All changed hunks");
+    await page.getByRole("tab", { name: "Deck", exact: true }).click();
+    await expect(page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]')).toBeVisible();
+    expect(new URL(page.url()).hash).toBe(slideHash);
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.getByRole("tab", { name: "Code Diff", exact: true }).click();
+    const toggle = page.getByRole("button", { name: "Toggle file tree", exact: true });
+    if (!(await tree.isVisible()) || await page.locator("[data-shell]").evaluate(el => el.classList.contains("tree-hidden"))) await toggle.click();
+    await tree.locator('[data-tree-path="assets/ui/theme.css"]').click();
+    await expect(diff).toHaveAttribute("data-file-path", "assets/ui/theme.css");
+    await expect(diff.locator("[data-file-diff-status]")).toHaveText("All changed hunks");
+    if (!(await page.locator("[data-shell]").evaluate(el => el.classList.contains("tree-hidden")))) await page.getByRole("button", { name: "Hide file tree", exact: true }).click();
+    await expect.poll(async () => {
+      const box = await page.locator("#changed-files-panel").boundingBox();
+      return box!.x + box!.width;
+    }).toBeLessThanOrEqual(0);
+    const narrow = await diff.boundingBox();
+    expect(narrow!.width).toBeGreaterThanOrEqual(380);
+    expect(narrow!.x).toBe(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.screenshot({ path: test.info().outputPath("review-code-narrow.png") });
+    await page.getByRole("tab", { name: "Deck", exact: true }).click();
+    await expect(page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]')).toBeVisible();
+    expect(new URL(page.url()).hash).toBe(slideHash);
+  } finally {
+    await stopSagaServer(running);
+  }
+});
+
 test("@critical approves slide by slide and marks a decision out of date when its code changes", async ({ page, sagaRepositories }) => {
   authorReview(sagaRepositories);
   const running = await startSagaServer(sagaRepositories);
