@@ -161,8 +161,10 @@ landmark projection rather than maintaining a second client-side slideshow.
 
 ## Verification record
 
-- `go test ./internal/server` passes, including the bounded-browser deep-link
-  contract and focused review handlers.
+- Focused `internal/server` review, frozen-state, and application-JavaScript
+  tests pass, including the bounded-browser deep-link contract. The complete
+  `internal/server` package exceeded the tracked ten-minute host limit without
+  emitting a test failure; that timeout is reported rather than called a pass.
 - The Chromium pull-request review suite covers all five scenarios, including
   persisted decisions, comments and replies, source currency, exact Item
   permalinks, reload resume, keyboard navigation, Escape focus restoration,
