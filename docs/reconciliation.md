@@ -90,3 +90,10 @@ health, omit `--against`: comparison-side validity alone cannot establish HEAD
 currency. Neither validation, pin freshness, nor coverage proves semantic
 correctness. Manual reassessment can remain in the queue after a successful
 repair because reconciliation does not store a new approval or waiver.
+
+Superseded quality evidence stays in the reference inventory with `debt:
+"historical"` and `history_reasons`. `historical_stale` is included in the total
+stale count, but excluded from active regression and baseline-debt counts and
+repair tasks. Historical bytes are not rewritten to make them current. Test
+repair paths inspect the test's feature status and carry current run parents;
+record a new run only after actually rerunning verification.

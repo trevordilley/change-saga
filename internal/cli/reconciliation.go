@@ -14,6 +14,8 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/livingapp"
+	"github.com/twentyideas/changesaga/internal/quality"
+	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -38,6 +40,8 @@ type reconciliationReport struct {
 }
 
 type reconciliationCurrency struct {
+	Historical        int                       `json:"historical"`
+	HistoricalStale   int                       `json:"historical_stale"`
 	Total             int                       `json:"total"`
 	Current           int                       `json:"current"`
 	Remapped          int                       `json:"remapped"`
@@ -52,6 +56,7 @@ type reconciliationCurrency struct {
 }
 
 type reconciliationReference struct {
+	HistoryReasons []string `json:"history_reasons,omitempty"`
 	ownedReference
 	Head coderesolve.Resolution  `json:"head"`
 	Base *coderesolve.Resolution `json:"base,omitempty"`
@@ -90,7 +95,7 @@ func Reconcile(ctx context.Context, args []string, out io.Writer) error {
 		return writeJSON(out, report)
 	}
 	fmt.Fprintf(out, "Documentation reconciliation %s..%s\n", shortOID(report.Opening.BaseOID), shortOID(report.Opening.HeadOID))
-	fmt.Fprintf(out, "HEAD currency: %d current (%d remapped), %d stale: %d pre-existing, %d regressions, %d introduced, %d baseline unknown\n", report.Currency.Current, report.Currency.Remapped, report.Currency.Stale, report.Currency.PreExisting, report.Currency.Regressions, report.Currency.Introduced, report.Currency.Unknown)
+	fmt.Fprintf(out, "HEAD currency: %d current (%d remapped), %d stale: %d pre-existing, %d regressions, %d introduced, %d baseline unknown, %d historical\n", report.Currency.Current, report.Currency.Remapped, report.Currency.Stale, report.Currency.PreExisting, report.Currency.Regressions, report.Currency.Introduced, report.Currency.Unknown, report.Currency.HistoricalStale)
 	fmt.Fprintf(out, "Documentation diff coverage: %d/%d; open review decks: %d (independent ranges and coverage in --json)\n", report.DocumentationCoverage.Areas.Implementation.Covered, report.DocumentationCoverage.Areas.Implementation.Total, len(report.ReviewCoverage))
 	for _, review := range report.ReviewCoverage {
 		if review.Coverage != nil {
@@ -170,11 +175,31 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 	var document *saga.Saga
 	var head statusDocument
 	var owned []ownedReference
+	tests := map[string]quality.TestCase{}
+	historical := map[string][]string{}
 	err = changeview.ReadSnapshot(ctx, root, layers.Saga.Head, func(snapshot string) error {
 		var e error
 		document, _, e = saga.Load(snapshot)
 		if e != nil {
 			return e
+		}
+		qualityDoc, e := quality.Load(snapshot)
+		if e != nil {
+			return e
+		}
+		for _, test := range qualityDoc.TestCases {
+			urn, _ := qualityid.TestCase(document.Manifest.ID, test.Identity.ID)
+			tests[urn] = test
+			heads := map[string]bool{}
+			for _, h := range test.EvidenceHeads {
+				heads[h] = true
+			}
+			for _, evidence := range test.Evidence {
+				owner, _ := qualityid.Evidence(document.Manifest.ID, test.Identity.ID, evidence.ID)
+				if !heads[owner] {
+					historical[owner] = []string{"evidence was superseded"}
+				}
+			}
 		}
 		owned, e = sagaReferences(document)
 		if e != nil {
@@ -247,12 +272,16 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 	result.Currency.References = []reconciliationReference{}
 	for _, ref := range owned {
 		resolution := resolver.Resolve(ctx, ref.Code, compared.Opening.HeadOID)
-		row := reconciliationReference{ownedReference: ref, Head: resolution, Debt: "none"}
+		row := reconciliationReference{ownedReference: ref, Head: resolution, Debt: "none", HistoryReasons: historical[ref.Owner]}
 		prior, existed := baseRefs[reconciliationReferenceKey(ref)]
 		if baseline && existed {
 			row.Base = &prior
 		}
 		result.Currency.Total++
+		if len(row.HistoryReasons) > 0 {
+			result.Currency.Historical++
+			row.Debt = "historical"
+		}
 		if resolution.Current() {
 			result.Currency.Current++
 			if resolution.Moved {
@@ -260,6 +289,11 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 			}
 		} else {
 			result.Currency.Stale++
+			if len(row.HistoryReasons) > 0 {
+				result.Currency.HistoricalStale++
+				result.Currency.References = append(result.Currency.References, row)
+				continue
+			}
 			switch {
 			case !baseline:
 				row.Debt = "baseline_unknown"
@@ -274,7 +308,7 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 				row.Debt = "pre_existing"
 				result.Currency.PreExisting++
 			}
-			task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, ref.Owner, ref.Kind)
+			task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, tests, ref.Owner, ref.Kind)
 			task.Debt, task.EvidenceFile, task.Reference = row.Debt, ref.EvidenceFile, ref.Index
 			task.Because = []changeview.Cause{{Kind: "head_currency", Detail: resolution.Reason, Via: ref.Code.Location().String()}}
 			if ref.Kind == "evidence" && len(task.Repair) == 0 {
@@ -305,7 +339,7 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		if entry.Kind == "code_reference" || entry.Kind == "term" {
 			continue
 		} // exact references above own these rows
-		task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, entry.Resource, entry.Kind)
+		task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, tests, entry.Resource, entry.Kind)
 		task.Debt = "new_or_changed"
 		if !baseline {
 			task.Debt = "baseline_unknown"
@@ -316,7 +350,7 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		result.Queue = append(result.Queue, task)
 	}
 	for _, affected := range layers.Affected {
-		task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, affected.URN, affected.Kind)
+		task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, tests, affected.URN, affected.Kind)
 		task.Debt, task.Because = "reassess", affected.Because
 		result.Queue = append(result.Queue, task)
 	}
@@ -324,7 +358,7 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		if changed.Kind != changeview.KindStory {
 			continue
 		}
-		task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, changed.URN, changed.Kind)
+		task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, tests, changed.URN, changed.Kind)
 		task.Debt = "reassess"
 		task.Because = []changeview.Cause{{Kind: "requirement_change", Detail: "requirement " + changed.Change + "; reassess linked implementation and tests even when no code changed"}}
 		result.Queue = append(result.Queue, task)
@@ -379,7 +413,7 @@ func reconciliationInvoke(command, root, repo string, mismatch bool, values ...g
 	return grammar.MustInvoke(command, root, values...)
 }
 
-func reconciliationRoute(root, repo, head string, mismatch bool, document *saga.Saga, resource, kind string) reconciliationTask {
+func reconciliationRoute(root, repo, head string, mismatch bool, document *saga.Saga, tests map[string]quality.TestCase, resource, kind string) reconciliationTask {
 	task := reconciliationTask{Resource: resource, Kind: kind, Inspect: []grammar.Invocation{}, Repair: []grammar.Invocation{}, Guidance: "Read the affected explanation and linked intent; change it only if its meaning or evidence no longer holds."}
 	query := func(command string, values ...grammar.Value) grammar.Invocation {
 		return reconciliationQuery(root, repo, head, command, values...)
@@ -418,10 +452,19 @@ func reconciliationRoute(root, repo, head string, mismatch bool, document *saga.
 	case "term":
 		task.Inspect = append(task.Inspect, query("query terms", grammar.V("term", resource)))
 		task.Repair = append(task.Repair, reconciliationInvoke("term revise", root, repo, mismatch, grammar.V("term", resource)))
-	case "quality_evidence", "test_case":
-		test := strings.Split(resource, ":evidence:")[0]
-		task.Inspect = append(task.Inspect, query("query traceability"))
-		task.Repair = append(task.Repair, reconciliationInvoke("quality evidence add", root, repo, mismatch, grammar.V("test", test)), reconciliationInvoke("quality run record", root, repo, mismatch, grammar.V("test", test)))
+	case "quality_evidence", "test_case", "test_run":
+		test := strings.Split(strings.Split(resource, ":evidence:")[0], ":run:")[0]
+		context := tests[test]
+		inspectValues := []grammar.Value{grammar.V("json", "true"), grammar.V("head", head)}
+		if context.Feature != "" {
+			inspectValues = append(inspectValues, grammar.V("feature", context.Feature))
+		}
+		task.Inspect = append(task.Inspect, reconciliationInvoke("status", root, repo, mismatch, inspectValues...))
+		runValues := []grammar.Value{grammar.V("test", test), grammar.V("commit", head)}
+		for _, parent := range context.RunHeads {
+			runValues = append(runValues, grammar.V("parent", parent))
+		}
+		task.Repair = append(task.Repair, reconciliationInvoke("quality evidence add", root, repo, mismatch, grammar.V("test", test)), reconciliationInvoke("quality run record", root, repo, mismatch, runValues...))
 		task.Guidance = "Inspect the test and linked criteria, rerun verification, then append evidence and a run with the actual result. Do not rewrite historical evidence or infer success from fresh pins."
 	case "claim":
 		task.Inspect = append(task.Inspect, query("query claims"))

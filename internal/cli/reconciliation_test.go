@@ -283,3 +283,56 @@ func TestReconciliationNewStaleEvidenceDoesNotInheritBaselineDebt(t *testing.T) 
 		t.Fatalf("new debt misclassified: %+v", report.Currency)
 	}
 }
+
+func TestReconciliationSupersededEvidenceAndRunRepair(t *testing.T) {
+	repo, root := shopSaga(t)
+	mustRun(t, Story, "set-state", "--story", "urn:change-saga:shop:story:pay", "--parent", "urn:change-saga:shop:story:pay:event:proposed", "--state", "accepted", "--reason", "Fixture requirement", "--event", "accepted", root)
+	test := "urn:change-saga:shop:test-case:charge"
+	mustRun(t, Quality, "test-case", "add", "--feature", "checkout", "--id", "charge", "--title", "Charge once", "--kind", "positive", "--automation", "automated", "--step", `{"id":"pay","action":"Pay","expected_result":"Charged once"}`, "--expected-result", "Charged once", root)
+	mustRun(t, Quality, "test-case", "set-state", "--test", test, "--parent", test+":event:proposed", "--state", "active", "--reason", "Ready", root)
+	mustRun(t, Relation, "add", "--feature", "checkout", "--id", "test-pay", "--type", "verifies", "--from", test, "--to", "urn:change-saga:shop:story:pay:criterion:charged", "--rationale", "Checks the charge count", root)
+	mustRun(t, Quality, "evidence", "add", "--test", test, "--id", "old", "--role", "implementation_under_test", "--code", "HEAD:src/queue.go#L3-L6", root)
+	commitAll(t, repo, "Document original test")
+	git(t, repo, "checkout", "-b", "repair")
+	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\nfunc Enqueue() {}\n")
+	commitAll(t, repo, "Revise queue")
+	mustRun(t, Quality, "evidence", "add", "--test", test, "--id", "replacement", "--role", "implementation_under_test", "--supersedes", test+":evidence:old", "--code", "HEAD:src/queue.go#L2", root)
+	report := reconciliationOf(t, root)
+	if report.Currency.HistoricalStale != 1 || report.Currency.Historical != 1 || report.Currency.Regressions != 1 {
+		t.Fatalf("superseded evidence must remain visible without adding active debt: %+v", report.Currency)
+	}
+	for _, task := range report.Queue {
+		if task.Resource == test+":evidence:old" && task.Debt != "reassess" {
+			t.Fatalf("history became a repair task: %+v", task)
+		}
+	}
+	mustRun(t, Quality, "run", "record", "--test", test, "--id", "before", "--result", "passed", "--summary", "Fixture result", "--evidence", test+":evidence:replacement", root)
+	mustRun(t, Quality, "test-case", "revise", "--test", test, "--parent", test+":revision:r1", "--revision", "r2", "--expected-result", "Charged exactly once", root)
+	report = reconciliationOf(t, root)
+	found := false
+	for _, task := range report.Queue {
+		if task.Kind != "test_run" {
+			continue
+		}
+		found = true
+		if task.Inspect[0].Command != "status" {
+			t.Fatalf("wrong run inspection: %+v", task)
+		}
+		output := mustRun(t, Status, task.Inspect[0].Argv[2:]...)
+		if !strings.Contains(output, test) {
+			t.Fatal("run inspection lost test context")
+		}
+		for _, repair := range task.Repair {
+			if repair.Command != "quality run record" {
+				continue
+			}
+			args := strings.Join(repair.Argv, " ")
+			if !strings.Contains(args, test+":run:before") || !strings.Contains(args, "--commit") {
+				t.Fatalf("rerun lost current heads/commit: %+v", repair)
+			}
+		}
+	}
+	if !found {
+		t.Fatalf("missing stale-run task: %+v", report.Queue)
+	}
+}
