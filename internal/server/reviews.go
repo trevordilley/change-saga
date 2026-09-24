@@ -21,7 +21,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -231,6 +230,10 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 	} else {
 		resolver = nil
 	}
+	var diffs *reviewDiffs
+	if report.Range != nil {
+		diffs = newReviewDiffs(a.sourceDir, resolver, *report.Range)
+	}
 	threads := reviewstate.Threads(review.Comments)
 	slideReports := map[string]reviewstate.SlideReport{}
 	for _, slide := range report.Slides {
@@ -264,7 +267,7 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 			if report.Range != nil {
 				for _, file := range item.Code {
 					for _, reference := range file.References {
-						itemView.Diffs = append(itemView.Diffs, a.referenceDiff(ctx, resolver, reference, *report.Range))
+						itemView.Diffs = append(itemView.Diffs, diffs.referenceDiff(ctx, reference))
 					}
 				}
 			}
@@ -424,38 +427,7 @@ func reviewRecordKind(record string) string {
 // review's base: the hunks between the merge-base and the head that touch the
 // referenced lines as they are at the head.
 func (a *app) referenceDiff(ctx context.Context, resolver *coderesolve.Resolver, reference coderef.Reference, rng reviewstate.Range) *reviewDiffView {
-	view := &reviewDiffView{Path: reference.Path, Location: reference.Location().String()}
-	start, end := reference.Start, reference.End
-	path := reference.Path
-	if resolver != nil {
-		if resolution := resolver.Resolve(ctx, reference, rng.HeadOID); resolution.Current() {
-			path, start, end = resolution.Location.Path, resolution.Location.Start, resolution.Location.End
-		} else if !reference.WholeFile() {
-			view.Note = "The referenced lines changed after the reference was written; showing every change to the file."
-			start, end = 0, 0
-		}
-	}
-	// Pathspecs are relative to the working directory, and a Saga served from
-	// inside its code repository has the Saga directory as its source dir.
-	repo := a.sourceDir
-	if top, err := gitOutput(ctx, a.sourceDir, "rev-parse", "--show-toplevel"); err == nil && top != "" {
-		repo = top
-	}
-	patch, err := gitdiff.FileDiff(ctx, repo, rng.BaseOID, rng.HeadOID, path)
-	if err != nil {
-		view.Note = "The diff could not be read from this checkout."
-		return view
-	}
-	view.Path = path
-	view.Lines = diffLinesTouching(patch, start, end)
-	if len(view.Lines) == 0 {
-		if start > 0 {
-			view.Note = fmt.Sprintf("Lines %d-%d are unchanged between the base and the head.", start, end)
-		} else if view.Note == "" {
-			view.Note = "The file is unchanged between the base and the head."
-		}
-	}
-	return view
+	return newReviewDiffs(a.sourceDir, resolver, rng).referenceDiff(ctx, reference)
 }
 
 // diffLinesTouching keeps the hunks of a unified patch whose new-side range
