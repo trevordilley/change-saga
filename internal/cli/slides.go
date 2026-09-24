@@ -332,6 +332,8 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	body := flags.String("body", "", "required concise callout body")
 	placement := flags.String("placement", "", "top, right, bottom, left, or overlay")
 	leader := flags.String("leader", "", "none, line, or arrow")
+	documentation := flags.String("documentation", "", "canonical Component or System URN")
+	documentationRevision := flags.String("documentation-revision", "", "exact revision URN for --documentation")
 	record := flags.String("record", "", "the record the item points at: required for onboarding items (a persona, feature, or story URN); optional for review items (a story, feature slide, or other record to open beside the change)")
 	feature := featureIDFlag(flags)
 	reviewID := flags.String("review", "", "the pull request review whose slide receives the item")
@@ -426,6 +428,20 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			}
 			target = saga.ItemTarget(document.Manifest.ID, slide.ID, *id)
 		}
+		var documentationPin *saga.DocumentationLink
+		if *documentation != "" || *documentationRevision != "" {
+			documentationPin = &saga.DocumentationLink{Target: *documentation, Revision: *documentationRevision}
+			if err := requireDocumentation(document.Root, document.Manifest.ID, documentationPin); err != nil {
+				return err
+			}
+			if slide.DeckID != "" {
+				for _, deck := range document.Onboarding {
+					if deck.ID == slide.DeckID {
+						return fmt.Errorf("onboarding Items cannot carry documentation")
+					}
+				}
+			}
+		}
 		if len(slide.Items) >= 7 && slide.Layout != "custom" {
 			return fmt.Errorf("standard layouts allow at most 7 semantic Items; split the slide")
 		}
@@ -459,7 +475,7 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			return err
 		}
 		path := filepath.Join(slide.Directory, filename)
-		manifest := saga.ItemManifest{Version: saga.DeckRecordVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader, Record: *record}
+		manifest := saga.ItemManifest{Version: saga.DeckRecordVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader, Record: *record, Documentation: documentationPin}
 		if err := store.WriteJSON(path, manifest, true); err != nil {
 			return err
 		}

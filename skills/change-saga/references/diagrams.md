@@ -219,3 +219,24 @@ no requested changed line is uncovered, no reference is stale, and each
 overlap is defensible. Verify claims independently; complete coverage is not
 verification. Remove scaffold content, run validation, and use the relevant
 bounded queries before handoff.
+
+## Reusable Components and Systems
+
+When supported by the current CLI, use `component` and `system` for canonical
+technical documentation, distinct from terms. Components identify meaningful
+logic/transformation with exact code. Systems pin Components and explain their
+directed interactions with scoped evidence. Discover the complete JSON
+contract through `spec --json` and command help. Author definitions with
+`add|revise --from`; lifecycle changes use `set-state`. Preserve every parent
+head and all code provenance.
+
+An implementation Item may link a canonical definition with `--documentation`
+and `--documentation-revision`, or the optional `documentation` field of an
+`apply-slide` Item. Keep contextual labels and exact Item evidence: a System
+link grants no coverage of that System's code. Read the saved revision before
+explicitly repinning; never rewrite old review content or approve a slide as a
+side effect. The drawer opens the explanation, its Components and exact code,
+then returns to the same implementation slide. Use `query inventory` for
+current heads, code and Component pin health, and selected-record history.
+This first pass does not add inventory to generic `references`/`repin`, feature
+audits, comparison layers or reconciliation; do not infer those integrations.

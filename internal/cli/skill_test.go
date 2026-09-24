@@ -258,7 +258,13 @@ func TestSkillQueryReferenceListsExactlyTheQueryOperations(t *testing.T) {
 // a test can read the real flag set from its -h output.
 var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"preintegrate": Preintegrate,
-	"init":         Init, "feature": Feature, "review": Review, "overview": Overview, "term": Term, "persona": Persona,
+	"init":         Init, "feature": Feature, "review": Review, "overview": Overview, "component": func(ctx context.Context, args []string, out io.Writer) error {
+		return Technical(ctx, "component", args, out)
+	},
+	"system": func(ctx context.Context, args []string, out io.Writer) error {
+		return Technical(ctx, "system", args, out)
+	},
+	"term": Term, "persona": Persona,
 	"setup-initial-saga": func(_ context.Context, args []string, out io.Writer) error { return SetupInitialSaga(args, out) },
 	"flag":               FeatureFlag, "prototype": Prototype, "story": Story, "criterion": Criterion, "citation": Citation,
 	"relation": Relation, "plan": Plan, "design": Design, "quality": Quality, "add-deck": AddDeck,

@@ -148,7 +148,53 @@ per-language heuristic.
 The **onboarding deck** is a flat deck with role `onboarding`, one per
 application. Its Items carry `record`, the URN of a persona, feature, or story they
 explain, and never own code references. Implementation decks keep role
-`change` and never carry `record`.
+`change` and never carry `record`. They may carry a separate pinned
+`documentation` link to a Component or System.
+
+### Components and Systems
+
+A **Component** is an identifiable unit of logic/transformation with a name,
+meaningful explanation, and exact pinned code. A **System** is a reusable
+interaction/data-flow diagram whose ordered Component members pin their
+revisions and whose directed interactions each explain their own exact code.
+Systems also carry a name, explanation, and direct scoped evidence. There is
+no prescribed C4 hierarchy, and terms remain a distinct vocabulary concept.
+
+Records live under `___inventory/components/<id>.component/` and
+`___inventory/systems/<id>.system/`, with an immutable identity, complete
+append-only revisions, and active/retired lifecycle events. URNs are
+`urn:change-saga:<saga>:component:<id>` or `:system:<id>`, followed by
+`:revision:<id>` or `:event:<id>` for history. Exactly one root and acyclic
+parent graphs are required; multiple heads are conflicts, never a fabricated
+winner. Component and System schemas are `v5/component*.schema.json` and
+`v5/system*.schema.json`. Each record is at most one MiB, each revision requires
+1–64 exact line-range code references with notes, and each System has 2–32
+unique Component pins and 1–64 directed interactions with unique IDs and
+member endpoints. Each interaction requires 1–64 exact code references.
+
+An implementation or review Item may carry `documentation: {target, revision}`
+conforming to `v5/documentation-link.schema.json`; onboarding Items may not.
+This field is separate from `record` and transfers **no code coverage**. The
+Item must still explain its own exact scoped evidence. Pins enter the existing
+Item/slide content digest; changing a definition does not mutate existing pins,
+slide content, historical review content, or approval currency. New pins must
+be current, active and unconflicted. Reads retain stale/retired/conflicted pins
+and their historical definitions; validation errors on missing pins and warns
+on other noncurrent states. `query inventory` reports exact code health using
+the existing code resolver, with snapshot-bound pagination and optional
+selected-record history. `query slide` returns its Items' documentation pins.
+
+Public writers are `component|system add|revise|set-state`; complete revision
+JSON is specified by `v5/technical-definition.schema.json`. The CLI resolves
+symbolic source commits and computes/verifies digests before publishing.
+Initial publication is atomic; later revisions/events are immutable files
+under the Saga lock. Explicit parent sets must match all current heads.
+Identical ID/content retries are no-ops; conflicting content is rejected.
+
+This extension needs no migration of existing valid Sagas. Older readers
+reject its new root/fields; upgrade readers before adoption. See
+[Component and System documentation](docs/component-system-inventory.md) for
+compatibility details, UI behavior, and deferred integration surfaces.
 
 ### V5 identities and quality records
 

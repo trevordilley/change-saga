@@ -412,6 +412,10 @@ func validateSlideManifest(value SlideManifest, path, deckID, deckTarget, target
 }
 
 func validateItem(item *Item, slide *Slide, validation *Validation) {
+	if item.Documentation != nil && !ValidDocumentationLink(manifestSagaID(item.Target), *item.Documentation) {
+		addIssue(validation, "error", item.Path, "documentation requires a canonical Component/System target and its exact revision URN")
+	}
+
 	if item.Version != DeckRecordVersion || !ValidMarkdownAnchor(item.ID) || !itemKinds[item.Kind] || strings.TrimSpace(item.Label) == "" {
 		addIssue(validation, "error", item.Path, "item requires version 4, a lowercase stable id, a supported kind, and a label")
 	}
@@ -513,8 +517,9 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 }
 
 // validateDeckRole enforces what each deck location may hold. A feature's
-// implementation deck explains code, so its Items own code evidence and never
-// reference records. The onboarding deck explains the app, so every Item
+// implementation deck owns scoped code evidence and keeps Item.Record empty;
+// its separate Documentation pin never transfers evidence. The onboarding deck
+// explains the app, so every Item
 // references a persona, feature, or story record and owns no code evidence.
 func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 	if deck.Role != role {
@@ -522,6 +527,11 @@ func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 	}
 	for _, slide := range deck.Slides {
 		for _, item := range slide.Items {
+			if item.Documentation != nil {
+				if role == DeckRoleOnboarding || !ValidDocumentationLink(sagaID, *item.Documentation) {
+					addIssue(validation, "error", item.Path, "documentation must pin a Component or System revision on an implementation or review Item")
+				}
+			}
 			switch role {
 			case DeckRoleReview:
 				// A review Item may reference the code the change touched,
@@ -568,4 +578,15 @@ func validRecordOfKinds(sagaID, value string, kinds []string) bool {
 		}
 	}
 	return false
+}
+
+// ValidDocumentationLink checks syntax only; inventory readers report missing,
+// retired, stale and conflicted targets separately without rewriting old pins.
+func ValidDocumentationLink(sagaID string, link DocumentationLink) bool {
+	if !validRecordOfKinds(sagaID, link.Target, []string{"component", "system"}) {
+		return false
+	}
+	prefix := link.Target + ":revision:"
+	id := strings.TrimPrefix(link.Revision, prefix)
+	return id != link.Revision && stableID.MatchString(id)
 }

@@ -83,6 +83,15 @@ Both navigation surfaces are built from manifests rather than incidental
 rendered state, so every destination remains addressable before its content is
 active.
 
+Implementation and review Items may also pin reusable Component or System
+definitions. Their book control and linked node open the saved definition in
+the same drawer, with directed Component interactions and exact code. Nested
+definitions have a back control; Escape restores the original Item control and
+keeps the slide hash/position. Display stale, retired, conflicted, or missing
+pins honestly. Neither navigation nor a newer definition repins the Item or
+changes a decision. Inventory and interaction code are fetched on demand, never
+embedded as a graph in every review shell.
+
 ## The page is a shell
 
 For v4, `GET /` renders the deck and slide manifests, thumbnail navigator, and

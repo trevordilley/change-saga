@@ -61,19 +61,20 @@ type SlideTransactionAsset struct {
 }
 
 type SlideTransactionItemRequest struct {
-	ID             string                `json:"id"`
-	Rank           int                   `json:"rank"`
-	Kind           string                `json:"kind"`
-	Label          string                `json:"label"`
-	Description    string                `json:"description"`
-	Selector       saga.LandmarkSelector `json:"selector"`
-	Hotspot        *saga.LandmarkRegion  `json:"hotspot,omitempty"`
-	About          string                `json:"about,omitempty"`
-	Body           string                `json:"body,omitempty"`
-	Placement      string                `json:"placement,omitempty"`
-	Leader         string                `json:"leader,omitempty"`
-	Evidence       []saga.CodeFile       `json:"evidence"`
-	CriterionLinks []saga.CriterionLink  `json:"criterion_links"`
+	Documentation  *saga.DocumentationLink `json:"documentation,omitempty"`
+	ID             string                  `json:"id"`
+	Rank           int                     `json:"rank"`
+	Kind           string                  `json:"kind"`
+	Label          string                  `json:"label"`
+	Description    string                  `json:"description"`
+	Selector       saga.LandmarkSelector   `json:"selector"`
+	Hotspot        *saga.LandmarkRegion    `json:"hotspot,omitempty"`
+	About          string                  `json:"about,omitempty"`
+	Body           string                  `json:"body,omitempty"`
+	Placement      string                  `json:"placement,omitempty"`
+	Leader         string                  `json:"leader,omitempty"`
+	Evidence       []saga.CodeFile         `json:"evidence"`
+	CriterionLinks []saga.CriterionLink    `json:"criterion_links"`
 }
 
 type SlideSemanticDiff struct {
@@ -225,6 +226,22 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			result.PreviousSnapshot = storedPreviousSnapshot(record, storedIndex)
 			return nil
 		}
+		for _, item := range revision.Items {
+			retained := false
+			if previous != nil {
+				for _, old := range previous.Items {
+					if old.Item.ID == item.Item.ID && reflect.DeepEqual(old.Item.Documentation, item.Item.Documentation) {
+						retained = true
+					}
+				}
+			}
+			if retained {
+				continue
+			}
+			if err := requireDocumentation(root, document.Manifest.ID, item.Item.Documentation); err != nil {
+				return err
+			}
+		}
 		if err := validateTransactionCriteria(document, revision.Items); err != nil {
 			return err
 		}
@@ -348,7 +365,7 @@ func buildSlideTransactionRevision(request SlideTransactionRequest, assetName, a
 		item := saga.ItemManifest{
 			Version: saga.DeckRecordVersion, ID: input.ID, SlideID: request.Slide.ID, Rank: input.Rank, Kind: input.Kind,
 			Label: input.Label, Description: strings.TrimSpace(input.Description), Selector: input.Selector, Hotspot: input.Hotspot,
-			About: input.About, Body: input.Body, Placement: input.Placement, Leader: input.Leader,
+			About: input.About, Body: input.Body, Placement: input.Placement, Leader: input.Leader, Documentation: input.Documentation,
 		}
 		revision.Items = append(revision.Items, saga.TransactionItem{Item: item, Evidence: append([]saga.CodeFile{}, input.Evidence...), CriterionLinks: append([]saga.CriterionLink{}, input.CriterionLinks...)})
 	}
