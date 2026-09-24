@@ -17,6 +17,34 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
+func TestQualifiedDiagramIDs(t *testing.T) {
+	root := newAuthoredSaga(t)
+	var output bytes.Buffer
+	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--feature-qualified-id", "--objective", "Explain the flow.", root, "arch"}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := AddSlide(context.Background(), []string{"--deck", "core--arch", "--feature-qualified-id", "--intent", "explain", "--layout", "diagram", root, "flow"}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := AddItem(context.Background(), []string{"--slide", "core--flow", "--kind", "node", "--element-id", "slide-title", "--description", "The request entry point.", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--id", "legacy-deck", "--objective", "Keep caller identity.", root, "legacy"}, &output); err != nil {
+		t.Fatal(err)
+	}
+	document, validation, err := saga.Load(root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("load: valid=%v err=%v issues=%#v", validation.Valid, err, validation.Issues)
+	}
+	generated := findDeck(document, "core--arch")
+	if generated == nil || generated.ID != "core--arch" || len(generated.Slides) != 1 || generated.Slides[0].ID != "core--flow" || generated.Slides[0].Items[0].ID != "slide-title" {
+		t.Fatalf("generated diagram identities = %#v", generated)
+	}
+	if explicit := findDeck(document, "legacy-deck"); explicit == nil || explicit.ID != "legacy-deck" {
+		t.Fatalf("explicit id was changed: %#v", explicit)
+	}
+}
+
 func TestImplementationDeckAuthoringLoop(t *testing.T) {
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")

@@ -25,6 +25,7 @@ package applayout
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -87,10 +88,46 @@ var AppRootDirs = []string{OverviewDir, PersonasDir, DesignSystemDir, Onboarding
 // FeatureRootDirs are the reserved directories allowed directly beneath a feature.
 var FeatureRootDirs = []string{RequirementsDir, DesignDir, SlidesDir, QualityDir, WorkplanDir}
 
-var stableID = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$`)
+var (
+	stableID          = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$`)
+	unsafeQualifiedID = regexp.MustCompile(`[^a-z0-9]+`)
+)
 
 // ValidID reports whether value is a stable identifier.
 func ValidID(value string) bool { return stableID.MatchString(value) }
+
+// FeatureQualifiedID returns the deterministic ID used when feature-qualified
+// generation is requested for a deck or slide without an explicit ID.
+// Existing and explicitly supplied IDs are never rewritten. The double hyphen
+// keeps the feature and local portions visually distinct while remaining
+// inside the stable-ID grammar used by every existing URN.
+func FeatureQualifiedID(feature, local string) string {
+	feature = qualifiedIDPart(feature, 60)
+	local = qualifiedIDPart(local, 60)
+	const separator = "--"
+	maximumLocal := 128 - len(feature) - len(separator)
+	if len(local) > maximumLocal {
+		local = strings.Trim(local[:maximumLocal], "-")
+	}
+	if local == "" {
+		local = "item"
+	}
+	return feature + separator + local
+}
+
+func qualifiedIDPart(value string, maximum int) string {
+	value = strings.ToLower(strings.TrimSpace(value))
+	value = unsafeQualifiedID.ReplaceAllString(value, "-")
+	value = strings.Trim(value, "-")
+	if value == "" {
+		value = "item"
+	}
+	if len(value) <= maximum {
+		return value
+	}
+	sum := sha256.Sum256([]byte(value))
+	return strings.Trim(value[:maximum-9], "-") + "-" + fmt.Sprintf("%x", sum[:4])
+}
 
 // FeatureManifest is the immutable identity of one durable product domain.
 type FeatureManifest struct {

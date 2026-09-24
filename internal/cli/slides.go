@@ -31,6 +31,7 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	id := flags.String("id", "", "stable deck identifier")
 	title := flags.String("title", "", "deck title")
 	role := flags.String("role", "change", "deck role: change for a feature's implementation deck, onboarding for the app's onboarding deck")
+	qualifiedID := flags.Bool("feature-qualified-id", false, "generate <feature>--<name> when --id is omitted")
 	feature := featureIDFlag(flags)
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative review order; defaults after the last deck")
@@ -42,8 +43,9 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("usage: %s", commandUsage["add-deck"])
 	}
 	name := store.Slug(strings.TrimSuffix(flags.Arg(1), ".deck"))
-	if *id == "" {
-		*id = name
+	implicitID := *id == ""
+	if *qualifiedID && !implicitID {
+		return fmt.Errorf("--feature-qualified-id cannot be combined with --id")
 	}
 	if *title == "" {
 		*title = strings.ReplaceAll(name, "-", " ")
@@ -56,9 +58,6 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	}
 	var created, target string
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		if !saga.ValidID(*id) || targetIDExists(document, *id) {
-			return fmt.Errorf("deck id %q is invalid or already used", *id)
-		}
 		var slidesRoot string
 		var peers []*saga.Deck
 		switch *role {
@@ -67,11 +66,22 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 			if err != nil {
 				return err
 			}
+			if implicitID && *qualifiedID {
+				*id = applayout.FeatureQualifiedID(target.ID, name)
+			} else if implicitID {
+				*id = name
+			}
 			slidesRoot = filepath.Join(target.Dir, saga.EmbeddedSlidesDir)
 			if found := document.FindFeature(target.ID); found != nil {
 				peers = found.Decks
 			}
 		case saga.DeckRoleOnboarding:
+			if *qualifiedID {
+				return fmt.Errorf("--feature-qualified-id is only for feature-owned implementation decks")
+			}
+			if implicitID {
+				*id = name
+			}
 			if *feature != "" {
 				return fmt.Errorf("the onboarding deck belongs to the app, not a feature; omit --feature")
 			}
@@ -81,6 +91,9 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 			slidesRoot = filepath.Join(document.Root, applayout.OnboardingDir)
 		default:
 			return fmt.Errorf("--role must be change or onboarding")
+		}
+		if !saga.ValidID(*id) || targetIDExists(document, *id) {
+			return fmt.Errorf("deck id %q is invalid or already used", *id)
 		}
 		chosenRank := rank.value
 		if !rank.set {
@@ -149,6 +162,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	entrypoint := flags.String("entrypoint", "slide.svg", "simple filename whose extension selects the compact slide asset name")
 	feature := featureIDFlag(flags)
 	reviewID := flags.String("review", "", "add the slide to this pull request review's deck instead of --deck")
+	qualifiedID := flags.Bool("feature-qualified-id", false, "generate <feature>--<name> when --id is omitted")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -156,8 +170,9 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("usage: %s", commandUsage["add-slide"])
 	}
 	name := store.Slug(strings.TrimSuffix(flags.Arg(1), ".slide"))
-	if *id == "" {
-		*id = name
+	implicitID := *id == ""
+	if *qualifiedID && !implicitID {
+		return fmt.Errorf("--feature-qualified-id cannot be combined with --id")
 	}
 	if *title == "" {
 		*title = strings.ReplaceAll(name, "-", " ")
@@ -207,6 +222,12 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 		var deck *saga.Deck
 		target = saga.SlideTarget(document.Manifest.ID, *id)
 		if *reviewID != "" {
+			if *qualifiedID {
+				return fmt.Errorf("--feature-qualified-id is only for feature-owned implementation slides")
+			}
+			if implicitID {
+				*id = name
+			}
 			review, err := findReviewDeck(document, *reviewID)
 			if err != nil {
 				return err
@@ -227,6 +248,16 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 			if err := assertDeckFeature(document, *feature, deck.Path, deck.Target); err != nil {
 				return err
 			}
+			if implicitID && *qualifiedID {
+				holding := saga.FeatureOf(deck.Path)
+				if holding == "" {
+					return fmt.Errorf("--feature-qualified-id is only for feature-owned implementation slides")
+				}
+				*id = applayout.FeatureQualifiedID(holding, name)
+			} else if implicitID {
+				*id = name
+			}
+			target = saga.SlideTarget(document.Manifest.ID, *id)
 			if !saga.ValidID(*id) || targetIDExists(document, *id) {
 				return fmt.Errorf("slide id %q is invalid or already used", *id)
 			}

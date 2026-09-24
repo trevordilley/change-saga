@@ -21,6 +21,175 @@ var (
 	faultHook  func(string, string) error
 )
 
+type WriteBatchEntry struct {
+	Path      string
+	Data      []byte
+	Exclusive bool
+}
+
+// WriteBatch prepares every file before publishing any of them, then commits
+// the set while the caller holds its domain lock. If publication fails, it
+// makes a best-effort rollback of entries already published and joins every
+// rollback failure to the publication error. Old bytes are staged separately
+// before publication and retained at the path named in the error if restoration
+// fails. This is not reader-atomic or crash-atomic across files; only each
+// individual create or replacement has the atomicity of its filesystem call.
+func WriteBatch(entries []WriteBatchEntry) (err error) {
+	type prepared struct {
+		WriteBatchEntry
+		temp           string
+		recovery       string
+		old            []byte
+		oldMode        fs.FileMode
+		hadOld         bool
+		committed      bool
+		retainRecovery bool
+	}
+	values := make([]prepared, len(entries))
+	seen := map[string]bool{}
+	defer func() {
+		for i := range values {
+			if values[i].temp != "" {
+				_ = os.Remove(values[i].temp)
+			}
+			if values[i].recovery != "" && !values[i].retainRecovery {
+				_ = os.Remove(values[i].recovery)
+			}
+		}
+	}()
+	for index, entry := range entries {
+		path, absErr := filepath.Abs(entry.Path)
+		if absErr != nil {
+			return absErr
+		}
+		if seen[path] {
+			return fmt.Errorf("batch writes %s more than once", filepath.Base(path))
+		}
+		seen[path] = true
+		values[index].WriteBatchEntry = entry
+		values[index].Path = path
+		info, statErr := os.Lstat(path)
+		if statErr == nil {
+			if entry.Exclusive {
+				return fs.ErrExist
+			}
+			if !info.Mode().IsRegular() || info.Mode()&os.ModeSymlink != 0 {
+				return fmt.Errorf("batch destination %s must be a regular file", filepath.Base(path))
+			}
+			values[index].old, err = os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			values[index].oldMode, values[index].hadOld = info.Mode().Perm(), true
+		} else if !errors.Is(statErr, fs.ErrNotExist) {
+			return statErr
+		} else if !entry.Exclusive {
+			return statErr
+		}
+		dir := filepath.Dir(path)
+		parent, parentErr := os.Stat(dir)
+		if parentErr != nil {
+			return parentErr
+		}
+		if !parent.IsDir() {
+			return fmt.Errorf("batch destination parent is not a directory")
+		}
+		temp, createErr := os.CreateTemp(dir, ".change-saga-batch-*")
+		if createErr != nil {
+			return createErr
+		}
+		values[index].temp = temp.Name()
+		if err = temp.Chmod(0o644); err == nil {
+			_, err = temp.Write(entry.Data)
+		}
+		if err == nil {
+			err = temp.Sync()
+		}
+		closeErr := temp.Close()
+		if err == nil {
+			err = closeErr
+		}
+		if err != nil {
+			return err
+		}
+		if values[index].hadOld {
+			recovery, createErr := os.CreateTemp(dir, ".change-saga-recovery-*")
+			if createErr != nil {
+				return createErr
+			}
+			values[index].recovery = recovery.Name()
+			if err = recovery.Chmod(values[index].oldMode); err == nil {
+				_, err = recovery.Write(values[index].old)
+			}
+			if err == nil {
+				err = recovery.Sync()
+			}
+			closeErr := recovery.Close()
+			if err == nil {
+				err = closeErr
+			}
+			if err != nil {
+				return err
+			}
+		}
+	}
+	rollback := func(last int) error {
+		var rollbackErrors []error
+		for index := last; index >= 0; index-- {
+			value := &values[index]
+			if !value.committed {
+				continue
+			}
+			if rollbackErr := injectFault("before-batch-rollback", value.Path); rollbackErr != nil {
+				if value.hadOld {
+					value.retainRecovery = true
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("restore %s: %w; recovery content retained at %s", value.Path, rollbackErr, value.recovery))
+				} else {
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("remove newly published %s: %w; published content remains at %s", value.Path, rollbackErr, value.Path))
+				}
+				continue
+			}
+			if value.hadOld {
+				if rollbackErr := WriteFile(value.Path, value.old, value.oldMode, false); rollbackErr != nil {
+					value.retainRecovery = true
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("restore %s: %w; recovery content retained at %s", value.Path, rollbackErr, value.recovery))
+				}
+			} else {
+				if rollbackErr := os.Remove(value.Path); rollbackErr != nil {
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("remove newly published %s: %w; published content remains at %s", value.Path, rollbackErr, value.Path))
+					continue
+				}
+				if rollbackErr := SyncDir(filepath.Dir(value.Path)); rollbackErr != nil {
+					rollbackErrors = append(rollbackErrors, fmt.Errorf("sync rollback removal of %s: %w", value.Path, rollbackErr))
+				}
+			}
+		}
+		return errors.Join(rollbackErrors...)
+	}
+	for index := range values {
+		value := &values[index]
+		if err = injectFault("before-batch-commit", value.Path); err != nil {
+			return errors.Join(err, rollback(index-1))
+		}
+		if value.Exclusive {
+			err = os.Link(value.temp, value.Path)
+		} else {
+			err = os.Rename(value.temp, value.Path)
+			if err == nil {
+				value.temp = ""
+			}
+		}
+		if err == nil {
+			value.committed = true
+			err = SyncDir(filepath.Dir(value.Path))
+		}
+		if err != nil {
+			return errors.Join(err, rollback(index))
+		}
+	}
+	return nil
+}
+
 // WriteJSON writes one complete JSON record without exposing a partially
 // written destination. The destination's parent directory must already exist.
 func WriteJSON(path string, value any, exclusive bool) error {

@@ -182,3 +182,103 @@ func TestSagaLockSerializesConcurrentWritersAndTimesOut(t *testing.T) {
 		t.Fatalf("maximum concurrent writers = %d, want 1", maximum)
 	}
 }
+
+func TestWriteBatchRollsBackPublishedFilesOnFailure(t *testing.T) {
+	dir := t.TempDir()
+	existing := filepath.Join(dir, "existing.json")
+	created := filepath.Join(dir, "created.json")
+	if err := os.WriteFile(existing, []byte("old\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	faultHook = func(point, path string) error {
+		if point == "before-batch-commit" && path == existing {
+			return errors.New("injected batch failure")
+		}
+		return nil
+	}
+	t.Cleanup(func() { faultHook = nil })
+	err := WriteBatch([]WriteBatchEntry{
+		{Path: created, Data: []byte("new\n"), Exclusive: true},
+		{Path: existing, Data: []byte("changed\n")},
+	})
+	if err == nil || !strings.Contains(err.Error(), "injected batch failure") {
+		t.Fatalf("batch error = %v", err)
+	}
+	if _, err := os.Stat(created); !os.IsNotExist(err) {
+		t.Fatalf("created file survived rollback: %v", err)
+	}
+	if got, err := os.ReadFile(existing); err != nil || string(got) != "old\n" {
+		t.Fatalf("existing file after rollback = %q, %v", got, err)
+	}
+}
+
+func TestWriteBatchReportsRollbackFailureAndRetainsRecoveryContent(t *testing.T) {
+	dir := t.TempDir()
+	existing := filepath.Join(dir, "existing.json")
+	blocked := filepath.Join(dir, "blocked.json")
+	if err := os.WriteFile(existing, []byte("old\n"), 0o640); err != nil {
+		t.Fatal(err)
+	}
+	faultHook = func(point, path string) error {
+		switch {
+		case point == "before-batch-commit" && path == blocked:
+			return errors.New("injected publish failure")
+		case point == "before-batch-rollback" && path == existing:
+			return errors.New("injected restore failure")
+		default:
+			return nil
+		}
+	}
+	t.Cleanup(func() { faultHook = nil })
+
+	err := WriteBatch([]WriteBatchEntry{
+		{Path: existing, Data: []byte("new\n")},
+		{Path: blocked, Data: []byte("created\n"), Exclusive: true},
+	})
+	if err == nil || !strings.Contains(err.Error(), "injected publish failure") || !strings.Contains(err.Error(), "injected restore failure") {
+		t.Fatalf("joined batch error = %v", err)
+	}
+	marker := "recovery content retained at "
+	position := strings.Index(err.Error(), marker)
+	if position < 0 {
+		t.Fatalf("batch error omits recovery path: %v", err)
+	}
+	recovery := strings.TrimSpace(err.Error()[position+len(marker):])
+	if got, readErr := os.ReadFile(recovery); readErr != nil || string(got) != "old\n" {
+		t.Fatalf("recovery content = %q, %v; error was %v", got, readErr, err)
+	}
+	if got, readErr := os.ReadFile(existing); readErr != nil || string(got) != "new\n" {
+		t.Fatalf("failed restoration should leave published value visible: %q, %v", got, readErr)
+	}
+}
+
+func TestWriteBatchCleansPreparedTempAfterRenameFailure(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "record.json")
+	if err := os.WriteFile(path, []byte("old\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	faultHook = func(point, target string) error {
+		if point != "before-batch-commit" || target != path {
+			return nil
+		}
+		if err := os.Remove(path); err != nil {
+			return err
+		}
+		return os.Mkdir(path, 0o755)
+	}
+	t.Cleanup(func() { faultHook = nil })
+
+	if err := WriteBatch([]WriteBatchEntry{{Path: path, Data: []byte("new\n")}}); err == nil {
+		t.Fatal("WriteBatch succeeded despite rename destination becoming a directory")
+	}
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range entries {
+		if strings.HasPrefix(entry.Name(), ".change-saga-batch-") || strings.HasPrefix(entry.Name(), ".change-saga-recovery-") {
+			t.Fatalf("temporary state remained after rename failure: %s", entry.Name())
+		}
+	}
+}

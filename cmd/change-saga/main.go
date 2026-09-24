@@ -131,6 +131,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Status(ctx, args[1:], stdout)
 	case "check":
 		err = cli.Check(ctx, args[1:], stdout)
+	case "preintegrate":
+		err = cli.Preintegrate(ctx, args[1:], stdout)
 	case "query":
 		err = cli.Query(ctx, args[1:], stdout)
 	case "visual-qa":

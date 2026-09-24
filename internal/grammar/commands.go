@@ -217,6 +217,20 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "story withdraw", Status: StatusImplemented, Mutates: true, Writes: []string{"story-event"},
+		Usage:       "change-saga story withdraw --story URN --event ID --parent URN... --reason TEXT [flags] <saga>",
+		Summary:     "withdraw a proposed or deferred story through an explicit rejected lifecycle event; accepted intent is refused",
+		Flags:       []Flag{featureIDFlag, required("story", "URN", "canonical proposed or deferred story URN"), required("event", "ID", "new rejected lifecycle event id"), repeatable("parent", "URN", "current lifecycle head URN", true), required("reason", "TEXT", "why the proposal is withdrawn"), requestIDFlag, jsonFlag},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "story consolidate", Status: StatusImplemented, Mutates: true, Writes: []string{"story-event", "relation"},
+		Usage:       "change-saga story consolidate --duplicate URN --canonical URN --event ID --parent URN... --map FROM=TO... --reason TEXT [--apply] [flags] <saga>",
+		Summary:     "preview and explicitly consolidate a duplicate proposal with exhaustive criterion mapping and safe relation replacement",
+		Flags:       []Flag{featureIDFlag, required("duplicate", "URN", "duplicate story URN"), required("canonical", "URN", "canonical existing story URN"), required("event", "ID", "new rejected or retired lifecycle event id"), repeatable("parent", "URN", "current duplicate lifecycle head URN", true), repeatable("map", "FROM=TO", "duplicate criterion URN to canonical criterion URN", true), required("reason", "TEXT", "why the proposals are consolidated"), optional("apply", "", "apply the validated preview"), jsonFlag},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "criterion add", Status: StatusImplemented, Mutates: true, Writes: []string{"story-revision"},
 		Usage:   "change-saga criterion add --story URN --parent REVISION --revision ID --id ID --statement TEXT [flags] <saga>",
 		Summary: "write a complete story revision that adds the narrowest independent pass/fail obligation supported by confirmed intent",
@@ -328,6 +342,7 @@ var commands = []Command{
 		Summary: "create a feature's implementation deck, or with --role onboarding the app's onboarding deck whose Items reference records",
 		Flags: []Flag{optional("feature", "ID", "feature whose implementation deck this is; required unless --role onboarding"),
 			optional("id", "ID", "stable deck id"), optional("title", "TEXT", "deck title"), optional("role", "ROLE", "change (a feature's implementation deck, the default) or onboarding (the app's onboarding deck)"),
+			optional("feature-qualified-id", "", "generate <feature>--<name> when --id is omitted"),
 			optional("rank", "N", "review order"), optional("objective", "TEXT", "one concise reviewer objective"),
 		},
 		Positionals: []string{"<saga>", "<name>"},
@@ -462,6 +477,14 @@ var commands = []Command{
 			optional("stale", "", "list only stale references"), optional("diff", "", "include each stale reference's diff since its pin"),
 			jsonFlag, optional("repo", "PATH", "source checkout when separate"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 			againstFlag, headFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "preintegrate", Status: StatusImplemented, Usage: "change-saga preintegrate --ref REF --ref REF [--repo PATH] [--json] <saga>",
+		Summary: "read explicit committed refs and report semantic convergence risks without choosing equivalence or changing Git",
+		Flags: []Flag{
+			repeatable("ref", "REF", "explicit committed Git ref to compare", true), optional("repo", "PATH", "Git repository containing the refs and Saga"), jsonFlag,
 		},
 		Positionals: sagaOnly,
 	},
