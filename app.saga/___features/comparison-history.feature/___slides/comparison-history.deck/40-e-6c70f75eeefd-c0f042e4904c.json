@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "path": "internal/server/template.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:1e96463a563eaab1e57a17db96e5e175719eb878e85d482f8b08a86f2ddff596",
+      "note": "The selected-file stream URL adds the requested limit only when its view provides one."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "bounded-stream",
+  "slide": "pr-code-batching",
+  "rank": 30,
+  "kind": "statement",
+  "label": "Bounds and source-bound cursors",
+  "description": "The endpoint retains its default of 50 and cap of 200. Continuations bind to source catalog identity and file; a changed source rejects the old cursor.",
+  "selector": {
+    "type": "element",
+    "element_id": "bounded-stream"
+  }
+}

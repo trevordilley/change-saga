@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "fresh-validation",
+  "slide": "pr-code-batching",
+  "rank": 20,
+  "kind": "region",
+  "label": "Fresh work for every page",
+  "description": "Each request loads and validates Saga data, resolves the current review range, reads the catalog and selected file, then returns a bounded row window. No Saga or file model is retained between requests.",
+  "selector": {
+    "type": "element",
+    "element_id": "fresh-validation"
+  }
+}

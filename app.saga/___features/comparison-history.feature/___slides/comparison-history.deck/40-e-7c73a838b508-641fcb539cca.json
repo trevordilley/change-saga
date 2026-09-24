@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "path": "internal/server/reviewcode.go",
+      "start": 136,
+      "end": 145,
+      "digest": "sha256:365507f0c31a53eef773d35e2e07ed39c0afd297424369aec8bbfcbf9a7dca03",
+      "note": "The file paging key includes source catalog identity and literal file path before row slicing."
+    }
+  ]
+}

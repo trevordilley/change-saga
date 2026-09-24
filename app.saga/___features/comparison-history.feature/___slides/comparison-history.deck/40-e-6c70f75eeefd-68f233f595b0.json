@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "path": "internal/server/incremental.go",
+      "start": 161,
+      "end": 168,
+      "digest": "sha256:ace813f522f1cfa02337275256a8fae43c0de75be6f9cc3723000363cfd054ef",
+      "note": "An optional view field preserves ordinary default behavior when zero."
+    }
+  ]
+}

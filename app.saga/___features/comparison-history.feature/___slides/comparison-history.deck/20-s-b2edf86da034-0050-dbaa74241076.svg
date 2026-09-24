@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">PR Code Diff uses larger bounded pages</title><desc id="desc">A 573 row file moves from twelve 50 row requests to three requests capped at 200 rows. Every request still validates current Saga data and source identity. Browser completion improves but first row latency does not.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#46627c"/></marker></defs>
+<style>text{font-family:system-ui,sans-serif;fill:#17314a}.title{font-size:34px;font-weight:750}.label{font-size:22px;font-weight:700}.small{font-size:18px}.tiny{font-size:15px}.line{stroke:#46627c;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
+<rect width="1280" height="720" fill="#f3f7fa"/>
+<text x="56" y="60" class="title">Same 573 rows, fewer repeated requests</text>
+<text x="56" y="99" class="small">The PR Code Diff requests the existing 200-row cap; other callers keep their defaults.</text>
+<g id="baseline"><text x="56" y="154" class="label">50 rows / request</text><text x="56" y="184" class="small">12 requests</text>
+<rect x="310" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="341" y="171" text-anchor="middle" class="small">50</text>
+<rect x="382" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="413" y="171" text-anchor="middle" class="small">50</text>
+<rect x="454" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="485" y="171" text-anchor="middle" class="small">50</text>
+<rect x="526" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="557" y="171" text-anchor="middle" class="small">50</text>
+<rect x="598" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="629" y="171" text-anchor="middle" class="small">50</text>
+<rect x="670" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="701" y="171" text-anchor="middle" class="small">50</text>
+<rect x="742" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="773" y="171" text-anchor="middle" class="small">50</text>
+<rect x="814" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="845" y="171" text-anchor="middle" class="small">50</text>
+<rect x="886" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="917" y="171" text-anchor="middle" class="small">50</text>
+<rect x="958" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="989" y="171" text-anchor="middle" class="small">50</text>
+<rect x="1030" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="1061" y="171" text-anchor="middle" class="small">50</text>
+<rect x="1102" y="130" width="62" height="66" rx="8" fill="#d6e3ee" stroke="#6e879d"/><text x="1133" y="171" text-anchor="middle" class="small">23</text>
+</g><g id="batched"><text x="56" y="266" class="label">200 rows / request</text><text x="56" y="296" class="small">3 requests</text>
+<rect x="310" y="238" width="278" height="66" rx="8" fill="#bde9dc" stroke="#2d8267"/><text x="449" y="279" text-anchor="middle" class="label">200 rows</text>
+<rect x="598" y="238" width="278" height="66" rx="8" fill="#bde9dc" stroke="#2d8267"/><text x="737" y="279" text-anchor="middle" class="label">200 rows</text>
+<rect x="886" y="238" width="278" height="66" rx="8" fill="#bde9dc" stroke="#2d8267"/><text x="1025" y="279" text-anchor="middle" class="label">173 rows</text>
+</g>
+<g id="fresh-validation"><rect x="56" y="358" width="1168" height="122" rx="16" fill="white" stroke="#b7c9d8"/>
+<text x="80" y="395" class="label">Every request still recomputes current data</text>
+<text x="80" y="444" class="small">Load + validate Saga</text><path d="M278 438H333" class="line"/>
+<text x="354" y="444" class="small">Resolve review range</text><path d="M551 438H603" class="line"/>
+<text x="624" y="444" class="small">Read catalog + file</text><path d="M808 438H861" class="line"/>
+<text x="882" y="444" class="small">Return bounded rows</text></g>
+<g id="bounded-stream"><text x="56" y="531" class="label">Cursor must match source identity + file</text>
+<text x="56" y="564" class="small">Default 50 · cap 200 · changed source rejects old cursor · no cross-request cache</text></g>
+<g id="measurement"><rect x="56" y="602" width="1168" height="81" rx="12" fill="#17314a"/>
+<text x="80" y="637" style="fill:white" class="label">All rows: 6.58 s → 4.66 s browser median</text>
+<text x="80" y="665" style="fill:#d7e6f0" class="tiny">Five contexts per version, warm host · first row did not improve · measured 2026-09-24 on Apple M3 Pro</text></g>
+</svg>

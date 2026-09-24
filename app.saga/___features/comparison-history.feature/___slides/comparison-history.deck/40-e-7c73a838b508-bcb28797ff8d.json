@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "path": "internal/server/incremental.go",
+      "start": 18,
+      "end": 23,
+      "digest": "sha256:eac28d7332237cc9e5f8d5b243575df6b57a2328ce2185f00ffca9d4185293d5",
+      "note": "Preserves default/cap and rejects a cursor whose source-bound key or checksum does not match."
+    },
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "path": "internal/server/incremental.go",
+      "start": 94,
+      "end": 120,
+      "digest": "sha256:98432eab44af4870342e1aa8942080487734cbcc40391ca479f4b9cc53da78d8",
+      "note": "Preserves default/cap and rejects a cursor whose source-bound key or checksum does not match."
+    }
+  ]
+}
