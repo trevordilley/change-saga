@@ -4,6 +4,40 @@ Read this reference for personas, stories, criteria, requirement citations,
 relations, or lifecycle changes. Read [query.md](query.md) first for an
 existing Saga. Discover exact mutation syntax from the installed CLI.
 
+## Ground the interview before drafting
+
+This applies to candidate stories in conversation, not only persisted records.
+An interview builds on the Saga's structured knowledge rather than starting
+with a blank template:
+
+1. Before proposing an "As a ...", query the existing personas. If the ID is
+   unknown, enumerate `query personas --saga PATH` and page to completion;
+   otherwise select the known ID or URN. Read definitions, current revision
+   heads, and lifecycle state. Match by responsibilities and needs, not just
+   the name. Name the selected persona and give its stable ID or URN alongside
+   a candidate story. Do not replace a defined persona with a generic role.
+2. Query the relevant feature context and existing requirements before
+   proposing a new story; use their terms, relations, and linked technical
+   definitions when they bear on the requested outcome. Prefer refining an
+   existing story when it already expresses the intent. Follow the query
+   reference's snapshot and pagination rules; read exact definitions where a
+   compact index leaves uncertainty.
+3. Briefly explain the relevant existing context, then ask about the missing
+   outcome, value, or observable behavior. Do not ask the user to restate facts
+   already established by those records or the conversation. Separate the
+   user's confirmed intent from candidate wording and open questions; do not
+   turn a proposed UI or the current implementation into a requirement.
+4. If several personas fit, present the actual candidates and ask which
+   outcome belongs to whom. If none fits, explicitly propose a new persona for
+   confirmation rather than silently inventing one. Retired or conflicted
+   definitions are not an unambiguous current choice. If querying is blocked,
+   report that limitation and leave the persona unresolved.
+
+Continue to capture only confirmed obligations. Interviewing does not itself
+accept a story, authorize a new persona, or authorize implementation. When
+authoring is requested, use the queried identities and supported typed persona
+links; never substitute prose mentions for those links.
+
 ## Model the product outcome
 
 A persona is a person who gets value from the app: the "As a ..." in a user

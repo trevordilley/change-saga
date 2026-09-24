@@ -133,7 +133,12 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 		},
 		{
 			name: "accepted story with provenance", fixture: "Add an accepted customer story with one confirmed criterion and its source citation.",
-			rowHint: "Author or revise personas", want: []string{"references/query.md", "references/stories.md"},
+			rowHint: "author or revise personas", want: []string{"references/query.md", "references/stories.md"},
+			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
+			name: "feature interview before a candidate story", fixture: "Interview me about reusable architecture, using the personas already in app.saga before drafting stories.",
+			rowHint: "Interview for a feature", want: []string{"references/query.md", "references/stories.md"},
 			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{

@@ -59,7 +59,7 @@ reference. When a task crosses rows, combine only those rows.
 | --- | --- |
 | Inspect or navigate an existing Saga; load compact feature context; resolve current heads, conflicts, evidence, or history | [Reading through the query API](references/query.md) |
 | Audit whether one feature has a current, exact implementation handoff | [Reading through the query API](references/query.md) |
-| Author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
+| Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |
 | Author Component/System definitions, their interactions, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
@@ -75,6 +75,11 @@ from a planned capability or another branch. Discover new CLI or query support
 from the installed binary before using it.
 
 ## Work at the requested scope
+
+Before drafting even a conversational candidate story for an existing Saga,
+query its personas and relevant product context. Use the actual persona name
+and stable identity, not a generic role invented from the conversation. Follow
+the grounded interview workflow in [stories and provenance](references/stories.md).
 
 For a new story, capture a persona-focused outcome and independent,
 observable pass/fail criteria. A proposed story may remain criterion-free
