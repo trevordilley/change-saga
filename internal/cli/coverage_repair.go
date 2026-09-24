@@ -184,6 +184,21 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 		}
 	}
 	walk(document.Section)
+	for _, review := range document.Reviews {
+		if review.Deck == nil {
+			continue
+		}
+		for _, slide := range review.Deck.Slides {
+			for _, item := range slide.Items {
+				for _, file := range item.Code {
+					if filepath.ToSlash(file.Path) == clean && review.Merged != nil {
+						return coverageRecordLocation{}, fmt.Errorf("review %q is history: its evidence cannot be repaired after landing", review.ID)
+					}
+				}
+				consider(item.Code)
+			}
+		}
+	}
 	if transactionTarget != "" {
 		return coverageRecordLocation{}, completeSlideMutationError("remove-coverage or replace-coverage", transactionTarget)
 	}
