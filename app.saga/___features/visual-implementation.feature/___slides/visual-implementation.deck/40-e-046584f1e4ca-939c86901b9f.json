@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/appjs.go",
+      "start": 48,
+      "end": 54,
+      "digest": "sha256:729b8948b45e3a5e99fd748f2933a29b6936bff6f174ca360187f1a10f1148ec",
+      "note": "Each Item reports code, story and documentation ownership separately; the saved-definition control can activate its contextual visual."
+    }
+  ]
+}

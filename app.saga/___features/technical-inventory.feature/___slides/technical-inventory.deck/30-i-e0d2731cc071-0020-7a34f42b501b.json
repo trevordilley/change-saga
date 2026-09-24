@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "transaction",
+  "slide": "technical-inventory-authoring",
+  "rank": 20,
+  "kind": "node",
+  "label": "Slide authoring",
+  "description": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable.",
+  "selector": {
+    "type": "element",
+    "element_id": "transaction"
+  }
+}

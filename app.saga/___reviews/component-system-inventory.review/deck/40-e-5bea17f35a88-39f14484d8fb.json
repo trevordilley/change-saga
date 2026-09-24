@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/reviewapp/types.go",
+      "start": 233,
+      "end": 246,
+      "digest": "sha256:25fd01c264554fb1bdacfc03059d077b2ab7c6bd50376af39661fc1f0ffd9191",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    }
+  ]
+}

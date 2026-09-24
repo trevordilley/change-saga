@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "technical-inventory-navigation",
+  "deck": "component-system-inventory",
+  "title": "Open the explanation; return to the slide",
+  "rank": 30,
+  "intent": "compare",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8e4173a49f86-0030-544342efe2af.svg",
+  "takeaway": "The existing drawer opens saved definitions and code while preserving the feature slide context.",
+  "reading_order": [
+    "control",
+    "fetch",
+    "code",
+    "return"
+  ]
+}

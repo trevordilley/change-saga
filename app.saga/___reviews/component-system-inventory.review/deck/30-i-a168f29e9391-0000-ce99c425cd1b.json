@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "contracts",
+  "slide": "technical-inventory-verification",
+  "rank": 0,
+  "kind": "node",
+  "label": "Public contract",
+  "description": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade/deferred-integration boundaries.",
+  "selector": {
+    "type": "element",
+    "element_id": "contracts"
+  }
+}

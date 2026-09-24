@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/template.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:f6f3e7a0efdbc6b7e89856b8f2c5f43210154f690ab666f7ddaec906ec83d56d",
+      "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/template.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:86292b43e98f371ef440ce06c0d58a9196a450a7fff44b1619863bb39b959d86",
+      "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
+    }
+  ]
+}

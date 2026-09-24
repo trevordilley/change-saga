@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/query.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:24c87cdc08701c105e773ab6115a273196448323da18e8b0a3b7539875ac9d96",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/query.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:7965219a7b1b4b20b3ae06692ae5bf912bda45f09bf4166d21b8ba4af1d24e1c",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/query.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:0a148c9fbd8d8483282bc865da43400f370e480fe4676807f65803231f84c6d5",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/query.go",
+      "start": 330,
+      "end": 332,
+      "digest": "sha256:9cdbfd9dc10a26e26f207481472dd418794784e5e089dd54b80e16ccc471c996",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/query.go",
+      "start": 491,
+      "end": 491,
+      "digest": "sha256:ad006af9d74eda5226e419064a44caa7a4370cec3bfab35912e640b5802c62e8",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/query.go",
+      "start": 513,
+      "end": 513,
+      "digest": "sha256:9e09358f937a030f31360b4a4e8d822c06e2679874654a220c32803b47c5b58e",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/query.go",
+      "start": 540,
+      "end": 540,
+      "digest": "sha256:383e69e5688d298ee69321d0e811484e203847cf7d422c33a455e81596f88321",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    }
+  ]
+}

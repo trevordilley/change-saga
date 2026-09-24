@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 222,
+      "end": 242,
+      "digest": "sha256:06b9dfc08426dd12d0ea0cdc35596704c47ae002a85e4f1c03581ef66962fc76",
+      "note": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade/deferred-integration boundaries."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/template.go",
+      "start": 378,
+      "end": 381,
+      "digest": "sha256:12d920d0c544d0830b4ec2edb3e40d00d9e8658163b242e61a68c912cc1e45d1",
+      "note": "The projected Item retains its own code affordance and optional saved definition pin; documentation never transfers code ownership."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/saga/slides.go",
+      "start": 382,
+      "end": 412,
+      "digest": "sha256:ce1483660083d534f4954286385396a5161fcc30eb48279c295137c99a518ccb",
+      "note": "Validates media, asset pairing, Item semantics, and each selector against the current visual during load."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/saga/slides.go",
+      "start": 414,
+      "end": 455,
+      "digest": "sha256:ce49b24b27bd8c956fb6e012a1bb8025ea93e7dbf82154b875c21d44c134979b",
+      "note": "Validates media, asset pairing, Item semantics, and each selector against the current visual during load."
+    }
+  ]
+}

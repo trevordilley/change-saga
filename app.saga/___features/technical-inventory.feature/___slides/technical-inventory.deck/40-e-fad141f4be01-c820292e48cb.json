@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/applayout/applayout.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:18be40563a775838a394ce9bacd01db09de0fe724973278a6894085dd431e0d5",
+      "note": "The loader reads a bounded inventory separately and rejects ambiguous JSON, invalid graph structure, and unsafe packages."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/styles.go",
+      "start": 565,
+      "end": 565,
+      "digest": "sha256:3fba465d88f47ceca702fff482e46afe00a334a39a977331dc1ba0d1d13accd7",
+      "note": "The local code renderer shows exact pinned evidence; interaction code is fetched only when expanded and narrow code can scroll."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/styles.go",
+      "start": 839,
+      "end": 847,
+      "digest": "sha256:88b428c87d1a32fde17d9f832faaa65720e20c8587dd688f6650d1cc0ddb3e1f",
+      "note": "The local code renderer shows exact pinned evidence; interaction code is fetched only when expanded and narrow code can scroll."
+    }
+  ]
+}

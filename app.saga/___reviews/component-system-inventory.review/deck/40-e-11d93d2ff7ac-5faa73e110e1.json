@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/cli/query.go",
+      "start": 485,
+      "end": 485,
+      "digest": "sha256:e6d4d76f49a530ff03995d0dc083df1623b86a4d0f0c3cbdc2197bf0a7018071",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    }
+  ]
+}

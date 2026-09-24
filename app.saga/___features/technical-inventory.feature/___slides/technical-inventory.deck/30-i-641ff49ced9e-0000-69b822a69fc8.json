@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "control",
+  "slide": "technical-inventory-navigation",
+  "rank": 0,
+  "kind": "node",
+  "label": "Contextual node",
+  "description": "The existing Item affordances expose a canonical documentation link in implementation and review contexts.",
+  "selector": {
+    "type": "element",
+    "element_id": "control"
+  }
+}

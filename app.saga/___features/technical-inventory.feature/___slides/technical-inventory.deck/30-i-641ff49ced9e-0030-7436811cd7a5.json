@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "return",
+  "slide": "technical-inventory-navigation",
+  "rank": 30,
+  "kind": "node",
+  "label": "Back / Escape",
+  "description": "Drawer request guards, nested back navigation and focus restoration preserve the slide context without approving or repinning.",
+  "selector": {
+    "type": "element",
+    "element_id": "return"
+  }
+}

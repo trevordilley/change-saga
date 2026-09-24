@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "read",
+  "slide": "technical-inventory-history",
+  "rank": 0,
+  "kind": "node",
+  "label": "Load bounded records",
+  "description": "The loader reads a bounded inventory separately and rejects ambiguous JSON, invalid graph structure, and unsafe packages.",
+  "selector": {
+    "type": "element",
+    "element_id": "read"
+  }
+}

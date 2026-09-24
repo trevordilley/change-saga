@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "writer",
+  "slide": "technical-inventory-authoring",
+  "rank": 0,
+  "kind": "node",
+  "label": "Public record author",
+  "description": "Component/System authoring resolves source identity, commits and digests before calling the record writer.",
+  "selector": {
+    "type": "element",
+    "element_id": "writer"
+  }
+}

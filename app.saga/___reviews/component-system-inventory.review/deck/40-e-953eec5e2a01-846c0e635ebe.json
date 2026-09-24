@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/styles.go",
+      "start": 565,
+      "end": 565,
+      "digest": "sha256:c81c4c352b2d993f967443a660b9284a8e3e24e6216b22efd14d97dac83cc65b",
+      "note": "The local code renderer shows exact pinned evidence; interaction code is fetched only when expanded and narrow code can scroll."
+    }
+  ]
+}

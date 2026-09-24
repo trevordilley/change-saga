@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "schema/v5/technical-definition.schema.json",
+      "digest": "sha256:537aeba0dda2e9a1b72e813df10f33ad283d33dde40c6de81f7a3589cce93af4",
+      "note": "File-addition event for schema/v5/technical-definition.schema.json. The deck also retains separate exact line-range references on the Items explaining behavior; this event does not approve the implementation."
+    }
+  ]
+}

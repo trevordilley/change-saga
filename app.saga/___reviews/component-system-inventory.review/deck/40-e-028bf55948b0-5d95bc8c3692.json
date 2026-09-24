@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/server.go",
+      "start": 826,
+      "end": 826,
+      "digest": "sha256:53fb3fc5a8f803652b1cd181a8f867458a6d777bc338be707e59f2bcadca1a11",
+      "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
+    }
+  ]
+}

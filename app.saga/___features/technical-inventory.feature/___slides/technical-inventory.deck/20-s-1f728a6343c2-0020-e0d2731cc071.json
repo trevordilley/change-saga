@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "technical-inventory-authoring",
+  "deck": "technical-inventory",
+  "title": "Author once; inspect explicit references",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0020-e0d2731cc071.svg",
+  "takeaway": "Public writers pin exact code; bounded queries and slide guards expose reference health.",
+  "reading_order": [
+    "writer",
+    "query",
+    "transaction",
+    "validate"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "technical-inventory",
+  "title": "Reusable technical documentation",
+  "role": "change",
+  "rank": 0,
+  "objective": "Understand stable Component/System definitions, scoped Item evidence, history, and contextual drill-down."
+}

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/inventory_test.go",
+      "digest": "sha256:095c064f4df60795788542147ec6277a7672b0e633d92bcd22aea494a387501c",
+      "note": "File-addition event for internal/cli/inventory_test.go. The deck also retains separate exact line-range references on the Items explaining behavior; this event does not approve the implementation."
+    }
+  ]
+}

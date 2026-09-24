@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/styles.go",
+      "start": 559,
+      "end": 574,
+      "digest": "sha256:b67044799702ec14b04d37bffabd2e74030575e4df801d7a0c69843074d33c25",
+      "note": "Story-control and preview styles reveal and highlight exact Item owners without conflating them with code ownership."
+    }
+  ]
+}

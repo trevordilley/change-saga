@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/requirements/inventory.go",
+      "digest": "sha256:74271d11486865861e9095e8d9e0008a7dc3c7c6a3d6a54ff5029bc8703b7f1d",
+      "note": "File-addition event for internal/requirements/inventory.go. The deck also retains separate exact line-range references on the Items explaining behavior; this event does not approve the implementation."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "schema/v5/system-event.schema.json",
+      "start": 1,
+      "end": 52,
+      "digest": "sha256:d6a059e7f4fed3c5a278c0210df17080f5d067f89db85b6bafecd64c1c238d61",
+      "note": "Lifecycle events append a reason and all observed parent heads without deleting historical definitions."
+    }
+  ]
+}

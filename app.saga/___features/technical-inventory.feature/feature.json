@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "technical-inventory",
+  "title": "Technical inventory",
+  "created_at": "2026-09-24T20:24:32.713041Z"
+}

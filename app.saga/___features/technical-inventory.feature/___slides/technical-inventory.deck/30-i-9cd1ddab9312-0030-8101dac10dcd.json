@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scope",
+  "slide": "technical-inventory-identity",
+  "rank": 30,
+  "kind": "node",
+  "label": "Scoped evidence",
+  "description": "The canonical link never supplies the Item evidence or changes its content digest when the definition advances.",
+  "selector": {
+    "type": "element",
+    "element_id": "scope"
+  }
+}

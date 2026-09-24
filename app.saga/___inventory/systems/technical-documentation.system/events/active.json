@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/system-event.schema.json",
+  "version": 5,
+  "id": "active",
+  "record": "urn:change-saga:change-saga:system:technical-documentation",
+  "parents": [],
+  "state": "active",
+  "created_at": "2026-09-24T20:24:32.629388Z"
+}
