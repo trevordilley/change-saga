@@ -3,6 +3,11 @@
 Status: implementation plan, not a description of shipped commands. Proposed
 syntax below must be reconciled with the existing query registry before release.
 
+Implementation note: the query milestone shipped with the final spellings and
+compatibility contract in [cli-record-queries.md](cli-record-queries.md). The
+name-only mutation remains intentionally unimplemented because durable request
+replay for a write-free no-op requires a persisted receipt-format decision.
+
 ## Decision and product boundary
 
 Keep Change Saga's native engine, storage format, and opinionated model. Do not

@@ -227,3 +227,49 @@ func TestQuerySchemaAndSpecDiscoverRecordOperations(t *testing.T) {
 		t.Fatalf("spec query operations = %#v", found)
 	}
 }
+
+// This is a reproducible byte count, not a token or runtime benchmark. The
+// legacy status response is still useful, but it omits the persona description
+// and therefore cannot complete the read by itself.
+func TestRecordQueryWorkflowMeasurements(t *testing.T) {
+	root, repo := coveredSaga(t)
+	persona := "urn:change-saga:batch:persona:" + testPersona
+	for index := 1; index <= 8; index++ {
+		addStory(t, root, testFeature, "measured-use-"+string(rune('a'+index-1)), persona)
+	}
+
+	var legacy bytes.Buffer
+	if err := Status(context.Background(), []string{"--json", "--repo", repo, root}, &legacy); err != nil {
+		t.Fatal(err)
+	}
+	queryBytes, queryCommands := 0, 0
+	var read bytes.Buffer
+	if err := Query(context.Background(), []string{"personas", "--saga", root, "--repo", repo, "--persona", testPersona}, &read); err != nil {
+		t.Fatal(err)
+	}
+	queryBytes += read.Len()
+	queryCommands++
+	var cursor string
+	for {
+		args := []string{"persona-references", "--saga", root, "--repo", repo, "--persona", testPersona, "--limit", "3"}
+		if cursor != "" {
+			args = append(args, "--cursor", cursor)
+		}
+		var output bytes.Buffer
+		if err := Query(context.Background(), args, &output); err != nil {
+			t.Fatal(err)
+		}
+		queryBytes += output.Len()
+		queryCommands++
+		var envelope struct {
+			Page queryPageEnvelope `json:"page"`
+		}
+		decodeOneJSONValue(t, output.Bytes(), &envelope)
+		if !envelope.Page.HasMore {
+			break
+		}
+		cursor = *envelope.Page.NextCursor
+	}
+	t.Logf("legacy_status commands=1 bytes=%d complete=false", legacy.Len())
+	t.Logf("record_queries commands=%d bytes=%d complete=true", queryCommands, queryBytes)
+}

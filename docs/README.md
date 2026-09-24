@@ -35,6 +35,7 @@ not a contract — where they disagree with the code, the code is current.
 | [ai-query-security-test-plan.md](ai-query-security-test-plan.md) | Adversarial acceptance cases and reusable fixture contract for the AI query boundary. |
 | [ergonomics-feature-context.md](ergonomics-feature-context.md) | The bounded feature-first query projection and its exact expansion contract. |
 | [cli-ergonomics-plan.md](cli-ergonomics-plan.md) | Query-first persona/term access, explicit reference inspection, and guarded naming edits without replacing Saga's engine or model. Implementation plan. |
+| [cli-record-queries.md](cli-record-queries.md) | The shipped persona/term read and reference-query contract, compatibility behavior, measurements, and guarded-rename safety decision. |
 | [ergonomics-handoff-audit.md](ergonomics-handoff-audit.md) | The read-only feature handoff audit, stable findings, and readiness semantics. |
 | [ergonomics-visual-qa.md](ergonomics-visual-qa.md) | Repeatable raw/reviewer rendering, managed output safety, and mechanical visual findings. |
 | [ergonomics-ai-instructions.md](ergonomics-ai-instructions.md) | How the shipped skill routes tasks to focused references without blanket loading. |

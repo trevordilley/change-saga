@@ -215,7 +215,20 @@ change-saga query gaps           --saga PATH [--kind uncovered|stale|overlap] [-
 change-saga query mappings       --saga PATH [--target TARGET] [--sort scrutiny|target|path] [--minimum-score N]
 change-saga query claims         --saga PATH [--target TARGET] [--status unverified|verified|failed|inconclusive]
 change-saga query verifications  --saga PATH [--claim ID] [--status unverified|verified|failed|inconclusive]
+change-saga query personas       --saga PATH [--persona ID|URN] [--cursor TOKEN] [--limit N]
+change-saga query persona-references --saga PATH --persona ID|URN [--cursor TOKEN] [--limit N]
+change-saga query terms          --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N]
+change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N]
 ```
+
+Persona and term selectors are exact stable IDs or canonical URNs, never
+display-name searches. The record operations expose current definitions,
+lifecycle and revision heads, and conflicts. The named reference operations
+return direct typed uses with provenance plus explicit covered/excluded classes;
+they exclude prose, SVG text, history, and transitive expansion. `terms`
+preserves its legacy complete response unless `--limit` or `--cursor` opts into
+bounded pagination. See [cli-record-queries.md](cli-record-queries.md) for the
+complete compatibility and cursor contract.
 
 `overview` returns saga identity, source snapshot, the root overview fragment
 summaries, and direct chapter summaries. A chapter summary contains target,
