@@ -802,7 +802,9 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .diff-surface[data-layout=split] .diff-column-head{display:none}
 }
 @media(max-width:780px){
-.topbar{padding:0 8px;gap:6px}
+.topbar{max-width:100%;padding:0 8px;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
+.topbar::-webkit-scrollbar{display:none}
+.topbar>*{flex:none}
 .brand span{display:none}
 .view-tab{padding:0 8px}
 .side-tab{padding:0 8px;font-size:12px}

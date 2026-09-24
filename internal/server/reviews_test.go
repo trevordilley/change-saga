@@ -131,7 +131,9 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 		`data-review-slide="queue"`, `data-decision-state="approved" data-currency="current"`, `data-review-decision-form="queue"`,
 		`data-review-diff=`, `review-line add`, `postgres`, `review-line del`, `sqs`,
 		`data-review-record="urn:change-saga:app:feature:` + serverFeature + `"`, `Index on status?`, `/reviews/pr-7/visual/queue`,
-		`https://github.com/acme/app/pull/7`,
+		`https://github.com/acme/app/pull/7`, `data-review-workspace`, `data-review-slide-link="queue"`,
+		`data-review-previous`, `data-review-next`, `data-review-reply-form=`, `<summary>Review this slide</summary>`, `<summary>Add comment</summary>`,
+		`<details class="review-slide-details"><summary><span>Slide details</span>`,
 	} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("review page is missing %q:\n%s", want, body)

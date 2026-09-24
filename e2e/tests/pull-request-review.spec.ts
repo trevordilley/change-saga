@@ -39,19 +39,31 @@ test("@critical approves slide by slide and marks a decision out of date when it
     const greeting = page.locator('[data-review-slide="greeting"]');
     const theme = page.locator('[data-review-slide="theme"]');
     await expect(greeting.getByRole("heading", { name: "Greeting takes a name" })).toBeVisible();
+    await greeting.locator(".review-slide-details > summary").click();
     // The Item's code reference is shown as a diff against the review's base.
     await expect(greeting.locator(".review-line.add").filter({ hasText: `"hello, " + name` })).toHaveCount(1);
     await expect(greeting.locator(".review-line.del").filter({ hasText: `return "hello"` })).toHaveCount(1);
     await expect(greeting.locator('[data-review-record="urn:change-saga:wave-one:feature:wave-one"]')).toBeVisible();
 
+    await greeting.locator(".review-decision-editor summary").click();
     await greeting.locator("[data-review-approve]").click();
     await expect(greeting.locator('[data-decision-state="approved"]')).toHaveAttribute("data-currency", "current");
+    await page.locator('[data-review-slide-link="theme"]').click();
+    await theme.locator(".review-decision-editor summary").click();
     await theme.locator("textarea[name=body]").first().fill("Name the colour token.");
     await theme.locator("[data-review-request-changes]").click();
     await expect(theme.locator('[data-decision-state="changes_requested"]')).toHaveAttribute("data-currency", "current");
-    await theme.locator('[data-review-comment-form$=":item:change"] textarea').fill("Is this contrast checked?");
-    await theme.locator('[data-review-comment-form$=":item:change"] button').click();
+    await theme.locator(".review-slide-details > summary").click();
+    const commentForm = theme.locator('[data-review-comment-form$=":item:change"]');
+    await commentForm.locator("xpath=preceding-sibling::summary").click();
+    await commentForm.locator("textarea").fill("Is this contrast checked?");
+    await commentForm.locator("button").click();
     await expect(theme.getByText("Is this contrast checked?")).toBeVisible();
+    const reply = theme.locator("[data-review-reply-form]");
+    await reply.locator("xpath=preceding-sibling::summary").click();
+    await reply.locator("textarea").fill("Yes; the token passes the contrast check.");
+    await reply.getByRole("button", { name: "Reply" }).click();
+    await expect(theme.getByText("Yes; the token passes the contrast check.")).toBeVisible();
 
     const approvals = reviewFiles(sagaRepositories, /___reviews\/pr-1\.review\/approvals\/.+\.json$/);
     expect(approvals).toHaveLength(2);
@@ -78,6 +90,49 @@ test("@critical approves slide by slide and marks a decision out of date when it
     const report = JSON.parse(status.stdout) as { reviews: Array<{ id: string; slides: Array<{ id: string; decisions: Array<{ state: string; currency: string }> }> }> };
     const slides = Object.fromEntries(report.reviews[0].slides.map((slide) => [slide.id, slide.decisions.map((decision) => `${decision.state}:${decision.currency}`)]));
     expect(slides).toEqual({ greeting: ["approved:out_of_date"], theme: ["changes_requested:current"] });
+  } finally {
+    await stopSagaServer(running);
+  }
+});
+
+test("keeps one review slide active with durable keyboard and narrow-screen navigation", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
+    const slides = page.locator("[data-review-slide]");
+    await expect(slides).toHaveCount(2);
+    await expect(slides.filter({ visible: true })).toHaveCount(1);
+    await expect(page.locator("[data-review-position]")).toContainText("Slide 1 of 2");
+
+    await page.locator('[data-review-slide-link="theme"]').click();
+    await expect(page.locator('[data-review-slide="theme"]')).toBeVisible();
+    await expect(page).toHaveURL(/#target-.*slide-theme/);
+    await page.reload();
+    await expect(page.locator('[data-review-slide="theme"]')).toBeVisible();
+    await expect(page.locator('[data-review-slide="greeting"]')).toBeHidden();
+
+    await page.keyboard.press("ArrowLeft");
+    await expect(page.locator('[data-review-slide="greeting"]')).toBeVisible();
+    const itemID = await page.locator('[data-review-slide="greeting"] [data-review-item="change"]').getAttribute("id");
+    expect(itemID).toBeTruthy();
+    await page.goto(new URL(`/reviews/pr-1#${itemID}`, running.baseURL).toString());
+    await expect(page.locator('[data-review-slide="greeting"]')).toBeVisible();
+    await expect(page.locator('[data-review-slide="greeting"] .review-slide-details')).toHaveAttribute("open", "");
+    await expect(page.locator('[data-review-slide="greeting"] [data-review-item="change"]')).toBeVisible();
+
+    const decisionEditor = page.locator('[data-review-slide="greeting"] .review-decision-editor');
+    await decisionEditor.locator("summary").click();
+    await decisionEditor.locator("textarea").focus();
+    await page.keyboard.press("Escape");
+    await expect(decisionEditor).not.toHaveAttribute("open", "");
+    await expect(decisionEditor.locator("summary")).toBeFocused();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(page.locator("[data-review-slide-link]").first()).toBeVisible();
+    await expect(page.locator("[data-review-next]")).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: test.info().outputPath("review-narrow.png") });
   } finally {
     await stopSagaServer(running);
   }
