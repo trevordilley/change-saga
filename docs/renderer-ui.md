@@ -111,7 +111,7 @@ the browser suite waits for instead of guessing.
 
 ## Review controls
 
-In v4 the complete slide is the approval target. Items provide precise comments,
+In v5 the complete slide is the approval target. Items provide precise comments,
 annotations, and evidence links without becoming a second approval checklist.
 Deck and Saga status are derived rollups. V2/v3 retain section/fragment controls
 and the chapter review directory in their legacy report reader.
@@ -121,10 +121,10 @@ overlay; Item discussion lives with that Item's evidence drawer. New comment,
 reply, and decision composers are not permanently open. Replies use the
 existing append-only thread target; revealing or navigating to a slide never
 records a decision. Escape closes an open composer without submitting it and
-restores its summary control. Current pull-request review slides expose
-authored Item hit regions, but do not implement user-drawn spatial annotations;
-rectangle, freehand, highlight, and sticky-note behavior below applies only to
-renderer surfaces that actually provide those anchors.
+restores its summary control. The persistent annotation toolbar belongs to the
+active slide, not to an Item: Pointer, Highlight, Rectangle, Ellipse, Freehand,
+and Sticky remain available without leaving the deck. Item hotspots continue
+to open their exact diff and affected record independently.
 
 In the legacy chapter directory, each row mirrors the decision control on its target's own bar and projects
 append-only approval events into exactly `Unreviewed`, `Approved`, or `Changes requested`.
@@ -143,19 +143,22 @@ events on approval-bearing descendants project to
 
 ## Comments and their marks
 
-A comment carries an anchor. When that anchor is a mark drawn on the content —
+A review comment may carry an anchor. When that anchor is a mark drawn on the content —
 a rectangle, a freehand drawing, a highlight, or a sticky note — the comment
 belongs to the mark and renders as a compact bubble pinned to it, revealed on
 hover or focus of either the mark or the bubble. Every other anchor — a whole
 fragment, a section, a chapter, a diff line — keeps its comment in the list
-below the content. `annotationAnchor` in `server.go` is the single place that
-decides which is which; adding an anchor type means answering there.
+below the content. `ReviewComment.Anchor` stores normalized slide geometry;
+`AnnotationAction` records create, update, and delete events. The root comment
+creates the annotation. Every move, color change, undo, redo, or delete is a
+reply event, so the original anchor, author, and discussion are never rewritten.
 
-The server places a bubble from the stored anchor (`annotationBubblePoint`) and
-the browser refines it against the mark as laid out (`positionAnnotationBubbles`
-in `appjs.go`). The two must agree on where a shape is, so `annotationShapeBounds`
-and `shapeBounds` are deliberate mirrors of each other. A highlight has no stored
-geometry and is placed by the browser alone.
+`GET /reviews/{id}/annotations` projects the latest visible anchor from that
+append-only thread. `prepareReviewAnnotations` in `appjs.go` mounts it over the
+active slide and derives both the mark and bubble location from the same
+normalized geometry. Highlights store their region just like other shapes,
+which keeps hit testing and bubble placement stable across deck fitting and
+narrow-screen layout changes.
 
 A revealed comment never buries the mark it describes, and arming a drawing tool
 closes every open bubble so the content keeps the pointer.

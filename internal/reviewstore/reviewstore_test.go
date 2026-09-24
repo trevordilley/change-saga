@@ -99,6 +99,36 @@ func TestReviewRecordsRoundTripAndValidate(t *testing.T) {
 	}
 }
 
+func TestReviewAnnotationEditsAreAppendOnlyComments(t *testing.T) {
+	root := reviewSaga(t)
+	human := saga.ReviewerIdentity{Kind: "human"}
+	anchor := &saga.ReviewAnchor{Type: "region", Coordinate: "normalized", Shapes: []saga.ReviewShape{{Type: "rect", X: .2, Y: .25, Width: .3, Height: .2, Color: "#d04832", StrokeWidth: .004}}}
+	created, err := Comment(root, Remark{Review: "pr-7", Target: "why", Body: "Clarify this transition.", Reviewer: human, Anchor: anchor, AnnotationAction: "create"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	moved := *anchor
+	moved.Shapes = append([]saga.ReviewShape(nil), anchor.Shapes...)
+	moved.Shapes[0].X = .3
+	if _, err := Comment(root, Remark{Review: "pr-7", ReplyTo: created.ID, Body: "Annotation moved.", Reviewer: human, Anchor: &moved, AnnotationAction: "update"}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Comment(root, Remark{Review: "pr-7", ReplyTo: created.ID, Body: "Annotation deleted.", Reviewer: human, AnnotationAction: "delete"}); err != nil {
+		t.Fatal(err)
+	}
+	document, validation, err := saga.Load(root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("load: %v %#v", err, validation.Issues)
+	}
+	comments := document.FindReview("pr-7").Comments
+	if len(comments) != 3 || comments[0].AnnotationAction != "create" || comments[1].AnnotationAction != "update" || comments[2].AnnotationAction != "delete" || comments[1].ReplyTo != created.ID {
+		t.Fatalf("annotation history = %#v", comments)
+	}
+	if anchor.Shapes[0].X != .2 {
+		t.Fatal("updating an annotation rewrote its original anchor")
+	}
+}
+
 func TestLoadRejectsMalformedReviewRecords(t *testing.T) {
 	now := time.Date(2026, 9, 18, 12, 0, 0, 0, time.UTC)
 	approval := func(mutate func(*saga.ReviewApproval)) saga.ReviewApproval {

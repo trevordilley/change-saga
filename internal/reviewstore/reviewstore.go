@@ -159,19 +159,43 @@ type Remark struct {
 	Review string
 	// Target is a review slide or Item: its ID, "slide/item", or its URN.
 	// It is ignored for a reply, which joins the thread it replies to.
-	Target   string
-	ReplyTo  string
-	Body     string
-	State    string
-	Reviewer saga.ReviewerIdentity
-	Commit   string
+	Target           string
+	ReplyTo          string
+	Body             string
+	State            string
+	Anchor           *saga.ReviewAnchor
+	AnnotationAction string
+	Reviewer         saga.ReviewerIdentity
+	Commit           string
 }
 
 // Comment appends a comment on a review slide or Item, or a reply.
 func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 	var written saga.ReviewComment
-	if strings.TrimSpace(remark.Body) == "" {
+	if strings.TrimSpace(remark.Body) == "" && remark.AnnotationAction == "" {
 		return written, fmt.Errorf("a comment needs a body")
+	}
+	if remark.AnnotationAction != "" {
+		if remark.AnnotationAction != "create" && remark.AnnotationAction != "update" && remark.AnnotationAction != "delete" {
+			return written, fmt.Errorf("an annotation action is create, update, or delete")
+		}
+		if (remark.AnnotationAction == "create" || remark.AnnotationAction == "update") && remark.Anchor == nil {
+			return written, fmt.Errorf("an annotation create or update needs an anchor")
+		}
+		if remark.AnnotationAction == "create" && remark.ReplyTo != "" {
+			return written, fmt.Errorf("an annotation create starts a thread")
+		}
+		if remark.AnnotationAction != "create" && remark.ReplyTo == "" {
+			return written, fmt.Errorf("an annotation update or delete replies to its root")
+		}
+		if remark.Anchor != nil {
+			if err := saga.ValidateReviewAnchor(*remark.Anchor); err != nil {
+				return written, err
+			}
+		}
+		if strings.TrimSpace(remark.Body) == "" {
+			remark.Body = "Annotation " + remark.AnnotationAction + "d."
+		}
 	}
 	if utf8.RuneCountInString(remark.Body) > MaxBodyRunes {
 		return written, fmt.Errorf("the comment exceeds %d characters", MaxBodyRunes)
@@ -210,6 +234,7 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 		written = saga.ReviewComment{
 			Schema: saga.ReviewCommentSchemaURL, Version: saga.ReviewVersion, ID: store.EventID(now),
 			Target: target, ReplyTo: remark.ReplyTo, Body: strings.TrimSpace(remark.Body), State: remark.State,
+			Anchor: remark.Anchor, AnnotationAction: remark.AnnotationAction,
 			Reviewer: remark.Reviewer, Commit: remark.Commit, CreatedAt: now,
 		}
 		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(review.Directory, saga.ReviewCommentsDir))

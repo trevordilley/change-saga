@@ -143,6 +143,79 @@ test("keeps one review slide active with durable keyboard and narrow-screen navi
   }
 });
 
+test("draws, discusses, edits, and append-only deletes slide annotations", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
+    const slide = page.locator('[data-deck-slide][data-slide-target$=":slide:greeting"]');
+    const layer = slide.locator(".review-annotation-layer");
+    await expect(layer).toBeVisible();
+    const toolbar = page.getByRole("toolbar", { name: "Annotate active slide" });
+    await toolbar.getByRole("button", { name: "Rectangle" }).click();
+    const box = await layer.boundingBox();
+    expect(box).toBeTruthy();
+    await page.mouse.move(box!.x + box!.width * .32, box!.y + box!.height * .28);
+    await page.mouse.down();
+    await page.mouse.move(box!.x + box!.width * .62, box!.y + box!.height * .58, { steps: 8 });
+    await page.mouse.up();
+    const composer = page.locator(".review-annotation-compose");
+    await expect(composer).toBeVisible();
+    await composer.locator("textarea").fill("Clarify the transition between these states.");
+    await composer.getByRole("button", { name: "Save annotation" }).click();
+
+    const annotation = slide.locator(".review-annotation");
+    await expect(annotation).toBeVisible();
+    await annotation.locator(".review-annotation-bubble > summary").click();
+    await expect(annotation.getByText("Clarify the transition between these states.")).toBeVisible();
+    const reply = annotation.locator(".review-annotation-reply");
+    await reply.locator("textarea").fill("I will add the missing state label.");
+    await reply.getByRole("button", { name: "Reply" }).click();
+    await expect(annotation.getByText("I will add the missing state label.")).toHaveCount(1);
+
+    const records = () => reviewFiles(sagaRepositories, /___reviews\/pr-1\.review\/comments\/.+\.json$/);
+    await expect.poll(() => records().length).toBe(2);
+    const root = readJSON<{ annotation_action: string; anchor: { coordinate_space: string; shapes: Array<{ x: number; y: number; width: number; height: number }> } }>(records()[0]);
+    expect(root.annotation_action).toBe("create");
+    expect(root.anchor.coordinate_space).toBe("normalized");
+    expect(root.anchor.shapes[0]).toMatchObject({ x: expect.any(Number), y: expect.any(Number), width: expect.any(Number), height: expect.any(Number) });
+
+    // The normalized mark keeps its relationship to the slide when the deck
+    // changes size; only its rendered pixels scale.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(annotation).toBeVisible();
+    const narrow = await annotation.locator("rect").boundingBox();
+    const narrowStage = await layer.boundingBox();
+    expect(narrow).toBeTruthy();
+    expect(narrow!.width / narrowStage!.width).toBeCloseTo(root.anchor.shapes[0].width, 1);
+    await page.setViewportSize({ width: 1280, height: 800 });
+
+    // Select the rectangle by its stroke, drag it, recolor it, then exercise
+    // append-only undo/redo before deleting it with the keyboard.
+    const mark = annotation.locator("rect");
+    const markBox = await mark.boundingBox();
+    await page.mouse.move(markBox!.x + 2, markBox!.y + 2);
+    await page.mouse.down();
+    await page.mouse.move(markBox!.x + 52, markBox!.y + 32, { steps: 5 });
+    await page.mouse.up();
+    await expect.poll(() => records().length).toBe(3);
+    await toolbar.locator('input[type="color"]').fill("#0969da");
+    await expect.poll(() => records().length).toBe(4);
+    await toolbar.getByRole("button", { name: "Undo" }).click();
+    await expect.poll(() => records().length).toBe(5);
+    await toolbar.getByRole("button", { name: "Redo" }).click();
+    await expect.poll(() => records().length).toBe(6);
+    await page.keyboard.press("Delete");
+    await expect(annotation).toHaveCount(0);
+    await expect.poll(() => records().length).toBe(7);
+    const deletion = readJSON<{ annotation_action: string; reply_to: string }>(records().at(-1)!);
+    expect(deletion.annotation_action).toBe("delete");
+    expect(deletion.reply_to).toBeTruthy();
+  } finally {
+    await stopSagaServer(running);
+  }
+});
+
 test("shows the living layers read-only beside the review of the compared change", async ({ page, sagaRepositories }) => {
   authorReview(sagaRepositories);
   const running = await startSagaServer(sagaRepositories, "main");

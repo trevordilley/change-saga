@@ -33,7 +33,9 @@ tool, and what they have to do about it.
   deck under `___reviews`; reviewers approve or request changes per slide, and a
   decision goes out of date when its slide or code changes. The documentation
   itself has no approvals or comments, and the tool never declares a review
-  approved.
+  approved. Reviewers can mark up a slide with highlights, shapes, freehand
+  drawing, and sticky notes; anchored discussion and every move, color change,
+  undo, redo, or deletion remain append-only review records.
 - **Adoption is incremental, and status reports instead of judging.** A first
   change is asked only to have its implementation explained. `status` reports
   six coverage areas (implementation, stories, personas, design, quality, and

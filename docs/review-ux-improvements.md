@@ -20,11 +20,12 @@ The current product has two deliberately different visual surfaces:
 - pull-request review decks are the change-review surface. The complete slide
   is the decision target and Items are the precise evidence/comment targets.
 
-That boundary is correct and remains unchanged. The current pull-request
-reviewer supports slide decisions, slide/Item comments, and append-only replies
-in its storage and HTTP handler. It does **not** implement rectangle, freehand,
-highlight, sticky-note, or other spatial annotation anchors. The legacy audit's
-annotation recommendations therefore are not presented as current capability.
+That boundary is correct and remains unchanged. The pull-request reviewer now
+restores the visual collaboration layer that existed before the documentation
+reframe: rectangle and ellipse shapes, freehand paths, highlights, sticky
+notes, anchored discussion bubbles, movement, color changes, keyboard deletion,
+and append-only undo/redo. Stories, Features, design records, and exact diffs
+complement those marks as linked context; they do not replace the deck.
 
 ### Prioritized findings
 
@@ -77,6 +78,14 @@ viewer directly:
   signals into a progress score or inferred completion;
 - at narrow widths the rail becomes a horizontal filmstrip while the slide
   keeps the rest of the viewport.
+- one persistent annotation toolbar operates on the active slide. All geometry
+  is normalized to the slide, so fitting the deck, changing viewport width, or
+  moving between slides does not move a mark away from its visual subject;
+- a new mark opens its comment composer only after a valid anchor exists.
+  Rectangle, ellipse, freehand, highlight, and sticky-note marks persist with
+  their human attribution; replies remain attached to the mark's bubble;
+- move, recolor, undo, redo, and delete append annotation events to the same
+  thread. They never rewrite or erase the original comment or anchor.
 
 All slides, exact Item targets, evidence, discussions, and ordinary forms stay
 in the server response. The browser reuses the implementation-deck viewer and
@@ -99,8 +108,6 @@ landmark projection rather than maintaining a second client-side slideshow.
 
 ## Deferred work
 
-- Spatial annotation tools require an explicit current review anchor/storage
-  design; none is implied by this presentation work.
 - A browser-local “last location” could improve cross-session resume, but must
   be keyed to the exact review head and must not be confused with review truth.
 - Unsaved composer text survives in-slide navigation because inactive slides
@@ -116,10 +123,11 @@ landmark projection rather than maintaining a second client-side slideshow.
 
 - `go test ./internal/server` passes, including the bounded-browser deep-link
   contract and focused review handlers.
-- The Chromium pull-request review suite passes all three scenarios, including
+- The Chromium pull-request review suite passes all four scenarios, including
   persisted decisions, comments and replies, source currency, exact Item
   permalinks, reload resume, keyboard navigation, Escape focus restoration,
-  and the 390 px layout.
+  normalized annotation geometry, move/recolor/undo/redo/delete history, and
+  the 390 px layout.
 - `./scripts/check-docs-links.sh` checks 202 in-repository links successfully.
 - Desktop and narrow before/after captures live under `.devswarm-temp` for the
   workspace handoff. The fixture and screenshots are deliberately not

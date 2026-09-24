@@ -2207,6 +2207,124 @@ const appJavaScript = `(() => {
     if (event.key === 'Escape') closeDrawer();
   });
 
+  async function prepareReviewAnnotations() {
+    const deck = q('[data-review-deck]');
+    if (!deck) return;
+    const reviewID = deck.dataset.review;
+    const token = q('input[name="token"]', deck)?.value || '';
+    const layers = new Map();
+    qa('.review-deck-slide').forEach(slide => {
+      const stage = q('.fragment-stage', slide);
+      if (!stage) return;
+      const layer = document.createElement('div');
+      layer.className = 'review-annotation-layer';
+      layer.dataset.annotationTarget = slide.dataset.slideTarget;
+      stage.append(layer);
+      layers.set(slide.dataset.slideTarget, layer);
+    });
+    const response = await fetch('/reviews/' + encodeURIComponent(reviewID) + '/annotations', {headers:{Accept:'application/json'}});
+    if (!response.ok) return;
+    const payload = await response.json();
+    let selected = null;
+    let tool = 'pointer';
+    let draft = null;
+    const undo = [], redo = [];
+    const clone = value => JSON.parse(JSON.stringify(value));
+    const clamp = value => Math.max(0, Math.min(1, value));
+    const point = (event, layer) => {
+      const rect = layer.getBoundingClientRect();
+      return {x:clamp((event.clientX-rect.left)/rect.width), y:clamp((event.clientY-rect.top)/rect.height)};
+    };
+    const currentSlide = () => q('.review-deck-slide.active');
+    const currentLayer = () => q('.review-annotation-layer', currentSlide());
+    const post = async (fields, reload = true) => {
+      const body = new URLSearchParams({token, ...fields});
+      const result = await fetch('/reviews/' + encodeURIComponent(reviewID) + '/comment', {method:'POST', body, headers:{'Content-Type':'application/x-www-form-urlencoded'}});
+      if (!result.ok) throw new Error(await result.text());
+      if (reload) location.reload();
+    };
+    const bounds = anchor => {
+      if (anchor.type === 'note') return {x:anchor.note.x,y:anchor.note.y,w:.16,h:.12};
+      const shapes = anchor.shapes || [];
+      const points = shapes.flatMap(shape => shape.points || []);
+      const xs = shapes.flatMap(shape => [shape.x || 0,(shape.x || 0)+(shape.width || 0)]).concat(points.map(p=>p.x));
+      const ys = shapes.flatMap(shape => [shape.y || 0,(shape.y || 0)+(shape.height || 0)]).concat(points.map(p=>p.y));
+      return {x:Math.min(...xs),y:Math.min(...ys),w:Math.max(...xs)-Math.min(...xs),h:Math.max(...ys)-Math.min(...ys)};
+    };
+    const shapeNode = shape => {
+      const ns='http://www.w3.org/2000/svg';
+      let node;
+      if (shape.type === 'path') {
+        node=document.createElementNS(ns,'polyline');
+        node.setAttribute('points',(shape.points||[]).map(p=>(p.x*1000)+','+(p.y*562.5)).join(' '));
+        node.setAttribute('fill','none');
+      } else {
+        node=document.createElementNS(ns,shape.type === 'ellipse' ? 'ellipse' : 'rect');
+        if (shape.type === 'ellipse') {
+          node.setAttribute('cx',(shape.x+shape.width/2)*1000);node.setAttribute('cy',(shape.y+shape.height/2)*562.5);
+          node.setAttribute('rx',shape.width*500);node.setAttribute('ry',shape.height*281.25);
+        } else {
+          node.setAttribute('x',shape.x*1000);node.setAttribute('y',shape.y*562.5);
+          node.setAttribute('width',shape.width*1000);node.setAttribute('height',shape.height*562.5);
+        }
+        node.setAttribute('fill',shape.type === 'highlight' ? (shape.color || '#f2bd4b') : 'transparent');
+        if (shape.type === 'highlight') node.setAttribute('fill-opacity','.28');
+      }
+      node.setAttribute('stroke',shape.color || '#d04832');
+      node.setAttribute('stroke-width',Math.max(2,(shape.stroke_width||.004)*1000));
+      node.setAttribute('vector-effect','non-scaling-stroke');
+      return node;
+    };
+    const select = entry => {
+      qa('.review-annotation.selected').forEach(node=>node.classList.remove('selected'));
+      selected=entry;
+      entry?.element?.classList.add('selected');
+      selection.hidden=!entry;
+      if (entry) color.value=(entry.anchor.note?.color || entry.anchor.shapes?.[0]?.color || '#d04832');
+      undoButton.disabled=!undo.length; redoButton.disabled=!redo.length;
+    };
+    const render = entry => {
+      const layer=layers.get(entry.Target); if(!layer || entry.Deleted || !entry.Anchor) return;
+      entry.anchor=clone(entry.Anchor);
+      const article=document.createElement('article'); article.className='review-annotation'; article.dataset.reviewAnnotation=entry.ID;
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 1000 562.5'); svg.setAttribute('preserveAspectRatio','none');
+      svg.classList.add('review-annotation-svg');
+      (entry.anchor.shapes||[]).forEach(shape=>svg.append(shapeNode(shape)));
+      article.append(svg);
+      if(entry.anchor.note){const note=document.createElement('button');note.type='button';note.className='review-sticky-note';note.textContent=entry.anchor.note.text;note.style.left=(entry.anchor.note.x*100)+'%';note.style.top=(entry.anchor.note.y*100)+'%';note.style.background=entry.anchor.note.color||'#f2bd4b';article.append(note);}
+      const box=bounds(entry.anchor); const details=document.createElement('details');details.className='review-annotation-bubble';details.style.left=(clamp(box.x+box.w)*100)+'%';details.style.top=(clamp(box.y+box.h)*100)+'%';
+      const summary=document.createElement('summary');summary.textContent=String(entry.Messages?.length||0);summary.setAttribute('aria-label','Open annotation discussion');details.append(summary);
+      const panel=document.createElement('div');panel.className='review-annotation-discussion';
+      (entry.Messages||[]).forEach(message=>{const item=document.createElement('div');item.className='review-annotation-message';const meta=document.createElement('small');meta.textContent=message.Author+' · '+new Date(message.CreatedAt).toLocaleString();const body=document.createElement('p');body.textContent=message.Body;item.append(meta,body);panel.append(item);});
+      if(!payload.Frozen){const form=document.createElement('form');form.className='review-annotation-reply';form.innerHTML='<label><span>Reply</span><textarea name="body" required rows="2"></textarea></label><button type="submit">Reply</button>';form.addEventListener('submit',event=>{event.preventDefault();void post({reply_to:entry.ID,body:new FormData(form).get('body')});});panel.append(form);}
+      details.append(panel);article.append(details);layer.append(article);entry.element=article;
+      svg.addEventListener('pointerdown',event=>startMove(event,entry));
+      q('.review-sticky-note',article)?.addEventListener('pointerdown',event=>startMove(event,entry));
+      article.addEventListener('click',event=>{if(!event.target.closest('details'))select(entry);});
+    };
+    const toolbar=document.createElement('div');toolbar.className='review-annotation-toolbox';toolbar.setAttribute('role','toolbar');toolbar.setAttribute('aria-label','Annotate active slide');
+    toolbar.innerHTML='<button type="button" data-tool="pointer" aria-pressed="true">Pointer</button><button type="button" data-tool="highlight" aria-pressed="false">Highlight</button><button type="button" data-tool="rect" aria-pressed="false">Rectangle</button><button type="button" data-tool="ellipse" aria-pressed="false">Ellipse</button><button type="button" data-tool="freehand" aria-pressed="false">Freehand</button><button type="button" data-tool="note" aria-pressed="false">Sticky</button><span data-selection hidden><input type="color" value="#d04832" aria-label="Annotation color"><button type="button" data-undo disabled>Undo</button><button type="button" data-redo disabled>Redo</button><button type="button" data-delete>Delete</button></span>';
+    deck.append(toolbar); const selection=q('[data-selection]',toolbar),color=q('input[type=color]',selection),undoButton=q('[data-undo]',selection),redoButton=q('[data-redo]',selection);
+    const composer=document.createElement('form');composer.className='review-annotation-compose';composer.hidden=true;composer.innerHTML='<label><span>Comment on annotation</span><textarea name="body" required rows="3"></textarea></label><div><button type="submit">Save annotation</button><button type="button" data-cancel>Cancel</button></div>';deck.append(composer);
+    function setTool(next){tool=next;qa('[data-tool]',toolbar).forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.tool===tool)));layers.forEach(layer=>layer.classList.toggle('drawing',tool!=='pointer'));if(tool!=='pointer')select(null);}
+    qa('[data-tool]',toolbar).forEach(button=>button.addEventListener('click',()=>setTool(button.dataset.tool)));
+    function openComposer(anchor,target){draft={anchor,target};composer.hidden=false;const field=q('textarea',composer);field.value='';field.focus();}
+    q('[data-cancel]',composer).addEventListener('click',()=>{composer.hidden=true;draft=null;setTool('pointer');});
+    composer.addEventListener('submit',event=>{event.preventDefault();if(!draft)return;const body=String(new FormData(composer).get('body')||'').trim();if(draft.anchor.type==='note')draft.anchor.note.text=body;void post({target:draft.target,body,annotation_action:'create',anchor:JSON.stringify(draft.anchor)});});
+    layers.forEach(layer=>{
+      layer.addEventListener('pointerdown',event=>{if(tool==='pointer'||event.target!==layer)return;event.preventDefault();const start=point(event,layer);if(tool==='note'){openComposer({type:'note',coordinate_space:'normalized',note:{text:'Sticky note',x:start.x,y:start.y,color:'#f2bd4b'}},layer.dataset.annotationTarget);return;}draft={start,points:[start],layer};layer.setPointerCapture(event.pointerId);});
+      layer.addEventListener('pointermove',event=>{if(!draft?.layer||draft.layer!==layer)return;draft.points.push(point(event,layer));});
+      layer.addEventListener('pointerup',event=>{if(!draft?.layer||draft.layer!==layer)return;const end=point(event,layer),start=draft.start;let anchor;if(tool==='freehand')anchor={type:'drawing',coordinate_space:'normalized',shapes:[{type:'path',points:draft.points,color:'#d04832',stroke_width:.004}]};else{const x=Math.min(start.x,end.x),y=Math.min(start.y,end.y),width=Math.abs(end.x-start.x),height=Math.abs(end.y-start.y);if(width<.01||height<.01){draft=null;return;}const kind=tool==='highlight'?'highlight':tool;anchor={type:tool==='highlight'?'highlight':'region',coordinate_space:'normalized',shapes:[{type:kind,x,y,width,height,color:tool==='highlight'?'#f2bd4b':'#d04832',stroke_width:.004}]};}const target=layer.dataset.annotationTarget;draft=null;openComposer(anchor,target);});
+    });
+    function startMove(event,entry){if(tool!=='pointer'||event.target.closest('details'))return;event.preventDefault();select(entry);const layer=layers.get(entry.Target),start=point(event,layer),before=clone(entry.anchor);const move=moveEvent=>{const now=point(moveEvent,layer),dx=now.x-start.x,dy=now.y-start.y;entry.anchor=clone(before);if(entry.anchor.note){entry.anchor.note.x=clamp(entry.anchor.note.x+dx);entry.anchor.note.y=clamp(entry.anchor.note.y+dy);}else{entry.anchor.shapes.forEach(shape=>{if(shape.points)shape.points.forEach(p=>{p.x=clamp(p.x+dx);p.y=clamp(p.y+dy);});else{shape.x=clamp(shape.x+dx);shape.y=clamp(shape.y+dy);}});}entry.element.remove();render(entry);select(entry);};const end=()=>{removeEventListener('pointermove',move);removeEventListener('pointerup',end);undo.push({entry,before,after:clone(entry.anchor)});redo.length=0;undoButton.disabled=false;void post({reply_to:entry.ID,body:'Annotation moved.',annotation_action:'update',anchor:JSON.stringify(entry.anchor)},false);};addEventListener('pointermove',move);addEventListener('pointerup',end,{once:true});}
+    color.addEventListener('change',()=>{if(!selected)return;const before=clone(selected.anchor);if(selected.anchor.note)selected.anchor.note.color=color.value;else selected.anchor.shapes.forEach(shape=>shape.color=color.value);undo.push({entry:selected,before,after:clone(selected.anchor)});redo.length=0;undoButton.disabled=false;selected.element.remove();render(selected);select(selected);void post({reply_to:selected.ID,body:'Annotation color changed.',annotation_action:'update',anchor:JSON.stringify(selected.anchor)},false);});
+    q('[data-delete]',selection).addEventListener('click',()=>{if(selected)void post({reply_to:selected.ID,body:'Annotation deleted.',annotation_action:'delete'});});
+    const replay=async(from,to,useBefore)=>{const command=from.pop();if(!command)return;to.push(command);const anchor=clone(useBefore?command.before:command.after);command.entry.anchor=anchor;command.entry.element.remove();render(command.entry);select(command.entry);undoButton.disabled=!undo.length;redoButton.disabled=!redo.length;await post({reply_to:command.entry.ID,body:useBefore?'Annotation change undone.':'Annotation change redone.',annotation_action:'update',anchor:JSON.stringify(anchor)},false);};
+    undoButton.addEventListener('click',()=>void replay(undo,redo,true));redoButton.addEventListener('click',()=>void replay(redo,undo,false));
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!composer.hidden){event.preventDefault();composer.hidden=true;draft=null;setTool('pointer');}else if((event.key==='Delete'||event.key==='Backspace')&&selected&&!event.target.matches('input,textarea')){event.preventDefault();q('[data-delete]',selection).click();}});
+    (payload.Annotations||[]).forEach(render);
+  }
+
   prepareLandmarks();
   prepareDiffCitations();
   const shellArriving = observeDeferredFragments();
@@ -2239,6 +2357,7 @@ const appJavaScript = `(() => {
   void loadLayers();
   void loadCoverageTotals();
   positionLandmarkHotspots();
+  void prepareReviewAnnotations();
   globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
   addEventListener('hashchange', () => {
     syncDeckSlideForHash();

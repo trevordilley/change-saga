@@ -336,7 +336,7 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 	}
 	// The Saga is documentation: no approval, comment, or annotation control
 	// is rendered on it in any mode.
-	for _, control := range []string{"annotation-toolbox", "data-annotation-tools", "data-review-progress", "data-review-controls", "data-review-decision", "data-review-comment", "data-shared-review-form", "/api/thread", "/api/review", "/api/reply", "/api/diff-review", "data-activity"} {
+	for _, control := range []string{`<div class="review-annotation-toolbox"`, "data-annotation-tools", "data-review-progress", "data-review-controls", "data-review-decision", "data-review-comment", "data-shared-review-form", "/api/thread", "/api/review", "/api/reply", "/api/diff-review", "data-activity"} {
 		if strings.Contains(renderedPage, control) {
 			t.Fatalf("documentation rendered review control %q", control)
 		}

@@ -6,6 +6,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"mime"
@@ -121,6 +122,10 @@ type reviewThreadView struct {
 	ID              string
 	State           string
 	Comments        []reviewCommentView
+	Anchor          *saga.ReviewAnchor
+	AnchorJSON      string
+	Annotation      bool
+	Deleted         bool
 	ReviewID, Token string
 	Frozen          bool
 }
@@ -348,7 +353,18 @@ func threadViewsFor(threads []*reviewstate.Thread, target, reviewID, token strin
 		}
 		view := &reviewThreadView{ID: thread.Root.ID, State: thread.State, ReviewID: reviewID, Token: token, Frozen: frozen}
 		for _, comment := range append([]saga.ReviewComment{thread.Root}, thread.Replies...) {
+			switch comment.AnnotationAction {
+			case "create", "update":
+				view.Annotation, view.Deleted, view.Anchor = true, false, comment.Anchor
+			case "delete":
+				view.Annotation, view.Deleted = true, true
+			}
 			view.Comments = append(view.Comments, reviewCommentView{ID: comment.ID, Author: reviewerSeat(comment.Reviewer), Body: markdown(comment.Body), CreatedAt: comment.CreatedAt, State: comment.State})
+		}
+		if view.Anchor != nil {
+			if data, err := json.Marshal(view.Anchor); err == nil {
+				view.AnchorJSON = string(data)
+			}
 		}
 		result = append(result, view)
 	}
@@ -593,9 +609,19 @@ func (a *app) reviewComment(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	var anchor *saga.ReviewAnchor
+	if source := strings.TrimSpace(r.PostForm.Get("anchor")); source != "" {
+		var decoded saga.ReviewAnchor
+		if err := json.Unmarshal([]byte(source), &decoded); err != nil {
+			http.Error(w, "The annotation anchor is invalid.", http.StatusBadRequest)
+			return
+		}
+		anchor = &decoded
+	}
 	comment, err := reviewstore.Comment(a.root, reviewstore.Remark{
 		Review: review.ID, Target: r.PostForm.Get("target"), ReplyTo: r.PostForm.Get("reply_to"),
 		Body: r.PostForm.Get("body"), State: r.PostForm.Get("state"),
+		Anchor: anchor, AnnotationAction: r.PostForm.Get("annotation_action"),
 		Reviewer: saga.ReviewerIdentity{Kind: "human"}, Commit: head,
 	})
 	if err != nil {
@@ -603,6 +629,55 @@ func (a *app) reviewComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http.Redirect(w, r, reviewHref(review.ID)+"#"+domID(comment.Target), http.StatusSeeOther)
+}
+
+// reviewAnnotations returns only the visual collaboration layer. Keeping this
+// projection separate lets the authored slide remain the first paint while
+// preserving exact, append-only annotation records in the Saga repository.
+func (a *app) reviewAnnotations(w http.ResponseWriter, r *http.Request) {
+	document := a.loadReviewDocument(w)
+	if document == nil {
+		return
+	}
+	review := document.FindReview(r.PathValue("id"))
+	if review == nil {
+		http.NotFound(w, r)
+		return
+	}
+	type message struct{ Author, Body, CreatedAt string }
+	type annotation struct {
+		ID, Target string
+		Anchor     *saga.ReviewAnchor
+		Deleted    bool
+		Messages   []message
+	}
+	response := struct {
+		Frozen      bool
+		Annotations []annotation
+	}{Frozen: review.Merged != nil, Annotations: []annotation{}}
+	for _, thread := range reviewstate.Threads(review.Comments) {
+		if thread.Root.AnnotationAction != "create" || thread.Root.Anchor == nil {
+			continue
+		}
+		entry := annotation{ID: thread.Root.ID, Target: thread.Root.Target, Anchor: thread.Root.Anchor}
+		for _, comment := range append([]saga.ReviewComment{thread.Root}, thread.Replies...) {
+			switch comment.AnnotationAction {
+			case "create", "update":
+				entry.Anchor, entry.Deleted = comment.Anchor, false
+			case "delete":
+				entry.Deleted = true
+			}
+			if comment.AnnotationAction == "" || comment.AnnotationAction == "create" {
+				entry.Messages = append(entry.Messages, message{Author: reviewerSeat(comment.Reviewer), Body: comment.Body, CreatedAt: comment.CreatedAt.Format(time.RFC3339)})
+			}
+		}
+		response.Annotations = append(response.Annotations, entry)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "no-store")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "The annotations could not be rendered.", http.StatusInternalServerError)
+	}
 }
 
 // reviewsForHead summarizes the reviews of the compared head for the Change
@@ -706,5 +781,9 @@ const reviewStyles = `
 .review-item-link{min-height:22px;padding:2px 6px;border:0;border-radius:4px;background:transparent;color:var(--accent);font:600 10px var(--ui)}.review-item-link:hover,.review-item-link:focus-visible{background:var(--bg-inset)}
 .review-item-panel{padding:16px}.review-item-panel h2{margin:2px 0}.review-item-panel header>p:last-child{color:var(--muted)}
 .review-source{margin-top:12px}.review-source summary,.review-compose summary{cursor:pointer;color:var(--accent);font-weight:600}.review-source .review-range{margin:8px 0 0;padding:8px 10px;border:1px solid var(--line);background:var(--bg-subtle)}
+.review-annotation-layer{position:absolute;z-index:6;inset:0;pointer-events:none}.review-annotation-layer.drawing{pointer-events:auto;cursor:crosshair;touch-action:none}.review-annotation{position:absolute;inset:0;pointer-events:none}.review-annotation-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.review-annotation-svg>*{pointer-events:visiblePainted;cursor:move}.review-annotation.selected .review-annotation-svg>*{filter:drop-shadow(0 0 3px #0969da);stroke-dasharray:8 5}.review-sticky-note{position:absolute;width:18%;min-height:12%;padding:10px;border:1px solid #7a5b13;border-radius:3px;box-shadow:0 4px 12px #0003;color:#2b210b;text-align:left;transform:translate(-8%,-8%);pointer-events:auto;cursor:move}.review-annotation-bubble{position:absolute;pointer-events:auto}.review-annotation-bubble>summary{display:grid;place-items:center;width:25px;height:25px;border:2px solid #fff;border-radius:50%;background:var(--accent);color:#fff;box-shadow:var(--shadow);font:700 11px var(--ui);list-style:none;cursor:pointer}.review-annotation-bubble>summary::-webkit-details-marker{display:none}.review-annotation-discussion{position:absolute;right:0;top:30px;width:min(360px,80vw);max-height:360px;overflow:auto;padding:12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);color:var(--ink)}.review-annotation-message+.review-annotation-message{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}.review-annotation-message small{color:var(--muted)}.review-annotation-message p{margin:3px 0}.review-annotation-reply textarea{width:100%}
+.review-annotation-toolbox{position:fixed;z-index:60;left:50%;bottom:16px;display:flex;align-items:center;gap:3px;max-width:calc(100vw - 20px);overflow:auto;padding:5px;border:1px solid var(--line);border-radius:9px;background:var(--frosted-bg);box-shadow:var(--shadow);transform:translateX(-50%)}.review-annotation-toolbox button{min-height:30px;border:0;border-radius:6px;background:transparent}.review-annotation-toolbox button:hover,.review-annotation-toolbox button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}.review-annotation-toolbox [data-selection]{display:flex;align-items:center;gap:3px;padding-left:5px;border-left:1px solid var(--line)}.review-annotation-toolbox [data-selection][hidden]{display:none}.review-annotation-toolbox input[type=color]{width:30px;height:30px;padding:2px;border:0;background:transparent}
+.review-annotation-compose{position:fixed;z-index:70;right:18px;bottom:64px;width:min(380px,calc(100vw - 36px));padding:14px;border:1px solid var(--line);border-radius:9px;background:var(--bg);box-shadow:var(--shadow)}.review-annotation-compose[hidden]{display:none}.review-annotation-compose textarea{width:100%}.review-annotation-compose>div{display:flex;justify-content:flex-end;gap:6px;margin-top:6px}
+@media(max-width:780px){.review-sticky-note{width:28%;min-width:88px;padding:5px;font-size:10px}.review-annotation-discussion{position:fixed;left:8px;right:8px;top:auto;bottom:58px;width:auto;max-height:45vh}.review-annotation-compose{right:8px;bottom:58px;width:calc(100vw - 16px)}}
 @media(max-width:780px){.review-deck-shell,.review-deck-shell.slide-mode{display:block;height:calc(100vh - var(--top));min-height:0}.review-deck-shell>.content{height:100%;padding:0}.review-deck-page{grid-template-columns:1fr;grid-template-rows:132px minmax(0,1fr)}.review-deck-rail{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:7px 8px;border-right:0;border-bottom:1px solid var(--line)}.review-deck-title{flex:0 0 160px}.review-thumbnail-list{display:flex;grid-auto-flow:column;gap:8px}.review-thumbnail-list .slide-thumbnail-card{flex:0 0 150px}.review-thumbnail-state{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.review-slide-panel{position:fixed;right:8px;top:calc(var(--top) + 8px);width:calc(100vw - 16px);max-height:calc(100vh - var(--top) - 16px)}}
 `
