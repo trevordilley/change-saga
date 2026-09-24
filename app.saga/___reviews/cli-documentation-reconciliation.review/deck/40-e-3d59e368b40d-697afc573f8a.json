@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/review-ux-improvements.md",
+      "start": 98,
+      "end": 116,
+      "digest": "sha256:7f8ca349030b437e7398ad62597cc9b9934c0cea9a7cf913d0d3f0db22477779",
+      "note": "The authoring handoff now identifies the tracked review deck and separates its comparison from living HEAD documentation health."
+    },
+    {
+      "commit": "2240bdcb738ae6eb50c998a4539c2ef2aaa3d9a9",
+      "path": "docs/review-ux-improvements.md",
+      "start": 98,
+      "end": 109,
+      "digest": "sha256:1e177ae9220d6ef775120ed24d0080e35327a8c6932e743c0e54e974d257ad8c",
+      "note": "The authoring handoff now identifies the tracked review deck and separates its comparison from living HEAD documentation health."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2240bdcb738ae6eb50c998a4539c2ef2aaa3d9a9",
+      "path": "internal/grammar/commands.go",
+      "start": 597,
+      "end": 603,
+      "digest": "sha256:7e5d4feced3a22fea8757682285caafa77861f60bfbb2c4986c45aa9a7a25f2f",
+      "note": "The public command registry exposes reconciliation flags and its required comparison; block context disambiguates repeated syntax."
+    }
+  ]
+}
