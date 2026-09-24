@@ -28,7 +28,10 @@ Never edit committed saga content to hide a word from the chrome.
 - Hairline separators instead of cards. No decorative rounding, shadows, or
   oversized headings on ordinary content.
 - Controls stay invisible until the reviewer hovers or focuses the thing they
-  belong to. Content is central and stays central.
+  belong to. Content is central and stays central. The exception is an
+  evidence-bearing Item in a pull-request review: its compact `Code · N` and
+  affected-record badges stay visible because otherwise a transparent hotspot
+  gives pointer, keyboard, and touch reviewers no signal that proof exists.
 
 ## Icons
 
@@ -63,8 +66,10 @@ hash owns the active slide or Item, including after a mutation redirect. With no
 hash it starts at the authored first slide: a recorded decision is not treated
 as completion or used to invent a resume verdict. Exact slide Items project
 interactive regions over the visual; their affordances open linked diffs and
-affected living-Saga records in the existing side drawer. Code and coverage do
-not become competing top-level views on an individual review.
+affected living-Saga records in the existing side drawer. Those badges remain
+visible without hover and name their evidence rather than using a generic Item
+control. Code and coverage do not become competing top-level views on an
+individual review.
 
 V2/v3 remain legacy reports with their documentation tree and collapsible
 chapters. The renderer must never reinterpret their fragments as slides or
@@ -124,7 +129,8 @@ records a decision. Escape closes an open composer without submitting it and
 restores its summary control. The persistent annotation toolbar belongs to the
 active slide, not to an Item: Pointer, Highlight, Rectangle, Ellipse, Freehand,
 and Sticky remain available without leaving the deck. Item hotspots continue
-to open their exact diff and affected record independently.
+to open their exact diff and affected record independently, and their evidence
+badges are the intentional always-visible exception to ordinary hover chrome.
 
 In the legacy chapter directory, each row mirrors the decision control on its target's own bar and projects
 append-only approval events into exactly `Unreviewed`, `Approved`, or `Changes requested`.
@@ -152,6 +158,10 @@ below the content. `ReviewComment.Anchor` stores normalized slide geometry;
 `AnnotationAction` records create, update, and delete events. The root comment
 creates the annotation. Every move, color change, undo, redo, or delete is a
 reply event, so the original anchor, author, and discussion are never rewritten.
+Update and delete events reply directly to that creation root; accepting them
+on an ordinary comment would create valid-looking history that the annotation
+projection cannot show. A merged review renders the projected marks read-only
+and never offers its editing toolbar.
 
 `GET /reviews/{id}/annotations` projects the latest visible anchor from that
 append-only thread. `prepareReviewAnnotations` in `appjs.go` mounts it over the

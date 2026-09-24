@@ -1,6 +1,6 @@
 # Review UX improvements
 
-Status: implemented first pass, 2026-09-23  
+Status: implemented and fidelity-audited first pass, 2026-09-24
 Scope: the v5 pull-request slide reviewer in `internal/server/reviews.go` and
 `internal/server/appjs.go`
 
@@ -51,6 +51,20 @@ complement those marks as linked context; they do not replace the deck.
 6. **P1 — narrow layouts inherited desktop density.** Slides became a tall
    sequence of diagram, decision form, Items, diffs, and comment forms without
    a compact way to retain deck position.
+7. **P0 — Item evidence was technically present but visually hidden.** Code
+   and affected-record controls began at zero opacity inside transparent
+   hotspots. The browser test could locate those controls by accessible name,
+   but a person—or any touch user—had no first-paint signal that evidence
+   existed.
+8. **P0 — annotation editing rehydrated stale geometry.** The first editing
+   implementation reset its mutable anchor from the server's original anchor
+   every time it rendered. Move, resize, recolor, sticky editing, undo, and
+   redo could therefore append events without persisting the displayed edit.
+   The initial browser test counted records instead of checking their values.
+9. **P1 — annotation history accepted orphan edits.** Update and delete events
+   required a reply, but did not require that reply target to be an annotation
+   creation root. Such records passed validation and then disappeared from the
+   annotation projection.
 
 ## Implemented slice
 
@@ -70,7 +84,8 @@ viewer directly:
 - direct slide and Item hashes reveal the owning slide, including after a
   decision or comment redirect and reload;
 - each semantic Item is projected onto its authored region or measured SVG
-  element. Its on-slide affordances open the exact linked diff and affected
+  element. Persistent, non-hover `Code · N` and `Affected · …` badges announce
+  the evidence on first paint and open the exact linked diff and affected
   living-Saga record in the existing drawer;
 - slide decision and slide-comment controls remain available in one quiet
   overlay; Item comments and replies live with the Item evidence they discuss;
@@ -86,6 +101,14 @@ viewer directly:
   their human attribution; replies remain attached to the mark's bubble;
 - move, recolor, undo, redo, and delete append annotation events to the same
   thread. They never rewrite or erase the original comment or anchor.
+- client-side edits retain the mutable anchor through re-rendering and roll
+  back to the last saved value when a mutation fails. A visible live status
+  reports loading/save failure instead of silently removing the workflow;
+- update/delete events must reply directly to an annotation-create root in
+  both the writer and loaded-record validation. Merged reviews project marks
+  read-only and do not render the annotation editing toolbar;
+- the narrow toolbar wraps into reachable rows rather than hiding later tools
+  behind an unannounced horizontal scroll.
 
 All slides, exact Item targets, evidence, discussions, and ordinary forms stay
 in the server response. The browser reuses the implementation-deck viewer and
@@ -95,16 +118,20 @@ landmark projection rather than maintaining a second client-side slideshow.
 
 - Approval still applies only to the complete review slide. Item evidence and
   comments do not become a second approval checklist.
-- Decision and comment endpoints, review targets, reviewer seats, source commit
-  pins, and one-record-per-file append behavior are unchanged.
+- Decision and comment routes, review targets, reviewer seats, source commit
+  pins, and one-record-per-file append behavior are preserved. Annotation
+  anchors and create/update/delete actions extend the v5 review-comment record;
+  they do not create a parallel mutable store.
 - A slide becoming visible never records a viewed or approval event.
 - Changes requested and out-of-date decisions remain visible in the rail and
   slide overlay; unresolved feedback is never hidden from state summaries.
 - Mutation redirects keep their exact slide or Item hash. No save is inferred
   from navigation, and form text is submitted only by the form's labeled
   action.
-- No dependency, schema, CLI contract, network asset, or storage change was
-  introduced.
+- No dependency, CLI contract, network asset, approval target, or mutable
+  storage mechanism was introduced. The v5 review-comment schema and model now
+  carry optional annotation actions and normalized anchors, and the browser
+  reads their projection from the review annotations endpoint.
 
 ## Deferred work
 
@@ -118,16 +145,23 @@ landmark projection rather than maintaining a second client-side slideshow.
   this slice adds replies only.
 - Review-level coverage remains available to reports and APIs, but it is not a
   competing view inside the individual deck experience.
+- Draft marks are not yet previewed while drawing or while their composer is
+  open. Non-sticky shapes also need a keyboard-selectable editing path; pointer
+  creation and all labeled toolbar actions remain keyboard/touch accessible.
+- Human annotation attribution remains the reviewer's stored seat (`Human`)
+  because changing identity capture is a product/storage decision outside this
+  UI slice.
 
 ## Verification record
 
 - `go test ./internal/server` passes, including the bounded-browser deep-link
   contract and focused review handlers.
-- The Chromium pull-request review suite passes all four scenarios, including
+- The Chromium pull-request review suite covers all five scenarios, including
   persisted decisions, comments and replies, source currency, exact Item
   permalinks, reload resume, keyboard navigation, Escape focus restoration,
-  normalized annotation geometry, move/recolor/undo/redo/delete history, and
-  the 390 px layout.
+  normalized annotation geometry, value-level move/resize/recolor/undo/redo
+  assertions, projection after reload, delete history, persistent evidence
+  badges, merged-review read-only behavior, and the 390 px layout.
 - `./scripts/check-docs-links.sh` checks 202 in-repository links successfully.
 - Desktop and narrow before/after captures live under `.devswarm-temp` for the
   workspace handoff. The fixture and screenshots are deliberately not

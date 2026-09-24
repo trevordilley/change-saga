@@ -31,6 +31,20 @@ function authorReview(repositories: SagaRepositories): void {
   git(repositories.sagaRepo, "commit", "-m", "Review deck for pull request 1");
 }
 
+function freezeReview(repositories: SagaRepositories): void {
+  const manifestPath = join(repositories.sagaRoot, "___reviews", "pr-1.review", "review.json");
+  const manifest = readJSON<Record<string, unknown>>(manifestPath);
+  manifest.merged = {
+    base: repositories.identity.base,
+    head: repositories.identity.head,
+    landed: repositories.identity.head,
+    merged_at: "2026-09-24T12:00:00Z",
+  };
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+  git(repositories.sagaRepo, "add", ".");
+  git(repositories.sagaRepo, "commit", "-m", "Freeze merged review fixture");
+}
+
 test("@critical approves slide by slide and marks a decision out of date when its code changes", async ({ page, sagaRepositories }) => {
   authorReview(sagaRepositories);
   const running = await startSagaServer(sagaRepositories);
@@ -39,7 +53,10 @@ test("@critical approves slide by slide and marks a decision out of date when it
     const greeting = page.locator('[data-deck-slide][data-slide-target$=":slide:greeting"]');
     const theme = page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]');
     await expect(greeting).toBeVisible();
-    await greeting.getByRole("button", { name: "Open linked evidence for The change" }).click();
+    const codeReference = greeting.getByRole("button", { name: "Open 1 code reference for The change" });
+    await expect(codeReference).toBeVisible();
+    await expect(codeReference).toHaveText("Code · 1");
+    await codeReference.click();
     // The Item's code reference is shown as a diff against the review's base.
     await expect(page.locator("#review-drawer .review-line.add").filter({ hasText: `"hello, " + name` })).toHaveCount(1);
     await expect(page.locator("#review-drawer .review-line.del").filter({ hasText: `return "hello"` })).toHaveCount(1);
@@ -56,18 +73,18 @@ test("@critical approves slide by slide and marks a decision out of date when it
     await theme.locator("textarea[name=body]").first().fill("Name the colour token.");
     await theme.locator("[data-review-request-changes]").click();
     await expect(theme.locator('[data-decision-state="changes_requested"]')).toHaveAttribute("data-currency", "current");
-    await theme.getByRole("button", { name: "Open linked evidence for The change" }).click();
+    await theme.getByRole("button", { name: "Open 1 code reference for The change" }).click();
     const commentForm = page.locator('#review-drawer [data-review-comment-form$=":item:change"]');
     await commentForm.locator("xpath=preceding-sibling::summary").click();
     await commentForm.locator("textarea").fill("Is this contrast checked?");
     await commentForm.locator("button").click();
-    await theme.getByRole("button", { name: "Open linked evidence for The change" }).click();
+    await theme.getByRole("button", { name: "Open 1 code reference for The change" }).click();
     await expect(page.locator("#review-drawer").getByText("Is this contrast checked?")).toBeVisible();
     const reply = page.locator("#review-drawer [data-review-reply-form]");
     await reply.locator("xpath=preceding-sibling::summary").click();
     await reply.locator("textarea").fill("Yes; the token passes the contrast check.");
     await reply.getByRole("button", { name: "Reply" }).click();
-    await theme.getByRole("button", { name: "Open linked evidence for The change" }).click();
+    await theme.getByRole("button", { name: "Open 1 code reference for The change" }).click();
     await expect(page.locator("#review-drawer").getByText("Yes; the token passes the contrast check.")).toBeVisible();
 
     const approvals = reviewFiles(sagaRepositories, /___reviews\/pr-1\.review\/approvals\/.+\.json$/);
@@ -175,7 +192,8 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
 
     const records = () => reviewFiles(sagaRepositories, /___reviews\/pr-1\.review\/comments\/.+\.json$/);
     await expect.poll(() => records().length).toBe(2);
-    const root = readJSON<{ annotation_action: string; anchor: { coordinate_space: string; shapes: Array<{ x: number; y: number; width: number; height: number }> } }>(records()[0]);
+    type AnnotationRecord = { annotation_action: string; reply_to?: string; anchor: { coordinate_space: string; shapes: Array<{ x: number; y: number; width: number; height: number; color: string }> } };
+    const root = readJSON<AnnotationRecord>(records()[0]);
     expect(root.annotation_action).toBe("create");
     expect(root.anchor.coordinate_space).toBe("normalized");
     expect(root.anchor.shapes[0]).toMatchObject({ x: expect.any(Number), y: expect.any(Number), width: expect.any(Number), height: expect.any(Number) });
@@ -199,22 +217,53 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
     await page.mouse.move(markBox!.x + 52, markBox!.y + 32, { steps: 5 });
     await page.mouse.up();
     await expect.poll(() => records().length).toBe(3);
+    const moved = readJSON<AnnotationRecord>(records()[2]);
+    expect(moved.anchor.shapes[0].x).toBeGreaterThan(root.anchor.shapes[0].x);
+    expect(moved.anchor.shapes[0].y).toBeGreaterThan(root.anchor.shapes[0].y);
     const handle = annotation.locator(".review-annotation-resize-handle");
     await expect(handle).toBeVisible();
     await toolbar.getByRole("button", { name: "Make annotation larger" }).click();
     await expect.poll(() => records().length).toBe(4);
+    const resized = readJSON<AnnotationRecord>(records()[3]);
+    expect(resized.anchor.shapes[0].width).toBeGreaterThan(moved.anchor.shapes[0].width);
+    expect(resized.anchor.shapes[0].height).toBeGreaterThan(moved.anchor.shapes[0].height);
     await toolbar.locator('input[type="color"]').fill("#0969da");
     await expect.poll(() => records().length).toBe(5);
+    expect(readJSON<AnnotationRecord>(records()[4]).anchor.shapes[0].color).toBe("#0969da");
     await toolbar.getByRole("button", { name: "Undo" }).click();
     await expect.poll(() => records().length).toBe(6);
+    expect(readJSON<AnnotationRecord>(records()[5]).anchor.shapes[0].color).toBe("#d04832");
     await toolbar.getByRole("button", { name: "Redo" }).click();
     await expect.poll(() => records().length).toBe(7);
+    const redone = readJSON<AnnotationRecord>(records()[6]);
+    expect(redone.anchor.shapes[0].color).toBe("#0969da");
+    expect(redone.anchor.shapes[0].width).toBeCloseTo(resized.anchor.shapes[0].width);
+
+    // The latest append-only update must project after a full reload, not
+    // merely look correct in transient client state.
+    await page.reload();
+    await expect(annotation.locator("rect")).toHaveAttribute("stroke", "#0969da");
+    await annotation.locator("rect").click({ position: { x: 2, y: 2 } });
     await page.keyboard.press("Delete");
     await expect(annotation).toHaveCount(0);
     await expect.poll(() => records().length).toBe(8);
     const deletion = readJSON<{ annotation_action: string; reply_to: string }>(records().at(-1)!);
     expect(deletion.annotation_action).toBe("delete");
     expect(deletion.reply_to).toBeTruthy();
+  } finally {
+    await stopSagaServer(running);
+  }
+});
+
+test("keeps merged review annotations read-only", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  freezeReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
+    await expect(page.locator(".review-annotation-layer").first()).toBeVisible();
+    await expect(page.getByRole("toolbar", { name: "Annotate active slide" })).toHaveCount(0);
+    await expect(page.locator("[data-review-decision-form], [data-review-comment-form]")).toHaveCount(0);
   } finally {
     await stopSagaServer(running);
   }

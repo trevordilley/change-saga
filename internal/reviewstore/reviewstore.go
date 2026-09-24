@@ -175,6 +175,9 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 	if strings.TrimSpace(remark.Body) == "" && remark.AnnotationAction == "" {
 		return written, fmt.Errorf("a comment needs a body")
 	}
+	if remark.AnnotationAction == "" && remark.Anchor != nil {
+		return written, fmt.Errorf("an annotation anchor requires an annotation action")
+	}
 	if remark.AnnotationAction != "" {
 		if remark.AnnotationAction != "create" && remark.AnnotationAction != "update" && remark.AnnotationAction != "delete" {
 			return written, fmt.Errorf("an annotation action is create, update, or delete")
@@ -216,13 +219,19 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 		}
 		target := ""
 		if remark.ReplyTo != "" {
+			var reply *saga.ReviewComment
 			for _, comment := range review.Comments {
 				if comment.ID == remark.ReplyTo {
 					target = comment.Target
+					copy := comment
+					reply = &copy
 				}
 			}
 			if target == "" {
 				return fmt.Errorf("comment %q does not exist in review %q", remark.ReplyTo, review.ID)
+			}
+			if (remark.AnnotationAction == "update" || remark.AnnotationAction == "delete") && (reply == nil || reply.AnnotationAction != "create" || reply.ReplyTo != "") {
+				return fmt.Errorf("an annotation update or delete must reply to its annotation create root")
 			}
 		} else {
 			var err error

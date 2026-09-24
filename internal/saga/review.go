@@ -377,7 +377,7 @@ func loadReview(root, dir, id string, manifest Manifest, options loadOptions, va
 	}); err != nil {
 		return nil, err
 	}
-	comments := map[string]bool{}
+	comments := map[string]ReviewComment{}
 	if err := loadReviewRecords(root, filepath.Join(dir, ReviewCommentsDir), "comment", validation, func(path string) {
 		var comment ReviewComment
 		if err := readJSON(path, &comment); err != nil {
@@ -385,7 +385,7 @@ func loadReview(root, dir, id string, manifest Manifest, options loadOptions, va
 			return
 		}
 		comment.Path = path
-		comments[comment.ID] = true
+		comments[comment.ID] = comment
 		review.Comments = append(review.Comments, comment)
 	}); err != nil {
 		return nil, err
@@ -440,8 +440,9 @@ func validateReviewApproval(approval ReviewApproval, name string, slides map[str
 	return ""
 }
 
-func validateReviewComment(comment ReviewComment, name string, targets, comments map[string]bool) string {
+func validateReviewComment(comment ReviewComment, name string, targets map[string]bool, comments map[string]ReviewComment) string {
 	reviewer := comment.Reviewer
+	reply, replyExists := comments[comment.ReplyTo]
 	switch {
 	case comment.Schema != ReviewCommentSchemaURL || comment.Version != ReviewVersion:
 		return fmt.Sprintf("comment requires $schema %s and version %d", ReviewCommentSchemaURL, ReviewVersion)
@@ -449,7 +450,7 @@ func validateReviewComment(comment ReviewComment, name string, targets, comments
 		return "comment id must be a stable identifier matching its filename"
 	case !targets[comment.Target]:
 		return "comment target must be a slide or Item of this review"
-	case comment.ReplyTo != "" && (!comments[comment.ReplyTo] || comment.ReplyTo == comment.ID):
+	case comment.ReplyTo != "" && (!replyExists || comment.ReplyTo == comment.ID):
 		return fmt.Sprintf("comment replies to unknown comment %q", comment.ReplyTo)
 	case strings.TrimSpace(comment.Body) == "":
 		return "comment body is required"
@@ -457,10 +458,14 @@ func validateReviewComment(comment ReviewComment, name string, targets, comments
 		return "comment state must be open or resolved"
 	case comment.AnnotationAction != "" && comment.AnnotationAction != "create" && comment.AnnotationAction != "update" && comment.AnnotationAction != "delete":
 		return "annotation_action must be create, update, or delete"
+	case comment.AnnotationAction == "" && comment.Anchor != nil:
+		return "an annotation anchor requires annotation_action"
 	case comment.AnnotationAction == "create" && (comment.ReplyTo != "" || comment.Anchor == nil):
 		return "an annotation create requires an anchor on a root comment"
 	case (comment.AnnotationAction == "update" || comment.AnnotationAction == "delete") && comment.ReplyTo == "":
 		return "an annotation update or delete must reply to its root comment"
+	case (comment.AnnotationAction == "update" || comment.AnnotationAction == "delete") && (reply.AnnotationAction != "create" || reply.ReplyTo != ""):
+		return "an annotation update or delete must reply to its annotation create root"
 	case comment.AnnotationAction == "update" && comment.Anchor == nil:
 		return "an annotation update requires an anchor"
 	case comment.AnnotationAction == "delete" && comment.Anchor != nil:

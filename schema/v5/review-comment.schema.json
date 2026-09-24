@@ -57,6 +57,24 @@
       "format": "date-time"
     }
   },
+  "allOf": [
+    {
+      "if": {"properties": {"annotation_action": {"const": "create"}}, "required": ["annotation_action"]},
+      "then": {"required": ["anchor"], "not": {"required": ["reply_to"]}}
+    },
+    {
+      "if": {"properties": {"annotation_action": {"const": "update"}}, "required": ["annotation_action"]},
+      "then": {"required": ["anchor", "reply_to"]}
+    },
+    {
+      "if": {"properties": {"annotation_action": {"const": "delete"}}, "required": ["annotation_action"]},
+      "then": {"required": ["reply_to"], "not": {"required": ["anchor"]}}
+    },
+    {
+      "if": {"required": ["anchor"]},
+      "then": {"required": ["annotation_action"]}
+    }
+  ],
   "$defs": {
     "id": {
       "type": "string",

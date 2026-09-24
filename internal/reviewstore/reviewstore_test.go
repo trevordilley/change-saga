@@ -116,12 +116,22 @@ func TestReviewAnnotationEditsAreAppendOnlyComments(t *testing.T) {
 	if _, err := Comment(root, Remark{Review: "pr-7", ReplyTo: created.ID, Body: "Annotation deleted.", Reviewer: human, AnnotationAction: "delete"}); err != nil {
 		t.Fatal(err)
 	}
+	ordinary, err := Comment(root, Remark{Review: "pr-7", Target: "why", Body: "Ordinary discussion.", Reviewer: human})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Comment(root, Remark{Review: "pr-7", ReplyTo: ordinary.ID, Body: "Invalid annotation update.", Reviewer: human, Anchor: &moved, AnnotationAction: "update"}); err == nil || !strings.Contains(err.Error(), "annotation create root") {
+		t.Fatalf("annotation update on an ordinary thread = %v", err)
+	}
+	if _, err := Comment(root, Remark{Review: "pr-7", Target: "why", Body: "Anchor without action.", Reviewer: human, Anchor: anchor}); err == nil || !strings.Contains(err.Error(), "annotation action") {
+		t.Fatalf("anchor without annotation action = %v", err)
+	}
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
 		t.Fatalf("load: %v %#v", err, validation.Issues)
 	}
 	comments := document.FindReview("pr-7").Comments
-	if len(comments) != 3 || comments[0].AnnotationAction != "create" || comments[1].AnnotationAction != "update" || comments[2].AnnotationAction != "delete" || comments[1].ReplyTo != created.ID {
+	if len(comments) != 4 || comments[0].AnnotationAction != "create" || comments[1].AnnotationAction != "update" || comments[2].AnnotationAction != "delete" || comments[1].ReplyTo != created.ID || comments[3].ID != ordinary.ID {
 		t.Fatalf("annotation history = %#v", comments)
 	}
 	if anchor.Shapes[0].X != .2 {
@@ -164,6 +174,15 @@ func TestLoadRejectsMalformedReviewRecords(t *testing.T) {
 		{"comment replies to nothing", func(t *testing.T, dir string) {
 			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) { c.ReplyTo = "missing" }))
 		}, "unknown comment"},
+		{"annotation update replies to ordinary comment", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(*saga.ReviewComment) {}))
+			writeJSON(t, filepath.Join(dir, "comments", "c2.json"), comment(func(c *saga.ReviewComment) {
+				c.ID = "c2"
+				c.ReplyTo = "c1"
+				c.AnnotationAction = "update"
+				c.Anchor = &saga.ReviewAnchor{Type: "region", Coordinate: "normalized", Shapes: []saga.ReviewShape{{Type: "rect", X: .2, Y: .2, Width: .2, Height: .2}}}
+			}))
+		}, "annotation create root"},
 		{"review holds an unknown entry", func(t *testing.T, dir string) {
 			writeJSON(t, filepath.Join(dir, "notes.json"), map[string]string{})
 		}, "unknown entry in a review"},
