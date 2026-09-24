@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "cd01b0decc45967bdb84080fefa7ffc4f3c5df22",
+      "commit": "05553b94d9c0dd824db1c0768649e4664a19a8b6",
       "path": "internal/grammar/commands.go",
       "start": 591,
       "end": 598,
