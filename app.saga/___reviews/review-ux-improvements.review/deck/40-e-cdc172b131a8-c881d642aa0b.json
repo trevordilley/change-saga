@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/appjs.go",
+      "start": 13,
+      "end": 44,
+      "digest": "sha256:6a98bfa287b5bcbdaa98fba051e03e13a4eae8c6f3cc3f7263414d88ebad3f00",
+      "note": "Focused Item controls reveal linked story and diff previews without requiring permanent badges."
+    }
+  ]
+}

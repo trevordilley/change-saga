@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "edit-correctness",
+  "slide": "fidelity-audit",
+  "rank": 10,
+  "kind": "node",
+  "label": "Mutable annotation state",
+  "description": "The browser retains edited geometry, supports move/resize/color/undo/redo, and reports failed writes. Creation retry remains a known pending fix.",
+  "selector": {
+    "type": "element",
+    "element_id": "edit-correctness"
+  }
+}

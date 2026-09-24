@@ -8,7 +8,7 @@
   "layout": "diagram",
   "media_type": "image/svg+xml",
   "entrypoint": "20-s-efa008eccd56-0000-aa1312a75963.svg",
-  "takeaway": "Requirements, prototypes, and quality own their records; livingapp composes them, but requirement queries currently omit feature ownership.",
+  "takeaway": "Requirements, prototypes, and quality own their records; livingapp composes snapshot-bound queries that preserve story feature ownership.",
   "reading_order": [
     "leaf-boundary",
     "requirements-owner",

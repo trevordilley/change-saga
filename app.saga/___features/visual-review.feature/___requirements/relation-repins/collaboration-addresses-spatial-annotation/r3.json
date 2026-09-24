@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r3",
+  "relation": "urn:change-saga:change-saga:relation:collaboration-addresses-spatial-annotation",
+  "from_content_digest": "sha256:a3241798cf476e3ff98990c681606b8910577d740b6645319dddfc59dbc6dfa4",
+  "rationale": "The implemented normalized anchors and append-only event projection preserve visual source while retaining spatial review feedback and author context.",
+  "created_at": "2026-09-24T20:27:18.288697Z"
+}

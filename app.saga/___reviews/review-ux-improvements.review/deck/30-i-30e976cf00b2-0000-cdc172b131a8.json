@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "discoverability",
+  "slide": "fidelity-audit",
+  "rank": 0,
+  "kind": "node",
+  "label": "Evidence controls",
+  "description": "Review Items expose exact code and affected records through focused controls and the marked-place list.",
+  "selector": {
+    "type": "element",
+    "element_id": "discoverability"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/review-experience-audit.md",
+      "start": 3,
+      "end": 4,
+      "digest": "sha256:64f3a367038defd820b679bf3b61ba148c7c50560ad6d372262ba363e574bcd6",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/review-experience-audit.md",
+      "start": 8,
+      "end": 17,
+      "digest": "sha256:39623e5c183573462162e4d20542a5cbd9b37816fe491380c7f4e8910a8723a1",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    }
+  ]
+}

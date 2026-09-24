@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/review.go",
+      "start": 109,
+      "end": 157,
+      "digest": "sha256:6a4c8a389dc23b90a8b0d835228cbaa267c6be88ff5407c235188c5cbb4e8088",
+      "note": "Spatial feedback and replies persist without modifying the source visual."
+    },
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 220,
+      "end": 257,
+      "digest": "sha256:58445b5a574ea448096cd58bec6af3c5fc4ab3f24a0345661a5796ff5f1cbb33",
+      "note": "Spatial feedback and replies persist without modifying the source visual."
+    }
+  ]
+}

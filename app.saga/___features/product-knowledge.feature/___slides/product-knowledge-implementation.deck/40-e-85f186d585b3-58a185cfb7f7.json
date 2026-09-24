@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/livingapp/feature_context.go",
+      "start": 557,
+      "end": 565,
+      "digest": "sha256:4654921ee76918577df6613dd3fbe4efb360233b62eec61a37134edc720daa5a",
+      "note": "The requirement projection copies the owning Feature field."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/review.go",
+      "start": 109,
+      "end": 157,
+      "digest": "sha256:6a4c8a389dc23b90a8b0d835228cbaa267c6be88ff5407c235188c5cbb4e8088",
+      "note": "Review comment events own optional normalized drawing or note anchors."
+    }
+  ]
+}

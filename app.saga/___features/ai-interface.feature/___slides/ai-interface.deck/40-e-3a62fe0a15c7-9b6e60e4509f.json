@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/cli/query.go",
+      "start": 415,
+      "end": 419,
+      "digest": "sha256:96a5c819d4e805481e6e33380da817f6f926c13ec8359f265e973037c19ceedb",
+      "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+    }
+  ]
+}

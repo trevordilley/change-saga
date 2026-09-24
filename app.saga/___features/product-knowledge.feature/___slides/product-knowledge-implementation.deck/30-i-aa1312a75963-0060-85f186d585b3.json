@@ -4,8 +4,8 @@
   "slide": "product-knowledge-ownership",
   "rank": 60,
   "kind": "callout",
-  "label": "Feature ownership missing",
-  "description": "The requirement response type and row projection omit the story Feature field, so callers cannot feature-scope this query directly.",
+  "label": "Feature-scoped requirements",
+  "description": "Requirement rows expose the story Feature value, and requirement and traceability queries filter by owning feature without changing app-global resource identity.",
   "selector": {
     "type": "element",
     "element_id": "feature-ownership-gap"

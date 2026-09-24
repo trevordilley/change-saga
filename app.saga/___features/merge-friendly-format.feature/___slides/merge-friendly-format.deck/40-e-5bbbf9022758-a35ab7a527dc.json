@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/store/store.go",
+      "start": 336,
+      "end": 345,
+      "digest": "sha256:eca1789a49af7a20ef16b519099073d3ea5b33cba83e22cc1e5a9777047a587b",
+      "note": "Publishes exclusive files with a hard link and replacements with atomic rename."
+    }
+  ]
+}

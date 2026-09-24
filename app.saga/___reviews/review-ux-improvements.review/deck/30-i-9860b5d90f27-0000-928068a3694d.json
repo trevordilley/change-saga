@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "anchor-model",
+  "slide": "append-only-annotations",
+  "rank": 0,
+  "kind": "node",
+  "label": "Normalized anchors",
+  "description": "Shapes and note text live on review comments with reviewer identity; geometry is normalized to the visual.",
+  "selector": {
+    "type": "element",
+    "element_id": "anchor-model"
+  }
+}

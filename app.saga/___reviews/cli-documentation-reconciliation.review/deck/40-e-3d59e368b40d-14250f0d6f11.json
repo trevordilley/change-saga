@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:c08eb608452f06f4511b0822b62f34b3adef262610cbe26c98f16fa369b412c1",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 33,
+      "end": 37,
+      "digest": "sha256:1a67518fc2293a1ed07efb3f3c7793ff0485d36c673a3a6807389aa2a207c5e9",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 43,
+      "end": 47,
+      "digest": "sha256:a792b525282be8d0baa51d4eecaebfe7fe2d9902852e1c2af3649df663e40173",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 81,
+      "end": 82,
+      "digest": "sha256:e8b4f22b22a10966d855c5a25190ec0e670e5b7deeda65ca8ca39de922589aaf",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    }
+  ]
+}

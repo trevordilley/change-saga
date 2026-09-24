@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/server/reviews.go",
+      "start": 575,
+      "end": 604,
+      "digest": "sha256:5fc942ba6c08ed273add8f2769297805169a79b2c4504652c89f0af0feca2c05",
+      "note": "Serves isolated slide assets and gates comment mutations before invoking storage."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/reconciliation.go",
+      "start": 271,
+      "end": 331,
+      "digest": "sha256:4372d715b6732dfa78c98c00645d57658d2a5721ffcb88a87eaaf43681b3f26b",
+      "note": "The currency step owns these workflow changes or their regression checks."
+    }
+  ]
+}

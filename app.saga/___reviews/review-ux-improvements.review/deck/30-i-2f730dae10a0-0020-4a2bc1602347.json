@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "product-intent",
+  "slide": "exact-evidence",
+  "rank": 20,
+  "kind": "node",
+  "label": "Affected documentation",
+  "description": "A review Item can link to the living story, feature or slide it changes; this link does not replace current implementation documentation.",
+  "selector": {
+    "type": "element",
+    "element_id": "product-intent"
+  }
+}

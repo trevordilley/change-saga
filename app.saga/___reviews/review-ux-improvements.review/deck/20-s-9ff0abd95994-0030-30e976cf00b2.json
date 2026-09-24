@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "fidelity-audit",
+  "deck": "review-ux-improvements",
+  "title": "Review interaction and regression boundaries",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-9ff0abd95994-0030-30e976cf00b2.svg",
+  "takeaway": "Interaction checks cover actual geometry and history. Coverage and pin freshness still do not establish correctness.",
+  "reading_order": [
+    "discoverability",
+    "edit-correctness",
+    "regression-proof"
+  ]
+}

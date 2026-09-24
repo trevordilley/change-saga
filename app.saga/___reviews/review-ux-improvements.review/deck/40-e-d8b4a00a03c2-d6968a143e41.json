@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews.go",
+      "start": 426,
+      "end": 462,
+      "digest": "sha256:6070239bcb2f5ed0fd15591e3721f968acd179cd9e5de7eab8c98ee4a2919707",
+      "note": "Focused current source context for this semantic Item."
+    }
+  ]
+}

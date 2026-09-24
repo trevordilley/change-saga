@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "slide-workspace",
+  "deck": "review-ux-improvements",
+  "title": "The review is the slide workspace",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-9ff0abd95994-0000-48828a9e0068.svg",
+  "takeaway": "The authored deck is the review surface; exact Item evidence and per-slide decisions support it.",
+  "reading_order": [
+    "workspace",
+    "navigation",
+    "decision"
+  ]
+}

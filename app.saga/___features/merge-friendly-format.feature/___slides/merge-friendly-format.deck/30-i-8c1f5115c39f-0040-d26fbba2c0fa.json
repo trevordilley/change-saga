@@ -5,7 +5,7 @@
   "rank": 40,
   "kind": "transition",
   "label": "Directory durability",
-  "description": "After publication, a directory-sync error rolls back exclusive file adds and complete entity directories; replacement files are not rolled back and may remain visible.",
+  "description": "Sync failure attempts rollback for exclusive adds; failed removal or resync reports published but not durable. Replacements remain published. Entity cleanup is best effort; an error alone does not prove absence.",
   "selector": {
     "type": "element",
     "element_id": "directory-sync"

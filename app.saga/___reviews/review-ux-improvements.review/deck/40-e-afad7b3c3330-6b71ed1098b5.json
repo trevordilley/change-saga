@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/template.go",
+      "start": 27,
+      "end": 28,
+      "digest": "sha256:041780839c24f103f79fe5c9e84922bd4588a0ceb65766d9f216104557d8e0cb",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/template.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:e28f2669ef80a9294a7d782b3fa058273f8882e6e14554e643dc1bcf61865174",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    }
+  ]
+}

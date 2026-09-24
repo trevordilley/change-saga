@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/styles.go",
+      "start": 805,
+      "end": 807,
+      "digest": "sha256:844028760349e86e2de0eca12e5eae458b0f9e7c3dd7b7e41a3c3e06b5f4e50e",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    }
+  ]
+}

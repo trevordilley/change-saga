@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews.go",
+      "start": 632,
+      "end": 640,
+      "digest": "sha256:4fe53e72b0959c6e9c33cc12aff83b7de77692c1b79e741a5c107328452bfd01",
+      "note": "append only annotations: projection owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews.go",
+      "start": 644,
+      "end": 644,
+      "digest": "sha256:f11e77123968e318ce45e8a575b91f22ccf390b4a4fc29f58be2da24deb28ce0",
+      "note": "append only annotations: projection owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/reviews.go",
+      "start": 654,
+      "end": 702,
+      "digest": "sha256:19910e2d54ca9a0d1e2aca33ae4191b77eb54c819b84efab4251047ca6d79c74",
+      "note": "append only annotations: projection owns these changed lines on this comparison side."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:reconcile-living-documentation",
+  "parents": [],
+  "title": "Reconcile living documentation after a change",
+  "statement": "As a developer, I can identify and repair documentation drift after implementing and reviewing a change so the Saga remains an accurate explanation of the current application.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "separate-currency",
+      "statement": "The reconciliation report separates review diff coverage from living documentation currency at the selected head and distinguishes existing debt from regressions."
+    },
+    {
+      "id": "explain-impact",
+      "statement": "Code changes and requirement-only changes identify implicated records through declared links with reasons for reassessment."
+    },
+    {
+      "id": "repair-loop",
+      "statement": "The queue supplies typed inspection and repair paths, including complete-slide snapshots where required, and supports checking again without treating fresh pins as semantic proof."
+    }
+  ],
+  "created_at": "2026-09-24T20:29:29.522462Z"
+}

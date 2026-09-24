@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">The fidelity audit closed correctness gaps</title>
+  <desc id="desc">Focused evidence controls, mutable annotation geometry and append-only history are separate review boundaries.</desc>
+  <defs><linearGradient id="bg4"><stop stop-color="#111827"/><stop offset="1" stop-color="#172b2a"/></linearGradient><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0l10 5-10 5z" fill="#6ee7b7"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg4)"/>
+  <text x="62" y="70" fill="#94aaa7" font-family="ui-monospace,monospace" font-size="16" letter-spacing="2">REVIEW UX · SLIDE 4</text>
+  <text x="62" y="126" fill="#f7fffc" font-family="Inter,system-ui,sans-serif" font-size="36" font-weight="750">Review interaction and regression boundaries</text>
+  <text x="62" y="164" fill="#b4cbc7" font-family="Inter,system-ui,sans-serif" font-size="19">Inspect exact evidence, persisted geometry and append-only history separately.</text>
+  <g id="discoverability">
+    <rect x="62" y="220" width="356" height="330" rx="18" fill="#101d25" stroke="#38bdf8" stroke-width="2"/>
+    <text x="88" y="257" fill="#7dd3fc" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">EVIDENCE DISCOVERABILITY</text>
+    <text x="88" y="306" fill="#fda4af" font-family="Inter,system-ui,sans-serif" font-size="17" font-weight="700">Before</text><text x="158" y="306" fill="#91a8b5" font-family="Inter,system-ui,sans-serif" font-size="16">element selection</text>
+    <path d="M90 332h265" stroke="#425967" stroke-width="2" stroke-dasharray="7 6"/>
+    <path d="M214 360v44" stroke="#6ee7b7" stroke-width="3" marker-end="url(#a4)"/>
+    <text x="88" y="450" fill="#6ee7b7" font-family="Inter,system-ui,sans-serif" font-size="17" font-weight="750">Now</text><rect x="143" y="426" width="105" height="38" rx="8" fill="#fff" stroke="#38bdf8"/><text x="195" y="451" text-anchor="middle" fill="#075985" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">Code · 3</text><rect x="258" y="426" width="126" height="38" rx="8" fill="#fff" stroke="#34d399"/><text x="321" y="451" text-anchor="middle" fill="#166534" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">Affected</text>
+    <text x="88" y="505" fill="#b9d0da" font-family="Inter,system-ui,sans-serif" font-size="14">focus · marked-place list</text>
+  </g>
+  <g id="edit-correctness">
+    <rect x="462" y="220" width="356" height="330" rx="18" fill="#151d24" stroke="#a78bfa" stroke-width="2"/>
+    <text x="488" y="257" fill="#c4b5fd" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">EDIT CORRECTNESS</text>
+    <rect x="492" y="286" width="296" height="76" rx="10" fill="#332239"/><text x="510" y="315" fill="#fda4af" font-family="ui-monospace,monospace" font-size="14">render(entry)</text><text x="510" y="340" fill="#e0b8c3" font-family="ui-monospace,monospace" font-size="13">stale Anchor → snap back</text>
+    <path d="M640 374v44" stroke="#6ee7b7" stroke-width="3" marker-end="url(#a4)"/>
+    <rect x="492" y="430" width="296" height="76" rx="10" fill="#15372e"/><text x="510" y="459" fill="#6ee7b7" font-family="ui-monospace,monospace" font-size="14">mutable anchor retained</text><text x="510" y="484" fill="#b7e9d5" font-family="ui-monospace,monospace" font-size="13">save failure → rollback</text>
+  </g>
+  <g id="regression-proof">
+    <rect x="862" y="220" width="356" height="330" rx="18" fill="#11241e" stroke="#34d399" stroke-width="2"/>
+    <text x="888" y="257" fill="#6ee7b7" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">TRUTHFUL HISTORY</text>
+    <g font-family="Inter,system-ui,sans-serif"><circle cx="909" cy="306" r="12" fill="#22a06b"/><path d="M903 306l4 4 8-10" fill="none" stroke="#fff" stroke-width="3"/><text x="935" y="312" fill="#e5fff4" font-size="16">changed x/y values</text><circle cx="909" cy="354" r="12" fill="#22a06b"/><path d="M903 354l4 4 8-10" fill="none" stroke="#fff" stroke-width="3"/><text x="935" y="360" fill="#e5fff4" font-size="16">larger width/height</text><circle cx="909" cy="402" r="12" fill="#22a06b"/><path d="M903 402l4 4 8-10" fill="none" stroke="#fff" stroke-width="3"/><text x="935" y="408" fill="#e5fff4" font-size="16">color after reload</text><circle cx="909" cy="450" r="12" fill="#22a06b"/><path d="M903 450l4 4 8-10" fill="none" stroke="#fff" stroke-width="3"/><text x="935" y="456" fill="#e5fff4" font-size="16">direct create-root only</text><circle cx="909" cy="498" r="12" fill="#22a06b"/><path d="M903 498l4 4 8-10" fill="none" stroke="#fff" stroke-width="3"/><text x="935" y="504" fill="#e5fff4" font-size="16">no event on select</text></g>
+  </g>
+  <rect x="62" y="585" width="1156" height="56" rx="12" fill="#142f28" stroke="#2d6f59"/><text x="640" y="620" text-anchor="middle" fill="#c8f7e5" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">Pending fixes: failed-create retry, stroke validation, and full Code Diff layout.</text>
+  <text x="62" y="681" fill="#d9eee8" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="650">Takeaway: passing coverage is no verdict on behavior or explanation.</text>
+</svg>

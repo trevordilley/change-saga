@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/server/server.go",
+      "start": 369,
+      "end": 377,
+      "digest": "sha256:7913f2d3eee0d50cfa45072e6c96b35b4807ef526aa6eb58b198016a62f3e7ec",
+      "note": "Review routes expose annotation reads and comment writes used for spatial review marks."
+    }
+  ]
+}

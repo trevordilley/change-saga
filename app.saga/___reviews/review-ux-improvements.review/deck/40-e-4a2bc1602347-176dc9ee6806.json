@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/README.md",
+      "start": 30,
+      "end": 32,
+      "digest": "sha256:352bcb2b142d66584ffee5814dd735f3a3bdba321187684cf079d8fefe1655df",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    }
+  ]
+}

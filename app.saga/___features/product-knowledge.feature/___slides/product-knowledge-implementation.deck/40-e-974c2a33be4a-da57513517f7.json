@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/requirements/terms.go",
+      "start": 37,
+      "end": 60,
+      "digest": "sha256:6005f1ce73922252266b83bb026fc60d0a2d07f607c1b1f2bcecdea47f8b3a89",
+      "note": "Term revisions retain definition, evidence axes, aliases, links, exact code and immutable parentage."
+    }
+  ]
+}

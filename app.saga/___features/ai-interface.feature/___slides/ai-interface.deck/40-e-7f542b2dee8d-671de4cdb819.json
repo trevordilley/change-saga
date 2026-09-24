@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/grammar/commands.go",
+      "start": 20,
+      "end": 35,
+      "digest": "sha256:dda89d9d567834db0c1a8d223c5e5f3b63e9998876779345afc161495c005795",
+      "note": "Published command shapes including review operations"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "projection",
+  "slide": "append-only-annotations",
+  "rank": 20,
+  "kind": "node",
+  "label": "Reload projection",
+  "description": "The annotation endpoint derives current geometry, deletion state and discussion from the ordered comment events.",
+  "selector": {
+    "type": "element",
+    "element_id": "projection"
+  }
+}

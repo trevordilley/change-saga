@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "CHANGELOG.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:98eed6baa4bef68f9cecda007683b88ff5ce499fe81c328943b26f54d3160d0b",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    }
+  ]
+}

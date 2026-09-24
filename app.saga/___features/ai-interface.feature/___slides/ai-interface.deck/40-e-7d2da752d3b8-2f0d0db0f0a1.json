@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 35,
+      "end": 52,
+      "digest": "sha256:109f6e80e1d5f402994c36ce8f8023e9c9843d2bb7e64bb6599c94a4fc9584b5",
+      "note": "Routes living operations through a second domain session while reusing reviewapp's public snapshot so both projections stay comparable."
+    }
+  ]
+}

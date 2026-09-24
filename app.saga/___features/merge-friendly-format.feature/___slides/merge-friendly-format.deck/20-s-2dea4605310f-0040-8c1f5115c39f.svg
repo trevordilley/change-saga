@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Atomic publication and failure boundaries</title>
-  <desc id="desc">Supported writers serialize and stage data before an atomic publish point. Pre-publish failures leave the destination unchanged. After publish, sync failures roll back exclusive files and entity directories, but replacement files may remain visible. Windows does not implement directory-entry fsync.</desc>
+  <desc id="desc">Supported writers serialize and stage data before an atomic publish point. Pre-publish failures leave the destination unchanged. After publish, sync failures attempt rollback of exclusive files and entity directories; failed rollback and replacements may remain visible. Windows does not implement directory-entry fsync.</desc>
   <defs>
     <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#26344d"/></marker>
     <marker id="red-a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#b64a42"/></marker>
@@ -30,12 +30,12 @@
   <path class="e" d="M936 170H984"/>
   <g id="directory-sync">
     <rect x="984" y="112" width="246" height="116" rx="20" fill="#e8f7ec" stroke="#2f7a4f" stroke-width="4"/>
-    <text class="t sh" x="1030" y="153">Directory sync</text><text class="t sm" x="1014" y="183">persist published name</text><text class="t sm" x="1009" y="207">error branches by write kind</text>
+    <text class="t sh" x="1030" y="153">Directory sync</text><text class="t sm" x="1014" y="183">persist published name</text><text class="t sm" x="1009" y="207">inspect publication status</text>
     <path class="fail" d="M1107 228V310"/>
     <rect x="692" y="310" width="538" height="162" rx="22" fill="#fff0ef" stroke="#b64a42" stroke-width="3"/>
     <text class="t sh" x="724" y="348">SYNC ERROR AFTER PUBLISH</text>
-    <text class="t b" x="724" y="382">Exclusive file add</text><text class="t sm" x="1004" y="382">remove new path + resync</text>
-    <text class="t b" x="724" y="414">Complete entity dir</text><text class="t sm" x="1004" y="414">remove final tree + resync</text>
+    <text class="t b" x="724" y="382">Exclusive file add</text><text class="t sm" x="1004" y="382">try remove + resync</text>
+    <text class="t b" x="724" y="414">Complete entity dir</text><text class="t sm" x="1004" y="414">try removal + resync</text>
     <text class="t b" x="724" y="446">Replacement file</text><text class="t sm" x="972" y="438">not rolled back; new bytes</text><text class="t sm" x="972" y="460">may remain visible</text>
   </g>
   <g id="failure-cleanup">

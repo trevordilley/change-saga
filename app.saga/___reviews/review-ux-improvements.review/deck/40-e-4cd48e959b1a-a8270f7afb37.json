@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/server_test.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:6d7a527665906d49c63206149c66ffaef82c3ce650d6ec0e923c562503be6039",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    }
+  ]
+}

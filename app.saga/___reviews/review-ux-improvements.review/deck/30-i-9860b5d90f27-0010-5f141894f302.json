@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "append-store",
+  "slide": "append-only-annotations",
+  "rank": 10,
+  "kind": "node",
+  "label": "Append-only events",
+  "description": "Create starts a thread; update and delete append to its create root under the Saga writer lock.",
+  "selector": {
+    "type": "element",
+    "element_id": "append-store"
+  }
+}

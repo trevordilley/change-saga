@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/appjs.go",
+      "start": 1115,
+      "end": 1115,
+      "digest": "sha256:4036bf8e3b3cad63a30c2780a02de6da9b15a108f0471e030b3be56684ae20cd",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/appjs.go",
+      "start": 2173,
+      "end": 2173,
+      "digest": "sha256:6af59154e060215c2e18680217597a454348a3bfc14367369830b480b2491e7a",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/appjs.go",
+      "start": 2175,
+      "end": 2175,
+      "digest": "sha256:e6936d43bf09e88631a3206be7c45b8585aa634d15f729c1b5094023242600a8",
+      "note": "exact evidence: item hotspots owns these changed lines on this comparison side."
+    }
+  ]
+}

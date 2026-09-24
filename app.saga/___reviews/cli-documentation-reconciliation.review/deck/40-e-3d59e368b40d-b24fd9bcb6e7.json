@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/cli.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:cdd0f830d11c0c9a8bfe5ff038f90fc042a8459c317dfbaf04e009c7f3240c49",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/cli.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:bda79b6473b478d18a77c14d1fd65e1fb665f9bbfe224312d10bf6dc01b7e1d0",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/cli.go",
+      "start": 242,
+      "end": 251,
+      "digest": "sha256:4afa01024e9f68de1cda4f0dbf0e1bc0984f5d0a7f957d37ca3d00cb7a89eace",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/cli.go",
+      "start": 322,
+      "end": 324,
+      "digest": "sha256:d81f67b24b3a50325d180a329c6aebef0e95fbfe044b638c8d3c4f862b548bc9",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/grammar/commands.go",
+      "start": 591,
+      "end": 596,
+      "digest": "sha256:ace2926692201e1ec9b548bb87673da7de2f369ed4e44496a28e26ee96432ea1",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    }
+  ]
+}

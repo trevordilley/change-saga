@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/ux-reframe.md",
+      "start": 3,
+      "end": 14,
+      "digest": "sha256:3414076c1804087cb9d588d36019531a60021fa8c820ab4262ac64dfe85bd215",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/ux-reframe.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:84ba4d03ff71e85e1b8f750905a5e235eee5bc3f8ebc627d975b0e2ebcce82ca",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/ux-reframe.md",
+      "start": 27,
+      "end": 28,
+      "digest": "sha256:97d2dc62d45fc7f11f61d1aba2db6f2aa89a608a28c8879c3dc5c963511edcc3",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/ux-reframe.md",
+      "start": 31,
+      "end": 33,
+      "digest": "sha256:3aeb983771155185f86b4e7ddfed9b7c1c0a8a1e45b49199bae2ea302ed61c08",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/ux-reframe.md",
+      "start": 113,
+      "end": 116,
+      "digest": "sha256:50e84eaf90f6b3ba598a77195fe4b399d358ba02937465e95163769fd4a39f48",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    }
+  ]
+}

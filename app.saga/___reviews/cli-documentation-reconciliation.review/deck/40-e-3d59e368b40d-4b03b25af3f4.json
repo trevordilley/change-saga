@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "cmd/change-saga/main.go",
+      "start": 132,
+      "end": 133,
+      "digest": "sha256:e585a4771eac44dc8ab05561243f4078e4256c9ad163c4b962ddcf1d034cf716",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    }
+  ]
+}

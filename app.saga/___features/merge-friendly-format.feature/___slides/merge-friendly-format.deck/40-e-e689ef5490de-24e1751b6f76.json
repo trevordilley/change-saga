@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/model.go",
+      "start": 43,
+      "end": 91,
+      "digest": "sha256:036635084d466e8f242df893c296b5db71f7b14ba595e3038ee15cd0d9cf2fb9",
+      "note": "Partitioned app layout and immutable requirement records"
+    }
+  ]
+}

@@ -1,5 +1,8 @@
 # Visual review collaboration {#visual-review-collaboration}
 
-Pull-request review is separate from the durable documentation surfaces. A review owns a visual deck; comments attach to a specific review slide or semantic Item, and the committed event files retain the discussion.
+A pull-request review owns its deck and discussion. Comments attach to a review slide or semantic Item; replies retain the root target. Spatial annotations add normalized shapes or note text to the same append-only comment history. Updates and deletes reply to the annotation's create root, leaving the source visual unchanged.[^history]
 
-The intended spatial-annotation layer adds text, freehand strokes, and resizable shapes over a slide without changing its source visual. The current implementation has contextual comments but no review-annotation record or browser drawing toolbox. Persistence and anchoring for spatial marks remain a design gap.
+The browser offers comment, highlight, rectangle, freehand and sticky-note tools. Reload projects the latest annotation geometry and discussion from those events. Prototype annotations separately link visuals to requirements.[^projection]
+
+[^history]: Review comment anchors and root validation define the durable discussion boundary.
+[^projection]: The browser tool palette and annotation projection reconstruct the current review marks.

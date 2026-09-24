@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "regression-proof",
+  "slide": "fidelity-audit",
+  "rank": 20,
+  "kind": "node",
+  "label": "Regression boundaries",
+  "description": "Source tests exercise review navigation, geometry persistence and rejection of updates that do not name an annotation create root.",
+  "selector": {
+    "type": "element",
+    "element_id": "regression-proof"
+  }
+}

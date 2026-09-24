@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "docs/reconciliation.md",
+      "start": 1,
+      "end": 99,
+      "digest": "sha256:f2fd432328c23057bfdf3a2a2f29ee93233ddde3e6c2695a48d1000eddc02b31",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    }
+  ]
+}

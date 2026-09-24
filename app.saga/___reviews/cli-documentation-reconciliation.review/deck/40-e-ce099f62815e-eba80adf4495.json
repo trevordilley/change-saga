@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/cli/skill_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:b0914807918423d52bf14030edc47f956d224d8ab0c12b4010c547c944ffd149",
+      "note": "The reassess step owns these workflow changes or their regression checks."
+    }
+  ]
+}
