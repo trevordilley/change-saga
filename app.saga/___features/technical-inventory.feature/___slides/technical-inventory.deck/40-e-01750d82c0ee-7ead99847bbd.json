@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "path": "internal/cli/query_inventory.go",
+      "start": 71,
+      "end": 76,
+      "digest": "sha256:43ebadeb867c683da6ea38eb3475d1d09a4fd4943e186fef803922ea3f23882c",
+      "note": "Both current readers independently load inventory; the arrows represent reads, not a drawer call through the query command."
+    },
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "path": "internal/server/inventory.go",
+      "start": 48,
+      "end": 59,
+      "digest": "sha256:fc36d14d6b2dfa2984647eaff9e78b80978d49b26047fd29912f6b69517dd5a3",
+      "note": "Both current readers independently load inventory; the arrows represent reads, not a drawer call through the query command."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-design-boundaries-model-extension",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-design-boundaries:item:model-extension",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+  "scope": "self",
+  "rationale": "Proposed: retain identity and immutable history while adding data entities, typed relationships and revision-level implementation intent. No implementation evidence is claimed.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T22:40:07.454132Z"
+}

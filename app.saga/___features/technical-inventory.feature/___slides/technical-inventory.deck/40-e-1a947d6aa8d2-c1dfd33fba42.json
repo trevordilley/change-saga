@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "path": "internal/server/inventory.go",
+      "start": 43,
+      "end": 60,
+      "digest": "sha256:ba864b5b58b72e66d0b0b2567b5c9503d111f347305b79884795fc13fd54f618",
+      "note": "Existing saved-revision lookup and on-demand drawer request provide the navigation boundary to extend."
+    },
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "path": "internal/server/appjs.go",
+      "start": 1246,
+      "end": 1281,
+      "digest": "sha256:179974e11ec9e1be2797ec352046e561313b8a097011f7ce3d6fe0c8f2bd8e1e",
+      "note": "Existing saved-revision lookup and on-demand drawer request provide the navigation boundary to extend."
+    }
+  ]
+}

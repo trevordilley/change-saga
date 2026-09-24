@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "report",
+  "slide": "technical-inventory-authored-erd",
+  "rank": 40,
+  "kind": "example",
+  "label": "PDF report",
+  "description": "Illustrative persisted entity showing selected identity, output and status fields. No existing Change Saga code is asserted.",
+  "selector": {
+    "type": "element",
+    "element_id": "report"
+  }
+}

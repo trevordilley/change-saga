@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "authored-scope",
+  "slide": "technical-inventory-authored-erd",
+  "rank": 0,
+  "kind": "statement",
+  "label": "Authored architectural overview",
+  "description": "Confirmed intent: authors select useful entities, fields and layout; this illustrative PDF example is not a Change Saga implementation or an exhaustive generated schema.",
+  "selector": {
+    "type": "element",
+    "element_id": "authored-scope"
+  }
+}

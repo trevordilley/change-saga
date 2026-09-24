@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "boundary",
+  "slide": "technical-inventory-design-boundaries",
+  "rank": 60,
+  "kind": "statement",
+  "label": "No automatic coverage",
+  "description": "Existing documentation links transfer no code ownership. The proposed selected-subset resolver must not grant coverage to unselected members.",
+  "selector": {
+    "type": "element",
+    "element_id": "boundary"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reads",
+  "slide": "technical-inventory-design-boundaries",
+  "rank": 30,
+  "kind": "edge",
+  "label": "Independent readers",
+  "description": "The inventory query and documentation drawer independently load the same record store. This is a data-read relationship, not a query-to-drawer request chain.",
+  "selector": {
+    "type": "element",
+    "element_id": "reads"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "technical-inventory-proposed-revisions",
+  "deck": "technical-inventory",
+  "title": "Proposed: keep identity through design and delivery",
+  "rank": 70,
+  "section": "Proposed technical design",
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0070-bf708790e4b7.svg",
+  "takeaway": "An existing entity keeps its implemented baseline while a pinned proposed successor evolves into evidence-backed implementation.",
+  "reading_order": [
+    "identity",
+    "baseline",
+    "proposal",
+    "implemented",
+    "history",
+    "deck-pins",
+    "independent-facts"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "navigation-extension",
+  "slide": "technical-inventory-design-boundaries",
+  "rank": 50,
+  "kind": "region",
+  "label": "Proposed navigation and scope",
+  "description": "Proposed: Technical Design houses the inventory and ERD. Queries find planned work and reverse usages; slide Items select only relevant evidence paths.",
+  "selector": {
+    "type": "element",
+    "element_id": "navigation-extension"
+  }
+}

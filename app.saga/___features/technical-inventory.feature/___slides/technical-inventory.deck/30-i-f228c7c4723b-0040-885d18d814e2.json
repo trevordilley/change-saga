@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "model-extension",
+  "slide": "technical-inventory-design-boundaries",
+  "rank": 40,
+  "kind": "region",
+  "label": "Proposed shared model extension",
+  "description": "Proposed: retain identity and immutable history while adding data entities, typed relationships and revision-level implementation intent. No implementation evidence is claimed.",
+  "selector": {
+    "type": "element",
+    "element_id": "model-extension"
+  }
+}

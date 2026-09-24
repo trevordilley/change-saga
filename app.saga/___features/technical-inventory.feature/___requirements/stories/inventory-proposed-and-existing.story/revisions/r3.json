@@ -1,0 +1,59 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r3",
+  "story": "urn:change-saga:change-saga:story:inventory-proposed-and-existing",
+  "parents": [
+    "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r2"
+  ],
+  "title": "Distinguish proposed entities from existing implementation",
+  "statement": "As an Architect or Developer, I can distinguish explicitly proposed technical entities from existing implementation and separately identify what is new relative to a comparison baseline so people and AI know both what remains to build and what a change introduced.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924",
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924",
+    "urn:change-saga:change-saga:citation:authored-erd-design-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "proposal-without-code",
+      "statement": "A proposed System, Component, or data entity can be recorded and referenced in a design before it has code evidence."
+    },
+    {
+      "id": "explicit-status",
+      "statement": "Entity documentation, deck references, and CLI queries expose proposed or implemented status for the selected entity revision explicitly; new is a separate comparison-relative classification, not a synonym for proposed."
+    },
+    {
+      "id": "evidence-distinction",
+      "statement": "An entity known to exist but lacking linked evidence is distinguishable from proposed work; missing, stale, or unresolved evidence remains visible and does not prove implementation."
+    },
+    {
+      "id": "history",
+      "statement": "Later addition of code evidence preserves the prior proposed definition and does not silently rewrite the committed plan."
+    },
+    {
+      "id": "comparison-relative-new",
+      "statement": "A result classified as new identifies the comparison baseline and selected head; an entity can be both implemented and new in that comparison, and no baseline-free query silently invents newness."
+    },
+    {
+      "id": "evidence-backed-transition",
+      "statement": "An explicit operation can mark a proposed entity implemented while supplying scoped code references supporting that implementation; the operation refuses missing or unresolvable supplied evidence and preserves the prior proposal."
+    },
+    {
+      "id": "remaining-roadmap",
+      "statement": "After implementation is recorded, proposed-work queries no longer classify that implemented revision as proposed; a separately proposed successor remains discoverable. The same comparison can still identify the entity as new, and unresolved or conflicting states remain visible."
+    },
+    {
+      "id": "implementation-not-approval",
+      "statement": "Recording implemented status and code evidence does not itself record verification, integration, or review approval, and code currency remains a separately reported fact."
+    },
+    {
+      "id": "same-identity-successor",
+      "statement": "A design can propose a successor revision of an existing System, Component, or data entity under the same stable identity while retaining the implemented baseline; deck references distinguish and pin the intended revision."
+    }
+  ],
+  "created_at": "2026-09-24T22:38:10.922025Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "baseline",
+  "slide": "technical-inventory-proposed-revisions",
+  "rank": 10,
+  "kind": "node",
+  "label": "Implemented baseline",
+  "description": "Proposed revision model retains the implemented baseline and its exact code while a successor is designed.",
+  "selector": {
+    "type": "element",
+    "element_id": "baseline"
+  }
+}

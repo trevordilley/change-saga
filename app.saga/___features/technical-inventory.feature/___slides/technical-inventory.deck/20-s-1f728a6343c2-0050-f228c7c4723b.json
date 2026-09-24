@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "technical-inventory-design-boundaries",
+  "deck": "technical-inventory",
+  "title": "Proposed: extend the inventory, keep the deck",
+  "rank": 50,
+  "section": "Proposed technical design",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0050-f228c7c4723b.svg",
+  "takeaway": "Extend existing record, query and drawer boundaries with proposed revisions, data entities and inspectable scoped evidence.",
+  "reading_order": [
+    "store",
+    "query",
+    "drawer",
+    "reads",
+    "model-extension",
+    "navigation-extension",
+    "boundary"
+  ]
+}

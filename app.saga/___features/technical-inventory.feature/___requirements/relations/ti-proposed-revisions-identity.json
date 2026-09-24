@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-proposed-revisions-identity",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-proposed-revisions:item:identity",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+  "scope": "self",
+  "rationale": "Confirmed design: Component, System and data-entity changes retain one stable identity with separate revisions; they do not create a duplicate entity for each feature.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T22:40:15.47963Z"
+}
