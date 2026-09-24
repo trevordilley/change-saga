@@ -134,13 +134,13 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 		`data-review-record="urn:change-saga:app:feature:` + serverFeature + `"`, `Index on status?`, `/reviews/pr-7/visual/queue`,
 		`https://github.com/acme/app/pull/7`, `data-slide-thumbnail`, `data-slide-previous`, `data-slide-next`,
 		`data-open-diffs="review-item-`, `data-open-stories="review-record-`, `data-review-reply-form=`,
-		`class="review-slide-menu"`, `<summary>Add comment</summary>`,
+		`class="review-slide-menu"`, `<summary>Add comment</summary>`, `data-slide-present`, `>Code Diff</button>`, `>Coverage</button>`,
 	} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("review page is missing %q:\n%s", want, body)
 		}
 	}
-	for _, discarded := range []string{`<details class="review-slide-details"`, `data-review-workspace`, `>Code Diff</button>`, `>Coverage</button>`} {
+	for _, discarded := range []string{`<details class="review-slide-details"`, `data-review-workspace`, `Code · 1`, `Affected · Feature`} {
 		if strings.Contains(body, discarded) {
 			t.Fatalf("review page still contains discarded review shell %q", discarded)
 		}

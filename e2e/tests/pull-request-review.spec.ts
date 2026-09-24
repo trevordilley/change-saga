@@ -57,22 +57,20 @@ test("@critical approves slide by slide and marks a decision out of date when it
     const greeting = page.locator('[data-deck-slide][data-slide-target$=":slide:greeting"]');
     const theme = page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]');
     await expect(greeting).toBeVisible();
-    const codeReference = greeting.getByRole("button", { name: "Open 1 code reference for The change" });
+    await greeting.locator(".landmark-menu > summary").click();
+    const codeReference = greeting.locator(".landmark-list").getByRole("button", { name: "Open 1 code reference for The change" });
     await expect(codeReference).toBeVisible();
-    await expect(codeReference).toHaveText("Code · 1");
     await codeReference.click();
     // The Item's code reference is shown as a diff against the review's base.
     await expect(page.locator("#review-drawer .review-line.add").filter({ hasText: `"hello, " + name` })).toHaveCount(1);
     await expect(page.locator("#review-drawer .review-line.del").filter({ hasText: `return "hello"` })).toHaveCount(1);
     await page.locator("[data-close-drawer]").last().click();
-    const affectedRecord = greeting.getByRole("button", { name: "Open affected documentation for Feature" });
+    const affectedRecord = greeting.locator(".landmark-list").getByRole("button", { name: "Open affected documentation for Feature" });
     await expect(affectedRecord).toBeVisible();
-    await expect(affectedRecord).toHaveText("Affected · Feature");
     await affectedRecord.click();
     await expect(page.locator('#review-drawer [data-review-record="urn:change-saga:wave-one:feature:wave-one"]')).toBeVisible();
     await page.locator("[data-close-drawer]").last().click();
 
-    await greeting.locator(".review-slide-menu > summary").click();
     await greeting.locator("[data-review-approve]").click();
     await expect(greeting.locator('[data-decision-state="approved"]')).toHaveAttribute("data-currency", "current");
     await page.locator('[data-slide-thumbnail][data-slide-target$=":slide:theme"]').click();
@@ -80,18 +78,21 @@ test("@critical approves slide by slide and marks a decision out of date when it
     await theme.locator("textarea[name=body]").first().fill("Name the colour token.");
     await theme.locator("[data-review-request-changes]").click();
     await expect(theme.locator('[data-decision-state="changes_requested"]')).toHaveAttribute("data-currency", "current");
-    await theme.getByRole("button", { name: "Open 1 code reference for The change" }).click();
+    await theme.locator(".landmark-menu > summary").click();
+    await theme.locator(".landmark-list").getByRole("button", { name: "Open 1 code reference for The change" }).click();
     const commentForm = page.locator('#review-drawer [data-review-comment-form$=":item:change"]');
     await commentForm.locator("xpath=preceding-sibling::summary").click();
     await commentForm.locator("textarea").fill("Is this contrast checked?");
     await commentForm.locator("button").click();
-    await theme.getByRole("button", { name: "Open 1 code reference for The change" }).click();
+    await theme.locator(".landmark-menu > summary").click();
+    await theme.locator(".landmark-list").getByRole("button", { name: "Open 1 code reference for The change" }).click();
     await expect(page.locator("#review-drawer").getByText("Is this contrast checked?")).toBeVisible();
     const reply = page.locator("#review-drawer [data-review-reply-form]");
     await reply.locator("xpath=preceding-sibling::summary").click();
     await reply.locator("textarea").fill("Yes; the token passes the contrast check.");
     await reply.getByRole("button", { name: "Reply" }).click();
-    await theme.getByRole("button", { name: "Open 1 code reference for The change" }).click();
+    await theme.locator(".landmark-menu > summary").click();
+    await theme.locator(".landmark-list").getByRole("button", { name: "Open 1 code reference for The change" }).click();
     await expect(page.locator("#review-drawer").getByText("Yes; the token passes the contrast check.")).toBeVisible();
 
     const approvals = reviewFiles(sagaRepositories, /___reviews\/pr-1\.review\/approvals\/.+\.json$/);
@@ -134,7 +135,8 @@ test("keeps one review slide active with durable keyboard and narrow-screen navi
     await expect(slides.filter({ visible: true })).toHaveCount(1);
     await expect(page.locator("[data-slide-position]")).toContainText("1 / 2");
     await expect(page.locator(".review-top,.review-slide-details")).toHaveCount(0);
-    await expect(page.locator("[data-slide-present], #view-slides")).toHaveCount(0);
+    await expect(page.locator("[data-slide-present]")).toBeVisible();
+    await expect(page.locator("#view-slides")).toHaveCount(0);
 
     await page.locator('[data-slide-thumbnail][data-slide-target$=":slide:theme"]').click();
     await expect(page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]')).toBeVisible();
@@ -176,13 +178,22 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
     const slide = page.locator('[data-deck-slide][data-slide-target$=":slide:greeting"]');
     const layer = slide.locator(".review-annotation-layer");
     await expect(layer).toBeVisible();
-    const toolbar = page.getByRole("toolbar", { name: "Annotate active slide" });
+    const toolbar = page.getByRole("toolbar", { name: "Annotation tools" });
+    await expect(toolbar).toBeHidden();
+    const annotationToggle = slide.getByRole("button", { name: "Show annotation tools for Greeting takes a name" });
+    await annotationToggle.click();
+    await expect(toolbar).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(toolbar).toBeHidden();
+    await expect(annotationToggle).toBeFocused();
+    await annotationToggle.click();
     await toolbar.getByRole("button", { name: "Rectangle" }).click();
     const box = await layer.boundingBox();
     expect(box).toBeTruthy();
     await page.mouse.move(box!.x + box!.width * .32, box!.y + box!.height * .28);
     await page.mouse.down();
     await page.mouse.move(box!.x + box!.width * .62, box!.y + box!.height * .58, { steps: 8 });
+    await expect(layer.locator(".review-annotation-draft rect")).toBeVisible();
     await page.mouse.up();
     const composer = page.locator(".review-annotation-compose");
     await expect(composer).toBeVisible();
@@ -215,6 +226,8 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
     expect(narrow).toBeTruthy();
     expect(narrow!.width / narrowStage!.width).toBeCloseTo(root.anchor.shapes[0].width, 1);
     await page.setViewportSize({ width: 1280, height: 800 });
+    await slide.getByRole("button", { name: "Show annotation tools for Greeting takes a name" }).click();
+    await expect(toolbar).toBeVisible();
 
     // Select the rectangle by its stroke, drag it, recolor it, then exercise
     // append-only undo/redo before deleting it with the keyboard.
@@ -230,7 +243,12 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
     expect(moved.anchor.shapes[0].y).toBeGreaterThan(root.anchor.shapes[0].y);
     const handle = annotation.locator(".review-annotation-resize-handle");
     await expect(handle).toBeVisible();
-    await toolbar.getByRole("button", { name: "Make annotation larger" }).click();
+    const handleBox = await handle.boundingBox();
+    expect(handleBox).toBeTruthy();
+    await page.mouse.move(handleBox!.x + handleBox!.width / 2, handleBox!.y + handleBox!.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(handleBox!.x + 42, handleBox!.y + 32, { steps: 5 });
+    await page.mouse.up();
     await expect.poll(() => records().length).toBe(4);
     const resized = readJSON<AnnotationRecord>(records()[3]);
     expect(resized.anchor.shapes[0].width).toBeGreaterThan(moved.anchor.shapes[0].width);
@@ -238,10 +256,12 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
     await toolbar.locator('input[type="color"]').fill("#0969da");
     await expect.poll(() => records().length).toBe(5);
     expect(readJSON<AnnotationRecord>(records()[4]).anchor.shapes[0].color).toBe("#0969da");
-    await toolbar.getByRole("button", { name: "Undo" }).click();
+    await expect(toolbar.locator("[data-undo]")).toHaveAttribute("data-undo-kind", "color");
+    await toolbar.locator("[data-undo]").click();
     await expect.poll(() => records().length).toBe(6);
     expect(readJSON<AnnotationRecord>(records()[5]).anchor.shapes[0].color).toBe("#d04832");
-    await toolbar.getByRole("button", { name: "Redo" }).click();
+    await expect(toolbar.locator("[data-redo]")).toHaveAttribute("data-redo-kind", "color");
+    await toolbar.locator("[data-redo]").click();
     await expect.poll(() => records().length).toBe(7);
     const redone = readJSON<AnnotationRecord>(records()[6]);
     expect(redone.anchor.shapes[0].color).toBe("#0969da");
@@ -270,7 +290,7 @@ test("keeps merged review annotations read-only", async ({ page, sagaRepositorie
   try {
     await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
     await expect(page.locator(".review-annotation-layer").first()).toBeVisible();
-    await expect(page.getByRole("toolbar", { name: "Annotate active slide" })).toHaveCount(0);
+    await expect(page.getByRole("toolbar", { name: "Annotation tools" })).toHaveCount(0);
     await expect(page.locator("[data-review-decision-form], [data-review-comment-form]")).toHaveCount(0);
   } finally {
     await stopSagaServer(running);

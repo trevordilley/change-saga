@@ -28,10 +28,10 @@ Never edit committed saga content to hide a word from the chrome.
 - Hairline separators instead of cards. No decorative rounding, shadows, or
   oversized headings on ordinary content.
 - Controls stay invisible until the reviewer hovers or focuses the thing they
-  belong to. Content is central and stays central. The exception is an
-  evidence-bearing Item in a pull-request review: its compact `Code · N` and
-  affected-record badges stay visible because otherwise a transparent hotspot
-  gives pointer, keyboard, and touch reviewers no signal that proof exists.
+  belong to. Content is central and stays central. Slide Items remain reachable
+  without hover through the marked-places menu, stable permalink, and keyboard
+  focus; their on-slide affordances use the same quiet treatment in
+  implementation and pull-request decks.
 
 ## Icons
 
@@ -58,18 +58,18 @@ changing the active slide.
 A pull-request review uses this same native presentation as its whole default
 surface: thumbnail rail plus one maximally fitted 16:9 slide. It is not a
 document page containing a slide, and it does not require a presentation-mode
-action before the slide fills the available pane. The rail adds exact decision
-currency and open-thread state without displacing the visual.
+action before the slide fills the available pane. Optional Present removes the
+chrome; it does not switch the reviewer into the deck.
 
 Previous/Next and unmodified arrow or Page keys follow authored order. The URL
 hash owns the active slide or Item, including after a mutation redirect. With no
 hash it starts at the authored first slide: a recorded decision is not treated
 as completion or used to invent a resume verdict. Exact slide Items project
-interactive regions over the visual; their affordances open linked diffs and
-affected living-Saga records in the existing side drawer. Those badges remain
-visible without hover and name their evidence rather than using a generic Item
-control. Code and coverage do not become competing top-level views on an
-individual review.
+interactive regions over the visual; their ordinary landmark affordances open
+linked diffs and affected living-Saga records in the existing side drawer. A
+review Item differs from an implementation Item only in what linked code means:
+it opens the exact base/head diff. Code Diff and Coverage remain secondary tabs
+and never displace the deck on entry.
 
 V2/v3 remain legacy reports with their documentation tree and collapsible
 chapters. The renderer must never reinterpret their fragments as slides or
@@ -126,11 +126,11 @@ overlay; Item discussion lives with that Item's evidence drawer. New comment,
 reply, and decision composers are not permanently open. Replies use the
 existing append-only thread target; revealing or navigating to a slide never
 records a decision. Escape closes an open composer without submitting it and
-restores its summary control. The persistent annotation toolbar belongs to the
-active slide, not to an Item: Pointer, Highlight, Rectangle, Ellipse, Freehand,
-and Sticky remain available without leaving the deck. Item hotspots continue
-to open their exact diff and affected record independently, and their evidence
-badges are the intentional always-visible exception to ordinary hover chrome.
+restores its summary control. The annotation button opens the compact released
+palette beside the active slide's action strip: Select, Comment, Highlight,
+Rectangle, Freehand, Sticky note, color, undo, redo, and selection deletion.
+The palette starts closed and belongs to the slide, not to an Item. Item
+hotspots continue to open their exact diff and affected record independently.
 
 In the legacy chapter directory, each row mirrors the decision control on its target's own bar and projects
 append-only approval events into exactly `Unreviewed`, `Approved`, or `Changes requested`.
