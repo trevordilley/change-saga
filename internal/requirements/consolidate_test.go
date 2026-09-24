@@ -188,7 +188,7 @@ func TestConsolidationRefusesConflictedAffectedRelation(t *testing.T) {
 
 func TestConsolidationRefusesTransactionOwnedCriterionLinks(t *testing.T) {
 	root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion := consolidationFixture(t)
-	slides := filepath.Join(root, "___features", "core.feature", "___slides")
+	slides := filepath.Join(root, "___features", "core.feature", "___slides", "implementation.deck")
 	if err := os.MkdirAll(slides, 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -204,6 +204,24 @@ func TestConsolidationRefusesTransactionOwnedCriterionLinks(t *testing.T) {
 	}
 	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "partial graph retirement") || !strings.Contains(err.Error(), "validator-link") || !strings.Contains(err.Error(), filepath.Base(path)) {
 		t.Fatalf("transaction-owned link refusal = %v", err)
+	}
+}
+
+func TestConsolidationRefusesSymlinkedTransactionDeck(t *testing.T) {
+	root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion := consolidationFixture(t)
+	slides := filepath.Join(root, "___features", "core.feature", "___slides")
+	if err := os.MkdirAll(slides, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Symlink(t.TempDir(), filepath.Join(slides, "implementation.deck")); err != nil {
+		t.Fatal(err)
+	}
+	input := ConsolidateInput{
+		Duplicate: duplicateURN, Canonical: canonicalURN, EventID: "consolidated", Parents: []string{duplicateURN + ":event:proposed"}, Reason: "duplicate",
+		CriterionMap: map[string]string{duplicateCriterion: canonicalCriterion},
+	}
+	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "must be a real directory") {
+		t.Fatalf("symlinked transaction deck refusal = %v", err)
 	}
 }
 

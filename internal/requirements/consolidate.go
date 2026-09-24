@@ -369,7 +369,9 @@ func transactionOwnedCriterionLinks(document *Document, duplicateStoryID string)
 		directories = append(directories, filepath.Join(feature.Dir, applayout.SlidesDir))
 	}
 	var affected []string
-	for _, directory := range directories {
+	rootCount := len(directories)
+	for directoryIndex := 0; directoryIndex < len(directories); directoryIndex++ {
+		directory := directories[directoryIndex]
 		info, err := os.Lstat(directory)
 		if os.IsNotExist(err) {
 			continue
@@ -385,6 +387,13 @@ func transactionOwnedCriterionLinks(document *Document, duplicateStoryID string)
 			return nil, err
 		}
 		for _, entry := range entries {
+			// Complete-slide records live in a deck bundle, one level below
+			// ___slides (or ___onboarding). Keep flat records compatible, but
+			// never recursively walk arbitrary directories or follow symlinks.
+			if directoryIndex < rootCount && strings.HasSuffix(entry.Name(), ".deck") {
+				directories = append(directories, filepath.Join(directory, entry.Name()))
+				continue
+			}
 			if !strings.HasPrefix(entry.Name(), "25-t-") || !strings.HasSuffix(entry.Name(), ".json") {
 				continue
 			}
