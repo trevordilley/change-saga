@@ -41,7 +41,7 @@ trusting filenames or a mutation message alone.
 
 ## Withdrawing or consolidating duplicate proposals
 
-These focused operations are integration dependencies. Use them only when
+Use these focused operations only when
 `change-saga story -h` lists `withdraw` and `consolidate`; otherwise stop with
 the current heads and candidate evidence instead of simulating either action
 with metadata edits or a false lifecycle transition.
@@ -61,6 +61,14 @@ relations, preserves exact non-requirement endpoints and current canonical
 pins, and retains old relations as superseded history. Conflicted heads,
 missing or many-to-one mappings, terminal canonical stories, invalid resulting
 relations, and replacement-ID collisions are refused before writing.
+
+Apply reloads and revalidates current state; a preview does not reserve its
+snapshot. Stale, conflicted, or unverifiable external pins are refused.
+Transaction-owned criterion links must first be updated through `apply-slide`;
+consolidation refuses to retire their story while leaving those links behind.
+Multi-record publication has best-effort rollback, not reader or crash
+atomicity. If rollback fails, preserve the reported recovery files and paths
+and inspect current state before retrying.
 
 ## Keep provenance exact
 

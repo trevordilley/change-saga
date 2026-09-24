@@ -49,9 +49,8 @@ conflicts but does not erase semantic conflicts; report both competing heads.
 
 ## Semantic pre-integration
 
-Semantic pre-integration is an integration dependency. Use it only when the
-installed CLI lists `preintegrate`; otherwise compare the available committed
-states through current read-only queries and report that the dedicated check
+Discover `preintegrate` in the installed CLI before use; otherwise compare the
+available committed states through current read-only queries and report that the dedicated check
 is unavailable.
 
 When available, `preintegrate --ref REF --ref REF [--repo PATH] [--json]

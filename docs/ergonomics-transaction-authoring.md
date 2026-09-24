@@ -19,7 +19,9 @@ repo, request, dryRun)`. `requestBase` resolves a request's relative asset path;
 The request has `version: 1`, `operation: "create"` or `"update"`, a stable
 `request_id`, a deck selector, and a complete slide value. Creation requires
 `expected_snapshot: "absent"`. Update requires the exact `sha256:...` snapshot
-returned by the preceding successful result. A retry with the same request ID
+returned by the preceding successful result or by `query slide` as
+`authoring_snapshot` (including for a legacy slide's first migration).
+A retry with the same request ID
 and payload is a no-op; reusing the ID with different content is rejected.
 
 Each Item must provide:
@@ -49,19 +51,34 @@ content-addressed regular file. They are not visible as a slide until one
 same-directory atomic record create/replace publishes the complete revision.
 A reader therefore resolves either the preceding complete revision or the new
 complete revision; it cannot resolve a new visual with old selectors or vice
-versa. If validation, failure injection, or record publication fails, a newly
-created unreferenced asset is removed and the previous record remains current.
+versa. A failure before publication removes a newly created unreferenced asset
+and leaves the previous record current. A failure after publication may leave
+the new value visible or its crash durability uncertain; the error distinguishes
+that state and the referenced asset is retained. Query current state before
+retrying, and preserve the same request ID for an identical replay.
 
 The record keeps up to 256 immutable revisions, preserving prior asset digests,
 Items, evidence, criterion pins, request IDs, and timestamps. Migrating a
 legacy flat slide captures its previous complete state as the first revision;
-the old flat files remain as non-authoritative history.
+the old flat files remain as non-authoritative history. Older partial slide,
+Item, content, coverage, and embedded-link mutations refuse transaction-managed
+targets and direct the caller to query the complete state and use `apply-slide`.
+
+Each revision records its `parent_snapshots`. Queries expose all
+`authoring_heads` and `authoring_conflict`; an ordinary update refuses divergent
+heads. After explicitly resolving the desired content, use `operation:
+"reconcile"` with `expected_snapshots` naming every divergent head and omit
+`expected_snapshot`. All prior revisions remain. This handles histories already
+combined in a record; it does not automatically resolve a Git text conflict.
 
 This is not a generic filesystem transaction and does not claim atomicity with
 story edits, standalone relation records, another slide, a Git commit, or any
-external system. Criterion links are transaction-owned exact pins projected on
-the loaded Item; they are not duplicated into the standalone requirements
-relation registry.
+external system. Criterion links are transaction-owned exact pins projected into
+the canonical in-memory requirements relation graph. Context, audit,
+traceability, currency checks, and reviewer story hovers consume that graph;
+no duplicate standalone relation file is written. Story consolidation refuses
+to retire intent while a current transaction still links to it; first repoint
+those links through `apply-slide` and then preview consolidation again.
 
 ## Example skeleton
 

@@ -225,6 +225,27 @@ func TestConsolidationRefusesSymlinkedTransactionDeck(t *testing.T) {
 	}
 }
 
+func TestConsolidationRefusesDivergentTransactionHeads(t *testing.T) {
+	root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion := consolidationFixture(t)
+	directory := filepath.Join(root, "___features", "core.feature", "___slides", "implementation.deck")
+	if err := os.MkdirAll(directory, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	// Current selects one branch, but the other branch must not be silently
+	// ignored when retiring intent. The transaction API owns reconciliation.
+	record := `{"current":"left","revisions":[{"snapshot":"root"},{"snapshot":"left","parent_snapshots":["root"]},{"snapshot":"right","parent_snapshots":["root"]}]}`
+	if err := os.WriteFile(filepath.Join(directory, "25-t-aaaaaaaaaaaa-bbbbbbbbbbbb.json"), []byte(record), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	input := ConsolidateInput{
+		Duplicate: duplicateURN, Canonical: canonicalURN, EventID: "consolidated", Parents: []string{duplicateURN + ":event:proposed"}, Reason: "duplicate",
+		CriterionMap: map[string]string{duplicateCriterion: canonicalCriterion},
+	}
+	if _, err := PreviewConsolidation(root, "test", input); err == nil || !strings.Contains(err.Error(), "authoring heads") {
+		t.Fatalf("divergent transaction refusal = %v", err)
+	}
+}
+
 func consolidationFixture(t *testing.T) (root, duplicateURN, canonicalURN, duplicateCriterion, canonicalCriterion string) {
 	t.Helper()
 	root = newSaga(t)

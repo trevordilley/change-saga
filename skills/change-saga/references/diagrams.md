@@ -59,8 +59,7 @@ and make the default state understandable without interaction.
 
 ## Complete-slide publication
 
-The complete-slide transaction is an integration dependency. Use it only when
-the installed CLI lists `apply-slide`; otherwise discover and use the existing
+Discover `apply-slide` in the installed CLI before use; otherwise use the existing
 focused slide, Item, relation, and evidence commands without inventing the
 transaction.
 
@@ -68,7 +67,10 @@ When available, `apply-slide --from FILE|- [--repo PATH] [--dry-run] [--json]
 <saga>` accepts one versioned, complete desired slide: the visual asset, slide
 metadata, ordered semantic Items and selectors, exact code evidence, and
 pinned Item-level criterion links. Create requires `expected_snapshot:
-"absent"`; update requires the exact snapshot from the preceding result.
+"absent"`; update requires the exact snapshot from the preceding result or
+`query slide`. Inspect authoring heads and preserve every conflicting head.
+For divergent history, use `operation: "reconcile"` with `expected_snapshots`
+containing every reported head, omitting the singular `expected_snapshot`.
 Preview with `--dry-run` before publishing. Preserve the stable `request_id`:
 an identical retry is a no-op and reuse with different content is rejected.
 
@@ -78,6 +80,10 @@ revision and rationale. The transaction refuses whole-file evidence, broad
 Deck/Slide criterion ownership, stale criteria, unsafe asset paths, and
 selector-breaking replacements. Its atomic boundary is one slide; it does not
 atomically include story edits, another slide, a Git commit, or external work.
+Once a slide is transaction-managed, update its complete desired state through
+`apply-slide`; older partial slide, Item, and evidence mutations refuse it.
+After a post-publication durability error, query the current snapshot before
+retrying; the published record and its referenced asset must remain intact.
 
 ## Compose semantic, reviewable visuals
 

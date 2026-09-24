@@ -11,6 +11,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
+	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
@@ -339,27 +340,6 @@ func currentRequirementRevision(document *Document, value string) (string, error
 	return story.RevisionHeads[0], nil
 }
 
-const maxSlideTransactionBytes = 8 << 20
-
-type consolidationTransactionRecord struct {
-	Current   string                             `json:"current"`
-	Revisions []consolidationTransactionRevision `json:"revisions"`
-}
-
-type consolidationTransactionRevision struct {
-	Snapshot string                         `json:"snapshot"`
-	Items    []consolidationTransactionItem `json:"items"`
-}
-
-type consolidationTransactionItem struct {
-	CriterionLinks []consolidationTransactionLink `json:"criterion_links"`
-}
-
-type consolidationTransactionLink struct {
-	ID        string `json:"id"`
-	Criterion string `json:"criterion"`
-}
-
 // transactionOwnedCriterionLinks finds current complete-slide links that the
 // requirements relation batch cannot rewrite. Consolidation refuses them
 // explicitly instead of retiring a story while leaving a partial live graph.
@@ -390,7 +370,7 @@ func transactionOwnedCriterionLinks(document *Document, duplicateStoryID string)
 			// Complete-slide records live in a deck bundle, one level below
 			// ___slides (or ___onboarding). Keep flat records compatible, but
 			// never recursively walk arbitrary directories or follow symlinks.
-			if directoryIndex < rootCount && strings.HasSuffix(entry.Name(), ".deck") {
+			if directoryIndex < rootCount && strings.HasSuffix(entry.Name(), saga.EmbeddedDeckSuffix) {
 				directories = append(directories, filepath.Join(directory, entry.Name()))
 				continue
 			}
@@ -402,28 +382,27 @@ func transactionOwnedCriterionLinks(document *Document, duplicateStoryID string)
 			if err != nil || entryInfo.Mode()&os.ModeSymlink != 0 || !entryInfo.Mode().IsRegular() {
 				return nil, fmt.Errorf("inspect transaction-owned criterion links: %s must be a real regular file", relative(document.Root, path))
 			}
-			if entryInfo.Size() > maxSlideTransactionBytes {
-				return nil, fmt.Errorf("inspect transaction-owned criterion links: %s exceeds %d bytes", relative(document.Root, path), maxSlideTransactionBytes)
+			if entryInfo.Size() > saga.MaxSlideTransactionBytes {
+				return nil, fmt.Errorf("inspect transaction-owned criterion links: %s exceeds %d bytes", relative(document.Root, path), saga.MaxSlideTransactionBytes)
 			}
 			data, err := os.ReadFile(path)
 			if err != nil {
 				return nil, err
 			}
-			var record consolidationTransactionRecord
+			var record saga.SlideTransactionRecord
 			if err := json.Unmarshal(data, &record); err != nil {
 				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: %w", relative(document.Root, path), err)
 			}
-			var current *consolidationTransactionRevision
-			for index := range record.Revisions {
-				if record.Revisions[index].Snapshot == record.Current {
-					if current != nil {
-						return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: current snapshot appears more than once", relative(document.Root, path))
-					}
-					current = &record.Revisions[index]
-				}
+			heads, err := record.Heads()
+			if err != nil {
+				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: %w", relative(document.Root, path), err)
 			}
-			if current == nil {
-				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: current snapshot does not name a revision", relative(document.Root, path))
+			if len(heads) != 1 || heads[0] != record.Current {
+				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: reconcile conflicting or non-current authoring heads with apply-slide first", relative(document.Root, path))
+			}
+			current, err := record.CurrentRevision()
+			if err != nil {
+				return nil, fmt.Errorf("inspect transaction-owned criterion links in %s: %w", relative(document.Root, path), err)
 			}
 			for itemIndex, item := range current.Items {
 				for linkIndex, link := range item.CriterionLinks {
