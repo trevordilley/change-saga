@@ -4,8 +4,8 @@
   "slide": "decision-write-path",
   "rank": 20,
   "kind": "transition",
-  "label": "Snapshot decision",
-  "description": "The decision service validates state and identity, resolves the slide, and captures its content digest.",
+  "label": "Check the shown snapshot",
+  "description": "Under the writer lock, resolve the canonical slide, recheck the current range and shown slide/source snapshot, then capture the slide digest. Approval belongs to the slide and does not approve Item evidence.",
   "selector": {
     "type": "element",
     "element_id": "snapshot-decision"

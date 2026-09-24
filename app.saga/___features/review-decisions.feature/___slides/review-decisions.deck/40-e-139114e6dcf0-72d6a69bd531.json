@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviews.go",
+      "start": 608,
+      "end": 633,
+      "digest": "sha256:30e173309c2776f6e8e5f182f39610869861d4414e85c88b424ce9064a88acb4",
+      "note": "After an attributed slide event is appended, JSON confirms the event and projects current feedback without document or iframe navigation. Ordinary forms still redirect; uncertain outcomes retain the draft and block blind retry."
+    },
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviewasync.go",
+      "start": 88,
+      "end": 106,
+      "digest": "sha256:2f618e4673d109afd3bde7c8adadf35152e617e2d9a7dfd1d8c39290c280861f",
+      "note": "After an attributed slide event is appended, JSON confirms the event and projects current feedback without document or iframe navigation. Ordinary forms still redirect; uncertain outcomes retain the draft and block blind retry."
+    }
+  ]
+}

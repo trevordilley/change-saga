@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -510,7 +511,7 @@ func ValidateReviewAnchor(anchor ReviewAnchor) error {
 			if shape.Type != "rect" && shape.Type != "ellipse" && shape.Type != "path" && shape.Type != "highlight" {
 				return fmt.Errorf("unsupported review annotation shape %q", shape.Type)
 			}
-			if !valid(shape.X) || !valid(shape.Y) || !valid(shape.Width) || !valid(shape.Height) || (shape.Color != "" && !validColor(shape.Color)) {
+			if !valid(shape.X) || !valid(shape.Y) || !valid(shape.Width) || !valid(shape.Height) || (shape.StrokeWidth < 0 || math.IsNaN(shape.StrokeWidth) || math.IsInf(shape.StrokeWidth, 0)) || (shape.Color != "" && !validColor(shape.Color)) {
 				return fmt.Errorf("annotation shape coordinates and color must be normalized and valid")
 			}
 			for _, point := range shape.Points {

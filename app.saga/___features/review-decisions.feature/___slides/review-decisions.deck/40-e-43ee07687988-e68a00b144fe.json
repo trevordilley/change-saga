@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviewasync_test.go",
+      "start": 142,
+      "end": 214,
+      "digest": "sha256:bcdf3efe3fe1269f364fd3338313e5c38f9cdf7e72ab7423787b5e05a039656e",
+      "note": "Only a valid slide decision reaches the append-only event write. The enhanced browser waits for an event receipt; missing confirmation is uncertain, so it retains the draft and requires inspection rather than automatically posting again."
+    },
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 378,
+      "end": 404,
+      "digest": "sha256:8f918c85c83012adc22d170c0d7a3ea3bd2d8a70edc3840700cc7bb2f9208c7a",
+      "note": "Only a valid slide decision reaches the append-only event write. The enhanced browser waits for an event receipt; missing confirmation is uncertain, so it retains the draft and requires inspection rather than automatically posting again."
+    }
+  ]
+}

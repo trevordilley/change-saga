@@ -4,8 +4,8 @@
   "slide": "comment-round-trip",
   "rank": 50,
   "kind": "transition",
-  "label": "Reload visible thread",
-  "description": "A 303 redirect returns to the review, where ordered comment events are regrouped into a visible thread.",
+  "label": "Project confirmed feedback",
+  "description": "A JSON receipt confirms the event ID and canonical target. Authoritative decisions, thumbnails, and threads update in place without rebuilding code or coverage HTML or navigating the slide iframe. Annotation projection uses a separate read.",
   "selector": {
     "type": "element",
     "element_id": "reload-thread"

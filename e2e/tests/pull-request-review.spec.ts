@@ -84,15 +84,11 @@ test("@critical approves slide by slide and marks a decision out of date when it
     await commentForm.locator("xpath=preceding-sibling::summary").click();
     await commentForm.locator("textarea").fill("Is this contrast checked?");
     await commentForm.locator("button").click();
-    await theme.locator(".landmark-menu > summary").click();
-    await theme.locator(".landmark-list").getByRole("button", { name: "Open 1 code reference for The change" }).click();
     await expect(page.locator("#review-drawer").getByText("Is this contrast checked?")).toBeVisible();
     const reply = page.locator("#review-drawer [data-review-reply-form]");
     await reply.locator("xpath=preceding-sibling::summary").click();
     await reply.locator("textarea").fill("Yes; the token passes the contrast check.");
     await reply.getByRole("button", { name: "Reply" }).click();
-    await theme.locator(".landmark-menu > summary").click();
-    await theme.locator(".landmark-list").getByRole("button", { name: "Open 1 code reference for The change" }).click();
     await expect(page.locator("#review-drawer").getByText("Yes; the token passes the contrast check.")).toBeVisible();
 
     const approvals = reviewFiles(sagaRepositories, /___reviews\/pr-1\.review\/approvals\/.+\.json$/);
@@ -226,7 +222,7 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
     expect(narrow).toBeTruthy();
     expect(narrow!.width / narrowStage!.width).toBeCloseTo(root.anchor.shapes[0].width, 1);
     await page.setViewportSize({ width: 1280, height: 800 });
-    await slide.getByRole("button", { name: "Show annotation tools for Greeting takes a name" }).click();
+    if (await toolbar.isHidden()) await slide.getByRole("button", { name: "Show annotation tools for Greeting takes a name" }).click();
     await expect(toolbar).toBeVisible();
 
     // Select the rectangle by its stroke, drag it, recolor it, then exercise
@@ -238,6 +234,7 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
     await page.mouse.move(markBox!.x + 52, markBox!.y + 32, { steps: 5 });
     await page.mouse.up();
     await expect.poll(() => records().length).toBe(3);
+    await expect(toolbar).not.toHaveAttribute("aria-busy", "true");
     const moved = readJSON<AnnotationRecord>(records()[2]);
     expect(moved.anchor.shapes[0].x).toBeGreaterThan(root.anchor.shapes[0].x);
     expect(moved.anchor.shapes[0].y).toBeGreaterThan(root.anchor.shapes[0].y);
@@ -250,19 +247,23 @@ test("draws, discusses, edits, and append-only deletes slide annotations", async
     await page.mouse.move(handleBox!.x + 42, handleBox!.y + 32, { steps: 5 });
     await page.mouse.up();
     await expect.poll(() => records().length).toBe(4);
+    await expect(toolbar).not.toHaveAttribute("aria-busy", "true");
     const resized = readJSON<AnnotationRecord>(records()[3]);
     expect(resized.anchor.shapes[0].width).toBeGreaterThan(moved.anchor.shapes[0].width);
     expect(resized.anchor.shapes[0].height).toBeGreaterThan(moved.anchor.shapes[0].height);
     await toolbar.locator('input[type="color"]').fill("#0969da");
     await expect.poll(() => records().length).toBe(5);
+    await expect(toolbar).not.toHaveAttribute("aria-busy", "true");
     expect(readJSON<AnnotationRecord>(records()[4]).anchor.shapes[0].color).toBe("#0969da");
     await expect(toolbar.locator("[data-undo]")).toHaveAttribute("data-undo-kind", "color");
     await toolbar.locator("[data-undo]").click();
     await expect.poll(() => records().length).toBe(6);
+    await expect(toolbar).not.toHaveAttribute("aria-busy", "true");
     expect(readJSON<AnnotationRecord>(records()[5]).anchor.shapes[0].color).toBe("#d04832");
     await expect(toolbar.locator("[data-redo]")).toHaveAttribute("data-redo-kind", "color");
     await toolbar.locator("[data-redo]").click();
     await expect.poll(() => records().length).toBe(7);
+    await expect(toolbar).not.toHaveAttribute("aria-busy", "true");
     const redone = readJSON<AnnotationRecord>(records()[6]);
     expect(redone.anchor.shapes[0].color).toBe("#0969da");
     expect(redone.anchor.shapes[0].width).toBeCloseTo(resized.anchor.shapes[0].width);
@@ -312,4 +313,119 @@ test("shows the living layers read-only beside the review of the compared change
   } finally {
     await stopSagaServer(running);
   }
+});
+
+test("async saves retain drafts on refusal and preserve the document, visual, drawer and slide", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(`${running.baseURL}/reviews/pr-1`);
+    await page.waitForLoadState("networkidle");
+    const slide = page.locator('.review-deck-slide.active');
+    const navigations: string[] = [], fullGets: string[] = [];
+    page.on('framenavigated', frame => navigations.push(frame.url()));
+    page.on('request', request => {
+      const path = new URL(request.url()).pathname;
+      if (request.method() === 'GET' && (path === '/reviews/pr-1' || path.includes('/visual/'))) fullGets.push(path);
+    });
+    await slide.locator('[data-review-approve]').click();
+    await expect(slide.locator('[data-decision-state="approved"]')).toHaveAttribute('data-currency','current');
+    await expect(page.locator('.slide-thumbnail-status').first()).toHaveAttribute('data-review-state','approved');
+    await slide.locator('.landmark-menu > summary').click();
+    await slide.locator('.landmark-list [data-open-diffs]').first().click();
+    const drawer=page.locator('#review-drawer');
+    const form=drawer.locator('[data-review-comment-form]');
+    await form.locator('xpath=preceding-sibling::summary').click();
+    await form.locator('textarea').fill('Keep this Item draft');
+    await page.route('**/reviews/pr-1/comment', route=>route.fulfill({status:400,body:'Refused before saving.'}),{times:1});
+    await form.locator('button').click();
+    await expect(form.locator('textarea')).toHaveValue('Keep this Item draft');
+    await expect(form.locator('button')).toBeEnabled();
+    await form.locator('button').click();
+    await expect(drawer.getByText('Keep this Item draft')).toBeVisible();
+    const reply=drawer.locator('[data-review-reply-form]');
+    await reply.locator('xpath=preceding-sibling::summary').click();
+    await reply.locator('textarea').fill('A reply without navigation');
+    await reply.locator('button').click();
+    await expect(drawer.getByText('A reply without navigation')).toBeVisible();
+    await expect(drawer).toHaveClass(/open/);
+    await page.locator('[data-close-drawer]').last().click();
+    await slide.locator('[data-review-annotation-toggle]').click();
+    const toolbar=page.getByRole('toolbar',{name:'Annotation tools'});
+    await toolbar.getByRole('button',{name:'Rectangle',exact:true}).click();
+    const layer=slide.locator('.review-annotation-layer'), box=(await layer.boundingBox())!;
+    await page.mouse.move(box.x+box.width*.25,box.y+box.height*.25);await page.mouse.down();
+    await page.mouse.move(box.x+box.width*.45,box.y+box.height*.45);await page.mouse.up();
+    const composer=page.locator('.review-annotation-compose');
+    await composer.locator('textarea').fill('Retry this mark once');
+    await page.route('**/reviews/pr-1/comment',route=>route.fulfill({status:400,body:'Refused before saving.'}),{times:1});
+    await composer.getByRole('button',{name:'Save annotation'}).click();
+    await expect(composer.locator('textarea')).toHaveValue('Retry this mark once');
+    await expect(layer.locator('.review-annotation-draft')).toBeVisible();
+    await expect(composer.getByRole('button',{name:'Save annotation'})).toBeEnabled();
+    await composer.getByRole('button',{name:'Save annotation'}).click();
+    await expect(composer).toBeHidden();
+    await expect(slide.locator('.review-annotation')).toHaveCount(1);
+    expect(navigations).toEqual([]);expect(fullGets).toEqual([]);
+    const records=reviewFiles(sagaRepositories,/___reviews\/pr-1\.review\/comments\/.+\.json$/);
+    expect(records).toHaveLength(3);
+    expect(records.map(p=>readJSON<{body:string}>(p).body).filter(body=>body==='Retry this mark once')).toHaveLength(1);
+    await page.reload();
+    await expect(slide.locator('.review-annotation')).toHaveCount(1);
+  } finally { await stopSagaServer(running); }
+});
+
+test("lost confirmations never retry writes and new feedback cannot approve an unseen head", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(`${running.baseURL}/reviews/pr-1`);await page.waitForLoadState('networkidle');
+    const slide=page.locator('.review-deck-slide.active');
+    const shown=await slide.getAttribute('data-review-snapshot');
+    await page.route('**/reviews/pr-1/decision',async route=>{
+      const response=await route.fetch();
+      expect(response.status()).toBe(200);
+      await route.abort('failed');
+    },{times:1});
+    await slide.locator('[data-review-approve]').click();
+    await expect(page.getByText(/confirmation was lost/)).toBeVisible();
+    await expect(slide.locator('[data-review-approve]')).toBeDisabled();
+    await page.getByRole('button',{name:'Check saved feedback'}).click();
+    await expect(slide.locator('[data-decision-state="approved"]')).toHaveAttribute('data-currency','current');
+    expect(reviewFiles(sagaRepositories,/___reviews\/pr-1\.review\/approvals\/.+\.json$/)).toHaveLength(1);
+    writeFileSync(join(sagaRepositories.sourceRepo,'src/app.go'),'package main\n// unseen source change\n');
+    git(sagaRepositories.sourceRepo,'add','.');git(sagaRepositories.sourceRepo,'commit','-m','Change after viewed slide');
+    await page.getByRole('button',{name:'Check saved feedback'}).click();
+    await expect(slide).toHaveAttribute('data-review-stale','true');
+    await expect(slide).toHaveAttribute('data-review-snapshot',shown!);
+    await expect(slide.locator('[data-review-approve]')).toBeDisabled();
+    expect(reviewFiles(sagaRepositories,/___reviews\/pr-1\.review\/approvals\/.+\.json$/)).toHaveLength(1);
+  } finally { await stopSagaServer(running); }
+});
+
+test("a refused sticky-note edit retains the editable draft and confirms exactly one update", async ({page,sagaRepositories}) => {
+  authorReview(sagaRepositories);const running=await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(`${running.baseURL}/reviews/pr-1`);await page.waitForLoadState('networkidle');
+    const slide=page.locator('.review-deck-slide.active');
+    await slide.locator('[data-review-annotation-toggle]').click();
+    await page.getByRole('toolbar',{name:'Annotation tools'}).getByRole('button',{name:'Sticky note',exact:true}).click();
+    const layer=slide.locator('.review-annotation-layer'),box=(await layer.boundingBox())!;
+    await page.mouse.click(box.x+box.width*.4,box.y+box.height*.4);
+    const composer=page.locator('.review-annotation-compose');
+    await composer.locator('textarea').fill('Original note');
+    await composer.getByRole('button',{name:'Save annotation'}).click();
+    const note=slide.locator('.review-sticky-note');await expect(note).toHaveText('Original note');
+    await expect(composer).toBeHidden();await note.dblclick();
+    await composer.locator('textarea').fill('Edited note retained');
+    await page.route('**/reviews/pr-1/comment',route=>route.fulfill({status:400,body:'Edit refused before saving.'}),{times:1});
+    await composer.getByRole('button',{name:'Save annotation'}).click();
+    await expect(composer.locator('textarea')).toHaveValue('Edited note retained');
+    await expect(note).toHaveText('Original note');
+    await composer.getByRole('button',{name:'Save annotation'}).click();
+    await expect(composer).toBeHidden();await expect(note).toHaveText('Edited note retained');
+    const records=reviewFiles(sagaRepositories,/___reviews\/pr-1\.review\/comments\/.+\.json$/);
+    expect(records).toHaveLength(2);
+    expect(readJSON<{annotation_action:string}>(records[1]).annotation_action).toBe('update');
+  } finally {await stopSagaServer(running);}
 });

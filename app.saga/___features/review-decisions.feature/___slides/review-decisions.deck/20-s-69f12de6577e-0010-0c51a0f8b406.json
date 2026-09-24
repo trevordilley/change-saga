@@ -8,7 +8,7 @@
   "layout": "sequence",
   "media_type": "image/svg+xml",
   "entrypoint": "20-s-69f12de6577e-0010-0c51a0f8b406.svg",
-  "takeaway": "A decision is authorized, pinned to the current head and slide digest, then atomically appended before the caller sees success.",
+  "takeaway": "The shown source and slide snapshot is checked under the writer lock. A confirmed slide decision updates feedback without reloading the document.",
   "reading_order": [
     "authorize",
     "capture-head",

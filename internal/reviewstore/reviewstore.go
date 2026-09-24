@@ -108,6 +108,10 @@ type Decision struct {
 	// Commit is the pull request head the decision is given at.
 	Commit string
 	Body   string
+	// CheckSnapshot optionally verifies a browser's viewed source and slide.
+	// It runs under the writer lock with the freshly loaded review and target.
+	// It must not mutate the Saga or acquire its writer lock again.
+	CheckSnapshot func(*saga.Review, string) error
 }
 
 // Decide appends a per-slide decision, recording the slide's content digest
@@ -133,6 +137,11 @@ func Decide(root string, decision Decision) (saga.ReviewApproval, error) {
 		}
 		if review.Merged != nil {
 			return fmt.Errorf("review %q is history: its change landed as %s", review.ID, review.Merged.Landed)
+		}
+		if decision.CheckSnapshot != nil {
+			if err := decision.CheckSnapshot(review, slide.Target); err != nil {
+				return err
+			}
 		}
 		digest, err := saga.SlideDigest(slide)
 		if err != nil {
@@ -167,6 +176,9 @@ type Remark struct {
 	AnnotationAction string
 	Reviewer         saga.ReviewerIdentity
 	Commit           string
+	// CheckSnapshot has the same lock and read-only contract as Decision's
+	// check. Replies pass their resolved canonical target, not user input.
+	CheckSnapshot func(*saga.Review, string) error
 }
 
 // Comment appends a comment on a review slide or Item, or a reply.
@@ -187,6 +199,9 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 		}
 		if remark.AnnotationAction == "create" && remark.ReplyTo != "" {
 			return written, fmt.Errorf("an annotation create starts a thread")
+		}
+		if remark.AnnotationAction == "delete" && remark.Anchor != nil {
+			return written, fmt.Errorf("an annotation delete does not carry an anchor")
 		}
 		if remark.AnnotationAction != "create" && remark.ReplyTo == "" {
 			return written, fmt.Errorf("an annotation update or delete replies to its root")
@@ -217,6 +232,9 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 		if review == nil {
 			return fmt.Errorf("review %q does not exist", remark.Review)
 		}
+		if review.Merged != nil {
+			return fmt.Errorf("review %q is history: its change landed as %s", review.ID, review.Merged.Landed)
+		}
 		target := ""
 		if remark.ReplyTo != "" {
 			var reply *saga.ReviewComment
@@ -236,6 +254,11 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 		} else {
 			var err error
 			if target, err = resolveTarget(review, remark.Target); err != nil {
+				return err
+			}
+		}
+		if remark.CheckSnapshot != nil {
+			if err := remark.CheckSnapshot(review, target); err != nil {
 				return err
 			}
 		}

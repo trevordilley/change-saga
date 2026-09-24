@@ -1,0 +1,227 @@
+{
+  "url": "http://127.0.0.1:51147/reviews/review-ux-improvements",
+  "samples": [
+    {
+      "kind": "decision",
+      "receiptMs": 421.31025000000045,
+      "projectedMs": 433.64649999999983,
+      "bytes": 5708,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/decision",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "decision",
+      "receiptMs": 310.65241700000024,
+      "projectedMs": 311.9016670000001,
+      "bytes": 5708,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/decision",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "decision",
+      "receiptMs": 316.04212499999994,
+      "projectedMs": 317.97454199999993,
+      "bytes": 5708,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/decision",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "decision",
+      "receiptMs": 301.2531250000002,
+      "projectedMs": 302.79554199999984,
+      "bytes": 5708,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/decision",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "decision",
+      "receiptMs": 304.1877919999997,
+      "projectedMs": 305.521084,
+      "bytes": 5708,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/decision",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "comment",
+      "receiptMs": 428.99074999999993,
+      "projectedMs": 433.3770000000004,
+      "bytes": 8904,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "comment",
+      "receiptMs": 342.2178750000003,
+      "projectedMs": 344.48875000000044,
+      "bytes": 12100,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "comment",
+      "receiptMs": 274.62045899999976,
+      "projectedMs": 276.3909169999997,
+      "bytes": 15296,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "comment",
+      "receiptMs": 279.73691599999984,
+      "projectedMs": 282.5227909999994,
+      "bytes": 18492,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "comment",
+      "receiptMs": 254.8946249999999,
+      "projectedMs": 257.7073330000003,
+      "bytes": 21688,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "annotation",
+      "receiptMs": 288.4686249999995,
+      "projectedMs": 366.6599580000002,
+      "bytes": 24894,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/annotations",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "annotation",
+      "receiptMs": 414.61616700000013,
+      "projectedMs": 493.0256250000002,
+      "bytes": 28100,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/annotations",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "annotation",
+      "receiptMs": 298.41341699999975,
+      "projectedMs": 375.46008299999994,
+      "bytes": 31306,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/annotations",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "annotation",
+      "receiptMs": 327.5216670000009,
+      "projectedMs": 405.48491699999977,
+      "bytes": 34512,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/annotations",
+          "type": "fetch"
+        }
+      ]
+    },
+    {
+      "kind": "annotation",
+      "receiptMs": 369.0232500000002,
+      "projectedMs": 445.9198329999981,
+      "bytes": 37720,
+      "requests": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/comment",
+          "type": "fetch"
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:51147/reviews/review-ux-improvements/annotations",
+          "type": "fetch"
+        }
+      ]
+    }
+  ],
+  "navigations": [],
+  "fullGets": []
+}

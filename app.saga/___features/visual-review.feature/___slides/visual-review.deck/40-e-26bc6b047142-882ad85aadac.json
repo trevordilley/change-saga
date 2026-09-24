@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviewasyncjs.go",
+      "start": 84,
+      "end": 104,
+      "digest": "sha256:a59ce87c1866d6aaef8343004f01439f1b1ca4c8570284dfde0deb853c696864",
+      "note": "JavaScript posts a comment, reply, or annotation with the process token and immutable shown-slide snapshot; ordinary HTML forms retain a redirect fallback."
+    },
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviewasyncjs.go",
+      "start": 111,
+      "end": 135,
+      "digest": "sha256:d18b34bb6f7d56ba6d0d301544c1d3e77053e0063457c973eb1f40453883e926",
+      "note": "JavaScript posts a comment, reply, or annotation with the process token and immutable shown-slide snapshot; ordinary HTML forms retain a redirect fallback."
+    }
+  ]
+}

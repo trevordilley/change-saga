@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Review decision write sequence</title>
-  <desc id="desc">A sequence from reviewer through HTTP guard, decision service, Git range, and append-only store. The current head and slide digest are captured before the event file is written.</desc>
+  <desc id="desc">The browser submits its shown snapshot. Under the writer lock the decision service rechecks source and slide identity before appending a slide-only event. JSON confirmation updates feedback in place.</desc>
   <defs><marker id="arr" markerWidth="11" markerHeight="11" refX="10" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#21455d"/></marker><filter id="s"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-opacity=".16"/></filter></defs>
   <rect width="1280" height="720" fill="#f7f3ea"/>
   <text x="58" y="62" fill="#172b3a" font-family="system-ui" font-size="34" font-weight="760">One decision becomes one immutable event</text>
-  <text x="58" y="94" fill="#5f7280" font-family="system-ui" font-size="17">Browser path shown; CLI enters at the same decision service after resolving the review head.</text>
+  <text x="58" y="94" fill="#5f7280" font-family="system-ui" font-size="17">Browser snapshots are checked under lock. CLI retains its current contract. Approval applies to the slide.</text>
   <g font-family="system-ui" font-size="17" font-weight="700" text-anchor="middle">
     <rect x="44" y="126" width="190" height="58" rx="18" fill="#d9eef7" stroke="#3d83a5" stroke-width="2"/><text x="139" y="162" fill="#18394a">Reviewer</text>
     <rect x="294" y="126" width="190" height="58" rx="18" fill="#e3e6fa" stroke="#6976bd" stroke-width="2"/><text x="389" y="162" fill="#303768">HTTP guard</text>
@@ -14,7 +14,7 @@
   </g>
   <g stroke="#94a5ad" stroke-width="2" stroke-dasharray="7 7"><line x1="139" y1="184" x2="139" y2="650"/><line x1="389" y1="184" x2="389" y2="650"/><line x1="639" y1="184" x2="639" y2="650"/><line x1="889" y1="184" x2="889" y2="650"/><line x1="1139" y1="184" x2="1139" y2="650"/></g>
   <g id="authorize" font-family="system-ui">
-    <path d="M139 236H379" stroke="#21455d" stroke-width="4" marker-end="url(#arr)"/><text x="259" y="224" text-anchor="middle" fill="#294557" font-size="16">POST slide + state + token</text>
+    <path d="M139 236H379" stroke="#21455d" stroke-width="4" marker-end="url(#arr)"/><text x="259" y="224" text-anchor="middle" fill="#294557" font-size="16">POST state + token + snapshot</text>
     <rect x="351" y="246" width="76" height="90" rx="12" fill="#6976bd" opacity=".16" stroke="#6976bd"/><text x="440" y="278" fill="#394177" font-size="15">parse ≤ 256 KiB</text><text x="440" y="303" fill="#394177" font-size="15">verify session token</text><text x="440" y="328" fill="#394177" font-size="15">reject frozen review</text>
   </g>
   <g id="capture-head" font-family="system-ui">
@@ -23,14 +23,14 @@
   </g>
   <g id="snapshot-decision" font-family="system-ui">
     <path d="M389 444H629" stroke="#21455d" stroke-width="4" marker-end="url(#arr)"/><text x="509" y="432" text-anchor="middle" fill="#294557" font-size="16">Decide(state, reviewer, head)</text>
-    <path d="M639 478H879" stroke="#875fa6" stroke-width="4" marker-end="url(#arr)"/><text x="759" y="466" text-anchor="middle" fill="#5b3e72" font-size="16">digest current slide</text>
-    <path d="M879 512H649" stroke="#4d9670" stroke-width="4" marker-end="url(#arr)"/><text x="764" y="502" text-anchor="middle" fill="#326348" font-size="16">sha256 snapshot</text>
+    <path d="M639 478H879" stroke="#875fa6" stroke-width="4" marker-end="url(#arr)"/><text x="759" y="466" text-anchor="middle" fill="#5b3e72" font-size="16">recheck shown snapshot</text>
+    <path d="M879 512H649" stroke="#4d9670" stroke-width="4" marker-end="url(#arr)"/><text x="764" y="502" text-anchor="middle" fill="#326348" font-size="16">range + slide digest</text>
   </g>
   <g id="append-event" font-family="system-ui">
     <path d="M639 552H1129" stroke="#21455d" stroke-width="4" marker-end="url(#arr)"/><text x="884" y="540" text-anchor="middle" fill="#294557" font-size="16">WriteJSON(create-only)</text>
     <rect x="1088" y="563" width="102" height="54" rx="12" fill="#f0c996" stroke="#b4752f" stroke-width="2" filter="url(#s)"/><text x="1139" y="586" text-anchor="middle" fill="#633e19" font-size="14" font-weight="700">new event</text><text x="1139" y="605" text-anchor="middle" fill="#80552a" font-size="12">never overwrite</text>
   </g>
   <g id="success-response" font-family="system-ui">
-    <path d="M1129 635H149" stroke="#4d9670" stroke-width="4" marker-end="url(#arr)"/><text x="639" y="625" text-anchor="middle" fill="#326348" font-size="16">303 back to the reviewed slide only after append succeeds</text>
+    <path d="M1129 635H149" stroke="#4d9670" stroke-width="4" marker-end="url(#arr)"/><text x="639" y="625" text-anchor="middle" fill="#326348" font-size="16">saved receipt → feedback in place; ordinary forms retain 303 fallback</text>
   </g>
 </svg>
