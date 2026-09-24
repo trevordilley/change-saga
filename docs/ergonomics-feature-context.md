@@ -17,7 +17,8 @@ The default projection is a compact, cursor-paged story index. It includes:
 - the feature identity once;
 - owned story identities, lifecycle state, current criterion identities, and every revision/lifecycle head;
 - directly related requirements in other features, with each exact relation URN, type, and endpoints that cross the boundary;
-- related terms by identity and name;
+- related terms by identity and name, with independent
+  `definition_maturity` and `implementation_evidence` values;
 - related slide and Item identities, exact story/criterion links, relation URNs, and code-reference counts;
 - known stale links, readiness gaps, requirement/work-plan conflicts, and explicit completeness bounds.
 
@@ -27,7 +28,7 @@ Both projections use the normal `change-saga.ai/v1` envelope, the established re
 
 The transport-neutral API is `livingapp.Session.Query` with `livingapp.Query{Operation: "context", Filters: livingapp.Filters{Feature: feature, Expand: story}}`. `Result.Data` is a `livingapp.FeatureContextPage`; `Result.Page` carries the same total/returned/next-cursor semantics as the CLI envelope. The existing `requirements` operation uses `Filters.Feature` and returns `Requirement.Feature`.
 
-The response's `data.completeness` is intentionally explicit: the graph is bounded to feature-owned stories and their unique current criteria, linked vocabulary and visuals, and one-hop relations. Revision/lifecycle history, unrelated global prose, and relations beyond one hop are excluded. Conflicted records retain all heads and never receive a fabricated current value.
+The response's `data.completeness` is intentionally explicit: the graph is bounded to feature-owned stories and their unique current criteria, linked vocabulary and visuals, and one-hop relations. Revision/lifecycle history, unrelated global prose, and relations beyond one hop are excluded. Conflicted records retain all heads and never receive a fabricated current value. Legacy term revisions that omit either semantic axis project it as `unknown`; revision-conflicted terms project both axes as `unknown`.
 
 ## Requirement ownership
 
@@ -45,8 +46,8 @@ The deterministic fixture in `internal/livingapp/feature_context_test.go` contai
 
 | Read | Calls | Bytes |
 | --- | ---: | ---: |
-| compact feature context | 1 | 3,624 |
-| compact context + one story expansion | 2 | 9,835 |
+| compact feature context | 1 | 3,693 |
+| compact context + one story expansion | 2 | 9,973 |
 | requirements + relations + traceability | 3 | 4,178 |
 
 Run `go test -run TestFeatureContextRepresentativeResponseMeasurement -v ./internal/livingapp` to reproduce the measurement. The three-query comparison is a conservative lower bound: it still does not supply term definitions or slide metadata, which require additional existing queries. These are response bytes, not estimated tokens, and no token-savings claim is made.

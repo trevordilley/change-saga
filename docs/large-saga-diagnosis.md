@@ -90,7 +90,7 @@ The authoring skill points straight at it:
 > Use `--changed-lines` only when every changed atom in the named file belongs
 > to the same focused target.
 >
-> — `skills/change-saga/references/authoring.md:266`
+> — `skills/change-saga/references/diagrams.md`, “Evidence discipline”
 
 That advice is correct, and following it is what produces a 230 MB saga.
 

@@ -39,6 +39,29 @@ After each mutation, query the requirement and its history. Confirm the new
 head, all parents, lifecycle state, and any remaining conflicts rather than
 trusting filenames or a mutation message alone.
 
+## Withdrawing or consolidating duplicate proposals
+
+These focused operations are integration dependencies. Use them only when
+`change-saga story -h` lists `withdraw` and `consolidate`; otherwise stop with
+the current heads and candidate evidence instead of simulating either action
+with metadata edits or a false lifecycle transition.
+
+When available, `story withdraw` appends a reasoned `rejected` lifecycle event
+to a uniquely current `proposed` or `deferred` story. It refuses accepted
+intent. Supply the exact story URN, current lifecycle parent, new event ID, and
+reason.
+
+`story consolidate` is preview-first and requires the duplicate and canonical
+story URNs, the duplicate's current lifecycle parent, a new event ID, a reason,
+and an exhaustive one-to-one mapping from every current duplicate criterion to
+a current canonical criterion. Add `--apply` only after reviewing the preview.
+Applying rejects a proposed/deferred duplicate, or retires an accepted
+duplicate only into an accepted canonical story. It replaces only affected
+relations, preserves exact non-requirement endpoints and current canonical
+pins, and retains old relations as superseded history. Conflicted heads,
+missing or many-to-one mappings, terminal canonical stories, invalid resulting
+relations, and replacement-ID collisions are refused before writing.
+
 ## Keep provenance exact
 
 Requirement citations are immutable provenance records describing where a

@@ -47,6 +47,22 @@ Parallel authoring is a core property: partition ownership by stable resource
 boundaries and merge the authored records with the code. It reduces shared-file
 conflicts but does not erase semantic conflicts; report both competing heads.
 
+## Semantic pre-integration
+
+Semantic pre-integration is an integration dependency. Use it only when the
+installed CLI lists `preintegrate`; otherwise compare the available committed
+states through current read-only queries and report that the dedicated check
+is unavailable.
+
+When available, `preintegrate --ref REF --ref REF [--repo PATH] [--json]
+<saga>` reads the Saga from two or more explicit committed Git refs. It reports
+stable-ID collisions, different current heads, and deterministic text-overlap
+candidates with exact ref, commit, and Saga-path provenance. It never reads an
+uncommitted working-tree Saga, chooses semantic equivalence, updates refs,
+checks out a branch, or merges Git. Treat the overlap score as a review prompt,
+not a duplicate decision; use [stories.md](stories.md) for an explicitly
+authorized withdrawal or consolidation.
+
 ## Pull-request review artifacts
 
 A review is one pull request's slide deck, bound to its verified base and head.
