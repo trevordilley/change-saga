@@ -91,7 +91,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
 	"init", "setup-initial-saga", "feature", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
-	"review", "validate", "status", "check", "preintegrate", "query", "visual-qa",
+	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"serve", "open", "install-skill", "spec",
 }
 
@@ -202,6 +202,7 @@ var commandUsage = map[string]string{
 	"review withdraw":             "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
 	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
+	"reconcile":                   "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json] <saga>",
 	"status":                      "change-saga status [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"preintegrate":                "change-saga preintegrate --ref REF --ref REF [--repo PATH] [--json] <saga>",
@@ -238,12 +239,16 @@ A focused change:
      every changed line from the Item that explains it. The first command that
      needs a feature creates one named after the branch (or pass --feature);
      with one feature, --feature is implied.
-  3. "status --against main" reports coverage by area (implementation,
-     stories, personas, design, quality, health) with what is and is not
-     covered. It has no verdict: it exits 0 whenever the report can be
-     trusted, and non-zero only for a malformed Saga or a mismatched checkout.
-  4. "check --covers implementation --against main" answers one scoped
-     question with its exit code; name only the areas the work requires.
+  3. Verify the implementation and author its PR review slide deck ("review").
+     The review deck explains the transition; living documentation explains
+     the current application. Each has independent coverage.
+  4. "reconcile --against main" explains affected records, HEAD reference
+     currency, baseline debt and regressions, with typed inspection/repair
+     paths. Reassess affected documentation and update only what needs it.
+  5. Run relevant tests, "validate", and "reconcile" again. "status" reports
+     coverage by area with no verdict. "check --covers implementation
+     --against main" asks about changed-line coverage; "check --covers health"
+     separately checks current health. Neither proves semantic correctness.
 
 Growing the Saga, a step at a time and only when it helps:
   - Product: write user stories with acceptance criteria ("story",
@@ -314,8 +319,9 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 var commandDescription = map[string]string{
 	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Features, stories, personas, design, and quality\nare optional and can come later.",
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
-	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check.",
-	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
+	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
+	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
+	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke\n\nComparison coverage can use deleted-line evidence valid at base. Check HEAD\nhealth separately without --against; use reconcile for debt and repair paths.",
 	"visual-qa":                   "Render selected implementation or onboarding slides both as raw assets and inside the\nactual reviewer at 1280x720 and 1024x576. The managed output includes screenshots, a\ncontact sheet, and visual-qa.json with mechanical clipping, text-overflow, missing-selector,\nand reliable Item-overlap findings. The command is read-only with respect to the Saga and\nexits 3 when error-severity findings exist. It does not judge whether semantic arrows or\nrelationships are correct.",
 	"preintegrate":                "Read committed Saga snapshots from two or more explicit Git refs and report\nstable-ID collisions, different current heads, and deterministic text-overlap\ncandidates with exact ref/commit provenance. It is advisory and read-only: it\nnever chooses semantic equivalence, updates a ref, checks out, or merges Git.",
 	"feature":                     "Add a durable product domain. A feature holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames a feature, so a story can move between features without breaking a link.",

@@ -129,6 +129,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.VerifyClaim(ctx, args[1:], stdout)
 	case "validate":
 		err = cli.Validate(ctx, args[1:], stdout)
+	case "reconcile":
+		err = cli.Reconcile(ctx, args[1:], stdout)
 	case "status":
 		err = cli.Status(ctx, args[1:], stdout)
 	case "check":
