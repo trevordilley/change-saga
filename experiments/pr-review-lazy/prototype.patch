@@ -1,0 +1,594 @@
+diff --git a/e2e/tests/pull-request-review.spec.ts b/e2e/tests/pull-request-review.spec.ts
+index cab3689..e61e20a 100644
+--- a/e2e/tests/pull-request-review.spec.ts
++++ b/e2e/tests/pull-request-review.spec.ts
+@@ -429,3 +429,30 @@ test("a refused sticky-note edit retains the editable draft and confirms exactly
+     expect(readJSON<{annotation_action:string}>(records[1]).annotation_action).toBe('update');
+   } finally {await stopSagaServer(running);}
+ });
++
++test("lazy Item failures retry and late responses cannot replace another drawer", async ({page,sagaRepositories}) => {
++  authorReview(sagaRepositories);const running=await startSagaServer(sagaRepositories);
++  try {
++    await page.goto(`${running.baseURL}/reviews/pr-1`);await page.waitForLoadState('networkidle');
++    const greeting=page.locator('.review-deck-slide[data-slide-target$=":greeting"]');
++    const theme=page.locator('.review-deck-slide[data-slide-target$=":theme"]');
++    expect(await page.locator('template[data-review-item-target]').first().innerHTML()).toBe('');
++    await greeting.locator('.landmark-menu > summary').click();
++    const open=greeting.locator('.landmark-list [data-open-diffs]').first();
++    await page.route('**/reviews/pr-1/item?**',route=>route.fulfill({status:500,body:'Temporary diff failure.'}),{times:1});
++    await open.click();await page.getByRole('button',{name:'Retry linked code'}).click();
++    await expect(page.locator('.review-item-surface')).toHaveAttribute('data-state','ready');
++    await expect(page.locator('#review-drawer')).toContainText('"hello, " + name');
++    await page.locator('[data-close-drawer]').last().click();
++    let release!:()=>void;const held=new Promise<void>(resolve=>release=resolve);
++    let received!:()=>void;const arrived=new Promise<void>(resolve=>received=resolve);
++    await page.route('**/reviews/pr-1/item?**',async route=>{const response=await route.fetch();received();await held;await route.fulfill({response});},{times:1});
++    await open.click();await arrived;await page.locator('[data-close-drawer]').last().click();
++    await page.locator('[data-slide-thumbnail][data-slide-target$=":theme"]').click();
++    await theme.locator('.landmark-menu > summary').click();await theme.locator('.landmark-list [data-open-diffs]').first().click();
++    await expect(page.locator('.review-item-surface')).toHaveAttribute('data-state','ready');
++    release();await page.waitForLoadState('networkidle');
++    await expect(page.locator('#review-drawer [data-review-item-panel]')).toHaveAttribute('data-review-target',/slide:theme:item:change$/);
++    await expect(page.locator('#review-drawer')).not.toContainText('"hello, " + name');
++  } finally {await stopSagaServer(running);}
++});
+diff --git a/internal/server/appjs.go b/internal/server/appjs.go
+index 42d2463..4f5f384 100644
+--- a/internal/server/appjs.go
++++ b/internal/server/appjs.go
+@@ -1197,6 +1197,7 @@ const appJavaScript = `(() => {
+   }
+ 
+   function restoreDrawerContent() {
++    cancelReviewItem();
+     const body = q('.drawer-body');
+     if (body) within(body, '[data-file-diff-href]').forEach(cancelReviewFile);
+     if (drawerRestore) {
+@@ -1224,6 +1225,7 @@ const appJavaScript = `(() => {
+     if (lazy) { void hydrateTargetCode(lazy); return; }
+     const source = document.getElementById(templateID);
+     if (!source) return;
++    if (source.dataset.reviewItemTarget) { openReviewItem(source,opener); return; }
+     // WebKit does not consistently move document.activeElement to a button
+     // before dispatching its click event. Preserve the event's explicit opener
+     // so Escape always restores focus to the control the reviewer activated.
+@@ -2207,7 +2209,7 @@ const appJavaScript = `(() => {
+     if (event.key === 'Escape') closeDrawer();
+   });
+ 
+-` + reviewAsyncJavaScript + `
++` + reviewAsyncJavaScript + reviewItemJavaScript + `
+   async function prepareReviewAnnotations() {
+     const deck = q('[data-review-deck]');
+     if (!deck) return;
+diff --git a/internal/server/reviewasyncjs.go b/internal/server/reviewasyncjs.go
+index 3c060d6..ed7abcf 100644
+--- a/internal/server/reviewasyncjs.go
++++ b/internal/server/reviewasyncjs.go
+@@ -7,6 +7,7 @@ const reviewAsyncJavaScript = `
+     const deck = q('[data-review-deck]');
+     if (!deck) return null;
+     let pending = false, uncertain = false, revision = 0;
++    const latestFeedback=new Map();
+     const status = document.createElement('div');
+     status.className = 'review-annotation-status'; status.hidden = true;
+     status.setAttribute('role', 'status'); deck.append(status);
+@@ -37,6 +38,7 @@ const reviewAsyncJavaScript = `
+     }
+     function apply(feedback) {
+       if (!feedback) return;
++      latestFeedback.set(feedback.target,feedback);
+       const slide = slideFor(feedback.target);
+       if (!slide) return;
+       const fresh = document.createElement('template'); fresh.innerHTML = feedback.menu;
+@@ -63,8 +65,10 @@ const reviewAsyncJavaScript = `
+           for (const thread of [...template.content.children]) {
+             const existing = [...container.children].find(n=>n.dataset.reviewThread===thread.dataset.reviewThread);
+             if (!existing) { container.append(thread); continue; }
+-            existing.className=thread.className; existing.dataset.threadState=thread.dataset.threadState;
+-            const state = q('.review-thread-head span',existing); if(state) state.textContent=thread.dataset.threadState;
++            const incomingIDs=new Set(qa(':scope > .review-comment',thread).map(n=>n.id));
++            const includesKnown=qa(':scope > .review-comment',existing).every(n=>incomingIDs.has(n.id));
++            if(includesKnown) { existing.className=thread.className; existing.dataset.threadState=thread.dataset.threadState;
++              const state = q('.review-thread-head span',existing); if(state) state.textContent=thread.dataset.threadState; }
+             for (const comment of qa(':scope > .review-comment',thread)) {
+               if (![...existing.children].some(n=>n.id===comment.id)) existing.insertBefore(comment,q(':scope > .review-reply',existing));
+             }
+@@ -133,6 +137,7 @@ const reviewAsyncJavaScript = `
+         const details=form.closest('details'); (details && q('summary',details) || event.submitter)?.focus({preventScroll:true});
+       }
+     });
+-    return {post,apply,slideFor,announce};
++    function feedbackFor(target) { const slide=slideFor(target); return slide && latestFeedback.get(slide.dataset.slideTarget); }
++    return {post,apply,slideFor,announce,feedbackFor,reapplyAfter(target,before) { const feedback=feedbackFor(target); if(feedback && feedback!==before)apply(feedback); }};
+   }) ();
+ `
+diff --git a/internal/server/reviews.go b/internal/server/reviews.go
+index 6e21f18..4b52b79 100644
+--- a/internal/server/reviews.go
++++ b/internal/server/reviews.go
+@@ -96,6 +96,7 @@ type reviewSlideView struct {
+ }
+ 
+ type reviewItemView struct {
++	DiffCount   int
+ 	Item        *saga.Item
+ 	DOMID       string
+ 	Region      *saga.LandmarkRegion
+@@ -227,12 +228,6 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
+ 		Saga: document, Review: review, Report: report, Frozen: review.Merged != nil,
+ 		Comparing: !a.rng.Observe(), MutationToken: a.mutationToken, Notice: r.URL.Query().Get("notice"),
+ 	}
+-	resolver, err := coderesolve.New(ctx, a.sourceDir)
+-	if err == nil {
+-		defer resolver.Close()
+-	} else {
+-		resolver = nil
+-	}
+ 	threads := reviewstate.Threads(review.Comments)
+ 	slideReports := map[string]reviewstate.SlideReport{}
+ 	for _, slide := range report.Slides {
+@@ -263,13 +258,10 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
+ 			if item.Record != "" {
+ 				itemView.RecordHref, itemView.RecordLabel, itemView.RecordKind = recordHref(document, item.Record), recordLabel(item.Record), reviewRecordKind(item.Record)
+ 			}
+-			if report.Range != nil {
+-				for _, file := range item.Code {
+-					for _, reference := range file.References {
+-						itemView.Diffs = append(itemView.Diffs, a.referenceDiff(ctx, resolver, reference, *report.Range))
+-					}
+-				}
++			for _, file := range item.Code {
++				itemView.DiffCount += len(file.References)
+ 			}
++
+ 			slideView.Items = append(slideView.Items, itemView)
+ 		}
+ 		view.Slides = append(view.Slides, slideView)
+@@ -757,10 +749,10 @@ const reviewTemplateSource = `{{define "review-summary"}}<article class="review-
+ {{define "review-diff"}}<figure class="review-diff" data-review-diff="{{.Location}}"><figcaption><code>{{.Path}}</code> <span class="review-location">{{.Location}}</span></figcaption>{{if .Note}}<p class="review-note">{{.Note}}</p>{{end}}{{if .Lines}}<table><tbody>{{range .Lines}}<tr class="review-line {{.Kind}}">{{if eq .Kind "hunk"}}<td colspan="3" class="review-hunk">{{.Text}}</td>{{else}}<td class="review-lineno">{{.Old}}</td><td class="review-lineno">{{.New}}</td><td class="review-code"><code>{{if eq .Kind "add"}}+{{else if eq .Kind "del"}}-{{else}} {{end}}{{.Text}}</code></td>{{end}}</tr>{{end}}</tbody></table>{{end}}</figure>{{end}}
+ {{define "review-threads"}}{{range .}}<article class="review-thread {{.State}}" id="thread-{{.ID}}" data-review-thread="{{.ID}}" data-review-target="{{.Target}}" data-thread-state="{{.State}}"><header class="review-thread-head"><strong>Discussion</strong><span>{{.State}}</span></header>{{range .Comments}}<div class="review-comment" id="comment-{{.ID}}"><div class="review-comment-meta">{{.Author}} · <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.CreatedAt.Format "2006-01-02 15:04 MST"}}</time>{{if .State}} · {{.State}}{{end}}</div><div class="review-comment-body">{{.Body}}</div></div>{{end}}{{if not .Frozen}}<details class="review-compose review-reply"><summary>Reply</summary><form class="review-comment-form" method="post" action="/reviews/{{.ReviewID}}/comment" data-review-reply-form="{{.ID}}"><input type="hidden" name="token" value="{{.Token}}"><input type="hidden" name="reply_to" value="{{.ID}}"><label><span>Reply to discussion</span><textarea name="body" required rows="3"></textarea></label><button type="submit">Reply</button></form></details>{{end}}</article>{{end}}{{end}}
+ {{define "review-comment-form"}}{{if not .Frozen}}<details class="review-compose"><summary>Add comment</summary><form class="review-comment-form" method="post" action="/reviews/{{.ReviewID}}/comment" data-review-comment-form="{{.Target}}"><input type="hidden" name="token" value="{{.Token}}"><input type="hidden" name="target" value="{{.Target}}"><label><span>Comment on {{.Label}}</span><textarea name="body" required rows="3"></textarea></label><button type="submit">Comment</button></form></details>{{end}}{{end}}
+-{{define "review-item-panel"}}<section class="review-item-panel" data-review-item-panel="{{.Item.ID}}" data-review-target="{{.Item.Target}}"><header><p class="eyebrow">Slide element</p><h2>{{.Item.Label}}</h2><p>{{.Item.Description}}</p></header>{{if .RecordHref}}<p class="review-record">Affected documentation: <a href="{{.RecordHref}}" data-review-record="{{.Item.Record}}">{{.RecordLabel}}</a></p>{{end}}{{range .Diffs}}{{template "review-diff" .}}{{else}}<p class="review-note">This element links no changed code.</p>{{end}}<div data-review-threads-for="{{.Item.Target}}">{{template "review-threads" .Threads}}</div></section>{{end}}
+-{{define "review-item-affordance"}}<span class="landmark-affordance review-item-affordance" data-landmark-affordance><a class="permalink" href="#{{.DOMID}}" aria-label="Link to {{.Item.Label}}" title="Copy link"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-link"></use></svg></a>{{if .RecordHref}}<button type="button" class="icon-button story-button" data-open-stories="review-record-{{.DOMID}}" aria-label="Open affected documentation for {{.Item.Label}}" title="Affected {{.RecordKind}}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-story"></use></svg></button>{{end}}{{if .Diffs}}<button type="button" class="icon-button diff-button" data-open-diffs="review-item-{{.DOMID}}" aria-label="Open {{len .Diffs}} code {{if eq (len .Diffs) 1}}reference{{else}}references{{end}} for {{.Item.Label}}" title="Linked code"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-diff"></use></svg><span>{{len .Diffs}}</span></button>{{else}}<button type="button" class="icon-button diff-button" data-open-diffs="review-item-{{.DOMID}}" aria-label="Open details for {{.Item.Label}}" title="Item details"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-more"></use></svg></button>{{end}}</span>{{end}}
++{{define "review-item-panel"}}<section class="review-item-panel" data-review-item-panel="{{.Item.ID}}" data-review-target="{{.Item.Target}}"><header><p class="eyebrow">Slide element</p><h2>{{.Item.Label}}</h2><p>{{.Item.Description}}</p></header>{{if .RecordHref}}<p class="review-record">Affected documentation: <a href="{{.RecordHref}}" data-review-record="{{.Item.Record}}">{{.RecordLabel}}</a></p>{{end}}<div data-review-item-diffs>{{range .Diffs}}{{template "review-diff" .}}{{else}}<p class="review-note">This element links no changed code.</p>{{end}}</div><div data-review-threads-for="{{.Item.Target}}">{{template "review-threads" .Threads}}</div></section>{{end}}
++{{define "review-item-affordance"}}<span class="landmark-affordance review-item-affordance" data-landmark-affordance><a class="permalink" href="#{{.DOMID}}" aria-label="Link to {{.Item.Label}}" title="Copy link"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-link"></use></svg></a>{{if .RecordHref}}<button type="button" class="icon-button story-button" data-open-stories="review-record-{{.DOMID}}" aria-label="Open affected documentation for {{.Item.Label}}" title="Affected {{.RecordKind}}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-story"></use></svg></button>{{end}}{{if .DiffCount}}<button type="button" class="icon-button diff-button" data-open-diffs="review-item-{{.DOMID}}" aria-label="Open {{.DiffCount}} code {{if eq  .DiffCount 1}}reference{{else}}references{{end}} for {{.Item.Label}}" title="Linked code"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-diff"></use></svg><span>{{.DiffCount}}</span></button>{{else}}<button type="button" class="icon-button diff-button" data-open-diffs="review-item-{{.DOMID}}" aria-label="Open details for {{.Item.Label}}" title="Item details"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-more"></use></svg></button>{{end}}</span>{{end}}
+ {{define "review-slide-menu"}}{{if not .Page.Frozen}}<form class="review-decision-quick" method="post" action="/reviews/{{.Page.Review.ID}}/decision" data-review-decision-form="{{.Slide.Slide.ID}}"><input type="hidden" name="token" value="{{.Page.MutationToken}}"><input type="hidden" name="slide" value="{{.Slide.Slide.ID}}"><input type="hidden" name="snapshot" value="{{.Slide.Snapshot}}"><button class="review-decision approve" type="submit" name="state" value="approved" data-review-approve aria-label="Approve {{.Slide.Slide.Title}}" title="Approve"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-approve"></use></svg></button></form>{{end}}<details class="review-slide-menu"><summary class="{{if .Page.Frozen}}icon-button review-history{{else}}review-decision reject{{end}}" aria-label="{{if .Page.Frozen}}Review decisions for{{else}}Request changes on{{end}} {{.Slide.Slide.Title}}" title="{{if .Page.Frozen}}Review decisions{{else}}Request changes{{end}}">{{if .Page.Frozen}}<svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg>{{else}}<svg class="i" aria-hidden="true" focusable="false"><use href="#i-reject"></use></svg>{{end}}</summary><div class="review-slide-panel"><header><p class="eyebrow">Review slide</p><h2>{{.Slide.Slide.Title}}</h2><p>{{.Slide.Slide.Takeaway}}</p></header><ul class="review-decision-list">{{range .Slide.Report.Decisions}}<li class="review-decision-row {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}"><strong>{{reviewState .State}}</strong> by {{reviewer .}} at <code>{{short .Commit}}</code>{{if eq .Currency "out_of_date"}} <span class="review-out-of-date" data-out-of-date>Out of date</span>{{else if eq .Currency "unknown"}} <span class="review-unknown">currency unknown</span>{{end}}{{if .Reasons}}<ul class="review-reasons">{{range .Reasons}}<li>{{.}}</li>{{end}}</ul>{{end}}{{if .Body}}<p class="review-body">{{.Body}}</p>{{end}}</li>{{else}}<li class="review-decision-row none">No decision yet</li>{{end}}</ul>{{if not .Page.Frozen}}<form class="review-decision-form" method="post" action="/reviews/{{.Page.Review.ID}}/decision"><input type="hidden" name="token" value="{{.Page.MutationToken}}"><input type="hidden" name="slide" value="{{.Slide.Slide.ID}}"><input type="hidden" name="snapshot" value="{{.Slide.Snapshot}}"><label><span>What needs to change?</span><textarea name="body" rows="3" required></textarea></label><div class="review-decision-buttons"><button type="submit" name="state" value="changes_requested" data-review-request-changes>Request changes</button><button type="submit" name="state" value="none" data-review-withdraw>Withdraw decision</button></div></form>{{end}}<details class="review-source"><summary>Source and currency</summary>{{template "review-range" .Page.Report}}</details></div></details><details class="review-slide-comment"><summary class="icon-button review-comment" aria-label="{{if .Page.Frozen}}Discussion on{{else}}Comment on{{end}} {{.Slide.Slide.Title}}" title="{{if .Page.Frozen}}Discussion{{else}}Comment{{end}}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-comment"></use></svg></summary><div class="review-slide-panel"><div data-review-threads-for="{{.Slide.Slide.Target}}">{{template "review-threads" .Slide.Threads}}</div>{{template "review-comment-form" (reviewCommentForm .Page .Slide.Slide.Target .Slide.Slide.Title)}}</div></details>{{end}}
+-{{define "review-page"}}{{$page := .}}<div class="review-deck-page" data-review="{{.Review.ID}}" data-review-token="{{.MutationToken}}" data-review-deck><nav class="review-deck-rail slide-side" aria-label="Review slides"><a class="sidebar-title" href="/reviews"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg><span>{{.Review.Title}}</span></a>{{with .Review.PullRequest}}<p class="review-deck-pr">{{if .URL}}<a href="{{.URL}}">{{if .Number}}Pull request #{{.Number}}{{else}}{{.URL}}{{end}}</a>{{else}}Pull request #{{.Number}}{{end}}</p>{{end}}<section class="slide-rail-deck"><h2>Review deck</h2><ol class="review-thumbnail-list slide-thumbnail-list">{{range $index,$slide := .Slides}}<li class="slide-thumbnail-card{{if eq $index 0}} active{{end}}" data-slide-thumbnail-card><div class="slide-thumbnail-preview" aria-hidden="true">{{if .Interactive}}<iframe tabindex="-1" sandbox="allow-scripts" loading="lazy" src="{{.VisualURL}}" title=""></iframe>{{else}}<img loading="lazy" src="{{.VisualURL}}" alt="">{{end}}</div><span class="slide-thumbnail-caption"><span class="slide-thumbnail-title">{{.Slide.Title}}</span><span class="slide-thumbnail-status" role="img" data-review-state="{{range .Report.Decisions}}{{.State}}{{else}}none{{end}}" aria-label="{{range .Report.Decisions}}{{reviewState .State}}{{if eq .Currency "out_of_date"}}; out of date{{end}}{{else}}Not reviewed{{end}}{{if .Report.OpenThreads}}; {{.Report.OpenThreads}} open threads{{end}}" title="{{range .Report.Decisions}}{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}{{else}}Not reviewed{{end}}{{if .Report.OpenThreads}} · {{.Report.OpenThreads}} open{{end}}"></span></span><button type="button" class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="{{.Slide.Target}}" aria-current="{{if eq $index 0}}true{{else}}false{{end}}" aria-label="Show slide: {{.Slide.Title}}"></button></li>{{end}}</ol></section></nav><section class="deck-viewer review-deck-viewer" data-deck-viewer aria-label="{{.Review.Title}}"><div class="deck-viewer-stage"><header class="deck-viewer-header" aria-live="polite"><div><strong data-current-slide-title>{{(index .Slides 0).Slide.Title}}</strong></div><span data-slide-position></span></header>{{range $index,$slide := .Slides}}<section class="deck-viewer-slide review-deck-slide{{if eq $index 0}} active{{end}}{{if .OutOfDate}} out-of-date{{end}}" data-deck-slide data-deck-target="{{$page.Review.Deck.Target}}" data-deck-role="review" data-deck-title="{{$page.Review.Title}}" data-slide-title="{{.Slide.Title}}" data-review-snapshot="{{.Snapshot}}" data-slide-target="{{.Slide.Target}}"{{if ne $index 0}} hidden{{end}}><article class="fragment review-fragment" id="{{.DOMID}}" data-target="{{.Slide.Target}}" data-fragment-title="{{.Slide.Title}}" tabindex="0"><div class="fragment-head"><div class="fragment-actions">{{if .Items}}<details class="landmark-menu"><summary aria-label="Jump to a marked place" title="Marked places"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></summary><div class="landmark-list">{{range .Items}}<div><a href="#{{.DOMID}}">{{.Item.Label}}</a>{{template "review-item-affordance" .}}</div>{{end}}</div></details>{{end}}<a class="permalink" href="#{{.DOMID}}" aria-label="Link to {{.Slide.Title}}" title="Copy link"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-link"></use></svg></a>{{if not $page.Frozen}}<button class="icon-button annotation-tools-toggle" type="button" data-review-annotation-toggle="{{.Slide.Target}}" aria-expanded="false" aria-controls="review-annotation-toolbox" aria-label="Show annotation tools for {{.Slide.Title}}" title="Annotate"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-marker"></use></svg></button>{{end}}{{template "review-slide-menu" (reviewSlideMenu $page .)}}</div></div>{{range .Items}}<span id="{{.DOMID}}" class="landmark-target" data-review-item="{{.Item.ID}}" data-landmark-target data-landmark-anchor="{{.DOMID}}" data-landmark-type="{{.Item.Selector.Type}}" data-element-id="{{.Item.Selector.ElementID}}" data-heading-id="{{.Item.Selector.HeadingID}}" data-exact="{{.Item.Selector.Exact}}" data-prefix="{{.Item.Selector.Prefix}}" data-suffix="{{.Item.Selector.Suffix}}"><template data-landmark-affordance-template>{{template "review-item-affordance" .}}</template></span><template id="review-item-{{.DOMID}}">{{template "review-item-panel" .}}{{template "review-comment-form" (reviewCommentForm $page .Item.Target .Item.Label)}}</template>{{if .RecordHref}}<template id="review-record-{{.DOMID}}"><section class="story-links"><h2>Affected documentation</h2><p>This exact slide element links to the living Saga record below.</p><ul><li><strong><a href="{{.RecordHref}}" data-review-record="{{.Item.Record}}">{{.RecordLabel}}</a></strong><p>{{.Item.Description}}</p></li></ul></section></template>{{end}}{{end}}<div class="fragment-stage">{{if .Interactive}}<iframe class="fragment-frame" data-fragment-frame sandbox="allow-scripts" src="{{.VisualURL}}" title="{{.Slide.Title}}"></iframe>{{else}}<img class="fragment-image" src="{{.VisualURL}}" alt="{{.Slide.Title}}">{{end}}{{range .Items}}{{if .Region}}<div class="landmark-hotspot" data-landmark-visual="{{.DOMID}}" data-x="{{.Region.X}}" data-y="{{.Region.Y}}" data-width="{{.Region.Width}}" data-height="{{.Region.Height}}">{{template "review-item-affordance" .}}</div>{{end}}{{end}}</div></article></section>{{end}}<nav class="deck-viewer-controls" aria-label="Slide navigation"><button type="button" class="slide-step" data-slide-previous aria-label="Previous slide" title="Previous slide">‹</button><button type="button" class="slide-step" data-slide-next aria-label="Next slide" title="Next slide">›</button></nav><button type="button" class="slide-exit-presentation" data-slide-exit-presentation hidden>Exit presentation</button></div></section></div>{{end}}
++{{define "review-page"}}{{$page := .}}<div class="review-deck-page" data-review="{{.Review.ID}}" data-review-token="{{.MutationToken}}" data-review-deck><nav class="review-deck-rail slide-side" aria-label="Review slides"><a class="sidebar-title" href="/reviews"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg><span>{{.Review.Title}}</span></a>{{with .Review.PullRequest}}<p class="review-deck-pr">{{if .URL}}<a href="{{.URL}}">{{if .Number}}Pull request #{{.Number}}{{else}}{{.URL}}{{end}}</a>{{else}}Pull request #{{.Number}}{{end}}</p>{{end}}<section class="slide-rail-deck"><h2>Review deck</h2><ol class="review-thumbnail-list slide-thumbnail-list">{{range $index,$slide := .Slides}}<li class="slide-thumbnail-card{{if eq $index 0}} active{{end}}" data-slide-thumbnail-card><div class="slide-thumbnail-preview" aria-hidden="true">{{if .Interactive}}<iframe tabindex="-1" sandbox="allow-scripts" loading="lazy" src="{{.VisualURL}}" title=""></iframe>{{else}}<img loading="lazy" src="{{.VisualURL}}" alt="">{{end}}</div><span class="slide-thumbnail-caption"><span class="slide-thumbnail-title">{{.Slide.Title}}</span><span class="slide-thumbnail-status" role="img" data-review-state="{{range .Report.Decisions}}{{.State}}{{else}}none{{end}}" aria-label="{{range .Report.Decisions}}{{reviewState .State}}{{if eq .Currency "out_of_date"}}; out of date{{end}}{{else}}Not reviewed{{end}}{{if .Report.OpenThreads}}; {{.Report.OpenThreads}} open threads{{end}}" title="{{range .Report.Decisions}}{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}{{else}}Not reviewed{{end}}{{if .Report.OpenThreads}} · {{.Report.OpenThreads}} open{{end}}"></span></span><button type="button" class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="{{.Slide.Target}}" aria-current="{{if eq $index 0}}true{{else}}false{{end}}" aria-label="Show slide: {{.Slide.Title}}"></button></li>{{end}}</ol></section></nav><section class="deck-viewer review-deck-viewer" data-deck-viewer aria-label="{{.Review.Title}}"><div class="deck-viewer-stage"><header class="deck-viewer-header" aria-live="polite"><div><strong data-current-slide-title>{{(index .Slides 0).Slide.Title}}</strong></div><span data-slide-position></span></header>{{range $index,$slide := .Slides}}<section class="deck-viewer-slide review-deck-slide{{if eq $index 0}} active{{end}}{{if .OutOfDate}} out-of-date{{end}}" data-deck-slide data-deck-target="{{$page.Review.Deck.Target}}" data-deck-role="review" data-deck-title="{{$page.Review.Title}}" data-slide-title="{{.Slide.Title}}" data-review-snapshot="{{.Snapshot}}" data-slide-target="{{.Slide.Target}}"{{if ne $index 0}} hidden{{end}}><article class="fragment review-fragment" id="{{.DOMID}}" data-target="{{.Slide.Target}}" data-fragment-title="{{.Slide.Title}}" tabindex="0"><div class="fragment-head"><div class="fragment-actions">{{if .Items}}<details class="landmark-menu"><summary aria-label="Jump to a marked place" title="Marked places"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></summary><div class="landmark-list">{{range .Items}}<div><a href="#{{.DOMID}}">{{.Item.Label}}</a>{{template "review-item-affordance" .}}</div>{{end}}</div></details>{{end}}<a class="permalink" href="#{{.DOMID}}" aria-label="Link to {{.Slide.Title}}" title="Copy link"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-link"></use></svg></a>{{if not $page.Frozen}}<button class="icon-button annotation-tools-toggle" type="button" data-review-annotation-toggle="{{.Slide.Target}}" aria-expanded="false" aria-controls="review-annotation-toolbox" aria-label="Show annotation tools for {{.Slide.Title}}" title="Annotate"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-marker"></use></svg></button>{{end}}{{template "review-slide-menu" (reviewSlideMenu $page .)}}</div></div>{{range .Items}}<span id="{{.DOMID}}" class="landmark-target" data-review-item="{{.Item.ID}}" data-landmark-target data-landmark-anchor="{{.DOMID}}" data-landmark-type="{{.Item.Selector.Type}}" data-element-id="{{.Item.Selector.ElementID}}" data-heading-id="{{.Item.Selector.HeadingID}}" data-exact="{{.Item.Selector.Exact}}" data-prefix="{{.Item.Selector.Prefix}}" data-suffix="{{.Item.Selector.Suffix}}"><template data-landmark-affordance-template>{{template "review-item-affordance" .}}</template></span><template id="review-item-{{.DOMID}}" data-review-item-target="{{.Item.Target}}" data-review-item-snapshot="{{$slide.Snapshot}}" data-review-item-href="/reviews/{{$page.Review.ID}}/item"></template>{{if .RecordHref}}<template id="review-record-{{.DOMID}}"><section class="story-links"><h2>Affected documentation</h2><p>This exact slide element links to the living Saga record below.</p><ul><li><strong><a href="{{.RecordHref}}" data-review-record="{{.Item.Record}}">{{.RecordLabel}}</a></strong><p>{{.Item.Description}}</p></li></ul></section></template>{{end}}{{end}}<div class="fragment-stage">{{if .Interactive}}<iframe class="fragment-frame" data-fragment-frame sandbox="allow-scripts" src="{{.VisualURL}}" title="{{.Slide.Title}}"></iframe>{{else}}<img class="fragment-image" src="{{.VisualURL}}" alt="{{.Slide.Title}}">{{end}}{{range .Items}}{{if .Region}}<div class="landmark-hotspot" data-landmark-visual="{{.DOMID}}" data-x="{{.Region.X}}" data-y="{{.Region.Y}}" data-width="{{.Region.Width}}" data-height="{{.Region.Height}}">{{template "review-item-affordance" .}}</div>{{end}}{{end}}</div></article></section>{{end}}<nav class="deck-viewer-controls" aria-label="Slide navigation"><button type="button" class="slide-step" data-slide-previous aria-label="Previous slide" title="Previous slide">‹</button><button type="button" class="slide-step" data-slide-next aria-label="Next slide" title="Next slide">›</button></nav><button type="button" class="slide-exit-presentation" data-slide-exit-presentation hidden>Exit presentation</button></div></section></div>{{end}}
+ {{define "review-coverage-surface"}}<div data-review-surface-response="manifest"><div class="review-surface review-coverage-surface">{{template "review-range" .Report}}{{if .Coverage}}{{template "review-coverage" .Coverage}}{{else}}<p class="review-note">The review's range could not be read, so its coverage is unknown.</p>{{end}}</div></div>{{end}}
+ {{define "review-coverage"}}{{if .}}<aside class="review-coverage{{if .Summary.Uncovered}} has-gap{{end}}" aria-label="Coverage of the change" data-review-coverage data-total="{{.Summary.Total}}" data-covered="{{.Summary.Covered}}" data-uncovered="{{.Summary.Uncovered}}" data-stale="{{.Summary.Stale}}" data-overlapping="{{.Summary.Overlapping}}"><h2>Coverage of the change</h2><p class="coverage-totals">{{.Summary.Total}} changed {{if eq .Summary.Total 1}}line{{else}}lines{{end}} · {{.Summary.Covered}} explained by the deck{{if .Summary.Uncovered}} · <span class="gap">{{.Summary.Uncovered}} unexplained</span>{{end}}{{if .Summary.Stale}} · <span class="gap">{{.Summary.Stale}} stale {{if eq .Summary.Stale 1}}reference{{else}}references{{end}}</span>{{end}}{{if .Summary.Overlapping}} · {{.Summary.Overlapping}} explained twice{{end}}</p>{{if .Files}}<p class="review-note">No review Item explains these changes. Cover them from the Item that does: <code>change-saga cover --target &lt;review Item&gt; --path &lt;file&gt; --changed-lines</code></p>{{range .Files}}<figure class="review-diff review-gap" data-review-gap="{{.Path}}"><figcaption><code>{{.Path}}</code>{{range .Locations}} <span class="review-location">{{.}}</span>{{end}}</figcaption>{{range .Events}}<p class="review-note">{{.}}</p>{{end}}{{if .Lines}}<table><tbody>{{range .Lines}}<tr class="review-line {{.Kind}}"><td class="review-lineno">{{.Old}}</td><td class="review-lineno">{{.New}}</td><td class="review-code"><code>{{if eq .Kind "add"}}+{{else}}-{{end}}{{.Text}}</code></td></tr>{{end}}</tbody></table>{{end}}</figure>{{end}}{{else}}<p class="review-note">Every changed line of the review's range is explained by the deck.</p>{{end}}{{if .Stale}}<h3>Stale references</h3><ul class="review-reasons">{{range .Stale}}<li data-review-stale="{{.Assignment.Target}}"><code>{{.Reference.Location}}</code>: {{.Reason}}</li>{{end}}</ul>{{end}}</aside>{{end}}{{end}}`
+ 
+diff --git a/internal/server/reviews_test.go b/internal/server/reviews_test.go
+index 177a9be..a548f72 100644
+--- a/internal/server/reviews_test.go
++++ b/internal/server/reviews_test.go
+@@ -127,6 +127,7 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
+ 
+ 	page := getPage(t, handler, "/reviews/pr-7")
+ 	body := page.Body.String()
++	body += reviewItemHTML(t, handler, body, saga.ReviewItemTarget("app", "pr-7", "queue", "node"))
+ 	for _, want := range []string{
+ 		`data-review-deck-shell`, `data-review-deck`, `data-deck-slide`, `data-slide-target="urn:change-saga:app:review:pr-7:slide:queue"`,
+ 		`data-decision-state="approved" data-currency="current"`, `data-review-decision-form="queue"`,
+@@ -231,6 +232,7 @@ func TestFrozenReviewIsViewableButTakesNoDecisions(t *testing.T) {
+ 	}
+ 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+ 	body := getPage(t, handler, "/reviews/pr-7").Body.String()
++	body += reviewItemHTML(t, handler, body, saga.ReviewItemTarget("app", "pr-7", "queue", "node"))
+ 	if !strings.Contains(body, "Frozen at") || strings.Contains(body, "data-review-decision-form") || !strings.Contains(body, "review-line add") {
+ 		t.Fatalf("frozen review page:\n%s", body)
+ 	}
+diff --git a/internal/server/server.go b/internal/server/server.go
+index dcfb471..d548b04 100644
+--- a/internal/server/server.go
++++ b/internal/server/server.go
+@@ -374,6 +374,7 @@ func newMux(application *app) *http.ServeMux {
+ 	mux.HandleFunc("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
+ 	mux.HandleFunc("GET /reviews/{id}/annotations", application.reviewAnnotations)
+ 	mux.HandleFunc("GET /reviews/{id}/feedback", application.reviewFeedbackSurface)
++	mux.HandleFunc("GET /reviews/{id}/item", application.reviewItemSurface)
+ 	mux.HandleFunc("POST /reviews/{id}/decision", application.reviewDecision)
+ 	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
+ 	mux.HandleFunc("GET /app.js", application.javascript)
+diff --git a/internal/server/reviewasyncitem.go b/internal/server/reviewasyncitem.go
+new file mode 100644
+index 0000000..f2e9971
+--- /dev/null
++++ b/internal/server/reviewasyncitem.go
+@@ -0,0 +1,194 @@
++package server
++
++import (
++	"bytes"
++	"crypto/sha256"
++	"encoding/base64"
++	"encoding/hex"
++	"encoding/json"
++	"fmt"
++	"net/http"
++
++	"github.com/twentyideas/changesaga/internal/coderef"
++	"github.com/twentyideas/changesaga/internal/coderesolve"
++	"github.com/twentyideas/changesaga/internal/reviewstate"
++	"github.com/twentyideas/changesaga/internal/saga"
++)
++
++const reviewItemPageRows = 1000
++
++type reviewItemCursor struct {
++	Target    string `json:"target"`
++	Snapshot  string `json:"snapshot"`
++	Reference int    `json:"reference"`
++	Line      int    `json:"line"`
++	Digest    string `json:"digest,omitempty"`
++}
++
++type reviewItemResponse struct {
++	Target   string `json:"target"`
++	Snapshot string `json:"snapshot"`
++	HTML     string `json:"html"`
++	Next     string `json:"next"`
++	Returned int    `json:"returned"`
++}
++
++func reviewItemReferences(item *saga.Item) []coderef.Reference {
++	var refs []coderef.Reference
++	for _, file := range item.Code {
++		refs = append(refs, file.References...)
++	}
++	return refs
++}
++
++func reviewDiffDigest(view *reviewDiffView) string {
++	data, _ := json.Marshal(view)
++	sum := sha256.Sum256(data)
++	return hex.EncodeToString(sum[:])
++}
++
++// reviewItemDiffPage visits only references needed for this page. A cursor
++// inside a long reference binds its exact projection, so a changed patch cannot
++// silently splice different line offsets into already displayed evidence.
++func reviewItemDiffPage(refs []coderef.Reference, cursor reviewItemCursor, read func(coderef.Reference) *reviewDiffView) ([]*reviewDiffView, reviewItemCursor, int, error) {
++	if cursor.Reference < 0 || cursor.Reference > len(refs) || cursor.Line < 0 || (cursor.Reference == len(refs) && cursor.Line != 0) {
++		return nil, cursor, 0, fmt.Errorf("invalid Item cursor")
++	}
++	var views []*reviewDiffView
++	returned := 0
++	for cursor.Reference < len(refs) && returned < reviewItemPageRows {
++		view := read(refs[cursor.Reference])
++		count := len(view.Lines)
++		if count == 0 {
++			count = 1
++		}
++		digest := reviewDiffDigest(view)
++		if cursor.Line >= count || (cursor.Line > 0 && cursor.Digest != digest) {
++			return nil, cursor, 0, errReviewViewChanged
++		}
++		take := min(count-cursor.Line, reviewItemPageRows-returned)
++		part := *view
++		if len(view.Lines) > 0 {
++			part.Lines = view.Lines[cursor.Line : cursor.Line+take]
++		}
++		views = append(views, &part)
++		returned += take
++		cursor.Line += take
++		if cursor.Line == count {
++			cursor.Reference++
++			cursor.Line = 0
++			cursor.Digest = ""
++		} else {
++			cursor.Digest = digest
++		}
++	}
++	return views, cursor, returned, nil
++}
++
++func (a *app) reviewItemSurface(w http.ResponseWriter, r *http.Request) {
++	document := a.loadReviewDocument(w)
++	if document == nil {
++		return
++	}
++	review := document.FindReview(r.PathValue("id"))
++	target := r.URL.Query().Get("target")
++	if review == nil {
++		http.NotFound(w, r)
++		return
++	}
++	slide := reviewTargetSlide(review, target)
++	var item *saga.Item
++	if slide != nil {
++		for _, candidate := range slide.Items {
++			if candidate.Target == target {
++				item = candidate
++				break
++			}
++		}
++	}
++	if item == nil {
++		http.NotFound(w, r)
++		return
++	}
++	rng, err := reviewstate.ResolveRange(r.Context(), a.sourceDir, review)
++	if err != nil {
++		http.Error(w, "The source comparison could not be read. "+err.Error(), http.StatusConflict)
++		return
++	}
++	snapshot := a.reviewSnapshot(slide, &rng)
++	if snapshot == "" || r.URL.Query().Get("snapshot") != snapshot {
++		reviewWriteError(w, errReviewViewChanged)
++		return
++	}
++	cursor := reviewItemCursor{Target: target, Snapshot: snapshot}
++	first := r.URL.Query().Get("cursor") == ""
++	if !first {
++		raw, err := base64.RawURLEncoding.DecodeString(r.URL.Query().Get("cursor"))
++		if err != nil || len(raw) > 4096 || json.Unmarshal(raw, &cursor) != nil {
++			http.Error(w, "invalid Item cursor", http.StatusBadRequest)
++			return
++		}
++		if cursor.Target != target || cursor.Snapshot != snapshot {
++			reviewWriteError(w, errReviewViewChanged)
++			return
++		}
++	}
++	resolver, err := coderesolve.New(r.Context(), a.sourceDir)
++	if err == nil {
++		defer resolver.Close()
++	} else {
++		resolver = nil
++	}
++	refs := reviewItemReferences(item)
++	// Integration hook: construct newReviewDiffs once here after combining the
++	// request-local patch helper; replace the closure's one-shot call below.
++	views, next, returned, err := reviewItemDiffPage(refs, cursor, func(ref coderef.Reference) *reviewDiffView { return a.referenceDiff(r.Context(), resolver, ref, rng) })
++	if err != nil {
++		reviewWriteError(w, err)
++		return
++	}
++	var html bytes.Buffer
++	if first {
++		view := &reviewItemView{Item: item, DOMID: domID(item.Target), Diffs: views, Threads: threadViewsFor(reviewstate.Threads(review.Comments), target, review.ID, a.mutationToken, review.Merged != nil)}
++		if item.Record != "" {
++			view.RecordHref, view.RecordLabel, view.RecordKind = recordHref(document, item.Record), recordLabel(item.Record), reviewRecordKind(item.Record)
++		}
++		err = reviewTemplates.ExecuteTemplate(&html, "review-item-panel", view)
++		if err == nil {
++			err = reviewTemplates.ExecuteTemplate(&html, "review-comment-form", reviewCommentFormView{ReviewID: review.ID, Token: a.mutationToken, Target: target, Label: item.Label, Frozen: review.Merged != nil})
++		}
++	} else {
++		for _, view := range views {
++			if err = reviewTemplates.ExecuteTemplate(&html, "review-diff", view); err != nil {
++				break
++			}
++		}
++	}
++	if err != nil {
++		http.Error(w, "The linked code could not be rendered.", http.StatusInternalServerError)
++		return
++	}
++	// No evidence result survives an intervening authoring/source change. A fresh
++	// load includes dirty/new records and preserves existing validation behavior.
++	fresh := a.loadReviewDocument(w)
++	if fresh == nil {
++		return
++	}
++	current := fresh.FindReview(review.ID)
++	if current == nil {
++		reviewWriteError(w, errReviewViewChanged)
++		return
++	}
++	currentRange, err := reviewstate.ResolveRange(r.Context(), a.sourceDir, current)
++	if err != nil || a.reviewSnapshot(reviewTargetSlide(current, target), &currentRange) != snapshot {
++		reviewWriteError(w, errReviewViewChanged)
++		return
++	}
++	response := reviewItemResponse{Target: target, Snapshot: snapshot, HTML: html.String(), Returned: returned}
++	if next.Reference < len(refs) {
++		encoded, _ := json.Marshal(next)
++		response.Next = base64.RawURLEncoding.EncodeToString(encoded)
++	}
++	writeIncrementalHeaders(w, "application/json")
++	_ = json.NewEncoder(w).Encode(response)
++}
+diff --git a/internal/server/reviewasyncitem_test.go b/internal/server/reviewasyncitem_test.go
+new file mode 100644
+index 0000000..962a3a7
+--- /dev/null
++++ b/internal/server/reviewasyncitem_test.go
+@@ -0,0 +1,139 @@
++package server
++
++import (
++	"context"
++	"encoding/json"
++	"fmt"
++	"net/http"
++	"net/http/httptest"
++	"net/url"
++	"reflect"
++	"strings"
++	"testing"
++
++	"github.com/twentyideas/changesaga/internal/coderef"
++	"github.com/twentyideas/changesaga/internal/gitdiff"
++	"github.com/twentyideas/changesaga/internal/reviewstate"
++	"github.com/twentyideas/changesaga/internal/reviewstore"
++	"github.com/twentyideas/changesaga/internal/saga"
++)
++
++func TestReviewItemPagesPreserveExactRowsAndVisitOnlyNeededReferences(t *testing.T) {
++	refs := []coderef.Reference{{Path: "first"}, {Path: "second"}, {Path: "unchanged"}}
++	first := &reviewDiffView{Path: "first", Location: "exact:first", Lines: make([]reviewDiffLine, reviewItemPageRows)}
++	second := &reviewDiffView{Path: "second", Location: "exact:second", Note: "Stale reference: showing every change.", Lines: make([]reviewDiffLine, reviewItemPageRows+4)}
++	for i := range first.Lines {
++		first.Lines[i] = reviewDiffLine{Kind: "add", New: fmt.Sprint(i), Text: fmt.Sprint(i)}
++	}
++	for i := range second.Lines {
++		second.Lines[i] = reviewDiffLine{Kind: "del", Old: fmt.Sprint(i), Text: fmt.Sprint(i)}
++	}
++	views := map[string]*reviewDiffView{"first": first, "second": second, "unchanged": {Path: "unchanged", Location: "exact:unchanged", Note: "The diff could not be read from this checkout."}}
++	calls := map[string]int{}
++	read := func(ref coderef.Reference) *reviewDiffView { calls[ref.Path]++; return views[ref.Path] }
++	cursor := reviewItemCursor{Target: "item", Snapshot: "shown"}
++	var gotFirst, gotSecond []reviewDiffLine
++	notes := []string{}
++	for cursor.Reference < len(refs) {
++		page, next, returned, err := reviewItemDiffPage(refs, cursor, read)
++		if err != nil {
++			t.Fatal(err)
++		}
++		if returned > reviewItemPageRows || returned == 0 {
++			t.Fatalf("unbounded/nonprogress page: %d", returned)
++		}
++		for _, view := range page {
++			switch view.Path {
++			case "first":
++				gotFirst = append(gotFirst, view.Lines...)
++			case "second":
++				gotSecond = append(gotSecond, view.Lines...)
++			default:
++				notes = append(notes, view.Note)
++			}
++		}
++		cursor = next
++	}
++	if !reflect.DeepEqual(gotFirst, first.Lines) || !reflect.DeepEqual(gotSecond, second.Lines) || len(notes) != 1 || !strings.Contains(notes[0], "could not be read") {
++		t.Fatal("exact rows or unresolved diagnostic lost")
++	}
++	if calls["first"] != 1 || calls["second"] != 2 || calls["unchanged"] != 1 {
++		t.Fatalf("recomputed previous references: %v", calls)
++	}
++	_, partial, _, _ := reviewItemDiffPage(refs, reviewItemCursor{Reference: 1}, read)
++	second.Lines[0].Text = "changed patch"
++	if _, _, _, err := reviewItemDiffPage(refs, partial, read); err == nil {
++		t.Fatal("changed patch spliced into old cursor")
++	}
++}
++
++func reviewItemHTML(t *testing.T, handler http.Handler, page, target string) string {
++	t.Helper()
++	marker := `data-review-item-target="` + target + `" data-review-item-snapshot="`
++	_, after, found := strings.Cut(page, marker)
++	if !found {
++		t.Fatal("missing lazy Item descriptor")
++	}
++	snapshot, _, _ := strings.Cut(after, `"`)
++	response := getPage(t, handler, "/reviews/pr-7/item?target="+url.QueryEscape(target)+"&snapshot="+snapshot)
++	var payload reviewItemResponse
++	if response.Code != 200 || json.Unmarshal(response.Body.Bytes(), &payload) != nil {
++		t.Fatalf("Item: %d %s", response.Code, response.Body)
++	}
++	return payload.HTML
++}
++
++func TestReviewItemEndpointIsLazyFreshPinnedAndReadOnly(t *testing.T) {
++	f := newServerReviewFixture(t)
++	a, handler := reviewApp(t, f, gitdiff.Range{})
++	get := func(path string) *httptest.ResponseRecorder {
++		response := httptest.NewRecorder()
++		handler.ServeHTTP(response, httptest.NewRequest("GET", path, nil))
++		return response
++	}
++	page := getPage(t, handler, "/reviews/pr-7").Body.String()
++	if strings.Contains(page, `class="review-line `) || strings.Contains(page, `class="review-item-panel"`) {
++		t.Fatal("initial page eagerly ships Item diff body")
++	}
++	document, _, _ := saga.Load(f.root)
++	review := document.FindReview("pr-7")
++	slide := review.Slide("queue")
++	target := slide.Items[0].Target
++	rng, _ := reviewstate.ResolveRange(context.Background(), f.repo, review)
++	snapshot := a.reviewSnapshot(slide, &rng)
++	path := "/reviews/pr-7/item?target=" + url.QueryEscape(target) + "&snapshot=" + snapshot
++	first := get(path)
++	var payload reviewItemResponse
++	if first.Code != 200 || json.Unmarshal(first.Body.Bytes(), &payload) != nil {
++		t.Fatalf("Item: %d %s", first.Code, first.Body)
++	}
++	for _, want := range []string{"postgres", "sqs", `review-line add`, `review-line del`, slide.Items[0].Code[0].References[0].Location().String()} {
++		if !strings.Contains(payload.HTML, want) {
++			t.Fatalf("missing exact reference %q", want)
++		}
++	}
++	if first.Header().Get("Cache-Control") != "no-store" || payload.Snapshot != snapshot || payload.Returned > reviewItemPageRows {
++		t.Fatal("unbounded or unpinned Item response")
++	}
++	if _, err := reviewstore.Comment(f.root, reviewstore.Remark{Review: review.ID, Target: target, Body: "External new feedback", Reviewer: saga.ReviewerIdentity{Kind: "human"}}); err != nil {
++		t.Fatal(err)
++	}
++	fresh := get(path)
++	if !strings.Contains(fresh.Body.String(), "External new feedback") {
++		t.Fatal("repeat open reused stale feedback")
++	}
++	if bad := get(path + "&cursor=bad"); bad.Code != 400 {
++		t.Fatalf("bad cursor %d", bad.Code)
++	}
++	if retry := get(path); retry.Code != 200 {
++		t.Fatal("failed load poisoned retry")
++	}
++	serverGit(t, f.repo, "commit", "--allow-empty", "-m", "advance reviewed head")
++	if stale := get(path); stale.Code != 409 {
++		t.Fatalf("unseen head accepted %d", stale.Code)
++	}
++	doc, validation, _ := saga.Load(f.root)
++	if !validation.Valid || len(doc.FindReview(review.ID).Approvals) != 0 || len(doc.FindReview(review.ID).Comments) != 1 {
++		t.Fatal("read-only Item endpoint changed review records")
++	}
++}
+diff --git a/internal/server/reviewasyncitemjs.go b/internal/server/reviewasyncitemjs.go
+new file mode 100644
+index 0000000..ae77d40
+--- /dev/null
++++ b/internal/server/reviewasyncitemjs.go
+@@ -0,0 +1,49 @@
++package server
++
++const reviewItemJavaScript = `
++  let reviewItemRequest = null;
++  function cancelReviewItem() {
++    if(reviewItemRequest) reviewItemRequest.controller.abort();
++    reviewItemRequest=null;
++  }
++  function openReviewItem(source,opener) {
++    restoreDrawerContent();
++    const surface=document.createElement('div'); surface.className='review-item-surface';
++    surface.dataset.reviewTarget=source.dataset.reviewItemTarget;
++    const content=document.createElement('div'),status=document.createElement('p');
++    status.setAttribute('role','status'); surface.append(content,status);
++    q('.drawer-body').append(surface);configureDrawer('code','Linked code');showDrawer(opener);
++    const request={controller:new AbortController(),surface,cursor:'',first:true};reviewItemRequest=request;
++    const current=()=>reviewItemRequest===request && surface.isConnected && !request.controller.signal.aborted;
++    async function load() {
++      while(current()) {
++        status.replaceChildren(document.createTextNode('Loading linked code…'));surface.dataset.state='loading';
++        try {
++          const feedbackAtStart=reviewAsync?.feedbackFor(source.dataset.reviewItemTarget);
++          const url=new URL(source.dataset.reviewItemHref,location.href);
++          url.searchParams.set('target',source.dataset.reviewItemTarget);url.searchParams.set('snapshot',source.dataset.reviewItemSnapshot);
++          if(request.cursor)url.searchParams.set('cursor',request.cursor);
++          const response=await fetch(url,{headers:{Accept:'application/json'},cache:'no-store',signal:request.controller.signal});
++          if(!response.ok)throw new Error((await response.text()).trim() || 'Linked code could not be loaded.');
++          const result=await response.json();
++          if(!current())return;
++          if(result.snapshot!==source.dataset.reviewItemSnapshot || result.target!==source.dataset.reviewItemTarget)throw new Error('The linked code no longer matches this slide. Reload and inspect the current slide.');
++          const template=document.createElement('template');template.innerHTML=result.html;
++          if(request.first) {content.replaceChildren(template.content);request.first=false;reviewAsync?.reapplyAfter(source.dataset.reviewItemTarget,feedbackAtStart);}
++          else q('[data-review-item-diffs]',content).append(template.content);
++          highlightCode(content);
++          // A save from the previous drawer may have finished while this GET
++          // was in flight. Preserve its newer confirmed feedback and drafts.
++          request.cursor=result.next || '';
++          if(!request.cursor){surface.dataset.state='ready';status.remove();return;}
++        } catch(error) {
++          if(!current() || error.name==='AbortError')return;
++          surface.dataset.state='error';status.replaceChildren(document.createTextNode(error.message+' '));
++          const retry=document.createElement('button');retry.type='button';retry.textContent='Retry linked code';
++          retry.addEventListener('click',()=>void load(),{once:true});status.append(retry);return;
++        }
++      }
++    }
++    void load();
++  }
++`
