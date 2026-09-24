@@ -4,8 +4,8 @@
   "slide": "mutation-guardrails",
   "rank": 30,
   "kind": "node",
-  "label": "Mutable current range",
-  "description": "Merged reviews and reviews whose followed head cannot resolve return conflict without writing.",
+  "label": "Open review and shown range",
+  "description": "Reject frozen or unresolved reviews. The fresh review and resolved range are checked again under the writer lock against the immutable snapshot shown to the browser.",
   "selector": {
     "type": "element",
     "element_id": "mutable-range"

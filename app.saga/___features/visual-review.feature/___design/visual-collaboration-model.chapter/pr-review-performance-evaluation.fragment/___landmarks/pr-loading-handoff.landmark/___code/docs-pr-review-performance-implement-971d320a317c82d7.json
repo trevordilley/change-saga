@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "docs/pr-review-performance-implementation.md",
+      "start": 8,
+      "end": 14,
+      "digest": "sha256:abd3f288140ae8a1cedf8d4b74dba7d140e4def1eedcbd40f6cc4d58a6648079",
+      "note": "Exact child commit identities and measured rejection of lazy Item loading; these implementations remain pending integration."
+    },
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "docs/pr-review-performance-implementation.md",
+      "start": 66,
+      "end": 94,
+      "digest": "sha256:751145dc66f81d2f4a96b58b14a5639f609144310bbe2c2d0c124ecd31974c36",
+      "note": "Exact child commit identities and measured rejection of lazy Item loading; these implementations remain pending integration."
+    }
+  ]
+}

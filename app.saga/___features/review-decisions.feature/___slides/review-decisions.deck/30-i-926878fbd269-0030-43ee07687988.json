@@ -4,8 +4,8 @@
   "slide": "decision-failure-boundaries",
   "rank": 30,
   "kind": "transition",
-  "label": "Successful append",
-  "description": "Only a fully validated decision reaches the create-only event write and success response.",
+  "label": "Append, then confirm",
+  "description": "Only a valid slide decision reaches the append-only event write. The enhanced browser waits for an event receipt; missing confirmation is uncertain, so it retains the draft and requires inspection rather than automatically posting again.",
   "selector": {
     "type": "element",
     "element_id": "append-success"

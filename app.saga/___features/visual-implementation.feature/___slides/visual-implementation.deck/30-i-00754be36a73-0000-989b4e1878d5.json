@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "request-scope",
+  "slide": "pr-request-diff-reuse",
+  "rank": 0,
+  "kind": "region",
+  "label": "One request and resolved range",
+  "description": "A request-scoped helper shares successful raw patches only for one resolved review range. The caller owns and closes the resolver; nothing is retained on the app across requests.",
+  "selector": {
+    "type": "element",
+    "element_id": "request-scope"
+  }
+}

@@ -1,0 +1,418 @@
+{
+  "urls": {
+    "eager": "http://127.0.0.1:52241/reviews/review-ux-improvements",
+    "lazy": "http://127.0.0.1:52420/reviews/review-ux-improvements"
+  },
+  "samples": [
+    {
+      "index": 0,
+      "mode": "eager",
+      "bytes": 3538001,
+      "usableMs": 4799.399999856949,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 61.21720800000003,
+          "completeMs": 61.21804200000042,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 324.13866600000074,
+          "completeMs": 324.1397500000003,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 0,
+      "mode": "lazy",
+      "bytes": 208954,
+      "usableMs": 1086.2999999523163,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 1339.2233749999996,
+          "completeMs": 1344.8968330000007,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aslide-workspace%3Aitem%3Aworkspace&snapshot=1c1c83d38de2d329878da8d024e79d1ab85a7111d12991c69025c902c98bb9e9",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 1323.318374999999,
+          "completeMs": 4167.930124999999,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjoyOSwibGluZSI6NjgsImRpZ2VzdCI6IjA1MWYzMzJkZDk0ZjUyMTEwZjIxNDM4MjY3NGQ5ZDUzZmVlM2UyNjU5OTg2Nzk0MDlmNTE0YzNkMWQyN2JlNmEifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozMiwibGluZSI6MTUsImRpZ2VzdCI6IjY5NzI1Mzc4OGViNmMwNmYyNmI2MDBlZjQ2ODc1OTI3YmFhNDg4YTdmMWM0M2E5M2QzYzk3NjVhNmYzNGQ1MjUifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNCwibGluZSI6MzEzLCJkaWdlc3QiOiJhOWUxNmY3MjRkNWIzMmVhNjU1ZjVlODY4NWU2OWJkYjM2OTc5ZGM0YzlhNDJmNzYwN2E3OTExZDlkZGRhZGFiIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNywibGluZSI6MjYwLCJkaWdlc3QiOiIzYWI3OTZlZjQzYmVlOTYxNDQ4OWYyYzkyYjM5MjQ1MGViOTBlYmEyMTU5MmFjMTIyY2Q3ZTIwYWVmZTE1MWNhIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MCwibGluZSI6MjA3LCJkaWdlc3QiOiI2YjFhODgyNGVhZGZiOTEzMjRkZjRkYTllNzYzZmM4NmE1MWU0YjkzNjRhZmYxZTNjYTg0NzdhNjQ4NjEyNDIyIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MywibGluZSI6MTU0LCJkaWdlc3QiOiJmNWE3NTRmOWIxNTE1MjdmMTdiOGI5MDc5Njg3OGFmNDQyZGMxNjU0MDQwMTNiMzUwNzFhODYyMDE1ODRiNWI0In0",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "mode": "eager",
+      "bytes": 3538001,
+      "usableMs": 5324.700000047684,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 69.73849999999948,
+          "completeMs": 69.7397920000003,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 251.97829199999978,
+          "completeMs": 251.98025000000052,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "mode": "lazy",
+      "bytes": 208954,
+      "usableMs": 827.4000000953674,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 1337.8379170000007,
+          "completeMs": 1347.0597500000003,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aslide-workspace%3Aitem%3Aworkspace&snapshot=1c1c83d38de2d329878da8d024e79d1ab85a7111d12991c69025c902c98bb9e9",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 1862.1003749999982,
+          "completeMs": 5204.678250000001,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjoyOSwibGluZSI6NjgsImRpZ2VzdCI6IjA1MWYzMzJkZDk0ZjUyMTEwZjIxNDM4MjY3NGQ5ZDUzZmVlM2UyNjU5OTg2Nzk0MDlmNTE0YzNkMWQyN2JlNmEifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozMiwibGluZSI6MTUsImRpZ2VzdCI6IjY5NzI1Mzc4OGViNmMwNmYyNmI2MDBlZjQ2ODc1OTI3YmFhNDg4YTdmMWM0M2E5M2QzYzk3NjVhNmYzNGQ1MjUifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNCwibGluZSI6MzEzLCJkaWdlc3QiOiJhOWUxNmY3MjRkNWIzMmVhNjU1ZjVlODY4NWU2OWJkYjM2OTc5ZGM0YzlhNDJmNzYwN2E3OTExZDlkZGRhZGFiIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNywibGluZSI6MjYwLCJkaWdlc3QiOiIzYWI3OTZlZjQzYmVlOTYxNDQ4OWYyYzkyYjM5MjQ1MGViOTBlYmEyMTU5MmFjMTIyY2Q3ZTIwYWVmZTE1MWNhIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MCwibGluZSI6MjA3LCJkaWdlc3QiOiI2YjFhODgyNGVhZGZiOTEzMjRkZjRkYTllNzYzZmM4NmE1MWU0YjkzNjRhZmYxZTNjYTg0NzdhNjQ4NjEyNDIyIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MywibGluZSI6MTU0LCJkaWdlc3QiOiJmNWE3NTRmOWIxNTE1MjdmMTdiOGI5MDc5Njg3OGFmNDQyZGMxNjU0MDQwMTNiMzUwNzFhODYyMDE1ODRiNWI0In0",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "mode": "eager",
+      "bytes": 3538001,
+      "usableMs": 7096.900000095367,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 112.30129099999613,
+          "completeMs": 112.30187499999738,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 288.46741699999984,
+          "completeMs": 288.4683329999971,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "mode": "lazy",
+      "bytes": 208954,
+      "usableMs": 1740.9000000953674,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 1355.453125,
+          "completeMs": 1363.827541999999,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aslide-workspace%3Aitem%3Aworkspace&snapshot=1c1c83d38de2d329878da8d024e79d1ab85a7111d12991c69025c902c98bb9e9",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 2427.099500000004,
+          "completeMs": 5793.163500000002,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjoyOSwibGluZSI6NjgsImRpZ2VzdCI6IjA1MWYzMzJkZDk0ZjUyMTEwZjIxNDM4MjY3NGQ5ZDUzZmVlM2UyNjU5OTg2Nzk0MDlmNTE0YzNkMWQyN2JlNmEifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozMiwibGluZSI6MTUsImRpZ2VzdCI6IjY5NzI1Mzc4OGViNmMwNmYyNmI2MDBlZjQ2ODc1OTI3YmFhNDg4YTdmMWM0M2E5M2QzYzk3NjVhNmYzNGQ1MjUifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNCwibGluZSI6MzEzLCJkaWdlc3QiOiJhOWUxNmY3MjRkNWIzMmVhNjU1ZjVlODY4NWU2OWJkYjM2OTc5ZGM0YzlhNDJmNzYwN2E3OTExZDlkZGRhZGFiIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNywibGluZSI6MjYwLCJkaWdlc3QiOiIzYWI3OTZlZjQzYmVlOTYxNDQ4OWYyYzkyYjM5MjQ1MGViOTBlYmEyMTU5MmFjMTIyY2Q3ZTIwYWVmZTE1MWNhIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MCwibGluZSI6MjA3LCJkaWdlc3QiOiI2YjFhODgyNGVhZGZiOTEzMjRkZjRkYTllNzYzZmM4NmE1MWU0YjkzNjRhZmYxZTNjYTg0NzdhNjQ4NjEyNDIyIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MywibGluZSI6MTU0LCJkaWdlc3QiOiJmNWE3NTRmOWIxNTE1MjdmMTdiOGI5MDc5Njg3OGFmNDQyZGMxNjU0MDQwMTNiMzUwNzFhODYyMDE1ODRiNWI0In0",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "mode": "eager",
+      "bytes": 3538001,
+      "usableMs": 5568.600000143051,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 79.27020800000173,
+          "completeMs": 79.27049999999872,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 263.7924999999959,
+          "completeMs": 263.7930839999972,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "mode": "lazy",
+      "bytes": 208954,
+      "usableMs": 1052.9000000953674,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 1449.4079579999961,
+          "completeMs": 1451.7657499999987,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aslide-workspace%3Aitem%3Aworkspace&snapshot=1c1c83d38de2d329878da8d024e79d1ab85a7111d12991c69025c902c98bb9e9",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 1342.0617500000008,
+          "completeMs": 4186.887959,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjoyOSwibGluZSI6NjgsImRpZ2VzdCI6IjA1MWYzMzJkZDk0ZjUyMTEwZjIxNDM4MjY3NGQ5ZDUzZmVlM2UyNjU5OTg2Nzk0MDlmNTE0YzNkMWQyN2JlNmEifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozMiwibGluZSI6MTUsImRpZ2VzdCI6IjY5NzI1Mzc4OGViNmMwNmYyNmI2MDBlZjQ2ODc1OTI3YmFhNDg4YTdmMWM0M2E5M2QzYzk3NjVhNmYzNGQ1MjUifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNCwibGluZSI6MzEzLCJkaWdlc3QiOiJhOWUxNmY3MjRkNWIzMmVhNjU1ZjVlODY4NWU2OWJkYjM2OTc5ZGM0YzlhNDJmNzYwN2E3OTExZDlkZGRhZGFiIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNywibGluZSI6MjYwLCJkaWdlc3QiOiIzYWI3OTZlZjQzYmVlOTYxNDQ4OWYyYzkyYjM5MjQ1MGViOTBlYmEyMTU5MmFjMTIyY2Q3ZTIwYWVmZTE1MWNhIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MCwibGluZSI6MjA3LCJkaWdlc3QiOiI2YjFhODgyNGVhZGZiOTEzMjRkZjRkYTllNzYzZmM4NmE1MWU0YjkzNjRhZmYxZTNjYTg0NzdhNjQ4NjEyNDIyIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MywibGluZSI6MTU0LCJkaWdlc3QiOiJmNWE3NTRmOWIxNTE1MjdmMTdiOGI5MDc5Njg3OGFmNDQyZGMxNjU0MDQwMTNiMzUwNzFhODYyMDE1ODRiNWI0In0",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "mode": "eager",
+      "bytes": 3538001,
+      "usableMs": 5301.599999904633,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 243.6516249999986,
+          "completeMs": 243.65291699999943,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 288.67037499998696,
+          "completeMs": 288.6713749999908,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "mode": "lazy",
+      "bytes": 208954,
+      "usableMs": 1175.1000001430511,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 812.8061670000025,
+          "completeMs": 815.2386249999981,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aslide-workspace%3Aitem%3Aworkspace&snapshot=1c1c83d38de2d329878da8d024e79d1ab85a7111d12991c69025c902c98bb9e9",
+              "method": "GET"
+            }
+          ]
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 2369.942583000011,
+          "completeMs": 5715.389541000011,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": [
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjoyOSwibGluZSI6NjgsImRpZ2VzdCI6IjA1MWYzMzJkZDk0ZjUyMTEwZjIxNDM4MjY3NGQ5ZDUzZmVlM2UyNjU5OTg2Nzk0MDlmNTE0YzNkMWQyN2JlNmEifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozMiwibGluZSI6MTUsImRpZ2VzdCI6IjY5NzI1Mzc4OGViNmMwNmYyNmI2MDBlZjQ2ODc1OTI3YmFhNDg4YTdmMWM0M2E5M2QzYzk3NjVhNmYzNGQ1MjUifQ",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNCwibGluZSI6MzEzLCJkaWdlc3QiOiJhOWUxNmY3MjRkNWIzMmVhNjU1ZjVlODY4NWU2OWJkYjM2OTc5ZGM0YzlhNDJmNzYwN2E3OTExZDlkZGRhZGFiIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjozNywibGluZSI6MjYwLCJkaWdlc3QiOiIzYWI3OTZlZjQzYmVlOTYxNDQ4OWYyYzkyYjM5MjQ1MGViOTBlYmEyMTU5MmFjMTIyY2Q3ZTIwYWVmZTE1MWNhIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MCwibGluZSI6MjA3LCJkaWdlc3QiOiI2YjFhODgyNGVhZGZiOTEzMjRkZjRkYTllNzYzZmM4NmE1MWU0YjkzNjRhZmYxZTNjYTg0NzdhNjQ4NjEyNDIyIn0",
+              "method": "GET"
+            },
+            {
+              "url": "http://127.0.0.1:52420/reviews/review-ux-improvements/item?target=urn%3Achange-saga%3Achange-saga%3Areview%3Areview-ux-improvements%3Aslide%3Aexact-evidence%3Aitem%3Aitem-hotspots&snapshot=1413766275416ea9eb074353f402275dabfe1a82235f4c653eb2358ed8b2768d&cursor=eyJ0YXJnZXQiOiJ1cm46Y2hhbmdlLXNhZ2E6Y2hhbmdlLXNhZ2E6cmV2aWV3OnJldmlldy11eC1pbXByb3ZlbWVudHM6c2xpZGU6ZXhhY3QtZXZpZGVuY2U6aXRlbTppdGVtLWhvdHNwb3RzIiwic25hcHNob3QiOiIxNDEzNzY2Mjc1NDE2ZWE5ZWIwNzQzNTNmNDAyMjc1ZGFiZmUxYTgyMjM1ZjRjNjUzZWIyMzU4ZWQ4YjI3NjhkIiwicmVmZXJlbmNlIjo0MywibGluZSI6MTU0LCJkaWdlc3QiOiJmNWE3NTRmOWIxNTE1MjdmMTdiOGI5MDc5Njg3OGFmNDQyZGMxNjU0MDQwMTNiMzUwNzFhODYyMDE1ODRiNWI0In0",
+              "method": "GET"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

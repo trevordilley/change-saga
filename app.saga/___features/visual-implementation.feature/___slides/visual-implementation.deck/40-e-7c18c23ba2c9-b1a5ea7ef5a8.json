@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a39e147fa2b2fe7c8f068ae32acae417c61001fe",
+      "path": "internal/server/reviewdiffs.go",
+      "start": 39,
+      "end": 59,
+      "digest": "sha256:eb705b5ebb29e453f8319f935ea2e86213b0908da063f4551baf5091e5d641c0",
+      "note": "Root resolution and path-keyed successful patch reuse eliminate duplicate subprocess reads within the request."
+    }
+  ]
+}

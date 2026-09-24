@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "id": "pr-loading-baseline-recorded-cost",
+  "target": "urn:change-saga:change-saga:fragment:pr-review-performance-evaluation:landmark:pr-loading-baseline",
+  "kind": "performance",
+  "statement": "The committed 2026-09-24 baseline dataset records five warm PR requests at source head 2fdf26f, each returning 3533094 bytes and invoking 298 Git processes, on the 1656-file disposable fixture. These are historical shared-host samples, not a latency guarantee.",
+  "evidence": [
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "e2e/profiling/pr-loading-baseline.json",
+      "start": 1,
+      "end": 68,
+      "digest": "sha256:ec6809f26885bd9c024b8989191ab3ca45cf2d439964a4cc86073d0ed5d4c5e5"
+    }
+  ],
+  "created_at": "2026-09-24T20:17:16.890537Z"
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 133,
+      "end": 157,
+      "digest": "sha256:e69ea7a9ed1a415a2d52befd32bb17e9f8578ee310d491a43822081a99d43051",
+      "note": "Under the writer lock, resolve the canonical slide, recheck the current range and shown slide/source snapshot, then capture the slide digest. Approval belongs to the slide and does not approve Item evidence."
+    },
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviewasync.go",
+      "start": 121,
+      "end": 150,
+      "digest": "sha256:1a9dc5c67533d6d2dacc77b818421c7a062d7ddc1d96a862c8306df91b5760dd",
+      "note": "Under the writer lock, resolve the canonical slide, recheck the current range and shown slide/source snapshot, then capture the slide digest. Approval belongs to the slide and does not approve Item evidence."
+    },
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviewasync.go",
+      "start": 175,
+      "end": 190,
+      "digest": "sha256:c2b1fd75b4fa5b236c7376478bcf5b0b0a01109f402a988d8218bf524ec0a48c",
+      "note": "Under the writer lock, resolve the canonical slide, recheck the current range and shown slide/source snapshot, then capture the slide digest. Approval belongs to the slide and does not approve Item evidence."
+    }
+  ]
+}

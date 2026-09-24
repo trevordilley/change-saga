@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "per-reference",
+  "slide": "pr-request-diff-reuse",
+  "rank": 30,
+  "kind": "node",
+  "label": "Preserve independent reference views",
+  "description": "After selecting a raw patch, each reference independently filters its own line range and receives its own rows, location and diagnostic. The paired workload compares all 140 complete views.",
+  "selector": {
+    "type": "element",
+    "element_id": "per-reference"
+  }
+}

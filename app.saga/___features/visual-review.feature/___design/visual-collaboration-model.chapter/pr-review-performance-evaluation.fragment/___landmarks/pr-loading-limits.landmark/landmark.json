@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "pr-loading-limits",
+  "label": "Boundaries and limits",
+  "description": "Preserve exact evidence and feedback semantics; shared-host samples and incomplete suites are not delivery proof.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "pr-loading-limits"
+  },
+  "target": ""
+}

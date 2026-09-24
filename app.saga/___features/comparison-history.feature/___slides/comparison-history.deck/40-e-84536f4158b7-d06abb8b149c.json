@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "496f4e764ef2f1f1e419da7cd4fb68958d921dda",
+      "path": "docs/pr-code-batching-performance.md",
+      "start": 34,
+      "end": 41,
+      "digest": "sha256:2a928cf5efa80b79c306d6415fe4e88b19e3ac480d16abd7968ac19247dbd4a0",
+      "note": "Records the complete traversal and observed 12 versus 3 requests for the 573-row workload."
+    }
+  ]
+}

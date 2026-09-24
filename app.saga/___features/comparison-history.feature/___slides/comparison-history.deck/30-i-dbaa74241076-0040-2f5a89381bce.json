@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "measurement",
+  "slide": "pr-code-batching",
+  "rank": 40,
+  "kind": "metric",
+  "label": "Recorded browser completion improvement",
+  "description": "Five browser contexts per version on a warm Apple M3 Pro host measured all-hunk medians of 6582.4 and 4655.4 ms. First-row latency did not improve; these samples are diagnostic, not a percentile guarantee.",
+  "selector": {
+    "type": "element",
+    "element_id": "measurement"
+  }
+}

@@ -4,8 +4,8 @@
   "slide": "decision-failure-boundaries",
   "rank": 10,
   "kind": "risk",
-  "label": "Frozen or unresolved review",
-  "description": "A landed review or unreadable review head rejects the mutation and keeps historical review data read-only.",
+  "label": "Frozen, unresolved, or stale view",
+  "description": "Frozen or unresolved reviews are refused. The shown snapshot is checked under the writer lock so changed source, visual, Items, or evidence cannot be silently approved.",
   "selector": {
     "type": "element",
     "element_id": "history-failure"

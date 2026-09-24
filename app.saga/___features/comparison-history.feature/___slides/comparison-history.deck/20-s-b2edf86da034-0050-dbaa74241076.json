@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "pr-code-batching",
+  "deck": "comparison-history",
+  "title": "Larger bounded pages reduce repeated work",
+  "rank": 50,
+  "section": "Review performance",
+  "intent": "explain",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b2edf86da034-0050-dbaa74241076.svg",
+  "takeaway": "The PR stream requests up to 200 rows per page; every request still validates current Saga and source data, with no cross-request cache.",
+  "reading_order": [
+    "baseline",
+    "batched",
+    "fresh-validation",
+    "bounded-stream",
+    "measurement"
+  ]
+}

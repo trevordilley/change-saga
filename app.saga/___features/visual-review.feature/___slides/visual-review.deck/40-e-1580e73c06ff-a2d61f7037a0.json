@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviews.go",
+      "start": 214,
+      "end": 240,
+      "digest": "sha256:e32a4d805b691b00963fbc7ff34a26568d68bc9bf29a2514279046fc5ce39547",
+      "note": "Builds the initial current review report before any feedback submission."
+    }
+  ]
+}

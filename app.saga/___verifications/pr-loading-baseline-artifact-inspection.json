@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "pr-loading-baseline-artifact-inspection",
+  "claim": "pr-loading-baseline-recorded-cost",
+  "status": "verified",
+  "method": "inspection",
+  "summary": "Inspected the committed raw JSON: all five warm PR samples report HTTP 200, 3533094 response bytes and 298 Git invocations; fixture.files is 1656. This verifies the recorded artifact, not a new timing run or a production latency guarantee.",
+  "command": "Inspect e2e/profiling/pr-loading-baseline.json at 170e4d6: select http entries for /reviews/review-ux-improvements, omit the first, assert five samples and recorded byte/Git counts.",
+  "created_at": "2026-09-24T20:17:17.326638Z"
+}

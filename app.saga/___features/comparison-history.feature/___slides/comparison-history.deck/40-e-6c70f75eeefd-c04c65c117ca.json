@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "path": "internal/server/reviewcode.go",
+      "start": 90,
+      "end": 100,
+      "digest": "sha256:5fe416e1bf2be961957d900583f106c9cecdbd01033d99c6daddd15f7546cea2",
+      "note": "The PR code-page projection explicitly chooses the existing maximum to avoid repeated validation for small batches."
+    }
+  ]
+}

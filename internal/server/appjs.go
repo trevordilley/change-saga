@@ -2207,6 +2207,7 @@ const appJavaScript = `(() => {
     if (event.key === 'Escape') closeDrawer();
   });
 
+` + reviewAsyncJavaScript + `
   async function prepareReviewAnnotations() {
     const deck = q('[data-review-deck]');
     if (!deck) return;
@@ -2214,6 +2215,7 @@ const appJavaScript = `(() => {
     const token = deck.dataset.reviewToken || '';
     const status = document.createElement('p');
     status.className = 'review-annotation-status';
+    status.style.pointerEvents='none';
     status.setAttribute('role', 'status');
     status.hidden = true;
     deck.append(status);
@@ -2221,6 +2223,8 @@ const appJavaScript = `(() => {
     const announce = (message, failed = false) => {
       clearTimeout(statusTimer);
       status.textContent = message;
+      const openComposer=q('.review-annotation-compose:not([hidden])');
+      status.style.bottom=openComposer ? (openComposer.offsetHeight+32)+'px' : '18px';
       status.classList.toggle('failed', failed);
       status.hidden = false;
       if (!failed) statusTimer = setTimeout(() => { status.hidden = true; }, 1600);
@@ -2250,19 +2254,42 @@ const appJavaScript = `(() => {
     };
     const currentSlide = () => q('.review-deck-slide.active');
     const currentLayer = () => q('.review-annotation-layer', currentSlide());
-    const post = async (fields, reload = true) => {
+    let annotationSaving = false;
+    const entries = new Map();
+    const refreshAnnotations = async () => {
+      const response = await fetch('/reviews/' + encodeURIComponent(reviewID) + '/annotations', {headers:{Accept:'application/json'},cache:'no-store'});
+      if (!response.ok) throw new Error('Saved annotations could not be checked.');
+      const current = await response.json(); payload.Frozen=current.Frozen;
+      for (const incoming of current.Annotations || []) {
+        const entry=entries.get(incoming.ID);
+        if (!entry) { render(incoming); continue; }
+        if (JSON.stringify([entry.Anchor,entry.Messages,entry.Deleted]) === JSON.stringify([incoming.Anchor,incoming.Messages,incoming.Deleted])) continue;
+        const oldForm=q('form',entry.element), oldField=oldForm && q('textarea',oldForm);
+        const text=oldField?.value || '', focused=oldField===document.activeElement, open=q('details',entry.element)?.open;
+        entry.element?.remove(); Object.assign(entry,incoming); entry.anchor=clone(incoming.Anchor); render(entry);
+        const field=entry.element && q('textarea',entry.element);
+        if(field) { field.value=text; if(focused) field.focus({preventScroll:true}); }
+        const details=entry.element && q('details',entry.element); if(details) details.open=Boolean(open);
+      }
+      if(selected) select(selected.Deleted ? null : selected);
+      if(current.Frozen) { deck.dataset.reviewFrozen='true'; qa('button,input,textarea',toolbar).forEach(control=>control.disabled=true); qa('.review-annotation-reply button,.review-annotation-reply textarea,[data-review-annotation-toggle]',deck).forEach(control=>control.disabled=true); }
+    };
+    deck.addEventListener('review-feedback-checked',()=>void refreshAnnotations().catch(()=>announce('Saved annotations could not be checked.',true)));
+    const post = async (fields, refresh = true) => {
+      if(annotationSaving) return false;
+      annotationSaving=true; toolbar.setAttribute('aria-busy','true');
+      const toolControls=qa('button,input',toolbar).map(control=>({control,disabled:control.disabled}));
+      toolControls.forEach(({control})=>control.disabled=true);
+      const buttons=qa('button,textarea',composer); buttons.forEach(button=>button.disabled=true);
       announce('Saving annotation…');
       try {
-        const body = new URLSearchParams({token, ...fields});
-        const result = await fetch('/reviews/' + encodeURIComponent(reviewID) + '/comment', {method:'POST', body, headers:{'Content-Type':'application/x-www-form-urlencoded'}});
-        if (!result.ok) { announce('The annotation was not saved. Your last saved review state is unchanged.', true); return false; }
-        announce('Annotation saved.');
-        if (reload) location.reload();
+        const target=fields.target || entries.get(fields.reply_to)?.Target;
+        const result=await reviewAsync.post('/reviews/' + encodeURIComponent(reviewID) + '/comment',fields,target);
+        if(!result.saved) { status.hidden=true; reviewAsync.announce(result.message || 'The save was refused. Your draft is retained.',target,Boolean(result.ambiguous)); return false; }
+        try { await refreshAnnotations(); announce('Annotation saved.'); }
+        catch(_) { status.hidden=true; reviewAsync.announce('Annotation saved. Its display could not be refreshed.',target,true); }
         return true;
-      } catch (_) {
-        announce('The annotation was not saved. Check the connection and try again.', true);
-        return false;
-      }
+      } finally { annotationSaving=false; toolbar.removeAttribute('aria-busy'); toolControls.forEach(({control,disabled})=>control.disabled=disabled||Boolean(deck.dataset.reviewFrozen)); buttons.forEach(button=>button.disabled=Boolean(deck.dataset.reviewFrozen)); }
     };
     const bounds = anchor => {
       if (anchor.type === 'note') return {x:anchor.note.x,y:anchor.note.y,w:.16,h:.12};
@@ -2322,6 +2349,7 @@ const appJavaScript = `(() => {
       syncHistoryButtons();
     };
     const render = entry => {
+      entries.set(entry.ID,entry);
       const layer=layers.get(entry.Target); if(!layer || entry.Deleted || !entry.Anchor) return;
       // The server payload uses Anchor. Keep one mutable client-side anchor
       // after initial hydration: edits render and persist that new value
@@ -2338,7 +2366,7 @@ const appJavaScript = `(() => {
       const summary=document.createElement('summary');summary.textContent=String(entry.Messages?.length||0);summary.setAttribute('aria-label','Open annotation discussion');details.append(summary);
       const panel=document.createElement('div');panel.className='review-annotation-discussion';
       (entry.Messages||[]).forEach(message=>{const item=document.createElement('div');item.className='review-annotation-message';const meta=document.createElement('small');meta.textContent=message.Author+' · '+new Date(message.CreatedAt).toLocaleString();const body=document.createElement('p');body.textContent=message.Body;item.append(meta,body);panel.append(item);});
-      if(!payload.Frozen){const form=document.createElement('form');form.className='review-annotation-reply';form.innerHTML='<label><span>Reply</span><textarea name="body" required rows="2"></textarea></label><button type="submit">Reply</button>';form.addEventListener('submit',event=>{event.preventDefault();void post({reply_to:entry.ID,body:new FormData(form).get('body')});});panel.append(form);}
+      if(!payload.Frozen){const form=document.createElement('form');form.className='review-annotation-reply';form.innerHTML='<label><span>Reply</span><textarea name="body" required rows="2"></textarea></label><button type="submit">Reply</button>';form.addEventListener('submit',async event=>{event.preventDefault();if(annotationSaving)return;const button=q('button',form);button.disabled=true;const saved=await post({reply_to:entry.ID,body:new FormData(form).get('body')});if(saved){const field=q('textarea',entry.element);if(field)field.value='';}button.disabled=false;});panel.append(form);}
       details.append(panel);article.append(details);layer.append(article);entry.element=article;
       if(!payload.Frozen){
         svg.addEventListener('pointerdown',event=>startMove(event,entry));
@@ -2366,7 +2394,16 @@ const appJavaScript = `(() => {
     qa('[data-tool]',toolbar).forEach(button=>button.addEventListener('click',()=>setTool(button.dataset.tool)));
     function openComposer(anchor,target,entry=null){draft={anchor,target,entry};composer.hidden=false;const field=q('textarea',composer);field.value=entry?.anchor.note?.text||'';field.focus();}
     q('[data-cancel]',composer).addEventListener('click',()=>{composer.hidden=true;draft=null;clearDraftVisual();setTool('pointer');});
-    composer.addEventListener('submit',event=>{event.preventDefault();if(!draft)return;const body=String(new FormData(composer).get('body')||'').trim();if(draft.anchor.type==='note')draft.anchor.note.text=body;if(draft.entry){const entry=draft.entry,before=clone(entry.anchor);entry.anchor=clone(draft.anchor);entry.element.remove();render(entry);select(entry);composer.hidden=true;draft=null;clearDraftVisual();void post({reply_to:entry.ID,body:'Sticky note edited.',annotation_action:'update',anchor:JSON.stringify(entry.anchor)},false).then(saved=>{if(!saved){entry.anchor=before;entry.element.remove();render(entry);select(entry);}});return;}const pending=draft;draft=null;clearDraftVisual();void post({target:pending.target,body,annotation_action:'create',anchor:JSON.stringify(pending.anchor)});});
+    composer.addEventListener('submit',async event=>{
+      event.preventDefault(); if(!draft || annotationSaving)return;
+      const pending=draft,body=String(new FormData(composer).get('body')||'').trim();
+      const anchor=clone(pending.anchor); if(anchor.type==='note')anchor.note.text=body;
+      const fields=pending.entry
+        ? {reply_to:pending.entry.ID,body:'Sticky note edited.',annotation_action:'update',anchor:JSON.stringify(anchor)}
+        : {target:pending.target,body,annotation_action:'create',anchor:JSON.stringify(anchor)};
+      const saved=await post(fields);
+      if(saved && draft===pending){composer.hidden=true;composer.reset();draft=null;clearDraftVisual();setTool('pointer');}
+    });
     const drawnAnchor=(start,end,points)=>{
       if(tool==='freehand')return {type:'drawing',coordinate_space:'normalized',shapes:[{type:'path',points,color:color.value,stroke_width:.004}]};
       const x=Math.min(start.x,end.x),y=Math.min(start.y,end.y),width=Math.abs(end.x-start.x),height=Math.abs(end.y-start.y);
@@ -2375,17 +2412,17 @@ const appJavaScript = `(() => {
       return {type:tool==='highlight'?'highlight':'region',coordinate_space:'normalized',shapes:[{type:kind,x,y,width,height,color:color.value,stroke_width:.004}]};
     };
     layers.forEach(layer=>{
-      layer.addEventListener('pointerdown',event=>{if(tool==='pointer'||event.target!==layer)return;event.preventDefault();const start=point(event,layer);if(tool==='note'){openComposer({type:'note',coordinate_space:'normalized',note:{text:'Sticky note',x:start.x,y:start.y,color:'#f2bd4b'}},layer.dataset.annotationTarget);return;}if(tool==='comment'){const anchor={type:'region',coordinate_space:'normalized',shapes:[{type:'ellipse',x:clamp(start.x-.012),y:clamp(start.y-.021),width:.024,height:.042,color:color.value,stroke_width:.004}]};showDraftVisual(layer,anchor);openComposer(anchor,layer.dataset.annotationTarget);return;}draft={start,points:[start],layer};layer.setPointerCapture(event.pointerId);});
+      layer.addEventListener('pointerdown',event=>{if(annotationSaving||tool==='pointer'||event.target!==layer)return;event.preventDefault();const start=point(event,layer);if(tool==='note'){openComposer({type:'note',coordinate_space:'normalized',note:{text:'Sticky note',x:start.x,y:start.y,color:'#f2bd4b'}},layer.dataset.annotationTarget);return;}if(tool==='comment'){const anchor={type:'region',coordinate_space:'normalized',shapes:[{type:'ellipse',x:clamp(start.x-.012),y:clamp(start.y-.021),width:.024,height:.042,color:color.value,stroke_width:.004}]};showDraftVisual(layer,anchor);openComposer(anchor,layer.dataset.annotationTarget);return;}draft={start,points:[start],layer};layer.setPointerCapture(event.pointerId);});
       layer.addEventListener('pointermove',event=>{if(!draft?.layer||draft.layer!==layer)return;const now=point(event,layer);draft.points.push(now);const anchor=drawnAnchor(draft.start,now,draft.points);if(anchor)showDraftVisual(layer,anchor);});
       layer.addEventListener('pointerup',event=>{if(!draft?.layer||draft.layer!==layer)return;const end=point(event,layer),anchor=drawnAnchor(draft.start,end,draft.points),target=layer.dataset.annotationTarget;draft=null;if(!anchor){clearDraftVisual();return;}openComposer(anchor,target);});
       layer.addEventListener('pointercancel',()=>{draft=null;clearDraftVisual();setTool('pointer');});
     });
     function restore(entry,anchor){entry.anchor=clone(anchor);entry.element.remove();render(entry);select(entry);}
-    function startMove(event,entry){if(tool!=='pointer'||event.target.closest('details'))return;event.preventDefault();select(entry);const layer=layers.get(entry.Target),start=point(event,layer),before=clone(latestAnchors.get(entry.ID)||entry.anchor);let changed=false;const move=moveEvent=>{const now=point(moveEvent,layer),dx=now.x-start.x,dy=now.y-start.y;if(Math.abs(dx)<.001&&Math.abs(dy)<.001)return;changed=true;entry.anchor=clone(before);if(entry.anchor.note){entry.anchor.note.x=clamp(entry.anchor.note.x+dx);entry.anchor.note.y=clamp(entry.anchor.note.y+dy);}else{entry.anchor.shapes.forEach(shape=>{if(shape.points)shape.points.forEach(p=>{p.x=clamp(p.x+dx);p.y=clamp(p.y+dy);});else{shape.x=clamp(shape.x+dx);shape.y=clamp(shape.y+dy);}});}entry.element.remove();render(entry);select(entry);};const end=()=>{removeEventListener('pointermove',move);removeEventListener('pointerup',end);if(!changed)return;const after=clone(latestAnchors.get(entry.ID)||entry.anchor);undo.push({kind:'move',entry,before,after});redo.length=0;syncHistoryButtons();void post({reply_to:entry.ID,body:'Annotation moved.',annotation_action:'update',anchor:JSON.stringify(after)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});};addEventListener('pointermove',move);addEventListener('pointerup',end,{once:true});}
-    function startResize(event,entry){event.preventDefault();event.stopPropagation();const layer=layers.get(entry.Target),before=clone(latestAnchors.get(entry.ID)||entry.anchor),box=bounds(before);const move=moveEvent=>{const now=point(moveEvent,layer),sx=Math.max(.05,(now.x-box.x)/Math.max(box.w,.001)),sy=Math.max(.05,(now.y-box.y)/Math.max(box.h,.001));entry.anchor=clone(before);entry.anchor.shapes.forEach(shape=>{if(shape.points)shape.points.forEach(p=>{p.x=clamp(box.x+(p.x-box.x)*sx);p.y=clamp(box.y+(p.y-box.y)*sy);});else{shape.x=clamp(box.x+(shape.x-box.x)*sx);shape.y=clamp(box.y+(shape.y-box.y)*sy);shape.width=clamp(shape.width*sx);shape.height=clamp(shape.height*sy);}});entry.element.remove();render(entry);select(entry);};const end=()=>{removeEventListener('pointermove',move);const after=clone(latestAnchors.get(entry.ID)||entry.anchor);undo.push({kind:'resize',entry,before,after});redo.length=0;syncHistoryButtons();void post({reply_to:entry.ID,body:'Annotation resized.',annotation_action:'update',anchor:JSON.stringify(after)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});};addEventListener('pointermove',move);addEventListener('pointerup',end,{once:true});}
-    color.addEventListener('change',()=>{if(!selected)return;const entry=selected,before=clone(latestAnchors.get(entry.ID)||entry.anchor);entry.anchor=clone(before);if(entry.anchor.note)entry.anchor.note.color=color.value;else entry.anchor.shapes.forEach(shape=>shape.color=color.value);undo.push({kind:'color',entry,before,after:clone(entry.anchor)});redo.length=0;entry.element.remove();render(entry);select(entry);void post({reply_to:entry.ID,body:'Annotation color changed.',annotation_action:'update',anchor:JSON.stringify(entry.anchor)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});});
-    q('[data-delete]',selection).addEventListener('click',()=>{if(selected)void post({reply_to:selected.ID,body:'Annotation deleted.',annotation_action:'delete'});});
-    const replay=async(from,to,useBefore)=>{const command=from.pop();if(!command)return;to.push(command);const previous=clone(latestAnchors.get(command.entry.ID)||command.entry.anchor),anchor=clone(useBefore?command.before:command.after);restore(command.entry,anchor);syncHistoryButtons();const saved=await post({reply_to:command.entry.ID,body:useBefore?'Annotation change undone.':'Annotation change redone.',annotation_action:'update',anchor:JSON.stringify(anchor)},false);if(!saved){to.pop();from.push(command);restore(command.entry,previous);syncHistoryButtons();}};
+    function startMove(event,entry){if(annotationSaving)return;if(tool!=='pointer'||event.target.closest('details'))return;event.preventDefault();select(entry);const layer=layers.get(entry.Target),start=point(event,layer),before=clone(latestAnchors.get(entry.ID)||entry.anchor);let changed=false;const move=moveEvent=>{const now=point(moveEvent,layer),dx=now.x-start.x,dy=now.y-start.y;if(Math.abs(dx)<.001&&Math.abs(dy)<.001)return;changed=true;entry.anchor=clone(before);if(entry.anchor.note){entry.anchor.note.x=clamp(entry.anchor.note.x+dx);entry.anchor.note.y=clamp(entry.anchor.note.y+dy);}else{entry.anchor.shapes.forEach(shape=>{if(shape.points)shape.points.forEach(p=>{p.x=clamp(p.x+dx);p.y=clamp(p.y+dy);});else{shape.x=clamp(shape.x+dx);shape.y=clamp(shape.y+dy);}});}entry.element.remove();render(entry);select(entry);};const end=()=>{removeEventListener('pointermove',move);removeEventListener('pointerup',end);if(!changed)return;const after=clone(latestAnchors.get(entry.ID)||entry.anchor);undo.push({kind:'move',entry,before,after});redo.length=0;syncHistoryButtons();void post({reply_to:entry.ID,body:'Annotation moved.',annotation_action:'update',anchor:JSON.stringify(after)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});};addEventListener('pointermove',move);addEventListener('pointerup',end,{once:true});}
+    function startResize(event,entry){if(annotationSaving)return;event.preventDefault();event.stopPropagation();const layer=layers.get(entry.Target),before=clone(latestAnchors.get(entry.ID)||entry.anchor),box=bounds(before);const move=moveEvent=>{const now=point(moveEvent,layer),sx=Math.max(.05,(now.x-box.x)/Math.max(box.w,.001)),sy=Math.max(.05,(now.y-box.y)/Math.max(box.h,.001));entry.anchor=clone(before);entry.anchor.shapes.forEach(shape=>{if(shape.points)shape.points.forEach(p=>{p.x=clamp(box.x+(p.x-box.x)*sx);p.y=clamp(box.y+(p.y-box.y)*sy);});else{shape.x=clamp(box.x+(shape.x-box.x)*sx);shape.y=clamp(box.y+(shape.y-box.y)*sy);shape.width=clamp(shape.width*sx);shape.height=clamp(shape.height*sy);}});entry.element.remove();render(entry);select(entry);};const end=()=>{removeEventListener('pointermove',move);const after=clone(latestAnchors.get(entry.ID)||entry.anchor);undo.push({kind:'resize',entry,before,after});redo.length=0;syncHistoryButtons();void post({reply_to:entry.ID,body:'Annotation resized.',annotation_action:'update',anchor:JSON.stringify(after)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});};addEventListener('pointermove',move);addEventListener('pointerup',end,{once:true});}
+    color.addEventListener('change',()=>{if(annotationSaving||!selected)return;const entry=selected,before=clone(latestAnchors.get(entry.ID)||entry.anchor);entry.anchor=clone(before);if(entry.anchor.note)entry.anchor.note.color=color.value;else entry.anchor.shapes.forEach(shape=>shape.color=color.value);undo.push({kind:'color',entry,before,after:clone(entry.anchor)});redo.length=0;entry.element.remove();render(entry);select(entry);void post({reply_to:entry.ID,body:'Annotation color changed.',annotation_action:'update',anchor:JSON.stringify(entry.anchor)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});});
+    q('[data-delete]',selection).addEventListener('click',()=>{if(selected&&!annotationSaving)void post({reply_to:selected.ID,body:'Annotation deleted.',annotation_action:'delete'});});
+    const replay=async(from,to,useBefore)=>{if(annotationSaving)return;const command=from.pop();if(!command)return;to.push(command);const previous=clone(latestAnchors.get(command.entry.ID)||command.entry.anchor),anchor=clone(useBefore?command.before:command.after);restore(command.entry,anchor);syncHistoryButtons();const saved=await post({reply_to:command.entry.ID,body:useBefore?'Annotation change undone.':'Annotation change redone.',annotation_action:'update',anchor:JSON.stringify(anchor)},false);if(!saved){to.pop();from.push(command);restore(command.entry,previous);syncHistoryButtons();}};
     undoButton.addEventListener('click',()=>void replay(undo,redo,true));redoButton.addEventListener('click',()=>void replay(redo,undo,false));
     document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!composer.hidden){event.preventDefault();composer.hidden=true;draft=null;clearDraftVisual();setTool('pointer');}else if(event.key==='Escape'&&!toolbar.hidden){event.preventDefault();closeToolbox(true);}else if((event.key==='Delete'||event.key==='Backspace')&&selected&&!event.target.matches('input,textarea')){event.preventDefault();q('[data-delete]',selection).click();}});
     (payload.Annotations||[]).forEach(render);

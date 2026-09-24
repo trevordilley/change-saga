@@ -5,7 +5,7 @@
   "rank": 50,
   "kind": "region",
   "label": "Durable critical section",
-  "description": "The write occurs under the Saga lock after a fresh valid reload and uses exclusive JSON publication.",
+  "description": "Lock and reload a valid Saga, resolve the canonical target, refuse frozen or changed snapshots, then exclusively publish one append-only event.",
   "selector": {
     "type": "element",
     "element_id": "durable-append"

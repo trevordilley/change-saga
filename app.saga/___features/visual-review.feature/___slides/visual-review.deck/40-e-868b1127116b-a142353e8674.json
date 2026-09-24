@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 185,
+      "end": 229,
+      "digest": "sha256:30cc724a0dc9ebbcb278657dbf5c450a1f2009be6eeefa6e8849f838c38b9c51",
+      "note": "Validate body, state, identity, commit, reply, target, annotation action and anchor before publication. Refused submissions retain the editable draft."
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "urls": {
+    "eager": "http://127.0.0.1:52733/reviews/review-ux-improvements"
+  },
+  "samples": [
+    {
+      "index": 0,
+      "mode": "eager",
+      "bytes": 3533094,
+      "usableMs": 2393.5999999046326,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 68.89058299999942,
+          "completeMs": 68.8916250000002,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 328.06754100000035,
+          "completeMs": 328.0685830000002,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "mode": "eager",
+      "bytes": 3533094,
+      "usableMs": 1455.7999999523163,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 70.25020799999947,
+          "completeMs": 70.25220799999988,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 404.63245800000004,
+          "completeMs": 404.63374999999905,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "mode": "eager",
+      "bytes": 3533094,
+      "usableMs": 1898.6000001430511,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 59.54120800000055,
+          "completeMs": 59.542750000000524,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 292.1212080000005,
+          "completeMs": 292.12225000000035,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "mode": "eager",
+      "bytes": 3533094,
+      "usableMs": 1888.5,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 54.97049999999945,
+          "completeMs": 54.9721669999999,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 223.14258300000074,
+          "completeMs": 223.143250000001,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "mode": "eager",
+      "bytes": 3533094,
+      "usableMs": 1623.7000000476837,
+      "actions": [
+        {
+          "kind": "first",
+          "firstRowMs": 41.102624999999534,
+          "completeMs": 41.10304199999882,
+          "rows": 655,
+          "hash": "2a44c7904365281dd52d3895063e17e88ba779a9fc01f9181483a14ffd11996f",
+          "requests": []
+        },
+        {
+          "kind": "largest",
+          "firstRowMs": 234.57508299999972,
+          "completeMs": 234.57537500000035,
+          "rows": 6899,
+          "hash": "8d0ae16cfed265bc441e7c594d158f42e4bb81dc1f752b1c24a4e456be25403b",
+          "requests": []
+        }
+      ]
+    }
+  ]
+}

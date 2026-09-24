@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "batched",
+  "slide": "pr-code-batching",
+  "rank": 10,
+  "kind": "example",
+  "label": "Three larger requests",
+  "description": "The PR code surface explicitly requests the supported 200-row limit; the measured file returns 200, 200, then 173 rows.",
+  "selector": {
+    "type": "element",
+    "element_id": "batched"
+  }
+}

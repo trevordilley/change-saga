@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Comment round trip sequence</title>
-  <desc id="desc">A review page is projected from the current Saga and source range. A comment POST passes a session and mutability gate, appends one JSON event under lock, then redirects to a fresh projection.</desc>
+  <desc id="desc">The browser keeps the shown slide while a tokenized POST checks its snapshot under the writer lock, appends one event, and returns a saved receipt with current feedback. Ordinary forms still redirect.</desc>
   <defs>
     <style>.ui{font-family:Inter,system-ui,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,monospace}.h{font-size:30px;font-weight:750;fill:#10213d}.sub{font-size:15px;fill:#526178}.actor{font-size:16px;font-weight:700;fill:#13233e}.msg{font-size:13px;fill:#263a59}.note{font-size:12px;fill:#596a82}.life{stroke:#aab6c8;stroke-width:2;stroke-dasharray:6 7}.call{stroke:#345e9c;stroke-width:2.5;fill:none;marker-end:url(#a)}.return{stroke:#4d8562;stroke-width:2.5;fill:none;stroke-dasharray:6 4;marker-end:url(#g)}.fail{stroke:#b33a4c;stroke-width:2.5;fill:none;marker-end:url(#r)}</style>
     <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#345e9c"/></marker>
@@ -8,8 +8,8 @@
     <marker id="r" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#b33a4c"/></marker>
   </defs>
   <rect width="1280" height="720" fill="#f8fafc"/>
-  <text class="ui h" x="55" y="52">One comment is a durable event, then a fresh read</text>
-  <text class="ui sub" x="55" y="79">The redirect is intentional: the browser sees the same projection path that every later reader sees.</text>
+  <text class="ui h" x="55" y="52">One comment is a durable event, then feedback in place</text>
+  <text class="ui sub" x="55" y="79">A saved receipt updates discussion; the active slide, iframe, drawer, and drafts stay in place.</text>
   <g class="ui">
     <g><rect x="55" y="105" width="150" height="48" rx="12" fill="#e9f1ff" stroke="#507ab5"/><text class="actor" x="91" y="135">Reviewer</text></g>
     <g><rect x="280" y="105" width="150" height="48" rx="12" fill="#e9f1ff" stroke="#507ab5"/><text class="actor" x="323" y="135">Browser</text></g>
@@ -34,20 +34,21 @@
   <g id="submit-comment" class="ui">
     <rect x="47" y="382" width="650" height="76" rx="12" fill="#fff6dc" opacity=".9"/>
     <path class="call" d="M130 408H355"/><text class="msg" x="193" y="401">write “Index on status?”</text>
-    <path class="call" d="M355 438H580"/><text class="msg" x="386" y="431">POST target + body + session token</text>
+    <path class="call" d="M355 438H580"/><text class="msg" x="386" y="431">POST body + token + shown snapshot</text>
   </g>
   <g id="gate-current-head" class="ui">
-    <path class="call" d="M580 482H805"/><text class="msg" x="604" y="475">resolve live review head</text>
+    <path class="call" d="M580 482H805"/><text class="msg" x="604" y="475">resolve head; check shown snapshot</text>
     <path class="fail" d="M580 505H430"/><text class="msg" x="438" y="498" fill="#9c2e40">403/409 before any write</text>
   </g>
   <g id="append-record" class="ui">
-    <path class="call" d="M580 536H1085"/><text class="msg" x="714" y="529">lock → reload valid Saga → resolve slide/Item → append comment JSON</text>
+    <path class="call" d="M580 536H1085"/><text class="msg" x="714" y="529">lock → reload → target + snapshot check → append comment event</text>
     <path class="return" d="M1085 565H580"/><text class="msg" x="764" y="558">event id + canonical target</text>
   </g>
   <g id="reload-thread" class="ui">
-    <path class="return" d="M580 596H355"/><text class="msg" x="415" y="589">303 → #target</text>
-    <path class="call" d="M355 620H580"/><text class="msg" x="420" y="613">fresh GET</text>
-    <path class="call" d="M580 642H805"/><text class="msg" x="619" y="635">regroup append-only comments</text>
-    <path class="return" d="M805 666H130"/><text class="msg" x="394" y="659">thread is visible to every participant</text>
+    <path class="call" d="M580 596H805"/><text class="msg" x="612" y="589">build compact feedback</text>
+    <path class="return" d="M805 620H580"/><text class="msg" x="614" y="613">current state; no code patches</text>
+    <path class="return" d="M580 642H355"/><text class="msg" x="385" y="635">JSON: saved + event ID + feedback</text>
+    <path class="return" d="M355 666H130"/><text class="msg" x="164" y="659">update discussion in place</text>
   </g>
+  <text class="ui note" x="55" y="702">No document or iframe navigation. Annotation layer: one GET. Ordinary forms: 303 fallback.</text>
 </svg>

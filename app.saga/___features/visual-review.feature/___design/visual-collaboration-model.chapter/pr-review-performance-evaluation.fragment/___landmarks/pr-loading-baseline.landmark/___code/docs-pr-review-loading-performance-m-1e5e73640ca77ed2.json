@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "docs/pr-review-loading-performance.md",
+      "start": 52,
+      "end": 91,
+      "digest": "sha256:b6a6dc3bbac34e7a8da833e604132c524227bbee9de95731638fd3053c7d8d2a",
+      "note": "Definitions and five-context first-usable and navigation measurements with shared-host limits."
+    }
+  ]
+}

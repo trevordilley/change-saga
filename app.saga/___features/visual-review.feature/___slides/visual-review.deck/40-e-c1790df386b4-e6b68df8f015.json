@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviewasync.go",
+      "start": 88,
+      "end": 106,
+      "digest": "sha256:2f618e4673d109afd3bde7c8adadf35152e617e2d9a7dfd1d8c39290c280861f",
+      "note": "A saved receipt survives feedback projection failure. Refusals retain editable drafts. Lost receipts block writes and offer read-only feedback checks; inspect and reload before another submission."
+    },
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/server/reviewasyncjs.go",
+      "start": 84,
+      "end": 109,
+      "digest": "sha256:8f07252a0b608b0a2a95237395357596ad1f6ac37d888e8004cdba45e647bb80",
+      "note": "A saved receipt survives feedback projection failure. Refusals retain editable drafts. Lost receipts block writes and offer read-only feedback checks; inspect and reload before another submission."
+    }
+  ]
+}

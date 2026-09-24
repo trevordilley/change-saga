@@ -90,6 +90,9 @@ func (a *app) reviewCodeSurface(w http.ResponseWriter, r *http.Request) {
 	result := codePageView{
 		Tree: makeChangedFileTree(files), Selected: selected,
 		DiffHref: base + "/file-diff", EmptyNote: "This review's range changes no files.",
+		// This stream reads every row, so request the supported maximum to
+		// avoid repeating validation and selected-file work for tiny pages.
+		DiffLimit:  maxDiffPageLimit,
 		TotalFiles: len(catalog.Files), NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start,
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
