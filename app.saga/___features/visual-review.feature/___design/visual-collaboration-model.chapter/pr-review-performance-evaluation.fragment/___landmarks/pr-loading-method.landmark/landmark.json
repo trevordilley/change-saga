@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "pr-loading-method",
+  "label": "Measure the whole interaction",
+  "description": "Read-only browser and opt-in Go measurements isolate the first slide, interactions and server stages.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "pr-loading-method"
+  },
+  "target": ""
+}

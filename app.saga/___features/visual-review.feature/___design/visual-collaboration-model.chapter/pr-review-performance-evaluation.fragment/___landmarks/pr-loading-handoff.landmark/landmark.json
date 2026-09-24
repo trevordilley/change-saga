@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "pr-loading-handoff",
+  "label": "Implementation handoff and rejected work",
+  "description": "Measured child commits await integration; the lazy Item experiment was rejected for drawer latency.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "pr-loading-handoff"
+  },
+  "target": ""
+}
