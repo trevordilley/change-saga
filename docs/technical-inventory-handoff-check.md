@@ -135,6 +135,11 @@ commit. A manager must supply that boundary before assigning code work.
 
 ## Minimum next task packet
 
+Follow-up: the [policy contract](technical-inventory-policy-contract.md) resolves
+the three behavioral questions and specifies the first executable policy slice.
+The packet below records the broader format handoff identified by this original
+assessment; it is not evidence that the proposed format has been implemented.
+
 The next bounded assignment is **format and compatibility contract**, not
 “implement entity lifecycle.” Its packet should contain:
 

@@ -251,6 +251,13 @@ evidence, and promotion rules for implemented entities with proposed
 relationships. Its task packet bounds that next assignment; the assessment is
 not a delivery-readiness or review verdict.
 
+The [view and implementation policy contract](technical-inventory-policy-contract.md)
+now resolves those three behavioral decisions: explicit saved-view admission,
+original and delivery-commit evidence validation, and independent entity/edge
+intent. It defines the first bounded executable policy slice and its acceptance
+matrix. Persisted encoding and public writer integration remain behind the
+compatibility gate; this is not a silent relaxation of today's authoring rules.
+
 ## Checks
 
 - Public query readback preserved all story parents/history and unchanged
