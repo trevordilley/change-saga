@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "02869a7de0e3b9970a50fd7d64dc73bab485ab49",
+      "path": "internal/cli/inventory.go",
+      "start": 131,
+      "end": 146,
+      "digest": "sha256:3e48d1533590f92fc6c70da1aae6a44cc377c928b1c21dc455b93b47e984a02c",
+      "note": "Reassessed after the missing-review-deck guard: new pins still require current definitions; validation reports missing/noncurrent pins and preserves the loader's missing-deck diagnostic."
+    },
+    {
+      "commit": "02869a7de0e3b9970a50fd7d64dc73bab485ab49",
+      "path": "internal/cli/inventory.go",
+      "start": 148,
+      "end": 209,
+      "digest": "sha256:75e9ae911761394d99a79cc95c3d11c01c43c3d5f0989ebb042800c0ffa1b2cf",
+      "note": "Reassessed after the missing-review-deck guard: new pins still require current definitions; validation reports missing/noncurrent pins and preserves the loader's missing-deck diagnostic."
+    }
+  ]
+}

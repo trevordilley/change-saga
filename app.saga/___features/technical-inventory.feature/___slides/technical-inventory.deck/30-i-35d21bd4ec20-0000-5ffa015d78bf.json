@@ -5,7 +5,7 @@
   "rank": 0,
   "kind": "node",
   "label": "Compatibility before new-format writes",
-  "description": "Agree explicit format gating and legacy reading before adding new records. Preserve old pins and reviews; unsupported readers must refuse rather than drop fields or rewrite history.",
+  "description": "Format details: docs/technical-inventory-design.md. Settle versioning and legacy reads before new records; preserve old pins/reviews. Unsupported readers must refuse, not discard data. Wire encoding remains proposed.",
   "selector": {
     "type": "element",
     "element_id": "compatibility"

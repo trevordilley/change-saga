@@ -243,6 +243,14 @@ next concrete slice; no public API, schema, dependency or product code changed
 in these design commits. Numerical bounds, an executable format migration and
 benchmarks are intentionally not claimed complete.
 
+The [cold handoff assessment](technical-inventory-handoff-check.md) confirms a
+fresh agent can reconstruct the intent without this conversation. It also
+identifies three format-gate decisions to settle explicitly: authoring new
+historical pins in a selected view, the source view required for implementation
+evidence, and promotion rules for implemented entities with proposed
+relationships. Its task packet bounds that next assignment; the assessment is
+not a delivery-readiness or review verdict.
+
 ## Checks
 
 - Public query readback preserved all story parents/history and unchanged
