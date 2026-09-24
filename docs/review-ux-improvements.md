@@ -9,8 +9,10 @@ Scope: the v5 pull-request slide reviewer in `internal/server/reviews.go` and
 This audit was performed against the current slide/Item reviewer, not inferred
 from the earlier chapter/fragment audit. `app.saga` was used read-only to
 inspect realistic product navigation. Because it has no pull-request review
-records, persisted interactions were exercised on a disposable three-slide
-review and separate source repository under `.devswarm-temp`.
+records, persisted interactions were exercised on a disposable four-slide
+review and separate source repository under `/tmp`. The fixture reviews this
+branch itself: each slide carries affected Story/Feature targets and exact,
+commit-pinned code references.
 
 The current product has two deliberately different visual surfaces:
 
@@ -65,6 +67,10 @@ complement those marks as linked context; they do not replace the deck.
    required a reply, but did not require that reply target to be an annotation
    creation root. Such records passed validation and then disappeared from the
    annotation projection.
+10. **P0 — ordinary implementation decks leaked presentation chrome into a
+    review.** A realistic Saga with its own implementation decks caused the
+    review route to show a second `Present` action and hidden Slides surface.
+    That contradicted the review contract: the review is already the deck.
 
 ## Implemented slice
 
