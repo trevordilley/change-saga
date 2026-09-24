@@ -98,6 +98,23 @@ colors), `e154ce8` (append-only undo/redo), `bb9d6d5` and `34258b4`
 All persisted mutations used disposable review fixtures; `app.saga` remained
 read-only.
 
+Change Saga itself was used as the final documentation and coverage check:
+
+- `change-saga validate --json app.saga` reports the repository's real app Saga
+  as valid. `status --json --against main --head HEAD app.saga` is deliberately
+  not presented as complete: because the branch-local review stays disposable,
+  the real Saga truthfully reports this branch's implementation mapping gaps.
+- A short-path disposable copy contains one `review-ux-improvements` review with
+  four authored slides and twelve Items. Its evidence was rebuilt against the
+  final branch head with `cover --changed-lines` so every old/new changed-line
+  atom belongs to exactly one explanatory Item. `review list --json` is the
+  acceptance report for the review range, current decisions, open discussion,
+  and review-deck coverage.
+- The disposable review was served by the current binary and exercised as the
+  actual deck, including Item-to-diff navigation, affected-record navigation,
+  slide annotation persistence after reload, decision currency, Coverage, and
+  desktop/narrow layouts. No mutation was written to `app.saga`.
+
 - Focused Go review, Saga annotation-model, review-store, JavaScript, deck, and
   slide tests pass: `go test ./internal/saga ./internal/reviewstore
   ./internal/server -run 'Review|Annotation|AppJavaScript|Deck|Slide' -count=1`.
