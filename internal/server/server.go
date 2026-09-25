@@ -162,12 +162,14 @@ type pageData struct {
 	ReviewCoverageHref string
 	Root               *sectionView
 	SlideRoot          *sectionView
-	Nav                []*navNodeView
-	Diagnostic         string
-	Code               *CodeReviewView
-	Manifest           *CoverageManifestView
-	Error              string
-	Files              []*fileDiffView
+	// SlidesHTML is the deck viewer rendered from SlideRoot.
+	SlidesHTML template.HTML
+	Nav        []*navNodeView
+	Diagnostic string
+	Code       *CodeReviewView
+	Manifest   *CoverageManifestView
+	Error      string
+	Files      []*fileDiffView
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
@@ -1173,18 +1175,24 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	if data.EmbeddedDecks {
 		// Every page shows the same decks, read from the same narrative and
 		// records, so their view is built once for each state of the files.
-		data.SlideRoot, err = files.slides(func() (*sectionView, error) {
+		data.SlideRoot, data.SlidesHTML, err = files.slides(func() (*sectionView, template.HTML, error) {
 			root := makeSectionView(slideRoot, scope)
 			storyLinks := &storyLinkDecorator{document: document, records: requirementsDocument}
 			for _, deck := range root.ChildViews {
 				for _, slide := range deck.FragmentViews {
 					if err := storyLinks.decorate(slide); err != nil {
-						return nil, fmt.Errorf("story links could not be resolved: %w", err)
+						return nil, "", fmt.Errorf("story links could not be resolved: %w", err)
 					}
 				}
 			}
 			labelDeckRoles(root, document)
-			return root, nil
+			// The deck viewer reads nothing but the decks, so it is rendered
+			// here once rather than into every page.
+			var rendered bytes.Buffer
+			if err := a.template.ExecuteTemplate(&rendered, "deck-viewer", root); err != nil {
+				return nil, "", fmt.Errorf("the decks could not be rendered: %w", err)
+			}
+			return root, template.HTML(rendered.String()), nil
 		})
 		if err != nil {
 			return nil, err

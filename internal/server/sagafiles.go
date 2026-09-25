@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"html/template"
 	"slices"
 	"sync"
 
@@ -48,10 +49,12 @@ type sagaFiles struct {
 	inventoryErr  error
 
 	// slidesView is every embedded deck's slides as every page shows them,
-	// story links decorated. It is built from the narrative and records
-	// above, so it holds for as long as they do. Pages only read it.
+	// story links decorated, and slidesHTML the deck viewer rendered from
+	// it. Both are built from the narrative and records above, so they hold
+	// for as long as those do. Pages only read them.
 	slidesOnce sync.Once
 	slidesView *sectionView
+	slidesHTML template.HTML
 	slidesErr  error
 }
 
@@ -116,11 +119,11 @@ func (files *sagaFiles) inventory(sagaID string) (requirements.Inventory, error)
 	return files.inventoryDoc, files.inventoryErr
 }
 
-// slides is the embedded decks' view, built once from this fingerprint's
-// narrative and records.
-func (files *sagaFiles) slides(build func() (*sectionView, error)) (*sectionView, error) {
+// slides is the embedded decks' view and its rendering, built once from this
+// fingerprint's narrative and records.
+func (files *sagaFiles) slides(build func() (*sectionView, template.HTML, error)) (*sectionView, template.HTML, error) {
 	files.slidesOnce.Do(func() {
-		files.slidesView, files.slidesErr = build()
+		files.slidesView, files.slidesHTML, files.slidesErr = build()
 	})
-	return files.slidesView, files.slidesErr
+	return files.slidesView, files.slidesHTML, files.slidesErr
 }
