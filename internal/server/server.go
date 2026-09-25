@@ -162,7 +162,8 @@ type pageData struct {
 	ReviewCoverageHref string
 	Root               *sectionView
 	SlideRoot          *sectionView
-	// SlidesHTML is the deck viewer rendered from SlideRoot.
+	// SlidesHTML is the deck viewer rendered from SlideRoot. Without it the
+	// page renders the viewer itself.
 	SlidesHTML template.HTML
 	Nav        []*navNodeView
 	Diagnostic string
