@@ -59,6 +59,10 @@ type storyLinkDecorator struct {
 	document *saga.Saga
 	records  requirements.Document
 	digests  map[*saga.Deck]map[string]string
+	// currency judges every relation against the records' heads, derived
+	// once for all the slides this decorator visits.
+	currency *requirements.RelationEvaluator
+	stories  map[string]requirements.Story
 }
 
 func (decorator *storyLinkDecorator) decorate(view *fragmentView) error {
@@ -99,10 +103,14 @@ func (decorator *storyLinkDecorator) decorate(view *fragmentView) error {
 		decorator.digests[deck] = digests
 	}
 	inputs := requirements.StaleInputs{CurrentContentDigests: digests, Missing: map[string]bool{}}
-	stories := map[string]requirements.Story{}
-	for _, story := range records.Stories {
-		stories[story.Identity.ID] = story
+	if decorator.currency == nil {
+		decorator.currency = requirements.NewRelationEvaluator(records)
+		decorator.stories = map[string]requirements.Story{}
+		for _, story := range records.Stories {
+			decorator.stories[story.Identity.ID] = story
+		}
 	}
+	stories := decorator.stories
 	for _, relation := range records.Relations {
 		if relation.State != requirements.RelationActive || (relation.Type != requirements.RelationExplains && relation.Type != requirements.RelationAddresses) {
 			continue
@@ -139,7 +147,7 @@ func (decorator *storyLinkDecorator) decorate(view *fragmentView) error {
 		if ref.Kind == livingid.KindCriterion && link.Criterion == "" {
 			link.Criterion = "Criterion " + ref.ID + " (not current)"
 		}
-		link.Status = requirements.EvaluateRelation(records, relation, inputs).Status
+		link.Status = decorator.currency.Evaluate(relation, inputs).Status
 		if owner != nil {
 			link.Item, link.ItemHref = owner.Title, "#"+owner.DOMID
 			owner.Stories.Links = append(owner.Stories.Links, link)

@@ -124,9 +124,30 @@ func EvaluateRelations(document Document, inputs StaleInputs) []RelationCurrency
 	return result
 }
 
-// EvaluateRelation reports the currency of one relation.
+// EvaluateRelation reports the currency of one relation. A caller judging
+// many relations of one document uses a RelationEvaluator instead, which
+// derives the document's heads once.
 func EvaluateRelation(document Document, relation Relation, inputs StaleInputs) RelationCurrency {
 	return newCurrencyHeads(document, inputs).evaluate(relation)
+}
+
+// RelationEvaluator judges relations against one document's story and
+// criterion heads. Deriving those heads walks every revision of every story,
+// so a page that judges many relations derives them once rather than once per
+// relation. The inputs may differ from call to call.
+type RelationEvaluator struct {
+	heads currencyHeads
+}
+
+// NewRelationEvaluator derives document's heads for repeated evaluation.
+func NewRelationEvaluator(document Document) *RelationEvaluator {
+	return &RelationEvaluator{heads: documentHeads(document)}
+}
+
+// Evaluate reports the currency of one relation under inputs. It agrees with
+// EvaluateRelation(document, relation, inputs).
+func (evaluator *RelationEvaluator) Evaluate(relation Relation, inputs StaleInputs) RelationCurrency {
+	return evaluator.heads.withInputs(inputs).evaluate(relation)
 }
 
 // currencyHeads is the merged view of current heads a relation is judged by.
@@ -146,13 +167,41 @@ type currencyHeads struct {
 }
 
 func newCurrencyHeads(document Document, inputs StaleInputs) currencyHeads {
-	heads := currencyHeads{sagaID: document.SagaID, inputs: inputs, revisions: map[string]string{}, conflicted: map[string][]string{}, removed: map[string]bool{}, statements: map[string]map[string]string{}, obligations: map[string]map[string]string{}}
-	for key, value := range inputs.CurrentRevisions {
-		heads.revisions[key] = value
+	return documentHeads(document).withInputs(inputs)
+}
+
+// withInputs is heads judged under inputs. Supplied revision heads are the
+// base the document's own story and criterion heads override; heads itself is
+// left untouched, so one document's heads serve any number of inputs.
+func (heads currencyHeads) withInputs(inputs StaleInputs) currencyHeads {
+	heads.inputs = inputs
+	if len(inputs.CurrentRevisions) > 0 {
+		revisions := make(map[string]string, len(inputs.CurrentRevisions)+len(heads.revisions))
+		for key, value := range inputs.CurrentRevisions {
+			revisions[key] = value
+		}
+		for key, value := range heads.revisions {
+			revisions[key] = value
+		}
+		heads.revisions = revisions
 	}
-	for key, value := range inputs.ConflictedRevisions {
-		heads.conflicted[key] = value
+	if len(inputs.ConflictedRevisions) > 0 {
+		conflicted := make(map[string][]string, len(inputs.ConflictedRevisions)+len(heads.conflicted))
+		for key, value := range inputs.ConflictedRevisions {
+			conflicted[key] = value
+		}
+		for key, value := range heads.conflicted {
+			conflicted[key] = value
+		}
+		heads.conflicted = conflicted
 	}
+	return heads
+}
+
+// documentHeads is the heads the document's own stories and criteria carry,
+// before any supplied inputs.
+func documentHeads(document Document) currencyHeads {
+	heads := currencyHeads{sagaID: document.SagaID, revisions: map[string]string{}, conflicted: map[string][]string{}, removed: map[string]bool{}, statements: map[string]map[string]string{}, obligations: map[string]map[string]string{}}
 	for _, story := range document.Stories {
 		storyID, _ := storyURN(document.SagaID, story.Identity.ID)
 		for _, revision := range story.Revisions {
