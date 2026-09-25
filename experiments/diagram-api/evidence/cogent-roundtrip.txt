@@ -1,0 +1,46 @@
+{
+  "connection_preserved": false,
+  "filter_preserved": false,
+  "input_bytes": 393,
+  "item_attribute_preserved": false,
+  "item_id_preserved": true,
+  "output_bytes": 459,
+  "version": "v0.3.42"
+}
+<svg
+viewBox="0 0 1280 720"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+xmlns="http://www.w3.org/2000/svg">
+<defs
+id="defs" />
+<g
+id="api"
+style="data-item-id:api;">
+<rect
+id="rect-0"
+style="fill:#ffffff;"
+x="100"
+y="100"
+width="180"
+height="80"
+rx="0"
+ry="0" />
+<text
+id="text-1"
+x="120"
+y="140">API</text>
+</g>
+<path
+id="request"
+style="data-from:api;data-to:db;"
+d="M280 140H400" />
+<g
+id="db">
+<circle
+id="circle-0"
+cx="420"
+cy="140"
+r="20" />
+</g>
+</svg>
+

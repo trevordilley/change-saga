@@ -1,0 +1,46 @@
+{
+  "upstream": "https://github.com/lucide-icons/lucide",
+  "revision": "66d8f9fc394b8530377e5f6112f0b8908ba01280",
+  "icons": {
+    "lucide:server": {
+      "file": "server.svg",
+      "sha256": "f7bea54b609dc488f3b848995014041846b2443fd2a880653e9e583d7a034f61"
+    },
+    "lucide:database": {
+      "file": "database.svg",
+      "sha256": "471eb14bc8d144896a82dfc4aa9daf350f769f0896f4bef33e50aabdbb51130d"
+    },
+    "lucide:file": {
+      "file": "file.svg",
+      "sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0"
+    },
+    "lucide:user": {
+      "file": "user.svg",
+      "sha256": "eae3b3b2400031ddd5ec869327d127a96014e5f63aa6e06658dd5d4e90661aa8"
+    },
+    "lucide:cloud": {
+      "file": "cloud.svg",
+      "sha256": "28a34022ed00177eb1f218eea5d2b7af30d09b529187fe32219e4dd8ea2b9740"
+    },
+    "lucide:lock": {
+      "file": "lock.svg",
+      "sha256": "d2cfe60cac8deaef36442b5c8218c1e61abe18222784b2a370ea090d13fca840"
+    },
+    "lucide:terminal": {
+      "file": "terminal.svg",
+      "sha256": "4f9b6488b237757d5cb615ccd07502fa99774826839e2a99017784bdb2596f1a"
+    },
+    "lucide:check": {
+      "file": "check.svg",
+      "sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0"
+    },
+    "lucide:triangle-alert": {
+      "file": "triangle-alert.svg",
+      "sha256": "4866f38b8560d410f21e3226413e0b77997b6dfbb6931fadfe0a0d5aef9ffeb4"
+    },
+    "lucide:git-branch": {
+      "file": "git-branch.svg",
+      "sha256": "041f04acc8f92657b849540f0440e2e85d0df0b8da2365611e81b9bebfafc4eb"
+    }
+  }
+}

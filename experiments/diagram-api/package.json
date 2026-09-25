@@ -1,0 +1,1 @@
+{"name":"change-saga-diagram-spike-qa","private":true,"type":"module","description":"Isolated browser QA for the diagram prototype","devDependencies":{"playwright":"1.58.2"}}

@@ -4,7 +4,8 @@ Status: design exploration, 2026-09-24. Incorporates the author's requested
 imperative drawing model and selection of Lucide as the default icon family.
 Commands and record shapes below are proposals, not shipped CLI contracts.
 No production format migration, editor replacement, or existing asset conversion
-is proposed by this document. The prototype and measurements remain to be done.
+is proposed by this document. A runnable native prototype and measured evidence
+now live in [experiments/diagram-api](../experiments/diagram-api/README.md).
 
 ## Direction
 
@@ -189,7 +190,7 @@ of every object that uses them.
 
 | Candidate | Relevant finding | Current role |
 | --- | --- | --- |
-| [Cogent SVG](https://pkg.go.dev/cogentcore.org/core/svg) | Editable SVG tree, XML I/O, geometry and transform APIs | First full-featured Go candidate to test; arbitrary SVG preservation and dependency footprint remain unverified |
+| [Cogent SVG](https://pkg.go.dev/cogentcore.org/core/svg) | Editable SVG tree, XML I/O, geometry and transform APIs | Tested v0.3.42: preserved object ID but rewrote metadata attributes into CSS and dropped a filter; not selected for this prototype |
 | [etree](https://github.com/beevik/etree) | Pure Go XML read/query/edit/write with standard-library dependencies | Smaller alternative requiring Saga-specific drawing conveniences |
 | [SVGo](https://github.com/ajstarks/svgo) | Imperative SVG output to a writer | Useful creation API, not a complete targeted-edit model |
 | [Canvas](https://github.com/tdewolff/canvas) | Rich vector paths, typography and multiple output backends | Possible geometry/text support; evaluate identity preservation before adoption |
@@ -210,26 +211,140 @@ persona/term query contracts are also a useful local precedent: stable identitie
 bounded responses, snapshots, and explicit completeness, without inferring
 semantic references from diagram text.
 
-## Next experiment and adoption decisions
+## Executed native experiment
 
-Keep the next implementation isolated. On one explicitly authored technical
-diagram, exercise icon placement/reuse, paths, a group, a free text label, custom
-SVG, targeted reads, label/style edits, movement, removal, and an atomic batch.
-Test that moving a node leaves the connected edge path unchanged and that a
-group transform moves only its children. Verify exact Item/code/story selectors.
+The [isolated Go CLI](../experiments/diagram-api/README.md) implements creation,
+add/get/update/move/remove, named styles, explicit alignment/distribution,
+compact description, source export, render, hash check/rebuild, conservative
+three-way merge, and atomic batches with expected snapshots and replay IDs.
+No production CLI, schema, existing asset, requirements relation, or review
+record changed. The later author direction selects this native-first experiment;
+the original Excalidraw runtime A/B comparison has **not** been executed.
 
-Test hash mismatch/rebuild, retry and publication failure behavior, missing
-assets, repeated icon IDs, different-element text/semantic merges, and
-same-element conflict detection. Visually inspect standard slide sizes. Test
-Go candidates for custom SVG preservation and font behavior before choosing one.
-Windows compatibility is a design requirement, not an executed validation claim.
+One authored publication-flow diagram combines services, a datastore cylinder,
+a warning branch, free text, a boundary group, paths and Lucide icons. The author
+positions everything. Moving the validator leaves all three incident paths
+unchanged; a separate batch explicitly adjusts their points and changes its
+label/style. A temporary edge is added and removed. The final compact description
+retains seven semantic elements and their explanatory text and connections.
+See [before](../experiments/diagram-api/evidence/before-1280.png),
+[moved without path edits](../experiments/diagram-api/evidence/moved-unrepaired-1280.png),
+and [final](../experiments/diagram-api/evidence/after-1280.png).
 
-Measure the entire comparable workflow against hand-authored SVG: requests,
-responses, schema and asset discovery, follow-up edits, and rendering retries.
-Report bytes and command counts; report tokens only with an identified tokenizer
-and model. Asset paths should never enter routine AI responses. No efficiency,
-visual-quality, merge-safety, or cross-platform result has yet been measured.
+The richer [Cogent trial](../experiments/diagram-api/trials/cogent/main.go)
+round-tripped a small SVG: `id="api"` survived, `data-item-id` and `data-from`
+became CSS declarations, and the filter disappeared. Its module graph also
+includes GUI/media/platform packages; that graph is not a binary-size measurement.
+The [captured result](../experiments/diagram-api/evidence/cogent-roundtrip.txt)
+supports choosing etree for faithful, explicit SVG construction in this spike;
+it does not establish that Cogent is unsuitable for other drawing tasks.
 
-Production source schema, CLI registration, storage integration, selected backend,
-asset pack size, and any editor integration remain separate adoption decisions.
-The present change records the design and Lucide choice only.
+The native binary uses etree 1.6.0, x/image 0.44.0 and x/text 0.40.0, plus Saga's
+existing store package. The heavier trial and browser QA are separate modules.
+Lucide inputs are pinned at commit `66d8f9fc394b8530377e5f6112f0b8908ba01280`;
+Go Regular is pinned with the renderer. All inputs and notices ship locally.
+No runtime downloads, seeds, or automatic ID allocation are involved. Ordering
+is explicit sibling `z`, then stable ID. Custom fragments are a restricted subset;
+full SVG freedom remains available through Saga's existing custom SVG mode.
+
+### What passed
+
+Race-enabled Go tests and vet passed on macOS 15.7.4 arm64. Tests cover unchanged
+connected-edge geometry after node movement, explicit group transforms, named
+styles/wrapping, reused icon IDs, compact semantic reads, dependency/cascade
+refusal, missing inputs, hash recovery preserving divergent bytes, injected
+pre-publication failure, same-request retry, stale/colliding requests, and two
+concurrent writers (one wins). Existing publication primitives communicate
+post-publication durability failures; this spike does not fault-inject an OS crash.
+
+A real temporary Saga fixture publishes the generated SVG with `apply-slide`,
+then republishes the move/label/style revision. Exact Item ID, code-range digest,
+criterion identity and story revision remain unchanged. Parsed XML selector
+checks reject missing/duplicate IDs. A separate existing production issue was
+reported to the parent: substring selector checks can mistake `data-item-id` for
+an actual `id`; this experiment does not change production validation.
+
+Two source branches editing different elements merge cleanly with Git's text
+merge and the semantic merge. Same-element changes conflict. A branch removing a
+node and another adding an incident edge is rejected semantically. This does not
+prove arbitrary independent edits are visually compatible: validate, render and
+inspect resolved source before publication. Merge the source export, regenerate
+the visual, and republish; do not hand-merge `current.json` receipt/hash bookkeeping.
+
+Chromium 145.0.7632.6 rendered eight views with networking blocked: before, moved,
+final, and direct-SVG final at 1280×720 and 1024×576. Bounds, duplicate-ID and font
+checks passed; the images were visually inspected. Direct-SVG and API final PNGs
+were byte-identical at both sizes. This is standalone SVG QA, not production
+review-surface QA. Windows amd64 cross-compilation passed without CGO; Windows
+runtime, OS crash recovery and cross-browser font metrics remain untested.
+
+### Measured workflow
+
+[Traffic](../experiments/diagram-api/evidence/traffic.json) counts actual UTF-8
+argv (space-separated), stdin, stdout and stderr bytes, including absolute paths.
+These are CLI interaction measurements, not this conversation's tokens, hidden
+reasoning, or build/download traffic. No tokenizer was run. The baseline uses
+the same initial artwork and equivalent literal XML edits, not independently
+prompted SVG authorship. It excludes shared local font and license payloads;
+we do not pretend an AI must type base64 fonts. Both final images are identical.
+
+| Measured sequence | CLI calls | Request bytes | Response bytes |
+| --- | ---: | ---: | ---: |
+| Comparable compact sequence, including schema/asset discovery and initialization | 10 | 6,261 | 5,804 |
+| Direct SVG creation/read/move/targeted read/edit/remove/read | 7 | 10,155 | 14,901 |
+| All compact operations/queries, including failure, retry, checks and recovery | 15 | 8,449 | 7,134 |
+| Full source export and two merge calls | 3 | 1,262 | 39,178 |
+| Four complete SVG transfers (before, moved, after, rebuilt) | 4 | 992 | 843,160 |
+| Entire instrumented prototype sequence | 22 | 10,703 | 889,472 |
+
+The comparable API sequence totals 12,065 bytes against 25,056 for the controlled
+SVG baseline, with more commands. This is evidence of smaller routine authoring
+and reading exchanges on this diagram, not a general token-efficiency claim.
+The final semantic description is 1,107 bytes. Its standalone SVG is 210,806 bytes,
+mostly the embedded font; that artifact transfer is retained in the full totals.
+The [comparison record](../experiments/diagram-api/evidence/comparison.json)
+identifies the exact included calls. Full source branches are mechanically
+prepared by the harness; their file bytes are outputs of source export, not
+newly authored request text. Building the tool, reading this documentation and
+writing the harness are not included as per-diagram discovery costs.
+
+The run includes one rejected overlong-label edit followed by a valid edit,
+an identical successful-batch retry, and hash-divergence recovery followed by
+byte-identical re-render. Eight browser render passes are separately recorded
+in [visual QA](../experiments/diagram-api/evidence/visual-qa.json). No screenshot
+revision retries were needed in the recorded run. The raw baseline lacks
+transaction/merge/recovery equivalents, so it is not compared to the full safety
+sequence as though they did the same work.
+
+### Excalidraw alternative and next decisions
+
+Current official docs were re-read during this experiment. The
+[skeleton API](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/api/excalidraw-element-skeleton)
+supports styled shapes, labels, explicit coordinates and arrow bindings; conversion
+regenerates IDs unless `{regenerateIds:false}` is supplied. Label sizing and bound
+arrows can introduce geometry behavior that this authoring contract deliberately
+keeps explicit. An adapter must separate connection metadata from such bindings.
+The [export API](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/api/utils/export)
+produces SVG DOM output; semantic element IDs surviving conversion must not be
+assumed to become exact SVG selectors. Test a mapping at export before adoption.
+
+Its [JSON format](https://docs.excalidraw.com/docs/codebase/json-schema) and
+[integration guide](https://docs.excalidraw.com/docs/@excalidraw/excalidraw/integration)
+remain useful prior art for scene elements and browser integration. An adapter
+would need separately pinned package/font/runtime versions, deterministic seeds
+and ordering, local assets for offline use, verified exported selectors, license
+notices, dependency-size measurements and Windows execution. Those results and
+adapter byte counts remain **unmeasured**; this document makes no superiority
+claim against an executed Excalidraw backend.
+
+Recommend continuing the native API experiment with two more hand-composed
+technical diagrams (sequence/swimlane and mixed custom graphics), then measuring
+independent AI authoring sessions. Retain exact authored geometry and compact
+semantic reads. Improve shape/text affordances from those examples before
+standardizing CLI flags. Resolve production selector validation separately.
+
+Production adoption still requires decisions about source storage and merge
+workflow, receipt/asset lifecycle, the supported SVG escape surface, font/script
+coverage, asset pack size, and integration with existing `apply-slide` snapshots.
+A production schema, editor, format migration or Excalidraw adapter should be
+reviewed as its own change. This branch only adds the experiment and evidence.

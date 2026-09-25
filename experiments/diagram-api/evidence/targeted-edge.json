@@ -1,0 +1,1 @@
+{"element":{"id":"publish","kind":"edge","label":"publish","x":0,"y":0,"width":95,"height":30,"z":1,"style":"emphasis","from":"validator","to":"published","points":[{"x":775,"y":280},{"x":920,"y":280}],"head":"arrow","head_size":16,"label_at":{"x":809,"y":240}},"selector":"#publish","snapshot":"sha256:52421faab8dbd0ac6e664f559ba167a274408e74187208add48b173667bc6e0b"}
