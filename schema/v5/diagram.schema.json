@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/diagram.schema.json",
+  "title": "Diagram source",
+  "description": "The authoritative source of a generated slide diagram. Every element is explicitly positioned in its parent group's coordinates; the CLI renders it deterministically to the slide's SVG, emitting each element as an element id Items can select. Element order is reading order and breaks ties between equal z values.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "width", "height", "elements"],
+  "properties": {
+    "version": {"const": 1},
+    "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 10000},
+    "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 10000},
+    "background": {"$ref": "#/$defs/color"},
+    "styles": {
+      "type": "object",
+      "description": "Named styles; a name matching a default (normal, primary, emphasis, secondary, warning, boundary, title, caption) replaces it completely.",
+      "patternProperties": {"^[a-z][a-z0-9-]{0,63}$": {"$ref": "#/$defs/style"}},
+      "additionalProperties": false
+    },
+    "elements": {"type": "array", "maxItems": 500, "items": {"$ref": "#/$defs/element"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$"},
+    "color": {"type": "string", "pattern": "^(#[a-fA-F0-9]{6}|none)$"},
+    "point": {
+      "type": "object", "additionalProperties": false, "required": ["x", "y"],
+      "properties": {"x": {"type": "number"}, "y": {"type": "number"}}
+    },
+    "box": {
+      "type": "object", "additionalProperties": false, "required": ["x", "y", "width", "height"],
+      "properties": {"x": {"type": "number"}, "y": {"type": "number"}, "width": {"type": "number", "exclusiveMinimum": 0}, "height": {"type": "number", "exclusiveMinimum": 0}}
+    },
+    "style": {
+      "type": "object", "additionalProperties": false, "required": ["fill", "stroke", "ink", "stroke_width", "font_size"],
+      "properties": {
+        "fill": {"$ref": "#/$defs/color"}, "stroke": {"$ref": "#/$defs/color"}, "ink": {"$ref": "#/$defs/color"},
+        "stroke_width": {"type": "number", "minimum": 0, "maximum": 50}, "font_size": {"type": "number", "minimum": 8, "maximum": 200},
+        "dash": {"type": "boolean"}
+      }
+    },
+    "element": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "x", "y", "style"],
+      "properties": {
+        "id": {"allOf": [{"$ref": "#/$defs/id"}, {"not": {"pattern": "^diagram-"}}]},
+        "kind": {"enum": ["node", "edge", "text", "group", "graphic"]},
+        "shape": {"enum": ["service", "datastore", "decision", "rect", "ellipse", "boundary"], "description": "Node shape; a group with rect or boundary draws a frame around its children."},
+        "label": {"type": "string", "maxLength": 2000},
+        "detail": {"type": "string", "maxLength": 2000},
+        "description": {"type": "string", "maxLength": 4000, "description": "Semantic explanation read by describe and assistive technology; not drawn."},
+        "x": {"type": "number"}, "y": {"type": "number"},
+        "width": {"type": "number", "minimum": 0}, "height": {"type": "number", "minimum": 0},
+        "z": {"type": "integer"},
+        "parent": {"$ref": "#/$defs/id"},
+        "style": {"$ref": "#/$defs/id"},
+        "icon": {"type": "string", "pattern": "^lucide:[a-z0-9-]+$", "description": "A bundled icon; list them with change-saga diagram icons."},
+        "icon_size": {"type": "number", "minimum": 0, "maximum": 256},
+        "from": {"$ref": "#/$defs/id"}, "to": {"$ref": "#/$defs/id"},
+        "points": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/point"}},
+        "path": {"type": "string", "pattern": "^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\\-\\s]+$"},
+        "head": {"enum": ["arrow", "none"]},
+        "head_size": {"type": "number", "minimum": 0, "maximum": 100},
+        "label_box": {"$ref": "#/$defs/box", "description": "Element-local box for an edge label or a node label placed outside its shape."},
+        "align": {"enum": ["start", "middle", "end"]},
+        "wrap": {"type": "boolean"},
+        "fragment": {"type": "string", "maxLength": 65536, "description": "Allowlisted SVG drawing markup for a graphic; currentColor follows its style's stroke."},
+        "decorative": {"type": "boolean", "description": "Hidden from describe and assistive technology; may not contain semantic children."}
+      }
+    }
+  }
+}

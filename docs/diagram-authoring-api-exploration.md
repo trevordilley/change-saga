@@ -1,11 +1,18 @@
 # Diagram authoring API exploration
 
-Status: design exploration, 2026-09-24. Incorporates the author's requested
-imperative drawing model and selection of Lucide as the default icon family.
-Commands and record shapes below are proposals, not shipped CLI contracts.
-No production format migration, editor replacement, or existing asset conversion
-is proposed by this document. A runnable native prototype and measured evidence
-now live in [experiments/diagram-api](../experiments/diagram-api/README.md).
+Status: shipped, 2026-09-24. The exploration below led to diagram-sourced
+slides: `apply-slide` accepts a `diagram`, and the `diagram describe|get|edit|
+icons|check` commands read and revise it (see SPEC.md, "Complete-slide
+transactions and diagram sources", and the change-saga skill's diagrams
+reference). Production resolved the trial gaps with ordered elements (reading
+order), framed groups that parent their contents, external `label_box` labels,
+`currentColor` graphics, and validation that reports every problem at once.
+Generated SVGs reference a shared font the reviewer serves rather than
+embedding it. Existing hand-authored slides were not converted. The sections
+below are the original exploration and its evidence, kept as the record of
+why; command names in them are proposals that were refined when shipped. The
+prototype and measurements live in
+[experiments/diagram-api](../experiments/diagram-api/README.md).
 
 ## Direction
 

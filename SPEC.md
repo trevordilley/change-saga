@@ -330,6 +330,45 @@ Exact diff evidence on a slide is owned only by Items, so every changed line a
 reviewer sees in the deck is attached to the specific visual element that
 explains it.
 
+### Complete-slide transactions and diagram sources
+
+`apply-slide` publishes one complete slide atomically: its visual, Items,
+exact evidence, and pinned criterion links. The slide's single
+`25-t-<deck-key>-<slide-key>.json` record holds its immutable revision history
+and names the current revision; visuals are content-addressed
+`24-a-<digest-prefix>.<ext>` sidecars committed before the record that
+references them. A legacy flat slide becomes the first revision the first time
+`apply-slide` updates it, and its flat records remain as migration history.
+
+A revision's visual is either an authored asset (SVG, HTML, or raster image)
+or a **diagram source**. A diagram source is a
+[`diagram.schema.json`](schema/v5/diagram.schema.json) document: an ordered list
+of explicitly positioned nodes, edges, text, groups, and allowlisted graphics.
+The CLI renders it deterministically to the revision's SVG asset and stores the
+canonical source beside it as a `24-a-*.json` sidecar. The revision pins both:
+
+```json
+"diagram": {"source": "24-a-….json", "source_digest": "sha256:…", "renderer": "change-saga-diagram/1"}
+```
+
+Everything downstream of the asset is unchanged: the SVG is what digests,
+approvals, selectors, the reviewer, and visual QA read. Each diagram element is
+rendered with its element ID as its SVG `id`, so an Item selects it with an
+`element` selector, which must name a non-decorative element. Rendering never
+lays out, resizes, or reroutes anything; text that does not fit its explicit
+box is refused. Generated SVGs reference one measurement font the reviewer
+serves at `/_diagram/fonts/go-regular.ttf` and fall back to a system
+sans-serif elsewhere. A reader validates a pin's digest and structure;
+`change-saga diagram check` re-renders sources and reports any published SVG
+that differs from its source, for example after a renderer change.
+
+`change-saga diagram edit` applies explicit operations to a diagram at an exact
+snapshot and republishes the slide through the same transaction, carrying its
+Items, evidence, and criterion links. `change-saga diagram describe` reads any
+slide compactly: its takeaway, Items in reading order, and, for a diagram
+source, its semantic elements and connections. The description omits geometry,
+styling, decorative elements, and asset bytes, and cannot rebuild the drawing.
+
 Stories and their acceptance criteria are the traceability backbone. A deck,
 slide, or Item relates to a story or criterion through an active relation that
 pins the exact story revision it relied on. Linking a story applies to every

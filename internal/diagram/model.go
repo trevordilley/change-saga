@@ -15,6 +15,7 @@ import (
 	"io"
 	"math"
 	"regexp"
+	"sort"
 	"strings"
 )
 
@@ -365,3 +366,48 @@ func (d Document) Validate() error {
 var pathData = regexp.MustCompile(`^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\-\s]+$`)
 
 func validPathData(path string) bool { return pathData.MatchString(path) }
+
+// Contract is the diagram vocabulary change-saga spec publishes, so an author
+// can discover the source format from the installed CLI without the network.
+func Contract() map[string]any {
+	styles := []string{}
+	for name := range DefaultStyles() {
+		styles = append(styles, name)
+	}
+	sort.Strings(styles)
+	sorted := func(values map[string]bool) []string {
+		result := []string{}
+		for value := range values {
+			if value != "" {
+				result = append(result, value)
+			}
+		}
+		sort.Strings(result)
+		return result
+	}
+	return map[string]any{
+		"schema":         "https://changesaga.dev/schema/v5/diagram.schema.json",
+		"version":        Version,
+		"renderer":       Renderer,
+		"request_field":  "diagram, instead of asset, in an apply-slide request",
+		"storage":        "24-a-<digest-prefix>.json beside the rendered 24-a-<digest-prefix>.svg, pinned by the revision's diagram field",
+		"element_kinds":  sorted(elementKinds),
+		"node_shapes":    sorted(nodeShapes),
+		"frame_shapes":   sorted(frameShapes),
+		"alignments":     sorted(textAlignment),
+		"default_styles": styles,
+		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative"},
+		"operations":     OperationNames,
+		"font":           FontPath,
+		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes},
+		"rules": []string{
+			"every coordinate is explicit and local to the parent group; nothing is laid out, resized, or rerouted",
+			"element order is reading order and breaks ties between equal z values",
+			"each element renders with its id as the SVG id; Items select semantic elements by id",
+			"text that does not fit its box is refused",
+			"a framed group draws its frame and parents its contents",
+			"decorative elements are hidden from describe and assistive technology and may not contain semantic ones",
+			"graphics accept allowlisted drawing markup; currentColor follows the style's stroke",
+		},
+	}
+}

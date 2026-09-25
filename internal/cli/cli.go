@@ -22,6 +22,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/areas"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
+	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -1238,8 +1239,9 @@ func Spec(args []string, out io.Writer) error {
 			},
 			"implementation_deck": map[string]any{
 				"storage": applayout.FeaturesDir + "/<feature>" + applayout.FeatureSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
-				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
-				"content":    "one self-contained visual file sharing its slide manifest stem",
+				"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
+				"content":        "one self-contained visual file sharing its slide manifest stem",
+				"diagram_source": diagram.Contract(),
 				"visual_forms": map[string]string{
 					"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",
 					"data-flow": "directed inputs, transformations, storage, and outputs", "sequence": "participants, time, calls, responses, and exceptional returns",
