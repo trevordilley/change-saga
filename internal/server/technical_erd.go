@@ -238,6 +238,9 @@ type erdView struct {
 
 func (view *erdView) DOMID() string { return "erd-" + domID(view.Target) }
 
+// elementPrefix namespaces the drawing's ids within the page.
+func (view *erdView) elementPrefix() string { return view.DOMID() + "-" }
+
 // makeERDView renders one ERD or overlay revision. Overlays compose their
 // directory over the exact baseline ERD revision they name; the canonical ERD
 // is read, never rewritten.
@@ -277,15 +280,16 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 		}
 		if err != nil {
 			view.VisualNote = "The authored diagram is unavailable: " + err.Error() + ". The directory below still lists every entity."
+		} else if markup, refused := sanitizeSVG(data, view.elementPrefix()); len(refused) > 0 {
+			view.VisualNote = "The authored diagram is unavailable: this reviewer draws only static shapes, text and same-document links, and the drawing contains " + strings.Join(refused, "; ") + ". The directory below still lists every entity."
 		} else {
-			// ValidateVisual refused anything active or external, so the
-			// author's drawing is inlined as authored for hit-testing.
-			view.Visual = template.HTML(data)
+			// Re-serialized from its tokens, never the author's bytes.
+			view.Visual = template.HTML(markup)
 		}
 	}
 	elements := map[string][]string{}
 	for _, binding := range bindings {
-		b := erdBindingView{ID: binding.ID, Element: binding.Element}
+		b := erdBindingView{ID: binding.ID, Element: view.elementPrefix() + binding.Element}
 		switch {
 		case binding.Entity != nil:
 			b.Pin = *binding.Entity

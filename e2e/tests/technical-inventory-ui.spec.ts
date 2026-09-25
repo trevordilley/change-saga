@@ -43,7 +43,13 @@ test("Technical design lists shared definitions and traces a slide Item to its p
   const row = systems.locator('[data-directory-row="FeatureFlag"]');
   await expect(row).toContainText("unspecified");
   await expect(row).toContainText("active");
-  await expect(row.locator("td").last()).toHaveText("1");
+  // Columns: explanation, intent, lifecycle, revision, code, used by, since.
+  await expect(row.locator("td").nth(5)).toHaveText("1");
+  // This fixture compares against main with the Saga in a companion
+  // repository, whose base inventory cannot be read: newness is unknown,
+  // never "new".
+  await expect(row.locator("td").nth(6)).toHaveText("unknown");
+  await expect(page.locator("[data-technical-newness]")).toHaveAttribute("data-technical-newness", "false");
   await expect(page.locator("[data-technical-data-model]")).toContainText("No data entities");
 
   // Keyboard: the definition link is reachable and opens its canonical page.
@@ -105,6 +111,8 @@ test("Technical design stays readable on a 390px touch screen", async ({ browser
   // The directory's header is sticky; bring the row to the middle of the
   // screen the way a reader scrolling to it would, rather than under it.
   const row = narrow.locator('[data-directory-row="FeatureFlag"]').getByRole("link", { name: "FeatureFlag" });
+  // Late-arriving shell content reflows the page, so settle it first.
+  await narrow.waitForLoadState("networkidle");
   await row.evaluate(element => element.scrollIntoView({ block: "center" }));
   await row.tap();
   await expect(narrow.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r1");
@@ -167,7 +175,7 @@ test("an authored ERD and an Item's exact selection open the same pinned definit
   await waitForSettledSaga(page);
   const model = page.locator("[data-technical-data-model]");
   await expect(model.locator("figcaption")).toContainText("1 of 2 directory entities are drawn; 1 is in the directory but not drawn.");
-  const drawn = model.locator("[data-erd-visual] svg #report");
+  const drawn = model.locator(`[data-erd-visual] svg [id$="-report"]`);
   await expect(drawn).toHaveAttribute("role", "button");
   await drawn.focus();
   await page.keyboard.press("Enter");

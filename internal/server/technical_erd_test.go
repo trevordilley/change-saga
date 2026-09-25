@@ -74,9 +74,11 @@ func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 		t.Fatalf("technical page: %d %s", status, body)
 	}
 	report := pins["report"]
+	application := (&erdView{Target: "urn:change-saga:test:erd:application"}).elementPrefix()
 	for _, want := range []string{
-		// The application ERD is the primary view, inlined as authored.
-		`<g id="report">`, `data-erd-element="report" data-erd-target="` + report.Target + `" data-erd-pin="` + report.Revision + `"`,
+		// The application ERD is the primary view, drawn as authored with
+		// its ids namespaced to the view.
+		`<g id="` + application + `report">`, `data-erd-element="` + application + `report" data-erd-target="` + report.Target + `" data-erd-pin="` + report.Revision + `"`,
 		"1 of 1 directory entity is drawn.",
 		`<span class="technical-intent intent-implemented">implemented</span>`,
 		// Productions read in their declared flow and are not foreign keys.
@@ -92,7 +94,7 @@ func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 	}
 	status, body = technicalGet(t, mux, "/technical/erd/reporting")
 	for _, want := range []string{
-		`<g id="report-card">`, "1 of 2 directory entities are drawn; 1 is in the directory but not drawn.",
+		`<g id="` + (&erdView{Target: "urn:change-saga:test:erd:reporting"}).elementPrefix() + `report-card">`, "1 of 2 directory entities are drawn; 1 is in the directory but not drawn.",
 		`data-erd-row-pin="` + pins["job-r2"].Revision + `"`, `<span class="directory-gap">not drawn</span>`,
 		`data-relationship-meaning="association"`, `<span class="cardinality" data-cardinality-owner>0..many</span>`,
 		`<span class="cardinality" data-cardinality-destination>unknown</span>`, "Cardinality is declared unknown, not guessed.",
@@ -158,7 +160,7 @@ func TestTechnicalOverlayComposesWithoutRewritingBaseline(t *testing.T) {
 	status, body := technicalGet(t, mux, "/technical/erd-overlay/pdf-jobs")
 	for _, want := range []string{
 		"The baseline ERD is not rewritten", `href="/technical/erd/application?revision=r1"`,
-		`<g id="job">`, `data-overlay-change="adds"`, "added by this overlay",
+		`<g id="` + (&erdView{Target: "urn:change-saga:test:erd-overlay:pdf-jobs"}).elementPrefix() + `job">`, `data-overlay-change="adds"`, "added by this overlay",
 		`data-erd-row-pin="` + pins["job"].Revision + `"`, `data-erd-relationship="produced-from-job"`,
 		"2 of 2 directory entities are drawn.",
 	} {
@@ -186,6 +188,57 @@ func TestTechnicalERDRefusesATamperedDrawing(t *testing.T) {
 	view := app.makeERDView(inventory, record, record.CurrentRevision)
 	if view.Visual != "" || !strings.Contains(view.VisualNote, "unavailable") || len(view.Directory) != 1 {
 		t.Fatalf("tampered drawing: %#v", view)
+	}
+}
+
+func TestTechnicalERDRefusesActiveDrawingContent(t *testing.T) {
+	root, repo, pins := dataModelFixture(t)
+	app := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	inventory, err := requirements.LoadInventory(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	record := *inventory.Find("urn:change-saga:test:erd:application")
+	revision := *record.CurrentRevision
+	unsafe := `<svg xmlns="http://www.w3.org/2000/svg"><g id="report"><rect width="9" height="9"/><animate attributeName="href" to="javascript:alert(1)"/></g></svg>`
+	digest := coderef.DigestBytes([]byte(unsafe))
+	revision.Visual = &requirements.Visual{Path: "assets/" + strings.TrimPrefix(digest, coderef.DigestPrefix) + ".svg", MediaType: "image/svg+xml", Digest: digest}
+	writeServerFile(t, filepath.Join(root, filepath.FromSlash(requirements.TechnicalPath(requirements.KindERD, "application")), filepath.FromSlash(revision.Visual.Path)), unsafe)
+	view := app.makeERDView(inventory, &record, &revision)
+	if view.Visual != "" || !strings.Contains(view.VisualNote, "unavailable") || len(view.Directory) != 1 || view.Directory[0].Pin != pins["report"] {
+		t.Fatalf("active drawing content was not refused: %#v", view)
+	}
+}
+
+func TestSanitizeSVGKeepsOnlyStaticDrawing(t *testing.T) {
+	safe := `<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10"><defs><marker id="arrow"><path d="M0 0L9 5z"/></marker></defs><g id="job" fill="url(#grad)"><text x="1">a &lt; b &amp; "c"</text></g><use xlink:href="#job"/><path marker-end="url( '#arrow' )" d="M0 0"/></svg>`
+	markup, refused := sanitizeSVG([]byte(safe), "p-")
+	if len(refused) > 0 {
+		t.Fatalf("static drawing refused: %v", refused)
+	}
+	for _, want := range []string{`<marker id="p-arrow">`, `<g fill="url(#p-grad)" id="p-job">`, `<use href="#p-job"></use>`, `marker-end="url(#p-arrow)"`, `a &lt; b &amp; &#34;c&#34;`} {
+		if !strings.Contains(markup, want) {
+			t.Fatalf("sanitized drawing lost %s: %s", want, markup)
+		}
+	}
+	for name, unsafe := range map[string]string{
+		"script":         `<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>`,
+		"animate":        `<svg xmlns="http://www.w3.org/2000/svg"><a><animate attributeName="href" to="javascript:alert(1)"/></a></svg>`,
+		"set":            `<svg xmlns="http://www.w3.org/2000/svg"><set attributeName="onmouseover" to="alert(1)"/></svg>`,
+		"handler":        `<svg xmlns="http://www.w3.org/2000/svg"><rect onload="alert(1)"/></svg>`,
+		"style element":  `<svg xmlns="http://www.w3.org/2000/svg"><style>body{display:none}</style></svg>`,
+		"class":          `<svg xmlns="http://www.w3.org/2000/svg"><g class="diff-drawer"/></svg>`,
+		"external href":  `<svg xmlns="http://www.w3.org/2000/svg"><use href="https://example.test/x.svg#a"/></svg>`,
+		"javascript":     `<svg xmlns="http://www.w3.org/2000/svg"><use href="javascript:alert(1)"/></svg>`,
+		"external url":   `<svg xmlns="http://www.w3.org/2000/svg"><rect fill="url(https://example.test/p)"/></svg>`,
+		"foreign object": `<svg xmlns="http://www.w3.org/2000/svg"><foreignObject><div xmlns="http://www.w3.org/1999/xhtml">x</div></foreignObject></svg>`,
+		"doctype":        `<!DOCTYPE svg [<!ENTITY x "y">]><svg xmlns="http://www.w3.org/2000/svg"/>`,
+		"two roots":      `<svg xmlns="http://www.w3.org/2000/svg"><svg/></svg>`,
+		"not xml":        `<svg><g></svg>`,
+	} {
+		if markup, refused := sanitizeSVG([]byte(unsafe), "p-"); len(refused) == 0 || markup != "" {
+			t.Errorf("%s accepted: %s", name, markup)
+		}
 	}
 }
 
