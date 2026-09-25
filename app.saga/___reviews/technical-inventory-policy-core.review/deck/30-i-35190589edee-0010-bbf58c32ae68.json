@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "candidate-tests",
+  "slide": "policy-proof",
+  "rank": 10,
+  "kind": "example",
+  "label": "Intent, bounds and diagnostics matrix",
+  "description": "Tests cover independent mixed intent, unknown assessments, exact endpoint/self behavior, absent evidence, resolver ordering, malformed/duplicate refs, 64/65 bounds, deterministic owner positions and input/output isolation.",
+  "selector": {
+    "type": "element",
+    "element_id": "candidate-tests"
+  },
+  "record": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation"
+}

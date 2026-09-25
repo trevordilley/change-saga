@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/pin.go",
+      "start": 1,
+      "end": 14,
+      "digest": "sha256:4c7954513fd9a355c66b105cae1a27bb94328ba2dac78e93c82201e8a0a80034",
+      "note": "This internal helper requires snapshot-consistent resolved views, exact endpoint facts and a resolver bound to the canonical source. It owns no loading, publication, locks, parent races, approval or coverage."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "technical-inventory-policy-core",
+  "title": "Technical inventory policy core",
+  "role": "review",
+  "rank": 0,
+  "objective": "Review only the new internal policy and tests; no public writer, format, coverage, loading or persistence integration."
+}

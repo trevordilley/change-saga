@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/git_test.go",
+      "start": 1,
+      "end": 171,
+      "digest": "sha256:fb302592a68a3d7d559b70c13a0e9bc4b108cf959652269c119b3dbf85b569ef",
+      "note": "Temporary Git fixtures test missing-original recovery refusal, commit objects, movement, edits, deletion, retained edges and mixed intent through coderesolve. Evaluation preserves inputs and source/Git state."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scope",
+  "slide": "policy-proof",
+  "rank": 40,
+  "kind": "statement",
+  "label": "Read-only fixture evaluation",
+  "description": "The Git fixture captures source HEAD, worktree status and object counts around evaluation and asserts unchanged input and source state; no real Saga is involved.",
+  "selector": {
+    "type": "element",
+    "element_id": "scope"
+  }
+}

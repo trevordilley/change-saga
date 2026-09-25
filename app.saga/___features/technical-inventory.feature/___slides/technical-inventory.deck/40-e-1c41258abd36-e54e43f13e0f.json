@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/implementation.go",
+      "start": 173,
+      "end": 200,
+      "digest": "sha256:4e073f5b17bc75f9dcea7664f0bc259807c1ca25daf6b854df46b059047b6b52",
+      "note": "Each implemented edge needs implemented source/destination revisions and its own valid evidence. The candidate supplies its post-transition self intent; proposed edges stay in input-order remaining work. No status cascades."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-policy-foundation-evidence",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation:item:evidence",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+  "scope": "self",
+  "rationale": "Bounded implemented helper foundation: ValidateCandidate bounds and validates evidence, checks original commit objects and Author bytes, then calls Resolve at the full delivery commit. Pure movement passes; missing original proof and stale delivery refuse. Public integration remains proposed.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-25T00:03:11.831386Z"
+}

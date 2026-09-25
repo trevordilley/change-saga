@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "pin-tests",
+  "slide": "policy-proof",
+  "rank": 0,
+  "kind": "example",
+  "label": "Saved-view acceptance matrix",
+  "description": "Tests cover exact current and historical pins, missing/mismatched/ambiguous/inactive views, unknown facts, no fallback, independent global health and immutable inputs.",
+  "selector": {
+    "type": "element",
+    "element_id": "pin-tests"
+  },
+  "record": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation"
+}

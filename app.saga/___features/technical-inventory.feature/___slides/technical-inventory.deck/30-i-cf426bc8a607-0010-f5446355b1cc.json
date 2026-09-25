@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pins",
+  "slide": "technical-inventory-policy-foundation",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Current or explicit saved-view admission",
+  "description": "AdmitPin admits the exact current active pin by default, or an exact binding in an explicitly resolved active saved view. Invalid selected views refuse without fallback; global health is returned separately.",
+  "selector": {
+    "type": "element",
+    "element_id": "pins"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "boundary",
+  "slide": "policy-gates",
+  "rank": 0,
+  "kind": "region",
+  "label": "Trusted caller boundary",
+  "description": "This internal helper requires snapshot-consistent resolved views, exact endpoint facts and a resolver bound to the canonical source. It owns no loading, publication, locks, parent races, approval or coverage.",
+  "selector": {
+    "type": "element",
+    "element_id": "boundary"
+  },
+  "record": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation"
+}

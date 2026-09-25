@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "policy-gates",
+  "deck": "technical-inventory-policy-core",
+  "title": "Three policy gates, no public wiring",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-f1417417b787-0000-2ed840321d17.svg",
+  "takeaway": "Exact source and tests for the first internal policy slice. No public feature delivery, coverage grant, or review verdict is implied.",
+  "reading_order": [
+    "boundary",
+    "pins",
+    "evidence",
+    "intent"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/pin.go",
+      "start": 15,
+      "end": 136,
+      "digest": "sha256:23e0c35bdcbee7469eb2ef0520ca335b8afe84de2ac41be92b490ff298be93bd",
+      "note": "AdmitPin admits the exact current active pin by default, or an exact binding in an explicitly resolved active saved view. Invalid selected views refuse without fallback; global health is returned separately."
+    }
+  ]
+}
