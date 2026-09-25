@@ -22,6 +22,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -102,6 +103,11 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 	}
 	if !validation.Valid {
 		return nil, newError(CodeInvalidSaga, "the saga is invalid", false, map[string]any{"issues": sanitizeIssues(validation.Issues)}, nil)
+	}
+	// Eligible Item selections inherit their selected code for deck coverage.
+	// An unreadable inventory attaches nothing; it never widens coverage.
+	if inventory, err := requirements.LoadInventory(document.Root, document.Manifest.ID); err == nil {
+		inventoryview.AttachInherited(document, &inventory)
 	}
 	sourceDir := options.SourceDir
 	if strings.TrimSpace(sourceDir) == "" {

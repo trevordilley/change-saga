@@ -19,22 +19,26 @@ import (
 // reconciliationInventory summarizes technical-inventory impact. Counts are
 // omission prompts: an affected definition needs reassessment, not an edit.
 type reconciliationInventory struct {
-	Records           int                     `json:"records"`
-	References        int                     `json:"references"`
-	Current           int                     `json:"current"`
-	Stale             int                     `json:"stale"`
-	PreExisting       int                     `json:"pre_existing"`
-	Regressions       int                     `json:"regressions"`
-	Introduced        int                     `json:"introduced"`
-	Unknown           int                     `json:"baseline_unknown"`
-	Affected          int                     `json:"affected_by_code_change"`
-	PinProblems       int                     `json:"item_pin_problems"`
-	Unresolved        int                     `json:"unresolved_records"`
-	Unreferenced      int                     `json:"unreferenced_needing_choice"`
-	ProposedSkipped   int                     `json:"proposed_references_not_assessed"`
-	Exempt            []inventoryUnreferenced `json:"unreferenced_exempt"`
-	BaselineAvailable bool                    `json:"baseline_available"`
-	Limits            []string                `json:"limits"`
+	Records              int                     `json:"records"`
+	References           int                     `json:"references"`
+	Current              int                     `json:"current"`
+	Stale                int                     `json:"stale"`
+	PreExisting          int                     `json:"pre_existing"`
+	Regressions          int                     `json:"regressions"`
+	Introduced           int                     `json:"introduced"`
+	Unknown              int                     `json:"baseline_unknown"`
+	Affected             int                     `json:"affected_by_code_change"`
+	PinProblems          int                     `json:"item_pin_problems"`
+	Unresolved           int                     `json:"unresolved_records"`
+	Unreferenced         int                     `json:"unreferenced_needing_choice"`
+	ProposedSkipped      int                     `json:"proposed_references_not_assessed"`
+	Selections           int                     `json:"item_selections"`
+	SelectionsUnresolved int                     `json:"selections_unresolved"`
+	SelectionsStale      int                     `json:"selections_selected_bytes_stale"`
+	SelectionsReassess   int                     `json:"selections_needing_reassessment"`
+	Exempt               []inventoryUnreferenced `json:"unreferenced_exempt"`
+	BaselineAvailable    bool                    `json:"baseline_available"`
+	Limits               []string                `json:"limits"`
 }
 
 type inventoryUnreferenced struct {
@@ -232,6 +236,33 @@ func reconcileInventory(ctx context.Context, in inventoryReconcileInput) (reconc
 				}
 			}
 		}
+	}
+	// Saved Item selections: unresolved paths, byte drift inside the subset,
+	// and changes outside it that need semantic reassessment.
+	for _, sel := range inventoryview.ItemSelections(ctx, in.document, in.inventory, in.head, in.resolver) {
+		summary.Selections++
+		if sel.Result.Eligible && len(sel.Result.Reasons) == 0 {
+			continue
+		}
+		debt := "reassess"
+		switch {
+		case sel.Result.State != "resolved":
+			debt = "unresolved"
+			summary.SelectionsUnresolved++
+		case sel.Result.SelectedHealth != nil && !sel.Result.SelectedHealth.Current():
+			debt = "selected_bytes_stale"
+			summary.SelectionsStale++
+		default:
+			summary.SelectionsReassess++
+		}
+		task := reconciliationRoute(in.root, in.repo, in.head, in.mismatch, in.document, nil, sel.Item, "item")
+		task.Debt = debt
+		for _, reason := range sel.Result.Reasons {
+			task.Because = append(task.Because, changeview.Cause{Kind: "selection_" + reason.Code, Via: sel.Result.Selection.ID, Detail: reason.Detail})
+		}
+		task.Inspect = append(task.Inspect, reconciliationQuery(in.root, in.repo, in.head, "query inventory-selections", grammar.V("item", sel.Item)))
+		task.Guidance = "Read the Item, its selection path and the current code. Selected-byte drift needs a new exact subset; a change outside the subset leaves the selected bytes current but may change what the entity means. Keep saved pins unless the Item deliberately adopts a newer revision."
+		tasks = append(tasks, task)
 	}
 	sort.SliceStable(summary.Exempt, func(i, j int) bool { return summary.Exempt[i].Target < summary.Exempt[j].Target })
 	return summary, tasks

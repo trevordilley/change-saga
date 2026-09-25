@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -433,4 +434,109 @@ func inventoryQueryTarget(sagaID, target string) error {
 		return fmt.Errorf("--target must be a canonical technical URN of this Saga")
 	}
 	return nil
+}
+
+type inventorySelectionsData struct {
+	Head         string                        `json:"head_oid"`
+	Selections   []inventoryview.ItemSelection `json:"selections"`
+	Completeness inventoryCoverageComplete     `json:"completeness"`
+}
+
+// queryInventorySelections explains every saved implementation Item
+// selection: its declared path, containing evidence and separately resolved
+// pin, selected-byte and containing-evidence health at one source revision.
+func queryInventorySelections(ctx context.Context, args []string, out io.Writer) error {
+	flags := flag.NewFlagSet("query inventory-selections", flag.ContinueOnError)
+	flags.SetOutput(io.Discard)
+	root := flags.String("saga", "", "app Saga root")
+	repo := flags.String("repo", "", "source checkout")
+	head := flags.String("head", "HEAD", "source revision to view")
+	feature := flags.String("feature", "", "feature ID or URN")
+	itemTarget := flags.String("item", "", "implementation Item URN")
+	state := flags.String("state", "", "eligible, ineligible or unresolved")
+	limit := flags.Int("limit", 50, "page size")
+	cursor := flags.String("cursor", "", "snapshot-bound page cursor")
+	fail := func(code string, err error) error {
+		return writeQueryFailure(out, &queryError{Code: code, Message: err.Error()})
+	}
+	if err := flags.Parse(args); err != nil {
+		if err == flag.ErrHelp {
+			return writeQuerySuccess(out, "", queryHelpFor("inventory-selections"), nil)
+		}
+		return fail("invalid_argument", err)
+	}
+	if *root == "" || flags.NArg() != 0 || *limit < 1 || *limit > maxQueryPageSize || (*state != "" && *state != "eligible" && *state != "ineligible" && *state != "unresolved") {
+		return fail("invalid_argument", fmt.Errorf("requires --saga; valid --state and --limit"))
+	}
+	manifest, err := saga.ReadManifest(*root)
+	if err != nil {
+		return fail("invalid_saga", err)
+	}
+	featureID := ""
+	if *feature != "" {
+		id, ok := applayout.FeatureFromURN(manifest.ID, *feature)
+		if !ok {
+			return fail("invalid_argument", fmt.Errorf("--feature must be a feature ID or canonical URN"))
+		}
+		featureID = id
+	}
+	checkout := firstNonEmpty(*repo, *root)
+	catalog, err := gitdiff.ReadCatalogRange(ctx, checkout, manifest.Source.Repository, gitdiff.Range{Head: *head}, gitdiff.ReadOptions{})
+	if err != nil {
+		return fail("source_unavailable", err)
+	}
+	changes := gitdiff.ChangeSet{Mode: catalog.Mode, Repository: catalog.Repository, Head: catalog.Head, BaseOID: catalog.BaseOID, HeadOID: catalog.HeadOID}
+	snapshot, err := reviewapp.Snapshot(ctx, *root, changes)
+	if err != nil {
+		return fail("internal", err)
+	}
+	inventory, err := requirements.LoadInventory(*root, manifest.ID)
+	if err != nil {
+		return fail("invalid_saga", err)
+	}
+	document, _, err := saga.Load(*root)
+	if err != nil {
+		return fail("invalid_saga", err)
+	}
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return fail("source_unavailable", err)
+	}
+	defer resolver.Close()
+	all := inventoryview.ItemSelections(ctx, document, &inventory, changes.HeadOID, resolver)
+	selected := []inventoryview.ItemSelection{}
+	for _, s := range all {
+		if (featureID != "" && s.Feature != featureID) || (*itemTarget != "" && s.Item != *itemTarget) {
+			continue
+		}
+		switch {
+		case *state == "eligible" && !s.Result.Eligible, *state == "ineligible" && (s.Result.Eligible || s.Result.State != "resolved"), *state == "unresolved" && s.Result.State == "resolved":
+			continue
+		}
+		// Attachment is the structural-and-current-pins test coverage uses.
+		s.Attached = s.Result.State == "resolved" && s.Result.PinsCurrent
+		selected = append(selected, s)
+	}
+	key := "inventory-selections:v1\x00" + changes.HeadOID + "\x00" + featureID + "\x00" + *itemTarget + "\x00" + *state
+	start, cursorErr := decodeTermsCursor(*cursor, key, snapshot, len(selected))
+	if cursorErr != nil {
+		return writeQueryFailure(out, cursorErr)
+	}
+	end := min(start+*limit, len(selected))
+	page := queryPageEnvelope{Total: len(selected), Returned: end - start, HasMore: end < len(selected)}
+	if page.HasMore {
+		next := encodeTermsCursor(key, snapshot, end)
+		page.NextCursor = &next
+	}
+	after, err := reviewapp.Snapshot(ctx, *root, changes)
+	if err != nil {
+		return fail("internal", err)
+	}
+	if after != snapshot {
+		return fail("stale_snapshot", fmt.Errorf("the Saga changed while reading; restart the query"))
+	}
+	return writeQuerySuccess(out, snapshot, inventorySelectionsData{Head: changes.HeadOID, Selections: selected[start:end], Completeness: inventoryCoverageComplete{
+		Measures: []string{"every saved selection of every implementation deck Item, in deck order", "structure from the saved revisions; pin status; selected bytes and containing evidence viewed separately at head_oid"},
+		Limits:   []string{"attached selections add only their selected lines to implementation-deck coverage, through the Item; unselected code in the same entity earns nothing", "review deck Items never inherit coverage", "eligibility is byte and pin currency, not proof that the explanation is correct"},
+	}}, &page)
 }
