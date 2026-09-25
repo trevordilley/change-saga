@@ -40,7 +40,7 @@ type cachedAnswer struct {
 // process. Without a session it computes the answer and remembers nothing.
 // Failures are never remembered.
 func Stable(ctx context.Context, repo string, objects []string, key []string, compute func() ([]byte, error)) ([]byte, error) {
-	if sessionFrom(ctx) == nil || !remembers(ctx) || !NamesObjects(objects...) {
+	if sessionFrom(ctx) == nil || !NamesObjects(objects...) {
 		return compute()
 	}
 	joined := strings.Join(append([]string{repo}, key...), "\x00")
@@ -53,6 +53,34 @@ func Stable(ctx context.Context, repo string, objects []string, key []string, co
 	value, err := compute()
 	if err == nil {
 		stable.put(joined, value)
+	}
+	return value, err
+}
+
+// StableDiff is Stable for a diff between commits. Git also reads attributes
+// from the checkout, nested .gitattributes files included, and no key here
+// covers them; so a long-running process, whose requests may outlive an
+// edit to one, remembers a diff only for the session that asked.
+func StableDiff(ctx context.Context, repo string, objects []string, key []string, compute func() ([]byte, error)) ([]byte, error) {
+	if remembers(ctx) {
+		return Stable(ctx, repo, objects, key, compute)
+	}
+	session := sessionFrom(ctx)
+	if session == nil {
+		return compute()
+	}
+	joined := strings.Join(append([]string{repo}, key...), "\x00")
+	session.mu.Lock()
+	value, ok := session.diffs[joined]
+	session.mu.Unlock()
+	if ok {
+		return bytes.Clone(value), nil
+	}
+	value, err := compute()
+	if err == nil {
+		session.mu.Lock()
+		session.diffs[joined] = bytes.Clone(value)
+		session.mu.Unlock()
 	}
 	return value, err
 }

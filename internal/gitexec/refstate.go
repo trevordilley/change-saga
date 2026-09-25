@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -23,8 +24,8 @@ import (
 // repository and global configuration files, and the Git environment. Git
 // rewrites every one of those through a lock file, so any change that could
 // move an answer changes the digest, whatever the file system's timestamp
-// resolution. Configuration pulled in through include directives and the
-// system-wide configuration file are not covered.
+// resolution. Configuration counts every file Git reads: the repository's,
+// the system and global files Git reports, and whatever they include.
 
 // maxStateBytes bounds how much a digest reads; a repository whose refs
 // exceed it is simply never remembered.
@@ -39,6 +40,10 @@ type repoLocation struct {
 	// change the answer.
 	between []string
 	topInfo os.FileInfo
+	// config is the configuration digest the answer was given under:
+	// core.worktree, core.bare, and safe.directory can all move or refuse
+	// the top level.
+	config string
 }
 
 var locations sync.Map // gitEnvironment + absolute directory -> *repoLocation
@@ -58,7 +63,7 @@ func TopLevel(ctx context.Context, dir string) (string, error) {
 func locate(ctx context.Context, dir string) (*repoLocation, error) {
 	abs, absErr := filepath.Abs(dir)
 	key := gitEnvironment() + "\x00" + abs
-	remember := absErr == nil && remembers(ctx)
+	remember := absErr == nil
 	if remember {
 		if cached, ok := locations.Load(key); ok && cached.(*repoLocation).stillAt(abs) {
 			return cached.(*repoLocation), nil
@@ -105,7 +110,9 @@ func (location *repoLocation) record(dir string) bool {
 		}
 		if os.SameFile(info, topInfo) {
 			location.topInfo = topInfo
-			return true
+			config, ok := location.digest(false)
+			location.config = config
+			return ok
 		}
 		location.between = append(location.between, current)
 		if filepath.Dir(current) == current {
@@ -123,6 +130,9 @@ func (location *repoLocation) stillAt(dir string) bool {
 		return false
 	}
 	if _, err := os.Stat(location.gitDir); err != nil {
+		return false
+	}
+	if config, ok := location.digest(false); !ok || config != location.config {
 		return false
 	}
 	for _, between := range location.between {
@@ -172,9 +182,6 @@ func ConfigOutput(ctx context.Context, repo string, args ...string) ([]byte, err
 }
 
 func rememberRefs(ctx context.Context, repo string, withRefs bool, query []string, compute func() ([]byte, error)) ([]byte, error) {
-	if !remembers(ctx) {
-		return compute()
-	}
 	location, err := locate(ctx, repo)
 	if err != nil {
 		return compute()
@@ -289,12 +296,43 @@ func (location *repoLocation) digest(withRefs bool) (string, bool) {
 		})
 		return err == nil && complete
 	}
-	files := append([]string{
+	// A configuration file counts with every file it includes, whatever the
+	// include's condition, followed as Git would.
+	var addConfig func(path string, depth int) bool
+	addConfig = func(path string, depth int) bool {
+		if depth > maxIncludeDepth || !add(path) {
+			return false
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return errors.Is(err, fs.ErrNotExist)
+		}
+		included, ok := includedConfigFiles(path, data)
+		if !ok {
+			return false
+		}
+		for _, include := range included {
+			if !addConfig(include, depth+1) {
+				return false
+			}
+		}
+		return true
+	}
+	user, ok := userConfigFiles()
+	if !ok {
+		return "", false
+	}
+	for _, path := range append([]string{
 		filepath.Join(location.gitDir, "config.worktree"),
 		filepath.Join(location.commonDir, "config"),
-	}, globalConfigFiles()...)
+	}, user...) {
+		if !addConfig(path, 0) {
+			return "", false
+		}
+	}
 	// Remotes may still be defined the legacy way, one file per remote.
 	roots := []string{filepath.Join(location.commonDir, "remotes"), filepath.Join(location.commonDir, "branches")}
+	var files []string
 	if withRefs {
 		files = append(files,
 			filepath.Join(location.gitDir, "HEAD"),
@@ -319,17 +357,103 @@ func (location *repoLocation) digest(withRefs bool) (string, bool) {
 	return hex.EncodeToString(hash.Sum(nil)), true
 }
 
-func globalConfigFiles() []string {
-	var files []string
-	if global := os.Getenv("GIT_CONFIG_GLOBAL"); global != "" {
-		files = append(files, global)
-	} else if home, err := os.UserHomeDir(); err == nil {
-		files = append(files, filepath.Join(home, ".gitconfig"))
-		if xdg := os.Getenv("XDG_CONFIG_HOME"); xdg != "" {
-			files = append(files, filepath.Join(xdg, "git", "config"))
-		} else {
-			files = append(files, filepath.Join(home, ".config", "git", "config"))
+// maxIncludeDepth matches Git's own limit on nested includes.
+const maxIncludeDepth = 10
+
+var userConfig sync.Map // gitEnvironment -> []string, or nil when unknown
+
+// userConfigFiles are the system and global configuration files Git reads
+// in this environment, as Git itself reports them. It reports false when
+// this Git cannot say, and nothing that depends on configuration is then
+// remembered.
+func userConfigFiles() ([]string, bool) {
+	key := gitEnvironment()
+	if cached, ok := userConfig.Load(key); ok {
+		files, _ := cached.([]string)
+		return files, files != nil
+	}
+	files := []string{}
+	system, err := exec.Command("git", "var", "GIT_CONFIG_SYSTEM").Output()
+	switch {
+	case err == nil:
+		files = append(files, strings.Fields(string(system))...)
+	case !noSystemConfig():
+		userConfig.Store(key, nil)
+		return nil, false
+	}
+	global, err := exec.Command("git", "var", "GIT_CONFIG_GLOBAL").Output()
+	if err != nil {
+		userConfig.Store(key, nil)
+		return nil, false
+	}
+	for _, line := range strings.Split(strings.TrimSpace(string(global)), "\n") {
+		if line = strings.TrimSpace(line); line != "" {
+			files = append(files, filepath.FromSlash(line))
 		}
 	}
-	return files
+	userConfig.Store(key, files)
+	return files, true
+}
+
+// noSystemConfig reports whether GIT_CONFIG_NOSYSTEM turns the system file
+// off, in which case git var reports no path for it.
+func noSystemConfig() bool {
+	switch strings.ToLower(strings.TrimSpace(os.Getenv("GIT_CONFIG_NOSYSTEM"))) {
+	case "", "0", "false", "no", "off":
+		return false
+	}
+	return true
+}
+
+// includedConfigFiles lists the files a configuration file includes through
+// [include] and [includeIf] path entries, resolved as Git resolves them. It
+// reports false for any path it cannot resolve exactly (escapes, %(prefix)),
+// so nothing is remembered on a guess.
+func includedConfigFiles(file string, data []byte) ([]string, bool) {
+	var included []string
+	section := ""
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(strings.TrimSuffix(line, "\r"))
+		if strings.HasPrefix(line, "[") {
+			end := strings.IndexByte(line, ']')
+			if end < 0 {
+				return nil, false
+			}
+			header := strings.ToLower(strings.TrimSpace(line[1:end]))
+			section = strings.TrimSpace(strings.SplitN(strings.SplitN(header, "\"", 2)[0], " ", 2)[0])
+			line = strings.TrimSpace(line[end+1:])
+		}
+		if line == "" || line[0] == '#' || line[0] == ';' || (section != "include" && section != "includeif") {
+			continue
+		}
+		key, value, found := strings.Cut(line, "=")
+		if !found || !strings.EqualFold(strings.TrimSpace(key), "path") {
+			continue
+		}
+		value = strings.TrimSpace(value)
+		if strings.HasPrefix(value, "\"") {
+			closing := strings.IndexByte(value[1:], '"')
+			if closing < 0 {
+				return nil, false
+			}
+			value = value[1 : closing+1]
+		} else if cut := strings.IndexAny(value, "#;"); cut >= 0 {
+			value = strings.TrimSpace(value[:cut])
+		}
+		if value == "" || strings.ContainsAny(value, "\\\"") || strings.Contains(value, "%(") {
+			return nil, false
+		}
+		switch {
+		case strings.HasPrefix(value, "~/"):
+			home, err := os.UserHomeDir()
+			if err != nil {
+				return nil, false
+			}
+			value = filepath.Join(home, value[2:])
+		case !filepath.IsAbs(filepath.FromSlash(value)):
+			value = filepath.Join(filepath.Dir(file), value)
+		}
+		included = append(included, filepath.FromSlash(value))
+	}
+	return included, true
 }

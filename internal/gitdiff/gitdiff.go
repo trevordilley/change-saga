@@ -422,7 +422,7 @@ func diffCommits(ctx context.Context, repo string, format []string, from, to str
 	// (binary and -diff change the patch), so the answer is remembered for the
 	// checkout's attribute files as they are now.
 	key := append([]string{"diff", from, to, attributesIdentity(repo)}, format...)
-	return gitexec.Stable(ctx, repo, []string{from, to}, append(append(key, "--"), pathspec...), func() ([]byte, error) {
+	return gitexec.StableDiff(ctx, repo, []string{from, to}, append(append(key, "--"), pathspec...), func() ([]byte, error) {
 		return diffCommitsOnce(ctx, repo, format, from, to, pathspec...)
 	})
 }

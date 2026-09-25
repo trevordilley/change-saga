@@ -39,7 +39,9 @@ type Session struct {
 	// digests holds each repository's ref and configuration digest, taken
 	// once per session; "" means the repository cannot be summarized.
 	digests map[string]string
-	// isolated sessions neither read nor add to the process-wide caches.
+	// diffs holds the diffs an isolated session has read.
+	diffs map[string][]byte
+	// isolated sessions remember diffs only for themselves.
 	isolated bool
 	closed   bool
 }
@@ -62,13 +64,11 @@ func Begin(ctx context.Context) (context.Context, func()) {
 	return begin(ctx, false)
 }
 
-// BeginIsolated is Begin for a request to a long-running process: the
-// session still asks each question once and shares batch processes, but it
-// neither reads nor adds to the answers remembered across sessions, so
-// nothing it learns outlives the request. Those caches rest on keys that
-// miss some inputs (nested .gitattributes edits, system-wide and included
-// Git configuration), which only a process that outlives such an edit can
-// observe.
+// BeginIsolated is Begin for a request to a long-running process. A diff
+// between commits also depends on attributes Git reads from the checkout,
+// nested .gitattributes files included, which no cache key covers; an
+// isolated session remembers diffs only for itself, so a request never sees
+// a patch read before such an edit. Everything else is remembered as usual.
 func BeginIsolated(ctx context.Context) (context.Context, func()) {
 	if sessionFrom(ctx) != nil {
 		return ctx, func() {}
@@ -86,7 +86,7 @@ func BeginDetached(ctx context.Context) (context.Context, func()) {
 }
 
 func begin(ctx context.Context, isolated bool) (context.Context, func()) {
-	session := &Session{memo: map[string]*call{}, pools: map[string]*batchPool{}, failures: map[string]int{}, digests: map[string]string{}, isolated: isolated}
+	session := &Session{memo: map[string]*call{}, pools: map[string]*batchPool{}, failures: map[string]int{}, digests: map[string]string{}, diffs: map[string][]byte{}, isolated: isolated}
 	session.cond = sync.NewCond(&session.mu)
 	return context.WithValue(ctx, sessionKey{}, session), session.close
 }
@@ -95,12 +95,11 @@ func begin(ctx context.Context, isolated bool) (context.Context, func()) {
 var longRunning atomic.Bool
 
 // LongRunning declares that this process outlives the commands it runs, as
-// the review server does. From then on no answer is remembered beyond the
-// session that asked it, including Git asked outside any session.
+// the review server does. From then on every session remembers diffs only
+// for itself, as an isolated one does.
 func LongRunning() { longRunning.Store(true) }
 
-// remembers reports whether ctx may use the answers remembered across
-// sessions.
+// remembers reports whether ctx may use diffs remembered across sessions.
 func remembers(ctx context.Context) bool {
 	if longRunning.Load() {
 		return false

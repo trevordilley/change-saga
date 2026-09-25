@@ -201,21 +201,23 @@ func TestRememberedAnswersStartNoGitWhenNothingChanged(t *testing.T) {
 	}
 }
 
-// An included configuration file is outside the state digest. A process
-// that outlives an edit to one, as the review server does, must see it: its
-// requests run in isolated sessions, and once it declares itself long
-// running nothing is remembered between sessions at all.
-func TestLongRunningProcessesSeeEditsTheDigestMisses(t *testing.T) {
+// Configuration counts every file Git reads: included files, followed
+// through relative paths and nested includes, and the system file. An edit
+// to any of them reaches the next command.
+func TestRememberedConfigurationFollowsIncludedAndSystemFiles(t *testing.T) {
 	repo, _ := history(t)
 	git(t, repo, "remote", "add", "origin", "https://example.test/a.git")
 	dir := t.TempDir()
-	included := filepath.Join(dir, "included")
-	global := filepath.Join(dir, "gitconfig")
-	write(t, global, "[include]\n\tpath = "+filepath.ToSlash(included)+"\n")
-	t.Setenv("GIT_CONFIG_GLOBAL", global)
-	origin := func(begin func(context.Context) (context.Context, func())) string {
+	nested := filepath.Join(dir, "nested")
+	write(t, filepath.Join(dir, "first"), "[includeIf \"gitdir:/nowhere/\"]\n\tpath = nested\n[include]\n\tpath = nested ; a comment\n")
+	write(t, filepath.Join(dir, "gitconfig"), "[include]\n\tpath = \""+filepath.ToSlash(filepath.Join(dir, "first"))+"\"\n")
+	system := filepath.Join(dir, "system")
+	write(t, system, "")
+	t.Setenv("GIT_CONFIG_GLOBAL", filepath.Join(dir, "gitconfig"))
+	t.Setenv("GIT_CONFIG_SYSTEM", system)
+	origin := func() string {
 		t.Helper()
-		ctx, end := begin(context.Background())
+		ctx, end := Begin(context.Background())
 		defer end()
 		output, err := ConfigOutput(ctx, repo, "remote", "get-url", "origin")
 		if err != nil {
@@ -223,27 +225,60 @@ func TestLongRunningProcessesSeeEditsTheDigestMisses(t *testing.T) {
 		}
 		return strings.TrimSpace(string(output))
 	}
-	rewrite := func(mirror string) {
-		write(t, included, "[url \""+mirror+"\"]\n\tinsteadOf = https://example.test/\n")
+	rule := func(mirror string) string {
+		return "[url \"" + mirror + "\"]\n\tinsteadOf = https://example.test/\n"
 	}
-
-	rewrite("https://one.test/")
-	if got := origin(Begin); got != "https://one.test/a.git" {
+	write(t, nested, rule("https://one.test/"))
+	if got := origin(); got != "https://one.test/a.git" {
 		t.Fatalf("origin = %q", got)
 	}
-	rewrite("https://two.test/")
-	// The gap this guards against: a command-scoped cache keeps the answer.
-	if got := origin(Begin); got != "https://one.test/a.git" {
-		t.Fatalf("the included file became part of the digest (%q); tighten this test", got)
+	write(t, nested, rule("https://two.test/"))
+	if got := origin(); got != "https://two.test/a.git" {
+		t.Fatalf("origin after editing a nested include = %q", got)
 	}
-	if got := origin(BeginIsolated); got != "https://two.test/a.git" {
-		t.Fatalf("an isolated session served a remembered origin %q", got)
+	write(t, nested, "")
+	write(t, system, rule("https://system.test/"))
+	if got := origin(); got != "https://system.test/a.git" {
+		t.Fatalf("origin after editing the system file = %q", got)
 	}
+}
 
-	t.Cleanup(func() { longRunning.Store(false) })
-	LongRunning()
-	rewrite("https://three.test/")
-	if got := origin(Begin); got != "https://three.test/a.git" {
-		t.Fatalf("a long-running process served a remembered origin %q", got)
+// core.worktree moves the top level without touching the directory tree.
+func TestRememberedTopLevelFollowsConfiguration(t *testing.T) {
+	repo, _ := history(t)
+	elsewhere := t.TempDir()
+	first, err := TopLevel(context.Background(), repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	git(t, repo, "config", "core.worktree", elsewhere)
+	moved, err := TopLevel(context.Background(), repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if moved == first {
+		t.Fatalf("TopLevel stayed %q after core.worktree moved it", first)
+	}
+	if want := git(t, repo, "rev-parse", "--show-toplevel"); moved != want {
+		t.Fatalf("TopLevel = %q; want %q", moved, want)
+	}
+}
+
+func TestIncludedConfigFiles(t *testing.T) {
+	dir := t.TempDir()
+	file := filepath.Join(dir, "config")
+	home, err := os.UserHomeDir()
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, ok := includedConfigFiles(file, []byte("[user]\n\tname = path = no\n[Include]\n\tPath = relative\n[includeIf \"onbranch:main\"] path = ~/cond # note\n[include]\n\tpath = \"/abs/quoted\"\n"))
+	want := []string{filepath.Join(dir, "relative"), filepath.Join(home, "cond"), filepath.FromSlash("/abs/quoted")}
+	if !ok || strings.Join(got, "|") != strings.Join(want, "|") {
+		t.Fatalf("includedConfigFiles = %q, %v; want %q", got, ok, want)
+	}
+	for _, unsure := range []string{"[include]\n\tpath = a\\\\b\n", "[include]\n\tpath = %(prefix)/etc/x\n", "[include\n"} {
+		if _, ok := includedConfigFiles(file, []byte(unsure)); ok {
+			t.Fatalf("includedConfigFiles accepted %q, which it cannot resolve exactly", unsure)
+		}
 	}
 }
