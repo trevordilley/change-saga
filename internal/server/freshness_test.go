@@ -161,15 +161,16 @@ func TestTheDecksAreBuiltOncePerStateOfTheSaga(t *testing.T) {
 			t.Fatalf("GET %s = %d", path, recorder.Code)
 		}
 	}
-	dogfoodGet("/")
+	dogfoodGet("/decks")
 	files := application.files.current
 	if files == nil || files.slidesView == nil {
 		t.Fatal("the app Saga's decks were not built through the Saga files")
 	}
 	built := files.slidesView
 	dogfoodGet("/features")
+	dogfoodGet("/decks")
 	if application.files.current != files || files.slidesView != built {
-		t.Fatal("a second page built the unchanged decks again")
+		t.Fatal("a second request built the unchanged decks again")
 	}
 }
 

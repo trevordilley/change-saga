@@ -161,11 +161,7 @@ type pageData struct {
 	ReviewCodeHref     string
 	ReviewCoverageHref string
 	Root               *sectionView
-	SlideRoot          *sectionView
-	// SlidesHTML is the deck viewer rendered from SlideRoot. Without it the
-	// page renders the viewer itself.
-	SlidesHTML template.HTML
-	Nav        []*navNodeView
+	Nav                []*navNodeView
 	Diagnostic string
 	Code       *CodeReviewView
 	Manifest   *CoverageManifestView
@@ -477,6 +473,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("POST /reviews/{id}/decision", application.reviewDecision)
 	handle("POST /reviews/{id}/comment", application.reviewComment)
 	handle("GET /assets/{hash}/{name}", application.shellAssetFile)
+	handle("GET /decks", application.decksPage)
 	handle("GET /app.js", application.javascript)
 	handle("GET "+diagram.FontPath, application.diagramFont)
 	handle("GET /theme.js", application.themeScript)
@@ -1284,33 +1281,72 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	if route.kind != "overview" && !data.TermsMode {
 		markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
 	}
-	if data.EmbeddedDecks {
-		// Every page shows the same decks, read from the same narrative and
-		// records, so their view is built once for each state of the files.
-		data.SlideRoot, data.SlidesHTML, err = files.slides(func() (*sectionView, template.HTML, error) {
-			root := makeSectionView(slideRoot, scope)
-			storyLinks := &storyLinkDecorator{document: document, records: requirementsDocument}
-			for _, deck := range root.ChildViews {
-				for _, slide := range deck.FragmentViews {
-					if err := storyLinks.decorate(slide); err != nil {
-						return nil, "", fmt.Errorf("story links could not be resolved: %w", err)
-					}
+	return data, nil
+}
+
+// decks is the deck viewer: every slide of every embedded deck, as every page
+// shows them. It is the largest thing the reviewer renders and the same for
+// every page, so the pages leave it out and the shell loads it once, after
+// its first paint, from /decks. Built from the narrative and the records with
+// the complete slides' links projected in, it is built once for each state
+// of the Saga's files, whose fingerprint it returns.
+func (a *app) decks(ctx context.Context) (string, template.HTML, error) {
+	files := a.sagaFiles(ctx)
+	document := files.narrative()
+	if document == nil {
+		return "", "", errors.New("The slide deck could not be loaded. Run change-saga validate for details.")
+	}
+	if len(document.Decks)+len(document.Onboarding) == 0 {
+		return files.fingerprint, "", nil
+	}
+	_, html, err := files.slides(func() (*sectionView, template.HTML, error) {
+		records, err := files.projectedRecords(document.Manifest.ID)
+		if err != nil {
+			return nil, "", fmt.Errorf("the complete-slide criterion links could not be loaded: %w", err)
+		}
+		_, slideRoot := splitReportAndDeckSections(document.Section)
+		root := makeSectionView(slideRoot, viewScope{})
+		storyLinks := &storyLinkDecorator{document: document, records: records}
+		for _, deck := range root.ChildViews {
+			for _, slide := range deck.FragmentViews {
+				if err := storyLinks.decorate(slide); err != nil {
+					return nil, "", fmt.Errorf("story links could not be resolved: %w", err)
 				}
 			}
-			labelDeckRoles(root, document)
-			// The deck viewer reads nothing but the decks, so it is rendered
-			// here once rather than into every page.
-			var rendered bytes.Buffer
-			if err := a.template.ExecuteTemplate(&rendered, "deck-viewer", root); err != nil {
-				return nil, "", fmt.Errorf("the decks could not be rendered: %w", err)
-			}
-			return root, template.HTML(rendered.String()), nil
-		})
-		if err != nil {
-			return nil, err
+		}
+		labelDeckRoles(root, document)
+		var rendered bytes.Buffer
+		if err := a.template.ExecuteTemplate(&rendered, "deck-viewer", root); err != nil {
+			return nil, "", fmt.Errorf("the decks could not be rendered: %w", err)
+		}
+		return root, template.HTML(rendered.String()), nil
+	})
+	return files.fingerprint, html, err
+}
+
+// decksPage serves the deck viewer to the shell. Its validator is the state
+// of the Saga it was built from, so a new session on an unchanged Saga
+// revalidates it rather than downloading it again, and a changed Saga is
+// never served from a cache.
+func (a *app) decksPage(w http.ResponseWriter, r *http.Request) {
+	fingerprint, html, err := a.decks(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	if fingerprint == "" {
+		w.Header().Set("Cache-Control", "no-store")
+	} else {
+		etag := `"` + fingerprint + `"`
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("ETag", etag)
+		if r.Header.Get("If-None-Match") == etag {
+			w.WriteHeader(http.StatusNotModified)
+			return
 		}
 	}
-	return data, nil
+	_, _ = io.WriteString(w, string(html))
 }
 
 // rootNavLinks points the sidebar's in-page anchors at the overview.

@@ -29,13 +29,23 @@ func TestEmbeddedDeckRendersInTheDeckViewer(t *testing.T) {
 	var rendered bytes.Buffer
 	data := pageData{
 		Saga: document, EmbeddedDecks: true,
-		Root: makeSectionView(reportRoot, viewScope{}), SlideRoot: makeSectionView(slideRoot, viewScope{}),
-		Nav: append(makeNavTree(reportRoot), makeDeckNavTree(slideRoot)...),
+		Root: makeSectionView(reportRoot, viewScope{}),
+		Nav:  append(makeNavTree(reportRoot), makeDeckNavTree(slideRoot)...),
 	}
 	if err := tmpl.ExecuteTemplate(&rendered, "page", data); err != nil {
 		t.Fatal(err)
 	}
-	html := rendered.String()
+	// The page holds the place the deck viewer loads into after its first
+	// paint; the viewer itself is the same for every page and comes once.
+	page := rendered.String()
+	if !strings.Contains(page, `data-deck-host hx-get="/decks" hx-trigger="load"`) || strings.Contains(page, "data-deck-viewer") {
+		t.Fatalf("the page does not load the deck viewer once, apart from itself:\n%s", page)
+	}
+	rendered.Reset()
+	if err := tmpl.ExecuteTemplate(&rendered, "deck-viewer", makeSectionView(slideRoot, viewScope{})); err != nil {
+		t.Fatal(err)
+	}
+	html := page + rendered.String()
 	slideTarget := saga.SlideTarget("visual", "change")
 	for _, contract := range []string{`id="view-slides"`, `class="sidebar-slide-surface"`, `data-deck-viewer`, `data-deck-slide`, `data-deck-target=`, `data-slide-present`, `data-slide-exit-presentation`, `data-deck-toggle`, `class="doc-node doc-slide-thumbnail"`, `class="slide-section-divider" data-slide-section>Architecture`, `data-slide-thumbnail`, `data-slide-target="` + slideTarget + `"`, `#i-deck`, `/f/change/` + assetName} {
 		if !strings.Contains(html, contract) {

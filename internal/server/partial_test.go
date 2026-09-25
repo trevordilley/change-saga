@@ -144,3 +144,32 @@ func getPlain(t *testing.T, handler http.Handler, path string) string {
 	}
 	return recorder.Body.String()
 }
+
+// The deck viewer is loaded once per session, after the first paint, and
+// its validator is the state of the Saga it shows: an unchanged Saga is
+// revalidated rather than sent again.
+func TestTheDecksLoadOnceAndRevalidate(t *testing.T) {
+	root := writeAppNavSaga(t)
+	handler := newMux(&app{root: root, sourceDir: root, template: serverTemplate(t)})
+	page := getPlain(t, handler, "/")
+	shell := shellVersionAttr.FindStringSubmatch(page)
+	if shell == nil || !strings.Contains(page, `id="decks-`+shell[1]+`" data-deck-host hx-get="/decks" hx-trigger="load" hx-target="this" hx-swap="innerHTML" hx-preserve>`) {
+		t.Fatal("the page does not load the decks into a host named for its Saga state")
+	}
+	if strings.Contains(page, "data-deck-viewer") {
+		t.Fatal("the page renders the deck viewer itself")
+	}
+	recorder := httptest.NewRecorder()
+	handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/decks", nil))
+	etag := recorder.Header().Get("ETag")
+	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), "data-deck-viewer") || etag != `"`+shell[1]+`"` || recorder.Header().Get("Cache-Control") != "no-cache" {
+		t.Fatalf("GET /decks = %d, ETag %q, Cache-Control %q", recorder.Code, etag, recorder.Header().Get("Cache-Control"))
+	}
+	again := httptest.NewRequest(http.MethodGet, "/decks", nil)
+	again.Header.Set("If-None-Match", etag)
+	revalidated := httptest.NewRecorder()
+	handler.ServeHTTP(revalidated, again)
+	if revalidated.Code != http.StatusNotModified || revalidated.Body.Len() != 0 {
+		t.Fatalf("revalidating the unchanged decks = %d with %d bytes", revalidated.Code, revalidated.Body.Len())
+	}
+}
