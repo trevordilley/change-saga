@@ -28,7 +28,10 @@ type Session struct {
 	mu      sync.Mutex
 	memo    map[string]*call
 	batches map[string]*batch
-	closed  bool
+	// failures counts batch processes that broke, per invocation. A Git that
+	// cannot serve an invocation at all must not cost a spawn per question.
+	failures map[string]int
+	closed   bool
 }
 
 type call struct {
@@ -46,7 +49,7 @@ func Begin(ctx context.Context) (context.Context, func()) {
 	if _, ok := ctx.Value(sessionKey{}).(*Session); ok {
 		return ctx, func() {}
 	}
-	session := &Session{memo: map[string]*call{}, batches: map[string]*batch{}}
+	session := &Session{memo: map[string]*call{}, batches: map[string]*batch{}, failures: map[string]int{}}
 	return context.WithValue(ctx, sessionKey{}, session), session.close
 }
 
@@ -121,25 +124,35 @@ func (session *Session) close() {
 	}
 }
 
+// maxBatchFailures is how many broken processes an invocation may leave
+// before the session stops starting it and callers spawn one-shot commands.
+const maxBatchFailures = 3
+
 // batchFor returns the session's live process for args, starting one when
-// none is running. It returns nil when there is no session or Git cannot be
-// started; callers then spawn a one-shot command instead.
+// none is running. It returns nil when the session is closed or Git cannot
+// serve args; callers then spawn a one-shot command instead.
 func (session *Session) batchFor(args []string, sentinel bool) *batch {
 	key := strings.Join(args, "\x00")
 	session.mu.Lock()
 	defer session.mu.Unlock()
-	if session.closed {
+	if session.closed || session.failures[key] >= maxBatchFailures {
 		return nil
 	}
-	if existing, ok := session.batches[key]; ok && !existing.isBroken() {
-		return existing
+	previous, ok := session.batches[key]
+	if ok && !previous.isBroken() {
+		return previous
+	}
+	if ok {
+		delete(session.batches, key)
+		previous.close()
+		if session.failures[key]++; session.failures[key] >= maxBatchFailures {
+			return nil
+		}
 	}
 	started, err := startBatch(args, sentinel)
 	if err != nil {
+		session.failures[key] = maxBatchFailures
 		return nil
-	}
-	if previous, ok := session.batches[key]; ok {
-		go previous.close()
 	}
 	session.batches[key] = started
 	return started

@@ -222,3 +222,47 @@ func TestCancelledRequestDoesNotHang(t *testing.T) {
 		t.Fatal("the session did not recover after a cancelled request")
 	}
 }
+
+func TestReadObjectMatchesCatFile(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	defer end()
+	for _, name := range []string{commits[0] + ":a.go", commits[2] + ":image.bin", commits[2] + ":docs", commits[1]} {
+		wantType := git(t, repo, "cat-file", "-t", name)
+		want, err := exec.Command("git", "-C", repo, "cat-file", wantType, name).Output()
+		if err != nil {
+			t.Fatal(err)
+		}
+		gotType, got, ok := ReadObject(ctx, repo, name)
+		if !ok || gotType != wantType || !bytes.Equal(got, want) {
+			t.Fatalf("ReadObject(%q) = %q, %q, %v; want %q, %q", name, gotType, got, ok, wantType, want)
+		}
+	}
+	if gotType, _, ok := ReadObject(ctx, repo, commits[0]+":absent"); !ok || gotType != "missing" {
+		t.Fatalf("ReadObject of an absent path = %q, %v; want missing", gotType, ok)
+	}
+	if _, _, ok := ReadObject(context.Background(), repo, commits[0]); ok {
+		t.Fatal("ReadObject answered without a session")
+	}
+}
+
+// A Git that cannot serve an invocation falls back to one-shot commands
+// instead of starting a process for every question.
+func TestBrokenBatchInvocationIsRetiredAfterRepeatedFailures(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	defer end()
+	args := []string{"-C", repo, "diff-tree", "--stdin", "--no-such-option"}
+	for range maxBatchFailures + 2 {
+		if _, ok := DiffTree(ctx, args, commits[0], commits[1]); ok {
+			t.Fatal("an invocation Git rejects answered")
+		}
+	}
+	session := sessionFrom(ctx)
+	if got := session.failures[strings.Join(args, "\x00")]; got != maxBatchFailures {
+		t.Fatalf("failures = %d; want the invocation retired after %d", got, maxBatchFailures)
+	}
+	if len(session.batches) != 0 {
+		t.Fatalf("a retired invocation left %d processes", len(session.batches))
+	}
+}

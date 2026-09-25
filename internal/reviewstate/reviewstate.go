@@ -390,7 +390,11 @@ func commitExists(ctx context.Context, dir, commit string) bool {
 	return err == nil
 }
 
+// revParse resolves revision, which every caller names as a commit.
 func revParse(ctx context.Context, dir, revision string) (string, error) {
+	if commit, ok := gitexec.ResolveCommit(ctx, dir, revision); ok {
+		return commit, nil
+	}
 	return gitOutput(ctx, dir, "rev-parse", "--verify", "--quiet", revision)
 }
 

@@ -7,8 +7,10 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"io"
 	"os/exec"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -66,10 +68,10 @@ func (b *batch) isBroken() bool {
 	return b.broken
 }
 
-// roundTrip writes request and reads one answer. With a sentinel the answer
-// is everything before the echoed sentinel line; otherwise it is one line.
-// Any failure marks the process broken so the session starts a fresh one.
-func (b *batch) roundTrip(ctx context.Context, request string) ([]byte, error) {
+// roundTrip writes request and reads one answer with read, or, when read is
+// nil, everything before the echoed sentinel line. Any failure marks the
+// process broken so the session starts a fresh one.
+func (b *batch) roundTrip(ctx context.Context, request string, read func(*bufio.Reader) ([]byte, error)) ([]byte, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 	if b.broken {
@@ -80,7 +82,7 @@ func (b *batch) roundTrip(ctx context.Context, request string) ([]byte, error) {
 	}
 	stop := context.AfterFunc(ctx, func() { _ = b.command.Process.Kill() })
 	defer stop()
-	answer, err := b.exchange(request)
+	answer, err := b.exchange(request, read)
 	if err != nil {
 		b.broken = true
 		_ = b.command.Process.Kill()
@@ -92,12 +94,12 @@ func (b *batch) roundTrip(ctx context.Context, request string) ([]byte, error) {
 	return answer, nil
 }
 
-func (b *batch) exchange(request string) ([]byte, error) {
+func (b *batch) exchange(request string, read func(*bufio.Reader) ([]byte, error)) ([]byte, error) {
 	if _, err := io.WriteString(b.stdin, request); err != nil {
 		return nil, err
 	}
-	if b.sentinel == "" {
-		return b.stdout.ReadBytes('\n')
+	if read != nil {
+		return read(b.stdout)
 	}
 	end := []byte(b.sentinel + "\n")
 	var answer []byte
@@ -143,7 +145,7 @@ func ResolveCommit(ctx context.Context, repo, revision string) (string, bool) {
 	if process == nil {
 		return "", false
 	}
-	answer, err := process.roundTrip(ctx, revision+"^{commit}\n")
+	answer, err := process.roundTrip(ctx, revision+"^{commit}\n", readLine)
 	if err != nil {
 		return "", false
 	}
@@ -170,12 +172,58 @@ func DiffTree(ctx context.Context, args []string, from, to string) ([]byte, bool
 		return nil, false
 	}
 	// diff-tree reads "<commit> <parent>": the newer side comes first.
-	answer, err := process.roundTrip(ctx, to+" "+from+"\n")
+	answer, err := process.roundTrip(ctx, to+" "+from+"\n", nil)
 	if err != nil {
 		return nil, false
 	}
 	return answer, true
 }
+
+// ReadObject reads an object the way `git cat-file --batch` reports it,
+// through the session's batch process for repo: its type and content, or
+// type "missing" when name names no single object. It reports false when it
+// cannot answer, and the caller then reads the object itself.
+func ReadObject(ctx context.Context, repo, name string) (string, []byte, bool) {
+	session := sessionFrom(ctx)
+	if session == nil || name == "" || strings.ContainsAny(name, "\n\r\x00") || len(name) > maxRequest {
+		return "", nil, false
+	}
+	process := session.batchFor([]string{"-C", repo, "cat-file", "--batch"}, false)
+	if process == nil {
+		return "", nil, false
+	}
+	var objectType string
+	content, err := process.roundTrip(ctx, name+"\n", func(reader *bufio.Reader) ([]byte, error) {
+		header, err := reader.ReadString('\n')
+		if err != nil {
+			return nil, err
+		}
+		fields := strings.Fields(header)
+		if len(fields) == 2 && (fields[1] == "missing" || fields[1] == "ambiguous") {
+			objectType = "missing"
+			return nil, nil
+		}
+		if len(fields) != 3 {
+			return nil, fmt.Errorf("unexpected cat-file header %q", strings.TrimSpace(header))
+		}
+		size, err := strconv.Atoi(fields[2])
+		if err != nil || size < 0 {
+			return nil, fmt.Errorf("unexpected cat-file header %q", strings.TrimSpace(header))
+		}
+		content := make([]byte, size+1)
+		if _, err := io.ReadFull(reader, content); err != nil {
+			return nil, err
+		}
+		objectType = fields[1]
+		return content[:size], nil
+	})
+	if err != nil {
+		return "", nil, false
+	}
+	return objectType, content, true
+}
+
+func readLine(reader *bufio.Reader) ([]byte, error) { return reader.ReadBytes('\n') }
 
 // IsObjectName reports whether value is a full SHA-1 or SHA-256 object name.
 func IsObjectName(value string) bool {

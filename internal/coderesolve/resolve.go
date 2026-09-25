@@ -333,6 +333,9 @@ func (resolver *Resolver) treeChanges(ctx context.Context, from, to string) (map
 
 // readObject must be called with mu held.
 func (resolver *Resolver) readObject(ctx context.Context, name string) (string, []byte, error) {
+	if objectType, content, ok := gitexec.ReadObject(ctx, resolver.repo, name); ok {
+		return objectType, content, nil
+	}
 	if resolver.objects == nil {
 		objects, err := startCatFile(resolver.repo)
 		if err != nil {
