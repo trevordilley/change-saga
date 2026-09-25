@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "e2e/tests/directory-width.spec.ts",
+      "digest": "sha256:b0bec28a641ccbdf83743a580bf66bb668669a64071e9678c1a9d121bf08ace0",
+      "note": "The browser spec is a new file."
+    }
+  ]
+}

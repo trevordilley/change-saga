@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "sticky-header-surprise",
+  "slide": "desktop-width",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Sticky table header: expected loss that isn't",
+  "description": "A scroller does stop the sticky table header following the page. But it stuck at top 0 beneath the 44px sticky topbar, so it was never visible while scrolled; nothing a reader saw is lost. A visible sticky header is separate work.",
+  "selector": {
+    "type": "element",
+    "element_id": "sticky-header-surprise"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/directory.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:cfeafebe836092141c46cc751003d4e14d7d096464e28556fd37b08db128d1ae",
+      "note": "The directory template wraps only the table in div.directory-scroll with role=region, aria-label from the title and tabindex 0; the filter and no-match status stay outside."
+    }
+  ]
+}

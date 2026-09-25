@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "directory-consumers",
+  "slide": "one-region",
+  "rank": 40,
+  "kind": "node",
+  "label": "Rendered through it",
+  "description": "Features, Personas, Flags, Terms, the Reviews index and the three Technical design tables all render through this template, so one change covers every directory.",
+  "selector": {
+    "type": "element",
+    "element_id": "directory-consumers"
+  }
+}

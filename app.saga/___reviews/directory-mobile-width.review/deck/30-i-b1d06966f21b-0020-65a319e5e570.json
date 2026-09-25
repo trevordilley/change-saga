@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "desktop-check",
+  "slide": "proof",
+  "rank": 20,
+  "kind": "region",
+  "label": "1440px check",
+  "description": "At 1440px every checked directory's page is no wider than the window and its table is no wider than its region.",
+  "selector": {
+    "type": "element",
+    "element_id": "desktop-check"
+  }
+}

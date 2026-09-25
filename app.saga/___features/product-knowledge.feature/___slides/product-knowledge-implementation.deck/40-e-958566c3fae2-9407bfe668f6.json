@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/reviews.go",
+      "start": 728,
+      "end": 728,
+      "digest": "sha256:76cff2f7ccbb58f7bc686dad7fb0a703faa0d751b403cd5bea75e3fc4b2615a6",
+      "note": "The Reviews index renders its table through the shared directory template."
+    }
+  ]
+}

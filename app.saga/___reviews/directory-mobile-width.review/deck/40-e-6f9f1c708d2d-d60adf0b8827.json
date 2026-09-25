@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/technical.go",
+      "start": 590,
+      "end": 590,
+      "digest": "sha256:cbc69d49ac59ef271634aad1c74ffc5d400e444b717f2db667a134de4daba883",
+      "note": "The .technical-page .directory selector is dropped; the rule now only scrolls an entity page's documentation explanation, and the tables use the shared region."
+    }
+  ]
+}

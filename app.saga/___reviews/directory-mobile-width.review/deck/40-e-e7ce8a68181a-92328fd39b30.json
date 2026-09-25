@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "e2e/tests/directory-width.spec.ts",
+      "start": 1,
+      "end": 99,
+      "digest": "sha256:4e0cca5a1964113b238fd4898240c4e21d82f577efca24dc47c35a0e75a08f43",
+      "note": "Fixture authoring, the six directories, the measure helper, and the 390px touch test: page width, region name and tabindex, in-place scrolling, and ArrowRight scrolling."
+    }
+  ]
+}

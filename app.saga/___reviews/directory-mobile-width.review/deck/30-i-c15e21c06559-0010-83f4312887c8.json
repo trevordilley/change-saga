@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "before-page-pans",
+  "slide": "same-swipe",
+  "rank": 10,
+  "kind": "example",
+  "label": "Before: the page pans",
+  "description": "At 50055150, /features on a 390px touch screen lays out 670px wide. One sideways swipe pans the whole page, so the tabs, filter and page header slide off screen along with the table.",
+  "selector": {
+    "type": "element",
+    "element_id": "before-page-pans"
+  }
+}
