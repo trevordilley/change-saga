@@ -1,7 +1,7 @@
 {
   "documentation": {
     "target": "urn:change-saga:change-saga:system:technical-documentation",
-    "revision": "urn:change-saga:change-saga:system:technical-documentation:revision:r1"
+    "revision": "urn:change-saga:change-saga:system:technical-documentation:revision:r2"
   },
   "version": 4,
   "id": "fetch",

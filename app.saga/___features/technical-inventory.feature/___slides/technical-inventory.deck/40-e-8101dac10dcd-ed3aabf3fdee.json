@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/inventory_test.go",
+      "start": 186,
+      "end": 247,
+      "digest": "sha256:ad31f30b5eab2ac9e328d995bfe17fab21b055110bf85d964e47827bb4317bea",
+      "note": "The canonical link never supplies the Item evidence or changes its content digest when the definition advances."
+    }
+  ]
+}

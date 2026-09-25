@@ -5,7 +5,7 @@
   "rank": 30,
   "kind": "node",
   "label": "Reference guard",
-  "description": "Validation rejects missing targets and warns on noncurrent links; new links must be active, current and unconflicted.",
+  "description": "Validation rejects missing targets and warns on noncurrent links; new links must be active, current and unconflicted unless an explicit saved view (format 2) admits the exact pin.",
   "selector": {
     "type": "element",
     "element_id": "validate"

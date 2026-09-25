@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/inventory.go",
+      "start": 360,
+      "end": 367,
+      "digest": "sha256:d26f87c25f6b0fd885ff9b3073f726f53f84e173b6cd71678d89b2ad0054deb0",
+      "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
+    }
+  ]
+}

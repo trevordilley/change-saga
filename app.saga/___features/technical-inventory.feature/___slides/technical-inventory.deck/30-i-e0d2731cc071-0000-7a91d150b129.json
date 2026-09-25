@@ -5,7 +5,7 @@
   "rank": 0,
   "kind": "node",
   "label": "Public record author",
-  "description": "Component/System authoring resolves source identity, commits and digests before calling the record writer.",
+  "description": "Component/System authoring resolves source identity, commits and digests before calling the record writer. After inventory format 2 is explicitly adopted, the same command also authors data entities, ERDs and overlays.",
   "selector": {
     "type": "element",
     "element_id": "writer"

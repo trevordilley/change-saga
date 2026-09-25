@@ -5,7 +5,7 @@
   "rank": 0,
   "kind": "node",
   "label": "Component",
-  "description": "A Component identifies a meaningful logic/transformation unit with exact pinned code and its own explanation.",
+  "description": "A Component identifies a meaningful logic/transformation unit with exact pinned code and its own explanation. Format-2 revisions add intent, baseline, delivery and evidence IDs; legacy revisions read as unspecified.",
   "selector": {
     "type": "element",
     "element_id": "component"

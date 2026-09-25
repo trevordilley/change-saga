@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/saga/slides.go",
+      "start": 417,
+      "end": 422,
+      "digest": "sha256:0e4bd76b03393673000014b39b54ec24e07060df1d1b009d301484a481549d0c",
+      "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/saga/slides.go",
+      "start": 520,
+      "end": 522,
+      "digest": "sha256:4333a702a76757290af1476b8dea13c9fd7e9ac937f4ec048c5aae88871014a7",
+      "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/saga/slides.go",
+      "start": 535,
+      "end": 539,
+      "digest": "sha256:c820800aa4e8f3ae0a94fee57302f32e8a39f15408c76e006e2a9fec840329f6",
+      "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/saga/slides.go",
+      "start": 586,
+      "end": 606,
+      "digest": "sha256:ecc20b248eb0d806c09914581b10b880ff3ffef546b3eb494a39708bdc81729b",
+      "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
+    }
+  ]
+}

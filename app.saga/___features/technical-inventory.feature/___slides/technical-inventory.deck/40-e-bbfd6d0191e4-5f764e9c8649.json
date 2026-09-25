@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "02869a7de0e3b9970a50fd7d64dc73bab485ab49",
+      "path": "internal/cli/inventory_test.go",
+      "start": 18,
+      "end": 153,
+      "digest": "sha256:ed0604de6aad15c755ded49296ff5ea081fb146a379fc23f3e7bb7e622de9274",
+      "note": "Public inventory regression coverage retains history, exact evidence and missing-target checks, and now preserves missing-review-deck diagnostics; the existing snapshot-cursor reference is retained unchanged."
+    },
+    {
+      "commit": "02869a7de0e3b9970a50fd7d64dc73bab485ab49",
+      "path": "internal/cli/inventory_test.go",
+      "start": 155,
+      "end": 170,
+      "digest": "sha256:86fc2e9d495ee4f740043a9f575fb0a1451f11b69cadf0154661a67cdea0b8be",
+      "note": "Public inventory regression coverage retains history, exact evidence and missing-target checks, and now preserves missing-review-deck diagnostics; the existing snapshot-cursor reference is retained unchanged."
+    },
+    {
+      "commit": "02869a7de0e3b9970a50fd7d64dc73bab485ab49",
+      "path": "internal/cli/inventory_test.go",
+      "start": 172,
+      "end": 184,
+      "digest": "sha256:b1b62e346e69187aa7adc1a6785215676b7cc1c3dc4495eb82b8e218236746a2",
+      "note": "Public inventory regression coverage retains history, exact evidence and missing-target checks, and now preserves missing-review-deck diagnostics; the existing snapshot-cursor reference is retained unchanged."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/inventory_test.go",
+      "start": 249,
+      "end": 294,
+      "digest": "sha256:86c736ae491e48331de742beeba927d6e9bffd83a6510bbeeeae0a446e76ab9c",
+      "note": "Public inventory regression coverage retains history, exact evidence and missing-target checks, and now preserves missing-review-deck diagnostics; the existing snapshot-cursor reference is retained unchanged."
+    }
+  ]
+}

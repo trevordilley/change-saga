@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 1,
+      "end": 382,
+      "digest": "sha256:873c97d80a60eff1f76870e2e6011a8243813f6f3c01b51af1bfed984d0442ca",
+      "note": "A System pins Component revisions and explains directed interactions with exact evidence for each flow."
+    }
+  ]
+}

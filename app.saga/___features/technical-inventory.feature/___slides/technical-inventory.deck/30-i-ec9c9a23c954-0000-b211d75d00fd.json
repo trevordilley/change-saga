@@ -5,7 +5,7 @@
   "rank": 0,
   "kind": "node",
   "label": "Public contract",
-  "description": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade/deferred-integration boundaries.",
+  "description": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade boundaries: reconciliation reports inventory, while references/repin, audits and comparison layers exclude it.",
   "selector": {
     "type": "element",
     "element_id": "contracts"

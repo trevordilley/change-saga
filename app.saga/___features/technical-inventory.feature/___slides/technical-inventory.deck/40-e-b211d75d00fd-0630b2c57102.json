@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/skill_test.go",
+      "start": 266,
+      "end": 282,
+      "digest": "sha256:851b7bf3877f9ca3ce76905c254a1959a1c58e33514372d17b54167243541aa5",
+      "note": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade/deferred-integration boundaries."
+    }
+  ]
+}

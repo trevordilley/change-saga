@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/requirements/inventory.go",
+      "start": 104,
+      "end": 120,
+      "digest": "sha256:4c5363a34e0e742ad7a79a1e84f460dbf7e2098cbd279dc92ba2b87ae2596f8d",
+      "note": "Graph resolution preserves all competing heads; link status distinguishes current, stale, retired, conflicted and missing."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/requirements/inventory.go",
+      "start": 419,
+      "end": 471,
+      "digest": "sha256:518b7c0fa862d6402baa308c794c8b531c064246cc402778f63e522f653154bd",
+      "note": "Graph resolution preserves all competing heads; link status distinguishes current, stale, retired, conflicted and missing."
+    }
+  ]
+}

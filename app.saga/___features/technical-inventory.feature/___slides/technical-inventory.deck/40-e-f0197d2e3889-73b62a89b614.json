@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 87,
+      "end": 204,
+      "digest": "sha256:f63e828f5918575bef343fcecad1b7465ac21a3d586b47e55fcb7beb4c796c5f",
+      "note": "Publication creates one complete record atomically or appends a revision; a conflicting duplicate identity is refused."
+    }
+  ]
+}
