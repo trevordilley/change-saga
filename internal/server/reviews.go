@@ -535,7 +535,7 @@ func (a *app) reviewVisual(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer file.Close()
-	w.Header().Set("Content-Security-Policy", "default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'")
+	w.Header().Set("Content-Security-Policy", authoredContentPolicy)
 	w.Header().Set("Cache-Control", "no-store")
 	if contentType := mime.TypeByExtension(strings.ToLower(filepath.Ext(path))); contentType != "" {
 		w.Header().Set("Content-Type", contentType)

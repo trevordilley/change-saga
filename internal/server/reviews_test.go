@@ -103,6 +103,19 @@ func postReview(t *testing.T, handler http.Handler, path string, values url.Valu
 	return recorder
 }
 
+// A slide visual is author-provided like a fragment, so a direct visit must
+// not run its script on the app origin beside the review's mutation token.
+func TestReviewVisualIsServedWithSandboxCSP(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	recorder := httptest.NewRecorder()
+	securityHeaders(handler).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/reviews/pr-7/visual/queue", nil))
+	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), `<rect id="node"`) {
+		t.Fatalf("slide visual: status=%d body=%s", recorder.Code, recorder.Body.String())
+	}
+	assertAuthoredContentPolicy(t, recorder.Header())
+}
+
 func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 	fixture := newServerReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
