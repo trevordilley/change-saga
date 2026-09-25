@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
       "path": "internal/reviewapp/session.go",
-      "start": 80,
-      "end": 149,
-      "digest": "sha256:e9999a6eab02b98da03799b2e137dd9f1dd91624c98797a2a67cae2e682da517",
+      "start": 82,
+      "end": 157,
+      "digest": "sha256:075bd3aa6ea51ffd6a1ab6ce7c5bd3ace2f56bfa9957d7e88d70b879fae383e0",
       "note": "Opens a deterministic query session and projects its source identity and coverage summary through the bounded overview contract."
     },
     {

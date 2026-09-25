@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
       "path": "internal/cli/slides.go",
       "start": 321,
-      "end": 388,
-      "digest": "sha256:1a8fce4536c599c60280421548d66ec218cd37b007e044ad6b7544f387e415c5",
+      "end": 391,
+      "digest": "sha256:35b32aea0c8a3703d7a8117ee842ce53bb7fa7b433a3947e7465ca39624c1633",
       "note": "Requires exactly one selector, a supported Item kind, and bounded semantic text before Item authoring proceeds."
     }
   ]

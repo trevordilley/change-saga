@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
       "path": "internal/reviewapp/session.go",
-      "start": 80,
-      "end": 180,
-      "digest": "sha256:777fb1598bdb487f9a96944e6e4c67e07c6a0636888db1eec56f02fd38a3f54f",
+      "start": 82,
+      "end": 188,
+      "digest": "sha256:daeec98a5b9ec5b22e98bdc767282657a54479f4fde13e214793175dc2ec4210",
       "note": "Validated application session and bounded projections"
     },
     {

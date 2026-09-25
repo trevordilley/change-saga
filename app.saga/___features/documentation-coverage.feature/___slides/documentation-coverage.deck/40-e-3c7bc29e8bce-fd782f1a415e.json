@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/coverage/coverage.go",
+      "start": 104,
+      "end": 154,
+      "digest": "sha256:bcdac42bd9558211254a434e8ebade03321a3bc84231cac8d6aa6eeebafee7ee",
+      "note": "Computes zero, one, and multiple owners for exact changed atoms."
+    }
+  ]
+}

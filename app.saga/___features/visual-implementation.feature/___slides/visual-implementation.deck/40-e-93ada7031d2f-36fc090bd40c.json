@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
       "path": "internal/server/template.go",
       "start": 381,
       "end": 381,
-      "digest": "sha256:0e370569af8008a64f918bfd99cad7b3adee0453bf85c664581b5a42e713ffb0",
+      "digest": "sha256:ebbca5753987b1e7bbab70f42d76172090f66cac7bdc7c6e5d485353ae1c0919",
       "note": "Renders interactive slide content in an iframe whose sandbox grants scripts and omits same-origin capability."
     }
   ]

@@ -10,11 +10,11 @@
       "note": "Validates media, asset pairing, Item semantics, and each selector against the current visual during load."
     },
     {
-      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
       "path": "internal/saga/slides.go",
-      "start": 414,
-      "end": 455,
-      "digest": "sha256:ce49b24b27bd8c956fb6e012a1bb8025ea93e7dbf82154b875c21d44c134979b",
+      "start": 416,
+      "end": 459,
+      "digest": "sha256:64dbbfafaa406f53cc1dae8e1524564efc504a10943c2e02c78cf47365d34455",
       "note": "Validates media, asset pairing, Item semantics, and each selector against the current visual during load."
     }
   ]
