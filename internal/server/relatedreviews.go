@@ -2,11 +2,6 @@ package server
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
-	"fmt"
-	"io/fs"
-	"path/filepath"
 	"sort"
 	"strings"
 	"sync"
@@ -117,40 +112,7 @@ func (a *app) relatedReviews(ctx context.Context, document *saga.Saga, records r
 // of the Saga, code references and reviews included, and the source head the
 // references resolve against.
 func (a *app) relatedFingerprint(ctx context.Context) (string, error) {
-	tree, err := sagaFilesFingerprint(a.root)
-	if err != nil {
-		return "", err
-	}
-	head, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "HEAD")
-	return tree + "\x00" + head, nil
-}
-
-// sagaFilesFingerprint commits to every file of the Saga at root by path,
-// size, and modification time.
-func sagaFilesFingerprint(root string) (string, error) {
-	digest := sha256.New()
-	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil {
-			return walkErr
-		}
-		rel, err := filepath.Rel(root, path)
-		if err != nil {
-			return err
-		}
-		if entry.IsDir() {
-			return nil
-		}
-		info, err := entry.Info()
-		if err != nil {
-			return err
-		}
-		fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", filepath.ToSlash(rel), info.Size(), info.ModTime().UnixNano())
-		return nil
-	})
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(digest.Sum(nil)), nil
+	return a.sagaState(ctx, true).relatedKey()
 }
 
 // buildRelatedReviews intersects every review's changed lines with the code

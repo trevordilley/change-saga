@@ -40,12 +40,7 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 	if _, err := application.relatedFingerprint(context.Background()); err != nil {
 		t.Fatal(err)
 	}
-	fingerprint := time.Since(started)
-	started = time.Now()
-	if _, err := application.outlineFingerprint(context.Background()); err != nil {
-		t.Fatal(err)
-	}
-	t.Logf("freshness check: related %s, the shell's own outline %s", fingerprint, time.Since(started))
+	t.Logf("freshness check, shared by the shell and the related reviews: %s", time.Since(started))
 	started = time.Now()
 	index := application.relatedReviews(context.Background(), document, records)
 	cold := time.Since(started)

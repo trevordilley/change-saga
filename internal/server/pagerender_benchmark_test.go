@@ -176,7 +176,7 @@ func TestMeasureFeaturePhases(t *testing.T) {
 	application = &app{root: dogfoodSaga, sourceDir: filepath.Join("..", ".."), template: tmpl}
 	handler := newMux(application)
 	lap("cold outlineDocument", func() { document = application.outlineDocument(ctx) })
-	files := application.sagaFiles()
+	files := application.sagaFiles(context.Background())
 	lap("cold sagaFiles().narrative()", func() { document = files.narrative() })
 	var records requirements.Document
 	lap("cold sagaFiles().records()", func() { records, _ = files.records(document.Manifest.ID) })
@@ -187,9 +187,8 @@ func TestMeasureFeaturePhases(t *testing.T) {
 	lap("first page after the above phases", func() { measureGet(t, handler, benchmarkFeaturePath) })
 	lap("warm page", func() { measureGet(t, handler, benchmarkFeaturePath) })
 	for i := 0; i < 3; i++ {
-		lap("outlineFingerprint walk", func() { outlineFingerprint(dogfoodSaga) })
-		lap("documentationFingerprint walk", func() { documentationFingerprint(dogfoodSaga) })
-		lap("sagaFilesFingerprint walk", func() { sagaFilesFingerprint(dogfoodSaga) })
+		lap("sagaFingerprints walk", func() { sagaFingerprints(dogfoodSaga, true) })
+		lap("freshness check (walk + both heads)", func() { application.checkSaga(ctx, time.Now(), true) })
 		lap("git rev-parse HEAD", func() { gitOutput(ctx, dogfoodSaga, "rev-parse", "HEAD") })
 	}
 }

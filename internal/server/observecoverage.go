@@ -131,10 +131,12 @@ type observeGraphCache struct {
 
 // observeGraph is the full Saga, with its code, and the records around it.
 // Callers only read what it returns.
-func (a *app) observeGraph() (*appGraph, []documentedCode, error) {
+func (a *app) observeGraph(ctx context.Context) (*appGraph, []documentedCode, error) {
 	a.observed.mutex.Lock()
 	defer a.observed.mutex.Unlock()
-	fingerprint, fingerprintErr := sagaFilesFingerprint(a.root)
+	// The key is taken before the Saga is read, so an edit made while it is
+	// read produces a miss on the next request, never a stale hit.
+	fingerprint, fingerprintErr := a.sagaState(ctx, true).filesKey()
 	if fingerprintErr == nil && a.observed.graph != nil && fingerprint == a.observed.fingerprint {
 		return a.observed.graph, a.observed.documented, nil
 	}
@@ -142,9 +144,7 @@ func (a *app) observeGraph() (*appGraph, []documentedCode, error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	// Fingerprint after loading, as the outline does: an edit made while the
-	// Saga was read produces a miss on the next request, never a stale hit.
-	if after, err := sagaFilesFingerprint(a.root); fingerprintErr == nil && err == nil && after == fingerprint {
+	if fingerprintErr == nil {
 		a.observed.fingerprint, a.observed.graph, a.observed.documented = fingerprint, graph, documented
 		a.observed.builds++
 	}
@@ -171,7 +171,7 @@ func loadObserveGraph(root string) (*appGraph, []documentedCode, error) {
 }
 
 func (a *app) observeCoverage(ctx context.Context, mode string) (*observeCoverageView, error) {
-	graph, documented, err := a.observeGraph()
+	graph, documented, err := a.observeGraph(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func (a *app) observeCoveragePage(w http.ResponseWriter, r *http.Request, mode s
 // head, for an observed Coverage row a reviewer opened.
 func (a *app) referenceCodePage(w http.ResponseWriter, r *http.Request) {
 	target := r.URL.Query().Get("target")
-	_, documented, err := a.observeGraph()
+	_, documented, err := a.observeGraph(r.Context())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

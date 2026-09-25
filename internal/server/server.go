@@ -62,6 +62,9 @@ type app struct {
 	// files is what documentation pages read from the Saga's own files,
 	// kept while those files are unchanged.
 	files sagaFilesCache
+	// fresh shares the check of whether the Saga's files or the heads
+	// have changed between the requests that ask at once.
+	fresh freshness
 	// comparisonLoader is the injectable boundary around the expensive source
 	// diff and coverage build. Root and narrative shell handlers must never call
 	// it; focused comparison endpoints reach it through snapshot().
@@ -363,56 +366,59 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 
 func newMux(application *app) *http.ServeMux {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /requirements/{story}/criteria/{criterion}", application.page)
-	mux.HandleFunc("GET /requirements/{story}", application.page)
-	mux.HandleFunc("GET /requirements", application.page)
-	mux.HandleFunc("GET /terms/{term}", application.page)
-	mux.HandleFunc("GET /terms", application.page)
-	mux.HandleFunc("GET /chapters/{chapter}", application.page)
-	mux.HandleFunc("GET /personas/{persona}", application.page)
-	mux.HandleFunc("GET /personas", application.page)
-	mux.HandleFunc("GET /flags", application.page)
-	mux.HandleFunc("GET /design-system", application.page)
-	mux.HandleFunc("GET /technical/{kind}/{id}", application.page)
-	mux.HandleFunc("GET /technical/{area}", application.page)
-	mux.HandleFunc("GET /technical", application.page)
-	mux.HandleFunc("GET /features/{feature}", application.page)
-	mux.HandleFunc("GET /features", application.page)
-	mux.HandleFunc("GET /tests/{test}", application.page)
-	mux.HandleFunc("GET /", application.page)
-	mux.HandleFunc("GET /reviews", application.reviewIndex)
-	mux.HandleFunc("GET /reviews/{id}", application.reviewPage)
-	mux.HandleFunc("GET /reviews/{id}/code", application.reviewCodeSurface)
-	mux.HandleFunc("GET /reviews/{id}/file-diff", application.reviewFileDiffSurface)
-	mux.HandleFunc("GET /reviews/{id}/coverage", application.reviewCoverageSurface)
-	mux.HandleFunc("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
-	mux.HandleFunc("GET /reviews/{id}/annotations", application.reviewAnnotations)
-	mux.HandleFunc("GET /reviews/{id}/feedback", application.reviewFeedbackSurface)
-	mux.HandleFunc("POST /reviews/{id}/decision", application.reviewDecision)
-	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
-	mux.HandleFunc("GET /app.js", application.javascript)
-	mux.HandleFunc("GET "+diagram.FontPath, application.diagramFont)
-	mux.HandleFunc("GET /theme.js", application.themeScript)
-	mux.HandleFunc("GET /api/documentation", application.documentationPage)
-	mux.HandleFunc("GET /api/technical-usages", application.technicalUsagesPage)
-	mux.HandleFunc("GET /api/code", application.codePage)
-	mux.HandleFunc("GET /api/coverage", application.coveragePage)
-	mux.HandleFunc("GET /api/totals", application.coverageTotalsPage)
-	mux.HandleFunc("GET /api/reference-code", application.referenceCodePage)
-	mux.HandleFunc("GET /api/layers", application.layersAPI)
-	mux.HandleFunc("GET /api/change", application.changePage)
-	mux.HandleFunc("GET /api/history", application.historyPage)
-	mux.HandleFunc("GET /api/coverage-file", application.coverageFilePage)
-	mux.HandleFunc("GET /api/coverage-target", application.coverageTargetPage)
-	mux.HandleFunc("GET /api/file-diff", application.fileDiffFragment)
-	mux.HandleFunc("GET /api/target-code", application.targetCode)
-	mux.HandleFunc("GET /api/file-owners", application.fileOwners)
-	mux.HandleFunc("GET /api/section", application.sectionBody)
-	mux.HandleFunc("GET /api/fragment", application.fragmentContent)
-	mux.HandleFunc("GET /api/locate", application.locateAnchor)
-	mux.HandleFunc("GET /api/runtime", application.runtimeStatus)
-	mux.HandleFunc("POST /api/runtime-stop", application.runtimeStop)
-	mux.HandleFunc("GET /f/{id}/{path...}", application.fragmentFile)
+	// Every route is stamped with its arrival, so the caches one request
+	// asks share the freshness check that answers it.
+	handle := func(pattern string, handler http.HandlerFunc) { mux.HandleFunc(pattern, arriving(handler)) }
+	handle("GET /requirements/{story}/criteria/{criterion}", application.page)
+	handle("GET /requirements/{story}", application.page)
+	handle("GET /requirements", application.page)
+	handle("GET /terms/{term}", application.page)
+	handle("GET /terms", application.page)
+	handle("GET /chapters/{chapter}", application.page)
+	handle("GET /personas/{persona}", application.page)
+	handle("GET /personas", application.page)
+	handle("GET /flags", application.page)
+	handle("GET /design-system", application.page)
+	handle("GET /technical/{kind}/{id}", application.page)
+	handle("GET /technical/{area}", application.page)
+	handle("GET /technical", application.page)
+	handle("GET /features/{feature}", application.page)
+	handle("GET /features", application.page)
+	handle("GET /tests/{test}", application.page)
+	handle("GET /", application.page)
+	handle("GET /reviews", application.reviewIndex)
+	handle("GET /reviews/{id}", application.reviewPage)
+	handle("GET /reviews/{id}/code", application.reviewCodeSurface)
+	handle("GET /reviews/{id}/file-diff", application.reviewFileDiffSurface)
+	handle("GET /reviews/{id}/coverage", application.reviewCoverageSurface)
+	handle("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
+	handle("GET /reviews/{id}/annotations", application.reviewAnnotations)
+	handle("GET /reviews/{id}/feedback", application.reviewFeedbackSurface)
+	handle("POST /reviews/{id}/decision", application.reviewDecision)
+	handle("POST /reviews/{id}/comment", application.reviewComment)
+	handle("GET /app.js", application.javascript)
+	handle("GET "+diagram.FontPath, application.diagramFont)
+	handle("GET /theme.js", application.themeScript)
+	handle("GET /api/documentation", application.documentationPage)
+	handle("GET /api/technical-usages", application.technicalUsagesPage)
+	handle("GET /api/code", application.codePage)
+	handle("GET /api/coverage", application.coveragePage)
+	handle("GET /api/totals", application.coverageTotalsPage)
+	handle("GET /api/reference-code", application.referenceCodePage)
+	handle("GET /api/layers", application.layersAPI)
+	handle("GET /api/change", application.changePage)
+	handle("GET /api/history", application.historyPage)
+	handle("GET /api/coverage-file", application.coverageFilePage)
+	handle("GET /api/coverage-target", application.coverageTargetPage)
+	handle("GET /api/file-diff", application.fileDiffFragment)
+	handle("GET /api/target-code", application.targetCode)
+	handle("GET /api/file-owners", application.fileOwners)
+	handle("GET /api/section", application.sectionBody)
+	handle("GET /api/fragment", application.fragmentContent)
+	handle("GET /api/locate", application.locateAnchor)
+	handle("GET /api/runtime", application.runtimeStatus)
+	handle("POST /api/runtime-stop", application.runtimeStop)
+	handle("GET /f/{id}/{path...}", application.fragmentFile)
 	return mux
 }
 
@@ -976,12 +982,17 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	if !ok {
 		return nil, errAppPageNotFound
 	}
+	if route.kind == "feature" || route.kind == "requirements" {
+		// These pages also ask for the related reviews, which read every
+		// file, so the one check this request takes covers every file.
+		a.sagaState(r.Context(), true)
+	}
 	document := a.outlineDocument(r.Context())
 	if document == nil {
 		return nil, errors.New("The saga could not be loaded. Run change-saga validate for details.")
 	}
 	// One fingerprint of the Saga's files serves every part the page reads.
-	files := a.sagaFiles()
+	files := a.sagaFiles(r.Context())
 	if len(document.Decks)+len(document.Onboarding) > 0 {
 		document = files.narrative()
 		if document == nil {
@@ -1230,7 +1241,7 @@ func splitReportAndDeckSections(root *saga.Section) (*saga.Section, *saga.Sectio
 }
 
 func (a *app) narrativeDocument(ctx context.Context) *saga.Saga {
-	return a.sagaFiles().narrative()
+	return a.sagaFiles(ctx).narrative()
 }
 
 // sourceReviewDocument is the narrative generation code and file responses

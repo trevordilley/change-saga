@@ -1,11 +1,7 @@
 package server
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
-	"fmt"
-	"io/fs"
-	"path/filepath"
+	"context"
 	"slices"
 	"sync"
 
@@ -54,8 +50,8 @@ type sagaFiles struct {
 
 // sagaFiles is the current Saga's files. When they cannot be fingerprinted
 // nothing is kept, and each part is read afresh.
-func (a *app) sagaFiles() *sagaFiles {
-	fingerprint, err := documentationFingerprint(a.root)
+func (a *app) sagaFiles(ctx context.Context) *sagaFiles {
+	fingerprint, err := a.sagaState(ctx, false).documentationKey()
 	if err != nil {
 		return &sagaFiles{root: a.root}
 	}
@@ -111,43 +107,4 @@ func (files *sagaFiles) inventory(sagaID string) (requirements.Inventory, error)
 		return requirements.LoadInventory(files.root, sagaID)
 	}
 	return files.inventoryDoc, files.inventoryErr
-}
-
-// documentationFingerprint commits to every file the parts above read, by
-// path, size, and modification time. It skips the code evidence, claims, and
-// verifications directories: the narrative leaves them unopened, and the
-// records, test cases, and inventory live elsewhere. A documentation page's
-// freshness check therefore does not scale with per-line evidence.
-func documentationFingerprint(root string) (string, error) {
-	digest := sha256.New()
-	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil {
-			return walkErr
-		}
-		rel, err := filepath.Rel(root, path)
-		if err != nil {
-			return err
-		}
-		rel = filepath.ToSlash(rel)
-		if entry.IsDir() {
-			switch entry.Name() {
-			case saga.CodeDirName, "___claims", "___verifications":
-				if path != root {
-					return filepath.SkipDir
-				}
-			}
-			fmt.Fprintf(digest, "d\x00%s\x00", rel)
-			return nil
-		}
-		info, err := entry.Info()
-		if err != nil {
-			return err
-		}
-		fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", rel, info.Size(), info.ModTime().UnixNano())
-		return nil
-	})
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(digest.Sum(nil)), nil
 }
