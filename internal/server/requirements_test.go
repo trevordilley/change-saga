@@ -12,6 +12,7 @@ import (
 )
 
 func TestRequirementsSurfaceProjectsStoriesAndCriteriaAsStableEntities(t *testing.T) {
+	t.Parallel()
 	created := time.Date(2026, 9, 17, 12, 0, 0, 0, time.UTC)
 	storyURN := "urn:change-saga:test:story:checkout"
 	revisionURN := storyURN + ":revision:r1"
@@ -51,6 +52,7 @@ func TestRequirementsSurfaceProjectsStoriesAndCriteriaAsStableEntities(t *testin
 }
 
 func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testing.T) {
+	t.Parallel()
 	storyURN := "urn:change-saga:test:story:checkout"
 	document := requirements.Document{SagaID: "test", Stories: []requirements.Story{{
 		Identity: requirements.StoryIdentity{ID: "checkout", CreatedAt: time.Unix(1, 0)},
@@ -123,6 +125,7 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 }
 
 func TestRequirementsSurfaceRejectsUnknownStoryAndCriterionRoutes(t *testing.T) {
+	t.Parallel()
 	document := requirements.Document{SagaID: "test"}
 	if _, _, err := makeRequirementsSurface(document, requirementRoute{active: true, storyID: "missing"}); err != errRequirementNotFound {
 		t.Fatalf("unknown story error = %v", err)
@@ -138,6 +141,7 @@ func TestRequirementsSurfaceRejectsUnknownStoryAndCriterionRoutes(t *testing.T) 
 }
 
 func TestRequirementsPathDoesNotCaptureOrdinaryRoutesWithTheSamePrefix(t *testing.T) {
+	t.Parallel()
 	for _, value := range []string{"/requirements", "/requirements/checkout", "/requirements/checkout/criteria/fast"} {
 		if !isRequirementsPath(value) {
 			t.Fatalf("requirements path %q was not recognized", value)
@@ -151,6 +155,7 @@ func TestRequirementsPathDoesNotCaptureOrdinaryRoutesWithTheSamePrefix(t *testin
 }
 
 func TestRetiredRequirementsShowOnlyExplicitCurrentReplacements(t *testing.T) {
+	t.Parallel()
 	created := time.Date(2026, 9, 21, 12, 0, 0, 0, time.UTC)
 	oldURN := "urn:change-saga:test:story:old-checkout"
 	newURN := "urn:change-saga:test:story:new-checkout"
@@ -216,6 +221,7 @@ func TestRetiredRequirementsShowOnlyExplicitCurrentReplacements(t *testing.T) {
 }
 
 func TestRetiredRequirementDoesNotInferReplacementFromItsReason(t *testing.T) {
+	t.Parallel()
 	oldURN := "urn:change-saga:test:story:old-checkout"
 	document := requirements.Document{SagaID: "test", Stories: []requirements.Story{{
 		Identity:         requirements.StoryIdentity{ID: "old-checkout"},

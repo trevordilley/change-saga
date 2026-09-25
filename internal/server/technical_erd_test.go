@@ -67,6 +67,7 @@ func dataModelFixture(t *testing.T) (root, repo string, pins map[string]saga.Doc
 }
 
 func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
+	t.Parallel()
 	root, repo, pins := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/erd")
@@ -113,6 +114,7 @@ func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 }
 
 func TestTechnicalDataEntityPageShowsStructureResourceAndRelationships(t *testing.T) {
+	t.Parallel()
 	root, repo, pins := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/data-entity/pdf-report")
@@ -149,6 +151,7 @@ func TestTechnicalDataEntityPageShowsStructureResourceAndRelationships(t *testin
 }
 
 func TestTechnicalSystemShowsEdgeIntentIndependently(t *testing.T) {
+	t.Parallel()
 	root, repo, _ := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/system/pdf-pipeline")
@@ -160,6 +163,7 @@ func TestTechnicalSystemShowsEdgeIntentIndependently(t *testing.T) {
 }
 
 func TestTechnicalOverlayComposesWithoutRewritingBaseline(t *testing.T) {
+	t.Parallel()
 	root, repo, pins := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/erd-overlay/pdf-jobs")
@@ -180,6 +184,7 @@ func TestTechnicalOverlayComposesWithoutRewritingBaseline(t *testing.T) {
 }
 
 func TestTechnicalERDRefusesATamperedDrawing(t *testing.T) {
+	t.Parallel()
 	root, repo, _ := dataModelFixture(t)
 	app := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
 	inventory, err := requirements.LoadInventory(root, "test")
@@ -197,6 +202,7 @@ func TestTechnicalERDRefusesATamperedDrawing(t *testing.T) {
 }
 
 func TestTechnicalERDRefusesActiveDrawingContent(t *testing.T) {
+	t.Parallel()
 	root, repo, pins := dataModelFixture(t)
 	app := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
 	inventory, err := requirements.LoadInventory(root, "test")
@@ -216,6 +222,7 @@ func TestTechnicalERDRefusesActiveDrawingContent(t *testing.T) {
 }
 
 func TestSanitizeSVGKeepsOnlyStaticDrawing(t *testing.T) {
+	t.Parallel()
 	safe := `<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10"><defs><marker id="arrow"><path d="M0 0L9 5z"/></marker></defs><g id="job" fill="url(#grad)"><text x="1">a &lt; b &amp; "c"</text></g><use xlink:href="#job"/><path marker-end="url( '#arrow' )" d="M0 0"/></svg>`
 	markup, refused := sanitizeSVG([]byte(safe), "p-")
 	if len(refused) > 0 {
@@ -251,6 +258,7 @@ func TestSanitizeSVGKeepsOnlyStaticDrawing(t *testing.T) {
 // CHANGE_SAGA_TECHNICAL_PREVIEW for manual browser inspection. It is skipped
 // in every ordinary run.
 func TestWriteTechnicalPreviewFixture(t *testing.T) {
+	t.Parallel()
 	out := os.Getenv("CHANGE_SAGA_TECHNICAL_PREVIEW")
 	if out == "" {
 		t.Skip("set CHANGE_SAGA_TECHNICAL_PREVIEW to export the fixture")
@@ -262,6 +270,7 @@ func TestWriteTechnicalPreviewFixture(t *testing.T) {
 }
 
 func TestTechnicalUsagesIncludeDeclaredOwners(t *testing.T) {
+	t.Parallel()
 	root, repo, _ := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/component/record-store")

@@ -25,6 +25,7 @@ import (
 )
 
 func TestSecureHandlerRejectsCrossOriginFetchSiteAndHost(t *testing.T) {
+	t.Parallel()
 	called := 0
 	handler := secureHandler(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		called++
@@ -69,6 +70,7 @@ func TestSecureHandlerRejectsCrossOriginFetchSiteAndHost(t *testing.T) {
 }
 
 func TestHTTPServerHasBoundedResourceSettings(t *testing.T) {
+	t.Parallel()
 	server := newHTTPServer(http.NotFoundHandler())
 	if server.ReadTimeout <= 0 || server.WriteTimeout <= 0 || server.IdleTimeout <= 0 || server.ReadHeaderTimeout <= 0 || server.MaxHeaderBytes <= 0 {
 		t.Fatalf("server limits are incomplete: %#v", server)
@@ -78,6 +80,7 @@ func TestHTTPServerHasBoundedResourceSettings(t *testing.T) {
 // The browser suite proves the behavior; this pins the markup contract the
 // behavior depends on so a template edit cannot quietly drop it.
 func TestWorkspaceTabsAndClosedDrawerCarryAccessibleSemantics(t *testing.T) {
+	t.Parallel()
 	for _, fragment := range []string{
 		`role="tablist"`,
 		`role="tab" id="view-tab-saga"`,
@@ -112,6 +115,7 @@ func TestWorkspaceTabsAndClosedDrawerCarryAccessibleSemantics(t *testing.T) {
 }
 
 func TestListenRefusesNonLoopbackAddressBeforeServing(t *testing.T) {
+	t.Parallel()
 	err := Listen(context.Background(), filepath.Join(t.TempDir(), "missing.saga"), "", "0.0.0.0:0", false, &bytes.Buffer{})
 	if err == nil || !strings.Contains(err.Error(), "non-loopback") {
 		t.Fatalf("Listen error = %v, want explicit non-loopback refusal", err)
@@ -119,6 +123,7 @@ func TestListenRefusesNonLoopbackAddressBeforeServing(t *testing.T) {
 }
 
 func TestManagedRuntimeEndpointsRequireTokenAndSignalShutdown(t *testing.T) {
+	t.Parallel()
 	stopped := make(chan struct{}, 1)
 	application := &app{shutdownToken: "private-token", shutdown: func() { stopped <- struct{}{} }}
 	handler := newMux(application)
@@ -150,6 +155,7 @@ func TestManagedRuntimeEndpointsRequireTokenAndSignalShutdown(t *testing.T) {
 }
 
 func TestColdComparisonEndpointReportsBuildingCacheWithoutMaterializingReviewData(t *testing.T) {
+	t.Parallel()
 	// Comparing: observing has no comparison, so its Coverage never waits on one.
 	application := &app{rng: gitdiff.Range{Against: "main"}}
 	application.cache.building = true
@@ -172,6 +178,7 @@ func TestColdComparisonEndpointReportsBuildingCacheWithoutMaterializingReviewDat
 }
 
 func TestBrowserErrorsDoNotExposeFilesystemPaths(t *testing.T) {
+	t.Parallel()
 	root := filepath.Join(t.TempDir(), "private", "missing.saga")
 	recorder := httptest.NewRecorder()
 	(&app{root: root}).page(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
@@ -189,6 +196,7 @@ func TestBrowserErrorsDoNotExposeFilesystemPaths(t *testing.T) {
 // anchors too, because a heading id and a landmark id are both suffixes of the
 // explanation that owns them.
 func TestDeferredAnchorsResolveToTheirChapterAndExplanation(t *testing.T) {
+	t.Parallel()
 	root := validServerSaga(t)
 	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "chapter.json"), `{"version":2,"id":"alpha","title":"Alpha"}`)
 	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "story.fragment", "fragment.json"), `{"version":2,"id":"alpha-story","title":"Alpha story","media_type":"text/markdown","entrypoint":"content.md"}`)
@@ -257,6 +265,7 @@ func sectionRequest(target string) *http.Request {
 }
 
 func TestFragmentFileRejectsSymlinkOutsidePackage(t *testing.T) {
+	t.Parallel()
 	root := validServerSaga(t)
 	outside := filepath.Join(filepath.Dir(root), "secret.txt")
 	writeServerFile(t, outside, "secret")
@@ -276,6 +285,7 @@ func TestFragmentFileRejectsSymlinkOutsidePackage(t *testing.T) {
 }
 
 func TestInteractiveFragmentIsServedWithSandboxCSP(t *testing.T) {
+	t.Parallel()
 	root := validServerSaga(t)
 	writeServerFile(t, filepath.Join(serverFeatureDir(root), "demo.fragment", "fragment.json"), `{"version":2,"id":"demo","media_type":"text/html","entrypoint":"index.html"}`)
 	writeServerFile(t, filepath.Join(serverFeatureDir(root), "demo.fragment", "index.html"), `<button onclick="this.textContent='ok'">Run</button>`)
@@ -323,6 +333,7 @@ func assertAuthoredContentPolicy(t *testing.T, header http.Header) {
 }
 
 func TestPageTemplateAndMarkdown(t *testing.T) {
+	t.Parallel()
 	tmpl := serverTemplate(t)
 	fragmentDir := t.TempDir()
 	writeServerFile(t, filepath.Join(fragmentDir, "content.md"), "# Story {#story}\n")
@@ -426,6 +437,7 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 }
 
 func TestSVGAspectRatioKeepsHotspotsAligned(t *testing.T) {
+	t.Parallel()
 	if got := svgAspectRatio(`<svg viewBox="0 0 1200 640"></svg>`); got != "1.87500000" {
 		t.Fatalf("aspect ratio = %q", got)
 	}
@@ -435,6 +447,7 @@ func TestSVGAspectRatioKeepsHotspotsAligned(t *testing.T) {
 }
 
 func TestMarkdownRendersSafeGFMWithStablePermalinks(t *testing.T) {
+	t.Parallel()
 	rendered := string(markdownWithAnchors(`# Story {#stable-story}
 
 | Before | After |
@@ -483,6 +496,7 @@ The lease is renewed before its midpoint.[^lease-renewal]
 // outline. Everything below that is fetched from a bounded endpoint as the
 // reviewer reaches it, so the page describes the story instead of containing it.
 func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
+	t.Parallel()
 	root := validServerSaga(t)
 	writeServerFile(t, filepath.Join(serverFeatureDir(root), "overview.fragment", "content.md"), "Root-only introduction\n")
 	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "chapter.json"), `{"version":2,"id":"alpha","title":"Alpha"}`)
@@ -582,6 +596,7 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 }
 
 func TestFragmentContentNeverLoadsTheSourceComparison(t *testing.T) {
+	t.Parallel()
 	root := validServerSaga(t)
 	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
 	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
@@ -600,6 +615,7 @@ func TestFragmentContentNeverLoadsTheSourceComparison(t *testing.T) {
 }
 
 func TestPageHandlerRendersRealGitComparison(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	serverGit(t, repo, "init", "-b", "main")
 	serverGit(t, repo, "config", "user.name", "Test")
@@ -665,6 +681,7 @@ func TestPageHandlerRendersRealGitComparison(t *testing.T) {
 }
 
 func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	serverGit(t, repo, "init", "-b", "main")
 	serverGit(t, repo, "config", "user.name", "Test")
@@ -742,6 +759,7 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 }
 
 func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	serverGit(t, repo, "init", "-b", "main")
 	serverGit(t, repo, "config", "user.name", "Test")
@@ -829,6 +847,7 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 }
 
 func TestNarrativeEvidenceTargetsFindsTheRequestedDeck(t *testing.T) {
+	t.Parallel()
 	target := saga.SlideTarget("slides", "summary")
 	itemTarget := saga.ItemTarget("slides", "summary", "code")
 	root := &saga.Section{Children: []*saga.Section{
@@ -848,6 +867,7 @@ func TestNarrativeEvidenceTargetsFindsTheRequestedDeck(t *testing.T) {
 // matches nothing, or one that matches more than intended, breaks the design
 // without breaking a render. These two pairs have both regressed before.
 func TestStylesheetSelectorsMatchTheMarkupTheyTarget(t *testing.T) {
+	t.Parallel()
 	// The disclosure chevron in the linked-code drawer is the shared glyph, so
 	// the rule that sizes and rotates it must name that class.
 	if !strings.Contains(pageStyles, ".attached-file[open]>summary .twisty{transform:rotate(90deg)}") || strings.Contains(pageStyles, ".attached-file-marker") {
@@ -866,6 +886,7 @@ func TestStylesheetSelectorsMatchTheMarkupTheyTarget(t *testing.T) {
 // The sidebar is documentation navigation, not a view of storage: it lists the
 // overview and every preloaded chapter while keeping chapter outlines collapsed.
 func TestNavigationTreeReadsAsCollapsedDocumentationOutline(t *testing.T) {
+	t.Parallel()
 	systemMap := &saga.Fragment{ID: "system-map", Title: "System map"}
 	root := &saga.Section{ID: "root", Title: "Scaffold", Target: saga.SagaTarget("test"),
 		Fragments: []*saga.Fragment{{ID: "overview", Title: "Overview"}, systemMap, {ID: "untitled"}},
@@ -896,6 +917,7 @@ func TestNavigationTreeReadsAsCollapsedDocumentationOutline(t *testing.T) {
 }
 
 func TestDeckNavigationNamesDecksAndExpandsToRenderedSlideThumbnails(t *testing.T) {
+	t.Parallel()
 	root := &saga.Section{ID: "root", Title: "Slides", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "deck", ID: "flow", Title: "Request flow", Target: saga.DeckTarget("test", "flow"), Fragments: []*saga.Fragment{
 			{ID: "happy", Title: "Happy path", Target: saga.SlideTarget("test", "happy"), SlideMeta: &saga.SlideManifest{Section: "Request"}},
@@ -919,6 +941,7 @@ func TestDeckNavigationNamesDecksAndExpandsToRenderedSlideThumbnails(t *testing.
 }
 
 func TestDOMIDIsStableAndCollisionResistantAfterReadablePrefix(t *testing.T) {
+	t.Parallel()
 	prefix := "urn:change-saga:test:fragment:" + strings.Repeat("shared-prefix", 10)
 	first := domID(prefix + "-one")
 	second := domID(prefix + "-two")
@@ -928,6 +951,7 @@ func TestDOMIDIsStableAndCollisionResistantAfterReadablePrefix(t *testing.T) {
 }
 
 func TestFileViewsGroupRenameAndUseDistinctAnchors(t *testing.T) {
+	t.Parallel()
 	changes := gitdiff.ChangeSet{
 		Repository: "https://example.test/a.git", BaseOID: "aaa", HeadOID: "bbb",
 		Atoms: []gitdiff.Atom{
@@ -1037,6 +1061,7 @@ func writeServerFeature(t *testing.T, root string) {
 // each record offers its history, and the comparison views stay on the
 // Review side.
 func TestObservingRendersNoApprovalControls(t *testing.T) {
+	t.Parallel()
 	root := validServerSaga(t)
 	render := func(rng gitdiff.Range) string {
 		tmpl, err := newPageTemplateFor(rng)
@@ -1066,6 +1091,7 @@ func TestObservingRendersNoApprovalControls(t *testing.T) {
 }
 
 func TestDiagramFontIsServedForSandboxedSlides(t *testing.T) {
+	t.Parallel()
 	recorder := httptest.NewRecorder()
 	newMux(&app{}).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, diagram.FontPath, nil))
 	want, _ := diagram.Font()

@@ -19,6 +19,7 @@ import (
 )
 
 func TestReviewDiffsReuseOnlyRawPatches(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	rng := reviewstate.Range{BaseOID: "base", HeadOID: "head"}
 	diffs := newReviewDiffs("nested", nil, rng)
@@ -88,6 +89,7 @@ func TestReviewDiffsReuseOnlyRawPatches(t *testing.T) {
 }
 
 func TestReviewDiffsRootFallbackAndPatchRetry(t *testing.T) {
+	t.Parallel()
 	for _, tc := range []struct {
 		name, top    string
 		err          error
@@ -133,6 +135,7 @@ func TestReviewDiffsRootFallbackAndPatchRetry(t *testing.T) {
 }
 
 func TestReviewDiffsMatchUncachedGitSemantics(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	repo := t.TempDir()
 	serverGit(t, repo, "init", "-b", "main")
@@ -356,6 +359,7 @@ func BenchmarkReviewDiffs(b *testing.B) {
 }
 
 func TestReviewDiffsRootLookupRecovers(t *testing.T) {
+	t.Parallel()
 	for _, firstErr := range []error{nil, errors.New("transient root failure")} {
 		t.Run(fmt.Sprint(firstErr), func(t *testing.T) {
 			diffs := newReviewDiffs("nested", nil, reviewstate.Range{})

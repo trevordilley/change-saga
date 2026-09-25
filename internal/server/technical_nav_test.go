@@ -38,6 +38,7 @@ func currentNav(sidebar string) []string {
 }
 
 func TestTechnicalDesignSidebarNestsItsAreas(t *testing.T) {
+	t.Parallel()
 	root, repo, _ := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	for _, tc := range []struct {
@@ -113,6 +114,7 @@ func TestTechnicalDesignSidebarNestsItsAreas(t *testing.T) {
 // Slides, drawers and reviews link to definition pages, and readers
 // bookmarked the single page's sections, so both keep working.
 func TestTechnicalDesignKeepsItsOldAddresses(t *testing.T) {
+	t.Parallel()
 	root, repo, _ := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	for path, crumb := range map[string]string{

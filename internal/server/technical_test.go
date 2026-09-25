@@ -52,6 +52,7 @@ func technicalGet(t *testing.T, mux http.Handler, path string) (int, string) {
 }
 
 func TestTechnicalDesignPageListsDefinitionsWithoutInferringIntent(t *testing.T) {
+	t.Parallel()
 	root, repo := technicalFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	// The landing page names the areas and what each holds; it is not the
@@ -104,6 +105,7 @@ func TestTechnicalDesignPageListsDefinitionsWithoutInferringIntent(t *testing.T)
 }
 
 func TestTechnicalEntityPageRendersExactPin(t *testing.T) {
+	t.Parallel()
 	root, repo := technicalFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
 	status, body := technicalGet(t, mux, "/technical/component/store")
@@ -136,6 +138,7 @@ func TestTechnicalEntityPageRendersExactPin(t *testing.T) {
 }
 
 func TestTechnicalEntityPageNamesCompetingHeads(t *testing.T) {
+	t.Parallel()
 	root, repo := technicalFixture(t)
 	// Simulate two branches that each revised r1 and then merged: a copy of
 	// r2 renamed r3 is a second head with the same parent. No writer is asked
@@ -171,6 +174,7 @@ func TestTechnicalEntityPageNamesCompetingHeads(t *testing.T) {
 }
 
 func TestTechnicalUsagesFollowItemPins(t *testing.T) {
+	t.Parallel()
 	target := "urn:change-saga:test:component:store"
 	pin := func(revision string) *saga.DocumentationLink {
 		return &saga.DocumentationLink{Target: target, Revision: target + ":revision:" + revision}
@@ -205,6 +209,7 @@ func TestTechnicalUsagesFollowItemPins(t *testing.T) {
 }
 
 func TestTechnicalNewnessNeedsANamedComparison(t *testing.T) {
+	t.Parallel()
 	root, repo := technicalFixture(t)
 	serverGit(t, repo, "add", ".")
 	serverGit(t, repo, "commit", "-m", "inventory on main")

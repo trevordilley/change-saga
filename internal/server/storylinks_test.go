@@ -11,6 +11,7 @@ import (
 )
 
 func TestSlideStorySummaryUsesOnlyItsExactItems(t *testing.T) {
+	t.Parallel()
 	root := filepath.Join(t.TempDir(), "visual.saga")
 	writeEmbeddedSlideFixture(t, root)
 	document, validation, err := saga.LoadNarrative(root)
@@ -76,6 +77,7 @@ func TestSlideStorySummaryUsesOnlyItsExactItems(t *testing.T) {
 }
 
 func TestSlideStoryHoverProjectsEmbeddedTransactionCriterionLinks(t *testing.T) {
+	t.Parallel()
 	root := filepath.Join(t.TempDir(), "visual.saga")
 	writeEmbeddedSlideFixture(t, root)
 	document, validation, err := saga.LoadNarrative(root)

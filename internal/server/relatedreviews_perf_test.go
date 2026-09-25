@@ -23,6 +23,7 @@ import (
 // documentation page asks for the index once and holds it until the Saga or
 // the source head changes, so the first build is the whole cost.
 func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
+	t.Parallel()
 	requireDogfoodSaga(t)
 	document, _, err := saga.Load(dogfoodSaga)
 	if err != nil {

@@ -19,6 +19,7 @@ import (
 )
 
 func TestReviewSnapshotIncludesSourceVisualAndItemEvidence(t *testing.T) {
+	t.Parallel()
 	f := newServerReviewFixture(t)
 	document, _, err := saga.Load(f.root)
 	if err != nil {
@@ -94,6 +95,7 @@ func TestReviewSnapshotIncludesSourceVisualAndItemEvidence(t *testing.T) {
 }
 
 func TestReviewSnapshotCheckRefusesUnseenOrFrozenSlide(t *testing.T) {
+	t.Parallel()
 	f := newServerReviewFixture(t)
 	document, _, _ := saga.Load(f.root)
 	review := document.FindReview("pr-7")
@@ -140,6 +142,7 @@ func postAsyncReview(t *testing.T, handler http.Handler, path string, values url
 }
 
 func TestReviewAsyncReceiptFeedbackAndFallback(t *testing.T) {
+	t.Parallel()
 	f := newServerReviewFixture(t)
 	a, handler := reviewApp(t, f, gitdiff.Range{})
 	document, _, _ := saga.Load(f.root)
@@ -214,6 +217,7 @@ func TestReviewAsyncReceiptFeedbackAndFallback(t *testing.T) {
 }
 
 func TestReviewAsyncGuardRechecksUnderWriterLock(t *testing.T) {
+	t.Parallel()
 	for _, change := range []string{"slide", "head", "frozen"} {
 		t.Run(change, func(t *testing.T) {
 			f := newServerReviewFixture(t)
@@ -256,6 +260,7 @@ func TestReviewAsyncGuardRechecksUnderWriterLock(t *testing.T) {
 }
 
 func TestReviewFeedbackAfterConcurrentSlideEditKeepsReceiptAndCurrency(t *testing.T) {
+	t.Parallel()
 	f := newServerReviewFixture(t)
 	a, _ := reviewApp(t, f, gitdiff.Range{})
 	document, _, _ := saga.Load(f.root)

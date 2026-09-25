@@ -10,6 +10,7 @@ import (
 )
 
 func TestDiffCountsHaveOneSharedRenderer(t *testing.T) {
+	t.Parallel()
 	addedRenderers := regexp.MustCompile(`[+]\{\{[^}]*Added\}\}`).FindAllString(pageTemplate, -1)
 	deletedRenderers := regexp.MustCompile(`−\{\{[^}]*Deleted\}\}`).FindAllString(pageTemplate, -1)
 	if len(addedRenderers) != 1 || len(deletedRenderers) != 1 {
@@ -21,6 +22,7 @@ func TestDiffCountsHaveOneSharedRenderer(t *testing.T) {
 }
 
 func TestFocusedCodeRendererIncludesAccessibleLocalDiffControls(t *testing.T) {
+	t.Parallel()
 	tmpl := serverTemplate(t)
 	old := &diffAtomView{Atom: gitdiff.Atom{Kind: "line", Key: "old", Ref: testLocation(testBaseCommit, "src/app.go", 7, 7), Path: "src/app.go", Side: "old", Line: 7, Content: "return old"}, Target: "urn:change-saga:test:saga"}
 	added := &diffAtomView{Atom: gitdiff.Atom{Kind: "line", Key: "new", Ref: testLocation(testHeadCommit, "src/app.go", 7, 7), Path: "src/app.go", Side: "new", Line: 7, Content: "return fresh"}, Target: "urn:change-saga:test:saga", Selected: true}

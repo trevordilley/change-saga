@@ -8,6 +8,7 @@ import (
 )
 
 func TestCoverageManifestProvesBothMappingDirections(t *testing.T) {
+	t.Parallel()
 	document, changes, report, _, staleRef := codeViewFixture(t)
 	report.Summary = coverage.Summary{Total: 3, Covered: 2, Uncovered: 1, Overlapping: 1, Stale: 1}
 	report.Complete = false
@@ -54,6 +55,7 @@ func TestCoverageManifestProvesBothMappingDirections(t *testing.T) {
 }
 
 func TestManifestChunksNeverMergeAcrossFiles(t *testing.T) {
+	t.Parallel()
 	document, changes, report, _, _ := codeViewFixture(t)
 	// Give the unowned line the same owner and adjacent-looking line number as
 	// the handler range. Reverse grouping must still retain the file boundary.
