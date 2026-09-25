@@ -278,6 +278,13 @@ func TestMeasureServedEdit(t *testing.T) {
 			time.Sleep(5 * time.Millisecond)
 		}
 		caughtUp := time.Since(saved)
+		// The warming page goes on to build the decks after the related
+		// reviews; wait for it to finish so the page measured is the next
+		// reviewer's.
+		for application.files.current == nil || application.files.current.slidesView == nil {
+			time.Sleep(5 * time.Millisecond)
+		}
+		caughtUp = time.Since(saved)
 		elapsed, _, _ := measureGet(t, handler, benchmarkFeaturePath)
 		t.Logf("edit %d: watcher rebuilt within %s of the save; the next feature page took %s", round, caughtUp.Round(time.Millisecond), elapsed.Round(time.Millisecond))
 	}

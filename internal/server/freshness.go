@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/saga"
-	"github.com/twentyideas/changesaga/internal/semanticgraph"
 )
 
 // sagaState is what one freshness check saw: a fingerprint of the Saga's
@@ -312,6 +311,7 @@ func skipDocumentationDirectory(base string) bool {
 // server, and rebuilds what a change invalidated before the next request
 // asks for it. It returns when ctx is done.
 func (a *app) watchSaga(ctx context.Context) {
+	handler := newMux(a)
 	a.fresh.mutex.Lock()
 	a.fresh.window = freshnessWindow
 	a.fresh.mutex.Unlock()
@@ -322,7 +322,7 @@ func (a *app) watchSaga(ctx context.Context) {
 			case <-ctx.Done():
 				return
 			case <-warm:
-				a.warmCaches(ctx)
+				a.warmCaches(ctx, handler)
 			}
 		}
 	}()
@@ -356,29 +356,22 @@ func (a *app) watchSaga(ctx context.Context) {
 	}
 }
 
-// warmCaches reads what a documentation page reads, as it reads it, so the
-// page after a change finds it already read.
-func (a *app) warmCaches(ctx context.Context) {
-	document := a.outlineDocument(ctx)
-	if document == nil {
-		return
-	}
-	files := a.sagaFiles(ctx)
-	if len(document.Decks)+len(document.Onboarding) > 0 {
-		if document = files.narrative(); document == nil {
-			return
-		}
-	}
-	files.tests()
-	files.inventory(document.Manifest.ID)
-	records, err := files.records(document.Manifest.ID)
+// warmCaches renders a documentation page nobody asked for, so the page after
+// a change finds everything it reads already read: the Saga's files, the
+// decks, and the related reviews, which the requirements page reads as every
+// feature and story page does. Rendering a real page keeps the warming
+// exactly what a page reads.
+func (a *app) warmCaches(ctx context.Context, handler http.Handler) {
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, "/requirements", nil)
 	if err != nil {
 		return
 	}
-	// The related reviews are built from the records a page passes them:
-	// with the complete-slide links projected in.
-	if err := semanticgraph.ProjectSlideCriterionLinks(document, &records); err != nil {
-		return
-	}
-	a.relatedReviews(ctx, document, records)
+	handler.ServeHTTP(&discardResponse{header: http.Header{}}, request)
 }
+
+// discardResponse is a response nobody reads.
+type discardResponse struct{ header http.Header }
+
+func (response *discardResponse) Header() http.Header            { return response.header }
+func (response *discardResponse) Write(data []byte) (int, error) { return len(data), nil }
+func (response *discardResponse) WriteHeader(int)                {}
