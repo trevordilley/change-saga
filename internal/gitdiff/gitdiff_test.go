@@ -5,11 +5,13 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"runtime"
 	"strings"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 func TestParseLinesAndEvents(t *testing.T) {
@@ -377,6 +379,51 @@ func TestAdversarialGitFixtureCorpus(t *testing.T) {
 	if len(changes.SagaChanges) == 0 {
 		t.Fatal("saga-only fixture was not classified separately")
 	}
+	assertSessionReadsMatch(t, repo, "https://example.test/acme/corpus.git", base, "HEAD")
+}
+
+// A gitexec session reads diffs through a shared diff-tree process. Every
+// reader must return exactly what it returns without one.
+func assertSessionReadsMatch(t *testing.T, repo, repository, base, head string) {
+	t.Helper()
+	plain := context.Background()
+	session, end := gitexec.Begin(plain)
+	defer end()
+	wantChanges, err := Read(plain, repo, repository, base, head)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantCatalog, err := ReadCatalog(plain, repo, repository, base, head)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTree, err := TreeChanges(plain, repo, wantChanges.BaseOID, wantChanges.HeadOID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for range 2 {
+		gotChanges, err := Read(session, repo, repository, base, head)
+		if err != nil {
+			t.Fatal(err)
+		}
+		gotCatalog, err := ReadCatalog(session, repo, repository, base, head)
+		if err != nil {
+			t.Fatal(err)
+		}
+		gotTree, err := TreeChanges(session, repo, wantChanges.BaseOID, wantChanges.HeadOID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(gotChanges, wantChanges) {
+			t.Fatalf("Read in a session differs:\n got %#v\nwant %#v", gotChanges, wantChanges)
+		}
+		if !reflect.DeepEqual(gotCatalog, wantCatalog) {
+			t.Fatalf("ReadCatalog in a session differs:\n got %#v\nwant %#v", gotCatalog, wantCatalog)
+		}
+		if !reflect.DeepEqual(gotTree, wantTree) {
+			t.Fatalf("TreeChanges in a session differs:\n got %#v\nwant %#v", gotTree, wantTree)
+		}
+	}
 }
 
 func TestEmptyFileAddAndDeleteProduceLifecycleAtoms(t *testing.T) {
@@ -543,6 +590,7 @@ func TestSubmoduleGitlinkChangeProducesAtoms(t *testing.T) {
 	if len(changes.Atoms) == 0 || !hasAtomPath(changes.Atoms, "deps/child") {
 		t.Fatalf("submodule change yielded no coverage atoms: %#v", changes)
 	}
+	assertSessionReadsMatch(t, repo, "https://example.test/acme/submodule.git", base, "HEAD")
 }
 
 func hasAtomPath(atoms []Atom, path string) bool {

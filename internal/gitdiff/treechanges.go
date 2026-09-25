@@ -36,8 +36,7 @@ func TreeChanges(ctx context.Context, repo, from, to string) ([]FileChange, erro
 	if from == to {
 		return nil, nil
 	}
-	args := canonicalDiffArgs(repo, "--unified=0", from, to, "--", ".", ":(exclude,glob)**/*.saga/**")
-	output, err := exec.CommandContext(ctx, "git", args...).Output()
+	output, err := diffCommits(ctx, repo, []string{"-p", "--unified=0"}, from, to, ".", ":(exclude,glob)**/*.saga/**")
 	if err != nil {
 		var exitErr *exec.ExitError
 		if errorAs(err, &exitErr) {
