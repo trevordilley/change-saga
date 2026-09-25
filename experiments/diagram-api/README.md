@@ -34,6 +34,18 @@ and compares final raw/API screenshots byte-for-byte at 1280×720 and 1024×576.
 This is standalone SVG QA, not Saga's reviewer-surface visual QA. See the committed
 [evidence](evidence/visual-qa.json) and [preview](evidence/after-1280.png).
 
+Authoring sessions for new diagrams (the sequence and composition trials) log
+each CLI call and screenshot arbitrary SVGs:
+
+```sh
+python3 examples/logged.py runs/mine/session.jsonl -- describe --store runs/mine/diagram
+hivecontrol exec oneshot 3m -- node examples/shoot.mjs runs/mine runs/mine/final.svg
+python3 examples/summarize-session.py runs/mine/session.jsonl
+```
+
+See [sequence](evidence/sequence/) and [composition](evidence/composition/)
+evidence and their findings in the design document.
+
 Windows compilation check (from a POSIX shell):
 
 ```sh
@@ -111,7 +123,9 @@ Saga's lock, atomic-write and publication-error primitives. A failed publication
 can leave unreferenced staged files but cannot publish half a batch. Receipt
 replay returns the current snapshot and the original applied snapshot.
 
-`check` detects source/visual/input divergence. `rebuild` retains divergent SVG
+`check` detects source/visual/input divergence and reports authoring-rule
+violations; loading checks integrity only, so an older record stays readable
+and repairable after a rule tightens. `rebuild` retains divergent SVG
 bytes under `recovered/` before regenerating the expected artifact. It refuses
 missing inputs or changed renderer output. There is no SVG-to-source import:
 editing the generated SVG is divergence, not a second supported authority.

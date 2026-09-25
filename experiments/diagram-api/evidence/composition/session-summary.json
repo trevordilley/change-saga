@@ -1,0 +1,34 @@
+{
+  "commands": 14,
+  "failed": [
+    {
+      "command": "check",
+      "exit": 1
+    },
+    {
+      "command": "apply",
+      "exit": 1
+    },
+    {
+      "command": "check",
+      "exit": 1
+    },
+    {
+      "command": "apply",
+      "exit": 1
+    }
+  ],
+  "categories": {
+    "compact_authoring_and_queries": {
+      "commands": 11,
+      "request_bytes": 13165,
+      "response_bytes": 5114
+    },
+    "rendered_artifacts": {
+      "commands": 3,
+      "request_bytes": 462,
+      "response_bytes": 651831
+    }
+  },
+  "token_counts": "not measured"
+}

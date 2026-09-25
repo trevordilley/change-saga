@@ -1,0 +1,40 @@
+Diagram: edit-to-review "From a CLI edit to a reviewer's screen"
+Snapshot: sha256:387d3359de68cecd7fcfc9b3e9ad06974a320fc419c0b370f40c5435103e578d
+View: semantic; omits geometry, styles, decorative_elements, asset_bytes, evidence_bodies; cannot reconstruct the drawing
+
+Nodes:
+  c-base in=history
+    description: Branch point on main
+  c-cache in=history
+    description: Add session cache
+  c-draw in=history
+    description: Draw request path
+  c-merge in=history
+    description: Merge after review
+  comment "Reviewer" in=browser icon=lucide:user
+    detail: 1 · Why a cache here?
+  commit "Commit the source" icon=lucide:git-branch
+  edit "Edit with the CLI" icon=lucide:terminal
+  mini-api "API" in=browser
+  mini-cache "Cache" in=browser
+  note-atomic "Source and SVG publish together."
+  note-geometry "Moving a node never reroutes an edge."
+  note-ids "Comments target stable element IDs."
+  review "Review the result" icon=lucide:user
+
+Edges:
+  comment-target: comment -> mini-cache in=browser
+  mini-lookup: mini-api -> mini-cache in=browser
+  to-commit: edit -> commit
+  to-review: commit -> review
+
+Groups:
+  browser "Review surface"
+  history "Branch history"
+  terminal "Terminal session"
+
+Text:
+  terminal-session "$ diagram-spike move --id api --dy 30\napplied: api moved, edges unchanged\n$ diagram-spike describe\napi -> cache \"lookup\"\n$ diagram-spike render > path.svg\n$ git commit -m \"Add session cache\"\n$ git push" in=terminal
+    description: The author edits named objects, reads the semantic view, and commits the source.
+
+Showing 1-21 of 21.

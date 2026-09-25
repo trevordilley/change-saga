@@ -320,6 +320,59 @@ revision retries were needed in the recorded run. The raw baseline lacks
 transaction/merge/recovery equivalents, so it is not compared to the full safety
 sequence as though they did the same work.
 
+### Sequence and composition trials
+
+Two further diagrams were authored through the CLI, each drawn in one batch and
+revised by inspecting screenshots:
+
+| Trial | What it exercised | Batches accepted first try | Revisions |
+| --- | --- | --- | --- |
+| [Sequence](../experiments/diagram-api/evidence/sequence/final-1280.png) | Five participants, dashed lifelines, activation bar, replies, `alt`/`else` fragment | 3 of 3 | One edge `move`; one grouping batch |
+| [Composition](../experiments/diagram-api/evidence/composition/final-1280.png) | Terminal and browser chrome, branch curves, nested mini diagram, numbered badge, comment callout, `align`/`distribute` | 3 of 5 | One four-element batch; one accessibility repair |
+
+Both final renders passed standalone screenshot QA at 1280×720 and 1024×576.
+Each directory holds the request batches, final source, text description, SVG,
+[session log](../experiments/diagram-api/evidence/sequence/session.jsonl) and
+[summary](../experiments/diagram-api/evidence/composition/session-summary.json).
+The first composition batch was 9,593 bytes; its text description is 1,577.
+The same agent that built the prototype authored both, and it generated the
+repetitive elements (participants, lifelines, messages) with a short script,
+not by typing JSON. These are not independent AI authoring sessions.
+
+Both failed composition batches traced to the prototype. Decorative
+groups rendered `aria-hidden`, hiding semantic children from assistive
+technology while `describe` named parents it never listed. Validation now
+refuses semantic elements inside decorative groups. Adding that rule then
+locked every command out of the existing record, including the repair edit,
+because loading validated authoring rules. Loading now checks integrity only;
+publishing enforces rules and `check` reports them. The repair then failed
+once more for a reason not yet fixed: validation reports only the first
+violation, so the third hidden group (`terminal`) surfaced only after the first
+two were repaired.
+
+Moving an edge carried its path and label together. Reparenting elements into
+a group at the origin added containment to `describe` without changing pixels.
+Custom fragments were sufficient for every non-shape graphic. The remaining
+gaps, most costly first:
+
+1. **Order.** `describe` sorts by ID, so message order survived only because
+   IDs were numbered (`m01-apply`). Sequences need explicit reading order.
+2. **Containers.** A visible frame (the `alt` boundary, each panel) and the
+   group that makes its contents children are separate objects. Moving a panel
+   leaves its contents behind, and `else` membership is unexpressed. A frame
+   that is both drawn and a parent would address both trials.
+3. **External labels.** A 20-unit commit dot cannot hold its label, so labels
+   became decorative text disconnected from the node they name.
+4. **Opaque fragments.** Colors are hard-coded rather than named styles, five
+   lifelines repeat one fragment, and resizing terminal chrome means resending
+   the whole fragment.
+5. **Text.** SVG collapsed a double space; there is no monospace face for
+   terminal content, no right or centered alignment, and no label background
+   where connectors cross text.
+6. **Hand-computed geometry.** Every message row and label offset was worked
+   out by the author. `distribute` helped, but needed a separate update to
+   set its starting coordinate.
+
 ### Excalidraw alternative and next decisions
 
 Current official docs were re-read during this experiment. The
@@ -341,11 +394,12 @@ notices, dependency-size measurements and Windows execution. Those results and
 adapter byte counts remain **unmeasured**; this document makes no superiority
 claim against an executed Excalidraw backend.
 
-Recommend continuing the native API experiment with two more hand-composed
-technical diagrams (sequence/swimlane and mixed custom graphics), then measuring
-independent AI authoring sessions. Retain exact authored geometry and compact
-semantic reads. Improve shape/text affordances from those examples before
-standardizing CLI flags. Resolve production selector validation separately.
+Recommend addressing the trial gaps next: explicit reading order in
+`describe`, drawn containers that are also parents, external node labels,
+style references inside fragments, and reporting every validation error at
+once. Then measure independent AI authoring sessions before standardizing CLI
+flags. Retain exact authored geometry and compact semantic reads. Resolve
+production selector validation separately.
 
 Production adoption still requires decisions about source storage and merge
 workflow, receipt/asset lifecycle, the supported SVG escape surface, font/script
