@@ -4,10 +4,14 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -88,4 +92,78 @@ func TestTheShellCheckSkipsCodeEvidence(t *testing.T) {
 	if files == filesAfter {
 		t.Fatal("an evidence edit left every-file fingerprint unchanged")
 	}
+}
+
+// Within a running server's window a recent check answers the request, and
+// the server's own write is seen by the very next request however recent
+// that check was.
+func TestTheServersOwnWriteIsSeenAtOnce(t *testing.T) {
+	fixture, _, _ := boundedFixture(t)
+	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: serverTemplate(t)}
+	application.fresh.window = time.Hour
+	handler := newMux(application)
+	open := func() {
+		t.Helper()
+		recorder := httptest.NewRecorder()
+		handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("GET / = %d: %s", recorder.Code, recorder.Body.String())
+		}
+	}
+	open()
+	open()
+	if application.fresh.checks != 1 {
+		t.Fatalf("a request inside the window took its own check: %d checks", application.fresh.checks)
+	}
+	first := application.files.current
+	writeServerFile(t, filepath.Join(fixture.Root, "README.md"), "Written by the server.\n")
+	application.fresh.wrote()
+	open()
+	if application.fresh.checks != 2 || application.files.current == first {
+		t.Fatalf("the request after the server's write was answered by a check from before it: %d checks", application.fresh.checks)
+	}
+}
+
+// A running server reads the Saga, related reviews included, before anyone
+// asks, and again after an edit made outside it, within the window.
+func TestAWatchedSagaIsReadBeforeAnyoneAsks(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	documentTheFixture(t, fixture)
+	application, handler := reviewApp(t, fixture, gitdiff.Range{})
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	go application.watchSaga(ctx)
+	builds := func() int {
+		application.related.mutex.Lock()
+		defer application.related.mutex.Unlock()
+		return application.related.builds
+	}
+	waitFor := func(what string, done func() bool) {
+		t.Helper()
+		deadline := time.Now().Add(30 * time.Second)
+		for !done() {
+			if time.Now().After(deadline) {
+				t.Fatalf("the watched Saga never %s", what)
+			}
+			time.Sleep(10 * time.Millisecond)
+		}
+	}
+	waitFor("built its related reviews", func() bool { return builds() == 1 })
+	path := requirementStoryHref("place-an-order")
+	if body := documentationPage(t, handler, path); !strings.Contains(body, `data-related-review="pr-7"`) {
+		t.Fatalf("%s lost its related review to the background build", path)
+	}
+	if builds() != 1 {
+		t.Fatalf("the page rebuilt the related reviews the watcher had built: %d builds", builds())
+	}
+	storyFile := filepath.Join(serverFeatureDir(fixture.root), applayout.RequirementsDir, "stories", "place-an-order.story", "story.json")
+	info, err := os.Stat(storyFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+	later := info.ModTime().Add(time.Second)
+	if err := os.Chtimes(storyFile, later, later); err != nil {
+		t.Fatal(err)
+	}
+	waitFor("rebuilt after an edit", func() bool { return builds() == 2 })
 }

@@ -196,3 +196,89 @@ func TestMeasureFeaturePhases(t *testing.T) {
 		lap("git rev-parse HEAD", func() { gitOutput(ctx, dogfoodSaga, "rev-parse", "HEAD") })
 	}
 }
+
+// servedApp is the app Saga as a running server holds it: watched, and read
+// in the background before any request.
+func servedApp(tb testing.TB) (*app, http.Handler, context.CancelFunc) {
+	tb.Helper()
+	tmpl, err := newPageTemplateFor(gitdiff.Range{})
+	if err != nil {
+		tb.Fatal(err)
+	}
+	application := &app{root: dogfoodSaga, sourceDir: filepath.Join("..", ".."), template: tmpl}
+	ctx, cancel := context.WithCancel(context.Background())
+	go application.watchSaga(ctx)
+	deadline := time.Now().Add(time.Minute)
+	for {
+		application.related.mutex.Lock()
+		built := application.related.builds
+		application.related.mutex.Unlock()
+		if built > 0 {
+			break
+		}
+		if time.Now().After(deadline) {
+			cancel()
+			tb.Fatal("the served app never read the Saga in the background")
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	return application, newMux(application), cancel
+}
+
+// BenchmarkFeaturePageServed is a feature page from a running server, which
+// checks the Saga in the background rather than per request.
+func BenchmarkFeaturePageServed(b *testing.B) {
+	if _, err := os.Stat(filepath.Join(dogfoodSaga, "saga.json")); err != nil {
+		b.Skip("app Saga absent")
+	}
+	_, handler, cancel := servedApp(b)
+	defer cancel()
+	measureGet(b, handler, benchmarkFeaturePath)
+	b.ReportAllocs()
+	b.ResetTimer()
+	pprof.Do(context.Background(), pprof.Labels("phase", "served"), func(context.Context) {
+		for i := 0; i < b.N; i++ {
+			measureGet(b, handler, benchmarkFeaturePath)
+		}
+	})
+}
+
+// TestMeasureServedEdit times a running server's feature page after an edit
+// to a feature's story, once the watcher has seen it, beside the first page
+// of a fresh server.
+func TestMeasureServedEdit(t *testing.T) {
+	if os.Getenv("SAGA_MEASURE") == "" {
+		t.Skip("set SAGA_MEASURE=1 to measure")
+	}
+	requireDogfoodSaga(t)
+	started := time.Now()
+	application, handler, cancel := servedApp(t)
+	defer cancel()
+	t.Logf("background read of the Saga at startup: %s", time.Since(started).Round(time.Millisecond))
+	elapsed, _, _ := measureGet(t, handler, benchmarkFeaturePath)
+	t.Logf("first feature page after the background read: %s", elapsed.Round(time.Millisecond))
+	stories, err := filepath.Glob(filepath.Join(dogfoodSaga, "___features", "*", "___requirements", "stories", "*", "story.json"))
+	if err != nil || len(stories) == 0 {
+		t.Fatalf("no story to edit: %v", err)
+	}
+	edited := stories[0]
+	info, err := os.Stat(edited)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.Chtimes(edited, info.ModTime(), info.ModTime())
+	for round := 1; round <= 3; round++ {
+		touched := info.ModTime().Add(time.Duration(round) * time.Second)
+		if err := os.Chtimes(edited, touched, touched); err != nil {
+			t.Fatal(err)
+		}
+		before := application.related.builds
+		saved := time.Now()
+		for application.related.builds == before && time.Since(saved) < 30*time.Second {
+			time.Sleep(5 * time.Millisecond)
+		}
+		caughtUp := time.Since(saved)
+		elapsed, _, _ := measureGet(t, handler, benchmarkFeaturePath)
+		t.Logf("edit %d: watcher rebuilt within %s of the save; the next feature page took %s", round, caughtUp.Round(time.Millisecond), elapsed.Round(time.Millisecond))
+	}
+}

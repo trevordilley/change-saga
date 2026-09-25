@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/semanticgraph"
 )
 
 // sagaState is what one freshness check saw: a fingerprint of the Saga's
@@ -69,21 +70,56 @@ func (state *sagaState) relatedKey() (string, error) {
 	return files + "\x00" + state.sourceHead, nil
 }
 
-// answers says whether this check can serve a request that arrived at
-// arrived and needs every file when full is set.
-func (state *sagaState) answers(arrived time.Time, full bool) bool {
-	return !state.started.Before(arrived) && (state.full || !full)
+// answers says whether this check can serve a request that accepts checks
+// begun at floor or later and needs every file when full is set.
+func (state *sagaState) answers(floor time.Time, full bool) bool {
+	return !state.started.Before(floor) && (state.full || !full)
 }
 
 // freshness shares freshness checks between requests. A check answers every
 // request that arrived before it started, so concurrent requests wait on one
 // walk rather than each taking their own, and none is served a state older
 // than itself.
+//
+// A running server also watches the Saga: a background check every
+// pollInterval while reviewers are using it, so a request is answered by a
+// check at most window older than itself instead of waiting on its own. An
+// edit made outside the server then shows within window of being saved, and
+// the caches it invalidates are rebuilt in the background before anyone
+// asks. The server's own writes are seen at once.
 type freshness struct {
 	mutex   sync.Mutex
 	latest  *sagaState
 	pending *pendingCheck
 	checks  int
+	// window is how much older than a request a check may be and still
+	// answer it. Zero, the default outside a running server, is none.
+	window time.Duration
+	// notBefore is when the server last wrote to the Saga. No check that
+	// began before it answers anything.
+	notBefore time.Time
+	// asked is when a request last asked, so polling stops while nobody is
+	// reviewing.
+	asked time.Time
+}
+
+const (
+	// freshnessWindow bounds how long an edit made outside the server can
+	// go unseen.
+	freshnessWindow = 250 * time.Millisecond
+	// pollInterval keeps a check within the window while reviewers are
+	// active, with room for the walk itself.
+	pollInterval = 200 * time.Millisecond
+	// pollIdle is how long after the last request polling continues.
+	pollIdle = 2 * time.Minute
+)
+
+// wrote records that the server itself changed the Saga, so the next request
+// takes a check that sees the change.
+func (f *freshness) wrote() {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+	f.notBefore = time.Now()
 }
 
 type pendingCheck struct {
@@ -118,14 +154,27 @@ func arrivedAt(ctx context.Context) time.Time {
 // evidence, claims, and verifications, so the pages that read none of them do
 // not scale with them; full also fingerprints every file.
 func (a *app) sagaState(ctx context.Context, full bool) *sagaState {
-	arrived := arrivedAt(ctx)
+	return a.checkedSince(ctx, arrivedAt(ctx), full, true)
+}
+
+// checkedSince is a check begun no earlier than arrived, less the window,
+// and never before the server's last write. asked says a request is asking,
+// rather than the poll.
+func (a *app) checkedSince(ctx context.Context, arrived time.Time, full, asked bool) *sagaState {
 	f := &a.fresh
 	f.mutex.Lock()
-	if state := f.latest; state != nil && state.err == nil && state.answers(arrived, full) {
+	if asked {
+		f.asked = time.Now()
+	}
+	floor := arrived.Add(-f.window)
+	if f.notBefore.After(floor) {
+		floor = f.notBefore
+	}
+	if state := f.latest; state != nil && state.err == nil && state.answers(floor, full) {
 		f.mutex.Unlock()
 		return state
 	}
-	if pending := f.pending; pending != nil && !pending.started.Before(arrived) && (pending.full || !full) {
+	if pending := f.pending; pending != nil && !pending.started.Before(floor) && (pending.full || !full) {
 		f.mutex.Unlock()
 		<-pending.done
 		return pending.state
@@ -257,4 +306,79 @@ func skipDocumentationDirectory(base string) bool {
 		return true
 	}
 	return false
+}
+
+// watchSaga checks the Saga every pollInterval while reviewers are using the
+// server, and rebuilds what a change invalidated before the next request
+// asks for it. It returns when ctx is done.
+func (a *app) watchSaga(ctx context.Context) {
+	a.fresh.mutex.Lock()
+	a.fresh.window = freshnessWindow
+	a.fresh.mutex.Unlock()
+	warm := make(chan struct{}, 1)
+	go func() {
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-warm:
+				a.warmCaches(ctx)
+			}
+		}
+	}()
+	ticker := time.NewTicker(pollInterval)
+	defer ticker.Stop()
+	var seen string
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+		}
+		a.fresh.mutex.Lock()
+		idle := time.Since(a.fresh.asked) > pollIdle
+		a.fresh.mutex.Unlock()
+		if idle && seen != "" {
+			continue
+		}
+		state := a.checkedSince(ctx, time.Now(), true, false)
+		key, err := state.relatedKey()
+		if err != nil {
+			continue
+		}
+		if outline, _ := state.outlineKey(); key+outline != seen {
+			seen = key + outline
+			select {
+			case warm <- struct{}{}:
+			default:
+			}
+		}
+	}
+}
+
+// warmCaches reads what a documentation page reads, as it reads it, so the
+// page after a change finds it already read.
+func (a *app) warmCaches(ctx context.Context) {
+	document := a.outlineDocument(ctx)
+	if document == nil {
+		return
+	}
+	files := a.sagaFiles(ctx)
+	if len(document.Decks)+len(document.Onboarding) > 0 {
+		if document = files.narrative(); document == nil {
+			return
+		}
+	}
+	files.tests()
+	files.inventory(document.Manifest.ID)
+	records, err := files.records(document.Manifest.ID)
+	if err != nil {
+		return
+	}
+	// The related reviews are built from the records a page passes them:
+	// with the complete-slide links projected in.
+	if err := semanticgraph.ProjectSlideCriterionLinks(document, &records); err != nil {
+		return
+	}
+	a.relatedReviews(ctx, document, records)
 }

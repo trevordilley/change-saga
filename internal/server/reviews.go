@@ -587,6 +587,8 @@ func (a *app) reviewDecision(w http.ResponseWriter, r *http.Request) {
 		CheckSnapshot: a.reviewSnapshotCheck(r, head), Review: review.ID, Slide: slide, State: r.PostForm.Get("state"),
 		Reviewer: saga.ReviewerIdentity{Kind: "human"}, Commit: head, Body: r.PostForm.Get("body"),
 	})
+	// The next request sees the write, however recently the Saga was checked.
+	a.fresh.wrote()
 	if err != nil {
 		reviewWriteError(w, err)
 		return
@@ -625,6 +627,7 @@ func (a *app) reviewComment(w http.ResponseWriter, r *http.Request) {
 		Anchor: anchor, AnnotationAction: r.PostForm.Get("annotation_action"),
 		Reviewer: saga.ReviewerIdentity{Kind: "human"}, Commit: head,
 	})
+	a.fresh.wrote()
 	if err != nil {
 		reviewWriteError(w, err)
 		return

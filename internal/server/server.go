@@ -347,6 +347,12 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 	}
 	errCh := make(chan error, 1)
 	go func() { errCh <- server.Serve(listener) }()
+	// The Saga is read in the background as soon as the server is up, and
+	// again whenever it changes, so a reviewer's first page and the page
+	// after an edit find it already read.
+	watchCtx, stopWatching := context.WithCancel(ctx)
+	defer stopWatching()
+	go application.watchSaga(watchCtx)
 	select {
 	case <-ctx.Done():
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
