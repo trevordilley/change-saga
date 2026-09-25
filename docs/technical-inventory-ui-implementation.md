@@ -10,9 +10,15 @@ reverse-use, selection and coverage projections to `internal/inventoryview`.
 ## What a reader gets
 
 - **Overview → Technical design** (`/technical`). The overview directory and
-  sidebar list it with its Systems, Components, ERDs and data entities. The page
-  holds a directory per kind, the application ERD and every data entity.
-  Directories count; they never score.
+  sidebar list it. The page is a short landing page naming three areas with
+  what each holds; it renders no directory. See
+  [Technical design as a tree of pages](#technical-design-as-a-tree-of-pages).
+- **Three area pages.** `/technical/erd` draws the application ERD (the one
+  named `application`, else the first) with a link to its revision history and
+  uses, lists other ERDs and overlays, and holds the directory of every data
+  entity. `/technical/systems` and `/technical/components` are those
+  directories. Each area page builds only its own content, and its filter
+  submits to its own page. Directories count; they never score.
 - **One canonical page per definition** (`/technical/{kind}/{id}`). With no
   revision it renders the unique current revision. `?revision=` renders that
   exact saved revision and states whether it is stale, retired or conflicted;
@@ -60,6 +66,43 @@ reverse-use, selection and coverage projections to `internal/inventoryview`.
   inherit through eligible selections, as the CLI does, and labels those owners
   "selected via" the selection rather than as authored evidence.
 
+## Technical design as a tree of pages
+
+The sidebar and the pages share one tree:
+
+```text
+Technical design          /technical              landing page, three areas
+  ERD                     /technical/erd          application ERD, other views, all data entities
+    each data entity      /technical/data-entity/{id}
+  Systems                 /technical/systems      directory of Systems
+    each System           /technical/system/{id}
+  Components              /technical/components   directory of Components
+    each Component        /technical/component/{id}
+```
+
+- **Sidebar.** Technical design under the overview discloses ERD, Systems and
+  Components through the existing `navSection` rows: each area row opens its
+  page, and its twisty discloses one row per definition. The current page's
+  row is marked `aria-current="page"` and every ancestor is expanded;
+  unrelated areas stay shut. ERDs and overlays have no row of their own, so on
+  their pages the ERD row is the current one. An empty area is omitted, like
+  every empty section.
+- **Addresses.** Definition pages keep `/technical/{kind}/{id}` and
+  `?revision=` pins, because slides, drawers and reviews link to them; nothing
+  redirects. Their breadcrumb now passes through their area. The landing
+  page's area entries carry the old single page's section ids
+  (`#technical-systems-section`, `#technical-components-section`,
+  `#technical-data-model`), so a bookmarked fragment still lands on the
+  matching area. Only `erd`, `systems` and `components` are areas; any other
+  `/technical/{segment}` is a 404.
+- **Design chapters.** No design chapter rendered on `/technical`: a
+  feature's `___design` chapters render on that feature's page and in its
+  sidebar places, and they stay there. The old page's in-page jump links
+  (Systems, Components, Data model) are replaced by the landing page and the
+  sidebar.
+- **Cost.** The landing page counts records only. Area and definition pages
+  build the shared reverse index and, when comparing, newness.
+
 ## Safety of authored drawings
 
 The loader validates ERD assets, but inlining the author's bytes would still
@@ -78,8 +121,10 @@ digest is refused the same way.
 - The authored-ERD slide draws holding resources as containers around entity
   cards. The renderer does not infer containment from a drawing; it lists
   holders as data, and an author may draw containers in the ERD asset.
-- The directory is a table rather than an expandable tree. It is filterable,
-  keyboard reachable, and linked row-for-element to the drawing.
+- The ERD page's directory is a table rather than an expandable tree. It is
+  filterable, keyboard reachable, and linked row-for-element to the drawing.
+  The expandable tree is the sidebar, where the ERD row discloses every data
+  entity.
 - `class` and `style` attributes are refused in ERD drawings, so authors must
   use presentation attributes. This is stricter than the loader.
 
@@ -92,6 +137,12 @@ conflict, made by copying a revision file. The browser checks are
 `e2e/tests/technical-inventory-ui.spec.ts`: desktop and 390px touch
 navigation, keyboard and Escape focus, permalink reload, 404s, an ERD and Item
 selection authored through the public CLI, and reviewer coverage attribution.
+`technical_nav_test.go` checks which sidebar rows are open and current on
+every Technical design page, the ERD page's other views, breadcrumbs through
+each area, old fragments and unknown areas. The browser spec walks the landing
+page into an area, opens areas by keyboard and by touch at 390px, and follows
+old addresses; `directory-width.spec.ts` reads the Components directory on its
+own page at phone width.
 
 Fixed in passing: `/api/layers` cached a git cancellation (`signal: killed`)
 as the comparison's error when a reader navigated away mid-derivation, so every
@@ -99,9 +150,11 @@ later request answered 500. Cancellations are no longer cached.
 
 ## Known gaps
 
-- `/features` and `/personas` directory tables widen the 390px layout viewport.
-  Technical design tables now scroll within their section. The shared
-  directory layout is unchanged.
+- Every directory, the Technical design ones included, scrolls its table
+  inside its own `.directory-scroll` region at phone width, so the page keeps
+  the device's width.
+- The sidebar lists every data entity beneath the ERD row. With many more
+  entities that list grows long; the ERD page's filter is the faster path.
 - The ERD view does not pan or zoom beyond browser scaling. On narrow screens
   the directory is the readable path.
 - Newness is identity-level (new, revised, unchanged). Relationship-level
@@ -109,8 +162,8 @@ later request answered 500. Cancellations are no longer cached.
 
 ## Saga documentation and reconciliation
 
-The living documentation uses the legacy inventory format. `app.saga` has not
-adopted format 2.
+The slice was first documented under the legacy inventory format; `app.saga`
+has since adopted format 2.
 
 - Components `technical-design-page`, `authored-erd-view` and
   `item-selection-drawer`, and System `technical-design-ui`, which pins them
@@ -139,3 +192,36 @@ adopted format 2.
   revision.
 - The four new definitions show as "reassess" only because this range added
   their code.
+
+### The area pages
+
+Splitting `/technical` moved the code the Technical Design UI's records cite,
+so their evidence went stale. Under inventory format 2 every new revision
+states intent, and an implemented interaction must join implemented
+endpoints:
+
+- Component `technical-design-page` r2 ("Technical design pages") and System
+  `technical-design-ui` r3 explain the page tree and pin current code, as
+  implemented at the delivery commit. The System's legacy members
+  `authored-erd-view` (r2), `item-selection-drawer` (r2) and
+  `technical-explanation-drawer` (r3) are restated as implemented with
+  unchanged explanations and their current code. System
+  `technical-documentation` still pins the drawer's r2, whose content is the
+  same; revising it would cascade through its legacy members into the
+  application ERD, so it is left to that record's owner.
+- New slide `ti-ui-impl-areas` (rank 242, "Technical Design UI") draws the
+  landing page, area pages, sidebar tree, area route and unchanged addresses.
+  Its six Items own the added code and the new navigation test. The overview,
+  ERD, trace and verification slides are republished through `apply-slide`
+  with their Items pinned to the current revisions and their evidence at the
+  current lines. Visual QA reports no findings for the new slide.
+- Review `technical-design-subpages` explains this branch's change over
+  `83672282`, the source-branch head it merged, in three slides. It covers
+  every changed line and file event in that range, with no overlaps and no
+  stale references. No review decision is recorded.
+
+`reconcile --against da5101a6` afterwards reports the same 12 evidence
+regressions on the historical proposal slides and 23 pre-existing stale
+references as before this change, and no stale code evidence or inventory
+evidence introduced by it. The Items and records above were repinned only
+after rereading their explanations against the new code.
