@@ -1,0 +1,117 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:data-entity:merge-record",
+  "parents": [
+    "urn:change-saga:change-saga:data-entity:merge-record:revision:r1"
+  ],
+  "name": "Merge record",
+  "explanation": "Persisted in the Saga (___merges/\u003ccommit\u003e.json) but produced from Git: when a change lands, repin records the landed commit, its base and the branch's commit messages, and names the review it froze, so squash merges keep their reasoning.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8"
+  },
+  "code": [
+    {
+      "id": "record",
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "path": "internal/saga/model.go",
+      "start": 315,
+      "end": 336,
+      "digest": "sha256:0185b4742d937845211d6ec4c41299d39f55db646b72a030e55cac35084d3903",
+      "note": "Merge and MergedCommit."
+    }
+  ],
+  "fields": [
+    {
+      "id": "commit",
+      "name": "commit",
+      "type": "landed OID",
+      "keys": [
+        "primary"
+      ],
+      "note": "Also the file name."
+    },
+    {
+      "id": "base",
+      "name": "base",
+      "type": "commit"
+    },
+    {
+      "id": "commits",
+      "name": "commits[]",
+      "type": "subject · body · author"
+    },
+    {
+      "id": "review",
+      "name": "review",
+      "type": "review ID",
+      "keys": [
+        "foreign"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "from-source",
+      "meaning": "production",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:source-repository",
+        "revision": "urn:change-saga:change-saga:data-entity:source-repository:revision:r2"
+      },
+      "label": "landed commits recorded in",
+      "explanation": "repin reads the branch commits with git log and writes them into the record.",
+      "flow": "destination_to_owner",
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "log",
+          "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+          "path": "internal/cli/references.go",
+          "start": 538,
+          "end": 556,
+          "digest": "sha256:522221b6b8c360a73aabb8e0d1e107de69df5fda8bf6f2c601c3ed0ec5b0b7d7",
+          "note": "branchCommits reads the landed branch from Git."
+        },
+        {
+          "id": "write",
+          "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+          "path": "internal/cli/references.go",
+          "start": 399,
+          "end": 410,
+          "digest": "sha256:846b91b6e6e1ada367618b0a0846d35a40b68f71a2970e2ec26eb14a2d3c7853",
+          "note": "The merge record is written under ___merges."
+        }
+      ]
+    },
+    {
+      "id": "freezes",
+      "meaning": "association",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:review",
+        "revision": "urn:change-saga:change-saga:data-entity:review:revision:r1"
+      },
+      "label": "freezes",
+      "explanation": "When the landed change has a review, repin freezes it at the same time and the record names it.",
+      "cardinality": {
+        "owner": "0..1",
+        "destination": "0..1"
+      },
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "freezes-field",
+          "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+          "path": "internal/saga/model.go",
+          "start": 324,
+          "end": 326,
+          "digest": "sha256:14394649a5510af6e290d87df8b3af171686a628d120937a01f2945deab2f162",
+          "note": "Merge.Review."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T15:40:26.867884Z"
+}
