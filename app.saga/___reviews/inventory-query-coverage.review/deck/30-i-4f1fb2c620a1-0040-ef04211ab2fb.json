@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unreferenced",
+  "slide": "reconcile",
+  "rank": 40,
+  "kind": "node",
+  "label": "Unreferenced: ask the user",
+  "description": "A definition with no declared implementation use is queued with its identity, explanation and evidence state unless explicitly proposed or new against a readable base; the guidance asks the user.",
+  "selector": {
+    "type": "element",
+    "element_id": "unreferenced"
+  }
+}

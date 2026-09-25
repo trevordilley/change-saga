@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 162,
+      "end": 167,
+      "digest": "sha256:d9237b6e1c57400c1b5842d572b90104d4a261f2b8ceede5bf2e95969340c3c5",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:746500227120a547c800489bad4a8ec5ea2faca2ba183e3c85329a38f8b75cbf",
+      "note": "append only annotations: append store owns these changed lines on this comparison side."
+    }
+  ]
+}

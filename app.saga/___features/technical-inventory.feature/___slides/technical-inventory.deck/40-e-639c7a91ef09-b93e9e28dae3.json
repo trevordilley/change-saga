@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/server/inventory.go",
+      "start": 114,
+      "end": 123,
+      "digest": "sha256:db45861288c71f3c8d73a832d295c0e57e909a78e7df12914ab5bb2e2379c65c",
+      "note": "The local code renderer shows exact pinned evidence; interaction code is fetched only when expanded and narrow code can scroll."
+    }
+  ]
+}

@@ -1,5 +1,41 @@
 # Changelog
 
+## Unreleased — Technical inventory format 2 (proposed and implemented design)
+
+- **Format:** Add inventory format 2, adopted only by an explicit
+  `change-saga inventory adopt-format --format 2`, which writes
+  `___inventory/format.json`. It adds explicit `proposed`/`implemented` intent on
+  Component, System and data-entity revisions (proposed revisions name an
+  implemented `baseline` revision or `none`; implemented revisions name a
+  `delivery` repository and full commit), stable evidence `id`s unique per
+  revision, data entities (`___inventory/data-entities/`: curated fields and key
+  roles, holding Component pins, owned association/production relationships
+  with independent intent), authored ERDs and overlays (`erds/`, `erd-overlays/`:
+  offline SVG, directory, element bindings, overlay pins and removals), and
+  Item `documentation_view` and `selections`. The Saga manifest and all record
+  `version` fields stay 5.
+  - *Older reader, newer Saga:* the marker, new directories and Item fields are
+    rejected, so an older change-saga refuses the inventory or the Saga instead
+    of dropping content. Upgrade readers before adopting.
+  - *Newer reader, older Saga:* unchanged. Legacy revisions read as
+    `unspecified` intent and their evidence has no IDs; nothing is rewritten.
+  - *Migration:* none automatic. After adoption, new Component/System revisions
+    must state intent; historical records stay as committed.
+- Implementation assertions are validated at the delivery commit through the
+  technical policy: original bytes and delivery currency for the entity and
+  every implemented edge, and exact endpoint intent without cascading
+  promotion. Any refusal writes nothing.
+
+## Unreleased — Component and System inventory
+
+- **Format:** Add opt-in v5 Component/System identities, immutable definition
+  revisions and lifecycle events, pinned Component interactions, exact scoped
+  code, and optional pinned Item `documentation` links. Existing Saga formats
+  remain readable; older readers require an upgrade to read the extension.
+- Add public authoring, paged inventory queries, reference validation, and lazy
+  in-slide canonical explanations with local code and preserved slide context.
+
+
 All notable changes to Change Saga are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 the policy in [docs/releasing.md](docs/releasing.md#versioning-policy).
@@ -33,7 +69,9 @@ tool, and what they have to do about it.
   deck under `___reviews`; reviewers approve or request changes per slide, and a
   decision goes out of date when its slide or code changes. The documentation
   itself has no approvals or comments, and the tool never declares a review
-  approved.
+  approved. Reviewers can mark up a slide with highlights, shapes, freehand
+  drawing, and sticky notes; anchored discussion and every move, color change,
+  undo, redo, or deletion remain append-only review records.
 - **Adoption is incremental, and status reports instead of judging.** A first
   change is asked only to have its implementation explained. `status` reports
   six coverage areas (implementation, stories, personas, design, quality, and

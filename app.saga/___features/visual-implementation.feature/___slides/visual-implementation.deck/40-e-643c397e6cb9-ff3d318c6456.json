@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "path": "e2e/tests/navigation.spec.ts",
+      "start": 166,
+      "end": 176,
+      "digest": "sha256:efb824aa498bf6b6e1442e854eb5fd05fe707441782b068f7bc64f78cdec2f16",
+      "note": "In a real browser, the framed interactive fragment still responds to a click, loads its own image, and reports origin null."
+    }
+  ]
+}

@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
-  <title id="title">State machine for a visual slide</title>
-  <desc id="desc">A slide becomes addressable and evidenced, enters a broken state only when replacement removes a referenced selector, is reported by validation, and returns through revise-item to addressable or evidenced state.</desc>
+  <title id="title">State machine for legacy partial slide authoring</title>
+  <desc id="desc">Legacy partial authoring can break a selector through asset replacement, then repair it with revise-item. Complete-slide transactions reject partial edits and require validated apply-slide publication.</desc>
   <defs>
     <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#1f3552"/></marker>
     <marker id="arr-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#b84444"/></marker>
     <marker id="arr-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3Z" fill="#2a7c59"/></marker>
   </defs>
   <rect width="1280" height="720" fill="#fbf8f1"/>
-  <text x="62" y="62" font-family="system-ui" font-size="32" font-weight="760" fill="#16243a">Only selector-breaking replacement enters BROKEN</text>
-  <text x="62" y="97" font-family="system-ui" font-size="18" fill="#526276">Validation reports the mismatch; revise-item preserves identity and chooses the truthful recovered state.</text>
+  <text x="62" y="62" font-family="system-ui" font-size="32" font-weight="760" fill="#16243a">Legacy partial edits: selector-breaking replacement</text>
+  <text x="62" y="97" font-family="system-ui" font-size="18" fill="#526276">Transaction-managed slides instead require a complete, selector-validated apply-slide update.</text>
 
   <g id="draft-state">
     <circle cx="145" cy="315" r="82" fill="#fff2c9" stroke="#d8951b" stroke-width="4"/>

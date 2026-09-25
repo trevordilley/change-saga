@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "narrow-check",
+  "slide": "proof",
+  "rank": 10,
+  "kind": "region",
+  "label": "390px touch check",
+  "description": "At a 390px touch viewport, for six directories: the page stays 390px wide, the table sits in a region named for the directory with tabindex 0, the region scrolls while the page does not, and ArrowRight scrolls the focused region.",
+  "selector": {
+    "type": "element",
+    "element_id": "narrow-check"
+  }
+}

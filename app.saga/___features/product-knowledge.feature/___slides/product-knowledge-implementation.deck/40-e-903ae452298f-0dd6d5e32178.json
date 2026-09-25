@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/directory.go",
+      "start": 182,
+      "end": 187,
+      "digest": "sha256:71d5aad1ed0931ceb6946c611421df7bcdf80aa312ab6755581743e4e6d4e295",
+      "note": "The directory template's doc comment states the width rule: a mobile browser would widen the whole page to fit a wide table, so the table scrolls inside its own region and no column is hidden."
+    }
+  ]
+}

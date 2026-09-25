@@ -4,8 +4,8 @@
   "slide": "contextual-review",
   "rank": 20,
   "kind": "risk",
-  "label": "Spatial annotation gap",
-  "description": "No PR-review overlay record or drawing toolbox implements freehand marks, shapes, or text; prototype requirement annotations are separate traceability edges.",
+  "label": "Spatial review annotations",
+  "description": "Drawing and note anchors use normalized geometry on append-only comments. Updates and deletes reply to the create root; reload projects the mark. Prototype annotations remain requirement links.",
   "selector": {
     "type": "element",
     "element_id": "annotation-gap"

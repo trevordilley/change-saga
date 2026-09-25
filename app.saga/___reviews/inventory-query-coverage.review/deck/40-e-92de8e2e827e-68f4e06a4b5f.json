@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/inherited.go",
+      "digest": "sha256:bd923822306bd4c2f14ab69cdf346f364673fa5c467e7735e3394c9cb1e6add2",
+      "note": "Eligible selections become inherited references without modifying the document."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/inherited.go",
+      "start": 1,
+      "end": 70,
+      "digest": "sha256:bd923822306bd4c2f14ab69cdf346f364673fa5c467e7735e3394c9cb1e6add2",
+      "note": "Eligible selections become inherited references without modifying the document."
+    }
+  ]
+}

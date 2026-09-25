@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "revision",
+  "slide": "technical-inventory-record-contract",
+  "rank": 10,
+  "kind": "node",
+  "label": "Immutable intent and selected structure",
+  "description": "A revision retains parents and an explicit baseline pin, phase, purpose, selected fields and keys. Proposed revisions may lack code; later implementation appends evidence without erasing the plan.",
+  "selector": {
+    "type": "element",
+    "element_id": "revision"
+  }
+}

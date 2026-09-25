@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "direct-visit",
+  "deck": "fragment-csp-sandbox",
+  "title": "Opening authored content directly",
+  "rank": 0,
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-51263b76707b-0000-b8df508f440d.svg",
+  "takeaway": "Before, opening a fragment or visual directly ran its script on the app origin. Now the response's sandbox directive makes it origin null there too.",
+  "reading_order": [
+    "before",
+    "after-policy",
+    "unit-proof",
+    "browser-proof"
+  ]
+}

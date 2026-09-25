@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "history",
+  "slide": "technical-inventory-proposed-revisions",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Append, do not overwrite",
+  "description": "The arrows show proposed authoring transitions, not existing software behavior. Preserve prior definitions and do not silently repin saved slides.",
+  "selector": {
+    "type": "element",
+    "element_id": "history"
+  }
+}

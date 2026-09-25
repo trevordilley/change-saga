@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view_test.go",
+      "digest": "sha256:5f35b609b470d20b40894bf571cc549c212fd75803ffc3e06ebea127e0039d7b",
+      "note": "CLI fixtures with a Saga committed at absent, unreadable, base and head states."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view_test.go",
+      "start": 1,
+      "end": 392,
+      "digest": "sha256:5f35b609b470d20b40894bf571cc549c212fd75803ffc3e06ebea127e0039d7b",
+      "note": "CLI fixtures with a Saga committed at absent, unreadable, base and head states."
+    }
+  ]
+}

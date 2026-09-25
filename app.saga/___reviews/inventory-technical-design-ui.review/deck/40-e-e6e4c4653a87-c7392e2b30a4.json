@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/inventory_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:9b31ec9e35794a417a057a988675be51352a5c6e72acf2197a8e1099ff0457e1",
+      "note": "The review control test checks the Item URN and selection count."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/inventory_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:104bb21b050cd154aa8daa69b43573585dbc0bead1b340dbf9a9fe92c71e16ad",
+      "note": "The review control test checks the Item URN and selection count."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:674187d2065679e64438529c514203474859e569a844dbe867c144ca90cb17b8",
+      "note": "The review control test checks the Item URN and selection count."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:d02ec9324fd248e01a344aa2707017603e7730960c42f1cb8f5e7553393e6074",
+      "note": "The review control test checks the Item URN and selection count."
+    }
+  ]
+}

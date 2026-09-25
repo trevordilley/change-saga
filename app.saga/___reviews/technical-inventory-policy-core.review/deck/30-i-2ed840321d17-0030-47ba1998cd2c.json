@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "intent",
+  "slide": "policy-gates",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Independent edge intent",
+  "description": "Each implemented edge needs implemented source/destination revisions and its own valid evidence. The candidate supplies its post-transition self intent; proposed edges stay in input-order remaining work. No status cascades.",
+  "selector": {
+    "type": "element",
+    "element_id": "intent"
+  },
+  "record": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/livingapp/session.go",
+      "start": 156,
+      "end": 215,
+      "digest": "sha256:569f123574dd958729f96a7c6df46c4736af7f783af155765ad91460264b00a1",
+      "note": "Defines the product-graph operations owned by livingapp and pages them through its transport-neutral session."
+    }
+  ]
+}

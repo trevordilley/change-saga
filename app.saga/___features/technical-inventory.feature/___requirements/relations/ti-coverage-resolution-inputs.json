@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-coverage-resolution-inputs",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-coverage-resolution:item:inputs",
+  "to": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+  "scope": "self",
+  "rationale": "Direct Item evidence remains supported. Proposed inherited selections contribute through saved entity paths without duplicate independent code mappings.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+  "state": "active",
+  "created_at": "2026-09-24T23:00:58.983653Z"
+}

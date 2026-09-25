@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/classify.go",
+      "start": 1,
+      "end": 48,
+      "digest": "sha256:f3afdfe1f8eece56995285f2d6eab34ec5423a4f694c0ac18ad8cc1c53582934",
+      "note": "Explicit intent read without inference and identity newness relative to a named baseline."
+    }
+  ]
+}

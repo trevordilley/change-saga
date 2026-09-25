@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation_inventory.go",
+      "start": 240,
+      "end": 266,
+      "digest": "sha256:981796bf0f696cbfa6002dc6459208f057054e28bcb43928af360346564c44b3",
+      "note": "Selection health routed to the Item."
+    }
+  ]
+}

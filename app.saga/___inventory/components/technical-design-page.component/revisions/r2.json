@@ -1,0 +1,55 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:component:technical-design-page",
+  "parents": [
+    "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+  ],
+  "name": "Technical design pages",
+  "explanation": "Technical design is a small tree of pages. A landing page names three areas and what each holds; the ERD, Systems and Components areas are pages of their own at /technical/erd, /technical/systems and /technical/components, each built only when read. Every definition keeps one canonical page per exact revision at /technical/{kind}/{id}: the unique current one, or a saved pin with its stale, retired or conflicted status and no repinning. Competing heads are named without choosing one.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "72844c8c991ab545a05eeab2773577606e021279"
+  },
+  "code": [
+    {
+      "id": "areas",
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "path": "internal/server/technical.go",
+      "start": 46,
+      "end": 76,
+      "digest": "sha256:d00b4504d97f151e83e12730cf464aec8e50daaee52bcc3b0be97d015f76df7d",
+      "note": "Names the three areas, their paths and the definition kinds beneath each, so pages, breadcrumbs and the sidebar place a definition in the same area."
+    },
+    {
+      "id": "landing",
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "path": "internal/server/technical.go",
+      "start": 352,
+      "end": 394,
+      "digest": "sha256:55db5b5f540b2217afc267e90d316163c1f7c5d6607e2bf7bd52efa0fed297c0",
+      "note": "The landing page counts each area's records and says how to start an empty one; nothing resolves."
+    },
+    {
+      "id": "directories",
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "path": "internal/server/technical.go",
+      "start": 396,
+      "end": 455,
+      "digest": "sha256:e11781776cb4b92373c2bbbc19d98b5d3d1c43b98d562af3686a7320b70f2cea",
+      "note": "Builds only the requested area's directory with explicit intent, lifecycle, revision heads, code and Item-use counts, and comparison newness only when comparing."
+    },
+    {
+      "id": "exact-page",
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "path": "internal/server/technical.go",
+      "start": 597,
+      "end": 647,
+      "digest": "sha256:f2e96a88f285155c18c67180fa3dff918ba32a3ac869d2381341eee3bd241386",
+      "note": "Resolves the requested or unique current revision exactly, lists competing heads, and reports the shown pin's status without substituting another revision."
+    }
+  ],
+  "created_at": "2026-09-25T06:24:03.994474Z"
+}

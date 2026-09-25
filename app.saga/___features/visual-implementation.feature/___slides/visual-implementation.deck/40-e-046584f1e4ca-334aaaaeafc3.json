@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "path": "internal/server/appjs.go",
+      "start": 12,
+      "end": 21,
+      "digest": "sha256:eb3de1af368b54e82e51772068867570b16a04c03892929e046f7b8f0330e38a",
+      "note": "Pointer and focus preview state marks and clears only overlays whose exact Items own story controls."
+    }
+  ]
+}

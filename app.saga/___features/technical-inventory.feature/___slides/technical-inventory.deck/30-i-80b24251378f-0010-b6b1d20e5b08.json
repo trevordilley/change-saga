@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "view-rule",
+  "slide": "technical-inventory-policy-decisions",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Admit history only through a resolved saved view",
+  "description": "A valid immutable view must contain the exact active, unambiguous binding. Preserve global stale/conflicted/retired health separately; admission alone never grants coverage.",
+  "selector": {
+    "type": "element",
+    "element_id": "view-rule"
+  }
+}

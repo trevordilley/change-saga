@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "pr-request-diff-reuse",
+  "deck": "visual-implementation",
+  "title": "One request shares raw patches, not reference judgments",
+  "rank": 50,
+  "section": "Review performance",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-0d89b27ce0b8-0050-00754be36a73.svg",
+  "takeaway": "Successful raw patches are shared within one PR request and range; exact reference resolution, filtering and diagnostics remain independent.",
+  "reading_order": [
+    "request-scope",
+    "resolve",
+    "patch-reuse",
+    "per-reference",
+    "retry",
+    "measurement"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "path": "internal/requirements/terms.go",
+      "start": 60,
+      "end": 90,
+      "digest": "sha256:53f6314e0345852bf4601dc4e3e86a454e9138c486f78d2e1f822c0ab1298a52",
+      "note": "Defines and atomically creates a versioned living term with aliases, intent links, defining code, and lifecycle history."
+    }
+  ]
+}

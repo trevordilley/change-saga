@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "opaque-origin",
+  "slide": "authored-content-origin",
+  "rank": 40,
+  "kind": "region",
+  "label": "Opaque origin",
+  "description": "Whether framed or opened directly, the author script runs on origin null. Inline script and the package's own assets still work; storage, cookies, fetch, popups, and forms do not.",
+  "selector": {
+    "type": "element",
+    "element_id": "opaque-origin"
+  }
+}

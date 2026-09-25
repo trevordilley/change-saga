@@ -1,10 +1,20 @@
 # Large-change review experience audit
 
-Status: implementation brief, 2026-08-19
+Status: historical v2/v3 report audit, 2026-08-19; applicability rechecked
+2026-09-24
 Scope: `internal/server/{template.go,appjs.go,server.go}` and
 `docs/ux-reframe.md`; no renderer changes are included here.
 
-## Recommendation
+This audit predates v5 pull-request review decks. Its chapter isolation,
+chapter resumption, and persistent chapter toolbox recommendations apply only
+to the legacy report/documentation reader. They are not requirements for a
+pull-request review. The current review contract is a full implementation-style
+slide deck on entry, with slide-scoped decisions and annotations, Item-scoped
+evidence and discussion, and Code Diff/Coverage as secondary views. See
+[review-ux-improvements.md](review-ux-improvements.md) for the current audit and
+[renderer-ui.md](renderer-ui.md) for the implemented contract.
+
+## Historical recommendation
 
 Adopt the direction in `ux-reframe.md`, but make the session boundary and
 resumption contract explicit. The overview, one chapter, and one code file are

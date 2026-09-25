@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "links",
+  "slide": "technical-inventory-record-contract",
+  "rank": 50,
+  "kind": "edge",
+  "label": "Ownership and revision pins",
+  "description": "Identity owns immutable revisions; diagram and directory pin a revision that in turn pins its resource and relationship endpoint.",
+  "selector": {
+    "type": "element",
+    "element_id": "links"
+  }
+}

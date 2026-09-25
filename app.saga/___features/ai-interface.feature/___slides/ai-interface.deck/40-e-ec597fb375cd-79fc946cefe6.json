@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/reviewapp/session.go",
+      "start": 82,
+      "end": 134,
+      "digest": "sha256:623731280e1850b12ff6b6e0cfacba164d565c43b0b6c3bbdc1face412c280b0",
+      "note": "Contains missing, unsafe, invalid Saga and unavailable source failures while loading the validated review/source snapshot."
+    }
+  ]
+}

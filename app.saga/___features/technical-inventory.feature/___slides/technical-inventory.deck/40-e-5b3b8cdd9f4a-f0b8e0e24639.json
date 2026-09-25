@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/inventory_test.go",
+      "start": 1,
+      "end": 72,
+      "digest": "sha256:5019fcb2e0a6ee31babf8a887dadd57bf6e84fbc59d0a8bbfe47e41228a0be80",
+      "note": "Server and browser regressions verify saved definitions, review rendering, desktop/narrow navigation and retained slide context."
+    }
+  ]
+}

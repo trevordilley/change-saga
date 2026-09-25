@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "drill-down",
+  "slide": "technical-inventory-authored-erd",
+  "rank": 60,
+  "kind": "transition",
+  "label": "Follow the entity into implementation",
+  "description": "Proposed navigation: the diagram and expandable directory open the same canonical entity; implementation slides and exact source references provide feature-specific detail without redefining it.",
+  "selector": {
+    "type": "element",
+    "element_id": "drill-down"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory_lifecycle_test.go",
+      "digest": "sha256:ab43e18c11c085621d3a54ac3708b311c0a5e44e461924e87177ca6a1166263f"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory_lifecycle_test.go",
+      "start": 1,
+      "end": 329,
+      "digest": "sha256:ab43e18c11c085621d3a54ac3708b311c0a5e44e461924e87177ca6a1166263f"
+    }
+  ]
+}

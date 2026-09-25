@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/documentation-link.schema.json",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:54eebee52e04e20ec00d0ebddea1a29bbd9cf5fb88cea21ed494afcb59001d46"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/documentation-link.schema.json",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:cb6dc2482530eb5a1cd5408f7d21832ee06922b1cf9087662c8d0402de861c41"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/documentation-link.schema.json",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:b9cbf5b0e5c26dd9edb6b66775983fa34957091ca42a8b843af732fdf5332862"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/documentation-link.schema.json",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:55dd09f2836c786bbfdabf4f86921e22603b2fb650d895abc5cd6fd992d42f17"
+    }
+  ]
+}

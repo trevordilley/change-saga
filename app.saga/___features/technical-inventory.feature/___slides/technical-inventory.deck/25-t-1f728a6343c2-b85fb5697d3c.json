@@ -1,0 +1,1404 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-ui-impl-erd",
+  "current": "sha256:e1a29086e6610f0ea19c982e5447e54553287af274102ed710300259763e86ed",
+  "revisions": [
+    {
+      "snapshot": "sha256:6eaa85ece757e23f608b160ac0b699ea2475dbac92f6c785b109817ea33ed3fc",
+      "request_id": "ti-ui-impl-erd-create-1",
+      "created_at": "2026-09-25T02:22:23.23633Z",
+      "asset": "24-a-69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edf.svg",
+      "asset_digest": "sha256:69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edfdd2b154e30fe",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-erd",
+        "deck": "technical-inventory",
+        "title": "The ERD is the author's drawing, bound to pins",
+        "rank": 245,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edf.svg",
+        "takeaway": "An authored, allowlisted drawing binds elements to the same pinned entities as its directory, which also lists what is not drawn.",
+        "reading_order": [
+          "allowlist",
+          "bindings",
+          "membership",
+          "notation",
+          "entity",
+          "overlay"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "allowlist",
+            "slide": "ti-ui-impl-erd",
+            "rank": 10,
+            "kind": "node",
+            "label": "Authored drawing, allowlisted",
+            "description": "The ERD revision's offline SVG is re-serialized from XML tokens with only static elements and fragment links; anything else makes the drawing unavailable while the directory remains.",
+            "selector": {
+              "type": "element",
+              "element_id": "allowlist"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_svg.go",
+                  "start": 53,
+                  "end": 161,
+                  "digest": "sha256:632beb4d1a0fe6a82ea49b44f78d4f03ddfef3b4b4bd70d9f1b9138fef2eb77c",
+                  "note": "Parses the drawing, keeps allowlisted elements and attributes, namespaces ids and refuses any other content instead of showing it in part."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-authored",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD shown is the author's human-consumable drawing, not a generated schema dump."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "bindings",
+            "slide": "ti-ui-impl-erd",
+            "rank": 20,
+            "kind": "edge",
+            "label": "Element to pinned entity",
+            "description": "Each bound element becomes a pointer, touch and keyboard control opening the same pinned definition drawer as its directory row; focus returns on Escape.",
+            "selector": {
+              "type": "element",
+              "element_id": "bindings"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 290,
+                  "end": 315,
+                  "digest": "sha256:78e198b02eea313f1a59f96bf3b322e0e1e1641d63d76a9f1ad2980ad3421e35",
+                  "note": "Resolves each binding to its entity or owning relationship pin, with intent and pin status, using the view's namespaced element ids."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 2498,
+                  "end": 2527,
+                  "digest": "sha256:f0c00a662c3b00c4df78acd1787d64de86b717fe3c39ef5eac243539674ce350",
+                  "note": "Makes only bound elements focusable controls carrying the pinned target, and highlights them with their directory row."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-same-definition",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Selecting an entity in the diagram or the directory opens the same canonical entity definition."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "membership",
+            "slide": "ti-ui-impl-erd",
+            "rank": 30,
+            "kind": "node",
+            "label": "Directory states drawn and not drawn",
+            "description": "The directory lists every entity the ERD revision pins with its intent and holders, and says which are drawn and which are only listed, so a selective drawing does not pretend to be complete.",
+            "selector": {
+              "type": "element",
+              "element_id": "membership"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 320,
+                  "end": 355,
+                  "digest": "sha256:6d583c5aa8fd4ae248272279d3278b2c106bb7e18762a4ea73fff17e7ad083c3",
+                  "note": "Builds one row per directory pin with intent, holders and overlay change, counting drawn and omitted entities."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-selective",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Omitted drawing detail is stated rather than implied missing."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "notation",
+            "slide": "ti-ui-impl-erd",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Associations versus productions",
+            "description": "Associations draw crow's-foot endpoints with textual cardinality, including a declared unknown; productions draw a labelled directional flow and say they are not foreign keys.",
+            "selector": {
+              "type": "element",
+              "element_id": "notation"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 101,
+                  "end": 151,
+                  "digest": "sha256:f4b46dde7c3cd795cd871693d4bffcf46354c5bf7e609b977bd86b561617eedf",
+                  "note": "Draws the declared notation from the record: crow's-foot endpoints per cardinality, or a dashed arrow for a production flow."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-meaning",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD distinguishes production from association and shows declared cardinality without inventing it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "entity",
+            "slide": "ti-ui-impl-erd",
+            "rank": 50,
+            "kind": "node",
+            "label": "Data entity in context",
+            "description": "An entity shows its purpose, selected fields and keys, holding Components as separate resources, owned and incoming relationships with links, and the ERDs that list it.",
+            "selector": {
+              "type": "element",
+              "element_id": "entity"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 156,
+                  "end": 195,
+                  "digest": "sha256:6a68fc5e506ca85152d4bd7c3d6c7c7f5a8d1d48825cde54a5bb25edf6f2448b",
+                  "note": "Fills fields, holders, owned relationships, incoming relationships derived from other entities' current revisions, and ERD membership."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-structure",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Entity details distinguish the entity from the queue or database holding it."
+            },
+            {
+              "id": "ti-ui-impl-erd-relationships",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:relationship-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Related entities and their relationships are explained and linked."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "overlay",
+            "slide": "ti-ui-impl-erd",
+            "rank": 60,
+            "kind": "region",
+            "label": "Overlay over an exact baseline",
+            "description": "An overlay's directory composes over the exact baseline ERD revision it names, marking added, replacing and removed rows; the canonical ERD is read, never rewritten.",
+            "selector": {
+              "type": "element",
+              "element_id": "overlay"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 252,
+                  "end": 273,
+                  "digest": "sha256:be98f54dcf5ee2a8c121f7a94121d754cc74c46bbfcd3f7f6c3a89a3ae36d74e",
+                  "note": "Composes the overlay with its pinned baseline, falls back to the baseline drawing only with a stated note, and never modifies the baseline record."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-design-context",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "A proposed change is followed to its design and feature context without overwriting the baseline model."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:172aa86e05b52be25eb7f1d847379a10de83233ca58e39863081b1c2c8cb5451",
+      "parent_snapshots": [
+        "sha256:6eaa85ece757e23f608b160ac0b699ea2475dbac92f6c785b109817ea33ed3fc"
+      ],
+      "request_id": "ti-ui-impl-erd-update-1",
+      "created_at": "2026-09-25T02:32:34.740252Z",
+      "asset": "24-a-69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edf.svg",
+      "asset_digest": "sha256:69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edfdd2b154e30fe",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-erd",
+        "deck": "technical-inventory",
+        "title": "The ERD is the author's drawing, bound to pins",
+        "rank": 245,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edf.svg",
+        "takeaway": "An authored, allowlisted drawing binds elements to the same pinned entities as its directory, which also lists what is not drawn.",
+        "reading_order": [
+          "allowlist",
+          "bindings",
+          "membership",
+          "notation",
+          "entity",
+          "overlay"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "allowlist",
+            "slide": "ti-ui-impl-erd",
+            "rank": 10,
+            "kind": "node",
+            "label": "Authored drawing, allowlisted",
+            "description": "The ERD revision's offline SVG is re-serialized from XML tokens with only static elements and fragment links; anything else makes the drawing unavailable while the directory remains.",
+            "selector": {
+              "type": "element",
+              "element_id": "allowlist"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 274,
+                  "end": 289,
+                  "digest": "sha256:f8523cd5788ea0863de05f924c5a3aa381a7951da61dbb7a7b8a02d3035a4b0c",
+                  "note": "Reads the pinned drawing, validates its digest and re-serializes it through the allowlist."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_svg.go",
+                  "start": 1,
+                  "end": 165,
+                  "digest": "sha256:3339bc22fdb88324e6a37ccb8499eae177473592d6bf9d1c9ada42e86008005e",
+                  "note": "Re-serializes the drawing from tokens through an allowlist of static elements and attributes, namespacing ids."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-authored",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD shown is the author's human-consumable drawing, not a generated schema dump."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "bindings",
+            "slide": "ti-ui-impl-erd",
+            "rank": 20,
+            "kind": "edge",
+            "label": "Element to pinned entity",
+            "description": "Each bound element becomes a pointer, touch and keyboard control opening the same pinned definition drawer as its directory row; focus returns on Escape.",
+            "selector": {
+              "type": "element",
+              "element_id": "bindings"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 1216,
+                  "end": 1217,
+                  "digest": "sha256:9c343f4c1991b083ee516193e77211680c79ba8bc7dffabec029c7bf642ca4a5",
+                  "note": "A bound SVG element that opened the drawer regains focus on Escape."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 2495,
+                  "end": 2529,
+                  "digest": "sha256:660a74ea036e6624a3a68a0219c7e6ce3d79c3cef76bd7dcea5f012a9c007518",
+                  "note": "Bound drawing elements become keyboard and touch controls and highlight with their directory row."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 290,
+                  "end": 315,
+                  "digest": "sha256:78e198b02eea313f1a59f96bf3b322e0e1e1641d63d76a9f1ad2980ad3421e35",
+                  "note": "Resolves each binding to its entity or relationship pin with the view's namespaced element id."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-same-definition",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Selecting an entity in the diagram or the directory opens the same canonical entity definition."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "membership",
+            "slide": "ti-ui-impl-erd",
+            "rank": 30,
+            "kind": "node",
+            "label": "Directory states drawn and not drawn",
+            "description": "The directory lists every entity the ERD revision pins with its intent and holders, and says which are drawn and which are only listed, so a selective drawing does not pretend to be complete.",
+            "selector": {
+              "type": "element",
+              "element_id": "membership"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 201,
+                  "end": 251,
+                  "digest": "sha256:7793aa2f55634de69657d4579eb8b70c4c83aa203a0dc02e412d22872715a8cb",
+                  "note": "ERD view: directory rows with drawn and not-drawn membership, the data model section, templates and styles."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 320,
+                  "end": 355,
+                  "digest": "sha256:6d583c5aa8fd4ae248272279d3278b2c106bb7e18762a4ea73fff17e7ad083c3",
+                  "note": "ERD view: directory rows with drawn and not-drawn membership, the data model section, templates and styles."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 365,
+                  "end": 478,
+                  "digest": "sha256:87f4d404e44c9a0d2d1471090ed641339a4ecdfdb62d202a2ed70a81bf7d156e",
+                  "note": "ERD view: directory rows with drawn and not-drawn membership, the data model section, templates and styles."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-selective",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Omitted drawing detail is stated rather than implied missing."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "notation",
+            "slide": "ti-ui-impl-erd",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Associations versus productions",
+            "description": "Associations draw crow's-foot endpoints with textual cardinality, including a declared unknown; productions draw a labelled directional flow and say they are not foreign keys.",
+            "selector": {
+              "type": "element",
+              "element_id": "notation"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 1,
+                  "end": 100,
+                  "digest": "sha256:0b074eb18e513ef1e925429837f325d0d43cc6bb324d16f65cde504feeae1f13",
+                  "note": "Relationship view types and the text notation for associations and productions."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 101,
+                  "end": 151,
+                  "digest": "sha256:f4b46dde7c3cd795cd871693d4bffcf46354c5bf7e609b977bd86b561617eedf",
+                  "note": "Draws crow's-foot endpoints or a dashed production arrow from the declared record."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-meaning",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD distinguishes production from association and shows declared cardinality without inventing it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "entity",
+            "slide": "ti-ui-impl-erd",
+            "rank": 50,
+            "kind": "node",
+            "label": "Data entity in context",
+            "description": "An entity shows its purpose, selected fields and keys, holding Components as separate resources, owned and incoming relationships with links, and the ERDs that list it.",
+            "selector": {
+              "type": "element",
+              "element_id": "entity"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 152,
+                  "end": 200,
+                  "digest": "sha256:4dc5dfcdb5bd9289766337b8e4b726f835bd779af29a9ddc8a43f1ffd660cc35",
+                  "note": "Data-entity fields, holders, owned and derived incoming relationships, and ERD membership."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-structure",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Entity details distinguish the entity from the queue or database holding it."
+            },
+            {
+              "id": "ti-ui-impl-erd-relationships",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:relationship-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Related entities and their relationships are explained and linked."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "overlay",
+            "slide": "ti-ui-impl-erd",
+            "rank": 60,
+            "kind": "region",
+            "label": "Overlay over an exact baseline",
+            "description": "An overlay's directory composes over the exact baseline ERD revision it names, marking added, replacing and removed rows; the canonical ERD is read, never rewritten.",
+            "selector": {
+              "type": "element",
+              "element_id": "overlay"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 252,
+                  "end": 273,
+                  "digest": "sha256:be98f54dcf5ee2a8c121f7a94121d754cc74c46bbfcd3f7f6c3a89a3ae36d74e",
+                  "note": "Composes an overlay with its exact baseline ERD revision without modifying it."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 316,
+                  "end": 319,
+                  "digest": "sha256:7cdf60a7848fb1703aac7902e569b28b851c538d715241f97e2abdc516020c9b",
+                  "note": "Indexes an overlay's proposed removals."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 356,
+                  "end": 364,
+                  "digest": "sha256:407a366574a89c7e015436e96c567c46d0bbb8f144d47295fa0097023ea81ced",
+                  "note": "Lists an overlay's proposed removals against the baseline rows."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-design-context",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "A proposed change is followed to its design and feature context without overwriting the baseline model."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:8a369f5a4aaf23add6775e0f5e822216dcba841e3865bdadcf48f6525e53ea3e",
+      "parent_snapshots": [
+        "sha256:172aa86e05b52be25eb7f1d847379a10de83233ca58e39863081b1c2c8cb5451"
+      ],
+      "request_id": "ti-ui-impl-erd-update-3",
+      "created_at": "2026-09-25T02:36:42.153442Z",
+      "asset": "24-a-69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edf.svg",
+      "asset_digest": "sha256:69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edfdd2b154e30fe",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-erd",
+        "deck": "technical-inventory",
+        "title": "The ERD is the author's drawing, bound to pins",
+        "rank": 245,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edf.svg",
+        "takeaway": "An authored, allowlisted drawing binds elements to the same pinned entities as its directory, which also lists what is not drawn.",
+        "reading_order": [
+          "allowlist",
+          "bindings",
+          "membership",
+          "notation",
+          "entity",
+          "overlay"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "allowlist",
+            "slide": "ti-ui-impl-erd",
+            "rank": 10,
+            "kind": "node",
+            "label": "Authored drawing, allowlisted",
+            "description": "The ERD revision's offline SVG is re-serialized from XML tokens with only static elements and fragment links; anything else makes the drawing unavailable while the directory remains.",
+            "selector": {
+              "type": "element",
+              "element_id": "allowlist"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 274,
+                  "end": 289,
+                  "digest": "sha256:f8523cd5788ea0863de05f924c5a3aa381a7951da61dbb7a7b8a02d3035a4b0c",
+                  "note": "Reads the pinned drawing, validates its digest and re-serializes it through the allowlist."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_svg.go",
+                  "start": 1,
+                  "end": 165,
+                  "digest": "sha256:3339bc22fdb88324e6a37ccb8499eae177473592d6bf9d1c9ada42e86008005e",
+                  "note": "Re-serializes the drawing from tokens through an allowlist of static elements and attributes, namespacing ids."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-authored",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD shown is the author's human-consumable drawing, not a generated schema dump."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "bindings",
+            "slide": "ti-ui-impl-erd",
+            "rank": 20,
+            "kind": "edge",
+            "label": "Element to pinned entity",
+            "description": "Each bound element becomes a pointer, touch and keyboard control opening the same pinned definition drawer as its directory row; focus returns on Escape.",
+            "selector": {
+              "type": "element",
+              "element_id": "bindings"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1216,
+                  "end": 1217,
+                  "digest": "sha256:9c343f4c1991b083ee516193e77211680c79ba8bc7dffabec029c7bf642ca4a5",
+                  "note": "A bound SVG element that opened the drawer regains focus on Escape."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 2495,
+                  "end": 2529,
+                  "digest": "sha256:660a74ea036e6624a3a68a0219c7e6ce3d79c3cef76bd7dcea5f012a9c007518",
+                  "note": "Bound drawing elements become keyboard and touch controls and highlight with their directory row."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 290,
+                  "end": 315,
+                  "digest": "sha256:78e198b02eea313f1a59f96bf3b322e0e1e1641d63d76a9f1ad2980ad3421e35",
+                  "note": "Resolves each binding to its entity or relationship pin with the view's namespaced element id."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-same-definition",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Selecting an entity in the diagram or the directory opens the same canonical entity definition."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "membership",
+            "slide": "ti-ui-impl-erd",
+            "rank": 30,
+            "kind": "node",
+            "label": "Directory states drawn and not drawn",
+            "description": "The directory lists every entity the ERD revision pins with its intent and holders, and says which are drawn and which are only listed, so a selective drawing does not pretend to be complete.",
+            "selector": {
+              "type": "element",
+              "element_id": "membership"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 201,
+                  "end": 251,
+                  "digest": "sha256:7793aa2f55634de69657d4579eb8b70c4c83aa203a0dc02e412d22872715a8cb",
+                  "note": "ERD view: directory rows with drawn and not-drawn membership, the data model section, templates and styles."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 320,
+                  "end": 355,
+                  "digest": "sha256:6d583c5aa8fd4ae248272279d3278b2c106bb7e18762a4ea73fff17e7ad083c3",
+                  "note": "ERD view: directory rows with drawn and not-drawn membership, the data model section, templates and styles."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 365,
+                  "end": 478,
+                  "digest": "sha256:87f4d404e44c9a0d2d1471090ed641339a4ecdfdb62d202a2ed70a81bf7d156e",
+                  "note": "ERD view: directory rows with drawn and not-drawn membership, the data model section, templates and styles."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-selective",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Omitted drawing detail is stated rather than implied missing."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "notation",
+            "slide": "ti-ui-impl-erd",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Associations versus productions",
+            "description": "Associations draw crow's-foot endpoints with textual cardinality, including a declared unknown; productions draw a labelled directional flow and say they are not foreign keys.",
+            "selector": {
+              "type": "element",
+              "element_id": "notation"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 1,
+                  "end": 100,
+                  "digest": "sha256:0b074eb18e513ef1e925429837f325d0d43cc6bb324d16f65cde504feeae1f13",
+                  "note": "Relationship view types and the text notation for associations and productions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 101,
+                  "end": 151,
+                  "digest": "sha256:f4b46dde7c3cd795cd871693d4bffcf46354c5bf7e609b977bd86b561617eedf",
+                  "note": "Draws crow's-foot endpoints or a dashed production arrow from the declared record."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-meaning",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD distinguishes production from association and shows declared cardinality without inventing it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "entity",
+            "slide": "ti-ui-impl-erd",
+            "rank": 50,
+            "kind": "node",
+            "label": "Data entity in context",
+            "description": "An entity shows its purpose, selected fields and keys, holding Components as separate resources, owned and incoming relationships with links, and the ERDs that list it.",
+            "selector": {
+              "type": "element",
+              "element_id": "entity"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 152,
+                  "end": 200,
+                  "digest": "sha256:4dc5dfcdb5bd9289766337b8e4b726f835bd779af29a9ddc8a43f1ffd660cc35",
+                  "note": "Data-entity fields, holders, owned and derived incoming relationships, and ERD membership."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-structure",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Entity details distinguish the entity from the queue or database holding it."
+            },
+            {
+              "id": "ti-ui-impl-erd-relationships",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:relationship-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Related entities and their relationships are explained and linked."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+            },
+            "version": 4,
+            "id": "overlay",
+            "slide": "ti-ui-impl-erd",
+            "rank": 60,
+            "kind": "region",
+            "label": "Overlay over an exact baseline",
+            "description": "An overlay's directory composes over the exact baseline ERD revision it names, marking added, replacing and removed rows; the canonical ERD is read, never rewritten.",
+            "selector": {
+              "type": "element",
+              "element_id": "overlay"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 252,
+                  "end": 273,
+                  "digest": "sha256:be98f54dcf5ee2a8c121f7a94121d754cc74c46bbfcd3f7f6c3a89a3ae36d74e",
+                  "note": "Composes an overlay with its exact baseline ERD revision without modifying it."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 316,
+                  "end": 319,
+                  "digest": "sha256:7cdf60a7848fb1703aac7902e569b28b851c538d715241f97e2abdc516020c9b",
+                  "note": "Indexes an overlay's proposed removals."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 356,
+                  "end": 364,
+                  "digest": "sha256:407a366574a89c7e015436e96c567c46d0bbb8f144d47295fa0097023ea81ced",
+                  "note": "Lists an overlay's proposed removals against the baseline rows."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-design-context",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "A proposed change is followed to its design and feature context without overwriting the baseline model."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:e1a29086e6610f0ea19c982e5447e54553287af274102ed710300259763e86ed",
+      "parent_snapshots": [
+        "sha256:8a369f5a4aaf23add6775e0f5e822216dcba841e3865bdadcf48f6525e53ea3e"
+      ],
+      "request_id": "ti-ui-impl-erd-areas",
+      "created_at": "2026-09-25T06:32:41.364015Z",
+      "asset": "24-a-69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edf.svg",
+      "asset_digest": "sha256:69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edfdd2b154e30fe",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-erd",
+        "deck": "technical-inventory",
+        "title": "The ERD is the author's drawing, bound to pins",
+        "rank": 245,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-69aec0f1bb48f3da1683db47848c2a2ad78374b7282341891edf.svg",
+        "takeaway": "An authored, allowlisted drawing binds elements to the same pinned entities as its directory, which also lists what is not drawn.",
+        "reading_order": [
+          "allowlist",
+          "bindings",
+          "membership",
+          "notation",
+          "entity",
+          "overlay"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+            },
+            "version": 4,
+            "id": "allowlist",
+            "slide": "ti-ui-impl-erd",
+            "rank": 0,
+            "kind": "node",
+            "label": "Authored drawing, allowlisted",
+            "description": "The ERD revision's offline SVG is re-serialized from XML tokens with only static elements and fragment links; anything else makes the drawing unavailable while the directory remains.",
+            "selector": {
+              "type": "element",
+              "element_id": "allowlist"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 274,
+                  "end": 289,
+                  "digest": "sha256:f8523cd5788ea0863de05f924c5a3aa381a7951da61dbb7a7b8a02d3035a4b0c",
+                  "note": "Reads the pinned drawing, validates its digest and re-serializes it through the allowlist."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_svg.go",
+                  "start": 1,
+                  "end": 165,
+                  "digest": "sha256:3339bc22fdb88324e6a37ccb8499eae177473592d6bf9d1c9ada42e86008005e",
+                  "note": "Re-serializes the drawing from tokens through an allowlist of static elements and attributes, namespacing ids."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-authored",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD shown is the author's human-consumable drawing, not a generated schema dump."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+            },
+            "version": 4,
+            "id": "bindings",
+            "slide": "ti-ui-impl-erd",
+            "rank": 10,
+            "kind": "edge",
+            "label": "Element to pinned entity",
+            "description": "Each bound element becomes a pointer, touch and keyboard control opening the same pinned definition drawer as its directory row; focus returns on Escape.",
+            "selector": {
+              "type": "element",
+              "element_id": "bindings"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1216,
+                  "end": 1217,
+                  "digest": "sha256:9c343f4c1991b083ee516193e77211680c79ba8bc7dffabec029c7bf642ca4a5",
+                  "note": "A bound SVG element that opened the drawer regains focus on Escape."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 2495,
+                  "end": 2529,
+                  "digest": "sha256:660a74ea036e6624a3a68a0219c7e6ce3d79c3cef76bd7dcea5f012a9c007518",
+                  "note": "Bound drawing elements become keyboard and touch controls and highlight with their directory row."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 290,
+                  "end": 315,
+                  "digest": "sha256:78e198b02eea313f1a59f96bf3b322e0e1e1641d63d76a9f1ad2980ad3421e35",
+                  "note": "Resolves each binding to its entity or relationship pin with the view's namespaced element id."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-same-definition",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Selecting an entity in the diagram or the directory opens the same canonical entity definition."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+            },
+            "version": 4,
+            "id": "membership",
+            "slide": "ti-ui-impl-erd",
+            "rank": 20,
+            "kind": "node",
+            "label": "Directory states drawn and not drawn",
+            "description": "The directory lists every entity the ERD revision pins with its intent and holders, and says which are drawn and which are only listed, so a selective drawing does not pretend to be complete.",
+            "selector": {
+              "type": "element",
+              "element_id": "membership"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 201,
+                  "end": 251,
+                  "digest": "sha256:7793aa2f55634de69657d4579eb8b70c4c83aa203a0dc02e412d22872715a8cb",
+                  "note": "ERD view: directory rows with drawn and not-drawn membership, the data model section, templates and styles."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 320,
+                  "end": 355,
+                  "digest": "sha256:6d583c5aa8fd4ae248272279d3278b2c106bb7e18762a4ea73fff17e7ad083c3",
+                  "note": "ERD view: directory rows with drawn and not-drawn membership, the data model section, templates and styles."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 365,
+                  "end": 478,
+                  "digest": "sha256:b9cca5b23b49d9052b743019cd78ea21a631fa67d7b578e8d4d164330f61960a",
+                  "note": "The ERD page's data model: the primary ERD, its other views and the all-entities directory, which filters on the ERD page."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-selective",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Omitted drawing detail is stated rather than implied missing."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+            },
+            "version": 4,
+            "id": "notation",
+            "slide": "ti-ui-impl-erd",
+            "rank": 30,
+            "kind": "statement",
+            "label": "Associations versus productions",
+            "description": "Associations draw crow's-foot endpoints with textual cardinality, including a declared unknown; productions draw a labelled directional flow and say they are not foreign keys.",
+            "selector": {
+              "type": "element",
+              "element_id": "notation"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 1,
+                  "end": 100,
+                  "digest": "sha256:0b074eb18e513ef1e925429837f325d0d43cc6bb324d16f65cde504feeae1f13",
+                  "note": "Relationship view types and the text notation for associations and productions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 101,
+                  "end": 151,
+                  "digest": "sha256:f4b46dde7c3cd795cd871693d4bffcf46354c5bf7e609b977bd86b561617eedf",
+                  "note": "Draws crow's-foot endpoints or a dashed production arrow from the declared record."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-meaning",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD distinguishes production from association and shows declared cardinality without inventing it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+            },
+            "version": 4,
+            "id": "entity",
+            "slide": "ti-ui-impl-erd",
+            "rank": 40,
+            "kind": "node",
+            "label": "Data entity in context",
+            "description": "An entity shows its purpose, selected fields and keys, holding Components as separate resources, owned and incoming relationships with links, and the ERDs that list it.",
+            "selector": {
+              "type": "element",
+              "element_id": "entity"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 152,
+                  "end": 200,
+                  "digest": "sha256:4dc5dfcdb5bd9289766337b8e4b726f835bd779af29a9ddc8a43f1ffd660cc35",
+                  "note": "Data-entity fields, holders, owned and derived incoming relationships, and ERD membership."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-structure",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Entity details distinguish the entity from the queue or database holding it."
+            },
+            {
+              "id": "ti-ui-impl-erd-relationships",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:relationship-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Related entities and their relationships are explained and linked."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:authored-erd-view",
+              "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+            },
+            "version": 4,
+            "id": "overlay",
+            "slide": "ti-ui-impl-erd",
+            "rank": 50,
+            "kind": "region",
+            "label": "Overlay over an exact baseline",
+            "description": "An overlay's directory composes over the exact baseline ERD revision it names, marking added, replacing and removed rows; the canonical ERD is read, never rewritten.",
+            "selector": {
+              "type": "element",
+              "element_id": "overlay"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 252,
+                  "end": 273,
+                  "digest": "sha256:be98f54dcf5ee2a8c121f7a94121d754cc74c46bbfcd3f7f6c3a89a3ae36d74e",
+                  "note": "Composes an overlay with its exact baseline ERD revision without modifying it."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 316,
+                  "end": 319,
+                  "digest": "sha256:7cdf60a7848fb1703aac7902e569b28b851c538d715241f97e2abdc516020c9b",
+                  "note": "Indexes an overlay's proposed removals."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_erd.go",
+                  "start": 356,
+                  "end": 364,
+                  "digest": "sha256:407a366574a89c7e015436e96c567c46d0bbb8f144d47295fa0097023ea81ced",
+                  "note": "Lists an overlay's proposed removals against the baseline rows."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-erd-design-context",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "A proposed change is followed to its design and feature context without overwriting the baseline model."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

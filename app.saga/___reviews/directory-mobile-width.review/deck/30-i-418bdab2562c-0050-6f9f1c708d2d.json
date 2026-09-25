@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "technical-rule-removed",
+  "slide": "one-region",
+  "rank": 50,
+  "kind": "statement",
+  "label": "Technical design's own scroller removed",
+  "description": "Technical design used to scroll its whole .directory, filter included. That selector is deleted from its style rule; its tables now scroll in the shared region like every other directory.",
+  "selector": {
+    "type": "element",
+    "element_id": "technical-rule-removed"
+  }
+}

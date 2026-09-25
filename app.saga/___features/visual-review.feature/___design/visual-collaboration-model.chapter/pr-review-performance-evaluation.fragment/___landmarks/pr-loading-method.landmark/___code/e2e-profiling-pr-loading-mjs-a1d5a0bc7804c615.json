@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "e2e/profiling/pr-loading.mjs",
+      "start": 5,
+      "end": 18,
+      "digest": "sha256:6dcec45feeeb295057ee1de0bb29d36b8bbd0c0c50baac2a125778b169bc5346",
+      "note": "Read-only loopback browser instrumentation, five contexts, visible slide readiness, interaction timing and selected-file completion."
+    },
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "e2e/profiling/pr-loading.mjs",
+      "start": 23,
+      "end": 38,
+      "digest": "sha256:bbc9a25228dbfb8da9b40e1f1e3e19014f653d5f7a621c2a98d22c75de52c77d",
+      "note": "Read-only loopback browser instrumentation, five contexts, visible slide readiness, interaction timing and selected-file completion."
+    },
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "e2e/profiling/pr-loading.mjs",
+      "start": 41,
+      "end": 82,
+      "digest": "sha256:7aff1abd9a36d5ddc5f46a8a6e9ee823f4ddbc661db0ff220f33566d9405c32b",
+      "note": "Read-only loopback browser instrumentation, five contexts, visible slide readiness, interaction timing and selected-file completion."
+    }
+  ]
+}

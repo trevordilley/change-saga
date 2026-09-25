@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 497,
+      "end": 501,
+      "digest": "sha256:206a57444438aabfa52d619822ab2416f17a29c37ea5872bcee760cdd138f1a8",
+      "note": "Added: area sections with one row per definition, and the row a page without its own row marks."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 504,
+      "end": 516,
+      "digest": "sha256:1f8e88ff47ea5895c32aca0f54b48aa20cebd872c2278b672136834341f82057",
+      "note": "Added: area sections with one row per definition, and the row a page without its own row marks."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 519,
+      "end": 523,
+      "digest": "sha256:0d65e6c11f5048d9a9b17029faccfa89798c8b19c9c77e921cac6572d8ee2ed4",
+      "note": "Added: area sections with one row per definition, and the row a page without its own row marks."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 528,
+      "end": 561,
+      "digest": "sha256:ec1d192e9b842f81f089037a1480ad6ba02d9c550dd8cc053b0f0426a0f066d3",
+      "note": "Added: area sections with one row per definition, and the row a page without its own row marks."
+    }
+  ]
+}

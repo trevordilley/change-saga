@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/app_records.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:738b5a3be3be1c8b34207c393b865f99bc1fd07b287dcabcf3ff74f92fcb6cfe"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/app_records.go",
+      "start": 258,
+      "end": 260,
+      "digest": "sha256:090fae8b2d445022fe9f5f92a43a093b43752ed3a34a4755d1e505dc4d4789d6"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/app_records.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:bc6389ce5f058dca4106106d369975992196bccc5ea76fb52a8b461a6fb9b50e"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/app_records.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:2b580c30df26ae457dfb00715d8937d9486d3aed8b253a5f25be4e25177a50a9"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/requirements/app_records.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:632da6a5d5bf616a9e50326ca0c3c460eaae341c7fe2402973eadbae46104490"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/requirements/app_records.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:d65f3e9cf8e6a382bdab95c7ca49b20d12ca13121e469e4c2bac72bf77f9f2b3"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/requirements/app_records.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:dd3b795422f7c12be4c97c1da9a2f189210813ac34043c3b5f73953218ac047e"
+    }
+  ]
+}

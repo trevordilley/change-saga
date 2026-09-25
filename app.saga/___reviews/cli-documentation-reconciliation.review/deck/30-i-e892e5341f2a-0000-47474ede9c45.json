@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "review",
+  "slide": "detect-repair-recheck",
+  "rank": 0,
+  "kind": "node",
+  "label": "Review comparison",
+  "description": "Review coverage is independent of living documentation currency; the report preserves both comparison endpoints.",
+  "selector": {
+    "type": "element",
+    "element_id": "review"
+  }
+}

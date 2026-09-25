@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "docs/pr-review-performance-implementation.md",
+      "start": 96,
+      "end": 116,
+      "digest": "sha256:9d5290bc5cd10af64c6c97c10446103d63bd3d33a65289cfc5cbb0f348a6fb88",
+      "note": "Relevant passed checks and explicit incomplete broad-suite and cross-browser verification limits."
+    }
+  ]
+}

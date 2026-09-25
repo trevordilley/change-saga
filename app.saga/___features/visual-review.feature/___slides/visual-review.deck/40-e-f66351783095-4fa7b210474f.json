@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "16b6587c91b2c608d17868b1d3bbd59ec90784fc",
+      "path": "internal/server/reviews.go",
+      "start": 506,
+      "end": 543,
+      "digest": "sha256:dc3267f1ac7bb26cdd4f44c0e7db8a858c8366bd009085fb791c99295e0ba119",
+      "note": "Reads only the slide entrypoint and serves it with the fragment CSP and no-store caching."
+    }
+  ]
+}

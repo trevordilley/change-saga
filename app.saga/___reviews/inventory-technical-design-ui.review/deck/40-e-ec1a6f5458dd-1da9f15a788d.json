@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "digest": "sha256:b2a2874ac7f76f4f515ad5e404b8458c0b5a762c8e7ed2d2622a8040d9a6020e",
+      "note": "New: the delivered behavior, divergences, verification and gaps."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 1,
+      "end": 108,
+      "digest": "sha256:b2a2874ac7f76f4f515ad5e404b8458c0b5a762c8e7ed2d2622a8040d9a6020e",
+      "note": "New: the delivered behavior, divergences, verification and gaps."
+    }
+  ]
+}

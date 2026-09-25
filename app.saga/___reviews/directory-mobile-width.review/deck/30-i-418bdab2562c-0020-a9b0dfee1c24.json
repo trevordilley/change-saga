@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "scroll-region",
+  "slide": "one-region",
+  "rank": 20,
+  "kind": "region",
+  "label": "New scroll region around the table",
+  "description": "The template now wraps only the table in div.directory-scroll: role region, named by the directory's title, tabindex 0, overflow-x auto with edge shadows. The table's markup, caption and header cells are unchanged.",
+  "selector": {
+    "type": "element",
+    "element_id": "scroll-region"
+  },
+  "record": "urn:change-saga:change-saga:slide:directory-scroll-region"
+}

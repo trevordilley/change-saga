@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "pr-loading-baseline",
+  "label": "Reproducible baseline",
+  "description": "Recorded fixture, exact source comparison, initial usability and repeated Git work.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "pr-loading-baseline"
+  },
+  "target": ""
+}

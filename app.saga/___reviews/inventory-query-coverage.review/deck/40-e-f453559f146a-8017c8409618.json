@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:9fa810402f814c6aced4be96ce131ecca0f9ab9856a155f3cbc9d1213d5f22a8",
+      "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:1091cea1543a5a0c2301b8562134d3ed3fdd2ef07b4d29155d16b0e0c8a5b393",
+      "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:aee835efa296ae4ca08efb4c4541e1e9f02bfbd1f7afe3fec1c7d513f9117253",
+      "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation.go",
+      "start": 181,
+      "end": 182,
+      "digest": "sha256:a4ec4b7016708bbcc285885a6735734fc55145db09feefeceda9f1023a49f7da",
+      "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation.go",
+      "start": 213,
+      "end": 217,
+      "digest": "sha256:367bc1501fce49c322e4b616ed33b074350d2d0e25782d7884a18761b9c07149",
+      "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation.go",
+      "start": 273,
+      "end": 279,
+      "digest": "sha256:bcc81529d7c8d801dadb4d4286ef4be1e4de5427453df8179cf191a2434789f4",
+      "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation.go",
+      "start": 289,
+      "end": 295,
+      "digest": "sha256:cce07a4bdae0fe707b559879a2bf79d26942c6c2e045310fa236d3e9c06d2f1c",
+      "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+    }
+  ]
+}

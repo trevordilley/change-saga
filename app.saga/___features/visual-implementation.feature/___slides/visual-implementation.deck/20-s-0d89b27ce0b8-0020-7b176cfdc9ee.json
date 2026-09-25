@@ -9,7 +9,7 @@
   "layout": "diagram",
   "media_type": "image/svg+xml",
   "entrypoint": "20-s-0d89b27ce0b8-0020-7b176cfdc9ee.svg",
-  "takeaway": "Replacing a visual can break existing element selectors; validation makes the break explicit until the Items are repaired.",
+  "takeaway": "Legacy partial edits can break selectors; transaction-managed slides require complete apply-slide updates that validate selectors before publication.",
   "reading_order": [
     "draft-state",
     "addressable-state",

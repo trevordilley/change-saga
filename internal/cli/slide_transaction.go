@@ -63,19 +63,22 @@ type SlideTransactionAsset struct {
 }
 
 type SlideTransactionItemRequest struct {
-	ID             string                `json:"id"`
-	Rank           int                   `json:"rank"`
-	Kind           string                `json:"kind"`
-	Label          string                `json:"label"`
-	Description    string                `json:"description"`
-	Selector       saga.LandmarkSelector `json:"selector"`
-	Hotspot        *saga.LandmarkRegion  `json:"hotspot,omitempty"`
-	About          string                `json:"about,omitempty"`
-	Body           string                `json:"body,omitempty"`
-	Placement      string                `json:"placement,omitempty"`
-	Leader         string                `json:"leader,omitempty"`
-	Evidence       []saga.CodeFile       `json:"evidence"`
-	CriterionLinks []saga.CriterionLink  `json:"criterion_links"`
+	Documentation     *saga.DocumentationLink `json:"documentation,omitempty"`
+	DocumentationView string                  `json:"documentation_view,omitempty"`
+	Selections        []saga.ItemSelection    `json:"selections,omitempty"`
+	ID                string                  `json:"id"`
+	Rank              int                     `json:"rank"`
+	Kind              string                  `json:"kind"`
+	Label             string                  `json:"label"`
+	Description       string                  `json:"description"`
+	Selector          saga.LandmarkSelector   `json:"selector"`
+	Hotspot           *saga.LandmarkRegion    `json:"hotspot,omitempty"`
+	About             string                  `json:"about,omitempty"`
+	Body              string                  `json:"body,omitempty"`
+	Placement         string                  `json:"placement,omitempty"`
+	Leader            string                  `json:"leader,omitempty"`
+	Evidence          []saga.CodeFile         `json:"evidence"`
+	CriterionLinks    []saga.CriterionLink    `json:"criterion_links"`
 }
 
 type SlideSemanticDiff struct {
@@ -163,6 +166,33 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 	if err := verifyTransactionEvidence(ctx, firstNonEmpty(repo, root), revision.Items); err != nil {
 		return SlideTransactionResult{}, err
 	}
+	manifest, err := saga.ReadManifest(root)
+	if err != nil {
+		return SlideTransactionResult{}, err
+	}
+	// Author selected bytes and resolve saved views once, before the lock, so
+	// the complete payload (and its snapshot) is fixed for idempotent retries.
+	// The inventory read here only supplies omitted selection commits; every
+	// selection is checked again under the lock.
+	preview, err := requirements.LoadInventory(root, manifest.ID)
+	if err != nil {
+		return SlideTransactionResult{}, err
+	}
+	for i := range revision.Items {
+		item := &revision.Items[i].Item
+		if item.Documentation == nil && (item.DocumentationView != "" || len(item.Selections) > 0) {
+			return SlideTransactionResult{}, fmt.Errorf("item %s: a saved view and selections require a documentation pin", item.ID)
+		}
+		if item.Documentation != nil {
+			item.Selections = defaultSelectionCommits(&preview, item.Selections)
+			if err := precheckSelections(&preview, *item.Documentation, item.Selections); err != nil {
+				return SlideTransactionResult{}, fmt.Errorf("item %s: %w", item.ID, err)
+			}
+		}
+		if item.DocumentationView, item.Selections, err = authorItemLinks(ctx, firstNonEmpty(repo, root), manifest, item.DocumentationView, item.Selections, nil); err != nil {
+			return SlideTransactionResult{}, fmt.Errorf("item %s: %w", item.ID, err)
+		}
+	}
 
 	var result SlideTransactionResult
 	err = store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
@@ -234,6 +264,23 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			result = transactionResult(document.Manifest.ID, target, recordPath, root, request.Operation, dryRun, true, &stored, &stored)
 			result.PreviousSnapshot = storedPreviousSnapshot(record, storedIndex)
 			return nil
+		}
+		inventory, err := requirements.LoadInventory(root, document.Manifest.ID)
+		if err != nil {
+			return err
+		}
+		for _, item := range revision.Items {
+			var prior *saga.ItemManifest
+			if previous != nil {
+				for i := range previous.Items {
+					if previous.Items[i].Item.ID == item.Item.ID {
+						prior = &previous.Items[i].Item
+					}
+				}
+			}
+			if err := admitItemLinks(ctx, &inventory, root, firstNonEmpty(repo, root), document.Manifest, item.Item, prior); err != nil {
+				return fmt.Errorf("item %s: %w", item.Item.ID, err)
+			}
 		}
 		if err := validateTransactionCriteria(document, revision.Items); err != nil {
 			return err
@@ -373,7 +420,8 @@ func buildSlideTransactionRevision(request SlideTransactionRequest, assetName, a
 		item := saga.ItemManifest{
 			Version: saga.DeckRecordVersion, ID: input.ID, SlideID: request.Slide.ID, Rank: input.Rank, Kind: input.Kind,
 			Label: input.Label, Description: strings.TrimSpace(input.Description), Selector: input.Selector, Hotspot: input.Hotspot,
-			About: input.About, Body: input.Body, Placement: input.Placement, Leader: input.Leader,
+			About: input.About, Body: input.Body, Placement: input.Placement, Leader: input.Leader, Documentation: input.Documentation,
+			DocumentationView: input.DocumentationView, Selections: append([]saga.ItemSelection(nil), input.Selections...),
 		}
 		revision.Items = append(revision.Items, saga.TransactionItem{Item: item, Evidence: append([]saga.CodeFile{}, input.Evidence...), CriterionLinks: append([]saga.CriterionLink{}, input.CriterionLinks...)})
 	}

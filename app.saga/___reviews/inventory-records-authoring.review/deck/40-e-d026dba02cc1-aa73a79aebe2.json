@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory_item.go",
+      "digest": "sha256:458eb11cbb7297b27b27b372c7f43937c4e41705425357c9094852784772dbd0"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory_item.go",
+      "start": 1,
+      "end": 229,
+      "digest": "sha256:458eb11cbb7297b27b27b372c7f43937c4e41705425357c9094852784772dbd0"
+    }
+  ]
+}

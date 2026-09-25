@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/technical.go",
+      "digest": "sha256:8626d3aeb96b73e87781dfc1fdcf3ca1a8b639887b576e05f6db3c57f94c89af",
+      "note": "New: Technical design directories, exact-revision pages, usages adapter, templates and styles."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/technical.go",
+      "start": 1,
+      "end": 601,
+      "digest": "sha256:8626d3aeb96b73e87781dfc1fdcf3ca1a8b639887b576e05f6db3c57f94c89af",
+      "note": "New: Technical design directories, exact-revision pages, usages adapter, templates and styles."
+    }
+  ]
+}

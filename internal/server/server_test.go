@@ -102,7 +102,7 @@ func TestWorkspaceTabsAndClosedDrawerCarryAccessibleSemantics(t *testing.T) {
 		"openFragmentDrawer(fragmentDrawerLink.dataset.openFragment, fragmentDrawerLink)",
 		"hydrateTargetCode(targetCodeButton)",
 		"data-target-code-response",
-		"const labels = {fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'}",
+		"const labels = {documentation:'Technical explanation', fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'}",
 		"openHistoryDrawer(historyButton.dataset.historyHref, historyButton)",
 	} {
 		if !strings.Contains(appJavaScript, fragment) {
@@ -284,13 +284,41 @@ func TestInteractiveFragmentIsServedWithSandboxCSP(t *testing.T) {
 	request.SetPathValue("id", "demo")
 	request.SetPathValue("path", "index.html")
 	recorder := httptest.NewRecorder()
-	application.fragmentFile(recorder, request)
+	securityHeaders(http.HandlerFunc(application.fragmentFile)).ServeHTTP(recorder, request)
 	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), "onclick") {
 		t.Fatalf("interactive fragment was not served: status=%d body=%s", recorder.Code, recorder.Body.String())
 	}
-	csp := recorder.Header().Get("Content-Security-Policy")
-	if !strings.Contains(csp, "script-src") || !strings.Contains(csp, "connect-src 'none'") {
-		t.Fatalf("unexpected fragment CSP: %s", csp)
+	assertAuthoredContentPolicy(t, recorder.Header())
+}
+
+// assertAuthoredContentPolicy checks the guarantees an author's script relies
+// on and the ones that contain it: it runs, but always on an opaque origin,
+// cannot reach the network, and only frames into the app itself.
+func assertAuthoredContentPolicy(t *testing.T, header http.Header) {
+	t.Helper()
+	policies := header.Values("Content-Security-Policy")
+	if len(policies) != 1 {
+		t.Fatalf("authored content has %d CSP headers, want 1: %q", len(policies), policies)
+	}
+	directives := map[string]string{}
+	for _, directive := range strings.Split(policies[0], ";") {
+		name, value, _ := strings.Cut(strings.TrimSpace(directive), " ")
+		directives[name] = value
+	}
+	for name, want := range map[string]string{
+		"sandbox":         "allow-scripts",
+		"connect-src":     "'none'",
+		"frame-ancestors": "'self'",
+		"form-action":     "'none'",
+		"base-uri":        "'none'",
+		"object-src":      "'none'",
+	} {
+		if got, ok := directives[name]; !ok || got != want {
+			t.Fatalf("CSP %s = %q, want %q in %q", name, got, want, policies[0])
+		}
+	}
+	if !strings.Contains(directives["script-src"], "'unsafe-inline'") {
+		t.Fatalf("authored script is no longer allowed to run: %q", policies[0])
 	}
 }
 
@@ -337,7 +365,7 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 	}
 	// The Saga is documentation: no approval, comment, or annotation control
 	// is rendered on it in any mode.
-	for _, control := range []string{"annotation-toolbox", "data-annotation-tools", "data-review-progress", "data-review-controls", "data-review-decision", "data-review-comment", "data-shared-review-form", "/api/thread", "/api/review", "/api/reply", "/api/diff-review", "data-activity"} {
+	for _, control := range []string{`<div class="review-annotation-toolbox"`, "data-annotation-tools", "data-review-progress", "data-review-controls", "data-review-decision", "data-review-comment", "data-shared-review-form", "/api/thread", "/api/review", "/api/reply", "/api/diff-review", "data-activity"} {
 		if strings.Contains(renderedPage, control) {
 			t.Fatalf("documentation rendered review control %q", control)
 		}

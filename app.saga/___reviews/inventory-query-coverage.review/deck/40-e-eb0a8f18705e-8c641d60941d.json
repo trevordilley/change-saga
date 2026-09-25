@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/coverage_test.go",
+      "digest": "sha256:4ab25341a06b0e847a47b3db5e55c3240f55f1de7786116834c98b19be45eeee",
+      "note": "Projection tests over temporary Git repositories."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/coverage_test.go",
+      "start": 1,
+      "end": 61,
+      "digest": "sha256:4ab25341a06b0e847a47b3db5e55c3240f55f1de7786116834c98b19be45eeee",
+      "note": "Projection tests over temporary Git repositories."
+    }
+  ]
+}

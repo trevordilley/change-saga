@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Technical design is a tree of pages</title><desc id="desc">A landing page opens the ERD, Systems and Components pages; the sidebar draws the same tree, and definition addresses never moved.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">TECHNICAL INVENTORY · IMPLEMENTED UI · PAGE TREE</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">Technical design is a tree of pages</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">The sidebar and the pages share one tree; definition addresses never moved.</text>
+<g id="sidebar"><rect x="60" y="180" width="330" height="330" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="208" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">SIDEBAR</text>
+<text x="78" y="240" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#17324d">▾ Technical design</text>
+<text x="102" y="270" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#17324d">▾ ERD</text>
+<text x="136" y="298" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">Code reference</text>
+<rect x="128" y="308" width="246" height="28" rx="5" fill="#e6eef6"/>
+<text x="136" y="328" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#1f5f9e" font-weight="bold">Item  (current page)</text>
+<text x="136" y="356" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">… one row per entity</text>
+<text x="102" y="388" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#17324d">▸ Systems</text>
+<text x="102" y="418" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#17324d">▸ Components</text>
+<text x="78" y="456" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#4d6278">Ancestors of the current row open;</text>
+<text x="78" y="478" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#4d6278">an ERD or overlay marks the ERD row.</text>
+</g>
+<g id="landing"><rect x="440" y="290" width="230" height="130" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="458" y="318" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">/technical</text>
+<text x="458" y="348" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Landing page</text>
+<text x="458" y="378" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">three areas, counted</text>
+<text x="458" y="402" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">no directories here</text>
+</g>
+<path d="M670 340L730 232" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M670 355L730 355" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M670 370L730 478" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="areas"><rect x="730" y="180" width="270" height="100" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="748" y="206" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">/technical/erd</text>
+<text x="748" y="236" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">ERD drawn as authored</text>
+<text x="748" y="262" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">other views · all data entities</text>
+<rect x="730" y="305" width="270" height="100" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="748" y="331" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">/technical/systems</text>
+<text x="748" y="361" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">Systems directory</text>
+<text x="748" y="387" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">built only when read</text>
+<rect x="730" y="430" width="270" height="100" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="748" y="456" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">/technical/components</text>
+<text x="748" y="486" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">Components directory</text>
+<text x="748" y="512" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">filters stay on the page</text>
+</g>
+<path d="M1000 230L1040 330" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M1000 355L1040 355" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M1000 480L1040 380" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="addresses"><rect x="1040" y="270" width="200" height="170" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="1056" y="298" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">UNCHANGED</text>
+<text x="1056" y="326" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#17324d">/technical/{kind}/{id}</text>
+<text x="1056" y="352" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">?revision= pins</text>
+<text x="1056" y="378" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">breadcrumb via area</text>
+<text x="1056" y="404" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">old #fragments land</text>
+</g>
+<g id="routes"><rect x="440" y="548" width="800" height="48" rx="10" fill="#e6eef6"/><text x="462" y="578" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#17324d">GET /technical/{area}: only erd, systems, components; any other area is a 404.</text></g>
+<g id="proof"><rect x="60" y="616" width="1180" height="60" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/><text x="84" y="652" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#17324d">Checked: nested rows and current marking per page, each area page, old addresses; keyboard, touch at 390px.</text></g>
+</svg>

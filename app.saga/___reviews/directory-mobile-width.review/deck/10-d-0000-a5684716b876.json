@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "directory-mobile-width",
+  "title": "Directory tables scroll in place on a phone",
+  "role": "review",
+  "rank": 0,
+  "objective": "Explain why directory pages no longer widen past a 390px phone, where the shared scroll region lives, what changes at desktop width, and how the browser check proves it."
+}

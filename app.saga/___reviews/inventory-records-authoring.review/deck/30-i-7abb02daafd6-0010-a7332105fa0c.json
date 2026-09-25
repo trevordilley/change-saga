@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "validation",
+  "slide": "ti-records-review-records",
+  "rank": 10,
+  "kind": "region",
+  "label": "Per-kind validation",
+  "description": "New validator keeps legacy rules unchanged and adds intent/baseline/delivery, evidence ids, entity, ERD and overlay rules and offline SVG safety.",
+  "selector": {
+    "type": "element",
+    "element_id": "validation"
+  }
+}

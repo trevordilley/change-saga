@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+    "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+  },
+  "version": 4,
+  "id": "coverage",
+  "slide": "ti-ui-review-trace",
+  "rank": 10,
+  "kind": "region",
+  "label": "Inherited coverage, labelled",
+  "description": "Reviewer coverage evaluates Items' eligible inherited selections as the CLI does, labels those owners selected via the selection, and moves the derived snapshot format to v4.",
+  "selector": {
+    "type": "element",
+    "element_id": "coverage"
+  }
+}

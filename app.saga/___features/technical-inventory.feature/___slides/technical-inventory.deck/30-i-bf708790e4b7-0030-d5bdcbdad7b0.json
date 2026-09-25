@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "implemented",
+  "slide": "technical-inventory-proposed-revisions",
+  "rank": 30,
+  "kind": "node",
+  "label": "Explicit implemented revision",
+  "description": "An explicit reconciliation records a later implemented revision with scoped, resolvable supporting code; the original proposal remains in history.",
+  "selector": {
+    "type": "element",
+    "element_id": "implemented"
+  }
+}

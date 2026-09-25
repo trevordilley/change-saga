@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-proposed-revisions-history",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-proposed-revisions:item:history",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+  "scope": "self",
+  "rationale": "The arrows show proposed authoring transitions, not existing software behavior. Preserve prior definitions and do not silently repin saved slides.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T22:40:17.32112Z"
+}

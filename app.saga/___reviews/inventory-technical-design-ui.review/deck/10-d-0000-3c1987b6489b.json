@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "inventory-technical-design-ui",
+  "title": "Technical Design UI: pages, authored ERD and Item selections",
+  "role": "review",
+  "rank": 0,
+  "objective": "Explain the reviewer's Technical Design pages, the safe authored ERD view, the slide Item selection drawer and reviewer coverage parity, with their tests."
+}

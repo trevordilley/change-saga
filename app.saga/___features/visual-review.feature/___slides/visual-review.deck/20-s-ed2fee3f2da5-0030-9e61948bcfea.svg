@@ -1,14 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Review comment mutation failure boundaries</title>
-  <desc id="desc">The comment endpoint rejects oversized or malformed forms, invalid tokens, missing or frozen reviews, unreadable heads, and invalid targets before the locked append. Only a successful append redirects.</desc>
+  <desc id="desc">Validation and shown-snapshot refusals happen before append. A saved receipt confirms persistence; a missing receipt is uncertain and must not cause a blind retry.</desc>
   <defs>
     <style>.ui{font-family:Inter,system-ui,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,monospace}.h{font-size:30px;font-weight:750;fill:#10213d}.sub{font-size:15px;fill:#526178}.q{font-size:15px;font-weight:700;fill:#18304f}.small{font-size:13px;fill:#42536d}.status{font-size:15px;font-weight:800}.flow{stroke:#42659c;stroke-width:3;fill:none;marker-end:url(#a)}.reject{stroke:#b3384a;stroke-width:2.5;fill:none;marker-end:url(#r)}</style>
     <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#42659c"/></marker>
     <marker id="r" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#b3384a"/></marker>
   </defs>
   <rect width="1280" height="720" fill="#f8fafc"/>
-  <text class="ui h" x="55" y="54">Every failure stops before the durable append</text>
-  <text class="ui sub" x="55" y="81">The endpoint is a funnel: transport, authority, lifecycle, source, and domain gates narrow into one locked write.</text>
+  <text class="ui h" x="55" y="54">Refused writes and lost confirmations are different</text>
+  <text class="ui sub" x="55" y="81">Validate before append; after append, require confirmation before clearing drafts or offering another write.</text>
 
   <g id="bounded-input" class="ui">
     <rect x="62" y="118" width="236" height="78" rx="17" fill="#e9f1ff" stroke="#4f78b2" stroke-width="2"/>
@@ -33,7 +33,7 @@
 
   <g id="mutable-range" class="ui">
     <polygon points="880,113 964,157 880,201 796,157" fill="#fff6dc" stroke="#b48632" stroke-width="2"/>
-    <text class="q" x="834" y="149">open review?</text><text class="small" x="829" y="171">head resolves?</text>
+    <text class="q" x="834" y="149">open review?</text><text class="small" x="829" y="171">shown view current?</text>
   </g>
   <path class="flow" d="M964 157H1017"/>
   <path class="reject" d="M880 201V246"/><g class="ui"><rect x="807" y="246" width="146" height="48" rx="12" fill="#fff0f1" stroke="#b3384a"/><text class="status" x="845" y="276" fill="#962b3b">409</text><text class="small" x="884" y="276">conflict</text></g>
@@ -49,15 +49,15 @@
   <g id="durable-append" class="ui">
     <rect x="478" y="330" width="488" height="114" rx="22" fill="#f1ecff" stroke="#7259ab" stroke-width="3"/>
     <text class="q" x="516" y="366">Critical section</text>
-    <text class="small" x="516" y="394">Saga writer lock → reload → canonical target → event id</text>
+    <text class="small" x="516" y="394">lock → reload → target → frozen + snapshot checks</text>
     <text class="mono small" x="516" y="420">store.WriteJSON(..., exclusive=true)</text>
   </g>
   <path class="flow" d="M722 444V508"/>
   <g id="success-outcome" class="ui">
     <rect x="478" y="508" width="488" height="112" rx="22" fill="#eaf8ef" stroke="#47815d" stroke-width="3"/>
-    <text class="q" x="516" y="545">303 See Other → canonical target anchor</text>
-    <text class="small" x="516" y="573">Fresh GET reconstructs the thread from disk.</text>
-    <text class="small" x="516" y="597">Tests assert refused writes leave no record.</text>
+    <text class="q" x="516" y="545">JSON receipt: saved + event ID</text>
+    <text class="small" x="516" y="573">Feedback updates in place; ordinary forms still use 303.</text>
+    <text class="small" x="516" y="597">Lost receipt: keep draft, check feedback, do not resubmit.</text>
   </g>
-  <text class="ui sub" x="55" y="675">Invariant: every red exit occurs before <tspan class="mono">comments/&lt;event&gt;.json</tspan> is published.</text>
+  <text class="ui sub" x="55" y="675">Every red refusal precedes publication of <tspan class="mono">comments/&lt;event&gt;.json</tspan>.</text>
 </svg>

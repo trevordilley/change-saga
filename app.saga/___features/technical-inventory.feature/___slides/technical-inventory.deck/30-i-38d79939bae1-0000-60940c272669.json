@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scope",
+  "slide": "technical-inventory-query-contract",
+  "rank": 0,
+  "kind": "node",
+  "label": "Fix scope and source comparison",
+  "description": "Feature or design scope follows declared links. Newness requires a named baseline and head; selected revision pins identify which planned intent is being queried.",
+  "selector": {
+    "type": "element",
+    "element_id": "scope"
+  }
+}

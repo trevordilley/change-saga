@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "desktop-after",
+  "slide": "desktop-width",
+  "rank": 20,
+  "kind": "example",
+  "label": "After at 1440px",
+  "description": "After the change the /terms table scrolls inside the content column, with an edge shadow on the right marking the hidden column.",
+  "selector": {
+    "type": "element",
+    "element_id": "desktop-after"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "records",
+  "slide": "technical-inventory-rollout",
+  "rank": 10,
+  "kind": "node",
+  "label": "Records and authoring together",
+  "description": "Deliver shared revision phase, data entities and exact selections with schemas, public commands and tests. An explicit implemented transition requires resolvable code and retains the proposal.",
+  "selector": {
+    "type": "element",
+    "element_id": "records"
+  }
+}

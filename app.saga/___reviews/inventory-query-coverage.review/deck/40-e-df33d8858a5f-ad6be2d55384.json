@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/coverage/inherited.go",
+      "digest": "sha256:93e0158d0684c034fc2a45092e155e26b32ecb78221854c5ea98469a83c5fc5f",
+      "note": "Labeled, Item-owned inherited assignments that never become stale evidence records."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/coverage/inherited.go",
+      "start": 1,
+      "end": 48,
+      "digest": "sha256:93e0158d0684c034fc2a45092e155e26b32ecb78221854c5ea98469a83c5fc5f",
+      "note": "Labeled, Item-owned inherited assignments that never become stale evidence records."
+    }
+  ]
+}

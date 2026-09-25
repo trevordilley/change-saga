@@ -1,0 +1,442 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1390 1166" role="img" aria-label="Change Saga persisted data model: thirteen record types and the associations between them">
+<title>Change Saga persisted data model</title>
+<rect x="0" y="0" width="1390" height="1166" fill="#ffffff"/>
+<g font-family="Helvetica, Arial, sans-serif">
+<text x="30" y="46" font-size="30" font-weight="bold" fill="#142638">How a Saga is stored</text>
+<text x="30" y="78" font-size="17" fill="#3d5266">Selected record types in app.saga and the associations the code enforces. Select an entity or edge to open it.</text>
+<text x="30" y="106" font-size="15" fill="#5a6b7a">Green: product records · blue: decks and code evidence · amber: pull-request review · violet: technical inventory. Not drawn: comments, flags, terms, quality, work plan.</text>
+<g id="r-feature-in-saga">
+<title>Feature (0..*) belongs to (1) Saga manifest</title>
+<path d="M390 213 L280 213" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M390 213 L280 213" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M372 213L390 203" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M372 213L390 213" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M372 213L390 223" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="362" cy="213" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M288 222L288 204" stroke="#3d5266" stroke-width="2"/>
+<path d="M295 222L295 204" stroke="#3d5266" stroke-width="2"/>
+<text x="354" y="237" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="316" y="237" font-size="15" fill="#5a6b7a" text-anchor="middle">1</text>
+<text x="335" y="203" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">belongs to</text>
+</g>
+<g id="r-story-in-feature">
+<title>Story (0..*) lives in (1) Feature</title>
+<path d="M750 213 L640 213" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M750 213 L640 213" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M732 213L750 203" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M732 213L750 213" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M732 213L750 223" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="722" cy="213" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M648 222L648 204" stroke="#3d5266" stroke-width="2"/>
+<path d="M655 222L655 204" stroke="#3d5266" stroke-width="2"/>
+<text x="714" y="237" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="676" y="237" font-size="15" fill="#5a6b7a" text-anchor="middle">1</text>
+<text x="695" y="203" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">lives in</text>
+</g>
+<g id="r-story-serves">
+<title>Story (0..*) serves (0..*) Persona</title>
+<path d="M1000 213 L1110 213" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1000 213 L1110 213" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M1018 213L1000 223" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1018 213L1000 213" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1018 213L1000 203" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1028" cy="213" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M1092 213L1110 203" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1092 213L1110 213" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1092 213L1110 223" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1082" cy="213" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="1036" y="237" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="1074" y="237" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="1055" y="203" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">serves</text>
+</g>
+<g id="r-criterion-of-story">
+<title>Acceptance criterion (0..*) criterion of (1) Story</title>
+<path d="M830 410 L830 296" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M830 410 L830 296" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M830 392L840 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M830 392L830 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M830 392L820 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="830" cy="382" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M821 304L839 304" stroke="#3d5266" stroke-width="2"/>
+<path d="M821 311L839 311" stroke="#3d5266" stroke-width="2"/>
+<text x="845" y="379" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="845" y="337" font-size="15" fill="#5a6b7a" text-anchor="start">1</text>
+<text x="822" y="358" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">criterion of</text>
+</g>
+<g id="r-deck-in-feature">
+<title>Deck (0..*) implements (0..1) Feature</title>
+<path d="M515 410 L515 296" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M515 410 L515 296" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M515 392L525 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M515 392L515 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M515 392L505 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="515" cy="382" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M506 305L524 305" stroke="#3d5266" stroke-width="2"/>
+<circle cx="515" cy="318" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="530" y="379" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="530" y="337" font-size="15" fill="#5a6b7a" text-anchor="start">0..1</text>
+<text x="507" y="358" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">implements</text>
+</g>
+<g id="r-deck-of-review">
+<title>Deck (1) explains (0..1) Review</title>
+<path d="M390 493 L280 493" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M390 493 L280 493" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M382 484L382 502" stroke="#3d5266" stroke-width="2"/>
+<path d="M375 484L375 502" stroke="#3d5266" stroke-width="2"/>
+<path d="M289 502L289 484" stroke="#3d5266" stroke-width="2"/>
+<circle cx="302" cy="493" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="354" y="517" font-size="15" fill="#5a6b7a" text-anchor="middle">1</text>
+<text x="316" y="517" font-size="15" fill="#5a6b7a" text-anchor="middle">0..1</text>
+<text x="335" y="483" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">explains</text>
+</g>
+<g id="r-slide-in-deck">
+<title>Slide (0..*) in (1) Deck</title>
+<path d="M515 690 L515 576" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M515 690 L515 576" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M515 672L525 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M515 672L515 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M515 672L505 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="515" cy="662" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M506 584L524 584" stroke="#3d5266" stroke-width="2"/>
+<path d="M506 591L524 591" stroke="#3d5266" stroke-width="2"/>
+<text x="530" y="659" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="530" y="617" font-size="15" fill="#5a6b7a" text-anchor="start">1</text>
+<text x="507" y="638" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">in</text>
+</g>
+<g id="r-item-on-slide">
+<title>Item (0..*) on (1) Slide</title>
+<path d="M750 773 L640 773" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M750 773 L640 773" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M732 773L750 763" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M732 773L750 773" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M732 773L750 783" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="722" cy="773" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M648 782L648 764" stroke="#3d5266" stroke-width="2"/>
+<path d="M655 782L655 764" stroke="#3d5266" stroke-width="2"/>
+<text x="714" y="797" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="676" y="797" font-size="15" fill="#5a6b7a" text-anchor="middle">1</text>
+<text x="695" y="763" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">on</text>
+</g>
+<g id="r-item-documents">
+<title>Item (0..*) documented by (0..1) Technical definition</title>
+<path d="M875 856 L875 1053 L1110 1053" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M875 856 L875 1053 L1110 1053" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M875 874L865 856" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M875 874L875 856" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M875 874L885 856" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="875" cy="884" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M1101 1044L1101 1062" stroke="#3d5266" stroke-width="2"/>
+<circle cx="1088" cy="1053" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="890" y="897" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="1074" y="1077" font-size="15" fill="#5a6b7a" text-anchor="middle">0..1</text>
+<text x="992.5" y="1043" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">documented by</text>
+</g>
+<g id="r-item-criterion-link">
+<title>Item (0..*) links (0..*) Acceptance criterion</title>
+<path d="M830 690 L830 576" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M830 690 L830 576" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M830 672L840 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M830 672L830 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M830 672L820 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="830" cy="662" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M830 594L820 576" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M830 594L830 576" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M830 594L840 576" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="830" cy="604" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="845" y="659" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="845" y="617" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="822" y="638" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">links</text>
+</g>
+<g id="r-code-reference-owned-by-item">
+<title>Code reference (0..*) evidence of (0..1) Item</title>
+<path d="M1110 773 L1000 773" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1110 773 L1000 773" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M1092 773L1110 763" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1092 773L1110 773" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1092 773L1110 783" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1082" cy="773" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M1009 782L1009 764" stroke="#3d5266" stroke-width="2"/>
+<circle cx="1022" cy="773" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="1074" y="797" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="1036" y="797" font-size="15" fill="#5a6b7a" text-anchor="middle">0..1</text>
+<text x="1055" y="763" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">evidence of</text>
+</g>
+<g id="r-code-reference-in-definition">
+<title>Code reference (0..*) evidence of (0..1) Technical definition</title>
+<path d="M1235 856 L1235 970" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1235 856 L1235 970" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M1235 874L1225 856" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1235 874L1235 856" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1235 874L1245 856" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1235" cy="884" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M1244 961L1226 961" stroke="#3d5266" stroke-width="2"/>
+<circle cx="1235" cy="948" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="1250" y="897" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="1250" y="939" font-size="15" fill="#5a6b7a" text-anchor="start">0..1</text>
+<text x="1227" y="918" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">evidence of</text>
+</g>
+<g id="r-relation-from-item">
+<title>Relation (0..*) from (0..1) Item</title>
+<path d="M1150 576 L1150 638 L950 638 L950 690" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1150 576 L1150 638 L950 638 L950 690" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M1150 594L1140 576" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1150 594L1150 576" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1150 594L1160 576" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1150" cy="604" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M959 681L941 681" stroke="#3d5266" stroke-width="2"/>
+<circle cx="950" cy="668" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="1165" y="617" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="965" y="659" font-size="15" fill="#5a6b7a" text-anchor="start">0..1</text>
+<text x="1050" y="628" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">from</text>
+</g>
+<g id="r-relation-to-story">
+<title>Relation (0..*) to (0..1) Story</title>
+<path d="M1150 410 L1150 366 L950 366 L950 296" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1150 410 L1150 366 L950 366 L950 296" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M1150 392L1160 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1150 392L1150 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1150 392L1140 410" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1150" cy="382" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M941 305L959 305" stroke="#3d5266" stroke-width="2"/>
+<circle cx="950" cy="318" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="1165" y="379" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="965" y="337" font-size="15" fill="#5a6b7a" text-anchor="start">0..1</text>
+<text x="1050" y="356" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">to</text>
+</g>
+<g id="r-relation-to-criterion">
+<title>Relation (0..*) to (0..1) Acceptance criterion</title>
+<path d="M1110 493 L1000 493" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1110 493 L1000 493" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M1092 493L1110 483" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1092 493L1110 493" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1092 493L1110 503" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1082" cy="493" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M1009 502L1009 484" stroke="#3d5266" stroke-width="2"/>
+<circle cx="1022" cy="493" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="1074" y="517" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="1036" y="517" font-size="15" fill="#5a6b7a" text-anchor="middle">0..1</text>
+<text x="1055" y="483" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">to</text>
+</g>
+<g id="r-review-decision-in-review">
+<title>Review decision (0..*) decision in (1) Review</title>
+<path d="M155 690 L155 576" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M155 690 L155 576" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M155 672L165 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M155 672L155 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M155 672L145 690" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="155" cy="662" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M146 584L164 584" stroke="#3d5266" stroke-width="2"/>
+<path d="M146 591L164 591" stroke="#3d5266" stroke-width="2"/>
+<text x="170" y="659" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="170" y="617" font-size="15" fill="#5a6b7a" text-anchor="start">1</text>
+<text x="147" y="638" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">decision in</text>
+</g>
+<g id="r-review-decision-on-slide">
+<title>Review decision (0..*) decides (1) Slide</title>
+<path d="M280 773 L390 773" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M280 773 L390 773" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M298 773L280 783" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M298 773L280 773" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M298 773L280 763" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="308" cy="773" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M382 764L382 782" stroke="#3d5266" stroke-width="2"/>
+<path d="M375 764L375 782" stroke="#3d5266" stroke-width="2"/>
+<text x="316" y="797" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="354" y="797" font-size="15" fill="#5a6b7a" text-anchor="middle">1</text>
+<text x="335" y="763" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">decides</text>
+</g>
+<g id="e-saga-manifest">
+<title>Saga manifest: saga.json</title>
+<rect x="30" y="130" width="250" height="166" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.6"/>
+<path d="M30 136Q30 130 36 130H274Q280 130 280 136V170H30Z" fill="#e5f0e7"/>
+<path d="M30 170H280" stroke="#2f6b3a" stroke-width="1"/>
+<text x="40" y="158" font-size="21" font-weight="bold" fill="#142638">Saga manifest</text>
+<text x="40" y="196" font-size="17" fill="#142638">id</text>
+<text x="270" y="196" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="40" y="219" font-size="17" fill="#142638">title</text>
+<text x="40" y="242" font-size="17" fill="#142638">source.repository</text>
+<text x="40" y="286" font-size="14" font-style="italic" fill="#5a6b7a">saga.json</text>
+</g>
+<g id="e-feature">
+<title>Feature: feature.json</title>
+<rect x="390" y="130" width="250" height="166" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.6"/>
+<path d="M390 136Q390 130 396 130H634Q640 130 640 136V170H390Z" fill="#e5f0e7"/>
+<path d="M390 170H640" stroke="#2f6b3a" stroke-width="1"/>
+<text x="400" y="158" font-size="21" font-weight="bold" fill="#142638">Feature</text>
+<text x="400" y="196" font-size="17" fill="#142638">id</text>
+<text x="630" y="196" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="400" y="219" font-size="17" fill="#142638">title · description</text>
+<text x="400" y="242" font-size="17" fill="#142638">created_at</text>
+<text x="400" y="286" font-size="14" font-style="italic" fill="#5a6b7a">feature.json</text>
+</g>
+<g id="e-story">
+<title>Story: revisions + events</title>
+<rect x="750" y="130" width="250" height="166" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.6"/>
+<path d="M750 136Q750 130 756 130H994Q1000 130 1000 136V170H750Z" fill="#e5f0e7"/>
+<path d="M750 170H1000" stroke="#2f6b3a" stroke-width="1"/>
+<text x="760" y="158" font-size="21" font-weight="bold" fill="#142638">Story</text>
+<text x="760" y="196" font-size="17" fill="#142638">id</text>
+<text x="990" y="196" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="760" y="219" font-size="17" fill="#142638">title · statement</text>
+<text x="760" y="242" font-size="17" fill="#142638">personas</text>
+<text x="990" y="242" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">FK</text>
+<text x="760" y="265" font-size="17" fill="#142638">lifecycle state</text>
+<text x="760" y="286" font-size="14" font-style="italic" fill="#5a6b7a">revisions + events</text>
+</g>
+<g id="e-persona">
+<title>Persona: revisions + events</title>
+<rect x="1110" y="130" width="250" height="166" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.6"/>
+<path d="M1110 136Q1110 130 1116 130H1354Q1360 130 1360 136V170H1110Z" fill="#e5f0e7"/>
+<path d="M1110 170H1360" stroke="#2f6b3a" stroke-width="1"/>
+<text x="1120" y="158" font-size="21" font-weight="bold" fill="#142638">Persona</text>
+<text x="1120" y="196" font-size="17" fill="#142638">id</text>
+<text x="1350" y="196" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="1120" y="219" font-size="17" fill="#142638">name · description</text>
+<text x="1120" y="242" font-size="17" fill="#142638">active | retired</text>
+<text x="1120" y="286" font-size="14" font-style="italic" fill="#5a6b7a">revisions + events</text>
+</g>
+<g id="e-review">
+<title>Review: review.json</title>
+<rect x="30" y="410" width="250" height="166" rx="6" fill="#ffffff" stroke="#8a5a14" stroke-width="1.6"/>
+<path d="M30 416Q30 410 36 410H274Q280 410 280 416V450H30Z" fill="#f7ecdd"/>
+<path d="M30 450H280" stroke="#8a5a14" stroke-width="1"/>
+<text x="40" y="438" font-size="21" font-weight="bold" fill="#142638">Review</text>
+<text x="40" y="476" font-size="17" fill="#142638">id</text>
+<text x="270" y="476" font-size="13.5" font-weight="bold" fill="#8a5a14" text-anchor="end">PK</text>
+<text x="40" y="499" font-size="17" fill="#142638">pull_request.number</text>
+<text x="270" y="499" font-size="13.5" font-weight="bold" fill="#8a5a14" text-anchor="end">UQ</text>
+<text x="40" y="522" font-size="17" fill="#142638">base · head</text>
+<text x="40" y="545" font-size="17" fill="#142638">merged commits</text>
+<text x="40" y="566" font-size="14" font-style="italic" fill="#5a6b7a">review.json</text>
+</g>
+<g id="e-deck">
+<title>Deck: flat deck bundle</title>
+<rect x="390" y="410" width="250" height="166" rx="6" fill="#ffffff" stroke="#245d8c" stroke-width="1.6"/>
+<path d="M390 416Q390 410 396 410H634Q640 410 640 416V450H390Z" fill="#e6eef6"/>
+<path d="M390 450H640" stroke="#245d8c" stroke-width="1"/>
+<text x="400" y="438" font-size="21" font-weight="bold" fill="#142638">Deck</text>
+<text x="400" y="476" font-size="17" fill="#142638">id</text>
+<text x="630" y="476" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">PK</text>
+<text x="400" y="499" font-size="17" fill="#142638">role</text>
+<text x="400" y="522" font-size="17" fill="#142638">title · objective</text>
+<text x="400" y="566" font-size="14" font-style="italic" fill="#5a6b7a">flat deck bundle</text>
+</g>
+<g id="e-criterion">
+<title>Acceptance criterion: inside a story revision</title>
+<rect x="750" y="410" width="250" height="166" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.6"/>
+<path d="M750 416Q750 410 756 410H994Q1000 410 1000 416V450H750Z" fill="#e5f0e7"/>
+<path d="M750 450H1000" stroke="#2f6b3a" stroke-width="1"/>
+<text x="760" y="438" font-size="21" font-weight="bold" fill="#142638">Acceptance criterion</text>
+<text x="760" y="476" font-size="17" fill="#142638">id</text>
+<text x="990" y="476" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK in story</text>
+<text x="760" y="499" font-size="17" fill="#142638">statement</text>
+<text x="760" y="566" font-size="14" font-style="italic" fill="#5a6b7a">inside a story revision</text>
+</g>
+<g id="e-relation">
+<title>Relation: pinned traceability edge</title>
+<rect x="1110" y="410" width="250" height="166" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.6"/>
+<path d="M1110 416Q1110 410 1116 410H1354Q1360 410 1360 416V450H1110Z" fill="#e5f0e7"/>
+<path d="M1110 450H1360" stroke="#2f6b3a" stroke-width="1"/>
+<text x="1120" y="438" font-size="21" font-weight="bold" fill="#142638">Relation</text>
+<text x="1120" y="476" font-size="17" fill="#142638">id</text>
+<text x="1350" y="476" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="1120" y="499" font-size="17" fill="#142638">type · state</text>
+<text x="1120" y="522" font-size="17" fill="#142638">from · to</text>
+<text x="1350" y="522" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">FK</text>
+<text x="1120" y="545" font-size="17" fill="#142638">to_revision</text>
+<text x="1350" y="545" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">FK</text>
+<text x="1120" y="566" font-size="14" font-style="italic" fill="#5a6b7a">pinned traceability edge</text>
+</g>
+<g id="e-review-decision">
+<title>Review decision: approvals/&lt;id&gt;.json</title>
+<rect x="30" y="690" width="250" height="166" rx="6" fill="#ffffff" stroke="#8a5a14" stroke-width="1.6"/>
+<path d="M30 696Q30 690 36 690H274Q280 690 280 696V730H30Z" fill="#f7ecdd"/>
+<path d="M30 730H280" stroke="#8a5a14" stroke-width="1"/>
+<text x="40" y="718" font-size="21" font-weight="bold" fill="#142638">Review decision</text>
+<text x="40" y="756" font-size="17" fill="#142638">id</text>
+<text x="270" y="756" font-size="13.5" font-weight="bold" fill="#8a5a14" text-anchor="end">PK</text>
+<text x="40" y="779" font-size="17" fill="#142638">slide</text>
+<text x="270" y="779" font-size="13.5" font-weight="bold" fill="#8a5a14" text-anchor="end">FK</text>
+<text x="40" y="802" font-size="17" fill="#142638">state · reviewer</text>
+<text x="40" y="825" font-size="17" fill="#142638">commit · slide_digest</text>
+<text x="40" y="846" font-size="14" font-style="italic" fill="#5a6b7a">approvals/&lt;id&gt;.json</text>
+</g>
+<g id="e-slide">
+<title>Slide: one visual + takeaway</title>
+<rect x="390" y="690" width="250" height="166" rx="6" fill="#ffffff" stroke="#245d8c" stroke-width="1.6"/>
+<path d="M390 696Q390 690 396 690H634Q640 690 640 696V730H390Z" fill="#e6eef6"/>
+<path d="M390 730H640" stroke="#245d8c" stroke-width="1"/>
+<text x="400" y="718" font-size="21" font-weight="bold" fill="#142638">Slide</text>
+<text x="400" y="756" font-size="17" fill="#142638">id</text>
+<text x="630" y="756" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">PK</text>
+<text x="400" y="779" font-size="17" fill="#142638">deck</text>
+<text x="630" y="779" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">FK</text>
+<text x="400" y="802" font-size="17" fill="#142638">intent · entrypoint</text>
+<text x="400" y="825" font-size="17" fill="#142638">reading_order</text>
+<text x="400" y="846" font-size="14" font-style="italic" fill="#5a6b7a">one visual + takeaway</text>
+</g>
+<g id="e-item">
+<title>Item: semantic element</title>
+<rect x="750" y="690" width="250" height="166" rx="6" fill="#ffffff" stroke="#245d8c" stroke-width="1.6"/>
+<path d="M750 696Q750 690 756 690H994Q1000 690 1000 696V730H750Z" fill="#e6eef6"/>
+<path d="M750 730H1000" stroke="#245d8c" stroke-width="1"/>
+<text x="760" y="718" font-size="21" font-weight="bold" fill="#142638">Item</text>
+<text x="760" y="756" font-size="17" fill="#142638">id</text>
+<text x="990" y="756" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">PK</text>
+<text x="760" y="779" font-size="17" fill="#142638">slide</text>
+<text x="990" y="779" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">FK</text>
+<text x="760" y="802" font-size="17" fill="#142638">kind · selector</text>
+<text x="760" y="825" font-size="17" fill="#142638">documentation</text>
+<text x="990" y="825" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">FK</text>
+<text x="760" y="846" font-size="14" font-style="italic" fill="#5a6b7a">semantic element</text>
+</g>
+<g id="e-code-reference">
+<title>Code reference: exact pinned lines</title>
+<rect x="1110" y="690" width="250" height="166" rx="6" fill="#ffffff" stroke="#245d8c" stroke-width="1.6"/>
+<path d="M1110 696Q1110 690 1116 690H1354Q1360 690 1360 696V730H1110Z" fill="#e6eef6"/>
+<path d="M1110 730H1360" stroke="#245d8c" stroke-width="1"/>
+<text x="1120" y="718" font-size="21" font-weight="bold" fill="#142638">Code reference</text>
+<text x="1120" y="756" font-size="17" fill="#142638">commit · path</text>
+<text x="1120" y="779" font-size="17" fill="#142638">start..end</text>
+<text x="1120" y="802" font-size="17" fill="#142638">digest (sha256)</text>
+<text x="1120" y="825" font-size="17" fill="#142638">note</text>
+<text x="1120" y="846" font-size="14" font-style="italic" fill="#5a6b7a">exact pinned lines</text>
+</g>
+<g id="e-technical-definition">
+<title>Technical definition: held by record store</title>
+<rect x="1110" y="970" width="250" height="166" rx="6" fill="#ffffff" stroke="#5b3f8c" stroke-width="1.6"/>
+<path d="M1110 976Q1110 970 1116 970H1354Q1360 970 1360 976V1010H1110Z" fill="#eeeaf6"/>
+<path d="M1110 1010H1360" stroke="#5b3f8c" stroke-width="1"/>
+<text x="1120" y="998" font-size="21" font-weight="bold" fill="#142638">Technical definition</text>
+<text x="1120" y="1036" font-size="17" fill="#142638">id + revision</text>
+<text x="1350" y="1036" font-size="13.5" font-weight="bold" fill="#5b3f8c" text-anchor="end">PK</text>
+<text x="1120" y="1059" font-size="17" fill="#142638">kind · intent</text>
+<text x="1120" y="1082" font-size="17" fill="#142638">delivery.commit</text>
+<text x="1120" y="1105" font-size="17" fill="#142638">code references</text>
+<text x="1120" y="1126" font-size="14" font-style="italic" fill="#5a6b7a">held by record store</text>
+</g>
+<g id="legend">
+<rect x="30" y="970" width="610" height="166" rx="6" fill="#f7f9fb" stroke="#c3cfda"/>
+<text x="46" y="1000" font-size="18" font-weight="bold" fill="#142638">Notation</text>
+<path d="M46 1032H126" stroke="#3d5266" stroke-width="2"/>
+<path d="M118 1023L118 1041" stroke="#3d5266" stroke-width="2"/>
+<path d="M111 1023L111 1041" stroke="#3d5266" stroke-width="2"/>
+<text x="138" y="1037" font-size="16" fill="#142638">1 exactly one</text>
+<path d="M46 1068H126" stroke="#3d5266" stroke-width="2"/>
+<path d="M117 1059L117 1077" stroke="#3d5266" stroke-width="2"/>
+<circle cx="104" cy="1068" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="138" y="1073" font-size="16" fill="#142638">0..1 zero or one</text>
+<path d="M46 1104H126" stroke="#3d5266" stroke-width="2"/>
+<path d="M108 1104L126 1094" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M108 1104L126 1104" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M108 1104L126 1114" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="98" cy="1104" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="138" y="1109" font-size="16" fill="#142638">0..* zero or more</text>
+<text x="298" y="1002" font-size="14.5" fill="#3d5266">The mark beside an entity: how many of it</text>
+<text x="298" y="1026" font-size="14.5" fill="#3d5266">take part per one of the other.</text>
+<text x="298" y="1050" font-size="14.5" fill="#3d5266">PK primary · FK foreign · UQ unique: roles</text>
+<text x="298" y="1074" font-size="14.5" fill="#3d5266">in the records, not database constraints.</text>
+<text x="298" y="1098" font-size="14.5" fill="#3d5266">No production edges: derived facts are</text>
+<text x="298" y="1122" font-size="14.5" fill="#3d5266">computed on read, never stored.</text>
+</g>
+</g></svg>

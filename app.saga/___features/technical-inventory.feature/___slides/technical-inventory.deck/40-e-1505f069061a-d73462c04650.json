@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "path": "internal/cli/query_inventory.go",
+      "start": 95,
+      "end": 140,
+      "digest": "sha256:1de958b8a2d7d2f061a231365ab80965fc7c9600bab369a7609d09fa7e48b4f4",
+      "note": "Existing snapshot-bound page projection resolves selected definitions, code and link health; proposal filtering remains proposed."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "one-region",
+  "deck": "directory-mobile-width",
+  "title": "One shared scroll region, used by every directory",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-a5684716b876-0020-418bdab2562c.svg",
+  "takeaway": "The fix is one named, focusable region in the shared directory template, so every directory gets it; Technical design drops its own whole-directory scroller.",
+  "reading_order": [
+    "directory-template",
+    "scroll-region",
+    "status-outside",
+    "directory-consumers",
+    "technical-rule-removed"
+  ]
+}

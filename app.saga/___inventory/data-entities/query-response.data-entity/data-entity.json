@@ -1,0 +1,6 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity.schema.json",
+  "version": 5,
+  "id": "query-response",
+  "created_at": "2026-09-25T06:16:16.068928Z"
+}

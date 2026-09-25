@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Raw patches are reused within one PR request</title><desc id="desc">Each exact reference is resolved separately. Within one request and resolved range, successful raw patches are reused by effective path. Each reference is filtered separately. Failed root lookups and patch reads retry; nothing is retained across requests.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#49627c"/></marker></defs>
+<style>text{font-family:system-ui,sans-serif;fill:#18324b}.title{font-size:33px;font-weight:750}.label{font-size:22px;font-weight:700}.small{font-size:17px}.tiny{font-size:15px}.line{stroke:#49627c;stroke-width:3;fill:none;marker-end:url(#arrow)}</style>
+<rect width="1280" height="720" fill="#f3f7fa"/>
+<text x="54" y="62" class="title">Reuse raw patches; resolve every exact reference</text>
+<g id="request-scope"><rect x="54" y="96" width="1172" height="72" rx="12" fill="#dce8f4"/>
+<text x="78" y="128" class="label">Lifetime: one request + one resolved base/head range</text>
+<text x="78" y="153" class="small">The caller owns the resolver. The patch map is discarded when the request finishes.</text></g>
+<g id="resolve"><rect x="54" y="217" width="310" height="189" rx="18" fill="white" stroke="#7593aa"/>
+<text x="80" y="257" class="label">Resolve each reference</text><text x="80" y="296" class="small">140 exact references in the fixture</text>
+<text x="80" y="329" class="small">Current → effective path + lines</text><text x="80" y="362" class="small">Stale → preserve diagnostic</text>
+<path d="M364 305H456" class="line"/><text x="380" y="290" class="tiny">path</text></g>
+<g id="patch-reuse"><rect x="462" y="217" width="348" height="189" rx="18" fill="#c5eade" stroke="#39866e"/>
+<text x="489" y="257" class="label">Raw patch by effective path</text><text x="489" y="296" class="small">Resolve checkout root once</text>
+<text x="489" y="329" class="small">Read once per successful path</text><text x="489" y="362" class="small">19 patch reads in the fixture</text>
+<path d="M810 305H894" class="line"/><text x="829" y="290" class="tiny">patch</text></g>
+<g id="per-reference"><rect x="900" y="217" width="326" height="189" rx="18" fill="white" stroke="#7593aa"/>
+<text x="926" y="257" class="label">Filter each reference</text><text x="926" y="296" class="small">Own exact range and digest</text>
+<text x="926" y="329" class="small">Own rows, notes and output</text><text x="926" y="362" class="small">140 complete views preserved</text></g>
+<g id="retry"><path d="M636 406V453" class="line"/><text x="659" y="440" class="tiny">failed read / unresolved root</text>
+<rect x="300" y="460" width="700" height="104" rx="14" fill="#fff1d6" stroke="#bc8e3b"/>
+<text x="328" y="496" class="label">Keep failures retryable</text>
+<text x="328" y="526" class="small">No failed-read or fallback-root entry is stored.</text>
+<text x="328" y="550" class="small">A later reference retries; successful empty patches can be reused.</text>
+<path d="M300 513H278V440H416V385H462" class="line"/></g>
+<g id="measurement"><rect x="54" y="604" width="1172" height="82" rx="12" fill="#18324b"/>
+<text x="79" y="638" class="label" style="fill:white">Warm PR HTTP median: 3.44 s → 1.07 s</text>
+<text x="79" y="667" class="tiny" style="fill:#d6e6f2">Five requests per version · same normalized HTML · warm shared host · no browser or cold-disk latency claim</text></g>
+</svg>

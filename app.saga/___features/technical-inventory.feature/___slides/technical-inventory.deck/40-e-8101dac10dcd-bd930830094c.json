@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/requirements/inventory_validate.go",
+      "start": 93,
+      "end": 125,
+      "digest": "sha256:b8f49f530807a9dbf81504cf18b26765eff6e45177f8854439e264573d389d80",
+      "note": "The canonical link never supplies the Item evidence or changes its content digest when the definition advances."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_coverage.go",
+      "digest": "sha256:0cfe730e40ed7bce1c03e00bf671c6a5a807e23d5d88cb4f9649f957a6e7fc1e",
+      "note": "query inventory-coverage: named scope, state pages and the response's measures and limits."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_coverage.go",
+      "start": 1,
+      "end": 184,
+      "digest": "sha256:0cfe730e40ed7bce1c03e00bf671c6a5a807e23d5d88cb4f9649f957a6e7fc1e",
+      "note": "query inventory-coverage: named scope, state pages and the response's measures and limits."
+    }
+  ]
+}

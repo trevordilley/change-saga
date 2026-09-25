@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "before",
+  "slide": "direct-visit",
+  "rank": 0,
+  "kind": "region",
+  "label": "Before: the direct visit ran on the app origin",
+  "description": "Both routes sent a policy that allowed inline script but had no sandbox directive. Framed, the iframe attribute sandboxed the script. Opened directly, it ran on the app origin, where it could open app pages and read their review token.",
+  "selector": {
+    "type": "element",
+    "element_id": "before"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "queue",
+  "slide": "technical-inventory-authored-erd",
+  "rank": 10,
+  "kind": "region",
+  "label": "Queue resource",
+  "description": "Illustrative containing resource for the job payload; the queue is distinct from the data entity it carries.",
+  "selector": {
+    "type": "element",
+    "element_id": "queue"
+  }
+}

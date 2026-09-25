@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/status_grammar.go",
+      "start": 87,
+      "end": 103,
+      "digest": "sha256:7bbf663ad3e896ab188968ab251747ad8ff592b2e0ecc813d312ad785267569f",
+      "note": "Loads the Saga and source comparison, then evaluates exact mapping coverage."
+    }
+  ]
+}

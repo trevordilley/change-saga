@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "resolver",
+  "slide": "technical-inventory-coverage-resolution",
+  "rank": 20,
+  "kind": "node",
+  "label": "Proposed selection resolver",
+  "description": "Proposed: resolve the saved path and selected bytes at the measured view. Bound traversal; expose missing or conflicting paths. Do not choose a revision winner or silently broaden scope.",
+  "selector": {
+    "type": "element",
+    "element_id": "resolver"
+  }
+}

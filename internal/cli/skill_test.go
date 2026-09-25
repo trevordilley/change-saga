@@ -133,7 +133,12 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 		},
 		{
 			name: "accepted story with provenance", fixture: "Add an accepted customer story with one confirmed criterion and its source citation.",
-			rowHint: "Author or revise personas", want: []string{"references/query.md", "references/stories.md"},
+			rowHint: "author or revise personas", want: []string{"references/query.md", "references/stories.md"},
+			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
+			name: "feature interview before a candidate story", fixture: "Interview me about reusable architecture, using the personas already in app.saga before drafting stories.",
+			rowHint: "Interview for a feature", want: []string{"references/query.md", "references/stories.md"},
 			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
@@ -258,7 +263,23 @@ func TestSkillQueryReferenceListsExactlyTheQueryOperations(t *testing.T) {
 // a test can read the real flag set from its -h output.
 var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"preintegrate": Preintegrate,
-	"init":         Init, "feature": Feature, "review": Review, "overview": Overview, "term": Term, "persona": Persona,
+	"init":         Init, "feature": Feature, "review": Review, "overview": Overview, "component": func(ctx context.Context, args []string, out io.Writer) error {
+		return Technical(ctx, "component", args, out)
+	},
+	"system": func(ctx context.Context, args []string, out io.Writer) error {
+		return Technical(ctx, "system", args, out)
+	},
+	"data-entity": func(ctx context.Context, args []string, out io.Writer) error {
+		return Technical(ctx, "data-entity", args, out)
+	},
+	"erd": func(ctx context.Context, args []string, out io.Writer) error {
+		return Technical(ctx, "erd", args, out)
+	},
+	"erd-overlay": func(ctx context.Context, args []string, out io.Writer) error {
+		return Technical(ctx, "erd-overlay", args, out)
+	},
+	"inventory": Inventory,
+	"term":      Term, "persona": Persona,
 	"setup-initial-saga": func(_ context.Context, args []string, out io.Writer) error { return SetupInitialSaga(args, out) },
 	"flag":               FeatureFlag, "prototype": Prototype, "story": Story, "criterion": Criterion, "citation": Citation,
 	"relation": Relation, "plan": Plan, "design": Design, "quality": Quality, "add-deck": AddDeck,
@@ -266,7 +287,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"add-chapter": AddChapter, "add-fragment": AddFragment, "set-fragment-content": SetFragmentContent,
 	"add-landmark": AddLandmark, "revise-deck": ReviseDeck, "remove-deck": RemoveDeck, "revise-slide": ReviseSlide, "remove-slide": RemoveSlide, "revise-item": ReviseItem, "remove-item": RemoveItem, "revise-chapter": ReviseChapter, "remove-chapter": RemoveChapter, "revise-section": ReviseSection, "remove-section": RemoveSection, "revise-fragment": ReviseFragment, "remove-fragment": RemoveFragment, "cover": Cover, "remove-coverage": RemoveCoverage,
 	"replace-coverage": ReplaceCoverage, "references": References, "repin": Repin, "sync": Sync,
-	"add-claim": AddClaim, "verify-claim": VerifyClaim, "validate": Validate, "status": Status, "check": Check, "query": Query,
+	"add-claim": AddClaim, "verify-claim": VerifyClaim, "validate": Validate, "status": Status, "reconcile": Reconcile, "check": Check, "query": Query,
 	"visual-qa":     VisualQA,
 	"serve":         func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, false) },
 	"open":          func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, true) },

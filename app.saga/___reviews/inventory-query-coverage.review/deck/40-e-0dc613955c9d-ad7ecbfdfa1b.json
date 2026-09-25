@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/changeview/baseline.go",
+      "digest": "sha256:7eaa2ce648ff7846a4f47c54d222b9d13503c3f58660a0b70316d0144d71f987",
+      "note": "Locates the Saga snapshot documenting the comparison base and distinguishes an absent Saga from an unreadable one."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/changeview/baseline.go",
+      "start": 1,
+      "end": 41,
+      "digest": "sha256:7eaa2ce648ff7846a4f47c54d222b9d13503c3f58660a0b70316d0144d71f987",
+      "note": "Locates the Saga snapshot documenting the comparison base and distinguishes an absent Saga from an unreadable one."
+    }
+  ]
+}

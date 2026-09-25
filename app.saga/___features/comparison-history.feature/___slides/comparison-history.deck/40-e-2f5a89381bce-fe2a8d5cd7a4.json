@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "496f4e764ef2f1f1e419da7cd4fb68958d921dda",
+      "path": "docs/pr-code-batching-performance.md",
+      "start": 20,
+      "end": 25,
+      "digest": "sha256:9e3c2c6ea85eef0a0b8cfb07add031075ec240d01f9850d3e0cc285779ed1457",
+      "note": "Preserves hardware, warm-host sample definitions, all browser samples, and the explicit absence of a first-row improvement."
+    },
+    {
+      "commit": "496f4e764ef2f1f1e419da7cd4fb68958d921dda",
+      "path": "docs/pr-code-batching-performance.md",
+      "start": 34,
+      "end": 41,
+      "digest": "sha256:2a928cf5efa80b79c306d6415fe4e88b19e3ac480d16abd7968ac19247dbd4a0",
+      "note": "Preserves hardware, warm-host sample definitions, all browser samples, and the explicit absence of a first-row improvement."
+    },
+    {
+      "commit": "496f4e764ef2f1f1e419da7cd4fb68958d921dda",
+      "path": "docs/pr-code-batching-performance.md",
+      "start": 62,
+      "end": 74,
+      "digest": "sha256:850439ceb2ae8ae1a748c0984ea5546265bc2c61ac6601491dc21309138c8a41",
+      "note": "Preserves hardware, warm-host sample definitions, all browser samples, and the explicit absence of a first-row improvement."
+    }
+  ]
+}

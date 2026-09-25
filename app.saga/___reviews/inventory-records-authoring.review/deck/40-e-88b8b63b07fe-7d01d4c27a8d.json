@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:2167fbf0e48149b2e5ba557bf6d50b355011bf8880f2cfc4f338be4fc4c0c911"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:7d93316ec7522cd0538d654b13112a7094dc06cbf46ca2473bcc484890312595"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:08666a228fe92a0467dce53f2fcc6379dbfeac189e6bc243bb12aa1058b35c6d"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:2f42c4e567800994de94e7dfcddc16bc88bf902fe0b4631a29ed60abd33c04a7"
+    }
+  ]
+}

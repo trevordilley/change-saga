@@ -1,0 +1,20 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:component:technical-record-author",
+  "parents": [],
+  "name": "Technical record author",
+  "explanation": "Turns complete author JSON into exact source commit/digest references, checks source identity, and publishes one explicit revision or lifecycle event.",
+  "code": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/inventory.go",
+      "start": 25,
+      "end": 125,
+      "digest": "sha256:18772cb6563fa8a6fe672b79a5b463fa046faf322ab2396bc8bed26b3a170a48",
+      "note": "Turns complete author JSON into exact source commit/digest references, checks source identity, and publishes one explicit revision or lifecycle event."
+    }
+  ],
+  "created_at": "2026-09-24T20:24:31.974675Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "proposal",
+  "slide": "technical-inventory-proposed-revisions",
+  "rank": 20,
+  "kind": "node",
+  "label": "Proposed successor",
+  "description": "A proposed revision states intended behavior without fabricated new-code evidence. Existing code may be referenced as context, not proof that the proposal is implemented.",
+  "selector": {
+    "type": "element",
+    "element_id": "proposal"
+  }
+}

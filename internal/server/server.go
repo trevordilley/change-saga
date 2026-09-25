@@ -117,6 +117,10 @@ type pageData struct {
 	Features *directoryView
 	Personas *directoryView
 	Flags    *directoryView
+	// Technical is the Technical design page, and TechnicalEntity one
+	// definition's canonical page.
+	Technical       *technicalPageView
+	TechnicalEntity *technicalEntityView
 	// DesignSystemMode is the design system's own page; DesignSystem is its
 	// content, which is absent until an author records some.
 	DesignSystemMode bool
@@ -129,6 +133,10 @@ type pageData struct {
 	PageFeature string
 	// Reviews is a review surface rendered inside the app shell.
 	Reviews template.HTML
+	// ReviewDeck makes one pull-request review use the same full-pane visual
+	// treatment as an implementation deck. The deck is the page; review actions
+	// are overlays and linked evidence opens from its exact Items.
+	ReviewDeck bool
 	// ReviewSide says the page is on the Review side of the header rather
 	// than the Documentation side. The two sides are what the header carries:
 	// Documentation is the overview and the feature set, Review the current
@@ -359,6 +367,9 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /personas", application.page)
 	mux.HandleFunc("GET /flags", application.page)
 	mux.HandleFunc("GET /design-system", application.page)
+	mux.HandleFunc("GET /technical/{kind}/{id}", application.page)
+	mux.HandleFunc("GET /technical/{area}", application.page)
+	mux.HandleFunc("GET /technical", application.page)
 	mux.HandleFunc("GET /features/{feature}", application.page)
 	mux.HandleFunc("GET /features", application.page)
 	mux.HandleFunc("GET /tests/{test}", application.page)
@@ -369,11 +380,15 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /reviews/{id}/file-diff", application.reviewFileDiffSurface)
 	mux.HandleFunc("GET /reviews/{id}/coverage", application.reviewCoverageSurface)
 	mux.HandleFunc("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
+	mux.HandleFunc("GET /reviews/{id}/annotations", application.reviewAnnotations)
+	mux.HandleFunc("GET /reviews/{id}/feedback", application.reviewFeedbackSurface)
 	mux.HandleFunc("POST /reviews/{id}/decision", application.reviewDecision)
 	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
 	mux.HandleFunc("GET /app.js", application.javascript)
 	mux.HandleFunc("GET "+diagram.FontPath, application.diagramFont)
 	mux.HandleFunc("GET /theme.js", application.themeScript)
+	mux.HandleFunc("GET /api/documentation", application.documentationPage)
+	mux.HandleFunc("GET /api/technical-usages", application.technicalUsagesPage)
 	mux.HandleFunc("GET /api/code", application.codePage)
 	mux.HandleFunc("GET /api/coverage", application.coveragePage)
 	mux.HandleFunc("GET /api/totals", application.coverageTotalsPage)
@@ -820,20 +835,23 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
 	funcs["comparing"] = func() bool { return comparing }
-	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates)
+	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates + technicalSelectionTemplates)
 }
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"comparing": func() bool { return true },
-		"short":     shortCommit,
-		"join":      strings.Join,
-		"markdown":  markdown,
-		"domID":     domID,
-		"fileIcon":  fileIcon,
-		"lower":     strings.ToLower,
+		"comparing":            func() bool { return true },
+		"short":                shortCommit,
+		"kindTitle":            technicalKindTitle,
+		"documentationControl": documentationControl,
+		"roleTitle":            technicalRoleTitle,
+		"join":                 strings.Join,
+		"markdown":             markdown,
+		"domID":                domID,
+		"fileIcon":             fileIcon,
+		"lower":                strings.ToLower,
 		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
 			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
 		},
@@ -900,6 +918,9 @@ func containsSection(root, wanted *saga.Section) bool {
 type appRoute struct {
 	kind string
 	id   string
+	// sub is a second path identity, such as a definition's ID beneath its
+	// kind.
+	sub string
 }
 
 func routeOf(r *http.Request) (appRoute, bool) {
@@ -919,6 +940,14 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "flags"}, true
 	case path == designSystemPath:
 		return appRoute{kind: "designsystem"}, true
+	case path == technicalPath:
+		return appRoute{kind: "technical"}, true
+	case strings.HasPrefix(path, technicalPath+"/") && r.PathValue("area") != "":
+		if _, ok := technicalAreaOf(r.PathValue("area"), ""); ok {
+			return appRoute{kind: "technical-area", id: r.PathValue("area")}, true
+		}
+	case strings.HasPrefix(path, technicalPath+"/") && r.PathValue("kind") != "" && r.PathValue("id") != "":
+		return appRoute{kind: "technical-entity", id: r.PathValue("kind"), sub: r.PathValue("id")}, true
 	case path == "/features":
 		return appRoute{kind: "features"}, true
 	case strings.HasPrefix(path, "/features/") && r.PathValue("feature") != "":
@@ -1043,6 +1072,13 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if len(designRoot.Fragments)+len(designRoot.Children) > 0 {
 			data.DesignSystem = makeSectionView(&designRoot, scope.shell())
 		}
+	case "technical", "technical-area", "technical-entity":
+		if data.Technical, data.TechnicalEntity, err = a.technicalShell(r.Context(), document, route, r.URL.Query()); err != nil {
+			if errors.Is(err, errTechnicalNotFound) {
+				return nil, errAppPageNotFound
+			}
+			return nil, err
+		}
 	case "feature":
 		if data.Feature, err = graph.featurePage(route.id); err != nil {
 			return nil, err
@@ -1078,8 +1114,19 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		data.Features = featuresDirectory(document, graph, data.PageFeature, directoryQuery(r))
 	}
 	onboarding := onboardingHref(document)
+	// The inventory is small, identity-only reading here: no code resolves.
+	inventory, inventoryErr := requirements.LoadInventory(a.root, document.Manifest.ID)
+	var technicalRows []*navNodeView
+	if inventoryErr == nil {
+		technicalRows = technicalNav(inventory)
+	}
 	if route.kind == "overview" {
 		data.OverviewParts = overviewDirectory(document, requirementsDocument, onboarding)
+		if inventoryErr == nil {
+			data.OverviewParts = append(data.OverviewParts, technicalOverviewPart(inventory))
+		} else {
+			data.OverviewParts = append(data.OverviewParts, overviewPartView{Title: "Technical design", Href: technicalPath, Count: "unreadable", Note: "The technical inventory could not be read: " + inventoryErr.Error(), Gap: true})
+		}
 	}
 	prototypeDocument, prototypeNote := a.prototypeDocument(document.Manifest.ID)
 	data.Nav = makeAppNavTree(appNavSources{
@@ -1088,13 +1135,14 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
 		pageFeature: data.PageFeature, reviewSide: data.ReviewSide,
+		technical: technicalRows,
 	})
 	if route.kind != "overview" {
 		// Off the overview, an in-page anchor would point into a page that is
 		// not there. Every such link opens the overview instead.
 		rootNavLinks(data.Nav)
 		if !data.TermsMode {
-			markActiveNav(data.Nav, r.URL.Path)
+			markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
 		}
 	}
 	if data.EmbeddedDecks {
@@ -1612,7 +1660,7 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "fragment file escapes its package", http.StatusForbidden)
 		return
 	}
-	w.Header().Set("Content-Security-Policy", "default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'")
+	w.Header().Set("Content-Security-Policy", authoredContentPolicy)
 	file, err := os.Open(realPath)
 	if err != nil {
 		http.NotFound(w, r)
@@ -1785,6 +1833,13 @@ func launchBrowser(target string) error {
 	}
 	return exec.Command(command, args...).Start()
 }
+
+// authoredContentPolicy governs author-provided fragments and review visuals.
+// Their script needs 'unsafe-inline', so the sandbox directive gives the
+// response an opaque origin wherever it loads, as the sandboxed iframe that
+// embeds it already does. Without it, opening the URL directly would run that
+// script on the app's own origin, beside pages carrying review tokens.
+const authoredContentPolicy = "sandbox allow-scripts; default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'"
 
 func securityHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

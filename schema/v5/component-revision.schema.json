@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "title": "Technical inventory component revision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "record",
+    "parents",
+    "created_at",
+    "name",
+    "explanation"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/component-revision.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "record": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "parents": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "explanation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intent": {
+      "enum": [
+        "proposed",
+        "implemented"
+      ]
+    },
+    "baseline": {
+      "type": "string",
+      "minLength": 1
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commit"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        }
+      }
+    },
+    "code": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "commit",
+          "path",
+          "start",
+          "end",
+          "note",
+          "digest"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "commit": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "end": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "intent": {
+            "const": "proposed"
+          }
+        },
+        "required": [
+          "intent"
+        ]
+      },
+      "then": {
+        "required": [
+          "baseline"
+        ],
+        "not": {
+          "required": [
+            "delivery"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "intent": {
+            "const": "implemented"
+          }
+        },
+        "required": [
+          "intent"
+        ]
+      },
+      "then": {
+        "required": [
+          "delivery",
+          "code"
+        ],
+        "not": {
+          "required": [
+            "baseline"
+          ]
+        },
+        "properties": {
+          "code": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "not": {
+          "required": [
+            "intent"
+          ]
+        }
+      },
+      "then": {
+        "required": [
+          "code"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "baseline"
+              ]
+            },
+            {
+              "required": [
+                "delivery"
+              ]
+            }
+          ]
+        },
+        "properties": {
+          "code": {
+            "minItems": 1,
+            "items": {
+              "not": {
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "code": {
+            "items": {
+              "required": [
+                "id"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

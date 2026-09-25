@@ -1,0 +1,88 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/system-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:system:technical-design-ui",
+  "parents": [],
+  "name": "Technical Design UI",
+  "explanation": "The reviewer's Technical Design surface: the overview page and canonical definition pages, the authored ERD view, and the slide drawer that opens a pinned definition with the Item's exact selections. Each part reads saved revisions; none repins, approves or grants coverage by linking.",
+  "code": [
+    {
+      "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+      "path": "internal/server/technical.go",
+      "start": 524,
+      "end": 540,
+      "digest": "sha256:7262bcbac5b7c4c6eb45ec0861107bcba4999afb86dda88c99126d96ad80583e",
+      "note": "One entry point loads the inventory, the shared reverse index and comparison newness for the page being read."
+    }
+  ],
+  "components": [
+    {
+      "target": "urn:change-saga:change-saga:component:technical-design-page",
+      "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:authored-erd-view",
+      "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+      "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "revision": "urn:change-saga:change-saga:component:technical-explanation-drawer:revision:r1"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "draw-data-model",
+      "from": "urn:change-saga:change-saga:component:technical-design-page",
+      "to": "urn:change-saga:change-saga:component:authored-erd-view",
+      "description": "The data model section draws the application ERD, the one named application or else the first, at its current revision.",
+      "code": [
+        {
+          "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+          "path": "internal/server/technical_erd.go",
+          "start": 434,
+          "end": 436,
+          "digest": "sha256:e3afb27c8b2f5a85898a259960280a7f96120a90de52ae90adc8528dc72b2ae0",
+          "note": "The page asks the ERD view to render the primary ERD's current revision."
+        }
+      ]
+    },
+    {
+      "id": "open-full-page",
+      "from": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "to": "urn:change-saga:change-saga:component:technical-design-page",
+      "description": "The drawer links the exact revision's canonical page and loads usages on request.",
+      "code": [
+        {
+          "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+          "path": "internal/server/inventory.go",
+          "start": 155,
+          "end": 158,
+          "digest": "sha256:3e80a9903e172d085dfe84a562abeeb71d204f3f6a96f8873499dcfaf8bc00f7",
+          "note": "The drawer sets the pinned page link and the lazy usages request."
+        }
+      ]
+    },
+    {
+      "id": "show-selections",
+      "from": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "to": "urn:change-saga:change-saga:component:item-selection-drawer",
+      "description": "Opened from a slide Item, the drawer shows that Item's selections before the definition's complete code.",
+      "code": [
+        {
+          "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+          "path": "internal/server/inventory.go",
+          "start": 159,
+          "end": 161,
+          "digest": "sha256:c005fde920514ed02d38aa480bde6ad5ec1b64e1afabb7da08637d5a54caa1a1",
+          "note": "Only a request naming the Item resolves its selections."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T02:19:36.268741Z"
+}

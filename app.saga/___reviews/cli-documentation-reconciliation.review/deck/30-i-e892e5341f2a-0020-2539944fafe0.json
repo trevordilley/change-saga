@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "impact",
+  "slide": "detect-repair-recheck",
+  "rank": 20,
+  "kind": "node",
+  "label": "Declared impact",
+  "description": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment.",
+  "selector": {
+    "type": "element",
+    "element_id": "impact"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "path": "e2e/tests/navigation.spec.ts",
+      "start": 177,
+      "end": 186,
+      "digest": "sha256:a8ee1f5b9c9bd1bbb68c737fb1440a9593f9317556410c8b5f351961f1639014",
+      "note": "Opening the fragment URL at top level still runs its script and image, but on origin null with storage denied."
+    }
+  ]
+}

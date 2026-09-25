@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "verify",
+  "deck": "inventory-query-coverage",
+  "title": "What changed: public contract and verification",
+  "rank": 60,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7bf5ed4a5d07-0060-f937581c7caa.svg",
+  "takeaway": "Three query operations and their schema/help changed; projection, CLI and format-2 end-to-end tests exercise the behavior.",
+  "reading_order": [
+    "contract",
+    "unit-tests",
+    "cli-fixtures",
+    "e2e",
+    "bench",
+    "docs"
+  ]
+}

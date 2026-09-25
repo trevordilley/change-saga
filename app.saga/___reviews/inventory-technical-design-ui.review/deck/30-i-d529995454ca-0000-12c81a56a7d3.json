@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "browser-proof",
+  "slide": "ti-ui-review-proof",
+  "rank": 0,
+  "kind": "example",
+  "label": "Browser flows",
+  "description": "Four Playwright flows cover desktop and 390px touch navigation, keyboard and Escape focus, permalinks, 404s, a CLI-authored ERD and Item selection, and coverage attribution.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser-proof"
+  }
+}

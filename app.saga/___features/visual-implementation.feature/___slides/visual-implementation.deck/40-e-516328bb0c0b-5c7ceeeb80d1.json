@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/slides.go",
+      "start": 490,
+      "end": 513,
+      "digest": "sha256:bacb3b10558a03bbe7fed4f28c378140fbf98dd3d7b80558734aaf7a464443d3",
+      "note": "Projects Slides as Fragments and Items as Landmarks without changing their targets or evidence ownership."
+    }
+  ]
+}

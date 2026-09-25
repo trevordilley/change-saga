@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 661,
+      "end": 661,
+      "digest": "sha256:497676d2d4845dc0e7717800ed3fc9b1cd2115f9a7bab8f12dff8df20817284b",
+      "note": "Added: the shell serves the landing page without usages or newness, and area pages with them."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 667,
+      "end": 670,
+      "digest": "sha256:4eade50bcb9d0d711ad06c42323e419e9863e37d9d5d2d86e5fe6a7b60d438b1",
+      "note": "Added: the shell serves the landing page without usages or newness, and area pages with them."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 673,
+      "end": 674,
+      "digest": "sha256:2c036ab1d9147f11b9e915079feaa81856e916d5302b9f301f7ed8202faee3e3",
+      "note": "Added: the shell serves the landing page without usages or newness, and area pages with them."
+    }
+  ]
+}

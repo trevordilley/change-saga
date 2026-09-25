@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+    "revision": "urn:change-saga:change-saga:component:technical-explanation-drawer:revision:r1"
+  },
+  "version": 4,
+  "id": "drawer",
+  "slide": "technical-inventory-design-boundaries",
+  "rank": 20,
+  "kind": "node",
+  "label": "Existing explanation drawer",
+  "description": "Existing on-demand navigation opens an exact saved definition and code; the drawer is the extension point for data entities and usage navigation.",
+  "selector": {
+    "type": "element",
+    "element_id": "drawer"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/server_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:1c3430a1ef80f2e172ce5b305b11e8af67708cef2739c161e4d68c1991d18b1e",
+      "note": "Server and browser regressions verify saved definitions, review rendering, desktop/narrow navigation and retained slide context."
+    }
+  ]
+}

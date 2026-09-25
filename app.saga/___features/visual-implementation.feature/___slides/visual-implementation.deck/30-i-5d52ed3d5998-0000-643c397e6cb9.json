@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "framed-path",
+  "slide": "authored-content-origin",
+  "rank": 0,
+  "kind": "edge",
+  "label": "Framed in an app page",
+  "description": "App pages embed fragments and review visuals in an iframe whose sandbox allows scripts only, which already gave the author script an opaque origin.",
+  "selector": {
+    "type": "element",
+    "element_id": "framed-path"
+  }
+}

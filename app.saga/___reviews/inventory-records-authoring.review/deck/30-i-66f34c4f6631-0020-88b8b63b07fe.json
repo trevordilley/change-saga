@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "adapters",
+  "slide": "ti-records-review-writers",
+  "rank": 20,
+  "kind": "region",
+  "label": "Mechanical adaptations",
+  "description": "Query and server code pass plain references from Evidence; test literals wrap Evidence; the schema helper is shared; skill_test registers the new commands. No behavior change.",
+  "selector": {
+    "type": "element",
+    "element_id": "adapters"
+  }
+}

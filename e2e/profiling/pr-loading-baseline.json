@@ -1,0 +1,820 @@
+{
+  "baseline_commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+  "date": "2026-09-24",
+  "fixture": {
+    "files": 1656,
+    "bytes": 1215165,
+    "slides": 4,
+    "items": 12,
+    "references": 140,
+    "changed_files": 19,
+    "changed_atoms": 1234,
+    "base": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+    "head": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469"
+  },
+  "browser": "151.0.7922.34",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "startup_ms_single_sample": 57.835042010992765,
+  "http": [
+    {
+      "path": "/reviews/review-ux-improvements",
+      "ms": 2855.5491250008345,
+      "ttfb_ms": 2854.436333058402,
+      "bytes": 3533094,
+      "status": 200,
+      "git_count": 299
+    },
+    {
+      "path": "/reviews/review-ux-improvements",
+      "ms": 2929.5245828107,
+      "ttfb_ms": 2926.2386248447,
+      "bytes": 3533094,
+      "status": 200,
+      "git_count": 298
+    },
+    {
+      "path": "/reviews/review-ux-improvements",
+      "ms": 2530.729209072888,
+      "ttfb_ms": 2529.549791943282,
+      "bytes": 3533094,
+      "status": 200,
+      "git_count": 298
+    },
+    {
+      "path": "/reviews/review-ux-improvements",
+      "ms": 3426.5570410061628,
+      "ttfb_ms": 3423.4648749697953,
+      "bytes": 3533094,
+      "status": 200,
+      "git_count": 298
+    },
+    {
+      "path": "/reviews/review-ux-improvements",
+      "ms": 3531.9284591823816,
+      "ttfb_ms": 3530.463624978438,
+      "bytes": 3533094,
+      "status": 200,
+      "git_count": 298
+    },
+    {
+      "path": "/reviews/review-ux-improvements",
+      "ms": 3756.704500177875,
+      "ttfb_ms": 3754.7005841042846,
+      "bytes": 3533094,
+      "status": 200,
+      "git_count": 298
+    },
+    {
+      "path": "/reviews/review-ux-improvements/visual/slide-workspace",
+      "ms": 61.28595909103751,
+      "ttfb_ms": 61.15600001066923,
+      "bytes": 4348,
+      "status": 200,
+      "git_count": 0
+    },
+    {
+      "path": "/reviews/review-ux-improvements/visual/slide-workspace",
+      "ms": 51.93433281965554,
+      "ttfb_ms": 51.91408284008503,
+      "bytes": 4348,
+      "status": 200,
+      "git_count": 0
+    },
+    {
+      "path": "/reviews/review-ux-improvements/visual/slide-workspace",
+      "ms": 51.53104104101658,
+      "ttfb_ms": 51.4695409219712,
+      "bytes": 4348,
+      "status": 200,
+      "git_count": 0
+    },
+    {
+      "path": "/reviews/review-ux-improvements/visual/slide-workspace",
+      "ms": 52.88308300077915,
+      "ttfb_ms": 52.85091605037451,
+      "bytes": 4348,
+      "status": 200,
+      "git_count": 0
+    },
+    {
+      "path": "/reviews/review-ux-improvements/visual/slide-workspace",
+      "ms": 62.42033280432224,
+      "ttfb_ms": 62.395749846473336,
+      "bytes": 4348,
+      "status": 200,
+      "git_count": 0
+    },
+    {
+      "path": "/reviews/review-ux-improvements/code",
+      "ms": 125.88599999435246,
+      "ttfb_ms": 125.85112499073148,
+      "bytes": 15600,
+      "status": 200,
+      "git_count": 7
+    },
+    {
+      "path": "/reviews/review-ux-improvements/code",
+      "ms": 182.28824995458126,
+      "ttfb_ms": 182.25691700354218,
+      "bytes": 15600,
+      "status": 200,
+      "git_count": 7
+    },
+    {
+      "path": "/reviews/review-ux-improvements/code",
+      "ms": 217.269083019346,
+      "ttfb_ms": 217.22729201428592,
+      "bytes": 15600,
+      "status": 200,
+      "git_count": 7
+    },
+    {
+      "path": "/reviews/review-ux-improvements/code",
+      "ms": 223.88554201461375,
+      "ttfb_ms": 223.81762485019863,
+      "bytes": 15600,
+      "status": 200,
+      "git_count": 7
+    },
+    {
+      "path": "/reviews/review-ux-improvements/code",
+      "ms": 348.3183339703828,
+      "ttfb_ms": 348.1647919397801,
+      "bytes": 15600,
+      "status": 200,
+      "git_count": 7
+    },
+    {
+      "path": "/reviews/review-ux-improvements/coverage",
+      "ms": 424.7076250612736,
+      "ttfb_ms": 424.67987490817904,
+      "bytes": 641,
+      "status": 200,
+      "git_count": 13
+    },
+    {
+      "path": "/reviews/review-ux-improvements/coverage",
+      "ms": 329.07150010578334,
+      "ttfb_ms": 329.0482920128852,
+      "bytes": 641,
+      "status": 200,
+      "git_count": 13
+    },
+    {
+      "path": "/reviews/review-ux-improvements/coverage",
+      "ms": 339.7435420192778,
+      "ttfb_ms": 339.71950015984476,
+      "bytes": 641,
+      "status": 200,
+      "git_count": 13
+    },
+    {
+      "path": "/reviews/review-ux-improvements/coverage",
+      "ms": 244.8804578743875,
+      "ttfb_ms": 244.8603748343885,
+      "bytes": 641,
+      "status": 200,
+      "git_count": 13
+    },
+    {
+      "path": "/reviews/review-ux-improvements/coverage",
+      "ms": 214.4284169189632,
+      "ttfb_ms": 214.39462481066585,
+      "bytes": 641,
+      "status": 200,
+      "git_count": 13
+    },
+    {
+      "path": "/reviews/review-ux-improvements/file-diff?file=internal/server/reviews.go",
+      "ms": 152.97370799817145,
+      "ttfb_ms": 152.94291684404016,
+      "bytes": 14874,
+      "status": 200,
+      "git_count": 10
+    },
+    {
+      "path": "/reviews/review-ux-improvements/file-diff?file=internal/server/reviews.go",
+      "ms": 225.51170783117414,
+      "ttfb_ms": 225.45854188501835,
+      "bytes": 14874,
+      "status": 200,
+      "git_count": 10
+    },
+    {
+      "path": "/reviews/review-ux-improvements/file-diff?file=internal/server/reviews.go",
+      "ms": 169.15749991312623,
+      "ttfb_ms": 169.1329579334706,
+      "bytes": 14874,
+      "status": 200,
+      "git_count": 10
+    },
+    {
+      "path": "/reviews/review-ux-improvements/file-diff?file=internal/server/reviews.go",
+      "ms": 127.48799985274673,
+      "ttfb_ms": 127.46454193256795,
+      "bytes": 14874,
+      "status": 200,
+      "git_count": 10
+    },
+    {
+      "path": "/reviews/review-ux-improvements/file-diff?file=internal/server/reviews.go",
+      "ms": 120.5657918471843,
+      "ttfb_ms": 120.53258391097188,
+      "bytes": 14874,
+      "status": 200,
+      "git_count": 10
+    }
+  ],
+  "browser_samples": [
+    {
+      "usable_ms": 2985.899999856949,
+      "reload_usable_ms": 2650.5999999046326,
+      "navigation": {
+        "responseStart": 2730.2000000476837,
+        "responseEnd": 2741.899999856949,
+        "domInteractive": 2806.5999999046326,
+        "domContentLoadedEventEnd": 2815.2999999523163,
+        "loadEventEnd": 3122.5
+      },
+      "document_bytes": 3533094,
+      "elements": 1447,
+      "template_bytes": 3198677,
+      "template_rows": 12566,
+      "actions": [
+        {
+          "name": "item_drawer",
+          "ms": 76.90000009536743,
+          "requests": 0
+        },
+        {
+          "name": "next_slide",
+          "ms": 43.700000047683716,
+          "requests": 0
+        },
+        {
+          "name": "previous_slide",
+          "ms": 39,
+          "requests": 0
+        },
+        {
+          "name": "code_tab",
+          "ms": 309.19999980926514,
+          "requests": 2
+        },
+        {
+          "name": "coverage_tab",
+          "ms": 307.40000009536743,
+          "requests": 1
+        },
+        {
+          "name": "code_tab_repeat",
+          "ms": 32.90000009536743,
+          "requests": 0
+        },
+        {
+          "name": "deck_return",
+          "ms": 41.90000009536743,
+          "requests": 0
+        }
+      ],
+      "cpu_seconds": {
+        "LayoutDuration": 0.038477,
+        "RecalcStyleDuration": 0.007075,
+        "DevToolsCommandDuration": 0.083761,
+        "ScriptDuration": 0.007954,
+        "V8CompileDuration": 4.3e-05,
+        "TaskDuration": 0.240854,
+        "TaskOtherDuration": 0.103544
+      },
+      "long_tasks": []
+    },
+    {
+      "usable_ms": 2620.199999809265,
+      "reload_usable_ms": 3863,
+      "navigation": {
+        "responseStart": 2384.699999809265,
+        "responseEnd": 2393.5999999046326,
+        "domInteractive": 2463.899999856949,
+        "domContentLoadedEventEnd": 2473.2999999523163,
+        "loadEventEnd": 2773
+      },
+      "document_bytes": 3533094,
+      "elements": 1447,
+      "template_bytes": 3198677,
+      "template_rows": 12566,
+      "actions": [
+        {
+          "name": "item_drawer",
+          "ms": 73.09999990463257,
+          "requests": 0
+        },
+        {
+          "name": "next_slide",
+          "ms": 47.60000014305115,
+          "requests": 0
+        },
+        {
+          "name": "previous_slide",
+          "ms": 45.799999952316284,
+          "requests": 0
+        },
+        {
+          "name": "code_tab",
+          "ms": 309.09999990463257,
+          "requests": 2
+        },
+        {
+          "name": "coverage_tab",
+          "ms": 307.19999980926514,
+          "requests": 1
+        },
+        {
+          "name": "code_tab_repeat",
+          "ms": 32.09999990463257,
+          "requests": 0
+        },
+        {
+          "name": "deck_return",
+          "ms": 42.90000009536743,
+          "requests": 0
+        }
+      ],
+      "cpu_seconds": {
+        "LayoutDuration": 0.055603,
+        "RecalcStyleDuration": 0.005124,
+        "DevToolsCommandDuration": 0.084351,
+        "ScriptDuration": 0.008662,
+        "V8CompileDuration": 5.6e-05,
+        "TaskDuration": 0.25876,
+        "TaskOtherDuration": 0.104964
+      },
+      "long_tasks": []
+    },
+    {
+      "usable_ms": 2673.899999856949,
+      "reload_usable_ms": 2752,
+      "navigation": {
+        "responseStart": 2538.899999856949,
+        "responseEnd": 2547.899999856949,
+        "domInteractive": 2603.7999999523163,
+        "domContentLoadedEventEnd": 2611,
+        "loadEventEnd": 2811.7999999523163
+      },
+      "document_bytes": 3533094,
+      "elements": 1447,
+      "template_bytes": 3198677,
+      "template_rows": 12566,
+      "actions": [
+        {
+          "name": "item_drawer",
+          "ms": 71.79999995231628,
+          "requests": 0
+        },
+        {
+          "name": "next_slide",
+          "ms": 56.799999952316284,
+          "requests": 0
+        },
+        {
+          "name": "previous_slide",
+          "ms": 49.799999952316284,
+          "requests": 0
+        },
+        {
+          "name": "code_tab",
+          "ms": 820.6000001430511,
+          "requests": 2
+        },
+        {
+          "name": "coverage_tab",
+          "ms": 308.59999990463257,
+          "requests": 1
+        },
+        {
+          "name": "code_tab_repeat",
+          "ms": 32.39999985694885,
+          "requests": 0
+        },
+        {
+          "name": "deck_return",
+          "ms": 33.10000014305115,
+          "requests": 0
+        }
+      ],
+      "cpu_seconds": {
+        "LayoutDuration": 0.036044,
+        "RecalcStyleDuration": 0.005725,
+        "DevToolsCommandDuration": 0.094027,
+        "ScriptDuration": 0.00637,
+        "V8CompileDuration": 5.4e-05,
+        "TaskDuration": 0.228634,
+        "TaskOtherDuration": 0.086414
+      },
+      "long_tasks": []
+    },
+    {
+      "usable_ms": 2936.5999999046326,
+      "reload_usable_ms": 3011.199999809265,
+      "navigation": {
+        "responseStart": 2778.899999856949,
+        "responseEnd": 2790.7999999523163,
+        "domInteractive": 2848.0999999046326,
+        "domContentLoadedEventEnd": 2856.2999999523163,
+        "loadEventEnd": 3083.0999999046326
+      },
+      "document_bytes": 3533094,
+      "elements": 1447,
+      "template_bytes": 3198677,
+      "template_rows": 12566,
+      "actions": [
+        {
+          "name": "item_drawer",
+          "ms": 70.60000014305115,
+          "requests": 0
+        },
+        {
+          "name": "next_slide",
+          "ms": 46.69999980926514,
+          "requests": 0
+        },
+        {
+          "name": "previous_slide",
+          "ms": 39.89999985694885,
+          "requests": 0
+        },
+        {
+          "name": "code_tab",
+          "ms": 315,
+          "requests": 2
+        },
+        {
+          "name": "coverage_tab",
+          "ms": 316,
+          "requests": 1
+        },
+        {
+          "name": "code_tab_repeat",
+          "ms": 31.59999990463257,
+          "requests": 0
+        },
+        {
+          "name": "deck_return",
+          "ms": 42.799999952316284,
+          "requests": 0
+        }
+      ],
+      "cpu_seconds": {
+        "LayoutDuration": 0.04302,
+        "RecalcStyleDuration": 0.005138,
+        "DevToolsCommandDuration": 0.084649,
+        "ScriptDuration": 0.007929,
+        "V8CompileDuration": 3.8e-05,
+        "TaskDuration": 0.233537,
+        "TaskOtherDuration": 0.092763
+      },
+      "long_tasks": []
+    },
+    {
+      "usable_ms": 3366.7000000476837,
+      "reload_usable_ms": 2910.2999999523163,
+      "navigation": {
+        "responseStart": 3206.7999999523163,
+        "responseEnd": 3218.2000000476837,
+        "domInteractive": 3280.100000143051,
+        "domContentLoadedEventEnd": 3287.2999999523163,
+        "loadEventEnd": 3555.2000000476837
+      },
+      "document_bytes": 3533094,
+      "elements": 1447,
+      "template_bytes": 3198677,
+      "template_rows": 12566,
+      "actions": [
+        {
+          "name": "item_drawer",
+          "ms": 66.60000014305115,
+          "requests": 0
+        },
+        {
+          "name": "next_slide",
+          "ms": 48.30000019073486,
+          "requests": 0
+        },
+        {
+          "name": "previous_slide",
+          "ms": 31.600000143051147,
+          "requests": 0
+        },
+        {
+          "name": "code_tab",
+          "ms": 307.09999990463257,
+          "requests": 2
+        },
+        {
+          "name": "coverage_tab",
+          "ms": 306.7999999523163,
+          "requests": 1
+        },
+        {
+          "name": "code_tab_repeat",
+          "ms": 33.5,
+          "requests": 0
+        },
+        {
+          "name": "deck_return",
+          "ms": 33.40000009536743,
+          "requests": 0
+        }
+      ],
+      "cpu_seconds": {
+        "LayoutDuration": 0.037977,
+        "RecalcStyleDuration": 0.005124,
+        "DevToolsCommandDuration": 0.077051,
+        "ScriptDuration": 0.007302,
+        "V8CompileDuration": 4.1e-05,
+        "TaskDuration": 0.222729,
+        "TaskOtherDuration": 0.095234
+      },
+      "long_tasks": []
+    }
+  ],
+  "large_file_samples": [
+    {
+      "first_row_ms": 3962.100000143051,
+      "all_hunks_ms": 10039.700000047684,
+      "rows": 573,
+      "ttfb_ms": 2989.7000000476837,
+      "file_page_requests": 12,
+      "file_page_ms": [
+        360.279,
+        1045.404,
+        1058.212,
+        698.509,
+        466.56699999999995,
+        635.416,
+        342.055,
+        409.017,
+        234.531,
+        267.259,
+        379.572,
+        314.179
+      ]
+    },
+    {
+      "first_row_ms": 5250.099999904633,
+      "all_hunks_ms": 7558.799999952316,
+      "rows": 573,
+      "ttfb_ms": 4350.400000095367,
+      "file_page_requests": 12,
+      "file_page_ms": [
+        495.93600000000004,
+        173.04500000000002,
+        168.893,
+        178.839,
+        142.94,
+        183.96800000000002,
+        234.59699999999998,
+        226.387,
+        175.491,
+        212.20999999999998,
+        192.875,
+        284.13
+      ]
+    },
+    {
+      "first_row_ms": 4927.400000095367,
+      "all_hunks_ms": 7741,
+      "rows": 573,
+      "ttfb_ms": 3523.7000000476837,
+      "file_page_requests": 12,
+      "file_page_ms": [
+        493.534,
+        233.694,
+        249.179,
+        231.624,
+        239.916,
+        191.144,
+        215.999,
+        274.37600000000003,
+        280.31,
+        281.05199999999996,
+        390.125,
+        266.025
+      ]
+    },
+    {
+      "first_row_ms": 5820.599999904633,
+      "all_hunks_ms": 8644.399999856949,
+      "rows": 573,
+      "ttfb_ms": 4410.399999856949,
+      "file_page_requests": 12,
+      "file_page_ms": [
+        664.323,
+        405.45700000000005,
+        400.523,
+        373.555,
+        232.59799999999998,
+        213.305,
+        198.29999999999998,
+        177.411,
+        156.24099999999999,
+        173.45499999999998,
+        209.257,
+        252.877
+      ]
+    },
+    {
+      "first_row_ms": 5346,
+      "all_hunks_ms": 9172.400000095367,
+      "rows": 573,
+      "ttfb_ms": 4438.400000095367,
+      "file_page_requests": 12,
+      "file_page_ms": [
+        367.861,
+        409.762,
+        260.087,
+        230.512,
+        285.466,
+        322.248,
+        552.415,
+        406.723,
+        294.15700000000004,
+        236.49200000000002,
+        250.28,
+        169.45399999999998
+      ]
+    }
+  ],
+  "go_benchmarks": [
+    {
+      "benchmark": "BenchmarkPRLoading/fresh_app-11",
+      "ops": 3,
+      "ns_per_op": 2822401417,
+      "bytes_per_op": 218378664,
+      "allocs_per_op": 1338345
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/fresh_app-11",
+      "ops": 3,
+      "ns_per_op": 2738533792,
+      "bytes_per_op": 217850669,
+      "allocs_per_op": 1335715
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/fresh_app-11",
+      "ops": 3,
+      "ns_per_op": 2680061667,
+      "bytes_per_op": 217907581,
+      "allocs_per_op": 1335731
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/warm_page-11",
+      "ops": 3,
+      "ns_per_op": 2552428667,
+      "bytes_per_op": 206601072,
+      "allocs_per_op": 1282389
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/warm_page-11",
+      "ops": 3,
+      "ns_per_op": 2658753014,
+      "bytes_per_op": 206646973,
+      "allocs_per_op": 1282361
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/warm_page-11",
+      "ops": 3,
+      "ns_per_op": 2681902750,
+      "bytes_per_op": 206729917,
+      "allocs_per_op": 1282421
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/load_validate-11",
+      "ops": 3,
+      "ns_per_op": 57351667,
+      "bytes_per_op": 19119565,
+      "allocs_per_op": 69867
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/load_validate-11",
+      "ops": 3,
+      "ns_per_op": 52121444,
+      "bytes_per_op": 19135816,
+      "allocs_per_op": 69860
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/load_validate-11",
+      "ops": 3,
+      "ns_per_op": 48127222,
+      "bytes_per_op": 19116754,
+      "allocs_per_op": 69846
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/report_coverage_currency-11",
+      "ops": 3,
+      "ns_per_op": 147326875,
+      "bytes_per_op": 10779170,
+      "allocs_per_op": 30839
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/report_coverage_currency-11",
+      "ops": 3,
+      "ns_per_op": 136835875,
+      "bytes_per_op": 10864725,
+      "allocs_per_op": 30841
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/report_coverage_currency-11",
+      "ops": 3,
+      "ns_per_op": 127248097,
+      "bytes_per_op": 10815829,
+      "allocs_per_op": 30839
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/item_reference_diffs-11",
+      "ops": 3,
+      "ns_per_op": 2086235861,
+      "bytes_per_op": 50181237,
+      "allocs_per_op": 101531
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/item_reference_diffs-11",
+      "ops": 3,
+      "ns_per_op": 2135983472,
+      "bytes_per_op": 50191744,
+      "allocs_per_op": 101508
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/item_reference_diffs-11",
+      "ops": 3,
+      "ns_per_op": 2363574514,
+      "bytes_per_op": 50172760,
+      "allocs_per_op": 101485
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/warm_shell-11",
+      "ops": 3,
+      "ns_per_op": 276709375,
+      "bytes_per_op": 75453165,
+      "allocs_per_op": 463342
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/warm_shell-11",
+      "ops": 3,
+      "ns_per_op": 258594792,
+      "bytes_per_op": 75396154,
+      "allocs_per_op": 463354
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/warm_shell-11",
+      "ops": 3,
+      "ns_per_op": 254668208,
+      "bytes_per_op": 75390138,
+      "allocs_per_op": 463346
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/shell_template-11",
+      "ops": 3,
+      "ns_per_op": 18736639,
+      "bytes_per_op": 5534416,
+      "allocs_per_op": 192762
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/shell_template-11",
+      "ops": 3,
+      "ns_per_op": 17693000,
+      "bytes_per_op": 5533253,
+      "allocs_per_op": 192757
+    },
+    {
+      "benchmark": "BenchmarkPRLoading/shell_template-11",
+      "ops": 3,
+      "ns_per_op": 17598000,
+      "bytes_per_op": 5533648,
+      "allocs_per_op": 192759
+    },
+    {
+      "benchmark": "BenchmarkPRReferenceMemoExperiment-11",
+      "ops": 3,
+      "ns_per_op": 219519792,
+      "bytes_per_op": 25523162,
+      "allocs_per_op": 73502
+    },
+    {
+      "benchmark": "BenchmarkPRReferenceMemoExperiment-11",
+      "ops": 3,
+      "ns_per_op": 217344889,
+      "bytes_per_op": 25481346,
+      "allocs_per_op": 73488
+    },
+    {
+      "benchmark": "BenchmarkPRReferenceMemoExperiment-11",
+      "ops": 3,
+      "ns_per_op": 226725653,
+      "bytes_per_op": 25515837,
+      "allocs_per_op": 73484
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/saga/review.go",
+      "start": 380,
+      "end": 404,
+      "digest": "sha256:31832284d9f5cdebc2264ddf7b7a6acf483dd3a8c8de9690734972fc3efd1085",
+      "note": "Loads every comment event independently, validates the full set, and orders it deterministically by time and id."
+    }
+  ]
+}

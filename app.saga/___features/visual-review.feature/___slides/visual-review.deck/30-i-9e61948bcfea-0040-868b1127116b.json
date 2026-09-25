@@ -4,8 +4,8 @@
   "slide": "mutation-guardrails",
   "rank": 40,
   "kind": "node",
-  "label": "Comment domain validation",
-  "description": "The store validates body, state, identity, commit, reply, and canonical slide-or-Item target.",
+  "label": "Comment and annotation validation",
+  "description": "Validate body, state, identity, commit, reply, target, annotation action and anchor before publication. Refused submissions retain the editable draft.",
   "selector": {
     "type": "element",
     "element_id": "domain-validation"

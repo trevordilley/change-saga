@@ -45,6 +45,10 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Review(ctx, args[1:], stdout)
 	case "overview":
 		err = cli.Overview(ctx, args[1:], stdout)
+	case "component", "system", "data-entity", "erd", "erd-overlay":
+		err = cli.Technical(ctx, args[0], args[1:], stdout)
+	case "inventory":
+		err = cli.Inventory(ctx, args[1:], stdout)
 	case "term":
 		err = cli.Term(ctx, args[1:], stdout)
 	case "persona":
@@ -131,6 +135,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.VerifyClaim(ctx, args[1:], stdout)
 	case "validate":
 		err = cli.Validate(ctx, args[1:], stdout)
+	case "reconcile":
+		err = cli.Reconcile(ctx, args[1:], stdout)
 	case "status":
 		err = cli.Status(ctx, args[1:], stdout)
 	case "check":

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "technical-inventory-policy-core",
+  "title": "Technical inventory policy core",
+  "base": "d67ad809b6c3828046c7549b0b5e00b914327bb3",
+  "head": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+  "created_at": "2026-09-25T00:03:36.571651Z"
+}

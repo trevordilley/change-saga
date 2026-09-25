@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "cli-documentation-reconciliation",
+  "title": "Reconcile living documentation from the CLI",
+  "base": "feature/review-ux-improvements",
+  "head": "feature/cli-doc-reconciliation",
+  "created_at": "2026-09-24T20:37:41.795362Z"
+}

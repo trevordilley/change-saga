@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:component:technical-record-author",
+  "parents": [
+    "urn:change-saga:change-saga:component:technical-record-author:revision:r1"
+  ],
+  "name": "Technical record author",
+  "explanation": "Turns complete author JSON into exact source commit/digest references, checks source identity, and publishes one explicit revision or lifecycle event. It also resolves a --delivery commit and a --visual SVG once before publication.",
+  "code": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/inventory.go",
+      "start": 28,
+      "end": 112,
+      "digest": "sha256:771ed513d08dbf1fd8c446bacb4b075e7906264a22e81cdbca2d626fc0a3c26a",
+      "note": "Parses complete author JSON, checks source identity, resolves delivery and visual inputs once, and publishes one explicit revision or lifecycle event."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/inventory.go",
+      "start": 134,
+      "end": 168,
+      "digest": "sha256:454b4f4781964edd5a1b0f3d3b520f9c995d505d4026af37a49f84c852c42440",
+      "note": "Turns every owner's references into exact source commit/digest references, keeping evidence IDs."
+    }
+  ],
+  "created_at": "2026-09-25T03:48:53.600952Z"
+}

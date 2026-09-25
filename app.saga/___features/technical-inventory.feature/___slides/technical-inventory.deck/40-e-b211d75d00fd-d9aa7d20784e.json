@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 1,
+      "end": 677,
+      "digest": "sha256:0c64004518abde883549437e8b0ad1c0a99d8dfcfda965108c065b5d6411147e",
+      "note": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade/deferred-integration boundaries."
+    }
+  ]
+}

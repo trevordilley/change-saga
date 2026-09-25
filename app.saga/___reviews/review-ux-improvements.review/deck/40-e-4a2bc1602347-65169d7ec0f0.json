@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "docs/renderer-ui.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:48dba82431dbe7e5c4385a34acbeffc38ccf002492718632dc903595cf02fc49",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "docs/renderer-ui.md",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:e0b84e73648b88c2b00b660c1142ed8a0ee6e15ff0ec3c834ff0cd564ca703ab",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "docs/renderer-ui.md",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:6e4e461ff813b9daaca333242dfa650b1e13f579d3c887063de3ac941df60f89",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "docs/renderer-ui.md",
+      "start": 127,
+      "end": 134,
+      "digest": "sha256:33591a4f372b3c070d4e0b93ec04e1d40a924ff7f5eed565a728ed80cd62acf9",
+      "note": "exact evidence: product intent owns these changed lines on this comparison side."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/implementation.go",
+      "start": 1,
+      "end": 98,
+      "digest": "sha256:ee850f833060c01c1e036df10e119c7b4ba037c5b977306f6f0e18653c156b00",
+      "note": "This internal helper requires snapshot-consistent resolved views, exact endpoint facts and a resolver bound to the canonical source. It owns no loading, publication, locks, parent races, approval or coverage."
+    }
+  ]
+}

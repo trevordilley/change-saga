@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">How the Technical Design UI is checked</title><desc id="desc">Server tests, real-browser flows and the implementation note.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker>
+<marker id="flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a5a00"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">TECHNICAL INVENTORY · IMPLEMENTED UI / 4</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">How the Technical Design UI is checked</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Server tests, real-browser flows and the implementation note.</text>
+<g id="server-tests"><rect x="60" y="190" width="360" height="200" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">GO TESTS</text>
+<text x="78" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Server behavior</text>
+<text x="78" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">shared writer-built fixture</text>
+<text x="78" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">exact pins, conflicts, newness</text>
+<text x="78" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">sanitizer: 13 refused variants</text>
+</g>
+<g id="browser"><rect x="460" y="190" width="360" height="200" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="478" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">BROWSER FLOWS</text>
+<text x="478" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Real reviewer, real CLI</text>
+<text x="478" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">desktop and 390px touch</text>
+<text x="478" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">keyboard, Escape, permalinks</text>
+<text x="478" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">ERD + selection + coverage</text>
+</g>
+<g id="note"><rect x="860" y="190" width="360" height="200" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="878" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">IMPLEMENTATION NOTE</text>
+<text x="878" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Behavior and gaps</text>
+<text x="878" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">what a reader gets</text>
+<text x="878" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">divergences from the proposal</text>
+<text x="878" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">known gaps</text>
+</g>
+<g id="found"><rect x="460" y="420" width="760" height="150" rx="10" fill="#fff8ec" stroke="#8a5a00" stroke-width="2" stroke-dasharray="8 5"/><text x="478" y="448" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#8a5a00" letter-spacing="1">FOUND BY THE BROWSER FLOWS</text><text x="478" y="478" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">A cancelled request poisoned /api/layers</text><text x="478" y="508" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">the git cancellation was cached as the comparison error;</text><text x="478" y="534" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">cancellations are no longer cached</text></g>
+<g id="footer"><rect x="60" y="604" width="1160" height="72" rx="10" fill="#e6eef6"/><text x="84" y="646" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">Passing checks show tested behavior; they are not a review verdict.</text></g>
+</svg>

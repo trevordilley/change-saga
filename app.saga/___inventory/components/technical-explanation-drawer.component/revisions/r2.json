@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+  "parents": [
+    "urn:change-saga:change-saga:component:technical-explanation-drawer:revision:r1"
+  ],
+  "name": "Technical explanation drawer",
+  "explanation": "Reads the saved Component/System revision on demand, opens nested definitions and exact code, and restores the original slide focus when closed. It also links the exact revision's full page, loads usages on request and, when opened from an Item, shows that Item's selections.",
+  "code": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/inventory.go",
+      "start": 65,
+      "end": 110,
+      "digest": "sha256:aa9d446b46ca708f7bbe2f795ac2678e862399a7a60b4fd4d5369ae793158e69",
+      "note": "Builds the view of one exact saved revision: status, history, member diagram, interactions and exact code, shared by the drawer and the definition's page."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/inventory.go",
+      "start": 112,
+      "end": 170,
+      "digest": "sha256:ea787b187a0eb3561a73fc94878c4b0d28889133ea664c6ac066cec74d91314b",
+      "note": "The on-demand endpoint resolves the requested pin without replacing it, serves interaction code lazily, links the revision's page and usages, and adds the opening Item's selections."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/appjs.go",
+      "start": 1247,
+      "end": 1286,
+      "digest": "sha256:09dc1a4597b5912d7ac1513dbacf6d509d046c39207bd3baddfc4b5ccfb7ced1",
+      "note": "Opens the drawer for a pin (and its Item), guards stale requests, keeps a back trail for nested definitions and offers a retry that preserves the pin."
+    }
+  ],
+  "created_at": "2026-09-25T03:48:53.379749Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "path": "e2e/profiling/pr-loading-baseline.json",
+      "start": 1,
+      "end": 68,
+      "digest": "sha256:ec6809f26885bd9c024b8989191ab3ca45cf2d439964a4cc86073d0ed5d4c5e5",
+      "note": "Recorded fixture identity, exact comparison and complete warm HTTP response samples; historical baseline, not a current latency promise."
+    }
+  ]
+}

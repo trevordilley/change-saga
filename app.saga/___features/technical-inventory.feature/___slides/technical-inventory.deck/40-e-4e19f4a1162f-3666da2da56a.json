@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/implementation.go",
+      "start": 99,
+      "end": 172,
+      "digest": "sha256:d0c5535851d595c0d38d5bd365caf8762a326e025d467adffdb7a9fdc466833d",
+      "note": "ValidateCandidate bounds and validates evidence, checks original commit objects and Author bytes, then calls Resolve at the full delivery commit. Pure movement passes; missing original proof and stale delivery refuse."
+    }
+  ]
+}

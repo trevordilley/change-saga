@@ -120,6 +120,9 @@ type DecisionReport struct {
 
 // Options carries what a report reads besides the review.
 type Options struct {
+	// SkipCoverage projects fresh decisions and discussion without generating
+	// coverage. The resolver still checks every decision's exact currency.
+	SkipCoverage bool
 	// Checkout is the code repository the review's commits live in.
 	Checkout string
 	// SagaRoot attributes decision records through Git.
@@ -146,7 +149,7 @@ func Build(ctx context.Context, review *saga.Review, options Options) Report {
 		if value.Note != "" {
 			report.Diagnostics = append(report.Diagnostics, value.Note)
 		}
-		if options.Resolver != nil {
+		if options.Resolver != nil && !options.SkipCoverage {
 			if covered, err := ReadCoverage(ctx, review, value, options.Checkout, options.Repository, options.Resolver); err != nil {
 				report.Diagnostics = append(report.Diagnostics, "the review's coverage could not be read: "+err.Error())
 			} else {

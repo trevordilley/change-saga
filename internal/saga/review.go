@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"math"
 	"os"
 	"path/filepath"
 	"sort"
@@ -107,18 +108,53 @@ type ReviewApproval struct {
 // ReviewComment is one comment on a review slide or Item, or a reply to
 // another comment. A comment may resolve or reopen its thread.
 type ReviewComment struct {
-	Path     string           `json:"-"`
-	Schema   string           `json:"$schema"`
-	Version  int              `json:"version"`
-	ID       string           `json:"id"`
-	Target   string           `json:"target"`
-	ReplyTo  string           `json:"reply_to,omitempty"`
-	Body     string           `json:"body"`
-	State    string           `json:"state,omitempty"`
-	Reviewer ReviewerIdentity `json:"reviewer"`
-	Commit   string           `json:"commit,omitempty"`
+	Path    string `json:"-"`
+	Schema  string `json:"$schema"`
+	Version int    `json:"version"`
+	ID      string `json:"id"`
+	Target  string `json:"target"`
+	ReplyTo string `json:"reply_to,omitempty"`
+	Body    string `json:"body"`
+	State   string `json:"state,omitempty"`
+	// Anchor and AnnotationAction make visual markup part of the same
+	// append-only discussion. The root creates the mark; later replies update
+	// or delete it without rewriting the original review record.
+	Anchor           *ReviewAnchor    `json:"anchor,omitempty"`
+	AnnotationAction string           `json:"annotation_action,omitempty"`
+	Reviewer         ReviewerIdentity `json:"reviewer"`
+	Commit           string           `json:"commit,omitempty"`
 	// CreatedAt orders comments; it is not an identity.
 	CreatedAt time.Time `json:"created_at"`
+}
+
+type ReviewAnchor struct {
+	Type       string        `json:"type"`
+	Coordinate string        `json:"coordinate_space,omitempty"`
+	Shapes     []ReviewShape `json:"shapes,omitempty"`
+	Note       *ReviewNote   `json:"note,omitempty"`
+}
+
+type ReviewShape struct {
+	Type        string        `json:"type"`
+	X           float64       `json:"x,omitempty"`
+	Y           float64       `json:"y,omitempty"`
+	Width       float64       `json:"width,omitempty"`
+	Height      float64       `json:"height,omitempty"`
+	Points      []ReviewPoint `json:"points,omitempty"`
+	Color       string        `json:"color,omitempty"`
+	StrokeWidth float64       `json:"stroke_width,omitempty"`
+}
+
+type ReviewPoint struct {
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+}
+
+type ReviewNote struct {
+	Text  string  `json:"text"`
+	X     float64 `json:"x"`
+	Y     float64 `json:"y"`
+	Color string  `json:"color,omitempty"`
 }
 
 // Review is one loaded pull request review.
@@ -342,7 +378,7 @@ func loadReview(root, dir, id string, manifest Manifest, options loadOptions, va
 	}); err != nil {
 		return nil, err
 	}
-	comments := map[string]bool{}
+	comments := map[string]ReviewComment{}
 	if err := loadReviewRecords(root, filepath.Join(dir, ReviewCommentsDir), "comment", validation, func(path string) {
 		var comment ReviewComment
 		if err := readJSON(path, &comment); err != nil {
@@ -350,7 +386,7 @@ func loadReview(root, dir, id string, manifest Manifest, options loadOptions, va
 			return
 		}
 		comment.Path = path
-		comments[comment.ID] = true
+		comments[comment.ID] = comment
 		review.Comments = append(review.Comments, comment)
 	}); err != nil {
 		return nil, err
@@ -405,8 +441,9 @@ func validateReviewApproval(approval ReviewApproval, name string, slides map[str
 	return ""
 }
 
-func validateReviewComment(comment ReviewComment, name string, targets, comments map[string]bool) string {
+func validateReviewComment(comment ReviewComment, name string, targets map[string]bool, comments map[string]ReviewComment) string {
 	reviewer := comment.Reviewer
+	reply, replyExists := comments[comment.ReplyTo]
 	switch {
 	case comment.Schema != ReviewCommentSchemaURL || comment.Version != ReviewVersion:
 		return fmt.Sprintf("comment requires $schema %s and version %d", ReviewCommentSchemaURL, ReviewVersion)
@@ -414,12 +451,26 @@ func validateReviewComment(comment ReviewComment, name string, targets, comments
 		return "comment id must be a stable identifier matching its filename"
 	case !targets[comment.Target]:
 		return "comment target must be a slide or Item of this review"
-	case comment.ReplyTo != "" && (!comments[comment.ReplyTo] || comment.ReplyTo == comment.ID):
+	case comment.ReplyTo != "" && (!replyExists || comment.ReplyTo == comment.ID):
 		return fmt.Sprintf("comment replies to unknown comment %q", comment.ReplyTo)
 	case strings.TrimSpace(comment.Body) == "":
 		return "comment body is required"
 	case comment.State != "" && comment.State != CommentOpen && comment.State != CommentResolved:
 		return "comment state must be open or resolved"
+	case comment.AnnotationAction != "" && comment.AnnotationAction != "create" && comment.AnnotationAction != "update" && comment.AnnotationAction != "delete":
+		return "annotation_action must be create, update, or delete"
+	case comment.AnnotationAction == "" && comment.Anchor != nil:
+		return "an annotation anchor requires annotation_action"
+	case comment.AnnotationAction == "create" && (comment.ReplyTo != "" || comment.Anchor == nil):
+		return "an annotation create requires an anchor on a root comment"
+	case (comment.AnnotationAction == "update" || comment.AnnotationAction == "delete") && comment.ReplyTo == "":
+		return "an annotation update or delete must reply to its root comment"
+	case (comment.AnnotationAction == "update" || comment.AnnotationAction == "delete") && (reply.AnnotationAction != "create" || reply.ReplyTo != ""):
+		return "an annotation update or delete must reply to its annotation create root"
+	case comment.AnnotationAction == "update" && comment.Anchor == nil:
+		return "an annotation update requires an anchor"
+	case comment.AnnotationAction == "delete" && comment.Anchor != nil:
+		return "an annotation delete cannot carry an anchor"
 	case comment.Commit != "" && !coderef.ValidCommit(comment.Commit):
 		return "comment commit must be a full commit"
 	case comment.CreatedAt.IsZero():
@@ -428,7 +479,55 @@ func validateReviewComment(comment ReviewComment, name string, targets, comments
 	if err := ValidateReviewerIdentity(&reviewer); err != nil {
 		return err.Error()
 	}
+	if comment.Anchor != nil {
+		if err := ValidateReviewAnchor(*comment.Anchor); err != nil {
+			return err.Error()
+		}
+	}
 	return ""
+}
+
+// ValidateReviewAnchor keeps slide markup in normalized coordinates so it
+// survives fitting, zoom, filmstrip changes, and narrow layouts.
+func ValidateReviewAnchor(anchor ReviewAnchor) error {
+	valid := func(value float64) bool { return value >= 0 && value <= 1 }
+	validColor := func(value string) bool {
+		if len(value) != 7 || value[0] != '#' {
+			return false
+		}
+		for _, r := range value[1:] {
+			if !((r >= '0' && r <= '9') || (r >= 'a' && r <= 'f') || (r >= 'A' && r <= 'F')) {
+				return false
+			}
+		}
+		return true
+	}
+	switch anchor.Type {
+	case "region", "drawing", "highlight":
+		if anchor.Coordinate != "normalized" || len(anchor.Shapes) == 0 || anchor.Note != nil {
+			return fmt.Errorf("visual annotation requires normalized shapes")
+		}
+		for _, shape := range anchor.Shapes {
+			if shape.Type != "rect" && shape.Type != "ellipse" && shape.Type != "path" && shape.Type != "highlight" {
+				return fmt.Errorf("unsupported review annotation shape %q", shape.Type)
+			}
+			if !valid(shape.X) || !valid(shape.Y) || !valid(shape.Width) || !valid(shape.Height) || (shape.StrokeWidth < 0 || math.IsNaN(shape.StrokeWidth) || math.IsInf(shape.StrokeWidth, 0)) || (shape.Color != "" && !validColor(shape.Color)) {
+				return fmt.Errorf("annotation shape coordinates and color must be normalized and valid")
+			}
+			for _, point := range shape.Points {
+				if !valid(point.X) || !valid(point.Y) {
+					return fmt.Errorf("annotation path points must be normalized")
+				}
+			}
+		}
+	case "note":
+		if anchor.Coordinate != "normalized" || anchor.Note == nil || len(anchor.Shapes) != 0 || strings.TrimSpace(anchor.Note.Text) == "" || len([]rune(anchor.Note.Text)) > 2000 || !valid(anchor.Note.X) || !valid(anchor.Note.Y) || (anchor.Note.Color != "" && !validColor(anchor.Note.Color)) {
+			return fmt.Errorf("sticky note requires normalized placement, text, and a valid color")
+		}
+	default:
+		return fmt.Errorf("review annotation type must be region, drawing, highlight, or note")
+	}
+	return nil
 }
 
 // SlideDigest identifies a slide's reviewable content: its manifest, visual,

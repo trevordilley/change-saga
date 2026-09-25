@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appjs.go",
+      "start": 1216,
+      "end": 1217,
+      "digest": "sha256:9c343f4c1991b083ee516193e77211680c79ba8bc7dffabec029c7bf642ca4a5",
+      "note": "Bound ERD elements become controls, highlight with their row, and an SVG opener regains focus."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appjs.go",
+      "start": 2495,
+      "end": 2529,
+      "digest": "sha256:660a74ea036e6624a3a68a0219c7e6ce3d79c3cef76bd7dcea5f012a9c007518",
+      "note": "Bound ERD elements become controls, highlight with their row, and an SVG opener regains focus."
+    }
+  ]
+}

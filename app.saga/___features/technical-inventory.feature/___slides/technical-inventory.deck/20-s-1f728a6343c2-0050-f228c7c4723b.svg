@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Extend the inventory, keep the deck</title><desc id="desc">Existing record storage feeds inventory queries and the explanation drawer. Proposed revision and data-entity structures extend storage; proposed filtered queries, reverse usages and scoped evidence extend navigation. No proposed capability is claimed as implemented.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#476079"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<g font-family="Arial,sans-serif" fill="#142638">
+<text x="60" y="52" font-size="18" fill="#925b14">TECHNICAL INVENTORY · PROPOSED DESIGN / 1</text>
+<text x="60" y="110" font-size="40">Extend the inventory, keep the deck</text>
+<text x="60" y="153" font-size="22" fill="#486173">Reuse the existing storage, query and navigation boundaries; add the missing semantics.</text>
+<g id="store"><rect x="60" y="240" width="310" height="164" rx="12" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="80" y="271" font-size="16" fill="#245d8c">EXISTING · CODE LINKED</text><text x="80" y="309" font-size="25">Technical record store</text><text x="80" y="346" font-size="20">Immutable definitions + pins</text><text x="80" y="378" font-size="20">Explicit revision heads</text></g>
+<g id="query"><rect x="485" y="240" width="285" height="164" rx="12" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="505" y="271" font-size="16" fill="#245d8c">EXISTING · CODE LINKED</text><text x="505" y="309" font-size="25">Inventory query</text><text x="505" y="346" font-size="20">Snapshot-bound pages</text><text x="505" y="378" font-size="20">Code + link health</text></g>
+<g id="drawer"><rect x="885" y="240" width="335" height="164" rx="12" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="905" y="271" font-size="16" fill="#245d8c">EXISTING · CODE LINKED</text><text x="905" y="309" font-size="25">Explanation drawer</text><text x="905" y="346" font-size="20">Read the saved definition</text><text x="905" y="378" font-size="20">Open code; return to slide</text></g>
+<g id="reads"><path d="M370 292H485 M370 250V205H1052V240" fill="none" stroke="#476079" stroke-width="2" marker-end="url(#arrow)"/><text x="390" y="282" font-size="17">read</text><text x="698" y="195" font-size="17">independent on-demand read</text></g>
+<g id="model-extension"><rect x="60" y="476" width="410" height="165" rx="12" fill="#fff6e8" stroke="#a56615" stroke-width="2" stroke-dasharray="8 5"/><path d="M215 476V404" fill="none" stroke="#a56615" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="80" y="508" font-size="16" fill="#925b14">PROPOSED · NO IMPLEMENTATION YET</text><text x="80" y="548" font-size="25">Evolve the shared model</text><text x="80" y="585" font-size="20">Data entities + typed relationships</text><text x="80" y="616" font-size="20">Implemented / proposed revisions</text></g>
+<g id="navigation-extension"><rect x="535" y="476" width="685" height="165" rx="12" fill="#fff6e8" stroke="#a56615" stroke-width="2" stroke-dasharray="8 5"/><path d="M627 476V404 M1052 476V404" fill="none" stroke="#a56615" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="555" y="508" font-size="16" fill="#925b14">PROPOSED · NO IMPLEMENTATION YET</text><text x="555" y="548" font-size="25">Navigate intent, usages and selected evidence</text><text x="555" y="585" font-size="20">Overview → Technical Design → Systems / Components / ERD</text><text x="555" y="616" font-size="20">AI filters proposals; deck Items select only the relevant code</text></g>
+<g id="boundary"><text x="60" y="685" font-size="19" fill="#486173">Boundary: a documentation link alone still grants no coverage. Scoped inheritance is proposed work.</text></g>
+</g></svg>

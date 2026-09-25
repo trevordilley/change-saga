@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-record-contract-revision",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-record-contract:item:revision",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+  "scope": "self",
+  "rationale": "Proposed design: A revision retains parents and an explicit baseline pin, phase, purpose, selected fields and keys. Proposed revisions may lack code; later implementation appends evidence without erasing the plan.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T23:14:58.552727Z"
+}

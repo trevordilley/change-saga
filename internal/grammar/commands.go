@@ -639,6 +639,12 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "reconcile", Status: StatusImplemented, Usage: "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json] <saga>",
+		Summary:     "read-only documentation reconciliation queue with independent HEAD currency, baseline debt, review coverage, declared-link impact and typed repair paths; no verdict",
+		Flags:       []Flag{jsonFlag, required("against", "REV", "comparison baseline"), headFlag, optional("repo", "PATH", "source checkout when separate"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs")},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "check", Status: StatusImplemented, Usage: "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 		Summary: "ask whether the named coverage areas are fully covered in scope; exits 0 when they are, 3 with only those areas' gaps when not, and 1 when the report cannot be trusted",
 		Flags: []Flag{

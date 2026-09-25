@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reuse",
+  "slide": "technical-inventory-coverage-resolution",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Existing resolver and coverage extension points",
+  "description": "Existing byte remapping, per-atom ownership and separate HEAD currency are code-linked foundations. Inventory-path resolution remains proposed; deletion-side diff evidence does not establish HEAD currency.",
+  "selector": {
+    "type": "element",
+    "element_id": "reuse"
+  }
+}

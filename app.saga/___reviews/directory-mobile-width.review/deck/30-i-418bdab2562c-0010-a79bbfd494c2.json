@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "directory-template",
+  "slide": "one-region",
+  "rank": 10,
+  "kind": "region",
+  "label": "Shared directory template",
+  "description": "Every directory renders one template: the filter form, then the table, then the no-match status. The filter stays at page width.",
+  "selector": {
+    "type": "element",
+    "element_id": "directory-template"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 323,
+      "end": 440,
+      "digest": "sha256:b09e8c2b16e3f3e0e25d8b68eaaa74ac0ecc536e058278e4b7bd4cbfb1129408",
+      "note": "query inventory-uses and canonical target validation for every inventory kind."
+    }
+  ]
+}

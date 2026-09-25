@@ -1,0 +1,22 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:component:technical-inventory-query",
+  "parents": [
+    "urn:change-saga:change-saga:component:technical-inventory-query:revision:r1"
+  ],
+  "name": "Technical inventory query",
+  "explanation": "Projects current definitions, explicit heads, code/link health and optional selected history through snapshot-bound pages.",
+  "code": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/query_inventory.go",
+      "start": 44,
+      "end": 196,
+      "digest": "sha256:00d0215d2760307e839805f2c74f654abf5920a4b5a7f3cabb216df0454b61bb",
+      "note": "Projects current definitions, explicit heads, code/link health and optional selected history through snapshot-bound pages."
+    }
+  ],
+  "created_at": "2026-09-25T03:48:53.494697Z"
+}

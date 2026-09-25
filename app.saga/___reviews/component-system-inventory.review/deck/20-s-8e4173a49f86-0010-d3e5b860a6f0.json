@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "technical-inventory-history",
+  "deck": "component-system-inventory",
+  "title": "History preserves the version you explained",
+  "rank": 10,
+  "intent": "compare",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8e4173a49f86-0010-d3e5b860a6f0.svg",
+  "takeaway": "Append revisions and lifecycle events; keep every head explicit and retain saved pins.",
+  "reading_order": [
+    "read",
+    "append",
+    "heads",
+    "lifecycle"
+  ]
+}

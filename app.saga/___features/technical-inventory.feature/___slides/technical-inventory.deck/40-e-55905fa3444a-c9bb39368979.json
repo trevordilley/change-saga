@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d6e0d4119f02e51a37306bf258290a7d7069a38",
+      "path": "internal/cli/query_inventory.go",
+      "start": 95,
+      "end": 140,
+      "digest": "sha256:1de958b8a2d7d2f061a231365ab80965fc7c9600bab369a7609d09fa7e48b4f4",
+      "note": "The current inventory query pages before source resolution and rejects a changed snapshot; proposed filters and reverse usage expansion must preserve this bounded read contract."
+    }
+  ]
+}

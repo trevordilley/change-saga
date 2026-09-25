@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/data-entity-event.schema.json",
+      "digest": "sha256:2e3221c59a42c0b8833919a8d032cbebfc7128d073c708a47ea03e3d7f3514d3"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/data-entity-event.schema.json",
+      "start": 1,
+      "end": 52,
+      "digest": "sha256:2e3221c59a42c0b8833919a8d032cbebfc7128d073c708a47ea03e3d7f3514d3"
+    }
+  ]
+}

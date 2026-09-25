@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 370,
+      "end": 389,
+      "digest": "sha256:1e94547031f930487596c6149f4c57042bc64d0e54b46301c0b2e7ce379dfdae",
+      "note": "Opening a review slide visual at top level returns the sandbox directive and renders on origin null."
+    }
+  ]
+}

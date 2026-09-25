@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli-tests",
+  "slide": "ti-records-review-proof",
+  "rank": 10,
+  "kind": "example",
+  "label": "Public CLI tests on temporary Git",
+  "description": "Lifecycle, drift, movement, forged digest, foreign repository, mixed intent, ERDs, review/implementation/transaction selections and saved views.",
+  "selector": {
+    "type": "element",
+    "element_id": "cli-tests"
+  }
+}

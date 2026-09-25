@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "index",
+  "slide": "technical-inventory-query-contract",
+  "rank": 40,
+  "kind": "node",
+  "label": "Disposable reverse index",
+  "description": "Derive incoming links from canonical records. Key reuse to Saga snapshot, source view and query shape; invalidate on change and never treat a stale cache as authoritative dependency evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "index"
+  }
+}

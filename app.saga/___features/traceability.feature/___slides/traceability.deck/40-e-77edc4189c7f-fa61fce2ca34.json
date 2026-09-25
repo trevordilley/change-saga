@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/livingapp/session.go",
+      "start": 199,
+      "end": 215,
+      "digest": "sha256:b637c7ce45e88c3222d760478e2dea0b5e1a013534488278f57f137eab73fb7f",
+      "note": "Dispatches traceability through the living session while ordinary living operations share the generic page path."
+    }
+  ]
+}

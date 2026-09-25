@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/content_edit.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:7ed115f74756c19008f46d89ffd95712ce6b3cb14450e1644358ef661421898a",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/content_edit.go",
+      "start": 609,
+      "end": 610,
+      "digest": "sha256:a8792a5b57070948603899c5158e8194cf5071b25c5d3ff20fdc63482d91b1d2",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/content_edit.go",
+      "start": 654,
+      "end": 689,
+      "digest": "sha256:483cc4928f054dfc50c72b63109d07ba6601cd92ff6fe6972176cdaff9bf18a6",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    }
+  ]
+}

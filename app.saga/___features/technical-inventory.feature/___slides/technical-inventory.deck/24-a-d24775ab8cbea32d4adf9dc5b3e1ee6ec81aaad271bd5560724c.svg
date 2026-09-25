@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">A slide Item opens its exact selection</title><desc id="desc">Selection, currency and integrity are separate; coverage matches the CLI.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker>
+<marker id="flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a5a00"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">TECHNICAL INVENTORY · IMPLEMENTED UI / 3</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">A slide Item opens its exact selection</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Selection, currency and integrity are separate; coverage matches the CLI.</text>
+<g id="control"><rect x="60" y="190" width="250" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">SLIDE ITEM</text>
+<text x="78" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Item control</text>
+<text x="78" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">implementation or review</text>
+<text x="78" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">pinned revision + Item</text>
+<text x="78" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">Escape returns focus here</text>
+</g>
+<path d="M310 275L360 275" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/><text x="335.0" y="267.0" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#17324d">open</text>
+<g id="selection"><rect x="360" y="190" width="330" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="378" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">DRAWER · SELECTED FOR THIS ITEM</text>
+<text x="378" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Exact selection first</text>
+<text x="378" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">declared path of pins</text>
+<text x="378" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">selected lines at the head</text>
+<text x="378" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">then the whole definition</text>
+</g>
+<g id="health"><rect x="740" y="190" width="480" height="170" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="758" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">SEPARATE HEALTH FACTS</text>
+<text x="758" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Selected ≠ containing ≠ digest</text>
+<text x="758" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">selected lines current or stale</text>
+<text x="758" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">containing reference stale on its own</text>
+<text x="758" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">unresolved: stable reason, no substitution</text>
+</g>
+<path d="M690 275L740 275" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="coverage"><rect x="60" y="400" width="540" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="428" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">REVIEWER COVERAGE</text>
+<text x="78" y="458" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Same as the CLI</text>
+<text x="78" y="488" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">inherited selected lines only</text>
+<text x="78" y="514" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">labelled &#x27;selected via …&#x27;</text>
+<text x="78" y="540" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">not an evidence record</text>
+</g>
+<g id="review"><rect x="640" y="400" width="580" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="658" y="428" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">REVIEW DECKS</text>
+<text x="658" y="458" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Same identities in review</text>
+<text x="658" y="488" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">review Items carry the same control</text>
+<text x="658" y="514" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">no decision is recorded by opening</text>
+</g>
+<g id="footer"><rect x="60" y="604" width="1160" height="72" rx="10" fill="#e6eef6"/><text x="84" y="646" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">Following a definition never changes the slide, its pins or its review decisions.</text></g>
+</svg>

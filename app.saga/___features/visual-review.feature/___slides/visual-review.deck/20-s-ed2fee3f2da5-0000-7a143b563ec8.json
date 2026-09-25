@@ -8,7 +8,7 @@
   "layout": "diagram",
   "media_type": "image/svg+xml",
   "entrypoint": "20-s-ed2fee3f2da5-0000-7a143b563ec8.svg",
-  "takeaway": "Review reads are projected, comment writes are locked appends, and PR-review spatial overlays have no implementation owner; prototype requirement annotations are separate.",
+  "takeaway": "Review reads project slides and annotation threads; comment and markup writes share the locked, append-only reviewstore boundary.",
   "reading_order": [
     "browser-surface",
     "http-adapter",

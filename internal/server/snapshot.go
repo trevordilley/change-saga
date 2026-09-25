@@ -19,6 +19,8 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/inventoryview"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/snapshotcache"
 )
@@ -278,7 +280,14 @@ func (a *app) populateDerivedSnapshot(ctx context.Context, built *reviewSnapshot
 		return err
 	}
 	defer resolver.Close()
-	built.report = coverage.Evaluate(ctx, built.document, built.validation, built.changes, resolver)
+	// Eligible Item selections inherit exactly their selected lines, as the
+	// CLI's reports do. An unreadable inventory inherits nothing; it never
+	// widens coverage.
+	var inherited []coverage.InheritedReference
+	if inventory, err := requirements.LoadInventory(a.root, built.document.Manifest.ID); err == nil {
+		inherited, _ = inventoryview.InheritedReferences(ctx, built.document, &inventory, built.changes.HeadOID, resolver)
+	}
+	built.report = coverage.EvaluateInherited(ctx, built.document, inherited, built.validation, built.changes, resolver)
 	digest := sha256.Sum256([]byte(built.changes.Repository + "\x00" + built.changes.BaseOID + "\x00" + built.changes.HeadOID))
 	built.identity = hex.EncodeToString(digest[:16])
 	built.indexComparison()
@@ -418,7 +427,8 @@ func (s *reviewSnapshot) indexComparison() {
 }
 
 const (
-	derivedSnapshotFormat = "review-index-v3"
+	// v4: coverage includes lines Items inherit through inventory selections.
+	derivedSnapshotFormat = "review-index-v4"
 	derivedSnapshotName   = derivedSnapshotFormat + ".json.gz"
 )
 

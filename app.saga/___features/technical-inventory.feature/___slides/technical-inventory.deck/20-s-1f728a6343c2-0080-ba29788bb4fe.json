@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "technical-inventory-selected-path",
+  "deck": "technical-inventory",
+  "title": "Proposed: select a path, not the whole system",
+  "rank": 80,
+  "section": "Proposed technical design",
+  "intent": "trace",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0080-ba29788bb4fe.svg",
+  "takeaway": "An Item selects exact evidence through pinned entity revisions; unselected members and source ranges grant no inherited coverage.",
+  "reading_order": [
+    "item",
+    "system",
+    "store",
+    "path",
+    "excluded",
+    "subset",
+    "provenance"
+  ]
+}

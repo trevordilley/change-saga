@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/server.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:1d6ed2055da1f9ac9dc9c93b60b079932a3feb1dd62331ff40879c8e7a01b695",
+      "note": "Added: the area route, its route identity for known areas only, and its shell case."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/server.go",
+      "start": 943,
+      "end": 946,
+      "digest": "sha256:4dd46fbf205ea5df0447629a77d44e45ef1821a4c87b21b5543241b428912a03",
+      "note": "Added: the area route, its route identity for known areas only, and its shell case."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/server.go",
+      "start": 1073,
+      "end": 1073,
+      "digest": "sha256:c53af1c2e57a5f3a59d0904ad336ca09c107f35c099976bf008f7cc07b3aa153",
+      "note": "Added: the area route, its route identity for known areas only, and its shell case."
+    }
+  ]
+}

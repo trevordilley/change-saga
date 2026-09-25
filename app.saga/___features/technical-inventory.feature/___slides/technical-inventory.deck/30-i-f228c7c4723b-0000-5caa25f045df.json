@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-record-store",
+    "revision": "urn:change-saga:change-saga:component:technical-record-store:revision:r1"
+  },
+  "version": 4,
+  "id": "store",
+  "slide": "technical-inventory-design-boundaries",
+  "rank": 0,
+  "kind": "node",
+  "label": "Existing record store",
+  "description": "Existing immutable Component/System definitions and explicit revision heads are the foundation to extend; this Item cites current code.",
+  "selector": {
+    "type": "element",
+    "element_id": "store"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:system:technical-documentation",
+    "revision": "urn:change-saga:change-saga:system:technical-documentation:revision:r2"
+  },
+  "version": 4,
+  "id": "system",
+  "slide": "technical-inventory-identity",
+  "rank": 10,
+  "kind": "node",
+  "label": "System",
+  "description": "A System pins Component revisions and explains directed interactions with exact evidence for each flow. Legacy System rules are unchanged; format-2 interactions carry their own intent.",
+  "selector": {
+    "type": "element",
+    "element_id": "system"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "blocked",
+  "slide": "technical-inventory-coverage-resolution",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Unresolved selection contributes no current coverage",
+  "description": "Missing paths, changed selected bytes and unresolved/conflicting intent stay explicit with reasons and grant no current coverage. Missing evidence does not prove the entity is unimplemented.",
+  "selector": {
+    "type": "element",
+    "element_id": "blocked"
+  }
+}

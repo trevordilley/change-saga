@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "sequence",
+  "slide": "technical-inventory-rollout",
+  "rank": 40,
+  "kind": "edge",
+  "label": "Dependency-gated implementation order",
+  "description": "Compatibility precedes new-record authoring; tested record and selection contracts precede consumer integration; the full workflow is verified before handoff.",
+  "selector": {
+    "type": "element",
+    "element_id": "sequence"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:erd-design-implications",
+  "parents": [
+    "urn:change-saga:change-saga:story:erd-design-implications:revision:r1"
+  ],
+  "title": "Understand data-model implications while designing",
+  "statement": "As an Architect defining a new design, I can see its ERD implications in the technical overview alongside the existing application data model so I can reason about how the proposed work changes the application's data.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924",
+    "urn:change-saga:change-saga:citation:authored-erd-design-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "technical-overview",
+      "statement": "The technical overview provides an application-wide ERD entry point showing existing data entities and the entities and relationships implicated by the selected design."
+    },
+    {
+      "id": "logical-and-persisted",
+      "statement": "The model can describe both logical payloads and persisted records, including a JSON PDF-generation job in a queue and the PDF report record produced from it, with their storage resources identified."
+    },
+    {
+      "id": "relationship-meaning",
+      "statement": "The ERD visually distinguishes the meaning of data relationships, including logical production/transformation and persisted associations, and exposes declared cardinality without inventing unknown relationships."
+    },
+    {
+      "id": "design-context",
+      "statement": "A proposed entity or relationship change can be followed to the design and feature context that introduces it without overwriting the baseline model."
+    },
+    {
+      "id": "authored-overview",
+      "statement": "The ERD is an authored, human-consumable architectural diagram whose selected entities, composition, and relationships convey the overall shape of the application rather than an automatically generated schema dump."
+    },
+    {
+      "id": "selective-detail",
+      "statement": "Authors can show only architecturally meaningful fields and keys; the ERD does not require an exhaustive mirror of database columns or payload properties, and omitted field detail does not imply missing implementation."
+    }
+  ],
+  "created_at": "2026-09-24T22:38:10.194363Z"
+}

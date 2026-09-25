@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/livingapp/status_terms.go",
+      "start": 127,
+      "end": 145,
+      "digest": "sha256:cd792ace2b48e9040a8878345ff2bf35359767a95d8443d36e8bff96942c5a07",
+      "note": "Resolves each current term reference at the observed head and preserves pinned, moved, and stale locations."
+    }
+  ]
+}

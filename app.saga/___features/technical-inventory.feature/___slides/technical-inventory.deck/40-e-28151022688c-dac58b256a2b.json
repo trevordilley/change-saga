@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/pin_test.go",
+      "start": 1,
+      "end": 64,
+      "digest": "sha256:b569991af507c81e361f0f778c0a2fe8e577d83df12bca8b39c283a22708341d",
+      "note": "Tests cover exact current and historical pins, missing/mismatched/ambiguous/inactive views, unknown facts, no fallback, independent global health and immutable inputs."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d6e0d4119f02e51a37306bf258290a7d7069a38",
+      "path": "internal/requirements/inventory.go",
+      "start": 31,
+      "end": 45,
+      "digest": "sha256:548f55eace2487df9b3e85d0d6c040b5cbfeb5594109ed9021f3c43ea8c30452",
+      "note": "The current definition and immutable revision are the extension point for explicit phase and data-entity structure; these new fields are not implemented."
+    }
+  ]
+}

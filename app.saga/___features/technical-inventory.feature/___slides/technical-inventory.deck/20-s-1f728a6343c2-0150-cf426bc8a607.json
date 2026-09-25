@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "technical-inventory-policy-foundation",
+  "deck": "technical-inventory",
+  "title": "Implemented foundation: technical inventory policy",
+  "rank": 150,
+  "section": "Implementation foundations",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0150-cf426bc8a607.svg",
+  "takeaway": "The internal helper enforces saved-view admission, original and delivery evidence, and independent intent; public authoring and coverage are not connected.",
+  "reading_order": [
+    "boundary",
+    "pins",
+    "evidence",
+    "intent",
+    "pin-tests",
+    "candidate-tests",
+    "git-tests"
+  ]
+}

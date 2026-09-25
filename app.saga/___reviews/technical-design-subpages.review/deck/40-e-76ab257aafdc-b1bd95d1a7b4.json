@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/server.go",
+      "start": 1068,
+      "end": 1068,
+      "digest": "sha256:ee2bdaa0bccdeb8f737fc9a807178a8a442dfe2c1875b606b2e7ec9c16a541fa",
+      "note": "Replaced: the shell case without area pages."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/coverage/coverage.go",
+      "start": 20,
+      "end": 88,
+      "digest": "sha256:bb3bc5e5f574c749d11526578564aec962ffd4bf21e9eb6cf855628b46fa012d",
+      "note": "Independent coverage states and evaluation"
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/coverage/coverage.go",
+      "start": 104,
+      "end": 154,
+      "digest": "sha256:bcdac42bd9558211254a434e8ebade03321a3bc84231cac8d6aa6eeebafee7ee",
+      "note": "Independent coverage states and evaluation"
+    }
+  ]
+}

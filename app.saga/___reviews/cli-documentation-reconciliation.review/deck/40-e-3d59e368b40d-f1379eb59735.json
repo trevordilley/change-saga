@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "skills/change-saga/references/integration.md",
+      "start": 29,
+      "end": 30,
+      "digest": "sha256:fa9ba044402330e8102891fc5fceebad1db5e87f668647506c100518dea10897",
+      "note": "The repair step owns these workflow changes or their regression checks."
+    }
+  ]
+}

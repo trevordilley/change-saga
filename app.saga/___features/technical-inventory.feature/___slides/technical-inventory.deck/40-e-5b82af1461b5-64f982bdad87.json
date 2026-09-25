@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d6e0d4119f02e51a37306bf258290a7d7069a38",
+      "path": "internal/requirements/inventory.go",
+      "start": 121,
+      "end": 141,
+      "digest": "sha256:85008282dafa2b77a9fb7b5c353b710ebf3012529fc6518cf8d5a342f343040d",
+      "note": "The current loader accepts only Component and System directories, grounding the need for explicit compatibility gating before new data-entity records."
+    }
+  ]
+}

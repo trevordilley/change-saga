@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/livingapp/status_load.go",
+      "start": 191,
+      "end": 236,
+      "digest": "sha256:8234f3fee4e53c5b8a9725c360347b2f1169a9feba2a10b9bbe7900172e4c86d",
+      "note": "Composes work-plan heads, design digests, requirements, test heads, and cross-domain endpoint facts into one evaluated graph."
+    }
+  ]
+}

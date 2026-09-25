@@ -1,0 +1,131 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:ca7880963be468544a4098aaa22f9ca1ff4b7b44743efe49396b5b8a71cb3463"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:ef87c0667024178e1ccf8f6c95e3e6eab1fb2debd27f5d7b756a2d1d2f11b9a4"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 21,
+      "end": 48,
+      "digest": "sha256:4ce457a7c74c58b8fde47d4006776b3f5690212a3d02f48eb1e19ff0882fe183"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:8349fa65d5c1c5424d1fea0e2d7485b0122d9261ce73d39e611a01ebc5fb5b13"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 64,
+      "end": 67,
+      "digest": "sha256:9e6345d3c74a66ff5ec429d1ecc57a9b0dbd0a4419d8a4f54fe50c2f643e6da3"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:639ebe12987a0c0ad3d04a8d1373da2ec1e3ef2c86d27527b1e8570aeea4af32"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:61b18db296a3c4c08e921988362c72199b04bd53d543959cb09e01cd4b2a13cc"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:3db2baff857bbbd7d208234a65b7104e3e296b58cc1baacb45af76311c5ca889"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 147,
+      "end": 152,
+      "digest": "sha256:94059137db0e4a36d0cd8d4628ef7e181ef72b6424fdcede78f9dff69492ddc6"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:dd4715184a5af853150d7e1156fc6005583dbd7db68959fed3c8327ce78f5dd4"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 168,
+      "end": 171,
+      "digest": "sha256:c311d03f2defe933e3b3fbc1ac7ad9c4443fd73ba26283a9dbb189b2d5ddf1be"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 201,
+      "end": 674,
+      "digest": "sha256:51053265fd98430387d6b47ee8fa0f9f7c52ce8cf1a38cd897b4d84f648a7d36"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 8,
+      "end": 9,
+      "digest": "sha256:73e2b63efe8a234b7289d6768aacc795b9380ffeb578dfb0238666cab1c9c429"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:76ba75cb138b2fd36d53ac331665dc040dbca337fdf163bf5892977921b69cfb"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:28af6ffec7fe20f89e6f9926182fb0290cbd2ae00d2bec8a761b10fb93ef8a24"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:4ba984614cdc3cbee80a88ac8322453a5282d82bced64d671014060989d1e25c"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 98,
+      "end": 99,
+      "digest": "sha256:0279313be947f78b7e5dc531e797dd0a57e9aef2001db4ef99081be6674d97f3"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/technical-definition.schema.json",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:122d917505b9bd1f488fac34c34613e4a48dc6f0bdf050308bbee51d40f3c3a7"
+    }
+  ]
+}

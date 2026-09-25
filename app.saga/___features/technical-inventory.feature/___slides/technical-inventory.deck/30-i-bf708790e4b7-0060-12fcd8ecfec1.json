@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "independent-facts",
+  "slide": "technical-inventory-proposed-revisions",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Keep newness and evidence health separate",
+  "description": "Newness names a baseline/head comparison; proposal status describes the selected revision. Implementation, source currency, tests, integration and human approval remain independent facts.",
+  "selector": {
+    "type": "element",
+    "element_id": "independent-facts"
+  }
+}

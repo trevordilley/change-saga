@@ -1,5 +1,17 @@
 # Change Saga UX reframe
 
+Status: historical v2/v3 documentation-reader direction, retained for the
+legacy report routes and the secondary code workspace. It is not the
+pull-request review contract.
+
+For v5 pull-request reviews, the review is the implementation-style slide deck:
+the thumbnail rail and fitted authored slide fill the review workspace on
+entry, while Code Diff and Coverage remain secondary views. See
+[review-ux-improvements.md](review-ux-improvements.md) and
+[renderer-ui.md](renderer-ui.md). The chapter-first recommendations below apply
+only to legacy report/documentation navigation; they must not be used to wrap,
+replace, or defer the review deck.
+
 ## Outcome
 
 Change Saga should make a very large change feel like a sequence of small,
@@ -7,18 +19,18 @@ finishable review sessions. The interface presents the story first, keeps
 mechanical coverage guarantees in the validator, and reveals review controls
 only when the reviewer asks for them.
 
-The primary experience is:
+The primary legacy report experience is:
 
 1. Read a short saga overview.
 2. Choose one chapter from a collapsed chapter list.
 3. Review that chapter on its own page, with linked code available in a drawer.
-4. Record comments, annotations, and a chapter decision without leaving the
-   chapter.
+4. Read its linked evidence without turning documentation into a pull-request
+   approval surface.
 5. Return later and resume at the next unfinished chapter.
 
-The complete code comparison remains a separate, first-class view. It uses a
-real file tree and a full-width, syntax-aware diff surface. Selecting a diff can
-also reveal excerpts from every related saga fragment.
+The complete code comparison remains a separate, first-class secondary view.
+It uses a real file tree and a full-width, syntax-aware diff surface. Selecting
+a diff can also reveal excerpts from every related saga fragment.
 
 ## Product principles
 
@@ -97,6 +109,10 @@ Acceptance criteria:
   URIs, internal paths, or coverage percentages.
 
 ## Workstream B: review controls and annotation toolbox
+
+This workstream describes the legacy chapter renderer. The v5 pull-request
+review instead uses one compact palette on the active slide and records
+decisions on the complete slide; Items remain evidence and discussion targets.
 
 - Replace repeated approval/change forms with one icon/menu per reviewable
   target that opens a popover or modal.

@@ -73,22 +73,53 @@ type SlideManifest struct {
 	ExceptionRationale string   `json:"exception_rationale,omitempty"`
 }
 
+// DocumentationLink pins a reusable Component, System or data-entity definition.
+// It never transfers that record's code ownership to the linking Item.
+type DocumentationLink struct {
+	Target   string `json:"target"`
+	Revision string `json:"revision"`
+}
+
+// ItemSelection explicitly selects part of one evidence reference reached
+// through declared links from the Item's documentation pin. Path[0] is that
+// pin; every later hop must be declared by the previous hop's saved revision.
+// Evidence names a stable evidence ID in the last hop's revision and Code is the
+// selected subset of that reference: same commit/path, a narrower or equal line
+// range and the digest of the selected bytes only. It is inventory format 2.
+type ItemSelection struct {
+	ID       string              `json:"id"`
+	Path     []DocumentationLink `json:"path"`
+	Evidence string              `json:"evidence"`
+	Code     coderef.Reference   `json:"code"`
+}
+
+// MaxItemSelections and MaxSelectionPath bound one Item's selections.
+const (
+	MaxItemSelections = 64
+	MaxSelectionPath  = 8
+)
+
 type ItemManifest struct {
-	Version     int              `json:"version"`
-	ID          string           `json:"id"`
-	SlideID     string           `json:"slide"`
-	Rank        int              `json:"rank"`
-	Kind        string           `json:"kind"`
-	Label       string           `json:"label"`
-	Description string           `json:"description,omitempty"`
-	Selector    LandmarkSelector `json:"selector"`
-	Hotspot     *LandmarkRegion  `json:"hotspot,omitempty"`
-	About       string           `json:"about,omitempty"`
-	Body        string           `json:"body,omitempty"`
-	Placement   string           `json:"placement,omitempty"`
-	Leader      string           `json:"leader,omitempty"`
-	// Record is the persona, feature, or story URN an onboarding Item explains.
-	// Only onboarding Items carry it; implementation Items reference code.
+	Documentation *DocumentationLink `json:"documentation,omitempty"`
+	// DocumentationView is the full commit of the saved Saga view that admitted a
+	// non-current Documentation pin. Empty means the pin was admitted as current.
+	DocumentationView string           `json:"documentation_view,omitempty"`
+	Selections        []ItemSelection  `json:"selections,omitempty"`
+	Version           int              `json:"version"`
+	ID                string           `json:"id"`
+	SlideID           string           `json:"slide"`
+	Rank              int              `json:"rank"`
+	Kind              string           `json:"kind"`
+	Label             string           `json:"label"`
+	Description       string           `json:"description,omitempty"`
+	Selector          LandmarkSelector `json:"selector"`
+	Hotspot           *LandmarkRegion  `json:"hotspot,omitempty"`
+	About             string           `json:"about,omitempty"`
+	Body              string           `json:"body,omitempty"`
+	Placement         string           `json:"placement,omitempty"`
+	Leader            string           `json:"leader,omitempty"`
+	// Record retains the role-specific onboarding/review record link.
+	// Implementation Items use Documentation for reusable technical definitions.
 	Record string `json:"record,omitempty"`
 }
 

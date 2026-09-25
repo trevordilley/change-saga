@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/snapshot.go",
+      "start": 22,
+      "end": 23,
+      "digest": "sha256:5cb149e082d45385227ae47e36e185a2b4e308916b1e00674e0ab66265967d8e",
+      "note": "Reviewer coverage includes inherited selections; the derived snapshot format moves to v4."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/snapshot.go",
+      "start": 283,
+      "end": 290,
+      "digest": "sha256:23c8f5d83b454c314747e821058824a01107eb144ba3b8d40ce7fab0a7f6fd42",
+      "note": "Reviewer coverage includes inherited selections; the derived snapshot format moves to v4."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/snapshot.go",
+      "start": 430,
+      "end": 431,
+      "digest": "sha256:7336a9bc287247fb75a4745d23f1984156c89d4623c16566ab379938db312092",
+      "note": "Reviewer coverage includes inherited selections; the derived snapshot format moves to v4."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/snapshot.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:8e6e4bfe77bfd8a893861caecad38d77a63c9e05867ae79161b87c1eb63f0df6",
+      "note": "Reviewer coverage includes inherited selections; the derived snapshot format moves to v4."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/snapshot.go",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:733993769fe372ff1d31d676fd6db040e1f1c8c3ec28f24ffe3b419d9cec4309",
+      "note": "Reviewer coverage includes inherited selections; the derived snapshot format moves to v4."
+    }
+  ]
+}

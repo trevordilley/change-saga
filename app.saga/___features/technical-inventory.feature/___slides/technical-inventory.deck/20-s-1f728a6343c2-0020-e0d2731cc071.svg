@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#245d8c"/></marker></defs>
+<text x="60" y="55" font-family="Arial,sans-serif" font-size="18" fill="#486173">TECHNICAL INVENTORY · IMPLEMENTATION</text>
+<text x="60" y="111" font-family="Arial,sans-serif" font-size="38" fill="#142638">Author once; inspect explicit references</text>
+<text x="60" y="157" font-family="Arial,sans-serif" font-size="21" fill="#486173">Public writers pin exact code; bounded queries and slide guards expose reference health.</text>
+<g id="writer"><rect x="60" y="235" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="78" y="271" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Public record author</text>
+<text x="78" y="308" font-family="Arial,sans-serif" font-size="20" fill="#142638">Complete JSON → exact pins</text>
+<text x="78" y="341" font-family="Arial,sans-serif" font-size="18" fill="#486173">Source identity + byte digest</text>
+<path d="M390 300H850" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<g id="query"><rect x="850" y="235" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="868" y="271" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Inventory query</text>
+<text x="868" y="308" font-family="Arial,sans-serif" font-size="20" fill="#142638">Current heads + code health</text>
+<text x="868" y="341" font-family="Arial,sans-serif" font-size="18" fill="#486173">Snapshot-bound pages</text>
+<path d="M1015 365V455" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<g id="transaction"><rect x="60" y="455" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="78" y="491" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Slide authoring</text>
+<text x="78" y="528" font-family="Arial,sans-serif" font-size="20" fill="#142638">Item documentation is explicit</text>
+<text x="78" y="561" font-family="Arial,sans-serif" font-size="18" fill="#486173">Retain old pins; inspect repins</text>
+<path d="M390 520H850" fill="none" stroke="#245d8c" stroke-width="3" marker-end="url(#arrow)"/>
+</g>
+<g id="validate"><rect x="850" y="455" width="330" height="130" rx="10" fill="white" stroke="#245d8c" stroke-width="2"/>
+<text x="868" y="491" font-family="Arial,sans-serif" font-size="25" fill="#245d8c">Reference guard</text>
+<text x="868" y="528" font-family="Arial,sans-serif" font-size="20" fill="#142638">New links must be current</text>
+<text x="868" y="561" font-family="Arial,sans-serif" font-size="18" fill="#486173">Old links retain honest status</text>
+</g>
+<text x="445" y="406" font-family="Arial,sans-serif" font-size="21" fill="#486173">explicit records and guards</text>
+<text x="60" y="683" font-family="Arial,sans-serif" font-size="20" fill="#486173">Saved definitions never silently repin slides or approve reviews.</text>
+</svg>

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 393,
+      "end": 394,
+      "digest": "sha256:6e28fae8b9b5caf0bbc970c8c90660da67ea0546716ed4892c302cfa1695d989",
+      "note": "Replaced: the flat sidebar list of every definition."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 397,
+      "end": 419,
+      "digest": "sha256:33cd7b0d3fdc1fcd93dd23cf8152c8ed402b601199713f043d02c8101617f8ed",
+      "note": "Replaced: the flat sidebar list of every definition."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:f37a3700375c4be0ddd0a4b3495dd5a2dfa19c2f559b04bdca690fe72d343e12",
+      "note": "Replaced: the flat sidebar list of every definition."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
-  <title id="title">Implemented contextual comments versus missing PR-review spatial overlays</title>
-  <desc id="desc">A rendered PR-review visual branches to implemented semantic comments anchored to a slide or Item, while freehand marks, shapes, and text overlays stop at an explicit unimplemented boundary. Prototype annotations are separate requirement-traceability edges, not PR-review drawing overlays.</desc>
+  <title id="title">Contextual comments and spatial review annotations</title>
+  <desc id="desc">A review visual supports slide and Item discussion plus normalized drawing and note anchors. Both persist as append-only comment threads. Prototype annotations separately link visuals to requirements.</desc>
   <defs>
     <style>.ui{font-family:Inter,system-ui,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,monospace}.h{font-size:30px;font-weight:750;fill:#10213d}.sub{font-size:15px;fill:#526178}.label{font-size:21px;font-weight:750;fill:#152542}.small{font-size:14px;fill:#445570}.ok{fill:none;stroke:#3f8059;stroke-width:5;marker-end:url(#g)}.gap{fill:none;stroke:#b4384b;stroke-width:5;stroke-dasharray:11 8;marker-end:url(#r)}</style>
     <marker id="g" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L9 3L0 6Z" fill="#3f8059"/></marker>
@@ -8,8 +8,8 @@
     <pattern id="stripe" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M-2 12L12-2M4 16L16 4" stroke="#f6d9de" stroke-width="1.5"/></pattern>
   </defs>
   <rect width="1280" height="720" fill="#f8fafc"/>
-  <text class="ui h" x="58" y="56">The collaboration fork is explicit: comments exist, drawing does not</text>
-  <text class="ui sub" x="58" y="83">Prototype annotations pin regions or elements to requirements; PR-review drawing remains unimplemented.</text>
+  <text class="ui h" x="58" y="56">Comments and drawing share the same review history</text>
+  <text class="ui sub" x="58" y="83">Review marks belong to discussion; prototype annotations remain requirement links.</text>
 
   <g id="slide" class="ui">
     <rect x="70" y="160" width="350" height="410" rx="24" fill="#e8f1ff" stroke="#4d76b0" stroke-width="3"/>
@@ -33,13 +33,13 @@
     <text class="mono small" x="636" y="394">comments/&lt;event&gt;.json</text>
   </g>
 
-  <path class="gap" d="M420 455C572 455 571 520 650 520"/><text class="ui small" x="473" y="444" fill="#9a2d40">stops here</text>
+  <path class="ok" d="M420 455C572 455 571 520 650 520"/><text class="ui small" x="473" y="444" fill="#9a2d40">append-only</text>
   <g id="annotation-gap" class="ui">
-    <rect x="650" y="448" width="560" height="190" rx="24" fill="url(#stripe)" stroke="#b4384b" stroke-width="3" stroke-dasharray="10 7"/>
+    <rect x="650" y="448" width="560" height="190" rx="24" fill="#eaf8ef" stroke="#43805a" stroke-width="3"/>
     <rect x="670" y="463" width="520" height="158" rx="16" fill="#fff" fill-opacity=".94"/>
-    <text class="label" x="684" y="491" fill="#8d2536">Missing PR-review spatial overlay</text>
-    <text class="small" x="684" y="516" fill="#6f3d47">Prototype annotations are requirement pins, not review marks.</text>
-    <g transform="translate(686 532)"><path d="M0 32C35-12 70 70 106 20S176 65 212 18" fill="none" stroke="#b4384b" stroke-width="5"/><rect x="244" y="0" width="84" height="62" rx="8" fill="none" stroke="#b4384b" stroke-width="4"/><text class="small" x="350" y="18" fill="#8d2536">freehand · shapes · text</text><text class="small" x="350" y="40" fill="#8d2536">author-visible</text><text class="small" x="350" y="61" fill="#8d2536">source-preserving</text></g>
-    <text class="small" x="684" y="614" fill="#8d2536">No review record · no tool state · no review mutation · no tests</text>
+    <text class="label" x="684" y="491" fill="#8d2536">Spatial annotations</text>
+    <text class="small" x="684" y="516" fill="#6f3d47">Normalized geometry + note text, attached to a review thread.</text>
+    <g transform="translate(686 532)"><path d="M0 32C35-12 70 70 106 20S176 65 212 18" fill="none" stroke="#b4384b" stroke-width="5"/><rect x="244" y="0" width="84" height="62" rx="8" fill="none" stroke="#b4384b" stroke-width="4"/><text class="small" x="350" y="18" fill="#8d2536">draw · highlight · note</text><text class="small" x="350" y="40" fill="#8d2536">thread discussion</text><text class="small" x="350" y="61" fill="#8d2536">source unchanged</text></g>
+    <text class="small" x="684" y="614" fill="#8d2536">Create → append update / delete → reload projected state</text>
   </g>
 </svg>

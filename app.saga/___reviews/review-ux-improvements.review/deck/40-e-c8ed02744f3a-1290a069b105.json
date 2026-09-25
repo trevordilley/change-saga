@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/icons.go",
+      "start": 25,
+      "end": 27,
+      "digest": "sha256:db11d0d28ea2152e62ce27ea29c14bdf5f67822103e999cd6acdc66ae330e9ff",
+      "note": "fidelity audit: edit correctness owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/icons.go",
+      "start": 29,
+      "end": 38,
+      "digest": "sha256:e3e4d17dce93df6c5b79964b12d57c23303dc58abdb943dd5c52e167faee2f64",
+      "note": "fidelity audit: edit correctness owns these changed lines on this comparison side."
+    }
+  ]
+}

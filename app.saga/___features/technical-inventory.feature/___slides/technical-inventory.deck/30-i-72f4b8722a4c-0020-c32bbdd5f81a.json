@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "job",
+  "slide": "technical-inventory-authored-erd",
+  "rank": 20,
+  "kind": "example",
+  "label": "PDF generation job",
+  "description": "Illustrative logical JSON entity showing only identity, correlation and input location. These example fields are not a committed product schema.",
+  "selector": {
+    "type": "element",
+    "element_id": "job"
+  }
+}

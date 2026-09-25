@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "fixture",
+  "slide": "ti-records-review-proof",
+  "rank": 20,
+  "kind": "example",
+  "label": "Shared inventory fixture",
+  "description": "WriteInventoryFixture publishes a realistic format-2 inventory through the real writers for the query and UI slices.",
+  "selector": {
+    "type": "element",
+    "element_id": "fixture"
+  }
+}

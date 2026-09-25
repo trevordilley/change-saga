@@ -1,0 +1,559 @@
+{
+  "version": 1,
+  "deck": "documentation-coverage",
+  "slide": "reconciliation-loop",
+  "current": "sha256:623aa6d3ee282edc9208f0f2329ecff26f875f7ab3c6160885c837651aea580e",
+  "revisions": [
+    {
+      "snapshot": "sha256:cd8dfdde90bfdfff9522becd6e9e48d0ff88671aee20eb99ed32f78131a45a54",
+      "request_id": "documentation-reconciliation-loop-v1",
+      "created_at": "2026-09-24T20:30:44.685866Z",
+      "asset": "24-a-be9b3c39e915e1767dd409c99db0047c2ae8fba388b072736466.svg",
+      "asset_digest": "sha256:be9b3c39e915e1767dd409c99db0047c2ae8fba388b0727364668028a1308613",
+      "slide": {
+        "version": 4,
+        "id": "reconciliation-loop",
+        "deck": "documentation-coverage",
+        "title": "Reconcile the current explanation",
+        "rank": 50,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-be9b3c39e915e1767dd409c99db0047c2ae8fba388b072736466.svg",
+        "takeaway": "Review coverage, HEAD currency and declared impact stay separate; inspect affected records, repair what changed, then check again.",
+        "reading_order": [
+          "review",
+          "currency",
+          "impact",
+          "reassess",
+          "repair"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "review",
+            "slide": "reconciliation-loop",
+            "rank": 0,
+            "kind": "node",
+            "label": "Review comparison",
+            "description": "Review coverage is independent of living documentation currency; the report preserves both comparison endpoints.",
+            "selector": {
+              "type": "element",
+              "element_id": "review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 211,
+                  "end": 224,
+                  "digest": "sha256:404f75c5164e524afb8bb35cba85502fea040f80443c6caee84f62e0d4e36dc8",
+                  "note": "Review coverage is independent of living documentation currency; the report preserves both comparison endpoints."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-review",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Review coverage is independent of living documentation currency; the report preserves both comparison endpoints."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "currency",
+            "slide": "reconciliation-loop",
+            "rank": 10,
+            "kind": "node",
+            "label": "HEAD reference currency",
+            "description": "Resolve living references against the selected head, distinguish baseline debt and new regressions, and retain superseded quality evidence as historical.",
+            "selector": {
+              "type": "element",
+              "element_id": "currency"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 271,
+                  "end": 331,
+                  "digest": "sha256:4372d715b6732dfa78c98c00645d57658d2a5721ffcb88a87eaaf43681b3f26b",
+                  "note": "Resolve living references against the selected head, distinguish baseline debt and new regressions, and retain superseded quality evidence as historical."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-currency",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Resolve living references against the selected head, distinguish baseline debt and new regressions, and retain superseded quality evidence as historical."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "impact",
+            "slide": "reconciliation-loop",
+            "rank": 20,
+            "kind": "node",
+            "label": "Declared impact",
+            "description": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment.",
+            "selector": {
+              "type": "element",
+              "element_id": "impact"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 352,
+                  "end": 366,
+                  "digest": "sha256:7270d29fe02cab0d05ee95fb0059e36ca62f33876e89561360a6309d3a3ad90f",
+                  "note": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/changeview/layers.go",
+                  "start": 421,
+                  "end": 488,
+                  "digest": "sha256:2f0f3f65b1f6e3db5ad5076aa258be7bec6ca5c48e80268596031642d587df58",
+                  "note": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-impact",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:explain-impact",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "reassess",
+            "slide": "reconciliation-loop",
+            "rank": 30,
+            "kind": "node",
+            "label": "Reassessment boundary",
+            "description": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit.",
+            "selector": {
+              "type": "element",
+              "element_id": "reassess"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 168,
+                  "end": 172,
+                  "digest": "sha256:3918897e29d70cceefa84cf709ade59607b3f9072ec4a6319dd2501d60ced4ee",
+                  "note": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 440,
+                  "end": 451,
+                  "digest": "sha256:dde793a4415e6920d4ed2eb8c4d03d7466b5bdbfe35c5bef171ea91c1abd89ef",
+                  "note": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-reassess",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "repair",
+            "slide": "reconciliation-loop",
+            "rank": 40,
+            "kind": "node",
+            "label": "Typed repair loop",
+            "description": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs.",
+            "selector": {
+              "type": "element",
+              "element_id": "repair"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 422,
+                  "end": 436,
+                  "digest": "sha256:e461ff3e7d25fa43fa13fbc33cbd228d6a35e13d1bb909b53454e2fcf19281f8",
+                  "note": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 455,
+                  "end": 470,
+                  "digest": "sha256:073631a5fb59bb92d856e1defc8bada94efdc54129450fefd7cd10c9bccee585",
+                  "note": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation_test.go",
+                  "start": 35,
+                  "end": 77,
+                  "digest": "sha256:be9669282503d6f4311c8f0709adfe35a4508ca192eaca2fd831964572eb3f4c",
+                  "note": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-repair",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:623aa6d3ee282edc9208f0f2329ecff26f875f7ab3c6160885c837651aea580e",
+      "parent_snapshots": [
+        "sha256:cd8dfdde90bfdfff9522becd6e9e48d0ff88671aee20eb99ed32f78131a45a54"
+      ],
+      "request_id": "repin-4e47d2c1-reconciliation-loop",
+      "created_at": "2026-09-25T03:59:26.051492Z",
+      "asset": "24-a-be9b3c39e915e1767dd409c99db0047c2ae8fba388b072736466.svg",
+      "asset_digest": "sha256:be9b3c39e915e1767dd409c99db0047c2ae8fba388b0727364668028a1308613",
+      "slide": {
+        "version": 4,
+        "id": "reconciliation-loop",
+        "deck": "documentation-coverage",
+        "title": "Reconcile the current explanation",
+        "rank": 50,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-be9b3c39e915e1767dd409c99db0047c2ae8fba388b072736466.svg",
+        "takeaway": "Review coverage, HEAD currency and declared impact stay separate; inspect affected records, repair what changed, then check again.",
+        "reading_order": [
+          "review",
+          "currency",
+          "impact",
+          "reassess",
+          "repair"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "review",
+            "slide": "reconciliation-loop",
+            "rank": 0,
+            "kind": "node",
+            "label": "Review comparison",
+            "description": "Review coverage is independent of living documentation currency; the report preserves both comparison endpoints.",
+            "selector": {
+              "type": "element",
+              "element_id": "review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 211,
+                  "end": 224,
+                  "digest": "sha256:404f75c5164e524afb8bb35cba85502fea040f80443c6caee84f62e0d4e36dc8",
+                  "note": "Review coverage is independent of living documentation currency; the report preserves both comparison endpoints."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-review",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Review coverage is independent of living documentation currency; the report preserves both comparison endpoints."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "currency",
+            "slide": "reconciliation-loop",
+            "rank": 10,
+            "kind": "node",
+            "label": "HEAD reference currency",
+            "description": "Resolve living references against the selected head, distinguish baseline debt and new regressions, and retain superseded quality evidence as historical.",
+            "selector": {
+              "type": "element",
+              "element_id": "currency"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 288,
+                  "end": 288,
+                  "digest": "sha256:236725b8343bf086c6b9eeec8af0ec88885a6a6e5751c20d6a1e0a28e02a4280",
+                  "note": "Resolve living references against the selected head, distinguish baseline debt and new regressions, and retain superseded quality evidence as historical."
+                },
+                {
+                  "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 296,
+                  "end": 355,
+                  "digest": "sha256:1a08981368816f9ccb292e2c47157d19a0d59b9be00d409100a3d9b02fbecc93",
+                  "note": "Resolve living references against the selected head, distinguish baseline debt and new regressions, and retain superseded quality evidence as historical."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-currency",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Resolve living references against the selected head, distinguish baseline debt and new regressions, and retain superseded quality evidence as historical."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "impact",
+            "slide": "reconciliation-loop",
+            "rank": 20,
+            "kind": "node",
+            "label": "Declared impact",
+            "description": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment.",
+            "selector": {
+              "type": "element",
+              "element_id": "impact"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 352,
+                  "end": 366,
+                  "digest": "sha256:7270d29fe02cab0d05ee95fb0059e36ca62f33876e89561360a6309d3a3ad90f",
+                  "note": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/changeview/layers.go",
+                  "start": 421,
+                  "end": 488,
+                  "digest": "sha256:2f0f3f65b1f6e3db5ad5076aa258be7bec6ca5c48e80268596031642d587df58",
+                  "note": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-impact",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:explain-impact",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Follow declared code and requirement links to implicated records; requirement-only changes still queue reassessment."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "reassess",
+            "slide": "reconciliation-loop",
+            "rank": 30,
+            "kind": "node",
+            "label": "Reassessment boundary",
+            "description": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit.",
+            "selector": {
+              "type": "element",
+              "element_id": "reassess"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 168,
+                  "end": 172,
+                  "digest": "sha256:3918897e29d70cceefa84cf709ade59607b3f9072ec4a6319dd2501d60ced4ee",
+                  "note": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 440,
+                  "end": 451,
+                  "digest": "sha256:dde793a4415e6920d4ed2eb8c4d03d7466b5bdbfe35c5bef171ea91c1abd89ef",
+                  "note": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-reassess",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "An affected record needs inspection; current pins do not establish semantic correctness or require a mechanical edit."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "repair",
+            "slide": "reconciliation-loop",
+            "rank": 40,
+            "kind": "node",
+            "label": "Typed repair loop",
+            "description": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs.",
+            "selector": {
+              "type": "element",
+              "element_id": "repair"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 422,
+                  "end": 436,
+                  "digest": "sha256:e461ff3e7d25fa43fa13fbc33cbd228d6a35e13d1bb909b53454e2fcf19281f8",
+                  "note": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 455,
+                  "end": 470,
+                  "digest": "sha256:073631a5fb59bb92d856e1defc8bada94efdc54129450fefd7cd10c9bccee585",
+                  "note": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+                  "path": "internal/cli/reconciliation_test.go",
+                  "start": 35,
+                  "end": 77,
+                  "digest": "sha256:be9669282503d6f4311c8f0709adfe35a4508ca192eaca2fd831964572eb3f4c",
+                  "note": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "reconcile-repair",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

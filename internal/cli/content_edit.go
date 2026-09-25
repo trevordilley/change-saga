@@ -10,6 +10,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"reflect"
 	"sort"
 	"strings"
 
@@ -590,7 +591,7 @@ func findEditableItem(document *saga.Saga, review, slideValue, value string) (*s
 	return nil, nil, fmt.Errorf("--item must identify an existing Item by URN, or by id with --slide")
 }
 
-func ReviseItem(_ context.Context, args []string, out io.Writer) error {
+func ReviseItem(ctx context.Context, args []string, out io.Writer) error {
 	flags, dryRun, jsonOutput := contentEditFlags("revise-item", out)
 	itemValue := flags.String("item", "", "Item URN, or its id with --slide")
 	slideValue := flags.String("slide", "", "slide holding the Item, when --item is an id")
@@ -605,6 +606,11 @@ func ReviseItem(_ context.Context, args []string, out io.Writer) error {
 	body := flags.String("body", "", "callout body")
 	placement := flags.String("placement", "", "top, right, bottom, left, or overlay")
 	leader := flags.String("leader", "", "none, line, or arrow")
+	documentation := flags.String("documentation", "", "Component/System URN; empty clears the link with empty revision")
+	documentationRevision := flags.String("documentation-revision", "", "exact canonical definition revision URN")
+	documentationView := flags.String("documentation-view", "", "saved Saga commit that admits a non-current pin; empty clears it")
+	selectionsFile := flags.String("selections", "", "JSON array replacing the Item's code selections; [] clears them")
+	repo := flags.String("repo", "", "source checkout for saved views and selections")
 	record := flags.String("record", "", "the record the item points at")
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative item order")
@@ -644,6 +650,42 @@ func ReviseItem(_ context.Context, args []string, out io.Writer) error {
 					stringField(flags, "leader", leader, &manifest.Leader),
 					stringField(flags, "record", record, &manifest.Record),
 					intField(flags, "rank", &rank, &manifest.Rank),
+				}
+				if flagWasSet(flags, "documentation") || flagWasSet(flags, "documentation-revision") || flagWasSet(flags, "documentation-view") || flagWasSet(flags, "selections") {
+					pin, view, selections := manifest.Documentation, manifest.DocumentationView, manifest.Selections
+					if flagWasSet(flags, "documentation") || flagWasSet(flags, "documentation-revision") {
+						if !flagWasSet(flags, "documentation") || !flagWasSet(flags, "documentation-revision") {
+							return fmt.Errorf("provide both --documentation and --documentation-revision")
+						}
+						pin = nil
+						if *documentation != "" || *documentationRevision != "" {
+							pin = &saga.DocumentationLink{Target: *documentation, Revision: *documentationRevision}
+						}
+						if !reflect.DeepEqual(pin, manifest.Documentation) {
+							// A new pin is admitted on its own terms; a view or
+							// selections from the old pin never carry over silently.
+							view, selections = "", nil
+						}
+					}
+					if flagWasSet(flags, "documentation-view") {
+						view = *documentationView
+					}
+					if flagWasSet(flags, "selections") {
+						requested, err := readItemSelections(*selectionsFile)
+						if err != nil {
+							return err
+						}
+						selections = requested
+					}
+					previous := item.ItemManifest
+					resolvedView, prepared, err := prepareItemInventoryLinks(ctx, document.Root, document.Manifest, itemInventoryLinks{Documentation: pin, View: view, Selections: selections, Previous: &previous, Checkout: *repo})
+					if err != nil {
+						return err
+					}
+					changed := !reflect.DeepEqual(pin, manifest.Documentation) || resolvedView != manifest.DocumentationView || !reflect.DeepEqual(prepared, manifest.Selections)
+					changes = append(changes, fieldChange{name: "documentation", set: true, changed: changed, apply: func() {
+						manifest.Documentation, manifest.DocumentationView, manifest.Selections = pin, resolvedView, prepared
+					}})
 				}
 				if *elementID != "" || *region != "" {
 					selector := saga.LandmarkSelector{Type: "element", ElementID: *elementID}

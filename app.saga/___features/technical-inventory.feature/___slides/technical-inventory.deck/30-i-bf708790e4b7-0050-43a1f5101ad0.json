@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "deck-pins",
+  "slide": "technical-inventory-proposed-revisions",
+  "rank": 50,
+  "kind": "edge",
+  "label": "Plan and delivery retain distinct pins",
+  "description": "Design and delivered deck versions pin the revisions they explain. Their committed history supports comparing planned against delivered behavior; this does not require inventing a second feature identity.",
+  "selector": {
+    "type": "element",
+    "element_id": "deck-pins"
+  }
+}

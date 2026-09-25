@@ -230,19 +230,20 @@ type FragmentContent struct {
 }
 
 type SemanticLandmark struct {
-	Target         string               `json:"target"`
-	ID             string               `json:"id"`
-	Label          string               `json:"label"`
-	Description    string               `json:"description,omitempty"`
-	Selector       *LandmarkValue       `json:"selector"`
-	Diffs          CompactDiffs         `json:"diffs"`
-	Kind           string               `json:"kind,omitempty"`
-	About          string               `json:"about,omitempty"`
-	Body           string               `json:"body,omitempty"`
-	Placement      string               `json:"placement,omitempty"`
-	Leader         string               `json:"leader,omitempty"`
-	Evidence       []saga.CodeFile      `json:"evidence,omitempty"`
-	CriterionLinks []saga.CriterionLink `json:"criterion_links,omitempty"`
+	Documentation  *saga.DocumentationLink `json:"documentation,omitempty"`
+	Target         string                  `json:"target"`
+	ID             string                  `json:"id"`
+	Label          string                  `json:"label"`
+	Description    string                  `json:"description,omitempty"`
+	Selector       *LandmarkValue          `json:"selector"`
+	Diffs          CompactDiffs            `json:"diffs"`
+	Kind           string                  `json:"kind,omitempty"`
+	About          string                  `json:"about,omitempty"`
+	Body           string                  `json:"body,omitempty"`
+	Placement      string                  `json:"placement,omitempty"`
+	Leader         string                  `json:"leader,omitempty"`
+	Evidence       []saga.CodeFile         `json:"evidence,omitempty"`
+	CriterionLinks []saga.CriterionLink    `json:"criterion_links,omitempty"`
 }
 
 // ResolvedSelector is one persisted code reference viewed in the comparison.

@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "same-swipe",
+  "deck": "directory-mobile-width",
+  "title": "The same swipe now moves the table, not the page",
+  "rank": 10,
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-a5684716b876-0010-c15e21c06559.svg",
+  "takeaway": "On a 390px phone the directory pages no longer widen to fit their tables: a sideways swipe scrolls only the table, and the tabs and filter stay put.",
+  "reading_order": [
+    "before-page-pans",
+    "after-table-scrolls",
+    "measured-widths"
+  ]
+}

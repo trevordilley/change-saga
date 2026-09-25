@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "path": "internal/saga/model.go",
+      "start": 76,
+      "end": 82,
+      "digest": "sha256:861c9545dd0560aeb6085baf989e9867b8dd91a99fbcb0387a4b28d53912d2ba",
+      "note": "The current Item documentation pin explicitly transfers no code ownership. Proposed selected-subset inheritance must be designed separately."
+    }
+  ]
+}

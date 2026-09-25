@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "intent-input",
+  "slide": "technical-inventory-policy-decisions",
+  "rank": 40,
+  "kind": "example",
+  "label": "An implemented entity may retain a proposed relationship",
+  "description": "Entity intent does not classify every outgoing relationship. A proposed edge remains visible as remaining work even when its endpoint entities exist.",
+  "selector": {
+    "type": "element",
+    "element_id": "intent-input"
+  }
+}

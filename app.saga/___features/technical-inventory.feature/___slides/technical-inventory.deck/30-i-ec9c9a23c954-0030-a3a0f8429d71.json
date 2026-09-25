@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "demo",
+  "slide": "technical-inventory-verification",
+  "rank": 30,
+  "kind": "node",
+  "label": "Disposable proof",
+  "description": "The public CLI fixture demonstrates shared identity across checkout and search. Full Chromium was45/46; full server race timed out in an existing dogfood test.",
+  "selector": {
+    "type": "element",
+    "element_id": "demo"
+  }
+}

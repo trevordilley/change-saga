@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#245d8c"/></marker></defs>
+<text x="60" y="55" font-family="Arial,sans-serif" font-size="18" fill="#486173">TECHNICAL INVENTORY · CHANGE REVIEW</text>
+<text x="60" y="111" font-family="Arial,sans-serif" font-size="38" fill="#142638">Compatibility and verification boundaries</text>
+<text x="60" y="157" font-family="Arial,sans-serif" font-size="21" fill="#486173">New format, CLI and UI contracts ship together; broad-suite limits remain explicit.</text>
+<g id="contracts"><rect x="60" y="212" width="1160" height="84" rx="8" fill="white" stroke="#bed0dd"/>
+<text x="80" y="246" font-family="Arial,sans-serif" font-size="23" fill="#142638">Public contract</text>
+<text x="80" y="275" font-family="Arial,sans-serif" font-size="19" fill="#486173">SPEC + schemas + CLI + skill</text>
+<text x="690" y="261" font-family="Arial,sans-serif" font-size="21" fill="#245d8c">Existing Saga readability retained</text>
+</g>
+<g id="records"><rect x="60" y="314" width="1160" height="84" rx="8" fill="white" stroke="#bed0dd"/>
+<text x="80" y="348" font-family="Arial,sans-serif" font-size="23" fill="#142638">History / evidence checks</text>
+<text x="80" y="377" font-family="Arial,sans-serif" font-size="19" fill="#486173">Duplicates, conflicts, stale pins</text>
+<text x="690" y="363" font-family="Arial,sans-serif" font-size="21" fill="#245d8c">Focused race tests passed</text>
+</g>
+<g id="browser"><rect x="60" y="416" width="1160" height="84" rx="8" fill="white" stroke="#bed0dd"/>
+<text x="80" y="450" font-family="Arial,sans-serif" font-size="23" fill="#142638">Reviewer interaction checks</text>
+<text x="80" y="479" font-family="Arial,sans-serif" font-size="19" fill="#486173">Keyboard, touch, nested return</text>
+<text x="690" y="465" font-family="Arial,sans-serif" font-size="21" fill="#245d8c">Focused Chromium test passed</text>
+</g>
+<g id="demo"><rect x="60" y="518" width="1160" height="84" rx="8" fill="white" stroke="#bed0dd"/>
+<text x="80" y="552" font-family="Arial,sans-serif" font-size="23" fill="#142638">Disposable proof</text>
+<text x="80" y="581" font-family="Arial,sans-serif" font-size="19" fill="#486173">One FeatureFlag; two features</text>
+<text x="690" y="567" font-family="Arial,sans-serif" font-size="21" fill="#245d8c">Full suites have known limits</text>
+</g>
+<text x="60" y="683" font-family="Arial,sans-serif" font-size="20" fill="#486173">Saved definitions never silently repin slides or approve reviews.</text>
+</svg>

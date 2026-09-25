@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-record-store",
+    "revision": "urn:change-saga:change-saga:component:technical-record-store:revision:r1"
+  },
+  "version": 4,
+  "id": "store",
+  "slide": "technical-inventory-selected-path",
+  "rank": 20,
+  "kind": "node",
+  "label": "Existing Technical record store",
+  "description": "The existing r1 Component references inventory_mutation.go lines 14–96 at fcd342210cd438267cc0c0ffb07282b4682c107f. It is a real starting point for a proposed narrower selection.",
+  "selector": {
+    "type": "element",
+    "element_id": "store"
+  }
+}

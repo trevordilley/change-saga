@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "uses",
+  "deck": "inventory-query-coverage",
+  "title": "What changed: declared reverse uses",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7bf5ed4a5d07-0020-42a371c468f8.svg",
+  "takeaway": "A new projection indexes declared links and a new operation pages reverse uses with explicit completeness.",
+  "reading_order": [
+    "index",
+    "traverse",
+    "completeness",
+    "query"
+  ]
+}

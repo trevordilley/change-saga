@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/testdata/query/help.golden",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0caf17877e7951055a858b3e45e2cdeb7ba51a278f5522028bbb88f9b2874c59",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/testdata/query/help.golden",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:448ea82f3ff4c290d01fcc49cd1d0f09f875a2762d5cfd8678d3e657c2fe3240",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    }
+  ]
+}

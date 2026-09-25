@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:inventory-compose-designs",
+  "parents": [
+    "urn:change-saga:change-saga:story:inventory-compose-designs:revision:r1"
+  ],
+  "title": "Compose designs from shared technical entities",
+  "statement": "As an Architect, I can reference existing Systems, Components, and data entities in implementation decks so my designs use consistent application concepts grounded in the application codebase.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924",
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "shared-identity",
+      "statement": "Two implementation decks can reference the same System, Component, or data entity identity and its saved definition without creating independent copies of that definition."
+    },
+    {
+      "id": "code-grounding",
+      "statement": "An existing entity referenced by a deck exposes its recorded exact code references and their current or stale state; the link alone does not assert that the code is current."
+    },
+    {
+      "id": "contextual-use",
+      "statement": "A deck can explain its own use of the shared entity while retaining the link to the canonical definition."
+    }
+  ],
+  "created_at": "2026-09-24T22:21:54.449364Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "50055150a0fe7a746fc43b68b15f9567ba9654f9",
+      "path": "internal/server/technical.go",
+      "start": 590,
+      "end": 590,
+      "digest": "sha256:e5c77fe6ba84244f2b77bb0b35c24d11431ad02fd57f18ebd7c8c523eb0e5bae",
+      "note": "Technical design scrolled its whole .directory, filter included, with this selector."
+    }
+  ]
+}

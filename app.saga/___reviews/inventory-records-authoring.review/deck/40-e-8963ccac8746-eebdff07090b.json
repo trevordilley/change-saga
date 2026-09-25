@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/savedview/savedview.go",
+      "digest": "sha256:e1f5fd516cf2ae8598cb2c234d3b8556a17fb504ea84ad5bb77f8b04eb60ef4a"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/savedview/savedview.go",
+      "start": 1,
+      "end": 263,
+      "digest": "sha256:e1f5fd516cf2ae8598cb2c234d3b8556a17fb504ea84ad5bb77f8b04eb60ef4a"
+    }
+  ]
+}

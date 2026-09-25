@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-rollout-conflicts",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-rollout:item:conflicts",
+  "to": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+  "scope": "self",
+  "rationale": "Proposed design: Expose all competing heads and require explicit reconciliation parents. Saved pins stay readable without implying currentness; preserving them is not approval or evidence of conflict resolution.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+  "state": "active",
+  "created_at": "2026-09-24T23:15:04.870604Z"
+}

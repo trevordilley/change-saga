@@ -72,6 +72,8 @@ type appNavSources struct {
 	// feature that opens over its four places. Empty on a page that belongs to
 	// no feature, where every feature stays a row.
 	pageFeature string
+	// technical is the Technical design rows, one per definition.
+	technical []*navNodeView
 	// reviewSide says the page is on the Review side of the header, which
 	// lists the reviews where Documentation lists the features.
 	reviewSide bool
@@ -108,6 +110,9 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	}
 	if len(onboarding) > 0 {
 		overview.Children = append(overview.Children, navDeck("Onboarding", "nav-onboarding", "deck", onboarding))
+	}
+	if len(sources.technical) > 0 {
+		overview.Children = append(overview.Children, navSection("Technical design", technicalPath, "nav-technical", "design", sources.technical))
 	}
 	if flags := flagNav(sources.requirements); len(flags) > 0 {
 		overview.Children = append(overview.Children, navSection("Feature flags", "/flags", "nav-featureflags", "flag", flags))

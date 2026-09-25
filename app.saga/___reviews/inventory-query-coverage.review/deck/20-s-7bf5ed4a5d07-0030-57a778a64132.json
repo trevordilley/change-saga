@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "selection",
+  "deck": "inventory-query-coverage",
+  "title": "What changed: inherited selection coverage",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7bf5ed4a5d07-0030-57a778a64132.svg",
+  "takeaway": "Deck coverage now counts exactly the lines of eligible Item selections, labeled as inherited; the document is never modified.",
+  "reading_order": [
+    "path",
+    "eligible",
+    "labeled",
+    "drift"
+  ]
+}

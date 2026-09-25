@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "existing-queue",
+  "slide": "technical-inventory-selection-impact",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Extend the existing reconciliation queue",
+  "description": "Current reconciliation separates HEAD currency from diff/review coverage and emits typed inspection/repair guidance. Linked code grounds that boundary; inventory selection integration is proposed.",
+  "selector": {
+    "type": "element",
+    "element_id": "existing-queue"
+  }
+}

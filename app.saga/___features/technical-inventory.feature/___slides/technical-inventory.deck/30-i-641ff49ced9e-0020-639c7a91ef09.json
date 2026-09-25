@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "code",
+  "slide": "technical-inventory-navigation",
+  "rank": 20,
+  "kind": "node",
+  "label": "Exact code",
+  "description": "The local code renderer shows exact pinned evidence; interaction code is fetched only when expanded and narrow code can scroll.",
+  "selector": {
+    "type": "element",
+    "element_id": "code"
+  }
+}

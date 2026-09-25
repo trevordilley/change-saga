@@ -1,0 +1,16 @@
+{
+  "version": 4,
+  "id": "tdsp-review-nav",
+  "deck": "technical-design-subpages",
+  "title": "The sidebar draws the same tree; addresses stay",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-4dd258840e40-0010-bbfac9063c3f.svg",
+  "takeaway": "Technical design's sidebar nests ERD, Systems and Components, marks the current row, and every existing definition address still works.",
+  "reading_order": [
+    "sidebar",
+    "addresses"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/server_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:8c594b3f0473d5f627190f3adcf5e50c7488c6360a56e1bfbf5bfa48a77c0ce6",
+      "note": "The fragment test goes through the security middleware and uses the new helper that checks every directive of the policy."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/server_test.go",
+      "start": 290,
+      "end": 292,
+      "digest": "sha256:c5bc0ae3ecdbb13cf3518bef3739134a3635e37369e37d81fc62d77a9d1f3d4a",
+      "note": "The fragment test goes through the security middleware and uses the new helper that checks every directive of the policy."
+    },
+    {
+      "commit": "2af2183829a96bc6d378d1ef3bd7e629ac495992",
+      "path": "internal/server/server_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:2ff157dd5a39b58b26e63af7874e7482d6607f5fddcfa8f9e00094cd5a69f188",
+      "note": "The fragment test goes through the security middleware and uses the new helper that checks every directive of the policy."
+    },
+    {
+      "commit": "2af2183829a96bc6d378d1ef3bd7e629ac495992",
+      "path": "internal/server/server_test.go",
+      "start": 290,
+      "end": 320,
+      "digest": "sha256:0e144dfd9b69f7e3d28274cda6f1d8733f2ea68b277cb355af4a4c1d2b1177f5",
+      "note": "The fragment test goes through the security middleware and uses the new helper that checks every directive of the policy."
+    }
+  ]
+}

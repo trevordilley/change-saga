@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "digest": "sha256:57fbf2e39744d5aa91c2e0e0c8b6aa840f525fc67080142103ded67c444b97fd",
+      "note": "New: four browser flows for Technical design, ERD, Item selections and coverage attribution."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 1,
+      "end": 230,
+      "digest": "sha256:57fbf2e39744d5aa91c2e0e0c8b6aa840f525fc67080142103ded67c444b97fd",
+      "note": "New: four browser flows for Technical design, ERD, Item selections and coverage attribution."
+    }
+  ]
+}

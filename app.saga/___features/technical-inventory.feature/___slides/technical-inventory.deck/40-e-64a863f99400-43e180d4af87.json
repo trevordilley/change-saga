@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0ddce8def26d380a77de0e119892d95abc48274",
+      "path": "internal/coverage/coverage.go",
+      "start": 107,
+      "end": 140,
+      "digest": "sha256:510a66f3fa2a652588844214730fa164f4b845bf934083aca33afb35642b4c5c",
+      "note": "Existing ownership union, exact-byte remapping and separate HEAD currency provide extension points. These references do not implement inventory-path selection."
+    },
+    {
+      "commit": "a0ddce8def26d380a77de0e119892d95abc48274",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 131,
+      "end": 166,
+      "digest": "sha256:750a1167773bbd80c2c2c3831d3a0a27dba5452a1dc21fb860dad9359e7793ba",
+      "note": "Existing ownership union, exact-byte remapping and separate HEAD currency provide extension points. These references do not implement inventory-path selection."
+    },
+    {
+      "commit": "a0ddce8def26d380a77de0e119892d95abc48274",
+      "path": "internal/cli/reconciliation.go",
+      "start": 25,
+      "end": 39,
+      "digest": "sha256:5ce578cb0ee1502e93b9fdbd2698e72c0cf308514ed9e6b7688a540d4a61f591",
+      "note": "Existing ownership union, exact-byte remapping and separate HEAD currency provide extension points. These references do not implement inventory-path selection."
+    }
+  ]
+}

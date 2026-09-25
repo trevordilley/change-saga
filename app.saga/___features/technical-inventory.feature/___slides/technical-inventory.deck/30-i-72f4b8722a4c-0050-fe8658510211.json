@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "transformation",
+  "slide": "technical-inventory-authored-erd",
+  "rank": 50,
+  "kind": "edge",
+  "label": "Job produces report",
+  "description": "Dashed directed edge means logical production, not a foreign key. Cardinality is unspecified here; real associations must use explicit ER notation with declared cardinalities rather than invented values.",
+  "selector": {
+    "type": "element",
+    "element_id": "transformation"
+  }
+}

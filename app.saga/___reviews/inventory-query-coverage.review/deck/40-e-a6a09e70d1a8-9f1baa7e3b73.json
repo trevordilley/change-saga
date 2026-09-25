@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/coverage.go",
+      "start": 1,
+      "end": 144,
+      "digest": "sha256:423ea71b32272a9ff4669dd4848f8b03d2f6f6b019afdea9cf7f1926479dab6b",
+      "note": "Coverage types, file measurement and per-line owner union."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/coverage.go",
+      "start": 200,
+      "end": 257,
+      "digest": "sha256:c840f2f3363eaa98e0ef6d401a4ee0b2aea92e46f14bb8d6d606cc1cd16aecb9",
+      "note": "Coverage types, file measurement and per-line owner union."
+    }
+  ]
+}

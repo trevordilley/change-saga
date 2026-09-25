@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-coverage-resolution-reuse",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-coverage-resolution:item:reuse",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+  "scope": "self",
+  "rationale": "Existing byte remapping, per-atom ownership and separate HEAD currency are code-linked foundations. Inventory-path resolution remains proposed; deletion-side diff evidence does not establish HEAD currency.",
+  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-24T23:01:00.973011Z"
+}

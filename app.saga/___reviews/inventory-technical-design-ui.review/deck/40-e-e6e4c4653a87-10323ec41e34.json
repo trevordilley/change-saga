@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/server_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:5bb5697a2894f03a945c886887dd2438321b1f9e69ed1a2266444257da4ed0eb",
+      "note": "The drawer label test follows the generalized label."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:ec9eb758c728fa9abd58ae5b596e082b788703c8f47784ddb062c1ba6b594d41",
+      "note": "The drawer label test follows the generalized label."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "compatibility",
+  "slide": "technical-inventory-rollout",
+  "rank": 0,
+  "kind": "node",
+  "label": "Compatibility before new-format writes",
+  "description": "Format details: docs/technical-inventory-design.md. Settle versioning and legacy reads before new records; preserve old pins/reviews. Unsupported readers must refuse, not discard data. Wire encoding remains proposed.",
+  "selector": {
+    "type": "element",
+    "element_id": "compatibility"
+  }
+}

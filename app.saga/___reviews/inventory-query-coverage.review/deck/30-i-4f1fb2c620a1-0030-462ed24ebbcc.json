@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "selections",
+  "slide": "reconcile",
+  "rank": 30,
+  "kind": "node",
+  "label": "Selection health",
+  "description": "Selections that no longer resolve, whose selected bytes drifted or whose containing evidence changed outside the subset are routed to the Item, never to evidence-file commands.",
+  "selector": {
+    "type": "element",
+    "element_id": "selections"
+  }
+}

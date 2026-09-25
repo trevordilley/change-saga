@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/appjs.go",
+      "start": 2210,
+      "end": 2393,
+      "digest": "sha256:cfcee465892b1baefbec47d0dea0723905e664eaa70282d915bc56fac12ee270",
+      "note": "fidelity audit: edit correctness owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "internal/server/appjs.go",
+      "start": 2426,
+      "end": 2426,
+      "digest": "sha256:e1cd939ffc2eea35bfb841d9c27162f5626146ca9c1eb1b513b9cd3c5ca0fc6e",
+      "note": "fidelity audit: edit correctness owns these changed lines on this comparison side."
+    }
+  ]
+}

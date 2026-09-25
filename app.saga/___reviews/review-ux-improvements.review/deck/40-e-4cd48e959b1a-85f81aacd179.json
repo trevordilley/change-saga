@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 22,
+      "end": 25,
+      "digest": "sha256:cef9d553c0436fe16d0d1e9b68dcb1e1230aad1bae145ca2f9932a114c58f47e",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 38,
+      "end": 51,
+      "digest": "sha256:1122ccab70c7abcb9ec190f5f150f0f7bb83226060da8d65e43e01f053dd2266",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 57,
+      "end": 63,
+      "digest": "sha256:3cc1a683600c0edfa21a05a9f875738fd3b7fae9bfdcacb3483fcfa853e0568d",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 65,
+      "end": 72,
+      "digest": "sha256:f69dfea2a3bf5fbea92455c4668ea11189178f44ca43df97afb42702c2b51a0d",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 76,
+      "end": 77,
+      "digest": "sha256:4feeec57038a7abed02ccefed94824343830bcbad9c42abd9831678ece2c6e9f",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 81,
+      "end": 96,
+      "digest": "sha256:0663fe77bf11d4c296c277f0169a1a8102d7efc193378a51c5be151a6b55f7d2",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 128,
+      "end": 299,
+      "digest": "sha256:abc8e8bb15c93a7e8e0785052a1928b6a0a46a6cbddeb9d9d700ed47b56decee",
+      "note": "fidelity audit: regression proof owns these changed lines on this comparison side."
+    }
+  ]
+}

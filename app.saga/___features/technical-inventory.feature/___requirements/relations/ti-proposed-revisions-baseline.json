@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-proposed-revisions-baseline",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-proposed-revisions:item:baseline",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+  "scope": "self",
+  "rationale": "Proposed revision model retains the implemented baseline and its exact code while a successor is designed.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T22:40:15.810842Z"
+}

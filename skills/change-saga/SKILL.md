@@ -60,8 +60,9 @@ reference. When a task crosses rows, combine only those rows.
 | --- | --- |
 | Inspect or navigate an existing Saga; load compact feature context; resolve current heads, conflicts, evidence, or history | [Reading through the query API](references/query.md) |
 | Audit whether one feature has a current, exact implementation handoff | [Reading through the query API](references/query.md) |
-| Author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
+| Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |
+| Author Component/System definitions, their interactions, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Render slides and run mechanical visual QA | [Diagrams and evidence](references/diagrams.md) |
 | Reconcile a comparison, work with a companion repository, repin landed evidence, recover, or hand off work without changing visuals | [Query](references/query.md), then [integration and recovery](references/integration.md) |
@@ -75,6 +76,11 @@ from a planned capability or another branch. Discover new CLI or query support
 from the installed binary before using it.
 
 ## Work at the requested scope
+
+Before drafting even a conversational candidate story for an existing Saga,
+query its personas and relevant product context. Use the actual persona name
+and stable identity, not a generic role invented from the conversation. Follow
+the grounded interview workflow in [stories and provenance](references/stories.md).
 
 For a new story, capture a persona-focused outcome and independent,
 observable pass/fail criteria. A proposed story may remain criterion-free
@@ -112,7 +118,12 @@ history rather than rewriting what was previously known.
 3. Use the routed reference and public commands to make the smallest complete
    change. Follow returned URNs and evidence record paths; do not reconstruct
    them from storage.
-4. Run `change-saga validate --json <saga>` and the task-relevant bounded
+4. After implementing, verifying, and preparing a PR review deck, run
+   `change-saga reconcile --against <base> --json <saga>`. Inspect the queue,
+   reassess affected living documentation, make justified repairs through
+   typed public paths, then reconcile again. Review coverage is independent
+   of HEAD documentation currency; retain baseline debt and uncertainty.
+   Run `change-saga validate --json <saga>` and the task-relevant bounded
    queries. Use `status --json` and its ordered `next_actions` as a work queue,
    not a verdict. Use
    `check --covers ...` only for the areas the user or team actually requires.

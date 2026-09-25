@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "ti-records-review-writers",
+  "deck": "inventory-records-authoring",
+  "title": "Writers: validate everything, then write",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-3f371ebb8f39-0020-66f34c4f6631.svg",
+  "takeaway": "The CLI resolves commits once; the requirements writer holds the lock and refuses before writing any file.",
+  "reading_order": [
+    "writer",
+    "cli",
+    "adapters",
+    "intent-required"
+  ]
+}

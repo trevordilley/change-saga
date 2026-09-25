@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_erd.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:77f1cbc50706e864d38a236e6a5a6e476b014c95204f02ddac46622b7c16bf76",
+      "note": "Changed: the data model's filter submits to the ERD page, whose section it now is."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_erd.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:ad96f7040aa926fa75d6daafe359e4a8d2a239961721f17d32d920ff5a057899",
+      "note": "Changed: the data model's filter submits to the ERD page, whose section it now is."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_erd.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:01433a47fa99cbbc55383179491e76aff3235fb669197ab11bf38a604209dba9",
+      "note": "Changed: the data model's filter submits to the ERD page, whose section it now is."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_erd.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:1f6393e5700786a47d59c558377e50a700ee7e2ac6574d57d3bb693c688c05bc",
+      "note": "Changed: the data model's filter submits to the ERD page, whose section it now is."
+    }
+  ]
+}

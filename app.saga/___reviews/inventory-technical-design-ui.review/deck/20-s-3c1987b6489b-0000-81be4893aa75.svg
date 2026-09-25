@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">New: Technical design pages</title><desc id="desc">Routes, directories and one canonical page per exact revision.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">REVIEW · TECHNICAL DESIGN UI / 1</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">New: Technical design pages</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Routes, directories and one canonical page per exact revision.</text>
+<g id="routes"><rect x="60" y="190" width="340" height="190" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">SHELL · NAV · ROUTES</text>
+<text x="78" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">/technical, /technical/{kind}/{id}</text>
+<text x="78" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">overview part + sidebar rows</text>
+<text x="78" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">pageData, template funcs</text>
+<text x="78" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">usages endpoint</text>
+</g>
+<path d="M400 285L450 285" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="pages"><rect x="450" y="190" width="360" height="190" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="468" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">technical.go</text>
+<text x="468" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Directories and exact pages</text>
+<text x="468" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">intent · lifecycle · heads · uses</text>
+<text x="468" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">?revision= pin, conflicts named</text>
+<text x="468" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">shared reverse index adapter</text>
+</g>
+<path d="M810 285L860 285" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="newness"><rect x="860" y="190" width="360" height="190" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="878" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">technical_newness.go</text>
+<text x="878" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Newness vs a named base</text>
+<text x="878" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">merge-base inventory via savedview</text>
+<text x="878" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">unknown with reason if unreadable</text>
+<text x="878" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">none when observing</text>
+</g>
+<g id="definition-view"><rect x="60" y="410" width="1160" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="438" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">inventory.go · SHARED DEFINITION VIEW</text>
+<text x="78" y="468" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">One exact-revision view for drawer and page</text>
+<text x="78" y="498" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">intent/baseline/delivery, entity detail, member page links, edge intent,</text>
+<text x="78" y="524" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">page link + lazy usages in the drawer; selections when opened from an Item</text>
+</g>
+<rect x="60" y="604" width="1160" height="72" rx="10" fill="#e6eef6"/><text x="84" y="646" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">Pages read saved revisions; no route writes, repins or approves.</text>
+</svg>

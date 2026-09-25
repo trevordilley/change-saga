@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "measurement",
+  "slide": "pr-request-diff-reuse",
+  "rank": 50,
+  "kind": "metric",
+  "label": "Recorded warm HTTP improvement",
+  "description": "Five alternating warm requests per version measured HTTP medians of 3439.007 and 1072.808 ms. Full HTML matched after token normalization. This measures server completion, not browser first-usable or cold-disk latency.",
+  "selector": {
+    "type": "element",
+    "element_id": "measurement"
+  }
+}

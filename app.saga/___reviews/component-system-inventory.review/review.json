@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "component-system-inventory",
+  "title": "Reusable Component and System documentation",
+  "base": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+  "head": "feature/component-system-inventory",
+  "created_at": "2026-09-24T20:24:32.904721Z"
+}

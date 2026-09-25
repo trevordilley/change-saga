@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 26,
+      "end": 37,
+      "digest": "sha256:bafd9b1c9a37755766fd62dc800e6e74afeb22a4ee4601743d6bb070699e83d6",
+      "note": "Lock and reload a valid Saga, resolve the canonical target, refuse frozen or changed snapshots, then exclusively publish one append-only event."
+    },
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 260,
+      "end": 279,
+      "digest": "sha256:5e632a88a028e883db7dd7bd6592450585d7e26d1e84ed4f41f7281df8d63a9c",
+      "note": "Lock and reload a valid Saga, resolve the canonical target, refuse frozen or changed snapshots, then exclusively publish one append-only event."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-proposed-revisions-deck-pins",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-proposed-revisions:item:deck-pins",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+  "scope": "self",
+  "rationale": "Design and delivered deck versions pin the revisions they explain. Their committed history supports comparing planned against delivered behavior; this does not require inventing a second feature identity.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T22:40:18.063126Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/cli/slides.go",
+      "start": 520,
+      "end": 544,
+      "digest": "sha256:614f35ba21ea68592325a16ad54d42cc7c71d782ae16c62712fe59143e4997ae",
+      "note": "Legacy partial editing preserves stable Item identity; transaction-managed slides reject partial updates and require apply-slide."
+    }
+  ]
+}

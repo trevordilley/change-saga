@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:erd-discover-proposed-changes",
+  "parents": [],
+  "title": "Discover proposed ERD changes through AI queries",
+  "statement": "As a Developer consuming a proposed implementation, I can have my AI retrieve the relevant proposed ERD changes and their design context so I know which data-model work to implement without reconstructing it from prose.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "query-changes",
+      "statement": "Public queries identify the entities and relationships added or changed by the selected design or comparison, including proposals without code evidence."
+    },
+    {
+      "id": "scoped-proposals",
+      "statement": "Queries can restrict proposed data entities and relationships to the relevant design or feature and return the stable identities and declared links establishing that scope."
+    },
+    {
+      "id": "separate-newness",
+      "statement": "Query results distinguish explicit proposed status from newness relative to a specified baseline and head; implemented entities introduced in that comparison remain discoverable as new."
+    },
+    {
+      "id": "handoff-context",
+      "statement": "A query result provides a path to the committed design context and current evidence so a worker can distinguish required work from existing implementation and unresolved knowledge."
+    }
+  ],
+  "created_at": "2026-09-24T22:22:28.708161Z"
+}

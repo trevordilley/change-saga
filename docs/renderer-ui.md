@@ -28,7 +28,10 @@ Never edit committed saga content to hide a word from the chrome.
 - Hairline separators instead of cards. No decorative rounding, shadows, or
   oversized headings on ordinary content.
 - Controls stay invisible until the reviewer hovers or focuses the thing they
-  belong to. Content is central and stays central.
+  belong to. Content is central and stays central. Slide Items remain reachable
+  without hover through the marked-places menu, stable permalink, and keyboard
+  focus; their on-slide affordances use the same quiet treatment in
+  implementation and pull-request decks.
 
 ## Icons
 
@@ -52,6 +55,22 @@ current deck, slide title, and position stay visible so reviewers can orient and
 resume. Fullscreen presentation hides application and review chrome without
 changing the active slide.
 
+A pull-request review uses this same native presentation as its whole default
+surface: thumbnail rail plus one maximally fitted 16:9 slide. It is not a
+document page containing a slide, and it does not require a presentation-mode
+action before the slide fills the available pane. Optional Present removes the
+chrome; it does not switch the reviewer into the deck.
+
+Previous/Next and unmodified arrow or Page keys follow authored order. The URL
+hash owns the active slide or Item, including after a mutation redirect. With no
+hash it starts at the authored first slide: a recorded decision is not treated
+as completion or used to invent a resume verdict. Exact slide Items project
+interactive regions over the visual; their ordinary landmark affordances open
+linked diffs and affected living-Saga records in the existing side drawer. A
+review Item differs from an implementation Item only in what linked code means:
+it opens the exact base/head diff. Code Diff and Coverage remain secondary tabs
+and never displace the deck on entry.
+
 V2/v3 remain legacy reports with their documentation tree and collapsible
 chapters. The renderer must never reinterpret their fragments as slides or
 manufacture deck-break slides. A report becomes a presentation only through an
@@ -63,6 +82,15 @@ filterable changed-file tree with counts, status, and a selected file.
 Both navigation surfaces are built from manifests rather than incidental
 rendered state, so every destination remains addressable before its content is
 active.
+
+Implementation and review Items may also pin reusable Component or System
+definitions. Their book control and linked node open the saved definition in
+the same drawer, with directed Component interactions and exact code. Nested
+definitions have a back control; Escape restores the original Item control and
+keeps the slide hash/position. Display stale, retired, conflicted, or missing
+pins honestly. Neither navigation nor a newer definition repins the Item or
+changes a decision. Inventory and interaction code are fetched on demand, never
+embedded as a graph in every review shell.
 
 ## The page is a shell
 
@@ -97,10 +125,21 @@ the browser suite waits for instead of guessing.
 
 ## Review controls
 
-In v4 the complete slide is the approval target. Items provide precise comments,
+In v5 the complete slide is the approval target. Items provide precise comments,
 annotations, and evidence links without becoming a second approval checklist.
 Deck and Saga status are derived rollups. V2/v3 retain section/fragment controls
 and the chapter review directory in their legacy report reader.
+
+In a pull-request review, slide decisions and slide discussion live in a quiet
+overlay; Item discussion lives with that Item's evidence drawer. New comment,
+reply, and decision composers are not permanently open. Replies use the
+existing append-only thread target; revealing or navigating to a slide never
+records a decision. Escape closes an open composer without submitting it and
+restores its summary control. The annotation button opens the compact released
+palette beside the active slide's action strip: Select, Comment, Highlight,
+Rectangle, Freehand, Sticky note, color, undo, redo, and selection deletion.
+The palette starts closed and belongs to the slide, not to an Item. Item
+hotspots continue to open their exact diff and affected record independently.
 
 In the legacy chapter directory, each row mirrors the decision control on its target's own bar and projects
 append-only approval events into exactly `Unreviewed`, `Approved`, or `Changes requested`.
@@ -119,19 +158,26 @@ events on approval-bearing descendants project to
 
 ## Comments and their marks
 
-A comment carries an anchor. When that anchor is a mark drawn on the content —
+A review comment may carry an anchor. When that anchor is a mark drawn on the content —
 a rectangle, a freehand drawing, a highlight, or a sticky note — the comment
 belongs to the mark and renders as a compact bubble pinned to it, revealed on
 hover or focus of either the mark or the bubble. Every other anchor — a whole
 fragment, a section, a chapter, a diff line — keeps its comment in the list
-below the content. `annotationAnchor` in `server.go` is the single place that
-decides which is which; adding an anchor type means answering there.
+below the content. `ReviewComment.Anchor` stores normalized slide geometry;
+`AnnotationAction` records create, update, and delete events. The root comment
+creates the annotation. Every move, color change, undo, redo, or delete is a
+reply event, so the original anchor, author, and discussion are never rewritten.
+Update and delete events reply directly to that creation root; accepting them
+on an ordinary comment would create valid-looking history that the annotation
+projection cannot show. A merged review renders the projected marks read-only
+and never offers its editing toolbar.
 
-The server places a bubble from the stored anchor (`annotationBubblePoint`) and
-the browser refines it against the mark as laid out (`positionAnnotationBubbles`
-in `appjs.go`). The two must agree on where a shape is, so `annotationShapeBounds`
-and `shapeBounds` are deliberate mirrors of each other. A highlight has no stored
-geometry and is placed by the browser alone.
+`GET /reviews/{id}/annotations` projects the latest visible anchor from that
+append-only thread. `prepareReviewAnnotations` in `appjs.go` mounts it over the
+active slide and derives both the mark and bubble location from the same
+normalized geometry. Highlights store their region just like other shapes,
+which keeps hit testing and bubble placement stable across deck fitting and
+narrow-screen layout changes.
 
 A revealed comment never buries the mark it describes, and arming a drawing tool
 closes every open bubble so the content keeps the pointer.

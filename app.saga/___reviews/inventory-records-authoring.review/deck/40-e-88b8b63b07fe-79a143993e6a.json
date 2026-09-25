@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/server/inventory.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:12417cdb440e70d7f61afaa74d454937fc3f3a54cbb2ad88da898734b54761a2"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/server/inventory.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:d83be7f055859cbd636085feef7e06e1310bea0637ed8e8c962fc4f6edbf0846"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/server/inventory.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:41c3874ccf6328dbdb323f963da2fc3b35a51d4022f3a387ca8c91ec3c39840e"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/server/inventory.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:0c17dc99115007c3053afaeda8c2da6f4b16acef2996bc29e8c3abfcc78b8de6"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/erd.schema.json",
+      "digest": "sha256:41991336a52ac97fe9f7887a6c552e584ca087ea202fa16d3c08c137d58e269e"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/erd.schema.json",
+      "start": 1,
+      "end": 37,
+      "digest": "sha256:41991336a52ac97fe9f7887a6c552e584ca087ea202fa16d3c08c137d58e269e"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 13,
+      "end": 15,
+      "digest": "sha256:95ada84a6a63b08a9526ff9b21abce4576d837549b52677652129e39c18e0d91",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 81,
+      "end": 82,
+      "digest": "sha256:f921ff631a60435f71e57a09b2ad1b8880794104fe29a47f3cafd70540579be7",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 102,
+      "end": 104,
+      "digest": "sha256:dd0af1137538d4896efa9c4db10dd077f0209837e220b8c76a1aa9ce5e005642",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 112,
+      "end": 113,
+      "digest": "sha256:ce44be1019889c43876b6f98e56cdc2842605928dd54204b8a444460e8be0405",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 13,
+      "end": 21,
+      "digest": "sha256:a236e694c9b00607f740fad661570289d992a7ee410e6b417f96370027b69cfc",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 69,
+      "end": 105,
+      "digest": "sha256:a6fd03e736249947f948327146a178963996727bbd59c40ed9bc511dcc5d09de",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 124,
+      "end": 127,
+      "digest": "sha256:ec3222a9309935d0f74f984141357dee7597509b09b4acac77cff53d3a07f3de",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 140,
+      "end": 145,
+      "digest": "sha256:08a6fcc21b16c1450a7b720a2935715b58a7f209bbb7616e2a8e7d719fec5972",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 153,
+      "end": 157,
+      "digest": "sha256:2e657cd7dbe2347b0ec39de7b0f8945bfeef2ed82c85f3f11393c5eb96b14fcf",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 165,
+      "end": 166,
+      "digest": "sha256:7434b97aaed2250f0a1ea689c4551fb280a81f759fe3b42ec10a907a63332b62",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 195,
+      "end": 227,
+      "digest": "sha256:71820a835400c7530d833c00de01d50a24becfe2091984af5bd203c6b900e095",
+      "note": "The implementation note's page tree, addresses, chapters, checks and Saga results."
+    }
+  ]
+}

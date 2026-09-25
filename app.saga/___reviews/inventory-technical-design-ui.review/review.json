@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "inventory-technical-design-ui",
+  "title": "Technical Design UI: pages, authored ERD and Item selections",
+  "base": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+  "head": "94be129341e0dd0843b45a7c45a542ff41321216",
+  "created_at": "2026-09-25T02:26:58.883075Z"
+}

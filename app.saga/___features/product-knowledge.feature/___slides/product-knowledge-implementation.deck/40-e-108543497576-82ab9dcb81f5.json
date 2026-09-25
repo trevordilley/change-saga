@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/directory.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:cfeafebe836092141c46cc751003d4e14d7d096464e28556fd37b08db128d1ae",
+      "note": "The region carries role=region, an aria-label of the directory's title and tabindex 0, and the table inside keeps its caption and scope=col and scope=row headers."
+    }
+  ]
+}

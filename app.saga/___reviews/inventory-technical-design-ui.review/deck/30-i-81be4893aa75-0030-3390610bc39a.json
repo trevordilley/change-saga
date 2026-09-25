@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-design-page",
+    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+  },
+  "version": 4,
+  "id": "definition-view",
+  "slide": "ti-ui-review-pages",
+  "rank": 30,
+  "kind": "region",
+  "label": "Shared definition view",
+  "description": "The drawer and the canonical page render one exact-revision view: intent with baseline or delivery, data-entity detail, member page links, edge intent, and in the drawer a page link, lazy usages and the opening Item's selections.",
+  "selector": {
+    "type": "element",
+    "element_id": "definition-view"
+  }
+}

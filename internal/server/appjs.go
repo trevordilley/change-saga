@@ -49,11 +49,12 @@ const appJavaScript = `(() => {
     if (!visual) return;
     const ownsCode = landmarkOwnsDiffs(target);
     visual.dataset.landmarkHasDiffs = String(ownsCode);
+    visual.dataset.landmarkHasDocumentation = String(Boolean(q('[data-landmark-affordance-template]', target)?.content.querySelector('[data-documentation-target]')));
     visual.dataset.landmarkHasStories = String(Boolean(q('[data-landmark-affordance-template]', target)?.content.querySelector('[data-open-stories]')));
   }
 
   function activateLandmarkCode(visual) {
-    const control = q('[data-open-diffs],[data-target-code-href]', visual);
+    const control = q('[data-documentation-target]', visual) || q('[data-open-diffs],[data-target-code-href]', visual);
     if (!control) return false;
     control.click();
     return true;
@@ -1093,8 +1094,12 @@ const appJavaScript = `(() => {
     }
   }
 
+  let reviewDeckHash = location.hash;
   function setView(name, updateURL = true) {
     if (!q('[data-view="'+name+'"]')) name = 'saga';
+    const reviewDeck = q('[data-review-deck-shell]');
+    const returningToReviewDeck = reviewDeck && name === 'saga' && !q('[data-view="saga"].active');
+    if (reviewDeck && name !== 'saga' && q('[data-view="saga"].active')) reviewDeckHash = location.hash;
     qa('[data-view]').forEach(view => view.classList.toggle('active', view.dataset.view === name));
     qa('[data-view-tab]').forEach(tab => {
       const selected = tab.dataset.viewTab === name || (name === 'slides' && tab.dataset.viewTab === 'saga');
@@ -1112,7 +1117,7 @@ const appJavaScript = `(() => {
     const shell = q('[data-shell]');
     if (shell) {
       shell.classList.toggle('code-mode', name === 'code');
-      shell.classList.toggle('slide-mode', name === 'slides');
+      shell.classList.toggle('slide-mode', name === 'slides' || (name === 'saga' && shell.hasAttribute('data-review-deck-shell')));
     }
     const slideView = q('[data-view="slides"]') ? 'slides' : 'saga';
     qa('[data-slide-present]').forEach(button => { button.hidden = name !== slideView; });
@@ -1122,6 +1127,7 @@ const appJavaScript = `(() => {
     if (updateURL) {
       const url = new URL(location.href);
       if (name === 'saga') url.searchParams.delete('view'); else url.searchParams.set('view', name);
+      if (returningToReviewDeck) url.hash = reviewDeckHash;
       history.pushState({view: name}, '', url);
     }
     if (name === 'code' || name === 'manifest' || name === 'change') void hydrateReviewSurface(name);
@@ -1181,8 +1187,8 @@ const appJavaScript = `(() => {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     drawer.dataset.drawerMode = mode;
-    const labels = {fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
-    const icons = {fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
+    const labels = {documentation:'Technical explanation', fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
+    const icons = {documentation:'#i-book', fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
     const label = labels[mode] || labels.code;
     drawer.setAttribute('aria-label', label);
     const heading = q('.drawer-head strong', drawer);
@@ -1207,7 +1213,8 @@ const appJavaScript = `(() => {
   }
 
   function showDrawer(opener) {
-    drawerOpener = opener instanceof HTMLElement && opener.isConnected
+    // A bound ERD element is an SVGElement; it takes focus like a button.
+    drawerOpener = (opener instanceof HTMLElement || opener instanceof SVGElement) && opener.isConnected
       ? opener
       : (document.activeElement instanceof HTMLElement ? document.activeElement : null);
     const drawer = q('.diff-drawer');
@@ -1235,6 +1242,47 @@ const appJavaScript = `(() => {
     configureDrawer('code', attached?.dataset.attachedTitle ? 'Linked code · ' + attached.dataset.attachedTitle : 'Linked code');
     highlightCode(body);
     showDrawer(returnOpener);
+  }
+
+  let documentationRequest = 0;
+  let documentationTrail = [];
+  async function openDocumentation(button, back = false) {
+    // An Item's control also names the Item, so the drawer can show the
+    // exact code that Item selects; definitions reached from there do not.
+    const pin = {target:button.dataset.documentationTarget, revision:button.dataset.documentationRevision, item:button.dataset.documentationItem || ''};
+    const alreadyOpen = q('.diff-drawer.open')?.dataset.drawerMode === 'documentation';
+    const opener = alreadyOpen ? drawerOpener : button;
+    if (!alreadyOpen) documentationTrail = [];
+    if (!back) documentationTrail.push(pin);
+    const request = ++documentationRequest;
+    restoreDrawerContent();
+    configureDrawer('documentation', 'Technical explanation');
+    const body = q('.drawer-body');
+    body.textContent = 'Loading explanation…';
+    showDrawer(opener);
+    const url = new URL('/api/documentation', location.origin);
+    url.searchParams.set('target', pin.target); url.searchParams.set('revision', pin.revision);
+    if (pin.item) url.searchParams.set('item', pin.item);
+    try {
+      const response = await fetch(url, {credentials:'same-origin'});
+      const html = await response.text();
+      if (request !== documentationRequest || q('.diff-drawer.open')?.dataset.drawerMode !== 'documentation') return;
+      if (!response.ok) throw new Error(html.trim());
+      body.innerHTML = html;
+      if (documentationTrail.length > 1) {
+        const previous = document.createElement('button');
+        previous.type = 'button'; previous.textContent = 'Back to previous explanation';
+        previous.dataset.documentationBack = 'true'; body.prepend(previous);
+      }
+      highlightCode(body);
+    } catch (error) {
+      if (request !== documentationRequest || q('.diff-drawer.open')?.dataset.drawerMode !== 'documentation') return;
+      body.textContent = error.message || 'Explanation could not be loaded.';
+      const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = 'Try again';
+      retry.dataset.documentationTarget = pin.target; retry.dataset.documentationRevision = pin.revision;
+      if (pin.item) retry.dataset.documentationItem = pin.item;
+      body.append(retry);
+    }
   }
 
   function openStoriesDrawer(button) {
@@ -1904,6 +1952,7 @@ const appJavaScript = `(() => {
   }
 
   function closeDrawer() {
+    documentationRequest++; documentationTrail = [];
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     const wasOpen = drawer.classList.contains('open');
@@ -2088,6 +2137,9 @@ const appJavaScript = `(() => {
     const storiesButton = event.target.closest('[data-open-stories]');
     if (storiesButton) { event.preventDefault(); openStoriesDrawer(storiesButton); return; }
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
+    const documentationButton = event.target.closest('[data-documentation-target]');
+    if (documentationButton) {event.preventDefault(); void openDocumentation(documentationButton); return;}
+    if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item}},true); return;}
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
     const landmarkVisual = event.target.closest?.('[data-landmark-visual]');
@@ -2170,9 +2222,16 @@ const appJavaScript = `(() => {
       syncSlidePresentation();
       return;
     }
-    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && deckViewerActive() && deckViewerSlides().length && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
+    const reviewDisclosure = event.target.closest?.('details.review-slide-menu[open],details.review-compose[open],details.review-decision-editor[open],details.review-source[open]');
+    if (event.key === 'Escape' && reviewDisclosure) {
       event.preventDefault();
-      stepDeckSlide(event.key === 'ArrowRight' ? 1 : -1);
+      reviewDisclosure.open = false;
+      q('summary', reviewDisclosure)?.focus();
+      return;
+    }
+    if (['ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown'].includes(event.key) && !q('.diff-drawer.open') && deckViewerActive() && deckViewerSlides().length && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
+      event.preventDefault();
+      stepDeckSlide(event.key === 'ArrowRight' || event.key === 'PageDown' ? 1 : -1);
       return;
     }
     const workspaceTab = event.target.closest?.('[data-view-tab]');
@@ -2200,6 +2259,227 @@ const appJavaScript = `(() => {
     if (event.key === 'Escape') closeDrawer();
   });
 
+` + reviewAsyncJavaScript + `
+  async function prepareReviewAnnotations() {
+    const deck = q('[data-review-deck]');
+    if (!deck) return;
+    const reviewID = deck.dataset.review;
+    const token = deck.dataset.reviewToken || '';
+    const status = document.createElement('p');
+    status.className = 'review-annotation-status';
+    status.style.pointerEvents='none';
+    status.setAttribute('role', 'status');
+    status.hidden = true;
+    deck.append(status);
+    let statusTimer = 0;
+    const announce = (message, failed = false) => {
+      clearTimeout(statusTimer);
+      status.textContent = message;
+      const openComposer=q('.review-annotation-compose:not([hidden])');
+      status.style.bottom=openComposer ? (openComposer.offsetHeight+32)+'px' : '18px';
+      status.classList.toggle('failed', failed);
+      status.hidden = false;
+      if (!failed) statusTimer = setTimeout(() => { status.hidden = true; }, 1600);
+    };
+    const layers = new Map();
+    qa('.review-deck-slide').forEach(slide => {
+      const stage = q('.fragment-stage', slide);
+      if (!stage) return;
+      const layer = document.createElement('div');
+      layer.className = 'review-annotation-layer';
+      layer.dataset.annotationTarget = slide.dataset.slideTarget;
+      stage.append(layer);
+      layers.set(slide.dataset.slideTarget, layer);
+    });
+    const response = await fetch('/reviews/' + encodeURIComponent(reviewID) + '/annotations', {headers:{Accept:'application/json'}});
+    if (!response.ok) { announce('Annotations are unavailable. The review deck is still readable.', true); return; }
+    const payload = await response.json();
+    let selected = null;
+    let tool = 'pointer';
+    let draft = null;
+    const undo = [], redo = [], latestAnchors = new Map();
+    const clone = value => JSON.parse(JSON.stringify(value));
+    const clamp = value => Math.max(0, Math.min(1, value));
+    const point = (event, layer) => {
+      const rect = layer.getBoundingClientRect();
+      return {x:clamp((event.clientX-rect.left)/rect.width), y:clamp((event.clientY-rect.top)/rect.height)};
+    };
+    const currentSlide = () => q('.review-deck-slide.active');
+    const currentLayer = () => q('.review-annotation-layer', currentSlide());
+    let annotationSaving = false;
+    const entries = new Map();
+    const refreshAnnotations = async () => {
+      const response = await fetch('/reviews/' + encodeURIComponent(reviewID) + '/annotations', {headers:{Accept:'application/json'},cache:'no-store'});
+      if (!response.ok) throw new Error('Saved annotations could not be checked.');
+      const current = await response.json(); payload.Frozen=current.Frozen;
+      for (const incoming of current.Annotations || []) {
+        const entry=entries.get(incoming.ID);
+        if (!entry) { render(incoming); continue; }
+        if (JSON.stringify([entry.Anchor,entry.Messages,entry.Deleted]) === JSON.stringify([incoming.Anchor,incoming.Messages,incoming.Deleted])) continue;
+        const oldForm=q('form',entry.element), oldField=oldForm && q('textarea',oldForm);
+        const text=oldField?.value || '', focused=oldField===document.activeElement, open=q('details',entry.element)?.open;
+        entry.element?.remove(); Object.assign(entry,incoming); entry.anchor=clone(incoming.Anchor); render(entry);
+        const field=entry.element && q('textarea',entry.element);
+        if(field) { field.value=text; if(focused) field.focus({preventScroll:true}); }
+        const details=entry.element && q('details',entry.element); if(details) details.open=Boolean(open);
+      }
+      if(selected) select(selected.Deleted ? null : selected);
+      if(current.Frozen) { deck.dataset.reviewFrozen='true'; qa('button,input,textarea',toolbar).forEach(control=>control.disabled=true); qa('.review-annotation-reply button,.review-annotation-reply textarea,[data-review-annotation-toggle]',deck).forEach(control=>control.disabled=true); }
+    };
+    deck.addEventListener('review-feedback-checked',()=>void refreshAnnotations().catch(()=>announce('Saved annotations could not be checked.',true)));
+    const post = async (fields, refresh = true) => {
+      if(annotationSaving) return false;
+      annotationSaving=true; toolbar.setAttribute('aria-busy','true');
+      const toolControls=qa('button,input',toolbar).map(control=>({control,disabled:control.disabled}));
+      toolControls.forEach(({control})=>control.disabled=true);
+      const buttons=qa('button,textarea',composer); buttons.forEach(button=>button.disabled=true);
+      announce('Saving annotation…');
+      try {
+        const target=fields.target || entries.get(fields.reply_to)?.Target;
+        const result=await reviewAsync.post('/reviews/' + encodeURIComponent(reviewID) + '/comment',fields,target);
+        if(!result.saved) { status.hidden=true; reviewAsync.announce(result.message || 'The save was refused. Your draft is retained.',target,Boolean(result.ambiguous)); return false; }
+        try { await refreshAnnotations(); announce('Annotation saved.'); }
+        catch(_) { status.hidden=true; reviewAsync.announce('Annotation saved. Its display could not be refreshed.',target,true); }
+        return true;
+      } finally { annotationSaving=false; toolbar.removeAttribute('aria-busy'); toolControls.forEach(({control,disabled})=>control.disabled=disabled||Boolean(deck.dataset.reviewFrozen)); buttons.forEach(button=>button.disabled=Boolean(deck.dataset.reviewFrozen)); }
+    };
+    const bounds = anchor => {
+      if (anchor.type === 'note') return {x:anchor.note.x,y:anchor.note.y,w:.16,h:.12};
+      const shapes = anchor.shapes || [];
+      const points = shapes.flatMap(shape => shape.points || []);
+      const xs = shapes.flatMap(shape => [shape.x || 0,(shape.x || 0)+(shape.width || 0)]).concat(points.map(p=>p.x));
+      const ys = shapes.flatMap(shape => [shape.y || 0,(shape.y || 0)+(shape.height || 0)]).concat(points.map(p=>p.y));
+      return {x:Math.min(...xs),y:Math.min(...ys),w:Math.max(...xs)-Math.min(...xs),h:Math.max(...ys)-Math.min(...ys)};
+    };
+    const shapeNode = shape => {
+      const ns='http://www.w3.org/2000/svg';
+      let node;
+      if (shape.type === 'path') {
+        node=document.createElementNS(ns,'polyline');
+        node.setAttribute('points',(shape.points||[]).map(p=>(p.x*1000)+','+(p.y*562.5)).join(' '));
+        node.setAttribute('fill','none');
+      } else {
+        node=document.createElementNS(ns,shape.type === 'ellipse' ? 'ellipse' : 'rect');
+        if (shape.type === 'ellipse') {
+          node.setAttribute('cx',(shape.x+shape.width/2)*1000);node.setAttribute('cy',(shape.y+shape.height/2)*562.5);
+          node.setAttribute('rx',shape.width*500);node.setAttribute('ry',shape.height*281.25);
+        } else {
+          node.setAttribute('x',shape.x*1000);node.setAttribute('y',shape.y*562.5);
+          node.setAttribute('width',shape.width*1000);node.setAttribute('height',shape.height*562.5);
+        }
+        node.setAttribute('fill',shape.type === 'highlight' ? (shape.color || '#f2bd4b') : 'transparent');
+        if (shape.type === 'highlight') node.setAttribute('fill-opacity','.28');
+      }
+      node.setAttribute('stroke',shape.color || '#d04832');
+      node.setAttribute('stroke-width',Math.max(2,(shape.stroke_width||.004)*1000));
+      node.setAttribute('vector-effect','non-scaling-stroke');
+      return node;
+    };
+    let draftVisual=null;
+    const clearDraftVisual=()=>{draftVisual?.remove();draftVisual=null;};
+    const showDraftVisual=(layer,anchor)=>{
+      clearDraftVisual();
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.classList.add('review-annotation-draft');svg.setAttribute('viewBox','0 0 1000 562.5');svg.setAttribute('preserveAspectRatio','none');
+      (anchor.shapes||[]).forEach(shape=>svg.append(shapeNode(shape)));layer.append(svg);draftVisual=svg;
+    };
+    const select = entry => {
+      qa('.review-annotation.selected').forEach(node=>node.classList.remove('selected'));
+      qa('.review-annotation-resize-handle').forEach(node=>node.remove());
+      selected=entry;
+      entry?.element?.classList.add('selected');
+      selection.hidden=!entry;
+      if (entry) {
+        color.value=(entry.anchor.note?.color || entry.anchor.shapes?.[0]?.color || '#d04832');
+        if (!entry.anchor.note) {
+          const box=bounds(entry.anchor), handle=document.createElement('button');
+          handle.type='button';handle.className='review-annotation-resize-handle';handle.setAttribute('aria-label','Resize annotation');
+          handle.style.left=(clamp(box.x+box.w)*100)+'%';handle.style.top=(clamp(box.y+box.h)*100)+'%';
+          handle.addEventListener('pointerdown',event=>startResize(event,entry));entry.element.append(handle);
+        }
+      }
+      syncHistoryButtons();
+    };
+    const render = entry => {
+      entries.set(entry.ID,entry);
+      const layer=layers.get(entry.Target); if(!layer || entry.Deleted || !entry.Anchor) return;
+      // The server payload uses Anchor. Keep one mutable client-side anchor
+      // after initial hydration: edits render and persist that new value
+      // instead of snapping back to the original projection.
+      if(!entry.anchor) entry.anchor=clone(latestAnchors.get(entry.ID)||entry.Anchor);
+      latestAnchors.set(entry.ID,clone(entry.anchor));
+      const article=document.createElement('article'); article.className='review-annotation'; article.dataset.reviewAnnotation=entry.ID;
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'); svg.setAttribute('viewBox','0 0 1000 562.5'); svg.setAttribute('preserveAspectRatio','none');
+      svg.classList.add('review-annotation-svg');
+      (entry.anchor.shapes||[]).forEach(shape=>svg.append(shapeNode(shape)));
+      article.append(svg);
+      if(entry.anchor.note){const note=document.createElement('button');note.type='button';note.className='review-sticky-note';note.textContent=entry.anchor.note.text;note.style.left=(entry.anchor.note.x*100)+'%';note.style.top=(entry.anchor.note.y*100)+'%';note.style.background=entry.anchor.note.color||'#f2bd4b';note.title='Double-click to edit';note.addEventListener('dblclick',event=>{event.preventDefault();event.stopPropagation();openComposer(clone(entry.anchor),entry.Target,entry);});article.append(note);}
+      const box=bounds(entry.anchor); const details=document.createElement('details');details.className='review-annotation-bubble';details.style.left=(clamp(box.x+box.w)*100)+'%';details.style.top=(clamp(box.y+box.h)*100)+'%';
+      const summary=document.createElement('summary');summary.textContent=String(entry.Messages?.length||0);summary.setAttribute('aria-label','Open annotation discussion');details.append(summary);
+      const panel=document.createElement('div');panel.className='review-annotation-discussion';
+      (entry.Messages||[]).forEach(message=>{const item=document.createElement('div');item.className='review-annotation-message';const meta=document.createElement('small');meta.textContent=message.Author+' · '+new Date(message.CreatedAt).toLocaleString();const body=document.createElement('p');body.textContent=message.Body;item.append(meta,body);panel.append(item);});
+      if(!payload.Frozen){const form=document.createElement('form');form.className='review-annotation-reply';form.innerHTML='<label><span>Reply</span><textarea name="body" required rows="2"></textarea></label><button type="submit">Reply</button>';form.addEventListener('submit',async event=>{event.preventDefault();if(annotationSaving)return;const button=q('button',form);button.disabled=true;const saved=await post({reply_to:entry.ID,body:new FormData(form).get('body')});if(saved){const field=q('textarea',entry.element);if(field)field.value='';}button.disabled=false;});panel.append(form);}
+      details.append(panel);article.append(details);layer.append(article);entry.element=article;
+      if(!payload.Frozen){
+        svg.addEventListener('pointerdown',event=>startMove(event,entry));
+        q('.review-sticky-note',article)?.addEventListener('pointerdown',event=>startMove(event,entry));
+        article.addEventListener('click',event=>{if(!event.target.closest('details'))select(entry);});
+      }
+    };
+    if(payload.Frozen){(payload.Annotations||[]).forEach(render);return;}
+    const icon = name => '<svg class="i" aria-hidden="true" focusable="false"><use href="#i-'+name+'"></use></svg>';
+    const toolbar=document.createElement('div');toolbar.id='review-annotation-toolbox';toolbar.className='review-annotation-toolbox';toolbar.setAttribute('role','toolbar');toolbar.setAttribute('aria-label','Annotation tools');toolbar.hidden=true;
+    toolbar.innerHTML='<button type="button" data-undo disabled aria-label="Nothing to undo" title="Undo">'+icon('undo')+'</button><button type="button" data-redo disabled aria-label="Nothing to redo" title="Redo">'+icon('redo')+'</button><span class="tool-divider" aria-hidden="true"></span><button type="button" data-tool="pointer" aria-pressed="true" aria-label="Select" title="Select">'+icon('cursor')+'</button><button type="button" data-tool="comment" aria-pressed="false" aria-label="Comment" title="Comment">'+icon('comment')+'</button><button type="button" data-tool="highlight" aria-pressed="false" aria-label="Highlight" title="Highlight">'+icon('marker')+'</button><button type="button" data-tool="rect" aria-pressed="false" aria-label="Rectangle" title="Rectangle">'+icon('square')+'</button><button type="button" data-tool="freehand" aria-pressed="false" aria-label="Freehand" title="Freehand">'+icon('pen')+'</button><button type="button" data-tool="note" aria-pressed="false" aria-label="Sticky note" title="Sticky note">'+icon('note')+'</button><label title="Annotation color"><span class="sr-only">Annotation color</span><input type="color" value="#d04832" aria-label="Annotation color"></label><span data-selection hidden><button type="button" data-delete aria-label="Delete selected annotation" title="Delete">'+icon('trash')+'</button></span>';
+    deck.append(toolbar); const selection=q('[data-selection]',toolbar),color=q('input[type=color]',toolbar),undoButton=q('[data-undo]',toolbar),redoButton=q('[data-redo]',toolbar);
+    function syncHistoryButtons(){const undoKind=undo.at(-1)?.kind||'',redoKind=redo.at(-1)?.kind||'';undoButton.disabled=!undoKind;redoButton.disabled=!redoKind;undoButton.dataset.undoKind=undoKind;redoButton.dataset.redoKind=redoKind;undoButton.setAttribute('aria-label',undoKind?'Undo '+undoKind:'Nothing to undo');redoButton.setAttribute('aria-label',redoKind?'Redo '+redoKind:'Nothing to redo');}
+    const composer=document.createElement('form');composer.className='review-annotation-compose';composer.hidden=true;composer.innerHTML='<label><span>Comment on annotation</span><textarea name="body" required rows="3"></textarea></label><div><button type="submit">Save annotation</button><button type="button" data-cancel>Cancel</button></div>';deck.append(composer);
+    let toolboxOpener=null;
+    function setTool(next){tool=next;qa('[data-tool]',toolbar).forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.tool===tool)));layers.forEach(layer=>layer.classList.toggle('drawing',tool!=='pointer'));if(tool!=='pointer')select(null);}
+    function closeToolbox(restore=false){toolbar.hidden=true;setTool('pointer');qa('[data-review-annotation-toggle]').forEach(button=>button.setAttribute('aria-expanded','false'));if(restore&&toolboxOpener?.isConnected)toolboxOpener.focus();}
+    qa('[data-review-annotation-toggle]').forEach(button=>button.addEventListener('click',()=>{
+      const closing=!toolbar.hidden&&toolboxOpener===button;
+      if(closing){closeToolbox(true);return;}
+      toolboxOpener=button;
+      qa('[data-review-annotation-toggle]').forEach(toggle=>toggle.setAttribute('aria-expanded',String(toggle===button)));
+      button.closest('.fragment-actions').append(toolbar);toolbar.hidden=false;setTool('pointer');q('[data-tool="pointer"]',toolbar)?.focus();
+    }));
+    qa('[data-tool]',toolbar).forEach(button=>button.addEventListener('click',()=>setTool(button.dataset.tool)));
+    function openComposer(anchor,target,entry=null){draft={anchor,target,entry};composer.hidden=false;const field=q('textarea',composer);field.value=entry?.anchor.note?.text||'';field.focus();}
+    q('[data-cancel]',composer).addEventListener('click',()=>{composer.hidden=true;draft=null;clearDraftVisual();setTool('pointer');});
+    composer.addEventListener('submit',async event=>{
+      event.preventDefault(); if(!draft || annotationSaving)return;
+      const pending=draft,body=String(new FormData(composer).get('body')||'').trim();
+      const anchor=clone(pending.anchor); if(anchor.type==='note')anchor.note.text=body;
+      const fields=pending.entry
+        ? {reply_to:pending.entry.ID,body:'Sticky note edited.',annotation_action:'update',anchor:JSON.stringify(anchor)}
+        : {target:pending.target,body,annotation_action:'create',anchor:JSON.stringify(anchor)};
+      const saved=await post(fields);
+      if(saved && draft===pending){composer.hidden=true;composer.reset();draft=null;clearDraftVisual();setTool('pointer');}
+    });
+    const drawnAnchor=(start,end,points)=>{
+      if(tool==='freehand')return {type:'drawing',coordinate_space:'normalized',shapes:[{type:'path',points,color:color.value,stroke_width:.004}]};
+      const x=Math.min(start.x,end.x),y=Math.min(start.y,end.y),width=Math.abs(end.x-start.x),height=Math.abs(end.y-start.y);
+      if(width<.01||height<.01)return null;
+      const kind=tool==='highlight'?'highlight':'rect';
+      return {type:tool==='highlight'?'highlight':'region',coordinate_space:'normalized',shapes:[{type:kind,x,y,width,height,color:color.value,stroke_width:.004}]};
+    };
+    layers.forEach(layer=>{
+      layer.addEventListener('pointerdown',event=>{if(annotationSaving||tool==='pointer'||event.target!==layer)return;event.preventDefault();const start=point(event,layer);if(tool==='note'){openComposer({type:'note',coordinate_space:'normalized',note:{text:'Sticky note',x:start.x,y:start.y,color:'#f2bd4b'}},layer.dataset.annotationTarget);return;}if(tool==='comment'){const anchor={type:'region',coordinate_space:'normalized',shapes:[{type:'ellipse',x:clamp(start.x-.012),y:clamp(start.y-.021),width:.024,height:.042,color:color.value,stroke_width:.004}]};showDraftVisual(layer,anchor);openComposer(anchor,layer.dataset.annotationTarget);return;}draft={start,points:[start],layer};layer.setPointerCapture(event.pointerId);});
+      layer.addEventListener('pointermove',event=>{if(!draft?.layer||draft.layer!==layer)return;const now=point(event,layer);draft.points.push(now);const anchor=drawnAnchor(draft.start,now,draft.points);if(anchor)showDraftVisual(layer,anchor);});
+      layer.addEventListener('pointerup',event=>{if(!draft?.layer||draft.layer!==layer)return;const end=point(event,layer),anchor=drawnAnchor(draft.start,end,draft.points),target=layer.dataset.annotationTarget;draft=null;if(!anchor){clearDraftVisual();return;}openComposer(anchor,target);});
+      layer.addEventListener('pointercancel',()=>{draft=null;clearDraftVisual();setTool('pointer');});
+    });
+    function restore(entry,anchor){entry.anchor=clone(anchor);entry.element.remove();render(entry);select(entry);}
+    function startMove(event,entry){if(annotationSaving)return;if(tool!=='pointer'||event.target.closest('details'))return;event.preventDefault();select(entry);const layer=layers.get(entry.Target),start=point(event,layer),before=clone(latestAnchors.get(entry.ID)||entry.anchor);let changed=false;const move=moveEvent=>{const now=point(moveEvent,layer),dx=now.x-start.x,dy=now.y-start.y;if(Math.abs(dx)<.001&&Math.abs(dy)<.001)return;changed=true;entry.anchor=clone(before);if(entry.anchor.note){entry.anchor.note.x=clamp(entry.anchor.note.x+dx);entry.anchor.note.y=clamp(entry.anchor.note.y+dy);}else{entry.anchor.shapes.forEach(shape=>{if(shape.points)shape.points.forEach(p=>{p.x=clamp(p.x+dx);p.y=clamp(p.y+dy);});else{shape.x=clamp(shape.x+dx);shape.y=clamp(shape.y+dy);}});}entry.element.remove();render(entry);select(entry);};const end=()=>{removeEventListener('pointermove',move);removeEventListener('pointerup',end);if(!changed)return;const after=clone(latestAnchors.get(entry.ID)||entry.anchor);undo.push({kind:'move',entry,before,after});redo.length=0;syncHistoryButtons();void post({reply_to:entry.ID,body:'Annotation moved.',annotation_action:'update',anchor:JSON.stringify(after)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});};addEventListener('pointermove',move);addEventListener('pointerup',end,{once:true});}
+    function startResize(event,entry){if(annotationSaving)return;event.preventDefault();event.stopPropagation();const layer=layers.get(entry.Target),before=clone(latestAnchors.get(entry.ID)||entry.anchor),box=bounds(before);const move=moveEvent=>{const now=point(moveEvent,layer),sx=Math.max(.05,(now.x-box.x)/Math.max(box.w,.001)),sy=Math.max(.05,(now.y-box.y)/Math.max(box.h,.001));entry.anchor=clone(before);entry.anchor.shapes.forEach(shape=>{if(shape.points)shape.points.forEach(p=>{p.x=clamp(box.x+(p.x-box.x)*sx);p.y=clamp(box.y+(p.y-box.y)*sy);});else{shape.x=clamp(box.x+(shape.x-box.x)*sx);shape.y=clamp(box.y+(shape.y-box.y)*sy);shape.width=clamp(shape.width*sx);shape.height=clamp(shape.height*sy);}});entry.element.remove();render(entry);select(entry);};const end=()=>{removeEventListener('pointermove',move);const after=clone(latestAnchors.get(entry.ID)||entry.anchor);undo.push({kind:'resize',entry,before,after});redo.length=0;syncHistoryButtons();void post({reply_to:entry.ID,body:'Annotation resized.',annotation_action:'update',anchor:JSON.stringify(after)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});};addEventListener('pointermove',move);addEventListener('pointerup',end,{once:true});}
+    color.addEventListener('change',()=>{if(annotationSaving||!selected)return;const entry=selected,before=clone(latestAnchors.get(entry.ID)||entry.anchor);entry.anchor=clone(before);if(entry.anchor.note)entry.anchor.note.color=color.value;else entry.anchor.shapes.forEach(shape=>shape.color=color.value);undo.push({kind:'color',entry,before,after:clone(entry.anchor)});redo.length=0;entry.element.remove();render(entry);select(entry);void post({reply_to:entry.ID,body:'Annotation color changed.',annotation_action:'update',anchor:JSON.stringify(entry.anchor)},false).then(saved=>{if(!saved){undo.pop();restore(entry,before);}});});
+    q('[data-delete]',selection).addEventListener('click',()=>{if(selected&&!annotationSaving)void post({reply_to:selected.ID,body:'Annotation deleted.',annotation_action:'delete'});});
+    const replay=async(from,to,useBefore)=>{if(annotationSaving)return;const command=from.pop();if(!command)return;to.push(command);const previous=clone(latestAnchors.get(command.entry.ID)||command.entry.anchor),anchor=clone(useBefore?command.before:command.after);restore(command.entry,anchor);syncHistoryButtons();const saved=await post({reply_to:command.entry.ID,body:useBefore?'Annotation change undone.':'Annotation change redone.',annotation_action:'update',anchor:JSON.stringify(anchor)},false);if(!saved){to.pop();from.push(command);restore(command.entry,previous);syncHistoryButtons();}};
+    undoButton.addEventListener('click',()=>void replay(undo,redo,true));redoButton.addEventListener('click',()=>void replay(redo,undo,false));
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!composer.hidden){event.preventDefault();composer.hidden=true;draft=null;clearDraftVisual();setTool('pointer');}else if(event.key==='Escape'&&!toolbar.hidden){event.preventDefault();closeToolbox(true);}else if((event.key==='Delete'||event.key==='Backspace')&&selected&&!event.target.matches('input,textarea')){event.preventDefault();q('[data-delete]',selection).click();}});
+    (payload.Annotations||[]).forEach(render);
+  }
+
   prepareLandmarks();
   prepareDiffCitations();
   const shellArriving = observeDeferredFragments();
@@ -2212,6 +2492,41 @@ const appJavaScript = `(() => {
   prepareContext();
   syncSlidePresentation();
   highlightCode();
+  // An authored ERD is inlined as drawn. Only the elements its bindings name
+  // become controls, each opening the same pinned definition its directory
+  // row opens. Nothing here reads the drawing's geometry.
+  function bindERDVisuals(root = document) {
+    for (const figure of within(root, '[data-erd-visual]')) {
+      for (const binding of within(figure, '[data-erd-bindings] [data-erd-element]')) {
+        const element = [...figure.querySelectorAll('svg [id]')].find(candidate => candidate.id === binding.dataset.erdElement);
+        if (!element || element.dataset.erdBound) continue;
+        element.dataset.erdBound = 'true';
+        element.dataset.documentationTarget = binding.dataset.erdTarget;
+        element.dataset.documentationRevision = binding.dataset.erdPin;
+        if (binding.dataset.erdRelationship) element.dataset.erdRelationship = binding.dataset.erdRelationship;
+        element.setAttribute('tabindex', '0');
+        element.setAttribute('role', 'button');
+        element.setAttribute('aria-label', 'Open ' + binding.textContent.trim() + (binding.dataset.erdIntent ? ' (' + binding.dataset.erdIntent + ')' : ''));
+        element.addEventListener('keydown', event => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          element.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
+        });
+      }
+    }
+    // A directory row and the drawn element it names light up together.
+    for (const row of within(root, '[data-erd-directory-row]')) {
+      const view = row.closest('[data-erd-view]');
+      const drawn = () => within(view || document, '[data-erd-bound]').filter(element => element.dataset.documentationRevision === row.dataset.erdRowPin && !element.dataset.erdRelationship);
+      const light = on => drawn().forEach(element => element.classList.toggle('erd-highlight', on));
+      row.addEventListener('mouseenter', () => light(true));
+      row.addEventListener('mouseleave', () => light(false));
+      row.addEventListener('focusin', () => light(true));
+      row.addEventListener('focusout', () => light(false));
+    }
+  }
+  bindERDVisuals();
+
   applyDiffLayout(rememberedDiffLayout());
   addEventListener('resize', () => { applyDiffLayout(diffLayout); positionLandmarkHotspots(); });
   document.addEventListener('fullscreenchange', syncSlidePresentation);
@@ -2232,6 +2547,7 @@ const appJavaScript = `(() => {
   void loadLayers();
   void loadCoverageTotals();
   positionLandmarkHotspots();
+  void prepareReviewAnnotations();
   globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
   addEventListener('hashchange', () => {
     syncDeckSlideForHash();

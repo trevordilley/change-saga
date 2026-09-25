@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/uses.go",
+      "start": 211,
+      "end": 262,
+      "digest": "sha256:113d815e1520f4e1d69e4248b1125686795c7130a8b9770d66b67c6e9ba13816",
+      "note": "Upward traversal through current owner revisions with depth, cycle and budget cuts."
+    }
+  ]
+}

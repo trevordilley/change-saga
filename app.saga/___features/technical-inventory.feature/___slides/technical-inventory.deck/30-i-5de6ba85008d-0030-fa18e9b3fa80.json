@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "lifecycle",
+  "slide": "technical-inventory-history",
+  "rank": 30,
+  "kind": "node",
+  "label": "Active ↔ retired",
+  "description": "Lifecycle events append a reason and all observed parent heads without deleting historical definitions.",
+  "selector": {
+    "type": "element",
+    "element_id": "lifecycle"
+  }
+}

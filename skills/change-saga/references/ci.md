@@ -27,15 +27,23 @@ With `--against`, the scope is the change: what it changed and what it
 affected. Without it, the scope is the whole app. `--feature` narrows either.
 
 ```sh
-# The one thing most teams require of every pull request.
+# Account for changed lines in living documentation.
 change-saga check --against origin/main --covers implementation app.saga
 
-# A team that also keeps existing documentation current.
-change-saga check --against origin/main --covers implementation,health app.saga
+# Check current health independently from diff-side accounting.
+change-saga check --covers health app.saga
+
+# Explain baseline debt, regressions and affected records with repair paths.
+change-saga reconcile --against origin/main --json app.saga
 
 # A stricter rule for one mature feature only.
 change-saga check --against origin/main --feature checkout --covers implementation,stories,design,quality app.saga
 ```
+
+Comparison coverage may accept references valid at the base for deleted lines.
+It must not be used as sole evidence of HEAD documentation currency. Review
+deck coverage is separate again. `reconcile` reports these independent axes;
+fresh pins and complete coverage do not prove semantic correctness.
 
 ## Write a rule over the JSON
 
@@ -70,7 +78,8 @@ and thresholds it cares about.
 ```sh
 status=$(change-saga status --json --against origin/main app.saga) || exit 1
 
-# Implementation must be complete; health may not regress.
+# Comparison implementation and comparison health must be complete.
+# Also run the independent HEAD health/reconciliation checks above.
 echo "$status" | jq -e '.coverage.areas.implementation.complete and .coverage.areas.health.complete'
 
 # At least one story per change, without requiring every line to reach one.

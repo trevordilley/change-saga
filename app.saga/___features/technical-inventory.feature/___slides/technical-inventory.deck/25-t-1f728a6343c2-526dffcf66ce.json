@@ -1,0 +1,1076 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-records-impl-data-model",
+  "current": "sha256:dff5d581a8b08be0d4c7de1d86034484fef401296003586ee952ce977c30e126",
+  "revisions": [
+    {
+      "snapshot": "sha256:4b25587855c8951277d27414ca8178496d4017eb0a786fe51a5aef484809b495",
+      "request_id": "ti-records-impl-data-model-v1",
+      "created_at": "2026-09-25T01:32:07.552095Z",
+      "asset": "24-a-f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b.svg",
+      "asset_digest": "sha256:f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b917d64312f70",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-data-model",
+        "deck": "technical-inventory",
+        "title": "Implemented: data entities, ERD roots and overlays",
+        "rank": 180,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b.svg",
+        "takeaway": "Entities hold curated fields, holding resources and owned edges with their own intent; the ERD binds an offline SVG to a directory, and overlays never rewrite it.",
+        "reading_order": [
+          "entity",
+          "relationship",
+          "erd",
+          "overlay",
+          "data-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "entity",
+            "slide": "ti-records-impl-data-model",
+            "rank": 10,
+            "kind": "node",
+            "label": "Data entity record",
+            "description": "A data entity has curated fields with key roles, holding Component pins with roles, and explicit intent. Resources are pins, not second identities; exhaustive columns are not required.",
+            "selector": {
+              "type": "element",
+              "element_id": "entity"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 308,
+                  "end": 362,
+                  "digest": "sha256:6d0d8edb34fced0c2fa21ec21ba2d34165ca0ce62dbff86ae090e55c0260ae75",
+                  "note": "validateDataEntity: fields, keys, holders and relationship rules."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-entity-logical",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:logical-and-persisted",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The record model describes queued payloads and persisted rows and names the Components that hold them."
+            },
+            {
+              "id": "ti-records-impl-data-entity-selective",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Fields are an author-curated subset; nothing requires mirroring every column or property."
+            },
+            {
+              "id": "ti-records-impl-data-entity-resource",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "The canonical record separates entity structure and purpose from its holding resources; display belongs to the UI slice."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "relationship",
+            "slide": "ti-records-impl-data-model",
+            "rank": 20,
+            "kind": "edge",
+            "label": "Owned relationship with its own intent",
+            "description": "An owning revision declares outgoing association (explicit, possibly unknown cardinality) or production (flow and label, no cardinality) edges. An implemented edge needs implemented endpoints.",
+            "selector": {
+              "type": "element",
+              "element_id": "relationship"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 288,
+                  "end": 299,
+                  "digest": "sha256:3c3154fc0244ccc59e5e0e151bbe2929000f066b6a527c13e7cfa8594c77fed2",
+                  "note": "edgeIntent: a proposed owner cannot assert an implemented relationship."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-relationship-meaning",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Meaning and declared cardinality are stored per relationship, with unknown kept explicit rather than guessed."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "erd",
+            "slide": "ti-records-impl-data-model",
+            "rank": 30,
+            "kind": "node",
+            "label": "Authored ERD root",
+            "description": "The ERD stores an offline SVG by content address, a directory of entity pins and element bindings that must lie in the directory. Unsafe or external SVG content is refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "erd"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 364,
+                  "end": 439,
+                  "digest": "sha256:0aec43b483e6f72729fde7312df511fe2230536327a6c761680ea9351646f81e",
+                  "note": "validateERDRevision: directory, bindings and visual shape."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 471,
+                  "end": 557,
+                  "digest": "sha256:d3c0c4ca4c03bf8c89d55e7b1add33c4f85c4014a275f6ecb7343b0af062c6ec",
+                  "note": "ValidateVisual: digest, offline safety and bound element ids."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-erd-authored",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD is an authored visual plus explicit bindings, not a generated schema dump."
+            },
+            {
+              "id": "ti-records-impl-data-erd-directory",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Diagram bindings and the directory resolve the same saved entity pins; the expandable UI is a sibling slice."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "overlay",
+            "slide": "ti-records-impl-data-model",
+            "rank": 40,
+            "kind": "node",
+            "label": "Design overlay",
+            "description": "An overlay names an exact ERD revision and feature, pins replacement or new entities and proposes removals. Composition leaves the canonical ERD unchanged; a removal retires nothing.",
+            "selector": {
+              "type": "element",
+              "element_id": "overlay"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 259,
+                  "end": 311,
+                  "digest": "sha256:44efed11a6b41ef10df93dd637acf9f5ca29df7728fc697a11f0e347a696ec38",
+                  "note": "checkViewReferences: baseline, removals, repeated pins and bindings against exact revisions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 124,
+                  "end": 161,
+                  "digest": "sha256:3597b0a29a1a5d08c4b1cdd231a5628fc0015b87970ffcacce295cb12850b96c",
+                  "note": "ComposeOverlay substitutes, adds and removes pins without modifying the ERD."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-overlay-context",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "A proposed change is recorded against a named baseline and feature without overwriting the baseline model."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "data-tests",
+            "slide": "ti-records-impl-data-model",
+            "rank": 50,
+            "kind": "example",
+            "label": "Data model authoring tests",
+            "description": "CLI tests refuse an implemented edge to a proposed entity, a missing holder pin, bindings outside the directory and unsafe SVG; model tests prove overlay composition and schema conformance.",
+            "selector": {
+              "type": "element",
+              "element_id": "data-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 262,
+                  "end": 329,
+                  "digest": "sha256:788d9c9af0763aa2bc888a4450b39259b622a0ee589bffdf7e5c21e02a67108d",
+                  "note": "Public data-entity, ERD and overlay authoring cases."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 305,
+                  "end": 359,
+                  "digest": "sha256:adea0d73659fb587d9272cd59da96df64a57fc7e3d4a1388c4dccb71610b7c2a",
+                  "note": "Data entities, ERD asset checks and overlay composition."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-tests-visible",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:visible-without-code",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Proposed entities and relationships are stored and composed without code evidence."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:8676e74c61e1fe2191bc9ca410e523a8b38e39fe719f34c2b1e318e9059ed07d",
+      "parent_snapshots": [
+        "sha256:4b25587855c8951277d27414ca8178496d4017eb0a786fe51a5aef484809b495"
+      ],
+      "request_id": "ti-records-impl-data-model-v2",
+      "created_at": "2026-09-25T01:38:20.993227Z",
+      "asset": "24-a-f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b.svg",
+      "asset_digest": "sha256:f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b917d64312f70",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-data-model",
+        "deck": "technical-inventory",
+        "title": "Implemented: data entities, ERD roots and overlays",
+        "rank": 180,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b.svg",
+        "takeaway": "Entities hold curated fields, holding resources and owned edges with their own intent; the ERD binds an offline SVG to a directory, and overlays never rewrite it.",
+        "reading_order": [
+          "entity",
+          "relationship",
+          "erd",
+          "overlay",
+          "data-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "entity",
+            "slide": "ti-records-impl-data-model",
+            "rank": 10,
+            "kind": "node",
+            "label": "Data entity record",
+            "description": "A data entity has curated fields with key roles, holding Component pins with roles, and explicit intent. Resources are pins, not second identities; exhaustive columns are not required.",
+            "selector": {
+              "type": "element",
+              "element_id": "entity"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 308,
+                  "end": 362,
+                  "digest": "sha256:6d0d8edb34fced0c2fa21ec21ba2d34165ca0ce62dbff86ae090e55c0260ae75",
+                  "note": "validateDataEntity: fields, keys, holders and relationship rules."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/data-entity.schema.json",
+                  "start": 1,
+                  "end": 37,
+                  "digest": "sha256:71304758808da9e1649da0cac49e89c464ecd3bd2aecee6ca4460ccb86f64203",
+                  "note": "Changed lines of schema/v5/data-entity.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/data-entity-revision.schema.json",
+                  "start": 1,
+                  "end": 463,
+                  "digest": "sha256:10c11338fa1071ceef00d35c2df9ca51da09883f36527aaa7547c6cac0e03d0f",
+                  "note": "Changed lines of schema/v5/data-entity-revision.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/data-entity-event.schema.json",
+                  "start": 1,
+                  "end": 52,
+                  "digest": "sha256:2e3221c59a42c0b8833919a8d032cbebfc7128d073c708a47ea03e3d7f3514d3",
+                  "note": "Changed lines of schema/v5/data-entity-event.schema.json explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-entity-logical",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:logical-and-persisted",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The record model describes queued payloads and persisted rows and names the Components that hold them."
+            },
+            {
+              "id": "ti-records-impl-data-entity-selective",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Fields are an author-curated subset; nothing requires mirroring every column or property."
+            },
+            {
+              "id": "ti-records-impl-data-entity-resource",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "The canonical record separates entity structure and purpose from its holding resources; display belongs to the UI slice."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "relationship",
+            "slide": "ti-records-impl-data-model",
+            "rank": 20,
+            "kind": "edge",
+            "label": "Owned relationship with its own intent",
+            "description": "An owning revision declares outgoing association (explicit, possibly unknown cardinality) or production (flow and label, no cardinality) edges. An implemented edge needs implemented endpoints.",
+            "selector": {
+              "type": "element",
+              "element_id": "relationship"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 288,
+                  "end": 299,
+                  "digest": "sha256:3c3154fc0244ccc59e5e0e151bbe2929000f066b6a527c13e7cfa8594c77fed2",
+                  "note": "edgeIntent: a proposed owner cannot assert an implemented relationship."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-relationship-meaning",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Meaning and declared cardinality are stored per relationship, with unknown kept explicit rather than guessed."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "erd",
+            "slide": "ti-records-impl-data-model",
+            "rank": 30,
+            "kind": "node",
+            "label": "Authored ERD root",
+            "description": "The ERD stores an offline SVG by content address, a directory of entity pins and element bindings that must lie in the directory. Unsafe or external SVG content is refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "erd"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 364,
+                  "end": 439,
+                  "digest": "sha256:0aec43b483e6f72729fde7312df511fe2230536327a6c761680ea9351646f81e",
+                  "note": "validateERDRevision: directory, bindings and visual shape."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 471,
+                  "end": 557,
+                  "digest": "sha256:d3c0c4ca4c03bf8c89d55e7b1add33c4f85c4014a275f6ecb7343b0af062c6ec",
+                  "note": "ValidateVisual: digest, offline safety and bound element ids."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd.schema.json",
+                  "start": 1,
+                  "end": 37,
+                  "digest": "sha256:41991336a52ac97fe9f7887a6c552e584ca087ea202fa16d3c08c137d58e269e",
+                  "note": "Changed lines of schema/v5/erd.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-revision.schema.json",
+                  "start": 1,
+                  "end": 185,
+                  "digest": "sha256:94f19cf6af5a008c73ec3a026759abf69fed678daabd0bffe5123d5494bd2104",
+                  "note": "Changed lines of schema/v5/erd-revision.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-event.schema.json",
+                  "start": 1,
+                  "end": 52,
+                  "digest": "sha256:d91a82cbfb3dab9e22ac1ffc5884300222cd9310987278ed4c5b7a4f1202dbc6",
+                  "note": "Changed lines of schema/v5/erd-event.schema.json explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-erd-authored",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD is an authored visual plus explicit bindings, not a generated schema dump."
+            },
+            {
+              "id": "ti-records-impl-data-erd-directory",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Diagram bindings and the directory resolve the same saved entity pins; the expandable UI is a sibling slice."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "overlay",
+            "slide": "ti-records-impl-data-model",
+            "rank": 40,
+            "kind": "node",
+            "label": "Design overlay",
+            "description": "An overlay names an exact ERD revision and feature, pins replacement or new entities and proposes removals. Composition leaves the canonical ERD unchanged; a removal retires nothing.",
+            "selector": {
+              "type": "element",
+              "element_id": "overlay"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 259,
+                  "end": 311,
+                  "digest": "sha256:44efed11a6b41ef10df93dd637acf9f5ca29df7728fc697a11f0e347a696ec38",
+                  "note": "checkViewReferences: baseline, removals, repeated pins and bindings against exact revisions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 124,
+                  "end": 161,
+                  "digest": "sha256:3597b0a29a1a5d08c4b1cdd231a5628fc0015b87970ffcacce295cb12850b96c",
+                  "note": "ComposeOverlay substitutes, adds and removes pins without modifying the ERD."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-overlay.schema.json",
+                  "start": 1,
+                  "end": 37,
+                  "digest": "sha256:da8640347e9004ddac43e73ad339cab8ebb67c0e014a19d8496913055b3d3d16",
+                  "note": "Changed lines of schema/v5/erd-overlay.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-overlay-revision.schema.json",
+                  "start": 1,
+                  "end": 227,
+                  "digest": "sha256:d744cba0114e85da2c4b6aaa452162691a10cb84feb6ff431112a8cae9442be0",
+                  "note": "Changed lines of schema/v5/erd-overlay-revision.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-overlay-event.schema.json",
+                  "start": 1,
+                  "end": 52,
+                  "digest": "sha256:a5885d2d45982da3f5f7f4756bb033d8501fbd07e65adb5b98419ca0a99ee537",
+                  "note": "Changed lines of schema/v5/erd-overlay-event.schema.json explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-overlay-context",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "A proposed change is recorded against a named baseline and feature without overwriting the baseline model."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "data-tests",
+            "slide": "ti-records-impl-data-model",
+            "rank": 50,
+            "kind": "example",
+            "label": "Data model authoring tests",
+            "description": "CLI tests refuse an implemented edge to a proposed entity, a missing holder pin, bindings outside the directory and unsafe SVG; model tests prove overlay composition and schema conformance.",
+            "selector": {
+              "type": "element",
+              "element_id": "data-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 262,
+                  "end": 329,
+                  "digest": "sha256:788d9c9af0763aa2bc888a4450b39259b622a0ee589bffdf7e5c21e02a67108d",
+                  "note": "Public data-entity, ERD and overlay authoring cases."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 305,
+                  "end": 359,
+                  "digest": "sha256:adea0d73659fb587d9272cd59da96df64a57fc7e3d4a1388c4dccb71610b7c2a",
+                  "note": "Data entities, ERD asset checks and overlay composition."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-tests-visible",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:visible-without-code",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Proposed entities and relationships are stored and composed without code evidence."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:dff5d581a8b08be0d4c7de1d86034484fef401296003586ee952ce977c30e126",
+      "parent_snapshots": [
+        "sha256:8676e74c61e1fe2191bc9ca410e523a8b38e39fe719f34c2b1e318e9059ed07d"
+      ],
+      "request_id": "repin-4e47d2c1-ti-records-impl-data-model",
+      "created_at": "2026-09-25T03:59:46.154528Z",
+      "asset": "24-a-f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b.svg",
+      "asset_digest": "sha256:f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b917d64312f70",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-data-model",
+        "deck": "technical-inventory",
+        "title": "Implemented: data entities, ERD roots and overlays",
+        "rank": 180,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-f212d2d89e21f3329ab4400985bf706fec4abd43408255f1917b.svg",
+        "takeaway": "Entities hold curated fields, holding resources and owned edges with their own intent; the ERD binds an offline SVG to a directory, and overlays never rewrite it.",
+        "reading_order": [
+          "entity",
+          "relationship",
+          "erd",
+          "overlay",
+          "data-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "entity",
+            "slide": "ti-records-impl-data-model",
+            "rank": 10,
+            "kind": "node",
+            "label": "Data entity record",
+            "description": "A data entity has curated fields with key roles, holding Component pins with roles, and explicit intent. Resources are pins, not second identities; exhaustive columns are not required.",
+            "selector": {
+              "type": "element",
+              "element_id": "entity"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 308,
+                  "end": 362,
+                  "digest": "sha256:6d0d8edb34fced0c2fa21ec21ba2d34165ca0ce62dbff86ae090e55c0260ae75",
+                  "note": "validateDataEntity: fields, keys, holders and relationship rules."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/data-entity.schema.json",
+                  "start": 1,
+                  "end": 37,
+                  "digest": "sha256:71304758808da9e1649da0cac49e89c464ecd3bd2aecee6ca4460ccb86f64203",
+                  "note": "Changed lines of schema/v5/data-entity.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/data-entity-revision.schema.json",
+                  "start": 1,
+                  "end": 463,
+                  "digest": "sha256:10c11338fa1071ceef00d35c2df9ca51da09883f36527aaa7547c6cac0e03d0f",
+                  "note": "Changed lines of schema/v5/data-entity-revision.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/data-entity-event.schema.json",
+                  "start": 1,
+                  "end": 52,
+                  "digest": "sha256:2e3221c59a42c0b8833919a8d032cbebfc7128d073c708a47ea03e3d7f3514d3",
+                  "note": "Changed lines of schema/v5/data-entity-event.schema.json explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-entity-logical",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:logical-and-persisted",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The record model describes queued payloads and persisted rows and names the Components that hold them."
+            },
+            {
+              "id": "ti-records-impl-data-entity-selective",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:selective-detail",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Fields are an author-curated subset; nothing requires mirroring every column or property."
+            },
+            {
+              "id": "ti-records-impl-data-entity-resource",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:structure-and-resource",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "The canonical record separates entity structure and purpose from its holding resources; display belongs to the UI slice."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "relationship",
+            "slide": "ti-records-impl-data-model",
+            "rank": 20,
+            "kind": "edge",
+            "label": "Owned relationship with its own intent",
+            "description": "An owning revision declares outgoing association (explicit, possibly unknown cardinality) or production (flow and label, no cardinality) edges. An implemented edge needs implemented endpoints.",
+            "selector": {
+              "type": "element",
+              "element_id": "relationship"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 288,
+                  "end": 299,
+                  "digest": "sha256:3c3154fc0244ccc59e5e0e151bbe2929000f066b6a527c13e7cfa8594c77fed2",
+                  "note": "edgeIntent: a proposed owner cannot assert an implemented relationship."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-relationship-meaning",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:relationship-meaning",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "Meaning and declared cardinality are stored per relationship, with unknown kept explicit rather than guessed."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "erd",
+            "slide": "ti-records-impl-data-model",
+            "rank": 30,
+            "kind": "node",
+            "label": "Authored ERD root",
+            "description": "The ERD stores an offline SVG by content address, a directory of entity pins and element bindings that must lie in the directory. Unsafe or external SVG content is refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "erd"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 364,
+                  "end": 439,
+                  "digest": "sha256:0aec43b483e6f72729fde7312df511fe2230536327a6c761680ea9351646f81e",
+                  "note": "validateERDRevision: directory, bindings and visual shape."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 516,
+                  "end": 630,
+                  "digest": "sha256:071c4eb975e6bb87aa0876f2439b1689cbeb0343ece7a6cc78b0f5c196148dcf",
+                  "note": "ValidateVisual: digest, offline safety and bound element ids."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd.schema.json",
+                  "start": 1,
+                  "end": 37,
+                  "digest": "sha256:41991336a52ac97fe9f7887a6c552e584ca087ea202fa16d3c08c137d58e269e",
+                  "note": "Changed lines of schema/v5/erd.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-revision.schema.json",
+                  "start": 1,
+                  "end": 185,
+                  "digest": "sha256:94f19cf6af5a008c73ec3a026759abf69fed678daabd0bffe5123d5494bd2104",
+                  "note": "Changed lines of schema/v5/erd-revision.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-event.schema.json",
+                  "start": 1,
+                  "end": 52,
+                  "digest": "sha256:d91a82cbfb3dab9e22ac1ffc5884300222cd9310987278ed4c5b7a4f1202dbc6",
+                  "note": "Changed lines of schema/v5/erd-event.schema.json explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-erd-authored",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:authored-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The ERD is an authored visual plus explicit bindings, not a generated schema dump."
+            },
+            {
+              "id": "ti-records-impl-data-erd-directory",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "Diagram bindings and the directory resolve the same saved entity pins; the expandable UI is a sibling slice."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "overlay",
+            "slide": "ti-records-impl-data-model",
+            "rank": 40,
+            "kind": "node",
+            "label": "Design overlay",
+            "description": "An overlay names an exact ERD revision and feature, pins replacement or new entities and proposes removals. Composition leaves the canonical ERD unchanged; a removal retires nothing.",
+            "selector": {
+              "type": "element",
+              "element_id": "overlay"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 259,
+                  "end": 311,
+                  "digest": "sha256:44efed11a6b41ef10df93dd637acf9f5ca29df7728fc697a11f0e347a696ec38",
+                  "note": "checkViewReferences: baseline, removals, repeated pins and bindings against exact revisions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 124,
+                  "end": 161,
+                  "digest": "sha256:3597b0a29a1a5d08c4b1cdd231a5628fc0015b87970ffcacce295cb12850b96c",
+                  "note": "ComposeOverlay substitutes, adds and removes pins without modifying the ERD."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-overlay.schema.json",
+                  "start": 1,
+                  "end": 37,
+                  "digest": "sha256:da8640347e9004ddac43e73ad339cab8ebb67c0e014a19d8496913055b3d3d16",
+                  "note": "Changed lines of schema/v5/erd-overlay.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-overlay-revision.schema.json",
+                  "start": 1,
+                  "end": 227,
+                  "digest": "sha256:d744cba0114e85da2c4b6aaa452162691a10cb84feb6ff431112a8cae9442be0",
+                  "note": "Changed lines of schema/v5/erd-overlay-revision.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/erd-overlay-event.schema.json",
+                  "start": 1,
+                  "end": 52,
+                  "digest": "sha256:a5885d2d45982da3f5f7f4756bb033d8501fbd07e65adb5b98419ca0a99ee537",
+                  "note": "Changed lines of schema/v5/erd-overlay-event.schema.json explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-overlay-context",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:design-context",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "A proposed change is recorded against a named baseline and feature without overwriting the baseline model."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "data-tests",
+            "slide": "ti-records-impl-data-model",
+            "rank": 50,
+            "kind": "example",
+            "label": "Data model authoring tests",
+            "description": "CLI tests refuse an implemented edge to a proposed entity, a missing holder pin, bindings outside the directory and unsafe SVG; model tests prove overlay composition and schema conformance.",
+            "selector": {
+              "type": "element",
+              "element_id": "data-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 262,
+                  "end": 329,
+                  "digest": "sha256:788d9c9af0763aa2bc888a4450b39259b622a0ee589bffdf7e5c21e02a67108d",
+                  "note": "Public data-entity, ERD and overlay authoring cases."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 305,
+                  "end": 359,
+                  "digest": "sha256:adea0d73659fb587d9272cd59da96df64a57fc7e3d4a1388c4dccb71610b7c2a",
+                  "note": "Data entities, ERD asset checks and overlay composition."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-data-tests-visible",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:visible-without-code",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Proposed entities and relationships are stored and composed without code evidence."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

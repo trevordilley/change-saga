@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/cover_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:3fe00f3c3b825941c25292722603a5a6e033abaa1541fde1f59e8e20930b7661",
+      "note": "The reassess step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/cover_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:7ed115f74756c19008f46d89ffd95712ce6b3cb14450e1644358ef661421898a",
+      "note": "The reassess step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/cover_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "The reassess step owns these workflow changes or their regression checks."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/cli/cover_test.go",
+      "start": 518,
+      "end": 586,
+      "digest": "sha256:393930e836f62e1ca834ee39574cc5b6350992c48002a16efefccaed53ae8b88",
+      "note": "The reassess step owns these workflow changes or their regression checks."
+    }
+  ]
+}

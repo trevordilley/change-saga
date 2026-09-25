@@ -1,0 +1,50 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:change-saga:story:inventory-query-technical-context",
+  "parents": [
+    "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r1"
+  ],
+  "title": "Discover technical context through the CLI",
+  "statement": "As an Architect or Developer directing AI work, I can query Systems, Components, data entities, their relationships, code, and usages so the AI can identify reusable entities and the relevant code subset before exploring raw source.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924",
+    "urn:change-saga:change-saga:citation:erd-roadmap-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "discover-definitions",
+      "statement": "Public queries return discoverable System, Component, and data-entity identities, descriptions, explicit proposal/existence information, and code-reference health."
+    },
+    {
+      "id": "transitive-navigation",
+      "statement": "Starting from a System or data-model entry, public queries expose the relevant Component/data-entity relationships and exact code references so a caller can identify and select a relevant subset."
+    },
+    {
+      "id": "usage-navigation",
+      "statement": "Queries expose implementation-deck usages and their originating Items so a caller can find existing feature precedent."
+    },
+    {
+      "id": "truthful-results",
+      "statement": "Query results distinguish missing evidence or links from confirmed absence and identify historical, stale, or conflicted records instead of presenting them as current facts."
+    },
+    {
+      "id": "filter-proposed",
+      "statement": "Public queries can filter proposed entities across Systems, Components, and data entities, returning their stable identities and the explicit state used for the filter."
+    },
+    {
+      "id": "filter-new",
+      "statement": "Public queries can filter entities introduced relative to a specified comparison baseline and head independently of proposed status, including newly implemented entities."
+    },
+    {
+      "id": "scoped-roadmap",
+      "statement": "Proposed and new filters can be constrained to the relevant design, feature, or comparison; results expose the declared links establishing scope rather than including unrelated application proposals."
+    }
+  ],
+  "created_at": "2026-09-24T22:22:00.120463Z"
+}

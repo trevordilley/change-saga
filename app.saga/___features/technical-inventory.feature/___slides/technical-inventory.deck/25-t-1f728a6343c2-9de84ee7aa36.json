@@ -1,0 +1,1443 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-ui-impl-trace",
+  "current": "sha256:605d3db7aa8062249447b59aead1dec008de6e003ab6b9cefa870128d26ce18b",
+  "revisions": [
+    {
+      "snapshot": "sha256:b71f5a7a4741fd1e47ed0bd512eef6df16ef157ce16910c2390c57dcb3a0e07e",
+      "request_id": "ti-ui-impl-trace-create-1",
+      "created_at": "2026-09-25T02:22:23.378006Z",
+      "asset": "24-a-d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c.svg",
+      "asset_digest": "sha256:d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c3b0b32e468f9",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-trace",
+        "deck": "technical-inventory",
+        "title": "A slide Item opens its exact selection",
+        "rank": 250,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c.svg",
+        "takeaway": "From a slide Item, the drawer shows exactly the code that Item selects, with its health facts, then returns to the same slide.",
+        "reading_order": [
+          "control",
+          "selection",
+          "health",
+          "coverage",
+          "review"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "control",
+            "slide": "ti-ui-impl-trace",
+            "rank": 10,
+            "kind": "node",
+            "label": "Item control names the Item",
+            "description": "The book control on an implementation or review Item carries its pinned revision and Item URN; Escape returns focus to it with the slide URL unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "control"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 34,
+                  "end": 39,
+                  "digest": "sha256:43a6559d7b5a56e11055aca7ea7d82c0dd5203bbcadd81fb36c214f505170a49",
+                  "note": "The control view carries the pin, the Item URN and its selection count."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 1250,
+                  "end": 1253,
+                  "digest": "sha256:b81ec8edad95155e270363655629f105863c237e78d427cfaed0030ca8213d7d",
+                  "note": "The drawer request keeps the Item only for the Item's own pin; definitions reached from the drawer do not inherit it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-return",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:return-context",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "Returning from the code view restores the originating deck, slide and Item."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "selection",
+            "slide": "ti-ui-impl-trace",
+            "rank": 20,
+            "kind": "node",
+            "label": "Exact selection before whole definition",
+            "description": "The drawer resolves each saved selection's declared path and shows its selected lines before the definition's complete code; a pin that changed shows no selection.",
+            "selector": {
+              "type": "element",
+              "element_id": "selection"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 99,
+                  "end": 137,
+                  "digest": "sha256:a4e44ed5d511dc4a2e03bce14511d8a395ed6cd329f6584ef16a1074169872f1",
+                  "note": "Reads the Item as saved, refuses a mismatched pin, and resolves each selection's declared path structurally."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-selected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:selected-code",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "The code subset selected for this use is shown separately from the entity's complete code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "health",
+            "slide": "ti-ui-impl-trace",
+            "rank": 30,
+            "kind": "statement",
+            "label": "Separate health facts",
+            "description": "Selected lines are current or stale at the observed head, the containing reference may be stale on its own, and the saved digest is checked at the selection's commit; unresolved paths give a reason.",
+            "selector": {
+              "type": "element",
+              "element_id": "health"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 138,
+                  "end": 156,
+                  "digest": "sha256:102f4b723fcff90a5ba92695ada8aae3748efc3be4964411015b736a039774bb",
+                  "note": "Reports containing-reference staleness, the selected lines at the head and selected-byte integrity as three separate results."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-identity",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "The code shows commit, path and range and reports stale or unresolved references without substitution."
+            },
+            {
+              "id": "ti-ui-impl-trace-health",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:evidence-health",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Code health is reported separately from intent and newness."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "coverage",
+            "slide": "ti-ui-impl-trace",
+            "rank": 40,
+            "kind": "region",
+            "label": "Inherited coverage, labelled",
+            "description": "The reviewer's comparison coverage credits Items with exactly their inherited selected lines, as the CLI does, labelled selected via the selection rather than authored evidence.",
+            "selector": {
+              "type": "element",
+              "element_id": "coverage"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/snapshot.go",
+                  "start": 283,
+                  "end": 290,
+                  "digest": "sha256:23c8f5d83b454c314747e821058824a01107eb144ba3b8d40ce7fab0a7f6fd42",
+                  "note": "Evaluates coverage with the Items' eligible inherited selections through the shared projection; an unreadable inventory inherits nothing."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/manifest.go",
+                  "start": 299,
+                  "end": 305,
+                  "digest": "sha256:00c777000fbce3bc50ea7315d8635edd028ecdd304543b742c8ffeb2936bf301",
+                  "note": "Names the selection an owner inherits through, so it is not presented as an authored evidence record."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-inherited",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Only the Item's selected subset contributes coverage, visibly attributed to the selection."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "review",
+            "slide": "ti-ui-impl-trace",
+            "rank": 50,
+            "kind": "region",
+            "label": "Review decks reuse identities",
+            "description": "Review deck Items carry the same definition control and selections; opening a definition records no review decision.",
+            "selector": {
+              "type": "element",
+              "element_id": "review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/reviews.go",
+                  "start": 733,
+                  "end": 733,
+                  "digest": "sha256:c978d353e24c3e9510ae11005e8680c0cf05b6a92bd6120643d4316db51c7f54",
+                  "note": "The review Item affordance renders the same definition control with the Item URN and selection count."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-review",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A review deck references the same identities and exposes the code subset relevant to the change."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:27f85e87a344077eb5a3d5a4d951cddb6b74dfce9dbe8ef741430ae116257424",
+      "parent_snapshots": [
+        "sha256:b71f5a7a4741fd1e47ed0bd512eef6df16ef157ce16910c2390c57dcb3a0e07e"
+      ],
+      "request_id": "ti-ui-impl-trace-update-1",
+      "created_at": "2026-09-25T02:32:34.899524Z",
+      "asset": "24-a-d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c.svg",
+      "asset_digest": "sha256:d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c3b0b32e468f9",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-trace",
+        "deck": "technical-inventory",
+        "title": "A slide Item opens its exact selection",
+        "rank": 250,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c.svg",
+        "takeaway": "From a slide Item, the drawer shows exactly the code that Item selects, with its health facts, then returns to the same slide.",
+        "reading_order": [
+          "control",
+          "selection",
+          "health",
+          "coverage",
+          "review"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "control",
+            "slide": "ti-ui-impl-trace",
+            "rank": 10,
+            "kind": "node",
+            "label": "Item control names the Item",
+            "description": "The book control on an implementation or review Item carries its pinned revision and Item URN; Escape returns focus to it with the slide URL unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "control"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 1190,
+                  "end": 1190,
+                  "digest": "sha256:bb85af25cd32727f925c0afb3aae8e2b8b606bb1104907f06c3980c7269a0a05",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 1250,
+                  "end": 1252,
+                  "digest": "sha256:aaf273c940edbce0d25a44bf98f5d84e933ad2acf31f5e89436f0bfab46ade4e",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 1259,
+                  "end": 1259,
+                  "digest": "sha256:ed2757cb7e779e04aabf2e49ad6bdb172743e6c0f910e7fed384275dca0ee580",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 1265,
+                  "end": 1265,
+                  "digest": "sha256:5a527a7fae9ff341ea5aa8fa66b1100fd26b4d8a7fd67f11c4b1892a3607493e",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 1283,
+                  "end": 1283,
+                  "digest": "sha256:65f40073dc2da15b58013907842413de432609d8eb178dd3546fc6d4ae08ddd8",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/appjs.go",
+                  "start": 2142,
+                  "end": 2142,
+                  "digest": "sha256:c08318350bf701de6659229b74f4a75a25dd372c28028fbf4c5c49024ef9e3b4",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 1,
+                  "end": 39,
+                  "digest": "sha256:cb537b8e9fd408654731b75dcaecb0efb3d529063dd6f7673e9ab2c83ab08af7",
+                  "note": "The Item control carries the pinned revision, the Item URN and its selection count."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/template.go",
+                  "start": 378,
+                  "end": 378,
+                  "digest": "sha256:ed2008b520192483d2c611386d1b9929eea72189206da16e587a3a83c035d9a5",
+                  "note": "Implementation Item controls name the landmark's own Item."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/template.go",
+                  "start": 381,
+                  "end": 381,
+                  "digest": "sha256:ebbca5753987b1e7bbab70f42d76172090f66cac7bdc7c6e5d485353ae1c0919",
+                  "note": "Implementation Item controls name the landmark's own Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-return",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:return-context",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "Returning from the code view restores the originating deck, slide and Item."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "selection",
+            "slide": "ti-ui-impl-trace",
+            "rank": 20,
+            "kind": "node",
+            "label": "Exact selection before whole definition",
+            "description": "The drawer resolves each saved selection's declared path and shows its selected lines before the definition's complete code; a pin that changed shows no selection.",
+            "selector": {
+              "type": "element",
+              "element_id": "selection"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 40,
+                  "end": 137,
+                  "digest": "sha256:8064e90ebbf01f0def84b41f7174e498fa514f43c8b0d9099275b76f26eba9a3",
+                  "note": "Resolves the opening Item's saved selections along their declared paths."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-selected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:selected-code",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "The code subset selected for this use is shown separately from the entity's complete code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "health",
+            "slide": "ti-ui-impl-trace",
+            "rank": 30,
+            "kind": "statement",
+            "label": "Separate health facts",
+            "description": "Selected lines are current or stale at the observed head, the containing reference may be stale on its own, and the saved digest is checked at the selection's commit; unresolved paths give a reason.",
+            "selector": {
+              "type": "element",
+              "element_id": "health"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 138,
+                  "end": 161,
+                  "digest": "sha256:e521ce1c6065528a4a6e049527cd8bfd5c480a1dfc2bf9d2b2180fd5a83046e7",
+                  "note": "Reports containing-reference staleness, selected lines at the head and digest integrity separately, and renders them."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-identity",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "The code shows commit, path and range and reports stale or unresolved references without substitution."
+            },
+            {
+              "id": "ti-ui-impl-trace-health",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:evidence-health",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Code health is reported separately from intent and newness."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "coverage",
+            "slide": "ti-ui-impl-trace",
+            "rank": 40,
+            "kind": "region",
+            "label": "Inherited coverage, labelled",
+            "description": "The reviewer's comparison coverage credits Items with exactly their inherited selected lines, as the CLI does, labelled selected via the selection rather than authored evidence.",
+            "selector": {
+              "type": "element",
+              "element_id": "coverage"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/manifest.go",
+                  "start": 90,
+                  "end": 92,
+                  "digest": "sha256:8d67fd946ee88c117a7afe1937edb44bbaba55edbd45c15f63d257a5cf02b98d",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/manifest.go",
+                  "start": 296,
+                  "end": 306,
+                  "digest": "sha256:2025c9491152fffeec93bb669353ce0ddb2ac38c03dcdc36f5b1541d75a8b016",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/manifest.go",
+                  "start": 330,
+                  "end": 337,
+                  "digest": "sha256:cc1433c34ee471d6636a11dfdc3d60ac8de2bb95df3789ba8d637f3cbd031908",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/snapshot.go",
+                  "start": 22,
+                  "end": 23,
+                  "digest": "sha256:5cb149e082d45385227ae47e36e185a2b4e308916b1e00674e0ab66265967d8e",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/snapshot.go",
+                  "start": 283,
+                  "end": 290,
+                  "digest": "sha256:23c8f5d83b454c314747e821058824a01107eb144ba3b8d40ce7fab0a7f6fd42",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/snapshot.go",
+                  "start": 430,
+                  "end": 431,
+                  "digest": "sha256:7336a9bc287247fb75a4745d23f1984156c89d4623c16566ab379938db312092",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/template.go",
+                  "start": 42,
+                  "end": 42,
+                  "digest": "sha256:5fac43a41225c5f589bebc1a7986ee1a8a7272b5a206cc08665b3ec832a40116",
+                  "note": "The coverage owner reference shows the selected-via label."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-inherited",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Only the Item's selected subset contributes coverage, visibly attributed to the selection."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "review",
+            "slide": "ti-ui-impl-trace",
+            "rank": 50,
+            "kind": "region",
+            "label": "Review decks reuse identities",
+            "description": "Review deck Items carry the same definition control and selections; opening a definition records no review decision.",
+            "selector": {
+              "type": "element",
+              "element_id": "review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/reviews.go",
+                  "start": 722,
+                  "end": 722,
+                  "digest": "sha256:3221df3b5dc1a98f7c0328d2fdf195a9b715c8a0aea9f2f71c95f840639ea7ae",
+                  "note": "Review Items render the same control with the Item URN and selection count."
+                },
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/reviews.go",
+                  "start": 733,
+                  "end": 733,
+                  "digest": "sha256:c978d353e24c3e9510ae11005e8680c0cf05b6a92bd6120643d4316db51c7f54",
+                  "note": "Review Items render the same control with the Item URN and selection count."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-review",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A review deck references the same identities and exposes the code subset relevant to the change."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:e385a22e8279a50934c87937e096109587c6bf8b1242c8be0689fd489b1b11a3",
+      "parent_snapshots": [
+        "sha256:27f85e87a344077eb5a3d5a4d951cddb6b74dfce9dbe8ef741430ae116257424"
+      ],
+      "request_id": "ti-ui-impl-trace-update-3",
+      "created_at": "2026-09-25T02:36:42.313194Z",
+      "asset": "24-a-d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c.svg",
+      "asset_digest": "sha256:d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c3b0b32e468f9",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-trace",
+        "deck": "technical-inventory",
+        "title": "A slide Item opens its exact selection",
+        "rank": 250,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c.svg",
+        "takeaway": "From a slide Item, the drawer shows exactly the code that Item selects, with its health facts, then returns to the same slide.",
+        "reading_order": [
+          "control",
+          "selection",
+          "health",
+          "coverage",
+          "review"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "control",
+            "slide": "ti-ui-impl-trace",
+            "rank": 10,
+            "kind": "node",
+            "label": "Item control names the Item",
+            "description": "The book control on an implementation or review Item carries its pinned revision and Item URN; Escape returns focus to it with the slide URL unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "control"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1190,
+                  "end": 1190,
+                  "digest": "sha256:bb85af25cd32727f925c0afb3aae8e2b8b606bb1104907f06c3980c7269a0a05",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1250,
+                  "end": 1252,
+                  "digest": "sha256:aaf273c940edbce0d25a44bf98f5d84e933ad2acf31f5e89436f0bfab46ade4e",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1259,
+                  "end": 1259,
+                  "digest": "sha256:ed2757cb7e779e04aabf2e49ad6bdb172743e6c0f910e7fed384275dca0ee580",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1265,
+                  "end": 1265,
+                  "digest": "sha256:5a527a7fae9ff341ea5aa8fa66b1100fd26b4d8a7fd67f11c4b1892a3607493e",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1283,
+                  "end": 1283,
+                  "digest": "sha256:65f40073dc2da15b58013907842413de432609d8eb178dd3546fc6d4ae08ddd8",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 2142,
+                  "end": 2142,
+                  "digest": "sha256:c08318350bf701de6659229b74f4a75a25dd372c28028fbf4c5c49024ef9e3b4",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 1,
+                  "end": 39,
+                  "digest": "sha256:cb537b8e9fd408654731b75dcaecb0efb3d529063dd6f7673e9ab2c83ab08af7",
+                  "note": "The Item control carries the pinned revision, the Item URN and its selection count."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/template.go",
+                  "start": 378,
+                  "end": 378,
+                  "digest": "sha256:ed2008b520192483d2c611386d1b9929eea72189206da16e587a3a83c035d9a5",
+                  "note": "Implementation Item controls name the landmark's own Item."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/template.go",
+                  "start": 381,
+                  "end": 381,
+                  "digest": "sha256:ebbca5753987b1e7bbab70f42d76172090f66cac7bdc7c6e5d485353ae1c0919",
+                  "note": "Implementation Item controls name the landmark's own Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-return",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:return-context",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "Returning from the code view restores the originating deck, slide and Item."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "selection",
+            "slide": "ti-ui-impl-trace",
+            "rank": 20,
+            "kind": "node",
+            "label": "Exact selection before whole definition",
+            "description": "The drawer resolves each saved selection's declared path and shows its selected lines before the definition's complete code; a pin that changed shows no selection.",
+            "selector": {
+              "type": "element",
+              "element_id": "selection"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 40,
+                  "end": 137,
+                  "digest": "sha256:8064e90ebbf01f0def84b41f7174e498fa514f43c8b0d9099275b76f26eba9a3",
+                  "note": "Resolves the opening Item's saved selections along their declared paths."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-selected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:selected-code",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "The code subset selected for this use is shown separately from the entity's complete code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "health",
+            "slide": "ti-ui-impl-trace",
+            "rank": 30,
+            "kind": "statement",
+            "label": "Separate health facts",
+            "description": "Selected lines are current or stale at the observed head, the containing reference may be stale on its own, and the saved digest is checked at the selection's commit; unresolved paths give a reason.",
+            "selector": {
+              "type": "element",
+              "element_id": "health"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 138,
+                  "end": 161,
+                  "digest": "sha256:e521ce1c6065528a4a6e049527cd8bfd5c480a1dfc2bf9d2b2180fd5a83046e7",
+                  "note": "Reports containing-reference staleness, selected lines at the head and digest integrity separately, and renders them."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-identity",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "The code shows commit, path and range and reports stale or unresolved references without substitution."
+            },
+            {
+              "id": "ti-ui-impl-trace-health",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:evidence-health",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Code health is reported separately from intent and newness."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "coverage",
+            "slide": "ti-ui-impl-trace",
+            "rank": 40,
+            "kind": "region",
+            "label": "Inherited coverage, labelled",
+            "description": "The reviewer's comparison coverage credits Items with exactly their inherited selected lines, as the CLI does, labelled selected via the selection rather than authored evidence.",
+            "selector": {
+              "type": "element",
+              "element_id": "coverage"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/manifest.go",
+                  "start": 90,
+                  "end": 92,
+                  "digest": "sha256:8d67fd946ee88c117a7afe1937edb44bbaba55edbd45c15f63d257a5cf02b98d",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/manifest.go",
+                  "start": 296,
+                  "end": 306,
+                  "digest": "sha256:2025c9491152fffeec93bb669353ce0ddb2ac38c03dcdc36f5b1541d75a8b016",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/manifest.go",
+                  "start": 330,
+                  "end": 337,
+                  "digest": "sha256:cc1433c34ee471d6636a11dfdc3d60ac8de2bb95df3789ba8d637f3cbd031908",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/snapshot.go",
+                  "start": 22,
+                  "end": 23,
+                  "digest": "sha256:5cb149e082d45385227ae47e36e185a2b4e308916b1e00674e0ab66265967d8e",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/snapshot.go",
+                  "start": 283,
+                  "end": 290,
+                  "digest": "sha256:23c8f5d83b454c314747e821058824a01107eb144ba3b8d40ce7fab0a7f6fd42",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/snapshot.go",
+                  "start": 430,
+                  "end": 431,
+                  "digest": "sha256:7336a9bc287247fb75a4745d23f1984156c89d4623c16566ab379938db312092",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/template.go",
+                  "start": 42,
+                  "end": 42,
+                  "digest": "sha256:5fac43a41225c5f589bebc1a7986ee1a8a7272b5a206cc08665b3ec832a40116",
+                  "note": "The coverage owner reference shows the selected-via label."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-inherited",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Only the Item's selected subset contributes coverage, visibly attributed to the selection."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+            },
+            "version": 4,
+            "id": "review",
+            "slide": "ti-ui-impl-trace",
+            "rank": 50,
+            "kind": "region",
+            "label": "Review decks reuse identities",
+            "description": "Review deck Items carry the same definition control and selections; opening a definition records no review decision.",
+            "selector": {
+              "type": "element",
+              "element_id": "review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/reviews.go",
+                  "start": 722,
+                  "end": 722,
+                  "digest": "sha256:3221df3b5dc1a98f7c0328d2fdf195a9b715c8a0aea9f2f71c95f840639ea7ae",
+                  "note": "Review Items render the same control with the Item URN and selection count."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/reviews.go",
+                  "start": 733,
+                  "end": 733,
+                  "digest": "sha256:c978d353e24c3e9510ae11005e8680c0cf05b6a92bd6120643d4316db51c7f54",
+                  "note": "Review Items render the same control with the Item URN and selection count."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-review",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A review deck references the same identities and exposes the code subset relevant to the change."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:605d3db7aa8062249447b59aead1dec008de6e003ab6b9cefa870128d26ce18b",
+      "parent_snapshots": [
+        "sha256:e385a22e8279a50934c87937e096109587c6bf8b1242c8be0689fd489b1b11a3"
+      ],
+      "request_id": "ti-ui-impl-trace-repin",
+      "created_at": "2026-09-25T06:32:41.59265Z",
+      "asset": "24-a-d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c.svg",
+      "asset_digest": "sha256:d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c3b0b32e468f9",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-trace",
+        "deck": "technical-inventory",
+        "title": "A slide Item opens its exact selection",
+        "rank": 250,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-d24775ab8cbea32d4adf9dc5b3e1ee6ec81aaad271bd5560724c.svg",
+        "takeaway": "From a slide Item, the drawer shows exactly the code that Item selects, with its health facts, then returns to the same slide.",
+        "reading_order": [
+          "control",
+          "selection",
+          "health",
+          "coverage",
+          "review"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r2"
+            },
+            "version": 4,
+            "id": "control",
+            "slide": "ti-ui-impl-trace",
+            "rank": 0,
+            "kind": "node",
+            "label": "Item control names the Item",
+            "description": "The book control on an implementation or review Item carries its pinned revision and Item URN; Escape returns focus to it with the slide URL unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "control"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1190,
+                  "end": 1190,
+                  "digest": "sha256:bb85af25cd32727f925c0afb3aae8e2b8b606bb1104907f06c3980c7269a0a05",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1250,
+                  "end": 1252,
+                  "digest": "sha256:aaf273c940edbce0d25a44bf98f5d84e933ad2acf31f5e89436f0bfab46ade4e",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1259,
+                  "end": 1259,
+                  "digest": "sha256:ed2757cb7e779e04aabf2e49ad6bdb172743e6c0f910e7fed384275dca0ee580",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1265,
+                  "end": 1265,
+                  "digest": "sha256:5a527a7fae9ff341ea5aa8fa66b1100fd26b4d8a7fd67f11c4b1892a3607493e",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 1283,
+                  "end": 1283,
+                  "digest": "sha256:65f40073dc2da15b58013907842413de432609d8eb178dd3546fc6d4ae08ddd8",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appjs.go",
+                  "start": 2142,
+                  "end": 2142,
+                  "digest": "sha256:c08318350bf701de6659229b74f4a75a25dd372c28028fbf4c5c49024ef9e3b4",
+                  "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 1,
+                  "end": 39,
+                  "digest": "sha256:cb537b8e9fd408654731b75dcaecb0efb3d529063dd6f7673e9ab2c83ab08af7",
+                  "note": "The Item control carries the pinned revision, the Item URN and its selection count."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/template.go",
+                  "start": 378,
+                  "end": 378,
+                  "digest": "sha256:ed2008b520192483d2c611386d1b9929eea72189206da16e587a3a83c035d9a5",
+                  "note": "Implementation Item controls name the landmark's own Item."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/template.go",
+                  "start": 381,
+                  "end": 381,
+                  "digest": "sha256:ebbca5753987b1e7bbab70f42d76172090f66cac7bdc7c6e5d485353ae1c0919",
+                  "note": "Implementation Item controls name the landmark's own Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-return",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:return-context",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "Returning from the code view restores the originating deck, slide and Item."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r2"
+            },
+            "version": 4,
+            "id": "selection",
+            "slide": "ti-ui-impl-trace",
+            "rank": 10,
+            "kind": "node",
+            "label": "Exact selection before whole definition",
+            "description": "The drawer resolves each saved selection's declared path and shows its selected lines before the definition's complete code; a pin that changed shows no selection.",
+            "selector": {
+              "type": "element",
+              "element_id": "selection"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 40,
+                  "end": 137,
+                  "digest": "sha256:8064e90ebbf01f0def84b41f7174e498fa514f43c8b0d9099275b76f26eba9a3",
+                  "note": "Resolves the opening Item's saved selections along their declared paths."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-selected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:selected-code",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "The code subset selected for this use is shown separately from the entity's complete code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r2"
+            },
+            "version": 4,
+            "id": "health",
+            "slide": "ti-ui-impl-trace",
+            "rank": 20,
+            "kind": "statement",
+            "label": "Separate health facts",
+            "description": "Selected lines are current or stale at the observed head, the containing reference may be stale on its own, and the saved digest is checked at the selection's commit; unresolved paths give a reason.",
+            "selector": {
+              "type": "element",
+              "element_id": "health"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_selection.go",
+                  "start": 138,
+                  "end": 161,
+                  "digest": "sha256:e521ce1c6065528a4a6e049527cd8bfd5c480a1dfc2bf9d2b2180fd5a83046e7",
+                  "note": "Reports containing-reference staleness, selected lines at the head and digest integrity separately, and renders them."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-identity",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "The code shows commit, path and range and reports stale or unresolved references without substitution."
+            },
+            {
+              "id": "ti-ui-impl-trace-health",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:evidence-health",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Code health is reported separately from intent and newness."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r2"
+            },
+            "version": 4,
+            "id": "coverage",
+            "slide": "ti-ui-impl-trace",
+            "rank": 30,
+            "kind": "region",
+            "label": "Inherited coverage, labelled",
+            "description": "The reviewer's comparison coverage credits Items with exactly their inherited selected lines, as the CLI does, labelled selected via the selection rather than authored evidence.",
+            "selector": {
+              "type": "element",
+              "element_id": "coverage"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/manifest.go",
+                  "start": 90,
+                  "end": 92,
+                  "digest": "sha256:8d67fd946ee88c117a7afe1937edb44bbaba55edbd45c15f63d257a5cf02b98d",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/manifest.go",
+                  "start": 296,
+                  "end": 306,
+                  "digest": "sha256:2025c9491152fffeec93bb669353ce0ddb2ac38c03dcdc36f5b1541d75a8b016",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/manifest.go",
+                  "start": 330,
+                  "end": 337,
+                  "digest": "sha256:cc1433c34ee471d6636a11dfdc3d60ac8de2bb95df3789ba8d637f3cbd031908",
+                  "note": "Owners inherited through a selection are labelled selected via it."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/snapshot.go",
+                  "start": 22,
+                  "end": 23,
+                  "digest": "sha256:5cb149e082d45385227ae47e36e185a2b4e308916b1e00674e0ab66265967d8e",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/snapshot.go",
+                  "start": 283,
+                  "end": 290,
+                  "digest": "sha256:23c8f5d83b454c314747e821058824a01107eb144ba3b8d40ce7fab0a7f6fd42",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/snapshot.go",
+                  "start": 430,
+                  "end": 431,
+                  "digest": "sha256:7336a9bc287247fb75a4745d23f1984156c89d4623c16566ab379938db312092",
+                  "note": "Reviewer coverage evaluates inherited selections as the CLI does; the derived snapshot format moves to v4."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/template.go",
+                  "start": 42,
+                  "end": 42,
+                  "digest": "sha256:5fac43a41225c5f589bebc1a7986ee1a8a7272b5a206cc08665b3ec832a40116",
+                  "note": "The coverage owner reference shows the selected-via label."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-inherited",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Only the Item's selected subset contributes coverage, visibly attributed to the selection."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+              "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r2"
+            },
+            "version": 4,
+            "id": "review",
+            "slide": "ti-ui-impl-trace",
+            "rank": 40,
+            "kind": "region",
+            "label": "Review decks reuse identities",
+            "description": "Review deck Items carry the same definition control and selections; opening a definition records no review decision.",
+            "selector": {
+              "type": "element",
+              "element_id": "review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/reviews.go",
+                  "start": 722,
+                  "end": 722,
+                  "digest": "sha256:3221df3b5dc1a98f7c0328d2fdf195a9b715c8a0aea9f2f71c95f840639ea7ae",
+                  "note": "Review Items render the same control with the Item URN and selection count."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/reviews.go",
+                  "start": 733,
+                  "end": 733,
+                  "digest": "sha256:c978d353e24c3e9510ae11005e8680c0cf05b6a92bd6120643d4316db51c7f54",
+                  "note": "Review Items render the same control with the Item URN and selection count."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-trace-review",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A review deck references the same identities and exposes the code subset relevant to the change."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

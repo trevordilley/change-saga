@@ -91,12 +91,18 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "setup-initial-saga", "feature", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "diagram", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
-	"review", "validate", "status", "check", "preintegrate", "query", "visual-qa",
+	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "diagram", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"serve", "open", "install-skill", "spec",
 }
 
 var commandUsage = map[string]string{
+	"component":                   "change-saga component <add|revise|set-state> [flags] <saga>",
+	"system":                      "change-saga system <add|revise|set-state> [flags] <saga>",
+	"data-entity":                 "change-saga data-entity <add|revise|set-state> [flags] <saga>",
+	"erd":                         "change-saga erd <add|revise|set-state> [flags] <saga>",
+	"erd-overlay":                 "change-saga erd-overlay <add|revise|set-state> [flags] <saga>",
+	"inventory":                   "change-saga inventory <adopt-format> [flags] <saga>",
 	"init":                        "change-saga init [flags] <name.saga>",
 	"setup-initial-saga":          "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
 	"feature":                     "change-saga feature add [flags] <saga>",
@@ -209,6 +215,7 @@ var commandUsage = map[string]string{
 	"review withdraw":             "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
 	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
+	"reconcile":                   "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json] <saga>",
 	"status":                      "change-saga status [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"preintegrate":                "change-saga preintegrate --ref REF --ref REF [--repo PATH] [--json] <saga>",
@@ -245,12 +252,16 @@ A focused change:
      every changed line from the Item that explains it. The first command that
      needs a feature creates one named after the branch (or pass --feature);
      with one feature, --feature is implied.
-  3. "status --against main" reports coverage by area (implementation,
-     stories, personas, design, quality, health) with what is and is not
-     covered. It has no verdict: it exits 0 whenever the report can be
-     trusted, and non-zero only for a malformed Saga or a mismatched checkout.
-  4. "check --covers implementation --against main" answers one scoped
-     question with its exit code; name only the areas the work requires.
+  3. Verify the implementation and author its PR review slide deck ("review").
+     The review deck explains the transition; living documentation explains
+     the current application. Each has independent coverage.
+  4. "reconcile --against main" explains affected records, HEAD reference
+     currency, baseline debt and regressions, with typed inspection/repair
+     paths. Reassess affected documentation and update only what needs it.
+  5. Run relevant tests, "validate", and "reconcile" again. "status" reports
+     coverage by area with no verdict. "check --covers implementation
+     --against main" asks about changed-line coverage; "check --covers health"
+     separately checks current health. Neither proves semantic correctness.
 
 Growing the Saga, a step at a time and only when it helps:
   - Product: write user stories with acceptance criteria ("story",
@@ -319,10 +330,17 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
+	"component":                   "Define an identifiable unit of logic with exact pinned code. Use add or revise --from with a complete technical-definition JSON document; immutable revisions preserve history.",
+	"system":                      "Define a reusable interaction diagram with pinned Components, directed data flow, and exact scoped code. Implementation Items link a specific revision without inheriting coverage.",
+	"data-entity":                 "Define a logical payload or persisted record: curated fields and keys, holding Components, and owned association/production relationships. Requires inventory format 2; every revision states proposed or implemented intent.",
+	"erd":                         "Author the application ERD: an offline SVG visual, its directory of data-entity pins, and element bindings. Requires inventory format 2.",
+	"erd-overlay":                 "Propose data-model changes against an exact ERD revision without rewriting it: replacement or new entity pins, removals, and an optional visual. Requires inventory format 2.",
+	"inventory":                   "Adopt inventory format 2 explicitly. Existing records are not rewritten; legacy revisions read as unspecified intent. Older change-saga versions then refuse the inventory instead of dropping content.",
 	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Features, stories, personas, design, and quality\nare optional and can come later.",
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
-	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check.",
-	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
+	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
+	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
+	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke\n\nComparison coverage can use deleted-line evidence valid at base. Check HEAD\nhealth separately without --against; use reconcile for debt and repair paths.",
 	"visual-qa":                   "Render selected implementation or onboarding slides both as raw assets and inside the\nactual reviewer at 1280x720 and 1024x576. The managed output includes screenshots, a\ncontact sheet, and visual-qa.json with mechanical clipping, text-overflow, missing-selector,\nand reliable Item-overlap findings. The command is read-only with respect to the Saga and\nexits 3 when error-severity findings exist. It does not judge whether semantic arrows or\nrelationships are correct.",
 	"preintegrate":                "Read committed Saga snapshots from two or more explicit Git refs and report\nstable-ID collisions, different current heads, and deterministic text-overlap\ncandidates with exact ref/commit provenance. It is advisory and read-only: it\nnever chooses semantic equivalence, updates a ref, checks out, or merges Git.",
 	"feature":                     "Add a durable product domain. A feature holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames a feature, so a story can move between features without breaking a link.",
@@ -838,6 +856,7 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 	appendPrototypeIssues(flags.Arg(0), document, &validation)
 	appendQualityIssues(flags.Arg(0), document, &validation)
 	appendAppIssues(flags.Arg(0), document, &validation)
+	appendInventoryIssues(flags.Arg(0), document, &validation)
 	if *jsonOutput {
 		if err := writeJSON(out, validationOutput{Validation: validation, Fixes: fixes}); err != nil {
 			return err
@@ -1219,6 +1238,14 @@ func Spec(args []string, out io.Writer) error {
 				"feature_content": "report content (chapters and fragments) plus the feature roots; no URN names its feature, so IDs are unique across the app",
 				"onboarding":      applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, feature, or story record instead of code evidence",
 			},
+			"technical_inventory": map[string]any{"root": requirements.InventoryDir, "kinds": TechnicalKinds, "format_kinds": map[string]int{"component": 1, "system": 1, requirements.KindDataEntity: 2, requirements.KindERD: 2, requirements.KindERDOverlay: 2},
+				"format":       map[string]any{"marker": requirements.InventoryDir + "/" + requirements.InventoryFormatName, "current": requirements.CurrentInventoryFormat, "absent": 1, "adopt": "inventory adopt-format --format 2 PATH (explicit; no automatic migration)", "older_readers": "refuse the marker, new directories and Item fields rather than drop content"},
+				"authoring":    "component|system|data-entity|erd|erd-overlay add|revise --id ID --from FILE --revision ID [--parent URN] [--delivery REV | --visual SVG] PATH; set-state --event ID --state active|retired --reason TEXT --parent URN",
+				"intent":       map[string]any{"values": []string{requirements.IntentProposed, requirements.IntentImplemented}, "legacy": requirements.IntentUnspecified, "proposed": "requires baseline: an implemented ancestor revision URN or \"none\"; code optional", "implemented": "requires delivery {repository, commit} and 1-64 references valid at their commit and current at delivery", "edges": "each interaction/relationship has its own intent; an implemented edge needs implemented endpoints; nothing cascades"},
+				"evidence_ids": "format-2 references carry an id unique across the revision; selections name (revision pin, evidence id)",
+				"bounds":       map[string]int{"references_per_owner": requirements.MaxEvidencePerOwner, "relationships": requirements.MaxRelationships, "fields": requirements.MaxEntityFields, "holders": requirements.MaxEntityHolders, "erd_directory": requirements.MaxERDDirectory, "erd_bindings": requirements.MaxERDBindings, "overlay_pins": requirements.MaxOverlayPins, "visual_bytes": requirements.MaxVisualBytes, "item_selections": saga.MaxItemSelections, "selection_path": saga.MaxSelectionPath},
+				"item_link":    "documentation: {target: Component-System-or-data-entity-URN, revision: Revision-URN}; optional documentation_view: full commit of a saved Saga view admitting a non-current pin; optional selections: [{id, path: [pins from documentation], evidence: id, code: subset reference}]",
+				"coverage":     "only direct Item code; documentation never transfers coverage; selections are explicit inputs to inventory-aware coverage consumers", "history": "immutable identity, complete revisions and lifecycle events; all heads explicit"},
 			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
 			"query": map[string]any{
 				"schema":     querySchema,
@@ -1998,6 +2025,15 @@ Falsifiable author assertions live as independent ___claims/<id>.json records.
 Append-only ___verifications/<id>.json records mark them unverified, verified,
 failed, or inconclusive and preserve the method and reproducible command. Claim
 evidence never contributes to coverage. Git history supplies attribution.
+
+Components identify meaningful units of logic with exact pinned code. Systems
+model their interactions and data flow with pinned Component revisions and
+exact interaction evidence. They live under ___inventory and have immutable
+identity, revisions and lifecycle events. Use component/system add|revise|set-state
+and query inventory. Implementation/review Item documentation links pin {target,
+revision}; they never transfer code coverage. Existing Item.record role rules
+remain unchanged. Stale pins and history stay inspectable; no autoapproval or
+automatic repinning occurs.
 
 The Saga is documentation. Stories, designs, test cases, and decks carry no
 approvals and no comments. A pull request's review is where a change is

@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/cli.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:30e8084c0109c47af920e4d97c6e421bed995c593e73814080371c48190ff2c8",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/cli.go",
+      "start": 99,
+      "end": 100,
+      "digest": "sha256:2cabb72b981a95cbe3408c2b0f4b81f3483fbd85eb71ab99ffeaef4bf59401bb",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/cli.go",
+      "start": 317,
+      "end": 318,
+      "digest": "sha256:bdf9759cd11a8fd7e09c4e32d539857b18cdbd6d900f5060065a0061cfec8e92",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/cli.go",
+      "start": 832,
+      "end": 832,
+      "digest": "sha256:55bfc81ddc732cb9ae50739e6f2cbbeb7465e465195226d5288e7ea7d6fac814",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/cli.go",
+      "start": 1228,
+      "end": 1235,
+      "digest": "sha256:efe4d1a23ed2fc778497eaec5d1dd65b2a95e6bcfcedde319c828cb0f4f8c93b",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/cli.go",
+      "start": 1994,
+      "end": 2002,
+      "digest": "sha256:6ac93dd113f35bf2160595bbeddb41737cc0189bf50a94d4a99690f7148e76c1",
+      "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
+    }
+  ]
+}

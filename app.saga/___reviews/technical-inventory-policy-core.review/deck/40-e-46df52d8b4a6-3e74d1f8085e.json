@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/implementation.go",
+      "digest": "sha256:4b1c44af521fea417afc8f815e51ac064af02ff9ed27d916d32a83172a3561a8",
+      "note": "File-addition event: introduce this isolated policy source/test file. Focused line references separately explain its behavior; this whole-file record preserves the file event."
+    }
+  ]
+}

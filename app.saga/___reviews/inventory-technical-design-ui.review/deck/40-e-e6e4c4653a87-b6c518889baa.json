@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/appjs.go",
+      "start": 1190,
+      "end": 1190,
+      "digest": "sha256:2241e86e865cccc2939c1b747984678357afdc93ef16d85a828f2aeb79399d7d",
+      "note": "Replaced drawer label and pin handling without the Item."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/appjs.go",
+      "start": 1249,
+      "end": 1249,
+      "digest": "sha256:fc008baa9131a333f245068a7e4f026d8123b274272951e6c5469915ef084429",
+      "note": "Replaced drawer label and pin handling without the Item."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/appjs.go",
+      "start": 1256,
+      "end": 1256,
+      "digest": "sha256:427c2570f88c70d9ced28f02aaf659198b42185c7008ca9efff17814a471127c",
+      "note": "Replaced drawer label and pin handling without the Item."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/appjs.go",
+      "start": 2137,
+      "end": 2137,
+      "digest": "sha256:51a62a0d56f75de624cacfc03b99b571f4a5a470b96f3d13df57688fcf3ed010",
+      "note": "Replaced drawer label and pin handling without the Item."
+    }
+  ]
+}

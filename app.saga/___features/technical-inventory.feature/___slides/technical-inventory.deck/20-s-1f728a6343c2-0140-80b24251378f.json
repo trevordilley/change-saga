@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "technical-inventory-policy-decisions",
+  "deck": "technical-inventory",
+  "title": "Proposed: historical views and implementation policy",
+  "rank": 140,
+  "section": "Proposed technical design",
+  "intent": "explain",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0140-80b24251378f.svg",
+  "takeaway": "Use explicit saved views, verify implementation at a named delivery commit, and never promote relationships automatically with their owner.",
+  "reading_order": [
+    "view-input",
+    "view-rule",
+    "delivery-input",
+    "delivery-rule",
+    "intent-input",
+    "intent-rule",
+    "foundation"
+  ]
+}

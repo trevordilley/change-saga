@@ -99,6 +99,25 @@ revision and supplies the required parents and revision identity. Never emulate
 a rename by editing files, changing a URN, rewriting prose/SVG, or repinning or
 approving dependencies.
 
+## Technical inventory
+
+`query inventory` reports each Component/System with the exact revisions it
+answers about (`selected`), their explicit intent, declared use counts and
+code health. Intent is `unspecified` for legacy revisions; never infer it.
+`--intent` filters explicit intent. `--new` requires `--against`: newness is
+identity introduction relative to that base, independent of intent, and an
+unreadable base fails with `baseline_unknown` rather than making everything
+new. `--feature` restricts to pins reachable from that feature's
+implementation Items and returns the declared `scope_paths`. Filters never
+remove unresolved records: page `data.unresolved` with `--conflict-cursor`
+until `data.completeness.unresolved_page.has_more` is false.
+
+`query inventory-uses --target URN [--depth N]` pages declared reverse uses;
+read `data.completeness` before claiming a definition is unused.
+`query inventory-coverage` measures code accounted for by the inventory in a
+named `--path` scope. It is not implementation-deck or review coverage, and
+covered lines are not proof of a correct explanation.
+
 ## Operations
 
 <!-- query-operations:begin -->
@@ -158,6 +177,14 @@ approving dependencies.
   `change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]`
 - `history`: when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison.
   `change-saga query history --saga PATH --node URN`
+- `inventory`: Component/System/data-entity/ERD definitions, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page.
+  `change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]`
+- `inventory-uses`: declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness.
+  `change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member|data_holder|relationship_destination|erd_directory|erd_overlay] [--cursor TOKEN] [--limit N] [--repo PATH]`
+- `inventory-coverage`: which tracked code at one source revision the current technical definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage.
+  `change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]`
+- `inventory-selections`: saved implementation Item selections with their declared path, containing evidence, pin health, and separately resolved selected-byte and containing-evidence health; whether each contributes inherited deck coverage.
+  `change-saga query inventory-selections --saga PATH [--feature ID|URN] [--item URN] [--state eligible|ineligible|unresolved] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]`
 - `terms`: the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation.
   `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `term-references`: direct explicit incoming and outgoing term references with provenance and declared coverage.

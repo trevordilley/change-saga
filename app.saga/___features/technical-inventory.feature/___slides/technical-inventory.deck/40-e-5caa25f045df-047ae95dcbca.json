@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "path": "internal/requirements/inventory.go",
+      "start": 31,
+      "end": 45,
+      "digest": "sha256:548f55eace2487df9b3e85d0d6c040b5cbfeb5594109ed9021f3c43ea8c30452",
+      "note": "Existing definition/revision shape and locked immutable writer are extension points, not evidence that proposed state or data entities exist."
+    },
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 14,
+      "end": 40,
+      "digest": "sha256:fc30df1e5691b7d930a4b5b1810098535b3afb51f73582be414df2023ed10b3f",
+      "note": "Existing definition/revision shape and locked immutable writer are extension points, not evidence that proposed state or data entities exist."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "provenance",
+  "slide": "technical-inventory-selected-path",
+  "rank": 60,
+  "kind": "statement",
+  "label": "Reuse evidence with its complete path",
+  "description": "Proposed: retain Item, entity revision path, containing evidence identity and selected source range/digest. Reuse canonical evidence without a second independent ownership mapping.",
+  "selector": {
+    "type": "element",
+    "element_id": "provenance"
+  }
+}

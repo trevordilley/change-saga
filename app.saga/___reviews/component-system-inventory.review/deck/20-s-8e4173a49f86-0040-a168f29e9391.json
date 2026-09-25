@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "technical-inventory-verification",
+  "deck": "component-system-inventory",
+  "title": "Compatibility and verification boundaries",
+  "rank": 40,
+  "intent": "compare",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8e4173a49f86-0040-a168f29e9391.svg",
+  "takeaway": "The opt-in format has focused regression evidence and explicit first-pass limits.",
+  "reading_order": [
+    "contracts",
+    "records",
+    "browser",
+    "demo"
+  ]
+}

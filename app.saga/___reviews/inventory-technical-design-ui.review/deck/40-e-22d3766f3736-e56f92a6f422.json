@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/template.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:666859cfff5b269a26e023c447de61eb957edc328c27ce8ab54e275d918acd39",
+      "note": "Replaced stylesheet and page switch lines."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/template.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:5832de406935a5c72f393a6be22fcff43c23dc58e56c2447735969d34c187d03",
+      "note": "Replaced stylesheet and page switch lines."
+    }
+  ]
+}

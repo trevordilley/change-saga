@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "delivery-input",
+  "slide": "technical-inventory-policy-decisions",
+  "rank": 20,
+  "kind": "example",
+  "label": "Original evidence and delivery are different source views",
+  "description": "Evidence originally authored at C0 must also resolve against the named immutable delivery commit C1 before a new implementation assertion is valid.",
+  "selector": {
+    "type": "element",
+    "element_id": "delivery-input"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "database",
+  "slide": "technical-inventory-authored-erd",
+  "rank": 30,
+  "kind": "region",
+  "label": "Database resource",
+  "description": "Illustrative storage boundary containing a report record; the database is not the report entity.",
+  "selector": {
+    "type": "element",
+    "element_id": "database"
+  }
+}

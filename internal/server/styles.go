@@ -226,6 +226,7 @@ it. The view tabs beside them belong to whichever side is open. */
 .directory-filter-go:hover{background:var(--bg-inset)}
 .directory-filter-clear{color:var(--muted);font-size:12px;text-decoration:none}
 .directory-filter-clear:hover{color:var(--accent)}
+.directory-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;background:linear-gradient(to right,var(--bg) 40%,transparent) left/28px 100% no-repeat local,linear-gradient(to left,var(--bg) 40%,transparent) right/28px 100% no-repeat local,radial-gradient(farthest-side at 0 50%,color-mix(in srgb,var(--ink) 16%,transparent),transparent) left/10px 100% no-repeat scroll,radial-gradient(farthest-side at 100% 50%,color-mix(in srgb,var(--ink) 16%,transparent),transparent) right/10px 100% no-repeat scroll}
 .directory-table{width:100%;border-collapse:collapse;font:13px/1.45 var(--ui);table-layout:auto}
 .directory-table caption{caption-side:top;margin-bottom:6px;color:var(--faint);font:11px var(--mono);text-align:left}
 .directory-table th,.directory-table td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:break-word}
@@ -562,7 +563,7 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .content-landmark-text>.landmark-affordance{position:absolute;z-index:4;left:calc(100% + 4px);top:50%;transform:translateY(-50%);white-space:nowrap}
 .content-landmark-text.content-landmark-active,.fragment.preview-linked-items .content-landmark-text[data-landmark-has-diffs="true"]{background:#f2bd4b40;outline:2px solid #d39418}
 .landmark-hotspot{position:absolute;z-index:3;border:1px solid transparent;border-radius:4px;pointer-events:auto}
-.landmark-hotspot[data-landmark-has-diffs="true"]{cursor:pointer}
+.landmark-hotspot[data-landmark-has-diffs="true"],.landmark-hotspot[data-landmark-has-documentation="true"]{cursor:pointer}
 .fragment.preview-linked-stories .landmark-hotspot[data-landmark-has-stories="true"]{border-color:#d39418;background:transparent}
 .fragment.preview-linked-stories .landmark-hotspot[data-landmark-has-stories="true"]>.landmark-affordance{opacity:1}
 .fragment.preview-linked-stories .fragment-heading[data-landmark-has-stories="true"]>.landmark-affordance,.fragment.preview-linked-stories .content-landmark-text[data-landmark-has-stories="true"]>.landmark-affordance{opacity:1}
@@ -802,7 +803,9 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .diff-surface[data-layout=split] .diff-column-head{display:none}
 }
 @media(max-width:780px){
-.topbar{padding:0 8px;gap:6px}
+.topbar{max-width:100%;padding:0 8px;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
+.topbar::-webkit-scrollbar{display:none}
+.topbar>*{flex:none}
 .brand span{display:none}
 .view-tab{padding:0 8px}
 .side-tab{padding:0 8px;font-size:12px}
@@ -834,4 +837,13 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .activity-heading{align-items:flex-start;flex-direction:column;gap:8px}
 .diff-drawer{width:100vw}
 }
+
+.diff-drawer[data-drawer-mode=documentation] .drawer-body{padding:14px 20px 60px}
+.documentation-explanation { overflow-wrap:anywhere; }
+.documentation-prose { white-space:pre-wrap; }
+.documentation-diagram { display:block; width:100%; max-width:430px; height:auto; }
+.documentation-explanation .term-code { overflow-x:auto; }
+.documentation-explanation .term-code-lines th { white-space:nowrap; overflow-wrap:normal; min-width:3ch; }
+.documentation-explanation button { cursor:pointer; max-width:100%; overflow-wrap:anywhere; }
+.documentation-members { display:flex; gap:12px; flex-wrap:wrap; padding-left:20px; }
 `

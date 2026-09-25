@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-selection-impact-routing",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-selection-impact:item:routing",
+  "to": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:explain-impact",
+  "scope": "self",
+  "rationale": "Partition selected-code drift from changes elsewhere in the entity. Both can require inspection; retain cause, exact path, source identity and baseline debt.",
+  "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-24T23:01:05.093372Z"
+}

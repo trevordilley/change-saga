@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "currency",
+  "slide": "detect-repair-recheck",
+  "rank": 10,
+  "kind": "node",
+  "label": "HEAD reference currency",
+  "description": "Resolve living references against the selected head, distinguish baseline debt and new regressions, and retain superseded quality evidence as historical.",
+  "selector": {
+    "type": "element",
+    "element_id": "currency"
+  }
+}

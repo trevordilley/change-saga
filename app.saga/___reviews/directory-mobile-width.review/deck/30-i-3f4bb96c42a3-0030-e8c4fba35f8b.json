@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "edge-shadows",
+  "slide": "desktop-width",
+  "rank": 30,
+  "kind": "statement",
+  "label": "Edge shadows",
+  "description": "Background gradients that move with the content show a shadow only on a side that still has columns to scroll to.",
+  "selector": {
+    "type": "element",
+    "element_id": "edge-shadows"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "schema/v5/review-comment.schema.json",
+      "start": 43,
+      "end": 48,
+      "digest": "sha256:7f03650325832c33a644452d9437f42ac4135de8c36e956ce0fb79de5c36830d",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "schema/v5/review-comment.schema.json",
+      "start": 60,
+      "end": 77,
+      "digest": "sha256:4685049d517284066e299186577a386f74bef5510143be59bfe5c409d6b75413",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "schema/v5/review-comment.schema.json",
+      "start": 113,
+      "end": 167,
+      "digest": "sha256:c9e324010e570ac077a9f39cf01d441c67f4b74ee4e3bcf99e3e7827d778befd",
+      "note": "append only annotations: anchor model owns these changed lines on this comparison side."
+    }
+  ]
+}

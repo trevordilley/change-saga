@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation_inventory.go",
+      "start": 1,
+      "end": 192,
+      "digest": "sha256:27b3e8622d25dc13a52ba30357ddf5642053c56cb17dcb49ef22f7dfc4839de6",
+      "note": "Inventory summary, base classification of stale evidence, code-change impact and repair shapes."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation_inventory.go",
+      "start": 267,
+      "end": 319,
+      "digest": "sha256:0f72a01d30f03fb0b014d5a68cc5cb96447649f975566e48188bc8978cfe272b",
+      "note": "Inventory summary, base classification of stale evidence, code-change impact and repair shapes."
+    }
+  ]
+}

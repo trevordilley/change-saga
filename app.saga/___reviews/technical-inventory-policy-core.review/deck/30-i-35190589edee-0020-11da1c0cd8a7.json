@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "git-tests",
+  "slide": "policy-proof",
+  "rank": 20,
+  "kind": "example",
+  "label": "Temporary Git delivery proof",
+  "description": "Temporary Git fixtures test missing-original recovery refusal, commit objects, movement, edits, deletion, retained edges and mixed intent through coderesolve. Evaluation preserves inputs and source/Git state.",
+  "selector": {
+    "type": "element",
+    "element_id": "git-tests"
+  },
+  "record": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation"
+}

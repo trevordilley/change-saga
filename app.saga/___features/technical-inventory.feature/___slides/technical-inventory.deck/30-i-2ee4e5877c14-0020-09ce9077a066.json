@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "resource",
+  "slide": "technical-inventory-record-contract",
+  "rank": 20,
+  "kind": "node",
+  "label": "Data is not its holding resource",
+  "description": "Pin a canonical Component describing the queue, database or other holding resource separately from the entity stored or carried there.",
+  "selector": {
+    "type": "element",
+    "element_id": "resource"
+  }
+}

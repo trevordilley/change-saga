@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0ddce8def26d380a77de0e119892d95abc48274",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 14,
+      "end": 40,
+      "digest": "sha256:fc30df1e5691b7d930a4b5b1810098535b3afb51f73582be414df2023ed10b3f",
+      "note": "Existing exact writer code used by the illustrative subset; selection inheritance remains proposed, not implemented by this source."
+    }
+  ]
+}

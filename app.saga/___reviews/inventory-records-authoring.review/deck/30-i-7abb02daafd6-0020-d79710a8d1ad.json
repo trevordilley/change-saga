@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "item-model",
+  "slide": "ti-records-review-records",
+  "rank": 20,
+  "kind": "region",
+  "label": "Item selection model",
+  "description": "ItemSelection and documentation_view are omitempty Item fields; data-entity pins become valid documentation; saga validation checks selection syntax only.",
+  "selector": {
+    "type": "element",
+    "element_id": "item-model"
+  }
+}

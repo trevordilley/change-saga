@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "path": "internal/cli/slides.go",
+      "start": 335,
+      "end": 336,
+      "digest": "sha256:19866f17ecea5b65e17b99ca26b7151ca8ba5875b0dc499ed46b0aa5627b21f4",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/slides.go",
+      "start": 434,
+      "end": 455,
+      "digest": "sha256:6f601fce9976889a76d4b531bd8a6e83fc9203be399f7eaf348bedea136d2461",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/slides.go",
+      "start": 490,
+      "end": 490,
+      "digest": "sha256:113f97c3f1b9024a648bfc061bcd252a826ce61afb67d898e896d372c1066574",
+      "note": "add-item, revise-item and complete-slide transactions preserve unchanged pins and make explicit reference changes inspectable."
+    }
+  ]
+}

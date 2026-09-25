@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Authored content runs on an opaque origin however it is reached</title>
+  <desc id="desc">An app page frames a fragment or review visual with an allow-scripts sandbox, and a reader can also open the same URL directly. Both routes send one authored-content policy with the sandbox directive, so the author script runs on origin null and cannot read app pages that carry the review token. Fonts served from the app itself do not load there; data: fonts do.</desc>
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#223650"/></marker>
+    <marker id="arr-red" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#b84444"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#f8f5ef"/>
+  <text x="60" y="62" font-family="system-ui" font-size="32" font-weight="760" fill="#16243a">Authored script never runs on the app origin</text>
+  <text x="60" y="96" font-family="system-ui" font-size="18" fill="#526276">The sandbox is sent with the response itself, so opening the URL directly can't bypass it.</text>
+
+  <g id="framed-path">
+    <rect x="60" y="150" width="270" height="140" rx="22" fill="#fff" stroke="#3769b0" stroke-width="3"/>
+    <text x="84" y="188" font-family="system-ui" font-size="19" font-weight="760" fill="#294f84">Framed in an app page</text>
+    <text x="84" y="222" font-family="ui-monospace,monospace" font-size="14" fill="#405976">&lt;iframe sandbox=</text>
+    <text x="84" y="244" font-family="ui-monospace,monospace" font-size="14" fill="#405976">  "allow-scripts"&gt;</text>
+    <text x="84" y="272" font-family="system-ui" font-size="14" fill="#526276">deck, doc tree, previews</text>
+    <path d="M330 220H392" stroke="#223650" stroke-width="4" marker-end="url(#arr)"/>
+  </g>
+
+  <g id="direct-visit">
+    <rect x="60" y="330" width="270" height="140" rx="22" fill="#fff" stroke="#b84444" stroke-width="3"/>
+    <text x="84" y="368" font-family="system-ui" font-size="19" font-weight="760" fill="#8a3030">Opened directly</text>
+    <text x="84" y="400" font-family="system-ui" font-size="15" fill="#6b3a3a">new tab · shared link</text>
+    <text x="84" y="424" font-family="system-ui" font-size="15" fill="#6b3a3a">top-level navigation,</text>
+    <text x="84" y="448" font-family="system-ui" font-size="15" fill="#6b3a3a">no iframe attribute</text>
+    <path d="M330 400H362V300H392" fill="none" stroke="#223650" stroke-width="4" marker-end="url(#arr)"/>
+  </g>
+
+  <g id="authored-routes">
+    <rect x="400" y="140" width="330" height="200" rx="26" fill="#fff" stroke="#223650" stroke-width="3"/>
+    <text x="424" y="176" font-family="system-ui" font-size="19" font-weight="760" fill="#16243a">Authored responses</text>
+    <rect x="424" y="196" width="282" height="52" rx="12" fill="#eef2f7"/>
+    <text x="440" y="228" font-family="ui-monospace,monospace" font-size="14" fill="#16243a">GET /f/{id}/{path}</text>
+    <rect x="424" y="264" width="282" height="52" rx="12" fill="#eef2f7"/>
+    <text x="440" y="296" font-family="ui-monospace,monospace" font-size="13" fill="#16243a">GET /reviews/{id}/visual/{slide}</text>
+  </g>
+
+  <g id="authored-policy">
+    <path d="M565 340V372" stroke="#223650" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="400" y="380" width="330" height="140" rx="26" fill="#16243a"/>
+    <text x="424" y="414" font-family="system-ui" font-size="17" font-weight="760" fill="#fff">one shared policy header</text>
+    <text x="424" y="446" font-family="ui-monospace,monospace" font-size="15" fill="#ffd98a">sandbox allow-scripts</text>
+    <text x="424" y="472" font-family="ui-monospace,monospace" font-size="14" fill="#d5dfec">connect-src 'none'</text>
+    <text x="424" y="496" font-family="ui-monospace,monospace" font-size="14" fill="#d5dfec">frame-ancestors 'self'</text>
+    <path d="M730 450H792" stroke="#223650" stroke-width="4" marker-end="url(#arr)"/>
+  </g>
+
+  <g id="opaque-origin">
+    <rect x="800" y="140" width="420" height="330" rx="30" fill="#e5f6ed" stroke="#2a7c59" stroke-width="4" stroke-dasharray="12 8"/>
+    <text x="830" y="182" font-family="system-ui" font-size="22" font-weight="760" fill="#245b45">Opaque origin</text>
+    <text x="830" y="214" font-family="ui-monospace,monospace" font-size="16" fill="#245b45">self.origin === "null"</text>
+    <text x="830" y="262" font-family="system-ui" font-size="16" fill="#245b45">✓ author script and inline handlers run</text>
+    <text x="830" y="294" font-family="system-ui" font-size="16" fill="#245b45">✓ images and scripts from its own package</text>
+    <text x="830" y="326" font-family="system-ui" font-size="16" fill="#245b45">✓ data: fonts and images</text>
+    <text x="830" y="374" font-family="system-ui" font-size="16" fill="#8a3030">✗ no storage, cookies, or fetch</text>
+    <text x="830" y="406" font-family="system-ui" font-size="16" fill="#8a3030">✗ no popups, forms, or top navigation</text>
+  </g>
+
+  <g id="app-origin">
+    <path d="M1010 470V548" stroke="#b84444" stroke-width="4" stroke-dasharray="8 6" marker-end="url(#arr-red)"/>
+    <circle cx="1010" cy="508" r="16" fill="#fee7e4" stroke="#b84444" stroke-width="3"/>
+    <path d="M1002 500L1018 516M1018 500L1002 516" stroke="#b84444" stroke-width="3"/>
+    <rect x="800" y="556" width="420" height="116" rx="26" fill="#fee7e4" stroke="#b84444" stroke-width="3"/>
+    <text x="830" y="592" font-family="system-ui" font-size="19" font-weight="760" fill="#8a3030">App origin · strict page policy</text>
+    <text x="830" y="622" font-family="system-ui" font-size="15" fill="#6b3a3a">/reviews/{id} carries the review token</text>
+    <text x="830" y="648" font-family="ui-monospace,monospace" font-size="13" fill="#6b3a3a">script-src 'self' · frame-ancestors 'none'</text>
+  </g>
+
+  <g id="self-fonts">
+    <rect x="60" y="556" width="670" height="116" rx="22" fill="#fff2ca" stroke="#d8951b" stroke-width="3"/>
+    <text x="86" y="592" font-family="system-ui" font-size="18" font-weight="760" fill="#68480f">Surprise: fonts from the app's own URL don't load</text>
+    <text x="86" y="622" font-family="system-ui" font-size="15" fill="#68480f">Fonts use CORS, and origin null is cross-origin to the server. This already</text>
+    <text x="86" y="646" font-family="system-ui" font-size="15" fill="#68480f">happened inside iframes; direct visits now behave the same. Embed data: fonts.</text>
+  </g>
+</svg>

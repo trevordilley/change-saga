@@ -108,6 +108,10 @@ type Decision struct {
 	// Commit is the pull request head the decision is given at.
 	Commit string
 	Body   string
+	// CheckSnapshot optionally verifies a browser's viewed source and slide.
+	// It runs under the writer lock with the freshly loaded review and target.
+	// It must not mutate the Saga or acquire its writer lock again.
+	CheckSnapshot func(*saga.Review, string) error
 }
 
 // Decide appends a per-slide decision, recording the slide's content digest
@@ -134,6 +138,11 @@ func Decide(root string, decision Decision) (saga.ReviewApproval, error) {
 		if review.Merged != nil {
 			return fmt.Errorf("review %q is history: its change landed as %s", review.ID, review.Merged.Landed)
 		}
+		if decision.CheckSnapshot != nil {
+			if err := decision.CheckSnapshot(review, slide.Target); err != nil {
+				return err
+			}
+		}
 		digest, err := saga.SlideDigest(slide)
 		if err != nil {
 			return err
@@ -159,19 +168,52 @@ type Remark struct {
 	Review string
 	// Target is a review slide or Item: its ID, "slide/item", or its URN.
 	// It is ignored for a reply, which joins the thread it replies to.
-	Target   string
-	ReplyTo  string
-	Body     string
-	State    string
-	Reviewer saga.ReviewerIdentity
-	Commit   string
+	Target           string
+	ReplyTo          string
+	Body             string
+	State            string
+	Anchor           *saga.ReviewAnchor
+	AnnotationAction string
+	Reviewer         saga.ReviewerIdentity
+	Commit           string
+	// CheckSnapshot has the same lock and read-only contract as Decision's
+	// check. Replies pass their resolved canonical target, not user input.
+	CheckSnapshot func(*saga.Review, string) error
 }
 
 // Comment appends a comment on a review slide or Item, or a reply.
 func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 	var written saga.ReviewComment
-	if strings.TrimSpace(remark.Body) == "" {
+	if strings.TrimSpace(remark.Body) == "" && remark.AnnotationAction == "" {
 		return written, fmt.Errorf("a comment needs a body")
+	}
+	if remark.AnnotationAction == "" && remark.Anchor != nil {
+		return written, fmt.Errorf("an annotation anchor requires an annotation action")
+	}
+	if remark.AnnotationAction != "" {
+		if remark.AnnotationAction != "create" && remark.AnnotationAction != "update" && remark.AnnotationAction != "delete" {
+			return written, fmt.Errorf("an annotation action is create, update, or delete")
+		}
+		if (remark.AnnotationAction == "create" || remark.AnnotationAction == "update") && remark.Anchor == nil {
+			return written, fmt.Errorf("an annotation create or update needs an anchor")
+		}
+		if remark.AnnotationAction == "create" && remark.ReplyTo != "" {
+			return written, fmt.Errorf("an annotation create starts a thread")
+		}
+		if remark.AnnotationAction == "delete" && remark.Anchor != nil {
+			return written, fmt.Errorf("an annotation delete does not carry an anchor")
+		}
+		if remark.AnnotationAction != "create" && remark.ReplyTo == "" {
+			return written, fmt.Errorf("an annotation update or delete replies to its root")
+		}
+		if remark.Anchor != nil {
+			if err := saga.ValidateReviewAnchor(*remark.Anchor); err != nil {
+				return written, err
+			}
+		}
+		if strings.TrimSpace(remark.Body) == "" {
+			remark.Body = "Annotation " + remark.AnnotationAction + "d."
+		}
 	}
 	if utf8.RuneCountInString(remark.Body) > MaxBodyRunes {
 		return written, fmt.Errorf("the comment exceeds %d characters", MaxBodyRunes)
@@ -190,15 +232,24 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 		if review == nil {
 			return fmt.Errorf("review %q does not exist", remark.Review)
 		}
+		if review.Merged != nil {
+			return fmt.Errorf("review %q is history: its change landed as %s", review.ID, review.Merged.Landed)
+		}
 		target := ""
 		if remark.ReplyTo != "" {
+			var reply *saga.ReviewComment
 			for _, comment := range review.Comments {
 				if comment.ID == remark.ReplyTo {
 					target = comment.Target
+					copy := comment
+					reply = &copy
 				}
 			}
 			if target == "" {
 				return fmt.Errorf("comment %q does not exist in review %q", remark.ReplyTo, review.ID)
+			}
+			if (remark.AnnotationAction == "update" || remark.AnnotationAction == "delete") && (reply == nil || reply.AnnotationAction != "create" || reply.ReplyTo != "") {
+				return fmt.Errorf("an annotation update or delete must reply to its annotation create root")
 			}
 		} else {
 			var err error
@@ -206,10 +257,16 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 				return err
 			}
 		}
+		if remark.CheckSnapshot != nil {
+			if err := remark.CheckSnapshot(review, target); err != nil {
+				return err
+			}
+		}
 		now := time.Now().UTC()
 		written = saga.ReviewComment{
 			Schema: saga.ReviewCommentSchemaURL, Version: saga.ReviewVersion, ID: store.EventID(now),
 			Target: target, ReplyTo: remark.ReplyTo, Body: strings.TrimSpace(remark.Body), State: remark.State,
+			Anchor: remark.Anchor, AnnotationAction: remark.AnnotationAction,
 			Reviewer: remark.Reviewer, Commit: remark.Commit, CreatedAt: now,
 		}
 		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(review.Directory, saga.ReviewCommentsDir))

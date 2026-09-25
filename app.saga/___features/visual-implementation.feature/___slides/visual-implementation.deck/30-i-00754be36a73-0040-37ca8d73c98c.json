@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "retry",
+  "slide": "pr-request-diff-reuse",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Retry failures without retaining them",
+  "description": "Failed or empty root discovery remains retryable. Patch failures and fallback-directory patches are not memoized; successful empty patches after root resolution are reusable.",
+  "selector": {
+    "type": "element",
+    "element_id": "retry"
+  }
+}

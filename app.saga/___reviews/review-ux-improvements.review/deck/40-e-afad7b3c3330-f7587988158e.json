@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 119,
+      "end": 121,
+      "digest": "sha256:ba1639ecfb966e69b6f9972a9f6b9be23f2e81b42132c2022b7a86059ec7ca2a",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:0f1e3a5e42eb7db2254e777d968fa2d36b377c8193d6db8b5a9f3e2894cd02e5",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:500fdcec3e5b5f40705bb13f88cd3e85f4b989dc289b70c4d1ae2a95eb9a0705",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:46cd8eb1189f52f1c3b46451ddc16bc2b8e153b14926c42302c133525984553a",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:a7abe1e87e80d063948724d866181814a66fb6a153fd2bbe31eb710579db4718",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:f12c86391b34dd9599291258ea5319a5e4f8e94c90ec2bccd85707e8ef066f14",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 254,
+      "end": 255,
+      "digest": "sha256:c12769b82d97b2aa31f0615bf980c6d21c4565542f2a3a8bc2832c1116a47f25",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:cea794677d84ece4af86151b484c9c08653cd85602c4ede8de2a8c698cab0a18",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:4de1e1ed41db37b78307eb6f3fb3f3adf415a4caafc2aed078ba8a9c7f30299a",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:8c43d60476e69472de982d5d4eddf17ba5d3d740f705011c53afe15608971da8",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    },
+    {
+      "commit": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+      "path": "internal/server/reviews.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:a0803652474385df608fa5bf66d078dccb0b8913885f5b9de95c4a673fc3060b",
+      "note": "slide workspace: workspace owns these changed lines on this comparison side."
+    }
+  ]
+}

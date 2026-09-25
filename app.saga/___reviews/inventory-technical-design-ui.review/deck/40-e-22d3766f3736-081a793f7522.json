@@ -1,0 +1,109 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 119,
+      "end": 122,
+      "digest": "sha256:839478f888fcb73caca25c2e7571e91beab07755cffaca68fa8579109a37e03e",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 369,
+      "end": 370,
+      "digest": "sha256:0bf2b779eb9fbd6ae06cdd74d0c5b47c696d43a849704e2a12690287360e9785",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:d4e78709586e6e3ef952cb6a9f4e273d5de530ad0e8f64a12100c9a8c7a25f11",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 835,
+      "end": 835,
+      "digest": "sha256:fba5cf37e0b3269f113e90e1fc5677aa8aa824976ead8c2a497bd6ed6a4ffdb1",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 842,
+      "end": 851,
+      "digest": "sha256:9cecc9bdf12937b86ae08f8e52edb8f9794218198d94e57af835d6c0d9c6dfd2",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 918,
+      "end": 920,
+      "digest": "sha256:c010db01002224fb62b8fdd10c7ea01c2f620443a4892f5241ac61ada4be988b",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 940,
+      "end": 943,
+      "digest": "sha256:a3560b430029062925689c1b9cd7a902d0b8e569f4c949cfad7d800d72439a88",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 1068,
+      "end": 1074,
+      "digest": "sha256:05f98b7423637b75ade0f3bb4f67bc0288aebf86e66a26121b0209e6da73a7de",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 1110,
+      "end": 1115,
+      "digest": "sha256:9482ee40487304210ec741dd316cc8878856bcc7a0e42b33656e6bab918f7e4c",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 1118,
+      "end": 1122,
+      "digest": "sha256:2600e4b559058676f7c98771476b779c9872cda04837f307da393b5cfed68589",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/server.go",
+      "start": 1131,
+      "end": 1131,
+      "digest": "sha256:e21ae300978f0c1edb5e1f82216b773d131f0563815f1f7dffb7c9b1b02d4a0b",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/server.go",
+      "start": 828,
+      "end": 828,
+      "digest": "sha256:6ffb95a4a21feb5dc97ede6fd14fd3c04601c4c66caeeb917e448dbd6760eeb1",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/server.go",
+      "start": 835,
+      "end": 841,
+      "digest": "sha256:e55d0a19c4a0d247f0380f4e954f65a456989d030ab1bec642cab8a40bf1cfad",
+      "note": "Routes, app route identity, shell wiring, page fields and template functions for Technical design."
+    }
+  ]
+}

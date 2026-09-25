@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">The ERD is the author&#x27;s drawing, bound to pins</title><desc id="desc">Selective, authored and safe; the directory states what is not drawn.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker>
+<marker id="flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a5a00"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">TECHNICAL INVENTORY · IMPLEMENTED UI / 2</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">The ERD is the author&#x27;s drawing, bound to pins</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Selective, authored and safe; the directory states what is not drawn.</text>
+<g id="allowlist"><rect x="60" y="190" width="300" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">AUTHORED DRAWING</text>
+<text x="78" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Drawn as authored</text>
+<text x="78" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">re-serialized from tokens</text>
+<text x="78" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">static shapes only; ids namespaced</text>
+<text x="78" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">anything else: unavailable</text>
+</g>
+<g id="bindings"><rect x="400" y="190" width="250" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="418" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">BINDINGS</text>
+<text x="418" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Element → pin</text>
+<text x="418" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">pointer, touch, keyboard</text>
+<text x="418" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">opens the same pin</text>
+<text x="418" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">as its directory row</text>
+</g>
+<path d="M360 275L400 275" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="membership"><rect x="690" y="190" width="250" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="708" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">DIRECTORY</text>
+<text x="708" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Every entity listed</text>
+<text x="708" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">drawn / not drawn</text>
+<text x="708" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">intent per entity</text>
+</g>
+<path d="M650 275L690 275" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="entity"><rect x="980" y="190" width="240" height="170" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="998" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">DATA ENTITY</text>
+<text x="998" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Structure in context</text>
+<text x="998" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">fields · keys</text>
+<text x="998" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">holding Components</text>
+<text x="998" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">in / out relationships</text>
+</g>
+<path d="M940 275L980 275" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="notation"><rect x="60" y="390" width="600" height="190" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/><text x="78" y="418" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">RELATIONSHIP NOTATION</text><path d="M100 470H380" stroke="#17324d" stroke-width="2"/><path d="M106 460V480M112 460V480" stroke="#17324d" stroke-width="2"/><path d="M380 460L368 470L380 480" fill="none" stroke="#17324d" stroke-width="2"/><circle cx="360" cy="470" r="6" fill="white" stroke="#17324d" stroke-width="2"/><text x="400" y="476" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#17324d">association: 1 — 0..many, or unknown</text><path d="M100 530H380" stroke="#8a5a00" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#flow)"/><text x="400" y="536" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00">production: labelled flow, not an FK</text></g>
+<g id="overlay"><rect x="700" y="390" width="520" height="190" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="718" y="418" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">ERD OVERLAY</text>
+<text x="718" y="448" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Proposed changes over a baseline</text>
+<text x="718" y="478" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">composed over the exact baseline revision</text>
+<text x="718" y="504" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">adds · replaces · removes, marked per row</text>
+<text x="718" y="530" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">the canonical ERD is never rewritten</text>
+</g>
+<g id="footer"><rect x="60" y="604" width="1160" height="72" rx="10" fill="#e6eef6"/><text x="84" y="646" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">The model comes from the records; the drawing is never parsed to understand it.</text></g>
+</svg>

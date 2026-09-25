@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "identity",
+  "slide": "technical-inventory-proposed-revisions",
+  "rank": 0,
+  "kind": "region",
+  "label": "One stable identity",
+  "description": "Confirmed design: Component, System and data-entity changes retain one stable identity with separate revisions; they do not create a duplicate entity for each feature.",
+  "selector": {
+    "type": "element",
+    "element_id": "identity"
+  }
+}

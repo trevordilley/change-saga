@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Proof, a fix, and the note</title><desc id="desc">What was checked, and one reviewer bug found on the way.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">REVIEW · TECHNICAL DESIGN UI / 4</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">Proof, a fix, and the note</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">What was checked, and one reviewer bug found on the way.</text>
+<g id="browser-proof"><rect x="60" y="190" width="400" height="220" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">e2e technical-inventory-ui.spec.ts</text>
+<text x="78" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Four browser flows</text>
+<text x="78" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">desktop + 390px touch, keyboard, Escape</text>
+<text x="78" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">ERD + selection authored via CLI</text>
+<text x="78" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">coverage attribution; 404s</text>
+</g>
+<g id="layers-fix"><rect x="500" y="190" width="340" height="220" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="518" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">layers.go</text>
+<text x="518" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Cancellation not cached</text>
+<text x="518" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">a reader navigating away no</text>
+<text x="518" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">longer poisons /api/layers</text>
+<text x="518" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">with a cached 500</text>
+</g>
+<g id="note"><rect x="880" y="190" width="340" height="220" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="898" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">docs</text>
+<text x="898" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Implementation note</text>
+<text x="898" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">delivered behavior</text>
+<text x="898" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">divergences from proposal</text>
+<text x="898" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">known gaps</text>
+</g>
+<rect x="60" y="604" width="1160" height="72" rx="10" fill="#e6eef6"/><text x="84" y="646" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">Checks are evidence of behavior tested, not a review verdict.</text>
+</svg>

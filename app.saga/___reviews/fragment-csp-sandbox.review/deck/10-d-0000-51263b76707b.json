@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "fragment-csp-sandbox",
+  "title": "Sandbox authored content at any origin",
+  "role": "review",
+  "rank": 0,
+  "objective": "Explain why fragments and review visuals now send the CSP sandbox directive, and how the change is tested."
+}

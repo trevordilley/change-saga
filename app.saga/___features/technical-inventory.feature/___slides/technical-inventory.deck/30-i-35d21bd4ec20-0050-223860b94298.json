@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "conflicts",
+  "slide": "technical-inventory-rollout",
+  "rank": 50,
+  "kind": "risk",
+  "label": "Never pick a winner by timestamp",
+  "description": "Expose all competing heads and require explicit reconciliation parents. Saved pins stay readable without implying currentness; preserving them is not approval or evidence of conflict resolution.",
+  "selector": {
+    "type": "element",
+    "element_id": "conflicts"
+  }
+}

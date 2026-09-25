@@ -6,6 +6,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"mime"
@@ -20,7 +21,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -82,10 +82,12 @@ type reviewGapFile struct {
 }
 
 type reviewSlideView struct {
+	Snapshot    string
 	Slide       *saga.Slide
 	DOMID       string
 	VisualURL   string
 	Interactive bool
+	Position    int
 	Report      reviewstate.SlideReport
 	OutOfDate   bool
 	Items       []*reviewItemView
@@ -95,8 +97,10 @@ type reviewSlideView struct {
 type reviewItemView struct {
 	Item        *saga.Item
 	DOMID       string
+	Region      *saga.LandmarkRegion
 	RecordHref  string
 	RecordLabel string
+	RecordKind  string
 	Diffs       []*reviewDiffView
 	Threads     []*reviewThreadView
 }
@@ -116,9 +120,16 @@ type reviewDiffLine struct {
 }
 
 type reviewThreadView struct {
-	ID       string
-	State    string
-	Comments []reviewCommentView
+	ID              string
+	Target          string
+	State           string
+	Comments        []reviewCommentView
+	Anchor          *saga.ReviewAnchor
+	AnchorJSON      string
+	Annotation      bool
+	Deleted         bool
+	ReviewID, Token string
+	Frozen          bool
 }
 
 type reviewCommentView struct {
@@ -221,29 +232,44 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 	} else {
 		resolver = nil
 	}
+	var diffs *reviewDiffs
+	if report.Range != nil {
+		diffs = newReviewDiffs(a.sourceDir, resolver, *report.Range)
+	}
 	threads := reviewstate.Threads(review.Comments)
 	slideReports := map[string]reviewstate.SlideReport{}
 	for _, slide := range report.Slides {
 		slideReports[slide.ID] = slide
 	}
-	for _, slide := range review.Deck.Slides {
+	for index, slide := range review.Deck.Slides {
 		slideView := &reviewSlideView{
-			Slide: slide, DOMID: domID(slide.Target), VisualURL: reviewHref(review.ID) + "/visual/" + slide.ID,
-			Interactive: slide.MediaType == "text/html", Report: slideReports[slide.ID],
+			Snapshot: a.reviewSnapshot(slide, report.Range), Slide: slide, DOMID: domID(slide.Target), VisualURL: reviewHref(review.ID) + "/visual/" + slide.ID,
+			Interactive: slide.MediaType == "text/html" || slide.MediaType == "image/svg+xml", Position: index + 1, Report: slideReports[slide.ID],
+		}
+		if slide.MediaType == "image/svg+xml" {
+			if data, readErr := os.ReadFile(filepath.Join(slide.Directory, filepath.FromSlash(slide.Entrypoint))); readErr == nil {
+				if aspect := svgAspectRatio(string(data)); aspect != "" {
+					slideView.VisualURL += "?saga_aspect=" + aspect
+				}
+			}
 		}
 		for _, decision := range slideView.Report.Decisions {
 			slideView.OutOfDate = slideView.OutOfDate || decision.Currency == reviewstate.OutOfDate
 		}
-		slideView.Threads = threadViewsFor(threads, slide.Target)
+		slideView.Threads = threadViewsFor(threads, slide.Target, review.ID, a.mutationToken, view.Frozen)
 		for _, item := range slide.Items {
-			itemView := &reviewItemView{Item: item, DOMID: domID(item.Target), Threads: threadViewsFor(threads, item.Target)}
+			region := item.Hotspot
+			if region == nil && item.Selector.Type == "region" {
+				region = &saga.LandmarkRegion{X: item.Selector.X, Y: item.Selector.Y, Width: item.Selector.Width, Height: item.Selector.Height}
+			}
+			itemView := &reviewItemView{Item: item, DOMID: domID(item.Target), Region: region, Threads: threadViewsFor(threads, item.Target, review.ID, a.mutationToken, view.Frozen)}
 			if item.Record != "" {
-				itemView.RecordHref, itemView.RecordLabel = recordHref(document, item.Record), recordLabel(item.Record)
+				itemView.RecordHref, itemView.RecordLabel, itemView.RecordKind = recordHref(document, item.Record), recordLabel(item.Record), reviewRecordKind(item.Record)
 			}
 			if report.Range != nil {
 				for _, file := range item.Code {
 					for _, reference := range file.References {
-						itemView.Diffs = append(itemView.Diffs, a.referenceDiff(ctx, resolver, reference, *report.Range))
+						itemView.Diffs = append(itemView.Diffs, diffs.referenceDiff(ctx, reference))
 					}
 				}
 			}
@@ -251,10 +277,12 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 		}
 		view.Slides = append(view.Slides, slideView)
 	}
-	// Opening a review gives its deck, its Code Diff, and its coverage, each
-	// read over the review's own range.
+	// Opening a review gives the deck the whole review pane. Code and coverage
+	// remain the same secondary surfaces implementation decks use; exact Items
+	// carry reviewers to the review-range diff and affected Saga records.
 	a.inShell(w, r, "review-page", view, reviewSurfaces{
-		deckLabel: "Deck", codeHref: reviewHref(review.ID) + "/code", coverageHref: reviewHref(review.ID) + "/coverage",
+		deckLabel: "Deck", reviewDeck: true,
+		codeHref: reviewHref(review.ID) + "/code", coverageHref: reviewHref(review.ID) + "/coverage",
 	})
 }
 
@@ -262,7 +290,10 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 // Code Diff and its coverage load from. A review's own range on a review's
 // page; the comparison the reviewer was opened with on the index, which has
 // no single range of its own.
-type reviewSurfaces struct{ deckLabel, codeHref, coverageHref string }
+type reviewSurfaces struct {
+	deckLabel, codeHref, coverageHref string
+	reviewDeck                        bool
+}
 
 // inShell renders a review surface inside the app shell, so the reviews sit
 // beside the sidebar and the tabs like every other page.
@@ -280,6 +311,7 @@ func (a *app) inShell(w http.ResponseWriter, r *http.Request, name string, view 
 	if surfaces.deckLabel != "" {
 		data.DeckLabel = surfaces.deckLabel
 	}
+	data.ReviewDeck = surfaces.reviewDeck
 	if surfaces.codeHref != "" || surfaces.coverageHref != "" {
 		data.ReviewCodeHref, data.ReviewCoverageHref = surfaces.codeHref, surfaces.coverageHref
 	}
@@ -323,15 +355,26 @@ func reviewCoverage(covered *reviewstate.Coverage) *reviewCoverageView {
 	return view
 }
 
-func threadViewsFor(threads []*reviewstate.Thread, target string) []*reviewThreadView {
+func threadViewsFor(threads []*reviewstate.Thread, target, reviewID, token string, frozen bool) []*reviewThreadView {
 	var result []*reviewThreadView
 	for _, thread := range threads {
 		if thread.Root.Target != target {
 			continue
 		}
-		view := &reviewThreadView{ID: thread.Root.ID, State: thread.State}
+		view := &reviewThreadView{ID: thread.Root.ID, Target: thread.Root.Target, State: thread.State, ReviewID: reviewID, Token: token, Frozen: frozen}
 		for _, comment := range append([]saga.ReviewComment{thread.Root}, thread.Replies...) {
+			switch comment.AnnotationAction {
+			case "create", "update":
+				view.Annotation, view.Deleted, view.Anchor = true, false, comment.Anchor
+			case "delete":
+				view.Annotation, view.Deleted = true, true
+			}
 			view.Comments = append(view.Comments, reviewCommentView{ID: comment.ID, Author: reviewerSeat(comment.Reviewer), Body: markdown(comment.Body), CreatedAt: comment.CreatedAt, State: comment.State})
+		}
+		if view.Anchor != nil {
+			if data, err := json.Marshal(view.Anchor); err == nil {
+				view.AnchorJSON = string(data)
+			}
 		}
 		result = append(result, view)
 	}
@@ -367,42 +410,26 @@ func recordLabel(record string) string {
 	return parts[len(parts)-2] + " " + parts[len(parts)-1]
 }
 
+func reviewRecordKind(record string) string {
+	parts := strings.Split(record, ":")
+	if len(parts) < 2 {
+		return "Record"
+	}
+	switch parts[len(parts)-2] {
+	case "story":
+		return "Story"
+	case "feature":
+		return "Feature"
+	default:
+		return "Record"
+	}
+}
+
 // referenceDiff is the diff of one Item's code reference against the
 // review's base: the hunks between the merge-base and the head that touch the
 // referenced lines as they are at the head.
 func (a *app) referenceDiff(ctx context.Context, resolver *coderesolve.Resolver, reference coderef.Reference, rng reviewstate.Range) *reviewDiffView {
-	view := &reviewDiffView{Path: reference.Path, Location: reference.Location().String()}
-	start, end := reference.Start, reference.End
-	path := reference.Path
-	if resolver != nil {
-		if resolution := resolver.Resolve(ctx, reference, rng.HeadOID); resolution.Current() {
-			path, start, end = resolution.Location.Path, resolution.Location.Start, resolution.Location.End
-		} else if !reference.WholeFile() {
-			view.Note = "The referenced lines changed after the reference was written; showing every change to the file."
-			start, end = 0, 0
-		}
-	}
-	// Pathspecs are relative to the working directory, and a Saga served from
-	// inside its code repository has the Saga directory as its source dir.
-	repo := a.sourceDir
-	if top, err := gitOutput(ctx, a.sourceDir, "rev-parse", "--show-toplevel"); err == nil && top != "" {
-		repo = top
-	}
-	patch, err := gitdiff.FileDiff(ctx, repo, rng.BaseOID, rng.HeadOID, path)
-	if err != nil {
-		view.Note = "The diff could not be read from this checkout."
-		return view
-	}
-	view.Path = path
-	view.Lines = diffLinesTouching(patch, start, end)
-	if len(view.Lines) == 0 {
-		if start > 0 {
-			view.Note = fmt.Sprintf("Lines %d-%d are unchanged between the base and the head.", start, end)
-		} else if view.Note == "" {
-			view.Note = "The file is unchanged between the base and the head."
-		}
-	}
-	return view
+	return newReviewDiffs(a.sourceDir, resolver, rng).referenceDiff(ctx, reference)
 }
 
 // diffLinesTouching keeps the hunks of a unified patch whose new-side range
@@ -508,7 +535,7 @@ func (a *app) reviewVisual(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer file.Close()
-	w.Header().Set("Content-Security-Policy", "default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'")
+	w.Header().Set("Content-Security-Policy", authoredContentPolicy)
 	w.Header().Set("Cache-Control", "no-store")
 	if contentType := mime.TypeByExtension(strings.ToLower(filepath.Ext(path))); contentType != "" {
 		w.Header().Set("Content-Type", contentType)
@@ -556,12 +583,19 @@ func (a *app) reviewDecision(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	slide := r.PostForm.Get("slide")
-	_, err := reviewstore.Decide(a.root, reviewstore.Decision{
-		Review: review.ID, Slide: slide, State: r.PostForm.Get("state"),
+	decision, err := reviewstore.Decide(a.root, reviewstore.Decision{
+		CheckSnapshot: a.reviewSnapshotCheck(r, head), Review: review.ID, Slide: slide, State: r.PostForm.Get("state"),
 		Reviewer: saga.ReviewerIdentity{Kind: "human"}, Commit: head, Body: r.PostForm.Get("body"),
 	})
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		reviewWriteError(w, err)
+		return
+	}
+	savedTarget := slide
+	if found := review.Slide(decision.Slide); found != nil {
+		savedTarget = found.Target
+	}
+	if a.reviewSaved(w, r, review.ID, decision.ID, savedTarget) {
 		return
 	}
 	target := ""
@@ -576,16 +610,78 @@ func (a *app) reviewComment(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
+	var anchor *saga.ReviewAnchor
+	if source := strings.TrimSpace(r.PostForm.Get("anchor")); source != "" {
+		var decoded saga.ReviewAnchor
+		if err := json.Unmarshal([]byte(source), &decoded); err != nil {
+			http.Error(w, "The annotation anchor is invalid.", http.StatusBadRequest)
+			return
+		}
+		anchor = &decoded
+	}
 	comment, err := reviewstore.Comment(a.root, reviewstore.Remark{
-		Review: review.ID, Target: r.PostForm.Get("target"), ReplyTo: r.PostForm.Get("reply_to"),
+		CheckSnapshot: a.reviewSnapshotCheck(r, head), Review: review.ID, Target: r.PostForm.Get("target"), ReplyTo: r.PostForm.Get("reply_to"),
 		Body: r.PostForm.Get("body"), State: r.PostForm.Get("state"),
+		Anchor: anchor, AnnotationAction: r.PostForm.Get("annotation_action"),
 		Reviewer: saga.ReviewerIdentity{Kind: "human"}, Commit: head,
 	})
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		reviewWriteError(w, err)
+		return
+	}
+	if a.reviewSaved(w, r, review.ID, comment.ID, comment.Target) {
 		return
 	}
 	http.Redirect(w, r, reviewHref(review.ID)+"#"+domID(comment.Target), http.StatusSeeOther)
+}
+
+// reviewAnnotations returns only the visual collaboration layer. Keeping this
+// projection separate lets the authored slide remain the first paint while
+// preserving exact, append-only annotation records in the Saga repository.
+func (a *app) reviewAnnotations(w http.ResponseWriter, r *http.Request) {
+	document := a.loadReviewDocument(w)
+	if document == nil {
+		return
+	}
+	review := document.FindReview(r.PathValue("id"))
+	if review == nil {
+		http.NotFound(w, r)
+		return
+	}
+	type message struct{ Author, Body, CreatedAt string }
+	type annotation struct {
+		ID, Target string
+		Anchor     *saga.ReviewAnchor
+		Deleted    bool
+		Messages   []message
+	}
+	response := struct {
+		Frozen      bool
+		Annotations []annotation
+	}{Frozen: review.Merged != nil, Annotations: []annotation{}}
+	for _, thread := range reviewstate.Threads(review.Comments) {
+		if thread.Root.AnnotationAction != "create" || thread.Root.Anchor == nil {
+			continue
+		}
+		entry := annotation{ID: thread.Root.ID, Target: thread.Root.Target, Anchor: thread.Root.Anchor}
+		for _, comment := range append([]saga.ReviewComment{thread.Root}, thread.Replies...) {
+			switch comment.AnnotationAction {
+			case "create", "update":
+				entry.Anchor, entry.Deleted = comment.Anchor, false
+			case "delete":
+				entry.Deleted = true
+			}
+			if comment.AnnotationAction == "" || comment.AnnotationAction == "create" {
+				entry.Messages = append(entry.Messages, message{Author: reviewerSeat(comment.Reviewer), Body: comment.Body, CreatedAt: comment.CreatedAt.Format(time.RFC3339)})
+			}
+		}
+		response.Annotations = append(response.Annotations, entry)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "no-store")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		http.Error(w, "The annotations could not be rendered.", http.StatusInternalServerError)
+	}
 }
 
 // reviewsForHead summarizes the reviews of the compared head for the Change
@@ -614,13 +710,16 @@ var reviewTemplates = template.Must(template.New("reviews").Funcs(templateFuncs(
 	"reviewCommentForm": func(page reviewPageView, target, label string) reviewCommentFormView {
 		return reviewCommentFormView{ReviewID: page.Review.ID, Token: page.MutationToken, Target: target, Label: label, Frozen: page.Frozen}
 	},
+	"reviewSlideMenu": func(page reviewPageView, slide *reviewSlideView) reviewSlideMenuView {
+		return reviewSlideMenuView{Page: page, Slide: slide}
+	},
 	"reviewer": func(decision reviewstate.DecisionReport) string {
 		if decision.Reviewer.Kind == "ai" {
 			return fmt.Sprintf("AI %s (%s, %s) for %s", decision.Reviewer.Name, decision.Reviewer.Agent, decision.Reviewer.Model, decision.Author)
 		}
 		return decision.Author
 	},
-}).Parse(reviewTemplateSource + directoryTemplates))
+}).Parse(reviewTemplateSource + directoryTemplates + documentationTemplates + technicalERDTemplates + technicalSelectionTemplates))
 
 // reviewTemplateSource renders the review index and one review. Plain forms
 // post decisions and comments, so the page works without script.
@@ -628,13 +727,12 @@ const reviewTemplateSource = `{{define "review-summary"}}<article class="review-
 {{define "review-range"}}<p class="review-range">{{with .Range}}{{if .Frozen}}Frozen at <code>{{short .BaseOID}}</code>..<code>{{short .HeadOID}}</code>{{else}}<code>{{short .BaseOID}}</code>..<code>{{short .HeadOID}}</code> · head follows <code>{{.Following}}</code>{{end}}{{end}}{{with .Merged}} · landed as <code>{{short .Landed}}</code>{{end}}{{range .Diagnostics}}<span class="review-diagnostic">{{.}}</span>{{end}}</p>{{end}}
 {{define "review-index"}}<div class="review-surface" data-review-index><header class="review-top"><h1>Reviews</h1><p>Each pull request has one review: a slide deck explaining what the change did and why. Approvals and comments happen only here, per slide. The Saga itself is documentation.</p></header>{{template "directory" .Directory}}{{if .Reviews}}<h2 class="review-detail-heading">Slide by slide</h2>{{end}}<main class="review-main">{{range .Reviews}}{{template "review-summary" .}}{{end}}</main></div>{{end}}
 {{define "review-diff"}}<figure class="review-diff" data-review-diff="{{.Location}}"><figcaption><code>{{.Path}}</code> <span class="review-location">{{.Location}}</span></figcaption>{{if .Note}}<p class="review-note">{{.Note}}</p>{{end}}{{if .Lines}}<table><tbody>{{range .Lines}}<tr class="review-line {{.Kind}}">{{if eq .Kind "hunk"}}<td colspan="3" class="review-hunk">{{.Text}}</td>{{else}}<td class="review-lineno">{{.Old}}</td><td class="review-lineno">{{.New}}</td><td class="review-code"><code>{{if eq .Kind "add"}}+{{else if eq .Kind "del"}}-{{else}} {{end}}{{.Text}}</code></td>{{end}}</tr>{{end}}</tbody></table>{{end}}</figure>{{end}}
-{{define "review-threads"}}{{range .}}<article class="review-thread {{.State}}" id="thread-{{.ID}}" data-review-thread="{{.ID}}" data-thread-state="{{.State}}">{{range .Comments}}<div class="review-comment" id="comment-{{.ID}}"><div class="review-comment-meta">{{.Author}} · <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.CreatedAt.Format "2006-01-02 15:04 MST"}}</time>{{if .State}} · {{.State}}{{end}}</div><div class="review-comment-body">{{.Body}}</div></div>{{end}}</article>{{end}}{{end}}
-{{define "review-comment-form"}}{{if not .Frozen}}<form class="review-comment-form" method="post" action="/reviews/{{.ReviewID}}/comment" data-review-comment-form="{{.Target}}"><input type="hidden" name="token" value="{{.Token}}"><input type="hidden" name="target" value="{{.Target}}"><label><span>Comment on {{.Label}}</span><textarea name="body" required rows="2"></textarea></label><button type="submit">Comment</button></form>{{end}}{{end}}
-{{define "review-page"}}<div class="review-surface" data-review="{{.Review.ID}}"><header class="review-top"><nav class="requirements-breadcrumbs" aria-label="Review breadcrumb"><a href="/reviews">Reviews</a><span>/</span><strong>{{.Review.Title}}</strong></nav><h1>{{.Review.Title}}</h1>{{with .Review.PullRequest}}<p class="review-pr">{{if .URL}}<a href="{{.URL}}">{{if .Number}}Pull request #{{.Number}}{{else}}{{.URL}}{{end}}</a>{{else}}Pull request #{{.Number}}{{end}}</p>{{end}}{{template "review-range" .Report}}<p class="review-rule">{{if .Frozen}}This review is history: its change has landed. It is shown exactly as it was reviewed.{{else}}Decide slide by slide. A decision records the head it was given at and goes out of date when the slide or the code it references changes. The tool records decisions; your team decides what it requires.{{end}}</p></header>
-<div class="review-layout"><main class="review-main">{{$page := .}}{{range .Slides}}<section class="review-slide{{if .OutOfDate}} out-of-date{{end}}" id="{{.DOMID}}" data-review-slide="{{.Slide.ID}}"><header class="review-slide-head"><h2>{{.Slide.Title}}</h2><p class="review-takeaway">{{.Slide.Takeaway}}</p></header><div class="review-slide-body"><div class="review-visual">{{if .Interactive}}<iframe sandbox="allow-scripts" src="{{.VisualURL}}" title="{{.Slide.Title}}"></iframe>{{else}}<img src="{{.VisualURL}}" alt="{{.Slide.Title}}">{{end}}</div>
-<aside class="review-decisions" aria-label="Decisions on {{.Slide.Title}}"><h3>Decisions</h3><ul>{{range .Report.Decisions}}<li class="review-decision-row {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}"><strong>{{reviewState .State}}</strong> by {{reviewer .}} at <code>{{short .Commit}}</code>{{if eq .Currency "out_of_date"}} <span class="review-out-of-date" data-out-of-date>Out of date</span>{{else if eq .Currency "unknown"}} <span class="review-unknown">currency unknown</span>{{end}}{{if .Reasons}}<ul class="review-reasons">{{range .Reasons}}<li>{{.}}</li>{{end}}</ul>{{end}}{{if .Body}}<p class="review-body">{{.Body}}</p>{{end}}</li>{{else}}<li class="review-decision-row none">No decision yet</li>{{end}}</ul>{{if not $page.Frozen}}<form class="review-decision-form" method="post" action="/reviews/{{$page.Review.ID}}/decision" data-review-decision-form="{{.Slide.ID}}"><input type="hidden" name="token" value="{{$page.MutationToken}}"><input type="hidden" name="slide" value="{{.Slide.ID}}"><label><span>Note</span><textarea name="body" rows="2" placeholder="Required when requesting changes"></textarea></label><div class="review-decision-buttons"><button type="submit" name="state" value="approved" data-review-approve>Approve slide</button><button type="submit" name="state" value="changes_requested" data-review-request-changes>Request changes</button><button type="submit" name="state" value="none" data-review-withdraw>Withdraw</button></div></form>{{end}}</aside></div>
-<div class="review-items">{{range .Items}}<article class="review-item" id="{{.DOMID}}" data-review-item="{{.Item.ID}}"><h3>{{.Item.Label}}</h3><p>{{.Item.Description}}</p>{{if .RecordHref}}<p class="review-record">Documentation: <a href="{{.RecordHref}}" data-review-record="{{.Item.Record}}">{{.RecordLabel}}</a></p>{{end}}{{range .Diffs}}{{template "review-diff" .}}{{end}}{{template "review-threads" .Threads}}{{template "review-comment-form" (reviewCommentForm $page .Item.Target .Item.Label)}}</article>{{end}}</div>
-<div class="review-slide-threads">{{template "review-threads" .Threads}}{{template "review-comment-form" (reviewCommentForm $page .Slide.Target .Slide.Title)}}</div></section>{{end}}</main></div></div>{{end}}
+{{define "review-threads"}}{{range .}}<article class="review-thread {{.State}}" id="thread-{{.ID}}" data-review-thread="{{.ID}}" data-review-target="{{.Target}}" data-thread-state="{{.State}}"><header class="review-thread-head"><strong>Discussion</strong><span>{{.State}}</span></header>{{range .Comments}}<div class="review-comment" id="comment-{{.ID}}"><div class="review-comment-meta">{{.Author}} · <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.CreatedAt.Format "2006-01-02 15:04 MST"}}</time>{{if .State}} · {{.State}}{{end}}</div><div class="review-comment-body">{{.Body}}</div></div>{{end}}{{if not .Frozen}}<details class="review-compose review-reply"><summary>Reply</summary><form class="review-comment-form" method="post" action="/reviews/{{.ReviewID}}/comment" data-review-reply-form="{{.ID}}"><input type="hidden" name="token" value="{{.Token}}"><input type="hidden" name="reply_to" value="{{.ID}}"><label><span>Reply to discussion</span><textarea name="body" required rows="3"></textarea></label><button type="submit">Reply</button></form></details>{{end}}</article>{{end}}{{end}}
+{{define "review-comment-form"}}{{if not .Frozen}}<details class="review-compose"><summary>Add comment</summary><form class="review-comment-form" method="post" action="/reviews/{{.ReviewID}}/comment" data-review-comment-form="{{.Target}}"><input type="hidden" name="token" value="{{.Token}}"><input type="hidden" name="target" value="{{.Target}}"><label><span>Comment on {{.Label}}</span><textarea name="body" required rows="3"></textarea></label><button type="submit">Comment</button></form></details>{{end}}{{end}}
+{{define "review-item-panel"}}<section class="review-item-panel" data-review-item-panel="{{.Item.ID}}" data-review-target="{{.Item.Target}}"><header><p class="eyebrow">Slide element</p><h2>{{.Item.Label}}</h2><p>{{.Item.Description}}</p></header>{{if .RecordHref}}<p class="review-record">Affected documentation: <a href="{{.RecordHref}}" data-review-record="{{.Item.Record}}">{{.RecordLabel}}</a></p>{{end}}{{range .Diffs}}{{template "review-diff" .}}{{else}}<p class="review-note">This element links no changed code.</p>{{end}}<div data-review-threads-for="{{.Item.Target}}">{{template "review-threads" .Threads}}</div></section>{{end}}
+{{define "review-item-affordance"}}{{template "documentation-control" (documentationControl .Item.Documentation .Item.Target (len .Item.Selections))}}<span class="landmark-affordance review-item-affordance" data-landmark-affordance><a class="permalink" href="#{{.DOMID}}" aria-label="Link to {{.Item.Label}}" title="Copy link"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-link"></use></svg></a>{{if .RecordHref}}<button type="button" class="icon-button story-button" data-open-stories="review-record-{{.DOMID}}" aria-label="Open affected documentation for {{.Item.Label}}" title="Affected {{.RecordKind}}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-story"></use></svg></button>{{end}}{{if .Diffs}}<button type="button" class="icon-button diff-button" data-open-diffs="review-item-{{.DOMID}}" aria-label="Open {{len .Diffs}} code {{if eq (len .Diffs) 1}}reference{{else}}references{{end}} for {{.Item.Label}}" title="Linked code"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-diff"></use></svg><span>{{len .Diffs}}</span></button>{{else}}<button type="button" class="icon-button diff-button" data-open-diffs="review-item-{{.DOMID}}" aria-label="Open details for {{.Item.Label}}" title="Item details"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-more"></use></svg></button>{{end}}</span>{{end}}
+{{define "review-slide-menu"}}{{if not .Page.Frozen}}<form class="review-decision-quick" method="post" action="/reviews/{{.Page.Review.ID}}/decision" data-review-decision-form="{{.Slide.Slide.ID}}"><input type="hidden" name="token" value="{{.Page.MutationToken}}"><input type="hidden" name="slide" value="{{.Slide.Slide.ID}}"><input type="hidden" name="snapshot" value="{{.Slide.Snapshot}}"><button class="review-decision approve" type="submit" name="state" value="approved" data-review-approve aria-label="Approve {{.Slide.Slide.Title}}" title="Approve"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-approve"></use></svg></button></form>{{end}}<details class="review-slide-menu"><summary class="{{if .Page.Frozen}}icon-button review-history{{else}}review-decision reject{{end}}" aria-label="{{if .Page.Frozen}}Review decisions for{{else}}Request changes on{{end}} {{.Slide.Slide.Title}}" title="{{if .Page.Frozen}}Review decisions{{else}}Request changes{{end}}">{{if .Page.Frozen}}<svg class="i" aria-hidden="true" focusable="false"><use href="#i-clock"></use></svg>{{else}}<svg class="i" aria-hidden="true" focusable="false"><use href="#i-reject"></use></svg>{{end}}</summary><div class="review-slide-panel"><header><p class="eyebrow">Review slide</p><h2>{{.Slide.Slide.Title}}</h2><p>{{.Slide.Slide.Takeaway}}</p></header><ul class="review-decision-list">{{range .Slide.Report.Decisions}}<li class="review-decision-row {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}"><strong>{{reviewState .State}}</strong> by {{reviewer .}} at <code>{{short .Commit}}</code>{{if eq .Currency "out_of_date"}} <span class="review-out-of-date" data-out-of-date>Out of date</span>{{else if eq .Currency "unknown"}} <span class="review-unknown">currency unknown</span>{{end}}{{if .Reasons}}<ul class="review-reasons">{{range .Reasons}}<li>{{.}}</li>{{end}}</ul>{{end}}{{if .Body}}<p class="review-body">{{.Body}}</p>{{end}}</li>{{else}}<li class="review-decision-row none">No decision yet</li>{{end}}</ul>{{if not .Page.Frozen}}<form class="review-decision-form" method="post" action="/reviews/{{.Page.Review.ID}}/decision"><input type="hidden" name="token" value="{{.Page.MutationToken}}"><input type="hidden" name="slide" value="{{.Slide.Slide.ID}}"><input type="hidden" name="snapshot" value="{{.Slide.Snapshot}}"><label><span>What needs to change?</span><textarea name="body" rows="3" required></textarea></label><div class="review-decision-buttons"><button type="submit" name="state" value="changes_requested" data-review-request-changes>Request changes</button><button type="submit" name="state" value="none" data-review-withdraw>Withdraw decision</button></div></form>{{end}}<details class="review-source"><summary>Source and currency</summary>{{template "review-range" .Page.Report}}</details></div></details><details class="review-slide-comment"><summary class="icon-button review-comment" aria-label="{{if .Page.Frozen}}Discussion on{{else}}Comment on{{end}} {{.Slide.Slide.Title}}" title="{{if .Page.Frozen}}Discussion{{else}}Comment{{end}}"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-comment"></use></svg></summary><div class="review-slide-panel"><div data-review-threads-for="{{.Slide.Slide.Target}}">{{template "review-threads" .Slide.Threads}}</div>{{template "review-comment-form" (reviewCommentForm .Page .Slide.Slide.Target .Slide.Slide.Title)}}</div></details>{{end}}
+{{define "review-page"}}{{$page := .}}<div class="review-deck-page" data-review="{{.Review.ID}}" data-review-token="{{.MutationToken}}" data-review-deck><nav class="review-deck-rail slide-side" aria-label="Review slides"><a class="sidebar-title" href="/reviews"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg><span>{{.Review.Title}}</span></a>{{with .Review.PullRequest}}<p class="review-deck-pr">{{if .URL}}<a href="{{.URL}}">{{if .Number}}Pull request #{{.Number}}{{else}}{{.URL}}{{end}}</a>{{else}}Pull request #{{.Number}}{{end}}</p>{{end}}<section class="slide-rail-deck"><h2>Review deck</h2><ol class="review-thumbnail-list slide-thumbnail-list">{{range $index,$slide := .Slides}}<li class="slide-thumbnail-card{{if eq $index 0}} active{{end}}" data-slide-thumbnail-card><div class="slide-thumbnail-preview" aria-hidden="true">{{if .Interactive}}<iframe tabindex="-1" sandbox="allow-scripts" loading="lazy" src="{{.VisualURL}}" title=""></iframe>{{else}}<img loading="lazy" src="{{.VisualURL}}" alt="">{{end}}</div><span class="slide-thumbnail-caption"><span class="slide-thumbnail-title">{{.Slide.Title}}</span><span class="slide-thumbnail-status" role="img" data-review-state="{{range .Report.Decisions}}{{.State}}{{else}}none{{end}}" aria-label="{{range .Report.Decisions}}{{reviewState .State}}{{if eq .Currency "out_of_date"}}; out of date{{end}}{{else}}Not reviewed{{end}}{{if .Report.OpenThreads}}; {{.Report.OpenThreads}} open threads{{end}}" title="{{range .Report.Decisions}}{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}{{else}}Not reviewed{{end}}{{if .Report.OpenThreads}} · {{.Report.OpenThreads}} open{{end}}"></span></span><button type="button" class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="{{.Slide.Target}}" aria-current="{{if eq $index 0}}true{{else}}false{{end}}" aria-label="Show slide: {{.Slide.Title}}"></button></li>{{end}}</ol></section></nav><section class="deck-viewer review-deck-viewer" data-deck-viewer aria-label="{{.Review.Title}}"><div class="deck-viewer-stage"><header class="deck-viewer-header" aria-live="polite"><div><strong data-current-slide-title>{{(index .Slides 0).Slide.Title}}</strong></div><span data-slide-position></span></header>{{range $index,$slide := .Slides}}<section class="deck-viewer-slide review-deck-slide{{if eq $index 0}} active{{end}}{{if .OutOfDate}} out-of-date{{end}}" data-deck-slide data-deck-target="{{$page.Review.Deck.Target}}" data-deck-role="review" data-deck-title="{{$page.Review.Title}}" data-slide-title="{{.Slide.Title}}" data-review-snapshot="{{.Snapshot}}" data-slide-target="{{.Slide.Target}}"{{if ne $index 0}} hidden{{end}}><article class="fragment review-fragment" id="{{.DOMID}}" data-target="{{.Slide.Target}}" data-fragment-title="{{.Slide.Title}}" tabindex="0"><div class="fragment-head"><div class="fragment-actions">{{if .Items}}<details class="landmark-menu"><summary aria-label="Jump to a marked place" title="Marked places"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-list"></use></svg></summary><div class="landmark-list">{{range .Items}}<div><a href="#{{.DOMID}}">{{.Item.Label}}</a>{{template "review-item-affordance" .}}</div>{{end}}</div></details>{{end}}<a class="permalink" href="#{{.DOMID}}" aria-label="Link to {{.Slide.Title}}" title="Copy link"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-link"></use></svg></a>{{if not $page.Frozen}}<button class="icon-button annotation-tools-toggle" type="button" data-review-annotation-toggle="{{.Slide.Target}}" aria-expanded="false" aria-controls="review-annotation-toolbox" aria-label="Show annotation tools for {{.Slide.Title}}" title="Annotate"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-marker"></use></svg></button>{{end}}{{template "review-slide-menu" (reviewSlideMenu $page .)}}</div></div>{{range .Items}}<span id="{{.DOMID}}" class="landmark-target" data-review-item="{{.Item.ID}}" data-landmark-target data-landmark-anchor="{{.DOMID}}" data-landmark-type="{{.Item.Selector.Type}}" data-element-id="{{.Item.Selector.ElementID}}" data-heading-id="{{.Item.Selector.HeadingID}}" data-exact="{{.Item.Selector.Exact}}" data-prefix="{{.Item.Selector.Prefix}}" data-suffix="{{.Item.Selector.Suffix}}"><template data-landmark-affordance-template>{{template "review-item-affordance" .}}</template></span><template id="review-item-{{.DOMID}}">{{template "review-item-panel" .}}{{template "review-comment-form" (reviewCommentForm $page .Item.Target .Item.Label)}}</template>{{if .RecordHref}}<template id="review-record-{{.DOMID}}"><section class="story-links"><h2>Affected documentation</h2><p>This exact slide element links to the living Saga record below.</p><ul><li><strong><a href="{{.RecordHref}}" data-review-record="{{.Item.Record}}">{{.RecordLabel}}</a></strong><p>{{.Item.Description}}</p></li></ul></section></template>{{end}}{{end}}<div class="fragment-stage">{{if .Interactive}}<iframe class="fragment-frame" data-fragment-frame sandbox="allow-scripts" src="{{.VisualURL}}" title="{{.Slide.Title}}"></iframe>{{else}}<img class="fragment-image" src="{{.VisualURL}}" alt="{{.Slide.Title}}">{{end}}{{range .Items}}{{if .Region}}<div class="landmark-hotspot" data-landmark-visual="{{.DOMID}}" data-x="{{.Region.X}}" data-y="{{.Region.Y}}" data-width="{{.Region.Width}}" data-height="{{.Region.Height}}">{{template "review-item-affordance" .}}</div>{{end}}{{end}}</div></article></section>{{end}}<nav class="deck-viewer-controls" aria-label="Slide navigation"><button type="button" class="slide-step" data-slide-previous aria-label="Previous slide" title="Previous slide">‹</button><button type="button" class="slide-step" data-slide-next aria-label="Next slide" title="Next slide">›</button></nav><button type="button" class="slide-exit-presentation" data-slide-exit-presentation hidden>Exit presentation</button></div></section></div>{{end}}
 {{define "review-coverage-surface"}}<div data-review-surface-response="manifest"><div class="review-surface review-coverage-surface">{{template "review-range" .Report}}{{if .Coverage}}{{template "review-coverage" .Coverage}}{{else}}<p class="review-note">The review's range could not be read, so its coverage is unknown.</p>{{end}}</div></div>{{end}}
 {{define "review-coverage"}}{{if .}}<aside class="review-coverage{{if .Summary.Uncovered}} has-gap{{end}}" aria-label="Coverage of the change" data-review-coverage data-total="{{.Summary.Total}}" data-covered="{{.Summary.Covered}}" data-uncovered="{{.Summary.Uncovered}}" data-stale="{{.Summary.Stale}}" data-overlapping="{{.Summary.Overlapping}}"><h2>Coverage of the change</h2><p class="coverage-totals">{{.Summary.Total}} changed {{if eq .Summary.Total 1}}line{{else}}lines{{end}} · {{.Summary.Covered}} explained by the deck{{if .Summary.Uncovered}} · <span class="gap">{{.Summary.Uncovered}} unexplained</span>{{end}}{{if .Summary.Stale}} · <span class="gap">{{.Summary.Stale}} stale {{if eq .Summary.Stale 1}}reference{{else}}references{{end}}</span>{{end}}{{if .Summary.Overlapping}} · {{.Summary.Overlapping}} explained twice{{end}}</p>{{if .Files}}<p class="review-note">No review Item explains these changes. Cover them from the Item that does: <code>change-saga cover --target &lt;review Item&gt; --path &lt;file&gt; --changed-lines</code></p>{{range .Files}}<figure class="review-diff review-gap" data-review-gap="{{.Path}}"><figcaption><code>{{.Path}}</code>{{range .Locations}} <span class="review-location">{{.}}</span>{{end}}</figcaption>{{range .Events}}<p class="review-note">{{.}}</p>{{end}}{{if .Lines}}<table><tbody>{{range .Lines}}<tr class="review-line {{.Kind}}"><td class="review-lineno">{{.Old}}</td><td class="review-lineno">{{.New}}</td><td class="review-code"><code>{{if eq .Kind "add"}}+{{else}}-{{end}}{{.Text}}</code></td></tr>{{end}}</tbody></table>{{end}}</figure>{{end}}{{else}}<p class="review-note">Every changed line of the review's range is explained by the deck.</p>{{end}}{{if .Stale}}<h3>Stale references</h3><ul class="review-reasons">{{range .Stale}}<li data-review-stale="{{.Assignment.Target}}"><code>{{.Reference.Location}}</code>: {{.Reason}}</li>{{end}}</ul>{{end}}</aside>{{end}}{{end}}`
 
@@ -644,34 +742,62 @@ type reviewCommentFormView struct {
 	Frozen                         bool
 }
 
+type reviewSlideMenuView struct {
+	Page  reviewPageView
+	Slide *reviewSlideView
+}
+
 const reviewStyles = `
 .review-surface{max-width:1560px;margin:0 auto;font:15px/1.5 var(--ui)}
-.review-top h1{margin:8px 0 4px}.review-range code,.review-decisions code{font-size:12px}
-.review-rule{color:var(--muted,#555)}.review-diagnostic{display:block;color:#a15c00}
+.review-top{padding:0 4px}.review-top h1{margin:8px 0 2px}.review-range code{font-size:12px}.review-diagnostic{display:block;color:#a15c00}
 .review-summary{border:1px solid var(--line,#ddd);border-radius:10px;padding:12px 16px;margin:12px 0}
 .review-summary.matching{border-color:#2f6fdc}.review-badge{font-size:12px;padding:1px 8px;border-radius:9px;background:#eee;color:#333}
 .review-slide-states{list-style:none;padding:0}.review-slide-states li{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:4px 0}
 .review-decision-chip{font-size:12px;padding:1px 8px;border-radius:9px;background:#eef}.review-decision-chip.approved{background:#dcf5e3;color:#14532d}
 .review-decision-chip.changes_requested{background:#fde2e1;color:#7f1d1d}.review-decision-chip.out-of-date{outline:2px dashed #b45309}
-.review-slide{border:1px solid var(--line,#ddd);border-radius:12px;padding:16px;margin:24px 0}
-.review-slide.out-of-date{border-color:#b45309}
-.review-slide-body{display:grid;grid-template-columns:minmax(0,2fr) minmax(260px,1fr);gap:16px}
-.review-visual img,.review-visual iframe{width:100%;border:1px solid var(--line,#ddd);border-radius:8px;background:#fff;aspect-ratio:16/9}
-.review-decisions ul{list-style:none;padding:0;margin:0}.review-decision-row{margin:6px 0}
 .review-out-of-date{font-size:12px;font-weight:700;color:#fff;background:#b45309;border-radius:9px;padding:1px 8px}
 .review-reasons{font-size:13px;color:#7c2d12}
 .review-decision-form textarea,.review-comment-form textarea{width:100%;box-sizing:border-box}
 .review-decision-buttons{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.review-item{border-top:1px solid var(--line,#eee);padding-top:10px;margin-top:10px}
 .review-diff{margin:8px 0;overflow-x:auto}.review-diff table{border-collapse:collapse;width:100%;font:12px/1.4 var(--mono)}
-.review-surface{min-width:0}.review-layout>*{min-width:0}
-.review-line.add{background:#e6ffed}.review-line.del{background:#ffeef0}.review-hunk{color:#57606a;background:#f6f8fa}
+.review-surface{min-width:0}
+.review-line.add{background:var(--add-bg)}.review-line.del{background:var(--del-bg)}.review-hunk{color:var(--muted);background:var(--bg-subtle)}
 .review-lineno{width:3em;text-align:right;color:#8b949e;padding-right:6px}.review-code code{white-space:pre}
-.review-thread{border-left:3px solid #2f6fdc;padding-left:8px;margin:8px 0}.review-thread.resolved{border-color:#999;opacity:.8}
-.review-comment-meta{font-size:12px;color:#666}
-.review-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
-@media (min-width:1280px){.review-layout{grid-template-columns:minmax(0,1fr) 360px}.review-coverage{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}}
+.review-thread{border-left:3px solid var(--accent);padding:8px 0 8px 12px;margin:12px 0;background:var(--bg-subtle)}.review-thread.resolved{border-color:var(--muted);opacity:.8}.review-thread-head{display:flex;justify-content:space-between;gap:12px;text-transform:capitalize}.review-thread-head span{font-size:12px;color:var(--muted,#666)}.review-comment+.review-comment{border-top:1px solid var(--line,#ddd);margin-top:8px;padding-top:8px}.review-comment-meta{font-size:12px;color:var(--muted,#666)}.review-comment-body>:first-child{margin-top:2px}.review-comment-body>:last-child{margin-bottom:2px}.review-compose{margin-top:10px}.review-comment-form{margin-top:8px;max-width:680px}.review-comment-form button{margin-top:6px}
 .review-coverage{border:1px solid var(--line,#ddd);border-radius:12px;padding:12px 16px;margin:24px 0}
 .review-coverage.has-gap{border-color:#b45309}.review-coverage h2{margin:0 0 4px;font-size:17px}
 .review-coverage .gap,.review-summary .gap{color:#b45309;font-weight:600}.review-gap figcaption{display:flex;flex-wrap:wrap;gap:4px 8px}
+/* A pull-request review is the implementation-deck renderer with review data. */
+.review-deck-shell:not(.code-mode){grid-template-columns:minmax(0,1fr)}
+.review-deck-shell:not(.code-mode)>.sidebar{display:none}
+.review-deck-shell.slide-mode{height:calc(100vh - var(--top));min-height:0;overflow:hidden;background:#111}
+.review-deck-shell.slide-mode>.content{width:100%;height:100%;padding:0;overflow:hidden}
+.review-deck-shell.slide-mode #view-saga{height:100%}
+.slide-present[hidden]{display:none}
+.review-deck-page{display:grid;grid-template-columns:210px minmax(0,1fr);width:100%;height:100%;min-height:0;background:#111;font:13px/1.55 var(--ui)}
+.review-deck-rail{height:100%;min-height:0;overflow:auto;padding:8px 10px 32px;background:var(--bg-subtle);border-right:1px solid var(--line);counter-reset:slide-thumbnail}
+.review-deck-rail>.sidebar-title{align-items:flex-start;margin-bottom:3px;font-size:12px;line-height:1.35}.review-deck-pr{margin:0 0 12px 22px;color:var(--faint);font-size:10.5px;overflow-wrap:anywhere}.review-deck-rail .slide-rail-deck>h2{margin:9px 0 7px 22px;color:var(--faint);font:600 9px/1.2 var(--ui);letter-spacing:.045em;text-transform:uppercase}
+.review-thumbnail-list{margin:0;padding:0;list-style:none}.review-thumbnail-list .slide-thumbnail-card{min-width:0}
+.slide-thumbnail-status{position:relative;z-index:3;display:grid;place-items:center;width:16px;height:16px;flex:none;border:1px solid var(--line);border-radius:50%;background:var(--bg);color:var(--faint);font:700 10px/1 var(--ui);pointer-events:none}.slide-thumbnail-status::before{content:'·'}.slide-thumbnail-status[data-review-state=approved]{border-color:var(--green);background:var(--approve-bg);color:var(--green)}.slide-thumbnail-status[data-review-state=approved]::before{content:'✓'}.slide-thumbnail-status[data-review-state=changes_requested]{border-color:var(--red);background:var(--reject-bg);color:var(--red)}.slide-thumbnail-status[data-review-state=changes_requested]::before{content:'!'}
+.review-deck-viewer{min-width:0}.review-deck-viewer .deck-viewer-stage{width:min(100%,calc(177.7778vh - 78.2222px))}
+.review-deck-slide .fragment-head::before{content:'Review slide'}
+.review-deck-slide.out-of-date .fragment-head::before{content:'Review slide · decision out of date';color:#b45309}
+.review-deck-slide .fragment-actions{display:flex;align-items:center;gap:2px}.review-deck-slide .fragment-actions>.permalink,.review-deck-slide .fragment-actions>.landmark-menu{opacity:.55}.review-deck-slide .fragment-actions:hover>.permalink,.review-deck-slide .fragment-actions:focus-within>.permalink,.review-deck-slide .fragment-actions:hover>.landmark-menu,.review-deck-slide .fragment-actions:focus-within>.landmark-menu{opacity:1}
+.review-decision-quick{display:inline-flex}.review-decision{display:grid;place-items:center;width:25px;height:23px;padding:0;border:0;border-radius:5px}.review-decision .i{width:15px;height:15px}.review-decision.approve{background:var(--approve-bg);color:var(--approve-ink)}.review-decision.reject{background:var(--reject-bg);color:var(--reject-ink)}.review-decision.approve:hover{background:var(--approve-hover);color:var(--green)}.review-decision.reject:hover{background:var(--reject-hover);color:var(--red)}
+.review-slide-menu,.review-slide-comment{position:relative}.review-slide-menu>summary,.review-slide-comment>summary{list-style:none}.review-slide-menu>summary::-webkit-details-marker,.review-slide-comment>summary::-webkit-details-marker{display:none}.review-slide-comment>summary{display:grid;place-items:center;width:25px;height:23px;padding:0;color:var(--faint)}
+.review-slide-panel{position:absolute;z-index:30;right:0;top:calc(100% + 6px);width:min(430px,82vw);max-height:min(680px,calc(100vh - var(--top) - 100px));overflow:auto;padding:14px 16px;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);color:var(--ink);text-shadow:none}.review-slide-panel h2{margin:2px 0;font-size:18px}.review-slide-panel header>p:last-child{margin:4px 0 12px;color:var(--muted)}
+.review-decision-list{list-style:none;margin:0 0 10px;padding:0}.review-decision-row{margin:6px 0}.review-decision-form{padding-top:10px;border-top:1px solid var(--line)}
+.review-deck-slide .landmark-hotspot{border-color:transparent;background:transparent}
+.review-item-affordance{gap:1px;padding:1px}.review-item-affordance .icon-button,.review-item-affordance .permalink{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:2px 4px;border:0;background:transparent;color:var(--muted);font:10px var(--mono)}.review-item-affordance .icon-button:hover,.review-item-affordance .permalink:hover{background:var(--bg-inset);color:var(--ink)}.review-item-affordance .diff-button span{margin-left:1px}
+.review-item-panel{padding:16px}.review-item-panel h2{margin:2px 0}.review-item-panel header>p:last-child{color:var(--muted)}
+.review-source{margin-top:12px}.review-source summary,.review-compose summary{cursor:pointer;color:var(--accent);font-weight:600}.review-source .review-range{margin:8px 0 0;padding:8px 10px;border:1px solid var(--line);background:var(--bg-subtle)}
+.review-annotation-layer{position:absolute;z-index:6;inset:0;pointer-events:none}.review-annotation-layer.drawing{pointer-events:auto;cursor:crosshair;touch-action:none;background:#0969da08}.review-annotation{position:absolute;inset:0;pointer-events:none}.review-annotation-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.review-annotation-svg>*{pointer-events:visiblePainted;cursor:grab}.review-annotation-svg>*:active{cursor:grabbing}.review-annotation.selected .review-annotation-svg>*{filter:drop-shadow(0 0 4px #fff);stroke-dasharray:10 7}.review-sticky-note{position:absolute;width:18%;min-height:12%;padding:10px;border:1px solid #7a5b13;border-radius:3px;box-shadow:0 4px 12px #0003;color:#2b210b;text-align:left;transform:translate(-8%,-8%);pointer-events:auto;cursor:move}.review-annotation-bubble{position:absolute;z-index:16;pointer-events:auto;transform:translate(-30%,-70%)}.review-annotation-bubble>summary{display:inline-flex;align-items:center;justify-content:center;width:25px;height:21px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--muted);box-shadow:var(--shadow);font:700 11px var(--mono);list-style:none;cursor:pointer}.review-annotation-bubble>summary::-webkit-details-marker{display:none}.review-annotation-discussion{position:absolute;right:0;top:26px;width:min(360px,80vw);max-height:360px;overflow:auto;padding:12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);color:var(--ink)}.review-annotation-message+.review-annotation-message{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}.review-annotation-message small{color:var(--muted)}.review-annotation-message p{margin:3px 0}.review-annotation-reply textarea{width:100%}
+.review-annotation-draft{position:absolute;z-index:2;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.review-annotation-draft>*{stroke-dasharray:7 5}
+.review-annotation-resize-handle{position:absolute;z-index:18;width:18px;height:18px;padding:0;border:2px solid #fff;border-radius:50%;background:var(--accent);box-shadow:var(--shadow);transform:translate(-50%,-50%);pointer-events:auto;cursor:nwse-resize}.review-annotation-resize-handle::after{content:'';display:block;width:5px;height:5px;margin:auto;border-right:1px solid #fff;border-bottom:1px solid #fff}
+.annotation-tools-toggle{color:var(--faint)}.annotation-tools-toggle[aria-expanded=true]{background:var(--accent-soft);color:var(--accent)}
+.review-annotation-toolbox{position:absolute;z-index:50;top:calc(100% + 5px);right:0;display:flex;align-items:center;gap:1px;max-width:min(620px,calc(100vw - 32px));padding:4px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:9px;box-shadow:var(--shadow)}.review-annotation-toolbox[hidden]{display:none}.review-annotation-toolbox button{display:grid;place-items:center;width:28px;height:28px;padding:0;border:0;border-radius:var(--radius);background:transparent;color:var(--muted)}.review-annotation-toolbox button:hover{background:var(--bg-inset);color:var(--ink)}.review-annotation-toolbox button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}.review-annotation-toolbox button:disabled{opacity:.35;cursor:not-allowed}.review-annotation-toolbox input[type=color]{width:18px;height:18px;padding:0;border:0;background:transparent;cursor:pointer}.review-annotation-toolbox .tool-divider{width:1px;height:18px;margin:0 3px;background:var(--line)}.review-annotation-toolbox [data-selection]{display:flex;align-items:center;gap:1px;padding-left:3px;border-left:1px solid var(--line)}.review-annotation-toolbox [data-selection][hidden]{display:none}
+.review-annotation-compose{position:fixed;z-index:70;right:18px;bottom:18px;width:min(440px,calc(100vw - 36px));padding:14px;border:1px solid var(--line);border-radius:9px;background:var(--bg);box-shadow:var(--shadow)}.review-annotation-compose[hidden]{display:none}.review-annotation-compose textarea{width:100%}.review-annotation-compose>div{display:flex;justify-content:flex-end;gap:6px;margin-top:6px}
+.review-annotation-status{position:fixed;z-index:75;right:18px;bottom:18px;max-width:min(520px,calc(100vw - 24px));margin:0;padding:7px 11px;border:1px solid var(--line);border-radius:7px;background:var(--bg);box-shadow:var(--shadow);color:var(--ink);font:600 12px var(--ui)}.review-annotation-status.failed{border-color:#b45309}.review-annotation-status[hidden]{display:none}
+body.presentation-mode .review-deck-page{grid-template-columns:minmax(0,1fr)}body.presentation-mode .review-deck-rail,body.presentation-mode .review-annotation-layer,body.presentation-mode .review-sticky-note,body.presentation-mode .review-annotation-bubble{display:none}
+@media(max-width:780px){.review-deck-page{grid-template-columns:min(210px,42vw) minmax(0,1fr)}.review-deck-rail{padding:8px 6px 24px}.review-sticky-note{width:28%;min-width:88px;padding:5px;font-size:10px}.review-annotation-discussion{position:fixed;left:8px;right:8px;top:auto;bottom:58px;width:auto;max-height:45vh}.review-annotation-compose{right:8px;bottom:8px;width:calc(100vw - 16px)}.review-annotation-toolbox{right:0;overflow-x:auto;justify-content:flex-start;max-width:min(620px,calc(100vw - 8px))}.review-slide-panel{position:fixed;right:8px;top:calc(var(--top) + 8px);width:calc(100vw - 16px);max-height:calc(100vh - var(--top) - 16px)}}
 `

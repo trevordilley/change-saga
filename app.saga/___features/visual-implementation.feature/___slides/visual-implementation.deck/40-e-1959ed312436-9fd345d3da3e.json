@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/template.go",
+      "start": 378,
+      "end": 381,
+      "digest": "sha256:5d5d443c6c5b95bad2627c9d9d59dcddedd6054bdc13a1ee2ef17c919249d1a7",
+      "note": "Item affordances expose separate story, code and saved Component/System explanation controls beside the semantic overlay."
+    }
+  ]
+}

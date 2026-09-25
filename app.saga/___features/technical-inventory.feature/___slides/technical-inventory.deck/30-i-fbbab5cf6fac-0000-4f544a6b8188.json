@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "change",
+  "slide": "technical-inventory-selection-impact",
+  "rank": 0,
+  "kind": "node",
+  "label": "Compare named source revisions",
+  "description": "Compare named baseline and head. Retain existing debt, newly stale references and unknown baseline cases as distinct states.",
+  "selector": {
+    "type": "element",
+    "element_id": "change"
+  }
+}

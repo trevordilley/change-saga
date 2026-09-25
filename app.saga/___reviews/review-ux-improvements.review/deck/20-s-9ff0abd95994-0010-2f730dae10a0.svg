@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Exact Items connect the picture to code and product intent</title>
+  <desc id="desc">A slide Item branches to an exact code diff and an affected Story. Focused controls and a marked-place list expose both paths.</desc>
+  <defs><linearGradient id="bg2"><stop stop-color="#111827"/><stop offset="1" stop-color="#13283a"/></linearGradient><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0l10 5-10 5z" fill="#67e8f9"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg2)"/>
+  <text x="62" y="70" fill="#8ea6bf" font-family="ui-monospace,monospace" font-size="16" letter-spacing="2">REVIEW UX · SLIDE 2</text>
+  <text x="62" y="126" fill="#f7fbff" font-family="Inter,system-ui,sans-serif" font-size="40" font-weight="750">The picture and its proof stay connected</text>
+  <text x="62" y="164" fill="#aac0d5" font-family="Inter,system-ui,sans-serif" font-size="19">Evidence belongs to the exact semantic Item—not vaguely to the slide or PR.</text>
+  <g id="item-hotspots">
+    <rect x="66" y="222" width="478" height="342" rx="18" fill="#eef7ff" stroke="#67e8f9" stroke-width="2"/>
+    <text x="94" y="256" fill="#32516b" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">AUTHORED REVIEW SLIDE</text>
+    <rect x="108" y="302" width="168" height="114" rx="14" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/><text x="192" y="351" text-anchor="middle" fill="#164e8a" font-family="Inter,system-ui,sans-serif" font-size="19" font-weight="750">Review Item</text><text x="192" y="380" text-anchor="middle" fill="#3d6385" font-family="Inter,system-ui,sans-serif" font-size="14">full-pane shell</text>
+    <rect x="326" y="302" width="168" height="114" rx="14" fill="#dcfce7" stroke="#22a06b" stroke-width="2"/><text x="410" y="351" text-anchor="middle" fill="#176441" font-family="Inter,system-ui,sans-serif" font-size="19" font-weight="750">Active slide</text><text x="410" y="380" text-anchor="middle" fill="#40735b" font-family="Inter,system-ui,sans-serif" font-size="14">bounded state</text>
+    <path d="M276 359h50" stroke="#416b89" stroke-width="3" marker-end="url(#a2)"/>
+    <rect x="119" y="432" width="130" height="34" rx="8" fill="#fff" stroke="#3b82f6"/><text x="184" y="454" text-anchor="middle" fill="#175da8" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="750">Code · 3</text>
+    <rect x="259" y="432" width="218" height="34" rx="8" fill="#fff" stroke="#22a06b"/><text x="368" y="454" text-anchor="middle" fill="#176441" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="750">Affected · Story</text>
+    <text x="305" y="513" text-anchor="middle" fill="#466780" font-family="Inter,system-ui,sans-serif" font-size="15">focus or marked-place list → exact context</text>
+  </g>
+  <path d="M552 360h76" stroke="#67e8f9" stroke-width="4" marker-end="url(#a2)"/>
+  <g id="code-evidence">
+    <rect x="652" y="218" width="558" height="170" rx="16" fill="#0b1420" stroke="#60a5fa" stroke-width="2"/>
+    <text x="680" y="250" fill="#93c5fd" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">EXACT REVIEWED DIFF</text>
+    <text x="680" y="282" fill="#c3d5e5" font-family="ui-monospace,monospace" font-size="14">internal/server/reviews.go · Item references</text>
+    <rect x="676" y="301" width="506" height="58" rx="7" fill="#102b25"/>
+    <text x="692" y="326" fill="#86efac" font-family="ui-monospace,monospace" font-size="13">+ Item code control opens pinned evidence</text>
+    <text x="692" y="348" fill="#86efac" font-family="ui-monospace,monospace" font-size="13">+ affected record opens separately from code</text>
+  </g>
+  <g id="product-intent">
+    <rect x="652" y="414" width="558" height="150" rx="16" fill="#10251f" stroke="#4ade80" stroke-width="2"/>
+    <text x="680" y="448" fill="#86efac" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="800">AFFECTED LIVING RECORD</text>
+    <text x="680" y="484" fill="#f0fdf4" font-family="Inter,system-ui,sans-serif" font-size="21" font-weight="750">Story · diagram element intent</text>
+    <text x="680" y="517" fill="#b7d7c5" font-family="Inter,system-ui,sans-serif" font-size="15">Code evidence and product intent remain distinct, exact, and reversible.</text>
+  </g>
+  <text x="62" y="675" fill="#d7e4ef" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="650">Takeaway: exact code and affected documentation remain separate Item actions.</text>
+</svg>

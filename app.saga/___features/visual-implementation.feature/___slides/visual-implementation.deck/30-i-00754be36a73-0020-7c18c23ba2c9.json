@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "patch-reuse",
+  "slide": "pr-request-diff-reuse",
+  "rank": 20,
+  "kind": "node",
+  "label": "Reuse successful raw patches",
+  "description": "The helper resolves a successful checkout root once and reads a raw patch once per effective path within this request. The measured 140-reference workload performs 19 successful patch reads.",
+  "selector": {
+    "type": "element",
+    "element_id": "patch-reuse"
+  }
+}

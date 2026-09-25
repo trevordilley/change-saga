@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "repair",
+  "slide": "detect-repair-recheck",
+  "rank": 40,
+  "kind": "node",
+  "label": "Typed repair loop",
+  "description": "Inspect complete-slide snapshots before managed publication, preserve run parents, and reconcile again after justified repairs.",
+  "selector": {
+    "type": "element",
+    "element_id": "repair"
+  }
+}

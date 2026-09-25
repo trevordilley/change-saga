@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "completeness",
+  "slide": "uses",
+  "rank": 30,
+  "kind": "node",
+  "label": "Explicit completeness",
+  "description": "Every page reports depth_cut, cycle_cut and truncated; complete is true only when none occurred, so an empty page is not presented as no uses.",
+  "selector": {
+    "type": "element",
+    "element_id": "completeness"
+  }
+}

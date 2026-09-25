@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "erd-roadmap-interview-20260924",
+  "kind": "decision",
+  "title": "ERD, logical data relationships, and queryable implementation roadmap",
+  "reference": "DevSwarm workspace d88e902d-39e5-4397-b4f7-aeff400dbeb5, feature/review-ux-improvements, user interview on 2026-09-24. User requested an application-wide ERD with an expandable entity directory, including queue JSON payloads and persisted records characterized by storage resources; supplied four ERD stories; requested filterable Systems/Components/data entities and implementation/delegation reconciliation. User confirmed proposed as explicit not-yet-implemented intent and new as comparison-relative, then approved recording the ERD stories and applicable inventory/planning revisions: 'Yes I believe so'.",
+  "created_at": "2026-09-24T22:20:08.068859Z"
+}

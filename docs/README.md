@@ -3,6 +3,9 @@
 Start with the [README](../README.md) for what Change Saga is and how to author
 your first saga. This directory holds the deeper material.
 
+Use [reconciliation.md](reconciliation.md) for the implement → verify → PR
+review deck → reconcile living documentation → check again workflow.
+
 ## The format
 
 | | |
@@ -27,8 +30,9 @@ not a contract — where they disagree with the code, the code is current.
 | | |
 | --- | --- |
 | [renderer-ui.md](renderer-ui.md) | Conventions the reviewer UI holds to, including the vocabulary boundary between reviewer chrome and format terms. Read before touching `internal/server/`. |
-| [ux-reframe.md](ux-reframe.md) | Why review is structured as a sequence of finishable chapter sessions. |
-| [review-experience-audit.md](review-experience-audit.md) | The audit behind that reframe, with the session and resumption contract. |
+| [ux-reframe.md](ux-reframe.md) | Historical v2/v3 chapter-reader direction and the secondary code-workspace rationale. |
+| [review-ux-improvements.md](review-ux-improvements.md) | Current v5 pull-request slide-deck contract, fidelity audit, and verification record. |
+| [review-experience-audit.md](review-experience-audit.md) | Historical audit behind the v2/v3 chapter-reader reframe; explicitly superseded for pull-request decks. |
 | [app-saga.md](app-saga.md) | The agreed goals and execution plan for one app Saga: durable features, personas, code references instead of stored diffs, and opening a Saga to observe or to compare. |
 | [requirements-design-quality-lifecycle.md](requirements-design-quality-lifecycle.md) | The plan behind the one Saga: from prototypes and requirements through design, exact implementation traceability, quality evidence, and completed review. |
 | [ai-facing-interface.md](ai-facing-interface.md) | The application boundary an AI client uses instead of walking `*.chapter` and `___review` paths directly. |
@@ -38,6 +42,7 @@ not a contract — where they disagree with the code, the code is current.
 | [cli-record-queries.md](cli-record-queries.md) | The shipped persona/term read and reference-query contract, compatibility behavior, measurements, and guarded-rename safety decision. |
 | [ergonomics-handoff-audit.md](ergonomics-handoff-audit.md) | The read-only feature handoff audit, stable findings, and readiness semantics. |
 | [ergonomics-visual-qa.md](ergonomics-visual-qa.md) | Repeatable raw/reviewer rendering, managed output safety, and mechanical visual findings. |
+| [technical-inventory-records-implementation.md](technical-inventory-records-implementation.md) | Delivered inventory format 2 records, explicit adoption, proposed/implemented authoring, data entities, ERDs, Item selections and saved views, with known limits. |
 | [ergonomics-ai-instructions.md](ergonomics-ai-instructions.md) | How the shipped skill routes tasks to focused references without blanket loading. |
 
 ## Working on the project

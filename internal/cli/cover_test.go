@@ -6,10 +6,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 
@@ -510,5 +513,74 @@ func TestCoverWithoutSelectorsExplainsBatch(t *testing.T) {
 	_, err := runCover(t, "", "--repo", repo, root)
 	if err == nil || !strings.Contains(err.Error(), "--batch") {
 		t.Fatalf("the empty-invocation error should mention --batch, got %v", err)
+	}
+}
+
+func TestReviewEvidenceSupportsPublicReplacementAndRemoval(t *testing.T) {
+	fixture := newReviewFixture(t)
+	mustRun(t, Review, "approve", "--review", "pr-7", "--slide", "queue", "--reviewer-kind", "human", "--body", "Fixture decision", fixture.root)
+	document, _, err := saga.Load(fixture.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	item := document.Reviews[0].Deck.Slides[0].Items[0]
+	record := item.Code[0].Path
+	before := reviewReport(t, fixture).Coverage.Summary.Covered
+	beforeFiles := snapshotFiles(t, fixture.root)
+	if err := ReplaceCoverage(context.Background(), []string{"--record", record, "--target", "urn:change-saga:app:review:pr-7:slide:missing:item:missing", "--ref", "HEAD:queue.go#L3", "--repo", fixture.repo, fixture.root}, &bytes.Buffer{}); err == nil {
+		t.Fatal("invalid repair target accepted")
+	}
+	if !reflect.DeepEqual(beforeFiles, snapshotFiles(t, fixture.root)) {
+		t.Fatal("failed repair changed files")
+	}
+	output := mustRun(t, ReplaceCoverage, "--record", record, "--target", item.Target, "--ref", "HEAD:queue.go#L3", "--note", "Reassessed exact implementation", "--repo", fixture.repo, "--json", fixture.root)
+	var replacement coverageRepairOutput
+	if err := json.Unmarshal([]byte(output), &replacement); err != nil {
+		t.Fatal(err)
+	}
+	if !replacement.OK || len(replacement.EvidenceFiles) != 1 {
+		t.Fatalf("replacement: %+v", replacement)
+	}
+	if got := reviewReport(t, fixture).Coverage.Summary.Covered; got != before {
+		t.Fatalf("replacement changed coverage: %d -> %d", before, got)
+	}
+	decision := slideReport(t, reviewReport(t, fixture), "queue").Decisions
+	if len(decision) != 1 || string(decision[0].Currency) != "out_of_date" {
+		t.Fatalf("repair lost decision or failed to age its content: %+v", decision)
+	}
+	mustRun(t, RemoveCoverage, "--record", replacement.EvidenceFiles[0], fixture.root)
+	if got := reviewReport(t, fixture).Coverage.Summary.Covered; got != before-1 {
+		t.Fatalf("removal did not reopen exact line: %d -> %d", before, got)
+	}
+}
+
+func TestFrozenReviewEvidenceRepairsLeaveHistoryUntouched(t *testing.T) {
+	fixture := newReviewFixture(t)
+	document, _, err := saga.Load(fixture.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	item := document.Reviews[0].Deck.Slides[0].Items[0]
+	head := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "HEAD"))
+	base := strings.TrimSpace(git(t, fixture.repo, "merge-base", "main", "HEAD"))
+	if err := reviewstore.Freeze(fixture.root, "pr-7", saga.ReviewMerge{Base: base, Head: head, Landed: head, MergedAt: time.Now().UTC()}); err != nil {
+		t.Fatal(err)
+	}
+	before := snapshotFiles(t, fixture.root)
+	for _, dry := range []bool{false, true} {
+		common := []string{"--record", item.Code[0].Path}
+		if dry {
+			common = append(common, "--dry-run")
+		}
+		removeArgs := append(append([]string{}, common...), fixture.root)
+		replaceArgs := append(append([]string{}, common...), "--target", item.Target, "--ref", head+":queue.go#L3", "--repo", fixture.repo, fixture.root)
+		for _, err := range []error{RemoveCoverage(context.Background(), removeArgs, &bytes.Buffer{}), ReplaceCoverage(context.Background(), replaceArgs, &bytes.Buffer{})} {
+			if err == nil || !strings.Contains(err.Error(), "history") {
+				t.Fatalf("frozen repair: %v", err)
+			}
+		}
+	}
+	if !reflect.DeepEqual(before, snapshotFiles(t, fixture.root)) {
+		t.Fatal("frozen repair changed history")
 	}
 }

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 523,
+      "end": 523,
+      "digest": "sha256:28c8e7b34041d76bb34cfe51e12c921dc93c3c084785a97f7d99cfadec0a62da",
+      "note": "Replaced: the shell that always built the whole page."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 531,
+      "end": 532,
+      "digest": "sha256:feddac22c3d0c9ec1519b3b14dc29fb78a6fbc99c47c48f4fc422d519402e16c",
+      "note": "Replaced: the shell that always built the whole page."
+    }
+  ]
+}

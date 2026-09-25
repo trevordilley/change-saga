@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/saga/model.go",
+      "start": 76,
+      "end": 81,
+      "digest": "sha256:9fdb6864a6c030ef822bd36dd8fbd0560c82ffc0f95f1a8982c738d3ecf53f00",
+      "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/saga/model.go",
+      "start": 102,
+      "end": 122,
+      "digest": "sha256:b1eb8aac5d4c299c4b7d1c59348e83679908417a13e6cefb712babcfb9663434",
+      "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
+    }
+  ]
+}

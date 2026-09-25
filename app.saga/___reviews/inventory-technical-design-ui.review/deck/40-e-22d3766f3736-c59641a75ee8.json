@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appnav.go",
+      "start": 75,
+      "end": 76,
+      "digest": "sha256:980b3d1d60a3a5d2861d46cd8668f62ec31c75e62b1cacf18c83c7c4956d4bad",
+      "note": "Sidebar rows for Technical design under the overview."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appnav.go",
+      "start": 114,
+      "end": 116,
+      "digest": "sha256:857b31416ad51f5ef28223898dd7a86828a48fe8eccf8433ebd1abfa4f0c1cf6",
+      "note": "Sidebar rows for Technical design under the overview."
+    }
+  ]
+}

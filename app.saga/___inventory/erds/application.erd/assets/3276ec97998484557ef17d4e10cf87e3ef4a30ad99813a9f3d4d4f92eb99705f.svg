@@ -1,0 +1,505 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1580 1604" role="img" aria-label="Change Saga data model: what is persisted in the Saga, what lives in Git, and what is derived on read">
+<title>Change Saga data model</title>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#9a6212"/></marker></defs>
+<rect x="0" y="0" width="1580" height="1604" fill="#ffffff"/>
+<g font-family="Helvetica, Arial, sans-serif">
+<text x="40" y="46" font-size="30" font-weight="bold" fill="#142638">How Change Saga’s data fits together</text>
+<text x="40" y="78" font-size="17" fill="#3d5266">The Saga stores explanation and exact pins; Git holds the code; coverage, currency and queries are computed from both on read.</text>
+<text x="40" y="104" font-size="15" fill="#5a6b7a">Select an entity or edge to open its definition and exact code. Selected entities only; the directory below lists them all.</text>
+<g id="band-saga"><rect x="80" y="120" width="1050" height="1036" rx="10" fill="#f7faf8" stroke="#b9cdbf"/><text x="100" y="146" font-size="15" font-weight="bold" letter-spacing="1.5" fill="#2f6b3a">SAGA · PERSISTED IN THE REPOSITORY (app.saga/)</text></g>
+<g id="band-git"><rect x="80" y="1176" width="1050" height="224" rx="10" fill="#f4f5f7" stroke="#c4c9d0"/><text x="540" y="1200" font-size="15" font-weight="bold" letter-spacing="1.5" fill="#4b5563">GIT · SOURCE OF TRUTH FOR CODE</text></g>
+<g id="band-derived"><rect x="1246" y="120" width="298" height="1280" rx="10" fill="#fffaf1" stroke="#dcc39a" stroke-dasharray="8 5"/><text x="1266" y="146" font-size="15" font-weight="bold" letter-spacing="1.5" fill="#9a6212">DERIVED ON READ</text><text x="1266" y="166" font-size="13" fill="#9a6212">never stored in the Saga</text></g>
+<g id="r-feature-in-saga">
+<title>Feature (0..*) belongs to (1) Saga manifest: persisted association</title>
+<path d="M480 275 L350 275" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M480 275 L350 275" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M462 275L480 265" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M462 275L480 275" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M462 275L480 285" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="452" cy="275" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M358 284L358 266" stroke="#3d5266" stroke-width="2"/>
+<path d="M365 284L365 266" stroke="#3d5266" stroke-width="2"/>
+<text x="442" y="299" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="388" y="299" font-size="15" fill="#5a6b7a" text-anchor="middle">1</text>
+<text x="415" y="265" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">belongs to</text>
+</g>
+<g id="r-story-in-feature">
+<title>Story (0..*) lives in (1) Feature: persisted association</title>
+<path d="M900 450 L900 400 L680 400 L680 350" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M900 450 L900 400 L680 400 L680 350" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M900 432L910 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M900 432L900 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M900 432L890 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="900" cy="422" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M671 358L689 358" stroke="#3d5266" stroke-width="2"/>
+<path d="M671 365L689 365" stroke="#3d5266" stroke-width="2"/>
+<text x="915" y="419" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="695" y="391" font-size="15" fill="#5a6b7a" text-anchor="start">1</text>
+<text x="790" y="390" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">lives in</text>
+</g>
+<g id="r-story-serves">
+<title>Story (0..*) serves (0..*) Persona: persisted association</title>
+<path d="M1030 450 L1030 350" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1030 450 L1030 350" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M1030 432L1040 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1030 432L1030 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1030 432L1020 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1030" cy="422" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M1030 368L1020 350" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1030 368L1030 350" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1030 368L1040 350" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1030" cy="378" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="1045" y="419" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="1045" y="391" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="1020" y="405" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">serves</text>
+</g>
+<g id="r-criterion-of-story">
+<title>Acceptance criterion (0..*) criterion of (1) Story: persisted association</title>
+<path d="M985 700 L985 600" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M985 700 L985 600" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M985 682L995 700" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M985 682L985 700" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M985 682L975 700" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="985" cy="672" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M976 608L994 608" stroke="#3d5266" stroke-width="2"/>
+<path d="M976 615L994 615" stroke="#3d5266" stroke-width="2"/>
+<text x="1000" y="669" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="1000" y="641" font-size="15" fill="#5a6b7a" text-anchor="start">1</text>
+<text x="975" y="655" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">criterion of</text>
+</g>
+<g id="r-deck-in-feature">
+<title>Deck (0..*) implements (0..1) Feature: persisted association</title>
+<path d="M580 450 L580 350" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M580 450 L580 350" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M580 432L590 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M580 432L580 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M580 432L570 450" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="580" cy="422" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M571 359L589 359" stroke="#3d5266" stroke-width="2"/>
+<circle cx="580" cy="372" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="595" y="419" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="595" y="391" font-size="15" fill="#5a6b7a" text-anchor="start">0..1</text>
+<text x="570" y="405" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">implements</text>
+</g>
+<g id="r-deck-of-review">
+<title>Deck (1) explains (0..1) Review: persisted association</title>
+<path d="M480 525 L350 525" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M480 525 L350 525" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M472 516L472 534" stroke="#3d5266" stroke-width="2"/>
+<path d="M465 516L465 534" stroke="#3d5266" stroke-width="2"/>
+<path d="M359 534L359 516" stroke="#3d5266" stroke-width="2"/>
+<circle cx="372" cy="525" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="442" y="549" font-size="15" fill="#5a6b7a" text-anchor="middle">1</text>
+<text x="388" y="549" font-size="15" fill="#5a6b7a" text-anchor="middle">0..1</text>
+<text x="415" y="515" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">explains</text>
+</g>
+<g id="r-slide-in-deck">
+<title>Slide (0..*) in (1) Deck: persisted association</title>
+<path d="M605 700 L605 600" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M605 700 L605 600" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M605 682L615 700" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M605 682L605 700" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M605 682L595 700" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="605" cy="672" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M596 608L614 608" stroke="#3d5266" stroke-width="2"/>
+<path d="M596 615L614 615" stroke="#3d5266" stroke-width="2"/>
+<text x="620" y="669" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="620" y="641" font-size="15" fill="#5a6b7a" text-anchor="start">1</text>
+<text x="595" y="655" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">in</text>
+</g>
+<g id="r-item-on-slide">
+<title>Item (0..*) on (1) Slide: persisted association</title>
+<path d="M605 950 L605 850" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M605 950 L605 850" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M605 932L615 950" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M605 932L605 950" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M605 932L595 950" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="605" cy="922" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M596 858L614 858" stroke="#3d5266" stroke-width="2"/>
+<path d="M596 865L614 865" stroke="#3d5266" stroke-width="2"/>
+<text x="620" y="919" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="620" y="891" font-size="15" fill="#5a6b7a" text-anchor="start">1</text>
+<text x="595" y="905" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">on</text>
+</g>
+<g id="r-item-documents">
+<title>Item (0..*) documented by (0..1) Technical definition: persisted association</title>
+<path d="M480 1025 L350 1025" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M480 1025 L350 1025" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M462 1025L480 1015" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M462 1025L480 1025" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M462 1025L480 1035" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="452" cy="1025" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M359 1034L359 1016" stroke="#3d5266" stroke-width="2"/>
+<circle cx="372" cy="1025" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="442" y="1049" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="388" y="1049" font-size="15" fill="#5a6b7a" text-anchor="middle">0..1</text>
+<text x="415" y="1015" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">documented by</text>
+</g>
+<g id="r-item-criterion-link">
+<title>Item (0..*) links (0..*) Acceptance criterion: persisted association</title>
+<path d="M690 950 L690 900 L920 900 L920 850" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M690 950 L690 900 L920 900 L920 850" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M690 932L700 950" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M690 932L690 950" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M690 932L680 950" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="690" cy="922" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M920 868L910 850" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M920 868L920 850" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M920 868L930 850" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="920" cy="878" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="705" y="919" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="935" y="891" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="805" y="890" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">links</text>
+</g>
+<g id="r-code-reference-owned-by-item">
+<title>Code reference (0..*) evidence of (0..1) Item: persisted association</title>
+<path d="M860 1025 L730 1025" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M860 1025 L730 1025" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M842 1025L860 1015" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M842 1025L860 1025" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M842 1025L860 1035" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="832" cy="1025" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M739 1034L739 1016" stroke="#3d5266" stroke-width="2"/>
+<circle cx="752" cy="1025" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="822" y="1049" font-size="15" fill="#5a6b7a" text-anchor="middle">0..*</text>
+<text x="768" y="1049" font-size="15" fill="#5a6b7a" text-anchor="middle">0..1</text>
+<text x="795" y="1015" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">evidence of</text>
+</g>
+<g id="r-code-reference-in-definition">
+<title>Code reference (0..*) evidence of (0..1) Technical definition: persisted association</title>
+<path d="M910 1100 L910 1132 L225 1132 L225 1100" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M910 1100 L910 1132 L225 1132 L225 1100" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M910 1118L900 1100" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M910 1118L910 1100" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M910 1118L920 1100" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="910" cy="1128" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M216 1109L234 1109" stroke="#3d5266" stroke-width="2"/>
+<circle cx="225" cy="1122" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="925" y="1141" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="240" y="1141" font-size="15" fill="#5a6b7a" text-anchor="start">0..1</text>
+<text x="567.5" y="1122" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">evidence of</text>
+</g>
+<g id="r-merge-record-freezes">
+<title>Merge record (0..1) freezes (0..1) Review: persisted association</title>
+<path d="M225 700 L225 600" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M225 700 L225 600" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M234 691L216 691" stroke="#3d5266" stroke-width="2"/>
+<circle cx="225" cy="678" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<path d="M216 609L234 609" stroke="#3d5266" stroke-width="2"/>
+<circle cx="225" cy="622" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="240" y="669" font-size="15" fill="#5a6b7a" text-anchor="start">0..1</text>
+<text x="240" y="641" font-size="15" fill="#5a6b7a" text-anchor="start">0..1</text>
+<text x="215" y="655" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">freezes</text>
+</g>
+<g id="r-source-repository-documented-by">
+<title>Source repository and commits (1) documented by (unknown) Saga manifest: persisted association</title>
+<path d="M100 1305 L40 1305 L40 275 L100 275" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M100 1305 L40 1305 L40 275 L100 275" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M92 1296L92 1314" stroke="#3d5266" stroke-width="2"/>
+<path d="M85 1296L85 1314" stroke="#3d5266" stroke-width="2"/>
+<text x="62" y="1329" font-size="15" fill="#5a6b7a" text-anchor="middle">1</text>
+<text x="62" y="299" font-size="15" fill="#5a6b7a" text-anchor="middle">unknown</text>
+<text x="34" y="790" transform="rotate(-90 34 790)" font-size="16" font-style="italic" fill="#3d5266" text-anchor="middle">documented by</text>
+</g>
+<g id="r-source-repository-pinned-by">
+<title>Source repository and commits (1) pinned by (0..*) Code reference: persisted association</title>
+<path d="M1050 1230 L1050 1100" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1050 1230 L1050 1100" fill="none" stroke="#3d5266" stroke-width="2"/>
+<path d="M1059 1222L1041 1222" stroke="#3d5266" stroke-width="2"/>
+<path d="M1059 1215L1041 1215" stroke="#3d5266" stroke-width="2"/>
+<path d="M1050 1118L1040 1100" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1050 1118L1050 1100" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M1050 1118L1060 1100" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="1050" cy="1128" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="1065" y="1199" font-size="15" fill="#5a6b7a" text-anchor="start">1</text>
+<text x="1065" y="1141" font-size="15" fill="#5a6b7a" text-anchor="start">0..*</text>
+<text x="1040" y="1170" font-size="16" font-style="italic" fill="#3d5266" text-anchor="end">pinned by</text>
+</g>
+<g id="r-merge-record-from-source">
+<title>Source repository and commits landed commits recorded in Merge record: derived, not a key</title>
+<path d="M160 1230 L160 1202 L66 1202 L66 810 L100 810" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M160 1230 L160 1202 L66 1202 L66 810 L100 810" fill="none" stroke="#9a6212" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+<text x="60" y="1006" transform="rotate(-90 60 1006)" font-size="16" font-style="italic" fill="#9a6212" text-anchor="middle">landed commits recorded in</text>
+</g>
+<g id="r-change-set-from-source">
+<title>Source repository and commits diffed into Change set: derived, not a key</title>
+<path d="M1110 1305 L1270 1305" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1110 1305 L1270 1305" fill="none" stroke="#9a6212" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+<text x="1190" y="1295" font-size="16" font-style="italic" fill="#9a6212" text-anchor="middle">diffed into</text>
+</g>
+<g id="r-coverage-report-from-change-set">
+<title>Change set measured into Coverage report: derived, not a key</title>
+<path d="M1395 1230 L1395 1100" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1395 1230 L1395 1100" fill="none" stroke="#9a6212" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+<text x="1385" y="1170" font-size="16" font-style="italic" fill="#9a6212" text-anchor="end">measured into</text>
+</g>
+<g id="r-coverage-report-from-code-references">
+<title>Code reference matched into Coverage report: derived, not a key</title>
+<path d="M1110 1025 L1270 1025" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1110 1025 L1270 1025" fill="none" stroke="#9a6212" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+<text x="1190" y="1015" font-size="16" font-style="italic" fill="#9a6212" text-anchor="middle">matched into</text>
+</g>
+<g id="r-reconciliation-queue-from-coverage">
+<title>Coverage report extended into Reconciliation queue: derived, not a key</title>
+<path d="M1395 950 L1395 850" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1395 950 L1395 850" fill="none" stroke="#9a6212" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+<text x="1385" y="905" font-size="16" font-style="italic" fill="#9a6212" text-anchor="end">extended into</text>
+</g>
+<g id="r-snapshot-cache-from-coverage">
+<title>Coverage report cached in Snapshot cache: derived, not a key</title>
+<path d="M1520 1000 L1554 1000 L1554 525 L1520 525" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M1520 1000 L1554 1000 L1554 525 L1520 525" fill="none" stroke="#9a6212" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+<text x="1574" y="762.5" transform="rotate(-90 1574 762.5)" font-size="16" font-style="italic" fill="#9a6212" text-anchor="middle">cached in</text>
+</g>
+<g id="r-query-response-from-saga">
+<title>Saga manifest projected into Query response: derived, not a key</title>
+<path d="M225 200 L225 176 L1395 176 L1395 200" fill="none" stroke="#ffffff" stroke-opacity="0" stroke-width="12"/>
+<path d="M225 200 L225 176 L1395 176 L1395 200" fill="none" stroke="#9a6212" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+<text x="810" y="166" font-size="16" font-style="italic" fill="#9a6212" text-anchor="middle">projected into</text>
+</g>
+<g id="e-saga-manifest">
+<title>Saga manifest: app.saga/saga.json</title>
+<rect x="100" y="200" width="250" height="150" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.8"/>
+<path d="M101 206Q101 201 106 201H344Q349 201 349 206V240H101Z" fill="#e5f0e7"/>
+<path d="M100 240H350" stroke="#2f6b3a" stroke-width="1"/>
+<text x="110" y="228" font-size="21" font-weight="bold" fill="#142638">Saga manifest</text>
+<text x="110" y="266" font-size="17" fill="#142638">id</text>
+<text x="340" y="266" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="110" y="289" font-size="17" fill="#142638">title</text>
+<text x="110" y="312" font-size="17" fill="#142638">source.repository</text>
+<text x="110" y="339" font-size="14" font-style="italic" fill="#5a6b7a">app.saga/saga.json</text>
+</g>
+<g id="e-feature">
+<title>Feature: feature.json</title>
+<rect x="480" y="200" width="250" height="150" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.8"/>
+<path d="M481 206Q481 201 486 201H724Q729 201 729 206V240H481Z" fill="#e5f0e7"/>
+<path d="M480 240H730" stroke="#2f6b3a" stroke-width="1"/>
+<text x="490" y="228" font-size="21" font-weight="bold" fill="#142638">Feature</text>
+<text x="490" y="266" font-size="17" fill="#142638">id</text>
+<text x="720" y="266" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="490" y="289" font-size="17" fill="#142638">title · description</text>
+<text x="490" y="312" font-size="17" fill="#142638">holds stories, deck, design</text>
+<text x="490" y="339" font-size="14" font-style="italic" fill="#5a6b7a">feature.json</text>
+</g>
+<g id="e-persona">
+<title>Persona: revisions + events</title>
+<rect x="860" y="200" width="250" height="150" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.8"/>
+<path d="M861 206Q861 201 866 201H1104Q1109 201 1109 206V240H861Z" fill="#e5f0e7"/>
+<path d="M860 240H1110" stroke="#2f6b3a" stroke-width="1"/>
+<text x="870" y="228" font-size="21" font-weight="bold" fill="#142638">Persona</text>
+<text x="870" y="266" font-size="17" fill="#142638">id</text>
+<text x="1100" y="266" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="870" y="289" font-size="17" fill="#142638">name · description</text>
+<text x="870" y="312" font-size="17" fill="#142638">active | retired</text>
+<text x="870" y="339" font-size="14" font-style="italic" fill="#5a6b7a">revisions + events</text>
+</g>
+<g id="e-review">
+<title>Review: + approvals, comments</title>
+<rect x="100" y="450" width="250" height="150" rx="6" fill="#ffffff" stroke="#8a5a14" stroke-width="1.8"/>
+<path d="M101 456Q101 451 106 451H344Q349 451 349 456V490H101Z" fill="#f7ecdd"/>
+<path d="M100 490H350" stroke="#8a5a14" stroke-width="1"/>
+<text x="110" y="478" font-size="21" font-weight="bold" fill="#142638">Review</text>
+<text x="110" y="516" font-size="17" fill="#142638">id</text>
+<text x="340" y="516" font-size="13.5" font-weight="bold" fill="#8a5a14" text-anchor="end">PK</text>
+<text x="110" y="539" font-size="17" fill="#142638">pull_request.number</text>
+<text x="340" y="539" font-size="13.5" font-weight="bold" fill="#8a5a14" text-anchor="end">UQ</text>
+<text x="110" y="562" font-size="17" fill="#142638">base · head · merged</text>
+<text x="110" y="589" font-size="14" font-style="italic" fill="#5a6b7a">+ approvals, comments</text>
+</g>
+<g id="e-deck">
+<title>Deck: flat deck bundle</title>
+<rect x="480" y="450" width="250" height="150" rx="6" fill="#ffffff" stroke="#245d8c" stroke-width="1.8"/>
+<path d="M481 456Q481 451 486 451H724Q729 451 729 456V490H481Z" fill="#e6eef6"/>
+<path d="M480 490H730" stroke="#245d8c" stroke-width="1"/>
+<text x="490" y="478" font-size="21" font-weight="bold" fill="#142638">Deck</text>
+<text x="490" y="516" font-size="17" fill="#142638">id</text>
+<text x="720" y="516" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">PK</text>
+<text x="490" y="539" font-size="17" fill="#142638">role: change | review | …</text>
+<text x="490" y="562" font-size="17" fill="#142638">title · objective</text>
+<text x="490" y="589" font-size="14" font-style="italic" fill="#5a6b7a">flat deck bundle</text>
+</g>
+<g id="e-story">
+<title>Story: revisions + lifecycle</title>
+<rect x="860" y="450" width="250" height="150" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.8"/>
+<path d="M861 456Q861 451 866 451H1104Q1109 451 1109 456V490H861Z" fill="#e5f0e7"/>
+<path d="M860 490H1110" stroke="#2f6b3a" stroke-width="1"/>
+<text x="870" y="478" font-size="21" font-weight="bold" fill="#142638">Story</text>
+<text x="870" y="516" font-size="17" fill="#142638">id</text>
+<text x="1100" y="516" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK</text>
+<text x="870" y="539" font-size="17" fill="#142638">title · statement</text>
+<text x="870" y="562" font-size="17" fill="#142638">personas</text>
+<text x="1100" y="562" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">FK</text>
+<text x="870" y="589" font-size="14" font-style="italic" fill="#5a6b7a">revisions + lifecycle</text>
+</g>
+<g id="e-merge-record">
+<title>Merge record: ___merges/&lt;commit&gt;.json</title>
+<rect x="100" y="700" width="250" height="150" rx="6" fill="#ffffff" stroke="#8a5a14" stroke-width="1.8"/>
+<path d="M101 706Q101 701 106 701H344Q349 701 349 706V740H101Z" fill="#f7ecdd"/>
+<path d="M100 740H350" stroke="#8a5a14" stroke-width="1"/>
+<text x="110" y="728" font-size="21" font-weight="bold" fill="#142638">Merge record</text>
+<text x="340" y="727" font-size="12" font-weight="bold" letter-spacing="1" fill="#8a5a14" text-anchor="end">FROM GIT</text>
+<text x="110" y="766" font-size="17" fill="#142638">commit</text>
+<text x="340" y="766" font-size="13.5" font-weight="bold" fill="#8a5a14" text-anchor="end">PK</text>
+<text x="110" y="789" font-size="17" fill="#142638">base · commits[]</text>
+<text x="110" y="812" font-size="17" fill="#142638">review</text>
+<text x="340" y="812" font-size="13.5" font-weight="bold" fill="#8a5a14" text-anchor="end">FK</text>
+<text x="110" y="839" font-size="14" font-style="italic" fill="#5a6b7a">___merges/&lt;commit&gt;.json</text>
+</g>
+<g id="e-slide">
+<title>Slide: one visual argument</title>
+<rect x="480" y="700" width="250" height="150" rx="6" fill="#ffffff" stroke="#245d8c" stroke-width="1.8"/>
+<path d="M481 706Q481 701 486 701H724Q729 701 729 706V740H481Z" fill="#e6eef6"/>
+<path d="M480 740H730" stroke="#245d8c" stroke-width="1"/>
+<text x="490" y="728" font-size="21" font-weight="bold" fill="#142638">Slide</text>
+<text x="490" y="766" font-size="17" fill="#142638">id</text>
+<text x="720" y="766" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">PK</text>
+<text x="490" y="789" font-size="17" fill="#142638">deck</text>
+<text x="720" y="789" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">FK</text>
+<text x="490" y="812" font-size="17" fill="#142638">visual · takeaway</text>
+<text x="490" y="839" font-size="14" font-style="italic" fill="#5a6b7a">one visual argument</text>
+</g>
+<g id="e-criterion">
+<title>Acceptance criterion: inside a story revision</title>
+<rect x="860" y="700" width="250" height="150" rx="6" fill="#ffffff" stroke="#2f6b3a" stroke-width="1.8"/>
+<path d="M861 706Q861 701 866 701H1104Q1109 701 1109 706V740H861Z" fill="#e5f0e7"/>
+<path d="M860 740H1110" stroke="#2f6b3a" stroke-width="1"/>
+<text x="870" y="728" font-size="21" font-weight="bold" fill="#142638">Acceptance criterion</text>
+<text x="870" y="766" font-size="17" fill="#142638">id</text>
+<text x="1100" y="766" font-size="13.5" font-weight="bold" fill="#2f6b3a" text-anchor="end">PK in story</text>
+<text x="870" y="789" font-size="17" fill="#142638">statement</text>
+<text x="870" y="839" font-size="14" font-style="italic" fill="#5a6b7a">inside a story revision</text>
+</g>
+<g id="e-technical-definition">
+<title>Technical definition: held by record store</title>
+<rect x="100" y="950" width="250" height="150" rx="6" fill="#ffffff" stroke="#5b3f8c" stroke-width="1.8"/>
+<path d="M101 956Q101 951 106 951H344Q349 951 349 956V990H101Z" fill="#eeeaf6"/>
+<path d="M100 990H350" stroke="#5b3f8c" stroke-width="1"/>
+<text x="110" y="978" font-size="21" font-weight="bold" fill="#142638">Technical definition</text>
+<text x="110" y="1016" font-size="17" fill="#142638">id + revision</text>
+<text x="340" y="1016" font-size="13.5" font-weight="bold" fill="#5b3f8c" text-anchor="end">PK</text>
+<text x="110" y="1039" font-size="17" fill="#142638">kind · intent</text>
+<text x="110" y="1062" font-size="17" fill="#142638">delivery.commit</text>
+<text x="110" y="1089" font-size="14" font-style="italic" fill="#5a6b7a">held by record store</text>
+</g>
+<g id="e-item">
+<title>Item: owns deck evidence</title>
+<rect x="480" y="950" width="250" height="150" rx="6" fill="#ffffff" stroke="#245d8c" stroke-width="1.8"/>
+<path d="M481 956Q481 951 486 951H724Q729 951 729 956V990H481Z" fill="#e6eef6"/>
+<path d="M480 990H730" stroke="#245d8c" stroke-width="1"/>
+<text x="490" y="978" font-size="21" font-weight="bold" fill="#142638">Item</text>
+<text x="490" y="1016" font-size="17" fill="#142638">id</text>
+<text x="720" y="1016" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">PK</text>
+<text x="490" y="1039" font-size="17" fill="#142638">slide</text>
+<text x="720" y="1039" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">FK</text>
+<text x="490" y="1062" font-size="17" fill="#142638">documentation</text>
+<text x="720" y="1062" font-size="13.5" font-weight="bold" fill="#245d8c" text-anchor="end">FK</text>
+<text x="490" y="1089" font-size="14" font-style="italic" fill="#5a6b7a">owns deck evidence</text>
+</g>
+<g id="e-code-reference">
+<title>Code reference: exact pinned bytes</title>
+<rect x="860" y="950" width="250" height="150" rx="6" fill="#ffffff" stroke="#245d8c" stroke-width="1.8"/>
+<path d="M861 956Q861 951 866 951H1104Q1109 951 1109 956V990H861Z" fill="#e6eef6"/>
+<path d="M860 990H1110" stroke="#245d8c" stroke-width="1"/>
+<text x="870" y="978" font-size="21" font-weight="bold" fill="#142638">Code reference</text>
+<text x="870" y="1016" font-size="17" fill="#142638">commit · path · lines</text>
+<text x="870" y="1039" font-size="17" fill="#142638">digest (sha256)</text>
+<text x="870" y="1062" font-size="17" fill="#142638">note</text>
+<text x="870" y="1089" font-size="14" font-style="italic" fill="#5a6b7a">exact pinned bytes</text>
+</g>
+<g id="e-source-repository">
+<title>Source repository and commits: .git — the only copy of the code</title>
+<rect x="100" y="1230" width="1010" height="150" rx="6" fill="#ffffff" stroke="#4b5563" stroke-width="1.8"/>
+<path d="M101 1236Q101 1231 106 1231H1104Q1109 1231 1109 1236V1270H101Z" fill="#eceef1"/>
+<path d="M100 1270H1110" stroke="#4b5563" stroke-width="1"/>
+<text x="110" y="1258" font-size="21" font-weight="bold" fill="#142638">Source repository and commits</text>
+<text x="110" y="1296" font-size="17" fill="#142638">repository · commit OID</text>
+<text x="1100" y="1296" font-size="13.5" font-weight="bold" fill="#4b5563" text-anchor="end">PK</text>
+<text x="110" y="1319" font-size="17" fill="#142638">file bytes at each commit (read with git cat-file)</text>
+<text x="110" y="1342" font-size="17" fill="#142638">branch history (read with git log)</text>
+<text x="110" y="1369" font-size="14" font-style="italic" fill="#5a6b7a">.git — the only copy of the code</text>
+</g>
+<g id="e-query-response">
+<title>Query response: AI read API, bounded</title>
+<rect x="1270" y="200" width="250" height="150" rx="6" fill="#fffdf8" stroke="#9a6212" stroke-width="1.8" stroke-dasharray="8 5"/>
+<path d="M1271 206Q1271 201 1276 201H1514Q1519 201 1519 206V240H1271Z" fill="#fbf1df"/>
+<path d="M1270 240H1520" stroke="#9a6212" stroke-width="1" stroke-dasharray="8 5"/>
+<text x="1280" y="228" font-size="21" font-weight="bold" fill="#142638">Query response</text>
+<text x="1280" y="266" font-size="17" fill="#142638">schema · ok</text>
+<text x="1280" y="289" font-size="17" fill="#142638">snapshot</text>
+<text x="1510" y="289" font-size="13.5" font-weight="bold" fill="#9a6212" text-anchor="end">sha256</text>
+<text x="1280" y="312" font-size="17" fill="#142638">data · next_cursor</text>
+<text x="1280" y="339" font-size="14" font-style="italic" fill="#5a6b7a">AI read API, bounded</text>
+</g>
+<g id="e-snapshot-cache">
+<title>Snapshot cache: user cache dir, disposable</title>
+<rect x="1270" y="450" width="250" height="150" rx="6" fill="#fffdf8" stroke="#9a6212" stroke-width="1.8" stroke-dasharray="8 5"/>
+<path d="M1271 456Q1271 451 1276 451H1514Q1519 451 1519 456V490H1271Z" fill="#fbf1df"/>
+<path d="M1270 490H1520" stroke="#9a6212" stroke-width="1" stroke-dasharray="8 5"/>
+<text x="1280" y="478" font-size="21" font-weight="bold" fill="#142638">Snapshot cache</text>
+<text x="1510" y="477" font-size="12" font-weight="bold" letter-spacing="1" fill="#9a6212" text-anchor="end">CACHED</text>
+<text x="1280" y="516" font-size="17" fill="#142638">saga · tree · source</text>
+<text x="1510" y="516" font-size="13.5" font-weight="bold" fill="#9a6212" text-anchor="end">PK</text>
+<text x="1280" y="539" font-size="17" fill="#142638">document · comparison</text>
+<text x="1280" y="562" font-size="17" fill="#142638">coverage index</text>
+<text x="1280" y="589" font-size="14" font-style="italic" fill="#5a6b7a">user cache dir, disposable</text>
+</g>
+<g id="e-reconciliation-queue">
+<title>Reconciliation queue: reconcile --against</title>
+<rect x="1270" y="700" width="250" height="150" rx="6" fill="#fffdf8" stroke="#9a6212" stroke-width="1.8" stroke-dasharray="8 5"/>
+<path d="M1271 706Q1271 701 1276 701H1514Q1519 701 1519 706V740H1271Z" fill="#fbf1df"/>
+<path d="M1270 740H1520" stroke="#9a6212" stroke-width="1" stroke-dasharray="8 5"/>
+<text x="1280" y="728" font-size="21" font-weight="bold" fill="#142638">Reconciliation queue</text>
+<text x="1280" y="766" font-size="17" fill="#142638">currency · debt</text>
+<text x="1280" y="789" font-size="17" fill="#142638">documentation coverage</text>
+<text x="1280" y="812" font-size="17" fill="#142638">queue[] inspect · repair</text>
+<text x="1280" y="839" font-size="14" font-style="italic" fill="#5a6b7a">reconcile --against</text>
+</g>
+<g id="e-coverage-report">
+<title>Coverage report: computed, never stored</title>
+<rect x="1270" y="950" width="250" height="150" rx="6" fill="#fffdf8" stroke="#9a6212" stroke-width="1.8" stroke-dasharray="8 5"/>
+<path d="M1271 956Q1271 951 1276 951H1514Q1519 951 1519 956V990H1271Z" fill="#fbf1df"/>
+<path d="M1270 990H1520" stroke="#9a6212" stroke-width="1" stroke-dasharray="8 5"/>
+<text x="1280" y="978" font-size="21" font-weight="bold" fill="#142638">Coverage report</text>
+<text x="1280" y="1016" font-size="17" fill="#142638">summary · uncovered</text>
+<text x="1280" y="1039" font-size="17" fill="#142638">overlaps · stale refs</text>
+<text x="1280" y="1062" font-size="17" fill="#142638">ownership per atom</text>
+<text x="1280" y="1089" font-size="14" font-style="italic" fill="#5a6b7a">computed, never stored</text>
+</g>
+<g id="e-change-set">
+<title>Change set: git diff merge-base..head</title>
+<rect x="1270" y="1230" width="250" height="150" rx="6" fill="#fffdf8" stroke="#9a6212" stroke-width="1.8" stroke-dasharray="8 5"/>
+<path d="M1271 1236Q1271 1231 1276 1231H1514Q1519 1231 1519 1236V1270H1271Z" fill="#fbf1df"/>
+<path d="M1270 1270H1520" stroke="#9a6212" stroke-width="1" stroke-dasharray="8 5"/>
+<text x="1280" y="1258" font-size="21" font-weight="bold" fill="#142638">Change set</text>
+<text x="1280" y="1296" font-size="17" fill="#142638">base_oid · head_oid</text>
+<text x="1280" y="1319" font-size="17" fill="#142638">atoms[].key</text>
+<text x="1510" y="1319" font-size="13.5" font-weight="bold" fill="#9a6212" text-anchor="end">UQ</text>
+<text x="1280" y="1342" font-size="17" fill="#142638">line · event atoms</text>
+<text x="1280" y="1369" font-size="14" font-style="italic" fill="#5a6b7a">git diff merge-base..head</text>
+</g>
+<g id="legend">
+<rect x="80" y="1430" width="1464" height="150" rx="6" fill="#f7f9fb" stroke="#c3cfda"/>
+<path d="M98 1464H178" stroke="#3d5266" stroke-width="2"/>
+<path d="M170 1455L170 1473" stroke="#3d5266" stroke-width="2"/>
+<path d="M163 1455L163 1473" stroke="#3d5266" stroke-width="2"/>
+<text x="190" y="1469" font-size="16" fill="#142638">1 exactly one</text>
+<path d="M98 1502H178" stroke="#3d5266" stroke-width="2"/>
+<path d="M169 1493L169 1511" stroke="#3d5266" stroke-width="2"/>
+<circle cx="156" cy="1502" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="190" y="1507" font-size="16" fill="#142638">0..1 zero or one</text>
+<path d="M98 1540H178" stroke="#3d5266" stroke-width="2"/>
+<path d="M160 1540L178 1530" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M160 1540L178 1540" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<path d="M160 1540L178 1550" stroke="#3d5266" stroke-width="1.6" fill="none"/>
+<circle cx="150" cy="1540" r="5.5" fill="#ffffff" stroke="#3d5266" stroke-width="1.6"/>
+<text x="190" y="1545" font-size="16" fill="#142638">0..* zero or more</text>
+<path d="M380 1464H460" stroke="#9a6212" stroke-width="2.2" stroke-dasharray="9 6" marker-end="url(#arrow)"/>
+<text x="474" y="1469" font-size="16" fill="#142638">produced from (derived data, never a key)</text>
+<rect x="380" y="1488" width="80" height="26" rx="4" fill="#ffffff" stroke="#245d8c" stroke-width="1.8"/>
+<text x="474" y="1507" font-size="16" fill="#142638">persisted record</text>
+<rect x="660" y="1488" width="80" height="26" rx="4" fill="#fffdf8" stroke="#9a6212" stroke-width="1.8" stroke-dasharray="8 5"/>
+<text x="754" y="1507" font-size="16" fill="#142638">derived on read or cached</text>
+<text x="380" y="1542" font-size="14.5" fill="#3d5266">Crow’s-foot marks beside an entity: how many of it per one of the other. Keys are roles in the records, not constraints.</text>
+<text x="380" y="1566" font-size="14.5" fill="#3d5266">In the directory, not drawn: Relation (pinned traceability edges) and Review decision (per-slide approvals).</text>
+</g>
+</g></svg>

@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "technical-inventory-rollout",
+  "deck": "technical-inventory",
+  "title": "Proposed: gated implementation and compatibility",
+  "rank": 130,
+  "section": "Proposed technical design",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0130-35d21bd4ec20.svg",
+  "takeaway": "Agree compatibility first, then ship records, shared consumers and end-to-end proof without rewriting historical plans or silently resolving conflicts.",
+  "reading_order": [
+    "compatibility",
+    "records",
+    "consumers",
+    "proof",
+    "sequence",
+    "conflicts",
+    "foundation"
+  ]
+}

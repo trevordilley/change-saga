@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "policy-proof",
+  "deck": "technical-inventory-policy-core",
+  "title": "Acceptance matrix and temporary Git proof",
+  "rank": 10,
+  "intent": "prove",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-f1417417b787-0010-35190589edee.svg",
+  "takeaway": "Exact source and tests for the first internal policy slice. No public feature delivery, coverage grant, or review verdict is implied.",
+  "reading_order": [
+    "pin-tests",
+    "candidate-tests",
+    "git-tests",
+    "scope"
+  ]
+}

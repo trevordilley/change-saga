@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/query.go",
+      "start": 317,
+      "end": 377,
+      "digest": "sha256:694066ac244d64f4edf5e29cab260d46db42bffa1bccd9df6c8b52d206d15529",
+      "note": "Validates the operation and parsed flags at the CLI boundary before any application session is opened."
+    }
+  ]
+}

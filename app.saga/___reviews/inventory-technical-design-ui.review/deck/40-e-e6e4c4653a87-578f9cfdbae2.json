@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/reviews.go",
+      "start": 722,
+      "end": 722,
+      "digest": "sha256:9bbc3561ffb8d036fb86fac4e910ba3f0d4cf09cc81ee49b20d6e8305e3c9722",
+      "note": "Review Items render the same control with the Item URN; review templates include the new templates."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/reviews.go",
+      "start": 733,
+      "end": 733,
+      "digest": "sha256:43fbf3346071d97a0298876654378f4d4309073b4a0f78c99f8b0d34e98780db",
+      "note": "Review Items render the same control with the Item URN; review templates include the new templates."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/reviews.go",
+      "start": 722,
+      "end": 722,
+      "digest": "sha256:3221df3b5dc1a98f7c0328d2fdf195a9b715c8a0aea9f2f71c95f840639ea7ae",
+      "note": "Review Items render the same control with the Item URN; review templates include the new templates."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/reviews.go",
+      "start": 733,
+      "end": 733,
+      "digest": "sha256:c978d353e24c3e9510ae11005e8680c0cf05b6a92bd6120643d4316db51c7f54",
+      "note": "Review Items render the same control with the Item URN; review templates include the new templates."
+    }
+  ]
+}

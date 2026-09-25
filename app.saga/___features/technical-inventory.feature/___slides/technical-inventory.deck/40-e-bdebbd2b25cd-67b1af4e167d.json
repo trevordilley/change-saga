@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "schema/v4/item.schema.json",
+      "start": 21,
+      "end": 23,
+      "digest": "sha256:3ca5622d4bf8d6f7062fff180358cd688e09d2f4ad088f4cde3f177d23c46522",
+      "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
+    }
+  ]
+}

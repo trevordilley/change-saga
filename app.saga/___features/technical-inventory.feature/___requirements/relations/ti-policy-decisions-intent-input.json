@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-policy-decisions-intent-input",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-policy-decisions:item:intent-input",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:remaining-roadmap",
+  "scope": "self",
+  "rationale": "Implementation policy: Entity intent does not classify every outgoing relationship. A proposed edge remains visible as remaining work even when its endpoint entities exist.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-24T23:54:54.098484Z"
+}

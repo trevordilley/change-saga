@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "path": "internal/changeview/read_snapshot.go",
+      "start": 1,
+      "end": 33,
+      "digest": "sha256:23c85b7ceda2c21d966a180634dda0c887708b11c12781aa3b80122bc104301e",
+      "note": "The currency step owns these workflow changes or their regression checks."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage",
+  "parents": [],
+  "title": "Reuse scoped inventory coverage in implementation decks",
+  "statement": "As an Architect or Developer, I can select the code relevant to an implementation deck through its referenced Systems and Components so the deck reuses grounded evidence without claiming the entities' entire implementations.",
+  "personas": [
+    "urn:change-saga:change-saga:persona:architect",
+    "urn:change-saga:change-saga:persona:developer"
+  ],
+  "citations": [
+    "urn:change-saga:change-saga:citation:technical-inventory-interview-20260924"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "selected-subset",
+      "statement": "A deck's entity reference retains an inspectable selection of the relevant exact code subset; referencing a System does not automatically select all member Components or all of their code."
+    },
+    {
+      "id": "inherited-evidence",
+      "statement": "The selected subset contributes to implementation-deck coverage through the inventory reference without requiring a duplicate independent mapping of the same underlying evidence."
+    },
+    {
+      "id": "explain-path",
+      "statement": "For inherited coverage, the report exposes the referencing deck Item, the System/Component path, and the selected source locations that account for it."
+    },
+    {
+      "id": "exclude-unselected",
+      "statement": "Unselected code contributes no inherited coverage, overlapping selections count only once, and stale or unresolved paths remain visible rather than count as current coverage."
+    }
+  ],
+  "created_at": "2026-09-24T22:00:13.872552Z"
+}

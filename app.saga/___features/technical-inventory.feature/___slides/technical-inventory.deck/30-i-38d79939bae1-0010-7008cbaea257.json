@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "filters",
+  "slide": "technical-inventory-query-contract",
+  "rank": 10,
+  "kind": "node",
+  "label": "Independent proposed and new filters",
+  "description": "Filter the selected revision's explicit proposal state separately from identity introduction in a comparison. Return unresolved competing states instead of choosing a current winner.",
+  "selector": {
+    "type": "element",
+    "element_id": "filters"
+  }
+}

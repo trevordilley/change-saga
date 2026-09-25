@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "bindings",
+  "slide": "technical-inventory-record-contract",
+  "rank": 40,
+  "kind": "node",
+  "label": "Diagram and directory share the same definition",
+  "description": "Bind the authored diagram, expandable directory and deck Items to canonical identity plus exact revision, preserving contextual explanation without duplicating definitions.",
+  "selector": {
+    "type": "element",
+    "element_id": "bindings"
+  }
+}

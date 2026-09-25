@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/content_edit.go",
+      "start": 594,
+      "end": 594,
+      "digest": "sha256:ab8dc1d9cb30556cbfed42bd48cf866538d326d658506fa31252a001a2773164"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/content_edit.go",
+      "start": 651,
+      "end": 657,
+      "digest": "sha256:72be8a462447526cb1da161bc38a9e6065f966561d7a394f3b90177bccfeb615"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/content_edit.go",
+      "start": 659,
+      "end": 661,
+      "digest": "sha256:613e4c0423fbedb4c57e417057cae55fcdf76f2aa83eaa6edf25a2f96ffa1197"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/content_edit.go",
+      "start": 664,
+      "end": 664,
+      "digest": "sha256:d75141b367cfca78006a144d7be6a76750f091195143339fcd34922ae3471ac3"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/content_edit.go",
+      "start": 594,
+      "end": 594,
+      "digest": "sha256:162d22e80510e94143b30c9ced1808464a85418c45d30f76d806e40b94b01399"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/content_edit.go",
+      "start": 611,
+      "end": 613,
+      "digest": "sha256:f3ba355b049338f682a5f709e87a3eb618a37fb706baa6333e3023447f622b94"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/content_edit.go",
+      "start": 654,
+      "end": 663,
+      "digest": "sha256:8a1ab3c640fc8913393854df2a55b742116048446cc4191156b1dcc7ca7977d7"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/content_edit.go",
+      "start": 665,
+      "end": 667,
+      "digest": "sha256:5274e3343593fb1f6828ab1a2a4f9f9f92284b76657b4fc41342649702bb1da8"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/content_edit.go",
+      "start": 670,
+      "end": 688,
+      "digest": "sha256:15eaed91c329c29402501550ce5043247d37ffe69c0a84c35b8e5ae8c1dca69c"
+    }
+  ]
+}

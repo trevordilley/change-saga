@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation_inventory.go",
+      "start": 193,
+      "end": 213,
+      "digest": "sha256:660fef9fd5cb258fe8a8b3346d97b5953f7fe520a1ed7e42427551d98aa138c8",
+      "note": "Unreferenced definitions ask the user unless proposed or new against a readable base."
+    }
+  ]
+}

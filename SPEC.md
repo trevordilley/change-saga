@@ -148,7 +148,142 @@ per-language heuristic.
 The **onboarding deck** is a flat deck with role `onboarding`, one per
 application. Its Items carry `record`, the URN of a persona, feature, or story they
 explain, and never own code references. Implementation decks keep role
-`change` and never carry `record`.
+`change` and never carry `record`. They may carry a separate pinned
+`documentation` link to a Component or System.
+
+### Components and Systems
+
+A **Component** is an identifiable unit of logic/transformation with a name,
+meaningful explanation, and exact pinned code. A **System** is a reusable
+interaction/data-flow diagram whose ordered Component members pin their
+revisions and whose directed interactions each explain their own exact code.
+Systems also carry a name, explanation, and direct scoped evidence. There is
+no prescribed C4 hierarchy, and terms remain a distinct vocabulary concept.
+
+Records live under `___inventory/components/<id>.component/` and
+`___inventory/systems/<id>.system/`, with an immutable identity, complete
+append-only revisions, and active/retired lifecycle events. URNs are
+`urn:change-saga:<saga>:component:<id>` or `:system:<id>`, followed by
+`:revision:<id>` or `:event:<id>` for history. Exactly one root and acyclic
+parent graphs are required; multiple heads are conflicts, never a fabricated
+winner. Component and System schemas are `v5/component*.schema.json` and
+`v5/system*.schema.json`. Each record is at most one MiB, each revision requires
+1–64 exact line-range code references with notes, and each System has 2–32
+unique Component pins and 1–64 directed interactions with unique IDs and
+member endpoints. Each interaction requires 1–64 exact code references.
+
+An implementation or review Item may carry `documentation: {target, revision}`
+conforming to `v5/documentation-link.schema.json`; onboarding Items may not.
+This field is separate from `record` and transfers **no code coverage**. The
+Item must still explain its own exact scoped evidence. Pins enter the existing
+Item/slide content digest; changing a definition does not mutate existing pins,
+slide content, historical review content, or approval currency. New pins must
+be current, active and unconflicted. Reads retain stale/retired/conflicted pins
+and their historical definitions; validation errors on missing pins and warns
+on other noncurrent states. `query inventory` reports exact code health using
+the existing code resolver, with snapshot-bound pagination and optional
+selected-record history. `query slide` returns its Items' documentation pins.
+
+Public writers are `component|system add|revise|set-state`; complete revision
+JSON is specified by `v5/technical-definition.schema.json`. The CLI resolves
+symbolic source commits and computes/verifies digests before publishing.
+Initial publication is atomic; later revisions/events are immutable files
+under the Saga lock. Explicit parent sets must match all current heads.
+Identical ID/content retries are no-ops; conflicting content is rejected.
+
+This extension needs no migration of existing valid Sagas. Older readers
+reject its new root/fields; upgrade readers before adoption. See
+[Component and System documentation](docs/component-system-inventory.md) for
+compatibility details, UI behavior, and deferred integration surfaces.
+
+### Technical inventory format 2
+
+Inventory format 2 is adopted only by `change-saga inventory adopt-format
+--format 2`, which writes `___inventory/format.json`
+(`v5/inventory-format.schema.json`: `$schema`, `format: 2`, `created_at`). Its
+absence means format 1. Adoption rewrites nothing: legacy revisions keep their
+bytes, read as `unspecified` intent, and their references have no evidence IDs.
+Readers refuse format-2 records or Item fields without the marker, and refuse
+any other marker value. Older readers reject the marker, the new directories
+and the new Item fields, so they refuse rather than drop content. The Saga
+manifest and every record `version` remain 5.
+
+**Intent.** Component, System and data-entity revisions state `intent`:
+`proposed` or `implemented`. After adoption every new Component/System
+revision must state it. A proposed revision names `baseline`: the URN of an
+implemented revision of the same record that is an ancestor through `parents`,
+or `"none"` (required for an initial revision). Baseline is separate from
+parents; no baseline is inferred. A proposed revision may have no code. An
+implemented revision names `delivery: {repository, commit}`: the Saga's
+canonical source repository and the full commit, resolved once by the command,
+at which its evidence was validated. It needs 1–64 references per owner. Each
+interaction (System) and relationship (data entity) has its own `intent`; an
+implemented edge requires an implemented owner and implemented endpoint
+revisions, and nothing is promoted by cascade. Evidence code is health, not
+intent: later drift does not demote an implemented revision, and intent never
+implies verification, integration or approval.
+
+**Evidence IDs.** In format-2 revisions every reference carries `id`, unique
+across the whole revision (entity code, interactions and relationships). A
+selection names a revision pin and an evidence ID, never an array position.
+
+**Implementation assertion.** Publishing an implemented revision, or any
+implemented edge, verifies every such reference's original bytes and digest at
+its own commit and resolves it at the delivery commit: pure movement is
+accepted and the original reference is kept; changed, deleted or unavailable
+bytes refuse the revision. Any refusal writes nothing.
+
+**Data entities** (`___inventory/data-entities/<id>.data-entity/`,
+`urn:change-saga:<saga>:data-entity:<id>`, `v5/data-entity*.schema.json`)
+describe logical payloads or persisted records: `fields` (0–64, curated;
+`keys` roles `primary|foreign|unique|partition`, which imply no physical
+constraint), `holders` (0–16 Component pins with a `role`; the resource is not
+the entity) and outgoing `relationships` (0–64) with a stable `id`, exact
+data-entity `destination` pin, `explanation`, `intent` and optional code.
+`meaning` is `association` (requires `cardinality {owner, destination}` of
+`unknown|0..1|1|0..many|1..many`) or `production` (requires `flow`
+`owner_to_destination|destination_to_owner` and a `label`, no cardinality).
+Incoming relationships are derived, never duplicated.
+
+**ERDs** (`erds/<id>.erd/`) are authored views: an immutable offline SVG
+`visual` stored at `assets/<sha256>.svg` in the record package, a `directory`
+of 1–512 data-entity pins, and 0–512 `bindings` of a unique SVG element `id` to
+exactly one entity pin or `relationship {owner, id}`. Bound pins must be in the
+directory, so the visual is a subset; directory members without a binding are
+omitted from the visual, not from the model. The SVG is allowlisted: only
+static drawing elements in the SVG namespace and presentation/geometry
+attributes, links only to same-document `#fragments`, no `javascript:` or
+`data:` values, no SMIL animation, DTDs, CDATA sections, prefixed element
+names or processing instructions other than one leading XML declaration, and
+no external `url()`/`@import`. **Overlays** (`erd-overlays/<id>.erd-overlay/`) name an exact `erd`
+revision as their baseline, an optional `feature`, `pins` that replace a
+baseline entity's pin or add an entity, `removals {target, explanation}`, and
+an optional visual whose bindings resolve against the composed directory. An
+overlay never modifies the ERD, and a removal does not retire an entity. The
+model (directory, bindings, meaning, cardinality) is readable without the SVG.
+
+**Items.** Implementation and review Items may pin data entities too.
+`documentation_view` is the full commit of a saved Saga view that admitted a
+non-current pin: the Saga must be committed inside its canonical source
+repository at that commit, with the same identity and source, and the pin must
+be that view's unambiguous active current revision. Sagas kept in a companion
+repository cannot use saved views. `selections` (0–64, `v5/item-selection.schema.json`)
+each hold a unique `id`, a `path` of 1–8 pins starting at the documentation pin
+where each hop is declared by the previous hop's saved revision (System member,
+data-entity holder or relationship destination), an `evidence` ID in the last
+hop's revision, and `code`: the same commit and path as that evidence, a
+contained line range and the digest of the selected bytes only. Selections
+never substitute newer revisions or widen ranges; validation errors when one no
+longer resolves. Documentation and selections transfer no coverage by
+themselves.
+
+Public writers: `data-entity|erd|erd-overlay add|revise|set-state` alongside
+`component|system`, with `--delivery REV` for implemented revisions and
+`--visual SVG` for ERD kinds; `add-item`/`revise-item` `--documentation-view`
+and `--selections`; `apply-slide` item `documentation_view`/`selections`.
+Writers keep the lock, all-head parent, new-pin currency and idempotent
+revision rules above. See the
+[records implementation note](docs/technical-inventory-records-implementation.md).
 
 ### V5 identities and quality records
 

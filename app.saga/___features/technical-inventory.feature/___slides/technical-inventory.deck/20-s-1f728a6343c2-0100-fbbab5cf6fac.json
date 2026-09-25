@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "technical-inventory-selection-impact",
+  "deck": "technical-inventory",
+  "title": "Proposed: reconcile affected selections and explanations",
+  "rank": 100,
+  "section": "Proposed technical design",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-1f728a6343c2-0100-fbbab5cf6fac.svg",
+  "takeaway": "Trace changes to exact entity usages; distinguish stale selected code from broader semantic impact, then repair deliberately and recheck.",
+  "reading_order": [
+    "change",
+    "reverse-path",
+    "selected-change",
+    "outside-change",
+    "routing",
+    "repair",
+    "existing-queue"
+  ]
+}

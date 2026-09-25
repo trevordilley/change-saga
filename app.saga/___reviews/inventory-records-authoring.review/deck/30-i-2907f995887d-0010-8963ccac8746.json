@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "savedview",
+  "slide": "ti-records-review-item-links",
+  "rank": 10,
+  "kind": "region",
+  "label": "Saved view loader",
+  "description": "Resolves a view to a full commit, requires the Saga there with the same identity and source, extracts its inventory through git and refuses with specific reasons.",
+  "selector": {
+    "type": "element",
+    "element_id": "savedview"
+  }
+}

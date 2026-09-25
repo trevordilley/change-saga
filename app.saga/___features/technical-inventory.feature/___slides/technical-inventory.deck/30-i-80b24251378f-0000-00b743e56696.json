@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "view-input",
+  "slide": "technical-inventory-policy-decisions",
+  "rank": 0,
+  "kind": "example",
+  "label": "A saved revision is not the global head",
+  "description": "A new historical pin request names an exact saved revision. Readability alone does not admit a new link or imply global currency.",
+  "selector": {
+    "type": "element",
+    "element_id": "view-input"
+  }
+}

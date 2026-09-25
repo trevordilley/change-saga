@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/reviewapp/session.go",
+      "start": 111,
+      "end": 182,
+      "digest": "sha256:7b855d68c6ff364f6012a8ae5fb6d9a92494d4ae3385dd7f02be6a619c466b7c",
+      "note": "Builds coverage from the source ChangeSet and makes its ownership result the shared selector-resolution index."
+    }
+  ]
+}

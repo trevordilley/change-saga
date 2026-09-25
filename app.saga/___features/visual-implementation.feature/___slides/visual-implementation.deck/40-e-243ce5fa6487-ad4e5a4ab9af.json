@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/cli/slides.go",
+      "start": 485,
+      "end": 498,
+      "digest": "sha256:179a2bf3573ea857e57c2119931a1d6a014b2399f7f408227f9c470d5d9a337b",
+      "note": "Creates the Item, appends it to reading_order, and removes the Item again if the Slide manifest rewrite fails."
+    }
+  ]
+}

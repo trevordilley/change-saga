@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "excluded",
+  "slide": "technical-inventory-selected-path",
+  "rank": 40,
+  "kind": "region",
+  "label": "Unselected members grant no coverage",
+  "description": "The System's other Components remain discoverable but contribute no inherited evidence to this example Item. Membership alone does not imply selection.",
+  "selector": {
+    "type": "element",
+    "element_id": "excluded"
+  }
+}

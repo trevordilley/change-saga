@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "path": "docs/review-ux-improvements.md",
+      "digest": "sha256:bb3cbaa6dff5562a629fbdddc24644a946dd097da90e3c4d286c4959ecf18b32",
+      "note": "The added audit document records the implementation findings, verification and remaining limitations for this review."
+    }
+  ]
+}

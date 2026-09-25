@@ -25,9 +25,34 @@ the result in the Saga rather than replacing that workflow.
 
 ## Reconcile from structured evidence
 
+Run `change-saga reconcile --against <base> --json <saga>` after implementing,
+verifying, and authoring the PR review deck. Its queue separates HEAD code
+reference currency from documentation diff coverage and each review's own
+coverage. It retains baseline debt, identifies newly stale references, and
+reports the reason and typed inspection/repair paths for each implicated
+record. An affected record needs reassessment, not necessarily an edit.
+Requirement-only changes prompt traceability inspection of declared
+implementation and test paths even when no code changed.
+
+Read query pages to completion. For transaction-backed slides, inspect
+`query slide` and preserve the snapshot, all authoring heads, Items, evidence,
+and criterion links in an `apply-slide` request; partial coverage repair is
+not supported. Other evidence uses the returned evidence file with
+`replace-coverage` or deliberate removal. Replacing a file replaces all its
+references, so preserve still-valid ones in the complete request. Reassess
+meaning before repinning relations or changing evidence.
+
+Rerun `validate`, relevant implementation/tests, and `reconcile` after repairs.
+The returned recheck commands pin the source OIDs; advance head deliberately
+after new code commits. Use `check --covers health` without `--against` for
+current health. Validation is structural; current pins do not prove prose,
+diagrams, code, or tests semantically correct. Reconciliation is read-only and
+records no review decisions or resolution acknowledgments.
+
 Query the comparison's Changed, Affected, and Code layers. Changed records
-carry before and after state. Affected records were not edited but became
-stale or invalid through pinned revisions or code references. Code groups
+carry before and after state. Affected records were not edited but are implicated through pinned
+revisions, code references, or declared chains. They may remain valid after
+reassessment. Code groups
 changed atoms beneath their current owners and reports unreferenced lines.
 
 Follow returned record URNs and evidence record paths. Do not compare prose,

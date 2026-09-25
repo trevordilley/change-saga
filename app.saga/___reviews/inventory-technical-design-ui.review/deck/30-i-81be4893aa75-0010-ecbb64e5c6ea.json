@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-design-page",
+    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+  },
+  "version": 4,
+  "id": "pages",
+  "slide": "ti-ui-review-pages",
+  "rank": 10,
+  "kind": "node",
+  "label": "Directories and exact pages",
+  "description": "technical.go builds per-kind directories and one page per exact revision, names competing heads, and adapts the shared reverse index into links to exact slide Items and owners.",
+  "selector": {
+    "type": "element",
+    "element_id": "pages"
+  }
+}

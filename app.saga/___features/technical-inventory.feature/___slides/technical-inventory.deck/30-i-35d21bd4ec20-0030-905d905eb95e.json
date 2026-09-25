@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "proof",
+  "slide": "technical-inventory-rollout",
+  "rank": 30,
+  "kind": "node",
+  "label": "End-to-end proof before handoff",
+  "description": "Exercise design, implementation, review and reconciliation using fixtures. Check subsets, reverse uses, retained plans, desktop and touch navigation, offline behavior, reloads and conflicts.",
+  "selector": {
+    "type": "element",
+    "element_id": "proof"
+  }
+}

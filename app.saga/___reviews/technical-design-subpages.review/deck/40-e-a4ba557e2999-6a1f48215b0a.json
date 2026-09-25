@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/server.go",
+      "start": 1143,
+      "end": 1143,
+      "digest": "sha256:a34c121a49eebb0b206e9a445a351d3046bbd3d04bc7eda71836a34aa1e42a75",
+      "note": "Added: an ERD or overlay page marks the ERD area row."
+    }
+  ]
+}

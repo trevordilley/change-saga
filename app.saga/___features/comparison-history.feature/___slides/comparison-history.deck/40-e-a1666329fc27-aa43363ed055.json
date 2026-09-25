@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "path": "internal/server/reviewcode.go",
+      "start": 22,
+      "end": 37,
+      "digest": "sha256:adda8e4d113078495762f0cce793ed259034c0975439f1763b9e1b620105ab1a",
+      "note": "Each page resolves current Saga/range and rebuilds catalog and selected-file rows before slicing."
+    },
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "path": "internal/server/reviewcode.go",
+      "start": 110,
+      "end": 134,
+      "digest": "sha256:88f13665d00810736e731396cb3642b1d187de99d069cc4365feb28e4686ebd0",
+      "note": "Each page resolves current Saga/range and rebuilds catalog and selected-file rows before slicing."
+    }
+  ]
+}

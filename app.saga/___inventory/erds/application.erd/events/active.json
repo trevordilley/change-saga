@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/erd-event.schema.json",
+  "version": 5,
+  "id": "active",
+  "record": "urn:change-saga:change-saga:erd:application",
+  "parents": [],
+  "state": "active",
+  "created_at": "2026-09-25T06:03:27.035263Z"
+}

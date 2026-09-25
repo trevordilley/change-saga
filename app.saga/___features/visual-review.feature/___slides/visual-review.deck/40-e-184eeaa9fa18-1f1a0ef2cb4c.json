@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "path": "internal/server/reviews.go",
+      "start": 657,
+      "end": 700,
+      "digest": "sha256:5c0c5b85bed955cb960ce2a97e14d3a627d208e8108d10cfcb14298437ba3394",
+      "note": "Reload projects annotation create/update/delete history into the current mark."
+    }
+  ]
+}
