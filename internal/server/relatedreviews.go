@@ -114,6 +114,13 @@ func (a *app) relatedReviews(ctx context.Context, document *saga.Saga, records r
 		a.related.touched = map[string][]string{}
 	}
 	index := buildRelatedReviews(ctx, a.sourceDir, full, records, resolver, a.related.touched)
+	if resolver != nil {
+		// Stop its Git reader between builds; the reads it cached are kept,
+		// and the next build starts the reader again. A reader left running
+		// would hold the repository open, which Windows will not let anyone
+		// remove.
+		resolver.Close()
+	}
 	if err == nil {
 		a.related.fingerprint, a.related.index = fingerprint, index
 		a.related.builds++

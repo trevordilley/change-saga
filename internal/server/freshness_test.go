@@ -106,8 +106,17 @@ func TestAWatchedSagaIsReadBeforeAnyoneAsks(t *testing.T) {
 	documentTheFixture(t, fixture)
 	application, handler := reviewApp(t, fixture, gitdiff.Range{})
 	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-	go application.watchSaga(ctx)
+	watching := make(chan struct{})
+	go func() {
+		defer close(watching)
+		application.watchSaga(ctx)
+	}()
+	// The watcher has stopped reading the Saga before its directory is
+	// removed.
+	defer func() {
+		cancel()
+		<-watching
+	}()
 	builds := func() int {
 		application.related.mutex.Lock()
 		defer application.related.mutex.Unlock()
