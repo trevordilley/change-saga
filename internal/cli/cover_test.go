@@ -7,10 +7,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -21,10 +23,37 @@ import (
 )
 
 // coveredSaga returns a saga whose source comparison contains a single added
-// file, plus the checkout to read it from.
+// file, plus the checkout to read it from. Building them takes a dozen Git
+// processes, which dominate on Windows, so the first caller builds a template
+// and every caller receives its own copy of it.
 func coveredSaga(t *testing.T) (root, repo string) {
 	t.Helper()
+	coveredSagaTemplate.once.Do(func() { coveredSagaTemplate.dir = buildCoveredSagaTemplate(t) })
+	if coveredSagaTemplate.dir == "" {
+		t.Fatal("the covered Saga template could not be built")
+	}
 	repo = shortTempDir(t)
+	copyTree(t, filepath.Join(coveredSagaTemplate.dir, "repo"), repo)
+	root = filepath.Join(shortTempDir(t), "batch.saga")
+	copyTree(t, filepath.Join(coveredSagaTemplate.dir, "batch.saga"), root)
+	return root, repo
+}
+
+var coveredSagaTemplate struct {
+	once sync.Once
+	dir  string
+}
+
+func buildCoveredSagaTemplate(t *testing.T) string {
+	t.Helper()
+	dir, err := os.MkdirTemp("", "cs-template")
+	if err != nil {
+		t.Fatal(err)
+	}
+	repo := filepath.Join(dir, "repo")
+	if err := os.Mkdir(repo, 0o755); err != nil {
+		t.Fatal(err)
+	}
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
 	git(t, repo, "config", "user.email", "test@example.test")
@@ -37,14 +66,48 @@ func coveredSaga(t *testing.T) (root, repo string) {
 	git(t, repo, "add", ".")
 	git(t, repo, "commit", "-m", "feature")
 
-	root = filepath.Join(shortTempDir(t), "batch.saga")
+	root := filepath.Join(dir, "batch.saga")
 	var output bytes.Buffer
 	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	addTestApp(t, root)
 	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Batch change {#batch-change}\n\nThe focused coverage test change.\n")
-	return root, repo
+	templateDirs = append(templateDirs, dir)
+	return dir
+}
+
+// copyTree copies the regular files and directories beneath from into to.
+func copyTree(t *testing.T, from, to string) {
+	t.Helper()
+	err := filepath.WalkDir(from, func(path string, entry fs.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		rel, err := filepath.Rel(from, path)
+		if err != nil {
+			return err
+		}
+		target := filepath.Join(to, rel)
+		info, err := entry.Info()
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() {
+			return os.MkdirAll(target, info.Mode().Perm())
+		}
+		if !info.Mode().IsRegular() {
+			return fmt.Errorf("copy %s: not a regular file", path)
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		return os.WriteFile(target, data, info.Mode().Perm())
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
 }
 
 func runCover(t *testing.T, stdin string, args ...string) (string, error) {
