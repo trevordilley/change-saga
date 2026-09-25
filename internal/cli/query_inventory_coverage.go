@@ -150,7 +150,7 @@ func queryInventoryCoverage(ctx context.Context, args []string, out io.Writer) e
 		Head: changes.HeadOID, State: *state, Summary: report.Summary, Entries: entries[start:end],
 		Scope: inventoryCoverageScope{Paths: append([]string{}, paths...), Kinds: kinds, Excludes: []string{"Saga directories", "binary files (counted, not measured)", "untracked and uncommitted files"}},
 		Completeness: inventoryCoverageComplete{
-			Measures: []string{"lines of tracked files at head_oid inside scope", "only the unique current revision of each active Component/System; each line counts once and keeps every owner", "System interaction evidence as owner#interaction"},
+			Measures: []string{"lines of tracked files at head_oid inside scope", "only the unique current revision of each active definition; each line counts once and keeps every owner", "interaction and relationship evidence as owner#edge; explicitly proposed edges are counted apart"},
 			Limits:   []string{"This is inventory coverage only: implementation-deck and review coverage have separate denominators.", "Stale references account for nothing; retired, proposed and conflicted owners are listed with reasons, not counted.", "Covered lines prove an explicit reference, not a correct or complete explanation."},
 		},
 	}, &page)

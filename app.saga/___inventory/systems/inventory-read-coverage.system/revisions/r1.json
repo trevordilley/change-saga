@@ -1,0 +1,108 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/system-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:system:inventory-read-coverage",
+  "parents": [],
+  "name": "Inventory reads and coverage",
+  "explanation": "Read-only consumers of the technical inventory: public queries, inventory coverage, inherited implementation-deck coverage and reconciliation all derive their answers from one declared-link projection and report unresolved facts rather than guessing.",
+  "code": [
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/inventoryview/uses.go",
+      "start": 1,
+      "end": 10,
+      "digest": "sha256:8a48ae379382ee734b2d7870f0161dba0e49c87fd5d2702f722d6c5f8a95e92e",
+      "note": "The projection package boundary: derived, read-only and rebuilt per snapshot, with no persisted or authoritative state."
+    }
+  ],
+  "components": [
+    {
+      "target": "urn:change-saga:change-saga:component:inventory-read-projection",
+      "revision": "urn:change-saga:change-saga:component:inventory-read-projection:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:inventory-read-queries",
+      "revision": "urn:change-saga:change-saga:component:inventory-read-queries:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:inventory-coverage-report",
+      "revision": "urn:change-saga:change-saga:component:inventory-coverage-report:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:inventory-selection-coverage",
+      "revision": "urn:change-saga:change-saga:component:inventory-selection-coverage:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:inventory-reconciliation",
+      "revision": "urn:change-saga:change-saga:component:inventory-reconciliation:revision:r1"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "scope-and-select",
+      "from": "urn:change-saga:change-saga:component:inventory-read-queries",
+      "to": "urn:change-saga:change-saga:component:inventory-read-projection",
+      "description": "Queries ask the projection for selected revisions, use counts and newness before filtering, so unresolved candidates are separated first.",
+      "code": [
+        {
+          "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+          "path": "internal/cli/query_inventory_view.go",
+          "start": 192,
+          "end": 225,
+          "digest": "sha256:bcb1bd43f5f1c7d1957056b1f44f212526cfe617a214ee4c3b02d1099a6b9d8e",
+          "note": "Selection, use counts and newness come from the projection; filters apply only after unresolved candidates are set aside."
+        }
+      ]
+    },
+    {
+      "id": "owned-evidence",
+      "from": "urn:change-saga:change-saga:component:inventory-coverage-report",
+      "to": "urn:change-saga:change-saga:component:inventory-read-projection",
+      "description": "Coverage measures every owned reference the projection lists, skipping explicitly proposed edges.",
+      "code": [
+        {
+          "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+          "path": "internal/inventoryview/coverage.go",
+          "start": 191,
+          "end": 198,
+          "digest": "sha256:b25174e1f7dc25d58483871a76a7eddacecf18516596a7e65c0c8eda58825e75",
+          "note": "Every owned reference, including edge evidence, is visited except explicitly proposed edges, which account for nothing."
+        }
+      ]
+    },
+    {
+      "id": "reconcile-uses",
+      "from": "urn:change-saga:change-saga:component:inventory-reconciliation",
+      "to": "urn:change-saga:change-saga:component:inventory-read-projection",
+      "description": "Reconciliation names the implementation Items that use an affected definition through declared paths.",
+      "code": [
+        {
+          "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+          "path": "internal/cli/reconciliation_inventory.go",
+          "start": 118,
+          "end": 128,
+          "digest": "sha256:2a036dc824f40d188be6e2941d1dee3fd6fca08abfa3529fcd962843324d9d7d",
+          "note": "Affected definitions list their declared implementation uses and say when more uses exist."
+        }
+      ]
+    },
+    {
+      "id": "reconcile-selections",
+      "from": "urn:change-saga:change-saga:component:inventory-reconciliation",
+      "to": "urn:change-saga:change-saga:component:inventory-selection-coverage",
+      "description": "Reconciliation turns selection health into Item tasks with separate debts for unresolved paths, drifted bytes and outside-subset changes.",
+      "code": [
+        {
+          "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+          "path": "internal/cli/reconciliation_inventory.go",
+          "start": 240,
+          "end": 266,
+          "digest": "sha256:981796bf0f696cbfa6002dc6459208f057054e28bcb43928af360346564c44b3",
+          "note": "Selection results become Item-routed tasks; nothing is repaired through evidence files."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T01:36:44.448095Z"
+}

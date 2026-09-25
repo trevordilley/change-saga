@@ -1,0 +1,1001 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-query-impl-reads",
+  "current": "sha256:e6e79fc76af3b18158d1463726c4dec510ad62581af029789626c1e93e86e916",
+  "revisions": [
+    {
+      "snapshot": "sha256:a5a2df244a7ef8afe95bf3137071d91bc4cdb6da62eadcc106c991b84599ee72",
+      "request_id": "ti-query-impl-reads-create",
+      "created_at": "2026-09-25T01:40:22.794449Z",
+      "asset": "24-a-b914247fa15cfb74b7425c8a65d97242903fd5987b0b210ccc78.svg",
+      "asset_digest": "sha256:b914247fa15cfb74b7425c8a65d97242903fd5987b0b210ccc78ce402dfb7449",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-reads",
+        "deck": "technical-inventory",
+        "title": "Implemented: scoped, filtered inventory reads",
+        "rank": 200,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-b914247fa15cfb74b7425c8a65d97242903fd5987b0b210ccc78.svg",
+        "takeaway": "query inventory filters explicit intent and baseline-relative newness on resolvable records only; unresolved candidates keep a separate page.",
+        "reading_order": [
+          "scope",
+          "filters",
+          "unresolved",
+          "newness"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-projection",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-projection:revision:r1"
+            },
+            "version": 4,
+            "id": "scope",
+            "slide": "ti-query-impl-reads",
+            "rank": 10,
+            "kind": "node",
+            "label": "Declared feature scope",
+            "description": "With --feature, candidates are pins reachable from the feature's implementation Items through declared members, holders and relationship destinations at each saved revision, with the paths that put them in scope.",
+            "selector": {
+              "type": "element",
+              "element_id": "scope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 39,
+                  "end": 97,
+                  "digest": "sha256:fee1e4eebac8e22290dfc41b7033a3191e22220fc9ef732b11a94a69288a7831",
+                  "note": "Feature scope follows only declared pins at each saved revision and returns the establishing paths."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "scope-inventory-query-technical-context-scoped-roadmap",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Scope comes from the feature's declared Item links and returns those paths, not unrelated proposals."
+            },
+            {
+              "id": "scope-erd-discover-proposed-changes-scoped-proposals",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Proposed data entities and relationships can be restricted to one feature's declared scope with the establishing paths."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-queries",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-queries:revision:r1"
+            },
+            "version": 4,
+            "id": "filters",
+            "slide": "ti-query-impl-reads",
+            "rank": 20,
+            "kind": "node",
+            "label": "Explicit intent filter",
+            "description": "--intent filters the selected revisions' explicit intent; legacy revisions read unspecified. Filters apply only after unresolved candidates are set aside.",
+            "selector": {
+              "type": "element",
+              "element_id": "filters"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 183,
+                  "end": 255,
+                  "digest": "sha256:515d7e93ad8912c276874ef2792fa9c06c60da7827da843b30b031595499a849",
+                  "note": "Intent and newness filters apply only to resolvable candidates."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "filters-inventory-query-technical-context-filter-proposed",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-proposed",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Proposed records are filtered by the explicit state of the selected revision, which each result reports."
+            },
+            {
+              "id": "filters-inventory-proposed-and-existing-explicit-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Results expose the selected revision's explicit intent; new is reported separately."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unresolved",
+            "slide": "ti-query-impl-reads",
+            "rank": 30,
+            "kind": "node",
+            "label": "Separate unresolved page",
+            "description": "Missing records or revisions and competing heads go to data.unresolved with reasons and heads, paged by --conflict-cursor; no filter removes them.",
+            "selector": {
+              "type": "element",
+              "element_id": "unresolved"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 139,
+                  "end": 174,
+                  "digest": "sha256:6e50637429a0380ddf907f03579ae13268e52b93af77c9b376a38d0a4891d050",
+                  "note": "Selection names unresolved reasons instead of choosing a revision."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "unresolved-inventory-query-technical-context-truthful-results",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Conflicted and missing records are reported as such on their own page rather than hidden or presented as current."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "newness",
+            "slide": "ti-query-impl-reads",
+            "rank": 40,
+            "kind": "node",
+            "label": "Newness against a named base",
+            "description": "--new requires --against. The base Saga's inventory decides new or existing; a Saga absent at the base makes identities new; an unreadable base is unknown and --new refuses.",
+            "selector": {
+              "type": "element",
+              "element_id": "newness"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 115,
+                  "end": 148,
+                  "digest": "sha256:9e7c36f8b3dacb0c233ce4f3548b6e99e6b3714fac64a684d163f75acda82803",
+                  "note": "The base snapshot is located with the change view's rules; any read failure leaves the baseline unknown."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/classify.go",
+                  "start": 39,
+                  "end": 48,
+                  "digest": "sha256:f6cfdb129ade4f5aa2b7c8978500c33948a9f7629a40a63830faa65b8b5fd1c6",
+                  "note": "Identity newness is relative to the named base; a revised existing identity is existing."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "newness-inventory-query-technical-context-filter-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "New identities are filtered against a specified baseline and head, independently of proposed status."
+            },
+            {
+              "id": "newness-inventory-proposed-and-existing-comparison-relative-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Newness names its baseline and head and is never invented without a readable baseline."
+            },
+            {
+              "id": "newness-erd-discover-proposed-changes-separate-newness",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:separate-newness",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Implemented entities introduced since the base remain discoverable as new, separately from proposed status."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:79cb930b1a8f1c418f9a6fb2c24b0e8af8f80fb2d455afc5d711b2a0a1326dab",
+      "parent_snapshots": [
+        "sha256:a5a2df244a7ef8afe95bf3137071d91bc4cdb6da62eadcc106c991b84599ee72"
+      ],
+      "request_id": "ti-query-impl-reads-layout-2",
+      "created_at": "2026-09-25T01:42:56.976116Z",
+      "asset": "24-a-6a909b24e47f256776babd62e22c0473501a74384a02be588395.svg",
+      "asset_digest": "sha256:6a909b24e47f256776babd62e22c0473501a74384a02be5883958c61b11a7add",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-reads",
+        "deck": "technical-inventory",
+        "title": "Implemented: scoped, filtered inventory reads",
+        "rank": 200,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-6a909b24e47f256776babd62e22c0473501a74384a02be588395.svg",
+        "takeaway": "query inventory filters explicit intent and baseline-relative newness on resolvable records only; unresolved candidates keep a separate page.",
+        "reading_order": [
+          "scope",
+          "filters",
+          "unresolved",
+          "newness"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-projection",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-projection:revision:r1"
+            },
+            "version": 4,
+            "id": "scope",
+            "slide": "ti-query-impl-reads",
+            "rank": 10,
+            "kind": "node",
+            "label": "Declared feature scope",
+            "description": "With --feature, candidates are pins reachable from the feature's implementation Items through declared members, holders and relationship destinations at each saved revision, with the paths that put them in scope.",
+            "selector": {
+              "type": "element",
+              "element_id": "scope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 39,
+                  "end": 97,
+                  "digest": "sha256:fee1e4eebac8e22290dfc41b7033a3191e22220fc9ef732b11a94a69288a7831",
+                  "note": "Feature scope follows only declared pins at each saved revision and returns the establishing paths."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "scope-inventory-query-technical-context-scoped-roadmap",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Scope comes from the feature's declared Item links and returns those paths, not unrelated proposals."
+            },
+            {
+              "id": "scope-erd-discover-proposed-changes-scoped-proposals",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Proposed data entities and relationships can be restricted to one feature's declared scope with the establishing paths."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-queries",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-queries:revision:r1"
+            },
+            "version": 4,
+            "id": "filters",
+            "slide": "ti-query-impl-reads",
+            "rank": 20,
+            "kind": "node",
+            "label": "Explicit intent filter",
+            "description": "--intent filters the selected revisions' explicit intent; legacy revisions read unspecified. Filters apply only after unresolved candidates are set aside.",
+            "selector": {
+              "type": "element",
+              "element_id": "filters"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 183,
+                  "end": 255,
+                  "digest": "sha256:515d7e93ad8912c276874ef2792fa9c06c60da7827da843b30b031595499a849",
+                  "note": "Intent and newness filters apply only to resolvable candidates."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "filters-inventory-query-technical-context-filter-proposed",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-proposed",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Proposed records are filtered by the explicit state of the selected revision, which each result reports."
+            },
+            {
+              "id": "filters-inventory-proposed-and-existing-explicit-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Results expose the selected revision's explicit intent; new is reported separately."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unresolved",
+            "slide": "ti-query-impl-reads",
+            "rank": 30,
+            "kind": "node",
+            "label": "Separate unresolved page",
+            "description": "Missing records or revisions and competing heads go to data.unresolved with reasons and heads, paged by --conflict-cursor; no filter removes them.",
+            "selector": {
+              "type": "element",
+              "element_id": "unresolved"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 139,
+                  "end": 174,
+                  "digest": "sha256:6e50637429a0380ddf907f03579ae13268e52b93af77c9b376a38d0a4891d050",
+                  "note": "Selection names unresolved reasons instead of choosing a revision."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "unresolved-inventory-query-technical-context-truthful-results",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Conflicted and missing records are reported as such on their own page rather than hidden or presented as current."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "newness",
+            "slide": "ti-query-impl-reads",
+            "rank": 40,
+            "kind": "node",
+            "label": "Newness against a named base",
+            "description": "--new requires --against. The base Saga's inventory decides new or existing; a Saga absent at the base makes identities new; an unreadable base is unknown and --new refuses.",
+            "selector": {
+              "type": "element",
+              "element_id": "newness"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 115,
+                  "end": 148,
+                  "digest": "sha256:9e7c36f8b3dacb0c233ce4f3548b6e99e6b3714fac64a684d163f75acda82803",
+                  "note": "The base snapshot is located with the change view's rules; any read failure leaves the baseline unknown."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/classify.go",
+                  "start": 39,
+                  "end": 48,
+                  "digest": "sha256:f6cfdb129ade4f5aa2b7c8978500c33948a9f7629a40a63830faa65b8b5fd1c6",
+                  "note": "Identity newness is relative to the named base; a revised existing identity is existing."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "newness-inventory-query-technical-context-filter-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "New identities are filtered against a specified baseline and head, independently of proposed status."
+            },
+            {
+              "id": "newness-inventory-proposed-and-existing-comparison-relative-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Newness names its baseline and head and is never invented without a readable baseline."
+            },
+            {
+              "id": "newness-erd-discover-proposed-changes-separate-newness",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:separate-newness",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Implemented entities introduced since the base remain discoverable as new, separately from proposed status."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:e6e79fc76af3b18158d1463726c4dec510ad62581af029789626c1e93e86e916",
+      "parent_snapshots": [
+        "sha256:79cb930b1a8f1c418f9a6fb2c24b0e8af8f80fb2d455afc5d711b2a0a1326dab"
+      ],
+      "request_id": "ti-query-impl-reads-evidence-3",
+      "created_at": "2026-09-25T01:53:09.17584Z",
+      "asset": "24-a-6a909b24e47f256776babd62e22c0473501a74384a02be588395.svg",
+      "asset_digest": "sha256:6a909b24e47f256776babd62e22c0473501a74384a02be5883958c61b11a7add",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-reads",
+        "deck": "technical-inventory",
+        "title": "Implemented: scoped, filtered inventory reads",
+        "rank": 200,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-6a909b24e47f256776babd62e22c0473501a74384a02be588395.svg",
+        "takeaway": "query inventory filters explicit intent and baseline-relative newness on resolvable records only; unresolved candidates keep a separate page.",
+        "reading_order": [
+          "scope",
+          "filters",
+          "unresolved",
+          "newness"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-projection",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-projection:revision:r1"
+            },
+            "version": 4,
+            "id": "scope",
+            "slide": "ti-query-impl-reads",
+            "rank": 10,
+            "kind": "node",
+            "label": "Declared feature scope",
+            "description": "With --feature, candidates are pins reachable from the feature's implementation Items through declared members, holders and relationship destinations at each saved revision, with the paths that put them in scope.",
+            "selector": {
+              "type": "element",
+              "element_id": "scope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 1,
+                  "end": 118,
+                  "digest": "sha256:896a3d1dedecf040b75fe5a0157b14922bfca0108d5c3de5376351a9265a3152",
+                  "note": "Feature scope types and declared-link descent at saved revisions, including holders and relationship destinations."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "scope-inventory-query-technical-context-scoped-roadmap",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Scope comes from the feature's declared Item links and returns those paths, not unrelated proposals."
+            },
+            {
+              "id": "scope-erd-discover-proposed-changes-scoped-proposals",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Proposed data entities and relationships can be restricted to one feature's declared scope with the establishing paths."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-queries",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-queries:revision:r1"
+            },
+            "version": 4,
+            "id": "filters",
+            "slide": "ti-query-impl-reads",
+            "rank": 20,
+            "kind": "node",
+            "label": "Explicit intent filter",
+            "description": "--intent filters the selected revisions' explicit intent; legacy revisions read unspecified. Filters apply only after unresolved candidates are set aside.",
+            "selector": {
+              "type": "element",
+              "element_id": "filters"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 1,
+                  "end": 97,
+                  "digest": "sha256:82a8a8c3ad8a4eada4a1ce8a0acc1c332c598d0c491a46cecb40488b55b83808",
+                  "note": "Read facts, filter state, the resolvable/unresolved partition and per-record code and link health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 149,
+                  "end": 322,
+                  "digest": "sha256:c55e099cf6821c666dc4c715b9bb2d4f31c542c07225966a45e523338e135921",
+                  "note": "Read facts, filter state, the resolvable/unresolved partition and per-record code and link health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 9,
+                  "end": 9,
+                  "digest": "sha256:e70b3fcdf711cbd6e4c1356c0694808ca625c8bf31a7c2c6fdd5f43579169a55",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 12,
+                  "end": 12,
+                  "digest": "sha256:8712c6cf82f31cf90ac49eb35ce452af5006070c4b92969d76c4b7b1b7263ed5",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 20,
+                  "end": 21,
+                  "digest": "sha256:e1c00ff0cbb7b5365256e1e31512ea614ab1c29c53793b575fe4836efb741d3f",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 27,
+                  "end": 27,
+                  "digest": "sha256:2d2f7f311fffa398c9593ecbead0b82e741a589e9fb999d780ca7233ef79ead7",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 41,
+                  "end": 41,
+                  "digest": "sha256:38173ff02f98e7114f3ad07ea3e303e2677437dc780913245fa2d0af0b99696a",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 49,
+                  "end": 50,
+                  "digest": "sha256:545605f32113dbbe6e4910c9de5b4c3e3be21cd25a58d1192deb23c475dbb8d3",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 53,
+                  "end": 56,
+                  "digest": "sha256:17198f1b746c99d5d9c8bfd04f354d8eb5e23e3b6a1ff63ae57113c5b5568b7d",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 59,
+                  "end": 60,
+                  "digest": "sha256:33b1d329af63c9050b59df004e086e1dc5b1adebd8bc7b5bd5d83b3cf8ec5ea4",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 70,
+                  "end": 80,
+                  "digest": "sha256:7a94bada73e9645b52dc15239790ed2b134f51ea6d732ed060a72034e2ffc0f7",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 86,
+                  "end": 96,
+                  "digest": "sha256:cccb8e07ddf9b340a94ef9795a92621fe71793b5345ba49ce3ff6095cd205c15",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 100,
+                  "end": 100,
+                  "digest": "sha256:f1632c801f1d8e750104215650d4b73c891937da428c609561d979459d885908",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 109,
+                  "end": 112,
+                  "digest": "sha256:b6b8e5b5b250fc050b45b641266f35d8b193c41834bf112beed4f1f2c26c51a2",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 114,
+                  "end": 114,
+                  "digest": "sha256:6bf5ceeac3dc251b8d10dc19d1795cd3a89420bfead6766d9fa940734820323c",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 117,
+                  "end": 117,
+                  "digest": "sha256:2f0610f7ab2f8302281f39465e77a53acddb66567c7be5716d076950cd125edf",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 121,
+                  "end": 125,
+                  "digest": "sha256:7f5a77bf4e70dbf373850c457c99761badefe9a708ea42b1a2a8355774be88dc",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 127,
+                  "end": 128,
+                  "digest": "sha256:c752c3604a18e32203100146e90b7eddae2bfd5a0fdc6c10c4171578cb33f683",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 130,
+                  "end": 142,
+                  "digest": "sha256:9f40480fe01738fb0d368d89094e53f96c4de03e31c06892b02e769f5bd8b4d5",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 149,
+                  "end": 149,
+                  "digest": "sha256:49145052f0cf01634dc89eb0aaf16e959de9a05e1633a7150bf2aa85dbd941ea",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 152,
+                  "end": 161,
+                  "digest": "sha256:1645620ee59f0a63a67d949f2a9723fcf24f258738a25bbf9f3274d8a7419e0c",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 174,
+                  "end": 175,
+                  "digest": "sha256:33914674025ca23539bb7c0529c673a03923e407791478b715e864b50efc1ab1",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 177,
+                  "end": 178,
+                  "digest": "sha256:570a2180db533d00a0e177fc26e1bab7836d28e7b721082400fb2bc2c143527c",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 189,
+                  "end": 195,
+                  "digest": "sha256:339fa84722528514e43abfd2f294e17b5bf6ede70b7e9410ff1a7085c1b81a11",
+                  "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "filters-inventory-query-technical-context-filter-proposed",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-proposed",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Proposed records are filtered by the explicit state of the selected revision, which each result reports."
+            },
+            {
+              "id": "filters-inventory-proposed-and-existing-explicit-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Results expose the selected revision's explicit intent; new is reported separately."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unresolved",
+            "slide": "ti-query-impl-reads",
+            "rank": 30,
+            "kind": "node",
+            "label": "Separate unresolved page",
+            "description": "Missing records or revisions and competing heads go to data.unresolved with reasons and heads, paged by --conflict-cursor; no filter removes them.",
+            "selector": {
+              "type": "element",
+              "element_id": "unresolved"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 119,
+                  "end": 174,
+                  "digest": "sha256:b64e11c38785ce7a572ac344d9a7d4119f544bf0e5bd5a3e4acabfb52358b58c",
+                  "note": "Selected revisions and the unresolved reasons filters must keep visible."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "unresolved-inventory-query-technical-context-truthful-results",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Conflicted and missing records are reported as such on their own page rather than hidden or presented as current."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "newness",
+            "slide": "ti-query-impl-reads",
+            "rank": 40,
+            "kind": "node",
+            "label": "Newness against a named base",
+            "description": "--new requires --against. The base Saga's inventory decides new or existing; a Saga absent at the base makes identities new; an unreadable base is unknown and --new refuses.",
+            "selector": {
+              "type": "element",
+              "element_id": "newness"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/classify.go",
+                  "start": 1,
+                  "end": 48,
+                  "digest": "sha256:f3afdfe1f8eece56995285f2d6eab34ec5423a4f694c0ac18ad8cc1c53582934",
+                  "note": "Explicit intent read without inference and identity newness relative to a named baseline."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/changeview/baseline.go",
+                  "start": 1,
+                  "end": 41,
+                  "digest": "sha256:7eaa2ce648ff7846a4f47c54d222b9d13503c3f58660a0b70316d0144d71f987",
+                  "note": "Locates the Saga snapshot documenting the comparison base; an absent Saga differs from an unreadable one."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 98,
+                  "end": 148,
+                  "digest": "sha256:1308ddf1b29cad7dbecc59715ad67b6768f11501310e7d938e0f4e5cb3117ac0",
+                  "note": "Reads the base inventory; any failure leaves the baseline unknown."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "newness-inventory-query-technical-context-filter-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "New identities are filtered against a specified baseline and head, independently of proposed status."
+            },
+            {
+              "id": "newness-inventory-proposed-and-existing-comparison-relative-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Newness names its baseline and head and is never invented without a readable baseline."
+            },
+            {
+              "id": "newness-erd-discover-proposed-changes-separate-newness",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:separate-newness",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Implemented entities introduced since the base remain discoverable as new, separately from proposed status."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

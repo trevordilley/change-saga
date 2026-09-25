@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "inventory-query-coverage",
+  "title": "Technical inventory reads, coverage and reconciliation",
+  "role": "review",
+  "rank": 0,
+  "objective": "Explain the read projection, inventory queries, inherited and inventory coverage, and reconciliation added on top of the records contract, and how each keeps unresolved facts visible."
+}

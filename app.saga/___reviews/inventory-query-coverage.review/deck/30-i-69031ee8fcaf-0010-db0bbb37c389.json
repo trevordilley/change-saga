@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scope",
+  "slide": "reads",
+  "rank": 10,
+  "kind": "node",
+  "label": "Declared feature scope",
+  "description": "With --feature, candidates are pins reachable from the feature's implementation Items through declared members, holders and relationship destinations at each saved revision, with the paths that put them in scope.",
+  "selector": {
+    "type": "element",
+    "element_id": "scope"
+  }
+}

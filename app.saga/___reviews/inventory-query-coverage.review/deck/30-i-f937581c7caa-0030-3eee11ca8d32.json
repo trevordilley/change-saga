@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli-fixtures",
+  "slide": "verify",
+  "rank": 30,
+  "kind": "node",
+  "label": "CLI fixtures",
+  "description": "CLI fixtures commit the Saga in its repository at absent, unreadable, base and head states to test filters, pages, coverage and reconciliation debt classes.",
+  "selector": {
+    "type": "element",
+    "element_id": "cli-fixtures"
+  }
+}

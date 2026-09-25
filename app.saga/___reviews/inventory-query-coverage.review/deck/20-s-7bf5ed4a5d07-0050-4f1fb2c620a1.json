@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "reconcile",
+  "deck": "inventory-query-coverage",
+  "title": "What changed: inventory reconciliation",
+  "rank": 50,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7bf5ed4a5d07-0050-4f1fb2c620a1.svg",
+  "takeaway": "reconcile gains an inventory section: evidence debt against the base, pin and selection health, and unreferenced definitions that ask the user.",
+  "reading_order": [
+    "debt",
+    "pins",
+    "selections",
+    "unreferenced"
+  ]
+}

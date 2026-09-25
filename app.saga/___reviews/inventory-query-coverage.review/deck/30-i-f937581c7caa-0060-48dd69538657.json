@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "docs",
+  "slide": "verify",
+  "rank": 60,
+  "kind": "node",
+  "label": "Implementation note",
+  "description": "The role-specific note records delivered behavior, measurements and verification, not proposals.",
+  "selector": {
+    "type": "element",
+    "element_id": "docs"
+  }
+}

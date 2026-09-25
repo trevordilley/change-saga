@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/bench_test.go",
+      "digest": "sha256:10b6939c0a47242444dcd0f02163a3a17b94ff01cdc9d2e57445a0d79c1bb796",
+      "note": "Projection benchmarks up to 8,000 records."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/bench_test.go",
+      "start": 1,
+      "end": 91,
+      "digest": "sha256:10b6939c0a47242444dcd0f02163a3a17b94ff01cdc9d2e57445a0d79c1bb796",
+      "note": "Projection benchmarks up to 8,000 records."
+    }
+  ]
+}

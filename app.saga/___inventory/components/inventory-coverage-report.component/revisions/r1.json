@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:component:inventory-coverage-report",
+  "parents": [],
+  "name": "Inventory coverage report",
+  "explanation": "Measures which tracked code at one revision and path scope the current inventory definitions account for, counting each line once with every owner and keeping stale, unresolved, excluded and proposed evidence separate.",
+  "code": [
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/inventoryview/coverage.go",
+      "start": 108,
+      "end": 246,
+      "digest": "sha256:b81311aa2fed1049f8e1d214afffd986c831a20f04bfce5409a307284d17ec54",
+      "note": "Counts each in-scope line once with all owners, excludes retired, proposed and conflicted owners with reasons and gives stale references no coverage."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/cli/query_inventory_coverage.go",
+      "start": 161,
+      "end": 184,
+      "digest": "sha256:5d5538e15c3a405c9e7a86e946180f30f352375f9798cff836be1389f7269a96",
+      "note": "Lists tracked regular files at the named commit and prefixes, excluding Saga directories."
+    }
+  ],
+  "created_at": "2026-09-25T01:36:29.899722Z"
+}

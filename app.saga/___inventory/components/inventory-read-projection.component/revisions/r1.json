@@ -1,0 +1,60 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:component:inventory-read-projection",
+  "parents": [],
+  "name": "Inventory read projection",
+  "explanation": "Rebuilds, per snapshot, a disposable index of declared technical links and answers reverse uses, feature scope, selected revisions and comparison-relative newness without persisting or inferring anything.",
+  "code": [
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/inventoryview/uses.go",
+      "start": 106,
+      "end": 162,
+      "digest": "sha256:d52e73581aee0e929a4413e63f01ed8af503a1549b35fcd5237d65b1f177082b",
+      "note": "Indexes only declared links: implementation and review Item pins, System members, data-entity holders, relationship destinations and ERD directory or overlay pins."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/inventoryview/uses.go",
+      "start": 214,
+      "end": 254,
+      "digest": "sha256:8259350f309427cc7a017683d14f5f38e8eeddd92b0095262b1c5c0ef28c80ec",
+      "note": "Walks uses upward through current owner revisions only and reports depth, cycle and traversal-budget cuts instead of presenting a partial answer as complete."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/inventoryview/uses.go",
+      "start": 291,
+      "end": 304,
+      "digest": "sha256:78d64a82a65175dddbe21a8815dcb2a4f6fcbc8ecedf58c89131ccbb299d6a6a",
+      "note": "Answers pin status from the index's own map so building the index stays linear."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/inventoryview/scope.go",
+      "start": 39,
+      "end": 97,
+      "digest": "sha256:fee1e4eebac8e22290dfc41b7033a3191e22220fc9ef732b11a94a69288a7831",
+      "note": "Derives a feature's technical scope from its implementation Items through declared pins at each saved revision, never substituting a newer revision."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/inventoryview/scope.go",
+      "start": 139,
+      "end": 174,
+      "digest": "sha256:6e50637429a0380ddf907f03579ae13268e52b93af77c9b376a38d0a4891d050",
+      "note": "Selects the exact revisions a read answers about and names the unresolved reasons that filters must never hide."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/inventoryview/classify.go",
+      "start": 39,
+      "end": 48,
+      "digest": "sha256:f6cfdb129ade4f5aa2b7c8978500c33948a9f7629a40a63830faa65b8b5fd1c6",
+      "note": "Classifies identity newness against a named baseline; an unreadable baseline is unknown rather than making everything new."
+    }
+  ],
+  "created_at": "2026-09-25T01:36:29.558178Z"
+}

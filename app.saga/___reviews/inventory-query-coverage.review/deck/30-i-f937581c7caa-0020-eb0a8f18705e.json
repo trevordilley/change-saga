@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unit-tests",
+  "slide": "verify",
+  "rank": 20,
+  "kind": "node",
+  "label": "Projection tests",
+  "description": "Pure projection tests use temporary Git repositories for movement, inside and outside edits, deletion, digest mismatch, conflicts, cycles, depth cuts, legacy evidence and status parity.",
+  "selector": {
+    "type": "element",
+    "element_id": "unit-tests"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/selection.go",
+      "start": 1,
+      "end": 130,
+      "digest": "sha256:42fac45b0c5c9a50bbe81dc06ed0c60cf9814d1371ad9cc90171828e1bebde10",
+      "note": "Delegates structure to the records resolver and verifies the selected digest."
+    }
+  ]
+}

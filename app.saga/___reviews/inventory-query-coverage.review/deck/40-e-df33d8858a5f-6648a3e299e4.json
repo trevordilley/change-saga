@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/coverage/coverage.go",
+      "start": 36,
+      "end": 39,
+      "digest": "sha256:174013b3d40e8968605817a67493acb40cf941866de0b5284a7cf2793fe98845",
+      "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/coverage/coverage.go",
+      "start": 112,
+      "end": 115,
+      "digest": "sha256:cc668ae1c6ae103711662411abbf5712d944204083ff8dfbf6333e9be6f1fd78",
+      "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/coverage/coverage.go",
+      "start": 124,
+      "end": 126,
+      "digest": "sha256:5dd103194fd3c41d9ee175d2831a73f413c9c73da31410c0955cb387e1c8971d",
+      "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/coverage/coverage.go",
+      "start": 180,
+      "end": 184,
+      "digest": "sha256:1f7aea2198901762f2aaf18f1d7a510aebd1d8771e3b8ca07479e6ddd5cd0cbe",
+      "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/coverage/coverage.go",
+      "start": 194,
+      "end": 196,
+      "digest": "sha256:52d915b71e21a6db226cfbb49e722ebe1164e84cc7bd1fae06db05c0fa8dc910",
+      "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+    }
+  ]
+}

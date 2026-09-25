@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "eligible",
+  "slide": "selection",
+  "rank": 20,
+  "kind": "node",
+  "label": "Eligibility at head",
+  "description": "Only selections whose structure resolves, whose pins are all current and whose selected bytes are current at head contribute; others contribute nothing and stay visible in query inventory-selections.",
+  "selector": {
+    "type": "element",
+    "element_id": "eligible"
+  }
+}

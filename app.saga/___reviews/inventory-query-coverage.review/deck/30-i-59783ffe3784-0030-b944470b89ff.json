@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "health",
+  "slide": "coverage",
+  "rank": 30,
+  "kind": "node",
+  "label": "Separate health pages",
+  "description": "Stale references, unresolved owners and excluded retired or proposed owners have their own pages with reasons; explicitly proposed edge evidence is counted apart. None counts as coverage.",
+  "selector": {
+    "type": "element",
+    "element_id": "health"
+  }
+}

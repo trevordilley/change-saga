@@ -1,0 +1,269 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:e70b3fcdf711cbd6e4c1356c0694808ca625c8bf31a7c2c6fdd5f43579169a55",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:8712c6cf82f31cf90ac49eb35ce452af5006070c4b92969d76c4b7b1b7263ed5",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 20,
+      "end": 21,
+      "digest": "sha256:e1c00ff0cbb7b5365256e1e31512ea614ab1c29c53793b575fe4836efb741d3f",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:2d2f7f311fffa398c9593ecbead0b82e741a589e9fb999d780ca7233ef79ead7",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:38173ff02f98e7114f3ad07ea3e303e2677437dc780913245fa2d0af0b99696a",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 49,
+      "end": 50,
+      "digest": "sha256:545605f32113dbbe6e4910c9de5b4c3e3be21cd25a58d1192deb23c475dbb8d3",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 53,
+      "end": 56,
+      "digest": "sha256:17198f1b746c99d5d9c8bfd04f354d8eb5e23e3b6a1ff63ae57113c5b5568b7d",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 59,
+      "end": 60,
+      "digest": "sha256:33b1d329af63c9050b59df004e086e1dc5b1adebd8bc7b5bd5d83b3cf8ec5ea4",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 70,
+      "end": 80,
+      "digest": "sha256:7a94bada73e9645b52dc15239790ed2b134f51ea6d732ed060a72034e2ffc0f7",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 86,
+      "end": 96,
+      "digest": "sha256:cccb8e07ddf9b340a94ef9795a92621fe71793b5345ba49ce3ff6095cd205c15",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:f1632c801f1d8e750104215650d4b73c891937da428c609561d979459d885908",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 109,
+      "end": 112,
+      "digest": "sha256:b6b8e5b5b250fc050b45b641266f35d8b193c41834bf112beed4f1f2c26c51a2",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:6bf5ceeac3dc251b8d10dc19d1795cd3a89420bfead6766d9fa940734820323c",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:2f0610f7ab2f8302281f39465e77a53acddb66567c7be5716d076950cd125edf",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 121,
+      "end": 125,
+      "digest": "sha256:7f5a77bf4e70dbf373850c457c99761badefe9a708ea42b1a2a8355774be88dc",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 127,
+      "end": 128,
+      "digest": "sha256:c752c3604a18e32203100146e90b7eddae2bfd5a0fdc6c10c4171578cb33f683",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 130,
+      "end": 142,
+      "digest": "sha256:9f40480fe01738fb0d368d89094e53f96c4de03e31c06892b02e769f5bd8b4d5",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:49145052f0cf01634dc89eb0aaf16e959de9a05e1633a7150bf2aa85dbd941ea",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 152,
+      "end": 161,
+      "digest": "sha256:1645620ee59f0a63a67d949f2a9723fcf24f258738a25bbf9f3274d8a7419e0c",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 174,
+      "end": 175,
+      "digest": "sha256:33914674025ca23539bb7c0529c673a03923e407791478b715e864b50efc1ab1",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 177,
+      "end": 178,
+      "digest": "sha256:570a2180db533d00a0e177fc26e1bab7836d28e7b721082400fb2bc2c143527c",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory.go",
+      "start": 189,
+      "end": 195,
+      "digest": "sha256:339fa84722528514e43abfd2f294e17b5bf6ede70b7e9410ff1a7085c1b81a11",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 43,
+      "end": 44,
+      "digest": "sha256:c2095361ea65f6cd74cad2af79d354b073b5ba40816813ebfab1a8907d44524c",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 58,
+      "end": 59,
+      "digest": "sha256:c899c5121d262e4772e8c758477d93b4f72aef647f08b5638476c6dbeca71216",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:c1a6938a763ae2291533a70de684cdcd050a6e709c2f770717cb7ccfb1b506a0",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:59792b3ebb917ce546dddfb712017727df95767bb71976f69930ab88043b232b",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:bfde35e5e9bb7cfdfb2e59d70c2bc0a5b6e389a8916658d0feb426518d12dec6",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:b5a3f559c88a46ff7cd9b7ee1cb4d9e3e5ea7acd25fe5474816bc8259b4e1fd7",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 86,
+      "end": 88,
+      "digest": "sha256:f84c5feb2a1b2dc7b3b712310070da2fccad803de9b8fa31b05c966d07c4cee1",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 91,
+      "end": 92,
+      "digest": "sha256:f3e586898f57909e488b8692d0e4b70a1387c2464467ce23de25a04d996e857f",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:e7915aa3513817cca96b7f6ed2aca82349d5c6087a429d6e03e9a184327e5dd4",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 115,
+      "end": 125,
+      "digest": "sha256:9a4d09abcbc6461eaf561ad23aee1ee984574f09c603cc178185a9d41a58a835",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query_inventory.go",
+      "start": 136,
+      "end": 139,
+      "digest": "sha256:8fdc40453eb60507901aad95f9da71d695ea5a1f5a3e88c73137d51fd9c20b01",
+      "note": "query inventory flags, catalog-only endpoints, both snapshot-bound pages and code health through the shared evidence iterator."
+    }
+  ]
+}

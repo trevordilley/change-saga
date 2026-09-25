@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/uses.go",
+      "start": 188,
+      "end": 210,
+      "digest": "sha256:eeb11962dddec70246780e17550ded7f28ef5d4d1fba46d8551ab12402a32cda",
+      "note": "Paging keeps exact totals and the completeness flags."
+    }
+  ]
+}
