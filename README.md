@@ -452,7 +452,7 @@ untrusted author with the same care as code from an untrusted branch. See
 
 ## Building from source
 
-Change Saga requires Go 1.26.1:
+Change Saga requires Go 1.26.6:
 
 ```sh
 git clone https://github.com/twentyideas/changesaga
