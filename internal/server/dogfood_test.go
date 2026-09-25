@@ -81,12 +81,12 @@ func dogfoodPage(t *testing.T, path string) (int, string) {
 	return recorder.Code, recorder.Body.String()
 }
 
-// dogfoodSidebar is the Contents navigation of one rendered page. The sidebar
-// shows one feature at a time, so a row that belongs to a feature is asserted on a
-// page inside that feature rather than on the app overview.
-func dogfoodSidebar(t *testing.T, path string) string {
+// pageSidebar is the Contents navigation of page, already rendered at path.
+// The sidebar shows one feature at a time, so a row that belongs to a feature
+// is asserted on a page inside that feature rather than on the app overview.
+func pageSidebar(t *testing.T, path, page string) string {
 	t.Helper()
-	_, rest, ok := strings.Cut(dogfoodOK(t, path), `<nav class="doc-tree"`)
+	_, rest, ok := strings.Cut(page, `<nav class="doc-tree"`)
 	if !ok {
 		t.Fatalf("GET %s rendered no sidebar", path)
 	}
@@ -269,7 +269,7 @@ func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 			}
 			// The feature's own page is where its chapters are in the sidebar:
 			// that page's feature is the one the sidebar shows.
-			if !strings.Contains(dogfoodSidebar(t, href), `href="`+href+`#`+domID(chapter.Target)+`"`) {
+			if !strings.Contains(pageSidebar(t, href, page), `href="`+href+`#`+domID(chapter.Target)+`"`) {
 				t.Fatalf("the sidebar does not open %s on its feature's page", chapter.ID)
 			}
 		}
@@ -288,14 +288,14 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 		href := testCaseHref(testCase.Identity.ID)
 		// Quality lists the test cases of the feature the sidebar shows, so the
 		// row is asserted on the test case's own page.
-		sidebar := dogfoodSidebar(t, href)
+		page := dogfoodOK(t, href)
+		sidebar := pageSidebar(t, href, page)
 		if strings.Contains(sidebar, "no test cases yet") {
 			t.Fatalf("the feature of %s still says it has no test cases", href)
 		}
 		if !strings.Contains(sidebar, `href="`+href+`"`) {
 			t.Fatalf("the sidebar does not list %s", href)
 		}
-		page := dogfoodOK(t, href)
 		for _, want := range []string{"data-test-definition", "data-test-verifies", "data-test-evidence", "data-test-runs", template.HTMLEscapeString(testCase.CurrentRevision.Title)} {
 			if !strings.Contains(page, want) {
 				t.Fatalf("%s lacks %q", href, want)
@@ -344,7 +344,7 @@ func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
 		page := dogfoodOK(t, href)
 		// A story's page shows that story's feature, so its Requirements row is
 		// in that page's own sidebar.
-		sidebar := dogfoodSidebar(t, href)
+		sidebar := pageSidebar(t, href, page)
 		if strings.Contains(sidebar, ">Story 0") || strings.Contains(sidebar, "Story 01 ·") {
 			t.Fatal("the sidebar still names stories by ordinal")
 		}
