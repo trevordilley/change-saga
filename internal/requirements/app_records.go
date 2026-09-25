@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/fs"
 	"path/filepath"
+	"slices"
 	"sort"
 	"strings"
 	"time"
@@ -254,7 +255,9 @@ type appPackage struct {
 
 // loadAppPackages strictly reads every <id><suffix> package beneath dir: an
 // identity file plus revisions/ and events/ directories of <id>.json records.
-func loadAppPackages(root, dir, suffix, identityName, schemaURL string, maximum int) ([]appPackage, error) {
+// Extra names additional real member directories (such as ERD assets) that the
+// kind's own loader validates.
+func loadAppPackages(root, dir, suffix, identityName, schemaURL string, maximum int, extra ...string) ([]appPackage, error) {
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return nil, err
@@ -274,14 +277,14 @@ func loadAppPackages(root, dir, suffix, identityName, schemaURL string, maximum 
 			return nil, fmt.Errorf("%s: package name is not a stable id", rel)
 		}
 		value := appPackage{id: id, dir: filepath.Join(dir, entry.Name())}
-		members, err := boundedReadDir(value.dir, 3)
+		members, err := boundedReadDir(value.dir, 3+len(extra))
 		if err != nil {
 			return nil, err
 		}
 		for _, member := range members {
 			switch {
 			case member.Name() == identityName && member.Type().IsRegular():
-			case (member.Name() == "revisions" || member.Name() == "events") && member.IsDir() && member.Type()&fs.ModeSymlink == 0:
+			case (member.Name() == "revisions" || member.Name() == "events" || slices.Contains(extra, member.Name())) && member.IsDir() && member.Type()&fs.ModeSymlink == 0:
 			default:
 				return nil, fmt.Errorf("%s: unknown entry %q", rel, member.Name())
 			}
