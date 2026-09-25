@@ -1,0 +1,4 @@
+# Change Saga pins exact bytes by digest: code evidence, Saga visuals and ERD
+# assets, bundled diagram icons, and golden files. Check every text file out
+# with LF on every platform so a Windows checkout reads the same bytes.
+* text=auto eol=lf
