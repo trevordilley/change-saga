@@ -184,6 +184,10 @@ func TestMeasureFeaturePhases(t *testing.T) {
 	lap("cold sagaFiles().inventory()", func() { files.inventory(document.Manifest.ID) })
 	lap("cold relatedReviews", func() { application.relatedReviews(ctx, document, records) })
 	lap("warm relatedReviews", func() { application.relatedReviews(ctx, document, records) })
+	lap("relatedReviews rebuild, reviews' diffs kept", func() {
+		application.related.index = nil
+		application.relatedReviews(ctx, document, records)
+	})
 	lap("first page after the above phases", func() { measureGet(t, handler, benchmarkFeaturePath) })
 	lap("warm page", func() { measureGet(t, handler, benchmarkFeaturePath) })
 	for i := 0; i < 3; i++ {

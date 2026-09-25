@@ -136,3 +136,48 @@ func relatedReviewSection(body string) string {
 	}
 	return body[index:min(index+400, len(body))]
 }
+
+// A rebuild keeps what each review's diff touched only while the code the
+// documentation references is unchanged. Repointing a record's code at the
+// line the review changed lists the review on it at once; an edit to prose
+// alone reads no review's diff again.
+func TestRelatedReviewsFollowAnEditToTheDocumentedCode(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	documentTheFixture(t, fixture)
+	application, handler := reviewApp(t, fixture, gitdiff.Range{})
+	unrelated := requirementStoryHref("name-the-package")
+	if body := documentationPage(t, handler, unrelated); strings.Contains(body, "data-related-review=") {
+		t.Fatalf("%s lists a review before its code was repointed", unrelated)
+	}
+	kept := application.related.touched
+	if len(kept) == 0 {
+		t.Fatal("the build kept nothing of what the reviews touched")
+	}
+
+	fragmentDir := filepath.Join(serverFeatureDir(fixture.root), applayout.DesignDir, "package-design.chapter", "package-clause.fragment")
+	writeServerFile(t, filepath.Join(fragmentDir, "content.md"), "# The package {#the-package}\n\nThe package is restated here.\n")
+	documentationPage(t, handler, unrelated)
+	if application.related.builds != 2 {
+		t.Fatalf("a prose edit rebuilt the index %d times, want 2", application.related.builds)
+	}
+	for key := range kept {
+		if _, ok := application.related.touched[key]; !ok {
+			t.Fatal("a prose edit read a review's diff again")
+		}
+	}
+
+	head := strings.TrimSpace(serverGit(t, fixture.repo, "rev-parse", "HEAD"))
+	resolver, err := coderesolve.New(context.Background(), fixture.repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	reference, err := resolver.Author(context.Background(), coderef.Location{Commit: head, Path: "queue.go", Start: 3, End: 3}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeServerJSON(t, filepath.Join(fragmentDir, saga.CodeDirName, "package-clause.json"), saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{reference}})
+	if body := documentationPage(t, handler, unrelated); !strings.Contains(body, `data-related-review="pr-7"`) {
+		t.Fatalf("%s does not list the review after its code was repointed at the changed line:\n%s", unrelated, relatedReviewSection(body))
+	}
+}
