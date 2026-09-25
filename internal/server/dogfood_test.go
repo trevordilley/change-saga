@@ -450,7 +450,7 @@ func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
 		}
 		code := dogfoodOK(t, "/api/reference-code?target="+url.QueryEscape(item.Target))
 		if !strings.Contains(code, "data-reference-code") || !strings.Contains(code, "<code data-code>") {
-			t.Fatalf("the Item %s rendered no code", item.Target)
+			t.Fatalf("the Item %s rendered no code:\n%s", item.Target, code)
 		}
 		for _, file := range item.Code {
 			for _, reference := range file.References {
