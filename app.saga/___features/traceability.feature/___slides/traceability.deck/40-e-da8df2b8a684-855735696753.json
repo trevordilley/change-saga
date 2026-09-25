@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bdeb5325e405aecb9f7f56aeb3b2ddefe0b808b2",
+      "path": "internal/requirements/relation_v5_test.go",
+      "start": 262,
+      "end": 271,
+      "digest": "sha256:657aea7fa66b19c16e5ab379fec8cfe12194856d788b23b55ad015ef445b0d53",
+      "note": "Verifies superseding a relation removes current standing without manufacturing stale reasons, and that a shared RelationEvaluator agrees."
+    }
+  ]
+}

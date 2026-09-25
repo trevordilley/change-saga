@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bdeb5325e405aecb9f7f56aeb3b2ddefe0b808b2",
+      "path": "internal/requirements/currency.go",
+      "start": 115,
+      "end": 254,
+      "digest": "sha256:6e3c939d034954e8dbb178391b8768a81ad48497d6395645538ae7f730f60910",
+      "note": "Relation currency against current heads; a RelationEvaluator derives a document's heads once for many relations."
+    }
+  ]
+}
