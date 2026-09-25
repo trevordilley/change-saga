@@ -225,3 +225,49 @@ func TestDiagramIconsLists(t *testing.T) {
 		t.Fatalf("icons = %q err=%v", output, err)
 	}
 }
+
+func TestDiagramDescribeReadsDiagramAndHandAuthoredSlides(t *testing.T) {
+	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
+	created, err := ApplySlideTransaction(context.Background(), root, base, repo, diagramSlideRequest(t, repo, base, commit, sagaID, "diagram-create", "create", "absent", testDiagram()), false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	text, err := runDiagram(t, "", "describe", "--slide", "flow", root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{
+		`Slide: urn:change-saga:` + sagaID + `:slide:flow "Atomic flow"`, "Snapshot: " + created.Snapshot, "Takeaway: The complete visual changes together.",
+		"Source: diagram rendered to image/svg+xml", "  1. worker [node] \"Worker\" element=worker code_files=1 criterion_links=1\n",
+		"     description: The worker performs the operation.\n", "  worker \"Worker\" shape=service icon=lucide:server\n",
+		"  write: worker -> store \"write\"\n", "Showing elements 1-3 of 3.",
+	} {
+		if !strings.Contains(text, want) {
+			t.Errorf("describe lacks %q:\n%s", want, text)
+		}
+	}
+	if strings.Contains(text, "<svg") || strings.Contains(text, "title") {
+		t.Errorf("describe must omit asset bytes and decorative elements:\n%s", text)
+	}
+	asJSON, err := runDiagram(t, "", "describe", "--slide", "flow", "--format", "json", root)
+	var value SlideDescription
+	if err != nil || json.Unmarshal([]byte(asJSON), &value) != nil || value.Source != "diagram" || value.Diagram == nil || value.Diagram.Total != 3 || len(value.Items) != 1 {
+		t.Fatalf("json describe = %s err=%v", asJSON, err)
+	}
+	if len(text) >= len(asJSON) {
+		t.Errorf("text (%d bytes) should be smaller than JSON (%d bytes)", len(text), len(asJSON))
+	}
+	got, err := runDiagram(t, "", "get", "--slide", "flow", "--id", "write", root)
+	if err != nil || !strings.Contains(got, `"snapshot": "`+created.Snapshot) || !strings.Contains(got, `"label_box"`) || !strings.Contains(got, `"selector": "#write"`) {
+		t.Fatalf("get = %s err=%v", got, err)
+	}
+
+	legacyRoot, legacyRepo, legacyBase, legacyCommit, legacyID := newSlideTransactionFixture(t)
+	if _, err := ApplySlideTransaction(context.Background(), legacyRoot, legacyBase, legacyRepo, slideTransactionRequest(t, legacyRepo, legacyBase, legacyCommit, legacyID, "svg-create", "create", "absent", "node-a"), false); err != nil {
+		t.Fatal(err)
+	}
+	legacy, err := runDiagram(t, "", "describe", "--slide", "flow", legacyRoot)
+	if err != nil || !strings.Contains(legacy, "Source: hand-authored image/svg+xml") || !strings.Contains(legacy, "worker [node] \"Worker\" element=node-a") || strings.Contains(legacy, "Nodes:") {
+		t.Fatalf("hand-authored describe = %s err=%v", legacy, err)
+	}
+}

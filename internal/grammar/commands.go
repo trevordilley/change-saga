@@ -76,6 +76,16 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "diagram describe", Status: StatusImplemented,
+		Usage:   "change-saga diagram describe --slide TARGET [--format text|json] [--offset N] [--limit N] <saga>",
+		Summary: "read one slide compactly: takeaway, Items in reading order, and a diagram's semantic elements and connections without geometry or asset bytes",
+		Flags: []Flag{
+			required("slide", "TARGET", "slide to describe"), optional("format", "FORMAT", "text (default) or json"),
+			optional("offset", "N", "first diagram element to include"), optional("limit", "N", "diagram elements per page, 1-100"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "diagram edit", Status: StatusImplemented, Mutates: true,
 		Writes:  []string{"slide-transaction", "slide-asset", "diagram-source"},
 		Usage:   "change-saga diagram edit --slide TARGET --expected SNAPSHOT --request-id ID --from FILE|- [--repo PATH] [--dry-run] [--json] <saga>",
@@ -86,6 +96,15 @@ var commands = []Command{
 			required("from", "FILE|-", "JSON array of diagram operations; [] re-renders unchanged source"),
 			optional("repo", "PATH", "code checkout used to re-verify exact evidence digests"),
 			{Name: "dry-run", Description: "validate and return the semantic diff without publishing"}, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "diagram get", Status: StatusImplemented,
+		Usage:   "change-saga diagram get --slide TARGET --id ELEMENT <saga>",
+		Summary: "return one diagram element's complete properties, resolved style, selector, and the snapshot an edit must expect",
+		Flags: []Flag{
+			required("slide", "TARGET", "slide whose diagram holds the element"), required("id", "ELEMENT", "diagram element id"),
 		},
 		Positionals: sagaOnly,
 	},

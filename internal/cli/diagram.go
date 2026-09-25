@@ -13,13 +13,18 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// Diagram dispatches the diagram command family: targeted edits to a
-// diagram-sourced slide, bundled icon discovery, and render drift checks.
+// Diagram dispatches the diagram command family: compact reading views,
+// targeted edits to a diagram-sourced slide, bundled icon discovery, and
+// render drift checks.
 func Diagram(ctx context.Context, args []string, out io.Writer) error {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("diagram", []string{"edit", "icons", "check"}, out)
+		return livingFamilyHelp("diagram", []string{"describe", "get", "edit", "icons", "check"}, out)
 	}
 	switch args[0] {
+	case "describe":
+		return diagramDescribe(args[1:], out)
+	case "get":
+		return diagramGet(args[1:], out)
 	case "edit":
 		return diagramEdit(ctx, args[1:], out)
 	case "icons":
