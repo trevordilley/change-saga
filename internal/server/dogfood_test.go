@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -48,18 +49,35 @@ func requireDogfoodSaga(t *testing.T) {
 	}
 }
 
+// dogfoodServer is one reviewer observing HEAD of the repository's app Saga,
+// shared by every dogfood request as a running server is shared by a
+// reviewer's requests. Its caches are keyed on what they read, so a warm
+// cache serves exactly what a cold one would build; sharing it only stops
+// each request from rebuilding the derived indexes of the whole Saga.
+var dogfoodServer struct {
+	once    sync.Once
+	handler http.Handler
+	err     error
+}
+
 // dogfoodPage renders one reviewer path of the repository's app Saga,
 // observing HEAD.
 func dogfoodPage(t *testing.T, path string) (int, string) {
 	t.Helper()
 	requireDogfoodSaga(t)
-	tmpl, err := newPageTemplateFor(gitdiff.Range{})
-	if err != nil {
-		t.Fatal(err)
+	dogfoodServer.once.Do(func() {
+		tmpl, err := newPageTemplateFor(gitdiff.Range{})
+		if err != nil {
+			dogfoodServer.err = err
+			return
+		}
+		dogfoodServer.handler = newMux(&app{root: dogfoodSaga, sourceDir: filepath.Join("..", ".."), template: tmpl})
+	})
+	if dogfoodServer.err != nil {
+		t.Fatal(dogfoodServer.err)
 	}
-	application := &app{root: dogfoodSaga, sourceDir: filepath.Join("..", ".."), template: tmpl}
 	recorder := httptest.NewRecorder()
-	newMux(application).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+	dogfoodServer.handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 	return recorder.Code, recorder.Body.String()
 }
 
