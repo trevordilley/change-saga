@@ -72,6 +72,9 @@ func (b *batch) isBroken() bool {
 // nil, everything before the echoed sentinel line. Any failure marks the
 // process broken so the session starts a fresh one.
 func (b *batch) roundTrip(ctx context.Context, request string, read func(*bufio.Reader) ([]byte, error)) ([]byte, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	b.mu.Lock()
 	defer b.mu.Unlock()
 	if b.broken {
