@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "before",
+  "slide": "tdsp-review-pages",
+  "rank": 0,
+  "kind": "region",
+  "label": "Before: one long page",
+  "description": "The single page built every directory, the whole data model and the usage index on every visit, with in-page jump links and one filter over all three directories. Its builder, template and styles are removed.",
+  "selector": {
+    "type": "element",
+    "element_id": "before"
+  }
+}

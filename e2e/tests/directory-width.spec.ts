@@ -32,7 +32,7 @@ const directories = [
   { path: "/flags", id: "flags", region: "Feature flags" },
   { path: "/terms", id: "terms", region: "Terms and vocabulary" },
   { path: "/reviews", id: "reviews", region: "Reviews" },
-  { path: "/technical", id: "technical-components", region: "Components" }
+  { path: "/technical/components", id: "technical-components", region: "Components" }
 ];
 
 type Measure = { inner: number; page: number; region: number; table: number; overflowX: string };
@@ -84,7 +84,7 @@ test("every directory keeps a 390px touch screen at its width and scrolls its ta
   }
   // The widest tables really do exceed a phone's width, so the check above is
   // not vacuous for them.
-  expect(scrolled).toEqual(expect.arrayContaining(["/features", "/terms", "/reviews", "/technical"]));
+  expect(scrolled).toEqual(expect.arrayContaining(["/features", "/terms", "/reviews", "/technical/components"]));
 
   // A keyboard reader focuses the region and scrolls it with the arrow keys.
   await narrow.goto(saga.baseURL + "/features");

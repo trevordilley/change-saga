@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "browser",
+  "slide": "tdsp-review-proof",
+  "rank": 10,
+  "kind": "example",
+  "label": "Browser tests",
+  "description": "Playwright walks landing to area to definition, opens areas by keyboard and by touch at 390px, follows saved pins and old fragments, and reads the Components directory at phone width.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser"
+  }
+}

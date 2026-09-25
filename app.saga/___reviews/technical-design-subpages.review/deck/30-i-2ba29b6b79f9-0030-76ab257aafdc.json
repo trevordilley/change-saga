@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-design-page",
+    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+  },
+  "version": 4,
+  "id": "routes",
+  "slide": "tdsp-review-pages",
+  "rank": 30,
+  "kind": "edge",
+  "label": "Area route and shell",
+  "description": "GET /technical/{area} routes only erd, systems and components; other segments are 404s. The landing page skips the reverse index and comparison newness that area and definition pages load.",
+  "selector": {
+    "type": "element",
+    "element_id": "routes"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 18,
+      "end": 19,
+      "digest": "sha256:da99293f79c2507f0e8a884a6da0a302218f651762f58035e858fa11b03bb5bd",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:e2b3eb9c79ba162af805741f4c10d6bd9e781fe87f5ce13cdb973dc475b27ed8",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:8e66b4522dfcee55e289e46e85b8c82ade8a0cf4f08e7ea9b78fc1407f03ee23",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:cd147f6c96eddea28c0b32346f30e2a5d5431b77fa4e59eccdfc64bb65d36b76",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 295,
+      "end": 299,
+      "digest": "sha256:e45405a9c4c541512e4ebc4f42243c45db9a77901d6180fc2d7406162d253425",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 301,
+      "end": 302,
+      "digest": "sha256:39f9081f3c5be94d61dfbafcb73c775c0db25907da6fa737835cb7503f27e63d",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 304,
+      "end": 306,
+      "digest": "sha256:041e492e34608820d659527270135c1c99e7b73530fff9869771868277269620",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 310,
+      "end": 315,
+      "digest": "sha256:d0eeabf8aaf0255734de4e5d21e5f21db448521d0a85fe895c7abe35cb2303c8",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 348,
+      "end": 349,
+      "digest": "sha256:4af0fe2ad525fb940f2457195614744472daff5e32b71aac634b299bbb8a1fce",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 571,
+      "end": 575,
+      "digest": "sha256:93293d24f8492fc31294f05d96f86c4d22a5977749b63e7e90ba3f808f8f3b4c",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 593,
+      "end": 593,
+      "digest": "sha256:c84ef2a35c5b800417f10c252cd91ce32a9a989c374ae25ee44b0e0306856c1a",
+      "note": "Removed: the single page's description, builder over every directory, jump-link template and its style."
+    }
+  ]
+}

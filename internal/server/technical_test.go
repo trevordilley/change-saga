@@ -54,25 +54,46 @@ func technicalGet(t *testing.T, mux http.Handler, path string) (int, string) {
 func TestTechnicalDesignPageListsDefinitionsWithoutInferringIntent(t *testing.T) {
 	root, repo := technicalFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
+	// The landing page names the areas and what each holds; it is not the
+	// directories themselves.
 	status, body := technicalGet(t, mux, "/technical")
 	if status != 200 {
 		t.Fatalf("technical page: %d %s", status, body)
 	}
 	for _, want := range []string{
-		`data-technical-page`, `data-technical-kind="system"`, `data-technical-kind="component"`,
-		`href="/technical/system/flags"`, `href="/technical/component/store"`, "FlagStore",
-		`<span class="directory-gap">unspecified</span>`, `data-technical-data-model`,
-		`data-directory-target="urn:change-saga:test:system:flags"`,
+		`data-technical-page="landing"`, `data-technical-area="systems"`, `href="/technical/systems">Systems</a><span class="overview-part-count">1 System</span>`,
+		`href="/technical/components">Components</a><span class="overview-part-count">2 Components</span>`,
+		`href="/technical/erd">ERD</a>`, "No data model yet.",
 	} {
 		if !strings.Contains(body, want) {
-			t.Fatalf("technical page lost %s: %s", want, body)
+			t.Fatalf("technical landing lost %s: %s", want, body)
 		}
 	}
-	// The sidebar reaches every definition from the overview.
-	if !strings.Contains(body, `href="/technical"`) || !strings.Contains(body, `nav-technical`) {
-		t.Fatal("sidebar lost Technical design")
+	for _, unwanted := range []string{`data-technical-kind=`, `data-directory=`, `data-technical-data-model`} {
+		if strings.Contains(body, unwanted) {
+			t.Fatalf("technical landing still renders %s", unwanted)
+		}
 	}
-	status, body = technicalGet(t, mux, "/technical?q=reader")
+	status, body = technicalGet(t, mux, "/technical/systems")
+	for _, want := range []string{
+		`data-technical-page="systems"`, `data-technical-kind="system"`, `href="/technical/system/flags"`,
+		`<span class="directory-gap">unspecified</span>`, `data-directory-target="urn:change-saga:test:system:flags"`,
+		`<a href="/technical">Technical design</a><span>/</span><strong>Systems</strong>`, `action="/technical/systems"`,
+	} {
+		if status != 200 || !strings.Contains(body, want) {
+			t.Fatalf("systems page lost %s: %d %s", want, status, body)
+		}
+	}
+	if strings.Contains(body, `data-technical-kind="component"`) {
+		t.Fatal("systems page lists Components")
+	}
+	status, body = technicalGet(t, mux, "/technical/components")
+	for _, want := range []string{`data-technical-kind="component"`, `href="/technical/component/store"`, "FlagStore", `action="/technical/components"`} {
+		if status != 200 || !strings.Contains(body, want) {
+			t.Fatalf("components page lost %s: %d %s", want, status, body)
+		}
+	}
+	status, body = technicalGet(t, mux, "/technical/components?q=reader")
 	if status != 200 || !strings.Contains(body, `data-directory-row="store" data-directory-text=`) || !strings.Contains(body, `hidden data-directory-row="store"`) {
 		t.Fatalf("server filter did not hide non-matching rows: %s", body)
 	}
@@ -143,7 +164,7 @@ func TestTechnicalEntityPageNamesCompetingHeads(t *testing.T) {
 	if status != 200 || !strings.Contains(body, `data-technical-pin-status="conflicted"`) || !strings.Contains(body, "<h1>BranchStore</h1>") {
 		t.Fatalf("conflicted pin: %d %s", status, body)
 	}
-	status, body = technicalGet(t, mux, "/technical")
+	status, body = technicalGet(t, mux, "/technical/components")
 	if status != 200 || !strings.Contains(body, "2 competing revisions") {
 		t.Fatalf("directory hid the conflict: %s", body)
 	}
@@ -205,11 +226,11 @@ func TestTechnicalNewnessNeedsANamedComparison(t *testing.T) {
 	serverGit(t, repo, "commit", "-m", "cache")
 
 	observing := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
-	if _, body := technicalGet(t, observing, "/technical"); strings.Contains(body, "Since ") || strings.Contains(body, "data-technical-newness") {
+	if _, body := technicalGet(t, observing, "/technical/components"); strings.Contains(body, "Since ") || strings.Contains(body, "data-technical-newness") {
 		t.Fatal("observing one commit claimed newness without a comparison")
 	}
 	comparing := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t), rng: gitdiff.Range{Against: "main"}})
-	status, body := technicalGet(t, comparing, "/technical")
+	status, body := technicalGet(t, comparing, "/technical/components")
 	if status != 200 || !strings.Contains(body, `data-technical-newness="true"`) || !strings.Contains(body, "Since main") {
 		t.Fatalf("comparison newness missing: %d %s", status, body)
 	}

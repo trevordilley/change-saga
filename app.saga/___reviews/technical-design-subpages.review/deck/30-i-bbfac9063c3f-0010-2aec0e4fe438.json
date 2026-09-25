@@ -1,0 +1,19 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-design-page",
+    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+  },
+  "version": 4,
+  "id": "addresses",
+  "slide": "tdsp-review-nav",
+  "rank": 10,
+  "kind": "callout",
+  "label": "Addresses kept",
+  "description": "Definition pages keep /technical/{kind}/{id} and ?revision= pins; a definition's view records its area so the breadcrumb passes through it, and the old section ids now mark the landing page's areas.",
+  "selector": {
+    "type": "element",
+    "element_id": "addresses"
+  },
+  "about": "sidebar",
+  "body": "Definition URLs and saved pins never moved; old #fragments land on their area."
+}

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_nav_test.go",
+      "digest": "sha256:c870918e4be05cb5c164414dd6f8eedcaa5a765417f69308c7fe79e6864d0777",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_nav_test.go",
+      "start": 1,
+      "end": 142,
+      "digest": "sha256:c870918e4be05cb5c164414dd6f8eedcaa5a765417f69308c7fe79e6864d0777",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    }
+  ]
+}

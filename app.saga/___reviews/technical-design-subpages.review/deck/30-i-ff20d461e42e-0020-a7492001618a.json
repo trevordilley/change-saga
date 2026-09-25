@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "saga",
+  "slide": "tdsp-review-proof",
+  "rank": 20,
+  "kind": "statement",
+  "label": "Saga and implementation note",
+  "description": "The implementation note records the tree, kept addresses, where design chapters live, checks and reconcile results; the new slide and revised definitions are explained on the implementation slide.",
+  "selector": {
+    "type": "element",
+    "element_id": "saga"
+  },
+  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-areas"
+}

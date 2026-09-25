@@ -367,6 +367,7 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /flags", application.page)
 	mux.HandleFunc("GET /design-system", application.page)
 	mux.HandleFunc("GET /technical/{kind}/{id}", application.page)
+	mux.HandleFunc("GET /technical/{area}", application.page)
 	mux.HandleFunc("GET /technical", application.page)
 	mux.HandleFunc("GET /features/{feature}", application.page)
 	mux.HandleFunc("GET /features", application.page)
@@ -939,6 +940,10 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "designsystem"}, true
 	case path == technicalPath:
 		return appRoute{kind: "technical"}, true
+	case strings.HasPrefix(path, technicalPath+"/") && r.PathValue("area") != "":
+		if _, ok := technicalAreaOf(r.PathValue("area"), ""); ok {
+			return appRoute{kind: "technical-area", id: r.PathValue("area")}, true
+		}
 	case strings.HasPrefix(path, technicalPath+"/") && r.PathValue("kind") != "" && r.PathValue("id") != "":
 		return appRoute{kind: "technical-entity", id: r.PathValue("kind"), sub: r.PathValue("id")}, true
 	case path == "/features":
@@ -1065,7 +1070,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if len(designRoot.Fragments)+len(designRoot.Children) > 0 {
 			data.DesignSystem = makeSectionView(&designRoot, scope.shell())
 		}
-	case "technical", "technical-entity":
+	case "technical", "technical-area", "technical-entity":
 		if data.Technical, data.TechnicalEntity, err = a.technicalShell(r.Context(), document, route, r.URL.Query()); err != nil {
 			if errors.Is(err, errTechnicalNotFound) {
 				return nil, errAppPageNotFound
@@ -1135,7 +1140,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		// not there. Every such link opens the overview instead.
 		rootNavLinks(data.Nav)
 		if !data.TermsMode {
-			markActiveNav(data.Nav, r.URL.Path)
+			markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
 		}
 	}
 	if data.EmbeddedDecks {

@@ -1,0 +1,18 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-design-page",
+    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+  },
+  "version": 4,
+  "id": "sidebar",
+  "slide": "tdsp-review-nav",
+  "rank": 0,
+  "kind": "region",
+  "label": "Nested sidebar sections",
+  "description": "Technical design's flat list of every definition becomes ERD, Systems and Components sections built with navSection. The current row is marked and its ancestors open; ERD and overlay pages mark the ERD row.",
+  "selector": {
+    "type": "element",
+    "element_id": "sidebar"
+  },
+  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-areas"
+}

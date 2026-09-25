@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "go-tests",
+  "slide": "tdsp-review-proof",
+  "rank": 0,
+  "kind": "example",
+  "label": "Go tests",
+  "description": "A new navigation test checks open and current rows on nine Technical design pages, breadcrumbs, old fragments and unknown areas; existing tests read the landing and area pages.",
+  "selector": {
+    "type": "element",
+    "element_id": "go-tests"
+  }
+}

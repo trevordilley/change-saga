@@ -365,7 +365,7 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 	return view
 }
 
-// ----- The Technical design page's data model -----
+// ----- The ERD page's data model -----
 
 type technicalDataModelView struct {
 	// Primary is the application's ERD, when one is authored: the one named
@@ -377,7 +377,7 @@ type technicalDataModelView struct {
 
 func (a *app) technicalDataModel(inventory requirements.Inventory, usages technicalUsageIndex, newness *technicalNewness, query string) *technicalDataModelView {
 	view := &technicalDataModelView{Entities: &directoryView{
-		ID: "technical-entities", Title: "Data entities", Action: technicalPath,
+		ID: "technical-entities", Title: "Data entities", Action: technicalPath + "/erd",
 		Label: "Filter data entities", Noun: "data entity", Nouns: "data entities",
 		Columns: []directoryColumn{{Title: "Data entity"}, {Title: "Purpose", Wide: true}, {Title: "Intent"}, {Title: "Held by"}, {Title: "Relationships", Numeric: true}, {Title: "Used by Items", Numeric: true}},
 		Empty:   "No data entities yet.",

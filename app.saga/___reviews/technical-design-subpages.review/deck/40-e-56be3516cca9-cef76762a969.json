@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_erd_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:79d1a643610e76943f03305aca96f03128f4f439e09202add0f96db2263d3e80",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_erd_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:2d2473c71981a5c68d81a87e8a3c5e6ee90284a9db33c4ecab5fba19a2e8be9b",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_erd_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:a3bbcc4c5ff0e48c8a99ceca51d6f7e96d9e3f15eb35d907a210c6f73bdbd8c4",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_erd_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:3ecdfd2c21f6e4826efbc86ad36952123a57ace845730f27dc7c7b9c84b59555",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    }
+  ]
+}

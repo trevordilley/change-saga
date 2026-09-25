@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:component:authored-erd-view",
+  "parents": [
+    "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+  ],
+  "name": "Authored ERD view",
+  "explanation": "Draws an ERD revision's own offline drawing as authored, re-serialized from an allowlist with ids namespaced to the view, binds only declared elements to their pinned entities, and lists the whole directory with drawn and not-drawn membership. Overlays compose over their exact baseline revision.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "72844c8c991ab545a05eeab2773577606e021279"
+  },
+  "code": [
+    {
+      "id": "technical-erd-247",
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "path": "internal/server/technical_erd.go",
+      "start": 247,
+      "end": 366,
+      "digest": "sha256:6c6efc8740469b843695ebc15586f3beb10555767b05e202f5309516c3b8652c",
+      "note": "Composes overlays over the exact baseline ERD revision, refuses a drawing that fails validation or the allowlist, and binds directory rows and drawn elements to the same pins."
+    },
+    {
+      "id": "technical-svg-53",
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "path": "internal/server/technical_svg.go",
+      "start": 53,
+      "end": 161,
+      "digest": "sha256:632beb4d1a0fe6a82ea49b44f78d4f03ddfef3b4b4bd70d9f1b9138fef2eb77c",
+      "note": "Re-serializes the drawing from XML tokens, keeping only static drawing elements, presentation attributes and fragment links, and refuses anything else."
+    }
+  ],
+  "created_at": "2026-09-25T06:26:23.602227Z"
+}

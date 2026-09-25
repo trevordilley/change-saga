@@ -1,0 +1,18 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:technical-design-page",
+    "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+  },
+  "version": 4,
+  "id": "landing",
+  "slide": "tdsp-review-pages",
+  "rank": 10,
+  "kind": "node",
+  "label": "Landing page",
+  "description": "/technical now names the ERD, Systems and Components areas with counts, or the command that starts an empty one, and renders no directory.",
+  "selector": {
+    "type": "element",
+    "element_id": "landing"
+  },
+  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-areas"
+}

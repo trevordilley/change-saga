@@ -1,0 +1,102 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/system-revision.schema.json",
+  "version": 5,
+  "id": "r3",
+  "record": "urn:change-saga:change-saga:system:technical-design-ui",
+  "parents": [
+    "urn:change-saga:change-saga:system:technical-design-ui:revision:r2"
+  ],
+  "name": "Technical Design UI",
+  "explanation": "The reviewer's Technical Design surface: a landing page over the ERD, Systems and Components pages, canonical definition pages, the authored ERD view, and the slide drawer that opens a pinned definition with the Item's exact selections. Each part reads saved revisions; none repins, approves or grants coverage by linking.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "72844c8c991ab545a05eeab2773577606e021279"
+  },
+  "code": [
+    {
+      "id": "entry",
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "path": "internal/server/technical.go",
+      "start": 661,
+      "end": 682,
+      "digest": "sha256:8b975957675b9ab8d0fa7a0eae64207a8bdd227c193b41bb62294730b64dea45",
+      "note": "One entry point loads the inventory for the page being read: the landing page counts records only, while area and definition pages add the shared reverse index and comparison newness."
+    }
+  ],
+  "components": [
+    {
+      "target": "urn:change-saga:change-saga:component:technical-design-page",
+      "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:authored-erd-view",
+      "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+      "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "revision": "urn:change-saga:change-saga:component:technical-explanation-drawer:revision:r3"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "draw-data-model",
+      "from": "urn:change-saga:change-saga:component:technical-design-page",
+      "to": "urn:change-saga:change-saga:component:authored-erd-view",
+      "description": "The ERD page draws the application ERD, the one named application or else the first, at its current revision.",
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "draw-data-model",
+          "commit": "72844c8c991ab545a05eeab2773577606e021279",
+          "path": "internal/server/technical_erd.go",
+          "start": 434,
+          "end": 436,
+          "digest": "sha256:e3afb27c8b2f5a85898a259960280a7f96120a90de52ae90adc8528dc72b2ae0",
+          "note": "The ERD page asks the ERD view to render the primary ERD's current revision."
+        }
+      ]
+    },
+    {
+      "id": "open-full-page",
+      "from": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "to": "urn:change-saga:change-saga:component:technical-design-page",
+      "description": "The drawer links the exact revision's canonical page and loads usages on request.",
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "open-full-page",
+          "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+          "path": "internal/server/inventory.go",
+          "start": 155,
+          "end": 158,
+          "digest": "sha256:3e80a9903e172d085dfe84a562abeeb71d204f3f6a96f8873499dcfaf8bc00f7",
+          "note": "The drawer sets the pinned page link and the lazy usages request."
+        }
+      ]
+    },
+    {
+      "id": "show-selections",
+      "from": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "to": "urn:change-saga:change-saga:component:item-selection-drawer",
+      "description": "Opened from a slide Item, the drawer shows that Item's selections before the definition's complete code.",
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "show-selections",
+          "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+          "path": "internal/server/inventory.go",
+          "start": 159,
+          "end": 161,
+          "digest": "sha256:c005fde920514ed02d38aa480bde6ad5ec1b64e1afabb7da08637d5a54caa1a1",
+          "note": "Only a request naming the Item resolves its selections."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T06:26:32.449779Z"
+}

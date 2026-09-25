@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "tdsp-review-proof",
+  "deck": "technical-design-subpages",
+  "title": "How the change is checked and documented",
+  "rank": 20,
+  "intent": "prove",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-4dd258840e40-0020-ff20d461e42e.svg",
+  "takeaway": "Go and browser tests pin the tree and old addresses; the Saga explains the tree and repins only what this change made stale.",
+  "reading_order": [
+    "go-tests",
+    "browser",
+    "saga"
+  ]
+}

@@ -15,8 +15,20 @@ import (
 
 // Technical design is the overview's shared technical vocabulary: the Systems,
 // Components, and data model that implementation and review decks reuse by
-// identity. It is one page with a directory per kind, and one canonical page
-// per definition. Both are read-only documentation.
+// identity. It is read as a small tree of pages, the same tree the sidebar
+// draws:
+//
+//	/technical              a landing page naming the three areas
+//	/technical/erd          the application ERD drawn, its other views, and
+//	                        every data entity
+//	/technical/systems      the directory of Systems
+//	/technical/components   the directory of Components
+//
+// and one canonical page per definition, /technical/{kind}/{id}, which
+// slides, drawers and reviews link to and which never moved. A definition
+// sits beneath the area of its kind: data entities, ERDs and overlays beneath
+// the ERD, Systems and Components beneath theirs. Every page is read-only
+// documentation.
 //
 // A definition page renders an exact revision. With no revision named it shows
 // the unique current revision; with competing heads it names every head and
@@ -30,6 +42,38 @@ import (
 // needs a named comparison, which this page does not have.
 
 const technicalPath = "/technical"
+
+// technicalArea is one of Technical design's three areas: its path segment,
+// its title, and the definition kinds that sit beneath it.
+type technicalArea struct {
+	Segment, Title, Lede string
+	Kinds                []string
+}
+
+var technicalAreas = []technicalArea{
+	{Segment: "erd", Title: "ERD", Lede: "The application's data model: the authored ERD, its other views, and every data entity with its fields, holders and relationships.",
+		Kinds: []string{requirements.KindDataEntity, requirements.KindERD, requirements.KindERDOverlay}},
+	{Segment: "systems", Title: "Systems", Lede: "How Components interact and how data flows through them.", Kinds: []string{"system"}},
+	{Segment: "components", Title: "Components", Lede: "Identifiable units of logic or transformation, reused by identity across decks.", Kinds: []string{"component"}},
+}
+
+// technicalAreaOf finds an area by its path segment, or by a definition kind
+// beneath it.
+func technicalAreaOf(segment, kind string) (technicalArea, bool) {
+	for _, area := range technicalAreas {
+		if area.Segment == segment && segment != "" {
+			return area, true
+		}
+		for _, candidate := range area.Kinds {
+			if candidate == kind && kind != "" {
+				return area, true
+			}
+		}
+	}
+	return technicalArea{}, false
+}
+
+func (area technicalArea) Href() string { return technicalPath + "/" + area.Segment }
 
 var errTechnicalNotFound = errors.New("technical definition not found")
 
@@ -265,9 +309,14 @@ func technicalRoleTitle(role string) string {
 	return role
 }
 
-// ----- The Technical design page -----
+// ----- The Technical design pages -----
 
+// technicalPageView is the landing page when Area is empty, and otherwise one
+// area's page. Only the area being read is built.
 type technicalPageView struct {
+	Area technicalArea
+	// Areas are the landing page's three areas, each with what it holds.
+	Areas      []technicalAreaView
 	Systems    *directoryView
 	Components *directoryView
 	// DataModel is the application's ERD, its other views, and every data
@@ -278,9 +327,17 @@ type technicalPageView struct {
 	Newness *technicalNewness
 }
 
-func technicalDirectory(id, title, lede, noun, nouns, command string) *directoryView {
+// technicalAreaView is one area on the landing page. Anchor keeps the
+// fragment the area had when the whole of Technical design was one page, so
+// an old link to it still lands on the area.
+type technicalAreaView struct {
+	overviewPartView
+	Segment, Anchor string
+}
+
+func technicalDirectory(id, title, lede, noun, nouns, command, action string) *directoryView {
 	return &directoryView{
-		ID: id, Title: title, Action: technicalPath, Lede: lede,
+		ID: id, Title: title, Action: action, Lede: lede,
 		Label: "Filter " + nouns, Noun: noun, Nouns: nouns,
 		Columns: []directoryColumn{
 			{Title: title[:len(title)-1]}, {Title: "Explanation", Wide: true},
@@ -292,27 +349,75 @@ func technicalDirectory(id, title, lede, noun, nouns, command string) *directory
 	}
 }
 
-func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUsageIndex, newness *technicalNewness, query string) *technicalPageView {
-	view := &technicalPageView{
-		Systems:    technicalDirectory("technical-systems", "Systems", "How Components interact and how data flows through them.", "System", "Systems", "change-saga system add"),
-		Components: technicalDirectory("technical-components", "Components", "Identifiable units of logic or transformation, reused by identity across decks.", "Component", "Components", "change-saga component add"),
-		Query:      query,
-	}
-	view.DataModel = a.technicalDataModel(inventory, usages, newness, query)
-	view.Newness = newness
-	if newness != nil {
-		for _, directory := range []*directoryView{view.Systems, view.Components} {
-			directory.Columns = append(directory.Columns, directoryColumn{Title: "Since " + newness.Against})
+// technicalLanding names the three areas with what each holds. It counts
+// records only; nothing resolves.
+func technicalLanding(inventory requirements.Inventory) []technicalAreaView {
+	systems, components, entities := technicalCount(inventory)
+	erds, overlays, erdName := 0, 0, ""
+	for _, record := range inventory.Records {
+		switch record.Kind {
+		case requirements.KindERD:
+			erds++
+			if record.CurrentRevision != nil && (erdName == "" || record.Identity.ID == "application") {
+				erdName = record.CurrentRevision.Name
+			}
+		case requirements.KindERDOverlay:
+			overlays++
 		}
+	}
+	erdCount := plural(entities, "data entity", "data entities") + " · " + plural(erds, "ERD", "ERDs")
+	if overlays > 0 {
+		erdCount += " · " + plural(overlays, "overlay", "overlays")
+	}
+	erdNote := technicalAreas[0].Lede
+	if erdName != "" {
+		erdNote = erdName + ", drawn as authored, and every data entity with its fields, holders and relationships."
+	}
+	areas := []technicalAreaView{
+		{overviewPartView: overviewPartView{Title: "ERD", Count: erdCount, Note: erdNote, Gap: entities+erds+overlays == 0}, Segment: "erd", Anchor: "technical-data-model"},
+		{overviewPartView: overviewPartView{Title: "Systems", Count: plural(systems, "System", "Systems"), Note: technicalAreas[1].Lede, Gap: systems == 0}, Segment: "systems", Anchor: "technical-systems-section"},
+		{overviewPartView: overviewPartView{Title: "Components", Count: plural(components, "Component", "Components"), Note: technicalAreas[2].Lede, Gap: components == 0}, Segment: "components", Anchor: "technical-components-section"},
+	}
+	for index := range areas {
+		areas[index].Href = technicalPath + "/" + areas[index].Segment
+	}
+	if areas[0].Gap {
+		areas[0].Note = "No data model yet. Run change-saga data-entity add to record a data entity."
+	}
+	if areas[1].Gap {
+		areas[1].Note = "No Systems yet. Run change-saga system add to record how Components interact."
+	}
+	if areas[2].Gap {
+		areas[2].Note = "No Components yet. Run change-saga component add to record a reusable Component."
+	}
+	return areas
+}
+
+func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUsageIndex, newness *technicalNewness, segment, query string) *technicalPageView {
+	view := &technicalPageView{Query: query, Newness: newness}
+	if segment == "" {
+		view.Areas = technicalLanding(inventory)
+		return view
+	}
+	view.Area, _ = technicalAreaOf(segment, "")
+	var directory *directoryView
+	switch segment {
+	case "erd":
+		view.DataModel = a.technicalDataModel(inventory, usages, newness, query)
+		return view
+	case "systems":
+		view.Systems = technicalDirectory("technical-systems", "Systems", view.Area.Lede, "System", "Systems", "change-saga system add", view.Area.Href())
+		directory = view.Systems
+	case "components":
+		view.Components = technicalDirectory("technical-components", "Components", view.Area.Lede, "Component", "Components", "change-saga component add", view.Area.Href())
+		directory = view.Components
+	}
+	if newness != nil {
+		directory.Columns = append(directory.Columns, directoryColumn{Title: "Since " + newness.Against})
 	}
 	for index := range inventory.Records {
 		record := &inventory.Records[index]
-		directory := view.Components
-		switch record.Kind {
-		case "system":
-			directory = view.Systems
-		case "component":
-		default:
+		if area, _ := technicalAreaOf("", record.Kind); area.Segment != segment || record.Kind == requirements.KindDataEntity {
 			continue
 		}
 		name, explanation, codeCount := record.Identity.ID, "", 0
@@ -345,8 +450,7 @@ func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUs
 		}
 		directory.addRow(directoryRow{Key: record.Identity.ID, Cells: cells})
 	}
-	view.Systems.apply(query)
-	view.Components.apply(query)
+	directory.apply(query)
 	return view
 }
 
@@ -390,45 +494,78 @@ func technicalOverviewPart(inventory requirements.Inventory) overviewPartView {
 	return part
 }
 
-// technicalNav is the sidebar's Technical design rows: Systems, then
-// Components, one row per definition opening its canonical page.
+// technicalNav is the sidebar's Technical design rows: its three areas, each
+// a section that opens its own page and discloses one row per definition
+// beneath it. The ERD lists its data entities; its ERDs and overlays are
+// reached from the ERD page, which is the row current while one is read. An
+// area with nothing in it is omitted, as every empty section is.
 func technicalNav(inventory requirements.Inventory) []*navNodeView {
 	var nodes []*navNodeView
-	for _, kind := range []string{"system", "component", requirements.KindERD, requirements.KindERDOverlay, requirements.KindDataEntity} {
-		for _, record := range inventory.Records {
-			if record.Kind != kind {
-				continue
+	for _, area := range technicalAreas {
+		var rows []*navNodeView
+		holds := false
+		for _, kind := range area.Kinds {
+			for _, record := range inventory.Records {
+				if record.Kind != kind {
+					continue
+				}
+				holds = true
+				if kind == requirements.KindERD || kind == requirements.KindERDOverlay {
+					continue
+				}
+				rows = append(rows, technicalNavRow(record))
 			}
-			title := record.Identity.ID
-			if record.CurrentRevision != nil {
-				title = record.CurrentRevision.Name
-			}
-			node := &navNodeView{Title: title, Href: technicalHref(kind, record.Identity.ID, ""), NodeID: "nav-" + domID(record.Target), Icon: "implementation"}
-			switch kind {
-			case "system":
-				node.Icon = "design"
-			case requirements.KindERD, requirements.KindERDOverlay:
-				node.Icon = "split"
-			case requirements.KindDataEntity:
-				node.Icon = "square"
-			}
-			switch {
-			case record.CurrentRevision == nil || record.CurrentLifecycle == nil:
-				node.Gap, node.Note = true, "conflicted"
-			case record.CurrentLifecycle.State == "retired":
-				node.Note = "retired"
-			}
-			nodes = append(nodes, node)
 		}
+		if !holds {
+			continue
+		}
+		icon := map[string]string{"erd": "split", "systems": "design", "components": "implementation"}[area.Segment]
+		nodes = append(nodes, navSection(area.Title, area.Href(), "nav-technical-"+area.Segment, icon, rows))
 	}
 	return nodes
+}
+
+// technicalNavRow is one definition, opening its canonical page.
+func technicalNavRow(record requirements.TechnicalRecord) *navNodeView {
+	title := record.Identity.ID
+	if record.CurrentRevision != nil {
+		title = record.CurrentRevision.Name
+	}
+	node := &navNodeView{Title: title, Href: technicalHref(record.Kind, record.Identity.ID, ""), NodeID: "nav-" + domID(record.Target), Icon: "implementation"}
+	switch record.Kind {
+	case "system":
+		node.Icon = "design"
+	case requirements.KindDataEntity:
+		node.Icon = "square"
+	}
+	switch {
+	case record.CurrentRevision == nil || record.CurrentLifecycle == nil:
+		node.Gap, node.Note = true, "conflicted"
+	case record.CurrentLifecycle.State == "retired":
+		node.Note = "retired"
+	}
+	return node
+}
+
+// technicalNavPath is the sidebar row a technical page marks current: its
+// own row, or, for a definition the sidebar lists no row for (an ERD or an
+// overlay), the area it sits beneath.
+func technicalNavPath(route appRoute, path string) string {
+	if route.kind == "technical-entity" && (route.id == requirements.KindERD || route.id == requirements.KindERDOverlay) {
+		if area, ok := technicalAreaOf("", route.id); ok {
+			return area.Href()
+		}
+	}
+	return path
 }
 
 // ----- One definition -----
 
 type technicalEntityView struct {
 	Kind, KindTitle, ID, Target string
-	Name                        string
+	// Area is the part of Technical design the definition sits beneath.
+	Area technicalArea
+	Name string
 	// Revision is the exact revision shown, and Requested whether a pin
 	// named it rather than the current definition.
 	Revision  string
@@ -467,6 +604,7 @@ func (a *app) technicalEntityPage(ctx context.Context, inventory requirements.In
 		return nil, errTechnicalNotFound
 	}
 	view := &technicalEntityView{Kind: kind, KindTitle: technicalKindTitle(kind), ID: id, Target: target, Name: id, Lifecycle: technicalLifecycle(record), Requested: revisionID != ""}
+	view.Area, _ = technicalAreaOf("", kind)
 	current := ""
 	if record.CurrentRevision != nil {
 		current = record.CurrentRevision.ID
@@ -520,16 +658,20 @@ func technicalKindTitle(kind string) string {
 	return strings.ToUpper(kind[:1]) + kind[1:]
 }
 
-// technicalRequest serves the page's routes inside the app shell.
+// technicalShell serves the pages' routes inside the app shell.
 func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route appRoute, query url.Values) (*technicalPageView, *technicalEntityView, error) {
 	inventory, err := requirements.LoadInventory(a.root, document.Manifest.ID)
 	if err != nil {
 		return nil, nil, err
 	}
+	if route.kind == "technical" {
+		// The landing page counts records; it resolves no usage or newness.
+		return a.technicalPage(inventory, technicalUsageIndex{}, nil, "", ""), nil, nil
+	}
 	usages := indexTechnicalUsages(document, inventory)
 	newness := a.comparisonNewness(ctx, document.Manifest)
-	if route.kind == "technical" {
-		return a.technicalPage(inventory, usages, newness, query.Get("q")), nil, nil
+	if route.kind == "technical-area" {
+		return a.technicalPage(inventory, usages, newness, route.id, query.Get("q")), nil, nil
 	}
 	entity, err := a.technicalEntityPage(ctx, inventory, usages, route.id, route.sub, query.Get("revision"))
 	if entity != nil && newness != nil {
@@ -568,14 +710,18 @@ func (a *app) technicalUsagesPage(w http.ResponseWriter, r *http.Request) {
 const technicalTemplates = `
 {{define "technical-usages"}}<div class="technical-usages" data-technical-usages="{{.Target}}">{{if .Usages}}<p class="technical-usage-count">{{if .Incomplete}}At least {{end}}{{.Items}} {{if eq .Items 1}}slide Item uses{{else}}slide Items use{{end}} this definition{{if lt .Current .Items}}; {{.Current}} pin its current revision directly{{end}}. {{.Total}} declared {{if eq .Total 1}}use{{else}}uses{{end}} in all{{if .Incomplete}}; the reverse index stopped early, so these are lower bounds{{end}}.</p><ul class="trace-links technical-usage-list">{{range .Usages}}<li data-technical-usage="{{if .Target}}{{.Target}}{{else}}{{.Owner}}{{end}}" data-usage-role="{{.Role}}" data-usage-status="{{.Status}}">{{if .Context}}{{if .Href}}<a href="{{.Href}}" data-usage-item="{{.Target}}">{{.Item}}</a>{{else}}<span>{{.Item}}</span>{{end}} <small class="trace-kind">{{.Context}} Item</small><small class="trace-note">{{if .Feature}}<a href="{{.FeatureHref}}">{{.Feature}}</a> · {{end}}{{if .Review}}<a href="{{.ReviewHref}}">{{.Review}}</a> · {{end}}{{.Deck}} · {{.Slide}}</small>{{else}}<small class="trace-kind">{{roleTitle .Role}}</small> <a href="{{.OwnerHref}}">{{.Owner}}</a>{{if .Edge}} <small class="trace-note">{{.Edge}}</small>{{end}}{{if not .OwnerCurrent}} <small class="gap">an earlier revision of it</small>{{end}}{{end}}<small class="technical-pin">pins <a href="{{.PinHref}}"><code>{{.Pin.Revision}}</code></a>{{if ne .Status "current"}} · <span class="gap">{{.Status}}</span>{{end}}</small>{{if .Via}}<small class="technical-via">through {{range $i, $v := .Via}}{{if $i}} → {{end}}<a href="{{$v.Href}}">{{$v.Title}}</a>{{end}}</small>{{end}}{{if .Description}}<p class="trace-rationale">{{.Description}}</p>{{end}}</li>{{end}}</ul>{{if .Truncated}}<p class="gap" role="status">{{.Truncated}} more uses are not listed here.</p>{{end}}{{if .DepthCut}}<p class="term-empty">Owners further up are not listed here; open an owner to follow it.</p>{{end}}{{else}}<p class="term-empty">{{if .Incomplete}}The reverse index stopped before finding a use; this is unknown, not unused.{{else}}No declared use: no slide Item, System, holder, relationship or ERD pins this definition.{{end}}</p>{{end}}</div>{{end}}
 
-{{define "technical-page"}}<section class="app-page technical-page" data-technical-page><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1>{{with .Newness}}<p class="technical-newness" data-technical-newness="{{.Known}}">Compared against <code>{{.Against}}</code>: “new” means the identity did not exist at the comparison's base{{if not .Known}}. The base inventory is unknown: {{.Reason}}{{end}}.</p>{{end}}<p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
-<nav class="technical-jump" aria-label="Technical design sections"><a href="#technical-systems-section">Systems</a><a href="#technical-components-section">Components</a><a href="#technical-data-model">Data model</a></nav>
-<section class="app-page-section" id="technical-systems-section" data-technical-kind="system"><h2>Systems</h2><p class="app-lede">{{.Systems.Lede}}</p>{{template "directory" .Systems}}</section>
-<section class="app-page-section" id="technical-components-section" data-technical-kind="component"><h2>Components</h2><p class="app-lede">{{.Components.Lede}}</p>{{template "directory" .Components}}</section>
-<section class="app-page-section" id="technical-data-model" data-technical-data-model><h2>Data model</h2>{{with .DataModel}}{{with .Primary}}<h3><a href="/technical/erd/{{.ID}}">{{.Name}}</a></h3><p class="app-lede">{{.Explanation}}</p>{{template "erd-view" .}}{{else}}<p class="app-empty">No ERD is authored yet. The data entities below remain readable without one.</p>{{end}}{{if .Views}}<h3>ERD views</h3>{{template "trace-links" .Views}}{{end}}<h3>All data entities</h3>{{template "directory" .Entities}}{{end}}</section>
+{{define "technical-newness"}}{{with .}}<p class="technical-newness" data-technical-newness="{{.Known}}">Compared against <code>{{.Against}}</code>: “new” means the identity did not exist at the comparison's base{{if not .Known}}. The base inventory is unknown: {{.Reason}}{{end}}.</p>{{end}}{{end}}
+
+{{define "technical-page"}}{{if .Area.Segment}}{{template "technical-area-page" .}}{{else}}<section class="app-page technical-page" data-technical-page="landing"><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1><p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
+<ul class="overview-parts technical-areas" aria-label="Technical design areas">{{range .Areas}}<li class="overview-part{{if .Gap}} gap{{end}}" id="{{.Anchor}}" data-technical-area="{{.Segment}}"><a class="overview-part-link" href="{{.Href}}">{{.Title}}</a><span class="overview-part-count">{{.Count}}</span><p class="overview-part-note">{{.Note}}</p></li>{{end}}</ul>
+</section>{{end}}{{end}}
+
+{{define "technical-area-page"}}<section class="app-page technical-page technical-area-page" data-technical-page="{{.Area.Segment}}"><nav class="requirements-breadcrumbs" aria-label="{{.Area.Title}} breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span><strong>{{.Area.Title}}</strong></nav><header class="page-heading"><p class="app-page-kind">Technical design</p><h1>{{.Area.Title}}</h1>{{template "technical-newness" .Newness}}<p class="app-lede">{{.Area.Lede}}</p></header>
+{{with .Systems}}<div data-technical-kind="system">{{template "directory" .}}</div>{{end}}{{with .Components}}<div data-technical-kind="component">{{template "directory" .}}</div>{{end}}
+{{with .DataModel}}<div data-technical-data-model>{{with .Primary}}<section class="app-page-section" data-technical-primary-erd><h2>{{.Name}}</h2><p class="app-lede">{{.Explanation}}</p><p class="documentation-page-link"><a href="/technical/erd/{{.ID}}">Revision {{.Revision}}, its history and where it is used</a></p>{{template "erd-view" .}}</section>{{else}}<p class="app-empty">No ERD is authored yet. The data entities below remain readable without one.</p>{{end}}{{if .Views}}<section class="app-page-section" data-technical-erd-views><h2>{{if .Primary}}Other ERD views{{else}}ERD views{{end}}</h2><p class="term-empty">Other authored ERDs, and overlays proposing changes over an exact baseline revision.</p>{{template "trace-links" .Views}}</section>{{end}}<section class="app-page-section" data-technical-entities><h2>All data entities</h2>{{template "directory" .Entities}}</section></div>{{end}}
 </section>{{end}}
 
-{{define "technical-entity-page"}}<section class="app-page technical-entity-page" data-technical-entity="{{.Target}}"{{if .Revision}} data-technical-revision="{{.Revision}}"{{end}}><nav class="requirements-breadcrumbs" aria-label="Definition breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span><strong>{{.Name}}</strong></nav>
+{{define "technical-entity-page"}}<section class="app-page technical-entity-page" data-technical-entity="{{.Target}}"{{if .Revision}} data-technical-revision="{{.Revision}}"{{end}}><nav class="requirements-breadcrumbs" aria-label="Definition breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span>{{with .Area.Segment}}<a href="/technical/{{.}}">{{$.Area.Title}}</a><span>/</span>{{end}}<strong>{{.Name}}</strong></nav>
 <header class="requirement-story-hero"><div><p class="app-page-kind">{{.KindTitle}}</p><h1>{{.Name}}</h1><p class="technical-facts"><span data-technical-fact="revision">Revision <code>{{if .Revision}}{{.Revision}}{{else}}none chosen{{end}}</code></span>{{if not .ERD}}<span data-technical-fact="intent">Intent: {{if eq .Intent "unspecified"}}<span class="gap">unspecified</span>{{else if .Intent}}{{.Intent}}{{else}}<span class="gap">unknown</span>{{end}}</span>{{end}}{{if .NewnessAgainst}}<span data-technical-fact="newness" data-newness="{{.Newness}}">Since {{.NewnessAgainst}}: {{if eq .Newness "unknown"}}<span class="gap" title="{{.NewnessReason}}">unknown</span>{{else}}{{.Newness}}{{end}}</span>{{end}}<span data-technical-fact="lifecycle">Lifecycle: {{if eq .Lifecycle "conflicted"}}<span class="gap">conflicted</span>{{else}}{{.Lifecycle}}{{end}}</span></p>
 {{if and .Revision (ne .PinStatus "current")}}<p role="status" class="gap" data-technical-pin-status="{{.PinStatus}}">{{if .Requested}}You are reading saved revision <code>{{.Revision}}</code>. It is {{.PinStatus}}; nothing has been repinned.{{else}}This definition is {{.PinStatus}}.{{end}}{{if and .CurrentHref .Requested}} <a href="{{.CurrentHref}}">Read the current definition</a>{{end}}</p>{{end}}
 {{if gt (len .Heads) 1}}<div role="status" class="gap" data-technical-conflict><p>This definition has {{len .Heads}} competing revisions. None is chosen as current; reconciling them names every head.</p><ul>{{range .Heads}}<li><a href="{{.Href}}"{{if .Shown}} aria-current="page"{{end}}><code>{{.ID}}</code></a></li>{{end}}</ul></div>{{end}}
@@ -590,7 +736,8 @@ const technicalStyles = `
 .technical-entity-page .documentation-explanation{max-width:100%;overflow-x:auto}
 .technical-page .directory-table{min-width:640px}
 .technical-page .directory-filter{flex-wrap:wrap}
-.technical-jump{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 8px;font:500 13px var(--ui)}
+.technical-areas{margin-top:8px}
+.technical-areas .overview-part:target{outline:2px solid var(--accent);outline-offset:2px}
 .technical-facts{display:flex;flex-wrap:wrap;gap:4px 18px;margin:6px 0 0;color:var(--muted);font:13px var(--ui)}
 .technical-facts code{color:var(--ink)}
 .technical-usage-list small{display:inline-block;margin-right:8px}

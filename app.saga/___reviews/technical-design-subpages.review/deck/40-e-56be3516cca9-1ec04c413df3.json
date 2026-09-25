@@ -1,0 +1,125 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 57,
+      "end": 58,
+      "digest": "sha256:13a3be73249c3f088cce7097fe4263144e11f87a13926a0e5811af8d9f382a81",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 64,
+      "end": 66,
+      "digest": "sha256:5a696280fc628dda1e3845121c4f7fc736726cd054dea6f7756986ccccc744ea",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:4b30e54122c0bd51a8e65e9db7a5bdefcf96510dfa57b066d28d7095dd83729e",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 72,
+      "end": 94,
+      "digest": "sha256:28110a3bdf27e88c39d45bbe5c57fa36d11c263976406224c3161eb495459081",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:c25d6161e00761c1de9bae782bcbd20cbc10180367d819b24c2e8de2c0e8ce1f",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:655b03dd5a4787078b1a0ba2ec1459d08c8c569dbc2d9123f4477f902f642ccd",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:0bd8a272ebdd1889ecaefc00eafa49bf2d2f6e819ca656b65aca121f14e2196f",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:08f58a0c6f957e0b2a29db34cd29a2b0d5831b88c963fb9313c38600e9e5405a",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_test.go",
+      "start": 62,
+      "end": 65,
+      "digest": "sha256:47533c07fd48ed15e159b95401c9ffc9e5a372a32af65b58528cd8b51aa602be",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:a71d0a091ab657386800ae33c2a24a094bed15e52a9bd8e7edc2dacf8f31d1af",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_test.go",
+      "start": 71,
+      "end": 73,
+      "digest": "sha256:747bb8f9ae41a46a468160618e1c6e0012105f04752986f9bb19cb27a9240d6f",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:2f37766a93b002b799e654bdc5107d157b3c19faf45da7ec4eb98ee78f7e1edf",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:b88298c087e406142ba774131d2f1bd86be6d5a26f399286546cf2556a123aa7",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:1a08bf112ca8b3300c6a63628df15601a450a1fa01ba640773af5077636895dc",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:49cbbba5ea51ec5d117d2807b57af6aaacb0909efd1861b3ddbb1b5c31b39b6d",
+      "note": "Tests of the landing and area pages, the nested sidebar, breadcrumbs and old addresses."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">One page became a landing page and three areas</title><desc id="desc">Before, /technical held every directory and the whole data model; after, a landing page opens the ERD, Systems and Components pages.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">REVIEW · TECHNICAL DESIGN SUB-PAGES / 1</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">One page became a landing page and three areas</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Each area is built only when read; the landing page counts records and nothing more.</text>
+<g id="before"><rect x="60" y="185" width="380" height="345" rx="10" fill="#fdf1f1" stroke="#9e1f1f" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="80" y="215" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#9e1f1f" letter-spacing="1">BEFORE · /technical</text>
+<text x="80" y="248" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">One long page</text>
+<text x="80" y="282" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">jump links: Systems · Components · Data model</text>
+<text x="80" y="312" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">Systems directory</text>
+<text x="80" y="340" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">Components directory</text>
+<text x="80" y="368" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">application ERD, drawn</text>
+<text x="80" y="396" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">ERD views · all data entities</text>
+<text x="80" y="436" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">every directory and the usage index</text>
+<text x="80" y="458" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">were built on every visit, and one</text>
+<text x="80" y="480" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">filter reached all three directories</text>
+</g>
+<path d="M440 357L500 357" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="landing"><rect x="500" y="300" width="240" height="115" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="518" y="328" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">AFTER · /technical</text>
+<text x="518" y="358" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Landing page</text>
+<text x="518" y="388" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">three areas, counted</text>
+</g>
+<path d="M740 330L800 240" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M740 357L800 357" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<path d="M740 385L800 475" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="areas"><rect x="800" y="185" width="420" height="100" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="818" y="212" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">/technical/erd</text>
+<text x="818" y="242" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">ERD drawn · other views · all entities</text>
+<text x="818" y="268" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">its filter submits to /technical/erd</text>
+<rect x="800" y="307" width="420" height="100" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="818" y="334" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">/technical/systems</text>
+<text x="818" y="364" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">Systems directory only</text>
+<text x="818" y="390" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">newness column when comparing</text>
+<rect x="800" y="430" width="420" height="100" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="818" y="457" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">/technical/components</text>
+<text x="818" y="487" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">Components directory only</text>
+<text x="818" y="513" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">same shared directory table</text>
+</g>
+<g id="routes"><rect x="60" y="570" width="1160" height="96" rx="10" fill="#e6eef6"/>
+<text x="84" y="606" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">GET /technical/{area} is registered beside /technical/{kind}/{id}; only erd, systems and components</text>
+<text x="84" y="638" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">are areas, so any other single segment is a 404. The landing page skips the reverse index and newness.</text></g>
+</svg>

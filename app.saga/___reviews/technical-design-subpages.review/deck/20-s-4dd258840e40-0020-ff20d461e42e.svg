@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">How the change is checked and documented</title><desc id="desc">Go and browser tests cover the tree, pages and old addresses; the Saga explains the page tree and repins what moved.</desc>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">REVIEW · TECHNICAL DESIGN SUB-PAGES / 3</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">How the change is checked and documented</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Tests pin the tree and the addresses; the Saga repins only what the change made stale.</text>
+<g id="go-tests"><rect x="60" y="185" width="560" height="200" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="80" y="215" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">GO · internal/server</text>
+<text x="80" y="248" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">technical_nav_test.go (new)</text>
+<text x="80" y="280" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">open and current rows on nine pages</text>
+<text x="80" y="306" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">breadcrumbs through areas · old fragments · 404s</text>
+<text x="80" y="340" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">existing tests read the landing and area pages</text>
+<text x="80" y="366" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">all on testfixture.WriteInventoryFixture</text>
+</g>
+<g id="browser"><rect x="660" y="185" width="560" height="200" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="680" y="215" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">PLAYWRIGHT · e2e/tests</text>
+<text x="680" y="248" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">Landing → area → definition</text>
+<text x="680" y="280" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">keyboard disclosure and focus order</text>
+<text x="680" y="306" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">touch at 390px, page keeps the device width</text>
+<text x="680" y="340" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">saved pins and old #fragments still land</text>
+<text x="680" y="366" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">Components directory scrolls in place</text>
+</g>
+<g id="saga"><rect x="60" y="420" width="1160" height="250" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="80" y="450" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">SAGA AND NOTE</text>
+<text x="80" y="484" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">Implementation slide ti-ui-impl-areas explains the tree; four UI slides repinned</text>
+<text x="80" y="518" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">technical-design-page r2 and technical-design-ui r3 describe the pages at current code, stated implemented.</text>
+<text x="80" y="546" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">Format 2 needs implemented endpoints, so three legacy member Components are restated as implemented.</text>
+<text x="80" y="574" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">technical-documentation still pins the drawer's r2 (same content); revising it would cascade into the ERD.</text>
+<text x="80" y="610" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">docs/technical-inventory-ui-implementation.md records the tree, addresses, chapters, checks and reconcile.</text>
+<text x="80" y="638" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">reconcile --against da5101a6: 12 historical regressions and 23 pre-existing, none introduced.</text>
+</g>
+</svg>

@@ -1,0 +1,399 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-ui-impl-areas",
+  "current": "sha256:eee8daf2b196aa71575a72bd7ae20ee21a6d45d833608cfd9c75df316ab8268a",
+  "revisions": [
+    {
+      "snapshot": "sha256:eee8daf2b196aa71575a72bd7ae20ee21a6d45d833608cfd9c75df316ab8268a",
+      "request_id": "ti-ui-impl-areas-create",
+      "created_at": "2026-09-25T06:32:40.946701Z",
+      "asset": "24-a-e3c2c4055f76ea439126e90fd2aa54932f84cb0264122871300a.svg",
+      "asset_digest": "sha256:e3c2c4055f76ea439126e90fd2aa54932f84cb0264122871300ae7d441e70d16",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-areas",
+        "deck": "technical-inventory",
+        "title": "Technical design is a tree of pages",
+        "rank": 242,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e3c2c4055f76ea439126e90fd2aa54932f84cb0264122871300a.svg",
+        "takeaway": "A landing page opens the ERD, Systems and Components pages; the sidebar draws the same tree, and definition addresses never moved.",
+        "reading_order": [
+          "landing",
+          "areas",
+          "sidebar",
+          "routes",
+          "addresses",
+          "proof"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+            },
+            "version": 4,
+            "id": "landing",
+            "slide": "ti-ui-impl-areas",
+            "rank": 0,
+            "kind": "node",
+            "label": "Landing page",
+            "description": "/technical is a short landing page naming the ERD, Systems and Components areas with what each holds, and how to start an empty one. It counts records and renders no directory.",
+            "selector": {
+              "type": "element",
+              "element_id": "landing"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 330,
+                  "end": 395,
+                  "digest": "sha256:f9f5ecfa1d91d00941adfc01170b3b5750b773b89986a2928943514caf115205",
+                  "note": "New: the landing page's areas, their counts and empty-state commands, keeping the single page's old section ids as anchors."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 715,
+                  "end": 718,
+                  "digest": "sha256:6c02d8122b1be2c25e48ed86ad3726faf9897285845755b1563c054181b6e6d1",
+                  "note": "New: the landing template lists the three areas and nothing else."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 739,
+                  "end": 740,
+                  "digest": "sha256:be7bd6fe8aaff6e98ff30b5fae0a67eedde6e9a1165838b91601f9065705890f",
+                  "note": "New: spacing for the area list, and a marker for an area reached by an old fragment."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-areas-landing",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:technical-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The landing page and the ERD page are the technical overview's application-wide entry point to the data model and its entities."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+            },
+            "version": 4,
+            "id": "areas",
+            "slide": "ti-ui-impl-areas",
+            "rank": 10,
+            "kind": "node",
+            "label": "One page per area",
+            "description": "/technical/erd draws the application ERD with its other views and every data entity; /technical/systems and /technical/components are their directories. Only the area being read is built, and its filter stays on its page.",
+            "selector": {
+              "type": "element",
+              "element_id": "areas"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 16,
+                  "end": 76,
+                  "digest": "sha256:8b52e8d4feab05c831906152eac018b378c31919c7bc7c22708b8602fe1ddc8c",
+                  "note": "New: the page tree, and the three areas with the definition kinds beneath each, shared by pages, breadcrumbs and the sidebar."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 312,
+                  "end": 329,
+                  "digest": "sha256:0b80711cfccd64b2111a2282fcef420236c1450e95d31c05eb77cf6ba5532dc3",
+                  "note": "New: one page view serves the landing page or a single area."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 396,
+                  "end": 417,
+                  "digest": "sha256:2f2644ee8c6d3248fd074768e6b5cb09db4ecddf948949dc6e2908784775df4b",
+                  "note": "New: an area page builds only its own directory, or the ERD page's data model."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 713,
+                  "end": 714,
+                  "digest": "sha256:271ec982641ea090ccf90bf2aae182560fb93ce97d641336d32ae4bf8c859a5b",
+                  "note": "Moved: the comparison note, now shared by the area pages."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 719,
+                  "end": 723,
+                  "digest": "sha256:2f1a1679141091f3e0ec8c7908b031de32a2d23242b3dcc68ad03f7b8445a468",
+                  "note": "New: the area page template: breadcrumb, lede, then that area's directory or data model."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-areas-areas",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:technical-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The landing page and the ERD page are the technical overview's application-wide entry point to the data model and its entities."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+            },
+            "version": 4,
+            "id": "sidebar",
+            "slide": "ti-ui-impl-areas",
+            "rank": 20,
+            "kind": "region",
+            "label": "The sidebar draws the same tree",
+            "description": "Technical design expands into ERD, Systems and Components, each a section row that opens its page and discloses one row per definition. The current row's ancestors open; an ERD or overlay page marks the ERD row.",
+            "selector": {
+              "type": "element",
+              "element_id": "sidebar"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 497,
+                  "end": 561,
+                  "digest": "sha256:f4448cd8070e315171ab393ea2c211c3329689c3c4ff57b16abe8af55fb317be",
+                  "note": "New: the areas become nested navigation sections with one row per definition, and pages without a row mark their area."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/server.go",
+                  "start": 1143,
+                  "end": 1143,
+                  "digest": "sha256:a34c121a49eebb0b206e9a445a351d3046bbd3d04bc7eda71836a34aa1e42a75",
+                  "note": "Changed: the shell marks the area row current for a definition that has no row of its own."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-areas-sidebar",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "The ERD row in the sidebar expands into its data entities, and each opens the same canonical entity page as the diagram and directory."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+            },
+            "version": 4,
+            "id": "routes",
+            "slide": "ti-ui-impl-areas",
+            "rank": 30,
+            "kind": "edge",
+            "label": "Area routes",
+            "description": "GET /technical/{area} serves only erd, systems and components; any other area is a 404. The shell loads the reverse index and comparison newness only for area and definition pages.",
+            "selector": {
+              "type": "element",
+              "element_id": "routes"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/server.go",
+                  "start": 369,
+                  "end": 371,
+                  "digest": "sha256:0417da24ead355261d3f50b58023f7090d0dcce3f729cdb92c50d08e0539b19e",
+                  "note": "Changed: the area route sits between the definition and landing routes."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/server.go",
+                  "start": 941,
+                  "end": 948,
+                  "digest": "sha256:0cca0623f8b2b91a498db009c0c67f6f98b2bce260584dfa890617296951f117",
+                  "note": "Changed: a known area segment becomes the area route; an unknown one matches nothing and is a 404."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/server.go",
+                  "start": 1073,
+                  "end": 1079,
+                  "digest": "sha256:34b06b6de808a9ad05b761f81054593a0c07c70934541972d00116eba2bd3bcd",
+                  "note": "Changed: area pages render through the same technical shell as the landing and definition pages."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 661,
+                  "end": 683,
+                  "digest": "sha256:120c1922f7c00bd4880fced87cdeb2e1dcb001fc55a5d272380c5c09f886aaf1",
+                  "note": "Changed: the landing page counts records only; area and definition pages add usages and newness."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-areas-routes",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:technical-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The landing page and the ERD page are the technical overview's application-wide entry point to the data model and its entities."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r2"
+            },
+            "version": 4,
+            "id": "addresses",
+            "slide": "ti-ui-impl-areas",
+            "rank": 40,
+            "kind": "callout",
+            "label": "Old addresses keep working",
+            "description": "Definition pages keep /technical/{kind}/{id} and ?revision= pins, which slides, drawers and reviews link to; their breadcrumb now passes through their area, and the single page's old fragments land on the matching area.",
+            "selector": {
+              "type": "element",
+              "element_id": "addresses"
+            },
+            "about": "areas",
+            "body": "Definition URLs and saved pins never moved; old #fragments land on their area."
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical.go",
+                  "start": 724,
+                  "end": 724,
+                  "digest": "sha256:4da9a1e8c35d5b8d62a0075dde9c6b68f8e53131edb18127e96720c23488e6b2",
+                  "note": "Changed: a definition page's breadcrumb names the area it sits beneath."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-areas-addresses",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "A pinned link from a slide, drawer or review still opens the definition's documentation and code at that exact revision."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "proof",
+            "slide": "ti-ui-impl-areas",
+            "rank": 50,
+            "kind": "example",
+            "label": "How the tree is checked",
+            "description": "Go tests check which rows are open and current on every Technical design page, the area pages and old addresses; Playwright opens areas by keyboard and by touch at 390px and reads the Components directory at phone width.",
+            "selector": {
+              "type": "element",
+              "element_id": "proof"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "internal/server/technical_nav_test.go",
+                  "start": 1,
+                  "end": 142,
+                  "digest": "sha256:c870918e4be05cb5c164414dd6f8eedcaa5a765417f69308c7fe79e6864d0777",
+                  "note": "New: the sidebar tree per page, the ERD page's views, breadcrumbs through each area, old fragments and unknown areas."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "e2e/tests/directory-width.spec.ts",
+                  "start": 35,
+                  "end": 35,
+                  "digest": "sha256:6079dda76f0001fd9696c2ba14116eeca1ce043c129a7fe91404cf4df958e633",
+                  "note": "Changed: the Components directory is read on its own page at phone width."
+                },
+                {
+                  "commit": "1885573387e95a2e78690784403d67f116c714fa",
+                  "path": "e2e/tests/directory-width.spec.ts",
+                  "start": 87,
+                  "end": 87,
+                  "digest": "sha256:863194ff519bbe791dafd0c8c663e908c8d82f28d5753162204e5a68261813ec",
+                  "note": "Changed: that page is among those whose table really scrolls in place."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-areas-proof",
+              "criterion": "urn:change-saga:change-saga:story:erd-entity-context:criterion:diagram-and-directory",
+              "story_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
+              "rationale": "The tests open the ERD's entity rows and check each opens its canonical entity page, current in the sidebar."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
