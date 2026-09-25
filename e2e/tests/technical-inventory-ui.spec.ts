@@ -3,8 +3,9 @@ import { join } from "node:path";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
 import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
 
-// Technical design: the overview's directory of Systems and Components, the
-// canonical page of one exact revision, and the round trip from a slide Item
+// Technical design: a landing page over three areas (the ERD, Systems and
+// Components), each a page of its own and a section of the sidebar; the
+// canonical page of one exact revision; and the round trip from a slide Item
 // to that definition, its usages, and back to the same slide.
 
 const prefix = "urn:change-saga:wave-one:";
@@ -39,6 +40,12 @@ test("Technical design lists shared definitions and traces a slide Item to its p
   await expect(part).toContainText("1 System · 2 Components");
   await part.getByRole("link", { name: "Technical design" }).click();
   await expect(page).toHaveURL(/\/technical$/);
+  // The landing page names the areas; it is not the directories.
+  await expect(page.locator("[data-technical-area]")).toHaveCount(3);
+  await expect(page.locator('[data-technical-area="erd"]')).toContainText("No data model yet");
+  await expect(page.locator("[data-directory]")).toHaveCount(0);
+  await page.locator('[data-technical-area="systems"]').getByRole("link", { name: "Systems" }).click();
+  await expect(page).toHaveURL(/\/technical\/systems$/);
   const systems = page.locator('[data-technical-kind="system"]');
   const row = systems.locator('[data-directory-row="FeatureFlag"]');
   await expect(row).toContainText("unspecified");
@@ -50,7 +57,7 @@ test("Technical design lists shared definitions and traces a slide Item to its p
   // never "new".
   await expect(row.locator("td").nth(6)).toHaveText("unknown");
   await expect(page.locator("[data-technical-newness]")).toHaveAttribute("data-technical-newness", "false");
-  await expect(page.locator("[data-technical-data-model]")).toContainText("No data entities");
+  await expect(page.locator('[data-technical-kind="component"]')).toHaveCount(0);
 
   // Keyboard: the definition link is reachable and opens its canonical page.
   const link = row.getByRole("link", { name: "FeatureFlag" });
@@ -90,7 +97,7 @@ test("Technical design lists shared definitions and traces a slide Item to its p
   await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r2");
   await page.reload();
   await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r2");
-  await page.goto(saga.baseURL + "/technical");
+  await page.goto(saga.baseURL + "/technical/systems");
   await expect(page.locator('[data-directory-row="FeatureFlag"]')).toContainText("1 not current");
 
   // Members open their own pinned pages.
@@ -103,7 +110,7 @@ test("Technical design stays readable on a 390px touch screen", async ({ browser
   author(saga);
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const narrow = await context.newPage();
-  await narrow.goto(saga.baseURL + "/technical");
+  await narrow.goto(saga.baseURL + "/technical/systems");
   await waitForSettledSaga(narrow);
   // A mobile browser widens its layout viewport to fit wide content, so
   // compare against the device width rather than innerWidth.
@@ -120,12 +127,73 @@ test("Technical design stays readable on a 390px touch screen", async ({ browser
   await narrow.locator("[data-technical-usages] [data-usage-item]").tap();
   await waitForSettledSaga(narrow);
   await expect(narrow.locator("[data-deck-slide]:visible")).toHaveAttribute("data-slide-title", "checkout-flag");
+
+  // The sidebar's areas open by touch, and a definition row opens its page.
+  await narrow.goto(saga.baseURL + "/technical");
+  await waitForSettledSaga(narrow);
+  const toggle = narrow.getByRole("button", { name: "Toggle Components", exact: true });
+  await expect(toggle).toHaveAttribute("aria-expanded", "false");
+  await toggle.tap();
+  await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await narrow.locator("#nav-technical-components").getByRole("link", { name: "FlagStore" }).tap();
+  await expect(narrow).toHaveURL(/\/technical\/component\/FlagStore$/);
+  expect(await narrow.evaluate(() => [window.innerWidth, document.documentElement.scrollWidth])).toEqual([390, 390]);
   await context.close();
+});
+
+test("the sidebar nests Technical design's areas and marks where the reader is", async ({ page, saga }) => {
+  author(saga);
+  await page.goto(saga.baseURL + "/technical/component/FlagStore");
+  await waitForSettledSaga(page);
+  const sidebar = page.locator(".sidebar");
+  // The definition is the current row, inside its open area, inside
+  // Technical design; the other area stays shut. With no data model yet the
+  // ERD area is not listed.
+  await expect(sidebar.locator('a[aria-current="page"]')).toHaveAttribute("href", "/technical/component/FlagStore");
+  await expect(sidebar.getByRole("button", { name: "Toggle Technical design", exact: true })).toHaveAttribute("aria-expanded", "true");
+  await expect(sidebar.getByRole("button", { name: "Toggle Components", exact: true })).toHaveAttribute("aria-expanded", "true");
+  await expect(sidebar.getByRole("button", { name: "Toggle Systems", exact: true })).toHaveAttribute("aria-expanded", "false");
+  await expect(sidebar.locator('a[href="/technical/erd"]')).toHaveCount(0);
+  await expect(page.locator(".requirements-breadcrumbs")).toContainText("Overview/Technical design/Components/FlagStore");
+
+  // Keyboard: open Systems with its disclosure, then follow a row.
+  const systems = sidebar.getByRole("button", { name: "Toggle Systems", exact: true });
+  await systems.focus();
+  await page.keyboard.press("Enter");
+  await expect(systems).toHaveAttribute("aria-expanded", "true");
+  await page.keyboard.press("Tab");
+  await expect(sidebar.getByRole("link", { name: "Systems", exact: true })).toBeFocused();
+  await page.keyboard.press("Tab");
+  const row = sidebar.locator("#nav-technical-systems").getByRole("link", { name: "FeatureFlag" });
+  await expect(row).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/technical\/system\/FeatureFlag$/);
+  await expect(sidebar.locator('a[aria-current="page"]')).toHaveAttribute("href", "/technical/system/FeatureFlag");
+
+  // The area row opens the area's page and becomes the current row.
+  await sidebar.getByRole("link", { name: "Components", exact: true }).click();
+  await expect(page).toHaveURL(/\/technical\/components$/);
+  await expect(sidebar.locator('a[aria-current="page"]')).toHaveAttribute("href", "/technical/components");
+  await expect(page.locator('[data-technical-kind="component"] [data-directory-row]')).toHaveCount(2);
+});
+
+test("old Technical design addresses keep working", async ({ page, saga }) => {
+  author(saga);
+  // Definition pages and saved pins kept their addresses.
+  await page.goto(saga.baseURL + "/technical/system/FeatureFlag?revision=r1");
+  await expect(page.locator("[data-technical-entity]")).toHaveAttribute("data-technical-revision", "r1");
+  await page.locator(".requirements-breadcrumbs").getByRole("link", { name: "Systems" }).click();
+  await expect(page).toHaveURL(/\/technical\/systems$/);
+  // A fragment of the old single page lands on the matching area.
+  await page.goto(saga.baseURL + "/technical#technical-components-section");
+  await expect(page.locator("#technical-components-section")).toHaveAttribute("data-technical-area", "components");
+  await page.locator("#technical-components-section").getByRole("link", { name: "Components" }).click();
+  await expect(page).toHaveURL(/\/technical\/components$/);
 });
 
 test("a missing definition or revision is a 404, never the latest definition", async ({ page, saga }) => {
   author(saga);
-  for (const path of ["/technical/system/FeatureFlag?revision=r9", "/technical/system/Absent", "/technical/nonsense/FeatureFlag"]) {
+  for (const path of ["/technical/system/FeatureFlag?revision=r9", "/technical/system/Absent", "/technical/nonsense/FeatureFlag", "/technical/nonsense"]) {
     const response = await page.goto(saga.baseURL + path);
     expect(response?.status(), path).toBe(404);
   }
@@ -170,9 +238,15 @@ test("an authored ERD and an Item's exact selection open the same pinned definit
   run("add-item", "--slide", "greeting-store", "--id", "store", "--kind", "node", "--element-id", "slide-title", "--description", "The slide explains only the stored greeting.",
     "--documentation", system.target, "--documentation-revision", system.revision, "--selections", selections, "--repo", saga.sourceRepo, saga.sagaRoot);
 
-  // The ERD: a drawn element and its directory row open the same pin.
+  // The ERD: the sidebar lists its data entities, and the ERD page draws it.
   await page.goto(saga.baseURL + "/technical");
   await waitForSettledSaga(page);
+  await page.locator('[data-technical-area="erd"]').getByRole("link", { name: "ERD" }).click();
+  await expect(page).toHaveURL(/\/technical\/erd$/);
+  const entities = page.locator(".sidebar #nav-technical-erd");
+  await expect(entities).toBeVisible();
+  await expect(entities.getByRole("link")).toHaveText(["PDF job", "PDF report"]);
+  // A drawn element and its directory row open the same pin.
   const model = page.locator("[data-technical-data-model]");
   await expect(model.locator("figcaption")).toContainText("1 of 2 directory entities are drawn; 1 is in the directory but not drawn.");
   const drawn = model.locator(`[data-erd-visual] svg [id$="-report"]`);
