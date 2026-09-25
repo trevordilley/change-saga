@@ -84,6 +84,11 @@ func (a *app) layersFor(ctx context.Context, current *reviewSnapshot) (*changevi
 		SagaRoot: a.root, Document: current.document, Checkout: a.sourceDir,
 		Changes: current.changes, Report: current.report, Resolver: resolver,
 	})
+	if err != nil && ctx.Err() != nil {
+		// The request went away while git was running. That is a fact about
+		// the request, not the comparison, so the next request derives again.
+		return nil, err
+	}
 	a.layers.key, a.layers.value, a.layers.err = key, nil, err
 	if err == nil {
 		a.layers.value = &layers
