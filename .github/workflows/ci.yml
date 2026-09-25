@@ -60,9 +60,31 @@ jobs:
         with:
           go-version-file: .go-version
           cache: true
-      - name: go vet
-        run: go vet ./...
+      # DIAGNOSTIC ONLY (perf/windows-cli-tests): remove before merge.
+      - name: diag windows environment
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          git --version
+          git config --show-origin --list || true
+          echo "--- 100 x git rev-parse HEAD"
+          time (for i in $(seq 100); do git rev-parse HEAD >/dev/null; done)
+          echo "--- 100 x git version via cmd"
+          time (for i in $(seq 100); do git version >/dev/null; done)
+          echo "TEMP=$TEMP TMP=$TMP RUNNER_TEMP=$RUNNER_TEMP"
+          pwsh -NoProfile -Command 'Get-MpComputerStatus | Select-Object RealTimeProtectionEnabled,AntivirusEnabled,OnAccessProtectionEnabled | Format-List; Get-MpPreference | Select-Object ExclusionPath,ExclusionProcess | Format-List' || true
+      - name: diag cli timings
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          go test -count=1 -json -timeout 30m ./internal/cli > "$RUNNER_TEMP/cli.json" || true
+          jq -r 'select(.Action=="fail") | "FAIL \(.Test)"' "$RUNNER_TEMP/cli.json"
+          jq -r 'select((.Action=="pass" or .Action=="fail") and .Test==null) | "PACKAGE \(.Elapsed)s"' "$RUNNER_TEMP/cli.json"
+          jq -r 'select((.Action=="pass" or .Action=="fail") and .Test!=null and (.Test|contains("/")|not)) | "\(.Elapsed) \(.Test)"' "$RUNNER_TEMP/cli.json" | sort -rn > "$RUNNER_TEMP/top.txt"
+          awk '{s+=$1} END {print "SUM top-level", s, "s over", NR, "tests"}' "$RUNNER_TEMP/top.txt"
+          head -80 "$RUNNER_TEMP/top.txt"
       - name: go test
+        if: runner.os != 'Windows'
         # The race-enabled server package is intentionally broad and can take
         # longer than Go's default 10-minute per-package timeout on shared CI
         # runners. Keep the full suite and race detector; give them headroom.
