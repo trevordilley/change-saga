@@ -405,6 +405,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /reviews/{id}/feedback", application.reviewFeedbackSurface)
 	handle("POST /reviews/{id}/decision", application.reviewDecision)
 	handle("POST /reviews/{id}/comment", application.reviewComment)
+	handle("GET /assets/{hash}/{name}", application.shellAssetFile)
 	handle("GET /app.js", application.javascript)
 	handle("GET "+diagram.FontPath, application.diagramFont)
 	handle("GET /theme.js", application.themeScript)
@@ -873,6 +874,7 @@ func templateFuncs() template.FuncMap {
 		"domID":                domID,
 		"fileIcon":             fileIcon,
 		"lower":                strings.ToLower,
+		"asset":                assetPath,
 		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
 			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
 		},

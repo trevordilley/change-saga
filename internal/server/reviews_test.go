@@ -203,11 +203,17 @@ func TestReviewsRenderInsideTheAppShell(t *testing.T) {
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	for _, path := range []string{"/reviews", "/reviews/pr-7"} {
 		page := getPage(t, handler, path).Body.String()
-		for _, shell := range []string{`<nav class="doc-tree"`, `data-view-tab="saga"`, `class="side-tab current" href="/reviews"`, "<style>", ".review-summary{"} {
+		for _, shell := range []string{`<nav class="doc-tree"`, `data-view-tab="saga"`, `class="side-tab current" href="/reviews"`, `<link rel="stylesheet" href="` + assetPath("app.css") + `">`} {
 			if !strings.Contains(page, shell) {
 				t.Fatalf("%s is outside the app shell: lacks %q", path, shell)
 			}
 		}
+	}
+	// The shell's one stylesheet styles the reviews like every other page.
+	styles := httptest.NewRecorder()
+	handler.ServeHTTP(styles, httptest.NewRequest(http.MethodGet, assetPath("app.css"), nil))
+	if !strings.Contains(styles.Body.String(), ".review-summary{") {
+		t.Fatal("the app stylesheet does not style the reviews")
 	}
 }
 

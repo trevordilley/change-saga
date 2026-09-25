@@ -1,0 +1,4 @@
+htmx.min.js      htmx.org 2.0.11           https://registry.npmjs.org/htmx.org/-/htmx.org-2.0.11.tgz (dist/htmx.min.js)                  LICENSE (0BSD)
+preload.min.js   htmx-ext-preload 2.1.2    https://registry.npmjs.org/htmx-ext-preload/-/htmx-ext-preload-2.1.2.tgz (dist/preload.min.js) PRELOAD-LICENSE (0BSD)
+d6fdc75f204e6bdefa99b69bf1e6d4ac69b8a364f77929f45c13476b4000f717  internal/server/assets/htmx/htmx.min.js
+2ac8ccf77deee4f8e87366d6b606085eed755b02513746ead7573395e717d26e  internal/server/assets/htmx/preload.min.js
