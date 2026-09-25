@@ -6,6 +6,7 @@ import (
 	"io"
 
 	"github.com/twentyideas/changesaga/internal/areas"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 // CheckSchema names the machine-readable `check --json` contract.
@@ -30,6 +31,8 @@ type checkDocument struct {
 // never consulted. It exits 1, like status, when the report cannot be
 // trusted.
 func Check(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("check", commandUsage["check"], out)
 	covers := flags.String("covers", "", "comma-separated coverage areas: implementation, stories, personas, design, quality, health")
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")

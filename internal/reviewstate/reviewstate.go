@@ -8,7 +8,6 @@ package reviewstate
 import (
 	"context"
 	"fmt"
-	"os/exec"
 	"sort"
 	"strings"
 	"time"
@@ -16,6 +15,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -395,7 +395,7 @@ func revParse(ctx context.Context, dir, revision string) (string, error) {
 }
 
 func gitOutput(ctx context.Context, dir string, args ...string) (string, error) {
-	output, err := exec.CommandContext(ctx, "git", append([]string{"-C", dir}, args...)...).Output()
+	output, err := gitexec.Output(ctx, append([]string{"-C", dir}, args...)...)
 	if err != nil {
 		return "", err
 	}

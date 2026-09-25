@@ -16,6 +16,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 type State string
@@ -68,7 +69,7 @@ type changeSet struct {
 
 // New opens a resolver for the repository containing dir.
 func New(ctx context.Context, dir string) (*Resolver, error) {
-	output, err := exec.CommandContext(ctx, "git", "-C", dir, "rev-parse", "--show-toplevel").Output()
+	output, err := gitexec.Output(ctx, "-C", dir, "rev-parse", "--show-toplevel")
 	if err != nil {
 		return nil, fmt.Errorf("locate Git repository: %w", err)
 	}

@@ -21,6 +21,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/diagram"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -127,6 +128,8 @@ func guardCompleteSlideMutation(operation string, slide *saga.Slide) error {
 // then the record is atomically created/replaced. The operation does not claim
 // atomicity with unrelated Saga records or arbitrary filesystem writes.
 func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, request SlideTransactionRequest, dryRun bool) (SlideTransactionResult, error) {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	asset, extension, source, err := slideTransactionContent(requestBase, &request)
 	if err != nil {
 		return SlideTransactionResult{}, err
@@ -869,6 +872,8 @@ func decodeSlideTransactionRequest(reader io.Reader) (SlideTransactionRequest, e
 }
 
 func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("apply-slide", commandUsage["apply-slide"], out)
 	from := flags.String("from", "", "complete slide transaction JSON file, or - for standard input")
 	repo := flags.String("repo", "", "code repository used to verify every exact evidence digest")

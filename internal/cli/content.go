@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -23,6 +24,8 @@ type fragmentContentOutput struct {
 // depend on the on-disk package layout. stdin is bound at this boundary so the
 // implementation remains deterministic in tests.
 func SetFragmentContent(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return setFragmentContentCommand(ctx, args, out, os.Stdin, narrativeAuthoring)
 }
 

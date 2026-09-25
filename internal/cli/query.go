@@ -14,6 +14,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -311,6 +312,8 @@ var queryUsage = map[string]string{
 // returned StatusError only communicates the already-rendered exit status to
 // the process entrypoint; callers must not print it.
 func Query(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return queryWithOpener(ctx, args, out, openQuerySession)
 }
 

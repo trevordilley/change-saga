@@ -2,12 +2,12 @@ package changeview
 
 import (
 	"context"
-	"os/exec"
 	"path/filepath"
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -59,7 +59,7 @@ func Open(ctx context.Context, options OpenOptions) (Layers, *Inventory, error) 
 }
 
 func sameRepository(ctx context.Context, sagaRepo, checkout string) bool {
-	output, err := exec.CommandContext(ctx, "git", "-C", checkout, "rev-parse", "--show-toplevel").Output()
+	output, err := gitexec.Output(ctx, "-C", checkout, "rev-parse", "--show-toplevel")
 	if err != nil {
 		return false
 	}
@@ -71,7 +71,10 @@ func sameRepository(ctx context.Context, sagaRepo, checkout string) bool {
 }
 
 func revParse(ctx context.Context, repo, revision string) (string, error) {
-	output, err := exec.CommandContext(ctx, "git", "-C", repo, "rev-parse", "--verify", "--quiet", revision+"^{commit}").Output()
+	if commit, ok := gitexec.ResolveCommit(ctx, repo, revision); ok {
+		return commit, nil
+	}
+	output, err := gitexec.Output(ctx, "-C", repo, "rev-parse", "--verify", "--quiet", revision+"^{commit}")
 	if err != nil {
 		return "", err
 	}

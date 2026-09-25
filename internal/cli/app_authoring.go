@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -130,6 +131,8 @@ func assertFeature(root, value, record, holding string) error {
 
 // Feature dispatches the feature command family.
 func Feature(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("feature", []string{"add"}, out)
 	}
@@ -197,6 +200,8 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 
 // Persona dispatches the persona command family.
 func Persona(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("persona", []string{"add", "revise", "set-state"}, out)
 	}
@@ -311,6 +316,8 @@ func personaSetState(_ context.Context, args []string, out io.Writer) error {
 
 // FeatureFlag dispatches the flag command family.
 func FeatureFlag(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("flag", []string{"add", "revise", "set-state"}, out)
 	}

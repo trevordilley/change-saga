@@ -7,6 +7,7 @@ import (
 	"io"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 )
 
@@ -17,6 +18,8 @@ var prototypeOperations = []string{"add-html", "add-external", "revise", "annota
 // prototype may stay unlinked while exploration continues, so authoring never
 // requires an annotation.
 func Prototype(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("prototype", prototypeOperations, out)
 	}

@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/technicalpolicy"
@@ -252,12 +253,13 @@ func extractTree(ctx context.Context, checkout, commit, treePath, dest string) e
 }
 
 func git(ctx context.Context, dir string, args ...string) (string, error) {
-	cmd := exec.CommandContext(ctx, "git", append([]string{"-C", dir}, args...)...)
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	out, err := cmd.Output()
+	out, err := gitexec.Output(ctx, append([]string{"-C", dir}, args...)...)
 	if err != nil {
-		return "", errors.New(strings.TrimSpace(stderr.String()))
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			return "", errors.New(strings.TrimSpace(string(exitErr.Stderr)))
+		}
+		return "", err
 	}
 	return string(out), nil
 }

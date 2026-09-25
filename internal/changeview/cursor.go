@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -107,7 +108,8 @@ func companionSides(ctx context.Context, location Location, checkout string, cha
 
 // isAncestor asks the code repository, never the Saga's, about ancestry.
 func isAncestor(ctx context.Context, checkout, ancestor, descendant string) bool {
-	return exec.CommandContext(ctx, "git", "-C", checkout, "merge-base", "--is-ancestor", ancestor, descendant).Run() == nil
+	_, err := gitexec.Output(ctx, "-C", checkout, "merge-base", "--is-ancestor", ancestor, descendant)
+	return err == nil
 }
 
 func short(commit string) string {

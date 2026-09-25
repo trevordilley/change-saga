@@ -12,6 +12,8 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 // Location is where a Saga lives in its own Git repository.
@@ -31,7 +33,7 @@ func Locate(ctx context.Context, root string) (Location, error) {
 	if resolved, err := filepath.EvalSymlinks(abs); err == nil {
 		abs = resolved
 	}
-	output, err := exec.CommandContext(ctx, "git", "-C", abs, "rev-parse", "--show-toplevel").Output()
+	output, err := gitexec.Output(ctx, "-C", abs, "rev-parse", "--show-toplevel")
 	if err != nil {
 		return Location{}, fmt.Errorf("the Saga at %s is not in a Git repository", root)
 	}

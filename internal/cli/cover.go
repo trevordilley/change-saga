@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -17,6 +16,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -109,6 +109,8 @@ func (value *coverFlags) record() coverRecord {
 // here rather than read inside the command so tests drive --batch
 // deterministically.
 func Cover(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	err := cover(ctx, args, out, os.Stdin)
 	if err != nil && jsonFlagRequested(args) {
 		return reportJSONMutationFailure(out, err)
@@ -438,7 +440,10 @@ func changedLocations(changes gitdiff.ChangeSet, path, side string) []coderef.Lo
 }
 
 func resolveCommit(ctx context.Context, checkout, revision string) (string, error) {
-	output, err := exec.CommandContext(ctx, "git", "-C", checkout, "rev-parse", "--verify", "--end-of-options", revision+"^{commit}").CombinedOutput()
+	if commit, ok := gitexec.ResolveCommit(ctx, checkout, revision); ok {
+		return commit, nil
+	}
+	output, err := gitexec.CombinedOutput(ctx, "-C", checkout, "rev-parse", "--verify", "--end-of-options", revision+"^{commit}")
 	if err != nil {
 		return "", fmt.Errorf("resolve revision %q: %s", revision, strings.TrimSpace(string(output)))
 	}
