@@ -16,6 +16,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
@@ -164,9 +165,8 @@ func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []
 	} else {
 		resolver = nil
 	}
-	reports := make([]reviewstate.Report, 0, len(reviews))
-	for _, review := range reviews {
-		repository := document.Manifest.Source.Repository
+	repository := document.Manifest.Source.Repository
+	build := func(review *saga.Review) reviewstate.Report {
 		report := reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: repository, SkipCoverage: true})
 		if report.Range != nil && resolver != nil {
 			if covered, err := a.reviewCoverage(ctx, review, *report.Range, repository, resolver); err != nil {
@@ -175,10 +175,33 @@ func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []
 				report.Coverage = covered
 			}
 		}
-		reports = append(reports, report)
+		return report
 	}
+	// Each review resolves its own range with Git, which is waiting rather
+	// than work, so a few are built at once. The resolver serializes its
+	// own reads.
+	reports := make([]reviewstate.Report, len(reviews))
+	next := make(chan int)
+	var workers sync.WaitGroup
+	for range min(reviewReportWorkers, len(reviews)) {
+		workers.Add(1)
+		go func() {
+			defer workers.Done()
+			for index := range next {
+				reports[index] = build(reviews[index])
+			}
+		}()
+	}
+	for index := range reviews {
+		next <- index
+	}
+	close(next)
+	workers.Wait()
 	return reports
 }
+
+// reviewReportWorkers bounds how many reviews' reports are built at once.
+const reviewReportWorkers = 4
 
 // comparedHead is the head commit this reviewer was opened to compare, or ""
 // when it observes.
