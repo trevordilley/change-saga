@@ -116,6 +116,10 @@ type pageData struct {
 	Features *directoryView
 	Personas *directoryView
 	Flags    *directoryView
+	// Technical is the Technical design page, and TechnicalEntity one
+	// definition's canonical page.
+	Technical       *technicalPageView
+	TechnicalEntity *technicalEntityView
 	// DesignSystemMode is the design system's own page; DesignSystem is its
 	// content, which is absent until an author records some.
 	DesignSystemMode bool
@@ -362,6 +366,8 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /personas", application.page)
 	mux.HandleFunc("GET /flags", application.page)
 	mux.HandleFunc("GET /design-system", application.page)
+	mux.HandleFunc("GET /technical/{kind}/{id}", application.page)
+	mux.HandleFunc("GET /technical", application.page)
 	mux.HandleFunc("GET /features/{feature}", application.page)
 	mux.HandleFunc("GET /features", application.page)
 	mux.HandleFunc("GET /tests/{test}", application.page)
@@ -379,6 +385,7 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /app.js", application.javascript)
 	mux.HandleFunc("GET /theme.js", application.themeScript)
 	mux.HandleFunc("GET /api/documentation", application.documentationPage)
+	mux.HandleFunc("GET /api/technical-usages", application.technicalUsagesPage)
 	mux.HandleFunc("GET /api/code", application.codePage)
 	mux.HandleFunc("GET /api/coverage", application.coveragePage)
 	mux.HandleFunc("GET /api/totals", application.coverageTotalsPage)
@@ -825,7 +832,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
 	funcs["comparing"] = func() bool { return comparing }
-	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates)
+	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates)
 }
 
 // templateFuncs is shared by the server and its rendering tests so a new
@@ -905,6 +912,9 @@ func containsSection(root, wanted *saga.Section) bool {
 type appRoute struct {
 	kind string
 	id   string
+	// sub is a second path identity, such as a definition's ID beneath its
+	// kind.
+	sub string
 }
 
 func routeOf(r *http.Request) (appRoute, bool) {
@@ -924,6 +934,10 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "flags"}, true
 	case path == designSystemPath:
 		return appRoute{kind: "designsystem"}, true
+	case path == technicalPath:
+		return appRoute{kind: "technical"}, true
+	case strings.HasPrefix(path, technicalPath+"/") && r.PathValue("kind") != "" && r.PathValue("id") != "":
+		return appRoute{kind: "technical-entity", id: r.PathValue("kind"), sub: r.PathValue("id")}, true
 	case path == "/features":
 		return appRoute{kind: "features"}, true
 	case strings.HasPrefix(path, "/features/") && r.PathValue("feature") != "":
@@ -1048,6 +1062,13 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if len(designRoot.Fragments)+len(designRoot.Children) > 0 {
 			data.DesignSystem = makeSectionView(&designRoot, scope.shell())
 		}
+	case "technical", "technical-entity":
+		if data.Technical, data.TechnicalEntity, err = a.technicalShell(r.Context(), document, route, r.URL.Query()); err != nil {
+			if errors.Is(err, errTechnicalNotFound) {
+				return nil, errAppPageNotFound
+			}
+			return nil, err
+		}
 	case "feature":
 		if data.Feature, err = graph.featurePage(route.id); err != nil {
 			return nil, err
@@ -1083,8 +1104,19 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		data.Features = featuresDirectory(document, graph, data.PageFeature, directoryQuery(r))
 	}
 	onboarding := onboardingHref(document)
+	// The inventory is small, identity-only reading here: no code resolves.
+	inventory, inventoryErr := requirements.LoadInventory(a.root, document.Manifest.ID)
+	var technicalRows []*navNodeView
+	if inventoryErr == nil {
+		technicalRows = technicalNav(inventory)
+	}
 	if route.kind == "overview" {
 		data.OverviewParts = overviewDirectory(document, requirementsDocument, onboarding)
+		if inventoryErr == nil {
+			data.OverviewParts = append(data.OverviewParts, technicalOverviewPart(inventory))
+		} else {
+			data.OverviewParts = append(data.OverviewParts, overviewPartView{Title: "Technical design", Href: technicalPath, Count: "unreadable", Note: "The technical inventory could not be read: " + inventoryErr.Error(), Gap: true})
+		}
 	}
 	prototypeDocument, prototypeNote := a.prototypeDocument(document.Manifest.ID)
 	data.Nav = makeAppNavTree(appNavSources{
@@ -1093,6 +1125,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
 		pageFeature: data.PageFeature, reviewSide: data.ReviewSide,
+		technical: technicalRows,
 	})
 	if route.kind != "overview" {
 		// Off the overview, an in-page anchor would point into a page that is
