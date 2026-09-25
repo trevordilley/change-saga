@@ -259,3 +259,52 @@ func TestInventoryUsesQuery(t *testing.T) {
 		t.Fatalf("cursor survived a Saga change: %v", failure)
 	}
 }
+
+func TestInventoryCoverageQuery(t *testing.T) {
+	f := newInventoryQueryFixture(t)
+	q := func(args ...string) (map[string]any, map[string]any) {
+		data, page, _ := inventoryEnvelope(t, append([]string{"inventory-coverage", "--saga", f.root, "--repo", f.repo}, args...)...)
+		return data, page
+	}
+	data, page := q("--path", "flags.go")
+	s := data["summary"].(map[string]any)
+	// Lines 3-5 and 7 are referenced; line 3 (store + System) and line 5
+	// (System + its interaction) overlap but count once. The conflicted reader
+	// is unresolved and contributes nothing.
+	if s["lines"].(float64) != 7 || s["covered_lines"].(float64) != 4 || s["uncovered_lines"].(float64) != 3 || s["overlapping_lines"].(float64) != 2 || s["unresolved_owners"].(float64) != 1 {
+		t.Fatalf("summary: %v", s)
+	}
+	if page["total"].(float64) != s["covered_ranges"].(float64)+s["uncovered_ranges"].(float64) {
+		t.Fatalf("ranges page: %v %v", page, s)
+	}
+	uncovered, _ := q("--path", "flags.go", "--state", "uncovered")
+	for _, e := range uncovered["entries"].([]any) {
+		if len(e.(map[string]any)["owners"].([]any)) != 0 {
+			t.Fatalf("uncovered range has owners: %v", e)
+		}
+	}
+	unresolved, _ := q("--state", "unresolved")
+	if entries := unresolved["entries"].([]any); len(entries) != 1 || entries[0].(map[string]any)["target"] != f.reader {
+		t.Fatalf("unresolved owners: %v", entries)
+	}
+	// Scope excludes the Saga directory itself.
+	whole, _ := q()
+	if whole["summary"].(map[string]any)["files"].(float64) != 1 {
+		t.Fatalf("Saga files measured as code: %v", whole["summary"])
+	}
+	writeFile(t, filepath.Join(f.repo, "flags.go"), "package flags\n\nvar enabled = false\n\nfunc Read() bool { return enabled }\n\nfunc Write(v bool) { enabled = v }\n")
+	git(t, f.repo, "commit", "-am", "change default")
+	data, _ = q("--path", "flags.go")
+	s = data["summary"].(map[string]any)
+	if s["stale_references"].(float64) != 2 || s["covered_lines"].(float64) != 2 {
+		t.Fatalf("stale evidence counted as coverage: %v", s)
+	}
+	stale, _ := q("--state", "stale")
+	if len(stale["entries"].([]any)) != 2 {
+		t.Fatalf("stale entries: %v", stale["entries"])
+	}
+	_, failure := q("--state", "everything")
+	if failure["code"] != "invalid_argument" {
+		t.Fatalf("unknown state accepted: %v", failure)
+	}
+}

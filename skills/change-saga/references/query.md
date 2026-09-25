@@ -159,6 +159,8 @@ approving dependencies.
   `change-saga query inventory --saga PATH [--kind component|system] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]`
 - `inventory-uses`: declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness.
   `change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member] [--cursor TOKEN] [--limit N]`
+- `inventory-coverage`: which tracked code at one source revision the current Component/System definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage.
+  `change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]`
 - `terms`: the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation.
   `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `term-references`: direct explicit incoming and outgoing term references with provenance and declared coverage.

@@ -221,6 +221,7 @@ var queryOperations = []string{
 	"history",
 	"inventory",
 	"inventory-uses",
+	"inventory-coverage",
 	"terms",
 	"term-references",
 }
@@ -231,6 +232,7 @@ var queryOperations = []string{
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
 	"inventory":           "Component/System definitions, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
+	"inventory-coverage":  "which tracked code at one source revision the current Component/System definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage",
 	"inventory-uses":      "declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness",
 	"schema":              "the response paths and pagination contract for a query operation; no saga is required",
 	"overview":            "saga identity, source comparison, coverage summary, and the top of the hierarchy",
@@ -266,6 +268,7 @@ var queryPurpose = map[string]string{
 
 var queryUsage = map[string]string{
 	"inventory":           "change-saga query inventory --saga PATH [--kind component|system] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]",
+	"inventory-coverage":  "change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
 	"inventory-uses":      "change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member] [--cursor TOKEN] [--limit N]",
 	"":                    "change-saga query <operation> --saga PATH [--repo PATH] [--against REV [--head REV]] [operation flags]",
 	"schema":              "change-saga query schema <operation>",
@@ -335,6 +338,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	}
 	if operation == "inventory-uses" {
 		return queryInventoryUses(ctx, args[1:], out)
+	}
+	if operation == "inventory-coverage" {
+		return queryInventoryCoverage(ctx, args[1:], out)
 	}
 	if operation == "terms" {
 		if len(args) > 1 && isHelpArg(args[1]) {
@@ -517,6 +523,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"audit":               {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":             {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
 		"inventory":           {"data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history", "data.records[].selected", "data.records[].newness", "data.records[].scope_paths", "data.records[].uses", "data.records[].selected_code_health", "data.unresolved", "data.filters", "data.comparison", "data.scope", "data.completeness"},
+		"inventory-coverage":  {"data.head_oid", "data.scope", "data.summary", "data.state", "data.entries", "data.completeness"},
 		"inventory-uses":      {"data.subject", "data.uses", "data.uses[].path", "data.completeness"},
 		"terms":               {"data.head_oid", "data.ref", "data.terms"},
 		"term-references":     {"data.subject", "data.references", "data.counts", "data.completeness"},
@@ -546,6 +553,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"readiness":           "data.requirements",
 		"inventory":           "data.records",
 		"inventory-uses":      "data.uses",
+		"inventory-coverage":  "data.entries",
 		"terms":               "data.terms",
 		"term-references":     "data.references",
 	}
