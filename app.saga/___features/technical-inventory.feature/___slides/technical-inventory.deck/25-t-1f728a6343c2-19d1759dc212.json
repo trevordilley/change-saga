@@ -1,0 +1,461 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-query-impl-reads",
+  "current": "sha256:79cb930b1a8f1c418f9a6fb2c24b0e8af8f80fb2d455afc5d711b2a0a1326dab",
+  "revisions": [
+    {
+      "snapshot": "sha256:a5a2df244a7ef8afe95bf3137071d91bc4cdb6da62eadcc106c991b84599ee72",
+      "request_id": "ti-query-impl-reads-create",
+      "created_at": "2026-09-25T01:40:22.794449Z",
+      "asset": "24-a-b914247fa15cfb74b7425c8a65d97242903fd5987b0b210ccc78.svg",
+      "asset_digest": "sha256:b914247fa15cfb74b7425c8a65d97242903fd5987b0b210ccc78ce402dfb7449",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-reads",
+        "deck": "technical-inventory",
+        "title": "Implemented: scoped, filtered inventory reads",
+        "rank": 200,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-b914247fa15cfb74b7425c8a65d97242903fd5987b0b210ccc78.svg",
+        "takeaway": "query inventory filters explicit intent and baseline-relative newness on resolvable records only; unresolved candidates keep a separate page.",
+        "reading_order": [
+          "scope",
+          "filters",
+          "unresolved",
+          "newness"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-projection",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-projection:revision:r1"
+            },
+            "version": 4,
+            "id": "scope",
+            "slide": "ti-query-impl-reads",
+            "rank": 10,
+            "kind": "node",
+            "label": "Declared feature scope",
+            "description": "With --feature, candidates are pins reachable from the feature's implementation Items through declared members, holders and relationship destinations at each saved revision, with the paths that put them in scope.",
+            "selector": {
+              "type": "element",
+              "element_id": "scope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 39,
+                  "end": 97,
+                  "digest": "sha256:fee1e4eebac8e22290dfc41b7033a3191e22220fc9ef732b11a94a69288a7831",
+                  "note": "Feature scope follows only declared pins at each saved revision and returns the establishing paths."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "scope-inventory-query-technical-context-scoped-roadmap",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Scope comes from the feature's declared Item links and returns those paths, not unrelated proposals."
+            },
+            {
+              "id": "scope-erd-discover-proposed-changes-scoped-proposals",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Proposed data entities and relationships can be restricted to one feature's declared scope with the establishing paths."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-queries",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-queries:revision:r1"
+            },
+            "version": 4,
+            "id": "filters",
+            "slide": "ti-query-impl-reads",
+            "rank": 20,
+            "kind": "node",
+            "label": "Explicit intent filter",
+            "description": "--intent filters the selected revisions' explicit intent; legacy revisions read unspecified. Filters apply only after unresolved candidates are set aside.",
+            "selector": {
+              "type": "element",
+              "element_id": "filters"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 183,
+                  "end": 255,
+                  "digest": "sha256:515d7e93ad8912c276874ef2792fa9c06c60da7827da843b30b031595499a849",
+                  "note": "Intent and newness filters apply only to resolvable candidates."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "filters-inventory-query-technical-context-filter-proposed",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-proposed",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Proposed records are filtered by the explicit state of the selected revision, which each result reports."
+            },
+            {
+              "id": "filters-inventory-proposed-and-existing-explicit-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Results expose the selected revision's explicit intent; new is reported separately."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unresolved",
+            "slide": "ti-query-impl-reads",
+            "rank": 30,
+            "kind": "node",
+            "label": "Separate unresolved page",
+            "description": "Missing records or revisions and competing heads go to data.unresolved with reasons and heads, paged by --conflict-cursor; no filter removes them.",
+            "selector": {
+              "type": "element",
+              "element_id": "unresolved"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 139,
+                  "end": 174,
+                  "digest": "sha256:6e50637429a0380ddf907f03579ae13268e52b93af77c9b376a38d0a4891d050",
+                  "note": "Selection names unresolved reasons instead of choosing a revision."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "unresolved-inventory-query-technical-context-truthful-results",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Conflicted and missing records are reported as such on their own page rather than hidden or presented as current."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "newness",
+            "slide": "ti-query-impl-reads",
+            "rank": 40,
+            "kind": "node",
+            "label": "Newness against a named base",
+            "description": "--new requires --against. The base Saga's inventory decides new or existing; a Saga absent at the base makes identities new; an unreadable base is unknown and --new refuses.",
+            "selector": {
+              "type": "element",
+              "element_id": "newness"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 115,
+                  "end": 148,
+                  "digest": "sha256:9e7c36f8b3dacb0c233ce4f3548b6e99e6b3714fac64a684d163f75acda82803",
+                  "note": "The base snapshot is located with the change view's rules; any read failure leaves the baseline unknown."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/classify.go",
+                  "start": 39,
+                  "end": 48,
+                  "digest": "sha256:f6cfdb129ade4f5aa2b7c8978500c33948a9f7629a40a63830faa65b8b5fd1c6",
+                  "note": "Identity newness is relative to the named base; a revised existing identity is existing."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "newness-inventory-query-technical-context-filter-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "New identities are filtered against a specified baseline and head, independently of proposed status."
+            },
+            {
+              "id": "newness-inventory-proposed-and-existing-comparison-relative-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Newness names its baseline and head and is never invented without a readable baseline."
+            },
+            {
+              "id": "newness-erd-discover-proposed-changes-separate-newness",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:separate-newness",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Implemented entities introduced since the base remain discoverable as new, separately from proposed status."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:79cb930b1a8f1c418f9a6fb2c24b0e8af8f80fb2d455afc5d711b2a0a1326dab",
+      "parent_snapshots": [
+        "sha256:a5a2df244a7ef8afe95bf3137071d91bc4cdb6da62eadcc106c991b84599ee72"
+      ],
+      "request_id": "ti-query-impl-reads-layout-2",
+      "created_at": "2026-09-25T01:42:56.976116Z",
+      "asset": "24-a-6a909b24e47f256776babd62e22c0473501a74384a02be588395.svg",
+      "asset_digest": "sha256:6a909b24e47f256776babd62e22c0473501a74384a02be5883958c61b11a7add",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-reads",
+        "deck": "technical-inventory",
+        "title": "Implemented: scoped, filtered inventory reads",
+        "rank": 200,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-6a909b24e47f256776babd62e22c0473501a74384a02be588395.svg",
+        "takeaway": "query inventory filters explicit intent and baseline-relative newness on resolvable records only; unresolved candidates keep a separate page.",
+        "reading_order": [
+          "scope",
+          "filters",
+          "unresolved",
+          "newness"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-projection",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-projection:revision:r1"
+            },
+            "version": 4,
+            "id": "scope",
+            "slide": "ti-query-impl-reads",
+            "rank": 10,
+            "kind": "node",
+            "label": "Declared feature scope",
+            "description": "With --feature, candidates are pins reachable from the feature's implementation Items through declared members, holders and relationship destinations at each saved revision, with the paths that put them in scope.",
+            "selector": {
+              "type": "element",
+              "element_id": "scope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 39,
+                  "end": 97,
+                  "digest": "sha256:fee1e4eebac8e22290dfc41b7033a3191e22220fc9ef732b11a94a69288a7831",
+                  "note": "Feature scope follows only declared pins at each saved revision and returns the establishing paths."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "scope-inventory-query-technical-context-scoped-roadmap",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:scoped-roadmap",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Scope comes from the feature's declared Item links and returns those paths, not unrelated proposals."
+            },
+            {
+              "id": "scope-erd-discover-proposed-changes-scoped-proposals",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:scoped-proposals",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Proposed data entities and relationships can be restricted to one feature's declared scope with the establishing paths."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-read-queries",
+              "revision": "urn:change-saga:change-saga:component:inventory-read-queries:revision:r1"
+            },
+            "version": 4,
+            "id": "filters",
+            "slide": "ti-query-impl-reads",
+            "rank": 20,
+            "kind": "node",
+            "label": "Explicit intent filter",
+            "description": "--intent filters the selected revisions' explicit intent; legacy revisions read unspecified. Filters apply only after unresolved candidates are set aside.",
+            "selector": {
+              "type": "element",
+              "element_id": "filters"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 183,
+                  "end": 255,
+                  "digest": "sha256:515d7e93ad8912c276874ef2792fa9c06c60da7827da843b30b031595499a849",
+                  "note": "Intent and newness filters apply only to resolvable candidates."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "filters-inventory-query-technical-context-filter-proposed",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-proposed",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Proposed records are filtered by the explicit state of the selected revision, which each result reports."
+            },
+            {
+              "id": "filters-inventory-proposed-and-existing-explicit-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Results expose the selected revision's explicit intent; new is reported separately."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unresolved",
+            "slide": "ti-query-impl-reads",
+            "rank": 30,
+            "kind": "node",
+            "label": "Separate unresolved page",
+            "description": "Missing records or revisions and competing heads go to data.unresolved with reasons and heads, paged by --conflict-cursor; no filter removes them.",
+            "selector": {
+              "type": "element",
+              "element_id": "unresolved"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/scope.go",
+                  "start": 139,
+                  "end": 174,
+                  "digest": "sha256:6e50637429a0380ddf907f03579ae13268e52b93af77c9b376a38d0a4891d050",
+                  "note": "Selection names unresolved reasons instead of choosing a revision."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "unresolved-inventory-query-technical-context-truthful-results",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:truthful-results",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Conflicted and missing records are reported as such on their own page rather than hidden or presented as current."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "newness",
+            "slide": "ti-query-impl-reads",
+            "rank": 40,
+            "kind": "node",
+            "label": "Newness against a named base",
+            "description": "--new requires --against. The base Saga's inventory decides new or existing; a Saga absent at the base makes identities new; an unreadable base is unknown and --new refuses.",
+            "selector": {
+              "type": "element",
+              "element_id": "newness"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 115,
+                  "end": 148,
+                  "digest": "sha256:9e7c36f8b3dacb0c233ce4f3548b6e99e6b3714fac64a684d163f75acda82803",
+                  "note": "The base snapshot is located with the change view's rules; any read failure leaves the baseline unknown."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/classify.go",
+                  "start": 39,
+                  "end": 48,
+                  "digest": "sha256:f6cfdb129ade4f5aa2b7c8978500c33948a9f7629a40a63830faa65b8b5fd1c6",
+                  "note": "Identity newness is relative to the named base; a revised existing identity is existing."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "newness-inventory-query-technical-context-filter-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "New identities are filtered against a specified baseline and head, independently of proposed status."
+            },
+            {
+              "id": "newness-inventory-proposed-and-existing-comparison-relative-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Newness names its baseline and head and is never invented without a readable baseline."
+            },
+            {
+              "id": "newness-erd-discover-proposed-changes-separate-newness",
+              "criterion": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:criterion:separate-newness",
+              "story_revision": "urn:change-saga:change-saga:story:erd-discover-proposed-changes:revision:r1",
+              "rationale": "Implemented entities introduced since the base remain discoverable as new, separately from proposed status."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

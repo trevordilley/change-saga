@@ -1,0 +1,403 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-query-impl-selection",
+  "current": "sha256:b1319888511ee1e102b1bfefd22a7e9d434e38cff6f25d731450a80d6db6ea5f",
+  "revisions": [
+    {
+      "snapshot": "sha256:dfaebd6b8d7a26575e7b8df4c1660857649d329aa926f31025d6ec2c6892c056",
+      "request_id": "ti-query-impl-selection-create",
+      "created_at": "2026-09-25T01:40:23.271593Z",
+      "asset": "24-a-fb9762d779d4ec10504435460a6a652206ea66beeff44507d300.svg",
+      "asset_digest": "sha256:fb9762d779d4ec10504435460a6a652206ea66beeff44507d3008b7620de09d0",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-selection",
+        "deck": "technical-inventory",
+        "title": "Implemented: inherited coverage from exact selections",
+        "rank": 202,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-fb9762d779d4ec10504435460a6a652206ea66beeff44507d300.svg",
+        "takeaway": "Only an eligible Item selection adds its selected lines to deck coverage, labeled as inherited; drift and outside-subset edits are reported separately.",
+        "reading_order": [
+          "path",
+          "eligible",
+          "labeled",
+          "drift"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-selection-coverage",
+              "revision": "urn:change-saga:change-saga:component:inventory-selection-coverage:revision:r1"
+            },
+            "version": 4,
+            "id": "path",
+            "slide": "ti-query-impl-selection",
+            "rank": 10,
+            "kind": "node",
+            "label": "Saved selection path",
+            "description": "A selection names the Item's pin, each declared hop at its saved revision, a revision-unique evidence ID and a subset; the records resolver checks structure and the selected digest is verified at its own commit.",
+            "selector": {
+              "type": "element",
+              "element_id": "path"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/selection.go",
+                  "start": 76,
+                  "end": 150,
+                  "digest": "sha256:23db6113e89486fec359c8d23706af6781f77c065927bf28e86b01322429982f",
+                  "note": "Structure is delegated to the records resolver; pin, selected-byte and containing health are reported separately."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "path-inventory-scoped-deck-coverage-selected-subset",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "The Item retains an inspectable selection; a System pin does not select all members or their code."
+            },
+            {
+              "id": "path-inventory-scoped-deck-coverage-explain-path",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Results expose the Item, the declared path and the selected locations."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "eligible",
+            "slide": "ti-query-impl-selection",
+            "rank": 20,
+            "kind": "node",
+            "label": "Eligibility at head",
+            "description": "Only selections whose structure resolves, whose pins are all current and whose selected bytes are current at head contribute; others contribute nothing and stay visible in query inventory-selections.",
+            "selector": {
+              "type": "element",
+              "element_id": "eligible"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/inherited.go",
+                  "start": 55,
+                  "end": 70,
+                  "digest": "sha256:be3fc2a5cef8d1ea2f15e07cd26f82c107f4ff8c40b59680f91184c947e31e49",
+                  "note": "Eligible selections become inherited references; the document is never modified."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "eligible-inventory-scoped-deck-coverage-inherited-evidence",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Selected code counts through the inventory reference without a duplicate authored mapping."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "labeled",
+            "slide": "ti-query-impl-selection",
+            "rank": 30,
+            "kind": "node",
+            "label": "Labeled inherited coverage",
+            "description": "Inherited lines are Item-owned coverage assignments carrying the selection, path and evidence ID with no evidence file, so no evidence-file repair can name them; unselected lines earn nothing.",
+            "selector": {
+              "type": "element",
+              "element_id": "labeled"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/coverage/inherited.go",
+                  "start": 37,
+                  "end": 48,
+                  "digest": "sha256:010c2f2bfeddb79eda701c235029c2ba5867ea0e3f353d921eff106b568f95a7",
+                  "note": "Inherited assignments are labeled and never reported as stale evidence records."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "labeled-inventory-scoped-deck-coverage-exclude-unselected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Unselected code earns no inherited coverage and overlapping selections count once."
+            },
+            {
+              "id": "labeled-inventory-design-to-review-no-implied-approval",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:no-implied-approval",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Inherited coverage is labeled and records no approval; it does not conceal unexplained changes."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "drift",
+            "slide": "ti-query-impl-selection",
+            "rank": 40,
+            "kind": "node",
+            "label": "Separate selection health",
+            "description": "An edit outside the subset keeps the selected bytes current but marks the containing evidence for semantic reassessment; an edit inside makes the selection stale and it stops contributing.",
+            "selector": {
+              "type": "element",
+              "element_id": "drift"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/selection.go",
+                  "start": 131,
+                  "end": 149,
+                  "digest": "sha256:065155e06e0a5c2dc6ef5ac3f3cd8adbf32aa0f06e5bc832e4050425e75d977c",
+                  "note": "Selected-byte drift and outside-subset changes are distinct reasons; eligibility needs current pins and bytes."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "drift-inventory-scoped-deck-coverage-exclude-unselected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Stale or unresolved paths remain visible rather than count as current coverage."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:b1319888511ee1e102b1bfefd22a7e9d434e38cff6f25d731450a80d6db6ea5f",
+      "parent_snapshots": [
+        "sha256:dfaebd6b8d7a26575e7b8df4c1660857649d329aa926f31025d6ec2c6892c056"
+      ],
+      "request_id": "ti-query-impl-selection-layout-2",
+      "created_at": "2026-09-25T01:42:58.71161Z",
+      "asset": "24-a-ba27e932c9315b6e07186746540d1ab4f25c92eba07e8dc1813a.svg",
+      "asset_digest": "sha256:ba27e932c9315b6e07186746540d1ab4f25c92eba07e8dc1813a9e13cd2ae613",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-selection",
+        "deck": "technical-inventory",
+        "title": "Implemented: inherited coverage from exact selections",
+        "rank": 202,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-ba27e932c9315b6e07186746540d1ab4f25c92eba07e8dc1813a.svg",
+        "takeaway": "Only an eligible Item selection adds its selected lines to deck coverage, labeled as inherited; drift and outside-subset edits are reported separately.",
+        "reading_order": [
+          "path",
+          "eligible",
+          "labeled",
+          "drift"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-selection-coverage",
+              "revision": "urn:change-saga:change-saga:component:inventory-selection-coverage:revision:r1"
+            },
+            "version": 4,
+            "id": "path",
+            "slide": "ti-query-impl-selection",
+            "rank": 10,
+            "kind": "node",
+            "label": "Saved selection path",
+            "description": "A selection names the Item's pin, each declared hop at its saved revision, a revision-unique evidence ID and a subset; the records resolver checks structure and the selected digest is verified at its own commit.",
+            "selector": {
+              "type": "element",
+              "element_id": "path"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/selection.go",
+                  "start": 76,
+                  "end": 150,
+                  "digest": "sha256:23db6113e89486fec359c8d23706af6781f77c065927bf28e86b01322429982f",
+                  "note": "Structure is delegated to the records resolver; pin, selected-byte and containing health are reported separately."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "path-inventory-scoped-deck-coverage-selected-subset",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "The Item retains an inspectable selection; a System pin does not select all members or their code."
+            },
+            {
+              "id": "path-inventory-scoped-deck-coverage-explain-path",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Results expose the Item, the declared path and the selected locations."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "eligible",
+            "slide": "ti-query-impl-selection",
+            "rank": 20,
+            "kind": "node",
+            "label": "Eligibility at head",
+            "description": "Only selections whose structure resolves, whose pins are all current and whose selected bytes are current at head contribute; others contribute nothing and stay visible in query inventory-selections.",
+            "selector": {
+              "type": "element",
+              "element_id": "eligible"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/inherited.go",
+                  "start": 55,
+                  "end": 70,
+                  "digest": "sha256:be3fc2a5cef8d1ea2f15e07cd26f82c107f4ff8c40b59680f91184c947e31e49",
+                  "note": "Eligible selections become inherited references; the document is never modified."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "eligible-inventory-scoped-deck-coverage-inherited-evidence",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Selected code counts through the inventory reference without a duplicate authored mapping."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "labeled",
+            "slide": "ti-query-impl-selection",
+            "rank": 30,
+            "kind": "node",
+            "label": "Labeled inherited coverage",
+            "description": "Inherited lines are Item-owned coverage assignments carrying the selection, path and evidence ID with no evidence file, so no evidence-file repair can name them; unselected lines earn nothing.",
+            "selector": {
+              "type": "element",
+              "element_id": "labeled"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/coverage/inherited.go",
+                  "start": 37,
+                  "end": 48,
+                  "digest": "sha256:010c2f2bfeddb79eda701c235029c2ba5867ea0e3f353d921eff106b568f95a7",
+                  "note": "Inherited assignments are labeled and never reported as stale evidence records."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "labeled-inventory-scoped-deck-coverage-exclude-unselected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Unselected code earns no inherited coverage and overlapping selections count once."
+            },
+            {
+              "id": "labeled-inventory-design-to-review-no-implied-approval",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:no-implied-approval",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Inherited coverage is labeled and records no approval; it does not conceal unexplained changes."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "drift",
+            "slide": "ti-query-impl-selection",
+            "rank": 40,
+            "kind": "node",
+            "label": "Separate selection health",
+            "description": "An edit outside the subset keeps the selected bytes current but marks the containing evidence for semantic reassessment; an edit inside makes the selection stale and it stops contributing.",
+            "selector": {
+              "type": "element",
+              "element_id": "drift"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+                  "path": "internal/inventoryview/selection.go",
+                  "start": 131,
+                  "end": 149,
+                  "digest": "sha256:065155e06e0a5c2dc6ef5ac3f3cd8adbf32aa0f06e5bc832e4050425e75d977c",
+                  "note": "Selected-byte drift and outside-subset changes are distinct reasons; eligibility needs current pins and bytes."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "drift-inventory-scoped-deck-coverage-exclude-unselected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Stale or unresolved paths remain visible rather than count as current coverage."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
