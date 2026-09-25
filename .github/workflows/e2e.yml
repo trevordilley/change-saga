@@ -24,7 +24,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromium, firefox, webkit]
+        # Chrome is the supported browser. Firefox and WebKit stay defined in
+        # playwright.config.ts for `npm run test:all-browsers`, not CI.
+        browser: [chromium]
     env:
       BROWSER: ${{ matrix.browser }}
     defaults:

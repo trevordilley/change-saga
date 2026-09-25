@@ -15,6 +15,7 @@ npx playwright install chromium
 npm test
 ```
 
+CI runs Chromium only; Chrome is the supported browser.
 `npm run test:all-browsers` also runs the defined Firefox and WebKit projects.
 `npm run test:repeat-critical` repeats the mutation-heavy critical flows three
 times to check isolation and timing.
