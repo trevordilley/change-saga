@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "50055150a0fe7a746fc43b68b15f9567ba9654f9",
+      "path": "internal/server/directory.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:9ab10ba419e445110505442b6f3359a6fa6446016638397ccc896e69843b2841",
+      "note": "The template doc comment used to close here; it now continues with the width rule."
+    }
+  ]
+}

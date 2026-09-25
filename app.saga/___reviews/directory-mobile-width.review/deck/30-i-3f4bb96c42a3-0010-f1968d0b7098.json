@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "desktop-before",
+  "slide": "desktop-width",
+  "rank": 10,
+  "kind": "example",
+  "label": "Before at 1440px",
+  "description": "At 1440px the /terms table is 1051px wide, 111px wider than the 940px content column, so its Reference column spilled past the content edge.",
+  "selector": {
+    "type": "element",
+    "element_id": "desktop-before"
+  }
+}

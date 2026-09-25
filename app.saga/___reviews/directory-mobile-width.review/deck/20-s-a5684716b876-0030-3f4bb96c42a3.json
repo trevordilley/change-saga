@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "desktop-width",
+  "deck": "directory-mobile-width",
+  "title": "At desktop width only the table that never fit changes",
+  "rank": 30,
+  "intent": "risk",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-a5684716b876-0030-3f4bb96c42a3.svg",
+  "takeaway": "At 1440px only /terms, whose table was already wider than its column, now scrolls in place; the sticky table header it gives up was hidden under the topbar anyway.",
+  "reading_order": [
+    "desktop-before",
+    "desktop-after",
+    "edge-shadows",
+    "desktop-unchanged",
+    "sticky-header-surprise"
+  ]
+}

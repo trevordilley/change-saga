@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unit-check",
+  "slide": "proof",
+  "rank": 30,
+  "kind": "region",
+  "label": "Go template test",
+  "description": "TestDirectoryTableScrollsInsideItsOwnRegion renders the directory template and checks the named, focusable region holds only the table, and that the overflow rule exists.",
+  "selector": {
+    "type": "element",
+    "element_id": "unit-check"
+  }
+}

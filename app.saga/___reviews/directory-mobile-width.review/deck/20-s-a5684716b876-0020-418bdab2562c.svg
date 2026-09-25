@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">One shared scroll region, used by every directory</title>
+  <desc id="desc">The directory template now wraps only the table in a named, focusable region that scrolls sideways. The filter and the no-match status stay outside it. Six directory pages and the three Technical design tables all render through this template; the Technical design page's own overflow rule is removed.</desc>
+  <defs><linearGradient id="bg"><stop stop-color="#111827"/><stop offset="1" stop-color="#13283a"/></linearGradient><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0l10 5-10 5z" fill="#67e8f9"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="62" y="62" fill="#8ea6bf" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" letter-spacing="2">DIRECTORY WIDTH · 2 OF 4</text>
+  <text x="62" y="112" fill="#f7fbff" font-family="Inter,system-ui,sans-serif" font-size="36" font-weight="750">One shared scroll region, used by every directory</text>
+  <text x="62" y="146" fill="#aac0d5" font-family="Inter,system-ui,sans-serif" font-size="18">The fix lives in the template every directory renders through, not in each page</text>
+  <g id="directory-template">
+    <rect x="62" y="186" width="660" height="440" rx="18" fill="#eef7ff" stroke="#67e8f9" stroke-width="2"/>
+    <text x="88" y="220" fill="#32516b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" font-weight="800" text-anchor="start">TEMPLATE "directory" · div.directory</text>
+    <rect x="92" y="240" width="600" height="52" rx="10" fill="#fff" stroke="#94a3b8"/>
+    <text x="112" y="272" fill="#334155" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="17" font-weight="700" text-anchor="start">form.directory-filter</text><text x="672" y="272" fill="#64748b" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="400" text-anchor="end">stays at page width</text>
+  </g>
+  <g id="scroll-region">
+    <rect x="92" y="308" width="600" height="228" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="112" y="338" fill="#1e3a8a" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="18" font-weight="800" text-anchor="start">div.directory-scroll</text>
+    <text x="112" y="362" fill="#1e40af" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" font-weight="600" text-anchor="start">role="region" · aria-label="{{.Title}}" · tabindex="0"</text>
+    <text x="112" y="384" fill="#1e40af" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" font-weight="400" text-anchor="start">overflow-x: auto · edge shadows mark hidden columns</text>
+    <rect x="112" y="400" width="660" height="116" rx="8" fill="#fff" stroke="#3b82f6" stroke-dasharray="6 5"/>
+    <text x="132" y="428" fill="#0f172a" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="17" font-weight="700" text-anchor="start">table.directory-table</text>
+    <text x="132" y="454" fill="#334155" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" font-weight="400" text-anchor="start">caption · th scope="col" · th scope="row"</text>
+    <text x="132" y="480" fill="#334155" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="400" text-anchor="start">unchanged: every column, every row, same markup</text>
+    <text x="132" y="504" fill="#b45309" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="700" text-anchor="start">wider than the region → scrolls inside it</text>
+  </g>
+  <g id="status-outside">
+    <rect x="92" y="552" width="600" height="52" rx="10" fill="#fff" stroke="#94a3b8"/>
+    <text x="112" y="584" fill="#334155" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="17" font-weight="700" text-anchor="start">p.directory-none role="status"</text><text x="672" y="584" fill="#64748b" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="400" text-anchor="end">outside the scroller</text>
+  </g>
+  <g id="directory-consumers">
+    <text x="862" y="204" fill="#8ea6bf" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" font-weight="800" text-anchor="start">RENDERED THROUGH IT</text>
+    <rect x="862" y="222" width="260" height="34" rx="8" fill="#10263a" stroke="#4b6a86"/><text x="878" y="245" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="600" text-anchor="start">/features</text><path d="M862 239h-18" stroke="#67e8f9" stroke-width="2"/>
+    <rect x="862" y="266" width="260" height="34" rx="8" fill="#10263a" stroke="#4b6a86"/><text x="878" y="289" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="600" text-anchor="start">/personas</text><path d="M862 283h-18" stroke="#67e8f9" stroke-width="2"/>
+    <rect x="862" y="310" width="260" height="34" rx="8" fill="#10263a" stroke="#4b6a86"/><text x="878" y="333" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="600" text-anchor="start">/flags</text><path d="M862 327h-18" stroke="#67e8f9" stroke-width="2"/>
+    <rect x="862" y="354" width="260" height="34" rx="8" fill="#10263a" stroke="#4b6a86"/><text x="878" y="377" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="600" text-anchor="start">/terms</text><path d="M862 371h-18" stroke="#67e8f9" stroke-width="2"/>
+    <rect x="862" y="398" width="260" height="34" rx="8" fill="#10263a" stroke="#4b6a86"/><text x="878" y="421" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="600" text-anchor="start">/reviews</text><path d="M862 415h-18" stroke="#67e8f9" stroke-width="2"/>
+    <rect x="862" y="442" width="260" height="34" rx="8" fill="#10263a" stroke="#4b6a86"/><text x="878" y="465" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="600" text-anchor="start">/technical · 3 tables</text><path d="M862 459h-18" stroke="#67e8f9" stroke-width="2"/>
+    <path d="M844 239v220M844 349h-116" stroke="#67e8f9" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  </g>
+  <g id="technical-rule-removed">
+    <rect x="780" y="500" width="440" height="126" rx="14" fill="#2a1d0e" stroke="#f59e0b" stroke-width="2"/>
+    <text x="802" y="530" fill="#fbbf24" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" font-weight="800" text-anchor="start">REUSED, NOT REINVENTED</text>
+    <text x="802" y="558" fill="#fde68a" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="500" text-anchor="start">Technical design scrolled its whole .directory,</text>
+    <text x="802" y="582" fill="#fde68a" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="500" text-anchor="start">filter included. That rule is deleted; its tables</text>
+    <text x="802" y="606" fill="#fde68a" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="500" text-anchor="start">now use the shared region like every other page.</text>
+  </g>
+  <text x="62" y="670" fill="#aac0d5" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">The region is a named landmark with a tab stop, so a keyboard reader can focus it and scroll with the arrow keys;</text>
+  <text x="62" y="694" fill="#aac0d5" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">the table inside keeps its caption and header cells for screen readers. No column is hidden at any width.</text>
+</svg>

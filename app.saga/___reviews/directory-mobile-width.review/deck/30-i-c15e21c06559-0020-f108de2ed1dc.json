@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "after-table-scrolls",
+  "slide": "same-swipe",
+  "rank": 20,
+  "kind": "example",
+  "label": "After: only the table scrolls",
+  "description": "At 4e47d2c1 the page stays 390px wide. The same swipe scrolls only the table, 292px, inside its region, while the tabs, filter and header stay in place.",
+  "selector": {
+    "type": "element",
+    "element_id": "after-table-scrolls"
+  }
+}

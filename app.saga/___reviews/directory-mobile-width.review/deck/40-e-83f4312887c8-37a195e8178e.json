@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "50055150a0fe7a746fc43b68b15f9567ba9654f9",
+      "path": "internal/server/directory.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:844a42727bb5e09b3e9490fa6c9207b89fd6d9e52b57fb560d67191504c47515",
+      "note": "The old directory template put the table straight into div.directory with nothing to hold its width, so a mobile browser widened the whole page to fit it."
+    }
+  ]
+}

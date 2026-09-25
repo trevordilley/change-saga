@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "measured-widths",
+  "slide": "same-swipe",
+  "rank": 30,
+  "kind": "metric",
+  "label": "Page width at 390px",
+  "description": "Measured page width at a 390px viewport, before and after: /features 670 to 390, /personas 420 to 390, /reviews 774 to 390, /terms 1063 to 390.",
+  "selector": {
+    "type": "element",
+    "element_id": "measured-widths"
+  }
+}

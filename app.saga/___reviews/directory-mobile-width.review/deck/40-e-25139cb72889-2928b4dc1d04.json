@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/directory_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:6c7872f7e7aba7ceb14de93a1613a51c5b446ca889744d3b529463bd245c0953",
+      "note": "The bytes import and TestDirectoryTableScrollsInsideItsOwnRegion, which pins the region markup, that it holds only the table, and the overflow rule."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/directory_test.go",
+      "start": 161,
+      "end": 188,
+      "digest": "sha256:85f485fc14eacef686099db7a2c1526611cd43f1e11867bcf784ea0bc4380356",
+      "note": "The bytes import and TestDirectoryTableScrollsInsideItsOwnRegion, which pins the region markup, that it holds only the table, and the overflow rule."
+    }
+  ]
+}

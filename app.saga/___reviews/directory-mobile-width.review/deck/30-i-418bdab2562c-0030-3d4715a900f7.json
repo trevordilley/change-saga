@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "status-outside",
+  "slide": "one-region",
+  "rank": 30,
+  "kind": "region",
+  "label": "Status stays outside",
+  "description": "The no-match status paragraph sits after the region, so it is never scrolled out of view with the table.",
+  "selector": {
+    "type": "element",
+    "element_id": "status-outside"
+  }
+}

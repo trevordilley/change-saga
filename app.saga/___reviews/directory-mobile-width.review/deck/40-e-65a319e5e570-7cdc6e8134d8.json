@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "e2e/tests/directory-width.spec.ts",
+      "start": 100,
+      "end": 111,
+      "digest": "sha256:c0ec76d4fca7950241806343662abfbe00829ce5d5f19068134a399ab83a1f20",
+      "note": "The 1440px test: each page is no wider than the window and each table no wider than its region."
+    }
+  ]
+}

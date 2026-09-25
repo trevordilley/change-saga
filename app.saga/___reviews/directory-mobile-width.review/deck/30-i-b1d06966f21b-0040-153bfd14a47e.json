@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "observed-results",
+  "slide": "proof",
+  "rank": 40,
+  "kind": "metric",
+  "label": "Observed results",
+  "description": "Author-reported runs: the new spec passed in Chromium, Firefox and WebKit and failed on the old code; neighbouring directory specs passed in Chromium. Firefox has no mobile viewport, so its page scroll width carries the check.",
+  "selector": {
+    "type": "element",
+    "element_id": "observed-results"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "proof",
+  "deck": "directory-mobile-width",
+  "title": "A browser check that fails on the old code",
+  "rank": 40,
+  "intent": "prove",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-a5684716b876-0040-b1d06966f21b.svg",
+  "takeaway": "A new browser spec checks six directories at 390px and 1440px in three engines and fails on the old code; a Go test pins the region markup and rule.",
+  "reading_order": [
+    "desktop-check",
+    "unit-check",
+    "narrow-check",
+    "observed-results"
+  ]
+}
