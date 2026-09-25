@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">Publishing one batch</title>
+  <desc id="diagram-desc">One record publishes source and SVG together.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-publish" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</metadata>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <g id="lifeline" data-diagram-kind="graphic" transform="translate(176 174)" aria-hidden="true" color="#94a3b8">
+    <line x1="0" y1="0" x2="0" y2="300" stroke="currentColor" stroke-dasharray="6 6"/>
+  </g>
+  <g id="heading" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve">
+      <tspan x="0" y="34">Publishing one batch</tspan>
+    </text>
+  </g>
+  <g id="author" data-diagram-kind="node" transform="translate(76 110)" role="group" aria-label="Author">
+    <rect width="200" height="64" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve">
+      <tspan x="52" y="40">Author</tspan>
+    </text>
+  </g>
+  <g id="store" data-diagram-kind="node" transform="translate(900 100)" role="group" aria-label="Store">
+    <path d="M0 14C0 -4.666666666666667 220 -4.666666666666667 220 14V96C220 114.66666666666667 0 114.66666666666667 0 96Z" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <path d="M0 14C0 33 220 33 220 14" fill="none" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="62" font-size="22" fill="#172033" xml:space="preserve">
+      <tspan x="18" y="62">Store</tspan>
+    </text>
+    <text x="18" y="95" font-size="15" fill="#172033" xml:space="preserve">
+      <tspan x="18" y="95">One record</tspan>
+    </text>
+  </g>
+  <g id="alt" data-diagram-kind="group" transform="translate(110 300)" role="group" aria-label="alt  [snapshot matches]">
+    <rect width="1070" height="200" rx="10" fill="#f0f3f6" stroke="#c3cdd8" stroke-width="1" stroke-dasharray="7 6"/>
+    <text x="18" y="30" font-size="18" fill="#526174" xml:space="preserve">
+      <tspan x="18" y="30">alt  [snapshot matches]</tspan>
+    </text>
+    <g id="commit" data-diagram-kind="node" transform="translate(40 80)" role="group" aria-label="merge">
+      <title>Merge after review</title>
+      <ellipse cx="10" cy="10" rx="10" ry="10" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="10" y="46" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle">
+        <tspan x="10" y="46">merge</tspan>
+      </text>
+    </g>
+    <g id="publish" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="publish  record" data-from="author" data-to="store">
+      <path d="M66 150 L790 150" fill="none" stroke="#64748b" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="7 6" marker-end="url(#diagram-head-publish)"/>
+      <text x="80" y="136" font-size="16" fill="#526174" xml:space="preserve">
+        <tspan x="80" y="136">publish  record</tspan>
+      </text>
+    </g>
+  </g>
+</svg>
