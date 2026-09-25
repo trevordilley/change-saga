@@ -222,17 +222,25 @@ func objectsArgs(repo string) []string {
 }
 
 // DiffTree returns what `git diff <from> <to>` prints for two commits, read
-// from a long-lived `git diff-tree --stdin` started with args. args must be
-// the complete diff-tree invocation, including --stdin, --no-commit-id, -r,
+// from a long-lived `git -C repo diff-tree --stdin` started with args. args
+// must be the rest of the invocation, including --stdin, --no-commit-id, -r,
 // and any pathspec; one process serves every pair diffed with the same args.
-// from and to must be full object names. It reports false when it cannot
+// from and to must be full object IDs. It reports false when it cannot
 // answer, and the caller then runs the one-shot diff instead.
-func DiffTree(ctx context.Context, args []string, from, to string) ([]byte, bool) {
+func DiffTree(ctx context.Context, repo string, args []string, from, to string) ([]byte, bool) {
 	session := sessionFrom(ctx)
 	if session == nil || !IsObjectName(from) || !IsObjectName(to) {
 		return nil, false
 	}
-	process, release := session.acquire(args, true)
+	// diff-tree exits on a commit the repository lacks, as a pinned
+	// reference's can be after gc; ask cat-file first so one absent commit
+	// does not cost the process, and leave its error to the one-shot diff.
+	for _, commit := range []string{from, to} {
+		if kind, ok := objectInfo(ctx, repo, commit); !ok || kind != "commit" {
+			return nil, false
+		}
+	}
+	process, release := session.acquire(append([]string{"-C", repo}, args...), true)
 	if process == nil {
 		return nil, false
 	}

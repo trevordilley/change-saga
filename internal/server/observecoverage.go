@@ -180,7 +180,7 @@ func (a *app) observeCoverage(ctx context.Context, mode string) (*observeCoverag
 	headOID := ""
 	if resolveErr == nil {
 		defer resolver.Close()
-		headOID, _ = gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--end-of-options", firstNonEmptyString(a.rng.Head, "HEAD")+"^{commit}")
+		headOID, _ = resolveCommit(ctx, a.sourceDir, firstNonEmptyString(a.rng.Head, "HEAD"))
 	}
 	files := map[string]*observeFileView{}
 	for _, record := range documented {

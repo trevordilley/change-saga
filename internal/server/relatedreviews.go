@@ -121,7 +121,7 @@ func (a *app) relatedFingerprint(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	head, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "HEAD")
+	head, _ := resolveCommit(ctx, a.sourceDir, "HEAD")
 	return tree + "\x00" + head, nil
 }
 

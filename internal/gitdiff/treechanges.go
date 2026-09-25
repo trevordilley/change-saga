@@ -8,6 +8,8 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 // Hunk is one zero-context hunk header. OldCount zero is a pure insertion after
@@ -50,6 +52,18 @@ func TreeChanges(ctx context.Context, repo, from, to string) ([]FileChange, erro
 // FileDiff returns the patch of the named paths between two commits, for
 // showing a reader what changed since a reference was pinned.
 func FileDiff(ctx context.Context, repo, from, to string, paths ...string) (string, error) {
+	if gitexec.NamesObjects(from, to) {
+		key := append([]string{"file-diff", from, to, attributesIdentity(repo)}, paths...)
+		output, err := gitexec.Stable(ctx, repo, []string{from, to}, key, func() ([]byte, error) {
+			patch, err := fileDiffOnce(ctx, repo, from, to, paths...)
+			return []byte(patch), err
+		})
+		return string(output), err
+	}
+	return fileDiffOnce(ctx, repo, from, to, paths...)
+}
+
+func fileDiffOnce(ctx context.Context, repo, from, to string, paths ...string) (string, error) {
 	args := canonicalDiffArgs(repo, "--unified=3", from, to, "--")
 	for _, path := range paths {
 		args = append(args, ":(literal)"+path)

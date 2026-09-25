@@ -12,6 +12,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -37,20 +38,20 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 	}
 	application := &app{root: dogfoodSaga, sourceDir: ".."}
 	started := time.Now()
-	if _, err := application.relatedFingerprint(context.Background()); err != nil {
+	if _, err := application.relatedFingerprint(requestContext(t)); err != nil {
 		t.Fatal(err)
 	}
 	fingerprint := time.Since(started)
 	started = time.Now()
-	if _, err := application.outlineFingerprint(context.Background()); err != nil {
+	if _, err := application.outlineFingerprint(requestContext(t)); err != nil {
 		t.Fatal(err)
 	}
 	t.Logf("freshness check: related %s, the shell's own outline %s", fingerprint, time.Since(started))
 	started = time.Now()
-	index := application.relatedReviews(context.Background(), document, records)
+	index := application.relatedReviews(requestContext(t), document, records)
 	cold := time.Since(started)
 	started = time.Now()
-	application.relatedReviews(context.Background(), document, records)
+	application.relatedReviews(requestContext(t), document, records)
 	warm := time.Since(started)
 	t.Logf("app.saga: %d features, %d stories, %d test cases, %d reviews; %d code references; cold %s (intersection %s), warm %s, builds %d",
 		len(document.Features), len(records.Stories), len(tests.TestCases), len(document.Reviews),
@@ -68,7 +69,7 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 	}
 	hitting := &app{root: touching, sourceDir: ".."}
 	started = time.Now()
-	hit := hitting.relatedReviews(context.Background(), touched, records)
+	hit := hitting.relatedReviews(requestContext(t), touched, records)
 	t.Logf("app.saga + 1 review of the commit that changed the documented file: cold %s, %d records list it", time.Since(started), len(hit.byRecord))
 	if len(hit.byRecord) == 0 {
 		t.Fatal("a review of the very commit that changed the documented code was related to nothing")
@@ -84,10 +85,10 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 		}
 		measured := &app{root: root, sourceDir: ".."}
 		started := time.Now()
-		built := measured.relatedReviews(context.Background(), copied, records)
+		built := measured.relatedReviews(requestContext(t), copied, records)
 		elapsed := time.Since(started)
 		started = time.Now()
-		measured.relatedReviews(context.Background(), copied, records)
+		measured.relatedReviews(requestContext(t), copied, records)
 		t.Logf("app.saga + %d reviews: cold %s (intersection %s, %d records with a review), warm %s",
 			reviews, elapsed, built.Elapsed, len(built.byRecord), time.Since(started))
 	}
@@ -183,4 +184,12 @@ func documentedReferenceCount(document *saga.Saga) int {
 		walk(document.Section)
 	}
 	return count
+}
+
+// requestContext is the context a request handler gets: its own Git session,
+// ended when the test does. The cost measured is the cost a reviewer pays.
+func requestContext(t *testing.T) context.Context {
+	ctx, end := gitexec.Begin(context.Background())
+	t.Cleanup(end)
+	return ctx
 }

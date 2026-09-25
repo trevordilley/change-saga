@@ -443,9 +443,9 @@ func attributesIdentity(repo string) string {
 }
 
 func diffCommitsOnce(ctx context.Context, repo string, format []string, from, to string, pathspec ...string) ([]byte, error) {
-	treeArgs := append(append([]string{}, canonicalDiffConfig...), "-C", repo, "diff-tree", "--stdin", "--no-commit-id", "-r")
+	treeArgs := append(append([]string{}, canonicalDiffConfig...), "diff-tree", "--stdin", "--no-commit-id", "-r")
 	treeArgs = append(append(append(treeArgs, canonicalDiffFlags...), format...), "--")
-	if output, ok := gitexec.DiffTree(ctx, append(treeArgs, pathspec...), from, to); ok {
+	if output, ok := gitexec.DiffTree(ctx, repo, append(treeArgs, pathspec...), from, to); ok {
 		return output, nil
 	}
 	args := canonicalDiffArgs(repo, append(append(append([]string{}, format...), from, to, "--"), pathspec...)...)

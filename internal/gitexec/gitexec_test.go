@@ -75,7 +75,7 @@ func TestDiffTreeMatchesGitDiff(t *testing.T) {
 	defer end()
 	for _, mode := range [][]string{{"-p", "--unified=0"}, {"-p", "--unified=20"}, {"--numstat", "-z"}} {
 		for _, pathspec := range [][]string{nil, {".", ":(exclude,glob)**/*.saga/**"}} {
-			treeArgs := append(append(append(append([]string{}, diffConfig...), "-C", repo, "diff-tree", "--stdin", "--no-commit-id", "-r"), diffFlags...), mode...)
+			treeArgs := append(append(append(append([]string{}, diffConfig...), "diff-tree", "--stdin", "--no-commit-id", "-r"), diffFlags...), mode...)
 			treeArgs = append(append(treeArgs, "--"), pathspec...)
 			for _, pair := range [][2]string{{commits[0], commits[1]}, {commits[1], commits[2]}, {commits[0], commits[3]}, {commits[3], commits[0]}, {commits[2], commits[2]}} {
 				diffArgs := append(append(append(append([]string{}, diffConfig...), "-C", repo, "diff"), diffFlags...), mode[len(mode)-1])
@@ -87,7 +87,7 @@ func TestDiffTreeMatchesGitDiff(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				got, ok := DiffTree(ctx, treeArgs, pair[0], pair[1])
+				got, ok := DiffTree(ctx, repo, treeArgs, pair[0], pair[1])
 				if !ok {
 					t.Fatalf("DiffTree %v %v could not answer", mode, pair)
 				}
@@ -101,20 +101,27 @@ func TestDiffTreeMatchesGitDiff(t *testing.T) {
 
 func TestDiffTreeDeclinesWhatItCannotAnswer(t *testing.T) {
 	repo, commits := history(t)
-	args := []string{"-C", repo, "diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
-	if _, ok := DiffTree(context.Background(), args, commits[0], commits[1]); ok {
+	args := []string{"diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
+	if _, ok := DiffTree(context.Background(), repo, args, commits[0], commits[1]); ok {
 		t.Fatal("DiffTree answered without a session")
 	}
 	ctx, end := Begin(context.Background())
 	defer end()
-	if _, ok := DiffTree(ctx, args, "main", commits[1]); ok {
+	if _, ok := DiffTree(ctx, repo, args, "main", commits[1]); ok {
 		t.Fatal("DiffTree answered for a revision that is not a full object name")
 	}
-	if _, ok := DiffTree(ctx, args, strings.Repeat("a", 40), commits[1]); ok {
-		t.Fatal("DiffTree answered for a missing commit")
+	for range maxBatchFailures + 1 {
+		if _, ok := DiffTree(ctx, repo, args, strings.Repeat("a", 40), commits[1]); ok {
+			t.Fatal("DiffTree answered for a missing commit")
+		}
+	}
+	// An absent commit is declined before it reaches diff-tree, which would
+	// exit on it; it must never retire the process for later pairs.
+	if got := sessionFrom(ctx).failures[strings.Join(append([]string{"-C", repo}, args...), "\x00")]; got != 0 {
+		t.Fatalf("absent commits broke diff-tree %d times", got)
 	}
 	// The failed process is replaced rather than poisoning the session.
-	if _, ok := DiffTree(ctx, args, commits[0], commits[1]); !ok {
+	if _, ok := DiffTree(ctx, repo, args, commits[0], commits[1]); !ok {
 		t.Fatal("DiffTree did not recover after a failed request")
 	}
 }
@@ -258,17 +265,17 @@ func TestBrokenBatchInvocationIsRetiredAfterRepeatedFailures(t *testing.T) {
 	repo, commits := history(t)
 	ctx, end := Begin(context.Background())
 	defer end()
-	args := []string{"-C", repo, "diff-tree", "--stdin", "--no-such-option"}
+	args := []string{"diff-tree", "--stdin", "--no-such-option"}
 	for range maxBatchFailures + 2 {
-		if _, ok := DiffTree(ctx, args, commits[0], commits[1]); ok {
+		if _, ok := DiffTree(ctx, repo, args, commits[0], commits[1]); ok {
 			t.Fatal("an invocation Git rejects answered")
 		}
 	}
 	session := sessionFrom(ctx)
-	if got := session.failures[strings.Join(args, "\x00")]; got != maxBatchFailures {
+	if got := session.failures[strings.Join(append([]string{"-C", repo}, args...), "\x00")]; got != maxBatchFailures {
 		t.Fatalf("failures = %d; want the invocation retired after %d", got, maxBatchFailures)
 	}
-	if got := liveProcesses(session); got != 0 {
+	if got := liveFor(session, append([]string{"-C", repo}, args...)); got != 0 {
 		t.Fatalf("a retired invocation left %d processes", got)
 	}
 }
@@ -281,6 +288,16 @@ func liveProcesses(session *Session) int {
 		live += pool.live
 	}
 	return live
+}
+
+// liveFor counts the processes running one invocation.
+func liveFor(session *Session, args []string) int {
+	session.mu.Lock()
+	defer session.mu.Unlock()
+	if pool := session.pools[strings.Join(args, "\x00")]; pool != nil {
+		return pool.live
+	}
+	return 0
 }
 
 func idleProcesses(session *Session) []*batch {
@@ -300,21 +317,22 @@ func TestParallelCallersShareABoundedPool(t *testing.T) {
 	ctx, end := Begin(context.Background())
 	defer end()
 	session := sessionFrom(ctx)
-	args := []string{"-C", repo, "diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
+	args := []string{"diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
 	var holders []func()
 	for range maxBatchProcesses {
-		process, release := session.acquire(args, true)
+		process, release := session.acquire(append([]string{"-C", repo}, args...), true)
 		if process == nil {
 			t.Fatal("the pool refused a process below its bound")
 		}
 		holders = append(holders, release)
 	}
-	if got := liveProcesses(session); got != maxBatchProcesses {
+	full := append([]string{"-C", repo}, args...)
+	if got := liveFor(session, full); got != maxBatchProcesses {
 		t.Fatalf("%d concurrent callers ran %d processes", maxBatchProcesses, got)
 	}
 	answered := make(chan bool)
 	go func() {
-		_, ok := DiffTree(ctx, args, commits[0], commits[1])
+		_, ok := DiffTree(ctx, repo, args, commits[0], commits[1])
 		answered <- ok
 	}()
 	select {
@@ -326,7 +344,7 @@ func TestParallelCallersShareABoundedPool(t *testing.T) {
 	if ok := <-answered; !ok {
 		t.Fatal("a waiting caller was not served by the released process")
 	}
-	if got := liveProcesses(session); got != maxBatchProcesses {
+	if got := liveFor(session, full); got != maxBatchProcesses {
 		t.Fatalf("the pool grew past its bound to %d processes", got)
 	}
 	for _, release := range holders[1:] {

@@ -17,6 +17,7 @@ import (
 	"bytes"
 	"context"
 	"os/exec"
+	"runtime"
 	"strings"
 	"sync"
 )
@@ -147,8 +148,9 @@ func (session *Session) close() {
 // before the session stops starting it and callers spawn one-shot commands.
 const maxBatchFailures = 3
 
-// maxBatchProcesses bounds the processes one invocation may run at once.
-const maxBatchProcesses = 4
+// maxBatchProcesses bounds the processes one invocation may run at once: as
+// many as can run in parallel, so a caller's workers never queue for Git.
+var maxBatchProcesses = max(runtime.GOMAXPROCS(0), 2)
 
 type batchPool struct {
 	idle []*batch
