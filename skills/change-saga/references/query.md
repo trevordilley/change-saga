@@ -96,6 +96,25 @@ revision and supplies the required parents and revision identity. Never emulate
 a rename by editing files, changing a URN, rewriting prose/SVG, or repinning or
 approving dependencies.
 
+## Technical inventory
+
+`query inventory` reports each Component/System with the exact revisions it
+answers about (`selected`), their explicit intent, declared use counts and
+code health. Intent is `unspecified` for legacy revisions; never infer it.
+`--intent` filters explicit intent. `--new` requires `--against`: newness is
+identity introduction relative to that base, independent of intent, and an
+unreadable base fails with `baseline_unknown` rather than making everything
+new. `--feature` restricts to pins reachable from that feature's
+implementation Items and returns the declared `scope_paths`. Filters never
+remove unresolved records: page `data.unresolved` with `--conflict-cursor`
+until `data.completeness.unresolved_page.has_more` is false.
+
+`query inventory-uses --target URN [--depth N]` pages declared reverse uses;
+read `data.completeness` before claiming a definition is unused.
+`query inventory-coverage` measures code accounted for by the inventory in a
+named `--path` scope. It is not implementation-deck or review coverage, and
+covered lines are not proof of a correct explanation.
+
 ## Operations
 
 <!-- query-operations:begin -->

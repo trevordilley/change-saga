@@ -294,3 +294,23 @@ func strings40(c string) string {
 	}
 	return out
 }
+
+func TestStatusMatchesLinkStatus(t *testing.T) {
+	inv := usesInventory()
+	inv.Records = append(inv.Records,
+		record("component", "gone", []requirements.TechnicalRevision{revision("r1", nil)}, "retired", false),
+		record("component", "split", []requirements.TechnicalRevision{revision("r1", nil), revision("r2", nil)}, "active", true))
+	ix := Build(nil, inv)
+	pins := []Pin{store1, store2, reader1, sys1, sys2, pin("component", "gone", "r1"), pin("component", "split", "r1"), pin("component", "store", "r9"), pin("component", "nope", "r1")}
+	seen := map[string]bool{}
+	for _, p := range pins {
+		want := inv.LinkStatus(p)
+		if got := ix.Status(p); got != want {
+			t.Fatalf("%v: index %s, inventory %s", p, got, want)
+		}
+		seen[want] = true
+	}
+	if len(seen) != 5 {
+		t.Fatalf("fixture must exercise every status: %v", seen)
+	}
+}

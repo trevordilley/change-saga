@@ -133,7 +133,7 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 	matched, unresolved := read.partition()
 	selected := []requirements.TechnicalRecord{}
 	for _, m := range matched {
-		selected = append(selected, *d.Find(m.Target))
+		selected = append(selected, *read.index.Record(m.Target))
 	}
 	key := "inventory:v2\x00" + *kind + "\x00" + *target + "\x00" + fmt.Sprint(*history) + "\x00" + *intent + "\x00" + fmt.Sprint(*onlyNew) + "\x00" + featureID + "\x00" + changes.BaseOID + "\x00" + changes.HeadOID
 	start, cursorErr := decodeTermsCursor(*cursor, key+"\x00records", snapshot, len(selected))

@@ -104,7 +104,7 @@ func Build(document *saga.Saga, inventory *requirements.Inventory) *Index {
 		ix.records[inventory.Records[i].Target] = &inventory.Records[i]
 	}
 	add := func(u Use) {
-		u.Status = inventory.LinkStatus(u.Pin)
+		u.Status = ix.Status(u.Pin)
 		ix.byTarget[u.Pin.Target] = append(ix.byTarget[u.Pin.Target], incoming{u})
 	}
 	if document != nil {
@@ -259,4 +259,22 @@ func (ix *Index) Counts(target string) UseCounts {
 		}
 	}
 	return counts
+}
+
+// Status mirrors requirements.Inventory.LinkStatus through the index: the
+// loaded inventory's Find is a linear scan, which made indexing quadratic.
+// TestStatusMatchesLinkStatus keeps the two in step.
+func (ix *Index) Status(p Pin) string {
+	r := ix.records[p.Target]
+	switch {
+	case r == nil || r.Revision(p.Revision) == nil:
+		return "missing"
+	case r.CurrentRevision == nil || r.CurrentLifecycle == nil:
+		return "conflicted"
+	case r.CurrentLifecycle.State == "retired":
+		return "retired"
+	case r.Target+":revision:"+r.CurrentRevision.ID != p.Revision:
+		return "stale"
+	}
+	return "current"
 }

@@ -147,7 +147,7 @@ func (ix *Index) Select(target string, scoped []Pin) ([]SelectedPin, []string) {
 			return selected, reasons
 		}
 		p := Pin{Target: target, Revision: target + ":revision:" + r.CurrentRevision.ID}
-		return append(selected, SelectedPin{Pin: p, Status: ix.Inventory.LinkStatus(p), Intent: RevisionIntent(r.CurrentRevision)}), reasons
+		return append(selected, SelectedPin{Pin: p, Status: ix.Status(p), Intent: RevisionIntent(r.CurrentRevision)}), reasons
 	}
 	for _, p := range scoped {
 		rev := r.Revision(p.Revision)
@@ -155,7 +155,7 @@ func (ix *Index) Select(target string, scoped []Pin) ([]SelectedPin, []string) {
 			reasons = append(reasons, UnresolvedMissingRevision)
 			continue
 		}
-		selected = append(selected, SelectedPin{Pin: p, Status: ix.Inventory.LinkStatus(p), Intent: RevisionIntent(rev)})
+		selected = append(selected, SelectedPin{Pin: p, Status: ix.Status(p), Intent: RevisionIntent(rev)})
 	}
 	if r.CurrentRevision == nil {
 		reasons = append(reasons, UnresolvedRevisionHeads)

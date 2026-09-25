@@ -237,6 +237,10 @@ link grants no coverage of that System's code. Read the saved revision before
 explicitly repinning; never rewrite old review content or approve a slide as a
 side effect. The drawer opens the explanation, its Components and exact code,
 then returns to the same implementation slide. Use `query inventory` for
-current heads, code and Component pin health, and selected-record history.
-This first pass does not add inventory to generic `references`/`repin`, feature
-audits, comparison layers or reconciliation; do not infer those integrations.
+current heads, code and Component pin health, and selected-record history;
+`query inventory-uses` for the Items and Systems that declare a definition; and
+`query inventory-coverage` for code the inventory accounts for. `reconcile`
+reports stale definition evidence, Item pins that are not current, and
+definitions without implementation-deck use. Inventory is not part of generic
+`references`/`repin`, feature audits or comparison layers; do not infer those
+integrations.
