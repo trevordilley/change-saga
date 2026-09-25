@@ -468,11 +468,52 @@ func checkVisualAsset(packageDir string, visual Visual, bindings []Binding) erro
 	return ValidateVisual(data, visual.Digest, bindings)
 }
 
+// Visual allowlists. The renderer inlines ERD SVG into pages that carry review
+// mutation tokens, so authoring admits only static drawing elements and
+// presentation/geometry attributes. Scripts, foreign content, event handlers and
+// SMIL animation (which can rewrite href at runtime) are not on the lists.
+var (
+	svgNamespace   = "http://www.w3.org/2000/svg"
+	xlinkNamespace = "http://www.w3.org/1999/xlink"
+	xmlNamespace   = "http://www.w3.org/XML/1998/namespace"
+	visualElements = setOf("svg", "g", "defs", "symbol", "use", "title", "desc", "rect", "circle", "ellipse", "line", "polyline", "polygon", "path", "text", "tspan", "textpath", "a", "marker", "lineargradient", "radialgradient", "stop", "clippath", "mask", "pattern", "style")
+	visualAttrs    = setOf("id", "class", "style", "type", "media", "version", "role", "lang", "href",
+		"x", "y", "x1", "y1", "x2", "y2", "cx", "cy", "r", "rx", "ry", "fx", "fy", "fr", "dx", "dy", "width", "height", "d", "points", "pathlength",
+		"transform", "viewbox", "preserveaspectratio", "rotate", "textlength", "lengthadjust", "startoffset", "method", "spacing", "side",
+		"fill", "fill-opacity", "fill-rule", "stroke", "stroke-width", "stroke-opacity", "stroke-dasharray", "stroke-dashoffset", "stroke-linecap", "stroke-linejoin", "stroke-miterlimit",
+		"opacity", "color", "visibility", "display", "overflow", "vector-effect", "shape-rendering", "text-rendering", "paint-order", "clip-path", "clip-rule", "mask",
+		"font-family", "font-size", "font-weight", "font-style", "font-variant", "text-anchor", "dominant-baseline", "alignment-baseline", "baseline-shift", "letter-spacing", "word-spacing", "text-decoration", "writing-mode", "direction", "unicode-bidi",
+		"marker-start", "marker-mid", "marker-end", "markerwidth", "markerheight", "markerunits", "refx", "refy", "orient",
+		"gradientunits", "gradienttransform", "spreadmethod", "offset", "stop-color", "stop-opacity", "clippathunits", "maskunits", "maskcontentunits", "patternunits", "patterncontentunits", "patterntransform",
+		"aria-label", "aria-labelledby", "aria-describedby", "aria-hidden", "focusable")
+)
+
+func setOf(values ...string) map[string]bool {
+	set := make(map[string]bool, len(values))
+	for _, value := range values {
+		set[value] = true
+	}
+	return set
+}
+
+// unsafeScheme reports a javascript: or data: value after removing whitespace
+// and control characters, which browsers ignore inside URL schemes.
+func unsafeScheme(value string) bool {
+	folded := strings.Map(func(r rune) rune {
+		if r <= ' ' || r == 0x7f {
+			return -1
+		}
+		return r
+	}, strings.ToLower(value))
+	return strings.Contains(folded, "javascript:") || strings.Contains(folded, "data:") || strings.Contains(folded, "vbscript:")
+}
+
 // ValidateVisual checks an SVG against its digest and bound element IDs. The
-// renderer inlines the SVG for hit-testing, so authoring refuses anything
-// active or external: scripts, foreign objects, event handlers, non-fragment
-// links, external url()/@import in styles and DTD/entity directives. Every ID
-// must be unique so a binding names exactly one element.
+// renderer inlines the SVG for hit-testing, so authoring accepts only allowlisted
+// static elements and attributes, same-document #fragment links, no
+// javascript:/data: values, no external url()/@import in styles and no
+// DTD/entity or processing instructions. Every ID must be unique so a binding
+// names exactly one element.
 func ValidateVisual(data []byte, digest string, bindings []Binding) error {
 	if len(data) > MaxVisualBytes {
 		return fmt.Errorf("visual exceeds one MiB")
@@ -501,8 +542,8 @@ func ValidateVisual(data []byte, digest string, bindings []Binding) error {
 				return fmt.Errorf("visual cannot contain processing instructions")
 			}
 		case xml.CharData:
-			if inStyle && unsafeStyle(string(value)) {
-				return fmt.Errorf("visual styles cannot import or reference external content")
+			if inStyle && (unsafeStyle(string(value)) || unsafeScheme(string(value))) {
+				return fmt.Errorf("visual styles cannot import or reference external or scripted content")
 			}
 		case xml.EndElement:
 			depth--
@@ -516,23 +557,38 @@ func ValidateVisual(data []byte, digest string, bindings []Binding) error {
 			}
 			depth++
 			name := strings.ToLower(value.Name.Local)
-			if name == "script" || name == "foreignobject" || name == "iframe" || name == "object" || name == "embed" {
-				return fmt.Errorf("visual cannot contain %s elements", value.Name.Local)
+			if (value.Name.Space != "" && value.Name.Space != svgNamespace) || !visualElements[name] {
+				return fmt.Errorf("visual element %s is not an allowed static SVG element", value.Name.Local)
 			}
 			inStyle = name == "style"
 			for _, attr := range value.Attr {
 				local := strings.ToLower(attr.Name.Local)
-				switch {
-				case strings.HasPrefix(local, "on"):
-					return fmt.Errorf("visual cannot contain event handler attributes")
-				case local == "href" || local == "src":
-					if !strings.HasPrefix(strings.TrimSpace(attr.Value), "#") {
-						return fmt.Errorf("visual links must be same-document #fragments")
+				switch attr.Name.Space {
+				case "":
+					if !visualAttrs[local] && local != "xmlns" {
+						return fmt.Errorf("visual attribute %s is not allowed", attr.Name.Local)
 					}
-				case local == "style" || strings.Contains(strings.ToLower(attr.Value), "url("):
-					if unsafeStyle(attr.Value) {
-						return fmt.Errorf("visual must be offline; %s references external content", attr.Name.Local)
+				case "xmlns":
+					// Namespace declarations carry no behavior.
+				case xlinkNamespace:
+					if local != "href" {
+						return fmt.Errorf("visual attribute xlink:%s is not allowed", attr.Name.Local)
 					}
+				case xmlNamespace:
+					if local != "space" && local != "lang" {
+						return fmt.Errorf("visual attribute xml:%s is not allowed", attr.Name.Local)
+					}
+				default:
+					return fmt.Errorf("visual attribute %s:%s is not allowed", attr.Name.Space, attr.Name.Local)
+				}
+				if unsafeScheme(attr.Value) {
+					return fmt.Errorf("visual attribute %s cannot contain javascript: or data: values", attr.Name.Local)
+				}
+				if local == "href" && !strings.HasPrefix(strings.TrimSpace(attr.Value), "#") {
+					return fmt.Errorf("visual links must be same-document #fragments")
+				}
+				if (local == "style" || strings.Contains(strings.ToLower(attr.Value), "url(")) && unsafeStyle(attr.Value) {
+					return fmt.Errorf("visual must be offline; %s references external content", attr.Name.Local)
 				}
 				if local == "id" && attr.Name.Space == "" {
 					elements[attr.Value]++
