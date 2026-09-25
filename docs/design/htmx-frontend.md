@@ -406,3 +406,22 @@ setup:
 - **Partial sizes.** A partial is 7–25 KB. The sidebar (357 KB, 418 rows) and
   the deck viewer (2.4 MB) load once per session.
 
+
+**E2E suite (Chromium, same machine):**
+
+- Wall time is unchanged: 101 s for 61 tests before, 108 s for 65 tests after.
+  Most tests start from a deep link, which is still a full page load, and
+  fixture setup (CLI runs, repositories, server start) dominates.
+- Run alone, the tests that follow links in the reviewer run faster. Examples:
+  - technical design traced to a slide: 12.4 s → 7.0 s
+  - section headers: 12.0 s → 8.6 s
+  - requirements: 10.9 s → 8.1 s
+  - directory widths: 7.1–7.8 s → 5.9–7.1 s
+- Tests that looked slower in the full parallel run were no slower alone.
+
+**Firefox and WebKit:** failures there predate this change:
+
+- **Consistent:** Firefox inventory, Firefox ERD zoom and the WebKit Technical
+  design sidebar focus fail on `df8b3760` too.
+- **Under load only:** the linked-file cancellation test flakes the same way on
+  `df8b3760` when many run in parallel.
