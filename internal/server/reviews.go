@@ -207,7 +207,7 @@ func (a *app) reviewIndex(w http.ResponseWriter, r *http.Request) {
 	for index, row := range view.Directory.Rows {
 		view.Reviews[index].Hidden = row.Hidden
 	}
-	a.inShell(w, r, "review-index", view, reviewSurfaces{deckLabel: "Reviews"})
+	a.inShell(w, r, "review-index", view, reviewSurfaces{deckLabel: "Reviews", title: "Reviews"})
 }
 
 func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
@@ -281,7 +281,7 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 	// remain the same secondary surfaces implementation decks use; exact Items
 	// carry reviewers to the review-range diff and affected Saga records.
 	a.inShell(w, r, "review-page", view, reviewSurfaces{
-		deckLabel: "Deck", reviewDeck: true,
+		deckLabel: "Deck", reviewDeck: true, title: reviewNavTitle(review),
 		codeHref: reviewHref(review.ID) + "/code", coverageHref: reviewHref(review.ID) + "/coverage",
 	})
 }
@@ -291,8 +291,8 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 // page; the comparison the reviewer was opened with on the index, which has
 // no single range of its own.
 type reviewSurfaces struct {
-	deckLabel, codeHref, coverageHref string
-	reviewDeck                        bool
+	deckLabel, codeHref, coverageHref, title string
+	reviewDeck                               bool
 }
 
 // inShell renders a review surface inside the app shell, so the reviews sit
@@ -312,6 +312,7 @@ func (a *app) inShell(w http.ResponseWriter, r *http.Request, name string, view 
 		data.DeckLabel = surfaces.deckLabel
 	}
 	data.ReviewDeck = surfaces.reviewDeck
+	data.PageTitle = surfaces.title
 	if surfaces.codeHref != "" || surfaces.coverageHref != "" {
 		data.ReviewCodeHref, data.ReviewCoverageHref = surfaces.codeHref, surfaces.coverageHref
 	}

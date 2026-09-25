@@ -178,13 +178,16 @@ test("keeps one review slide active with durable keyboard and narrow-screen navi
   const running = await startSagaServer(sagaRepositories);
   try {
     await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
-    const slides = page.locator("[data-deck-slide]");
+    // The review's own deck is the page. The shell's viewer of the Saga's
+    // embedded decks is kept across pages, and stays out of sight here.
+    const review = page.locator("#page");
+    const slides = review.locator("[data-deck-slide]");
     await expect(slides).toHaveCount(2);
     await expect(slides.filter({ visible: true })).toHaveCount(1);
-    await expect(page.locator("[data-slide-position]")).toContainText("1 / 2");
+    await expect(review.locator("[data-slide-position]")).toContainText("1 / 2");
     await expect(page.locator(".review-top,.review-slide-details")).toHaveCount(0);
     await expect(page.locator("[data-slide-present]")).toBeVisible();
-    await expect(page.locator("#view-slides")).toHaveCount(0);
+    await expect(page.locator("#view-slides")).toBeHidden();
 
     await page.locator('[data-slide-thumbnail][data-slide-target$=":slide:theme"]').click();
     await expect(page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]')).toBeVisible();
@@ -209,8 +212,8 @@ test("keeps one review slide active with durable keyboard and narrow-screen navi
     await expect(slideMenu.locator(":scope > summary")).toBeFocused();
 
     await page.setViewportSize({ width: 390, height: 844 });
-    await expect(page.locator("[data-slide-thumbnail]").first()).toBeVisible();
-    await expect(page.locator("[data-slide-next]")).toBeVisible();
+    await expect(review.locator("[data-slide-thumbnail]").first()).toBeVisible();
+    await expect(review.locator("[data-slide-next]")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.screenshot({ path: test.info().outputPath("review-narrow.png") });
   } finally {

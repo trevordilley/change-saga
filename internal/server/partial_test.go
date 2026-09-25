@@ -124,7 +124,8 @@ func TestOnlyAPageSwapGetsThePartial(t *testing.T) {
 
 // pageContent is what a full page renders inside #page.
 func pageContent(full string) string {
-	start := strings.Index(full, `<div id="page">`)
+	const open = `<div id="page" hx-history-elt>`
+	start := strings.Index(full, open)
 	end := strings.Index(full, `</div><div class="view" id="view-slides"`)
 	if end < 0 {
 		end = strings.Index(full, `</div></main>`)
@@ -132,7 +133,7 @@ func pageContent(full string) string {
 	if start < 0 || end < start {
 		return ""
 	}
-	return full[start+len(`<div id="page">`) : end]
+	return full[start+len(open) : end]
 }
 
 func getPlain(t *testing.T, handler http.Handler, path string) string {

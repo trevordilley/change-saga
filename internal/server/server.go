@@ -177,6 +177,9 @@ type pageData struct {
 	// with them. Empty when the Saga could not be fingerprinted, which no
 	// kept part ever matches.
 	ShellVersion string
+	// PageTitle names the page in its <title> and to a reader told that it
+	// has arrived. Empty on the overview, which the Saga's title names.
+	PageTitle string
 	// StaleShell says the browser asking for this page as a partial holds a
 	// sidebar and deck viewer from another state of the Saga, so the partial
 	// replaces them too.
@@ -1313,7 +1316,46 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	if route.kind != "overview" && !data.TermsMode {
 		markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
 	}
+	data.PageTitle = pageTitle(data)
 	return data, nil
+}
+
+// pageTitle names the page as its heading does, so a reader switching tabs,
+// or told by a screen reader that a page has arrived, knows which one it is.
+func pageTitle(data *pageData) string {
+	switch {
+	case data.RequirementsMode && data.Requirements.FocusedCriterion != nil && data.Requirements.Story != nil:
+		return data.Requirements.FocusedCriterion.Label + " · " + data.Requirements.Story.Title
+	case data.RequirementsMode && data.Requirements.Story != nil:
+		return data.Requirements.Story.Title
+	case data.RequirementsMode:
+		return "Requirements"
+	case data.TermsMode && data.Terms.Term != nil:
+		return data.Terms.Term.Name
+	case data.TermsMode:
+		return "Terms and vocabulary"
+	case data.Persona != nil:
+		return data.Persona.Name
+	case data.Feature != nil:
+		return data.Feature.Title
+	case data.TestCase != nil:
+		return data.TestCase.Title
+	case data.Features != nil:
+		return data.Features.Title
+	case data.Personas != nil:
+		return data.Personas.Title
+	case data.Flags != nil:
+		return data.Flags.Title
+	case data.TechnicalEntity != nil:
+		return data.TechnicalEntity.Name
+	case data.Technical != nil && data.Technical.Area.Title != "":
+		return data.Technical.Area.Title
+	case data.Technical != nil:
+		return "Technical design"
+	case data.DesignSystemMode:
+		return "Design system"
+	}
+	return ""
 }
 
 // decks is the deck viewer: every slide of every embedded deck, as every page
