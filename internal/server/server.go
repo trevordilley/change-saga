@@ -65,6 +65,8 @@ type app struct {
 	files sagaFilesCache
 	// reviewCoverages is each review's coverage; see reviewcache.go.
 	reviewCoverages reviewCoverageCache
+	// termPlacesCache is where the terms' code is at the head.
+	termPlacesCache termPlacesCache
 	// fresh shares the check of whether the Saga's files or the heads
 	// have changed between the requests that ask at once.
 	fresh freshness

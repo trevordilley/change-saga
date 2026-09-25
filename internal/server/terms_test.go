@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -204,5 +205,33 @@ func TestTheCodeViewNamesTheTermsAFileDefines(t *testing.T) {
 	}
 	if href := recordHref(&saga.Saga{Manifest: saga.Manifest{ID: "test"}}, "urn:change-saga:test:term:testtaker"); href != "/terms/testtaker" {
 		t.Fatalf("a review Item's term record opens the term page: %s", href)
+	}
+}
+
+// The terms table places each term's code at the head. That follows from the
+// head commit and the references alone, so it is kept under both: an
+// unchanged head reuses it, and a new commit places the code again.
+func TestTermPlacesAreKeptPerHeadAndReferences(t *testing.T) {
+	root, repo := termSaga(t)
+	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	document, err := requirements.Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	first := application.termPlaces(t.Context(), document)
+	if len(first["testtaker"]) != 1 || first["testtaker"][0].Stale {
+		t.Fatalf("the term's code was not placed: %#v", first)
+	}
+	firstKey := application.termPlacesCache.key
+	second := application.termPlaces(t.Context(), document)
+	if application.termPlacesCache.key != firstKey || reflect.ValueOf(second).Pointer() != reflect.ValueOf(first).Pointer() {
+		t.Fatal("an unchanged head and unchanged references placed the code again")
+	}
+	// A new commit that rewrites the constant makes the reference stale.
+	writeServerFile(t, filepath.Join(repo, "kinds.go"), strings.Replace(serverKinds, `"testtaker"`, `"candidate"`, 1))
+	serverGit(t, repo, "commit", "-am", "rename")
+	moved := application.termPlaces(t.Context(), document)
+	if application.termPlacesCache.key == firstKey || len(moved["testtaker"]) != 1 || !moved["testtaker"][0].Stale {
+		t.Fatalf("a new head did not place the code again: %#v", moved)
 	}
 }

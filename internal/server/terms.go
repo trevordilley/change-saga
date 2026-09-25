@@ -2,10 +2,14 @@ package server
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/url"
 	"strings"
+	"sync"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
@@ -230,14 +234,32 @@ func termWhere(location coderef.Location) string {
 // thirty files' worth of it. A reviewer with no code repository gets no
 // places, which the table states as a gap rather than an error.
 func (a *app) termPlaces(ctx context.Context, document requirements.Document) map[string][]termPlace {
+	head := firstNonEmptyString(a.rng.Head, "HEAD")
+	headOID, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--end-of-options", head+"^{commit}")
+	// Where each term's code is follows from the head commit and the
+	// references alone, so it is kept under exactly those. The head is
+	// resolved on every request; a commit never changes under its OID.
+	key := ""
+	if headOID != "" {
+		if encoded, err := json.Marshal(termReferences(document)); err == nil {
+			digest := sha256.Sum256(append([]byte(headOID+"\x00"), encoded...))
+			key = hex.EncodeToString(digest[:])
+		}
+	}
+	if key != "" {
+		a.termPlacesCache.mutex.Lock()
+		cached, ok := a.termPlacesCache.places, a.termPlacesCache.key == key
+		a.termPlacesCache.mutex.Unlock()
+		if ok {
+			return cached
+		}
+	}
 	places := map[string][]termPlace{}
 	resolver, err := coderesolve.New(ctx, a.sourceDir)
 	if err != nil {
 		return places
 	}
 	defer resolver.Close()
-	head := firstNonEmptyString(a.rng.Head, "HEAD")
-	headOID, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--end-of-options", head+"^{commit}")
 	for _, term := range document.Terms {
 		if term.CurrentRevision == nil {
 			continue
@@ -252,7 +274,32 @@ func (a *app) termPlaces(ctx context.Context, document requirements.Document) ma
 			places[term.Identity.ID] = append(places[term.Identity.ID], place)
 		}
 	}
+	if key != "" {
+		a.termPlacesCache.mutex.Lock()
+		a.termPlacesCache.key, a.termPlacesCache.places = key, places
+		a.termPlacesCache.mutex.Unlock()
+	}
 	return places
+}
+
+// termReferences is what termPlaces reads of the terms: each current term's
+// code references, in order.
+func termReferences(document requirements.Document) map[string][]coderef.Reference {
+	references := map[string][]coderef.Reference{}
+	for _, term := range document.Terms {
+		if term.CurrentRevision != nil {
+			references[term.Identity.ID] = append(references[term.Identity.ID], term.CurrentRevision.Code...)
+		}
+	}
+	return references
+}
+
+// termPlacesCache is the latest terms table's places and what they were
+// read from; see termPlaces. Callers only read the places.
+type termPlacesCache struct {
+	mutex  sync.Mutex
+	key    string
+	places map[string][]termPlace
 }
 
 // termCode renders each reference as code at the head, or at its pin when it
