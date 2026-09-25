@@ -364,9 +364,8 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 
 func newMux(application *app) *http.ServeMux {
 	mux := http.NewServeMux()
-	handle := func(pattern string, handler http.HandlerFunc) {
-		mux.HandleFunc(pattern, withGitSession(handler))
-	}
+	// Every route asks Git through one session per request.
+	handle := func(pattern string, handler http.HandlerFunc) { mux.HandleFunc(pattern, withGitSession(handler)) }
 	handle("GET /requirements/{story}/criteria/{criterion}", application.page)
 	handle("GET /requirements/{story}", application.page)
 	handle("GET /requirements", application.page)
