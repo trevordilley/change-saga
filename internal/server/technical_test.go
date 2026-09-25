@@ -23,7 +23,7 @@ func technicalFixture(t *testing.T) (root, repo string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	code := []coderef.Reference{{Commit: commit, Path: "kinds.go", Start: 6, End: 6, Digest: digest, Note: "Exact declaration provenance."}}
+	code := []requirements.Evidence{{Reference: coderef.Reference{Commit: commit, Path: "kinds.go", Start: 6, End: 6, Digest: digest, Note: "Exact declaration provenance."}}}
 	store := "urn:change-saga:test:component:store"
 	reader := "urn:change-saga:test:component:reader"
 	for _, id := range []string{"store", "reader"} {

@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "title": "Technical inventory component revision",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,8 +12,7 @@
     "parents",
     "created_at",
     "name",
-    "explanation",
-    "code"
+    "explanation"
   ],
   "properties": {
     "$schema": {
@@ -50,9 +50,37 @@
       "type": "string",
       "minLength": 1
     },
+    "intent": {
+      "enum": [
+        "proposed",
+        "implemented"
+      ]
+    },
+    "baseline": {
+      "type": "string",
+      "minLength": 1
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "commit"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+        }
+      }
+    },
     "code": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 0,
       "maxItems": 64,
       "items": {
         "type": "object",
@@ -62,10 +90,14 @@
           "path",
           "start",
           "end",
-          "digest",
-          "note"
+          "note",
+          "digest"
         ],
         "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
           "commit": {
             "type": "string",
             "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
@@ -93,5 +125,108 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "intent": {
+            "const": "proposed"
+          }
+        },
+        "required": [
+          "intent"
+        ]
+      },
+      "then": {
+        "required": [
+          "baseline"
+        ],
+        "not": {
+          "required": [
+            "delivery"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "intent": {
+            "const": "implemented"
+          }
+        },
+        "required": [
+          "intent"
+        ]
+      },
+      "then": {
+        "required": [
+          "delivery",
+          "code"
+        ],
+        "not": {
+          "required": [
+            "baseline"
+          ]
+        },
+        "properties": {
+          "code": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "not": {
+          "required": [
+            "intent"
+          ]
+        }
+      },
+      "then": {
+        "required": [
+          "code"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "baseline"
+              ]
+            },
+            {
+              "required": [
+                "delivery"
+              ]
+            }
+          ]
+        },
+        "properties": {
+          "code": {
+            "minItems": 1,
+            "items": {
+              "not": {
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "code": {
+            "items": {
+              "required": [
+                "id"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
 }

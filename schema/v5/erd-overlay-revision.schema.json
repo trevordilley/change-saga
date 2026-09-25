@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/erd-overlay-revision.schema.json",
+  "title": "Technical inventory ERD overlay revision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "record",
+    "parents",
+    "created_at",
+    "name",
+    "explanation",
+    "erd"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/erd-overlay-revision.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "record": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd-overlay:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "parents": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd-overlay:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "explanation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "erd": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "revision"
+      ],
+      "properties": {
+        "target": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:erd:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        }
+      }
+    },
+    "feature": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:feature:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "pins": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "target",
+          "revision"
+        ],
+        "properties": {
+          "target": {
+            "type": "string",
+            "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "revision": {
+            "type": "string",
+            "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          }
+        }
+      }
+    },
+    "removals": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "target",
+          "explanation"
+        ],
+        "properties": {
+          "target": {
+            "type": "string",
+            "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "visual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "media_type",
+        "digest"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^assets/[0-9a-f]{64}\\.svg$"
+        },
+        "media_type": {
+          "const": "image/svg+xml"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "bindings": {
+      "type": "array",
+      "maxItems": 512,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "element"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "element": {
+            "type": "string",
+            "pattern": "^[A-Za-z_][A-Za-z0-9._-]{0,127}$"
+          },
+          "entity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "revision"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              }
+            }
+          },
+          "relationship": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "owner",
+              "id"
+            ],
+            "properties": {
+              "owner": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "target",
+                  "revision"
+                ],
+                "properties": {
+                  "target": {
+                    "type": "string",
+                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  },
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+                  }
+                }
+              },
+              "id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              }
+            }
+          }
+        },
+        "oneOf": [
+          {
+            "required": [
+              "entity"
+            ]
+          },
+          {
+            "required": [
+              "relationship"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

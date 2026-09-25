@@ -70,7 +70,7 @@ func (a *app) documentationView(ctx context.Context, inventory requirements.Inve
 		path := fmt.Sprintf("M 250 %d H %d V %d H 255", from, lane, to)
 		view.Edges = append(view.Edges, documentationEdge{ID: edge.ID, From: names[edge.From], To: names[edge.To], Description: edge.Description, Path: path, CodeHref: "/api/documentation?" + url.Values{"target": {pin.Target}, "revision": {pin.Revision}, "interaction": {edge.ID}}.Encode()})
 	}
-	view.Code = a.documentationCode(ctx, revision.Code, record.Kind)
+	view.Code = a.documentationCode(ctx, requirements.References(revision.Code), record.Kind)
 	return view
 }
 
@@ -102,7 +102,7 @@ func (a *app) documentationPage(w http.ResponseWriter, r *http.Request) {
 		for _, edge := range revision.Interactions {
 			if edge.ID == interaction {
 				var body bytes.Buffer
-				if err := a.template.ExecuteTemplate(&body, "documentation-code", a.documentationCode(r.Context(), edge.Code, "interaction")); err != nil {
+				if err := a.template.ExecuteTemplate(&body, "documentation-code", a.documentationCode(r.Context(), requirements.References(edge.Code), "interaction")); err != nil {
 					http.Error(w, err.Error(), 500)
 					return
 				}

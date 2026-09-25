@@ -7,6 +7,8 @@ import (
 	"sort"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 var slideIntents = map[string]bool{
@@ -413,7 +415,10 @@ func validateSlideManifest(value SlideManifest, path, deckID, deckTarget, target
 
 func validateItem(item *Item, slide *Slide, validation *Validation) {
 	if item.Documentation != nil && !ValidDocumentationLink(manifestSagaID(item.Target), *item.Documentation) {
-		addIssue(validation, "error", item.Path, "documentation requires a canonical Component/System target and its exact revision URN")
+		addIssue(validation, "error", item.Path, "documentation requires a canonical Component, System or data-entity target and its exact revision URN")
+	}
+	for _, problem := range ItemSelectionProblems(manifestSagaID(item.Target), item.ItemManifest) {
+		addIssue(validation, "error", item.Path, problem)
 	}
 
 	if item.Version != DeckRecordVersion || !ValidMarkdownAnchor(item.ID) || !itemKinds[item.Kind] || strings.TrimSpace(item.Label) == "" {
@@ -529,7 +534,7 @@ func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 		for _, item := range slide.Items {
 			if item.Documentation != nil {
 				if role == DeckRoleOnboarding || !ValidDocumentationLink(sagaID, *item.Documentation) {
-					addIssue(validation, "error", item.Path, "documentation must pin a Component or System revision on an implementation or review Item")
+					addIssue(validation, "error", item.Path, "documentation must pin a Component, System or data-entity revision on an implementation or review Item")
 				}
 			}
 			switch role {
@@ -583,10 +588,62 @@ func validRecordOfKinds(sagaID, value string, kinds []string) bool {
 // ValidDocumentationLink checks syntax only; inventory readers report missing,
 // retired, stale and conflicted targets separately without rewriting old pins.
 func ValidDocumentationLink(sagaID string, link DocumentationLink) bool {
-	if !validRecordOfKinds(sagaID, link.Target, []string{"component", "system"}) {
+	return ValidPinOfKinds(sagaID, link, DocumentationKinds...)
+}
+
+// DocumentationKinds are the inventory kinds an Item may document. ERD roots
+// and overlays are views over data entities, not Item documentation targets.
+var DocumentationKinds = []string{"component", "system", "data-entity"}
+
+// ValidPinOfKinds checks exact target/revision syntax for the named kinds.
+func ValidPinOfKinds(sagaID string, link DocumentationLink, kinds ...string) bool {
+	if !validRecordOfKinds(sagaID, link.Target, kinds) {
 		return false
 	}
 	prefix := link.Target + ":revision:"
 	id := strings.TrimPrefix(link.Revision, prefix)
 	return id != link.Revision && stableID.MatchString(id)
+}
+
+// ItemSelectionProblems checks the syntax of an Item's saved view and
+// selections. Hop declarations, evidence IDs and subset containment need the
+// inventory and are checked by its readers and writers.
+func ItemSelectionProblems(sagaID string, item ItemManifest) []string {
+	problems := []string{}
+	if item.DocumentationView != "" && (item.Documentation == nil || !coderef.ValidCommit(item.DocumentationView)) {
+		problems = append(problems, "documentation_view requires documentation and a full commit object name")
+	}
+	if len(item.Selections) == 0 {
+		return problems
+	}
+	if item.Documentation == nil {
+		return append(problems, "selections require a documentation pin")
+	}
+	if len(item.Selections) > MaxItemSelections {
+		return append(problems, fmt.Sprintf("an Item has at most %d selections", MaxItemSelections))
+	}
+	seen := map[string]bool{}
+	for _, selection := range item.Selections {
+		label := "selection " + selection.ID
+		if !stableID.MatchString(selection.ID) || seen[selection.ID] {
+			problems = append(problems, label+": requires a unique stable id")
+		}
+		seen[selection.ID] = true
+		if len(selection.Path) == 0 || len(selection.Path) > MaxSelectionPath || selection.Path[0] != *item.Documentation {
+			problems = append(problems, fmt.Sprintf("%s: path must start at the documentation pin and contain 1 to %d hops", label, MaxSelectionPath))
+		}
+		for _, hop := range selection.Path {
+			if !ValidDocumentationLink(sagaID, hop) {
+				problems = append(problems, label+": every hop must pin a Component, System or data-entity revision")
+				break
+			}
+		}
+		if !stableID.MatchString(selection.Evidence) {
+			problems = append(problems, label+": evidence must name a stable evidence id")
+		}
+		if coderef.Validate(selection.Code) != nil || selection.Code.WholeFile() || strings.TrimSpace(selection.Code.Note) == "" {
+			problems = append(problems, label+": code must be an exact line range with digest and note")
+		}
+	}
+	return problems
 }

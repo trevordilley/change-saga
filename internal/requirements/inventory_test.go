@@ -13,7 +13,7 @@ import (
 
 func TestInventoryHistorySchemas(t *testing.T) {
 	root := newSaga(t)
-	def := TechnicalDefinition{Name: "FlagStore", Explanation: "Owns flag values.", Code: []coderef.Reference{{Commit: strings.Repeat("c", 40), Path: "flags.go", Start: 2, End: 3, Digest: "sha256:" + strings.Repeat("d", 64), Note: "The exact store implementation."}}}
+	def := TechnicalDefinition{Name: "FlagStore", Explanation: "Owns flag values.", Code: []Evidence{{Reference: coderef.Reference{Commit: strings.Repeat("c", 40), Path: "flags.go", Start: 2, End: 3, Digest: "sha256:" + strings.Repeat("d", 64), Note: "The exact store implementation."}}}}
 	for _, id := range []string{"store", "client"} {
 		if _, err := WriteTechnical(root, "test", "component", id, "r1", nil, def, true); err != nil {
 			t.Fatal(err)
@@ -60,6 +60,35 @@ func TestInventoryHistorySchemas(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	validateInventorySchemas(t, d)
+	// Malformed dependencies remain visible as missing instead of synthesizing
+	// an identity or widening evidence to cover them.
+	missing := DocumentationLink{Target: "urn:change-saga:test:component:missing", Revision: "urn:change-saga:test:component:missing:revision:r1"}
+	if d.LinkStatus(missing) != "missing" {
+		t.Fatal("missing link not reported")
+	}
+	def.Code[0].Start = 0
+	def.Code[0].End = 0
+	if _, err := WriteTechnical(root, "test", "component", "wide", "r1", nil, def, true); err == nil {
+		t.Fatal("whole file evidence accepted")
+	}
+	if _, err := os.Stat(filepath.Join(root, TechnicalPath("component", "wide"))); !os.IsNotExist(err) {
+		t.Fatal("invalid publication left metadata")
+	}
+}
+
+func TestInventoryRejectsAmbiguousJSON(t *testing.T) {
+	for _, data := range []string{`{"name":"A","name":"B"}`, `{"name":"A"} {}`, `{"name":"A","surprise":true}`} {
+		var value TechnicalDefinition
+		if err := DecodeInventoryJSON([]byte(data), &value); err == nil {
+			t.Fatalf("ambiguous or unknown JSON accepted: %s", data)
+		}
+	}
+}
+
+// validateInventorySchemas checks every loaded record against its published schema.
+func validateInventorySchemas(t *testing.T, d Inventory) {
+	t.Helper()
 	compiler := jsonschema.NewCompiler()
 	for _, record := range d.Records {
 		values := []any{record.Identity}
@@ -83,29 +112,6 @@ func TestInventoryHistorySchemas(t *testing.T) {
 			if err := schema.Validate(obj); err != nil {
 				t.Fatalf("%s: %v", name, err)
 			}
-		}
-	}
-	// Malformed dependencies remain visible as missing instead of synthesizing
-	// an identity or widening evidence to cover them.
-	missing := DocumentationLink{Target: "urn:change-saga:test:component:missing", Revision: "urn:change-saga:test:component:missing:revision:r1"}
-	if d.LinkStatus(missing) != "missing" {
-		t.Fatal("missing link not reported")
-	}
-	def.Code[0].Start = 0
-	def.Code[0].End = 0
-	if _, err := WriteTechnical(root, "test", "component", "wide", "r1", nil, def, true); err == nil {
-		t.Fatal("whole file evidence accepted")
-	}
-	if _, err := os.Stat(filepath.Join(root, TechnicalPath("component", "wide"))); !os.IsNotExist(err) {
-		t.Fatal("invalid publication left metadata")
-	}
-}
-
-func TestInventoryRejectsAmbiguousJSON(t *testing.T) {
-	for _, data := range []string{`{"name":"A","name":"B"}`, `{"name":"A"} {}`, `{"name":"A","surprise":true}`} {
-		var value TechnicalDefinition
-		if err := DecodeInventoryJSON([]byte(data), &value); err == nil {
-			t.Fatalf("ambiguous or unknown JSON accepted: %s", data)
 		}
 	}
 }

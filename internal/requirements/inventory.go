@@ -3,6 +3,7 @@ package requirements
 import (
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"path/filepath"
 	"strings"
 	"time"
@@ -19,20 +20,131 @@ const MaxInventoryRecords = 10000
 
 type DocumentationLink = saga.DocumentationLink
 
-type Interaction struct {
-	ID          string              `json:"id"`
-	From        string              `json:"from"`
-	To          string              `json:"to"`
-	Description string              `json:"description"`
-	Code        []coderef.Reference `json:"code"`
+// Evidence is one exact code reference. Inventory format 2 revisions give each
+// reference an ID unique across the whole revision, so a selection names
+// (revision pin, evidence ID) rather than a mutable array position. Legacy
+// references have no ID and are not selectable.
+type Evidence struct {
+	ID string `json:"id,omitempty"`
+	coderef.Reference
 }
 
+// References returns the plain code references, for resolvers and renderers.
+func References(evidence []Evidence) []coderef.Reference {
+	out := make([]coderef.Reference, len(evidence))
+	for i := range evidence {
+		out[i] = evidence[i].Reference
+	}
+	return out
+}
+
+type Interaction struct {
+	ID          string     `json:"id"`
+	From        string     `json:"from"`
+	To          string     `json:"to"`
+	Description string     `json:"description"`
+	Intent      string     `json:"intent,omitempty"`
+	Code        []Evidence `json:"code,omitempty"`
+}
+
+// Delivery names the source repository and full commit at which an
+// implemented revision's evidence was validated. It is the assertion's source
+// view, not a mutable application setting.
+type Delivery struct {
+	Repository string `json:"repository"`
+	Commit     string `json:"commit"`
+}
+
+// Field is one author-selected field of a data entity; the list is curated,
+// never an exhaustive schema mirror.
+type Field struct {
+	ID   string   `json:"id"`
+	Name string   `json:"name"`
+	Type string   `json:"type,omitempty"`
+	Keys []string `json:"keys,omitempty"`
+	Note string   `json:"note,omitempty"`
+}
+
+// Holder pins a Component (queue, store, ...) that carries or stores a data
+// entity. It is a distinct resource, not a second identity for the entity.
+type Holder struct {
+	Component DocumentationLink `json:"component"`
+	Role      string            `json:"role"`
+}
+
+// Cardinality is declared per association endpoint; "unknown" is explicit.
+type Cardinality struct {
+	Owner       string `json:"owner"`
+	Destination string `json:"destination"`
+}
+
+// Relationship is an outgoing edge owned by a data-entity revision. Incoming
+// relationships are derived by readers and never duplicated.
+type Relationship struct {
+	ID          string            `json:"id"`
+	Meaning     string            `json:"meaning"`
+	Destination DocumentationLink `json:"destination"`
+	Label       string            `json:"label,omitempty"`
+	Explanation string            `json:"explanation"`
+	Cardinality *Cardinality      `json:"cardinality,omitempty"`
+	Flow        string            `json:"flow,omitempty"`
+	Intent      string            `json:"intent"`
+	Code        []Evidence        `json:"code,omitempty"`
+}
+
+// Visual is an immutable, offline SVG asset stored in the record package.
+type Visual struct {
+	Path      string `json:"path"`
+	MediaType string `json:"media_type"`
+	Digest    string `json:"digest"`
+}
+
+// RelationshipRef names one relationship by its owning entity revision.
+type RelationshipRef struct {
+	Owner DocumentationLink `json:"owner"`
+	ID    string            `json:"id"`
+}
+
+// Removal proposes removing a baseline directory entity in an overlay. It
+// does not retire the entity; that remains an explicit lifecycle event.
+type Removal struct {
+	Target      string `json:"target"`
+	Explanation string `json:"explanation"`
+}
+
+// Binding attaches one SVG element to exactly one entity or relationship.
+type Binding struct {
+	ID           string             `json:"id"`
+	Element      string             `json:"element"`
+	Entity       *DocumentationLink `json:"entity,omitempty"`
+	Relationship *RelationshipRef   `json:"relationship,omitempty"`
+}
+
+// TechnicalDefinition is the complete authored content of one revision. Kinds
+// use disjoint subsets: Component/System (code, components, interactions),
+// data-entity (fields, holders, relationships), ERD (visual, directory,
+// bindings) and ERD overlay (erd, feature, pins, optional visual/bindings).
+// Intent, Baseline and Delivery are inventory format 2 and absent on legacy
+// revisions, which read as unspecified intent.
 type TechnicalDefinition struct {
-	Name         string              `json:"name"`
-	Explanation  string              `json:"explanation"`
-	Code         []coderef.Reference `json:"code"`
-	Components   []DocumentationLink `json:"components,omitempty"`
-	Interactions []Interaction       `json:"interactions,omitempty"`
+	Name          string              `json:"name"`
+	Explanation   string              `json:"explanation"`
+	Intent        string              `json:"intent,omitempty"`
+	Baseline      string              `json:"baseline,omitempty"`
+	Delivery      *Delivery           `json:"delivery,omitempty"`
+	Code          []Evidence          `json:"code,omitempty"`
+	Components    []DocumentationLink `json:"components,omitempty"`
+	Interactions  []Interaction       `json:"interactions,omitempty"`
+	Fields        []Field             `json:"fields,omitempty"`
+	Holders       []Holder            `json:"holders,omitempty"`
+	Relationships []Relationship      `json:"relationships,omitempty"`
+	ERD           *DocumentationLink  `json:"erd,omitempty"`
+	Feature       string              `json:"feature,omitempty"`
+	Pins          []DocumentationLink `json:"pins,omitempty"`
+	Removals      []Removal           `json:"removals,omitempty"`
+	Visual        *Visual             `json:"visual,omitempty"`
+	Directory     []DocumentationLink `json:"directory,omitempty"`
+	Bindings      []Binding           `json:"bindings,omitempty"`
 }
 
 type TechnicalRevision struct {
@@ -69,20 +181,49 @@ type TechnicalRecord struct {
 }
 
 type Inventory struct {
-	SagaID  string
+	SagaID string
+	// Format is 1 when ___inventory/format.json is absent, else its format.
+	Format  int
 	Records []TechnicalRecord
+}
+
+// TechnicalKinds lists every inventory kind in load order, with its
+// directory and the minimum inventory format that may contain it.
+var TechnicalKinds = []struct {
+	Kind, Dir string
+	Format    int
+}{
+	{"component", "components", 1}, {"system", "systems", 1}, {KindDataEntity, "data-entities", 2}, {KindERD, "erds", 2}, {KindERDOverlay, "erd-overlays", 2},
+}
+
+const (
+	KindDataEntity = "data-entity"
+	KindERD        = "erd"
+	KindERDOverlay = "erd-overlay"
+)
+
+func technicalKindDir(kind string) (string, bool) {
+	for _, k := range TechnicalKinds {
+		if k.Kind == kind {
+			return k.Dir, true
+		}
+	}
+	return "", false
 }
 
 func TechnicalSchema(kind, suffix string) string {
 	return "https://changesaga.dev/schema/v5/" + kind + suffix + ".schema.json"
 }
 func TechnicalURN(sagaID, kind, id string) (string, error) {
-	if kind != "component" && kind != "system" {
-		return "", fmt.Errorf("kind must be component or system")
+	if _, ok := technicalKindDir(kind); !ok {
+		return "", fmt.Errorf("kind must be component, system, data-entity, erd or erd-overlay")
 	}
 	return appRecordURN(sagaID, kind, id)
 }
-func TechnicalPath(kind, id string) string { return InventoryDir + "/" + kind + "s/" + id + "." + kind }
+func TechnicalPath(kind, id string) string {
+	dir, _ := technicalKindDir(kind)
+	return InventoryDir + "/" + dir + "/" + id + "." + kind
+}
 func (d *Inventory) Find(target string) *TechnicalRecord {
 	for i := range d.Records {
 		if d.Records[i].Target == target {
@@ -98,6 +239,52 @@ func (r *TechnicalRecord) Revision(pin string) *TechnicalRevision {
 		}
 	}
 	return nil
+}
+
+// Pinned returns the exact pinned revision, never a successor.
+func (d *Inventory) Pinned(link DocumentationLink) *TechnicalRevision {
+	if r := d.Find(link.Target); r != nil {
+		return r.Revision(link.Revision)
+	}
+	return nil
+}
+
+// EffectiveIntent reports the explicit intent, or unspecified for legacy
+// revisions. It is never inferred from code, lifecycle or age.
+func (v *TechnicalRevision) EffectiveIntent() string {
+	if v.Intent == "" {
+		return IntentUnspecified
+	}
+	return v.Intent
+}
+
+// EvidenceByID finds a stable evidence ID anywhere in the revision. The
+// returned owner is "" for the entity's own code, else the interaction or
+// relationship ID that owns the reference.
+func (v *TechnicalRevision) EvidenceByID(id string) (*Evidence, string) {
+	if id == "" {
+		return nil, ""
+	}
+	for i := range v.Code {
+		if v.Code[i].ID == id {
+			return &v.Code[i], ""
+		}
+	}
+	for i := range v.Interactions {
+		for j := range v.Interactions[i].Code {
+			if v.Interactions[i].Code[j].ID == id {
+				return &v.Interactions[i].Code[j], v.Interactions[i].ID
+			}
+		}
+	}
+	for i := range v.Relationships {
+		for j := range v.Relationships[i].Code {
+			if v.Relationships[i].Code[j].ID == id {
+				return &v.Relationships[i].Code[j], v.Relationships[i].ID
+			}
+		}
+	}
+	return nil, ""
 }
 
 // LinkStatus never picks a winner, repins a reference, or grants coverage.
@@ -119,30 +306,45 @@ func (d *Inventory) LinkStatus(link DocumentationLink) string {
 }
 
 func LoadInventory(root, sagaID string) (Inventory, error) {
-	d := Inventory{SagaID: sagaID, Records: []TechnicalRecord{}}
+	d := Inventory{SagaID: sagaID, Format: 1, Records: []TechnicalRecord{}}
 	dir := filepath.Join(root, InventoryDir)
 	if present, err := realDirectory(dir); err != nil {
 		return d, err
 	} else if present {
-		entries, err := boundedReadDir(dir, 2)
+		entries, err := boundedReadDir(dir, len(TechnicalKinds)+1)
 		if err != nil {
 			return d, err
 		}
 		for _, e := range entries {
-			if (e.Name() != "components" && e.Name() != "systems") || !e.IsDir() {
+			if e.Name() == InventoryFormatName && e.Type().IsRegular() {
+				continue
+			}
+			if _, ok := kindForDir(e.Name()); !ok || !e.IsDir() || e.Type()&fs.ModeSymlink != 0 {
 				return d, fmt.Errorf("%s: unknown inventory entry %s", InventoryDir, e.Name())
 			}
 		}
-	}
-	for _, kind := range []string{"component", "system"} {
-		packages, err := loadAppPackages(root, filepath.Join(dir, kind+"s"), "."+kind, kind+".json", TechnicalSchema(kind, ""), MaxInventoryRecords)
+		format, err := readInventoryFormat(root)
 		if err != nil {
 			return d, err
 		}
+		d.Format = format
+	}
+	for _, k := range TechnicalKinds {
+		extra := []string{}
+		if k.Kind == KindERD || k.Kind == KindERDOverlay {
+			extra = append(extra, "assets")
+		}
+		packages, err := loadAppPackages(root, filepath.Join(dir, k.Dir), "."+k.Kind, k.Kind+".json", TechnicalSchema(k.Kind, ""), MaxInventoryRecords, extra...)
+		if err != nil {
+			return d, err
+		}
+		if len(packages) > 0 && d.Format < k.Format {
+			return d, fmt.Errorf("%s: %s records require inventory format %d; run inventory adopt-format explicitly", InventoryDir, k.Kind, k.Format)
+		}
 		for _, p := range packages {
-			urn, _ := TechnicalURN(sagaID, kind, p.id)
-			r := TechnicalRecord{Kind: kind, Target: urn, Identity: p.identity}
-			if err := readInventoryJSON(filepath.Join(p.dir, kind+".json"), &r.Identity); err != nil {
+			urn, _ := TechnicalURN(sagaID, k.Kind, p.id)
+			r := TechnicalRecord{Kind: k.Kind, Target: urn, Identity: p.identity}
+			if err := readInventoryJSON(filepath.Join(p.dir, k.Kind+".json"), &r.Identity); err != nil {
 				return d, err
 			}
 			for _, path := range p.revisions {
@@ -150,8 +352,16 @@ func LoadInventory(root, sagaID string) (Inventory, error) {
 				if err := readInventoryJSON(path, &v); err != nil {
 					return d, err
 				}
-				if err := validateTechnicalRevision(v, kind, urn, strings.TrimSuffix(filepath.Base(path), ".json")); err != nil {
+				if err := validateTechnicalRevision(v, k.Kind, urn, strings.TrimSuffix(filepath.Base(path), ".json")); err != nil {
 					return d, fmt.Errorf("%s: %w", path, err)
+				}
+				if v.Intent != "" && d.Format < 2 {
+					return d, fmt.Errorf("%s: revision intent requires inventory format 2; run inventory adopt-format explicitly", path)
+				}
+				if v.Visual != nil {
+					if err := checkVisualAsset(p.dir, *v.Visual, v.Bindings); err != nil {
+						return d, fmt.Errorf("%s: %w", path, err)
+					}
 				}
 				r.Revisions = append(r.Revisions, v)
 			}
@@ -160,7 +370,7 @@ func LoadInventory(root, sagaID string) (Inventory, error) {
 				if err := readInventoryJSON(path, &v); err != nil {
 					return d, err
 				}
-				if err := validateTechnicalEvent(v, kind, urn, strings.TrimSuffix(filepath.Base(path), ".json")); err != nil {
+				if err := validateTechnicalEvent(v, k.Kind, urn, strings.TrimSuffix(filepath.Base(path), ".json")); err != nil {
 					return d, fmt.Errorf("%s: %w", path, err)
 				}
 				r.Events = append(r.Events, v)
@@ -177,76 +387,15 @@ func LoadInventory(root, sagaID string) (Inventory, error) {
 	return d, nil
 }
 
-func exactTechnicalCode(code []coderef.Reference) error {
-	if len(code) == 0 || len(code) > 64 {
-		return fmt.Errorf("requires 1 to 64 exact code references")
+func kindForDir(name string) (string, bool) {
+	for _, k := range TechnicalKinds {
+		if k.Dir == name {
+			return k.Kind, true
+		}
 	}
-	seen := map[string]bool{}
-	for _, ref := range code {
-		if err := coderef.Validate(ref); err != nil {
-			return err
-		}
-		if ref.Start == 0 || strings.TrimSpace(ref.Note) == "" {
-			return fmt.Errorf("code requires exact line ranges and a meaningful note")
-		}
-		key := ref.Location().String()
-		if seen[key] {
-			return fmt.Errorf("duplicate code reference %s", key)
-		}
-		seen[key] = true
-	}
-	return nil
+	return "", false
 }
-func validateTechnicalRevision(v TechnicalRevision, kind, urn, id string) error {
-	encoded, err := json.MarshalIndent(v, "", "  ")
-	if err != nil {
-		return err
-	}
-	if len(encoded)+1 > MaxRecordBytes {
-		return fmt.Errorf("revision exceeds one MiB")
-	}
 
-	if v.Schema != TechnicalSchema(kind, "-revision") || v.Version != 5 || !livingid.ValidID(v.ID) || v.ID != id || v.Record != urn || v.Parents == nil || v.CreatedAt.IsZero() {
-		return fmt.Errorf("invalid %s revision identity, parents, schema, version or time", kind)
-	}
-	if strings.TrimSpace(v.Name) == "" || v.Name != strings.TrimSpace(v.Name) || len(v.Name) > 200 || strings.TrimSpace(v.Explanation) == "" {
-		return fmt.Errorf("name (up to 200 bytes) and meaningful explanation are required")
-	}
-	if err := exactTechnicalCode(v.Code); err != nil {
-		return err
-	}
-	if kind == "component" {
-		if len(v.Components)+len(v.Interactions) > 0 {
-			return fmt.Errorf("components cannot contain a system graph")
-		}
-		return nil
-	}
-	if len(v.Components) < 2 || len(v.Components) > 32 || len(v.Interactions) == 0 || len(v.Interactions) > 64 {
-		return fmt.Errorf("a System requires 2 to 32 Components and 1 to 64 interactions")
-	}
-	members := map[string]bool{}
-	sagaID := strings.Split(urn, ":")[2]
-	for _, pin := range v.Components {
-		if !saga.ValidDocumentationLink(sagaID, pin) || !strings.Contains(pin.Target, ":component:") {
-			return fmt.Errorf("system members must pin Component revisions")
-		}
-		if members[pin.Target] {
-			return fmt.Errorf("duplicate Component %s", pin.Target)
-		}
-		members[pin.Target] = true
-	}
-	edges := map[string]bool{}
-	for _, edge := range v.Interactions {
-		if !livingid.ValidID(edge.ID) || edges[edge.ID] || !members[edge.From] || !members[edge.To] || strings.TrimSpace(edge.Description) == "" {
-			return fmt.Errorf("interaction requires unique ID, member endpoints and a description")
-		}
-		edges[edge.ID] = true
-		if err := exactTechnicalCode(edge.Code); err != nil {
-			return fmt.Errorf("interaction %s: %w", edge.ID, err)
-		}
-	}
-	return nil
-}
 func validateTechnicalEvent(v TechnicalEvent, kind, urn, id string) error {
 	encoded, err := json.MarshalIndent(v, "", "  ")
 	if err != nil {
@@ -277,11 +426,26 @@ func resolveTechnical(r *TechnicalRecord, sagaID string) error {
 	for _, v := range r.Events {
 		events = append(events, graphMember{v.ID, v.Parents})
 	}
-	heads, _ := resolveAppGraph(&problems, "revision", sagaID, r.Kind, r.Identity.ID, "revision", revs)
+	heads, parentsOf := resolveAppGraph(&problems, "revision", sagaID, r.Kind, r.Identity.ID, "revision", revs)
 	r.RevisionHeads = memberURNs(sagaID, r.Kind, r.Identity.ID, "revision", heads)
 	r.CurrentRevision = nil
 	if len(heads) == 1 {
 		r.CurrentRevision = r.Revision(r.RevisionHeads[0])
+	}
+	// A proposed revision's implemented baseline is an explicit ancestor pin of
+	// the same identity, retained separately from its parents.
+	for _, v := range r.Revisions {
+		if v.Baseline == "" || v.Baseline == BaselineNone {
+			continue
+		}
+		base := r.Revision(v.Baseline)
+		if base == nil || base.Intent != IntentImplemented {
+			problems.add("revision %q baseline must pin an implemented revision of the same record", v.ID)
+			continue
+		}
+		if !technicalAncestor(parentsOf, r.Target+":revision:", v.ID, base.ID) {
+			problems.add("revision %q baseline %s is not one of its ancestors", v.ID, v.Baseline)
+		}
 	}
 	heads, _ = resolveAppGraph(&problems, "lifecycle", sagaID, r.Kind, r.Identity.ID, "event", events)
 	eventStates := map[string]string{}
@@ -304,4 +468,23 @@ func resolveTechnical(r *TechnicalRecord, sagaID string) error {
 		}
 	}
 	return problems.err()
+}
+
+// technicalAncestor walks declared parents (bounded by the record's revisions).
+func technicalAncestor(parentsOf map[string][]string, prefix, from, target string) bool {
+	seen := map[string]bool{}
+	queue := append([]string{}, parentsOf[from]...)
+	for len(queue) > 0 {
+		next := strings.TrimPrefix(queue[0], prefix)
+		queue = queue[1:]
+		if next == target {
+			return true
+		}
+		if seen[next] {
+			continue
+		}
+		seen[next] = true
+		queue = append(queue, parentsOf[next]...)
+	}
+	return false
 }
