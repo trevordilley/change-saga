@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"sort"
+	"sync"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -116,20 +117,53 @@ func collectDocumentedCode(document *saga.Saga, records requirements.Document, t
 	return result
 }
 
-// observeGraph loads the full Saga, with its code, and the records around it.
+// observeGraphCache keeps the observed graph while no file of the Saga has
+// changed. Every observed Coverage row a reviewer opens asks for one record's
+// code, and loading the whole Saga with its code for each of them costs far
+// more than the code itself.
+type observeGraphCache struct {
+	mutex       sync.Mutex
+	fingerprint string
+	graph       *appGraph
+	documented  []documentedCode
+	builds      int
+}
+
+// observeGraph is the full Saga, with its code, and the records around it.
+// Callers only read what it returns.
 func (a *app) observeGraph() (*appGraph, []documentedCode, error) {
-	document, validation, err := saga.Load(a.root)
+	a.observed.mutex.Lock()
+	defer a.observed.mutex.Unlock()
+	fingerprint, fingerprintErr := sagaFilesFingerprint(a.root)
+	if fingerprintErr == nil && a.observed.graph != nil && fingerprint == a.observed.fingerprint {
+		return a.observed.graph, a.observed.documented, nil
+	}
+	graph, documented, err := loadObserveGraph(a.root)
+	if err != nil {
+		return nil, nil, err
+	}
+	// Fingerprint after loading, as the outline does: an edit made while the
+	// Saga was read produces a miss on the next request, never a stale hit.
+	if after, err := sagaFilesFingerprint(a.root); fingerprintErr == nil && err == nil && after == fingerprint {
+		a.observed.fingerprint, a.observed.graph, a.observed.documented = fingerprint, graph, documented
+		a.observed.builds++
+	}
+	return graph, documented, nil
+}
+
+func loadObserveGraph(root string) (*appGraph, []documentedCode, error) {
+	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
 		return nil, nil, errors.New("The saga could not be loaded. Run change-saga validate for details.")
 	}
-	records, err := requirements.Load(a.root, document.Manifest.ID)
+	records, err := requirements.Load(root, document.Manifest.ID)
 	if err != nil {
 		return nil, nil, errors.New("The requirements could not be loaded. Run change-saga validate for details.")
 	}
 	if err := semanticgraph.ProjectSlideCriterionLinks(document, &records); err != nil {
 		return nil, nil, errors.New("The complete-slide criterion links could not be loaded. Run change-saga validate for details.")
 	}
-	tests, err := quality.Load(a.root)
+	tests, err := quality.Load(root)
 	if err != nil {
 		tests = quality.Document{SagaID: document.Manifest.ID}
 	}

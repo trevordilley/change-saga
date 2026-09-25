@@ -56,6 +56,9 @@ type app struct {
 	// related is the derived related-reviews index, kept while nothing it
 	// reads has changed.
 	related relatedReviewCache
+	// observed is the observed Coverage graph, kept while the Saga's files
+	// are unchanged.
+	observed observeGraphCache
 	// comparisonLoader is the injectable boundary around the expensive source
 	// diff and coverage build. Root and narrative shell handlers must never call
 	// it; focused comparison endpoints reach it through snapshot().

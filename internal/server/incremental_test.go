@@ -258,3 +258,34 @@ func getPage(t *testing.T, handler http.Handler, path string) *httptest.Response
 	}
 	return recorder
 }
+
+// Observed Coverage loads the whole Saga with its code once, and every row a
+// reviewer then opens reads that graph, until a file of the Saga changes.
+func TestObservedCoverageGraphIsReusedUntilTheSagaChanges(t *testing.T) {
+	fixture, _, _ := boundedFixture(t)
+	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: serverTemplate(t)}
+	handler := newMux(application)
+	coverage := getPage(t, handler, "/api/coverage?mode=saga").Body.String()
+	_, rest, ok := strings.Cut(coverage, `/api/reference-code?target=`)
+	if !ok {
+		t.Fatalf("observed coverage offered no reference code:\n%s", coverage)
+	}
+	escaped, _, _ := strings.Cut(rest, `"`)
+	target, err := url.QueryUnescape(strings.ReplaceAll(escaped, "&amp;", "&"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for range 3 {
+		if body := getPage(t, handler, "/api/reference-code?target="+url.QueryEscape(target)).Body.String(); !strings.Contains(body, "data-reference-code") {
+			t.Fatalf("reference code for %s:\n%s", target, body)
+		}
+	}
+	if application.observed.builds != 1 {
+		t.Fatalf("observed graph builds = %d, want 1", application.observed.builds)
+	}
+	writeServerFile(t, filepath.Join(fixture.Root, "README.md"), "An edit the next request must see.\n")
+	getPage(t, handler, "/api/coverage?mode=code")
+	if application.observed.builds != 2 {
+		t.Fatalf("observed graph builds after an edit = %d, want 2", application.observed.builds)
+	}
+}
