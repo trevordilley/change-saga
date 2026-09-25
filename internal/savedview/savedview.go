@@ -221,32 +221,34 @@ func extractTree(ctx context.Context, checkout, commit, treePath, dest string) e
 	if err := cmd.Start(); err != nil {
 		return err
 	}
+	// Git blocks writing blobs nobody reads once the pipe fills (4 KiB on
+	// Windows), so a failed extraction stops it before waiting.
+	abort := func(err error) error {
+		_ = cmd.Process.Kill()
+		_ = cmd.Wait()
+		return err
+	}
 	reader := bufio.NewReader(stdout)
 	for _, b := range blobs {
 		header, err := reader.ReadString('\n')
 		if err != nil {
-			_ = cmd.Wait()
-			return err
+			return abort(err)
 		}
 		fields := strings.Fields(header)
 		if len(fields) != 3 || fields[1] != "blob" {
-			_ = cmd.Wait()
-			return fmt.Errorf("blob %s is unavailable", b.oid)
+			return abort(fmt.Errorf("blob %s is unavailable", b.oid))
 		}
 		size, _ := strconv.Atoi(fields[2])
 		data := make([]byte, size+1)
 		if _, err := io.ReadFull(reader, data); err != nil {
-			_ = cmd.Wait()
-			return err
+			return abort(err)
 		}
 		target := filepath.Join(dest, filepath.FromSlash(b.path))
 		if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
-			_ = cmd.Wait()
-			return err
+			return abort(err)
 		}
 		if err := os.WriteFile(target, data[:size], 0o644); err != nil {
-			_ = cmd.Wait()
-			return err
+			return abort(err)
 		}
 	}
 	return cmd.Wait()

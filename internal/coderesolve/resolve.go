@@ -345,7 +345,7 @@ func (resolver *Resolver) readObject(ctx context.Context, name string) (string, 
 	}
 	objectType, content, err := resolver.objects.read(name)
 	if err != nil {
-		resolver.objects.close()
+		resolver.objects.abort()
 		resolver.objects = nil
 	}
 	return objectType, content, err
@@ -403,6 +403,14 @@ func (objects *catFile) read(name string) (string, []byte, error) {
 func (objects *catFile) close() {
 	_ = objects.stdin.Close()
 	_ = objects.cmd.Wait()
+}
+
+// abort stops a reader that failed mid-answer. Git may still be writing an
+// object nobody will read, and once the pipe fills (4 KiB on Windows) it
+// blocks, so waiting without killing it would never return.
+func (objects *catFile) abort() {
+	_ = objects.cmd.Process.Kill()
+	objects.close()
 }
 
 func short(commit string) string {
