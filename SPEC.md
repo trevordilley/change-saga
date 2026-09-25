@@ -250,9 +250,11 @@ Incoming relationships are derived, never duplicated.
 of 1–512 data-entity pins, and 0–512 `bindings` of a unique SVG element `id` to
 exactly one entity pin or `relationship {owner, id}`. Bound pins must be in the
 directory, so the visual is a subset; directory members without a binding are
-omitted from the visual, not from the model. The SVG may not contain scripts,
-foreign objects, event handlers, DTDs, external links or external `url()`/
-`@import`. **Overlays** (`erd-overlays/<id>.erd-overlay/`) name an exact `erd`
+omitted from the visual, not from the model. The SVG is allowlisted: only
+static drawing elements in the SVG namespace and presentation/geometry
+attributes, links only to same-document `#fragments`, no `javascript:` or
+`data:` values, no SMIL animation, DTDs or processing instructions, and no
+external `url()`/`@import`. **Overlays** (`erd-overlays/<id>.erd-overlay/`) name an exact `erd`
 revision as their baseline, an optional `feature`, `pins` that replace a
 baseline entity's pin or add an entity, `removals {target, explanation}`, and
 an optional visual whose bindings resolve against the composed directory. An

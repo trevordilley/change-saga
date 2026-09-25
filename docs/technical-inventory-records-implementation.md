@@ -41,7 +41,8 @@ item JSON (`documentation_view`, `selections`).
   with kind-disjoint fields; `Evidence{ID, coderef.Reference}` for all code.
   `LoadInventory` returns every kind in deterministic order (kind, then id)
   and validates each record structurally, including baseline ancestry and the
-  pinned SVG's digest and safety.
+  pinned SVG's digest and safety. SVG safety is an allowlist of static elements
+  and presentation attributes because the renderer inlines the visual.
 - **Writer** (`internal/requirements/inventory_mutation.go`,
   `WriteTechnicalRevision`): under the Saga lock it checks all-head parents,
   idempotent replay, candidate history resolution, new-pin currency (retained
