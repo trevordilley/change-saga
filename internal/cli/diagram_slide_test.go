@@ -3,6 +3,7 @@ package cli
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"strings"
@@ -145,4 +146,82 @@ func issueText(validation saga.Validation) string {
 		parts = append(parts, issue.Message)
 	}
 	return strings.Join(parts, "\n")
+}
+
+func runDiagram(t *testing.T, stdin string, args ...string) (string, error) {
+	t.Helper()
+	if stdin != "" {
+		file := filepath.Join(t.TempDir(), "ops.json")
+		writeFile(t, file, stdin)
+		for index, arg := range args {
+			if arg == "OPS" {
+				args[index] = file
+			}
+		}
+	}
+	var out bytes.Buffer
+	err := Diagram(context.Background(), args, &out)
+	return out.String(), err
+}
+
+func TestDiagramEditRepublishesTargetedChanges(t *testing.T) {
+	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
+	created, err := ApplySlideTransaction(context.Background(), root, base, repo, diagramSlideRequest(t, repo, base, commit, sagaID, "diagram-create", "create", "absent", testDiagram()), false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	move := `[{"op":"move","id":"store","dx":40},{"op":"update","id":"write","set":{"points":[{"x":340,"y":170},{"x":560,"y":170}]}}]`
+	args := []string{"edit", "--slide", "flow", "--expected", created.Snapshot, "--request-id", "move-store", "--from", "OPS", "--repo", repo, "--json", root}
+	output, err := runDiagram(t, move, append([]string{}, args...)...)
+	if err != nil {
+		t.Fatalf("diagram edit: %v\n%s", err, output)
+	}
+	var result DiagramEditResult
+	if err := json.Unmarshal([]byte(output), &result); err != nil || result.PreviousSnapshot != created.Snapshot || strings.Join(result.ChangedElements, ",") != "store,write" || !result.Diff.DiagramChanged {
+		t.Fatalf("edit result = %#v err=%v", result, err)
+	}
+	document, validation, err := saga.Load(root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("load: %v %#v", err, validation.Issues)
+	}
+	slide := document.Decks[0].Slides[0]
+	if slide.AuthoringSnapshot != result.Snapshot || len(slide.Items) != 1 || len(slide.Items[0].Code) != 1 || len(slide.Items[0].CriterionLinks) != 1 {
+		t.Fatalf("items, evidence, and criterion links must carry over: %#v", slide.Items)
+	}
+	retry, err := runDiagram(t, move, append([]string{}, args...)...)
+	if err != nil || !strings.Contains(retry, `"replayed": true`) {
+		t.Fatalf("retry must replay: %v\n%s", err, retry)
+	}
+	if _, err := runDiagram(t, `[{"op":"move","id":"store","dx":1}]`, "edit", "--slide", "flow", "--expected", created.Snapshot, "--request-id", "stale-move", "--from", "OPS", "--repo", repo, root); err == nil || !strings.Contains(err.Error(), "expected_snapshot mismatch") {
+		t.Fatalf("stale edit error = %v", err)
+	}
+	if _, err := runDiagram(t, `[{"op":"remove","id":"worker","cascade":true}]`, "edit", "--slide", "flow", "--expected", result.Snapshot, "--request-id", "drop-worker", "--from", "OPS", "--repo", repo, root); err == nil || !strings.Contains(err.Error(), "worker") {
+		t.Fatalf("removing an Item's element must refuse: %v", err)
+	}
+	rerender, err := runDiagram(t, `[]`, "edit", "--slide", "flow", "--expected", result.Snapshot, "--request-id", "rerender", "--from", "OPS", "--repo", repo, "--dry-run", "--json", root)
+	if err != nil || !strings.Contains(rerender, `"changed_ids": []`) {
+		t.Fatalf("an unchanged re-render is a no-op: %v\n%s", err, rerender)
+	}
+	check, err := runDiagram(t, "", "check", "--json", root)
+	if err != nil || !strings.Contains(check, `"current": true`) || !strings.Contains(check, `"ok": true`) {
+		t.Fatalf("diagram check: %v\n%s", err, check)
+	}
+}
+
+func TestDiagramEditRefusesHandAuthoredSlides(t *testing.T) {
+	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
+	created, err := ApplySlideTransaction(context.Background(), root, base, repo, slideTransactionRequest(t, repo, base, commit, sagaID, "svg-create", "create", "absent", "node-a"), false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := runDiagram(t, `[]`, "edit", "--slide", "flow", "--expected", created.Snapshot, "--request-id", "edit", "--from", "OPS", root); err == nil || !strings.Contains(err.Error(), "has no diagram source") {
+		t.Fatalf("hand-authored slide error = %v", err)
+	}
+}
+
+func TestDiagramIconsLists(t *testing.T) {
+	output, err := runDiagram(t, "", "icons", "--query", "data")
+	if err != nil || output != "lucide:database\n" {
+		t.Fatalf("icons = %q err=%v", output, err)
+	}
 }
