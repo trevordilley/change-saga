@@ -1,0 +1,622 @@
+{
+  "version": 1,
+  "renderer": "diagram-spike/1-etree-1.6.0",
+  "id": "edit-to-review",
+  "title": "From a CLI edit to a reviewer's screen",
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "styles": {
+    "badge": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "#ffffff",
+      "stroke_width": 1,
+      "font_size": 13
+    },
+    "boundary": {
+      "fill": "#f0f3f6",
+      "stroke": "#c3cdd8",
+      "ink": "#526174",
+      "stroke_width": 1,
+      "font_size": 18,
+      "dash": true
+    },
+    "caption": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "#526174",
+      "stroke_width": 1,
+      "font_size": 13
+    },
+    "comment": {
+      "fill": "#fffbeb",
+      "stroke": "#d97706",
+      "ink": "#78350f",
+      "stroke_width": 1.5,
+      "font_size": 16
+    },
+    "commit": {
+      "fill": "#ffffff",
+      "stroke": "#2563eb",
+      "ink": "#172033",
+      "stroke_width": 3,
+      "font_size": 12
+    },
+    "emphasis": {
+      "fill": "none",
+      "stroke": "#2563eb",
+      "ink": "#153869",
+      "stroke_width": 4,
+      "font_size": 18
+    },
+    "link": {
+      "fill": "none",
+      "stroke": "#d97706",
+      "ink": "#78350f",
+      "stroke_width": 1.5,
+      "font_size": 12,
+      "dash": true
+    },
+    "mini": {
+      "fill": "#ffffff",
+      "stroke": "#64748b",
+      "ink": "#172033",
+      "stroke_width": 1.5,
+      "font_size": 14
+    },
+    "mini-edge": {
+      "fill": "none",
+      "stroke": "#64748b",
+      "ink": "#526174",
+      "stroke_width": 1.5,
+      "font_size": 12
+    },
+    "normal": {
+      "fill": "#ffffff",
+      "stroke": "#64748b",
+      "ink": "#172033",
+      "stroke_width": 2,
+      "font_size": 22
+    },
+    "note": {
+      "fill": "#f1f5f9",
+      "stroke": "#e2e8f0",
+      "ink": "#334155",
+      "stroke_width": 1,
+      "font_size": 17
+    },
+    "panel": {
+      "fill": "#ffffff",
+      "stroke": "#cbd5e1",
+      "ink": "#172033",
+      "stroke_width": 1.5,
+      "font_size": 20
+    },
+    "primary": {
+      "fill": "#edf5ff",
+      "stroke": "#2563eb",
+      "ink": "#153869",
+      "stroke_width": 2,
+      "font_size": 22
+    },
+    "secondary": {
+      "fill": "none",
+      "stroke": "#94a3b8",
+      "ink": "#526174",
+      "stroke_width": 2,
+      "font_size": 18
+    },
+    "term": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "#e2e8f0",
+      "stroke_width": 1,
+      "font_size": 14
+    },
+    "term-dim": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "#94a3b8",
+      "stroke_width": 1,
+      "font_size": 12
+    },
+    "title": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "#172033",
+      "stroke_width": 1,
+      "font_size": 34
+    },
+    "warning": {
+      "fill": "#fff7e6",
+      "stroke": "#b7791f",
+      "ink": "#805015",
+      "stroke_width": 2,
+      "font_size": 19
+    }
+  },
+  "assets": {
+    "font:go-regular": {
+      "digest": "sha256:197d9f3703b4c00af609178876a8d73e396f64fe438b2c871778566632374be3",
+      "origin": "golang.org/x/image@v0.44.0/font/gofont/goregular",
+      "license": "These fonts were created by the Bigelow & Holmes foundry specifically for the\nGo project. See https://blog.golang.org/go-fonts for details.\n\nThey are licensed under the same open source license as the rest of the Go\nproject's software:\n\nCopyright (c) 2016 Bigelow & Holmes Inc.. All rights reserved.\n\nDistribution of this font is governed by the following license. If you do not\nagree to this license, including the disclaimer, do not distribute or modify\nthis font.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n\t* Redistributions of source code must retain the above copyright notice,\n\t  this list of conditions and the following disclaimer.\n\n\t* Redistributions in binary form must reproduce the above copyright notice,\n\t  this list of conditions and the following disclaimer in the documentation\n\t  and/or other materials provided with the distribution.\n\n\t* Neither the name of Google Inc. nor the names of its contributors may be\n\t  used to endorse or promote products derived from this software without\n\t  specific prior written permission.\n\nDISCLAIMER: THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,\nTHE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE\nARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n"
+    },
+    "lucide:git-branch": {
+      "digest": "sha256:041f04acc8f92657b849540f0440e2e85d0df0b8da2365611e81b9bebfafc4eb",
+      "origin": "lucide@66d8f9fc394b8530377e5f6112f0b8908ba01280/git-branch.svg",
+      "license": "ISC License\n\nCopyright (c) 2026 Lucide Icons and Contributors\n\nPermission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\nOR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nThe following Lucide icons are derived from the Feather project:\n\nairplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out\n\nThe MIT License (MIT) (for the icons listed above)\n\nCopyright (c) 2013-present Cole Bemis\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+    },
+    "lucide:terminal": {
+      "digest": "sha256:4f9b6488b237757d5cb615ccd07502fa99774826839e2a99017784bdb2596f1a",
+      "origin": "lucide@66d8f9fc394b8530377e5f6112f0b8908ba01280/terminal.svg",
+      "license": "ISC License\n\nCopyright (c) 2026 Lucide Icons and Contributors\n\nPermission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\nOR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nThe following Lucide icons are derived from the Feather project:\n\nairplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out\n\nThe MIT License (MIT) (for the icons listed above)\n\nCopyright (c) 2013-present Cole Bemis\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+    },
+    "lucide:user": {
+      "digest": "sha256:eae3b3b2400031ddd5ec869327d127a96014e5f63aa6e06658dd5d4e90661aa8",
+      "origin": "lucide@66d8f9fc394b8530377e5f6112f0b8908ba01280/user.svg",
+      "license": "ISC License\n\nCopyright (c) 2026 Lucide Icons and Contributors\n\nPermission to use, copy, modify, and/or distribute this software for any\npurpose with or without fee is hereby granted, provided that the above\ncopyright notice and this permission notice appear in all copies.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES\nWITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF\nMERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR\nANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES\nWHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN\nACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF\nOR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.\n\n---\n\nThe following Lucide icons are derived from the Feather project:\n\nairplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out\n\nThe MIT License (MIT) (for the icons listed above)\n\nCopyright (c) 2013-present Cole Bemis\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+    }
+  },
+  "elements": {
+    "badge": {
+      "id": "badge",
+      "kind": "graphic",
+      "x": 274,
+      "y": 48,
+      "z": 2,
+      "parent": "browser",
+      "style": "normal",
+      "fragment": "<circle r=\"11\" fill=\"#d97706\"/>",
+      "decorative": true
+    },
+    "badge-number": {
+      "id": "badge-number",
+      "kind": "text",
+      "label": "1",
+      "x": 270,
+      "y": 38,
+      "width": 10,
+      "height": 18,
+      "z": 3,
+      "parent": "browser",
+      "style": "badge",
+      "decorative": true
+    },
+    "browser": {
+      "id": "browser",
+      "kind": "group",
+      "label": "Review surface",
+      "x": 898,
+      "y": 170,
+      "z": 0,
+      "style": "normal"
+    },
+    "browser-frame": {
+      "id": "browser-frame",
+      "kind": "graphic",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "parent": "browser",
+      "style": "normal",
+      "fragment": "<rect width=\"304\" height=\"300\" rx=\"10\" fill=\"#ffffff\" stroke=\"#cbd5e1\"/><path d=\"M0 10A10 10 0 0 1 10 0H294A10 10 0 0 1 304 10V30H0Z\" fill=\"#f1f5f9\"/><circle cx=\"18\" cy=\"15\" r=\"5\" fill=\"#cbd5e1\"/><circle cx=\"36\" cy=\"15\" r=\"5\" fill=\"#cbd5e1\"/><circle cx=\"54\" cy=\"15\" r=\"5\" fill=\"#cbd5e1\"/><rect x=\"72\" y=\"6\" width=\"220\" height=\"18\" rx=\"9\" fill=\"#ffffff\"/>",
+      "decorative": true
+    },
+    "browser-url": {
+      "id": "browser-url",
+      "kind": "text",
+      "label": "review / request-path",
+      "x": 84,
+      "y": 6,
+      "width": 200,
+      "height": 18,
+      "z": 0,
+      "parent": "browser",
+      "style": "term-dim",
+      "decorative": true
+    },
+    "c-base": {
+      "id": "c-base",
+      "kind": "node",
+      "shape": "ellipse",
+      "description": "Branch point on main",
+      "x": 30,
+      "y": 210,
+      "width": 20,
+      "height": 20,
+      "z": 1,
+      "parent": "history",
+      "style": "commit"
+    },
+    "c-cache": {
+      "id": "c-cache",
+      "kind": "node",
+      "shape": "ellipse",
+      "description": "Add session cache",
+      "x": 190,
+      "y": 110,
+      "width": 20,
+      "height": 20,
+      "z": 1,
+      "parent": "history",
+      "style": "commit"
+    },
+    "c-draw": {
+      "id": "c-draw",
+      "kind": "node",
+      "shape": "ellipse",
+      "description": "Draw request path",
+      "x": 100,
+      "y": 110,
+      "width": 20,
+      "height": 20,
+      "z": 1,
+      "parent": "history",
+      "style": "commit"
+    },
+    "c-merge": {
+      "id": "c-merge",
+      "kind": "node",
+      "shape": "ellipse",
+      "description": "Merge after review",
+      "x": 250,
+      "y": 210,
+      "width": 20,
+      "height": 20,
+      "z": 1,
+      "parent": "history",
+      "style": "commit"
+    },
+    "comment": {
+      "id": "comment",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Reviewer",
+      "detail": "1 · Why a cache here?",
+      "x": 24,
+      "y": 176,
+      "width": 256,
+      "height": 96,
+      "z": 0,
+      "parent": "browser",
+      "style": "comment",
+      "icon": "lucide:user"
+    },
+    "comment-target": {
+      "id": "comment-target",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "parent": "browser",
+      "style": "link",
+      "from": "comment",
+      "to": "mini-cache",
+      "points": [
+        {
+          "x": 234,
+          "y": 176
+        },
+        {
+          "x": 234,
+          "y": 132
+        }
+      ],
+      "head": "arrow"
+    },
+    "commit": {
+      "id": "commit",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Commit the source",
+      "x": 470,
+      "y": 100,
+      "width": 340,
+      "height": 410,
+      "z": -1,
+      "style": "panel",
+      "icon": "lucide:git-branch"
+    },
+    "edit": {
+      "id": "edit",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Edit with the CLI",
+      "x": 60,
+      "y": 100,
+      "width": 340,
+      "height": 410,
+      "z": -1,
+      "style": "panel",
+      "icon": "lucide:terminal"
+    },
+    "heading": {
+      "id": "heading",
+      "kind": "text",
+      "label": "From a CLI edit to a reviewer's screen",
+      "x": 60,
+      "y": 28,
+      "width": 1000,
+      "height": 48,
+      "z": 0,
+      "style": "title",
+      "decorative": true
+    },
+    "history": {
+      "id": "history",
+      "kind": "group",
+      "label": "Branch history",
+      "x": 488,
+      "y": 170,
+      "z": 0,
+      "style": "normal"
+    },
+    "history-lines": {
+      "id": "history-lines",
+      "kind": "graphic",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "parent": "history",
+      "style": "normal",
+      "fragment": "<path d=\"M10 220H294\" stroke=\"#94a3b8\" stroke-width=\"3\" fill=\"none\"/><path d=\"M40 220C80 220 70 120 110 120H200C240 120 230 220 260 220\" stroke=\"#2563eb\" stroke-width=\"3\" fill=\"none\"/>",
+      "decorative": true
+    },
+    "mini-api": {
+      "id": "mini-api",
+      "kind": "node",
+      "shape": "rect",
+      "label": "API",
+      "x": 24,
+      "y": 64,
+      "width": 96,
+      "height": 48,
+      "z": 0,
+      "parent": "browser",
+      "style": "mini"
+    },
+    "mini-cache": {
+      "id": "mini-cache",
+      "kind": "node",
+      "shape": "datastore",
+      "label": "Cache",
+      "x": 184,
+      "y": 52,
+      "width": 100,
+      "height": 76,
+      "z": 0,
+      "parent": "browser",
+      "style": "mini"
+    },
+    "mini-lookup": {
+      "id": "mini-lookup",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "parent": "browser",
+      "style": "mini-edge",
+      "from": "mini-api",
+      "to": "mini-cache",
+      "points": [
+        {
+          "x": 120,
+          "y": 88
+        },
+        {
+          "x": 184,
+          "y": 88
+        }
+      ],
+      "head": "arrow"
+    },
+    "note-atomic": {
+      "id": "note-atomic",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Source and SVG publish together.",
+      "x": 463,
+      "y": 560,
+      "width": 353,
+      "height": 60,
+      "z": 0,
+      "style": "note",
+      "wrap": true
+    },
+    "note-geometry": {
+      "id": "note-geometry",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Moving a node never reroutes an edge.",
+      "x": 60,
+      "y": 560,
+      "width": 353,
+      "height": 60,
+      "z": 0,
+      "style": "note",
+      "wrap": true
+    },
+    "note-ids": {
+      "id": "note-ids",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Comments target stable element IDs.",
+      "x": 866,
+      "y": 560,
+      "width": 353,
+      "height": 60,
+      "z": 0,
+      "style": "note",
+      "wrap": true
+    },
+    "review": {
+      "id": "review",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Review the result",
+      "x": 880,
+      "y": 100,
+      "width": 340,
+      "height": 410,
+      "z": -1,
+      "style": "panel",
+      "icon": "lucide:user"
+    },
+    "t-branch": {
+      "id": "t-branch",
+      "kind": "text",
+      "label": "feature/cache",
+      "x": 96,
+      "y": 78,
+      "width": 120,
+      "height": 18,
+      "z": 0,
+      "parent": "history",
+      "style": "caption",
+      "decorative": true
+    },
+    "t-cache": {
+      "id": "t-cache",
+      "kind": "text",
+      "label": "cache",
+      "x": 176,
+      "y": 140,
+      "width": 120,
+      "height": 18,
+      "z": 0,
+      "parent": "history",
+      "style": "caption",
+      "decorative": true
+    },
+    "t-draw": {
+      "id": "t-draw",
+      "kind": "text",
+      "label": "draw",
+      "x": 88,
+      "y": 140,
+      "width": 120,
+      "height": 18,
+      "z": 0,
+      "parent": "history",
+      "style": "caption",
+      "decorative": true
+    },
+    "t-main": {
+      "id": "t-main",
+      "kind": "text",
+      "label": "main",
+      "x": 10,
+      "y": 240,
+      "width": 120,
+      "height": 18,
+      "z": 0,
+      "parent": "history",
+      "style": "caption",
+      "decorative": true
+    },
+    "t-merge": {
+      "id": "t-merge",
+      "kind": "text",
+      "label": "merge",
+      "x": 238,
+      "y": 240,
+      "width": 120,
+      "height": 18,
+      "z": 0,
+      "parent": "history",
+      "style": "caption",
+      "decorative": true
+    },
+    "terminal": {
+      "id": "terminal",
+      "kind": "group",
+      "label": "Terminal session",
+      "x": 78,
+      "y": 170,
+      "z": 0,
+      "style": "normal"
+    },
+    "terminal-frame": {
+      "id": "terminal-frame",
+      "kind": "graphic",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "parent": "terminal",
+      "style": "normal",
+      "fragment": "<rect width=\"304\" height=\"300\" rx=\"10\" fill=\"#0f172a\"/><path d=\"M0 10A10 10 0 0 1 10 0H294A10 10 0 0 1 304 10V30H0Z\" fill=\"#1e293b\"/><circle cx=\"18\" cy=\"15\" r=\"5\" fill=\"#f87171\"/><circle cx=\"36\" cy=\"15\" r=\"5\" fill=\"#fbbf24\"/><circle cx=\"54\" cy=\"15\" r=\"5\" fill=\"#34d399\"/>",
+      "decorative": true
+    },
+    "terminal-session": {
+      "id": "terminal-session",
+      "kind": "text",
+      "label": "$ diagram-spike move --id api --dy 30\napplied: api moved, edges unchanged\n$ diagram-spike describe\napi -> cache \"lookup\"\n$ diagram-spike render > path.svg\n$ git commit -m \"Add session cache\"\n$ git push",
+      "description": "The author edits named objects, reads the semantic view, and commits the source.",
+      "x": 16,
+      "y": 46,
+      "width": 276,
+      "height": 160,
+      "z": 0,
+      "parent": "terminal",
+      "style": "term"
+    },
+    "terminal-title": {
+      "id": "terminal-title",
+      "kind": "text",
+      "label": "diagram-spike",
+      "x": 112,
+      "y": 6,
+      "width": 100,
+      "height": 18,
+      "z": 0,
+      "parent": "terminal",
+      "style": "term-dim",
+      "decorative": true
+    },
+    "to-commit": {
+      "id": "to-commit",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "style": "emphasis",
+      "from": "edit",
+      "to": "commit",
+      "points": [
+        {
+          "x": 400,
+          "y": 305
+        },
+        {
+          "x": 470,
+          "y": 305
+        }
+      ],
+      "head": "arrow",
+      "head_size": 14
+    },
+    "to-review": {
+      "id": "to-review",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "style": "emphasis",
+      "from": "commit",
+      "to": "review",
+      "points": [
+        {
+          "x": 810,
+          "y": 305
+        },
+        {
+          "x": 880,
+          "y": 305
+        }
+      ],
+      "head": "arrow",
+      "head_size": 14
+    }
+  }
+}

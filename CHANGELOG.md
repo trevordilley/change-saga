@@ -100,6 +100,18 @@ tool, and what they have to do about it.
 
 ### Added
 
+- **Diagrams authored as source.** An `apply-slide` request may supply a
+  structured `diagram` instead of an `asset`: an ordered list of explicitly
+  positioned nodes, edges, text, framed groups, and allowlisted graphics with
+  pinned Lucide icons. The CLI renders it deterministically to the slide's SVG
+  and stores the source beside it, so selectors, digests, approvals, the
+  reviewer, and visual QA work unchanged. `diagram edit` applies targeted
+  operations at an exact snapshot, `diagram describe` reads any slide as
+  compact text (or `--format json`) about an order of magnitude smaller than
+  its SVG, `diagram get` returns one element, `diagram icons` lists icons, and
+  `diagram check` reports SVGs that drifted from their source. Hand-authored
+  SVG and HTML slides keep working unchanged.
+
 - `query personas`, `query persona-references`, and `query term-references`
   provide exact current-record reads and bounded, provenance-bearing direct
   reference inspection. `query terms --limit` adds bounded enumeration while

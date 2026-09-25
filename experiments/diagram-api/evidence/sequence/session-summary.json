@@ -1,0 +1,17 @@
+{
+  "commands": 8,
+  "failed": [],
+  "categories": {
+    "compact_authoring_and_queries": {
+      "commands": 6,
+      "request_bytes": 8966,
+      "response_bytes": 3362
+    },
+    "rendered_artifacts": {
+      "commands": 2,
+      "request_bytes": 302,
+      "response_bytes": 433888
+    }
+  },
+  "token_counts": "not measured"
+}

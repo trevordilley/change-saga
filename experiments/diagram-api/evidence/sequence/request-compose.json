@@ -1,0 +1,563 @@
+{
+  "version": 1,
+  "request_id": "compose",
+  "expected_snapshot": "sha256:6608eae5f161ebdbea1daf432f9e5b4a899a0763b125ed5b915f00248401c3af",
+  "operations": [
+    {
+      "op": "style",
+      "id": "message",
+      "style": {
+        "fill": "none",
+        "stroke": "#334155",
+        "ink": "#172033",
+        "stroke_width": 2,
+        "font_size": 16
+      }
+    },
+    {
+      "op": "style",
+      "id": "reply",
+      "style": {
+        "fill": "none",
+        "stroke": "#64748b",
+        "ink": "#526174",
+        "stroke_width": 1.5,
+        "font_size": 16,
+        "dash": true
+      }
+    },
+    {
+      "op": "style",
+      "id": "fragment",
+      "style": {
+        "fill": "none",
+        "stroke": "#94a3b8",
+        "ink": "#526174",
+        "stroke_width": 1.5,
+        "font_size": 16
+      }
+    },
+    {
+      "op": "style",
+      "id": "activation",
+      "style": {
+        "fill": "#edf5ff",
+        "stroke": "#2563eb",
+        "ink": "#153869",
+        "stroke_width": 1.5,
+        "font_size": 12
+      }
+    },
+    {
+      "op": "style",
+      "id": "stale",
+      "style": {
+        "fill": "none",
+        "stroke": "#b7791f",
+        "ink": "#805015",
+        "stroke_width": 2,
+        "font_size": 16,
+        "dash": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "heading",
+        "kind": "text",
+        "label": "Publishing one diagram batch",
+        "x": 60,
+        "y": 28,
+        "width": 900,
+        "height": 48,
+        "style": "title",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "author",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Author",
+        "icon": "lucide:user",
+        "x": 76,
+        "y": 110,
+        "width": 200,
+        "height": 64,
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "lifeline-author",
+        "kind": "graphic",
+        "x": 176,
+        "y": 174,
+        "z": -1,
+        "style": "secondary",
+        "decorative": true,
+        "fragment": "<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"526\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"6 6\"/>"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "cli",
+        "kind": "node",
+        "shape": "rect",
+        "label": "CLI",
+        "icon": "lucide:terminal",
+        "x": 308,
+        "y": 110,
+        "width": 200,
+        "height": 64,
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "lifeline-cli",
+        "kind": "graphic",
+        "x": 408,
+        "y": 174,
+        "z": -1,
+        "style": "secondary",
+        "decorative": true,
+        "fragment": "<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"526\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"6 6\"/>"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "lock",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Store lock",
+        "icon": "lucide:lock",
+        "x": 540,
+        "y": 110,
+        "width": 200,
+        "height": 64,
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "lifeline-lock",
+        "kind": "graphic",
+        "x": 640,
+        "y": 174,
+        "z": -1,
+        "style": "secondary",
+        "decorative": true,
+        "fragment": "<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"526\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"6 6\"/>"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "renderer",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Renderer",
+        "icon": "lucide:file",
+        "x": 772,
+        "y": 110,
+        "width": 200,
+        "height": 64,
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "lifeline-renderer",
+        "kind": "graphic",
+        "x": 872,
+        "y": 174,
+        "z": -1,
+        "style": "secondary",
+        "decorative": true,
+        "fragment": "<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"526\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"6 6\"/>"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "record",
+        "kind": "node",
+        "shape": "rect",
+        "label": "current.json",
+        "icon": "lucide:database",
+        "x": 1004,
+        "y": 110,
+        "width": 200,
+        "height": 64,
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "lifeline-record",
+        "kind": "graphic",
+        "x": 1104,
+        "y": 174,
+        "z": -1,
+        "style": "secondary",
+        "decorative": true,
+        "fragment": "<line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"526\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"6 6\"/>"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "cli-active",
+        "kind": "node",
+        "shape": "rect",
+        "x": 401,
+        "y": 205,
+        "width": 14,
+        "height": 480,
+        "style": "activation",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "alt",
+        "kind": "node",
+        "shape": "boundary",
+        "label": "alt  [snapshot matches]",
+        "x": 110,
+        "y": 355,
+        "width": 1070,
+        "height": 290,
+        "z": -1,
+        "style": "fragment"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "else-divider",
+        "kind": "graphic",
+        "x": 110,
+        "y": 565,
+        "z": -1,
+        "style": "fragment",
+        "decorative": true,
+        "fragment": "<line x1=\"0\" y1=\"0\" x2=\"1070\" y2=\"0\" stroke=\"#94a3b8\" stroke-width=\"1.5\" stroke-dasharray=\"4 4\"/>"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "else-guard",
+        "kind": "text",
+        "label": "[else: snapshot is stale]",
+        "x": 128,
+        "y": 572,
+        "width": 260,
+        "height": 24,
+        "style": "fragment"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m01-apply",
+        "kind": "edge",
+        "from": "author",
+        "to": "cli",
+        "points": [
+          {
+            "x": 176,
+            "y": 215
+          },
+          {
+            "x": 401,
+            "y": 215
+          }
+        ],
+        "head": "arrow",
+        "label": "apply(batch, S1)",
+        "label_at": {
+          "x": 190,
+          "y": 189
+        },
+        "width": 200,
+        "height": 24,
+        "style": "message",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m02-lock",
+        "kind": "edge",
+        "from": "cli",
+        "to": "lock",
+        "points": [
+          {
+            "x": 415,
+            "y": 255
+          },
+          {
+            "x": 640,
+            "y": 255
+          }
+        ],
+        "head": "arrow",
+        "label": "acquire lock",
+        "label_at": {
+          "x": 428,
+          "y": 229
+        },
+        "width": 200,
+        "height": 24,
+        "style": "message",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m03-read",
+        "kind": "edge",
+        "from": "cli",
+        "to": "record",
+        "points": [
+          {
+            "x": 415,
+            "y": 295
+          },
+          {
+            "x": 1104,
+            "y": 295
+          }
+        ],
+        "head": "arrow",
+        "label": "read current snapshot",
+        "label_at": {
+          "x": 428,
+          "y": 269
+        },
+        "width": 200,
+        "height": 24,
+        "style": "message",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m04-current",
+        "kind": "edge",
+        "from": "record",
+        "to": "cli",
+        "points": [
+          {
+            "x": 1104,
+            "y": 330
+          },
+          {
+            "x": 415,
+            "y": 330
+          }
+        ],
+        "head": "arrow",
+        "label": "S1",
+        "label_at": {
+          "x": 1060,
+          "y": 304
+        },
+        "width": 40,
+        "height": 24,
+        "style": "reply",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m05-render",
+        "kind": "edge",
+        "from": "cli",
+        "to": "renderer",
+        "points": [
+          {
+            "x": 415,
+            "y": 425
+          },
+          {
+            "x": 872,
+            "y": 425
+          }
+        ],
+        "head": "arrow",
+        "label": "render private copy",
+        "label_at": {
+          "x": 428,
+          "y": 399
+        },
+        "width": 200,
+        "height": 24,
+        "style": "message",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m06-svg",
+        "kind": "edge",
+        "from": "renderer",
+        "to": "cli",
+        "points": [
+          {
+            "x": 872,
+            "y": 460
+          },
+          {
+            "x": 415,
+            "y": 460
+          }
+        ],
+        "head": "arrow",
+        "label": "SVG + hash",
+        "label_at": {
+          "x": 700,
+          "y": 434
+        },
+        "width": 150,
+        "height": 24,
+        "style": "reply",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m07-publish",
+        "kind": "edge",
+        "from": "cli",
+        "to": "record",
+        "points": [
+          {
+            "x": 415,
+            "y": 500
+          },
+          {
+            "x": 1104,
+            "y": 500
+          }
+        ],
+        "head": "arrow",
+        "label": "publish one record",
+        "label_at": {
+          "x": 428,
+          "y": 474
+        },
+        "width": 200,
+        "height": 24,
+        "style": "emphasis",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m08-applied",
+        "kind": "edge",
+        "from": "cli",
+        "to": "author",
+        "points": [
+          {
+            "x": 401,
+            "y": 540
+          },
+          {
+            "x": 176,
+            "y": 540
+          }
+        ],
+        "head": "arrow",
+        "label": "applied: S2",
+        "label_at": {
+          "x": 200,
+          "y": 514
+        },
+        "width": 190,
+        "height": 24,
+        "style": "reply",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m09-reject",
+        "kind": "edge",
+        "from": "cli",
+        "to": "author",
+        "points": [
+          {
+            "x": 401,
+            "y": 620
+          },
+          {
+            "x": 176,
+            "y": 620
+          }
+        ],
+        "head": "arrow",
+        "label": "rejected, unchanged",
+        "label_at": {
+          "x": 186,
+          "y": 594
+        },
+        "width": 210,
+        "height": 24,
+        "style": "stale",
+        "z": 1
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "m10-release",
+        "kind": "edge",
+        "from": "cli",
+        "to": "lock",
+        "points": [
+          {
+            "x": 415,
+            "y": 675
+          },
+          {
+            "x": 640,
+            "y": 675
+          }
+        ],
+        "head": "arrow",
+        "label": "release lock",
+        "label_at": {
+          "x": 428,
+          "y": 649
+        },
+        "width": 200,
+        "height": 24,
+        "style": "message",
+        "z": 1
+      }
+    }
+  ]
+}

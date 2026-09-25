@@ -1,0 +1,684 @@
+{
+  "version": 1,
+  "request_id": "compose",
+  "expected_snapshot": "sha256:13fbf301d0c31e81088d548274cc2bbf14e036f00d503990a5edfd86437dc44e",
+  "operations": [
+    {
+      "op": "style",
+      "id": "panel",
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#cbd5e1",
+        "ink": "#172033",
+        "stroke_width": 1.5,
+        "font_size": 20
+      }
+    },
+    {
+      "op": "style",
+      "id": "term",
+      "style": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "#e2e8f0",
+        "stroke_width": 1,
+        "font_size": 14
+      }
+    },
+    {
+      "op": "style",
+      "id": "term-dim",
+      "style": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "#94a3b8",
+        "stroke_width": 1,
+        "font_size": 12
+      }
+    },
+    {
+      "op": "style",
+      "id": "mini",
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#64748b",
+        "ink": "#172033",
+        "stroke_width": 1.5,
+        "font_size": 14
+      }
+    },
+    {
+      "op": "style",
+      "id": "mini-edge",
+      "style": {
+        "fill": "none",
+        "stroke": "#64748b",
+        "ink": "#526174",
+        "stroke_width": 1.5,
+        "font_size": 12
+      }
+    },
+    {
+      "op": "style",
+      "id": "commit",
+      "style": {
+        "fill": "#ffffff",
+        "stroke": "#2563eb",
+        "ink": "#172033",
+        "stroke_width": 3,
+        "font_size": 12
+      }
+    },
+    {
+      "op": "style",
+      "id": "caption",
+      "style": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "#526174",
+        "stroke_width": 1,
+        "font_size": 13
+      }
+    },
+    {
+      "op": "style",
+      "id": "badge",
+      "style": {
+        "fill": "none",
+        "stroke": "none",
+        "ink": "#ffffff",
+        "stroke_width": 1,
+        "font_size": 13
+      }
+    },
+    {
+      "op": "style",
+      "id": "comment",
+      "style": {
+        "fill": "#fffbeb",
+        "stroke": "#d97706",
+        "ink": "#78350f",
+        "stroke_width": 1.5,
+        "font_size": 16
+      }
+    },
+    {
+      "op": "style",
+      "id": "link",
+      "style": {
+        "fill": "none",
+        "stroke": "#d97706",
+        "ink": "#78350f",
+        "stroke_width": 1.5,
+        "font_size": 12,
+        "dash": true
+      }
+    },
+    {
+      "op": "style",
+      "id": "note",
+      "style": {
+        "fill": "#f1f5f9",
+        "stroke": "#e2e8f0",
+        "ink": "#334155",
+        "stroke_width": 1,
+        "font_size": 17
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "heading",
+        "kind": "text",
+        "label": "From a CLI edit to a reviewer's screen",
+        "x": 60,
+        "y": 28,
+        "width": 1000,
+        "height": 48,
+        "style": "title",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "edit",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Edit with the CLI",
+        "icon": "lucide:terminal",
+        "x": 60,
+        "y": 100,
+        "width": 340,
+        "height": 410,
+        "z": -1,
+        "style": "panel"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "commit",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Commit the source",
+        "icon": "lucide:git-branch",
+        "x": 470,
+        "y": 100,
+        "width": 340,
+        "height": 410,
+        "z": -1,
+        "style": "panel"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "review",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Review the result",
+        "icon": "lucide:user",
+        "x": 880,
+        "y": 100,
+        "width": 340,
+        "height": 410,
+        "z": -1,
+        "style": "panel"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "to-commit",
+        "kind": "edge",
+        "from": "edit",
+        "to": "commit",
+        "points": [
+          {
+            "x": 400,
+            "y": 305
+          },
+          {
+            "x": 470,
+            "y": 305
+          }
+        ],
+        "head": "arrow",
+        "head_size": 14,
+        "style": "emphasis"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "to-review",
+        "kind": "edge",
+        "from": "commit",
+        "to": "review",
+        "points": [
+          {
+            "x": 810,
+            "y": 305
+          },
+          {
+            "x": 880,
+            "y": 305
+          }
+        ],
+        "head": "arrow",
+        "head_size": 14,
+        "style": "emphasis"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "terminal",
+        "kind": "group",
+        "x": 78,
+        "y": 170,
+        "style": "normal",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "terminal-frame",
+        "kind": "graphic",
+        "parent": "terminal",
+        "x": 0,
+        "y": 0,
+        "decorative": true,
+        "fragment": "<rect width=\"304\" height=\"300\" rx=\"10\" fill=\"#0f172a\"/><path d=\"M0 10A10 10 0 0 1 10 0H294A10 10 0 0 1 304 10V30H0Z\" fill=\"#1e293b\"/><circle cx=\"18\" cy=\"15\" r=\"5\" fill=\"#f87171\"/><circle cx=\"36\" cy=\"15\" r=\"5\" fill=\"#fbbf24\"/><circle cx=\"54\" cy=\"15\" r=\"5\" fill=\"#34d399\"/>",
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "terminal-title",
+        "kind": "text",
+        "parent": "terminal",
+        "label": "diagram-spike",
+        "x": 112,
+        "y": 6,
+        "width": 100,
+        "height": 18,
+        "style": "term-dim",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "terminal-session",
+        "kind": "text",
+        "parent": "terminal",
+        "x": 16,
+        "y": 46,
+        "width": 276,
+        "height": 150,
+        "style": "term",
+        "label": "$ diagram-spike move --id api --dy 30\napplied  changed: api\n$ diagram-spike describe\napi -> cache \"lookup\"\n$ git commit -m \"Add session cache\"",
+        "description": "The author edits named objects, reads the semantic view, and commits the source."
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "history",
+        "kind": "group",
+        "x": 488,
+        "y": 170,
+        "style": "normal",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "history-lines",
+        "kind": "graphic",
+        "parent": "history",
+        "x": 0,
+        "y": 0,
+        "decorative": true,
+        "fragment": "<path d=\"M10 220H294\" stroke=\"#94a3b8\" stroke-width=\"3\" fill=\"none\"/><path d=\"M40 220C80 220 70 120 110 120H200C240 120 230 220 260 220\" stroke=\"#2563eb\" stroke-width=\"3\" fill=\"none\"/>",
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "c-base",
+        "kind": "node",
+        "shape": "ellipse",
+        "parent": "history",
+        "x": 30,
+        "y": 210,
+        "width": 20,
+        "height": 20,
+        "z": 1,
+        "style": "commit",
+        "description": "Branch point on main"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "c-draw",
+        "kind": "node",
+        "shape": "ellipse",
+        "parent": "history",
+        "x": 100,
+        "y": 110,
+        "width": 20,
+        "height": 20,
+        "z": 1,
+        "style": "commit",
+        "description": "Draw request path"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "c-cache",
+        "kind": "node",
+        "shape": "ellipse",
+        "parent": "history",
+        "x": 190,
+        "y": 110,
+        "width": 20,
+        "height": 20,
+        "z": 1,
+        "style": "commit",
+        "description": "Add session cache"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "c-merge",
+        "kind": "node",
+        "shape": "ellipse",
+        "parent": "history",
+        "x": 250,
+        "y": 210,
+        "width": 20,
+        "height": 20,
+        "z": 1,
+        "style": "commit",
+        "description": "Merge after review"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "t-main",
+        "kind": "text",
+        "parent": "history",
+        "label": "main",
+        "x": 10,
+        "y": 240,
+        "width": 120,
+        "height": 18,
+        "style": "caption",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "t-branch",
+        "kind": "text",
+        "parent": "history",
+        "label": "feature/cache",
+        "x": 96,
+        "y": 78,
+        "width": 120,
+        "height": 18,
+        "style": "caption",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "t-draw",
+        "kind": "text",
+        "parent": "history",
+        "label": "draw",
+        "x": 88,
+        "y": 140,
+        "width": 120,
+        "height": 18,
+        "style": "caption",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "t-cache",
+        "kind": "text",
+        "parent": "history",
+        "label": "cache",
+        "x": 176,
+        "y": 140,
+        "width": 120,
+        "height": 18,
+        "style": "caption",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "t-merge",
+        "kind": "text",
+        "parent": "history",
+        "label": "merge",
+        "x": 238,
+        "y": 240,
+        "width": 120,
+        "height": 18,
+        "style": "caption",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "browser",
+        "kind": "group",
+        "x": 898,
+        "y": 170,
+        "style": "normal",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "browser-frame",
+        "kind": "graphic",
+        "parent": "browser",
+        "x": 0,
+        "y": 0,
+        "decorative": true,
+        "fragment": "<rect width=\"304\" height=\"300\" rx=\"10\" fill=\"#ffffff\" stroke=\"#cbd5e1\"/><path d=\"M0 10A10 10 0 0 1 10 0H294A10 10 0 0 1 304 10V30H0Z\" fill=\"#f1f5f9\"/><circle cx=\"18\" cy=\"15\" r=\"5\" fill=\"#cbd5e1\"/><circle cx=\"36\" cy=\"15\" r=\"5\" fill=\"#cbd5e1\"/><circle cx=\"54\" cy=\"15\" r=\"5\" fill=\"#cbd5e1\"/><rect x=\"72\" y=\"6\" width=\"220\" height=\"18\" rx=\"9\" fill=\"#ffffff\"/>",
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "browser-url",
+        "kind": "text",
+        "parent": "browser",
+        "label": "review / request-path",
+        "x": 84,
+        "y": 6,
+        "width": 200,
+        "height": 18,
+        "style": "term-dim",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "mini-api",
+        "kind": "node",
+        "shape": "rect",
+        "parent": "browser",
+        "label": "API",
+        "x": 24,
+        "y": 64,
+        "width": 96,
+        "height": 48,
+        "style": "mini"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "mini-cache",
+        "kind": "node",
+        "shape": "datastore",
+        "parent": "browser",
+        "label": "Cache",
+        "x": 184,
+        "y": 52,
+        "width": 100,
+        "height": 76,
+        "style": "mini"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "mini-lookup",
+        "kind": "edge",
+        "parent": "browser",
+        "from": "mini-api",
+        "to": "mini-cache",
+        "points": [
+          {
+            "x": 120,
+            "y": 88
+          },
+          {
+            "x": 184,
+            "y": 88
+          }
+        ],
+        "head": "arrow",
+        "style": "mini-edge"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "badge",
+        "kind": "graphic",
+        "parent": "browser",
+        "x": 274,
+        "y": 48,
+        "z": 2,
+        "decorative": true,
+        "fragment": "<circle r=\"11\" fill=\"#d97706\"/>",
+        "style": "normal"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "badge-number",
+        "kind": "text",
+        "parent": "browser",
+        "label": "1",
+        "x": 270,
+        "y": 38,
+        "width": 10,
+        "height": 18,
+        "z": 3,
+        "style": "badge",
+        "decorative": true
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "comment",
+        "kind": "node",
+        "shape": "rect",
+        "parent": "browser",
+        "label": "Reviewer",
+        "detail": "1 · Why a cache here?",
+        "icon": "lucide:user",
+        "x": 24,
+        "y": 176,
+        "width": 256,
+        "height": 96,
+        "style": "comment"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "comment-target",
+        "kind": "edge",
+        "parent": "browser",
+        "from": "comment",
+        "to": "mini-cache",
+        "points": [
+          {
+            "x": 234,
+            "y": 176
+          },
+          {
+            "x": 234,
+            "y": 132
+          }
+        ],
+        "head": "arrow",
+        "style": "link"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "note-geometry",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Moving a node never reroutes an edge.",
+        "wrap": true,
+        "x": 0,
+        "y": 0,
+        "width": 353,
+        "height": 90,
+        "style": "note"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "note-atomic",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Source and SVG publish together.",
+        "wrap": true,
+        "x": 0,
+        "y": 0,
+        "width": 353,
+        "height": 90,
+        "style": "note"
+      }
+    },
+    {
+      "op": "add",
+      "element": {
+        "id": "note-ids",
+        "kind": "node",
+        "shape": "rect",
+        "label": "Comments target stable element IDs.",
+        "wrap": true,
+        "x": 0,
+        "y": 0,
+        "width": 353,
+        "height": 90,
+        "style": "note"
+      }
+    },
+    {
+      "op": "align",
+      "ids": [
+        "note-geometry",
+        "note-atomic",
+        "note-ids"
+      ],
+      "axis": "y",
+      "value": 560
+    },
+    {
+      "op": "update",
+      "id": "note-geometry",
+      "set": {
+        "x": 60
+      }
+    },
+    {
+      "op": "distribute",
+      "ids": [
+        "note-geometry",
+        "note-atomic",
+        "note-ids"
+      ],
+      "axis": "x",
+      "value": 50
+    }
+  ]
+}

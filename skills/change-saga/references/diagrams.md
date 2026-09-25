@@ -52,10 +52,56 @@ arrangement; neither supplies the diagram's meaning. A row of cards is valid
 only when membership or matched comparison is the relationship. Boxes joined
 only by reading order are an outline, not a diagram.
 
-Use SVG for stable architecture, boundaries, data models, and flows. Use
-self-contained HTML when switching paths, stepping through states, changing an
-input, or comparing behavior materially helps. Load no network dependencies,
-and make the default state understandable without interaction.
+Author stable architecture, boundaries, data models, flows, and sequences as a
+diagram source (below); the CLI renders it to SVG. Hand-author SVG only when a
+composition needs what the source cannot express, and use self-contained HTML
+when switching paths, stepping through states, changing an input, or comparing
+behavior materially helps. Load no network dependencies, and make the default
+state understandable without interaction.
+
+## Author diagrams as source
+
+A diagram source is an ordered list of explicitly positioned elements; the CLI
+renders it to the slide's SVG. Pass it as `"diagram"` instead of `"asset"` in
+an `apply-slide` request. `change-saga spec --json` publishes its vocabulary
+under `implementation_deck.diagram_source`; list icons with `change-saga
+diagram icons`.
+
+- Kinds: `node` (shape `service`, `datastore`, `decision`, `rect`, `ellipse`,
+  `boundary`), `edge` (`from`/`to` nodes plus explicit `points` or `path`),
+  `text`, `group`, and `graphic` (allowlisted SVG drawing markup).
+- Every coordinate is explicit and local to the parent group. Nothing is laid
+  out, resized, or rerouted for you: moving a node leaves its edges where they
+  are, so update their `points` in the same batch.
+- Element order is reading order. Put participants, then messages in time
+  order, so the description reads in sequence.
+- A group with `shape` `rect` or `boundary` draws a frame and parents its
+  contents; use one for containers, lanes, trust boundaries, and `alt`/`loop`
+  fragments, so moving the frame moves what it contains.
+- Edge labels need a `label_box`; a node whose shape is too small for its
+  label may place it in a `label_box` outside the shape. `align` is `start`,
+  `middle`, or `end`.
+- Text that does not fit its box is refused, never shrunk: widen the box,
+  wrap, or shorten the text.
+- Name styles; define custom ones under `styles`. Graphics use `currentColor`
+  for their style's stroke instead of hard-coded colors.
+- Mark titles, lifelines, and chrome `decorative`. Everything else is semantic,
+  appears in the description, and needs a `description` when its label does
+  not stand alone. A semantic element cannot sit in a decorative group.
+- Give every Item an `element` selector naming a semantic element ID.
+
+Revise a published diagram with `change-saga diagram edit --slide TARGET
+--expected SNAPSHOT --request-id ID --from OPS.json <saga>`. Operations are
+`add` (optionally `before` an ID), `update` (`set` fields; `null` removes one),
+`move` (`dx`, `dy`), `remove` (`cascade` for dependents), `style`, `align`,
+`distribute`, and `canvas`. The edit republishes through `apply-slide` with
+the slide's Items, evidence, and criterion links unchanged, so stale evidence
+or criteria still refuse it. Use `change-saga diagram get` for one element's
+exact properties before editing it, and `change-saga diagram describe` to read
+the slide; do not read or edit the stored source or SVG. Validation reports
+every problem in a batch at once; fix them all before retrying. Run
+`change-saga diagram check` before handoff to confirm every published SVG still
+matches its source.
 
 ## Complete-slide publication
 
@@ -73,6 +119,9 @@ For divergent history, use `operation: "reconcile"` with `expected_snapshots`
 containing every reported head, omitting the singular `expected_snapshot`.
 Preview with `--dry-run` before publishing. Preserve the stable `request_id`:
 an identical retry is a no-op and reuse with different content is rejected.
+
+A request supplies exactly one of `asset` or `diagram`; with a diagram,
+`media_type` is `image/svg+xml` and may be omitted.
 
 Each Item needs a resolving selector, focused line-range evidence whose digest
 matches the named commit, and an exact criterion link with its current story

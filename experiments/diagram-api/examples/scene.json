@@ -1,0 +1,201 @@
+[
+  {
+    "id": "author",
+    "kind": "node",
+    "shape": "service",
+    "label": "Explicit edits",
+    "detail": "Coordinates, paths, labels",
+    "x": 65,
+    "y": 225,
+    "width": 280,
+    "height": 110,
+    "style": "normal",
+    "icon": "lucide:terminal"
+  },
+  {
+    "id": "validator",
+    "kind": "node",
+    "shape": "service",
+    "label": "Validate + stage",
+    "detail": "Selectors, references, asset hashes",
+    "description": "Reject invalid batches before publication.",
+    "x": 445,
+    "y": 205,
+    "width": 330,
+    "height": 150,
+    "style": "primary",
+    "icon": "lucide:check"
+  },
+  {
+    "id": "published",
+    "kind": "node",
+    "shape": "datastore",
+    "label": "One snapshot",
+    "detail": "Source + visual hash",
+    "x": 920,
+    "y": 200,
+    "width": 290,
+    "height": 165,
+    "style": "normal",
+    "icon": "lucide:database"
+  },
+  {
+    "id": "reject",
+    "kind": "node",
+    "shape": "rect",
+    "label": "Reject whole batch",
+    "detail": "Previous snapshot stays current",
+    "x": 65,
+    "y": 440,
+    "width": 310,
+    "height": 110,
+    "style": "warning",
+    "icon": "lucide:triangle-alert"
+  },
+  {
+    "id": "batch",
+    "kind": "edge",
+    "from": "author",
+    "to": "validator",
+    "points": [
+      {
+        "x": 345,
+        "y": 280
+      },
+      {
+        "x": 445,
+        "y": 280
+      }
+    ],
+    "label": "batch",
+    "label_at": {
+      "x": 365,
+      "y": 240
+    },
+    "width": 80,
+    "height": 30,
+    "style": "secondary",
+    "head": "arrow",
+    "z": 1
+  },
+  {
+    "id": "publish",
+    "kind": "edge",
+    "from": "validator",
+    "to": "published",
+    "points": [
+      {
+        "x": 775,
+        "y": 280
+      },
+      {
+        "x": 920,
+        "y": 280
+      }
+    ],
+    "label": "publish",
+    "label_at": {
+      "x": 809,
+      "y": 240
+    },
+    "width": 95,
+    "height": 30,
+    "style": "emphasis",
+    "head": "arrow",
+    "head_size": 16,
+    "z": 1
+  },
+  {
+    "id": "failure",
+    "kind": "edge",
+    "from": "validator",
+    "to": "reject",
+    "points": [
+      {
+        "x": 610,
+        "y": 355
+      },
+      {
+        "x": 610,
+        "y": 495
+      },
+      {
+        "x": 375,
+        "y": 495
+      }
+    ],
+    "label": "any check fails",
+    "label_at": {
+      "x": 630,
+      "y": 408
+    },
+    "width": 170,
+    "height": 30,
+    "style": "warning",
+    "head": "arrow",
+    "z": 1
+  },
+  {
+    "id": "heading",
+    "kind": "text",
+    "label": "Publish a diagram as one complete change",
+    "x": 65,
+    "y": 45,
+    "width": 1150,
+    "height": 60,
+    "style": "title",
+    "decorative": true
+  },
+  {
+    "id": "subhead",
+    "kind": "text",
+    "label": "Explicit drawing commands become one validated source and its exact SVG.",
+    "x": 65,
+    "y": 107,
+    "width": 1140,
+    "height": 38,
+    "style": "secondary",
+    "decorative": true
+  },
+  {
+    "id": "footer",
+    "kind": "text",
+    "label": "Moving a node never reroutes an edge. The author controls every coordinate.",
+    "x": 65,
+    "y": 632,
+    "width": 1140,
+    "height": 40,
+    "style": "secondary",
+    "decorative": true
+  },
+  {
+    "id": "revision-boundary",
+    "kind": "group",
+    "x": 0,
+    "y": 0,
+    "z": -2,
+    "style": "normal",
+    "decorative": true
+  },
+  {
+    "id": "revision-area",
+    "kind": "node",
+    "shape": "boundary",
+    "parent": "revision-boundary",
+    "x": 890,
+    "y": 178,
+    "width": 345,
+    "height": 222,
+    "style": "boundary",
+    "decorative": true
+  },
+  {
+    "id": "accent",
+    "kind": "graphic",
+    "x": 65,
+    "y": 157,
+    "style": "normal",
+    "fragment": "<path d=\"M0 0H72\" stroke=\"#2563eb\" stroke-width=\"4\"/>",
+    "decorative": true
+  }
+]

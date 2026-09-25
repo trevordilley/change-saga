@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "request_id": "revise",
+  "expected_snapshot": "sha256:039ff5700166aabc41c440b1688423532700c64a74c47030f33aa65cf1f356a5",
+  "operations": [
+    {
+      "op": "update",
+      "id": "terminal-session",
+      "set": {
+        "label": "$ diagram-spike move --id api --dy 30\napplied: api moved, edges unchanged\n$ diagram-spike describe\napi -> cache \"lookup\"\n$ diagram-spike render > path.svg\n$ git commit -m \"Add session cache\"\n$ git push",
+        "height": 160
+      }
+    },
+    {
+      "op": "update",
+      "id": "note-geometry",
+      "set": {
+        "height": 60
+      }
+    },
+    {
+      "op": "update",
+      "id": "note-atomic",
+      "set": {
+        "height": 60
+      }
+    },
+    {
+      "op": "update",
+      "id": "note-ids",
+      "set": {
+        "height": 60
+      }
+    }
+  ]
+}
