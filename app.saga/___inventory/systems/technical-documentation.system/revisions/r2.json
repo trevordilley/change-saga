@@ -1,0 +1,106 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/system-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:system:technical-documentation",
+  "parents": [
+    "urn:change-saga:change-saga:system:technical-documentation:revision:r1"
+  ],
+  "name": "Technical documentation",
+  "explanation": "Public authors publish immutable Component/System definitions with exact evidence. Inventory queries and the slide explanation drawer read those records independently. An Item carries its saved revision pin and its own scoped evidence; opening a System transfers no coverage and never updates the Item or approves a review.",
+  "code": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/saga/model.go",
+      "start": 76,
+      "end": 81,
+      "digest": "sha256:9fdb6864a6c030ef822bd36dd8fbd0560c82ffc0f95f1a8982c738d3ecf53f00",
+      "note": "The Item link stores canonical target and exact revision independently of its code evidence."
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/saga/model.go",
+      "start": 102,
+      "end": 107,
+      "digest": "sha256:af6b75fdb73496a83984b027a0329c0191aa4cd4fde2eb79f0652c2c45b6f885",
+      "note": "Items carry the pin (and, in inventory format 2, an optional saved view and explicit selections) beside their own evidence."
+    }
+  ],
+  "components": [
+    {
+      "target": "urn:change-saga:change-saga:component:technical-record-store",
+      "revision": "urn:change-saga:change-saga:component:technical-record-store:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:technical-record-author",
+      "revision": "urn:change-saga:change-saga:component:technical-record-author:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:technical-inventory-query",
+      "revision": "urn:change-saga:change-saga:component:technical-inventory-query:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "revision": "urn:change-saga:change-saga:component:technical-explanation-drawer:revision:r2"
+    }
+  ],
+  "interactions": [
+    {
+      "id": "publish",
+      "from": "urn:change-saga:change-saga:component:technical-record-author",
+      "to": "urn:change-saga:change-saga:component:technical-record-store",
+      "description": "The author resolves source evidence before publishing an immutable revision through the locked record writer.",
+      "code": [
+        {
+          "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+          "path": "internal/cli/inventory.go",
+          "start": 134,
+          "end": 168,
+          "digest": "sha256:454b4f4781964edd5a1b0f3d3b520f9c995d505d4026af37a49f84c852c42440",
+          "note": "Source validation and digest verification keep authored evidence exact."
+        },
+        {
+          "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+          "path": "internal/cli/inventory.go",
+          "start": 99,
+          "end": 102,
+          "digest": "sha256:711e38e2cc13f97f573e65b7c2ddb3b8ea77fd7196426016c55a45af2d75177d",
+          "note": "Publication hands the verified definition to the locked writer."
+        }
+      ]
+    },
+    {
+      "id": "query",
+      "from": "urn:change-saga:change-saga:component:technical-inventory-query",
+      "to": "urn:change-saga:change-saga:component:technical-record-store",
+      "description": "The query loads inventory separately, selects one page, resolves its code health, and rejects a changed snapshot.",
+      "code": [
+        {
+          "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+          "path": "internal/cli/query_inventory.go",
+          "start": 101,
+          "end": 188,
+          "digest": "sha256:ed547ba4e867e1500d71a03aeb2c7846aaf0e43d607afa81a3db846ce29c8cb4",
+          "note": "Only explicit inventory reads project these records; pagination is bound to the observed snapshot."
+        }
+      ]
+    },
+    {
+      "id": "open-pin",
+      "from": "urn:change-saga:change-saga:component:technical-explanation-drawer",
+      "to": "urn:change-saga:change-saga:component:technical-record-store",
+      "description": "A selected Item pin resolves the saved definition, including stale or retired history, without rewriting slide content.",
+      "code": [
+        {
+          "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+          "path": "internal/server/inventory.go",
+          "start": 112,
+          "end": 135,
+          "digest": "sha256:54f3ffb8a8ac22abd9257cc91593915734e33c46b51d6c57bd2da56dfa525fc4",
+          "note": "The on-demand endpoint validates the pin and resolves the exact saved revision."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T03:49:17.802727Z"
+}
