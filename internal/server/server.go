@@ -224,7 +224,15 @@ type navNodeView struct {
 	Slide    *SlideReferenceView
 	Active   bool
 	Expanded bool
+	// Hidden is a section the sidebar carries for the other side of the
+	// header: it is there for the next page, not this one.
+	Hidden   bool
 	Children []*navNodeView
+	// dormant marks a subtree the sidebar holds for other pages: a feature
+	// the page does not belong to, or the other side's section. The sidebar
+	// is the same on every page, so what this page marks current or opens is
+	// decided outside these subtrees.
+	dormant bool
 }
 
 type sectionView struct {
@@ -1176,13 +1184,12 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		pageFeature: data.PageFeature, reviewSide: data.ReviewSide,
 		technical: technicalRows,
 	})
-	if route.kind != "overview" {
-		// Off the overview, an in-page anchor would point into a page that is
-		// not there. Every such link opens the overview instead.
-		rootNavLinks(data.Nav)
-		if !data.TermsMode {
-			markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
-		}
+	// The sidebar is the same on every page, so it outlives the page it was
+	// loaded with: an in-page anchor names the overview's path rather than
+	// whichever page is showing.
+	rootNavLinks(data.Nav)
+	if route.kind != "overview" && !data.TermsMode {
+		markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
 	}
 	if data.EmbeddedDecks {
 		// Every page shows the same decks, read from the same narrative and
@@ -1233,6 +1240,9 @@ func markActiveNav(nodes []*navNodeView, path string) {
 	var mark func([]*navNodeView)
 	mark = func(nodes []*navNodeView) {
 		for _, node := range nodes {
+			if node.dormant {
+				continue
+			}
 			node.Active = node.Href == path
 			mark(node.Children)
 		}

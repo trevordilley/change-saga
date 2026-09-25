@@ -172,6 +172,9 @@ func navPlace(title, id, icon string, children []*navNodeView) *navNodeView {
 // hides its children outright, so without this, opening a story would collapse
 // the sidebar around the very row the reader is on.
 func revealActive(node *navNodeView) bool {
+	if node.dormant {
+		return false
+	}
 	revealed := node.Active
 	for _, child := range node.Children {
 		if revealActive(child) {

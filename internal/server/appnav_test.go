@@ -220,10 +220,45 @@ func TestEveryNavigationRowHasAnIcon(t *testing.T) {
 	t.Run("review", func(t *testing.T) { check(t, "the sidebar", makeAppNavTree(sources)) })
 }
 
+// shownNav is the rows the sidebar shows: the other side's section is carried
+// for later pages but hidden.
+func shownNav(nodes []*navNodeView) []*navNodeView {
+	var shown []*navNodeView
+	for _, node := range nodes {
+		if !node.Hidden {
+			shown = append(shown, node)
+		}
+	}
+	return shown
+}
+
+func anyActive(nodes []*navNodeView) bool {
+	for _, node := range nodes {
+		if node.Active || anyActive(node.Children) {
+			return true
+		}
+	}
+	return false
+}
+
+// navStructure is the sidebar's rows and links without their state.
+func navStructure(nodes []*navNodeView) string {
+	var out strings.Builder
+	var walk func([]*navNodeView, int)
+	walk = func(nodes []*navNodeView, depth int) {
+		for _, node := range nodes {
+			fmt.Fprintf(&out, "%s%s %s %s\n", strings.Repeat(" ", depth), node.NodeID, node.Title, node.Href)
+			walk(node.Children, depth+1)
+		}
+	}
+	walk(nodes, 0)
+	return out.String()
+}
+
 func TestTheReviewSideHidesReviewsWhenThereAreNone(t *testing.T) {
 	sources := appNavFixture(t)
 	sources.reviewSide = true
-	if got := topTitles(makeAppNavTree(sources)); got != "Overview" {
+	if got := topTitles(shownNav(makeAppNavTree(sources))); got != "Overview" {
 		t.Fatalf("empty review sidebar = %s, want Overview", got)
 	}
 }
@@ -254,11 +289,12 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	if got, want := topTitles(findNav(t, nodes, "Features").Children), "Billing|Catalog"; got != want {
 		t.Fatalf("features section = %s, want %s", got, want)
 	}
-	// Only the feature being read opens; the other one is the row alone, linking
-	// to its page, with nothing of its own beneath it.
+	// Only the feature being read opens; the other one is shut, one row linking
+	// to its page, and nothing beneath it is current. Its places are there for
+	// the pages the sidebar is kept for after this one.
 	catalogRow := findNav(t, nodes, "Features", "Catalog")
-	if catalogRow.Href != featureHref("catalog") || len(catalogRow.Children) != 0 || catalogRow.Group || catalogRow.Expanded {
-		t.Fatalf("a feature the reader is not in must be one row: %#v", catalogRow)
+	if catalogRow.Href != featureHref("catalog") || catalogRow.Expanded || !catalogRow.dormant || anyActive(catalogRow.Children) {
+		t.Fatalf("a feature the reader is not in must be one shut row: %#v", catalogRow)
 	}
 	assertFeatureSubtree(t, findNav(t, nodes, "Features").Children, "Billing", "billing")
 	// Billing's one deck is its Implementation: the slides sit directly beneath.
@@ -273,8 +309,12 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	other.pageFeature = "catalog"
 	chosen := makeAppNavTree(other)
 	assertFeatureSubtree(t, findNav(t, chosen, "Features").Children, "Catalog", "catalog")
-	if billingRow := findNav(t, chosen, "Features", "Billing"); len(billingRow.Children) != 0 {
+	if billingRow := findNav(t, chosen, "Features", "Billing"); billingRow.Expanded {
 		t.Fatalf("both features opened at once: %v", navTitles(chosen, 0))
+	}
+	// The sidebar is the same whichever feature is open: only its state moves.
+	if got, want := navStructure(chosen), navStructure(nodes); got != want {
+		t.Fatalf("opening another feature changed the sidebar's rows:\n%s\nwant\n%s", got, want)
 	}
 	if findNavByID(chosen, featureNavID("catalog")+"-implementation") != nil {
 		t.Fatal("an empty feature Implementation must be hidden")
@@ -339,7 +379,7 @@ func TestEveryFeatureIsARowAndOnlyThePagesFeatureOpens(t *testing.T) {
 			if row.NodeID != featureNavID(id) || row.Href != featureHref(id) || row.Icon != "product" {
 				t.Fatalf("feature row = %#v", row)
 			}
-			if len(row.Children) > 0 {
+			if row.Expanded {
 				opened = append(opened, id)
 			}
 		}
@@ -528,7 +568,7 @@ func TestTheSidebarOpensThePagesFeatureAndStoresNothing(t *testing.T) {
 	// Every feature is a row wherever the reader is, and only the page's feature is
 	// opened. The app's own pages belong to no feature, so they open none.
 	opens := func(body, feature string) bool {
-		return strings.Contains(body, `<div class="doc-children" id="`+featureNavID(feature)+`"`)
+		return strings.Contains(body, `<div class="doc-children" id="`+featureNavID(feature)+`">`)
 	}
 	for _, want := range []struct {
 		path    string
