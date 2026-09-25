@@ -341,11 +341,47 @@ func TestDescriptionAndSharedVisualInputs(t *testing.T) {
 			t.Fatalf("description omitted meaning: %s", text)
 		}
 	}
-	if summary["reconstructable"] != false || summary["total"] != 7 {
+	if summary.Reconstructable || summary.Total != 7 {
 		t.Fatal(summary)
 	}
+	text := summary.Text()
+	for _, line := range []string{
+		`Diagram: atomic "Atomic diagram publication"`,
+		"Snapshot: " + rec.Snapshot,
+		`  validator "Validate + stage" icon=lucide:check`,
+		"    detail: Selectors, references, asset hashes",
+		"    description: Reject invalid batches before publication.",
+		`  publish: validator -> published "publish"`,
+		"Showing 1-7 of 7.",
+	} {
+		if !strings.Contains(text, line+"\n") {
+			t.Fatalf("text description omitted %q:\n%s", line, text)
+		}
+	}
+	if strings.Contains(text, "revision-area") || len(text) >= len(b) {
+		t.Fatalf("text description should omit decorative elements and be smaller than JSON:\n%s", text)
+	}
 	first := Describe(rec.Source, 0, 2)
-	if first["has_more"] != true || first["next_offset"] != 2 {
+	if !first.HasMore || first.NextOffset != 2 || !strings.Contains(first.Text(), "Showing 1-2 of 7; continue with --offset 2.") {
 		t.Fatal(first)
+	}
+	if !strings.Contains(Describe(rec.Source, 50, 2).Text(), "No elements at offset 7 of 7.") {
+		t.Fatal("past-the-end page should say it is empty")
+	}
+}
+
+func TestDescribeTextQuotesStructureBreakingProse(t *testing.T) {
+	d := New("quoting", "Line\nbreak")
+	d.Elements["loose"] = Element{ID: "loose", Kind: "edge", Style: "normal", Label: `say "hi"`, Detail: "two\nlines", Description: " padded"}
+	text := Describe(d, 0, 10).Text()
+	for _, line := range []string{
+		`Diagram: quoting "Line\nbreak"`,
+		`  loose: (unconnected) -> (unconnected) "say \"hi\""`,
+		`    detail: "two\nlines"`,
+		`    description: " padded"`,
+	} {
+		if !strings.Contains(text, line+"\n") {
+			t.Fatalf("missing %q:\n%s", line, text)
+		}
 	}
 }

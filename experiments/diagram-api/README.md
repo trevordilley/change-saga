@@ -56,6 +56,7 @@ there is no sprawling production flag family yet.
 bin/diagram-spike init --store runs/manual --id example --title Example --request init
 bin/diagram-spike assets search database
 bin/diagram-spike describe --store runs/manual
+bin/diagram-spike describe --store runs/manual --format json
 ```
 
 Every mutation requires the preceding response's exact snapshot and a unique
@@ -96,7 +97,9 @@ missing font glyphs are errors. These are authoring tools, not automatic layout.
 
 `describe` returns IDs, labels/detail/description, connections, parent/icon and
 link counts, pagination, snapshot, and explicit omissions. It cannot reconstruct
-the SVG. `get --id ID` returns the complete element and exact selector. `source`
+the SVG. Output is compact Graphviz-like text by default (see the
+[example](evidence/describe-after.txt)); `--format json` returns the same
+projection for tooling. The text is a reading view, not an editable syntax. `get --id ID` returns the complete element and exact selector. `source`
 is a verbose export used for recovery/merging, not a routine AI read.
 
 ## Authority and safety

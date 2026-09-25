@@ -133,7 +133,8 @@ Reading view: geometry, detailed styling, and decorative children omitted.
 
 Targeted queries expose full object properties when needed. JSON responses
 should state the snapshot and omitted fields; graph-like text is a presentation
-of that same projection. Structural reads use the authoritative document and do
+of that same projection. The prototype makes that text `describe`'s default
+reading view and keeps `--format json` for tooling; neither is an editable syntax. Structural reads use the authoritative document and do
 not reconstruct connections by inspecting SVG paths.
 
 ## Authority, transactions, and escape hatches
@@ -290,17 +291,20 @@ we do not pretend an AI must type base64 fonts. Both final images are identical.
 
 | Measured sequence | CLI calls | Request bytes | Response bytes |
 | --- | ---: | ---: | ---: |
-| Comparable compact sequence, including schema/asset discovery and initialization | 10 | 6,261 | 5,804 |
+| Comparable compact sequence, including schema/asset discovery and initialization | 10 | 6,261 | 5,310 |
 | Direct SVG creation/read/move/targeted read/edit/remove/read | 7 | 10,155 | 14,901 |
-| All compact operations/queries, including failure, retry, checks and recovery | 15 | 8,449 | 7,134 |
+| All compact operations/queries, including failure, retry, checks and recovery | 15 | 8,449 | 6,640 |
 | Full source export and two merge calls | 3 | 1,262 | 39,178 |
 | Four complete SVG transfers (before, moved, after, rebuilt) | 4 | 992 | 843,160 |
-| Entire instrumented prototype sequence | 22 | 10,703 | 889,472 |
+| Entire instrumented prototype sequence | 22 | 10,703 | 888,978 |
 
-The comparable API sequence totals 12,065 bytes against 25,056 for the controlled
+The comparable API sequence totals 11,571 bytes against 25,056 for the controlled
 SVG baseline, with more commands. This is evidence of smaller routine authoring
 and reading exchanges on this diagram, not a general token-efficiency claim.
-The final semantic description is 1,107 bytes. Its standalone SVG is 210,806 bytes,
+The final semantic description is 837 bytes as default text; `--format json` of the
+same projection is 1,118 bytes and is kept out of the traffic totals. The first
+recorded run used JSON describes: 12,065 comparable bytes, 1,107 description bytes.
+Its standalone SVG is 210,806 bytes,
 mostly the embedded font; that artifact transfer is retained in the full totals.
 The [comparison record](../experiments/diagram-api/evidence/comparison.json)
 identifies the exact included calls. Full source branches are mechanically

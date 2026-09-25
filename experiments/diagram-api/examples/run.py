@@ -7,13 +7,13 @@ OUT.mkdir(parents=True,exist_ok=False)
 BIN=ROOT/'bin'/'diagram-spike'
 STORE=OUT/'diagram'
 traffic=[]
-def run(args, data=None, artifact=None, okay=True):
+def run(args, data=None, artifact=None, okay=True, measured=True):
     payload=b'' if data is None else (json.dumps(data,separators=(',',':'))+'\n').encode()
     command=[str(BIN)]+args
     p=subprocess.run(command,input=payload,capture_output=True)
     # Count actual argv bytes separated by spaces, stdin, stdout and stderr.
     # Paths are retained so the report states exactly which run was measured.
-    traffic.append(dict(argv=command,request_bytes=len(' '.join(command).encode())+len(payload),response_bytes=len(p.stdout)+len(p.stderr),exit=p.returncode))
+    if measured:traffic.append(dict(argv=command,request_bytes=len(' '.join(command).encode())+len(payload),response_bytes=len(p.stdout)+len(p.stderr),exit=p.returncode))
     if artifact:(OUT/artifact).write_bytes(p.stdout)
     if p.returncode and okay:raise RuntimeError(p.stderr.decode())
     if not okay and p.returncode==0:raise RuntimeError('Expected failure: '+' '.join(command))
@@ -25,7 +25,7 @@ scene=json.loads((ROOT/'examples/scene.json').read_text())
 req=dict(version=1,request_id='compose',expected_snapshot=r['snapshot'],operations=[dict(op='add',element=e) for e in scene])
 (OUT/'create-request.json').write_text(json.dumps(req,indent=2)+'\n')
 r=run(['apply','--store',str(STORE)],req)
-run(['describe','--store',str(STORE)],artifact='describe-before.json')
+run(['describe','--store',str(STORE)],artifact='describe-before.txt')
 run(['render','--store',str(STORE)],artifact='before.svg')
 # Two actual source branches from a common baseline (no DevSwarm workspaces).
 base=run(['source','--store',str(STORE)])
@@ -51,7 +51,9 @@ req=dict(version=1,request_id='revise',expected_snapshot=r['snapshot'],operation
 r=run(['apply','--store',str(STORE)],req)
 run(['apply','--store',str(STORE)],req) # identical retry
 r=run(['remove','--store',str(STORE),'--expected',r['snapshot'],'--request','remove-edge','--id','temporary'])
-run(['describe','--store',str(STORE)],artifact='describe-after.json')
+run(['describe','--store',str(STORE)],artifact='describe-after.txt')
+# Same projection for tooling; kept out of traffic so command indices stay comparable.
+run(['describe','--store',str(STORE),'--format','json'],artifact='describe-after.json',measured=False)
 run(['render','--store',str(STORE)],artifact='after.svg')
 run(['check','--store',str(STORE)],artifact='integrity.json')
 # Explicit corruption/recovery test keeps modified visual bytes.
@@ -62,6 +64,7 @@ run(['rebuild','--store',str(STORE)],artifact='rebuild.json')
 run(['render','--store',str(STORE)],artifact='rebuilt.svg')
 assert (OUT/'after.svg').read_bytes()==(OUT/'rebuilt.svg').read_bytes()
 report={'commands':len(traffic),'request_bytes':sum(t['request_bytes'] for t in traffic),'response_bytes':sum(t['response_bytes'] for t in traffic),'token_counts':'not measured','traffic':traffic}
+report['describe_formats']={'text_bytes':(OUT/'describe-after.txt').stat().st_size,'json_bytes':(OUT/'describe-after.json').stat().st_size}
 # SVG/font transfer and merge/source export are separate categories, not hidden costs.
 report['categories']={}
 for t in traffic:

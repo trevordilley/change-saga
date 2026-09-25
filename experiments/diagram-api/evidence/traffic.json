@@ -1,7 +1,7 @@
 {
   "commands": 22,
   "request_bytes": 10703,
-  "response_bytes": 889472,
+  "response_bytes": 888978,
   "token_counts": "not measured",
   "traffic": [
     {
@@ -10,7 +10,7 @@
         "schema"
       ],
       "request_bytes": 121,
-      "response_bytes": 1930,
+      "response_bytes": 1976,
       "exit": 0
     },
     {
@@ -60,7 +60,7 @@
         "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
       ],
       "request_bytes": 250,
-      "response_bytes": 1109,
+      "response_bytes": 839,
       "exit": 0
     },
     {
@@ -224,7 +224,7 @@
         "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
       ],
       "request_bytes": 250,
-      "response_bytes": 1107,
+      "response_bytes": 837,
       "exit": 0
     },
     {
@@ -283,11 +283,15 @@
       "exit": 0
     }
   ],
+  "describe_formats": {
+    "text_bytes": 837,
+    "json_bytes": 1118
+  },
   "categories": {
     "compact_authoring_and_queries": {
       "commands": 15,
       "request_bytes": 8449,
-      "response_bytes": 7134
+      "response_bytes": 6640
     },
     "rendered_artifacts": {
       "commands": 4,

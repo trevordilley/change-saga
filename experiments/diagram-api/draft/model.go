@@ -12,6 +12,7 @@ import (
 	"math"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -417,7 +418,21 @@ type Summary struct {
 	CriterionLinks int    `json:"criterion_links,omitempty"`
 }
 
-func Describe(d Document, offset, limit int) map[string]any {
+// Description is the single reading projection behind every describe format.
+type Description struct {
+	ID              string    `json:"id"`
+	Title           string    `json:"title"`
+	Snapshot        string    `json:"snapshot"`
+	Elements        []Summary `json:"elements"`
+	Offset          int       `json:"offset"`
+	Total           int       `json:"total"`
+	NextOffset      int       `json:"next_offset"`
+	HasMore         bool      `json:"has_more"`
+	Omitted         []string  `json:"omitted"`
+	Reconstructable bool      `json:"reconstructable"`
+}
+
+func Describe(d Document, offset, limit int) Description {
 	ids := keys(d.Elements)
 	all := []Summary{}
 	for _, id := range ids {
@@ -426,9 +441,82 @@ func Describe(d Document, offset, limit int) map[string]any {
 			all = append(all, Summary{ID: id, Kind: e.Kind, Label: e.Label, Detail: e.Detail, Description: e.Description, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, CodeLinks: len(e.Evidence), CriterionLinks: len(e.CriterionLinks)})
 		}
 	}
-	if offset > len(all) {
-		offset = len(all)
-	}
+	offset = min(offset, len(all))
 	end := min(offset+limit, len(all))
-	return map[string]any{"id": d.ID, "title": d.Title, "snapshot": Snapshot(d), "elements": all[offset:end], "total": len(all), "next_offset": end, "has_more": end < len(all), "omitted": []string{"geometry", "styles", "decorative_elements", "asset_bytes", "evidence_bodies"}, "reconstructable": false}
+	return Description{ID: d.ID, Title: d.Title, Snapshot: Snapshot(d), Elements: all[offset:end], Offset: offset, Total: len(all), NextOffset: end, HasMore: end < len(all), Omitted: []string{"geometry", "styles", "decorative_elements", "asset_bytes", "evidence_bodies"}, Reconstructable: false}
+}
+
+var textSections = []struct{ kind, heading string }{{"node", "Nodes"}, {"edge", "Edges"}, {"group", "Groups"}, {"text", "Text"}, {"graphic", "Graphics"}}
+
+// Text renders the description as compact, Graphviz-like reading text. It is a
+// view of the same projection as the JSON format, not an editable syntax.
+func (v Description) Text() string {
+	var b strings.Builder
+	fmt.Fprintf(&b, "Diagram: %s %s\nSnapshot: %s\n", v.ID, strconv.Quote(v.Title), v.Snapshot)
+	fmt.Fprintf(&b, "View: semantic; omits %s; cannot reconstruct the drawing\n", strings.Join(v.Omitted, ", "))
+	for _, section := range textSections {
+		heading := false
+		for _, e := range v.Elements {
+			if e.Kind != section.kind {
+				continue
+			}
+			if !heading {
+				fmt.Fprintf(&b, "\n%s:\n", section.heading)
+				heading = true
+			}
+			b.WriteString("  " + e.ID)
+			if e.Kind == "edge" {
+				b.WriteString(": " + orUnset(e.From) + " -> " + orUnset(e.To))
+			}
+			if e.Label != "" {
+				b.WriteString(" " + strconv.Quote(e.Label))
+			}
+			for _, attr := range [][2]string{{"in", e.Parent}, {"icon", e.Icon}} {
+				if attr[1] != "" {
+					fmt.Fprintf(&b, " %s=%s", attr[0], attr[1])
+				}
+			}
+			for _, count := range []struct {
+				name string
+				n    int
+			}{{"code_links", e.CodeLinks}, {"criterion_links", e.CriterionLinks}} {
+				if count.n > 0 {
+					fmt.Fprintf(&b, " %s=%d", count.name, count.n)
+				}
+			}
+			b.WriteString("\n")
+			for _, field := range [][2]string{{"detail", e.Detail}, {"description", e.Description}} {
+				if field[1] != "" {
+					fmt.Fprintf(&b, "    %s: %s\n", field[0], plain(field[1]))
+				}
+			}
+		}
+	}
+	switch {
+	case v.Total == 0:
+		b.WriteString("\nNo semantic elements.\n")
+	case len(v.Elements) == 0:
+		fmt.Fprintf(&b, "\nNo elements at offset %d of %d.\n", v.Offset, v.Total)
+	case v.HasMore:
+		fmt.Fprintf(&b, "\nShowing %d-%d of %d; continue with --offset %d.\n", v.Offset+1, v.NextOffset, v.Total, v.NextOffset)
+	default:
+		fmt.Fprintf(&b, "\nShowing %d-%d of %d.\n", v.Offset+1, v.NextOffset, v.Total)
+	}
+	return b.String()
+}
+
+func orUnset(id string) string {
+	if id == "" {
+		return "(unconnected)"
+	}
+	return id
+}
+
+// plain leaves ordinary prose unquoted but quotes anything that could break the
+// line structure or be misread, such as newlines or surrounding spaces.
+func plain(s string) string {
+	if q := strconv.Quote(s); q[1:len(q)-1] == s && strings.TrimSpace(s) == s {
+		return s
+	}
+	return strconv.Quote(s)
 }

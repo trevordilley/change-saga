@@ -68,7 +68,7 @@ func run(args []string) error {
 			"update":        "--store DIR --expected HASH --request ID --id ID --set JSON",
 			"move":          "--store DIR --expected HASH --request ID --id ID --dx N --dy N (edges unchanged)",
 			"remove":        "--store DIR --expected HASH --request ID --id ID [--cascade]; linked Items refused",
-			"describe":      "--store DIR [--offset N --limit N]; compact, non-reconstructable",
+			"describe":      "--store DIR [--offset N --limit N] [--format text|json]; compact semantic text by default, non-reconstructable",
 			"get":           "--store DIR --id ID; complete targeted element and snapshot",
 			"source":        "--store DIR; complete source including asset pins",
 			"render":        "--store DIR > drawing.svg; checks hash and selectors",
@@ -104,6 +104,7 @@ func run(args []string) error {
 	dry := fs.Bool("dry-run", false, "validate only")
 	offset := fs.Int("offset", 0, "offset")
 	limit := fs.Int("limit", 30, "limit")
+	format := fs.String("format", "text", "describe output: text or json")
 	base := fs.String("base", "", "base source")
 	ours := fs.String("ours", "", "ours source")
 	theirs := fs.String("theirs", "", "theirs source")
@@ -179,7 +180,15 @@ func run(args []string) error {
 			if *offset < 0 || *limit < 1 || *limit > 100 {
 				return fmt.Errorf("offset >=0 and limit 1..100 required")
 			}
-			emit(draft.Describe(r.Source, *offset, *limit))
+			v := draft.Describe(r.Source, *offset, *limit)
+			switch *format {
+			case "text":
+				fmt.Print(v.Text())
+			case "json":
+				emit(v)
+			default:
+				return fmt.Errorf("--format must be text or json")
+			}
 		case "get":
 			e, ok := r.Source.Elements[*id]
 			if !ok {
