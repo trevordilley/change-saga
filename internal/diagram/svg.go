@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"regexp"
 	"strings"
 )
 
@@ -36,12 +37,15 @@ func (n *node) set(name, value string) { n.attrs = append(n.attrs, [2]string{nam
 
 func (n *node) write(w *bytes.Buffer, depth int) {
 	indent := strings.Repeat("  ", depth)
-	w.WriteString(indent + "<" + n.tag)
-	for _, attr := range n.attrs {
-		w.WriteString(" " + attr[0] + `="`)
-		escape(w, attr[1], true)
-		w.WriteString(`"`)
+	w.WriteString(indent)
+	// Text content is whitespace-significant under xml:space="preserve", so a
+	// text element and its tspans are written inline without indentation.
+	if n.tag == "text" {
+		n.writeInline(w)
+		w.WriteString("\n")
+		return
 	}
+	n.open(w)
 	switch {
 	case len(n.children) == 0 && n.text == "":
 		w.WriteString("/>\n")
@@ -51,16 +55,34 @@ func (n *node) write(w *bytes.Buffer, depth int) {
 		w.WriteString("</" + n.tag + ">\n")
 	default:
 		w.WriteString(">\n")
-		if n.text != "" {
-			w.WriteString(indent + "  ")
-			escape(w, n.text, false)
-			w.WriteString("\n")
-		}
 		for _, child := range n.children {
 			child.write(w, depth+1)
 		}
 		w.WriteString(indent + "</" + n.tag + ">\n")
 	}
+}
+
+func (n *node) open(w *bytes.Buffer) {
+	w.WriteString("<" + n.tag)
+	for _, attr := range n.attrs {
+		w.WriteString(" " + attr[0] + `="`)
+		escape(w, attr[1], true)
+		w.WriteString(`"`)
+	}
+}
+
+func (n *node) writeInline(w *bytes.Buffer) {
+	n.open(w)
+	if len(n.children) == 0 && n.text == "" {
+		w.WriteString("/>")
+		return
+	}
+	w.WriteString(">")
+	escape(w, n.text, false)
+	for _, child := range n.children {
+		child.writeInline(w)
+	}
+	w.WriteString("</" + n.tag + ">")
 }
 
 // escape writes value with only the escapes XML requires, replacing
@@ -93,12 +115,36 @@ var fragmentElements = map[string]bool{
 	"polyline": true, "polygon": true, "text": true, "tspan": true, "title": true, "desc": true,
 }
 
-var fragmentAttributes = map[string]bool{
-	"d": true, "x": true, "y": true, "x1": true, "y1": true, "x2": true, "y2": true, "cx": true, "cy": true,
-	"r": true, "rx": true, "ry": true, "dx": true, "dy": true, "width": true, "height": true, "points": true,
-	"fill": true, "stroke": true, "stroke-width": true, "stroke-dasharray": true, "stroke-linecap": true,
-	"stroke-linejoin": true, "fill-rule": true, "opacity": true, "fill-opacity": true, "stroke-opacity": true,
-	"transform": true, "font-size": true, "font-weight": true, "text-anchor": true, "dominant-baseline": true,
+// maxFragmentDepth bounds nesting so a small fragment cannot expand into an
+// enormous indented rendering.
+const maxFragmentDepth = 24
+
+var (
+	numberValue    = `[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?`
+	lengthValue    = regexp.MustCompile(`^` + numberValue + `(px|%)?$`)
+	numberList     = regexp.MustCompile(`^(\s*` + numberValue + `\s*,?)*$`)
+	colorValue     = regexp.MustCompile(`^(#[0-9a-fA-F]{3}|#[0-9a-fA-F]{6}|none|currentColor|[a-z]{3,20})$`)
+	transformValue = regexp.MustCompile(`^(\s*(matrix|translate|scale|rotate|skewX|skewY)\s*\((\s*` + numberValue + `\s*,?)*\)\s*,?)*\s*$`)
+	dashValue      = regexp.MustCompile(`^(none|(\s*` + numberValue + `\s*,?)+)$`)
+)
+
+func enum(values ...string) *regexp.Regexp {
+	return regexp.MustCompile(`^(` + strings.Join(values, "|") + `)$`)
+}
+
+// fragmentAttributes gives every allowed attribute its own value grammar.
+// Values are matched after XML decoding, so no escape sequence, entity, url(),
+// or script can hide inside an otherwise allowed attribute.
+var fragmentAttributes = map[string]*regexp.Regexp{
+	"d": pathData, "points": numberList, "transform": transformValue,
+	"x": lengthValue, "y": lengthValue, "x1": lengthValue, "y1": lengthValue, "x2": lengthValue, "y2": lengthValue,
+	"cx": lengthValue, "cy": lengthValue, "r": lengthValue, "rx": lengthValue, "ry": lengthValue, "dx": lengthValue, "dy": lengthValue,
+	"width": lengthValue, "height": lengthValue, "stroke-width": lengthValue, "font-size": lengthValue,
+	"opacity": lengthValue, "fill-opacity": lengthValue, "stroke-opacity": lengthValue,
+	"fill": colorValue, "stroke": colorValue, "stroke-dasharray": dashValue,
+	"stroke-linecap": enum("butt", "round", "square"), "stroke-linejoin": enum("miter", "round", "bevel"),
+	"fill-rule": enum("nonzero", "evenodd"), "font-weight": enum("normal", "bold", "[1-9]00"),
+	"text-anchor": enum("start", "middle", "end"), "dominant-baseline": enum("auto", "middle", "central", "hanging", "alphabetic", "text-top", "text-bottom"),
 }
 
 // parseFragment accepts a bounded subset of SVG drawing markup. It refuses
@@ -136,16 +182,30 @@ func parseMarkup(markup string) ([]xml.Attr, []*node, error) {
 			if (t.Name.Space != "" && t.Name.Space != svgNamespace) || !fragmentElements[t.Name.Local] {
 				return nil, nil, fmt.Errorf("fragment element <%s> is not supported", t.Name.Local)
 			}
+			if len(stack) > maxFragmentDepth {
+				return nil, nil, fmt.Errorf("fragment nests deeper than %d elements", maxFragmentDepth)
+			}
 			child := &node{tag: t.Name.Local}
+			seen := map[string]bool{}
 			for _, attr := range t.Attr {
-				value := strings.TrimSpace(attr.Value)
-				lower := strings.ToLower(value)
-				if attr.Name.Space != "" || !fragmentAttributes[attr.Name.Local] || strings.Contains(lower, "url(") || strings.Contains(lower, "javascript:") {
+				grammar := fragmentAttributes[attr.Name.Local]
+				if attr.Name.Space != "" || grammar == nil {
 					return nil, nil, fmt.Errorf("fragment attribute %s is not supported", attr.Name.Local)
 				}
-				child.attrs = append(child.attrs, [2]string{attr.Name.Local, attr.Value})
+				if seen[attr.Name.Local] {
+					return nil, nil, fmt.Errorf("fragment attribute %s is repeated", attr.Name.Local)
+				}
+				seen[attr.Name.Local] = true
+				value := strings.TrimSpace(attr.Value)
+				if !grammar.MatchString(value) {
+					return nil, nil, fmt.Errorf("fragment attribute %s has an unsupported value %q", attr.Name.Local, attr.Value)
+				}
+				child.attrs = append(child.attrs, [2]string{attr.Name.Local, value})
 			}
 			parent := stack[len(stack)-1]
+			if parent.text != "" {
+				return nil, nil, fmt.Errorf("fragment text may not mix characters and child elements")
+			}
 			parent.children = append(parent.children, child)
 			stack = append(stack, child)
 		case xml.EndElement:
@@ -157,6 +217,9 @@ func parseMarkup(markup string) ([]xml.Attr, []*node, error) {
 				current := stack[len(stack)-1]
 				if current == root || (current.tag != "text" && current.tag != "tspan" && current.tag != "title" && current.tag != "desc") {
 					return nil, nil, fmt.Errorf("fragment text must be inside text, tspan, title, or desc")
+				}
+				if len(current.children) > 0 {
+					return nil, nil, fmt.Errorf("fragment text may not mix characters and child elements")
 				}
 				current.text += text
 			}

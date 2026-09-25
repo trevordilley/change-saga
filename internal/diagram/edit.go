@@ -3,7 +3,9 @@ package diagram
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"sort"
+	"strings"
 )
 
 // Operation is one explicit edit. Operations never lay out, resize, or reroute
@@ -206,6 +208,9 @@ func patch(e Element, set json.RawMessage) (Element, error) {
 		if key == "id" || key == "kind" {
 			return Element{}, fmt.Errorf("%s is immutable; remove and add a new element instead", key)
 		}
+		if !elementFields[key] {
+			return Element{}, fmt.Errorf("unknown element field %q", key)
+		}
 		if string(value) == "null" {
 			delete(merged, key)
 			continue
@@ -219,6 +224,18 @@ func patch(e Element, set json.RawMessage) (Element, error) {
 	}
 	return updated, nil
 }
+
+// elementFields are the exact JSON names update may set. JSON decoding is
+// case-insensitive, so a case-variant key would otherwise be applied or
+// silently ignored depending on which fields are already present.
+var elementFields = func() map[string]bool {
+	fields := map[string]bool{}
+	elementType := reflect.TypeOf(Element{})
+	for index := range elementType.NumField() {
+		fields[strings.Split(elementType.Field(index).Tag.Get("json"), ",")[0]] = true
+	}
+	return fields
+}()
 
 func axis(e Element, name string) float64 {
 	if name == "x" {

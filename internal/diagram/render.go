@@ -32,7 +32,15 @@ var measurementFont = sync.OnceValues(func() (*sfnt.Font, error) {
 	return sfnt.Parse(data)
 })
 
-func num(n float64) string { return strconv.FormatFloat(n, 'f', -1, 64) }
+// num formats coordinates rounded to thousandths, so the output bytes do not
+// depend on floating-point contraction differences between CPU architectures.
+func num(n float64) string {
+	rounded := math.Round(n*1000) / 1000
+	if rounded == 0 {
+		rounded = 0 // normalize negative zero
+	}
+	return strconv.FormatFloat(rounded, 'f', -1, 64)
+}
 
 // Render validates d and produces its SVG. The output is deterministic for a
 // given Document, Options, and Renderer: element order, attributes, and
@@ -353,7 +361,7 @@ func (r *renderer) text(g *node, s string, box Box, size float64, ink string, wr
 		if width*widthSlack > box.Width+.01 {
 			return fmt.Errorf("text overflow: %q needs width %.1f, its box has %.1f", line, width*widthSlack, box.Width)
 		}
-		t.add("tspan", "x", num(x), "y", num(box.Y+size+float64(index)*size*lineHeight)).text = line
+		t.add("tspan", "x", num(x), "y", num(box.Y+size+float64(float64(index)*size*lineHeight))).text = line
 	}
 	return nil
 }

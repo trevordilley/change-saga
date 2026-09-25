@@ -6,6 +6,7 @@ import (
 	"flag"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 )
@@ -245,4 +246,71 @@ func equalJSON(a, b any) bool {
 	x, _ := json.Marshal(a)
 	y, _ := json.Marshal(b)
 	return bytes.Equal(x, y)
+}
+
+func TestReviewRegressions(t *testing.T) {
+	deep := strings.Repeat("<g>", 30) + "<rect width=\"1\" height=\"1\"/>" + strings.Repeat("</g>", 30)
+	for name, fragment := range map[string]string{
+		"deep nesting":        deep,
+		"css escape":          `<rect fill="\75rl(http://host/p.svg#g)" width="1" height="1"/>`,
+		"entity escape":       `<rect fill="&#92;75rl(#g)" width="1" height="1"/>`,
+		"url in transform":    `<g transform="translate(url(#x))"><rect/></g>`,
+		"duplicate attribute": `<rect x="1" x="2" width="3" height="4"/>`,
+		"mixed content":       `<text>a<tspan>b</tspan>c</text>`,
+		"named color call":    `<rect fill="rgb(1,2,3)" width="1" height="1"/>`,
+	} {
+		if _, err := parseFragment(fragment); err == nil {
+			t.Errorf("%s accepted: %s", name, fragment)
+		}
+	}
+	if _, err := parseFragment(`<g transform="translate(1 2) rotate(45)"><path d="M0 0L10 10" stroke="currentColor" stroke-dasharray="4 4" stroke-linecap="round"/></g>`); err != nil {
+		t.Fatalf("ordinary drawing markup refused: %v", err)
+	}
+
+	d := New()
+	for index := 0; index < 5; index++ {
+		d.Elements = append(d.Elements, Element{ID: "g" + string(rune('a'+index)), Kind: "graphic", Style: "normal", Decorative: true, Fragment: `<rect width="1" height="1"/>` + strings.Repeat(" ", 60<<10)})
+	}
+	if err := d.Validate(); err == nil || !strings.Contains(err.Error(), "graphic fragments total") {
+		t.Fatalf("total fragment cap not enforced: %v", err)
+	}
+
+	if got := num(38.925000000000004); got != "38.925" {
+		t.Fatalf("num must round away floating-point contraction noise, got %s", got)
+	}
+	if got := num(-0.0001); got != "0" {
+		t.Fatalf("negative zero must normalize, got %s", got)
+	}
+
+	d = New()
+	d.Styles = map[string]Style{"odd": {Fill: "none", Stroke: "none", Ink: "#000000", StrokeWidth: 1, FontSize: 17.3}}
+	d.Elements = []Element{{ID: "note", Kind: "text", Label: "one\ntwo\nthree", Width: 300, Height: 90, Style: "odd", Align: "middle"}}
+	svg, err := Render(d, Options{Title: "x"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(svg), "0000000") {
+		t.Fatalf("coordinates carry floating-point noise:\n%s", svg)
+	}
+	if regexp.MustCompile(`<text[^>]*>\s|</tspan>\s+<tspan`).Match(svg) {
+		t.Fatalf("whitespace inside preserved text shifts alignment:\n%s", svg)
+	}
+
+	sample := sample()
+	if _, _, err := Edit(sample, []Operation{{Op: "update", ID: "author", Set: json.RawMessage(`{"Label":"x"}`)}}); err == nil || !strings.Contains(err.Error(), `unknown element field "Label"`) {
+		t.Fatalf("case-variant keys must be refused: %v", err)
+	}
+	bad := New()
+	bad.Elements = []Element{
+		{ID: "a", Kind: "node", Shape: "rect", Width: 10, Height: 10, Style: "normal"},
+		{ID: "e", Kind: "edge", From: "a", To: "a", Path: "M0 0L1 1", Points: []Point{{1, 1}}, Style: "normal"},
+		{ID: "frame", Kind: "group", Icon: "lucide:user", Style: "normal"},
+	}
+	if err := bad.Validate(); err == nil || !strings.Contains(err.Error(), "e: edge needs either") || !strings.Contains(err.Error(), "frame: only nodes take an icon") {
+		t.Fatalf("path+point edge and group icon must be refused: %v", err)
+	}
+	encoded, _ := Encode(Document{Version: Version, Width: 1, Height: 1})
+	if !strings.Contains(string(encoded), `"elements": []`) {
+		t.Fatalf("stored source must carry an elements array: %s", encoded)
+	}
 }

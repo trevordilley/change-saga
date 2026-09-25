@@ -28,6 +28,7 @@ const (
 
 	MaxElements       = 500
 	MaxFragmentBytes  = 64 << 10
+	MaxTotalFragments = 256 << 10
 	MaxLabelRunes     = 2000
 	MaxDescribeLimit  = 100
 	DefaultWidth      = 1280
@@ -182,6 +183,9 @@ func decodeStrict(data []byte, out any) error {
 
 // Encode returns the canonical stored bytes for d.
 func Encode(d Document) ([]byte, error) {
+	if d.Elements == nil {
+		d.Elements = []Element{}
+	}
 	data, err := json.MarshalIndent(d, "", "  ")
 	if err != nil {
 		return nil, err
@@ -208,11 +212,24 @@ func (d Document) Validate() error {
 	if len(d.Elements) > MaxElements {
 		add("a diagram may contain at most %d elements", MaxElements)
 	}
-	for name, style := range d.Styles {
+	styleNames := make([]string, 0, len(d.Styles))
+	for name := range d.Styles {
+		styleNames = append(styleNames, name)
+	}
+	sort.Strings(styleNames)
+	for _, name := range styleNames {
+		style := d.Styles[name]
 		if !identifier.MatchString(name) || !colorPattern.MatchString(style.Fill) || !colorPattern.MatchString(style.Stroke) || !colorPattern.MatchString(style.Ink) ||
 			!finite(style.FontSize) || style.FontSize < 8 || style.FontSize > 200 || !finite(style.StrokeWidth) || style.StrokeWidth < 0 || style.StrokeWidth > 50 {
 			add("style %s: needs a stable name, #rrggbb or none colors, font_size 8-200, and stroke_width 0-50", name)
 		}
+	}
+	fragmentBytes := 0
+	for _, e := range d.Elements {
+		fragmentBytes += len(e.Fragment)
+	}
+	if fragmentBytes > MaxTotalFragments {
+		add("graphic fragments total %d bytes; a diagram may carry at most %d", fragmentBytes, MaxTotalFragments)
 	}
 	byID := map[string]Element{}
 	for _, e := range d.Elements {
@@ -248,6 +265,9 @@ func (d Document) Validate() error {
 		}
 		if !textAlignment[e.Align] {
 			fail("align must be start, middle, or end")
+		}
+		if e.Icon != "" && e.Kind != "node" {
+			fail("only nodes take an icon")
 		}
 		if e.Icon != "" {
 			if !IconExists(e.Icon) {
@@ -290,7 +310,7 @@ func (d Document) Validate() error {
 					fail("edge endpoint %q is not a node", end)
 				}
 			}
-			if (len(e.Points) < 2) == (e.Path == "") {
+			if hasPoints := len(e.Points) > 0; hasPoints == (e.Path != "") || (hasPoints && len(e.Points) < 2) {
 				fail("edge needs either at least two points or a path, not both")
 			}
 			for _, p := range e.Points {
@@ -311,15 +331,15 @@ func (d Document) Validate() error {
 			if e.Label != "" && e.LabelBox == nil {
 				fail("an edge label needs an explicit label_box")
 			}
-			if e.Shape != "" || e.Icon != "" {
-				fail("edges do not take a shape or icon")
+			if e.Shape != "" {
+				fail("edges do not take a shape")
 			}
 		case "text":
 			if e.Width <= 0 || e.Height <= 0 {
 				fail("text needs an explicit positive width and height")
 			}
-			if e.Shape != "" || e.Icon != "" {
-				fail("text does not take a shape or icon")
+			if e.Shape != "" {
+				fail("text does not take a shape")
 			}
 		case "group":
 			if e.Shape != "" && !frameShapes[e.Shape] {
