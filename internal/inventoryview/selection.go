@@ -17,16 +17,23 @@ type Resolver interface {
 
 const MaxPathHops = 8
 
-// Selection names an exact subset of one evidence reference reached through
-// declared pins. Path[0] is the referencing Item's own documentation pin and
-// the final pin owns the evidence. EvidenceOwner is empty for the entity's own
-// code or names a System interaction (later: an owned relationship).
+// Selection mirrors the records contract's Item selection: an exact subset of
+// one evidence reference reached through declared pins. Path[0] is the
+// referencing Item's own documentation pin; Evidence is an evidence ID unique
+// across the final pin's revision, so its owning edge is derived, not stored.
 type Selection struct {
-	ID            string            `json:"id"`
-	Path          []Pin             `json:"path"`
-	EvidenceOwner string            `json:"evidence_owner,omitempty"`
-	Evidence      string            `json:"evidence"`
-	Selected      coderef.Reference `json:"selected"`
+	ID       string            `json:"id"`
+	Path     []Pin             `json:"path"`
+	Evidence string            `json:"evidence"`
+	Selected coderef.Reference `json:"code"`
+}
+
+// lookupEvidence finds evidence by its persisted ID in one revision and names
+// its owning edge ("" for the entity). Persisted evidence IDs arrive with the
+// records contract; legacy references have none and are not selectable, so
+// until then nothing is found.
+var lookupEvidence = func(rev *requirements.TechnicalRevision, id string) (*coderef.Reference, string) {
+	return nil, ""
 }
 
 // Selection reason codes. Blocking reasons leave the selection unresolved;
@@ -37,7 +44,6 @@ const (
 	ReasonMissingPin         = "missing_pin"
 	ReasonConflictedPin      = "conflicted_pin"
 	ReasonUndeclaredHop      = "undeclared_hop"
-	ReasonMissingOwner       = "missing_evidence_owner"
 	ReasonMissingEvidence    = "missing_evidence"
 	ReasonWholeFileSelection = "whole_file_selection"
 	ReasonOutsideEvidence    = "outside_evidence"
@@ -70,6 +76,7 @@ type SelectionResult struct {
 	State            string                  `json:"state"` // resolved | unresolved
 	View             string                  `json:"view"`
 	Hops             []Hop                   `json:"hops"`
+	EvidenceOwner    string                  `json:"evidence_owner,omitempty"`
 	Containing       *coderef.Reference      `json:"containing,omitempty"`
 	ContainingHealth *coderesolve.Resolution `json:"containing_health,omitempty"`
 	SelectedHealth   *coderesolve.Resolution `json:"selected_health,omitempty"`
@@ -78,10 +85,6 @@ type SelectionResult struct {
 	Eligible bool     `json:"eligible"`
 	Reasons  []Reason `json:"reasons"`
 }
-
-// EvidenceID is the read-only identity of a legacy reference that has no
-// persisted ID: its exact pinned location, unique within one owner revision.
-func EvidenceID(ref coderef.Reference) string { return ref.Location().String() }
 
 // ResolveSelection validates every adjacent hop at its saved revision and the
 // subset against its containing reference, then views both at view. It never
@@ -141,26 +144,7 @@ func ResolveSelection(ctx context.Context, inventory *requirements.Inventory, se
 	if blocked || last == nil {
 		return result
 	}
-	refs := last.Code
-	if sel.EvidenceOwner != "" {
-		refs = nil
-		found := false
-		for _, edge := range last.Interactions {
-			if edge.ID == sel.EvidenceOwner {
-				refs, found = edge.Code, true
-			}
-		}
-		if !found {
-			block(ReasonMissingOwner, len(sel.Path)-1, sel.EvidenceOwner)
-			return result
-		}
-	}
-	for i := range refs {
-		if EvidenceID(refs[i]) == sel.Evidence {
-			ref := refs[i]
-			result.Containing = &ref
-		}
-	}
+	result.Containing, result.EvidenceOwner = lookupEvidence(last, sel.Evidence)
 	if result.Containing == nil {
 		block(ReasonMissingEvidence, len(sel.Path)-1, sel.Evidence)
 		return result

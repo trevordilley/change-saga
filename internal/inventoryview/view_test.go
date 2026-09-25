@@ -124,7 +124,26 @@ func TestSelectionResolution(t *testing.T) {
 		record("component", "other", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{sysRef})}, "active", false),
 		record("system", "flags", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{sysRef}, comp, other)}, "active", false),
 	}}
-	sel := Selection{ID: "sel", Path: []Pin{sys, comp}, Evidence: EvidenceID(containing), Selected: selected}
+	// Fixture evidence IDs stand in for the records contract's persisted IDs.
+	ids := map[string]string{containing.Location().String(): "store-body", sysRef.Location().String(): "other-body"}
+	restore := lookupEvidence
+	t.Cleanup(func() { lookupEvidence = restore })
+	lookupEvidence = func(rev *requirements.TechnicalRevision, id string) (*coderef.Reference, string) {
+		for i := range rev.Code {
+			if ids[rev.Code[i].Location().String()] == id {
+				return &rev.Code[i], ""
+			}
+		}
+		for _, edge := range rev.Interactions {
+			for i := range edge.Code {
+				if "edge-"+ids[edge.Code[i].Location().String()] == id {
+					return &edge.Code[i], edge.ID
+				}
+			}
+		}
+		return nil, ""
+	}
+	sel := Selection{ID: "sel", Path: []Pin{sys, comp}, Evidence: "store-body", Selected: selected}
 
 	ok := ResolveSelection(ctx, inv, sel, base, res)
 	if ok.State != "resolved" || !ok.Eligible || !ok.PinsCurrent || len(ok.Reasons) != 0 || *ok.Containing != containing {
@@ -134,7 +153,6 @@ func TestSelectionResolution(t *testing.T) {
 	cases := map[string]func(Selection) Selection{
 		ReasonUndeclaredHop:      func(s Selection) Selection { s.Path = []Pin{sys, pin("component", "orphan", "r1")}; return s },
 		ReasonMissingEvidence:    func(s Selection) Selection { s.Evidence = "nope"; return s },
-		ReasonMissingOwner:       func(s Selection) Selection { s.EvidenceOwner = "missing-edge"; return s },
 		ReasonInvalidSelection:   func(s Selection) Selection { s.Path = nil; return s },
 		ReasonWholeFileSelection: func(s Selection) Selection { s.Selected.Start, s.Selected.End = 0, 0; return s },
 		ReasonOutsideEvidence: func(s Selection) Selection {
@@ -194,12 +212,12 @@ func TestSelectionResolution(t *testing.T) {
 	if got = ResolveSelection(ctx, inv, sel, base, res); got.State != "unresolved" || !hasReason(got, ReasonConflictedPin) {
 		t.Fatalf("conflicted hop: %+v", got)
 	}
-	// Interaction evidence is addressed by its owner-local ID.
+	// Evidence IDs are unique across the revision; the owning edge is derived.
 	inv.Records[2] = record("system", "flags", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{sysRef}, comp, other)}, "active", false)
 	inv.Records[2].Revisions[0].Interactions = []requirements.Interaction{{ID: "read", From: other.Target, To: comp.Target, Description: "reads", Code: []coderef.Reference{containing}}}
 	inv.Records[2].CurrentRevision = &inv.Records[2].Revisions[0]
-	edge := Selection{ID: "edge", Path: []Pin{sys}, EvidenceOwner: "read", Evidence: EvidenceID(containing), Selected: selected}
-	if got = ResolveSelection(ctx, inv, edge, base, res); !got.Eligible {
+	edge := Selection{ID: "edge", Path: []Pin{sys}, Evidence: "edge-store-body", Selected: selected}
+	if got = ResolveSelection(ctx, inv, edge, base, res); !got.Eligible || got.EvidenceOwner != "read" {
 		t.Fatalf("interaction evidence: %+v", got)
 	}
 }
@@ -255,6 +273,24 @@ func splitKeep(s string) []string {
 		}
 		out = append(out, s[:i])
 		s = s[i:]
+	}
+	return out
+}
+
+func TestLegacyEvidenceIsNotSelectable(t *testing.T) {
+	ref := coderef.Reference{Commit: strings40("a"), Path: "a.go", Start: 1, End: 2, Digest: "sha256:" + strings40("b") + strings40("b")[:24], Note: "x"}
+	comp := pin("component", "store", "r1")
+	inv := &requirements.Inventory{Records: []requirements.TechnicalRecord{record("component", "store", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{ref})}, "active", false)}}
+	sel := Selection{ID: "s", Path: []Pin{comp}, Evidence: ref.Location().String(), Selected: ref}
+	if got := ResolveSelection(context.Background(), inv, sel, "", nil); got.State != "unresolved" || !hasReason(got, ReasonMissingEvidence) {
+		t.Fatalf("a legacy location became a selectable identity: %+v", got)
+	}
+}
+
+func strings40(c string) string {
+	out := ""
+	for len(out) < 40 {
+		out += c
 	}
 	return out
 }
