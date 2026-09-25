@@ -39,6 +39,9 @@ type documentationView struct {
 	// definition's canonical page and loads its usages on request. The page
 	// itself lists usages directly.
 	PageHref, UsagesHref string
+	// Selections is the opening Item's exact selections, when the drawer was
+	// opened from an Item.
+	Selections *itemSelectionsView
 	// OnPage renders the definition on its own page: members open their own
 	// pages rather than the drawer, and the page's heading names it.
 	OnPage bool
@@ -153,6 +156,9 @@ func (a *app) documentationPage(w http.ResponseWriter, r *http.Request) {
 	// loads its other usages only when asked.
 	view.PageHref = technicalPinHref(pin)
 	view.UsagesHref = "/api/technical-usages?" + url.Values{"target": {pin.Target}}.Encode()
+	if item := r.URL.Query().Get("item"); item != "" {
+		view.Selections = a.itemSelections(r.Context(), inventory, pin, item)
+	}
 	var body bytes.Buffer
 	if err := a.template.ExecuteTemplate(&body, "documentation", view); err != nil {
 		http.Error(w, err.Error(), 500)
@@ -174,7 +180,7 @@ func (a *app) documentationCode(ctx context.Context, refs []coderef.Reference, s
 }
 
 const documentationTemplates = `
-{{define "documentation-control"}}{{with .}}<button type="button" class="icon-button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}" aria-label="Open technical explanation" title="Open technical explanation"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></button>{{end}}{{end}}
+{{define "documentation-control"}}{{with .}}<button type="button" class="icon-button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}"{{if .Item}} data-documentation-item="{{.Item}}"{{end}}{{if .Selections}} data-documentation-selections="{{.Selections}}"{{end}} aria-label="Open technical explanation" title="Open technical explanation"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></button>{{end}}{{end}}
 {{define "documentation-code"}}{{range .}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}"><figcaption><code>{{.Location}}</code>{{if .Stale}} · stale{{end}}</figcaption>{{if .Note}}<p class="term-code-note">{{.Note}}</p>{{end}}<table class="term-code-lines"><tbody>{{range .Lines}}<tr{{if .Referenced}} class="referenced"{{end}}><th scope="row">{{.Number}}</th><td><code data-code>{{.Text}}</code></td></tr>{{end}}</tbody></table></figure>{{end}}{{end}}
 {{define "documentation"}}<article class="documentation-explanation" data-documentation-view="{{.Target}}" data-documentation-pin="{{.Revision}}">
 {{if not .OnPage}}<p class="trace-kind">{{kindTitle .Kind}}</p><h2>{{.Name}}</h2>
@@ -184,8 +190,8 @@ const documentationTemplates = `
 {{if .Members}}<h3>Component interactions</h3><svg class="documentation-diagram" viewBox="0 0 430 {{.Height}}" role="group" aria-label="Directed component interactions; explanations and exact code follow."><defs><marker id="documentation-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>{{range .Edges}}<path d="{{.Path}}" fill="none" stroke="currentColor" stroke-width="2"{{if eq .Intent "proposed"}} stroke-dasharray="6 4"{{end}} marker-end="url(#documentation-arrow)"><title>{{.From}} → {{.To}}: {{.Description}}{{if eq .Intent "proposed"}} (proposed){{end}}</title></path>{{end}}{{range .Members}}<a {{if $.OnPage}}href="{{.PageHref}}"{{else}}href="/api/documentation?target={{.Pin.Target}}&amp;revision={{.Pin.Revision}}" data-documentation-target="{{.Pin.Target}}" data-documentation-revision="{{.Pin.Revision}}"{{end}} aria-label="Open {{.Name}}"><g transform="translate(20 {{.Y}})"><rect width="230" height="50" fill="var(--bg,white)" stroke="currentColor"/><text x="12" y="30" font-size="14" fill="currentColor">{{.Name}}</text></g></a>{{end}}</svg>
 <ul class="documentation-members">{{range .Members}}<li>{{if $.OnPage}}<a href="{{.PageHref}}">{{.Name}}</a>{{else}}<button type="button" data-documentation-target="{{.Pin.Target}}" data-documentation-revision="{{.Pin.Revision}}">{{.Name}}</button>{{end}}{{if ne .Status "current"}} <span class="gap">{{.Status}}</span>{{end}}</li>{{end}}</ul>
 <ol>{{range .Edges}}<li data-interaction="{{.ID}}" data-interaction-intent="{{.Intent}}"><h4>{{.From}} → {{.To}}{{if ne .Intent "unspecified"}} <small class="technical-intent intent-{{.Intent}}">{{.Intent}}</small>{{end}}</h4><p>{{.Description}}</p><details data-lazy-href="{{.CodeHref}}"><summary>Interaction code</summary><div data-lazy-body>Code loads when opened.</div></details></li>{{end}}</ol>{{end}}
-{{if eq .Kind "data-entity"}}{{template "data-entity-detail" .}}{{end}}
-<h3>Exact code</h3>{{if .Code}}{{template "documentation-code" .Code}}{{else}}<p class="term-empty" data-documentation-no-code>{{if eq .Intent "proposed"}}No code yet. A proposal remains visible and usable before implementation.{{else}}No code references.{{end}}</p>{{end}}
+{{with .Selections}}{{template "item-selections" .}}{{end}}{{if eq .Kind "data-entity"}}{{template "data-entity-detail" .}}{{end}}
+<h3>{{if .Selections}}All of this definition's code{{else}}Exact code{{end}}</h3>{{if .Code}}{{template "documentation-code" .Code}}{{else}}<p class="term-empty" data-documentation-no-code>{{if eq .Intent "proposed"}}No code yet. A proposal remains visible and usable before implementation.{{else}}No code references.{{end}}</p>{{end}}
 {{if .UsagesHref}}<details class="documentation-usages" data-lazy-href="{{.UsagesHref}}"><summary>Used by</summary><div data-lazy-body>Usages load when opened.</div></details>{{end}}{{if not .OnPage}}<details><summary>Definition history</summary><p>Viewing <code>{{.Revision}}</code>. Opening another revision does not update this slide.</p><ul>{{range .History}}<li><button type="button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}">{{.Revision}}</button></li>{{end}}</ul></details>{{end}}
 </article>{{end}}
 `

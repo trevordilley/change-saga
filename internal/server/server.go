@@ -832,21 +832,22 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
 	funcs["comparing"] = func() bool { return comparing }
-	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates)
+	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates + technicalSelectionTemplates)
 }
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"comparing": func() bool { return true },
-		"short":     shortCommit,
-		"kindTitle": technicalKindTitle,
-		"join":      strings.Join,
-		"markdown":  markdown,
-		"domID":     domID,
-		"fileIcon":  fileIcon,
-		"lower":     strings.ToLower,
+		"comparing":            func() bool { return true },
+		"short":                shortCommit,
+		"kindTitle":            technicalKindTitle,
+		"documentationControl": documentationControl,
+		"join":                 strings.Join,
+		"markdown":             markdown,
+		"domID":                domID,
+		"fileIcon":             fileIcon,
+		"lower":                strings.ToLower,
 		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
 			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
 		},

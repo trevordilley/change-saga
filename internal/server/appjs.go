@@ -1247,7 +1247,9 @@ const appJavaScript = `(() => {
   let documentationRequest = 0;
   let documentationTrail = [];
   async function openDocumentation(button, back = false) {
-    const pin = {target:button.dataset.documentationTarget, revision:button.dataset.documentationRevision};
+    // An Item's control also names the Item, so the drawer can show the
+    // exact code that Item selects; definitions reached from there do not.
+    const pin = {target:button.dataset.documentationTarget, revision:button.dataset.documentationRevision, item:button.dataset.documentationItem || ''};
     const alreadyOpen = q('.diff-drawer.open')?.dataset.drawerMode === 'documentation';
     const opener = alreadyOpen ? drawerOpener : button;
     if (!alreadyOpen) documentationTrail = [];
@@ -1260,6 +1262,7 @@ const appJavaScript = `(() => {
     showDrawer(opener);
     const url = new URL('/api/documentation', location.origin);
     url.searchParams.set('target', pin.target); url.searchParams.set('revision', pin.revision);
+    if (pin.item) url.searchParams.set('item', pin.item);
     try {
       const response = await fetch(url, {credentials:'same-origin'});
       const html = await response.text();
@@ -1277,6 +1280,7 @@ const appJavaScript = `(() => {
       body.textContent = error.message || 'Explanation could not be loaded.';
       const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = 'Try again';
       retry.dataset.documentationTarget = pin.target; retry.dataset.documentationRevision = pin.revision;
+      if (pin.item) retry.dataset.documentationItem = pin.item;
       body.append(retry);
     }
   }
@@ -2135,7 +2139,7 @@ const appJavaScript = `(() => {
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
     const documentationButton = event.target.closest('[data-documentation-target]');
     if (documentationButton) {event.preventDefault(); void openDocumentation(documentationButton); return;}
-    if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision}},true); return;}
+    if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item}},true); return;}
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
     const landmarkVisual = event.target.closest?.('[data-landmark-visual]');
