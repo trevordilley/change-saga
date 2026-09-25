@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "technical-inventory",
   "slide": "ti-query-impl-selection",
-  "current": "sha256:b1319888511ee1e102b1bfefd22a7e9d434e38cff6f25d731450a80d6db6ea5f",
+  "current": "sha256:9e91c0ba423dbcf0de53a5e6c68bd400b19e65574525e5e3a0312b31b2632857",
   "revisions": [
     {
       "snapshot": "sha256:dfaebd6b8d7a26575e7b8df4c1660857649d329aa926f31025d6ec2c6892c056",
@@ -384,6 +384,361 @@
                   "end": 149,
                   "digest": "sha256:065155e06e0a5c2dc6ef5ac3f3cd8adbf32aa0f06e5bc832e4050425e75d977c",
                   "note": "Selected-byte drift and outside-subset changes are distinct reasons; eligibility needs current pins and bytes."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "drift-inventory-scoped-deck-coverage-exclude-unselected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Stale or unresolved paths remain visible rather than count as current coverage."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:9e91c0ba423dbcf0de53a5e6c68bd400b19e65574525e5e3a0312b31b2632857",
+      "parent_snapshots": [
+        "sha256:b1319888511ee1e102b1bfefd22a7e9d434e38cff6f25d731450a80d6db6ea5f"
+      ],
+      "request_id": "ti-query-impl-selection-evidence-3",
+      "created_at": "2026-09-25T01:53:10.162658Z",
+      "asset": "24-a-ba27e932c9315b6e07186746540d1ab4f25c92eba07e8dc1813a.svg",
+      "asset_digest": "sha256:ba27e932c9315b6e07186746540d1ab4f25c92eba07e8dc1813a9e13cd2ae613",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-selection",
+        "deck": "technical-inventory",
+        "title": "Implemented: inherited coverage from exact selections",
+        "rank": 202,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-ba27e932c9315b6e07186746540d1ab4f25c92eba07e8dc1813a.svg",
+        "takeaway": "Only an eligible Item selection adds its selected lines to deck coverage, labeled as inherited; drift and outside-subset edits are reported separately.",
+        "reading_order": [
+          "path",
+          "eligible",
+          "labeled",
+          "drift"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-selection-coverage",
+              "revision": "urn:change-saga:change-saga:component:inventory-selection-coverage:revision:r1"
+            },
+            "version": 4,
+            "id": "path",
+            "slide": "ti-query-impl-selection",
+            "rank": 10,
+            "kind": "node",
+            "label": "Saved selection path",
+            "description": "A selection names the Item's pin, each declared hop at its saved revision, a revision-unique evidence ID and a subset; the records resolver checks structure and the selected digest is verified at its own commit.",
+            "selector": {
+              "type": "element",
+              "element_id": "path"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/selection.go",
+                  "start": 1,
+                  "end": 130,
+                  "digest": "sha256:42fac45b0c5c9a50bbe81dc06ed0c60cf9814d1371ad9cc90171828e1bebde10",
+                  "note": "Delegates structure to the records resolver and verifies the selected digest."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 441,
+                  "end": 545,
+                  "digest": "sha256:f3b9b1a64ffdc245196217cebb73be0f3e3868828a28a7245665883a25d02f64",
+                  "note": "query inventory-selections explains every saved Item selection."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "path-inventory-scoped-deck-coverage-selected-subset",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "The Item retains an inspectable selection; a System pin does not select all members or their code."
+            },
+            {
+              "id": "path-inventory-scoped-deck-coverage-explain-path",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Results expose the Item, the declared path and the selected locations."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "eligible",
+            "slide": "ti-query-impl-selection",
+            "rank": 20,
+            "kind": "node",
+            "label": "Eligibility at head",
+            "description": "Only selections whose structure resolves, whose pins are all current and whose selected bytes are current at head contribute; others contribute nothing and stay visible in query inventory-selections.",
+            "selector": {
+              "type": "element",
+              "element_id": "eligible"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/inherited.go",
+                  "start": 1,
+                  "end": 70,
+                  "digest": "sha256:bd923822306bd4c2f14ab69cdf346f364673fa5c467e7735e3394c9cb1e6add2",
+                  "note": "Eligible selections become inherited references without modifying the document."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "eligible-inventory-scoped-deck-coverage-inherited-evidence",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Selected code counts through the inventory reference without a duplicate authored mapping."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "labeled",
+            "slide": "ti-query-impl-selection",
+            "rank": 30,
+            "kind": "node",
+            "label": "Labeled inherited coverage",
+            "description": "Inherited lines are Item-owned coverage assignments carrying the selection, path and evidence ID with no evidence file, so no evidence-file repair can name them; unselected lines earn nothing.",
+            "selector": {
+              "type": "element",
+              "element_id": "labeled"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/coverage/inherited.go",
+                  "start": 1,
+                  "end": 48,
+                  "digest": "sha256:93e0158d0684c034fc2a45092e155e26b32ecb78221854c5ea98469a83c5fc5f",
+                  "note": "Labeled, Item-owned inherited assignments that never become stale evidence records."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/coverage/coverage.go",
+                  "start": 36,
+                  "end": 39,
+                  "digest": "sha256:174013b3d40e8968605817a67493acb40cf941866de0b5284a7cf2793fe98845",
+                  "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/coverage/coverage.go",
+                  "start": 112,
+                  "end": 115,
+                  "digest": "sha256:cc668ae1c6ae103711662411abbf5712d944204083ff8dfbf6333e9be6f1fd78",
+                  "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/coverage/coverage.go",
+                  "start": 124,
+                  "end": 126,
+                  "digest": "sha256:5dd103194fd3c41d9ee175d2831a73f413c9c73da31410c0955cb387e1c8971d",
+                  "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/coverage/coverage.go",
+                  "start": 180,
+                  "end": 184,
+                  "digest": "sha256:1f7aea2198901762f2aaf18f1d7a510aebd1d8771e3b8ca07479e6ddd5cd0cbe",
+                  "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/coverage/coverage.go",
+                  "start": 194,
+                  "end": 196,
+                  "digest": "sha256:52d915b71e21a6db226cfbb49e722ebe1164e84cc7bd1fae06db05c0fa8dc910",
+                  "note": "Assignments carry optional inheritance provenance; evaluation accepts inherited references."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory_view.go",
+                  "start": 546,
+                  "end": 556,
+                  "digest": "sha256:9c43b9ad062b1980343c6759665ed842ffa0ad6ebef2d89a3d15794eb6aebaab",
+                  "note": "The CLI comparison collects eligible selections at head."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/status_grammar.go",
+                  "start": 102,
+                  "end": 102,
+                  "digest": "sha256:19f8f8bfd53c7ad7142c5c298bdbb937fee3f722e7742fbeb83b5f2b819eb96d",
+                  "note": "status, check and reconcile evaluate coverage with inherited selections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 25,
+                  "end": 25,
+                  "digest": "sha256:8712c6cf82f31cf90ac49eb35ce452af5006070c4b92969d76c4b7b1b7263ed5",
+                  "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 120,
+                  "end": 125,
+                  "digest": "sha256:2e278a1f1d925e959bf78f3beeb0f2bfdd15d2bfaf9d098108e5d77fee236062",
+                  "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 128,
+                  "end": 128,
+                  "digest": "sha256:6c07b943249910348fde9f4f989836ab36866d802e4e5033585da318dc668f02",
+                  "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 130,
+                  "end": 130,
+                  "digest": "sha256:f3808fc6174636db3f95f9bf4a623d3c9382127022851e991b61b68f91a3b1c4",
+                  "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "labeled-inventory-scoped-deck-coverage-exclude-unselected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Unselected code earns no inherited coverage and overlapping selections count once."
+            },
+            {
+              "id": "labeled-inventory-design-to-review-no-implied-approval",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:no-implied-approval",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Inherited coverage is labeled and records no approval; it does not conceal unexplained changes."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "drift",
+            "slide": "ti-query-impl-selection",
+            "rank": 40,
+            "kind": "node",
+            "label": "Separate selection health",
+            "description": "An edit outside the subset keeps the selected bytes current but marks the containing evidence for semantic reassessment; an edit inside makes the selection stale and it stops contributing.",
+            "selector": {
+              "type": "element",
+              "element_id": "drift"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/selection.go",
+                  "start": 131,
+                  "end": 150,
+                  "digest": "sha256:3141aee959c900de1d7bb52aee7ddb1ba4a69e8e807037122194a05f0d22c96f",
+                  "note": "Separate selected-byte and containing-evidence health; eligibility needs current pins and bytes."
                 }
               ]
             }

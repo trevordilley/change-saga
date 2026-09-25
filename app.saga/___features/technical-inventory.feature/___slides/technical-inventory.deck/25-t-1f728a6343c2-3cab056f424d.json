@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "technical-inventory",
   "slide": "ti-query-impl-coverage",
-  "current": "sha256:5ac8cf4981c7284e20a0b219f8e9d528a1751729304721940a6a237c20bb7367",
+  "current": "sha256:e99f00f8fb5e12170e36c14a84078131bad696b2a4bfcef9986ec67873d0b945",
   "revisions": [
     {
       "snapshot": "sha256:a3a0777762da5740d86ce438728279c38f377dee9809887b7c06f9ad683b159e",
@@ -372,6 +372,238 @@
                   "end": 156,
                   "digest": "sha256:0e0356a16d5735c80739298723fe8078e30da0c844f1113ba8ab68f7fbd4e66e",
                   "note": "The response states its measures and its limits relative to deck and review coverage."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "denominators-inventory-code-coverage-bounded-report",
+              "criterion": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:bounded-report",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
+              "rationale": "The report names what it measures, keeping it distinct from other coverage."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:e99f00f8fb5e12170e36c14a84078131bad696b2a4bfcef9986ec67873d0b945",
+      "parent_snapshots": [
+        "sha256:5ac8cf4981c7284e20a0b219f8e9d528a1751729304721940a6a237c20bb7367"
+      ],
+      "request_id": "ti-query-impl-coverage-evidence-3",
+      "created_at": "2026-09-25T01:53:10.500881Z",
+      "asset": "24-a-79d112fea8bc34aa97e447c4b31d3263bf9163ce35dcaf32fde7.svg",
+      "asset_digest": "sha256:79d112fea8bc34aa97e447c4b31d3263bf9163ce35dcaf32fde71b0a4249d3d6",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-coverage",
+        "deck": "technical-inventory",
+        "title": "Implemented: inventory coverage report",
+        "rank": 203,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-79d112fea8bc34aa97e447c4b31d3263bf9163ce35dcaf32fde7.svg",
+        "takeaway": "query inventory-coverage counts each in-scope line once with every owner and keeps stale, unresolved, excluded and proposed evidence out of coverage.",
+        "reading_order": [
+          "scope",
+          "owners",
+          "health",
+          "denominators"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-coverage-report",
+              "revision": "urn:change-saga:change-saga:component:inventory-coverage-report:revision:r1"
+            },
+            "version": 4,
+            "id": "scope",
+            "slide": "ti-query-impl-coverage",
+            "rank": 10,
+            "kind": "node",
+            "label": "Named scope",
+            "description": "The report names its head commit and path prefixes and measures tracked text files there; Saga directories are excluded and binary files are counted, not measured.",
+            "selector": {
+              "type": "element",
+              "element_id": "scope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory_coverage.go",
+                  "start": 1,
+                  "end": 148,
+                  "digest": "sha256:74b46817c3595388a83282362193f92b6b36e72b9fa8c5ad0aa0d2d4b70091b5",
+                  "note": "query inventory-coverage: named scope, state pages and tracked-file listing."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory_coverage.go",
+                  "start": 157,
+                  "end": 184,
+                  "digest": "sha256:d6c49ce265e4a6e9131e913a96cc9042f8152a896100540730376909dfde6288",
+                  "note": "query inventory-coverage: named scope, state pages and tracked-file listing."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "scope-inventory-code-coverage-bounded-report",
+              "criterion": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:bounded-report",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
+              "rationale": "The report identifies the source revision and code scope and reports covered and uncovered code in it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "owners",
+            "slide": "ti-query-impl-coverage",
+            "rank": 20,
+            "kind": "node",
+            "label": "Each line once, every owner",
+            "description": "Only the unique current revision of each active definition counts; each line counts once and keeps all owners, including interaction and relationship evidence as owner#edge.",
+            "selector": {
+              "type": "element",
+              "element_id": "owners"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/coverage.go",
+                  "start": 1,
+                  "end": 144,
+                  "digest": "sha256:423ea71b32272a9ff4669dd4848f8b03d2f6f6b019afdea9cf7f1926479dab6b",
+                  "note": "Coverage types, file measurement and the per-line owner union."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/coverage.go",
+                  "start": 200,
+                  "end": 257,
+                  "digest": "sha256:c840f2f3363eaa98e0ef6d401a4ee0b2aea92e46f14bb8d6d606cc1cd16aecb9",
+                  "note": "Coverage types, file measurement and the per-line owner union."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/classify.go",
+                  "start": 49,
+                  "end": 94,
+                  "digest": "sha256:56ae66243ad5dc0f9bb8dc3bf88e7fbc018d9f57363a9d87c5aba006e748487e",
+                  "note": "Every owned reference, with edge intent, for coverage and reconciliation."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "owners-inventory-code-coverage-exact-owners",
+              "criterion": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:exact-owners",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
+              "rationale": "Covered ranges name the owning definitions; uncovered ranges name the locations needing attention."
+            },
+            {
+              "id": "owners-inventory-code-coverage-deduplicate",
+              "criterion": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:deduplicate",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
+              "rationale": "Code referenced by several definitions counts once in the total."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "health",
+            "slide": "ti-query-impl-coverage",
+            "rank": 30,
+            "kind": "node",
+            "label": "Separate health pages",
+            "description": "Stale references, unresolved owners and excluded retired or proposed owners have their own pages with reasons; explicitly proposed edge evidence is counted apart. None counts as coverage.",
+            "selector": {
+              "type": "element",
+              "element_id": "health"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/inventoryview/coverage.go",
+                  "start": 145,
+                  "end": 199,
+                  "digest": "sha256:db51b60cd5aeab8b7a5b46a1d6f423831724da36fb3cfd1376c7bad15a0aa702",
+                  "note": "Unresolved, excluded, stale and proposed-edge evidence kept out of coverage."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "health-inventory-code-coverage-separate-health",
+              "criterion": "urn:change-saga:change-saga:story:inventory-code-coverage:criterion:separate-health",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
+              "rationale": "Stale, unresolved and overlapping references are reported separately and absent evidence never counts."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "denominators",
+            "slide": "ti-query-impl-coverage",
+            "rank": 40,
+            "kind": "node",
+            "label": "Distinct denominators",
+            "description": "Inventory coverage is labeled separately from implementation-deck and review coverage; a covered line proves an explicit reference, not a correct explanation.",
+            "selector": {
+              "type": "element",
+              "element_id": "denominators"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/query_inventory_coverage.go",
+                  "start": 149,
+                  "end": 156,
+                  "digest": "sha256:0e0356a16d5735c80739298723fe8078e30da0c844f1113ba8ab68f7fbd4e66e",
+                  "note": "The response states what it measures and its limits relative to deck and review coverage."
                 }
               ]
             }

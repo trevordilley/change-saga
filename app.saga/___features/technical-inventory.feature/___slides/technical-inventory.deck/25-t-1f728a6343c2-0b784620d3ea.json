@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "technical-inventory",
   "slide": "ti-query-impl-reconcile",
-  "current": "sha256:6a27fa77516a81b9c83a6119f5f38d6b9605c620a4256a816cf92ecf4697b67c",
+  "current": "sha256:da912c563372e58e3473dfa56ccdeed790c292bec6c8823ff9c6bcee3d8ab4f9",
   "revisions": [
     {
       "snapshot": "sha256:033f56c6a869a88e0b221f613682348a28eebbc49c76ad842374b5b1d3d58b5b",
@@ -372,6 +372,309 @@
                   "end": 213,
                   "digest": "sha256:660fef9fd5cb258fe8a8b3346d97b5953f7fe520a1ed7e42427551d98aa138c8",
                   "note": "Unreferenced definitions ask the user; proposal and readable-base newness are the only exemptions."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "unreferenced-inventory-reconcile-unreferenced-explicit-proposal",
+              "criterion": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:explicit-proposal",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:revision:r2",
+              "rationale": "Only explicit proposal or newness against the named base exempts an unreferenced definition."
+            },
+            {
+              "id": "unreferenced-inventory-reconcile-unreferenced-ask-user",
+              "criterion": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:ask-user",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:revision:r2",
+              "rationale": "The entry asks the user and never deletes, reclassifies or attaches the definition."
+            },
+            {
+              "id": "unreferenced-inventory-reconcile-unreferenced-actionable-context",
+              "criterion": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:criterion:actionable-context",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-reconcile-unreferenced:revision:r2",
+              "rationale": "The entry carries identity, explanation and evidence state for the user's decision."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:da912c563372e58e3473dfa56ccdeed790c292bec6c8823ff9c6bcee3d8ab4f9",
+      "parent_snapshots": [
+        "sha256:6a27fa77516a81b9c83a6119f5f38d6b9605c620a4256a816cf92ecf4697b67c"
+      ],
+      "request_id": "ti-query-impl-reconcile-evidence-3",
+      "created_at": "2026-09-25T01:53:10.833798Z",
+      "asset": "24-a-0a91311cb53b86805f7e755ab7957857f7ac9e5edd3c09aba789.svg",
+      "asset_digest": "sha256:0a91311cb53b86805f7e755ab7957857f7ac9e5edd3c09aba789260ff53410fa",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-reconcile",
+        "deck": "technical-inventory",
+        "title": "Implemented: inventory reconciliation",
+        "rank": 204,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-0a91311cb53b86805f7e755ab7957857f7ac9e5edd3c09aba789.svg",
+        "takeaway": "reconcile classifies definition evidence debt, routes pins and selections to their Items and asks the user about unreferenced definitions.",
+        "reading_order": [
+          "debt",
+          "pins",
+          "selections",
+          "unreferenced"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:inventory-reconciliation",
+              "revision": "urn:change-saga:change-saga:component:inventory-reconciliation:revision:r1"
+            },
+            "version": 4,
+            "id": "debt",
+            "slide": "ti-query-impl-reconcile",
+            "rank": 10,
+            "kind": "node",
+            "label": "Definition evidence debt",
+            "description": "Stale definition references are classified against the base inventory as regression, introduced, pre-existing or baseline unknown and list the implementation Items that use the definition.",
+            "selector": {
+              "type": "element",
+              "element_id": "debt"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation_inventory.go",
+                  "start": 1,
+                  "end": 192,
+                  "digest": "sha256:27b3e8622d25dc13a52ba30357ddf5642053c56cb17dcb49ef22f7dfc4839de6",
+                  "note": "Inventory summary, base classification of stale evidence, code-change impact and repair shapes."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation_inventory.go",
+                  "start": 267,
+                  "end": 319,
+                  "digest": "sha256:0f72a01d30f03fb0b014d5a68cc5cb96447649f975566e48188bc8978cfe272b",
+                  "note": "Inventory summary, base classification of stale evidence, code-change impact and repair shapes."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 19,
+                  "end": 19,
+                  "digest": "sha256:9fa810402f814c6aced4be96ce131ecca0f9ab9856a155f3cbc9d1213d5f22a8",
+                  "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 36,
+                  "end": 36,
+                  "digest": "sha256:1091cea1543a5a0c2301b8562134d3ed3fdd2ef07b4d29155d16b0e0c8a5b393",
+                  "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 101,
+                  "end": 101,
+                  "digest": "sha256:aee835efa296ae4ca08efb4c4541e1e9f02bfbd1f7afe3fec1c7d513f9117253",
+                  "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 181,
+                  "end": 182,
+                  "digest": "sha256:a4ec4b7016708bbcc285885a6735734fc55145db09feefeceda9f1023a49f7da",
+                  "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 213,
+                  "end": 217,
+                  "digest": "sha256:367bc1501fce49c322e4b616ed33b074350d2d0e25782d7884a18761b9c07149",
+                  "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 273,
+                  "end": 279,
+                  "digest": "sha256:bcc81529d7c8d801dadb4d4286ef4be1e4de5427453df8179cf191a2434789f4",
+                  "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 289,
+                  "end": 295,
+                  "digest": "sha256:cce07a4bdae0fe707b559879a2bf79d26942c6c2e045310fa236d3e9c06d2f1c",
+                  "note": "Loads head and base inventories and joins the inventory section and entries to the report."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "debt-inventory-proposed-and-existing-evidence-distinction",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-distinction",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Stale or unresolved evidence stays visible and is classified rather than read as implementation."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "pins",
+            "slide": "ti-query-impl-reconcile",
+            "rank": 20,
+            "kind": "node",
+            "label": "Item pins",
+            "description": "Implementation Items whose pin is stale, retired, missing or conflicted are routed to their slide for reassessment; saved pins are kept until deliberately repinned.",
+            "selector": {
+              "type": "element",
+              "element_id": "pins"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation_inventory.go",
+                  "start": 214,
+                  "end": 239,
+                  "digest": "sha256:0fbde7bb7c533ddfbfc28552fc8e4a2b1ce452cd886bd15bc364fa7062d6e4f4",
+                  "note": "Non-current Item pins routed to their slide."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "pins-inventory-design-to-review-visible-evolution",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:visible-evolution",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Changed definitions are traced to the Items that pin them without overwriting saved pins."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "selections",
+            "slide": "ti-query-impl-reconcile",
+            "rank": 30,
+            "kind": "node",
+            "label": "Selection health",
+            "description": "Selections that no longer resolve, whose selected bytes drifted or whose containing evidence changed outside the subset are routed to the Item, never to evidence-file commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "selections"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation_inventory.go",
+                  "start": 240,
+                  "end": 266,
+                  "digest": "sha256:981796bf0f696cbfa6002dc6459208f057054e28bcb43928af360346564c44b3",
+                  "note": "Selection health routed to the Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "selections-inventory-scoped-deck-coverage-exclude-unselected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Stale or unresolved selection paths remain visible instead of counting as coverage."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unreferenced",
+            "slide": "ti-query-impl-reconcile",
+            "rank": 40,
+            "kind": "node",
+            "label": "Unreferenced: ask the user",
+            "description": "A definition with no declared implementation use is queued with its identity, explanation and evidence state unless explicitly proposed or new against a readable base; the guidance asks the user.",
+            "selector": {
+              "type": "element",
+              "element_id": "unreferenced"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+                  "path": "internal/cli/reconciliation_inventory.go",
+                  "start": 193,
+                  "end": 213,
+                  "digest": "sha256:660fef9fd5cb258fe8a8b3346d97b5953f7fe520a1ed7e42427551d98aa138c8",
+                  "note": "Unreferenced definitions ask the user unless proposed or new against a readable base."
                 }
               ]
             }
