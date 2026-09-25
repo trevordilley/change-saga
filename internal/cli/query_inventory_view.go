@@ -349,6 +349,7 @@ func queryInventoryUses(ctx context.Context, args []string, out io.Writer) error
 	flags.SetOutput(io.Discard)
 	root := flags.String("saga", "", "app Saga root")
 	target := flags.String("target", "", "canonical technical URN")
+	flags.String("repo", "", "accepted for uniformity; declared uses read no source")
 	revision := flags.String("revision", "", "exact revision URN")
 	depth := flags.Int("depth", 0, "additional declared owner hops")
 	var roles stringList

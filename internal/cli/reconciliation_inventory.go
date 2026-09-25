@@ -287,7 +287,7 @@ func inventoryTask(in inventoryReconcileInput, target, kind, debt string) reconc
 		Repair:   []grammar.Invocation{},
 		Guidance: "Read the definition, its history and its uses; change it only if its meaning or evidence no longer holds.",
 	}
-	if commandKind == "component" || commandKind == "system" {
+	if _, ok := grammar.Lookup(commandKind + " revise"); ok {
 		values := []grammar.Value{grammar.V("id", id), grammar.V("from", ""), grammar.V("revision", "")}
 		if r := in.inventory.Find(target); r != nil {
 			for _, h := range r.RevisionHeads {
