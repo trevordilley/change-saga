@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "ti-records-review-records",
+  "deck": "inventory-records-authoring",
+  "title": "Records: one model, one explicit gate",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-3f371ebb8f39-0010-7abb02daafd6.svg",
+  "takeaway": "Format 2 fields are additive and omitted on legacy revisions; only the explicit marker admits them.",
+  "reading_order": [
+    "model",
+    "validation",
+    "item-model",
+    "schemas",
+    "contract-docs"
+  ]
+}

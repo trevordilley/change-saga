@@ -1,0 +1,82 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 64,
+      "end": 77,
+      "digest": "sha256:d18795bae3bfd8889c5b7fada7e93b69c47a2f585e35401b5fc35715910bccee"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:f2439ffc4591d7939effa213f3ee5db20f57a34b3f66bcac92db7e95d7e9590a"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 232,
+      "end": 234,
+      "digest": "sha256:67edad1387955046815d6fe97fd46c2f46fc97ef570829cb86e9b409ad36f376"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 238,
+      "end": 242,
+      "digest": "sha256:426f69c52ee8282711290be3935923c137d904fbf007dd491f4c03a0dd899ba1"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 64,
+      "end": 79,
+      "digest": "sha256:745d7fa18ff2e031b8d5d779b31000ec1aa929a526ae689e98135d95d242c824"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 159,
+      "end": 185,
+      "digest": "sha256:fc7dcc4461c8958240b3ae5c61019092d95f0d35eeedcf0a379ca8fd3fb1fb18"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 258,
+      "end": 261,
+      "digest": "sha256:b8e5b66c947308d97667de97f339184948db7f97f332e6abd027cb5741aa0596"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:8e332f3da643c78634e1270684f782cd58d80482ac6424074620a86422d5e6cb"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 265,
+      "end": 267,
+      "digest": "sha256:c0c62b02009975849d436e3802c02431efa2b25d6a9e6fc7b363c82f30b123d5"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 271,
+      "end": 272,
+      "digest": "sha256:fb3469998c4a057220dde12b734364733bdc6a4e6899174d5d721c4bef274150"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:c67393258f06adc54e7fe5ed0404fbe4c8133e94dc2a4caaed45e7d3ce4cfb5b"
+    }
+  ]
+}

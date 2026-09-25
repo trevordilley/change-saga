@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "ti-records-review-item-links",
+  "deck": "inventory-records-authoring",
+  "title": "Items: exact selections and saved views",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-3f371ebb8f39-0030-2907f995887d.svg",
+  "takeaway": "Review and implementation Items share one admission path: current pins, or explicit saved views, plus exact selections.",
+  "reading_order": [
+    "resolver",
+    "savedview",
+    "item-authoring"
+  ]
+}

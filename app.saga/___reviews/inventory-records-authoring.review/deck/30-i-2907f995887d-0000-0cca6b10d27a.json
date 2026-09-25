@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "resolver",
+  "slide": "ti-records-review-item-links",
+  "rank": 0,
+  "kind": "region",
+  "label": "Structural selection resolver",
+  "description": "ResolveSelection checks declared hops at saved revisions, stable evidence ids and containment with stable reason codes; ComposeOverlay and VerifySelectedBytes.",
+  "selector": {
+    "type": "element",
+    "element_id": "resolver"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "inventory-records-authoring",
+  "title": "Technical inventory records and authoring (format 2)",
+  "base": "da5101a6",
+  "head": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+  "created_at": "2026-09-25T01:34:15.462616Z"
+}

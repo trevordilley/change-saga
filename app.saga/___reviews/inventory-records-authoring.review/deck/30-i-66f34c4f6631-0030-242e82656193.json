@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "intent-required",
+  "slide": "ti-records-review-writers",
+  "rank": 30,
+  "kind": "callout",
+  "label": "Intent required after adoption",
+  "description": "Expectation: revise works as before. Actual: after adoption an intent-less Component/System revision is refused, so no new revision is silently unspecified.",
+  "selector": {
+    "type": "element",
+    "element_id": "intent-required"
+  },
+  "about": "writer",
+  "body": "Expectation: revise works as before. Actual: after adoption an intent-less Component/System revision is refused, so no new revision is silently unspecified."
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "item-authoring",
+  "slide": "ti-records-review-item-links",
+  "rank": 20,
+  "kind": "region",
+  "label": "Item authoring paths",
+  "description": "add-item, revise-item and apply-slide author selections and views, precheck structure, admit pins with AdmitPin and retain unchanged pins; requireDocumentation is replaced.",
+  "selector": {
+    "type": "element",
+    "element_id": "item-authoring"
+  }
+}

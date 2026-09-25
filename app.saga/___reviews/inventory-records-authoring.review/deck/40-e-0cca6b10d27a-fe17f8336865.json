@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/inventory_selection.go",
+      "digest": "sha256:fe31d04c978dc21c7ad5ab8fc7491ee9fa728f5ae430ae6a1b0b1290673797b9"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/inventory_selection.go",
+      "start": 1,
+      "end": 161,
+      "digest": "sha256:fe31d04c978dc21c7ad5ab8fc7491ee9fa728f5ae430ae6a1b0b1290673797b9"
+    }
+  ]
+}

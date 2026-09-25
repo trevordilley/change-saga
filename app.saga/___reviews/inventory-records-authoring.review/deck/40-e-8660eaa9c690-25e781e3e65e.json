@@ -1,0 +1,82 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:24781e912ed536347ce5cfd63345a6e8823cb93099a1006114a4032fec45f3a0"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:ef87c0667024178e1ccf8f6c95e3e6eab1fb2debd27f5d7b756a2d1d2f11b9a4"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 53,
+      "end": 80,
+      "digest": "sha256:44caf63ebe5e3c01566a34efcd2187bcae2c903427afa932b1ab1124ef2813d1"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:8349fa65d5c1c5424d1fea0e2d7485b0122d9261ce73d39e611a01ebc5fb5b13"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 93,
+      "end": 94,
+      "digest": "sha256:2e14213da94836676c22109f864fc1aef6bafc4587d49c14ceb2b530ab1e5946"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 97,
+      "end": 100,
+      "digest": "sha256:9e6345d3c74a66ff5ec429d1ecc57a9b0dbd0a4419d8a4f54fe50c2f643e6da3"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 128,
+      "end": 231,
+      "digest": "sha256:bde292a6ed9ef728c1e7342d284f68cec973513c4dddcff6176ab08f3e3ead12"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 14,
+      "end": 15,
+      "digest": "sha256:73e2b63efe8a234b7289d6768aacc795b9380ffeb578dfb0238666cab1c9c429"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:76ba75cb138b2fd36d53ac331665dc040dbca337fdf163bf5892977921b69cfb"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 65,
+      "end": 66,
+      "digest": "sha256:a281d61b388ab716c6164b3673992f961c44f013934389724b045981065c9ba7"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/component-revision.schema.json",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:27e5788d5d9d73d24a81dbc0a5a74bfa82c9c3b3af99e52af796e90b468a8a3d"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:ee1b451309cb29d8de63ff963b5ee0edcc9df144abc7fffaab382c20541ca5e6"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:d87ac38aaeaad02a90c3e8155e58a2ab2ed5a4bdc04830b85d39a9df1a03a14f"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:c4163fd5ee889e173599b845017dd408bb584e61d0782f19e7b3fc6b6cc74499"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:b599c24807cde7ce74d169dc31409c309c3ff9aab4134a720c9b02d2bc9985fb"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 6,
+      "end": 7,
+      "digest": "sha256:708f76353782bfd4457ab22c2695b125dfe32c13987944f072dbe11a8242fbad"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:c77eebf26696b4e23de030b5a5631894b92838f0cdf322c7fbac252e33e147fe"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 14,
+      "end": 22,
+      "digest": "sha256:1188e31051597080f2334edd6cc7db33d00a7ba13172890c6e9ee3575adc71f7"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:c02372abca0c4b9134f9ab0ca0fc8bec3bb0523445944fc3e69887713a8f067e"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:ddfa0295b41637bd227ab7e767da26ab51253ff1cff6527504d5c458b9b292a1"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/grammar/commands_inventory.go",
+      "start": 29,
+      "end": 32,
+      "digest": "sha256:8815bf2faff4a2948eaa7b0f3ff0998aa7539043e5ed614630d4a9d06ea73b55"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "cmd/change-saga/main.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:414b19435268fd115bac8e0b6fe63c296a39f06246213033337cbc108939ef52"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "cmd/change-saga/main.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:3b0b494c3dcb9894f6e05c9ea1c7dbb7d96bc4e94a0fc39ff5c8747392187829"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "cmd/change-saga/main.go",
+      "start": 50,
+      "end": 51,
+      "digest": "sha256:89e1e30a71f0d6fccbf6218078bce8af63c7ca85dbe171f337d66fda68afc5d5"
+    }
+  ]
+}

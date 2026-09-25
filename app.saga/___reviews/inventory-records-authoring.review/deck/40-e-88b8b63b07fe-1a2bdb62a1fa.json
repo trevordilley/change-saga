@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/query_inventory.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:c447cafd8e346fb68b71b9ed2620b68efe7ddc48cff5569867b470c49ec773a0"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/query_inventory.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:775ac24eed4da7ea0f9dae7618e0b57a68dca13a975105426d33f8bc6f818213"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/query_inventory.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:3616b2acb5811c831921b0d11768351a23e0356e2934afa5a706fb5495255686"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/query_inventory.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:c33251c6c082824583be825c0187d47290c59a4ec64fb80cc5f7708e1f9805de"
+    }
+  ]
+}

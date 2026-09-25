@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "record-tests",
+  "slide": "ti-records-review-proof",
+  "rank": 0,
+  "kind": "example",
+  "label": "Record and reader tests",
+  "description": "Legacy intent, opt-in refusal, baseline ancestry, per-kind valid/invalid tables, SVG safety, selection codes, overlay composition and schema conformance.",
+  "selector": {
+    "type": "element",
+    "element_id": "record-tests"
+  }
+}

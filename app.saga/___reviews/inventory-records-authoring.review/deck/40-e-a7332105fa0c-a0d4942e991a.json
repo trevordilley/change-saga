@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/inventory_validate.go",
+      "digest": "sha256:3d7c99400a7ed0c218059fa74805298efd60ad713e872753763324297b2eb8d5"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/inventory_validate.go",
+      "start": 1,
+      "end": 572,
+      "digest": "sha256:3d7c99400a7ed0c218059fa74805298efd60ad713e872753763324297b2eb8d5"
+    }
+  ]
+}

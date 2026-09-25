@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/cli.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:bed3da433d573e1669f9f0bb936fef361fc3ae23b5c989e3f3c3ddd5df7ad1b0"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/cli.go",
+      "start": 1220,
+      "end": 1221,
+      "digest": "sha256:4fedbc0a7017c2c38158e9e9b6b756ea4304cf6c293c4405fc6351ba39cde1b8"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/cli.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:30e8084c0109c47af920e4d97c6e421bed995c593e73814080371c48190ff2c8"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/cli.go",
+      "start": 101,
+      "end": 104,
+      "digest": "sha256:5e1d5a57948d085657b960b24ba1d1b6b571116c8e513ce199951fa07afba5dd"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/cli.go",
+      "start": 328,
+      "end": 331,
+      "digest": "sha256:e02d5f545124e85d3a04c60582b705b759b0114f282d4b3b7138f6a38543ba7c"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/cli.go",
+      "start": 1228,
+      "end": 1236,
+      "digest": "sha256:a5aabad0bff868e3f92d307c0222ff8433285171b46a0011144358874d444aa5"
+    }
+  ]
+}

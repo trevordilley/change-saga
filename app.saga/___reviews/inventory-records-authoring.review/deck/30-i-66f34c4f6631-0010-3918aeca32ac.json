@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "cli",
+  "slide": "ti-records-review-writers",
+  "rank": 10,
+  "kind": "region",
+  "label": "Public commands",
+  "description": "Adds data-entity, erd, erd-overlay and inventory adopt-format; resolves --delivery once to the canonical repository; binds --visual by digest; grammar and help list them.",
+  "selector": {
+    "type": "element",
+    "element_id": "cli"
+  }
+}

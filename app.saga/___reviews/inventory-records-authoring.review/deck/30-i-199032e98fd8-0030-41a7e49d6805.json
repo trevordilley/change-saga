@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "gaps",
+  "slide": "ti-records-review-proof",
+  "rank": 30,
+  "kind": "risk",
+  "label": "Not claimed",
+  "description": "Full race suite not passing (baseline help test); no reviewer-surface visual QA here; app.saga not adopted; companion-repo saved views; query, coverage and UI are sibling slices.",
+  "selector": {
+    "type": "element",
+    "element_id": "gaps"
+  }
+}

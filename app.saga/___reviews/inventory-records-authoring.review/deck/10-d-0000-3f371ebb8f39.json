@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "inventory-records-authoring",
+  "title": "Technical inventory records and authoring (format 2)",
+  "role": "review",
+  "rank": 0,
+  "objective": "Explain the exact da5101a6..a0cb6cbe change: the opt-in inventory format 2 records, validated public writers, and exact Item selections with saved-view pins."
+}
