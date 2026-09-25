@@ -374,6 +374,17 @@ test("a large ERD drawing zooms and pans by toolbar, keyboard, mouse and touch",
   await page.keyboard.press("Escape");
   await expect(drawn).toBeFocused();
 
+  // A bound entity stays clickable at every zoom level, fitted and zoomed in.
+  for (const zoomSteps of [0, 4]) {
+    await fitButton.click();
+    for (let i = 0; i < zoomSteps; i++) await toolbar.getByRole("button", { name: "Zoom in" }).click();
+    await drawn.scrollIntoViewIfNeeded();
+    await drawn.click();
+    await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", job.revision);
+    await page.keyboard.press("Escape");
+    await expect(page.locator(".diff-drawer")).not.toHaveClass(/open/);
+  }
+
   // Touch at 390px: large targets, the region pans, the page keeps its width.
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const narrow = await context.newPage();
