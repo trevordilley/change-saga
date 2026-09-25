@@ -226,6 +226,7 @@ it. The view tabs beside them belong to whichever side is open. */
 .directory-filter-go:hover{background:var(--bg-inset)}
 .directory-filter-clear{color:var(--muted);font-size:12px;text-decoration:none}
 .directory-filter-clear:hover{color:var(--accent)}
+.directory-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;background:linear-gradient(to right,var(--bg) 40%,transparent) left/28px 100% no-repeat local,linear-gradient(to left,var(--bg) 40%,transparent) right/28px 100% no-repeat local,radial-gradient(farthest-side at 0 50%,color-mix(in srgb,var(--ink) 16%,transparent),transparent) left/10px 100% no-repeat scroll,radial-gradient(farthest-side at 100% 50%,color-mix(in srgb,var(--ink) 16%,transparent),transparent) right/10px 100% no-repeat scroll}
 .directory-table{width:100%;border-collapse:collapse;font:13px/1.45 var(--ui);table-layout:auto}
 .directory-table caption{caption-side:top;margin-bottom:6px;color:var(--faint);font:11px var(--mono);text-align:left}
 .directory-table th,.directory-table td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:break-word}

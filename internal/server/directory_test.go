@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"net/http"
 	"strings"
 	"testing"
@@ -155,5 +156,33 @@ func TestTheOverviewNamesItsPartsWithTheirCounts(t *testing.T) {
 	// An empty part states its growth and the command, never a failure.
 	if !strings.Contains(body, "No feature flags yet. Run change-saga flag add") {
 		t.Fatal("an empty overview part must state the command that fills it")
+	}
+}
+
+// A table wider than a phone scrolls inside a named, focusable region, so the
+// page itself keeps the device's width and a keyboard reader can still reach
+// every column. The table inside keeps its caption and header semantics.
+func TestDirectoryTableScrollsInsideItsOwnRegion(t *testing.T) {
+	tmpl, err := newPageTemplate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	view := &directoryView{ID: "features", Title: "Features", Action: "/features", Label: "Filter features", Noun: "feature", Nouns: "features",
+		Columns: []directoryColumn{{Title: "Feature"}, {Title: "Stories", Numeric: true}}}
+	view.addRow(directoryRow{Key: "wide", Cells: []directoryCell{linkCell("Wide", "/features/wide"), countCell(3)}})
+	var rendered bytes.Buffer
+	if err := tmpl.ExecuteTemplate(&rendered, "directory", view); err != nil {
+		t.Fatal(err)
+	}
+	body := rendered.String()
+	region := `<div class="directory-scroll" role="region" aria-label="Features" tabindex="0" data-directory-scroll><table class="directory-table" id="features-table"><caption data-directory-caption>`
+	if !strings.Contains(body, region) {
+		t.Fatalf("the table does not scroll inside a named, focusable region:\n%s", body)
+	}
+	if !strings.Contains(body, `</tbody></table></div><p class="directory-none"`) {
+		t.Fatalf("the scroll region must hold only the table, not the filter or its status:\n%s", body)
+	}
+	if !strings.Contains(pageStyles, ".directory-scroll{max-width:100%;overflow-x:auto") {
+		t.Fatal("the directory scroll region has no horizontal overflow rule")
 	}
 }
