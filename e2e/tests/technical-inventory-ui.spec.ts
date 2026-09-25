@@ -302,3 +302,90 @@ test("an authored ERD and an Item's exact selection open the same pinned definit
   expect(coverage).toContain("data-owner-inherited");
   expect(coverage).toContain("selected via Store (greet-only)");
 });
+
+// A real application ERD is far larger than the content column. Its page
+// takes the full width, and the drawing zooms and pans inside its own region
+// by toolbar, keyboard, mouse drag and touch, without widening the page.
+test("a large ERD drawing zooms and pans by toolbar, keyboard, mouse and touch", async ({ browser, page, saga }) => {
+  const run = (...args: string[]) => {
+    const result = runCLI(saga, args, saga.sagaRepo);
+    expect(result.status, args.join(" ") + "\n" + result.stdout + result.stderr).toBe(0);
+  };
+  const json = (name: string, value: unknown) => {
+    const path = join(saga.root, name);
+    writeFileSync(path, typeof value === "string" ? value : JSON.stringify(value));
+    return path;
+  };
+  const job = { target: prefix + "data-entity:job", revision: prefix + "data-entity:job:revision:r1" };
+  run("inventory", "adopt-format", "--format", "2", saga.sagaRoot);
+  run("data-entity", "add", "--id", "job", "--from", json("job.json", { name: "PDF job", explanation: "Queued payload.", intent: "proposed", baseline: "none" }), "--repo", saga.sourceRepo, saga.sagaRoot);
+  const svg = json("large.svg", `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1600" width="1600" height="1600"><rect width="1600" height="1600" fill="white"/><g id="job"><rect x="1300" y="1300" width="260" height="200" fill="white" stroke="black"/><text x="1320" y="1400" font-size="18">PDF job</text></g></svg>`);
+  run("erd", "add", "--id", "application", "--from", json("erd.json", { name: "Application data", explanation: "Authored overview.", directory: [job], bindings: [{ id: "job", element: "job", entity: job }] }),
+    "--visual", svg, "--repo", saga.sourceRepo, saga.sagaRoot);
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto(saga.baseURL + "/technical/erd");
+  await waitForSettledSaga(page);
+  await expect(page.locator(".technical-erd-page")).toHaveCount(1);
+  const toolbar = page.getByRole("toolbar", { name: "Application data zoom" });
+  const viewport = page.getByRole("region", { name: /^Application data diagram/ });
+  const level = toolbar.locator("[data-erd-zoom-level]");
+  const fitButton = toolbar.getByRole("button", { name: "Fit width" });
+  await expect(toolbar).toBeVisible();
+  await expect(fitButton).toHaveAttribute("aria-pressed", "true");
+  const widths = () => viewport.evaluate(element => ({ region: element.clientWidth, content: element.scrollWidth, page: document.documentElement.scrollWidth, inner: innerWidth }));
+  // Fitted, the whole drawing's width is in view.
+  const fitted = await widths();
+  expect(fitted.content).toBeLessThanOrEqual(fitted.region + 1);
+  const fittedLevel = await level.textContent();
+
+  // Toolbar: zooming in makes the drawing wider than its region, never the page.
+  await toolbar.getByRole("button", { name: "Zoom in" }).click();
+  await toolbar.getByRole("button", { name: "Zoom in" }).click();
+  await expect(level).not.toHaveText(fittedLevel!);
+  await expect(fitButton).toHaveAttribute("aria-pressed", "false");
+  const zoomed = await widths();
+  expect(zoomed.content).toBeGreaterThan(zoomed.region);
+  expect(zoomed.page).toBeLessThanOrEqual(zoomed.inner);
+
+  // Mouse: dragging pans the region and does not open what it started on.
+  await viewport.evaluate(element => { element.scrollLeft = 0; element.scrollTop = 0; });
+  const box = (await viewport.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 - 200, box.y + box.height / 2 - 150, { steps: 8 });
+  await page.mouse.up();
+  expect(await viewport.evaluate(element => element.scrollLeft)).toBeGreaterThan(100);
+  await expect(page.locator(".diff-drawer")).not.toHaveClass(/open/);
+
+  // Keyboard: the region is focusable; 0 fits the width, + zooms in again, and
+  // the bound entity is still reached with Tab and opens with Enter.
+  await viewport.focus();
+  await page.keyboard.press("0");
+  await expect(fitButton).toHaveAttribute("aria-pressed", "true");
+  await expect(level).toHaveText(fittedLevel!);
+  await page.keyboard.press("+");
+  await expect(fitButton).toHaveAttribute("aria-pressed", "false");
+  await page.keyboard.press("Tab");
+  const drawn = viewport.locator(`svg [id$="-job"]`);
+  await expect(drawn).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", job.revision);
+  await page.keyboard.press("Escape");
+  await expect(drawn).toBeFocused();
+
+  // Touch at 390px: large targets, the region pans, the page keeps its width.
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const narrow = await context.newPage();
+  await narrow.goto(saga.baseURL + "/technical/erd/application");
+  await waitForSettledSaga(narrow);
+  const zoomIn = narrow.getByRole("button", { name: "Zoom in" });
+  expect((await zoomIn.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  await zoomIn.tap();
+  await zoomIn.tap();
+  const region = narrow.getByRole("region", { name: /^Application data diagram/ });
+  await region.evaluate(element => { element.scrollLeft = element.scrollWidth; });
+  expect(await region.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+  expect(await narrow.evaluate(() => [window.innerWidth, document.documentElement.scrollWidth])).toEqual([390, 390]);
+  await context.close();
+});

@@ -2495,8 +2495,87 @@ const appJavaScript = `(() => {
   // An authored ERD is inlined as drawn. Only the elements its bindings name
   // become controls, each opening the same pinned definition its directory
   // row opens. Nothing here reads the drawing's geometry.
+  // A drawing wider than the column opens fitted to its width, readable or
+  // not; the toolbar, the + - 0 keys and dragging with a mouse zoom and pan
+  // it inside its own scroll region, which touch pans natively. Zoom keeps
+  // the point at the centre of the region where it was.
+  function prepareERDZoom(figure) {
+    const viewport = q('[data-erd-viewport]', figure);
+    const svg = viewport && q('svg', viewport);
+    const bar = q('[data-erd-zoom]', figure);
+    if (!svg || !bar || viewport.dataset.erdZoomReady) return;
+    viewport.dataset.erdZoomReady = 'true';
+    const natural = svg.viewBox?.baseVal?.width || Number(svg.getAttribute('width')) || svg.getBoundingClientRect().width || 1;
+    const level = q('[data-erd-zoom-level]', bar);
+    const fitButton = q('[data-erd-zoom-fit]', bar);
+    const [zoomOut, zoomIn] = [q('[data-erd-zoom-step="-1"]', bar), q('[data-erd-zoom-step="1"]', bar)];
+    const minimum = () => Math.min(fit(), 0.5), maximum = 4;
+    const fit = () => Math.max(viewport.clientWidth, 1) / natural;
+    let scale = null;
+    const current = () => scale ?? fit();
+    function show() {
+      const shown = current();
+      level.textContent = Math.round(shown * 100) + '%';
+      fitButton.setAttribute('aria-pressed', String(scale === null));
+      zoomOut.disabled = shown <= minimum() + 1e-6;
+      zoomIn.disabled = shown >= maximum - 1e-6;
+    }
+    function zoom(next) {
+      const before = current();
+      const centreX = (viewport.scrollLeft + viewport.clientWidth / 2) / before;
+      const centreY = (viewport.scrollTop + viewport.clientHeight / 2) / before;
+      scale = next === null ? null : Math.min(maximum, Math.max(minimum(), next));
+      svg.style.width = scale === null ? '' : Math.round(natural * scale) + 'px';
+      const after = current();
+      viewport.scrollLeft = centreX * after - viewport.clientWidth / 2;
+      viewport.scrollTop = centreY * after - viewport.clientHeight / 2;
+      show();
+    }
+    const step = direction => zoom(current() * (direction > 0 ? 1.25 : 0.8));
+    zoomOut.addEventListener('click', () => step(-1));
+    zoomIn.addEventListener('click', () => step(1));
+    fitButton.addEventListener('click', () => zoom(null));
+    viewport.addEventListener('keydown', event => {
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
+      if (event.key === '+' || event.key === '=') step(1);
+      else if (event.key === '-' || event.key === '_') step(-1);
+      else if (event.key === '0') zoom(null);
+      else return;
+      event.preventDefault();
+    });
+    // A mouse drags the drawing; a drag never also opens what it started on.
+    let drag = null, suppressClick = false;
+    viewport.addEventListener('pointerdown', event => {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      drag = {x: event.clientX, y: event.clientY, left: viewport.scrollLeft, top: viewport.scrollTop, moved: false, id: event.pointerId};
+    });
+    viewport.addEventListener('pointermove', event => {
+      if (!drag || event.pointerId !== drag.id) return;
+      const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+      if (!drag.moved && Math.hypot(dx, dy) < 4) return;
+      if (!drag.moved) { drag.moved = true; viewport.classList.add('erd-dragging'); viewport.setPointerCapture(event.pointerId); }
+      viewport.scrollLeft = drag.left - dx;
+      viewport.scrollTop = drag.top - dy;
+    });
+    const endDrag = () => {
+      if (drag?.moved) { suppressClick = true; setTimeout(() => { suppressClick = false; }, 0); }
+      viewport.classList.remove('erd-dragging');
+      drag = null;
+    };
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    viewport.addEventListener('click', event => {
+      if (!suppressClick) return;
+      event.preventDefault();
+      event.stopPropagation();
+    }, true);
+    addEventListener('resize', show);
+    bar.hidden = false;
+    show();
+  }
   function bindERDVisuals(root = document) {
     for (const figure of within(root, '[data-erd-visual]')) {
+      prepareERDZoom(figure);
       for (const binding of within(figure, '[data-erd-bindings] [data-erd-element]')) {
         const element = [...figure.querySelectorAll('svg [id]')].find(candidate => candidate.id === binding.dataset.erdElement);
         if (!element || element.dataset.erdBound) continue;
