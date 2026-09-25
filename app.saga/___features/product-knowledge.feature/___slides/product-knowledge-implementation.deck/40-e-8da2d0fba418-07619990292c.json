@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fb823403e0be9d5c33979463c3b39a388167187",
+      "path": "e2e/tests/directory-width.spec.ts",
+      "start": 1,
+      "end": 111,
+      "digest": "sha256:03d4f476e73fea2d544eacc4d0672b9e542536f5a98b190f3dde64fef3663992",
+      "note": "The browser spec opens six directories at a 390px touch viewport (the Technical design one on its Components page) and at 1440px: page width, region naming, in-place scrolling and keyboard scrolling."
+    }
+  ]
+}

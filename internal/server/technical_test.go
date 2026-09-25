@@ -84,8 +84,8 @@ func TestTechnicalDesignPageListsDefinitionsWithoutInferringIntent(t *testing.T)
 			t.Fatalf("systems page lost %s: %d %s", want, status, body)
 		}
 	}
-	if strings.Contains(body, `data-technical-kind="component"`) {
-		t.Fatal("systems page lists Components")
+	if strings.Contains(body, `data-technical-kind="component"`) || strings.Contains(body, `technical-area-page technical-erd-page"`) {
+		t.Fatal("systems page lists Components or takes the ERD page's full width")
 	}
 	status, body = technicalGet(t, mux, "/technical/components")
 	for _, want := range []string{`data-technical-kind="component"`, `href="/technical/component/store"`, "FlagStore", `action="/technical/components"`} {

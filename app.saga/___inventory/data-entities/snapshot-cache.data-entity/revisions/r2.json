@@ -1,0 +1,88 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:data-entity:snapshot-cache",
+  "parents": [
+    "urn:change-saga:change-saga:data-entity:snapshot-cache:revision:r1"
+  ],
+  "name": "Reviewer snapshot cache",
+  "explanation": "Derived and disposable, persisted outside the Saga in the user cache directory: generations of the loaded document, comparison and coverage, keyed by the Saga path, a fingerprint of the Saga tree and the exact source comparison. Deleting it only costs time.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8"
+  },
+  "code": [
+    {
+      "id": "rules",
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "path": "internal/snapshotcache/snapshotcache.go",
+      "start": 1,
+      "end": 33,
+      "digest": "sha256:f705d3b6afb4257f36158427a2e5cffc6a3425f1ac80e9d683aa29df61a2415d",
+      "note": "The four cache rules: fingerprint keys, atomic creation, disposability, never inside a Saga."
+    },
+    {
+      "id": "key",
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "path": "internal/snapshotcache/snapshotcache.go",
+      "start": 71,
+      "end": 83,
+      "digest": "sha256:9b95ce885536de98204a4aaac0791915f3fc47d206d7561945e44e4bcc52a0fa",
+      "note": "Key: Saga path, tree and source fingerprints."
+    }
+  ],
+  "fields": [
+    {
+      "id": "key",
+      "name": "saga · tree · source",
+      "type": "fingerprints",
+      "keys": [
+        "primary"
+      ],
+      "note": "Changed inputs address a new generation; nothing is invalidated."
+    },
+    {
+      "id": "generation",
+      "name": "generation directory",
+      "type": "files",
+      "note": "Published atomically by rename."
+    }
+  ],
+  "relationships": [
+    {
+      "id": "from-coverage",
+      "meaning": "production",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:coverage-report",
+        "revision": "urn:change-saga:change-saga:data-entity:coverage-report:revision:r2"
+      },
+      "label": "cached in",
+      "explanation": "The reviewer builds the comparison and its coverage once per input fingerprint and stores the derived index as a generation.",
+      "flow": "destination_to_owner",
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "snapshot",
+          "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+          "path": "internal/server/snapshot.go",
+          "start": 33,
+          "end": 38,
+          "digest": "sha256:b787b0c5eadb86477ab1698238b51827a71ded0861f4abf5436211b777c204fc",
+          "note": "The reviewer snapshot holds the document, the comparison and the coverage report."
+        },
+        {
+          "id": "build",
+          "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+          "path": "internal/server/snapshot.go",
+          "start": 241,
+          "end": 253,
+          "digest": "sha256:1c9c478237ace54aae76643989f1f0280fc74af36a167b66fad8bf82e9f52e9d",
+          "note": "A generation is built under the fingerprint key."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T15:40:28.427108Z"
+}

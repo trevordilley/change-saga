@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "go-tests",
+  "slide": "tdsz-review-proof",
+  "rank": 0,
+  "kind": "example",
+  "label": "Go markup tests",
+  "description": "The ERD page and an ERD's page carry the full-width class, the hidden toolbar and the focusable region; the Systems page stays in its column.",
+  "selector": {
+    "type": "element",
+    "element_id": "go-tests"
+  }
+}

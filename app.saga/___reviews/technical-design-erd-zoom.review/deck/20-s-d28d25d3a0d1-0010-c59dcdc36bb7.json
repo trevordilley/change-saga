@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "tdsz-review-proof",
+  "deck": "technical-design-erd-zoom",
+  "title": "How the zoom is checked",
+  "rank": 10,
+  "intent": "prove",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-d28d25d3a0d1-0010-c59dcdc36bb7.svg",
+  "takeaway": "Go tests pin the full-width, focusable markup; a browser test zooms and pans a 1600px drawing by every input without widening the page.",
+  "reading_order": [
+    "go-tests",
+    "browser",
+    "note"
+  ]
+}

@@ -187,11 +187,18 @@ func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	// One evaluator judges the document under every inputs below, and must
+	// agree with the one-shot evaluation each time: supplied heads never
+	// leak from one call into the next.
+	shared := NewRelationEvaluator(document)
 	evaluate := func(inputs StaleInputs) RelationCurrency {
 		t.Helper()
 		currencies := EvaluateRelations(document, inputs)
 		if len(currencies) != 1 || currencies[0].Relation != v5RelationURN {
 			t.Fatalf("currencies = %#v", currencies)
+		}
+		if reused := shared.Evaluate(document.Relations[0], inputs); !reflect.DeepEqual(reused, currencies[0]) {
+			t.Fatalf("reused evaluator = %#v, want %#v", reused, currencies[0])
 		}
 		return currencies[0]
 	}
@@ -246,6 +253,7 @@ func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 	if document, err = Load(root, "test"); err != nil {
 		t.Fatal(err)
 	}
+	shared = NewRelationEvaluator(document)
 	got = evaluate(current)
 	if got.Status != CurrencyStale || got.Current() || !reflect.DeepEqual(got.Reasons, []CurrencyReason{{Endpoint: "to", Code: ReasonCriterionStatementChanged, Pinned: v5StoryR1, Current: []string{"urn:change-saga:test:story:checkout:revision:r2"}, Message: "to criterion statement changed"}}) {
 		t.Fatalf("revised story = %#v", got)
@@ -257,6 +265,7 @@ func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 	if document, err = Load(root, "test"); err != nil {
 		t.Fatal(err)
 	}
+	shared = NewRelationEvaluator(document)
 	if got := evaluate(current); got.Status != CurrencySuperseded || got.Current() || len(got.Reasons) != 0 {
 		t.Fatalf("superseded = %#v", got)
 	}

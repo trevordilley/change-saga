@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/technical_erd.go",
+      "start": 473,
+      "end": 474,
+      "digest": "sha256:4001539641c24352f47288d7026f5e187c703805c439bcfb91ab4e4a099299c3",
+      "note": "Added: ERD pages lift the 940px cap; the ERD's explanation keeps a readable measure."
+    }
+  ]
+}

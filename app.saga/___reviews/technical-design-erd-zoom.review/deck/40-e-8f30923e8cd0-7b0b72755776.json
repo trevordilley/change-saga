@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/technical_erd_test.go",
+      "start": 90,
+      "end": 93,
+      "digest": "sha256:68e940de1e7efbc433895adab7190050578f790d6bedf349f24e203855b7ffcf",
+      "note": "Asserts the full-width class, hidden toolbar and focusable region on ERD pages."
+    },
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/technical_erd_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:0253ce0f138924166799b5ea940532d1deecadca9332b8db5e2c47b36fb7eb0d",
+      "note": "Asserts the full-width class, hidden toolbar and focusable region on ERD pages."
+    }
+  ]
+}

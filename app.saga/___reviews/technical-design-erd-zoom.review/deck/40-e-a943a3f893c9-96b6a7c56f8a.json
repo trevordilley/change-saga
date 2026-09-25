@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 103,
+      "end": 110,
+      "digest": "sha256:819a06f0ce6b2fb1d9dd73d129420ae876ba6bc31a0214e4d1811f9da57bdb78",
+      "note": "The note's ERD pages bullet, test sentence and narrowed pinch gap."
+    },
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 153,
+      "end": 154,
+      "digest": "sha256:72a46901a1925768b9c354b33d5d5e12a59ae86e55c2b7d3ff331a2069c40e38",
+      "note": "The note's ERD pages bullet, test sentence and narrowed pinch gap."
+    },
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 167,
+      "end": 169,
+      "digest": "sha256:87faec0ee86de7a247c5e02e1350632f0cf0d7c64c85a28277d8a29a03fa7809",
+      "note": "The note's ERD pages bullet, test sentence and narrowed pinch gap."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:ece7ccb2bd2e35b663f70168ef349cfdedd6dc8b8de971e7cc6c489dcdec71c5",
+      "note": "The note's ERD pages bullet, test sentence and narrowed pinch gap."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "docs/technical-inventory-ui-implementation.md",
+      "start": 158,
+      "end": 159,
+      "digest": "sha256:5cf6e05e54a1d7fb808cac7f441ffae26034fe408f44278541fa8b3db004f866",
+      "note": "The note's ERD pages bullet, test sentence and narrowed pinch gap."
+    }
+  ]
+}

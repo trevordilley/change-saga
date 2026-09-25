@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 719,
+      "end": 719,
+      "digest": "sha256:6df8601b7a5dd84283ea38148069466fdfcd128289da8a9add98dbcd19833d81",
+      "note": "Replaced: the same templates without the full-width class."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 724,
+      "end": 724,
+      "digest": "sha256:4da9a1e8c35d5b8d62a0075dde9c6b68f8e53131edb18127e96720c23488e6b2",
+      "note": "Replaced: the same templates without the full-width class."
+    }
+  ]
+}

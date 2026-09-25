@@ -1,0 +1,70 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:data-entity:technical-definition",
+  "parents": [
+    "urn:change-saga:change-saga:data-entity:technical-definition:revision:r1"
+  ],
+  "name": "Technical definition",
+  "explanation": "A Component, System, data entity or ERD in ___inventory/: an immutable identity, append-only revisions (explanation, exact code, members, relationships, and in format 2 intent and delivery) and lifecycle events.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8"
+  },
+  "code": [
+    {
+      "id": "definition",
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "path": "internal/requirements/inventory.go",
+      "start": 123,
+      "end": 158,
+      "digest": "sha256:3823d38b3fcb082c422a8f22ee4a0abd5436a3d1181d16ecebe358258072aad0",
+      "note": "The authored definition and its revision envelope."
+    }
+  ],
+  "fields": [
+    {
+      "id": "id",
+      "name": "id",
+      "type": "string",
+      "keys": [
+        "primary"
+      ],
+      "note": "URN urn:change-saga:\u003csaga\u003e:\u003ckind\u003e:\u003cid\u003e."
+    },
+    {
+      "id": "revision",
+      "name": "revision id",
+      "type": "string",
+      "note": "Items and Systems pin an exact revision."
+    },
+    {
+      "id": "kind",
+      "name": "kind",
+      "type": "component | system | data-entity | erd | erd-overlay"
+    },
+    {
+      "id": "intent",
+      "name": "intent",
+      "type": "proposed | implemented",
+      "note": "Legacy revisions read as unspecified."
+    },
+    {
+      "id": "delivery",
+      "name": "delivery.commit",
+      "type": "commit"
+    }
+  ],
+  "holders": [
+    {
+      "component": {
+        "target": "urn:change-saga:change-saga:component:technical-record-store",
+        "revision": "urn:change-saga:change-saga:component:technical-record-store:revision:r3"
+      },
+      "role": "Loads the bounded immutable records and appends new revisions under the Saga lock."
+    }
+  ],
+  "created_at": "2026-09-25T15:40:23.859673Z"
+}

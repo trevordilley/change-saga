@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "7fb823403e0be9d5c33979463c3b39a388167187",
+      "path": "internal/server/technical.go",
+      "start": 720,
+      "end": 721,
+      "digest": "sha256:f2f5538b429fd7b7ee8823bf3f709df29ffa2ca86483414e88b5dce0c696bf67",
+      "note": "Technical design's Systems and Components pages and the ERD page's data-entity table render through the shared directory template."
+    }
+  ]
+}

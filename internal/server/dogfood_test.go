@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -48,27 +49,44 @@ func requireDogfoodSaga(t *testing.T) {
 	}
 }
 
+// dogfoodServer is one reviewer observing HEAD of the repository's app Saga,
+// shared by every dogfood request as a running server is shared by a
+// reviewer's requests. Its caches are keyed on what they read, so a warm
+// cache serves exactly what a cold one would build; sharing it only stops
+// each request from rebuilding the derived indexes of the whole Saga.
+var dogfoodServer struct {
+	once    sync.Once
+	handler http.Handler
+	err     error
+}
+
 // dogfoodPage renders one reviewer path of the repository's app Saga,
 // observing HEAD.
 func dogfoodPage(t *testing.T, path string) (int, string) {
 	t.Helper()
 	requireDogfoodSaga(t)
-	tmpl, err := newPageTemplateFor(gitdiff.Range{})
-	if err != nil {
-		t.Fatal(err)
+	dogfoodServer.once.Do(func() {
+		tmpl, err := newPageTemplateFor(gitdiff.Range{})
+		if err != nil {
+			dogfoodServer.err = err
+			return
+		}
+		dogfoodServer.handler = newMux(&app{root: dogfoodSaga, sourceDir: filepath.Join("..", ".."), template: tmpl})
+	})
+	if dogfoodServer.err != nil {
+		t.Fatal(dogfoodServer.err)
 	}
-	application := &app{root: dogfoodSaga, sourceDir: filepath.Join("..", ".."), template: tmpl}
 	recorder := httptest.NewRecorder()
-	newMux(application).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+	dogfoodServer.handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
 	return recorder.Code, recorder.Body.String()
 }
 
-// dogfoodSidebar is the Contents navigation of one rendered page. The sidebar
-// shows one feature at a time, so a row that belongs to a feature is asserted on a
-// page inside that feature rather than on the app overview.
-func dogfoodSidebar(t *testing.T, path string) string {
+// pageSidebar is the Contents navigation of page, already rendered at path.
+// The sidebar shows one feature at a time, so a row that belongs to a feature
+// is asserted on a page inside that feature rather than on the app overview.
+func pageSidebar(t *testing.T, path, page string) string {
 	t.Helper()
-	_, rest, ok := strings.Cut(dogfoodOK(t, path), `<nav class="doc-tree"`)
+	_, rest, ok := strings.Cut(page, `<nav class="doc-tree"`)
 	if !ok {
 		t.Fatalf("GET %s rendered no sidebar", path)
 	}
@@ -251,7 +269,7 @@ func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 			}
 			// The feature's own page is where its chapters are in the sidebar:
 			// that page's feature is the one the sidebar shows.
-			if !strings.Contains(dogfoodSidebar(t, href), `href="`+href+`#`+domID(chapter.Target)+`"`) {
+			if !strings.Contains(pageSidebar(t, href, page), `href="`+href+`#`+domID(chapter.Target)+`"`) {
 				t.Fatalf("the sidebar does not open %s on its feature's page", chapter.ID)
 			}
 		}
@@ -270,14 +288,14 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 		href := testCaseHref(testCase.Identity.ID)
 		// Quality lists the test cases of the feature the sidebar shows, so the
 		// row is asserted on the test case's own page.
-		sidebar := dogfoodSidebar(t, href)
+		page := dogfoodOK(t, href)
+		sidebar := pageSidebar(t, href, page)
 		if strings.Contains(sidebar, "no test cases yet") {
 			t.Fatalf("the feature of %s still says it has no test cases", href)
 		}
 		if !strings.Contains(sidebar, `href="`+href+`"`) {
 			t.Fatalf("the sidebar does not list %s", href)
 		}
-		page := dogfoodOK(t, href)
 		for _, want := range []string{"data-test-definition", "data-test-verifies", "data-test-evidence", "data-test-runs", template.HTMLEscapeString(testCase.CurrentRevision.Title)} {
 			if !strings.Contains(page, want) {
 				t.Fatalf("%s lacks %q", href, want)
@@ -316,6 +334,9 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 // criterion has its own traceability view; the sidebar names stories by
 // title, not by ordinal.
 func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
+	// It only reads the shared dogfood server, which serves concurrent
+	// requests as a reviewer's server does, so it runs beside the others.
+	t.Parallel()
 	document, records, _ := dogfoodRecords(t)
 	graph := newAppGraph(document, records, quality.Document{})
 	for _, story := range records.Stories {
@@ -326,7 +347,7 @@ func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
 		page := dogfoodOK(t, href)
 		// A story's page shows that story's feature, so its Requirements row is
 		// in that page's own sidebar.
-		sidebar := dogfoodSidebar(t, href)
+		sidebar := pageSidebar(t, href, page)
 		if strings.Contains(sidebar, ">Story 0") || strings.Contains(sidebar, "Story 01 ·") {
 			t.Fatal("the sidebar still names stories by ordinal")
 		}
@@ -395,6 +416,9 @@ func TestRequirementsOverviewIsGroupedByFeature(t *testing.T) {
 // references code is a Saga → Code row whose code renders at the head, and
 // every referenced file is a Code → Saga row.
 func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
+	// It only reads the shared dogfood server, which serves concurrent
+	// requests as a reviewer's server does, so it runs beside the others.
+	t.Parallel()
 	requireDogfoodSaga(t)
 	document, _, err := saga.Load(dogfoodSaga)
 	if err != nil {
@@ -417,6 +441,9 @@ func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
 	if !strings.Contains(sagaToCode, "data-observe-coverage") {
 		t.Fatal("observing did not render the documented-code coverage")
 	}
+	// Code → Saga is one page for the whole Saga; every Item is checked
+	// against the same rendering.
+	codeToSaga := dogfoodOK(t, "/api/coverage?mode=code")
 	for _, item := range items {
 		if !strings.Contains(sagaToCode, `data-observe-target="`+item.Target+`"`) {
 			t.Fatalf("Saga → Code lacks the Item %s", item.Target)
@@ -425,7 +452,6 @@ func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
 		if !strings.Contains(code, "data-reference-code") || !strings.Contains(code, "<code data-code>") {
 			t.Fatalf("the Item %s rendered no code", item.Target)
 		}
-		codeToSaga := dogfoodOK(t, "/api/coverage?mode=code")
 		for _, file := range item.Code {
 			for _, reference := range file.References {
 				if !strings.Contains(codeToSaga, `data-observe-file="`+reference.Path+`"`) && !strings.Contains(sagaToCode, "stale") {
@@ -469,6 +495,9 @@ func TestComparedCoverageLineRetriesWhileTheComparisonBuilds(t *testing.T) {
 // The documentation carries no approval or comment control on any page,
 // including the new ones; only a review's slides do.
 func TestDocumentationPagesHaveNoApprovalOrCommentControls(t *testing.T) {
+	// It only reads the shared dogfood server, which serves concurrent
+	// requests as a reviewer's server does, so it runs beside the others.
+	t.Parallel()
 	document, records, tests := dogfoodRecords(t)
 	paths := []string{"/", "/requirements", "/terms"}
 	for _, story := range records.Stories {

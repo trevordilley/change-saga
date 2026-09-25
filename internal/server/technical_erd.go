@@ -449,15 +449,29 @@ const technicalERDTemplates = `
 {{define "erd-view"}}<div class="erd-view" id="{{.DOMID}}" data-erd-view="{{.Target}}" data-erd-revision="{{.Revision}}">
 {{if .BaselineHref}}<p class="erd-overlay-note">Proposed changes over <a href="{{.BaselineHref}}">{{.BaselineName}}</a>{{if .Feature}} for <a href="{{.FeatureHref}}">{{.Feature}}</a>{{end}}. The baseline ERD is not rewritten.</p>{{end}}
 {{if .VisualNote}}<p role="status" class="gap" data-erd-visual-note>{{.VisualNote}}</p>{{end}}
-{{if .Visual}}<figure class="erd-visual" data-erd-visual aria-label="{{.Name}}: authored diagram; the directory below lists every entity.">{{.Visual}}<ul hidden data-erd-bindings>{{range .Bindings}}<li data-erd-element="{{.Element}}" data-erd-target="{{.Pin.Target}}" data-erd-pin="{{.Pin.Revision}}"{{if .Relationship}} data-erd-relationship="{{.Relationship}}"{{end}} data-erd-intent="{{.Intent}}" data-erd-status="{{.Status}}">{{.Label}}</li>{{end}}</ul><figcaption>Select a drawn entity or relationship to open its pinned definition. {{.Drawn}} of {{len .Directory}} directory {{if eq (len .Directory) 1}}entity is{{else}}entities are{{end}} drawn{{if .Omitted}}; {{.Omitted}} {{if eq .Omitted 1}}is{{else}}are{{end}} in the directory but not drawn{{end}}.</figcaption></figure>{{end}}
+{{if .Visual}}<figure class="erd-visual" data-erd-visual aria-label="{{.Name}}: authored diagram; the directory below lists every entity."><div class="erd-zoom" role="toolbar" aria-label="{{.Name}} zoom" data-erd-zoom hidden><button type="button" class="erd-zoom-button" data-erd-zoom-step="-1" aria-label="Zoom out" title="Zoom out (-)">−</button><output class="erd-zoom-level" data-erd-zoom-level aria-live="polite">Fit</output><button type="button" class="erd-zoom-button" data-erd-zoom-step="1" aria-label="Zoom in" title="Zoom in (+)">+</button><button type="button" class="erd-zoom-button erd-zoom-fit" data-erd-zoom-fit aria-pressed="true" title="Fit width (0)">Fit width</button></div><div class="erd-viewport" data-erd-viewport tabindex="0" role="region" aria-label="{{.Name}} diagram. Scroll or drag to pan; plus and minus zoom, zero fits the width.">{{.Visual}}</div><ul hidden data-erd-bindings>{{range .Bindings}}<li data-erd-element="{{.Element}}" data-erd-target="{{.Pin.Target}}" data-erd-pin="{{.Pin.Revision}}"{{if .Relationship}} data-erd-relationship="{{.Relationship}}"{{end}} data-erd-intent="{{.Intent}}" data-erd-status="{{.Status}}">{{.Label}}</li>{{end}}</ul><figcaption>Select a drawn entity or relationship to open its pinned definition. {{.Drawn}} of {{len .Directory}} directory {{if eq (len .Directory) 1}}entity is{{else}}entities are{{end}} drawn{{if .Omitted}}; {{.Omitted}} {{if eq .Omitted 1}}is{{else}}are{{end}} in the directory but not drawn{{end}}.</figcaption></figure>{{end}}
 <h3>Entity directory</h3><table class="directory-table erd-directory" data-erd-directory><thead><tr><th scope="col">Data entity</th><th scope="col">Intent</th><th scope="col">In the diagram</th><th scope="col">Held by</th><th scope="col" class="wide">Purpose</th></tr></thead><tbody>{{range .Directory}}<tr data-erd-directory-row="{{.Pin.Target}}" data-erd-row-pin="{{.Pin.Revision}}"{{if .Change}} data-overlay-change="{{.Change}}"{{end}}><th scope="row">{{if .Href}}<a href="{{.Href}}">{{.Name}}</a>{{else}}{{.Name}}{{end}}{{if .Pin.Revision}} <button type="button" class="icon-button" data-documentation-target="{{.Pin.Target}}" data-documentation-revision="{{.Pin.Revision}}" aria-label="Open {{.Name}} explanation" title="Open explanation"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></button>{{end}}{{if eq .Change "adds"}} <small class="technical-change">added by this overlay</small>{{else if eq .Change "replaces"}} <small class="technical-change">proposed revision replacing {{.ChangeNote}}</small>{{else if eq .Change "removes"}} <small class="technical-change">proposed removal: {{.ChangeNote}}</small>{{end}}{{if and (ne .Status "current") (ne .Change "removes")}} <small class="gap">{{.Status}}</small>{{end}}</th><td><span class="technical-intent intent-{{.Intent}}">{{.Intent}}</span></td><td>{{if .Elements}}drawn{{else}}<span class="directory-gap">not drawn</span>{{end}}</td><td>{{range $i, $h := .Holders}}{{if $i}}, {{end}}{{$h}}{{else}}<span class="directory-gap">none named</span>{{end}}</td><td>{{.Explanation}}</td></tr>{{end}}</tbody></table>
 {{if .Relationships}}<h3>Relationships</h3><ul class="relationship-list">{{range .Relationships}}{{template "relationship-row" .}}{{end}}</ul>{{end}}
 </div>{{end}}
 `
 
 const technicalERDStyles = `
-.erd-visual{margin:12px 0;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);overflow:auto}
-.erd-visual>svg{display:block;width:100%;height:auto;max-width:1200px}
+.erd-visual{margin:12px 0;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);min-width:0}
+.erd-viewport{overflow:auto;max-height:min(80vh,1400px);overscroll-behavior:contain;cursor:grab}
+.erd-viewport:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.erd-viewport.erd-dragging{cursor:grabbing;user-select:none}
+.erd-viewport>svg{display:block;width:100%;height:auto;max-width:none}
+.erd-zoom{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 8px;font:500 13px var(--ui)}
+.erd-zoom[hidden]{display:none}
+.erd-zoom-button{min-width:32px;height:32px;padding:0 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:600 15px var(--ui);cursor:pointer}
+.erd-zoom-button:hover{background:var(--bg-inset)}
+.erd-zoom-button:disabled{color:var(--muted);cursor:default;opacity:.6}
+.erd-zoom-fit{font-size:13px}
+.erd-zoom-fit[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.erd-zoom-level{min-width:48px;text-align:center;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (pointer:coarse){.erd-zoom-button{min-width:44px;height:44px}}
+.technical-erd-page{max-width:none}
+.technical-erd-page .documentation-prose{max-width:72ch}
 .erd-visual figcaption{margin-top:6px;color:var(--muted);font:12px var(--ui)}
 .erd-visual [data-erd-bound]{cursor:pointer}
 .erd-visual [data-erd-bound]:hover,.erd-visual [data-erd-bound]:focus-visible,.erd-visual [data-erd-bound].erd-highlight{outline:3px solid var(--accent,#2f6fdd);outline-offset:2px}

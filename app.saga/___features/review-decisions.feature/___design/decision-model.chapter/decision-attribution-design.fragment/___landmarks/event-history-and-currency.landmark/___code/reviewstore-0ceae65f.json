@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "0864f8ff517748e12a5e422a917bb28eeef341cd",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 113,
-      "end": 154,
-      "digest": "sha256:9de1750d123a0b5a1430f7425f93578533e18fee87c2c81ed870978094b1b959",
+      "start": 117,
+      "end": 163,
+      "digest": "sha256:2e74d9b4a578653a0a438f9c3042024c0d281167d965558353aa3e92d3b6f974",
       "note": "Append-only storage, composite-seat latest projection, and independent currency calculation."
     },
     {

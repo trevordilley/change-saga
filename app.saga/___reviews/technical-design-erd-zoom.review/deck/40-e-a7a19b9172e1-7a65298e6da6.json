@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 305,
+      "end": 391,
+      "digest": "sha256:e708a5a4fc11b2b32c6e4d9ca90c3011827fa6c6df0b696c9e85f72301818d39",
+      "note": "The 1600px-drawing zoom and pan test by toolbar, drag, keys and touch."
+    }
+  ]
+}
