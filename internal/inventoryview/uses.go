@@ -163,8 +163,6 @@ func (ix *Index) Record(target string) *requirements.TechnicalRecord { return ix
 // not traversed further: a superseded System revision does not make its old
 // Item users users of the member.
 func (ix *Index) Uses(target string, o UseOptions) UsePage {
-	page := UsePage{Uses: []Use{}}
-	depth := min(max(o.Depth, 0), MaxDepth)
 	limit := o.Limit
 	if limit <= 0 {
 		limit = DefaultLimit
@@ -174,6 +172,24 @@ func (ix *Index) Uses(target string, o UseOptions) UsePage {
 	for _, r := range o.Roles {
 		roles[r] = true
 	}
+	all, page := ix.collect(target, o.Revision, o.Depth)
+	for _, u := range all {
+		if len(roles) == 0 || roles[u.Role] {
+			page.Uses = append(page.Uses, u)
+		}
+	}
+	page.Total = len(page.Uses)
+	start := min(max(o.Offset, 0), page.Total)
+	end := min(start+limit, page.Total)
+	page.Uses = page.Uses[start:end]
+	return page
+}
+
+// collect walks declared uses in deterministic order; the returned page has
+// its flags set and no Uses.
+func (ix *Index) collect(target, revision string, depth int) ([]Use, UsePage) {
+	page := UsePage{Uses: []Use{}}
+	depth = min(max(depth, 0), MaxDepth)
 	all := []Use{}
 	visits := 0
 	var walk func(pinTarget, pinRevision string, suffix []Pin, level int, onPath map[string]bool)
@@ -208,18 +224,9 @@ func (ix *Index) Uses(target string, o UseOptions) UsePage {
 			delete(onPath, u.Owner)
 		}
 	}
-	walk(target, o.Revision, nil, 0, map[string]bool{target: true})
-	for _, u := range all {
-		if len(roles) == 0 || roles[u.Role] {
-			page.Uses = append(page.Uses, u)
-		}
-	}
-	page.Total = len(page.Uses)
-	start := min(max(o.Offset, 0), page.Total)
-	end := min(start+limit, page.Total)
-	page.Uses = page.Uses[start:end]
+	walk(target, revision, nil, 0, map[string]bool{target: true})
 	page.Complete = !page.Truncated && !page.DepthCut && !page.CycleCut
-	return page
+	return all, page
 }
 
 // ImplementationUses reports direct and transitive implementation-deck uses of
@@ -227,4 +234,29 @@ func (ix *Index) Uses(target string, o UseOptions) UsePage {
 // caller must treat an incomplete page as unknown, never as zero uses.
 func (ix *Index) ImplementationUses(target string) UsePage {
 	return ix.Uses(target, UseOptions{Depth: MaxDepth, Limit: MaxLimit, Roles: []string{RoleImplementationItem}})
+}
+
+// UseCounts summarizes declared uses of any revision of a target. Counts of an
+// incomplete traversal are lower bounds and Complete is false.
+type UseCounts struct {
+	Implementation int  `json:"implementation_items"`
+	Review         int  `json:"review_items"`
+	Owners         int  `json:"technical_owners"`
+	Complete       bool `json:"complete"`
+}
+
+func (ix *Index) Counts(target string) UseCounts {
+	all, page := ix.collect(target, "", MaxDepth)
+	counts := UseCounts{Complete: page.Complete}
+	for _, u := range all {
+		switch u.Role {
+		case RoleImplementationItem:
+			counts.Implementation++
+		case RoleReviewItem:
+			counts.Review++
+		case RoleSystemMember:
+			counts.Owners++
+		}
+	}
+	return counts
 }

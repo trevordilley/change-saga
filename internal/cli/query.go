@@ -220,6 +220,7 @@ var queryOperations = []string{
 	"layers",
 	"history",
 	"inventory",
+	"inventory-uses",
 	"terms",
 	"term-references",
 }
@@ -229,7 +230,8 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
-	"inventory":           "Component/System definitions, pinned graph links, exact code health and optional selected-record history",
+	"inventory":           "Component/System definitions, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
+	"inventory-uses":      "declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness",
 	"schema":              "the response paths and pagination contract for a query operation; no saga is required",
 	"overview":            "saga identity, source comparison, coverage summary, and the top of the hierarchy",
 	"children":            "one level of children under a target; a fragment's children are its landmarks",
@@ -263,7 +265,8 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
-	"inventory":           "change-saga query inventory --saga PATH [--kind component|system] [--target URN [--history]] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
+	"inventory":           "change-saga query inventory --saga PATH [--kind component|system] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]",
+	"inventory-uses":      "change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member] [--cursor TOKEN] [--limit N]",
 	"":                    "change-saga query <operation> --saga PATH [--repo PATH] [--against REV [--head REV]] [operation flags]",
 	"schema":              "change-saga query schema <operation>",
 	"overview":            "change-saga query overview --saga PATH [--repo PATH] [--against REV [--head REV]]",
@@ -329,6 +332,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	}
 	if operation == "inventory" {
 		return queryInventory(ctx, args[1:], out)
+	}
+	if operation == "inventory-uses" {
+		return queryInventoryUses(ctx, args[1:], out)
 	}
 	if operation == "terms" {
 		if len(args) > 1 && isHelpArg(args[1]) {
@@ -510,7 +516,8 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"readiness":           {"data.summary", "data.requirements"},
 		"audit":               {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":             {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
-		"inventory":           {"data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history"},
+		"inventory":           {"data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history", "data.records[].selected", "data.records[].newness", "data.records[].scope_paths", "data.records[].uses", "data.records[].selected_code_health", "data.unresolved", "data.filters", "data.comparison", "data.scope", "data.completeness"},
+		"inventory-uses":      {"data.subject", "data.uses", "data.uses[].path", "data.completeness"},
 		"terms":               {"data.head_oid", "data.ref", "data.terms"},
 		"term-references":     {"data.subject", "data.references", "data.counts", "data.completeness"},
 		"layers":              {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
@@ -538,6 +545,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"traceability":        "data.criteria",
 		"readiness":           "data.requirements",
 		"inventory":           "data.records",
+		"inventory-uses":      "data.uses",
 		"terms":               "data.terms",
 		"term-references":     "data.references",
 	}
@@ -553,6 +561,14 @@ func querySchemaFor(operation string) querySchemaDescription {
 	description := querySchemaDescription{
 		Operation: operation, Purpose: queryPurpose[operation], Usage: queryUsage[operation],
 		DataPaths: append([]string(nil), paths[operation]...), Pagination: pagination,
+	}
+	if operation == "inventory" {
+		description.AdditionalPagination = []queryPaginationDescription{{
+			Kind: "cursor", CountedPath: "data.unresolved",
+			TotalPath: "data.completeness.unresolved_page.total", ReturnedPath: "data.completeness.unresolved_page.returned",
+			HasMorePath: "data.completeness.unresolved_page.has_more", NextCursorPath: "data.completeness.unresolved_page.next_cursor",
+			CursorFlag: "--conflict-cursor", LimitFlag: "--conflict-limit",
+		}}
 	}
 	if operation == "persona-references" || operation == "term-references" {
 		description.AdditionalPagination = []queryPaginationDescription{{
