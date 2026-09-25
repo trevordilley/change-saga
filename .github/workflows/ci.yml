@@ -62,17 +62,6 @@ jobs:
           cache: true
       - name: go vet
         run: go vet ./...
-      # DIAGNOSTIC ONLY (perf/windows-cli-tests): remove before merge.
-      - name: diag cli timings
-        if: runner.os == 'Windows'
-        shell: bash
-        run: |
-          go test -count=1 -json -timeout 30m ./internal/cli > "$RUNNER_TEMP/cli.json" || true
-          jq -r 'select(.Action=="fail") | "FAIL \(.Test)"' "$RUNNER_TEMP/cli.json"
-          jq -r 'select((.Action=="pass" or .Action=="fail") and .Test==null) | "PACKAGE \(.Elapsed)s"' "$RUNNER_TEMP/cli.json"
-          jq -r 'select((.Action=="pass" or .Action=="fail") and .Test!=null and (.Test|contains("/")|not)) | "\(.Elapsed) \(.Test)"' "$RUNNER_TEMP/cli.json" | sort -rn > "$RUNNER_TEMP/top.txt"
-          awk '{s+=$1} END {print "SUM top-level", s, "s over", NR, "tests"}' "$RUNNER_TEMP/top.txt"
-          head -80 "$RUNNER_TEMP/top.txt"
       - name: go test
         # The race-enabled server package is intentionally broad and can take
         # longer than Go's default 10-minute per-package timeout on shared CI
