@@ -1,10 +1,13 @@
 package server
 
 // Included in the existing local script's closure so drawer and annotation
-// integrations share one mutation path without a frontend dependency.
+// integrations share one mutation path without a frontend dependency. It is
+// made for each review page that arrives; its listener lives as long as the
+// page's scope does.
 const reviewAsyncJavaScript = `
-  const reviewAsync = (() => {
-    const deck = q('[data-review-deck]');
+  let reviewAsync = null;
+  function makeReviewAsync(signal) {
+    const deck = q('#page [data-review-deck]');
     if (!deck) return null;
     let pending = false, uncertain = false, revision = 0;
     const status = document.createElement('div');
@@ -132,7 +135,7 @@ const reviewAsyncJavaScript = `
       if(result.saved && form.contains(focusAtSubmit) && slideFor(target)?.classList.contains('active') && (document.activeElement===focusAtSubmit || document.activeElement===document.body)) {
         const details=form.closest('details'); (details && q('summary',details) || event.submitter)?.focus({preventScroll:true});
       }
-    });
+    }, {signal});
     return {post,apply,slideFor,announce};
-  }) ();
+  }
 `
