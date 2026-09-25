@@ -238,8 +238,17 @@ func TestReadObjectMatchesCatFile(t *testing.T) {
 			t.Fatalf("ReadObject(%q) = %q, %q, %v; want %q, %q", name, gotType, got, ok, wantType, want)
 		}
 	}
-	if gotType, _, ok := ReadObject(ctx, repo, commits[0]+":absent"); !ok || gotType != "missing" {
-		t.Fatalf("ReadObject of an absent path = %q, %v; want missing", gotType, ok)
+	for _, name := range []string{commits[0] + ":absent", commits[0] + ":name with spaces"} {
+		if gotType, _, ok := ReadObject(ctx, repo, name); !ok || gotType != "missing" {
+			t.Fatalf("ReadObject(%q) = %q, %v; want missing", name, gotType, ok)
+		}
+	}
+	// Revisions and objects share one cat-file process per repository.
+	if _, ok := ResolveCommit(ctx, repo, "HEAD"); !ok {
+		t.Fatal("ResolveCommit failed after reads")
+	}
+	if got := len(sessionFrom(ctx).batches); got != 1 {
+		t.Fatalf("the session runs %d cat-file processes for one repository; want 1", got)
 	}
 	if _, _, ok := ReadObject(context.Background(), repo, commits[0]); ok {
 		t.Fatal("ReadObject answered without a session")

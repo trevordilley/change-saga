@@ -141,19 +141,27 @@ func ResolveCommit(ctx context.Context, repo, revision string) (string, bool) {
 	if session == nil || revision == "" || strings.ContainsAny(revision, "\n\r\x00") || len(revision) > maxRequest {
 		return "", false
 	}
-	process := session.batchFor([]string{"-C", repo, "cat-file", "--batch-check=%(objectname) %(objecttype)"}, false)
+	process := session.batchFor(objectsArgs(repo), false)
 	if process == nil {
 		return "", false
 	}
-	answer, err := process.roundTrip(ctx, revision+"^{commit}\n", readLine)
+	answer, err := process.roundTrip(ctx, "info "+revision+"^{commit}\n", readLine)
 	if err != nil {
 		return "", false
 	}
 	fields := strings.Fields(string(answer))
-	if len(fields) != 2 || fields[1] != "commit" || !IsObjectName(fields[0]) {
+	if len(fields) != 3 || fields[1] != "commit" || !IsObjectName(fields[0]) {
 		return "", false
 	}
 	return fields[0], true
+}
+
+// objectsArgs is the one cat-file process a session keeps per repository for
+// both revision lookups (info) and object reads (contents). --batch-command
+// needs Git 2.36; an older Git fails the first request, and the session
+// retires the invocation and falls back to one-shot commands.
+func objectsArgs(repo string) []string {
+	return []string{"-C", repo, "cat-file", "--batch-command=%(objectname) %(objecttype) %(objectsize)"}
 }
 
 // DiffTree returns what `git diff <from> <to>` prints for two commits, read
@@ -188,21 +196,22 @@ func ReadObject(ctx context.Context, repo, name string) (string, []byte, bool) {
 	if session == nil || name == "" || strings.ContainsAny(name, "\n\r\x00") || len(name) > maxRequest {
 		return "", nil, false
 	}
-	process := session.batchFor([]string{"-C", repo, "cat-file", "--batch"}, false)
+	process := session.batchFor(objectsArgs(repo), false)
 	if process == nil {
 		return "", nil, false
 	}
 	var objectType string
-	content, err := process.roundTrip(ctx, name+"\n", func(reader *bufio.Reader) ([]byte, error) {
+	content, err := process.roundTrip(ctx, "contents "+name+"\n", func(reader *bufio.Reader) ([]byte, error) {
 		header, err := reader.ReadString('\n')
 		if err != nil {
 			return nil, err
 		}
-		fields := strings.Fields(header)
-		if len(fields) == 2 && (fields[1] == "missing" || fields[1] == "ambiguous") {
+		// A name Git cannot resolve is echoed back, spaces and all.
+		if trimmed := strings.TrimSuffix(header, "\n"); strings.HasSuffix(trimmed, " missing") || strings.HasSuffix(trimmed, " ambiguous") {
 			objectType = "missing"
 			return nil, nil
 		}
+		fields := strings.Fields(header)
 		if len(fields) != 3 {
 			return nil, fmt.Errorf("unexpected cat-file header %q", strings.TrimSpace(header))
 		}
