@@ -334,6 +334,9 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 // criterion has its own traceability view; the sidebar names stories by
 // title, not by ordinal.
 func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
+	// It only reads the shared dogfood server, which serves concurrent
+	// requests as a reviewer's server does, so it runs beside the others.
+	t.Parallel()
 	document, records, _ := dogfoodRecords(t)
 	graph := newAppGraph(document, records, quality.Document{})
 	for _, story := range records.Stories {
@@ -413,6 +416,9 @@ func TestRequirementsOverviewIsGroupedByFeature(t *testing.T) {
 // references code is a Saga → Code row whose code renders at the head, and
 // every referenced file is a Code → Saga row.
 func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
+	// It only reads the shared dogfood server, which serves concurrent
+	// requests as a reviewer's server does, so it runs beside the others.
+	t.Parallel()
 	requireDogfoodSaga(t)
 	document, _, err := saga.Load(dogfoodSaga)
 	if err != nil {
@@ -489,6 +495,9 @@ func TestComparedCoverageLineRetriesWhileTheComparisonBuilds(t *testing.T) {
 // The documentation carries no approval or comment control on any page,
 // including the new ones; only a review's slides do.
 func TestDocumentationPagesHaveNoApprovalOrCommentControls(t *testing.T) {
+	// It only reads the shared dogfood server, which serves concurrent
+	// requests as a reviewer's server does, so it runs beside the others.
+	t.Parallel()
 	document, records, tests := dogfoodRecords(t)
 	paths := []string{"/", "/requirements", "/terms"}
 	for _, story := range records.Stories {
