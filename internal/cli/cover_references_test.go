@@ -32,37 +32,42 @@ const (
 // and a rename with an edit.
 func fileEventSaga(t *testing.T) (root, repo, base, head string) {
 	t.Helper()
-	repo = t.TempDir()
-	git(t, repo, "init", "-b", "main")
-	git(t, repo, "config", "user.name", "Test Author")
-	git(t, repo, "config", "user.email", "test@example.test")
-	git(t, repo, "remote", "add", "origin", rangeRepository)
-	writeFile(t, filepath.Join(repo, "service", "modified.go"), modifiedBase)
-	writeFile(t, filepath.Join(repo, "service", "deleted.go"), deletedFile)
-	writeFile(t, filepath.Join(repo, "service", "before.go"), renamedFile)
-	writeFile(t, filepath.Join(repo, "service", "moved.go"), movedBase)
-	git(t, repo, "add", ".")
-	git(t, repo, "commit", "-m", "base")
-	base = strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
-	git(t, repo, "checkout", "-b", "feature")
-	writeFile(t, filepath.Join(repo, "service", "modified.go"), modifiedHead)
-	writeFile(t, filepath.Join(repo, "service", "added.go"), addedFile)
-	git(t, repo, "rm", "-q", "service/deleted.go")
-	git(t, repo, "mv", "service/before.go", "service/after.go")
-	git(t, repo, "mv", "service/moved.go", "service/relocated.go")
-	writeFile(t, filepath.Join(repo, "service", "relocated.go"), movedHead)
-	git(t, repo, "add", "-A")
-	git(t, repo, "commit", "-m", "feature")
-	head = strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
+	dir, values := fileEventTemplate.instantiate(t, func(t *testing.T, dir string) map[string]string {
+		repo := mkdir(t, filepath.Join(dir, "repo"))
+		git(t, repo, "init", "-b", "main")
+		git(t, repo, "config", "user.name", "Test Author")
+		git(t, repo, "config", "user.email", "test@example.test")
+		git(t, repo, "remote", "add", "origin", rangeRepository)
+		writeFile(t, filepath.Join(repo, "service", "modified.go"), modifiedBase)
+		writeFile(t, filepath.Join(repo, "service", "deleted.go"), deletedFile)
+		writeFile(t, filepath.Join(repo, "service", "before.go"), renamedFile)
+		writeFile(t, filepath.Join(repo, "service", "moved.go"), movedBase)
+		git(t, repo, "add", ".")
+		git(t, repo, "commit", "-m", "base")
+		base := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
+		git(t, repo, "checkout", "-b", "feature")
+		writeFile(t, filepath.Join(repo, "service", "modified.go"), modifiedHead)
+		writeFile(t, filepath.Join(repo, "service", "added.go"), addedFile)
+		git(t, repo, "rm", "-q", "service/deleted.go")
+		git(t, repo, "mv", "service/before.go", "service/after.go")
+		git(t, repo, "mv", "service/moved.go", "service/relocated.go")
+		writeFile(t, filepath.Join(repo, "service", "relocated.go"), movedHead)
+		git(t, repo, "add", "-A")
+		git(t, repo, "commit", "-m", "feature")
+		head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 
-	root = filepath.Join(t.TempDir(), "events.saga")
-	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--repository", rangeRepository, root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Events {#events}\n\nEvery kind of file change.\n")
-	return root, repo, base, head
+		root := filepath.Join(dir, "saga", "events.saga")
+		var output bytes.Buffer
+		if err := Init(context.Background(), []string{"--repo", repo, "--repository", rangeRepository, root}, &output); err != nil {
+			t.Fatal(err)
+		}
+		writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Events {#events}\n\nEvery kind of file change.\n")
+		return map[string]string{"base": base, "head": head}
+	})
+	return filepath.Join(dir, "saga", "events.saga"), filepath.Join(dir, "repo"), values["base"], values["head"]
 }
+
+var fileEventTemplate fixtureTemplate
 
 func coverJSON(t *testing.T, args ...string) coverageMutationOutput {
 	t.Helper()

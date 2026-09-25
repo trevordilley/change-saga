@@ -28,30 +28,36 @@ func mustRun(t *testing.T, run layerCommand, args ...string) string {
 // it, and a queue design that addresses the story and references code.
 func shopSaga(t *testing.T) (repo, root string) {
 	t.Helper()
-	repo = t.TempDir()
-	git(t, repo, "init", "-b", "main")
-	git(t, repo, "config", "user.name", "Test Author")
-	git(t, repo, "config", "user.email", "test@example.test")
-	git(t, repo, "remote", "add", "origin", "https://example.test/acme/shop.git")
-	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\n// Enqueue sends a job to SQS.\nfunc Enqueue(job string) error {\n\treturn sqs.Send(job)\n}\n")
-	git(t, repo, "add", ".")
-	git(t, repo, "commit", "-m", "Add checkout")
-	root = filepath.Join(repo, "app.saga")
-	mustRun(t, Init, "--repo", repo, "--id", "shop", root)
-	mustRun(t, Feature, "add", "--id", "checkout", "--title", "Checkout", root)
-	mustRun(t, Persona, "add", "--id", "shopper", "--name", "Shopper", "--description", "Buys things", root)
-	mustRun(t, Story, "add", "--feature", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
-		"--priority", "must", "--criterion", "charged=The card is charged once", "--persona", "urn:change-saga:shop:persona:shopper", root)
-	design := filepath.Join(t.TempDir(), "design.md")
-	writeFile(t, design, "# Queue {#queue}\n\nJobs go to SQS.\n")
-	mustRun(t, Design, "add-fragment", "--feature", "checkout", "--id", "queue-design", "--title", "Queue", "--type", "markdown", "--name", "queue-design", "--source", design, root)
-	mustRun(t, Cover, "--target", "___features/checkout.feature/___design/queue-design.fragment", "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
-	mustRun(t, Relation, "add", "--feature", "checkout", "--id", "design-pay", "--type", "addresses", "--from", "urn:change-saga:shop:fragment:queue-design",
-		"--to", "urn:change-saga:shop:story:pay", "--rationale", "The queue is how payment reaches fulfilment", root)
-	git(t, repo, "add", ".")
-	git(t, repo, "commit", "-m", "Document checkout")
-	return repo, root
+	dir, _ := shopSagaTemplate.instantiate(t, func(t *testing.T, dir string) map[string]string {
+		repo := mkdir(t, filepath.Join(dir, "repo"))
+		git(t, repo, "init", "-b", "main")
+		git(t, repo, "config", "user.name", "Test Author")
+		git(t, repo, "config", "user.email", "test@example.test")
+		git(t, repo, "remote", "add", "origin", "https://example.test/acme/shop.git")
+		writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\n// Enqueue sends a job to SQS.\nfunc Enqueue(job string) error {\n\treturn sqs.Send(job)\n}\n")
+		git(t, repo, "add", ".")
+		git(t, repo, "commit", "-m", "Add checkout")
+		root := filepath.Join(repo, "app.saga")
+		mustRun(t, Init, "--repo", repo, "--id", "shop", root)
+		mustRun(t, Feature, "add", "--id", "checkout", "--title", "Checkout", root)
+		mustRun(t, Persona, "add", "--id", "shopper", "--name", "Shopper", "--description", "Buys things", root)
+		mustRun(t, Story, "add", "--feature", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
+			"--priority", "must", "--criterion", "charged=The card is charged once", "--persona", "urn:change-saga:shop:persona:shopper", root)
+		design := filepath.Join(dir, "design.md")
+		writeFile(t, design, "# Queue {#queue}\n\nJobs go to SQS.\n")
+		mustRun(t, Design, "add-fragment", "--feature", "checkout", "--id", "queue-design", "--title", "Queue", "--type", "markdown", "--name", "queue-design", "--source", design, root)
+		mustRun(t, Cover, "--target", "___features/checkout.feature/___design/queue-design.fragment", "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
+		mustRun(t, Relation, "add", "--feature", "checkout", "--id", "design-pay", "--type", "addresses", "--from", "urn:change-saga:shop:fragment:queue-design",
+			"--to", "urn:change-saga:shop:story:pay", "--rationale", "The queue is how payment reaches fulfilment", root)
+		git(t, repo, "add", ".")
+		git(t, repo, "commit", "-m", "Document checkout")
+		return nil
+	})
+	repo = filepath.Join(dir, "repo")
+	return repo, filepath.Join(repo, "app.saga")
 }
+
+var shopSagaTemplate fixtureTemplate
 
 func statusLayers(t *testing.T, root string, args ...string) (statusDocument, map[string]json.RawMessage) {
 	t.Helper()
