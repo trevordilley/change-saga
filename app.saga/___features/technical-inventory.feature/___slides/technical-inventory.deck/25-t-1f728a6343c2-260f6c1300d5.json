@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-records-impl-selections",
+  "current": "sha256:728f3db7b77c290c87df217ce7c158c00974a67f6a181cd1c5c33a859c545a31",
+  "revisions": [
+    {
+      "snapshot": "sha256:728f3db7b77c290c87df217ce7c158c00974a67f6a181cd1c5c33a859c545a31",
+      "request_id": "ti-records-impl-selections-v1",
+      "created_at": "2026-09-25T01:32:07.68887Z",
+      "asset": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
+      "asset_digest": "sha256:e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedffb4d6d31c62e",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-selections",
+        "deck": "technical-inventory",
+        "title": "Implemented: exact Item selections and saved-view pins",
+        "rank": 190,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
+        "takeaway": "An Item selects a subset through saved pins and a stable evidence ID; historical pins need an explicit saved view, and old pins survive definition succession.",
+        "reading_order": [
+          "path",
+          "authoring",
+          "view",
+          "retention",
+          "selection-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "path",
+            "slide": "ti-records-impl-selections",
+            "rank": 10,
+            "kind": "edge",
+            "label": "Declared path of saved pins",
+            "description": "Each hop must be declared by the previous saved revision: System member, holder or relationship destination. The range must lie inside the named evidence at its commit; failures have stable codes.",
+            "selector": {
+              "type": "element",
+              "element_id": "path"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 43,
+                  "end": 89,
+                  "digest": "sha256:f14ac064b7b9cdfba62d5fab81b238e3b2a3c939f9903d0c56780ed815cdc295",
+                  "note": "ResolveSelection: path, evidence and containment with reason codes."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 102,
+                  "end": 122,
+                  "digest": "sha256:da7da51e65f8a1f87b247b30c06800443afa90f9c829d9d3991c49eacd2cb7a0",
+                  "note": "declaresHop: only declared links at the saved revision."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-subset",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "A reference stores an inspectable subset; referencing a System selects nothing implicitly."
+            },
+            {
+              "id": "ti-records-impl-selection-path",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "The saved path records the System/Component/data-entity route that coverage reports will expose."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "authoring",
+            "slide": "ti-records-impl-selections",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Selected bytes authored exactly",
+            "description": "The CLI defaults an omitted commit to the containing evidence commit, prechecks structure, then digests only the selected lines; a supplied digest must match.",
+            "selector": {
+              "type": "element",
+              "element_id": "authoring"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 65,
+                  "end": 115,
+                  "digest": "sha256:5086b85c0bd125543f7eb5774eb5cf1c58a958befd2cf67ab652c35697f453c7",
+                  "note": "authorItemLinks resolves views once and authors new selections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 148,
+                  "end": 163,
+                  "digest": "sha256:e4364a0559a9df15c3123d407f925b0e92ffbd5ba27dbcbf01aee6b7e9e6a950",
+                  "note": "defaultSelectionCommits uses the containing evidence commit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-source",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "Each selection stores its commit, path, exact range and selected-byte digest for display and currency checks."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "view",
+            "slide": "ti-records-impl-selections",
+            "rank": 30,
+            "kind": "node",
+            "label": "Explicit saved view",
+            "description": "A historical pin is admitted only when the Saga committed at the named commit binds it as its active current revision. The loader reads that commit through Git and refuses with a specific reason.",
+            "selector": {
+              "type": "element",
+              "element_id": "view"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/savedview/savedview.go",
+                  "start": 64,
+                  "end": 131,
+                  "digest": "sha256:a5d7e11efa192017cef6b90eea3c51a52dd63d5cb68d87db656a10886f79aec9",
+                  "note": "savedview.Load: commit, Saga identity, source and inventory at that commit."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 188,
+                  "end": 209,
+                  "digest": "sha256:cf3a06cd879969cc72547821a74ec7f1d6ad9d50b26ceddb8037702152c652ab",
+                  "note": "admitDocumentationPin applies technicalpolicy.AdmitPin."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-compare-plan",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A review Item can pin the committed design revision through the saved view that bound it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "retention",
+            "slide": "ti-records-impl-selections",
+            "rank": 40,
+            "kind": "node",
+            "label": "Old pins are retained",
+            "description": "An unchanged pin, view or selection is retained when an Item is revised, and a newer definition revision is never substituted in a saved path.",
+            "selector": {
+              "type": "element",
+              "element_id": "retention"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 117,
+                  "end": 146,
+                  "digest": "sha256:431b7127692e3f5b83d53a971afb00d4378057804ef00cb88a6402e646ce77be",
+                  "note": "admitItemLinks retains unchanged pins and re-resolves every selection."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-evolution",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:visible-evolution",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Definition succession leaves prior Item pins and selections intact so evolution stays traceable."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "selection-tests",
+            "slide": "ti-records-impl-selections",
+            "rank": 50,
+            "kind": "example",
+            "label": "Selection and view tests",
+            "description": "Tests cover review and implementation Items, every named refusal, saved-view admission and refusal, retention across a newer revision, and transaction selections with replayed retries.",
+            "selector": {
+              "type": "element",
+              "element_id": "selection-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 16,
+                  "end": 146,
+                  "digest": "sha256:64169cfc8928809c1fc79b4924623de44fca52118e70f8dc69a15e5ea34c3184",
+                  "note": "Review/implementation selections, refusals and saved views."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 170,
+                  "end": 215,
+                  "digest": "sha256:8f3e409d38b676e90208accb17b912571033a601c14b574168a2200530749467",
+                  "note": "apply-slide selections, replay and refusal."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 249,
+                  "end": 303,
+                  "digest": "sha256:712916a1f9bad80f9c170e248c28123fe62813fe886a5d37d25d95fe64f0f3c7",
+                  "note": "Structural resolution never substitutes newer revisions."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-review-reuse",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Review deck Items reference the same identities and select the relevant code subset."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

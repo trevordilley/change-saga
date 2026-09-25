@@ -1,0 +1,304 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-records-impl-transition",
+  "current": "sha256:18b9fed7ada9907b31f2f8af04271e6e55ada4fdec02a821f1f218b67ff77253",
+  "revisions": [
+    {
+      "snapshot": "sha256:18b9fed7ada9907b31f2f8af04271e6e55ada4fdec02a821f1f218b67ff77253",
+      "request_id": "ti-records-impl-transition-v1",
+      "created_at": "2026-09-25T01:32:07.323165Z",
+      "asset": "24-a-4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604.svg",
+      "asset_digest": "sha256:4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604eeb83d0e2e78",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-transition",
+        "deck": "technical-inventory",
+        "title": "Implemented: proposed to implemented at a delivery commit",
+        "rank": 170,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604.svg",
+        "takeaway": "A code-free proposal and its implemented successor share one identity; implementation is refused unless the evidence verifies and is current at the delivery commit.",
+        "reading_order": [
+          "proposal",
+          "delivery",
+          "policy",
+          "publication",
+          "lifecycle-test",
+          "policy-test"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "proposal",
+            "slide": "ti-records-impl-transition",
+            "rank": 10,
+            "kind": "node",
+            "label": "Code-free proposal and successor",
+            "description": "A proposed revision needs no code and names baseline: none, or an implemented ancestor revision of the same record for a successor. The baseline is kept apart from parents and never inferred.",
+            "selector": {
+              "type": "element",
+              "element_id": "proposal"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 219,
+                  "end": 286,
+                  "digest": "sha256:ba5df1794c62b70c6565653a0a4d4455499e0fabab18dad9030bdcc4edd77c7c",
+                  "note": "validateIntentRevision: baseline, delivery and per-intent code rules."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 419,
+                  "end": 471,
+                  "digest": "sha256:518b7c0fa862d6402baa308c794c8b531c064246cc402778f63e522f653154bd",
+                  "note": "resolveTechnical checks that a baseline is an implemented ancestor."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-proposal",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:proposal-without-code",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Proposed Components, Systems and data entities are publishable without code evidence."
+            },
+            {
+              "id": "ti-records-impl-transition-successor",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "A successor proposal keeps the stable identity and pins its implemented baseline revision explicitly."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "delivery",
+            "slide": "ti-records-impl-transition",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Delivery resolved once",
+            "description": "The CLI resolves --delivery (or delivery.commit) once to a full OID and binds it to the manifest source repository; a different repository or two different commits are refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "delivery"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 170,
+                  "end": 205,
+                  "digest": "sha256:48fbddfafd55d4ad8e1c771c0f8522b8a57490993d0c337c78267fbe4dce5dc0",
+                  "note": "resolveDelivery binds the delivery commit and repository at the command boundary."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-delivery",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The explicit implementation operation records the exact source view its evidence was validated against."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "policy",
+            "slide": "ti-records-impl-transition",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Policy validation before writing",
+            "description": "Under the lock, technicalpolicy verifies original bytes and delivery currency for the entity and every implemented edge; interactions check both member endpoints. Diagnostics refuse the revision.",
+            "selector": {
+              "type": "element",
+              "element_id": "policy"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 313,
+                  "end": 361,
+                  "digest": "sha256:c2b0e54cb98fc74ae695f8759131f3f07e4b6bc3a053d5fe0968261713864a08",
+                  "note": "checkImplementationPolicy builds the candidate with exact endpoint facts and calls ValidateCandidate."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-policy",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Missing, forged or stale supplied evidence refuses the transition."
+            },
+            {
+              "id": "ti-records-impl-transition-not-approval",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:implementation-not-approval",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Validation records intent and evidence only; no verification, integration or review decision is written."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "publication",
+            "slide": "ti-records-impl-transition",
+            "rank": 40,
+            "kind": "node",
+            "label": "Locked, idempotent publication",
+            "description": "Publication requires every current head as a parent, admits only current new pins, replays identical retries and writes nothing when any check fails.",
+            "selector": {
+              "type": "element",
+              "element_id": "publication"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 92,
+                  "end": 204,
+                  "digest": "sha256:8631a056119b4d189f92eb122e3593c83ed5183aaf5f47345cee8cb2ad338b54",
+                  "note": "WriteTechnicalRevision: replay, parents, candidate history, pin, view and policy checks, then write."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 237,
+                  "end": 257,
+                  "digest": "sha256:3358333840dddc347475388a0fe77a538406afb26ff538c8f720f3edaf69e86a",
+                  "note": "admitDefinitionPins: new pins must be current unless retained or self."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Adding implementation evidence appends a revision and leaves the committed proposal intact."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "lifecycle-test",
+            "slide": "ti-records-impl-transition",
+            "rank": 50,
+            "kind": "example",
+            "label": "Lifecycle through the public CLI",
+            "description": "A temporary Git repository exercises refusal before adoption, a code-free proposal, the implemented revision at a full OID, a proposed successor, retries and pinning from a slide.",
+            "selector": {
+              "type": "element",
+              "element_id": "lifecycle-test"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 85,
+                  "end": 195,
+                  "digest": "sha256:ffdc0c6dc89d1fb3d3d9b08bd4a1d601be86153efd5bbf7180ee3d6747ac0b25",
+                  "note": "End-to-end proposed, implemented and successor lifecycle with slide pinning."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-lifecycle-preserved",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "The test proves the proposal remains readable after implementation is recorded."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "policy-test",
+            "slide": "ti-records-impl-transition",
+            "rank": 60,
+            "kind": "example",
+            "label": "Evidence policy cases",
+            "description": "Pure movement keeps the original reference; edited bytes give stale_delivery_evidence with no files written; forged digests, foreign repositories and implemented edges to proposed members refuse.",
+            "selector": {
+              "type": "element",
+              "element_id": "policy-test"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 197,
+                  "end": 260,
+                  "digest": "sha256:2523fb8a433abc9ea931a64c60daf81ebe4e180c74d8cffe054c7ffef7589d3e",
+                  "note": "Movement, drift, forged digest, foreign repository and mixed-intent System cases."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-policy-test",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The refusals and the accepted movement case are exercised against real Git history."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

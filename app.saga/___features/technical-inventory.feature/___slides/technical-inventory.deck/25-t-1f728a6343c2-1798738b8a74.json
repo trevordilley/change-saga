@@ -1,0 +1,246 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-records-impl-format",
+  "current": "sha256:e2035d67a05c1f70551a9cf5c4bd5d9eb891a26ebaefcf4a2a75468af4920b20",
+  "revisions": [
+    {
+      "snapshot": "sha256:e2035d67a05c1f70551a9cf5c4bd5d9eb891a26ebaefcf4a2a75468af4920b20",
+      "request_id": "ti-records-impl-format-v1",
+      "created_at": "2026-09-25T01:32:07.122806Z",
+      "asset": "24-a-7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349.svg",
+      "asset_digest": "sha256:7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349fda7daa0f8be",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-format",
+        "deck": "technical-inventory",
+        "title": "Implemented: explicit inventory format 2 gate",
+        "rank": 160,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349.svg",
+        "takeaway": "Format 2 exists only after an explicit marker; legacy revisions stay byte-identical and read unspecified, and older readers refuse instead of dropping content.",
+        "reading_order": [
+          "legacy",
+          "marker",
+          "loader",
+          "refusal-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "legacy",
+            "slide": "ti-records-impl-format",
+            "rank": 10,
+            "kind": "node",
+            "label": "Legacy history reads unspecified",
+            "description": "Existing Component/System revisions keep their bytes and have no evidence IDs. Their intent reads unspecified, never inferred from code, lifecycle or age; the legacy validation rules are unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "legacy"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 252,
+                  "end": 259,
+                  "digest": "sha256:b3cd634e3958a8c41fa3bd2cfa23e3be685e5b9b011f67b0340e8758bbf7c721",
+                  "note": "EffectiveIntent reports explicit intent or unspecified for legacy revisions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 168,
+                  "end": 200,
+                  "digest": "sha256:f45ffbd0b9aff99dcc4e3f2bed5f4f96783f7c6fa2b98a0de90c4d3da52ff409",
+                  "note": "The original format-1 rules, which also refuse IDs, baseline or delivery without intent."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-legacy-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Records expose explicit proposed/implemented intent per revision and an explicit unspecified value for legacy history; displays and queries are sibling slices."
+            },
+            {
+              "id": "ti-records-impl-format-legacy-evidence",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-distinction",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "A legacy entity with or without evidence is not relabeled proposed or implemented; the stored assessment stays separate from code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "marker",
+            "slide": "ti-records-impl-format",
+            "rank": 20,
+            "kind": "node",
+            "label": "Explicit adoption marker",
+            "description": "inventory adopt-format --format 2 writes ___inventory/format.json under the Saga lock and rewrites no record. Only format 2 exists; an unknown marker value is refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "marker"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 58,
+                  "end": 85,
+                  "digest": "sha256:91a200dc9b915efdac8781028b1cbda4adc2ac92ff7dca2efa086086a365de26",
+                  "note": "AdoptInventoryFormat writes only the marker and replays when already adopted."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 64,
+                  "end": 87,
+                  "digest": "sha256:11137e115bc2687f07d12151247290dd18d183cb42d2e47eab46f628de27f7d1",
+                  "note": "readInventoryFormat treats absence as format 1 and refuses unsupported formats."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-marker-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Adoption preserves every committed revision unchanged; new structures are only ever appended as new revisions."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "loader",
+            "slide": "ti-records-impl-format",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Reader and writer gate",
+            "description": "LoadInventory reads format 1 and 2 kinds in a fixed order and refuses format-2 kinds or intent without the marker. After adoption a new Component/System revision must state intent.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 308,
+                  "end": 388,
+                  "digest": "sha256:bb7c5dfc5b2a9ac7d6162bce98ff3deb35afa2d9331020bb19fd51e3803763e9",
+                  "note": "LoadInventory: kind directories, marker, per-kind format gate and structural validation."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 206,
+                  "end": 218,
+                  "digest": "sha256:d4b238a96344461a647caf3857299d22310280e1f765bd448ea01325fd5b7727",
+                  "note": "formatAdmits refuses format-2 writes before adoption and intent-less writes after it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-loader-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "After adoption every new revision carries an explicit intent, so the selected revision status is never silently unspecified."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "refusal-tests",
+            "slide": "ti-records-impl-format",
+            "rank": 40,
+            "kind": "example",
+            "label": "Compatibility tests",
+            "description": "Tests cover legacy intent before and after adoption, refusal of intent and data entities without the marker, a future format 3 and an unknown inventory directory.",
+            "selector": {
+              "type": "element",
+              "element_id": "refusal-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 69,
+                  "end": 90,
+                  "digest": "sha256:1be95f447e8d43b540c7027d22d6f64b7de45ce9119696da81d48f3eaf3d44f2",
+                  "note": "Legacy records read unspecified before and after adoption."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 92,
+                  "end": 126,
+                  "digest": "sha256:10684b2fd485c3b4dbf6eb13eb276cdf4884afa465ad45f79a25a9c02298da18",
+                  "note": "Format-2 content without the marker and unsupported markers are refused."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-tests-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The tests prove adoption and reading never rewrite or reinterpret committed history."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
