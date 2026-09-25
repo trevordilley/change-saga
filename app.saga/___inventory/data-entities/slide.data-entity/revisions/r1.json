@@ -1,0 +1,88 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:data-entity:slide",
+  "parents": [],
+  "name": "Slide",
+  "explanation": "One visual argument in a deck: a single asset (SVG, HTML or raster), a takeaway and the reading order of its Items. Transaction-managed slides are stored as an append-only history of complete snapshots.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa"
+  },
+  "code": [
+    {
+      "id": "manifest",
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "path": "internal/saga/model.go",
+      "start": 60,
+      "end": 74,
+      "digest": "sha256:d4a634ff399eecd306524af75a0f76cfff64c9c1c3c07a000e70e42de795954e",
+      "note": "The slide record."
+    }
+  ],
+  "fields": [
+    {
+      "id": "id",
+      "name": "id",
+      "type": "string",
+      "keys": [
+        "primary"
+      ],
+      "note": "Unique across the whole Saga."
+    },
+    {
+      "id": "deck",
+      "name": "deck",
+      "type": "deck ID",
+      "keys": [
+        "foreign"
+      ]
+    },
+    {
+      "id": "intent",
+      "name": "intent",
+      "type": "string"
+    },
+    {
+      "id": "entrypoint",
+      "name": "entrypoint",
+      "type": "asset file"
+    },
+    {
+      "id": "reading_order",
+      "name": "reading_order",
+      "type": "Item IDs"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "in-deck",
+      "meaning": "association",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:deck",
+        "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+      },
+      "label": "in",
+      "explanation": "Each slide names its deck; a deck may have no slides yet.",
+      "cardinality": {
+        "owner": "0..many",
+        "destination": "1"
+      },
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "in-deck-field",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/saga/model.go",
+          "start": 63,
+          "end": 63,
+          "digest": "sha256:06d76c201ff5201a06ab1b912a1bcc5f5b1ec77ecbd239abbc0b7090e4ae43d1",
+          "note": "SlideManifest.DeckID."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T06:00:46.746213Z"
+}

@@ -1,0 +1,127 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:data-entity:code-reference",
+  "parents": [],
+  "name": "Code reference",
+  "explanation": "An exact, commit-pinned line range with the digest of its bytes and a note. Evidence records (40-e files and ___code directories) hold references for Items and narrative targets; definitions embed them. Pure movement remaps; changed bytes make it stale.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa"
+  },
+  "code": [
+    {
+      "id": "reference",
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "path": "internal/coderef/coderef.go",
+      "start": 28,
+      "end": 37,
+      "digest": "sha256:2c3f317fe6d295f846341d24e39da9d702a6b29b9dd401289d7304a94c5383cf",
+      "note": "The persisted code reference."
+    },
+    {
+      "id": "record",
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "path": "internal/saga/model.go",
+      "start": 260,
+      "end": 266,
+      "digest": "sha256:56897ef015f54b4f1d80356bdac15b48f8e12bc6defb6c6b57cd0a7a97a92b39",
+      "note": "An evidence record: the references one target explains."
+    }
+  ],
+  "fields": [
+    {
+      "id": "commit",
+      "name": "commit",
+      "type": "full commit"
+    },
+    {
+      "id": "path",
+      "name": "path",
+      "type": "repository path"
+    },
+    {
+      "id": "range",
+      "name": "start..end",
+      "type": "lines",
+      "note": "Zero for a whole-file reference."
+    },
+    {
+      "id": "digest",
+      "name": "digest",
+      "type": "sha256",
+      "note": "Of exactly the referenced bytes."
+    },
+    {
+      "id": "note",
+      "name": "note",
+      "type": "string"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "owned-by-item",
+      "meaning": "association",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:item",
+        "revision": "urn:change-saga:change-saga:data-entity:item:revision:r1"
+      },
+      "label": "evidence of",
+      "explanation": "An Item owns its evidence records; references also belong to fragments, landmarks and sections, so not every reference has an Item.",
+      "cardinality": {
+        "owner": "0..many",
+        "destination": "0..1"
+      },
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "owned-by-item-field",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/saga/model.go",
+          "start": 151,
+          "end": 151,
+          "digest": "sha256:e878c0546816a0822451c835e84a74763245e64271ac6750844df23eb974c155",
+          "note": "Item.Code."
+        }
+      ]
+    },
+    {
+      "id": "in-definition",
+      "meaning": "association",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:technical-definition",
+        "revision": "urn:change-saga:change-saga:data-entity:technical-definition:revision:r1"
+      },
+      "label": "evidence of",
+      "explanation": "A definition revision embeds its own references, each with a stable evidence ID in format 2.",
+      "cardinality": {
+        "owner": "0..many",
+        "destination": "0..1"
+      },
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "in-definition-type",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/requirements/inventory.go",
+          "start": 23,
+          "end": 30,
+          "digest": "sha256:943a49536387facb4a8fa0997de75295e5a20ee179d5a7e962d41da342a74402",
+          "note": "Evidence: an ID around a code reference."
+        },
+        {
+          "id": "in-definition-field",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/requirements/inventory.go",
+          "start": 135,
+          "end": 135,
+          "digest": "sha256:206cf74e209c7778076f265a004d79e5ea48a736caa1655ab8b95fb6d9a017bc",
+          "note": "TechnicalDefinition.Code."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T06:00:47.128787Z"
+}

@@ -1,0 +1,171 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:data-entity:item",
+  "parents": [],
+  "name": "Item",
+  "explanation": "One semantic element of a slide (node, edge, region, callout, ...) with a selector into the visual. Only Items own deck code evidence; an Item may pin one technical definition revision and, on transaction-managed slides, exact criteria.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa"
+  },
+  "code": [
+    {
+      "id": "manifest",
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "path": "internal/saga/model.go",
+      "start": 102,
+      "end": 124,
+      "digest": "sha256:07e58d713c0c65166c48c804aa93db0003c8b27caced9d5c37cc373b03085ad9",
+      "note": "The Item record."
+    },
+    {
+      "id": "loaded",
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "path": "internal/saga/model.go",
+      "start": 146,
+      "end": 156,
+      "digest": "sha256:b581798460b200e378450f8abd88aa2fdc3454e3dc60bb14dda6deb3437099aa",
+      "note": "A loaded Item with its code and criterion links."
+    }
+  ],
+  "fields": [
+    {
+      "id": "id",
+      "name": "id",
+      "type": "string",
+      "keys": [
+        "primary"
+      ],
+      "note": "URN \u003cslide\u003e:item:\u003cid\u003e."
+    },
+    {
+      "id": "slide",
+      "name": "slide",
+      "type": "slide ID",
+      "keys": [
+        "foreign"
+      ]
+    },
+    {
+      "id": "kind",
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "id": "selector",
+      "name": "selector",
+      "type": "element | region | text | heading"
+    },
+    {
+      "id": "documentation",
+      "name": "documentation",
+      "type": "target + revision",
+      "keys": [
+        "foreign"
+      ],
+      "note": "Optional pin; grants no coverage."
+    }
+  ],
+  "relationships": [
+    {
+      "id": "on-slide",
+      "meaning": "association",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:slide",
+        "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r1"
+      },
+      "label": "on",
+      "explanation": "Each Item names its slide; a slide lists its Items in reading order.",
+      "cardinality": {
+        "owner": "0..many",
+        "destination": "1"
+      },
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "on-slide-field",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/saga/model.go",
+          "start": 110,
+          "end": 110,
+          "digest": "sha256:58fd1bcd0cd956ceb0dc3aa9ab7208e0916d50e714ffa92089c9cd7581802f58",
+          "note": "ItemManifest.SlideID."
+        }
+      ]
+    },
+    {
+      "id": "documents",
+      "meaning": "association",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:technical-definition",
+        "revision": "urn:change-saga:change-saga:data-entity:technical-definition:revision:r1"
+      },
+      "label": "documented by",
+      "explanation": "An Item may pin one exact definition revision; the pin never transfers that definition's code ownership.",
+      "cardinality": {
+        "owner": "0..many",
+        "destination": "0..1"
+      },
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "documents-link",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/saga/model.go",
+          "start": 76,
+          "end": 81,
+          "digest": "sha256:9fdb6864a6c030ef822bd36dd8fbd0560c82ffc0f95f1a8982c738d3ecf53f00",
+          "note": "DocumentationLink: target and exact revision."
+        },
+        {
+          "id": "documents-field",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/saga/model.go",
+          "start": 103,
+          "end": 103,
+          "digest": "sha256:f83bc3cb6b8052c88366aa2602cbf86c61d3c0971095abbecfccdf354b0503e8",
+          "note": "ItemManifest.Documentation."
+        }
+      ]
+    },
+    {
+      "id": "criterion-link",
+      "meaning": "association",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:criterion",
+        "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1"
+      },
+      "label": "links",
+      "explanation": "On a transaction-managed slide each Item carries exact criterion links, each pinned to the story revision that contained the criterion.",
+      "cardinality": {
+        "owner": "0..many",
+        "destination": "0..many"
+      },
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "criterion-link-type",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/saga/slide_transaction.go",
+          "start": 36,
+          "end": 41,
+          "digest": "sha256:792ddb327ebf2a935f1f3822087c583fbf19b3dbc086f088ede8150585535157",
+          "note": "CriterionLink."
+        },
+        {
+          "id": "criterion-link-field",
+          "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+          "path": "internal/saga/model.go",
+          "start": 152,
+          "end": 154,
+          "digest": "sha256:3107f5fe123c621cee926df1c20e7e4973c80cd10be408095819a3a1c4ecf240",
+          "note": "Item.CriterionLinks."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T06:00:46.995476Z"
+}
