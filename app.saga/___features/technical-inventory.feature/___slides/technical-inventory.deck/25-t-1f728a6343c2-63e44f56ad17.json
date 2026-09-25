@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "technical-inventory",
   "slide": "ti-ui-impl-overview",
-  "current": "sha256:26c5a18702cd162496023552e5c5a44fadef8076205fd3d42acb897513b303d2",
+  "current": "sha256:eccbecb1e2c4abf602e524c03f6dfdd9f1f5c4f3010ec679f1d2dc6db38c3d60",
   "revisions": [
     {
       "snapshot": "sha256:0930a3c2ba6b8e90325d096fd434e73474deee6ad1a411e607bace01f9fe096f",
@@ -913,6 +913,474 @@
                   "start": 510,
                   "end": 602,
                   "digest": "sha256:72dcac89ac40a19e5097ed4a0c2154532d5fab35794a117e0a740eafaf219c04",
+                  "note": "Technical design directories, overview part, sidebar rows, templates and styles."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/template.go",
+                  "start": 26,
+                  "end": 26,
+                  "digest": "sha256:1de9148158f5a0dbf6ac674288ee74232c287ef1b905292d5a7909ca590cec40",
+                  "note": "The page stylesheet and page switch include Technical design."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/template.go",
+                  "start": 29,
+                  "end": 29,
+                  "digest": "sha256:0881947591dc09fea5188e81b3edacc25ccd5105b60a3afe760867d00297b120",
+                  "note": "The page stylesheet and page switch include Technical design."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-directory",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:technical-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The Technical design page is the overview entry point listing Systems, Components, ERDs and data entities."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "exact",
+            "slide": "ti-ui-impl-overview",
+            "rank": 20,
+            "kind": "node",
+            "label": "Canonical page at an exact revision",
+            "description": "A definition page renders the unique current revision, or the ?revision= pin with its stale, retired or conflicted status; competing heads are named and none is chosen.",
+            "selector": {
+              "type": "element",
+              "element_id": "exact"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/inventory.go",
+                  "start": 9,
+                  "end": 9,
+                  "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+                  "note": "One exact-revision definition view shared by the drawer and page: intent, entity detail, page link, usages and Item selections."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/inventory.go",
+                  "start": 21,
+                  "end": 22,
+                  "digest": "sha256:ed0abbdbbfd4fb21b38102f98281063b39b31b7d0d5d15dd5bfcbfc73c5bec4c",
+                  "note": "One exact-revision definition view shared by the drawer and page: intent, entity detail, page link, usages and Item selections."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/inventory.go",
+                  "start": 27,
+                  "end": 28,
+                  "digest": "sha256:1dd69ce6835a573ab4f70a4bd378ff185900f7f6a51de67cb28158eb7bf627c0",
+                  "note": "One exact-revision definition view shared by the drawer and page: intent, entity detail, page link, usages and Item selections."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/inventory.go",
+                  "start": 38,
+                  "end": 109,
+                  "digest": "sha256:42c497ca93dc4c881cd807a3a9edf63d7ac052cf244c9d6aded6a270665c6380",
+                  "note": "One exact-revision definition view shared by the drawer and page: intent, entity detail, page link, usages and Item selections."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/inventory.go",
+                  "start": 154,
+                  "end": 160,
+                  "digest": "sha256:a7c476c204686df4c0ef02905bf334f30cbd2962fcdff312c750d1ec195e9f71",
+                  "note": "One exact-revision definition view shared by the drawer and page: intent, entity detail, page link, usages and Item selections."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/inventory.go",
+                  "start": 183,
+                  "end": 183,
+                  "digest": "sha256:ebe1f80b084d09e276073debab22230d7e05c0152e793065c3df56099c6fbb82",
+                  "note": "One exact-revision definition view shared by the drawer and page: intent, entity detail, page link, usages and Item selections."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/inventory.go",
+                  "start": 186,
+                  "end": 195,
+                  "digest": "sha256:9750c22dff93b33ffcfdc92c07602b801f0a7568a9f3ca0bd06f4c2c7a37d63a",
+                  "note": "One exact-revision definition view shared by the drawer and page: intent, entity detail, page link, usages and Item selections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical.go",
+                  "start": 460,
+                  "end": 509,
+                  "digest": "sha256:e2d70e35f930c033b01230f5b841b91fe96eac24e2d38fc232f8d60ea105f682",
+                  "note": "Resolves the requested or unique current revision exactly and lists competing heads."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-exact",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "The page presents the definition's description and code at the exact revision a reader asked for, with currency visible."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "facts",
+            "slide": "ti-ui-impl-overview",
+            "rank": 30,
+            "kind": "statement",
+            "label": "Intent, lifecycle and newness are separate",
+            "description": "Intent is explicit or unspecified; newness is new, revised or unchanged only against a named comparison's merge-base, and unknown with its reason when that base cannot be read.",
+            "selector": {
+              "type": "element",
+              "element_id": "facts"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical_newness.go",
+                  "start": 1,
+                  "end": 90,
+                  "digest": "sha256:250b6ceb87565393907aa6dbee74c16f441910a7bc22c6de1f696c3e77fda0d8",
+                  "note": "Newness relative to the named comparison's merge-base inventory, unknown with reason when unreadable."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-newness",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Newness is shown only relative to the named comparison, never as a badge on every proposal."
+            },
+            {
+              "id": "ti-ui-impl-overview-state",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:consistent-state",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Directories and pages expose the same explicit intent for every kind, independent of code health."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "usages",
+            "slide": "ti-ui-impl-overview",
+            "rank": 40,
+            "kind": "node",
+            "label": "Declared uses",
+            "description": "A definition lists slide Items, owners such as System membership or ERD directories, and Items reaching it through one owner, each linking the exact slide Item or owner revision.",
+            "selector": {
+              "type": "element",
+              "element_id": "usages"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical.go",
+                  "start": 198,
+                  "end": 241,
+                  "digest": "sha256:576a06290c1460fc995e1d804005b1002fc4c3a761e16f89a4691778da5c9483",
+                  "note": "Turns shared reverse-index uses into links to exact slide Items, review Items or owner revisions."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-uses",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:reverse-uses",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "The definition exposes the feature, deck, slide and Item that use it."
+            },
+            {
+              "id": "ti-ui-impl-overview-navigate",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:navigate-usage",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "Following a use opens the referencing slide at the Item, not only the feature."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "boundary",
+            "slide": "ti-ui-impl-overview",
+            "rank": 50,
+            "kind": "callout",
+            "label": "Reading is not repinning",
+            "description": "Opening a saved revision reads it only: no slide pin changes, no review decision is recorded, and a link grants no coverage.",
+            "selector": {
+              "type": "element",
+              "element_id": "boundary"
+            },
+            "about": "exact",
+            "body": "Reading a pin never repins it, approves a slide, or grants coverage."
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical.go",
+                  "start": 489,
+                  "end": 500,
+                  "digest": "sha256:035d7161c5a857a69f4a0f30c52eaf44c402173a3e284d821ea673a930d6027f",
+                  "note": "A requested revision is read exactly; a missing one is not found rather than replaced by the latest."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-preserved",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "A saved proposal revision stays readable as saved even after later revisions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:eccbecb1e2c4abf602e524c03f6dfdd9f1f5c4f3010ec679f1d2dc6db38c3d60",
+      "parent_snapshots": [
+        "sha256:26c5a18702cd162496023552e5c5a44fadef8076205fd3d42acb897513b303d2"
+      ],
+      "request_id": "repin-4e47d2c1-ti-ui-impl-overview",
+      "created_at": "2026-09-25T03:59:54.564639Z",
+      "asset": "24-a-5de04fdc02063e57847b28c4e18c3e5c7e693982afdfd1fd636c.svg",
+      "asset_digest": "sha256:5de04fdc02063e57847b28c4e18c3e5c7e693982afdfd1fd636cadd0e60e8dcf",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-overview",
+        "deck": "technical-inventory",
+        "title": "Technical design reads exact revisions",
+        "rank": 240,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-5de04fdc02063e57847b28c4e18c3e5c7e693982afdfd1fd636c.svg",
+        "takeaway": "Overview → Technical design → one canonical page per exact revision, with intent, lifecycle and comparison newness as separate facts.",
+        "reading_order": [
+          "directory",
+          "exact",
+          "facts",
+          "usages",
+          "boundary"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "directory",
+            "slide": "ti-ui-impl-overview",
+            "rank": 10,
+            "kind": "region",
+            "label": "Technical design directories",
+            "description": "Overview → Technical design lists Systems, Components, ERDs and data entities in directories that state intent, lifecycle, revision heads and use counts, never a score.",
+            "selector": {
+              "type": "element",
+              "element_id": "directory"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appnav.go",
+                  "start": 75,
+                  "end": 76,
+                  "digest": "sha256:980b3d1d60a3a5d2861d46cd8668f62ec31c75e62b1cacf18c83c7c4956d4bad",
+                  "note": "Sidebar rows for Technical design under the overview."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/appnav.go",
+                  "start": 114,
+                  "end": 116,
+                  "digest": "sha256:857b31416ad51f5ef28223898dd7a86828a48fe8eccf8433ebd1abfa4f0c1cf6",
+                  "note": "Sidebar rows for Technical design under the overview."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 119,
+                  "end": 122,
+                  "digest": "sha256:839478f888fcb73caca25c2e7571e91beab07755cffaca68fa8579109a37e03e",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 369,
+                  "end": 370,
+                  "digest": "sha256:0bf2b779eb9fbd6ae06cdd74d0c5b47c696d43a849704e2a12690287360e9785",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 388,
+                  "end": 388,
+                  "digest": "sha256:d4e78709586e6e3ef952cb6a9f4e273d5de530ad0e8f64a12100c9a8c7a25f11",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 835,
+                  "end": 835,
+                  "digest": "sha256:fba5cf37e0b3269f113e90e1fc5677aa8aa824976ead8c2a497bd6ed6a4ffdb1",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 842,
+                  "end": 851,
+                  "digest": "sha256:9cecc9bdf12937b86ae08f8e52edb8f9794218198d94e57af835d6c0d9c6dfd2",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 918,
+                  "end": 920,
+                  "digest": "sha256:c010db01002224fb62b8fdd10c7ea01c2f620443a4892f5241ac61ada4be988b",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 940,
+                  "end": 943,
+                  "digest": "sha256:a3560b430029062925689c1b9cd7a902d0b8e569f4c949cfad7d800d72439a88",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 1068,
+                  "end": 1074,
+                  "digest": "sha256:05f98b7423637b75ade0f3bb4f67bc0288aebf86e66a26121b0209e6da73a7de",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 1110,
+                  "end": 1115,
+                  "digest": "sha256:9482ee40487304210ec741dd316cc8878856bcc7a0e42b33656e6bab918f7e4c",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 1118,
+                  "end": 1122,
+                  "digest": "sha256:2600e4b559058676f7c98771476b779c9872cda04837f307da393b5cfed68589",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/server.go",
+                  "start": 1131,
+                  "end": 1131,
+                  "digest": "sha256:e21ae300978f0c1edb5e1f82216b773d131f0563815f1f7dffb7c9b1b02d4a0b",
+                  "note": "Technical design routes, route identity, shell wiring, page fields and template functions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical.go",
+                  "start": 1,
+                  "end": 197,
+                  "digest": "sha256:95dda88d6a49634a80ef301c23c3d5f085cfee867f275d49e25c46f1ad46688b",
+                  "note": "Technical design directories, overview part, sidebar rows, templates and styles."
+                },
+                {
+                  "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+                  "path": "internal/server/technical.go",
+                  "start": 242,
+                  "end": 459,
+                  "digest": "sha256:68c51b34bb74165f0adf0e75086fdfccc900e7c26ea71ef3da9eab8b574ed9fe",
+                  "note": "Technical design directories, overview part, sidebar rows, templates and styles."
+                },
+                {
+                  "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+                  "path": "internal/server/technical.go",
+                  "start": 510,
+                  "end": 602,
+                  "digest": "sha256:951a909e8588518d55cd079fa2b17cbbd610b920922702fb5e792d4a5f519e82",
                   "note": "Technical design directories, overview part, sidebar rows, templates and styles."
                 }
               ]
