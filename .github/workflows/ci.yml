@@ -69,17 +69,9 @@ jobs:
         #
         # internal/server is the longest package, and go test ./... would start
         # it after nearly everything else, leaving it to run alone at the end.
-        # Start it first and run the other packages beside it.
-        shell: bash
-        run: |
-          go test -timeout 20m ${{ matrix.race }} ./internal/server > "$RUNNER_TEMP/server-test.log" 2>&1 &
-          server=$!
-          mapfile -t packages < <(go list ./... | grep -v '/internal/server$')
-          status=0
-          go test -timeout 20m ${{ matrix.race }} "${packages[@]}" || status=$?
-          wait "$server" || status=$?
-          cat "$RUNNER_TEMP/server-test.log"
-          exit "$status"
+        # go test starts packages in the order they are named and runs each
+        # once, so naming it first starts it first.
+        run: go test -timeout 20m ${{ matrix.race }} ./internal/server ./...
         env:
           # Test fixtures commit constantly, and after each commit Git starts
           # its automatic maintenance as another process. Throwaway fixture
