@@ -71,20 +71,7 @@ jobs:
           jq -r 'select((.Action=="pass" or .Action=="fail") and .Test!=null and (.Test|contains("/")|not)) | "\(.Elapsed) \(.Test)"' "$RUNNER_TEMP/cli.json" | sort -rn > "$RUNNER_TEMP/top.txt"
           awk '{s+=$1} END {print "SUM top-level", s, "s over", NR, "tests"}' "$RUNNER_TEMP/top.txt"
           head -80 "$RUNNER_TEMP/top.txt"
-      - name: diag cli syscall profile
-        if: runner.os == 'Windows'
-        shell: bash
-        run: |
-          go test -count=1 -trace "$RUNNER_TEMP/trace.out" -run 'TestOnboardingDeckSuggestsOrientIntent|TestReviseItemCorrectsFieldsInPlaceAndReplays|TestInventoryFormatTwoReadsCoverageAndReconcile|TestReconciliationSelectedHeadAndSourcePaths|TestBadCoverTargetNamesItems|TestReplacedSlidePairsWithItsReplacementAndItsReason' -v ./internal/cli | grep -E '^(---|ok|FAIL)'
-          ls -la "$RUNNER_TEMP/trace.out"
-          go tool trace -pprof=syscall "$RUNNER_TEMP/trace.out" > "$RUNNER_TEMP/syscall.pprof"
-          go tool pprof -top -nodecount=40 "$RUNNER_TEMP/syscall.pprof" 2>/dev/null | head -50
-          echo "=== cumulative"
-          go tool pprof -top -cum -nodecount=60 "$RUNNER_TEMP/syscall.pprof" 2>/dev/null | head -70
-          echo "=== by test-visible function"
-          go tool pprof -top -cum -focus='changesaga' -nodecount=60 "$RUNNER_TEMP/syscall.pprof" 2>/dev/null | head -70
       - name: go test
-        if: runner.os != 'Windows'
         # The race-enabled server package is intentionally broad and can take
         # longer than Go's default 10-minute per-package timeout on shared CI
         # runners. Keep the full suite and race detector; give them headroom.
