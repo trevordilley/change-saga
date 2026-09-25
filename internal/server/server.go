@@ -1002,7 +1002,8 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	}
 	// One fingerprint of the Saga's files serves every part the page reads.
 	files := a.sagaFiles(r.Context())
-	if len(document.Decks)+len(document.Onboarding) > 0 {
+	narrated := len(document.Decks)+len(document.Onboarding) > 0
+	if narrated {
 		document = files.narrative()
 		if document == nil {
 			return nil, errors.New("The slide deck could not be loaded. Run change-saga validate for details.")
@@ -1017,7 +1018,15 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		}
 		return nil, errors.New("The requirements could not be loaded. Run change-saga validate for details.")
 	}
-	if err := semanticgraph.ProjectSlideCriterionLinks(document, &requirementsDocument); err != nil {
+	// The page reads the records with the complete slides' links projected
+	// in. Projected from the narrative, they are the same for every page of
+	// one state of the files, so they are projected once for all of them.
+	if narrated {
+		requirementsDocument, err = files.projectedRecords(document.Manifest.ID)
+	} else {
+		err = semanticgraph.ProjectSlideCriterionLinks(document, &requirementsDocument)
+	}
+	if err != nil {
 		return nil, errors.New("The complete-slide criterion links could not be loaded. Run change-saga validate for details.")
 	}
 	tests, err := files.tests()

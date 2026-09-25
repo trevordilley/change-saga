@@ -101,7 +101,9 @@ type freshness struct {
 
 const (
 	// pollInterval is how soon after an edit the watcher starts reading it.
-	pollInterval = 200 * time.Millisecond
+	// Requests take their own checks, so it bounds only how early the
+	// reading starts, not what any page shows.
+	pollInterval = 500 * time.Millisecond
 	// pollIdle is how long after the last request polling continues.
 	pollIdle = 2 * time.Minute
 )

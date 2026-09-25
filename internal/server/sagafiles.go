@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	"html/template"
 	"slices"
 	"sync"
@@ -9,6 +10,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/semanticgraph"
 )
 
 // sagaFilesCache keeps what documentation pages read from the Saga's own
@@ -42,6 +44,11 @@ type sagaFiles struct {
 	testsOnce sync.Once
 	testsDoc  quality.Document
 	testsErr  error
+
+	projectedOnce sync.Once
+	projectedID   string
+	projectedDoc  requirements.Document
+	projectedErr  error
 
 	inventoryOnce sync.Once
 	inventoryID   string
@@ -99,6 +106,45 @@ func (files *sagaFiles) records(sagaID string) (requirements.Document, error) {
 	document := files.recordsDoc
 	document.Relations = slices.Clone(document.Relations)
 	return document, files.recordsErr
+}
+
+// projectedRecords is the records with the complete slides' criterion links
+// projected into them from this fingerprint's narrative, as every page reads
+// them. The relations are the caller's own copy.
+func (files *sagaFiles) projectedRecords(sagaID string) (requirements.Document, error) {
+	files.projectedOnce.Do(func() {
+		files.projectedID = sagaID
+		files.projectedDoc, files.projectedErr = files.records(sagaID)
+		if files.projectedErr != nil {
+			return
+		}
+		document := files.narrative()
+		if document == nil {
+			files.projectedErr = errors.New("the narrative could not be loaded")
+			return
+		}
+		files.projectedErr = semanticgraph.ProjectSlideCriterionLinks(document, &files.projectedDoc)
+	})
+	if files.projectedID != sagaID {
+		return files.project(sagaID)
+	}
+	document := files.projectedDoc
+	document.Relations = slices.Clone(document.Relations)
+	return document, files.projectedErr
+}
+
+// project projects the links afresh, for a caller the kept projection does
+// not serve.
+func (files *sagaFiles) project(sagaID string) (requirements.Document, error) {
+	document, err := files.records(sagaID)
+	if err != nil {
+		return document, err
+	}
+	narrative := files.narrative()
+	if narrative == nil {
+		return document, errors.New("the narrative could not be loaded")
+	}
+	return document, semanticgraph.ProjectSlideCriterionLinks(narrative, &document)
 }
 
 func (files *sagaFiles) tests() (quality.Document, error) {
