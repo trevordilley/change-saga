@@ -175,6 +175,12 @@ func TestInventoryProposedToImplementedLifecycle(t *testing.T) {
 	if err := addItem("baseline", "r2"); err == nil || !strings.Contains(err.Error(), "stale") {
 		t.Fatalf("stale implemented baseline pinned without a saved view: %v", err)
 	}
+	// This Saga lives outside its source checkout (a companion layout), so no
+	// saved view can be established; the refusal is specific, never a fallback.
+	out.Reset()
+	if err := AddItem(h.ctx, []string{"--slide", "writes", "--id", "viewed", "--kind", "node", "--element-id", "slide-title", "--description", "Uses the baseline.", "--documentation", urn, "--documentation-revision", urn + ":revision:r2", "--documentation-view", "HEAD", "--repo", h.repo, h.root}, &out); err == nil || !strings.Contains(err.Error(), "view_saga_missing") {
+		t.Fatalf("companion-repository view: %v", err)
+	}
 	if err := addItem("proposal", "r3"); err != nil {
 		t.Fatalf("pin current proposal: %v %s", err, out.String())
 	}

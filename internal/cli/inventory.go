@@ -266,23 +266,6 @@ func decodeStrictInventory(data []byte, value any) error {
 	return requirements.DecodeInventoryJSON(data, value)
 }
 
-func requireDocumentation(root, sagaID string, pin *saga.DocumentationLink) error {
-	if pin == nil {
-		return nil
-	}
-	if !saga.ValidDocumentationLink(sagaID, *pin) {
-		return fmt.Errorf("documentation requires a canonical Component/System target and its revision URN")
-	}
-	d, err := requirements.LoadInventory(root, sagaID)
-	if err != nil {
-		return err
-	}
-	if status := d.LinkStatus(*pin); status != "current" {
-		return fmt.Errorf("documentation target %s is %s", pin.Target, status)
-	}
-	return nil
-}
-
 func appendInventoryIssues(root string, document *saga.Saga, validation *saga.Validation) {
 	if document == nil {
 		return
@@ -322,12 +305,31 @@ func appendInventoryIssues(root string, document *saga.Saga, validation *saga.Va
 			}
 		}
 	}
+	checkItem := func(item *saga.Item) {
+		if item.Documentation == nil {
+			return
+		}
+		if item.DocumentationView == "" {
+			report(item.Path, *item.Documentation)
+		}
+		formatTwo := item.DocumentationView != "" || len(item.Selections) > 0 || strings.Contains(item.Documentation.Target, ":"+requirements.KindDataEntity+":")
+		if formatTwo && d.Format < 2 {
+			validation.Valid = false
+			validation.Issues = append(validation.Issues, saga.Issue{Severity: "error", Path: item.Path, Message: "Item uses inventory format 2 content without ___inventory/format.json"})
+		}
+		// Saved revisions are append-only, so a selection that no longer
+		// resolves structurally is damaged metadata, not ordinary drift.
+		for _, selection := range item.Selections {
+			if _, err := d.ResolveSelection(*item.Documentation, selection); err != nil {
+				validation.Valid = false
+				validation.Issues = append(validation.Issues, saga.Issue{Severity: "error", Path: item.Path, Message: "selection " + selection.ID + " does not resolve: " + err.Error()})
+			}
+		}
+	}
 	for _, deck := range document.Decks {
 		for _, slide := range deck.Slides {
 			for _, item := range slide.Items {
-				if item.Documentation != nil {
-					report(item.Path, *item.Documentation)
-				}
+				checkItem(item)
 			}
 		}
 	}
@@ -338,9 +340,7 @@ func appendInventoryIssues(root string, document *saga.Saga, validation *saga.Va
 		}
 		for _, slide := range review.Deck.Slides {
 			for _, item := range slide.Items {
-				if item.Documentation != nil {
-					report(item.Path, *item.Documentation)
-				}
+				checkItem(item)
 			}
 		}
 	}

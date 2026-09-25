@@ -3,7 +3,8 @@ package grammar
 func init() {
 	for i := range commands {
 		if commands[i].Name == "add-item" || commands[i].Name == "revise-item" {
-			commands[i].Flags = append(commands[i].Flags, optional("documentation", "URN", "canonical Component, System or data-entity target"), optional("documentation-revision", "URN", "exact definition revision pin"))
+			commands[i].Flags = append(commands[i].Flags, optional("documentation", "URN", "canonical Component, System or data-entity target"), optional("documentation-revision", "URN", "exact definition revision pin"),
+				optional("documentation-view", "REV", "saved Saga commit admitting a non-current pin (inventory format 2)"), optional("selections", "FILE|-", "JSON array of explicit code selections (inventory format 2)"), optional("repo", "PATH", "source checkout for saved views and selections"))
 		}
 	}
 
