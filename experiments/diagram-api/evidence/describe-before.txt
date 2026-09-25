@@ -1,0 +1,21 @@
+Diagram: atomic "Atomic diagram publication"
+Snapshot: sha256:8dba229b57c97ccf6af5219be2b7f23da2f5cb524c91942100b11c82ceb0dd6b
+View: semantic; omits geometry, styles, decorative_elements, asset_bytes, evidence_bodies; cannot reconstruct the drawing
+
+Nodes:
+  author "Explicit edits" icon=lucide:terminal
+    detail: Coordinates, paths, labels
+  published "One snapshot" icon=lucide:database
+    detail: Source + visual hash
+  reject "Reject whole batch" icon=lucide:triangle-alert
+    detail: Previous snapshot stays current
+  validator "Validate + stage" icon=lucide:check
+    detail: Selectors, references, asset hashes
+    description: Reject invalid batches before publication.
+
+Edges:
+  batch: author -> validator "batch"
+  failure: validator -> reject "any check fails"
+  publish: validator -> published "publish"
+
+Showing 1-7 of 7.

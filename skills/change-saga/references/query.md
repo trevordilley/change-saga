@@ -27,8 +27,11 @@ Saga that changed underneath a multi-step read.
 ## Navigating
 
 Start at `query overview` and walk one level at a time with `query children`.
-Read slide content with `query slide` and Item evidence with `query
-slide-diffs`; read narrative content through `query fragment`. A fragment's
+Read a slide with `change-saga diagram describe --slide TARGET <saga>`: compact
+text with its takeaway, Items in reading order, and a diagram's elements and
+connections, without asset bytes. Use `query slide` only when you need the raw
+visual or complete Item evidence, and `query slide-diffs` for Item evidence
+atoms; read narrative content through `query fragment`. A fragment's
 children are its landmarks, and each one reports the target URN to pass to
 `change-saga cover --target`. Navigate evidence in both directions with `query
 fragment-diffs` and `query diff-owners`, and page completeness problems with

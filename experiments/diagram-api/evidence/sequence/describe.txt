@@ -1,0 +1,31 @@
+Diagram: publish-sequence "Publishing one diagram batch"
+Snapshot: sha256:2e3497af38d7d6b3e697beff69dad166dc71024db05edd9d02789dae8dfef5c3
+View: semantic; omits geometry, styles, decorative_elements, asset_bytes, evidence_bodies; cannot reconstruct the drawing
+
+Nodes:
+  alt "alt  [snapshot matches]" in=alt-block
+  author "Author" icon=lucide:user
+  cli "CLI" icon=lucide:terminal
+  lock "Store lock" icon=lucide:lock
+  record "current.json" icon=lucide:database
+  renderer "Renderer" icon=lucide:file
+
+Edges:
+  m01-apply: author -> cli "apply(batch, S1)"
+  m02-lock: cli -> lock "acquire lock"
+  m03-read: cli -> record "read current snapshot"
+  m04-current: record -> cli "S1"
+  m05-render: cli -> renderer "render private copy" in=alt-block
+  m06-svg: renderer -> cli "SVG + hash" in=alt-block
+  m07-publish: cli -> record "publish one record" in=alt-block
+  m08-applied: cli -> author "applied: S2" in=alt-block
+  m09-reject: cli -> author "rejected, unchanged" in=alt-block
+  m10-release: cli -> lock "release lock"
+
+Groups:
+  alt-block "alt: snapshot matches, else stale"
+
+Text:
+  else-guard "[else: snapshot is stale]" in=alt-block
+
+Showing 1-18 of 18.

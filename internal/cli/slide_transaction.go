@@ -20,6 +20,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -39,6 +40,7 @@ type SlideTransactionRequest struct {
 	ExpectedSnapshots []string                      `json:"expected_snapshots,omitempty"`
 	Slide             SlideTransactionSlide         `json:"slide"`
 	Asset             SlideTransactionAsset         `json:"asset"`
+	Diagram           *diagram.Document             `json:"diagram,omitempty"`
 	Items             []SlideTransactionItemRequest `json:"items"`
 }
 
@@ -81,6 +83,7 @@ type SlideTransactionItemRequest struct {
 
 type SlideSemanticDiff struct {
 	AssetChanged    bool     `json:"asset_changed"`
+	DiagramChanged  bool     `json:"diagram_changed"`
 	CreatedItems    []string `json:"created_items"`
 	UpdatedItems    []string `json:"updated_items"`
 	RemovedItems    []string `json:"removed_items"`
@@ -124,7 +127,7 @@ func guardCompleteSlideMutation(operation string, slide *saga.Slide) error {
 // then the record is atomically created/replaced. The operation does not claim
 // atomicity with unrelated Saga records or arbitrary filesystem writes.
 func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, request SlideTransactionRequest, dryRun bool) (SlideTransactionResult, error) {
-	asset, extension, err := readSlideTransactionAsset(requestBase, request.Asset)
+	asset, extension, source, err := slideTransactionContent(requestBase, &request)
 	if err != nil {
 		return SlideTransactionResult{}, err
 	}
@@ -153,6 +156,13 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		return SlideTransactionResult{}, err
 	}
 	revision := buildSlideTransactionRevision(request, assetName, coderef.DigestBytes(asset))
+	var sourceName string
+	if source != nil {
+		if sourceName, err = saga.SlideAssetFilename(source, ".json"); err != nil {
+			return SlideTransactionResult{}, err
+		}
+		revision.Diagram = &saga.DiagramSource{Source: sourceName, SourceDigest: coderef.DigestBytes(source), Renderer: diagram.Renderer}
+	}
 	if err := verifyTransactionEvidence(ctx, firstNonEmpty(repo, root), revision.Items); err != nil {
 		return SlideTransactionResult{}, err
 	}
@@ -330,19 +340,34 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			return fmt.Errorf("slide transaction exceeds the %d-byte limit", saga.MaxSlideTransactionBytes)
 		}
 		result = transactionResult(document.Manifest.ID, target, recordPath, root, request.Operation, dryRun, false, previous, &revision)
+		staged := map[string][]byte{assetName: asset}
+		if source != nil {
+			staged[sourceName] = source
+		}
 		if dryRun {
-			return validateTransactionCandidateWithoutPublish(document.Root, deck, record, assetName, asset)
+			return validateTransactionCandidateWithoutPublish(document.Root, deck, record, staged)
 		}
 
-		assetPath := filepath.Join(deck.Directory, assetName)
-		assetCreated, writeErr := commitTransactionAsset(assetPath, asset)
-		if writeErr != nil {
-			return writeErr
-		}
+		// Content-addressed sidecars are committed before the record that
+		// references them; until then they are invisible to Saga readers.
+		created := []string{}
 		rollbackAsset := func() {
-			if assetCreated {
-				_ = os.Remove(assetPath)
+			for _, path := range created {
+				_ = os.Remove(path)
+			}
+			if len(created) > 0 {
 				_ = store.SyncDir(deck.Directory)
+			}
+		}
+		for _, name := range sortedKeys(staged) {
+			path := filepath.Join(deck.Directory, name)
+			wrote, writeErr := commitTransactionAsset(path, staged[name])
+			if writeErr != nil {
+				rollbackAsset()
+				return writeErr
+			}
+			if wrote {
+				created = append(created, path)
 			}
 		}
 		validation := saga.ValidateSlideTransactionCandidate(document.Root, deck, record)
@@ -513,17 +538,19 @@ func slideTransactionDiff(sagaID string, before, after *saga.SlideTransactionRev
 	if before == nil {
 		changed := []string{saga.SlideTarget(sagaID, after.Slide.ID)}
 		diff.AssetChanged = true
+		diff.DiagramChanged = after.Diagram != nil
 		for _, item := range after.Items {
 			diff.CreatedItems = append(diff.CreatedItems, item.Item.ID)
 			changed = append(changed, saga.ItemTarget(sagaID, after.Slide.ID, item.Item.ID))
 		}
 		return diff, changed
 	}
-	if before.AssetDigest == after.AssetDigest && reflect.DeepEqual(before.Slide, after.Slide) && reflect.DeepEqual(before.Items, after.Items) {
+	if before.AssetDigest == after.AssetDigest && reflect.DeepEqual(before.Slide, after.Slide) && reflect.DeepEqual(before.Items, after.Items) && reflect.DeepEqual(before.Diagram, after.Diagram) {
 		return diff, []string{}
 	}
 	changed := []string{saga.SlideTarget(sagaID, after.Slide.ID)}
 	diff.AssetChanged = before.AssetDigest != after.AssetDigest || before.Slide.MediaType != after.Slide.MediaType
+	diff.DiagramChanged = !reflect.DeepEqual(before.Diagram, after.Diagram)
 	oldItems, newItems := map[string]saga.TransactionItem{}, map[string]saga.TransactionItem{}
 	for _, item := range before.Items {
 		oldItems[item.Item.ID] = item
@@ -645,6 +672,44 @@ func firstSnapshot(values []string) string {
 	return values[0]
 }
 
+// slideTransactionContent returns the slide asset and, for a diagram-sourced
+// request, the canonical diagram source it was rendered from. A diagram fills
+// an omitted media_type with SVG; the rendered SVG's accessible name and
+// summary are the slide title and takeaway.
+func slideTransactionContent(base string, request *SlideTransactionRequest) ([]byte, string, []byte, error) {
+	if request.Diagram == nil {
+		asset, extension, err := readSlideTransactionAsset(base, request.Asset)
+		return asset, extension, nil, err
+	}
+	if request.Asset != (SlideTransactionAsset{}) {
+		return nil, "", nil, fmt.Errorf("supply either asset or diagram, not both")
+	}
+	if request.Slide.MediaType == "" {
+		request.Slide.MediaType = "image/svg+xml"
+	}
+	if request.Slide.MediaType != "image/svg+xml" {
+		return nil, "", nil, fmt.Errorf("a diagram renders image/svg+xml, not %s", request.Slide.MediaType)
+	}
+	svg, err := diagram.Render(*request.Diagram, diagram.Options{Title: request.Slide.Title, Description: strings.TrimSpace(request.Slide.Takeaway)})
+	if err != nil {
+		return nil, "", nil, fmt.Errorf("diagram: %w", err)
+	}
+	source, err := diagram.Encode(*request.Diagram)
+	if err != nil {
+		return nil, "", nil, err
+	}
+	return svg, ".svg", source, nil
+}
+
+func sortedKeys[V any](values map[string]V) []string {
+	keys := make([]string, 0, len(values))
+	for key := range values {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	return keys
+}
+
 func readSlideTransactionAsset(base string, asset SlideTransactionAsset) ([]byte, string, error) {
 	if (asset.Path == "") == (asset.ContentBase64 == "") {
 		return nil, "", fmt.Errorf("asset requires exactly one of path or content_base64")
@@ -724,22 +789,31 @@ func commitTransactionAsset(path string, data []byte) (bool, error) {
 	return true, nil
 }
 
-func validateTransactionCandidateWithoutPublish(root string, deck *saga.Deck, record saga.SlideTransactionRecord, assetName string, asset []byte) error {
+func validateTransactionCandidateWithoutPublish(root string, deck *saga.Deck, record saga.SlideTransactionRecord, staged map[string][]byte) error {
 	stage, err := os.MkdirTemp("", "change-saga-slide-dry-")
 	if err != nil {
 		return err
 	}
 	defer os.RemoveAll(stage)
-	assets := map[string][]byte{assetName: asset}
+	assets := map[string][]byte{}
+	for name, value := range staged {
+		assets[name] = value
+	}
 	for _, revision := range record.Revisions {
-		if _, present := assets[revision.Asset]; present {
-			continue
+		names := []string{revision.Asset}
+		if revision.Diagram != nil {
+			names = append(names, revision.Diagram.Source)
 		}
-		value, readErr := os.ReadFile(filepath.Join(deck.Directory, revision.Asset))
-		if readErr != nil {
-			return readErr
+		for _, name := range names {
+			if _, present := assets[name]; present {
+				continue
+			}
+			value, readErr := os.ReadFile(filepath.Join(deck.Directory, name))
+			if readErr != nil {
+				return readErr
+			}
+			assets[name] = value
 		}
-		assets[revision.Asset] = value
 	}
 	for name, value := range assets {
 		if err := os.WriteFile(filepath.Join(stage, name), value, 0o600); err != nil {

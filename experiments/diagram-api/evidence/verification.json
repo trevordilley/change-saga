@@ -1,0 +1,19 @@
+{
+  "kind": "summary of observed verification results, not a raw execution log",
+  "platform": "macOS 15.7.4 arm64",
+  "go": "go1.26.1",
+  "experimental_module": {
+    "go test -race ./...": "passed",
+    "go vet ./...": "passed",
+    "go build -o bin/diagram-spike ./cmd/diagram-spike": "passed",
+    "GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o bin/diagram-spike.exe ./cmd/diagram-spike": "passed; compilation only"
+  },
+  "qa_dependency_install": "npm ci --prefix experiments/diagram-api passed from repository root",
+  "browser": "Chromium 145.0.7632.6",
+  "visual_report": "visual-qa.json",
+  "windows_runtime": "not executed",
+  "production_review_surface_qa": "not executed",
+  "excalidraw_adapter_runtime": "not executed",
+  "token_counts": "not measured",
+  "additional_root_suite": "An extra repository-wide go test -race ./... run was stopped before completion (exit 143); emitted package results passed, including internal/cli. Not counted as a full root-suite pass. The isolated module suite completed successfully."
+}

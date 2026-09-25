@@ -141,6 +141,9 @@ type Slide struct {
 	AuthoringHeads     []string  `json:"authoring_heads,omitempty"`
 	AuthoringConflict  bool      `json:"authoring_conflict,omitempty"`
 	AuthoringCreatedAt time.Time `json:"-"`
+	// Diagram names the structured source the current transaction revision
+	// rendered its SVG from. Hand-authored slides have none.
+	Diagram *DiagramSource `json:"-"`
 }
 
 type Item struct {

@@ -26,6 +26,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
+	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -384,6 +385,7 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("POST /reviews/{id}/decision", application.reviewDecision)
 	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
 	mux.HandleFunc("GET /app.js", application.javascript)
+	mux.HandleFunc("GET "+diagram.FontPath, application.diagramFont)
 	mux.HandleFunc("GET /theme.js", application.themeScript)
 	mux.HandleFunc("GET /api/documentation", application.documentationPage)
 	mux.HandleFunc("GET /api/technical-usages", application.technicalUsagesPage)
@@ -1674,6 +1676,19 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", contentType)
 	}
 	http.ServeContent(w, r, filepath.Base(realPath), info.ModTime(), file)
+}
+
+// diagramFont serves the font generated diagram SVGs measure their text
+// with. Slides render in sandboxed, opaque-origin frames and browsers fetch
+// fonts in CORS mode, so the response must allow any origin; the bytes are
+// public and fixed for this binary.
+func (a *app) diagramFont(w http.ResponseWriter, _ *http.Request) {
+	data, _ := diagram.Font()
+	w.Header().Set("Content-Type", "font/ttf")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Cache-Control", "public, max-age=86400")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	_, _ = w.Write(data)
 }
 
 func (a *app) javascript(w http.ResponseWriter, _ *http.Request) {

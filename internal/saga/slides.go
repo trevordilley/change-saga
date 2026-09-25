@@ -169,11 +169,15 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 		}
 		for _, revision := range record.Revisions {
 			allowedAssets[revision.Asset] = true
+			if revision.Diagram != nil {
+				allowedAssets[revision.Diagram.Source] = true
+			}
 		}
 		heads, _ := record.Heads()
 		slide := &Slide{
 			Path: relativePath(root, path), Directory: recordRoot, SlideManifest: current.Slide, Target: targets.slide(current.Slide.ID),
 			AuthoringSnapshot: current.Snapshot, AuthoringHeads: heads, AuthoringConflict: len(heads) > 1, AuthoringCreatedAt: current.CreatedAt,
+			Diagram: current.Diagram,
 		}
 		key := FlatTargetKey(slide.Target)
 		if matches[2] != key {

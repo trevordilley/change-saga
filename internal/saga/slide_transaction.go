@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/sagaref"
 )
@@ -59,6 +60,16 @@ type SlideTransactionRevision struct {
 	AssetDigest     string            `json:"asset_digest"`
 	Slide           SlideManifest     `json:"slide"`
 	Items           []TransactionItem `json:"items"`
+	Diagram         *DiagramSource    `json:"diagram,omitempty"`
+}
+
+// DiagramSource pins the structured diagram a revision's SVG asset was
+// rendered from. Source is a content-addressed JSON sidecar beside the asset;
+// Renderer records which deterministic renderer produced the asset bytes.
+type DiagramSource struct {
+	Source       string `json:"source"`
+	SourceDigest string `json:"source_digest"`
+	Renderer     string `json:"renderer"`
 }
 
 // SlideTransactionRecord is the single logical publication point for a
@@ -259,6 +270,9 @@ func validateSlideTransactionRecord(root, recordRoot, name, sagaID string, deck 
 			problem("asset_digest does not match the referenced asset bytes")
 		}
 		validateTransactionalSlide(root, recordRoot, name, sagaID, deck, targets, *revision, validation)
+		if revision.Diagram != nil {
+			validateRevisionDiagram(recordRoot, *revision, problem)
+		}
 	}
 	heads, headsErr := record.Heads()
 	if headsErr != nil {
@@ -350,3 +364,53 @@ func validateCriterionLink(sagaID string, link CriterionLink) error {
 }
 
 func utf8Count(value string) int { return len([]rune(value)) }
+
+// validateRevisionDiagram checks a revision's diagram pin: the source is a
+// content-addressed regular file whose digest matches, it decodes as a valid
+// diagram, the slide is SVG, and every element-selecting Item names a
+// semantic element. Rendering equivalence is established when the CLI writes
+// the revision and rechecked by diagram check, not on every load.
+func validateRevisionDiagram(recordRoot string, revision SlideTransactionRevision, problem func(string)) {
+	pin := *revision.Diagram
+	if !strings.HasPrefix(pin.Source, "24-a-") || filepath.Ext(pin.Source) != ".json" || filepath.Base(pin.Source) != pin.Source {
+		problem("diagram source must be a content-addressed .json sidecar")
+		return
+	}
+	if !strings.HasPrefix(pin.SourceDigest, coderef.DigestPrefix) || strings.TrimSpace(pin.Renderer) == "" {
+		problem("diagram needs a sha256 source_digest and its renderer")
+		return
+	}
+	if revision.Slide.MediaType != "image/svg+xml" {
+		problem("a diagram-sourced slide must publish image/svg+xml")
+	}
+	path := filepath.Join(recordRoot, pin.Source)
+	info, err := os.Lstat(path)
+	if err != nil || info.Mode()&os.ModeSymlink != 0 || !info.Mode().IsRegular() {
+		problem("diagram source must be an existing regular file, not a directory or symlink")
+		return
+	}
+	data, err := os.ReadFile(path)
+	if err != nil || coderef.DigestBytes(data) != pin.SourceDigest {
+		problem("diagram source_digest does not match the referenced source bytes")
+		return
+	}
+	document, err := diagram.Decode(data)
+	if err == nil {
+		err = document.Validate()
+	}
+	if err != nil {
+		problem("diagram source is invalid: " + strings.ReplaceAll(err.Error(), "\n", "; "))
+		return
+	}
+	for _, item := range revision.Items {
+		if item.Item.Selector.Type != "element" {
+			continue
+		}
+		element, found := document.Element(item.Item.Selector.ElementID)
+		if !found {
+			problem(fmt.Sprintf("item %q selects %q, which is not a diagram element", item.Item.ID, item.Item.Selector.ElementID))
+		} else if element.Decorative {
+			problem(fmt.Sprintf("item %q selects decorative diagram element %q; Items must select semantic elements", item.Item.ID, element.ID))
+		}
+	}
+}

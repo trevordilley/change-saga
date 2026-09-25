@@ -1,0 +1,307 @@
+{
+  "commands": 22,
+  "request_bytes": 10703,
+  "response_bytes": 888978,
+  "token_counts": "not measured",
+  "traffic": [
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "schema"
+      ],
+      "request_bytes": 121,
+      "response_bytes": 1976,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "assets",
+        "search",
+        "database"
+      ],
+      "request_bytes": 137,
+      "response_bytes": 127,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "init",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram",
+        "--id",
+        "atomic",
+        "--title",
+        "Atomic diagram publication",
+        "--request",
+        "init"
+      ],
+      "request_bytes": 308,
+      "response_bytes": 189,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "apply",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 3207,
+      "response_bytes": 332,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "describe",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 250,
+      "response_bytes": 839,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "render",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 248,
+      "response_bytes": 210774,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "source",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 248,
+      "response_bytes": 19553,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "merge",
+        "--base",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/base.json",
+        "--ours",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/ours.json",
+        "--theirs",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/theirs.json"
+      ],
+      "request_bytes": 508,
+      "response_bytes": 19551,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "merge",
+        "--base",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/base.json",
+        "--ours",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/ours.json",
+        "--theirs",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/same.json"
+      ],
+      "request_bytes": 506,
+      "response_bytes": 74,
+      "exit": 1
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "update",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram",
+        "--expected",
+        "sha256:8dba229b57c97ccf6af5219be2b7f23da2f5cb524c91942100b11c82ceb0dd6b",
+        "--request",
+        "overflow",
+        "--id",
+        "validator",
+        "--set",
+        "{\"label\": \"This deliberately long description does not fit in its label slot\"}"
+      ],
+      "request_bytes": 450,
+      "response_bytes": 149,
+      "exit": 1
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "move",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram",
+        "--expected",
+        "sha256:8dba229b57c97ccf6af5219be2b7f23da2f5cb524c91942100b11c82ceb0dd6b",
+        "--request",
+        "move",
+        "--id",
+        "validator",
+        "--dy",
+        "30"
+      ],
+      "request_bytes": 367,
+      "response_bytes": 200,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "render",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 248,
+      "response_bytes": 210774,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "get",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram",
+        "--id",
+        "publish"
+      ],
+      "request_bytes": 258,
+      "response_bytes": 370,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "apply",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 995,
+      "response_bytes": 240,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "apply",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 995,
+      "response_bytes": 298,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "remove",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram",
+        "--expected",
+        "sha256:89a5825f9ca4a06c8437fb028942e252e31aa94b125cd1e096feae01105cb3a1",
+        "--request",
+        "remove-edge",
+        "--id",
+        "temporary"
+      ],
+      "request_bytes": 368,
+      "response_bytes": 200,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "describe",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 250,
+      "response_bytes": 837,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "render",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 248,
+      "response_bytes": 210806,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "check",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 247,
+      "response_bytes": 208,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "check",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 247,
+      "response_bytes": 290,
+      "exit": 1
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "rebuild",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 249,
+      "response_bytes": 385,
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/bin/diagram-spike",
+        "render",
+        "--store",
+        "/Users/20idemo/.devswarm/repos/2E/a37c313d/explore-diagram-authoring-api/experiments/diagram-api/runs/evidence/diagram"
+      ],
+      "request_bytes": 248,
+      "response_bytes": 210806,
+      "exit": 0
+    }
+  ],
+  "describe_formats": {
+    "text_bytes": 837,
+    "json_bytes": 1118
+  },
+  "categories": {
+    "compact_authoring_and_queries": {
+      "commands": 15,
+      "request_bytes": 8449,
+      "response_bytes": 6640
+    },
+    "rendered_artifacts": {
+      "commands": 4,
+      "request_bytes": 992,
+      "response_bytes": 843160
+    },
+    "full_source_and_merge": {
+      "commands": 3,
+      "request_bytes": 1262,
+      "response_bytes": 39178
+    }
+  }
+}

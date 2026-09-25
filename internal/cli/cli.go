@@ -22,6 +22,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/areas"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
+	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -90,7 +91,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "diagram", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"serve", "open", "install-skill", "spec",
 }
@@ -173,6 +174,12 @@ var commandUsage = map[string]string{
 	"add-deck":                    "change-saga add-deck (--feature ID | --role onboarding) [flags] <saga> <name>",
 	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"apply-slide":                 "change-saga apply-slide --from FILE|- [--repo PATH] [--dry-run] [--json] <saga>",
+	"diagram":                     "change-saga diagram <describe|get|edit|icons|check> [flags] <saga>",
+	"diagram describe":            "change-saga diagram describe --slide TARGET [--format text|json] [--offset N] [--limit N] <saga>",
+	"diagram get":                 "change-saga diagram get --slide TARGET --id ELEMENT <saga>",
+	"diagram edit":                "change-saga diagram edit --slide TARGET --expected SNAPSHOT --request-id ID --from FILE|- [--repo PATH] [--dry-run] [--json] <saga>",
+	"diagram icons":               "change-saga diagram icons [--query TEXT] [--json]",
+	"diagram check":               "change-saga diagram check [--slide TARGET] [--json] <saga>",
 	"set-slide-content":           "change-saga set-slide-content [--review ID] --target TARGET --source FILE|- [--json|--quiet] <saga>",
 	"add-item":                    "change-saga add-item [--review ID] --slide TARGET --kind KIND [selector] [--record URN] [flags] <saga>",
 	"add-chapter":                 "change-saga add-chapter (--feature ID | --app designsystem) [flags] <saga> <name>",
@@ -398,7 +405,13 @@ var commandDescription = map[string]string{
 	"plan record-merge":           "Append merge evidence for a declared merge unit. A merged state contributes delivery\nevidence only when its immutable commit and diff links resolve.",
 	"add-deck":                    "Add an implementation deck. The implementation decks are the Saga's Implementation\nsection; split the delivered change into decks only where a concern warrants its own review.",
 	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
-	"apply-slide":                 "Publish one complete implementation slide from structured JSON: its visual asset,\nsemantic Items and selectors, exact code evidence, and pinned Item-level criterion links.\n--dry-run returns the same semantic diff without publishing; updates require the current snapshot.",
+	"apply-slide":                 "Publish one complete implementation slide from structured JSON: its visual asset or a\n\"diagram\" source the CLI renders to SVG, semantic Items and selectors, exact code evidence,\nand pinned Item-level criterion links. --dry-run returns the same semantic diff without\npublishing; updates require the current snapshot.",
+	"diagram":                     "Edit and check diagram-sourced slides. A diagram is an ordered list of explicitly\npositioned nodes, edges, text, groups, and graphics; the CLI renders it to the slide's\nSVG. Read any slide compactly with `change-saga diagram describe`.",
+	"diagram edit":                "Apply a JSON array of operations (add, update, move, remove, style, align, distribute,\ncanvas) to a slide's diagram at an exact snapshot and republish it through apply-slide,\nkeeping its Items, evidence, and criterion links. Nothing moves unless named: moving a\nnode leaves its edges where they are. [] re-renders the unchanged source.",
+	"diagram describe":            "Read one slide compactly: its takeaway, Items in reading order with evidence and\ncriterion-link counts, and, for a diagram-sourced slide, its groups, nodes, edges, and\ncontainment in document order. Geometry, styling, decorative elements, and asset bytes are\nomitted, so the view cannot rebuild the drawing. Text by default; --format json for tools.",
+	"diagram get":                 "Return one diagram element's complete stored properties, resolved style, and selector,\nwith the snapshot to pass to diagram edit --expected.",
+	"diagram icons":               "List the bundled, digest-pinned Lucide icons a diagram element may name in \"icon\".",
+	"diagram check":               "Re-render each diagram-sourced slide with this binary and report any whose published\nSVG differs from its source. Exits 3 when one is stale; repair with an empty diagram edit.",
 	"set-slide-content":           "Replace a slide's visual entrypoint while preserving its stable target and items.",
 	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Code references attach here.",
 	"review":                      "A review is a pull request's slide deck: one review per pull request, viewed from the\nmerge-base of its base and its head, and following the head as commits are pushed. The deck\nexplains what the change did and why, the transition the current documentation no longer\nshows. Its Items reference the code the change touched (shown as a diff against the base)\nand the Saga records it revised. Approval and comments exist only here, per review slide:\nthe documentation itself has none. The tool records decisions and reports whether each is\nout of date for the current head; it never declares a review approved.",
@@ -1253,8 +1266,9 @@ func Spec(args []string, out io.Writer) error {
 			},
 			"implementation_deck": map[string]any{
 				"storage": applayout.FeaturesDir + "/<feature>" + applayout.FeatureSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
-				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
-				"content":    "one self-contained visual file sharing its slide manifest stem",
+				"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
+				"content":        "one self-contained visual file sharing its slide manifest stem",
+				"diagram_source": diagram.Contract(),
 				"visual_forms": map[string]string{
 					"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",
 					"data-flow": "directed inputs, transformations, storage, and outputs", "sequence": "participants, time, calls, responses, and exceptional returns",

@@ -1,0 +1,22 @@
+{
+  "browser": "145.0.7632.6",
+  "network": "all requests blocked",
+  "views": [
+    {
+      "name": "final",
+      "width": 1280,
+      "height": 720,
+      "duplicate_ids": [],
+      "findings": [],
+      "font_ready": true
+    },
+    {
+      "name": "final",
+      "width": 1024,
+      "height": 576,
+      "duplicate_ids": [],
+      "findings": [],
+      "font_ready": true
+    }
+  ]
+}

@@ -4,7 +4,7 @@
   "title": "Complete slide transaction request",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "operation", "request_id", "deck", "slide", "asset", "items"],
+  "required": ["version", "operation", "request_id", "deck", "slide", "items"],
   "properties": {
     "version": {"const": 1},
     "operation": {"enum": ["create", "update", "reconcile"]},
@@ -14,9 +14,13 @@
     "expected_snapshots": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"$ref": "#/$defs/digest"}},
     "slide": {"$ref": "#/$defs/slide"},
     "asset": {"$ref": "#/$defs/asset"},
+    "diagram": {"$ref": "https://changesaga.dev/schema/v5/diagram.schema.json", "description": "Structured source the CLI renders to the slide's SVG and stores beside it; supply it instead of asset."},
     "items": {"type": "array", "minItems": 1, "maxItems": 7, "items": {"$ref": "#/$defs/item"}}
   },
   "allOf": [
+    {"oneOf": [{"required": ["asset"], "not": {"required": ["diagram"]}}, {"required": ["diagram"], "not": {"required": ["asset"]}}]},
+    {"if": {"required": ["asset"]}, "then": {"properties": {"slide": {"required": ["media_type"]}}}},
+    {"if": {"required": ["diagram"]}, "then": {"properties": {"slide": {"properties": {"media_type": {"const": "image/svg+xml"}}}}}},
     {"if": {"properties": {"operation": {"const": "create"}}}, "then": {"required": ["expected_snapshot"], "properties": {"expected_snapshot": {"const": "absent"}}, "not": {"required": ["expected_snapshots"]}}},
     {"if": {"properties": {"operation": {"const": "update"}}}, "then": {"required": ["expected_snapshot"], "properties": {"expected_snapshot": {"$ref": "#/$defs/digest"}}, "not": {"required": ["expected_snapshots"]}}},
     {"if": {"properties": {"operation": {"const": "reconcile"}}}, "then": {"required": ["expected_snapshots"], "not": {"required": ["expected_snapshot"]}}}
@@ -28,7 +32,7 @@
     "slide": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title", "rank", "intent", "layout", "media_type", "takeaway", "reading_order"],
+      "required": ["id", "title", "rank", "intent", "layout", "takeaway", "reading_order"],
       "properties": {
         "id": {"$ref": "#/$defs/stableId"},
         "title": {"type": "string", "minLength": 1, "maxLength": 100},

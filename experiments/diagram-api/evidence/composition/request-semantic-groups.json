@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "request_id": "semantic-groups-2",
+  "expected_snapshot": "sha256:8b2229c64b2c5672b6964394237b5555604e47f1db8561f8a8c2ca8d2dead63b",
+  "operations": [
+    {
+      "op": "update",
+      "id": "browser",
+      "set": {
+        "decorative": false,
+        "label": "Review surface"
+      }
+    },
+    {
+      "op": "update",
+      "id": "history",
+      "set": {
+        "decorative": false,
+        "label": "Branch history"
+      }
+    },
+    {
+      "op": "update",
+      "id": "terminal",
+      "set": {
+        "decorative": false,
+        "label": "Terminal session"
+      }
+    }
+  ]
+}

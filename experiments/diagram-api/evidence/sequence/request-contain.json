@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "request_id": "contain",
+  "expected_snapshot": "sha256:c35aece306834ba273e781a44c8ab384e526068698926e059e2519683b5f4a12",
+  "operations": [
+    {
+      "op": "add",
+      "element": {
+        "id": "alt-block",
+        "kind": "group",
+        "label": "alt: snapshot matches, else stale",
+        "x": 0,
+        "y": 0,
+        "style": "fragment"
+      }
+    },
+    {
+      "op": "update",
+      "id": "alt",
+      "set": {
+        "parent": "alt-block"
+      }
+    },
+    {
+      "op": "update",
+      "id": "else-divider",
+      "set": {
+        "parent": "alt-block"
+      }
+    },
+    {
+      "op": "update",
+      "id": "else-guard",
+      "set": {
+        "parent": "alt-block"
+      }
+    },
+    {
+      "op": "update",
+      "id": "m05-render",
+      "set": {
+        "parent": "alt-block"
+      }
+    },
+    {
+      "op": "update",
+      "id": "m06-svg",
+      "set": {
+        "parent": "alt-block"
+      }
+    },
+    {
+      "op": "update",
+      "id": "m07-publish",
+      "set": {
+        "parent": "alt-block"
+      }
+    },
+    {
+      "op": "update",
+      "id": "m08-applied",
+      "set": {
+        "parent": "alt-block"
+      }
+    },
+    {
+      "op": "update",
+      "id": "m09-reject",
+      "set": {
+        "parent": "alt-block"
+      }
+    }
+  ]
+}

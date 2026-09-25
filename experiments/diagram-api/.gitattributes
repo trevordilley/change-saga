@@ -1,0 +1,3 @@
+# Preserve exact tool output, including the renderer's terminal blank line.
+evidence/**/*.svg whitespace=-blank-at-eof
+evidence/cogent-roundtrip.txt whitespace=-blank-at-eof

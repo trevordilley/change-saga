@@ -19,6 +19,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -1061,5 +1062,17 @@ func TestObservingRendersNoApprovalControls(t *testing.T) {
 	// side and not while reading documentation.
 	if strings.Contains(compared, `data-view-tab="change"`) {
 		t.Fatal("documentation offered the Change tab, which belongs to the Review side")
+	}
+}
+
+func TestDiagramFontIsServedForSandboxedSlides(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	newMux(&app{}).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, diagram.FontPath, nil))
+	want, _ := diagram.Font()
+	if recorder.Code != http.StatusOK || recorder.Header().Get("Content-Type") != "font/ttf" || !bytes.Equal(recorder.Body.Bytes(), want) {
+		t.Fatalf("font status=%d type=%q bytes=%d", recorder.Code, recorder.Header().Get("Content-Type"), recorder.Body.Len())
+	}
+	if recorder.Header().Get("Access-Control-Allow-Origin") != "*" {
+		t.Fatal("opaque-origin slide frames fetch fonts in CORS mode and need Access-Control-Allow-Origin")
 	}
 }

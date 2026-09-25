@@ -26,8 +26,9 @@ These rules apply to every Change Saga task:
   `change-saga query schema <operation>` instead of guessing a command or
   response shape. If a reference disagrees with the CLI, follow the CLI and
   report the mismatch.
-- Read real Saga metadata only through `change-saga query`. Never glob, grep,
-  or open metadata files to infer Saga state. Page every result to completion,
+- Read real Saga metadata only through `change-saga query`, or read one slide
+  compactly with `change-saga diagram describe`. Never glob, grep, or open
+  metadata files to infer Saga state. Page every result to completion,
   keep one snapshot across a multi-query read, and restart if it changes.
 - Make Saga mutations only through public CLI authoring commands. Do not edit,
   invent, rename, or delete metadata files. Narrative and visual source files
