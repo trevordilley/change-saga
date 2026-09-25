@@ -2896,6 +2896,16 @@ const appJavaScript = `(() => {
       // hx-preserve kept is already loaded.
       else if (element.id === 'view-slides' && !q('[data-deck-viewer]', element)) expectDecks();
     });
+    // What this script inserts itself, into the drawer, a chapter, an
+    // explanation, or a review surface, holds links too; they are boosted
+    // like the ones htmx swapped in, so following one keeps the shell. Only
+    // links: the forms this script builds submit themselves.
+    new MutationObserver(records => {
+      for (const record of records) for (const node of record.addedNodes) {
+        if (node.nodeType !== 1 || node['htmx-internal-data']) continue;
+        within(node, 'a[href]').forEach(link => { if (!link['htmx-internal-data']) htmx.process(link); });
+      }
+    }).observe(document.body, {childList: true, subtree: true});
     // Every request says which state of the Saga the kept sidebar and deck
     // viewer show, so a page from another state brings them again.
     const keptShell = () => q('#changed-files-panel')?.dataset.sagaShell;
