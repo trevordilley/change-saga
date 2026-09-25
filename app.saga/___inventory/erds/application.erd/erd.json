@@ -1,0 +1,6 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/erd.schema.json",
+  "version": 5,
+  "id": "application",
+  "created_at": "2026-09-25T06:03:27.035263Z"
+}

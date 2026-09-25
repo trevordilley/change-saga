@@ -1,0 +1,364 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/erd-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "record": "urn:change-saga:change-saga:erd:application",
+  "parents": [
+    "urn:change-saga:change-saga:erd:application:revision:r1"
+  ],
+  "name": "Change Saga data model",
+  "explanation": "How app.saga is stored: the manifest, product records (features, personas, stories, criteria, relations), documentation decks with their slides, Items and exact code references, technical definitions, and pull-request reviews with their decisions. The drawing is selective; the directory lists every entity.",
+  "visual": {
+    "path": "assets/c75460f5b1bd0b3d5939d07dd03980e61473aba92034762b5dc96e31b3b3ea06.svg",
+    "media_type": "image/svg+xml",
+    "digest": "sha256:c75460f5b1bd0b3d5939d07dd03980e61473aba92034762b5dc96e31b3b3ea06"
+  },
+  "directory": [
+    {
+      "target": "urn:change-saga:change-saga:data-entity:saga-manifest",
+      "revision": "urn:change-saga:change-saga:data-entity:saga-manifest:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:feature",
+      "revision": "urn:change-saga:change-saga:data-entity:feature:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:story",
+      "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:persona",
+      "revision": "urn:change-saga:change-saga:data-entity:persona:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:review",
+      "revision": "urn:change-saga:change-saga:data-entity:review:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:deck",
+      "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:criterion",
+      "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:relation",
+      "revision": "urn:change-saga:change-saga:data-entity:relation:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:review-decision",
+      "revision": "urn:change-saga:change-saga:data-entity:review-decision:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:slide",
+      "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:item",
+      "revision": "urn:change-saga:change-saga:data-entity:item:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:code-reference",
+      "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:technical-definition",
+      "revision": "urn:change-saga:change-saga:data-entity:technical-definition:revision:r1"
+    }
+  ],
+  "bindings": [
+    {
+      "id": "e-saga-manifest",
+      "element": "e-saga-manifest",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:saga-manifest",
+        "revision": "urn:change-saga:change-saga:data-entity:saga-manifest:revision:r1"
+      }
+    },
+    {
+      "id": "e-feature",
+      "element": "e-feature",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:feature",
+        "revision": "urn:change-saga:change-saga:data-entity:feature:revision:r1"
+      }
+    },
+    {
+      "id": "e-story",
+      "element": "e-story",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:story",
+        "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+      }
+    },
+    {
+      "id": "e-persona",
+      "element": "e-persona",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:persona",
+        "revision": "urn:change-saga:change-saga:data-entity:persona:revision:r1"
+      }
+    },
+    {
+      "id": "e-review",
+      "element": "e-review",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:review",
+        "revision": "urn:change-saga:change-saga:data-entity:review:revision:r1"
+      }
+    },
+    {
+      "id": "e-deck",
+      "element": "e-deck",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:deck",
+        "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+      }
+    },
+    {
+      "id": "e-criterion",
+      "element": "e-criterion",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:criterion",
+        "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1"
+      }
+    },
+    {
+      "id": "e-relation",
+      "element": "e-relation",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:relation",
+        "revision": "urn:change-saga:change-saga:data-entity:relation:revision:r1"
+      }
+    },
+    {
+      "id": "e-review-decision",
+      "element": "e-review-decision",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:review-decision",
+        "revision": "urn:change-saga:change-saga:data-entity:review-decision:revision:r1"
+      }
+    },
+    {
+      "id": "e-slide",
+      "element": "e-slide",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:slide",
+        "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r1"
+      }
+    },
+    {
+      "id": "e-item",
+      "element": "e-item",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:item",
+        "revision": "urn:change-saga:change-saga:data-entity:item:revision:r1"
+      }
+    },
+    {
+      "id": "e-code-reference",
+      "element": "e-code-reference",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:code-reference",
+        "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r1"
+      }
+    },
+    {
+      "id": "e-technical-definition",
+      "element": "e-technical-definition",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:technical-definition",
+        "revision": "urn:change-saga:change-saga:data-entity:technical-definition:revision:r1"
+      }
+    },
+    {
+      "id": "r-feature-in-saga",
+      "element": "r-feature-in-saga",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:feature",
+          "revision": "urn:change-saga:change-saga:data-entity:feature:revision:r1"
+        },
+        "id": "in-saga"
+      }
+    },
+    {
+      "id": "r-story-in-feature",
+      "element": "r-story-in-feature",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:story",
+          "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+        },
+        "id": "in-feature"
+      }
+    },
+    {
+      "id": "r-story-serves",
+      "element": "r-story-serves",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:story",
+          "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+        },
+        "id": "serves"
+      }
+    },
+    {
+      "id": "r-criterion-of-story",
+      "element": "r-criterion-of-story",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:criterion",
+          "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1"
+        },
+        "id": "of-story"
+      }
+    },
+    {
+      "id": "r-deck-in-feature",
+      "element": "r-deck-in-feature",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:deck",
+          "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+        },
+        "id": "in-feature"
+      }
+    },
+    {
+      "id": "r-deck-of-review",
+      "element": "r-deck-of-review",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:deck",
+          "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+        },
+        "id": "of-review"
+      }
+    },
+    {
+      "id": "r-slide-in-deck",
+      "element": "r-slide-in-deck",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:slide",
+          "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r1"
+        },
+        "id": "in-deck"
+      }
+    },
+    {
+      "id": "r-item-on-slide",
+      "element": "r-item-on-slide",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:item",
+          "revision": "urn:change-saga:change-saga:data-entity:item:revision:r1"
+        },
+        "id": "on-slide"
+      }
+    },
+    {
+      "id": "r-item-documents",
+      "element": "r-item-documents",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:item",
+          "revision": "urn:change-saga:change-saga:data-entity:item:revision:r1"
+        },
+        "id": "documents"
+      }
+    },
+    {
+      "id": "r-item-criterion-link",
+      "element": "r-item-criterion-link",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:item",
+          "revision": "urn:change-saga:change-saga:data-entity:item:revision:r1"
+        },
+        "id": "criterion-link"
+      }
+    },
+    {
+      "id": "r-code-reference-owned-by-item",
+      "element": "r-code-reference-owned-by-item",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:code-reference",
+          "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r1"
+        },
+        "id": "owned-by-item"
+      }
+    },
+    {
+      "id": "r-code-reference-in-definition",
+      "element": "r-code-reference-in-definition",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:code-reference",
+          "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r1"
+        },
+        "id": "in-definition"
+      }
+    },
+    {
+      "id": "r-relation-from-item",
+      "element": "r-relation-from-item",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:relation",
+          "revision": "urn:change-saga:change-saga:data-entity:relation:revision:r1"
+        },
+        "id": "from-item"
+      }
+    },
+    {
+      "id": "r-relation-to-story",
+      "element": "r-relation-to-story",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:relation",
+          "revision": "urn:change-saga:change-saga:data-entity:relation:revision:r1"
+        },
+        "id": "to-story"
+      }
+    },
+    {
+      "id": "r-relation-to-criterion",
+      "element": "r-relation-to-criterion",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:relation",
+          "revision": "urn:change-saga:change-saga:data-entity:relation:revision:r1"
+        },
+        "id": "to-criterion"
+      }
+    },
+    {
+      "id": "r-review-decision-in-review",
+      "element": "r-review-decision-in-review",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:review-decision",
+          "revision": "urn:change-saga:change-saga:data-entity:review-decision:revision:r1"
+        },
+        "id": "in-review"
+      }
+    },
+    {
+      "id": "r-review-decision-on-slide",
+      "element": "r-review-decision-on-slide",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:review-decision",
+          "revision": "urn:change-saga:change-saga:data-entity:review-decision:revision:r1"
+        },
+        "id": "on-slide"
+      }
+    }
+  ],
+  "created_at": "2026-09-25T06:05:36.302969Z"
+}
