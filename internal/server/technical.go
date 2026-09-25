@@ -597,5 +597,6 @@ const technicalStyles = `
 .technical-pin code{font-size:11px}
 .technical-history{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
 .technical-entity-page [data-technical-conflict] ul{margin:4px 0 0}
+.technical-entity-page .documentation-members{list-style:none}
 .documentation-page-link{margin:4px 0 12px;font:500 13px var(--ui)}
 `
