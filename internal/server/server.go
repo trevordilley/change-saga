@@ -421,10 +421,12 @@ func newMux(application *app) *http.ServeMux {
 
 // withGitSession gives each request one Git session: its Git questions are
 // asked once and its revision, object, and diff reads share long-lived
-// processes that stop when the response is written.
+// processes that stop when the response is written. The session is
+// isolated: the server outlives edits that cross-command caches cannot see,
+// so nothing one request learns is served to the next.
 func withGitSession(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx, end := gitexec.Begin(r.Context())
+		ctx, end := gitexec.BeginIsolated(r.Context())
 		defer end()
 		next(w, r.WithContext(ctx))
 	}

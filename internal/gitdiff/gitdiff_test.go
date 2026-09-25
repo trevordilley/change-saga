@@ -672,3 +672,37 @@ func TestCachedCommitDiffFollowsCheckoutAttributes(t *testing.T) {
 		t.Fatalf("diff after marking the file -diff = %#v, %v; want it binary", after, err)
 	}
 }
+
+// Remembered diffs key on the top-level attribute files only. A process
+// that outlives an uncommitted edit to a nested .gitattributes, as the
+// review server does, runs isolated sessions and must see the new patch.
+func TestIsolatedSessionsFollowNestedAttributes(t *testing.T) {
+	repo := newGitTestRepo(t)
+	writeGitTestFile(t, filepath.Join(repo, "sub", "data.txt"), "one\n")
+	gitTest(t, repo, "add", ".")
+	gitTest(t, repo, "commit", "-m", "base")
+	base := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	writeGitTestFile(t, filepath.Join(repo, "sub", "data.txt"), "two\n")
+	gitTest(t, repo, "commit", "-am", "edit")
+	head := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	changes := func(begin func(context.Context) (context.Context, func())) []FileChange {
+		t.Helper()
+		ctx, end := begin(context.Background())
+		defer end()
+		result, err := TreeChanges(ctx, repo, base, head)
+		if err != nil || len(result) != 1 {
+			t.Fatalf("TreeChanges = %#v, %v", result, err)
+		}
+		return result
+	}
+	if changes(gitexec.Begin)[0].Binary {
+		t.Fatal("a text edit was reported binary")
+	}
+	writeGitTestFile(t, filepath.Join(repo, "sub", ".gitattributes"), "*.txt -diff\n")
+	if changes(gitexec.Begin)[0].Binary {
+		t.Fatal("nested attributes became part of the diff key; tighten this test")
+	}
+	if !changes(gitexec.BeginIsolated)[0].Binary {
+		t.Fatal("an isolated session served a diff remembered before the nested attribute edit")
+	}
+}

@@ -200,3 +200,50 @@ func TestRememberedAnswersStartNoGitWhenNothingChanged(t *testing.T) {
 		t.Fatalf("an unchanged repository cost the second command %d Git processes", again)
 	}
 }
+
+// An included configuration file is outside the state digest. A process
+// that outlives an edit to one, as the review server does, must see it: its
+// requests run in isolated sessions, and once it declares itself long
+// running nothing is remembered between sessions at all.
+func TestLongRunningProcessesSeeEditsTheDigestMisses(t *testing.T) {
+	repo, _ := history(t)
+	git(t, repo, "remote", "add", "origin", "https://example.test/a.git")
+	dir := t.TempDir()
+	included := filepath.Join(dir, "included")
+	global := filepath.Join(dir, "gitconfig")
+	write(t, global, "[include]\n\tpath = "+filepath.ToSlash(included)+"\n")
+	t.Setenv("GIT_CONFIG_GLOBAL", global)
+	origin := func(begin func(context.Context) (context.Context, func())) string {
+		t.Helper()
+		ctx, end := begin(context.Background())
+		defer end()
+		output, err := ConfigOutput(ctx, repo, "remote", "get-url", "origin")
+		if err != nil {
+			t.Fatal(err)
+		}
+		return strings.TrimSpace(string(output))
+	}
+	rewrite := func(mirror string) {
+		write(t, included, "[url \""+mirror+"\"]\n\tinsteadOf = https://example.test/\n")
+	}
+
+	rewrite("https://one.test/")
+	if got := origin(Begin); got != "https://one.test/a.git" {
+		t.Fatalf("origin = %q", got)
+	}
+	rewrite("https://two.test/")
+	// The gap this guards against: a command-scoped cache keeps the answer.
+	if got := origin(Begin); got != "https://one.test/a.git" {
+		t.Fatalf("the included file became part of the digest (%q); tighten this test", got)
+	}
+	if got := origin(BeginIsolated); got != "https://two.test/a.git" {
+		t.Fatalf("an isolated session served a remembered origin %q", got)
+	}
+
+	t.Cleanup(func() { longRunning.Store(false) })
+	LongRunning()
+	rewrite("https://three.test/")
+	if got := origin(Begin); got != "https://three.test/a.git" {
+		t.Fatalf("a long-running process served a remembered origin %q", got)
+	}
+}

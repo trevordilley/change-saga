@@ -58,7 +58,8 @@ func TopLevel(ctx context.Context, dir string) (string, error) {
 func locate(ctx context.Context, dir string) (*repoLocation, error) {
 	abs, absErr := filepath.Abs(dir)
 	key := gitEnvironment() + "\x00" + abs
-	if absErr == nil {
+	remember := absErr == nil && remembers(ctx)
+	if remember {
 		if cached, ok := locations.Load(key); ok && cached.(*repoLocation).stillAt(abs) {
 			return cached.(*repoLocation), nil
 		}
@@ -79,7 +80,7 @@ func locate(ctx context.Context, dir string) (*repoLocation, error) {
 	if !filepath.IsAbs(location.commonDir) {
 		location.commonDir = filepath.Join(abs, location.commonDir)
 	}
-	if absErr == nil && location.record(abs) {
+	if remember && location.record(abs) {
 		locations.Store(key, location)
 	}
 	return location, nil
@@ -171,6 +172,9 @@ func ConfigOutput(ctx context.Context, repo string, args ...string) ([]byte, err
 }
 
 func rememberRefs(ctx context.Context, repo string, withRefs bool, query []string, compute func() ([]byte, error)) ([]byte, error) {
+	if !remembers(ctx) {
+		return compute()
+	}
 	location, err := locate(ctx, repo)
 	if err != nil {
 		return compute()

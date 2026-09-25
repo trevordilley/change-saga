@@ -190,7 +190,7 @@ func documentedReferenceCount(document *saga.Saga) int {
 // requestContext is the context a request handler gets: its own Git session,
 // ended when the test does. The cost measured is the cost a reviewer pays.
 func requestContext(t *testing.T) context.Context {
-	ctx, end := gitexec.Begin(context.Background())
+	ctx, end := gitexec.BeginIsolated(context.Background())
 	t.Cleanup(end)
 	return ctx
 }

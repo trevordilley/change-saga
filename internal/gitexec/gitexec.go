@@ -20,6 +20,7 @@ import (
 	"runtime"
 	"strings"
 	"sync"
+	"sync/atomic"
 )
 
 type sessionKey struct{}
@@ -38,7 +39,9 @@ type Session struct {
 	// digests holds each repository's ref and configuration digest, taken
 	// once per session; "" means the repository cannot be summarized.
 	digests map[string]string
-	closed  bool
+	// isolated sessions neither read nor add to the process-wide caches.
+	isolated bool
+	closed   bool
 }
 
 type call struct {
@@ -56,16 +59,54 @@ func Begin(ctx context.Context) (context.Context, func()) {
 	if sessionFrom(ctx) != nil {
 		return ctx, func() {}
 	}
-	return BeginDetached(ctx)
+	return begin(ctx, false)
+}
+
+// BeginIsolated is Begin for a request to a long-running process: the
+// session still asks each question once and shares batch processes, but it
+// neither reads nor adds to the answers remembered across sessions, so
+// nothing it learns outlives the request. Those caches rest on keys that
+// miss some inputs (nested .gitattributes edits, system-wide and included
+// Git configuration), which only a process that outlives such an edit can
+// observe.
+func BeginIsolated(ctx context.Context) (context.Context, func()) {
+	if sessionFrom(ctx) != nil {
+		return ctx, func() {}
+	}
+	return begin(ctx, true)
 }
 
 // BeginDetached starts a session of its own even when ctx carries one, for
 // work that outlives its caller, such as a build a request starts in the
-// background: the caller's session ends when the caller returns.
+// background: the caller's session ends when the caller returns. It is
+// isolated when the caller's session is.
 func BeginDetached(ctx context.Context) (context.Context, func()) {
-	session := &Session{memo: map[string]*call{}, pools: map[string]*batchPool{}, failures: map[string]int{}, digests: map[string]string{}}
+	outer := sessionFrom(ctx)
+	return begin(ctx, outer != nil && outer.isolated)
+}
+
+func begin(ctx context.Context, isolated bool) (context.Context, func()) {
+	session := &Session{memo: map[string]*call{}, pools: map[string]*batchPool{}, failures: map[string]int{}, digests: map[string]string{}, isolated: isolated}
 	session.cond = sync.NewCond(&session.mu)
 	return context.WithValue(ctx, sessionKey{}, session), session.close
+}
+
+// longRunning is set by a process that serves for a long time.
+var longRunning atomic.Bool
+
+// LongRunning declares that this process outlives the commands it runs, as
+// the review server does. From then on no answer is remembered beyond the
+// session that asked it, including Git asked outside any session.
+func LongRunning() { longRunning.Store(true) }
+
+// remembers reports whether ctx may use the answers remembered across
+// sessions.
+func remembers(ctx context.Context) bool {
+	if longRunning.Load() {
+		return false
+	}
+	session := sessionFrom(ctx)
+	return session == nil || !session.isolated
 }
 
 func sessionFrom(ctx context.Context) *Session {

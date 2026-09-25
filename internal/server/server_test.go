@@ -21,6 +21,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -1100,5 +1101,42 @@ func TestDiagramFontIsServedForSandboxedSlides(t *testing.T) {
 	}
 	if recorder.Header().Get("Access-Control-Allow-Origin") != "*" {
 		t.Fatal("opaque-origin slide frames fetch fonts in CORS mode and need Access-Control-Allow-Origin")
+	}
+}
+
+// The server outlives edits its Git caches cannot key on, such as a
+// configuration file pulled in by an include directive. Each request must
+// see the configuration as it is when the request arrives.
+func TestRequestsSeeGitConfigurationEditedWhileServing(t *testing.T) {
+	repo := t.TempDir()
+	for _, args := range [][]string{{"init", "-q"}, {"remote", "add", "origin", "https://example.test/a.git"}} {
+		if output, err := exec.Command("git", append([]string{"-C", repo}, args...)...).CombinedOutput(); err != nil {
+			t.Fatalf("git %v: %v\n%s", args, err, output)
+		}
+	}
+	dir := t.TempDir()
+	included := filepath.Join(dir, "included")
+	global := filepath.Join(dir, "gitconfig")
+	if err := os.WriteFile(global, []byte("[include]\n\tpath = "+filepath.ToSlash(included)+"\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("GIT_CONFIG_GLOBAL", global)
+	handler := withGitSession(func(w http.ResponseWriter, r *http.Request) {
+		output, err := gitexec.ConfigOutput(r.Context(), repo, "remote", "get-url", "origin")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		_, _ = w.Write(output)
+	})
+	for _, mirror := range []string{"https://one.test/", "https://two.test/"} {
+		if err := os.WriteFile(included, []byte("[url \""+mirror+"\"]\n\tinsteadOf = https://example.test/\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+		recorder := httptest.NewRecorder()
+		handler(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
+		if got := strings.TrimSpace(recorder.Body.String()); got != mirror+"a.git" {
+			t.Fatalf("a request after the include changed saw origin %q; want %sa.git", got, mirror)
+		}
 	}
 }

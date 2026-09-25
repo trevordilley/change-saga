@@ -40,7 +40,7 @@ type cachedAnswer struct {
 // process. Without a session it computes the answer and remembers nothing.
 // Failures are never remembered.
 func Stable(ctx context.Context, repo string, objects []string, key []string, compute func() ([]byte, error)) ([]byte, error) {
-	if sessionFrom(ctx) == nil || !NamesObjects(objects...) {
+	if sessionFrom(ctx) == nil || !remembers(ctx) || !NamesObjects(objects...) {
 		return compute()
 	}
 	joined := strings.Join(append([]string{repo}, key...), "\x00")
