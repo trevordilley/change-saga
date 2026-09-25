@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/template.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:e06c6126298e68d211cde100b9c7603300c0abebd1babc24bc7bd40dcca85da1",
+      "note": "Replaced owner reference without the label."
+    }
+  ]
+}

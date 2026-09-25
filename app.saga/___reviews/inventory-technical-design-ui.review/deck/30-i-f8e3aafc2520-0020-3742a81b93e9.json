@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:authored-erd-view",
+    "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r1"
+  },
+  "version": 4,
+  "id": "bindings",
+  "slide": "ti-ui-review-erd",
+  "rank": 20,
+  "kind": "edge",
+  "label": "Bound elements in the browser",
+  "description": "Bound elements become keyboard and touch controls opening the same drawer as their row, highlight with it, and receive focus back on Escape.",
+  "selector": {
+    "type": "element",
+    "element_id": "bindings"
+  }
+}

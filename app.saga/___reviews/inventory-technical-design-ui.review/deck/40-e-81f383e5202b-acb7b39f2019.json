@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/manifest.go",
+      "start": 90,
+      "end": 92,
+      "digest": "sha256:8d67fd946ee88c117a7afe1937edb44bbaba55edbd45c15f63d257a5cf02b98d",
+      "note": "Coverage owners inherited through a selection are labelled selected via it."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/manifest.go",
+      "start": 296,
+      "end": 306,
+      "digest": "sha256:2025c9491152fffeec93bb669353ce0ddb2ac38c03dcdc36f5b1541d75a8b016",
+      "note": "Coverage owners inherited through a selection are labelled selected via it."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/manifest.go",
+      "start": 330,
+      "end": 337,
+      "digest": "sha256:cc1433c34ee471d6636a11dfdc3d60ac8de2bb95df3789ba8d637f3cbd031908",
+      "note": "Coverage owners inherited through a selection are labelled selected via it."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/manifest.go",
+      "start": 316,
+      "end": 317,
+      "digest": "sha256:407eb39b0e993f1fbf1f88f838796ed2379924f279c1354954e4e44bc3b98f92",
+      "note": "Coverage owners inherited through a selection are labelled selected via it."
+    }
+  ]
+}

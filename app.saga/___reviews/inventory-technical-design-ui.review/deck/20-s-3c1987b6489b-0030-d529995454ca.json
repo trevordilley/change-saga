@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "ti-ui-review-proof",
+  "deck": "inventory-technical-design-ui",
+  "title": "Proof, a fix, and the note",
+  "rank": 30,
+  "intent": "prove",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-3c1987b6489b-0030-d529995454ca.svg",
+  "takeaway": "Browser flows check the UI end to end; a cached-cancellation bug in /api/layers is fixed; the note records gaps.",
+  "reading_order": [
+    "browser-proof",
+    "layers-fix",
+    "note"
+  ]
+}

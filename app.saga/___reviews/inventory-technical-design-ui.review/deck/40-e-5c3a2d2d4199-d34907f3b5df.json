@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/technical_erd.go",
+      "digest": "sha256:205de380ff31f0a0bfae1be0479b330ea66ced971c0748d933159dac0cd6b4e1",
+      "note": "New: ERD view, bindings, directory membership, relationship notation, overlay composition and data-entity detail."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/technical_erd.go",
+      "start": 1,
+      "end": 478,
+      "digest": "sha256:205de380ff31f0a0bfae1be0479b330ea66ced971c0748d933159dac0cd6b4e1",
+      "note": "New: ERD view, bindings, directory membership, relationship notation, overlay composition and data-entity detail."
+    }
+  ]
+}

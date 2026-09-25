@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/template.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:ed2008b520192483d2c611386d1b9929eea72189206da16e587a3a83c035d9a5",
+      "note": "Implementation Items' controls name the landmark's own Item."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/template.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:ebbca5753987b1e7bbab70f42d76172090f66cac7bdc7c6e5d485353ae1c0919",
+      "note": "Implementation Items' controls name the landmark's own Item."
+    }
+  ]
+}

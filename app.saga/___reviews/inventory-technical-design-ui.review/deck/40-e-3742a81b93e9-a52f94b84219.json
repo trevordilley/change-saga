@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/appjs.go",
+      "start": 1216,
+      "end": 1216,
+      "digest": "sha256:d1737b22be8c9c1fbd76ff2e6addd02f0658925fb3a7ed6c07dafd93598db5b3",
+      "note": "Replaced opener check that accepted only HTML elements."
+    }
+  ]
+}

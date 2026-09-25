@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "note",
+  "slide": "ti-ui-review-proof",
+  "rank": 20,
+  "kind": "statement",
+  "label": "Implementation note",
+  "description": "The note records delivered behavior, deliberate divergences from the proposal slides, verification, and known gaps.",
+  "selector": {
+    "type": "element",
+    "element_id": "note"
+  }
+}

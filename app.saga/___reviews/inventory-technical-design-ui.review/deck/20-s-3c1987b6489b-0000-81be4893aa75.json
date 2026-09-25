@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "ti-ui-review-pages",
+  "deck": "inventory-technical-design-ui",
+  "title": "New: Technical design pages",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-3c1987b6489b-0000-81be4893aa75.svg",
+  "takeaway": "Technical design adds read-only routes, per-kind directories and exact-revision pages over one shared definition view.",
+  "reading_order": [
+    "routes",
+    "pages",
+    "newness",
+    "definition-view"
+  ]
+}

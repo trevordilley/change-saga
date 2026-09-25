@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory.go",
+      "start": 21,
+      "end": 22,
+      "digest": "sha256:ed0abbdbbfd4fb21b38102f98281063b39b31b7d0d5d15dd5bfcbfc73c5bec4c",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory.go",
+      "start": 27,
+      "end": 28,
+      "digest": "sha256:1dd69ce6835a573ab4f70a4bd378ff185900f7f6a51de67cb28158eb7bf627c0",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory.go",
+      "start": 38,
+      "end": 109,
+      "digest": "sha256:42c497ca93dc4c881cd807a3a9edf63d7ac052cf244c9d6aded6a270665c6380",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory.go",
+      "start": 154,
+      "end": 160,
+      "digest": "sha256:a7c476c204686df4c0ef02905bf334f30cbd2962fcdff312c750d1ec195e9f71",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:ebe1f80b084d09e276073debab22230d7e05c0152e793065c3df56099c6fbb82",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/inventory.go",
+      "start": 186,
+      "end": 195,
+      "digest": "sha256:9750c22dff93b33ffcfdc92c07602b801f0a7568a9f3ca0bd06f4c2c7a37d63a",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/inventory.go",
+      "start": 77,
+      "end": 101,
+      "digest": "sha256:a8e55f9dd9ba1ce519f0a7c6e08217243dc451a2dba7ec2b73e8d1fcc4580421",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/inventory.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:0c17dc99115007c3053afaeda8c2da6f4b16acef2996bc29e8c3abfcc78b8de6",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/inventory.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:5d12d6a8327b2f6f59b2f2e9771632187ba00b4b7141bf85bdacc332b7e00350",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/inventory.go",
+      "start": 128,
+      "end": 135,
+      "digest": "sha256:f12bd63042de65e3cb45485c2cd34d74c0c9b5cc67f0d76a0a64e56fc38ffab1",
+      "note": "The drawer and page share one exact-revision definition view with intent, entity detail, page link, usages and Item selections."
+    }
+  ]
+}

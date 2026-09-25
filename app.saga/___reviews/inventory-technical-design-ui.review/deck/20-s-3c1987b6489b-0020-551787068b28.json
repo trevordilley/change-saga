@@ -1,0 +1,16 @@
+{
+  "version": 4,
+  "id": "ti-ui-review-trace",
+  "deck": "inventory-technical-design-ui",
+  "title": "New: Item selections and coverage parity",
+  "rank": 20,
+  "intent": "trace",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-3c1987b6489b-0020-551787068b28.svg",
+  "takeaway": "A slide Item's drawer shows its exact selection, and reviewer coverage credits inherited lines as the CLI does, labelled.",
+  "reading_order": [
+    "selections",
+    "coverage"
+  ]
+}

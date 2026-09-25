@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/technical_newness.go",
+      "digest": "sha256:250b6ceb87565393907aa6dbee74c16f441910a7bc22c6de1f696c3e77fda0d8",
+      "note": "New: newness relative to the comparison's merge-base inventory, unknown with reason when unreadable."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/technical_newness.go",
+      "start": 1,
+      "end": 90,
+      "digest": "sha256:250b6ceb87565393907aa6dbee74c16f441910a7bc22c6de1f696c3e77fda0d8",
+      "note": "New: newness relative to the comparison's merge-base inventory, unknown with reason when unreadable."
+    }
+  ]
+}

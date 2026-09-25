@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/layers.go",
+      "start": 87,
+      "end": 91,
+      "digest": "sha256:4b196830b9a253fa9a76edbdd58fbd1c6016084a836a7f165ae6f34a84b4a3a6",
+      "note": "A cancelled derivation is returned without being cached."
+    }
+  ]
+}

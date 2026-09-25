@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/template.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:2d1bd9606f424edefb801ddbb6c1da128984410918cff94c828cc1c1d21acc1f",
+      "note": "Replaced controls that carried only the pin."
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "path": "internal/server/template.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:0e370569af8008a64f918bfd99cad7b3adee0453bf85c664581b5a42e713ffb0",
+      "note": "Replaced controls that carried only the pin."
+    }
+  ]
+}

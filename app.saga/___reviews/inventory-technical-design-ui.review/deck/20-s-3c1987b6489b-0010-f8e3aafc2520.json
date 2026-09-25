@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "ti-ui-review-erd",
+  "deck": "inventory-technical-design-ui",
+  "title": "New: authored ERD and data entities",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-3c1987b6489b-0010-f8e3aafc2520.svg",
+  "takeaway": "The ERD view re-serializes the author's drawing through an allowlist and binds elements to the same pins as its directory.",
+  "reading_order": [
+    "allowlist",
+    "renderer",
+    "bindings"
+  ]
+}

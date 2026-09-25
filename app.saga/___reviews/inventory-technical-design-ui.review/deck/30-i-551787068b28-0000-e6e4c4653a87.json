@@ -1,0 +1,17 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:item-selection-drawer",
+    "revision": "urn:change-saga:change-saga:component:item-selection-drawer:revision:r1"
+  },
+  "version": 4,
+  "id": "selections",
+  "slide": "ti-ui-review-trace",
+  "rank": 0,
+  "kind": "node",
+  "label": "Item to exact selection and back",
+  "description": "Item controls carry the Item URN in implementation and review decks; the drawer resolves that Item's selections and reports selected, containing and digest facts separately; the drawer label becomes Technical explanation.",
+  "selector": {
+    "type": "element",
+    "element_id": "selections"
+  }
+}

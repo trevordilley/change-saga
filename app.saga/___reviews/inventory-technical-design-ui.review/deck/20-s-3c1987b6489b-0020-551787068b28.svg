@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">New: Item selections and coverage parity</title><desc id="desc">From a slide Item to its exact selection; the reviewer counts what the CLI counts.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">REVIEW · TECHNICAL DESIGN UI / 3</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">New: Item selections and coverage parity</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">From a slide Item to its exact selection; the reviewer counts what the CLI counts.</text>
+<g id="selections"><rect x="60" y="190" width="560" height="220" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">technical_selection.go · appjs · reviews · template</text>
+<text x="78" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Item → exact selection → back</text>
+<text x="78" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">control carries the Item URN and selection count</text>
+<text x="78" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">drawer resolves path, selected lines, integrity</text>
+<text x="78" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">drawer label generalized: Technical explanation</text>
+</g>
+<g id="coverage"><rect x="660" y="190" width="560" height="220" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="678" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">snapshot.go · manifest.go · template</text>
+<text x="678" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Inherited coverage, labelled</text>
+<text x="678" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">EvaluateInherited with inventoryview</text>
+<text x="678" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">owners shown &#x27;selected via …&#x27;</text>
+<text x="678" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">derived snapshot format v3 → v4</text>
+</g>
+<rect x="60" y="604" width="1160" height="72" rx="10" fill="#e6eef6"/><text x="84" y="646" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">Opening a selection records nothing; inherited lines are never evidence records.</text>
+</svg>

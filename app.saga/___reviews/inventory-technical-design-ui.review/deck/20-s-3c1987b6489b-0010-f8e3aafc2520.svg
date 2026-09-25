@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">New: authored ERD and data entities</title><desc id="desc">Drawn as authored, allowlisted, bound to pinned entities.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">REVIEW · TECHNICAL DESIGN UI / 2</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">New: authored ERD and data entities</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Drawn as authored, allowlisted, bound to pinned entities.</text>
+<g id="allowlist"><rect x="60" y="190" width="360" height="200" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="78" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">technical_svg.go</text>
+<text x="78" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Token re-serialization</text>
+<text x="78" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">allowlisted elements + attributes</text>
+<text x="78" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">fragment links only; ids namespaced</text>
+<text x="78" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">anything else: refused, not partial</text>
+</g>
+<path d="M420 290L470 290" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="renderer"><rect x="470" y="190" width="400" height="200" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="488" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">technical_erd.go</text>
+<text x="488" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">ERD view + entity detail</text>
+<text x="488" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">bindings, directory drawn/not drawn</text>
+<text x="488" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">crow&#x27;s foot vs production notation</text>
+<text x="488" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">overlay over exact baseline</text>
+</g>
+<path d="M870 290L920 290" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="bindings"><rect x="920" y="190" width="300" height="200" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="938" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">appjs.go</text>
+<text x="938" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Bound elements</text>
+<text x="938" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">keyboard/touch controls</text>
+<text x="938" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">same drawer as the row</text>
+<text x="938" y="330" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">SVG opener gets focus back</text>
+</g>
+<rect x="60" y="604" width="1160" height="72" rx="10" fill="#e6eef6"/><text x="84" y="646" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">The records carry meaning; the drawing is never parsed to understand the model.</text>
+</svg>

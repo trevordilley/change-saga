@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appjs.go",
+      "start": 1190,
+      "end": 1190,
+      "digest": "sha256:bb85af25cd32727f925c0afb3aae8e2b8b606bb1104907f06c3980c7269a0a05",
+      "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appjs.go",
+      "start": 1250,
+      "end": 1252,
+      "digest": "sha256:aaf273c940edbce0d25a44bf98f5d84e933ad2acf31f5e89436f0bfab46ade4e",
+      "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appjs.go",
+      "start": 1259,
+      "end": 1259,
+      "digest": "sha256:ed2757cb7e779e04aabf2e49ad6bdb172743e6c0f910e7fed384275dca0ee580",
+      "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appjs.go",
+      "start": 1265,
+      "end": 1265,
+      "digest": "sha256:5a527a7fae9ff341ea5aa8fa66b1100fd26b4d8a7fd67f11c4b1892a3607493e",
+      "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appjs.go",
+      "start": 1283,
+      "end": 1283,
+      "digest": "sha256:65f40073dc2da15b58013907842413de432609d8eb178dd3546fc6d4ae08ddd8",
+      "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/appjs.go",
+      "start": 2142,
+      "end": 2142,
+      "digest": "sha256:c08318350bf701de6659229b74f4a75a25dd372c28028fbf4c5c49024ef9e3b4",
+      "note": "Drawer requests carry the opening Item; the drawer label becomes Technical explanation."
+    }
+  ]
+}

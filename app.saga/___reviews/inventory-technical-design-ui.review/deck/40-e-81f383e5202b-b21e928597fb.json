@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "path": "internal/server/template.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:5fac43a41225c5f589bebc1a7986ee1a8a7272b5a206cc08665b3ec832a40116",
+      "note": "The owner reference shows the selected-via label."
+    }
+  ]
+}
