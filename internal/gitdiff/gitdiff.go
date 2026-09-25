@@ -508,7 +508,7 @@ func VerifyRepository(ctx context.Context, repo, declared string) error {
 		}
 		return nil
 	}
-	remoteOutput, err := gitexec.RepoOutput(ctx, repo, "remote", "get-url", "origin")
+	remoteOutput, err := gitexec.ConfigOutput(ctx, repo, "remote", "get-url", "origin")
 	if err != nil || strings.TrimSpace(string(remoteOutput)) == "" {
 		return fmt.Errorf("source checkout has no origin and cannot be verified against declared repository %q (use the explicit repository-mismatch override only when this checkout is known to be equivalent)", declared)
 	}

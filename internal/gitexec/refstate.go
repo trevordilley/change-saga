@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -64,11 +65,15 @@ func locate(ctx context.Context, dir string) (*repoLocation, error) {
 	}
 	output, err := CombinedOutput(ctx, "-C", dir, "rev-parse", "--show-toplevel", "--absolute-git-dir", "--git-common-dir")
 	if err != nil {
-		return nil, errors.New(strings.TrimSpace(string(output)))
+		// Git's own message, or why Git could not run at all.
+		if message := strings.TrimSpace(string(output)); message != "" {
+			return nil, errors.New(message)
+		}
+		return nil, err
 	}
 	lines := strings.Split(strings.TrimRight(string(output), "\r\n"), "\n")
 	if len(lines) != 3 {
-		return nil, errors.New(strings.TrimSpace(string(output)))
+		return nil, fmt.Errorf("unexpected rev-parse output %q", output)
 	}
 	location := &repoLocation{top: strings.TrimSpace(lines[0]), gitDir: filepath.FromSlash(strings.TrimSpace(lines[1])), commonDir: filepath.FromSlash(strings.TrimSpace(lines[2]))}
 	if !filepath.IsAbs(location.commonDir) {
@@ -152,17 +157,25 @@ var refAnswers sync.Map // repository key + query -> refAnswer
 // it only for queries answered by those alone, such as a remote's URL or
 // what HEAD names. Failures are never remembered.
 func RepoOutput(ctx context.Context, repo string, args ...string) ([]byte, error) {
-	return rememberRefs(ctx, repo, append([]string{"output"}, args...), func() ([]byte, error) {
+	return rememberRefs(ctx, repo, true, append([]string{"output"}, args...), func() ([]byte, error) {
 		return Output(ctx, append([]string{"-C", repo}, args...)...)
 	})
 }
 
-func rememberRefs(ctx context.Context, repo string, query []string, compute func() ([]byte, error)) ([]byte, error) {
+// ConfigOutput is RepoOutput for queries answered by configuration alone,
+// such as a remote's URL, so moving a ref does not make them ask again.
+func ConfigOutput(ctx context.Context, repo string, args ...string) ([]byte, error) {
+	return rememberRefs(ctx, repo, false, append([]string{"config"}, args...), func() ([]byte, error) {
+		return Output(ctx, append([]string{"-C", repo}, args...)...)
+	})
+}
+
+func rememberRefs(ctx context.Context, repo string, withRefs bool, query []string, compute func() ([]byte, error)) ([]byte, error) {
 	location, err := locate(ctx, repo)
 	if err != nil {
 		return compute()
 	}
-	digest, ok := location.stateDigest(ctx)
+	digest, ok := location.stateDigest(ctx, withRefs)
 	if !ok {
 		return compute()
 	}
@@ -181,20 +194,24 @@ func rememberRefs(ctx context.Context, repo string, query []string, compute func
 
 // stateDigest is digest, computed once per session: no supported command
 // changes refs or configuration while it runs.
-func (location *repoLocation) stateDigest(ctx context.Context) (string, bool) {
+func (location *repoLocation) stateDigest(ctx context.Context, withRefs bool) (string, bool) {
 	session := sessionFrom(ctx)
 	if session == nil {
-		return location.digest()
+		return location.digest(withRefs)
+	}
+	key := location.gitDir
+	if withRefs {
+		key = "refs\x00" + key
 	}
 	session.mu.Lock()
-	cached, ok := session.digests[location.gitDir]
+	cached, ok := session.digests[key]
 	session.mu.Unlock()
 	if ok {
 		return cached, cached != ""
 	}
-	digest, ok := location.digest()
+	digest, ok := location.digest(withRefs)
 	session.mu.Lock()
-	session.digests[location.gitDir] = digest
+	session.digests[key] = digest
 	session.mu.Unlock()
 	return digest, ok
 }
@@ -226,8 +243,9 @@ func looksAbbreviated(revision string) bool {
 	return true
 }
 
-// digest summarizes everything a ref or configuration answer depends on.
-func (location *repoLocation) digest() (string, bool) {
+// digest summarizes everything a configuration answer depends on and, with
+// withRefs, everything a ref answer depends on too.
+func (location *repoLocation) digest(withRefs bool) (string, bool) {
 	hash := sha256.New()
 	budget := maxStateBytes
 	add := func(path string) bool {
@@ -267,22 +285,27 @@ func (location *repoLocation) digest() (string, bool) {
 		})
 		return err == nil && complete
 	}
-	files := []string{
-		filepath.Join(location.gitDir, "HEAD"),
+	files := append([]string{
 		filepath.Join(location.gitDir, "config.worktree"),
 		filepath.Join(location.commonDir, "config"),
-		filepath.Join(location.commonDir, "packed-refs"),
-		filepath.Join(location.commonDir, "reftable", "tables.list"),
+	}, globalConfigFiles()...)
+	// Remotes may still be defined the legacy way, one file per remote.
+	roots := []string{filepath.Join(location.commonDir, "remotes"), filepath.Join(location.commonDir, "branches")}
+	if withRefs {
+		files = append(files,
+			filepath.Join(location.gitDir, "HEAD"),
+			filepath.Join(location.commonDir, "packed-refs"),
+			filepath.Join(location.commonDir, "reftable", "tables.list"),
+		)
+		roots = append(roots, filepath.Join(location.commonDir, "refs"))
+		if location.gitDir != location.commonDir {
+			roots = append(roots, filepath.Join(location.gitDir, "refs"))
+		}
 	}
-	files = append(files, globalConfigFiles()...)
 	for _, path := range files {
 		if !add(path) {
 			return "", false
 		}
-	}
-	roots := []string{filepath.Join(location.commonDir, "refs")}
-	if location.gitDir != location.commonDir {
-		roots = append(roots, filepath.Join(location.gitDir, "refs"))
 	}
 	for _, root := range roots {
 		if !walk(root) {

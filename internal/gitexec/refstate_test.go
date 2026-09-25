@@ -89,7 +89,7 @@ func TestRememberedConfigurationFollowsConfigChanges(t *testing.T) {
 		t.Helper()
 		ctx, end := Begin(context.Background())
 		defer end()
-		output, err := RepoOutput(ctx, repo, "remote", "get-url", "origin")
+		output, err := ConfigOutput(ctx, repo, "remote", "get-url", "origin")
 		if err != nil {
 			return "error"
 		}
@@ -179,7 +179,7 @@ func TestRememberedAnswersStartNoGitWhenNothingChanged(t *testing.T) {
 		if top, err := TopLevel(ctx, repo); err != nil || top == "" {
 			t.Fatalf("TopLevel = %q, %v", top, err)
 		}
-		if _, err := RepoOutput(ctx, repo, "remote", "get-url", "origin"); err != nil {
+		if _, err := ConfigOutput(ctx, repo, "remote", "get-url", "origin"); err != nil {
 			t.Fatal(err)
 		}
 		if got, ok := ResolveCommit(ctx, repo, "main"); !ok || got != commits[3] {

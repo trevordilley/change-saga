@@ -148,7 +148,7 @@ func ResolveCommit(ctx context.Context, repo, revision string) (string, bool) {
 	}
 	// A branch or HEAD names the same commit until refs change, so its
 	// answer is remembered across commands under the repository's digest.
-	commit, err := rememberRefs(ctx, repo, []string{"commit", revision}, func() ([]byte, error) {
+	commit, err := rememberRefs(ctx, repo, true, []string{"commit", revision}, func() ([]byte, error) {
 		if commit, ok := resolveCommit(ctx, repo, revision); ok {
 			return []byte(commit), nil
 		}

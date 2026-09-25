@@ -1393,7 +1393,7 @@ func discoverRepository(ctx context.Context, repoDir, explicit string, options .
 		}
 		return canonical, root, nil
 	}
-	remoteOutput, remoteErr := gitexec.RepoOutput(ctx, root, "remote", "get-url", "origin")
+	remoteOutput, remoteErr := gitexec.ConfigOutput(ctx, root, "remote", "get-url", "origin")
 	if remoteErr == nil && strings.TrimSpace(string(remoteOutput)) != "" {
 		canonical, err := normalizeRepositoryURI(strings.TrimSpace(string(remoteOutput)), root)
 		if err != nil {
@@ -1413,7 +1413,7 @@ func discoverRepository(ctx context.Context, repoDir, explicit string, options .
 }
 
 func repositoryOriginAvailable(ctx context.Context, root string) bool {
-	output, err := gitexec.RepoOutput(ctx, root, "remote", "get-url", "origin")
+	output, err := gitexec.ConfigOutput(ctx, root, "remote", "get-url", "origin")
 	return err == nil && strings.TrimSpace(string(output)) != ""
 }
 

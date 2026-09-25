@@ -374,9 +374,9 @@ func attributions(ctx context.Context, sagaRoot string, review *saga.Review) map
 			author = strings.TrimSpace(value.Name + " <" + value.Email + ">")
 		case gitattribution.Uncommitted:
 			if local == "" {
-				name, _ := gitOutput(ctx, sagaRoot, "config", "user.name")
-				email, _ := gitOutput(ctx, sagaRoot, "config", "user.email")
-				local = strings.TrimSpace(name + " <" + email + ">")
+				name, _ := gitexec.ConfigOutput(ctx, sagaRoot, "config", "user.name")
+				email, _ := gitexec.ConfigOutput(ctx, sagaRoot, "config", "user.email")
+				local = strings.TrimSpace(strings.TrimSpace(string(name)) + " <" + strings.TrimSpace(string(email)) + ">")
 			}
 			author = local
 		}
