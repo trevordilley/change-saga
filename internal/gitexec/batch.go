@@ -156,6 +156,31 @@ func ResolveCommit(ctx context.Context, repo, revision string) (string, bool) {
 	return fields[0], true
 }
 
+// objectInfo reports object's type, or "missing", through the session's
+// cat-file process for repo.
+func objectInfo(ctx context.Context, repo, object string) (string, bool) {
+	session := sessionFrom(ctx)
+	if session == nil || object == "" || strings.ContainsAny(object, "\n\r\x00") || len(object) > maxRequest {
+		return "", false
+	}
+	process := session.batchFor(objectsArgs(repo), false)
+	if process == nil {
+		return "", false
+	}
+	answer, err := process.roundTrip(ctx, "info "+object+"\n", readLine)
+	if err != nil {
+		return "", false
+	}
+	if trimmed := strings.TrimSuffix(string(answer), "\n"); strings.HasSuffix(trimmed, " missing") || strings.HasSuffix(trimmed, " ambiguous") {
+		return "missing", true
+	}
+	fields := strings.Fields(string(answer))
+	if len(fields) != 3 {
+		return "", false
+	}
+	return fields[1], true
+}
+
 // objectsArgs is the one cat-file process a session keeps per repository for
 // both revision lookups (info) and object reads (contents). --batch-command
 // needs Git 2.36; an older Git fails the first request, and the session

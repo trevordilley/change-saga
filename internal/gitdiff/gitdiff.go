@@ -417,6 +417,34 @@ func canonicalDiffArgs(repo string, specific ...string) []string {
 // one diff-tree process, whose output is byte-for-byte what git diff prints;
 // otherwise, or if that process cannot answer, it runs git diff itself.
 func diffCommits(ctx context.Context, repo string, format []string, from, to string, pathspec ...string) ([]byte, error) {
+	if !gitexec.NamesObjects(from, to) {
+		return diffCommitsOnce(ctx, repo, format, from, to, pathspec...)
+	}
+	// Two commits fix both trees. Git also reads attributes from the checkout
+	// (binary and -diff change the patch), so the answer is remembered for the
+	// checkout's attribute files as they are now.
+	key := append([]string{"diff", from, to, attributesIdentity(repo)}, format...)
+	return gitexec.Stable(ctx, repo, []string{from, to}, append(append(key, "--"), pathspec...), func() ([]byte, error) {
+		return diffCommitsOnce(ctx, repo, format, from, to, pathspec...)
+	})
+}
+
+// attributesIdentity describes the checkout's top-level attribute files.
+// Nested .gitattributes files are not consulted: a long-running process may
+// show a diff cached before an uncommitted edit to one of them.
+func attributesIdentity(repo string) string {
+	var identity strings.Builder
+	for _, path := range []string{filepath.Join(repo, ".gitattributes"), filepath.Join(repo, ".git", "info", "attributes")} {
+		if info, err := os.Stat(path); err == nil {
+			fmt.Fprintf(&identity, "%d@%d;", info.Size(), info.ModTime().UnixNano())
+		} else {
+			identity.WriteString("-;")
+		}
+	}
+	return identity.String()
+}
+
+func diffCommitsOnce(ctx context.Context, repo string, format []string, from, to string, pathspec ...string) ([]byte, error) {
 	treeArgs := append(append([]string{}, canonicalDiffConfig...), "-C", repo, "diff-tree", "--stdin", "--no-commit-id", "-r")
 	treeArgs = append(append(append(treeArgs, canonicalDiffFlags...), format...), "--")
 	if output, ok := gitexec.DiffTree(ctx, append(treeArgs, pathspec...), from, to); ok {
@@ -441,7 +469,15 @@ func classifyAtomPaths(atom Atom) (hasSaga, hasProduct bool) {
 }
 
 func resolveMergeBase(ctx context.Context, repo, base, head string) (string, error) {
-	output, err := gitexec.CombinedOutput(ctx, "-C", repo, "merge-base", "--", base, head)
+	query := func() ([]byte, error) { return gitexec.CombinedOutput(ctx, "-C", repo, "merge-base", "--", base, head) }
+	var output []byte
+	var err error
+	if gitexec.NamesObjects(base, head) {
+		// Commit IDs fix their ancestry, so their merge-base never changes.
+		output, err = gitexec.Stable(ctx, repo, []string{base, head}, []string{"merge-base", base, head}, query)
+	} else {
+		output, err = query()
+	}
 	if err != nil {
 		return "", fmt.Errorf("resolve merge base for %s and %s: %s", base, head, strings.TrimSpace(string(output)))
 	}

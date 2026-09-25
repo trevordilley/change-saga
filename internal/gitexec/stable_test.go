@@ -1,0 +1,93 @@
+package gitexec
+
+import (
+	"container/list"
+	"context"
+	"errors"
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+func TestStableRemembersSuccessesWithinSessions(t *testing.T) {
+	repo, commits := history(t)
+	key := []string{"test", t.Name()}
+	calls := 0
+	failing := func() ([]byte, error) { calls++; return nil, errors.New("not yet") }
+	answering := func() ([]byte, error) { calls++; return []byte("answer"), nil }
+	for range 2 {
+		if _, err := Stable(context.Background(), repo, commits[:1], key, answering); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if calls != 2 {
+		t.Fatalf("without a session compute ran %d times; want every call", calls)
+	}
+	calls = 0
+	for range 2 {
+		ctx, end := Begin(context.Background())
+		if _, err := Stable(ctx, repo, commits[:1], key, failing); err == nil {
+			t.Fatal("a failure was reported as an answer")
+		}
+		end()
+	}
+	for range 3 {
+		ctx, end := Begin(context.Background())
+		if value, err := Stable(ctx, repo, commits[:1], key, answering); err != nil || string(value) != "answer" {
+			t.Fatalf("Stable = %q, %v", value, err)
+		}
+		end()
+	}
+	if calls != 3 {
+		t.Fatalf("compute ran %d times; want every failure and one success across sessions", calls)
+	}
+}
+
+// gc prunes unreachable commits, as after a squash merge. An answer about a
+// commit that is gone must not outlive it.
+func TestStableForgetsAnswersAboutPrunedCommits(t *testing.T) {
+	repo, commits := history(t)
+	tree := git(t, repo, "rev-parse", commits[0]+"^{tree}")
+	orphan := git(t, repo, "commit-tree", "-m", "unreachable", tree)
+	key := []string{"test", t.Name()}
+	calls := 0
+	compute := func() ([]byte, error) { calls++; return []byte("answer"), nil }
+	ctx, end := Begin(context.Background())
+	if _, err := Stable(ctx, repo, []string{orphan}, key, compute); err != nil {
+		t.Fatal(err)
+	}
+	end()
+	if err := os.Remove(filepath.Join(repo, ".git", "objects", orphan[:2], orphan[2:])); err != nil {
+		t.Fatal(err)
+	}
+	ctx, end = Begin(context.Background())
+	defer end()
+	if _, err := Stable(ctx, repo, []string{orphan}, key, compute); err != nil {
+		t.Fatal(err)
+	}
+	if calls != 2 {
+		t.Fatalf("an answer about a pruned commit was served from memory (compute ran %d times)", calls)
+	}
+}
+
+func TestAnswerCacheEvictsLeastRecentlyUsed(t *testing.T) {
+	cache := &answerCache{entries: map[string]*list.Element{}, order: list.New(), limit: 64}
+	cache.put("a", []byte("0123"))
+	cache.put("b", []byte("0123"))
+	cache.get("a")
+	cache.put("big", []byte(strings.Repeat("x", 5))) // over limit/16: never stored
+	for index := range 10 {
+		cache.put(fmt.Sprintf("k%d", index), []byte("0123"))
+	}
+	if _, ok := cache.get("big"); ok {
+		t.Fatal("an answer larger than a sixteenth of the cache was stored")
+	}
+	if cache.size > cache.limit {
+		t.Fatalf("cache holds %d bytes over its %d limit", cache.size, cache.limit)
+	}
+	if _, ok := cache.get("b"); ok {
+		t.Fatal("the least recently used answer survived eviction")
+	}
+}

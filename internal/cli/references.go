@@ -511,7 +511,7 @@ func reviewToFreeze(ctx context.Context, document *saga.Saga, checkout, onto, br
 // branch is still available, the merge-base of that tip and the branch. It is
 // empty for a root commit.
 func landedBase(ctx context.Context, checkout, onto, branch string) string {
-	parent, err := gitexec.Output(ctx, "-C", checkout, "rev-parse", "--verify", "--quiet", onto+"^1")
+	parent, err := firstParent(ctx, checkout, onto)
 	if err != nil {
 		return ""
 	}
@@ -522,6 +522,17 @@ func landedBase(ctx context.Context, checkout, onto, branch string) string {
 		}
 	}
 	return base
+}
+
+// firstParent is onto's first parent, which a commit ID fixes forever.
+func firstParent(ctx context.Context, checkout, onto string) ([]byte, error) {
+	query := func() ([]byte, error) {
+		return gitexec.Output(ctx, "-C", checkout, "rev-parse", "--verify", "--quiet", onto+"^1")
+	}
+	if gitexec.NamesObjects(onto) {
+		return gitexec.Stable(ctx, checkout, []string{onto}, []string{"first-parent", onto}, query)
+	}
+	return query()
 }
 
 // referenceKeyBefore returns the key the planned change expects to replace,
@@ -551,7 +562,7 @@ func branchCommits(ctx context.Context, checkout, onto string, tips map[string]b
 	}
 	sort.Strings(sorted)
 	args = append(args, sorted...)
-	if parent, err := gitexec.Output(ctx, "-C", checkout, "rev-parse", "--verify", "--quiet", onto+"^1"); err == nil {
+	if parent, err := firstParent(ctx, checkout, onto); err == nil {
 		args = append(args, "^"+strings.TrimSpace(string(parent)))
 	}
 	args = append(args, "--")

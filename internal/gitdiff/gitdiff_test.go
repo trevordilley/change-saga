@@ -650,3 +650,25 @@ func writeGitTestBytes(t *testing.T, path string, body []byte) {
 		t.Fatal(err)
 	}
 }
+
+// Git reads attributes from the checkout even when diffing two commits, so an
+// uncommitted attribute edit must not be answered from an earlier diff.
+func TestCachedCommitDiffFollowsCheckoutAttributes(t *testing.T) {
+	repo := newGitTestRepo(t)
+	writeGitTestFile(t, filepath.Join(repo, "data.txt"), "one\n")
+	gitTest(t, repo, "add", ".")
+	gitTest(t, repo, "commit", "-m", "base")
+	base := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	writeGitTestFile(t, filepath.Join(repo, "data.txt"), "two\n")
+	gitTest(t, repo, "commit", "-am", "edit")
+	head := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	before, err := TreeChanges(context.Background(), repo, base, head)
+	if err != nil || len(before) != 1 || before[0].Binary || len(before[0].Hunks) != 1 {
+		t.Fatalf("text diff = %#v, %v", before, err)
+	}
+	writeGitTestFile(t, filepath.Join(repo, ".gitattributes"), "*.txt -diff\n")
+	after, err := TreeChanges(context.Background(), repo, base, head)
+	if err != nil || len(after) != 1 || !after[0].Binary {
+		t.Fatalf("diff after marking the file -diff = %#v, %v; want it binary", after, err)
+	}
+}
