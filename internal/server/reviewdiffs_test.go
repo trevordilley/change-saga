@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -142,7 +143,14 @@ func TestReviewDiffsMatchUncachedGitSemantics(t *testing.T) {
 		fmt.Fprintf(&lines, "line %d\n", i)
 	}
 	before := lines.String()
-	for _, path := range []string{"file", "moved", "renamed-before", "deleted", "unchanged", "literal[1]*.txt", "literal1-other.txt"} {
+	// A path full of glob syntax must be passed to Git literally; the decoy is
+	// what the path would match as a pattern. Windows forbids '*' in file
+	// names, so there the bracket alone carries the glob.
+	literal, decoy := "literal[1]*.txt", "literal1-other.txt"
+	if runtime.GOOS == "windows" {
+		literal, decoy = "literal[1].txt", "literal1.txt"
+	}
+	for _, path := range []string{"file", "moved", "renamed-before", "deleted", "unchanged", literal, decoy} {
 		writeServerFile(t, filepath.Join(repo, path), before)
 	}
 	writeServerFile(t, filepath.Join(repo, "binary"), "before\x00data")
@@ -151,8 +159,8 @@ func TestReviewDiffsMatchUncachedGitSemantics(t *testing.T) {
 	base := strings.TrimSpace(serverGit(t, repo, "rev-parse", "HEAD"))
 	after := strings.ReplaceAll(strings.ReplaceAll(before, "line 5\n", "changed five\n"), "line 30\n", "changed thirty\n")
 	writeServerFile(t, filepath.Join(repo, "file"), after)
-	writeServerFile(t, filepath.Join(repo, "literal[1]*.txt"), after)
-	writeServerFile(t, filepath.Join(repo, "literal1-other.txt"), "must not match literal path\n")
+	writeServerFile(t, filepath.Join(repo, literal), after)
+	writeServerFile(t, filepath.Join(repo, decoy), "must not match literal path\n")
 	writeServerFile(t, filepath.Join(repo, "moved"), "inserted\n"+before)
 	serverGit(t, repo, "mv", "renamed-before", "renamed-after")
 	serverGit(t, repo, "rm", "deleted")
@@ -183,7 +191,7 @@ func TestReviewDiffsMatchUncachedGitSemantics(t *testing.T) {
 		author(base, "moved", 30, 30), author(base, "renamed-before", 30, 30),
 		author(base, "deleted", 5, 5), author(base, "deleted", 0, 0),
 		author(head, "binary", 0, 0), author(base, "binary", 0, 0),
-		author(head, "literal[1]*.txt", 5, 5), author(head, "unchanged", 5, 5), author(head, "unchanged", 0, 0),
+		author(head, literal, 5, 5), author(head, "unchanged", 5, 5), author(head, "unchanged", 0, 0),
 	}
 	badDigest := refs[0]
 	badDigest.Digest = "sha256:" + strings.Repeat("0", 64)
