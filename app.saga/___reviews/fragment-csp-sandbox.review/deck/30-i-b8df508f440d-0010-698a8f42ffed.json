@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "after-policy",
+  "slide": "direct-visit",
+  "rank": 10,
+  "kind": "node",
+  "label": "After: one policy with the sandbox directive",
+  "description": "Both routes now send one shared policy starting with sandbox allow-scripts, so the script runs on origin null even without an iframe. The framed case does not change.",
+  "selector": {
+    "type": "element",
+    "element_id": "after-policy"
+  },
+  "record": "urn:change-saga:change-saga:slide:authored-content-origin"
+}

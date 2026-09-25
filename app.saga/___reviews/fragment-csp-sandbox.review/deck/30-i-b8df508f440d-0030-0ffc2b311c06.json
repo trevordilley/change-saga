@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "browser-proof",
+  "slide": "direct-visit",
+  "rank": 30,
+  "kind": "statement",
+  "label": "Browser tests check both cases",
+  "description": "Real-browser tests click the interactive fragment framed and opened directly, load its package image, and check origin null. They also open a review slide visual directly and check the header and the origin.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser-proof"
+  }
+}
