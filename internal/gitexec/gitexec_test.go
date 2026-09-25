@@ -204,7 +204,7 @@ func TestNestedBeginSharesTheSessionAndEndStopsProcesses(t *testing.T) {
 			t.Fatal("ending the session left its Git process running")
 		}
 	}
-	if _, ok := ResolveCommit(outer, repo, "HEAD"); ok {
+	if _, _, ok := ReadObject(outer, repo, "HEAD"); ok || len(session.batches) != 0 {
 		t.Fatal("an ended session started a new process")
 	}
 }

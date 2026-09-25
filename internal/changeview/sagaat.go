@@ -33,11 +33,10 @@ func Locate(ctx context.Context, root string) (Location, error) {
 	if resolved, err := filepath.EvalSymlinks(abs); err == nil {
 		abs = resolved
 	}
-	output, err := gitexec.Output(ctx, "-C", abs, "rev-parse", "--show-toplevel")
+	repo, err := gitexec.TopLevel(ctx, abs)
 	if err != nil {
 		return Location{}, fmt.Errorf("the Saga at %s is not in a Git repository", root)
 	}
-	repo := strings.TrimSpace(string(output))
 	if resolved, err := filepath.EvalSymlinks(repo); err == nil {
 		repo = resolved
 	}

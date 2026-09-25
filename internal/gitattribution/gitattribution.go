@@ -38,8 +38,7 @@ type Resolver struct {
 }
 
 func New(ctx context.Context, fromDir string) *Resolver {
-	output, err := gitexec.Output(ctx, "-C", fromDir, "rev-parse", "--show-toplevel")
-	root := strings.TrimSpace(string(output))
+	root, err := gitexec.TopLevel(ctx, fromDir)
 	if resolved, resolveErr := filepath.EvalSymlinks(root); resolveErr == nil {
 		root = resolved
 	}

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
-	"strings"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -104,9 +103,9 @@ func sameCheckout(ctx context.Context, sagaRepo, checkout string) bool {
 }
 
 func gitTopLevel(ctx context.Context, dir string) (string, error) {
-	output, err := gitexec.Output(ctx, "-C", dir, "rev-parse", "--show-toplevel")
+	top, err := gitexec.TopLevel(ctx, dir)
 	if err != nil {
 		return "", fmt.Errorf("%s is not a Git checkout", dir)
 	}
-	return strings.TrimSpace(string(output)), nil
+	return top, nil
 }

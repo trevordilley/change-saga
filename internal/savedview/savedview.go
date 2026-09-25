@@ -70,7 +70,7 @@ func Load(ctx context.Context, checkout, sagaRoot string, current saga.Manifest,
 	fail := func(reason Reason, format string, args ...any) (View, error) {
 		return View{}, &Error{Reason: reason, Message: fmt.Sprintf(format, args...)}
 	}
-	top, err := git(ctx, checkout, "rev-parse", "--show-toplevel")
+	top, err := gitexec.TopLevel(ctx, checkout)
 	if err != nil {
 		return fail(CommitUnavailable, "%s is not a Git checkout", checkout)
 	}

@@ -135,11 +135,38 @@ func (b *batch) close() {
 
 // ResolveCommit resolves revision to a commit object name the way
 // `git rev-parse --verify --end-of-options <revision>^{commit}` does, using
-// the session's batch process for repo. It reports false whenever it cannot
-// answer: no session, a revision that cannot be sent on one line, a missing
-// or ambiguous object, or a failed process. Callers then run rev-parse
-// themselves, which also keeps Git's own error message for the user.
+// the session's batch process for repo, or without a session, rev-parse. A
+// branch or HEAD is remembered across commands until the repository's refs
+// or configuration change. It reports false whenever it cannot answer: no
+// session for a revision that is not remembered by refs, a revision that
+// cannot be sent on one line, a missing or ambiguous object, or a failed
+// process. Callers then run rev-parse themselves, which also keeps Git's own
+// error message for the user.
 func ResolveCommit(ctx context.Context, repo, revision string) (string, bool) {
+	if !refCacheable(revision) {
+		return resolveCommit(ctx, repo, revision)
+	}
+	// A branch or HEAD names the same commit until refs change, so its
+	// answer is remembered across commands under the repository's digest.
+	commit, err := rememberRefs(ctx, repo, []string{"commit", revision}, func() ([]byte, error) {
+		if commit, ok := resolveCommit(ctx, repo, revision); ok {
+			return []byte(commit), nil
+		}
+		if sessionFrom(ctx) != nil {
+			return nil, errUnanswered
+		}
+		output, err := exec.CommandContext(ctx, "git", "-C", repo, "rev-parse", "--verify", "--quiet", "--end-of-options", revision+"^{commit}").Output()
+		if commit := strings.TrimSpace(string(output)); err == nil && IsObjectName(commit) {
+			return []byte(commit), nil
+		}
+		return nil, errUnanswered
+	})
+	return string(commit), err == nil
+}
+
+var errUnanswered = errors.New("git could not answer")
+
+func resolveCommit(ctx context.Context, repo, revision string) (string, bool) {
 	session := sessionFrom(ctx)
 	if session == nil || revision == "" || strings.ContainsAny(revision, "\n\r\x00") || len(revision) > maxRequest {
 		return "", false

@@ -69,12 +69,12 @@ type changeSet struct {
 
 // New opens a resolver for the repository containing dir.
 func New(ctx context.Context, dir string) (*Resolver, error) {
-	output, err := gitexec.Output(ctx, "-C", dir, "rev-parse", "--show-toplevel")
+	repo, err := gitexec.TopLevel(ctx, dir)
 	if err != nil {
 		return nil, fmt.Errorf("locate Git repository: %w", err)
 	}
 	return &Resolver{
-		repo: strings.TrimSpace(string(output)), blobs: map[string]blobResult{},
+		repo: repo, blobs: map[string]blobResult{},
 		commits: map[string]bool{}, changes: map[[2]string]changeSet{}, verified: map[string]string{},
 	}, nil
 }

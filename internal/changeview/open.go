@@ -59,11 +59,10 @@ func Open(ctx context.Context, options OpenOptions) (Layers, *Inventory, error) 
 }
 
 func sameRepository(ctx context.Context, sagaRepo, checkout string) bool {
-	output, err := gitexec.Output(ctx, "-C", checkout, "rev-parse", "--show-toplevel")
+	codeRepo, err := gitexec.TopLevel(ctx, checkout)
 	if err != nil {
 		return false
 	}
-	codeRepo := strings.TrimSpace(string(output))
 	if resolved, err := filepath.EvalSymlinks(codeRepo); err == nil {
 		codeRepo = resolved
 	}

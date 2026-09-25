@@ -1376,11 +1376,10 @@ func parseRanges(value string) ([]lineRange, error) {
 func discoverRepository(ctx context.Context, repoDir, explicit string, options ...bool) (string, string, error) {
 	allowLocal := len(options) > 0 && options[0]
 	allowMismatch := len(options) > 1 && options[1]
-	rootOutput, err := gitexec.CombinedOutput(ctx, "-C", repoDir, "rev-parse", "--show-toplevel")
+	root, err := gitexec.TopLevel(ctx, repoDir)
 	if err != nil {
-		return "", "", fmt.Errorf("locate source repository: %s", strings.TrimSpace(string(rootOutput)))
+		return "", "", fmt.Errorf("locate source repository: %s", err)
 	}
-	root := strings.TrimSpace(string(rootOutput))
 	if explicit != "" {
 		canonical, err := coderef.CanonicalRepository(explicit)
 		if err != nil {
@@ -1394,7 +1393,7 @@ func discoverRepository(ctx context.Context, repoDir, explicit string, options .
 		}
 		return canonical, root, nil
 	}
-	remoteOutput, remoteErr := gitexec.CombinedOutput(ctx, "-C", root, "remote", "get-url", "origin")
+	remoteOutput, remoteErr := gitexec.RepoOutput(ctx, root, "remote", "get-url", "origin")
 	if remoteErr == nil && strings.TrimSpace(string(remoteOutput)) != "" {
 		canonical, err := normalizeRepositoryURI(strings.TrimSpace(string(remoteOutput)), root)
 		if err != nil {
@@ -1414,7 +1413,7 @@ func discoverRepository(ctx context.Context, repoDir, explicit string, options .
 }
 
 func repositoryOriginAvailable(ctx context.Context, root string) bool {
-	output, err := gitexec.Output(ctx, "-C", root, "remote", "get-url", "origin")
+	output, err := gitexec.RepoOutput(ctx, root, "remote", "get-url", "origin")
 	return err == nil && strings.TrimSpace(string(output)) != ""
 }
 

@@ -31,7 +31,10 @@ type Session struct {
 	// failures counts batch processes that broke, per invocation. A Git that
 	// cannot serve an invocation at all must not cost a spawn per question.
 	failures map[string]int
-	closed   bool
+	// digests holds each repository's ref and configuration digest, taken
+	// once per session; "" means the repository cannot be summarized.
+	digests map[string]string
+	closed  bool
 }
 
 type call struct {
@@ -49,7 +52,7 @@ func Begin(ctx context.Context) (context.Context, func()) {
 	if _, ok := ctx.Value(sessionKey{}).(*Session); ok {
 		return ctx, func() {}
 	}
-	session := &Session{memo: map[string]*call{}, batches: map[string]*batch{}, failures: map[string]int{}}
+	session := &Session{memo: map[string]*call{}, batches: map[string]*batch{}, failures: map[string]int{}, digests: map[string]string{}}
 	return context.WithValue(ctx, sessionKey{}, session), session.close
 }
 

@@ -208,11 +208,10 @@ func ReadFile(ctx context.Context, fromDir string, catalog Catalog, file FileSum
 	if !known {
 		return ChangeSet{}, fmt.Errorf("read file diff: file is not part of the source catalog")
 	}
-	repoOut, err := gitexec.Output(ctx, "-C", fromDir, "rev-parse", "--show-toplevel")
+	repo, err := gitexec.TopLevel(ctx, fromDir)
 	if err != nil {
 		return ChangeSet{}, fmt.Errorf("locate Git repository: %w", err)
 	}
-	repo := strings.TrimSpace(string(repoOut))
 	if err := VerifyRepository(ctx, repo, catalog.Repository); err != nil {
 		return ChangeSet{}, err
 	}
@@ -269,11 +268,10 @@ func changeSetFromPatch(output []byte, prepared preparedComparison) (ChangeSet, 
 }
 
 func prepareComparison(ctx context.Context, fromDir, repositoryURI, base, head string, options ReadOptions) (preparedComparison, error) {
-	repoOut, err := gitexec.Output(ctx, "-C", fromDir, "rev-parse", "--show-toplevel")
+	repo, err := gitexec.TopLevel(ctx, fromDir)
 	if err != nil {
 		return preparedComparison{}, fmt.Errorf("locate Git repository: %w", err)
 	}
-	repo := strings.TrimSpace(string(repoOut))
 	repositoryURI, err = coderef.CanonicalRepository(repositoryURI)
 	if err != nil {
 		return preparedComparison{}, fmt.Errorf("canonicalize declared repository: %w", err)
@@ -510,7 +508,7 @@ func VerifyRepository(ctx context.Context, repo, declared string) error {
 		}
 		return nil
 	}
-	remoteOutput, err := gitexec.CombinedOutput(ctx, "-C", repo, "remote", "get-url", "origin")
+	remoteOutput, err := gitexec.RepoOutput(ctx, repo, "remote", "get-url", "origin")
 	if err != nil || strings.TrimSpace(string(remoteOutput)) == "" {
 		return fmt.Errorf("source checkout has no origin and cannot be verified against declared repository %q (use the explicit repository-mismatch override only when this checkout is known to be equivalent)", declared)
 	}

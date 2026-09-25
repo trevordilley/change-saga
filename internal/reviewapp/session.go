@@ -860,7 +860,7 @@ func Snapshot(ctx context.Context, root string, changes gitdiff.ChangeSet) (stri
 func buildSnapshot(ctx context.Context, root string, changes gitdiff.ChangeSet) (string, error) {
 	hash := sha256.New()
 	_, _ = fmt.Fprintf(hash, "change-saga-reviewapp-v1\x00%s\x00%s\x00", changes.BaseOID, changes.HeadOID)
-	if output, err := gitexec.Output(ctx, "-C", root, "rev-parse", "--verify", "HEAD"); err == nil {
+	if output, err := gitexec.RepoOutput(ctx, root, "rev-parse", "--verify", "HEAD"); err == nil {
 		_, _ = hash.Write(bytesTrimSpace(output))
 		_, _ = hash.Write([]byte{0})
 	}
