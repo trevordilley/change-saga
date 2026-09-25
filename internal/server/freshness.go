@@ -9,8 +9,8 @@ import (
 	"hash"
 	"io/fs"
 	"net/http"
+	"os"
 	"path/filepath"
-	"strings"
 	"sync"
 	"time"
 
@@ -81,45 +81,30 @@ func (state *sagaState) answers(floor time.Time, full bool) bool {
 // than itself.
 //
 // A running server also watches the Saga: a background check every
-// pollInterval while reviewers are using it, so a request is answered by a
-// check at most window older than itself instead of waiting on its own. An
-// edit made outside the server then shows within window of being saved, and
-// the caches it invalidates are rebuilt in the background before anyone
-// asks. The server's own writes are seen at once.
+// pollInterval while reviewers are using it. When one sees a change, what the
+// change invalidated is read again in the background, so the page after an
+// edit usually finds it already read. A page never waits on the watcher, and
+// is never answered by a check older than itself: an edit saved before a
+// request arrives is always in its page.
 type freshness struct {
 	mutex   sync.Mutex
 	latest  *sagaState
 	pending *pendingCheck
 	checks  int
-	// window is how much older than a request a check may be and still
-	// answer it. Zero, the default outside a running server, is none.
-	window time.Duration
-	// notBefore is when the server last wrote to the Saga. No check that
-	// began before it answers anything.
-	notBefore time.Time
 	// asked is when a request last asked, so polling stops while nobody is
 	// reviewing.
 	asked time.Time
+	// sagaHead and sourceHead read the heads of the repositories the Saga
+	// and its code references live in.
+	sagaHead, sourceHead headReader
 }
 
 const (
-	// freshnessWindow bounds how long an edit made outside the server can
-	// go unseen.
-	freshnessWindow = 250 * time.Millisecond
-	// pollInterval keeps a check within the window while reviewers are
-	// active, with room for the walk itself.
+	// pollInterval is how soon after an edit the watcher starts reading it.
 	pollInterval = 200 * time.Millisecond
 	// pollIdle is how long after the last request polling continues.
 	pollIdle = 2 * time.Minute
 )
-
-// wrote records that the server itself changed the Saga, so the next request
-// takes a check that sees the change.
-func (f *freshness) wrote() {
-	f.mutex.Lock()
-	defer f.mutex.Unlock()
-	f.notBefore = time.Now()
-}
 
 type pendingCheck struct {
 	started time.Time
@@ -156,18 +141,13 @@ func (a *app) sagaState(ctx context.Context, full bool) *sagaState {
 	return a.checkedSince(ctx, arrivedAt(ctx), full, true)
 }
 
-// checkedSince is a check begun no earlier than arrived, less the window,
-// and never before the server's last write. asked says a request is asking,
-// rather than the poll.
-func (a *app) checkedSince(ctx context.Context, arrived time.Time, full, asked bool) *sagaState {
+// checkedSince is a check begun no earlier than floor. asked says a request
+// is asking, rather than the watcher.
+func (a *app) checkedSince(ctx context.Context, floor time.Time, full, asked bool) *sagaState {
 	f := &a.fresh
 	f.mutex.Lock()
 	if asked {
 		f.asked = time.Now()
-	}
-	floor := arrived.Add(-f.window)
-	if f.notBefore.After(floor) {
-		floor = f.notBefore
 	}
 	if state := f.latest; state != nil && state.err == nil && state.answers(floor, full) {
 		f.mutex.Unlock()
@@ -205,11 +185,11 @@ func (a *app) checkSaga(ctx context.Context, started time.Time, full bool) *saga
 	wait.Add(2)
 	go func() {
 		defer wait.Done()
-		state.sagaHead, _ = gitOutput(ctx, a.root, "rev-parse", "HEAD")
+		state.sagaHead = a.fresh.sagaHead.head(ctx, a.root)
 	}()
 	go func() {
 		defer wait.Done()
-		state.sourceHead, _ = gitOutput(ctx, a.sourceDir, "rev-parse", "HEAD")
+		state.sourceHead = a.fresh.sourceHead.head(ctx, a.sourceDir)
 	}()
 	state.outline, state.documentation, state.files, state.err = sagaFingerprints(a.root, full)
 	wait.Wait()
@@ -229,72 +209,130 @@ func (a *app) checkSaga(ctx context.Context, started time.Time, full bool) *saga
 //     Only a full walk takes it; otherwise the walk never enters the
 //     directories documentation skips.
 func sagaFingerprints(root string, full bool) (outline, documentation, files string, err error) {
-	outlineDigest, documentationDigest, filesDigest := sha256.New(), sha256.New(), sha256.New()
-	// Each set skips whole directories. The walk visits a directory's
-	// entries before any path after it, so a skipped directory is left the
-	// first time a path falls outside it.
-	var outlineSkip, documentationSkip string
-	inside := func(skip, rel string) bool {
-		return skip != "" && strings.HasPrefix(rel, skip+"/")
-	}
-	err = filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil {
-			return walkErr
-		}
-		rel, err := filepath.Rel(root, path)
-		if err != nil {
-			return err
-		}
-		rel = filepath.ToSlash(rel)
-		if !inside(outlineSkip, rel) {
-			outlineSkip = ""
-		}
-		if !inside(documentationSkip, rel) {
-			documentationSkip = ""
-		}
-		if entry.IsDir() {
-			if outlineSkip == "" {
-				if path != root && skipOutlineDirectory(rel, entry.Name()) {
-					outlineSkip = rel
-				} else {
-					fmt.Fprintf(outlineDigest, "d\x00%s\x00", rel)
-				}
-			}
-			if documentationSkip == "" {
-				if path != root && skipDocumentationDirectory(entry.Name()) {
-					if !full {
-						return filepath.SkipDir
-					}
-					documentationSkip = rel
-				} else {
-					fmt.Fprintf(documentationDigest, "d\x00%s\x00", rel)
-				}
-			}
-			return nil
-		}
-		info, err := entry.Info()
-		if err != nil {
-			return err
-		}
-		line := func(digest hash.Hash) {
-			fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", rel, info.Size(), info.ModTime().UnixNano())
-		}
-		line(filesDigest)
-		if documentationSkip == "" {
-			line(documentationDigest)
-		}
-		if outlineSkip == "" && outlineFile(rel, entry.Name()) {
-			line(outlineDigest)
-		}
-		return nil
-	})
+	listings, err := listSaga(root, full)
 	if err != nil {
 		return "", "", "", err
 	}
+	outlineDigest, documentationDigest, filesDigest := sha256.New(), sha256.New(), sha256.New()
+	// The digests are taken in the order filepath.WalkDir visits the tree:
+	// a directory, then its entries by name, each directory's entries before
+	// the next entry. outlineOn and documentationOn say whether the set
+	// still reads the directory being visited.
+	var visit func(rel string, outlineOn, documentationOn bool)
+	visit = func(rel string, outlineOn, documentationOn bool) {
+		for _, entry := range listings[rel] {
+			path := entry.name
+			if rel != "." {
+				path = rel + "/" + entry.name
+			}
+			if entry.dir {
+				childOutline := outlineOn && !skipOutlineDirectory(path, entry.name)
+				childDocumentation := documentationOn && !skipDocumentationDirectory(entry.name)
+				if childOutline {
+					fmt.Fprintf(outlineDigest, "d\x00%s\x00", path)
+				}
+				if childDocumentation {
+					fmt.Fprintf(documentationDigest, "d\x00%s\x00", path)
+				}
+				if childDocumentation || full {
+					visit(path, childOutline, childDocumentation)
+				}
+				continue
+			}
+			line := func(digest hash.Hash) {
+				fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", path, entry.size, entry.modTime)
+			}
+			line(filesDigest)
+			if documentationOn {
+				line(documentationDigest)
+			}
+			if outlineOn && outlineFile(path, entry.name) {
+				line(outlineDigest)
+			}
+		}
+	}
+	fmt.Fprintf(outlineDigest, "d\x00.\x00")
+	fmt.Fprintf(documentationDigest, "d\x00.\x00")
+	visit(".", true, true)
 	if !full {
 		return hex.EncodeToString(outlineDigest.Sum(nil)), hex.EncodeToString(documentationDigest.Sum(nil)), "", nil
 	}
 	return hex.EncodeToString(outlineDigest.Sum(nil)), hex.EncodeToString(documentationDigest.Sum(nil)), hex.EncodeToString(filesDigest.Sum(nil)), nil
+}
+
+// sagaEntry is one entry of a Saga directory as a check listed it.
+type sagaEntry struct {
+	name    string
+	dir     bool
+	size    int64
+	modTime int64
+}
+
+// sagaListers is how many directories a check lists at once. Listing is
+// mostly waiting on the file system, which serves several directories
+// together far faster than one after another.
+const sagaListers = 8
+
+// listSaga lists every directory of the Saga, several at once, by its path
+// relative to root; the root is ".". Entries are in name order. Unless full is
+// set it never enters the directories documentation skips. Any directory or
+// entry that cannot be read fails the whole listing, as it fails a walk.
+func listSaga(root string, full bool) (map[string][]sagaEntry, error) {
+	listings := map[string][]sagaEntry{}
+	var (
+		mutex    sync.Mutex
+		wait     sync.WaitGroup
+		firstErr error
+	)
+	slots := make(chan struct{}, sagaListers)
+	var list func(rel string)
+	list = func(rel string) {
+		defer wait.Done()
+		slots <- struct{}{}
+		entries, err := os.ReadDir(filepath.Join(root, filepath.FromSlash(rel)))
+		listed := make([]sagaEntry, 0, len(entries))
+		for _, entry := range entries {
+			if err != nil {
+				break
+			}
+			item := sagaEntry{name: entry.Name(), dir: entry.IsDir()}
+			if !item.dir {
+				var info fs.FileInfo
+				if info, err = entry.Info(); err == nil {
+					item.size, item.modTime = info.Size(), info.ModTime().UnixNano()
+				}
+			}
+			listed = append(listed, item)
+		}
+		<-slots
+		mutex.Lock()
+		listings[rel] = listed
+		if err != nil && firstErr == nil {
+			firstErr = err
+		}
+		failed := firstErr != nil
+		mutex.Unlock()
+		if failed {
+			return
+		}
+		for _, item := range listed {
+			if item.dir && (full || !skipDocumentationDirectory(item.name)) {
+				child := item.name
+				if rel != "." {
+					child = rel + "/" + item.name
+				}
+				wait.Add(1)
+				go list(child)
+			}
+		}
+	}
+	wait.Add(1)
+	go list(".")
+	wait.Wait()
+	if firstErr != nil {
+		return nil, firstErr
+	}
+	return listings, nil
 }
 
 // skipDocumentationDirectory names the directories no documentation page
@@ -312,9 +350,6 @@ func skipDocumentationDirectory(base string) bool {
 // asks for it. It returns when ctx is done.
 func (a *app) watchSaga(ctx context.Context) {
 	handler := newMux(a)
-	a.fresh.mutex.Lock()
-	a.fresh.window = freshnessWindow
-	a.fresh.mutex.Unlock()
 	warm := make(chan struct{}, 1)
 	go func() {
 		for {

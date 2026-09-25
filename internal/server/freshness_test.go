@@ -2,6 +2,11 @@ package server
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
+	"hash"
+	"io/fs"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -94,38 +99,8 @@ func TestTheShellCheckSkipsCodeEvidence(t *testing.T) {
 	}
 }
 
-// Within a running server's window a recent check answers the request, and
-// the server's own write is seen by the very next request however recent
-// that check was.
-func TestTheServersOwnWriteIsSeenAtOnce(t *testing.T) {
-	fixture, _, _ := boundedFixture(t)
-	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: serverTemplate(t)}
-	application.fresh.window = time.Hour
-	handler := newMux(application)
-	open := func() {
-		t.Helper()
-		recorder := httptest.NewRecorder()
-		handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
-		if recorder.Code != http.StatusOK {
-			t.Fatalf("GET / = %d: %s", recorder.Code, recorder.Body.String())
-		}
-	}
-	open()
-	open()
-	if application.fresh.checks != 1 {
-		t.Fatalf("a request inside the window took its own check: %d checks", application.fresh.checks)
-	}
-	first := application.files.current
-	writeServerFile(t, filepath.Join(fixture.Root, "README.md"), "Written by the server.\n")
-	application.fresh.wrote()
-	open()
-	if application.fresh.checks != 2 || application.files.current == first {
-		t.Fatalf("the request after the server's write was answered by a check from before it: %d checks", application.fresh.checks)
-	}
-}
-
 // A running server reads the Saga, related reviews included, before anyone
-// asks, and again after an edit made outside it, within the window.
+// asks, and again after an edit, before anyone asks for it.
 func TestAWatchedSagaIsReadBeforeAnyoneAsks(t *testing.T) {
 	fixture := newServerReviewFixture(t)
 	documentTheFixture(t, fixture)
@@ -196,4 +171,104 @@ func TestTheDecksAreBuiltOncePerStateOfTheSaga(t *testing.T) {
 	if application.files.current != files || files.slidesView != built {
 		t.Fatal("a second page built the unchanged decks again")
 	}
+}
+
+// Several directories are listed at once, and the fingerprints are exactly
+// those one walk of the Saga in name order takes.
+func TestTheListedFingerprintsAreTheWalkedOnes(t *testing.T) {
+	roots := []string{validServerSaga(t)}
+	if _, err := os.Stat(filepath.Join(dogfoodSaga, saga.ManifestName)); err == nil {
+		roots = append(roots, dogfoodSaga)
+	}
+	fixture, _, _ := boundedFixture(t)
+	roots = append(roots, fixture.Root)
+	for _, root := range roots {
+		for _, full := range []bool{false, true} {
+			outline, documentation, files, err := sagaFingerprints(root, full)
+			if err != nil {
+				t.Fatal(err)
+			}
+			wantOutline, wantDocumentation, wantFiles, err := walkedSagaFingerprints(root, full)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if outline != wantOutline || documentation != wantDocumentation || files != wantFiles {
+				t.Fatalf("%s (full %v): listed fingerprints differ from the walked ones", root, full)
+			}
+		}
+	}
+	if _, _, _, err := sagaFingerprints(filepath.Join(t.TempDir(), "missing"), true); err == nil {
+		t.Fatal("a missing Saga was fingerprinted")
+	}
+}
+
+// walkedSagaFingerprints is one sequential walk of the Saga, the reference
+// the listed fingerprints are held to.
+func walkedSagaFingerprints(root string, full bool) (outline, documentation, files string, err error) {
+	outlineDigest, documentationDigest, filesDigest := sha256.New(), sha256.New(), sha256.New()
+	// Each set skips whole directories. The walk visits a directory's
+	// entries before any path after it, so a skipped directory is left the
+	// first time a path falls outside it.
+	var outlineSkip, documentationSkip string
+	inside := func(skip, rel string) bool {
+		return skip != "" && strings.HasPrefix(rel, skip+"/")
+	}
+	err = filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
+		if walkErr != nil {
+			return walkErr
+		}
+		rel, err := filepath.Rel(root, path)
+		if err != nil {
+			return err
+		}
+		rel = filepath.ToSlash(rel)
+		if !inside(outlineSkip, rel) {
+			outlineSkip = ""
+		}
+		if !inside(documentationSkip, rel) {
+			documentationSkip = ""
+		}
+		if entry.IsDir() {
+			if outlineSkip == "" {
+				if path != root && skipOutlineDirectory(rel, entry.Name()) {
+					outlineSkip = rel
+				} else {
+					fmt.Fprintf(outlineDigest, "d\x00%s\x00", rel)
+				}
+			}
+			if documentationSkip == "" {
+				if path != root && skipDocumentationDirectory(entry.Name()) {
+					if !full {
+						return filepath.SkipDir
+					}
+					documentationSkip = rel
+				} else {
+					fmt.Fprintf(documentationDigest, "d\x00%s\x00", rel)
+				}
+			}
+			return nil
+		}
+		info, err := entry.Info()
+		if err != nil {
+			return err
+		}
+		line := func(digest hash.Hash) {
+			fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", rel, info.Size(), info.ModTime().UnixNano())
+		}
+		line(filesDigest)
+		if documentationSkip == "" {
+			line(documentationDigest)
+		}
+		if outlineSkip == "" && outlineFile(rel, entry.Name()) {
+			line(outlineDigest)
+		}
+		return nil
+	})
+	if err != nil {
+		return "", "", "", err
+	}
+	if !full {
+		return hex.EncodeToString(outlineDigest.Sum(nil)), hex.EncodeToString(documentationDigest.Sum(nil)), "", nil
+	}
+	return hex.EncodeToString(outlineDigest.Sum(nil)), hex.EncodeToString(documentationDigest.Sum(nil)), hex.EncodeToString(filesDigest.Sum(nil)), nil
 }
