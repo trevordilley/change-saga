@@ -5,6 +5,8 @@ the **Proposed technical design** section of the existing `technical-inventory`
 implementation deck in `app.saga`. The user explicitly chose to develop the
 implementation deck during architecture planning. Its earlier five slides
 retain the current implementation; ten appended slides identify the proposal.
+The subsequent **Implementation foundations** section documents the first
+implemented internal policy helper, not completion of the proposed feature.
 
 ## Decisions captured
 
@@ -262,6 +264,46 @@ matrix. Persisted encoding and public writer integration remain behind the
 compatibility gate; this is not a silent relaxation of today's authoring rules.
 
 ## Checks
+
+### First implemented policy slice
+
+Code `d62bcb84` and Saga explanation `84224690` were independently reviewed and
+merged into this branch as `7315c64c`. The new `internal/technicalpolicy` package
+implements the three policy decisions without production consumers, persisted
+format changes, or relaxed public CLI guards. The foundation slide
+`technical-inventory-policy-foundation` links its source/tests and seven current
+criterion pins. The two-slide `technical-inventory-policy-core` review explains
+the exact `d67ad809..d62bcb84` code comparison; it records no review decisions.
+
+Post-merge race tests pass for `technicalpolicy` (2.337s), `coderesolve` (2.011s)
+and `coderef` (1.267s). The child also passed full `go vet ./...`, a separate CLI
+build and raw/reviewer visual checks at 1280x720 and 1024x576. The full race suite
+is **not passing**: it reported the independently reproduced baseline
+`TestTopLevelHelpDescribesIncrementalAdoption` help-text failure, then exceeded
+its 10-minute bound before all packages completed.
+
+Public readback after integration confirms 13 current foundation selectors and
+seven current criterion links. The child review maps 844 changed lines plus
+five explicitly documented file-addition events, with 22 intentional overlaps
+for the separate fixture no-write explanation and no stale references.
+Validation retains the two existing code-free proposal warnings. Reconciliation
+against `d67ad809` retains 23 pre-existing health entries plus two uncovered
+Markdown-change entries from this parent's design-note edits; these are not
+policy-code or reference-currency regressions. The dedicated `preintegrate`
+check cannot finish because of an existing slide ID shared by a feature deck
+and an older review deck; scoped query/readback checks were used instead.
+
+Read-only post-merge browser checks pass both review slides, code drawers via
+the marked-place menu, Escape and permalink reload at 1280px and 390px. Local
+screenshots are `integrated-policy-{gates,proof}-{1280,390}.png` in the existing
+QA directory. The narrow canvas remains very small with controls overlaid on
+the diagram; working drawers do not constitute a polished mobile slide view.
+
+Source identity, saved-view loading, public publication/locking, compatibility,
+coverage and renderer integration remain future work. This slice establishes
+tested policy, not the full design-to-delivery workflow.
+
+### Earlier design-authoring checks
 
 - Public query readback preserved all story parents/history and unchanged
   proposed lifecycle. The first slice's 17 relation pins were current; the
