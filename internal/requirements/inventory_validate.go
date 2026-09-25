@@ -488,6 +488,11 @@ var (
 		"aria-label", "aria-labelledby", "aria-describedby", "aria-hidden", "focusable")
 )
 
+var (
+	xmlDeclaration  = regexp.MustCompile(`^<\?xml( (version|encoding|standalone)="[A-Za-z0-9._-]*")*\s*\?>`)
+	prefixedElement = regexp.MustCompile(`</?[A-Za-z_][A-Za-z0-9._-]*:`)
+)
+
 func setOf(values ...string) map[string]bool {
 	set := make(map[string]bool, len(values))
 	for _, value := range values {
@@ -521,6 +526,18 @@ func ValidateVisual(data []byte, digest string, bindings []Binding) error {
 	sum := sha256.Sum256(data)
 	if digest != "" && digest != coderef.DigestPrefix+hex.EncodeToString(sum[:]) {
 		return fmt.Errorf("visual digest does not match its bytes")
+	}
+	// Consumers may inline the raw bytes as HTML, where processing instructions,
+	// CDATA and prefixed element names parse differently from XML. Admit only a
+	// leading XML declaration, no CDATA and unprefixed element names.
+	if declaration := xmlDeclaration.Find(data); bytes.Count(data, []byte("<?")) > 0 && (declaration == nil || bytes.Count(data, []byte("<?")) != 1) {
+		return fmt.Errorf("visual may contain only a leading XML declaration, no other processing instructions")
+	}
+	if bytes.Contains(data, []byte("<![CDATA[")) {
+		return fmt.Errorf("visual cannot contain CDATA sections")
+	}
+	if prefixedElement.Match(data) {
+		return fmt.Errorf("visual element names must be unprefixed")
 	}
 	decoder := xml.NewDecoder(io.LimitReader(bytes.NewReader(data), MaxVisualBytes))
 	decoder.Strict = true

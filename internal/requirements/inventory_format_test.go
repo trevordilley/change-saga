@@ -251,6 +251,12 @@ func TestInventoryVisualIsOfflineAndBound(t *testing.T) {
 		"foreign namespace": []byte(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:h="http://www.w3.org/1999/xhtml"><h:div id="report"/></svg>`),
 		"image element":     []byte(`<svg xmlns="http://www.w3.org/2000/svg"><image id="report" href="#x"/></svg>`),
 		"style javascript":  []byte(`<svg xmlns="http://www.w3.org/2000/svg"><style>g { background: javascript:x }</style><g id="report"/></svg>`),
+		"pi before root":    []byte(`<?xml version="1.0" x="><img src=x onerror=alert(1)>"?><svg xmlns="http://www.w3.org/2000/svg"><g id="report"/></svg>`),
+		"pi inside svg":     []byte(`<svg xmlns="http://www.w3.org/2000/svg"><?xml version="1.0" x="><img src=x onerror=alert(1)>"?><g id="report"/></svg>`),
+		"other pi":          []byte(`<?xml version="1.0"?><?xml-stylesheet href="x.css"?><svg xmlns="http://www.w3.org/2000/svg"><g id="report"/></svg>`),
+		"cdata":             []byte(`<svg xmlns="http://www.w3.org/2000/svg"><text id="report"><![CDATA[ > <img src=x onerror=alert(1)>]]></text></svg>`),
+		"prefixed svg":      []byte(`<s:svg xmlns:s="http://www.w3.org/2000/svg"><s:text id="report"><![CDATA[ > <img src=x onerror=alert(1)>]]></s:text></s:svg>`),
+		"prefixed element":  []byte(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:s="http://www.w3.org/2000/svg"><s:g id="report"/></svg>`),
 	} {
 		if err := ValidateVisual(bad, "", bindings); err == nil {
 			t.Errorf("%s accepted", name)
