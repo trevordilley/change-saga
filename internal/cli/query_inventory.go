@@ -17,11 +17,14 @@ import (
 
 type inventoryCodeHealth struct {
 	Owner      string                 `json:"owner"`
+	Evidence   string                 `json:"evidence,omitempty"`
+	Intent     string                 `json:"intent,omitempty"`
 	Reference  string                 `json:"reference"`
 	Resolution coderesolve.Resolution `json:"resolution"`
 }
 type inventoryLinkHealth struct {
 	Owner  string                 `json:"owner"`
+	Role   string                 `json:"role,omitempty"`
 	Link   saga.DocumentationLink `json:"link"`
 	Status string                 `json:"status"`
 }
@@ -43,8 +46,8 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 	flags.SetOutput(io.Discard)
 	root := flags.String("saga", "", "app Saga root")
 	repo := flags.String("repo", "", "source checkout")
-	target := flags.String("target", "", "canonical Component/System URN")
-	kind := flags.String("kind", "", "component or system")
+	target := flags.String("target", "", "canonical technical URN")
+	kind := flags.String("kind", "", "component, system, data-entity, erd or erd-overlay")
 	history := flags.Bool("history", false, "include immutable history for the selected target")
 	head := flags.String("head", "HEAD", "source revision to observe")
 	against := flags.String("against", "", "comparison baseline for newness")
@@ -67,7 +70,7 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 	if *conflictLimit == 0 {
 		*conflictLimit = *limit
 	}
-	if *root == "" || flags.NArg() != 0 || *limit < 1 || *limit > maxQueryPageSize || *conflictLimit < 1 || *conflictLimit > maxQueryPageSize || (*kind != "" && *kind != "component" && *kind != "system") || (*history && *target == "") {
+	if *root == "" || flags.NArg() != 0 || *limit < 1 || *limit > maxQueryPageSize || *conflictLimit < 1 || *conflictLimit > maxQueryPageSize || (*kind != "" && !inventoryKind(*kind)) || (*history && *target == "") {
 		return fail("invalid_argument", fmt.Errorf("requires --saga; valid --kind, --limit and --conflict-limit; --history requires --target"))
 	}
 	if *intent != "" && *intent != "proposed" && *intent != "implemented" && *intent != "unspecified" {
@@ -108,7 +111,7 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 		return fail("invalid_saga", err)
 	}
 	if *target != "" {
-		if _, err := inventoryTarget(manifest.ID, "", *target); err != nil {
+		if err := inventoryQueryTarget(manifest.ID, *target); err != nil {
 			return fail("invalid_argument", err)
 		}
 		if d.Find(*target) == nil && featureID == "" {
@@ -171,17 +174,8 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 		entry.inventoryReadFacts = matched[start+len(entries)].inventoryReadFacts
 		entry.SelectedCode = selectedCodeHealth(ctx, resolver, r, entry.Selected, changes.HeadOID)
 		if rev := r.CurrentRevision; rev != nil {
-			for _, ref := range rev.Code {
-				entry.Code = append(entry.Code, inventoryCodeHealth{Owner: r.Target, Reference: ref.Location().String(), Resolution: resolver.Resolve(ctx, ref.Reference, changes.HeadOID)})
-			}
-			for _, edge := range rev.Interactions {
-				for _, ref := range edge.Code {
-					entry.Code = append(entry.Code, inventoryCodeHealth{Owner: r.Target + "#" + edge.ID, Reference: ref.Location().String(), Resolution: resolver.Resolve(ctx, ref.Reference, changes.HeadOID)})
-				}
-			}
-			for _, pin := range rev.Components {
-				entry.Links = append(entry.Links, inventoryLinkHealth{Owner: r.Target, Link: pin, Status: d.LinkStatus(pin)})
-			}
+			entry.Code = inventoryCodeHealthOf(ctx, resolver, r.Target, rev, changes.HeadOID)
+			entry.Links = inventoryLinksOf(read.index, r.Target, rev)
 		}
 		entries = append(entries, entry)
 	}

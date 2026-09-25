@@ -72,7 +72,7 @@ func (ix *Index) FeatureScope(feature *saga.Feature) Scope {
 				scope.CycleCut = true
 				continue
 			}
-			if len(base.Path) >= MaxPathHops {
+			if len(base.Path) >= saga.MaxSelectionPath {
 				scope.Truncated = true
 				continue
 			}
@@ -103,11 +103,18 @@ func (ix *Index) revision(p Pin) *requirements.TechnicalRevision {
 	return nil
 }
 
-// declaredOutgoing lists the pins a revision declares as its members. Owned
-// data-entity holders and relationship destinations join this list when the
-// records contract lands; nothing else is inferred.
+// declaredOutgoing lists the pins a revision declares and a selection path may
+// follow: System members, data-entity holding Components and relationship
+// destinations. Nothing else is inferred.
 func (ix *Index) declaredOutgoing(rev *requirements.TechnicalRevision) []Pin {
-	return rev.Components
+	pins := append([]Pin{}, rev.Components...)
+	for _, holder := range rev.Holders {
+		pins = append(pins, holder.Component)
+	}
+	for _, edge := range rev.Relationships {
+		pins = append(pins, edge.Destination)
+	}
+	return pins
 }
 
 // SelectedPin is one revision a query answers about, with its explicit intent

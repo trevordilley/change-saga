@@ -22,7 +22,14 @@ const (
 	RoleImplementationItem = "implementation_item"
 	RoleReviewItem         = "review_item"
 	RoleSystemMember       = "system_member"
+	RoleDataHolder         = "data_holder"
+	RoleRelationship       = "relationship_destination"
+	RoleERDDirectory       = "erd_directory"
+	RoleERDOverlay         = "erd_overlay"
 )
+
+// ownerRoles are technical owners whose current revision is traversed upward.
+var ownerRoles = map[string]bool{RoleSystemMember: true, RoleDataHolder: true, RoleRelationship: true}
 
 const (
 	MaxDepth      = 8
@@ -50,9 +57,11 @@ type Use struct {
 	Owner         string `json:"owner,omitempty"`
 	OwnerRevision string `json:"owner_revision,omitempty"`
 	OwnerCurrent  bool   `json:"owner_current,omitempty"`
-	Pin           Pin    `json:"pin"`
-	Status        string `json:"status"`
-	Path          []Pin  `json:"path"`
+	// Edge names the owning relationship or holder role, when there is one.
+	Edge   string `json:"edge,omitempty"`
+	Pin    Pin    `json:"pin"`
+	Status string `json:"status"`
+	Path   []Pin  `json:"path"`
 }
 
 func (u Use) Direct() bool { return len(u.Path) == 1 }
@@ -125,8 +134,23 @@ func Build(document *saga.Saga, inventory *requirements.Inventory) *Index {
 		for _, rev := range r.Revisions {
 			pin := r.Target + ":revision:" + rev.ID
 			current := r.CurrentRevision != nil && r.CurrentRevision.ID == rev.ID
+			owned := func(role, edge string, p Pin) {
+				add(Use{Role: role, Owner: r.Target, OwnerRevision: pin, OwnerCurrent: current, Edge: edge, Pin: p})
+			}
 			for _, member := range rev.Components {
-				add(Use{Role: RoleSystemMember, Owner: r.Target, OwnerRevision: pin, OwnerCurrent: current, Pin: member})
+				owned(RoleSystemMember, "", member)
+			}
+			for _, holder := range rev.Holders {
+				owned(RoleDataHolder, holder.Role, holder.Component)
+			}
+			for _, edge := range rev.Relationships {
+				owned(RoleRelationship, edge.ID, edge.Destination)
+			}
+			for _, entry := range rev.Directory {
+				owned(RoleERDDirectory, "", entry)
+			}
+			for _, entry := range rev.Pins {
+				owned(RoleERDOverlay, "", entry)
 			}
 		}
 	}
@@ -151,7 +175,7 @@ func walkDeck(deck *saga.Deck, visit func(*saga.Slide, *saga.Item)) {
 }
 
 func useKey(u Use) string {
-	return u.Role + "\x00" + u.Feature + "\x00" + u.Review + "\x00" + u.Item + "\x00" + u.OwnerRevision + "\x00" + u.Pin.Revision
+	return u.Role + "\x00" + u.Feature + "\x00" + u.Review + "\x00" + u.Item + "\x00" + u.OwnerRevision + "\x00" + u.Edge + "\x00" + u.Pin.Revision
 }
 
 // Record returns the loaded record for target, or nil.
@@ -206,7 +230,7 @@ func (ix *Index) collect(target, revision string, depth int) ([]Use, UsePage) {
 			u := in.use
 			u.Path = append([]Pin{u.Pin}, suffix...)
 			all = append(all, u)
-			if u.Role != RoleSystemMember || !u.OwnerCurrent {
+			if !ownerRoles[u.Role] || !u.OwnerCurrent {
 				continue
 			}
 			if onPath[u.Owner] {
@@ -254,7 +278,7 @@ func (ix *Index) Counts(target string) UseCounts {
 			counts.Implementation++
 		case RoleReviewItem:
 			counts.Review++
-		case RoleSystemMember:
+		case RoleSystemMember, RoleDataHolder, RoleRelationship, RoleERDDirectory, RoleERDOverlay:
 			counts.Owners++
 		}
 	}

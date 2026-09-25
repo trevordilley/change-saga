@@ -231,7 +231,7 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
-	"inventory":           "Component/System definitions, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
+	"inventory":           "Component/System/data-entity/ERD definitions, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
 	"inventory-coverage":  "which tracked code at one source revision the current Component/System definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage",
 	"inventory-uses":      "declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness",
 	"schema":              "the response paths and pagination contract for a query operation; no saga is required",
@@ -267,9 +267,9 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
-	"inventory":           "change-saga query inventory --saga PATH [--kind component|system] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]",
+	"inventory":           "change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]",
 	"inventory-coverage":  "change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
-	"inventory-uses":      "change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member] [--cursor TOKEN] [--limit N]",
+	"inventory-uses":      "change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member|data_holder|relationship_destination|erd_directory|erd_overlay] [--cursor TOKEN] [--limit N]",
 	"":                    "change-saga query <operation> --saga PATH [--repo PATH] [--against REV [--head REV]] [operation flags]",
 	"schema":              "change-saga query schema <operation>",
 	"overview":            "change-saga query overview --saga PATH [--repo PATH] [--against REV [--head REV]]",

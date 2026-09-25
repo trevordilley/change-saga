@@ -8,14 +8,13 @@ import (
 type Intent = technicalpolicy.Intent
 
 // RevisionIntent reports the explicit proposed/implemented assessment of one
-// revision. Today's persisted revisions carry no intent, so every legacy
-// revision reads as unspecified; intent is never inferred from code evidence,
-// lifecycle, age or name.
+// revision. Legacy revisions read as unspecified; intent is never inferred
+// from code evidence, lifecycle, age or name.
 func RevisionIntent(rev *requirements.TechnicalRevision) Intent {
 	if rev == nil {
 		return technicalpolicy.Unspecified
 	}
-	return technicalpolicy.Unspecified
+	return Intent(rev.EffectiveIntent())
 }
 
 // Newness classifications are relative to one named comparison baseline.
@@ -46,4 +45,50 @@ func Newness(target string, baseline Baseline) string {
 	default:
 		return NewnessExisting
 	}
+}
+
+// OwnedEvidence is one code reference a revision owns: its own code (Edge "")
+// or an interaction's or relationship's, with that edge's explicit intent.
+type OwnedEvidence struct {
+	Edge     string
+	Intent   Intent
+	Evidence requirements.Evidence
+}
+
+// Suffix is the owner suffix appended to a record target: "" or "#edge".
+func (o OwnedEvidence) Suffix() string {
+	if o.Edge == "" {
+		return ""
+	}
+	return "#" + o.Edge
+}
+
+// Evidence lists every code reference a revision owns, in declaration order.
+func Evidence(rev *requirements.TechnicalRevision) []OwnedEvidence {
+	out := []OwnedEvidence{}
+	if rev == nil {
+		return out
+	}
+	own := RevisionIntent(rev)
+	for _, e := range rev.Code {
+		out = append(out, OwnedEvidence{"", own, e})
+	}
+	for _, edge := range rev.Interactions {
+		for _, e := range edge.Code {
+			out = append(out, OwnedEvidence{edge.ID, edgeIntent(edge.Intent), e})
+		}
+	}
+	for _, edge := range rev.Relationships {
+		for _, e := range edge.Code {
+			out = append(out, OwnedEvidence{edge.ID, edgeIntent(edge.Intent), e})
+		}
+	}
+	return out
+}
+
+func edgeIntent(value string) Intent {
+	if value == "" {
+		return technicalpolicy.Unspecified
+	}
+	return Intent(value)
 }

@@ -2,11 +2,12 @@ package inventoryview
 
 import (
 	"context"
-	"strings"
+	"errors"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 // Resolver views a code reference at a commit; *coderesolve.Resolver and the
@@ -15,40 +16,19 @@ type Resolver interface {
 	Resolve(ctx context.Context, reference coderef.Reference, view string) coderesolve.Resolution
 }
 
-const MaxPathHops = 8
-
-// Selection mirrors the records contract's Item selection: an exact subset of
-// one evidence reference reached through declared pins. Path[0] is the
-// referencing Item's own documentation pin; Evidence is an evidence ID unique
-// across the final pin's revision, so its owning edge is derived, not stored.
-type Selection struct {
-	ID       string            `json:"id"`
-	Path     []Pin             `json:"path"`
-	Evidence string            `json:"evidence"`
-	Selected coderef.Reference `json:"code"`
+// SelectionResolver also authors the original bytes of a reference, so the
+// saved selected-byte digest can be verified. *coderesolve.Resolver fits.
+type SelectionResolver interface {
+	Resolver
+	Author(ctx context.Context, location coderef.Location, note string) (coderef.Reference, error)
 }
 
-// lookupEvidence finds evidence by its persisted ID in one revision and names
-// its owning edge ("" for the entity). Persisted evidence IDs arrive with the
-// records contract; legacy references have none and are not selectable, so
-// until then nothing is found.
-var lookupEvidence = func(rev *requirements.TechnicalRevision, id string) (*coderef.Reference, string) {
-	return nil, ""
-}
-
-// Selection reason codes. Blocking reasons leave the selection unresolved;
-// health reasons keep it resolved but ineligible for current coverage.
+// Structural reason codes come from requirements.ResolveSelection and
+// requirements.VerifySelectedBytes. Pin and byte health codes are ours:
+// conflicted pins leave a selection unresolved; the others keep it resolved
+// but ineligible (or, for outside_subset_changed, flag semantic review only).
 const (
-	ReasonInvalidSelection   = "invalid_selection"
-	ReasonPathTooLong        = "path_too_long"
-	ReasonMissingPin         = "missing_pin"
-	ReasonConflictedPin      = "conflicted_pin"
-	ReasonUndeclaredHop      = "undeclared_hop"
-	ReasonMissingEvidence    = "missing_evidence"
-	ReasonWholeFileSelection = "whole_file_selection"
-	ReasonOutsideEvidence    = "outside_evidence"
-	ReasonDigestMismatch     = "selected_digest_mismatch"
-
+	ReasonConflictedPin    = "conflicted_pin"
 	ReasonRetiredPin       = "retired_pin"
 	ReasonNoncurrentPin    = "noncurrent_pin"
 	ReasonSelectedStale    = "selected_bytes_stale"
@@ -63,16 +43,17 @@ type Reason struct {
 }
 
 type Hop struct {
-	Pin      Pin    `json:"pin"`
-	Status   string `json:"status"`
-	Declared bool   `json:"declared"`
+	Pin    Pin    `json:"pin"`
+	Status string `json:"status"`
+	Kind   string `json:"kind,omitempty"`
 }
 
 // SelectionResult keeps structural resolution, pin health, selected-byte
 // health and containing-evidence health as separate facts. Current selected
 // bytes never establish that the containing entity is healthy or accurate.
 type SelectionResult struct {
-	Selection        Selection               `json:"selection"`
+	Item             string                  `json:"item,omitempty"`
+	Selection        saga.ItemSelection      `json:"selection"`
 	State            string                  `json:"state"` // resolved | unresolved
 	View             string                  `json:"view"`
 	Hops             []Hop                   `json:"hops"`
@@ -86,104 +67,84 @@ type SelectionResult struct {
 	Reasons  []Reason `json:"reasons"`
 }
 
-// ResolveSelection validates every adjacent hop at its saved revision and the
-// subset against its containing reference, then views both at view. It never
-// substitutes a newer revision, expands a range or traverses all members.
-func ResolveSelection(ctx context.Context, inventory *requirements.Inventory, sel Selection, view string, resolver Resolver) SelectionResult {
+// ResolveSelection delegates structure (declared hops at saved revisions,
+// evidence ID, containment) to requirements.ResolveSelection, verifies the
+// selected digest at its own commit, then reports pin health and views the
+// selected bytes and containing evidence at view separately. It never
+// substitutes a newer revision, widens a range or traverses all members.
+// Without a resolver or a full view commit only structure and pins are known.
+func ResolveSelection(ctx context.Context, inventory *requirements.Inventory, documentation Pin, sel saga.ItemSelection, view string, resolver SelectionResolver) SelectionResult {
 	result := SelectionResult{Selection: sel, State: "unresolved", View: view, Hops: []Hop{}, Reasons: []Reason{}}
-	block := func(code string, hop int, detail string) {
+	add := func(code string, hop int, detail string) {
 		result.Reasons = append(result.Reasons, Reason{code, hop, detail})
 	}
-	if len(sel.Path) == 0 || strings.TrimSpace(sel.Evidence) == "" || coderef.Validate(sel.Selected) != nil || inventory == nil {
-		block(ReasonInvalidSelection, -1, "selection requires a path, evidence identity and a valid exact reference")
-		return result
-	}
-	if len(sel.Path) > MaxPathHops {
-		block(ReasonPathTooLong, -1, "")
+	if inventory == nil {
+		add(string(requirements.SelectionInvalid), -1, "no inventory")
 		return result
 	}
 	blocked := false
 	pinsCurrent := true
-	var last *requirements.TechnicalRevision
 	for i, pin := range sel.Path {
-		hop := Hop{Pin: pin, Status: inventory.LinkStatus(pin), Declared: i == 0}
-		record := inventory.Find(pin.Target)
-		var rev *requirements.TechnicalRevision
-		if record != nil {
-			rev = record.Revision(pin.Revision)
-		}
-		if i > 0 && last != nil {
-			for _, member := range last.Components {
-				if member == pin {
-					hop.Declared = true
-				}
-			}
+		hop := Hop{Pin: pin, Status: inventory.LinkStatus(pin)}
+		if r := inventory.Find(pin.Target); r != nil {
+			hop.Kind = r.Kind
 		}
 		switch hop.Status {
-		case "missing":
-			block(ReasonMissingPin, i, pin.Revision)
-			blocked = true
 		case "conflicted":
-			block(ReasonConflictedPin, i, pin.Target)
+			add(ReasonConflictedPin, i, pin.Target)
 			blocked = true
 		case "retired":
-			block(ReasonRetiredPin, i, pin.Target)
+			add(ReasonRetiredPin, i, pin.Target)
 			pinsCurrent = false
 		case "stale":
-			block(ReasonNoncurrentPin, i, pin.Revision)
+			add(ReasonNoncurrentPin, i, pin.Revision)
 			pinsCurrent = false
 		}
-		if !hop.Declared {
-			block(ReasonUndeclaredHop, i, "not declared by "+sel.Path[i-1].Revision)
-			blocked = true
-		}
 		result.Hops = append(result.Hops, hop)
-		last = rev
 	}
 	result.PinsCurrent = pinsCurrent
-	if blocked || last == nil {
+	structural, err := inventory.ResolveSelection(documentation, sel)
+	if err != nil {
+		var selErr *requirements.SelectionError
+		if errors.As(err, &selErr) {
+			add(string(selErr.Code), selErr.Hop, selErr.Message)
+		} else {
+			add(string(requirements.SelectionInvalid), -1, err.Error())
+		}
 		return result
 	}
-	result.Containing, result.EvidenceOwner = lookupEvidence(last, sel.Evidence)
-	if result.Containing == nil {
-		block(ReasonMissingEvidence, len(sel.Path)-1, sel.Evidence)
-		return result
-	}
-	if sel.Selected.WholeFile() {
-		block(ReasonWholeFileSelection, -1, "")
-		return result
-	}
-	if !result.Containing.Location().Contains(sel.Selected.Location()) {
-		block(ReasonOutsideEvidence, -1, sel.Selected.Location().String()+" is not within "+result.Containing.Location().String())
+	containing := structural.Evidence.Reference
+	result.Containing, result.EvidenceOwner = &containing, structural.OwnerEdge
+	if blocked {
 		return result
 	}
 	if resolver == nil || !coderef.ValidCommit(view) {
 		result.State = "resolved"
 		return result
 	}
-	// The selected digest must match the pinned bytes themselves; a subset
-	// digest that was never true is invalid, not drift.
-	if pinned := resolver.Resolve(ctx, sel.Selected, sel.Selected.Commit); !pinned.Current() {
-		block(ReasonDigestMismatch, -1, pinned.Reason)
+	if err := requirements.VerifySelectedBytes(ctx, resolver.Author, sel); err != nil {
+		var selErr *requirements.SelectionError
+		if errors.As(err, &selErr) {
+			add(string(selErr.Code), selErr.Hop, selErr.Message)
+		}
 		return result
 	}
 	result.State = "resolved"
-	containing := resolver.Resolve(ctx, *result.Containing, view)
-	selected := resolver.Resolve(ctx, sel.Selected, view)
-	result.ContainingHealth, result.SelectedHealth = &containing, &selected
-	if !selected.Current() {
-		block(ReasonSelectedStale, -1, selected.Reason)
+	containingHealth := resolver.Resolve(ctx, containing, view)
+	selectedHealth := resolver.Resolve(ctx, sel.Code, view)
+	result.ContainingHealth, result.SelectedHealth = &containingHealth, &selectedHealth
+	if !selectedHealth.Current() {
+		add(ReasonSelectedStale, -1, selectedHealth.Reason)
 	}
-	if !containing.Current() {
-		detail := containing.Reason
-		if selected.Current() {
+	if !containingHealth.Current() {
+		if selectedHealth.Current() {
 			// The selected bytes survived; the change lies outside the subset
 			// and still requires semantic reassessment of the entity.
-			block(ReasonSemanticReassess, -1, detail)
+			add(ReasonSemanticReassess, -1, containingHealth.Reason)
 		} else {
-			block(ReasonContainingStale, -1, detail)
+			add(ReasonContainingStale, -1, containingHealth.Reason)
 		}
 	}
-	result.Eligible = pinsCurrent && selected.Current()
+	result.Eligible = pinsCurrent && selectedHealth.Current()
 	return result
 }

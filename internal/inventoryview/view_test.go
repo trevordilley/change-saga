@@ -124,59 +124,53 @@ func TestSelectionResolution(t *testing.T) {
 		record("component", "other", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{sysRef})}, "active", false),
 		record("system", "flags", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{sysRef}, comp, other)}, "active", false),
 	}}
-	// Fixture evidence IDs stand in for the records contract's persisted IDs.
-	ids := map[string]string{containing.Location().String(): "store-body", sysRef.Location().String(): "other-body"}
-	restore := lookupEvidence
-	t.Cleanup(func() { lookupEvidence = restore })
-	lookupEvidence = func(rev *requirements.TechnicalRevision, id string) (*coderef.Reference, string) {
-		for i := range rev.Code {
-			if ids[rev.Code[i].Location().String()] == id {
-				return &rev.Code[i], ""
-			}
+	sel := saga.ItemSelection{ID: "sel", Path: []Pin{sys, comp}, Evidence: "e1", Code: selected}
+	resolve := func(sel saga.ItemSelection, view string) SelectionResult {
+		var doc Pin
+		if len(sel.Path) > 0 {
+			doc = sel.Path[0]
 		}
-		for _, edge := range rev.Interactions {
-			for i := range edge.Code {
-				if "edge-"+ids[edge.Code[i].Location().String()] == id {
-					return &edge.Code[i], edge.ID
-				}
-			}
-		}
-		return nil, ""
+		return ResolveSelection(ctx, inv, doc, sel, view, res)
 	}
-	sel := Selection{ID: "sel", Path: []Pin{sys, comp}, Evidence: "store-body", Selected: selected}
-
-	ok := ResolveSelection(ctx, inv, sel, base, res)
-	if ok.State != "resolved" || !ok.Eligible || !ok.PinsCurrent || len(ok.Reasons) != 0 || *ok.Containing != containing {
+	ok := resolve(sel, base)
+	if ok.State != "resolved" || !ok.Eligible || !ok.PinsCurrent || len(ok.Reasons) != 0 || *ok.Containing != containing || ok.Hops[1].Kind != "component" {
 		t.Fatalf("valid selection: %+v", ok)
 	}
 
-	cases := map[string]func(Selection) Selection{
-		ReasonUndeclaredHop:      func(s Selection) Selection { s.Path = []Pin{sys, pin("component", "orphan", "r1")}; return s },
-		ReasonMissingEvidence:    func(s Selection) Selection { s.Evidence = "nope"; return s },
-		ReasonInvalidSelection:   func(s Selection) Selection { s.Path = nil; return s },
-		ReasonWholeFileSelection: func(s Selection) Selection { s.Selected.Start, s.Selected.End = 0, 0; return s },
-		ReasonOutsideEvidence: func(s Selection) Selection {
-			s.Selected = r.ref(t, res, base, "store.go", 10, 20)
+	type mutation = func(saga.ItemSelection) saga.ItemSelection
+	cases := map[requirements.SelectionCode]mutation{
+		requirements.SelectionUndeclared: func(s saga.ItemSelection) saga.ItemSelection {
+			s.Path = []Pin{comp, other}
 			return s
 		},
-		ReasonDigestMismatch: func(s Selection) Selection { s.Selected.Digest = sysRef.Digest; return s },
+		requirements.SelectionNoEvidence: func(s saga.ItemSelection) saga.ItemSelection { s.Evidence = "nope"; return s },
+		requirements.SelectionInvalid:    func(s saga.ItemSelection) saga.ItemSelection { s.Path = nil; return s },
+		requirements.SelectionWholeFile: func(s saga.ItemSelection) saga.ItemSelection {
+			s.Code.Start, s.Code.End = 0, 0
+			return s
+		},
+		requirements.SelectionOutside: func(s saga.ItemSelection) saga.ItemSelection {
+			s.Code = r.ref(t, res, base, "store.go", 10, 20)
+			return s
+		},
+		requirements.SelectionDigestMismatch: func(s saga.ItemSelection) saga.ItemSelection { s.Code.Digest = sysRef.Digest; return s },
 	}
 	for code, mutate := range cases {
-		got := ResolveSelection(ctx, inv, mutate(sel), base, res)
-		if got.State != "unresolved" || got.Eligible || !hasReason(got, code) {
+		got := resolve(mutate(sel), base)
+		if got.State != "unresolved" || got.Eligible || !hasReason(got, string(code)) {
 			t.Fatalf("%s: %+v", code, got)
 		}
 	}
 	// Missing pins cannot be substituted by a newer revision.
 	missing := sel
 	missing.Path = []Pin{sys, pin("component", "store", "r9")}
-	if got := ResolveSelection(ctx, inv, missing, base, res); got.State != "unresolved" || !hasReason(got, ReasonMissingPin) {
+	if got := resolve(missing, base); got.State != "unresolved" || !hasReason(got, string(requirements.SelectionMissingPin)) {
 		t.Fatalf("missing pin: %+v", got)
 	}
 
 	// Pure movement: insert lines above; both stay current and remap.
 	moved := r.commit(t, map[string]string{"store.go": "new 1\nnew 2\n" + lines(100, "store")})
-	got := ResolveSelection(ctx, inv, sel, moved, res)
+	got := resolve(sel, moved)
 	if !got.Eligible || !got.SelectedHealth.Moved || got.SelectedHealth.Location.Start != 16 || !got.ContainingHealth.Current() {
 		t.Fatalf("movement: %+v", got)
 	}
@@ -184,19 +178,19 @@ func TestSelectionResolution(t *testing.T) {
 	// bytes stay current while the entity needs semantic reassessment.
 	content := "new 1\nnew 2\n" + lines(100, "store")
 	outside := r.commit(t, map[string]string{"store.go": replaceLine(content, 2+60, "edited outside subset")})
-	got = ResolveSelection(ctx, inv, sel, outside, res)
+	got = resolve(sel, outside)
 	if !got.Eligible || got.ContainingHealth.Current() || !hasReason(got, ReasonSemanticReassess) || hasReason(got, ReasonSelectedStale) {
 		t.Fatalf("outside edit: %+v", got)
 	}
 	// Edit inside the subset: selected bytes stale; not eligible.
 	inside := r.commit(t, map[string]string{"store.go": replaceLine(content, 2+20, "edited inside subset")})
-	got = ResolveSelection(ctx, inv, sel, inside, res)
+	got = resolve(sel, inside)
 	if got.Eligible || !hasReason(got, ReasonSelectedStale) || !hasReason(got, ReasonContainingStale) || got.State != "resolved" {
 		t.Fatalf("inside edit: %+v", got)
 	}
 	// Deletion: file removed at the view.
 	deleted := r.commit(t, map[string]string{"store.go": ""})
-	got = ResolveSelection(ctx, inv, sel, deleted, res)
+	got = resolve(sel, deleted)
 	if got.Eligible || !hasReason(got, ReasonSelectedStale) {
 		t.Fatalf("deletion: %+v", got)
 	}
@@ -204,20 +198,20 @@ func TestSelectionResolution(t *testing.T) {
 	// A stale (superseded) hop remains readable but is not current coverage;
 	// a conflicted record is unresolved.
 	inv.Records[2] = record("system", "flags", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{sysRef}, comp, other), revision("r2", []coderef.Reference{sysRef}, comp, other)}, "active", false)
-	got = ResolveSelection(ctx, inv, sel, base, res)
+	got = resolve(sel, base)
 	if got.State != "resolved" || got.Eligible || got.PinsCurrent || !hasReason(got, ReasonNoncurrentPin) {
 		t.Fatalf("stale hop: %+v", got)
 	}
 	inv.Records[2] = record("system", "flags", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{sysRef}, comp, other), revision("r2", []coderef.Reference{sysRef}, comp, other)}, "active", true)
-	if got = ResolveSelection(ctx, inv, sel, base, res); got.State != "unresolved" || !hasReason(got, ReasonConflictedPin) {
+	if got = resolve(sel, base); got.State != "unresolved" || !hasReason(got, ReasonConflictedPin) {
 		t.Fatalf("conflicted hop: %+v", got)
 	}
 	// Evidence IDs are unique across the revision; the owning edge is derived.
 	inv.Records[2] = record("system", "flags", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{sysRef}, comp, other)}, "active", false)
-	inv.Records[2].Revisions[0].Interactions = []requirements.Interaction{{ID: "read", From: other.Target, To: comp.Target, Description: "reads", Code: []coderef.Reference{containing}}}
+	inv.Records[2].Revisions[0].Interactions = []requirements.Interaction{{ID: "read", From: other.Target, To: comp.Target, Description: "reads", Code: evidence("edge-", containing)}}
 	inv.Records[2].CurrentRevision = &inv.Records[2].Revisions[0]
-	edge := Selection{ID: "edge", Path: []Pin{sys}, Evidence: "edge-store-body", Selected: selected}
-	if got = ResolveSelection(ctx, inv, edge, base, res); !got.Eligible || got.EvidenceOwner != "read" {
+	edge := saga.ItemSelection{ID: "edge", Path: []Pin{sys}, Evidence: "edge-1", Code: selected}
+	if got = resolve(edge, base); !got.Eligible || got.EvidenceOwner != "read" {
 		t.Fatalf("interaction evidence: %+v", got)
 	}
 }
@@ -280,9 +274,11 @@ func splitKeep(s string) []string {
 func TestLegacyEvidenceIsNotSelectable(t *testing.T) {
 	ref := coderef.Reference{Commit: strings40("a"), Path: "a.go", Start: 1, End: 2, Digest: "sha256:" + strings40("b") + strings40("b")[:24], Note: "x"}
 	comp := pin("component", "store", "r1")
-	inv := &requirements.Inventory{Records: []requirements.TechnicalRecord{record("component", "store", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{ref})}, "active", false)}}
-	sel := Selection{ID: "s", Path: []Pin{comp}, Evidence: ref.Location().String(), Selected: ref}
-	if got := ResolveSelection(context.Background(), inv, sel, "", nil); got.State != "unresolved" || !hasReason(got, ReasonMissingEvidence) {
+	legacy := revision("r1", nil)
+	legacy.Code = []requirements.Evidence{{Reference: ref}}
+	inv := &requirements.Inventory{Records: []requirements.TechnicalRecord{record("component", "store", []requirements.TechnicalRevision{legacy}, "active", false)}}
+	sel := saga.ItemSelection{ID: "s", Path: []Pin{comp}, Evidence: ref.Location().String(), Code: ref}
+	if got := ResolveSelection(context.Background(), inv, comp, sel, "", nil); got.State != "unresolved" || !hasReason(got, string(requirements.SelectionNoEvidence)) {
 		t.Fatalf("a legacy location became a selectable identity: %+v", got)
 	}
 }
@@ -312,5 +308,45 @@ func TestStatusMatchesLinkStatus(t *testing.T) {
 	}
 	if len(seen) != 5 {
 		t.Fatalf("fixture must exercise every status: %v", seen)
+	}
+}
+
+func TestDataEntityEdgesAreDeclaredUses(t *testing.T) {
+	store := pin("component", "store", "r1")
+	job, report := pin("data-entity", "job", "r1"), pin("data-entity", "report", "r1")
+	reportRev := revision("r1", nil)
+	reportRev.Intent = "implemented"
+	reportRev.Holders = []requirements.Holder{{Component: store, Role: "persists"}}
+	reportRev.Relationships = []requirements.Relationship{{ID: "produced-from", Meaning: "production", Destination: job, Intent: "proposed"}}
+	erd := revision("r1", nil)
+	erd.Directory = []Pin{job, report}
+	inv := &requirements.Inventory{Records: []requirements.TechnicalRecord{
+		record("component", "store", []requirements.TechnicalRevision{revision("r1", nil)}, "active", false),
+		record("data-entity", "job", []requirements.TechnicalRevision{revision("r1", nil)}, "active", false),
+		record("data-entity", "report", []requirements.TechnicalRevision{reportRev}, "active", false),
+		record("erd", "application", []requirements.TechnicalRevision{erd}, "active", false),
+	}}
+	doc := document(map[string][]*saga.Item{"reports": {item("reports", "s", "report", &report)}}, nil)
+	ix := Build(doc, inv)
+	roles := map[string]Use{}
+	for _, u := range ix.Uses(store.Target, UseOptions{Depth: 2}).Uses {
+		roles[u.Role] = u
+	}
+	if roles[RoleDataHolder].Edge != "persists" || roles[RoleImplementationItem].Feature != "reports" || len(roles[RoleImplementationItem].Path) != 2 {
+		t.Fatalf("holder uses: %+v", roles)
+	}
+	roles = map[string]Use{}
+	for _, u := range ix.Uses(job.Target, UseOptions{Depth: 1}).Uses {
+		roles[u.Role] = u
+	}
+	if roles[RoleRelationship].Edge != "produced-from" || roles[RoleERDDirectory].Owner != ns+"erd:application" {
+		t.Fatalf("relationship/ERD uses: %+v", roles)
+	}
+	scope := ix.FeatureScope(doc.Features[0])
+	if len(scope.Entries) != 3 {
+		t.Fatalf("scope must follow holders and relationship destinations: %+v", scope.Entries)
+	}
+	if RevisionIntent(&inv.Records[2].Revisions[0]) != technicalpolicy.Implemented {
+		t.Fatal("explicit intent not read")
 	}
 }

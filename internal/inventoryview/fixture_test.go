@@ -39,8 +39,17 @@ func record(kind, id string, revisions []requirements.TechnicalRevision, state s
 	return r
 }
 
+// revision gives each reference the evidence ID "e<n>" (1-based).
 func revision(id string, code []coderef.Reference, members ...Pin) requirements.TechnicalRevision {
-	return requirements.TechnicalRevision{ID: id, TechnicalDefinition: requirements.TechnicalDefinition{Name: id, Explanation: "x", Code: code, Components: members}}
+	return requirements.TechnicalRevision{ID: id, TechnicalDefinition: requirements.TechnicalDefinition{Name: id, Explanation: "x", Code: evidence("e", code...), Components: members}}
+}
+
+func evidence(prefix string, refs ...coderef.Reference) []requirements.Evidence {
+	out := []requirements.Evidence{}
+	for i, ref := range refs {
+		out = append(out, requirements.Evidence{ID: fmt.Sprint(prefix, i+1), Reference: ref})
+	}
+	return out
 }
 
 func item(featureDeck, slide, id string, doc *Pin) *saga.Item {

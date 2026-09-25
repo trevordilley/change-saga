@@ -19,7 +19,7 @@ func TestInventoryCoverage(t *testing.T) {
 	outside := r.ref(t, res, base, "lib/other.go", 1, 2)
 	head := r.commit(t, map[string]string{"app/changed.go": replaceLine(lines(10, "changed"), 2, "edited")})
 	sysRev := revision("r1", []coderef.Reference{outside}, pin("component", "store", "r1"), pin("component", "other", "r1"))
-	sysRev.Interactions = []requirements.Interaction{{ID: "read", Code: []coderef.Reference{overlap}}}
+	sysRev.Interactions = []requirements.Interaction{{ID: "read", Code: evidence("read", overlap)}}
 	inv := &requirements.Inventory{Records: []requirements.TechnicalRecord{
 		record("component", "store", []requirements.TechnicalRevision{revision("r1", []coderef.Reference{store, changed})}, "active", false),
 		record("system", "flags", []requirements.TechnicalRevision{sysRev}, "active", false),

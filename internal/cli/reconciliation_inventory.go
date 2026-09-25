@@ -31,6 +31,7 @@ type reconciliationInventory struct {
 	PinProblems       int                     `json:"item_pin_problems"`
 	Unresolved        int                     `json:"unresolved_records"`
 	Unreferenced      int                     `json:"unreferenced_needing_choice"`
+	ProposedSkipped   int                     `json:"proposed_references_not_assessed"`
 	Exempt            []inventoryUnreferenced `json:"unreferenced_exempt"`
 	BaselineAvailable bool                    `json:"baseline_available"`
 	Limits            []string                `json:"limits"`
@@ -81,10 +82,10 @@ func reconcileInventory(ctx context.Context, in inventoryReconcileInput) (reconc
 			if r.CurrentRevision == nil {
 				continue
 			}
-			for _, ref := range inventoryReferences(r.CurrentRevision) {
-				key := inventoryRefKey{r.Target + ref.owner, ref.code.Key()}
+			for _, owned := range inventoryview.Evidence(r.CurrentRevision) {
+				key := inventoryRefKey{r.Target + owned.Suffix(), owned.Evidence.Key()}
 				baseSeen[key] = true
-				baseCurrent[key] = in.resolver.Resolve(ctx, ref.code, in.base).Current()
+				baseCurrent[key] = in.resolver.Resolve(ctx, owned.Evidence.Reference, in.base).Current()
 			}
 		}
 	}
@@ -136,10 +137,16 @@ func reconcileInventory(ctx context.Context, in inventoryReconcileInput) (reconc
 		staleCauses := []changeview.Cause{}
 		changeCauses := []changeview.Cause{}
 		debt := ""
-		for _, ref := range inventoryReferences(r.CurrentRevision) {
+		for _, owned := range inventoryview.Evidence(r.CurrentRevision) {
+			if owned.Intent == technicalpolicy.Proposed {
+				// Proposed evidence asserts no implementation currency.
+				summary.ProposedSkipped++
+				continue
+			}
 			summary.References++
-			owner := r.Target + ref.owner
-			resolution := in.resolver.Resolve(ctx, ref.code, in.head)
+			owner := r.Target + owned.Suffix()
+			ref := owned.Evidence
+			resolution := in.resolver.Resolve(ctx, ref.Reference, in.head)
 			if resolution.Current() {
 				summary.Current++
 				if n := countChanged("new", resolution.Location); n > 0 {
@@ -148,7 +155,7 @@ func reconcileInventory(ctx context.Context, in inventoryReconcileInput) (reconc
 				continue
 			}
 			summary.Stale++
-			key := inventoryRefKey{owner, ref.code.Key()}
+			key := inventoryRefKey{owner, ref.Key()}
 			refDebt := ""
 			switch {
 			case !in.baseKnown:
@@ -165,7 +172,7 @@ func reconcileInventory(ctx context.Context, in inventoryReconcileInput) (reconc
 				summary.PreExisting++
 			}
 			debt = worseDebt(debt, refDebt)
-			staleCauses = append(staleCauses, changeview.Cause{Kind: "head_currency", Via: ref.code.Location().String(), Detail: owner + ": " + resolution.Reason})
+			staleCauses = append(staleCauses, changeview.Cause{Kind: "head_currency", Via: ref.Location().String(), Detail: owner + ": " + resolution.Reason})
 		}
 		if len(staleCauses) > 0 {
 			task := inventoryTask(in, r.Target, "inventory_evidence", debt)

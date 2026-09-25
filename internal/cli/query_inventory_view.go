@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
-	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
@@ -269,30 +268,55 @@ func selectedCodeHealth(ctx context.Context, resolver *coderesolve.Resolver, r r
 		if rev == nil || rev == r.CurrentRevision {
 			continue
 		}
-		for _, ref := range inventoryReferences(rev) {
-			health = append(health, inventoryCodeHealth{Owner: s.Pin.Revision + ref.owner, Reference: ref.code.Location().String(), Resolution: resolver.Resolve(ctx, ref.code, head)})
-		}
+		health = append(health, inventoryCodeHealthOf(ctx, resolver, s.Pin.Revision, rev, head)...)
 	}
 	return health
 }
 
-type inventoryReference struct {
-	owner string // "" for the entity, "#<edge>" for an owned edge
-	code  coderef.Reference
+// inventoryCodeHealthOf resolves every reference a revision owns, including
+// interaction and relationship evidence, with its evidence ID and edge intent.
+func inventoryCodeHealthOf(ctx context.Context, resolver *coderesolve.Resolver, owner string, rev *requirements.TechnicalRevision, head string) []inventoryCodeHealth {
+	health := []inventoryCodeHealth{}
+	for _, owned := range inventoryview.Evidence(rev) {
+		health = append(health, inventoryCodeHealth{Owner: owner + owned.Suffix(), Evidence: owned.Evidence.ID, Intent: string(owned.Intent), Reference: owned.Evidence.Location().String(), Resolution: resolver.Resolve(ctx, owned.Evidence.Reference, head)})
+	}
+	return health
 }
 
-// inventoryReferences lists every code reference a revision owns.
-func inventoryReferences(rev *requirements.TechnicalRevision) []inventoryReference {
-	refs := []inventoryReference{}
-	for _, ref := range rev.Code {
-		refs = append(refs, inventoryReference{"", ref})
+// inventoryLinksOf reports every pin a revision declares with its status.
+func inventoryLinksOf(ix *inventoryview.Index, owner string, rev *requirements.TechnicalRevision) []inventoryLinkHealth {
+	links := []inventoryLinkHealth{}
+	add := func(role string, pin saga.DocumentationLink) {
+		links = append(links, inventoryLinkHealth{Owner: owner, Role: role, Link: pin, Status: ix.Status(pin)})
 	}
-	for _, edge := range rev.Interactions {
-		for _, ref := range edge.Code {
-			refs = append(refs, inventoryReference{"#" + edge.ID, ref})
+	for _, pin := range rev.Components {
+		add("member", pin)
+	}
+	for _, holder := range rev.Holders {
+		add("holder", holder.Component)
+	}
+	for _, edge := range rev.Relationships {
+		add("relationship:"+edge.ID, edge.Destination)
+	}
+	for _, pin := range rev.Directory {
+		add("directory", pin)
+	}
+	if rev.ERD != nil {
+		add("baseline_erd", *rev.ERD)
+	}
+	for _, pin := range rev.Pins {
+		add("overlay_pin", pin)
+	}
+	return links
+}
+
+func inventoryKind(kind string) bool {
+	for _, k := range requirements.TechnicalKinds {
+		if k.Kind == kind {
+			return true
 		}
 	}
-	return refs
+	return false
 }
 
 type inventoryUsesData struct {
@@ -343,7 +367,9 @@ func queryInventoryUses(ctx context.Context, args []string, out io.Writer) error
 		return fail("invalid_argument", fmt.Errorf("requires --saga and --target; --depth 0..%d; valid --limit", inventoryview.MaxDepth))
 	}
 	for _, role := range roles {
-		if role != inventoryview.RoleImplementationItem && role != inventoryview.RoleReviewItem && role != inventoryview.RoleSystemMember {
+		switch role {
+		case inventoryview.RoleImplementationItem, inventoryview.RoleReviewItem, inventoryview.RoleSystemMember, inventoryview.RoleDataHolder, inventoryview.RoleRelationship, inventoryview.RoleERDDirectory, inventoryview.RoleERDOverlay:
+		default:
 			return fail("invalid_argument", fmt.Errorf("unknown --role %s", role))
 		}
 	}
@@ -351,7 +377,7 @@ func queryInventoryUses(ctx context.Context, args []string, out io.Writer) error
 	if err != nil {
 		return fail("invalid_saga", err)
 	}
-	if _, err := inventoryTarget(manifest.ID, "", *target); err != nil {
+	if err := inventoryQueryTarget(manifest.ID, *target); err != nil {
 		return fail("invalid_argument", err)
 	}
 	if *revision != "" && !strings.HasPrefix(*revision, *target+":revision:") {
@@ -396,4 +422,15 @@ func queryInventoryUses(ctx context.Context, args []string, out io.Writer) error
 		Includes: []string{"implementation and review deck Items whose documentation pins the target", "technical owners whose revisions declare the target, marked current or historical", "transitive uses through current owner revisions up to --depth"},
 		Excludes: []string{"undeclared mentions in prose, SVG text or code", "uses through superseded owner revisions (reported, not traversed)"},
 	}}, &page)
+}
+
+// inventoryQueryTarget accepts a canonical URN of any inventory kind.
+func inventoryQueryTarget(sagaID, target string) error {
+	prefix := "urn:change-saga:" + sagaID + ":"
+	rest, ok := strings.CutPrefix(target, prefix)
+	kind, id, found := strings.Cut(rest, ":")
+	if !ok || !found || !inventoryKind(kind) || strings.Contains(id, ":") || id == "" {
+		return fmt.Errorf("--target must be a canonical technical URN of this Saga")
+	}
+	return nil
 }

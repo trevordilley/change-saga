@@ -62,20 +62,23 @@ type ExcludedOwner struct {
 }
 
 type CoverageSummary struct {
-	Files          int `json:"files"`
-	BinaryFiles    int `json:"binary_files"`
-	Lines          int `json:"lines"`
-	Covered        int `json:"covered_lines"`
-	Uncovered      int `json:"uncovered_lines"`
-	Overlapping    int `json:"overlapping_lines"`
-	References     int `json:"references"`
-	Current        int `json:"current_references"`
-	Stale          int `json:"stale_references"`
-	OutsideScope   int `json:"current_references_outside_scope"`
-	Unresolved     int `json:"unresolved_owners"`
-	Excluded       int `json:"excluded_owners"`
-	CoveredRanges  int `json:"covered_ranges"`
-	UncoveredRange int `json:"uncovered_ranges"`
+	Files        int `json:"files"`
+	BinaryFiles  int `json:"binary_files"`
+	Lines        int `json:"lines"`
+	Covered      int `json:"covered_lines"`
+	Uncovered    int `json:"uncovered_lines"`
+	Overlapping  int `json:"overlapping_lines"`
+	References   int `json:"references"`
+	Current      int `json:"current_references"`
+	Stale        int `json:"stale_references"`
+	OutsideScope int `json:"current_references_outside_scope"`
+	Unresolved   int `json:"unresolved_owners"`
+	Excluded     int `json:"excluded_owners"`
+	// ProposedEdgeReferences are references on explicitly proposed
+	// interactions or relationships; they account for nothing.
+	ProposedEdgeReferences int `json:"proposed_edge_references"`
+	CoveredRanges          int `json:"covered_ranges"`
+	UncoveredRange         int `json:"uncovered_ranges"`
 }
 
 // CoverageReport is an omission check of which code in a named scope the
@@ -98,7 +101,8 @@ const (
 
 // Coverage measures inventory code coverage at Head. Only the unique current
 // revision of an active record counts; conflicted records are unresolved and
-// retired or proposed revisions are excluded, each with a reason. Stale
+// retired or proposed revisions are excluded, each with a reason, as is the
+// evidence of explicitly proposed interactions and relationships. Stale
 // references account for nothing. Every line counts once however many owners
 // reference it; all owners are retained on the range.
 func Coverage(ctx context.Context, inventory *requirements.Inventory, in CoverageInput, source Source) (CoverageReport, error) {
@@ -184,13 +188,13 @@ func Coverage(ctx context.Context, inventory *requirements.Inventory, in Coverag
 					lines[line-1] = append(lines[line-1], o)
 				}
 			}
-			for _, ref := range r.CurrentRevision.Code {
-				visit(r.Target, ref)
-			}
-			for _, edge := range r.CurrentRevision.Interactions {
-				for _, ref := range edge.Code {
-					visit(r.Target+"#"+edge.ID, ref)
+			for _, owned := range Evidence(r.CurrentRevision) {
+				if owned.Intent == technicalpolicy.Proposed {
+					// A proposed edge's evidence is not implemented coverage.
+					report.Summary.ProposedEdgeReferences++
+					continue
 				}
+				visit(r.Target+owned.Suffix(), owned.Evidence.Reference)
 			}
 		}
 	}

@@ -54,7 +54,7 @@ func newInventoryQueryFixture(t *testing.T) inventoryQueryFixture {
 		return coderef.Reference{Commit: f.absent, Path: "flags.go", Start: start, End: end, Digest: digest, Note: "Exact flag code."}
 	}
 	def := func(name string, code ...coderef.Reference) requirements.TechnicalDefinition {
-		return requirements.TechnicalDefinition{Name: name, Explanation: "Explains " + name + ".", Code: code}
+		return requirements.TechnicalDefinition{Name: name, Explanation: "Explains " + name + ".", Code: legacyEvidence(code...)}
 	}
 	urn := "urn:change-saga:atomic:"
 	f.store, f.reader, f.system, f.later = urn+"component:store", urn+"component:reader", urn+"system:flags", urn+"component:later"
@@ -69,7 +69,7 @@ func newInventoryQueryFixture(t *testing.T) inventoryQueryFixture {
 
 	system := def("Flags", ref(3, 5))
 	system.Components = []saga.DocumentationLink{{Target: f.store, Revision: f.store + ":revision:r1"}, {Target: f.reader, Revision: f.reader + ":revision:r1"}}
-	system.Interactions = []requirements.Interaction{{ID: "read", From: f.reader, To: f.store, Description: "Reads the flag.", Code: []coderef.Reference{ref(5, 5)}}}
+	system.Interactions = []requirements.Interaction{{ID: "read", From: f.reader, To: f.store, Description: "Reads the flag.", Code: legacyEvidence(ref(5, 5))}}
 	if _, err := requirements.WriteTechnical(f.root, "atomic", "system", "flags", "r1", nil, system, true); err != nil {
 		t.Fatal(err)
 	}
@@ -119,6 +119,15 @@ func inventoryEnvelope(t *testing.T, args ...string) (map[string]any, map[string
 		return nil, envelope.Error, ""
 	}
 	return envelope.Data, envelope.Page, envelope.Snapshot
+}
+
+// legacyEvidence wraps references without evidence IDs (inventory format 1).
+func legacyEvidence(refs ...coderef.Reference) []requirements.Evidence {
+	out := []requirements.Evidence{}
+	for _, ref := range refs {
+		out = append(out, requirements.Evidence{Reference: ref})
+	}
+	return out
 }
 
 func targets(records []any) []string {
@@ -251,7 +260,7 @@ func TestInventoryUsesQuery(t *testing.T) {
 		t.Fatalf("unbounded depth accepted: %v", failure)
 	}
 	// A changed Saga invalidates the cursor.
-	if _, err := requirements.WriteTechnical(f.root, "atomic", "component", "extra", "r1", nil, requirements.TechnicalDefinition{Name: "extra", Explanation: "x", Code: []coderef.Reference{{Commit: f.absent, Path: "flags.go", Start: 1, End: 1, Digest: coderef.DigestBytes([]byte("package flags\n")), Note: "x"}}}, true); err != nil {
+	if _, err := requirements.WriteTechnical(f.root, "atomic", "component", "extra", "r1", nil, requirements.TechnicalDefinition{Name: "extra", Explanation: "x", Code: legacyEvidence(coderef.Reference{Commit: f.absent, Path: "flags.go", Start: 1, End: 1, Digest: coderef.DigestBytes([]byte("package flags\n")), Note: "x"})}, true); err != nil {
 		t.Fatal(err)
 	}
 	_, failure, _ = q("--target", f.store, "--depth", "1", "--limit", "1", "--cursor", deepCursor)
