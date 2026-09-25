@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/technical_erd.go",
+      "start": 452,
+      "end": 452,
+      "digest": "sha256:fa9662b2d88bb70f7f80897031f3f48e2d13567ef55e279a9dfe1209783aec5a",
+      "note": "Added: the zoom toolbar and focusable scroll region in the ERD view, and their styles."
+    },
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/technical_erd.go",
+      "start": 459,
+      "end": 472,
+      "digest": "sha256:6e29da4698147c7db5c8ae394b2b9cce3334a908348e3b2e9b83be9cc2d222b5",
+      "note": "Added: the zoom toolbar and focusable scroll region in the ERD view, and their styles."
+    }
+  ]
+}

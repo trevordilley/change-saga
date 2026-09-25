@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_erd.go",
+      "start": 452,
+      "end": 452,
+      "digest": "sha256:29732f0fb74bb69ecbd5613365224bca8b9cd6f8f11703aceff699827ac40e9a",
+      "note": "Replaced: the figure that scrolled itself and capped the drawing at 1200px."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_erd.go",
+      "start": 459,
+      "end": 460,
+      "digest": "sha256:c6f8966c579d2ca7fce4754d6c9e82699bc531267a96392aa91e6d4101fca3a0",
+      "note": "Replaced: the figure that scrolled itself and capped the drawing at 1200px."
+    }
+  ]
+}

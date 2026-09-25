@@ -1,0 +1,18 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:authored-erd-view",
+    "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+  },
+  "version": 4,
+  "id": "page-width",
+  "slide": "tdsz-review-zoom",
+  "rank": 0,
+  "kind": "region",
+  "label": "ERD pages take the full width",
+  "description": "The ERD area page and an ERD's own page gain a class that lifts the 940px page cap, while the ERD's explanation keeps a readable measure.",
+  "selector": {
+    "type": "element",
+    "element_id": "page-width"
+  },
+  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-erd"
+}

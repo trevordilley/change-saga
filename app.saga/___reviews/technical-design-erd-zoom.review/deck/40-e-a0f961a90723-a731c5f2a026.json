@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/appjs.go",
+      "start": 2498,
+      "end": 2575,
+      "digest": "sha256:973d57b987922bea5e6079d7f05ec1dea048260e76f95af4beb16aafa08a453a",
+      "note": "Added: toolbar, + - 0 keys, mouse drag-pan with click suppression, centre-preserving zoom."
+    },
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/appjs.go",
+      "start": 2578,
+      "end": 2578,
+      "digest": "sha256:6bf54c4804519fcc19cbe25596be3f5738c53e6fbc0a07725ceba6ef4e38f152",
+      "note": "Added: toolbar, + - 0 keys, mouse drag-pan with click suppression, centre-preserving zoom."
+    }
+  ]
+}

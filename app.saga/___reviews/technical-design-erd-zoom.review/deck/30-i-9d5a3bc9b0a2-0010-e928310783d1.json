@@ -1,0 +1,18 @@
+{
+  "documentation": {
+    "target": "urn:change-saga:change-saga:component:authored-erd-view",
+    "revision": "urn:change-saga:change-saga:component:authored-erd-view:revision:r2"
+  },
+  "version": 4,
+  "id": "region",
+  "slide": "tdsz-review-zoom",
+  "rank": 10,
+  "kind": "node",
+  "label": "The drawing's own scroll region",
+  "description": "The drawing sits in a focusable, named scroll region under a zoom toolbar that ships hidden until app.js drives it; the figure no longer scrolls or caps the drawing at 1200px.",
+  "selector": {
+    "type": "element",
+    "element_id": "region"
+  },
+  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-erd"
+}

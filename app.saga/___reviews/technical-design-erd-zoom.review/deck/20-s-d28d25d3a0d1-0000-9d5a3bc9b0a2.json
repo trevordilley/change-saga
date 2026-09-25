@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "tdsz-review-zoom",
+  "deck": "technical-design-erd-zoom",
+  "title": "A large ERD zooms and pans in its own region",
+  "rank": 0,
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-d28d25d3a0d1-0000-9d5a3bc9b0a2.svg",
+  "takeaway": "ERD pages take the full width; the drawing opens fitted in its own region and zooms and pans by toolbar, keys, mouse drag and touch.",
+  "reading_order": [
+    "page-width",
+    "region",
+    "controls"
+  ]
+}

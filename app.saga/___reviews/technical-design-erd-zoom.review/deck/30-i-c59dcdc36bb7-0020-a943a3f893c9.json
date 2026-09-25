@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "note",
+  "slide": "tdsz-review-proof",
+  "rank": 20,
+  "kind": "statement",
+  "label": "Implementation note",
+  "description": "The note records the ERD pages' width and zoom, the browser test, and the remaining gap that a pinch zooms the page rather than the drawing.",
+  "selector": {
+    "type": "element",
+    "element_id": "note"
+  },
+  "record": "urn:change-saga:change-saga:slide:ti-ui-impl-erd"
+}

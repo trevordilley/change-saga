@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "browser",
+  "slide": "tdsz-review-proof",
+  "rank": 10,
+  "kind": "example",
+  "label": "Browser zoom test",
+  "description": "A 1600px drawing is zoomed and panned by toolbar, mouse drag, the + and 0 keys, and touch at 390px; the page never widens and the entity still opens by keyboard.",
+  "selector": {
+    "type": "element",
+    "element_id": "browser"
+  }
+}

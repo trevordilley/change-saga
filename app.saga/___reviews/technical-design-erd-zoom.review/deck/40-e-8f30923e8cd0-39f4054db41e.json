@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical_test.go",
+      "start": 87,
+      "end": 88,
+      "digest": "sha256:5e3919169698fad5cbfb01f543a2c3546b4cb52cd9b6d25fb6f53b83f4118584",
+      "note": "Asserts the Systems page stays in its column."
+    },
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/technical_test.go",
+      "start": 87,
+      "end": 88,
+      "digest": "sha256:05d83d0c71a0722be1cd94446415904689e715f0ab30e78262e4f65f60c6200f",
+      "note": "Asserts the Systems page stays in its column."
+    }
+  ]
+}
