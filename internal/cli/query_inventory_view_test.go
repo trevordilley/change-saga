@@ -308,3 +308,76 @@ func TestInventoryCoverageQuery(t *testing.T) {
 		t.Fatalf("unknown state accepted: %v", failure)
 	}
 }
+
+func TestReconcileInventoryImpact(t *testing.T) {
+	ctx := context.Background()
+	f := newInventoryQueryFixture(t)
+	writeFile(t, filepath.Join(f.repo, "flags.go"), "package flags\n\nvar enabled = false\n\nfunc Read() bool { return enabled }\n\nfunc Write(v bool) { enabled = v }\n")
+	git(t, f.repo, "commit", "-am", "change default")
+	reconcile := func(base string) reconciliationReport {
+		t.Helper()
+		var out bytes.Buffer
+		if err := Reconcile(ctx, []string{"--against", base, "--repo", f.repo, "--json", f.root}, &out); err != nil {
+			t.Fatalf("reconcile: %v %s", err, out.String())
+		}
+		var report reconciliationReport
+		if err := json.Unmarshal(out.Bytes(), &report); err != nil {
+			t.Fatal(err)
+		}
+		return report
+	}
+	tasks := func(report reconciliationReport) map[string]reconciliationTask {
+		byResource := map[string]reconciliationTask{}
+		for _, task := range report.Queue {
+			if strings.HasPrefix(task.Kind, "inventory") {
+				byResource[task.Resource+"|"+task.Kind] = task
+			}
+		}
+		return byResource
+	}
+	report := reconcile(f.base)
+	inv := report.Inventory
+	// store's line 3 existed and was current at base: a regression. The
+	// System was authored after base: its stale reference is introduced.
+	if !inv.BaselineAvailable || inv.Stale != 2 || inv.Regressions != 1 || inv.Introduced != 1 || inv.Unresolved != 1 {
+		t.Fatalf("inventory summary: %+v", inv)
+	}
+	got := tasks(report)
+	store := got[f.store+"|inventory_evidence"]
+	if store.Debt != "regression" || len(store.Repair) != 1 || store.Repair[0].Command != "component revise" {
+		t.Fatalf("store task: %+v", store)
+	}
+	usedByItem := false
+	for _, cause := range store.Because {
+		usedByItem = usedByItem || (cause.Kind == "declared_use" && strings.Contains(cause.Via, ":item:"))
+	}
+	if !usedByItem {
+		t.Fatalf("stale definition does not name the Items that use it: %+v", store.Because)
+	}
+	if got[f.system+"|inventory_evidence"].Debt != "introduced" || got[f.reader+"|inventory_definition"].Debt != "unresolved" {
+		t.Fatalf("system/reader tasks: %+v", got)
+	}
+	// later has no implementation use but is new against this base.
+	if len(inv.Exempt) != 1 || inv.Exempt[0].Target != f.later || inv.Exempt[0].Reason != "new_in_comparison" || inv.Unreferenced != 0 {
+		t.Fatalf("new unreferenced definition must not ask the user: %+v", inv)
+	}
+	// Against a base where later already existed, it needs a user choice.
+	report = reconcile(f.head)
+	later := tasks(report)[f.later+"|inventory_unreferenced"]
+	if report.Inventory.Unreferenced != 1 || later.Debt != "needs_user_choice" || !strings.Contains(later.Guidance, "Ask the user") {
+		t.Fatalf("existing unreferenced definition: %+v %+v", report.Inventory, later)
+	}
+	if len(later.Repair) != 1 || later.Repair[0].Command != "component revise" {
+		t.Fatalf("repair shape: %+v", later.Repair)
+	}
+	// An unreadable baseline is unknown: nothing is exempt as new and stale
+	// evidence is not classified as introduced.
+	report = reconcile(f.broken)
+	if report.Inventory.BaselineAvailable || report.Inventory.Unknown != 2 || len(report.Inventory.Exempt) != 0 || report.Inventory.Unreferenced != 1 {
+		t.Fatalf("unknown baseline: %+v", report.Inventory)
+	}
+	// Reconciliation never writes: the fixture Saga is unchanged.
+	if status := git(t, f.repo, "status", "--porcelain", "--", f.root); strings.TrimSpace(status) != "" {
+		t.Fatalf("reconcile mutated the Saga: %s", status)
+	}
+}
