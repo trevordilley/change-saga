@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/pin.go",
+      "digest": "sha256:40f15dff2e53ce9fda7dacdee9b70d6ca017a306b60e02713640ad6192eea28e",
+      "note": "File-addition event: introduce this isolated policy source/test file. Focused line references separately explain its behavior; this whole-file record preserves the file event."
+    }
+  ]
+}

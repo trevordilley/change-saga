@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/git_test.go",
+      "start": 138,
+      "end": 159,
+      "digest": "sha256:f63d2a445e24f06513a547231622560cd4c0e40d8d58d4ab3ad2b22c4689314d",
+      "note": "The Git fixture captures source HEAD, worktree status and object counts around evaluation and asserts unchanged input and source state; no real Saga is involved."
+    }
+  ]
+}

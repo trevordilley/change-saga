@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "ti-policy-foundation-git-tests",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation:item:git-tests",
+  "to": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+  "scope": "self",
+  "rationale": "Bounded implemented helper foundation: Temporary Git fixtures test missing-original recovery refusal, commit objects, movement, edits, deletion, retained edges and mixed intent through coderesolve. Evaluation preserves inputs and source/Git state. Public integration remains proposed.",
+  "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-25T00:03:36.458664Z"
+}

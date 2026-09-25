@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "path": "internal/technicalpolicy/implementation_test.go",
+      "start": 1,
+      "end": 273,
+      "digest": "sha256:6562a5e685c7798be53ac3c21c961e3f39cb8346e66e3f92dff6cadcd6e482e9",
+      "note": "Tests cover independent mixed intent, unknown assessments, exact endpoint/self behavior, absent evidence, resolver ordering, malformed/duplicate refs, 64/65 bounds, deterministic owner positions and input/output isolation."
+    }
+  ]
+}

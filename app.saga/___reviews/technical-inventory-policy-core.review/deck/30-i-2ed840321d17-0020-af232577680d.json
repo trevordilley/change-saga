@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "evidence",
+  "slide": "policy-gates",
+  "rank": 20,
+  "kind": "transition",
+  "label": "Original bytes then delivery currency",
+  "description": "ValidateCandidate bounds and validates evidence, checks original commit objects and Author bytes, then calls Resolve at the full delivery commit. Pure movement passes; missing original proof and stale delivery refuse.",
+  "selector": {
+    "type": "element",
+    "element_id": "evidence"
+  },
+  "record": "urn:change-saga:change-saga:slide:technical-inventory-policy-foundation"
+}
