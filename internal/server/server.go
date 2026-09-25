@@ -1676,7 +1676,9 @@ func makeFileViews(changes gitdiff.ChangeSet, target string) []*fileDiffView {
 }
 
 func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
-	index, validation, err := saga.LoadMutationIndex(a.root)
+	// A page embeds every slide's files, so the index they are found in is
+	// read once for each state of the Saga's files rather than per file.
+	index, validation, err := a.sagaFiles(r.Context()).mutation()
 	if err != nil || !validation.Valid {
 		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
 		return
@@ -1722,6 +1724,9 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 	if contentType := mime.TypeByExtension(strings.ToLower(filepath.Ext(realPath))); contentType != "" {
 		w.Header().Set("Content-Type", contentType)
 	}
+	// The browser may keep the file but must ask before each use; an
+	// unchanged file is answered by its modification time alone.
+	w.Header().Set("Cache-Control", "no-cache")
 	http.ServeContent(w, r, filepath.Base(realPath), info.ModTime(), file)
 }
 

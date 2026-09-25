@@ -50,6 +50,13 @@ type sagaFiles struct {
 	projectedDoc  requirements.Document
 	projectedErr  error
 
+	// mutation is the Saga's target directories, which every fragment file
+	// a page embeds is looked up in.
+	mutationOnce       sync.Once
+	mutationIndex      saga.MutationIndex
+	mutationValidation saga.Validation
+	mutationErr        error
+
 	inventoryOnce sync.Once
 	inventoryID   string
 	inventoryDoc  requirements.Inventory
@@ -145,6 +152,14 @@ func (files *sagaFiles) project(sagaID string) (requirements.Document, error) {
 		return document, errors.New("the narrative could not be loaded")
 	}
 	return document, semanticgraph.ProjectSlideCriterionLinks(narrative, &document)
+}
+
+// mutation is the Saga's mutation index. Callers only read it.
+func (files *sagaFiles) mutation() (saga.MutationIndex, saga.Validation, error) {
+	files.mutationOnce.Do(func() {
+		files.mutationIndex, files.mutationValidation, files.mutationErr = saga.LoadMutationIndex(files.root)
+	})
+	return files.mutationIndex, files.mutationValidation, files.mutationErr
 }
 
 func (files *sagaFiles) tests() (quality.Document, error) {
