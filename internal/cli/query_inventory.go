@@ -172,11 +172,11 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 		entry.SelectedCode = selectedCodeHealth(ctx, resolver, r, entry.Selected, changes.HeadOID)
 		if rev := r.CurrentRevision; rev != nil {
 			for _, ref := range rev.Code {
-				entry.Code = append(entry.Code, inventoryCodeHealth{Owner: r.Target, Reference: ref.Location().String(), Resolution: resolver.Resolve(ctx, ref, changes.HeadOID)})
+				entry.Code = append(entry.Code, inventoryCodeHealth{Owner: r.Target, Reference: ref.Location().String(), Resolution: resolver.Resolve(ctx, ref.Reference, changes.HeadOID)})
 			}
 			for _, edge := range rev.Interactions {
 				for _, ref := range edge.Code {
-					entry.Code = append(entry.Code, inventoryCodeHealth{Owner: r.Target + "#" + edge.ID, Reference: ref.Location().String(), Resolution: resolver.Resolve(ctx, ref, changes.HeadOID)})
+					entry.Code = append(entry.Code, inventoryCodeHealth{Owner: r.Target + "#" + edge.ID, Reference: ref.Location().String(), Resolution: resolver.Resolve(ctx, ref.Reference, changes.HeadOID)})
 				}
 			}
 			for _, pin := range rev.Components {

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/inventory-format.schema.json",
+  "title": "Technical inventory format marker",
+  "description": "Presence of ___inventory/format.json records deliberate adoption of inventory format 2. Absence means format 1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "format",
+    "created_at"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/inventory-format.schema.json"
+    },
+    "format": {
+      "const": 2
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

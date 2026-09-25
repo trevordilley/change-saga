@@ -7,7 +7,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -87,7 +86,7 @@ func technicalOperation(ctx context.Context, kind string, args []string, out io.
 			return e
 		}
 		defer resolver.Close()
-		author := func(refs []coderef.Reference) error {
+		author := func(refs []requirements.Evidence) error {
 			for i, r := range refs {
 				loc, e := resolveLocation(ctx, firstNonEmpty(*repo, root), r.Location().String())
 				if e != nil {
@@ -100,7 +99,7 @@ func technicalOperation(ctx context.Context, kind string, args []string, out io.
 				if r.Digest != "" && r.Digest != pinned.Digest {
 					return fmt.Errorf("code digest does not match %s", loc)
 				}
-				refs[i] = pinned
+				refs[i].Reference = pinned
 			}
 			return nil
 		}

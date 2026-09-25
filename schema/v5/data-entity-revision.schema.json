@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://changesaga.dev/schema/v5/system-revision.schema.json",
-  "title": "Technical inventory system revision",
+  "$id": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "title": "Technical inventory data entity revision",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,12 +13,11 @@
     "created_at",
     "name",
     "explanation",
-    "components",
-    "interactions"
+    "intent"
   ],
   "properties": {
     "$schema": {
-      "const": "https://changesaga.dev/schema/v5/system-revision.schema.json"
+      "const": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json"
     },
     "version": {
       "const": 5
@@ -29,14 +28,14 @@
     },
     "record": {
       "type": "string",
-      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:system:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
     },
     "parents": {
       "type": "array",
       "uniqueItems": true,
       "items": {
         "type": "string",
-        "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:system:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
       }
     },
     "created_at": {
@@ -88,6 +87,7 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "id",
           "commit",
           "path",
           "start",
@@ -127,57 +127,168 @@
         }
       }
     },
-    "components": {
+    "fields": {
       "type": "array",
-      "minItems": 2,
-      "maxItems": 32,
-      "uniqueItems": true,
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "target",
-          "revision"
-        ],
-        "properties": {
-          "target": {
-            "type": "string",
-            "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
-          },
-          "revision": {
-            "type": "string",
-            "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
-          }
-        }
-      }
-    },
-    "interactions": {
-      "type": "array",
-      "minItems": 1,
       "maxItems": 64,
       "items": {
         "type": "object",
         "additionalProperties": false,
         "required": [
           "id",
-          "from",
-          "to",
-          "description"
+          "name"
         ],
         "properties": {
           "id": {
             "type": "string",
             "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
           },
-          "from": {
-            "type": "string"
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
           },
-          "to": {
-            "type": "string"
+          "type": {
+            "type": "string",
+            "maxLength": 200
           },
-          "description": {
+          "keys": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "primary",
+                "foreign",
+                "unique",
+                "partition"
+              ]
+            }
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "holders": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "component",
+          "role"
+        ],
+        "properties": {
+          "component": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "revision"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:component:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              }
+            }
+          },
+          "role": {
             "type": "string",
             "minLength": 1
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "meaning",
+          "destination",
+          "explanation",
+          "intent"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "meaning": {
+            "enum": [
+              "association",
+              "production"
+            ]
+          },
+          "destination": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "revision"
+            ],
+            "properties": {
+              "target": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              "revision": {
+                "type": "string",
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:data-entity:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              }
+            }
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cardinality": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "owner",
+              "destination"
+            ],
+            "properties": {
+              "owner": {
+                "enum": [
+                  "unknown",
+                  "0..1",
+                  "1",
+                  "0..many",
+                  "1..many"
+                ]
+              },
+              "destination": {
+                "enum": [
+                  "unknown",
+                  "0..1",
+                  "1",
+                  "0..many",
+                  "1..many"
+                ]
+              }
+            }
+          },
+          "flow": {
+            "enum": [
+              "owner_to_destination",
+              "destination_to_owner"
+            ]
           },
           "intent": {
             "enum": [
@@ -193,6 +304,7 @@
               "type": "object",
               "additionalProperties": false,
               "required": [
+                "id",
                 "commit",
                 "path",
                 "start",
@@ -232,7 +344,67 @@
               }
             }
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "meaning": {
+                  "const": "association"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "cardinality"
+              ],
+              "not": {
+                "required": [
+                  "flow"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "meaning": {
+                  "const": "production"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "flow",
+                "label"
+              ],
+              "not": {
+                "required": [
+                  "cardinality"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "intent": {
+                  "const": "implemented"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "code"
+              ],
+              "properties": {
+                "code": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
       }
     }
   },
@@ -283,97 +455,6 @@
         "properties": {
           "code": {
             "minItems": 1
-          }
-        }
-      }
-    },
-    {
-      "if": {
-        "not": {
-          "required": [
-            "intent"
-          ]
-        }
-      },
-      "then": {
-        "required": [
-          "code"
-        ],
-        "not": {
-          "anyOf": [
-            {
-              "required": [
-                "baseline"
-              ]
-            },
-            {
-              "required": [
-                "delivery"
-              ]
-            }
-          ]
-        },
-        "properties": {
-          "code": {
-            "minItems": 1,
-            "items": {
-              "not": {
-                "required": [
-                  "id"
-                ]
-              }
-            }
-          },
-          "interactions": {
-            "items": {
-              "required": [
-                "code"
-              ],
-              "not": {
-                "required": [
-                  "intent"
-                ]
-              },
-              "properties": {
-                "code": {
-                  "minItems": 1,
-                  "items": {
-                    "not": {
-                      "required": [
-                        "id"
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "else": {
-        "properties": {
-          "code": {
-            "items": {
-              "required": [
-                "id"
-              ]
-            }
-          },
-          "interactions": {
-            "items": {
-              "required": [
-                "intent"
-              ],
-              "properties": {
-                "code": {
-                  "items": {
-                    "required": [
-                      "id"
-                    ]
-                  }
-                }
-              }
-            }
           }
         }
       }

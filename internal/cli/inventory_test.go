@@ -188,7 +188,7 @@ func TestInventoryTransaction(t *testing.T) {
 	root, repo, base, commit, id := newSlideTransactionFixture(t)
 	request := slideTransactionRequest(t, repo, base, commit, id, "with-definition", "create", "absent", "node")
 	ref := request.Items[0].Evidence[0].References[0]
-	def := requirements.TechnicalDefinition{Name: "Worker", Explanation: "Runs the service safely.", Code: []coderef.Reference{ref}}
+	def := requirements.TechnicalDefinition{Name: "Worker", Explanation: "Runs the service safely.", Code: []requirements.Evidence{{Reference: ref}}}
 	target := "urn:change-saga:" + id + ":component:worker"
 	if _, err := requirements.WriteTechnical(root, id, "component", "worker", "r1", nil, def, true); err != nil {
 		t.Fatal(err)
@@ -252,7 +252,7 @@ func TestInventoryCursor(t *testing.T) {
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	root := newTermSaga(t, repo)
 	ref := coderef.Reference{Commit: commit, Path: "flags.go", Start: 1, End: 1, Digest: coderef.DigestBytes([]byte("package flags\n")), Note: "Exact code"}
-	def := requirements.TechnicalDefinition{Name: "Flag", Explanation: "A bounded definition.", Code: []coderef.Reference{ref}}
+	def := requirements.TechnicalDefinition{Name: "Flag", Explanation: "A bounded definition.", Code: []requirements.Evidence{{Reference: ref}}}
 	for _, id := range []string{"a", "b", "c"} {
 		if _, err := requirements.WriteTechnical(root, "atomic", "component", id, "r1", nil, def, true); err != nil {
 			t.Fatal(err)
