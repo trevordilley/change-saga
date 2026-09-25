@@ -435,6 +435,9 @@ func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
 	if !strings.Contains(sagaToCode, "data-observe-coverage") {
 		t.Fatal("observing did not render the documented-code coverage")
 	}
+	// Code → Saga is one page for the whole Saga; every Item is checked
+	// against the same rendering.
+	codeToSaga := dogfoodOK(t, "/api/coverage?mode=code")
 	for _, item := range items {
 		if !strings.Contains(sagaToCode, `data-observe-target="`+item.Target+`"`) {
 			t.Fatalf("Saga → Code lacks the Item %s", item.Target)
@@ -443,7 +446,6 @@ func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
 		if !strings.Contains(code, "data-reference-code") || !strings.Contains(code, "<code data-code>") {
 			t.Fatalf("the Item %s rendered no code", item.Target)
 		}
-		codeToSaga := dogfoodOK(t, "/api/coverage?mode=code")
 		for _, file := range item.Code {
 			for _, reference := range file.References {
 				if !strings.Contains(codeToSaga, `data-observe-file="`+reference.Path+`"`) && !strings.Contains(sagaToCode, "stale") {
