@@ -196,6 +196,8 @@ type technicalPageView struct {
 	// entity.
 	DataModel *technicalDataModelView
 	Query     string
+	// Newness is set only when comparing: what is new relative to the base.
+	Newness *technicalNewness
 }
 
 func technicalDirectory(id, title, lede, noun, nouns, command string) *directoryView {
@@ -212,13 +214,19 @@ func technicalDirectory(id, title, lede, noun, nouns, command string) *directory
 	}
 }
 
-func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUsageIndex, query string) *technicalPageView {
+func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUsageIndex, newness *technicalNewness, query string) *technicalPageView {
 	view := &technicalPageView{
 		Systems:    technicalDirectory("technical-systems", "Systems", "How Components interact and how data flows through them.", "System", "Systems", "change-saga system add"),
 		Components: technicalDirectory("technical-components", "Components", "Identifiable units of logic or transformation, reused by identity across decks.", "Component", "Components", "change-saga component add"),
 		Query:      query,
 	}
-	view.DataModel = a.technicalDataModel(inventory, usages, query)
+	view.DataModel = a.technicalDataModel(inventory, usages, newness, query)
+	view.Newness = newness
+	if newness != nil {
+		for _, directory := range []*directoryView{view.Systems, view.Components} {
+			directory.Columns = append(directory.Columns, directoryColumn{Title: "Since " + newness.Against})
+		}
+	}
 	for index := range inventory.Records {
 		record := &inventory.Records[index]
 		directory := view.Components
@@ -249,15 +257,27 @@ func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUs
 		if used.Total > used.Current {
 			usedCell.Note = strconv.Itoa(used.Total-used.Current) + " not current"
 		}
-		directory.addRow(directoryRow{Key: record.Identity.ID, Cells: []directoryCell{
+		cells := []directoryCell{
 			{Text: name, Href: technicalHref(record.Kind, record.Identity.ID, ""), Note: record.Identity.ID, Target: record.Target},
 			textCell(summarise(explanation, 140)),
 			intent, lifecycle, revision, countCell(codeCount), usedCell,
-		}})
+		}
+		if newness != nil {
+			cells = append(cells, newnessCell(newness, record))
+		}
+		directory.addRow(directoryRow{Key: record.Identity.ID, Cells: cells})
 	}
 	view.Systems.apply(query)
 	view.Components.apply(query)
 	return view
+}
+
+// newnessCell states one identity's newness relative to the comparison.
+func newnessCell(newness *technicalNewness, record *requirements.TechnicalRecord) directoryCell {
+	if !newness.Known {
+		return gapCell("unknown")
+	}
+	return textCell(newness.Of(record))
 }
 
 // technicalCount is the overview directory's count for Technical design.
@@ -349,6 +369,8 @@ type technicalEntityView struct {
 	Usages        technicalUsagesView
 	History       []technicalRevisionLink
 	LifecycleNote string
+	// Newness is relative to the named comparison, when comparing.
+	Newness, NewnessAgainst, NewnessReason string
 }
 
 type technicalRevisionLink struct {
@@ -427,10 +449,15 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 		return nil, nil, err
 	}
 	usages := indexTechnicalUsages(document, inventory)
+	newness := a.comparisonNewness(ctx, document.Manifest)
 	if route.kind == "technical" {
-		return a.technicalPage(inventory, usages, query.Get("q")), nil, nil
+		return a.technicalPage(inventory, usages, newness, query.Get("q")), nil, nil
 	}
 	entity, err := a.technicalEntityPage(ctx, inventory, usages, route.id, route.sub, query.Get("revision"))
+	if entity != nil && newness != nil {
+		entity.NewnessAgainst, entity.NewnessReason = newness.Against, newness.Reason
+		entity.Newness = newness.Of(inventory.Find(entity.Target))
+	}
 	return nil, entity, err
 }
 
@@ -463,7 +490,7 @@ func (a *app) technicalUsagesPage(w http.ResponseWriter, r *http.Request) {
 const technicalTemplates = `
 {{define "technical-usages"}}<div class="technical-usages" data-technical-usages="{{.Target}}">{{if .Usages}}<p class="technical-usage-count">{{.Total}} {{if eq .Total 1}}Item pins{{else}}Items pin{{end}} this definition{{if lt .Current .Total}}; {{.Current}} at its current revision{{end}}.</p><ul class="trace-links technical-usage-list">{{range .Usages}}<li data-technical-usage="{{.Target}}" data-usage-status="{{.Status}}">{{if .Href}}<a href="{{.Href}}" data-usage-item="{{.Target}}">{{.Item}}</a>{{else}}<span>{{.Item}}</span>{{end}} <small class="trace-kind">{{.Context}} Item</small><small class="trace-note">{{if .Feature}}<a href="{{.FeatureHref}}">{{.Feature}}</a> · {{end}}{{if .Review}}<a href="{{.ReviewHref}}">{{.Review}}</a> · {{end}}{{.Deck}} · {{.Slide}}</small><small class="technical-pin">pins <a href="{{.PinHref}}"><code>{{.Pin.Revision}}</code></a>{{if ne .Status "current"}} · <span class="gap">{{.Status}}</span>{{end}}</small>{{if .Description}}<p class="trace-rationale">{{.Description}}</p>{{end}}</li>{{end}}</ul>{{if .Truncated}}<p class="gap" role="status">{{.Truncated}} more usages are not listed here.</p>{{end}}{{else}}<p class="term-empty">No implementation or review Item pins this definition yet.</p>{{end}}</div>{{end}}
 
-{{define "technical-page"}}<section class="app-page technical-page" data-technical-page><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1><p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
+{{define "technical-page"}}<section class="app-page technical-page" data-technical-page><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1>{{with .Newness}}<p class="technical-newness" data-technical-newness="{{.Known}}">Compared against <code>{{.Against}}</code>: “new” means the identity did not exist at the comparison's base{{if not .Known}}. The base inventory is unknown: {{.Reason}}{{end}}.</p>{{end}}<p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
 <nav class="technical-jump" aria-label="Technical design sections"><a href="#technical-systems-section">Systems</a><a href="#technical-components-section">Components</a><a href="#technical-data-model">Data model</a></nav>
 <section class="app-page-section" id="technical-systems-section" data-technical-kind="system"><h2>Systems</h2><p class="app-lede">{{.Systems.Lede}}</p>{{template "directory" .Systems}}</section>
 <section class="app-page-section" id="technical-components-section" data-technical-kind="component"><h2>Components</h2><p class="app-lede">{{.Components.Lede}}</p>{{template "directory" .Components}}</section>
@@ -471,7 +498,7 @@ const technicalTemplates = `
 </section>{{end}}
 
 {{define "technical-entity-page"}}<section class="app-page technical-entity-page" data-technical-entity="{{.Target}}"{{if .Revision}} data-technical-revision="{{.Revision}}"{{end}}><nav class="requirements-breadcrumbs" aria-label="Definition breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span><strong>{{.Name}}</strong></nav>
-<header class="requirement-story-hero"><div><p class="app-page-kind">{{.KindTitle}}</p><h1>{{.Name}}</h1><p class="technical-facts"><span data-technical-fact="revision">Revision <code>{{if .Revision}}{{.Revision}}{{else}}none chosen{{end}}</code></span>{{if not .ERD}}<span data-technical-fact="intent">Intent: {{if eq .Intent "unspecified"}}<span class="gap">unspecified</span>{{else if .Intent}}{{.Intent}}{{else}}<span class="gap">unknown</span>{{end}}</span>{{end}}<span data-technical-fact="lifecycle">Lifecycle: {{if eq .Lifecycle "conflicted"}}<span class="gap">conflicted</span>{{else}}{{.Lifecycle}}{{end}}</span></p>
+<header class="requirement-story-hero"><div><p class="app-page-kind">{{.KindTitle}}</p><h1>{{.Name}}</h1><p class="technical-facts"><span data-technical-fact="revision">Revision <code>{{if .Revision}}{{.Revision}}{{else}}none chosen{{end}}</code></span>{{if not .ERD}}<span data-technical-fact="intent">Intent: {{if eq .Intent "unspecified"}}<span class="gap">unspecified</span>{{else if .Intent}}{{.Intent}}{{else}}<span class="gap">unknown</span>{{end}}</span>{{end}}{{if .NewnessAgainst}}<span data-technical-fact="newness" data-newness="{{.Newness}}">Since {{.NewnessAgainst}}: {{if eq .Newness "unknown"}}<span class="gap" title="{{.NewnessReason}}">unknown</span>{{else}}{{.Newness}}{{end}}</span>{{end}}<span data-technical-fact="lifecycle">Lifecycle: {{if eq .Lifecycle "conflicted"}}<span class="gap">conflicted</span>{{else}}{{.Lifecycle}}{{end}}</span></p>
 {{if and .Revision (ne .PinStatus "current")}}<p role="status" class="gap" data-technical-pin-status="{{.PinStatus}}">{{if .Requested}}You are reading saved revision <code>{{.Revision}}</code>. It is {{.PinStatus}}; nothing has been repinned.{{else}}This definition is {{.PinStatus}}.{{end}}{{if and .CurrentHref .Requested}} <a href="{{.CurrentHref}}">Read the current definition</a>{{end}}</p>{{end}}
 {{if gt (len .Heads) 1}}<div role="status" class="gap" data-technical-conflict><p>This definition has {{len .Heads}} competing revisions. None is chosen as current; reconciling them names every head.</p><ul>{{range .Heads}}<li><a href="{{.Href}}"{{if .Shown}} aria-current="page"{{end}}><code>{{.ID}}</code></a></li>{{end}}</ul></div>{{end}}
 {{if .LifecycleNote}}<p class="term-state">{{.LifecycleNote}}</p>{{end}}</div></header>

@@ -371,7 +371,7 @@ type technicalDataModelView struct {
 	Entities *directoryView
 }
 
-func (a *app) technicalDataModel(inventory requirements.Inventory, usages technicalUsageIndex, query string) *technicalDataModelView {
+func (a *app) technicalDataModel(inventory requirements.Inventory, usages technicalUsageIndex, newness *technicalNewness, query string) *technicalDataModelView {
 	view := &technicalDataModelView{Entities: &directoryView{
 		ID: "technical-entities", Title: "Data entities", Action: technicalPath,
 		Label: "Filter data entities", Noun: "data entity", Nouns: "data entities",
@@ -414,11 +414,18 @@ func (a *app) technicalDataModel(inventory requirements.Inventory, usages techni
 				}
 			}
 			used := usages.view(record.Target)
-			view.Entities.addRow(directoryRow{Key: record.Identity.ID, Cells: []directoryCell{
+			cells := []directoryCell{
 				{Text: name, Href: technicalHref(record.Kind, record.Identity.ID, ""), Note: record.Identity.ID, Target: record.Target},
 				textCell(summarise(purpose, 140)), intent, listCell(holders, "no holding resource named"), countCell(relationships), countCell(used.Total),
-			}})
+			}
+			if newness != nil {
+				cells = append(cells, newnessCell(newness, record))
+			}
+			view.Entities.addRow(directoryRow{Key: record.Identity.ID, Cells: cells})
 		}
+	}
+	if newness != nil {
+		view.Entities.Columns = append(view.Entities.Columns, directoryColumn{Title: "Since " + newness.Against})
 	}
 	if primary != nil {
 		view.Primary = a.makeERDView(inventory, primary, primary.CurrentRevision)

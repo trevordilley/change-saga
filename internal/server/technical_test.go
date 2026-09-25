@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -179,5 +180,48 @@ func TestTechnicalUsagesFollowItemPins(t *testing.T) {
 	last := view.Usages[2]
 	if last.Context != "Review" || last.Href != "/reviews/pr-7#"+domID("urn:change-saga:test:review:pr-7:slide:store:item:store") || last.Status != "current" {
 		t.Fatalf("review usage: %#v", last)
+	}
+}
+
+func TestTechnicalNewnessNeedsANamedComparison(t *testing.T) {
+	root, repo := technicalFixture(t)
+	serverGit(t, repo, "add", ".")
+	serverGit(t, repo, "commit", "-m", "inventory on main")
+	serverGit(t, repo, "checkout", "-b", "cache")
+	inventory, err := requirements.LoadInventory(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	reader := inventory.Find("urn:change-saga:test:component:reader")
+	definition := reader.CurrentRevision.TechnicalDefinition
+	if _, err := requirements.WriteTechnical(root, "test", "component", "cache", "r1", nil, definition, true); err != nil {
+		t.Fatal(err)
+	}
+	definition.Explanation = "Reads through the cache."
+	if _, err := requirements.WriteTechnical(root, "test", "component", "reader", "r2", []string{reader.Target + ":revision:r1"}, definition, false); err != nil {
+		t.Fatal(err)
+	}
+	serverGit(t, repo, "add", ".")
+	serverGit(t, repo, "commit", "-m", "cache")
+
+	observing := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
+	if _, body := technicalGet(t, observing, "/technical"); strings.Contains(body, "Since ") || strings.Contains(body, "data-technical-newness") {
+		t.Fatal("observing one commit claimed newness without a comparison")
+	}
+	comparing := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t), rng: gitdiff.Range{Against: "main"}})
+	status, body := technicalGet(t, comparing, "/technical")
+	if status != 200 || !strings.Contains(body, `data-technical-newness="true"`) || !strings.Contains(body, "Since main") {
+		t.Fatalf("comparison newness missing: %d %s", status, body)
+	}
+	for id, want := range map[string]string{"cache": "new", "reader": "revised", "store": "unchanged"} {
+		row := body[strings.Index(body, `data-directory-row="`+id+`"`):]
+		row = row[:strings.Index(row, "</tr>")]
+		if !strings.HasSuffix(row, "<td>"+want+"</td>") {
+			t.Fatalf("%s newness: want %s in %s", id, want, row)
+		}
+	}
+	status, body = technicalGet(t, comparing, "/technical/component/cache")
+	if status != 200 || !strings.Contains(body, `data-newness="new"`) || !strings.Contains(body, "Since main: new") {
+		t.Fatalf("entity newness: %d %s", status, body)
 	}
 }

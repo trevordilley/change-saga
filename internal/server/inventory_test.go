@@ -15,12 +15,12 @@ import (
 
 func TestDocumentationReviewControl(t *testing.T) {
 	pin := &saga.DocumentationLink{Target: "urn:change-saga:test:component:store", Revision: "urn:change-saga:test:component:store:revision:r1"}
-	item := reviewItemView{Item: &saga.Item{ItemManifest: saga.ItemManifest{Documentation: pin}}}
+	item := reviewItemView{Item: &saga.Item{ItemManifest: saga.ItemManifest{Documentation: pin, Selections: []saga.ItemSelection{{ID: "subset"}}}, Target: "urn:change-saga:test:review:pr-1:slide:s:item:i"}}
 	var rendered bytes.Buffer
 	if err := reviewTemplates.ExecuteTemplate(&rendered, "review-item-affordance", item); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(rendered.String(), `data-documentation-target="`+pin.Target+`"`) {
+	if !strings.Contains(rendered.String(), `data-documentation-target="`+pin.Target+`"`) || !strings.Contains(rendered.String(), `data-documentation-item="urn:change-saga:test:review:pr-1:slide:s:item:i" data-documentation-selections="1"`) {
 		t.Fatalf("review lost shared documentation control: %s", rendered.String())
 	}
 }
