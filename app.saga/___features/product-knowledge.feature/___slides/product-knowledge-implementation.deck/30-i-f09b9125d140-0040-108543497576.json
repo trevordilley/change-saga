@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "keyboard-and-reader",
+  "slide": "directory-scroll-region",
+  "rank": 40,
+  "kind": "region",
+  "label": "Keyboard and screen reader",
+  "description": "The region is named for its directory and takes a tab stop, so a keyboard reader can focus it and scroll with the arrow keys. The table inside keeps its caption and column and row headers.",
+  "selector": {
+    "type": "element",
+    "element_id": "keyboard-and-reader"
+  }
+}

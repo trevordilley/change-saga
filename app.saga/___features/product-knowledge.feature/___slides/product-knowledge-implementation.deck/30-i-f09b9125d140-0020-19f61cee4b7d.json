@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scroll-region",
+  "slide": "directory-scroll-region",
+  "rank": 20,
+  "kind": "region",
+  "label": "Table scrolls inside its own region",
+  "description": "The directory template wraps only the table in a region that scrolls sideways when the table needs more width than the screen. Every column is still rendered; edge shadows mark the side that has more columns.",
+  "selector": {
+    "type": "element",
+    "element_id": "scroll-region"
+  }
+}

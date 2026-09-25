@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/directory_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:6c7872f7e7aba7ceb14de93a1613a51c5b446ca889744d3b529463bd245c0953",
+      "note": "The bytes import the template test renders into."
+    }
+  ]
+}

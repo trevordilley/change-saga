@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">A directory table scrolls inside its own region</title>
+  <desc id="desc">Every directory page renders one template: a filter, then a named focusable region holding the table, then the no-match status. The region scrolls sideways when the table needs more width than the screen, so the page keeps the device's width and every column stays reachable by touch and keyboard.</desc>
+  <defs><linearGradient id="bg"><stop stop-color="#111827"/><stop offset="1" stop-color="#13283a"/></linearGradient><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0l10 5-10 5z" fill="#67e8f9"/></marker></defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="62" y="62" fill="#8ea6bf" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" letter-spacing="2">DIRECTORIES · IMPLEMENTATION</text>
+  <text x="62" y="112" fill="#f7fbff" font-family="Inter,system-ui,sans-serif" font-size="36" font-weight="750">A directory table scrolls inside its own region</text>
+  <text x="62" y="146" fill="#aac0d5" font-family="Inter,system-ui,sans-serif" font-size="18">Width is the table's problem, never the page's: the region absorbs it</text>
+  <g id="page-at-device-width">
+    <rect x="62" y="180" width="560" height="470" rx="18" fill="#10263a" stroke="#4b6a86" stroke-width="2"/>
+    <text x="86" y="212" fill="#8ea6bf" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" font-weight="800" text-anchor="start">PAGE · always device width</text>
+    <rect x="86" y="232" width="512" height="46" rx="10" fill="#1b3550" stroke="#4b6a86"/><text x="106" y="261" fill="#e6edf3" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">filter · submits ?q= without JavaScript</text>
+    <rect x="86" y="584" width="512" height="46" rx="10" fill="#1b3550" stroke="#4b6a86"/><text x="106" y="613" fill="#e6edf3" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">status · “Nothing matches this filter.”</text>
+  </g>
+  <g id="scroll-region">
+    <rect x="86" y="296" width="512" height="270" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+    <text x="106" y="326" fill="#1e3a8a" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="17" font-weight="800" text-anchor="start">region named for the directory · tabindex 0</text>
+    <text x="106" y="350" fill="#1e40af" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="15" font-weight="400" text-anchor="start">overflow-x: auto · edge shadows</text>
+    <rect x="106" y="368" width="660" height="178" rx="8" fill="#fff" stroke="#3b82f6" stroke-dasharray="6 5"/>
+    <text x="126" y="398" fill="#0f172a" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="700" text-anchor="start">table · caption · column and row headers</text>
+    <text x="126" y="432" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13" font-weight="700" text-anchor="start">FEATURE</text>
+    <text x="242" y="432" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13" font-weight="700" text-anchor="start">DESCRIPTION</text>
+    <text x="358" y="432" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13" font-weight="700" text-anchor="start">STORIES</text>
+    <text x="474" y="432" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13" font-weight="700" text-anchor="start">ACCEPTED</text>
+    <text x="590" y="432" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13" font-weight="700" text-anchor="start">WITH DESIGN</text>
+    <text x="706" y="432" fill="#64748b" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13" font-weight="700" text-anchor="start">TEST CASES</text>
+    <path d="M126 444h660" stroke="#cbd5e1"/>
+    <text x="126" y="476" fill="#334155" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="400" text-anchor="start">every column rendered; none hidden at any width</text>
+    <text x="126" y="504" fill="#b45309" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="700" text-anchor="start">wider than the region → scrolls inside it</text>
+  </g>
+  <rect x="599" y="369" width="167" height="176" fill="#13283a" opacity=".78"/>
+  <text x="606" y="566" fill="#67e8f9" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="600" text-anchor="start">off screen: swipe or arrows</text>
+  <g id="directory-users">
+    <rect x="880" y="180" width="340" height="250" rx="18" fill="#0f1c2b" stroke="#67e8f9" stroke-width="2"/>
+    <text x="904" y="212" fill="#67e8f9" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" font-weight="800" text-anchor="start">ONE TEMPLATE, EVERY DIRECTORY</text>
+    <text x="904" y="248" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="500" text-anchor="start">/features  /personas</text>
+    <text x="904" y="282" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="500" text-anchor="start">/flags  /terms</text>
+    <text x="904" y="316" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="500" text-anchor="start">/reviews</text>
+    <text x="904" y="350" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="500" text-anchor="start">/technical: Systems,</text>
+    <text x="904" y="384" fill="#e6edf3" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="16" font-weight="500" text-anchor="start">  Components, Data entities</text>
+  </g>
+  <g id="keyboard-and-reader">
+    <rect x="880" y="448" width="340" height="202" rx="18" fill="#0f2a1c" stroke="#22c55e" stroke-width="2"/>
+    <text x="904" y="480" fill="#86efac" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" font-weight="800" text-anchor="start">KEYBOARD AND SCREEN READER</text>
+    <text x="904" y="510" fill="#dcfce7" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">Tab reaches the named region;</text>
+    <text x="904" y="534" fill="#dcfce7" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">arrow keys scroll it. The table</text>
+    <text x="904" y="558" fill="#dcfce7" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">keeps its caption, column and</text>
+    <text x="904" y="582" fill="#dcfce7" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">row headers, so it is announced</text>
+    <text x="904" y="606" fill="#dcfce7" font-family="Inter,system-ui,sans-serif" font-size="16" font-weight="400" text-anchor="start">as the same table at any width.</text>
+  </g>
+  <g id="verified-by">
+    <rect x="62" y="668" width="1158" height="38" rx="10" fill="#0f1c2b" stroke="#4b6a86" stroke-width="2"/>
+    <text x="82" y="692" fill="#8ea6bf" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="13" font-weight="800" text-anchor="start">VERIFIED BY</text>
+    <text x="196" y="693" fill="#e6edf3" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="400" text-anchor="start">a Go template test pins the region markup and rule · directory-width.spec.ts checks six directories at 390px (touch) and 1440px</text>
+  </g>
+</svg>

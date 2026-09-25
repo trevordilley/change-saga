@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/directory.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:cfeafebe836092141c46cc751003d4e14d7d096464e28556fd37b08db128d1ae",
+      "note": "The directory template wraps only the table in div.directory-scroll; the filter form before it and the no-match status after it stay outside the scroller at page width."
+    }
+  ]
+}

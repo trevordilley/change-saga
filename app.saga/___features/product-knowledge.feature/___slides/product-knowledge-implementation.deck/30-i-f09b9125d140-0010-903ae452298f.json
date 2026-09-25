@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "page-at-device-width",
+  "slide": "directory-scroll-region",
+  "rank": 10,
+  "kind": "region",
+  "label": "Page keeps the device's width",
+  "description": "A directory page is its filter, the table region, then the no-match status. The filter and status stay at page width, and the page never widens to fit a table, so nothing else slides off screen.",
+  "selector": {
+    "type": "element",
+    "element_id": "page-at-device-width"
+  }
+}

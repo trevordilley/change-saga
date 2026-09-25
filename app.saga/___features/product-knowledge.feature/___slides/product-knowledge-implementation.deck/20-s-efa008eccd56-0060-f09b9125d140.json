@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "directory-scroll-region",
+  "deck": "product-knowledge-implementation",
+  "title": "Directory tables scroll inside their own region",
+  "rank": 60,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-efa008eccd56-0060-f09b9125d140.svg",
+  "takeaway": "Every directory's table scrolls sideways inside a named, focusable region, so the page keeps the device's width and every column stays reachable by touch and keyboard.",
+  "reading_order": [
+    "page-at-device-width",
+    "scroll-region",
+    "directory-users",
+    "keyboard-and-reader",
+    "verified-by"
+  ]
+}
