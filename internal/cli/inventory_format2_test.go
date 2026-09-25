@@ -172,6 +172,36 @@ func TestInventoryFormatTwoReadsCoverageAndReconcile(t *testing.T) {
 	if selection["eligible"] != false || !strings.Contains(mustJSON(selection["reasons"]), "selected_bytes_stale") {
 		t.Fatalf("inside edit: %v", selection)
 	}
+	// Regression: a drifted selection is repaired through its Item, never
+	// through evidence-file commands naming a record that does not exist.
+	out.Reset()
+	if err := Reconcile(ctx, []string{"--against", head, "--repo", repo, "--json", root}, &out); err != nil {
+		t.Fatalf("reconcile: %v %s", err, out.String())
+	}
+	report = reconciliationReport{}
+	if err := json.Unmarshal(out.Bytes(), &report); err != nil {
+		t.Fatal(err)
+	}
+	selectionTask := false
+	for _, task := range report.Queue {
+		for _, repair := range task.Repair {
+			if (repair.Command == "replace-coverage" || repair.Command == "remove-coverage" || repair.Command == "cover") && strings.Contains(mustJSON(repair), "selections") {
+				t.Fatalf("evidence repair names a selection: %+v", repair)
+			}
+		}
+		for _, cause := range task.Because {
+			selectionTask = selectionTask || (cause.Kind == "selection_selected_bytes_stale" && task.Debt == "selected_bytes_stale")
+		}
+	}
+	if !selectionTask || report.Inventory.SelectionsStale != 1 {
+		t.Fatalf("selection task missing: %+v", report.Inventory)
+	}
+	for _, args := range [][]string{{"mappings"}, {"gaps", "--kind", "stale"}, {"gaps", "--kind", "overlap", "--against", before}} {
+		data, _, _ := inventoryEnvelope(t, append(append([]string{}, args...), "--saga", root, "--repo", repo, "--limit", "200")...)
+		if strings.Contains(mustJSON(data), "#selections") {
+			t.Fatalf("query %v presents a selection as an evidence record: %s", args, mustJSON(data))
+		}
+	}
 }
 
 func mustJSON(v any) string {

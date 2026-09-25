@@ -11,6 +11,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -540,4 +541,16 @@ func queryInventorySelections(ctx context.Context, args []string, out io.Writer)
 		Measures: []string{"every saved selection of every implementation deck Item, in deck order", "structure from the saved revisions; pin status; selected bytes and containing evidence viewed separately at head_oid"},
 		Limits:   []string{"attached selections add only their selected lines to implementation-deck coverage, through the Item; unselected code in the same entity earns nothing", "review deck Items never inherit coverage", "eligibility is byte and pin currency, not proof that the explanation is correct"},
 	}}, &page)
+}
+
+// inheritedSelections returns the eligible Item selections that contribute
+// labeled inherited coverage at head. An unreadable inventory contributes
+// nothing; it never widens coverage.
+func inheritedSelections(ctx context.Context, document *saga.Saga, head string, resolver *coderesolve.Resolver) []coverage.InheritedReference {
+	inventory, err := requirements.LoadInventory(document.Root, document.Manifest.ID)
+	if err != nil {
+		return nil
+	}
+	inherited, _ := inventoryview.InheritedReferences(ctx, document, &inventory, head, resolver)
+	return inherited
 }

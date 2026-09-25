@@ -104,11 +104,6 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 	if !validation.Valid {
 		return nil, newError(CodeInvalidSaga, "the saga is invalid", false, map[string]any{"issues": sanitizeIssues(validation.Issues)}, nil)
 	}
-	// Eligible Item selections inherit their selected code for deck coverage.
-	// An unreadable inventory attaches nothing; it never widens coverage.
-	if inventory, err := requirements.LoadInventory(document.Root, document.Manifest.ID); err == nil {
-		inventoryview.AttachInherited(document, &inventory)
-	}
 	sourceDir := options.SourceDir
 	if strings.TrimSpace(sourceDir) == "" {
 		sourceDir = document.Root
@@ -122,11 +117,17 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 		return nil, newError(CodeSourceUnavailable, "the source repository is unavailable", true, nil, err)
 	}
 	defer resolver.Close()
+	// Eligible Item selections inherit their selected lines, labeled as such.
+	// An unreadable inventory inherits nothing; it never widens coverage.
+	var inherited []coverage.InheritedReference
+	if inventory, err := requirements.LoadInventory(document.Root, document.Manifest.ID); err == nil {
+		inherited, _ = inventoryview.InheritedReferences(ctx, document, &inventory, changes.HeadOID, resolver)
+	}
 	var report coverage.Report
 	if options.SummaryOnly {
-		report = coverage.EvaluateSummary(ctx, document, validation, changes, resolver)
+		report = coverage.EvaluateSummaryInherited(ctx, document, inherited, validation, changes, resolver)
 	} else {
-		report = coverage.Evaluate(ctx, document, validation, changes, resolver)
+		report = coverage.EvaluateInherited(ctx, document, inherited, validation, changes, resolver)
 	}
 	snapshot, err := buildSnapshot(ctx, document.Root, changes)
 	if err != nil {

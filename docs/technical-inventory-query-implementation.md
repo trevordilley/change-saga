@@ -1,9 +1,7 @@
 # Technical inventory: read, coverage and reconciliation implementation
 
-Status: implemented on `feature/inventory-query-coverage-claude` for today's
-Component/System records and deck Items. Record intent, persisted evidence IDs,
-Item selections and data entities come from the records contract and are wired
-separately (see [Waiting on the records contract](#waiting-on-the-records-contract)).
+Status: implemented on `feature/inventory-query-coverage-claude` over the
+records contract (format 1 and format 2 inventories, Item selections).
 The [design](technical-inventory-design.md) and
 [policy contract](technical-inventory-policy-contract.md) remain the intent;
 this note describes delivered behavior only.
@@ -57,6 +55,7 @@ Pure, read-only and rebuilt per snapshot. Nothing here is persisted or cached.
 | `query inventory` | Existing fields plus per-record `selected` (pins, status, intent), `uses` counts, `newness` with `--against`, `scope_paths` with `--feature`, and `selected_code_health` for non-current scoped revisions. `--intent` and `--new` filter resolvable records only; unresolved candidates are always on `data.unresolved` with a separate `--conflict-cursor/--conflict-limit` page. `--new` without `--against` is `invalid_argument`; with an unreadable base it is `baseline_unknown`. |
 | `query inventory-uses` | Pages declared uses of one target, optionally one exact revision, by role and bounded `--depth` (0–8), with completeness flags. |
 | `query inventory-coverage` | Tracked, non-Saga text files at `--head` under repeated `--path` prefixes, measured against the unique current revision of each active Component/System, including interaction evidence. Each line counts once and keeps every owner; overlap, stale references, unresolved (conflicted) and excluded (retired/proposed) owners are separate `--state` pages. |
+| `query inventory-selections` | Every saved implementation Item selection with its path, containing evidence and owning edge, pin health, and separately resolved selected-byte and containing-evidence health; whether it contributes inherited coverage. |
 | `reconcile` | New `inventory` section and queue entries (see below). |
 
 Every cursor is bound to the Saga snapshot, source endpoints, operation and
@@ -80,6 +79,9 @@ cursor), so newness and reconciliation read the same baseline.
 - **Competing heads** (`inventory_definition`, `unresolved`).
 - **Item documentation pins** that are stale, retired, missing or conflicted,
   routed to the owning slide.
+- **Item selections** that no longer resolve (`unresolved`), whose selected
+  bytes drifted (`selected_bytes_stale`), or whose containing evidence changed
+  outside the subset (`reassess`), routed to the Item.
 - **Unreferenced definitions** (`inventory_unreferenced`, `needs_user_choice`)
   with no declared implementation-deck use, unless explicitly proposed or new
   against a readable base (listed as `unreferenced_exempt`). An unknown base
@@ -110,18 +112,30 @@ its own map (a parity test keeps it equal to `LinkStatus`). No cache was
 added: at these sizes snapshot hashing, Saga loading and source resolution
 dominate, not the in-memory index.
 
-## Waiting on the records contract
+## Records contract integration and inherited deck coverage
 
-Records contract commit #1 (`1fa8db15`) supplies `EffectiveIntent`,
-`EvidenceByID`, `requirements.ResolveSelection` with stable reason codes, Item
-`selections`, data entities with holders and relationships, and
-`documentation_view`. After the parent imports it, this slice will: read
-explicit intent; replace the evidence lookup seam with `EvidenceByID`; call the
-records structural check and layer pin, byte and containing health on top;
-follow holders and relationship destinations as declared edges; and count
-eligible Item selections as inherited implementation-deck coverage with the
-Item → path → selected-location provenance. Until then no selection is
-persisted, so inherited coverage is zero rather than inferred from pins.
+The records contract (`1fa8db15`, `b5ecfa45`, `b6c07006`) is read directly:
+`EffectiveIntent` for intent, `EvidenceByID` through
+`requirements.ResolveSelection` and `VerifySelectedBytes` for selection
+structure (no parallel structural rules here), data-entity holders and
+relationship destinations as declared traversable edges, and ERD directories
+and overlays as reported uses. Evidence on explicitly proposed interactions
+or relationships is neither coverage nor assessed for currency.
+
+`inventoryview.InheritedReferences` returns the Item selections that are
+eligible at head: structurally resolved, every pin current and selected bytes
+current. `coverage.EvaluateInherited` adds exactly those selected lines to
+implementation-deck coverage, owned by the Item and labeled with an
+`inherited` provenance (Item, selection, path, evidence ID) and no evidence
+file. The loaded document is never modified, so evidence listings, mappings,
+selectors, stale-reference lists and repair advice never present a selection
+as an authored evidence record. A selection that drifts contributes nothing
+and is reported through `query inventory-selections` and reconciliation's
+selection entries, whose repair path is the Item. Review deck Items never
+inherit. Validation's "slide has no Item-linked code" warning is deliberately
+unchanged: inherited coverage is not authored Item evidence. The status,
+check and reconcile comparison and the query session evaluate coverage this
+way; the reviewer renderer's own coverage is owned by the UI slice.
 
 ## Verification
 

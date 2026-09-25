@@ -38,35 +38,47 @@ func TestInheritedSelectionCoverage(t *testing.T) {
 	doc := document(map[string][]*saga.Item{"checkout": {good}}, nil)
 	doc.Section = &saga.Section{Target: ns + "saga", Fragments: []*saga.Fragment{{Target: ns + "fragment:slide", Landmarks: []saga.Landmark{{Target: good.Target}}}}}
 
-	selections := AttachInherited(doc, inv)
-	if len(selections) != 2 || !selections[0].Attached || selections[1].Attached || selections[1].Result.State != "unresolved" {
-		t.Fatalf("attachment: %+v", selections)
-	}
-	if len(good.Code) != 1 || !IsInherited(good.Code[0].Path) || len(doc.Section.Fragments[0].Landmarks[0].Code) != 1 {
-		t.Fatalf("inherited evidence not on the Item and its landmark: %+v", good.Code)
-	}
 	run(t, r.dir, "remote", "add", "origin", "https://example.test/acme/app.git")
 	changes, err := gitdiff.Read(ctx, r.dir, "https://example.test/acme/app.git", empty, head)
 	if err != nil {
 		t.Fatal(err)
 	}
-	report := coverage.Evaluate(ctx, doc, saga.Validation{Valid: true}, changes, res)
+	inherited, selections := InheritedReferences(ctx, doc, inv, head, res)
+	if len(selections) != 2 || !selections[0].Attached || selections[1].Attached || selections[1].Result.State != "unresolved" || len(inherited) != 1 {
+		t.Fatalf("eligibility: %+v", selections)
+	}
+	if len(good.Code) != 0 || len(doc.Section.Fragments[0].Landmarks[0].Code) != 0 {
+		t.Fatal("inherited code must never be written into the document as authored evidence")
+	}
+	report := coverage.EvaluateInherited(ctx, doc, inherited, saga.Validation{Valid: true}, changes, res)
 	// 100 added lines plus the file-addition event; 73 unselected lines and
 	// the event stay uncovered.
 	if report.Summary.Total != 101 || report.Summary.Covered != 27 || report.Summary.Uncovered != 74 {
 		t.Fatalf("only the selected subset may count: %+v", report.Summary)
 	}
-	for _, target := range report.Targets {
-		if target.Target == good.Target && target.Covered != 27 {
-			t.Fatalf("Item owner: %+v", target)
+	for _, owners := range report.Ownership {
+		for _, owner := range owners {
+			if owner.Target != good.Target || owner.Inherited == nil || owner.EvidenceFile != "" || owner.Inherited.Selection != "store-read" || len(owner.Inherited.Path) != 2 {
+				t.Fatalf("inherited ownership must be labeled, not an evidence record: %+v", owner)
+			}
 		}
+	}
+	// Selected bytes that drift contribute nothing and are not reported as a
+	// stale evidence record; selection health reports them instead.
+	drifted := r.commit(t, map[string]string{"store.go": replaceLine(lines(100, "store"), 20, "edited")})
+	changes, err = gitdiff.Read(ctx, r.dir, "https://example.test/acme/app.git", empty, drifted)
+	if err != nil {
+		t.Fatal(err)
+	}
+	inherited, selections = InheritedReferences(ctx, doc, inv, drifted, res)
+	report = coverage.EvaluateInherited(ctx, doc, inherited, saga.Validation{Valid: true}, changes, res)
+	if len(inherited) != 0 || selections[0].Attached || report.Summary.Covered != 0 || len(report.StaleReferences) != 0 || !hasReason(selections[0].Result, ReasonSelectedStale) {
+		t.Fatalf("drifted selection: %+v %+v", selections[0], report.Summary)
 	}
 
 	// A superseded System pin stays readable but inherits nothing.
 	inv.Records[2] = record("system", "flags", []requirements.TechnicalRevision{revision("r1", nil, comp, other), revision("r2", nil, comp, other)}, "active", false)
-	good.Code = nil
-	doc.Section.Fragments[0].Landmarks[0].Code = nil
-	if got := AttachInherited(doc, inv); got[0].Attached || !hasReason(got[0].Result, ReasonNoncurrentPin) || len(good.Code) != 0 {
-		t.Fatalf("noncurrent path attached: %+v", got[0])
+	if inherited, got := InheritedReferences(ctx, doc, inv, head, res); len(inherited) != 0 || got[0].Attached || !hasReason(got[0].Result, ReasonNoncurrentPin) {
+		t.Fatalf("noncurrent path inherited: %+v", got[0])
 	}
 }

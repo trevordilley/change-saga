@@ -16,10 +16,8 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/grammar"
-	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/nextaction"
-	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -91,11 +89,6 @@ func readComparison(ctx context.Context, root, repoDir string, rng gitdiff.Range
 	if err != nil {
 		return comparison{}, err
 	}
-	// Eligible Item selections inherit their selected code for deck coverage.
-	// An unreadable inventory attaches nothing; it never widens coverage.
-	if inventory, err := requirements.LoadInventory(document.Root, document.Manifest.ID); err == nil {
-		inventoryview.AttachInherited(document, &inventory)
-	}
 	checkout := firstNonEmpty(repoDir, document.Root)
 	changes, err := gitdiff.ReadRange(ctx, checkout, document.Manifest.Source.Repository, rng, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
 	if err != nil {
@@ -106,7 +99,7 @@ func readComparison(ctx context.Context, root, repoDir string, rng gitdiff.Range
 		return comparison{}, fmt.Errorf("open source repository: %w", err)
 	}
 	defer resolver.Close()
-	report := coverage.Evaluate(ctx, document, validation, changes, resolver)
+	report := coverage.EvaluateInherited(ctx, document, inheritedSelections(ctx, document, changes.HeadOID, resolver), validation, changes, resolver)
 	return comparison{document: document, validation: validation, changes: changes, report: report, checkout: checkout}, nil
 }
 

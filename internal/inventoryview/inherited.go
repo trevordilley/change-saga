@@ -2,16 +2,11 @@ package inventoryview
 
 import (
 	"context"
-	"strings"
 
-	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
-
-// InheritedMarker separates an Item's path from the selection it inherits
-// evidence through, in the pseudo evidence-file path coverage reports.
-const InheritedMarker = "#selections/"
 
 // ItemSelection is one saved selection of one implementation Item.
 type ItemSelection struct {
@@ -21,8 +16,8 @@ type ItemSelection struct {
 	Item    string          `json:"item"`
 	Pin     Pin             `json:"documentation"`
 	Result  SelectionResult `json:"resolution"`
-	// Attached is true when the selected code joined the Item's evidence for
-	// implementation-deck coverage (structurally resolved, every pin current).
+	// Attached is true when the selection contributes inherited
+	// implementation-deck coverage (see InheritedReferences).
 	Attached bool `json:"attached"`
 }
 
@@ -52,63 +47,24 @@ func ItemSelections(ctx context.Context, document *saga.Saga, inventory *require
 	return out
 }
 
-// AttachInherited adds each structurally resolved selection whose pins are all
-// current to its Item's evidence as a pseudo evidence file
-// "<item path>#selections/<id>", so implementation-deck coverage counts the
-// selected lines once, through the Item, without a duplicate mapping. Coverage
-// then judges the selected bytes itself: stale selected bytes account for
-// nothing. Unresolved, conflicted, retired or noncurrent paths contribute
-// nothing and stay visible through ItemSelections. Only the in-memory
-// document changes.
-func AttachInherited(document *saga.Saga, inventory *requirements.Inventory) []ItemSelection {
-	selections := ItemSelections(context.Background(), document, inventory, "", nil)
-	if len(selections) == 0 {
-		return selections
-	}
-	landmarks := map[string]*saga.Landmark{}
-	walkLandmarks(document.Section, func(l *saga.Landmark) { landmarks[l.Target] = l })
-	items := map[string]*saga.Item{}
-	for _, feature := range document.Features {
-		for _, deck := range feature.Decks {
-			for _, slide := range deck.Slides {
-				for _, item := range slide.Items {
-					items[item.Target] = item
-				}
-			}
-		}
-	}
+// InheritedReferences returns the selections that may contribute inherited
+// implementation-deck coverage: structurally resolved, every pin current, and
+// selected bytes current at view. It also returns every selection's
+// resolution so ineligible ones stay visible. The document is not modified:
+// inherited code is never presented as an authored evidence record.
+func InheritedReferences(ctx context.Context, document *saga.Saga, inventory *requirements.Inventory, view string, resolver SelectionResolver) ([]coverage.InheritedReference, []ItemSelection) {
+	selections := ItemSelections(ctx, document, inventory, view, resolver)
+	inherited := []coverage.InheritedReference{}
 	for i := range selections {
 		s := &selections[i]
-		if s.Result.State != "resolved" || !s.Result.PinsCurrent {
+		if !s.Result.Eligible {
 			continue
 		}
-		item := items[s.Item]
-		file := saga.CodeFile{Path: item.Path + InheritedMarker + s.Result.Selection.ID, Version: saga.CurrentVersion, References: []coderef.Reference{s.Result.Selection.Code}}
-		item.Code = append(item.Code, file)
-		item.HasCode = true
-		if l := landmarks[s.Item]; l != nil {
-			l.Code = append(l.Code, file)
-			l.HasCode = true
-		}
 		s.Attached = true
+		inherited = append(inherited, coverage.InheritedReference{
+			Inheritance: coverage.Inheritance{Item: s.Item, Selection: s.Result.Selection.ID, Path: append([]Pin{}, s.Result.Selection.Path...), Evidence: s.Result.Selection.Evidence},
+			Reference:   s.Result.Selection.Code,
+		})
 	}
-	return selections
-}
-
-// IsInherited reports whether an evidence-file path names an inherited
-// selection rather than an authored evidence record.
-func IsInherited(evidenceFile string) bool { return strings.Contains(evidenceFile, InheritedMarker) }
-
-func walkLandmarks(section *saga.Section, visit func(*saga.Landmark)) {
-	if section == nil {
-		return
-	}
-	for _, fragment := range section.Fragments {
-		for i := range fragment.Landmarks {
-			visit(&fragment.Landmarks[i])
-		}
-	}
-	for _, child := range section.Children {
-		walkLandmarks(child, visit)
-	}
+	return inherited, selections
 }
