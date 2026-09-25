@@ -56,6 +56,12 @@ type app struct {
 	// related is the derived related-reviews index, kept while nothing it
 	// reads has changed.
 	related relatedReviewCache
+	// observed is the observed Coverage graph, kept while the Saga's files
+	// are unchanged.
+	observed observeGraphCache
+	// files is what documentation pages read from the Saga's own files,
+	// kept while those files are unchanged.
+	files sagaFilesCache
 	// comparisonLoader is the injectable boundary around the expensive source
 	// diff and coverage build. Root and narrative shell handlers must never call
 	// it; focused comparison endpoints reach it through snapshot().
@@ -974,15 +980,17 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	if document == nil {
 		return nil, errors.New("The saga could not be loaded. Run change-saga validate for details.")
 	}
+	// One fingerprint of the Saga's files serves every part the page reads.
+	files := a.sagaFiles()
 	if len(document.Decks)+len(document.Onboarding) > 0 {
-		document = a.narrativeDocument(r.Context())
+		document = files.narrative()
 		if document == nil {
 			return nil, errors.New("The slide deck could not be loaded. Run change-saga validate for details.")
 		}
 	}
 	scope := viewScope{}
 	reportRoot, slideRoot := splitReportAndDeckSections(document.Section)
-	requirementsView, _, requirementsDocument, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
+	requirementsView, _, requirementsDocument, err := loadRequirementsSurface(files, document.Manifest.ID, r)
 	if err != nil {
 		if errors.Is(err, errRequirementNotFound) {
 			return nil, err
@@ -992,7 +1000,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	if err := semanticgraph.ProjectSlideCriterionLinks(document, &requirementsDocument); err != nil {
 		return nil, errors.New("The complete-slide criterion links could not be loaded. Run change-saga validate for details.")
 	}
-	tests, err := quality.Load(a.root)
+	tests, err := files.tests()
 	if err != nil {
 		tests = quality.Document{SagaID: document.Manifest.ID}
 	}
@@ -1115,7 +1123,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	}
 	onboarding := onboardingHref(document)
 	// The inventory is small, identity-only reading here: no code resolves.
-	inventory, inventoryErr := requirements.LoadInventory(a.root, document.Manifest.ID)
+	inventory, inventoryErr := files.inventory(document.Manifest.ID)
 	var technicalRows []*navNodeView
 	if inventoryErr == nil {
 		technicalRows = technicalNav(inventory)
@@ -1222,11 +1230,7 @@ func splitReportAndDeckSections(root *saga.Section) (*saga.Section, *saga.Sectio
 }
 
 func (a *app) narrativeDocument(ctx context.Context) *saga.Saga {
-	document, validation, err := saga.LoadNarrative(a.root)
-	if err != nil || !validation.Valid {
-		return nil
-	}
-	return document
+	return a.sagaFiles().narrative()
 }
 
 // sourceReviewDocument is the narrative generation code and file responses

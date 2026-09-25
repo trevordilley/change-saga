@@ -120,10 +120,19 @@ func copyDogfoodSagaWithReview(t *testing.T, id, commit string) string {
 	return root
 }
 
-// copySaga is a writable copy of this repository's own app Saga.
+// copySaga is a writable copy of this repository's own app Saga. It lives
+// in a short temporary directory rather than t.TempDir, which is named after
+// the test: under macOS's long temporary root that name alone pushes the
+// copy's deck files past the portable path limit the Saga enforces, and the
+// copy would not validate.
 func copySaga(t *testing.T) string {
 	t.Helper()
-	root := filepath.Join(t.TempDir(), "app.saga")
+	dir, err := os.MkdirTemp("", "saga")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { os.RemoveAll(dir) })
+	root := filepath.Join(dir, "app.saga")
 	if err := os.CopyFS(root, os.DirFS(dogfoodSaga)); err != nil {
 		t.Fatal(err)
 	}

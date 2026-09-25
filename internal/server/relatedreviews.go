@@ -117,12 +117,23 @@ func (a *app) relatedReviews(ctx context.Context, document *saga.Saga, records r
 // of the Saga, code references and reviews included, and the source head the
 // references resolve against.
 func (a *app) relatedFingerprint(ctx context.Context) (string, error) {
+	tree, err := sagaFilesFingerprint(a.root)
+	if err != nil {
+		return "", err
+	}
+	head, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "HEAD")
+	return tree + "\x00" + head, nil
+}
+
+// sagaFilesFingerprint commits to every file of the Saga at root by path,
+// size, and modification time.
+func sagaFilesFingerprint(root string) (string, error) {
 	digest := sha256.New()
-	err := filepath.WalkDir(a.root, func(path string, entry fs.DirEntry, walkErr error) error {
+	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
 			return walkErr
 		}
-		rel, err := filepath.Rel(a.root, path)
+		rel, err := filepath.Rel(root, path)
 		if err != nil {
 			return err
 		}
@@ -139,8 +150,7 @@ func (a *app) relatedFingerprint(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	head, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "HEAD")
-	return hex.EncodeToString(digest.Sum(nil)) + "\x00" + head, nil
+	return hex.EncodeToString(digest.Sum(nil)), nil
 }
 
 // buildRelatedReviews intersects every review's changed lines with the code
