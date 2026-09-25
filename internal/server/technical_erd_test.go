@@ -87,6 +87,10 @@ func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 		// Holding resources are distinct from the data.
 		"Record store (persists report rows)",
 		`href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`, "2 data entities",
+		// The drawing takes the page's full width inside its own zoomable
+		// scroll region; the toolbar stays hidden until app.js drives it.
+		`technical-area-page technical-erd-page"`, `<div class="erd-zoom" role="toolbar" aria-label="Application data model zoom" data-erd-zoom hidden>`,
+		`<div class="erd-viewport" data-erd-viewport tabindex="0" role="region"`,
 	} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("data model lost %q", want)
@@ -94,6 +98,7 @@ func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 	}
 	status, body = technicalGet(t, mux, "/technical/erd/reporting")
 	for _, want := range []string{
+		`technical-entity-page technical-erd-page"`, `data-erd-viewport`,
 		`<g id="` + (&erdView{Target: "urn:change-saga:test:erd:reporting"}).elementPrefix() + `report-card">`, "1 of 2 directory entities are drawn; 1 is in the directory but not drawn.",
 		`data-erd-row-pin="` + pins["job-r2"].Revision + `"`, `<span class="directory-gap">not drawn</span>`,
 		`data-relationship-meaning="association"`, `<span class="cardinality" data-cardinality-owner>0..many</span>`,

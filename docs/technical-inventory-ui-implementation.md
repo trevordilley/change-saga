@@ -100,6 +100,14 @@ Technical design          /technical              landing page, three areas
   sidebar places, and they stay there. The old page's in-page jump links
   (Systems, Components, Data model) are replaced by the landing page and the
   sidebar.
+- **ERD pages.** The ERD area page and an ERD's own page take the full
+  content width rather than the 940px column. The drawing opens fitted to that
+  width inside its own focusable scroll region, with a toolbar: zoom out, the
+  current level, zoom in, and fit width. Plus, minus and zero do the same from
+  the keyboard; a mouse drag pans without opening the entity it started on;
+  touch pans the region natively; and the buttons grow to 44px on coarse
+  pointers. Zooming keeps the centre of the region in place, and the page
+  never widens. The reviewer had no zoom control to reuse.
 - **Cost.** The landing page counts records only. Area and definition pages
   build the shared reverse index and, when comparing, newness.
 
@@ -142,7 +150,8 @@ every Technical design page, the ERD page's other views, breadcrumbs through
 each area, old fragments and unknown areas. The browser spec walks the landing
 page into an area, opens areas by keyboard and by touch at 390px, and follows
 old addresses; `directory-width.spec.ts` reads the Components directory on its
-own page at phone width.
+own page at phone width. A browser test draws a 1600px ERD and zooms and pans
+it by toolbar, keyboard, mouse drag and touch at 390px.
 
 Fixed in passing: `/api/layers` cached a git cancellation (`signal: killed`)
 as the comparison's error when a reader navigated away mid-derivation, so every
@@ -155,8 +164,9 @@ later request answered 500. Cancellations are no longer cached.
   the device's width.
 - The sidebar lists every data entity beneath the ERD row. With many more
   entities that list grows long; the ERD page's filter is the faster path.
-- The ERD view does not pan or zoom beyond browser scaling. On narrow screens
-  the directory is the readable path.
+- ERD zoom has no pinch gesture of its own: touch pans the drawing's region
+  natively and zooms with the toolbar buttons, while a pinch zooms the whole
+  page as it does elsewhere.
 - Newness is identity-level (new, revised, unchanged). Relationship-level
   additions within a revision are not yet distinguished in the UI.
 
