@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "technical-inventory",
   "slide": "ti-query-impl-verification",
-  "current": "sha256:ae6468865285f901fdec38442727a2b612289a9df062d5c4c4f649b5acd52a69",
+  "current": "sha256:be50fb35cb681ffa8b13678acb294a11ec53c9357ab17be234cd0bfca3db3660",
   "revisions": [
     {
       "snapshot": "sha256:ae6468865285f901fdec38442727a2b612289a9df062d5c4c4f649b5acd52a69",
@@ -415,6 +415,436 @@
                   "start": 1,
                   "end": 149,
                   "digest": "sha256:40385aa6d9e5a042f322bcd45cdac1bcf83d1d7fa756e262d0315e13bd5e4c10",
+                  "note": "Delivered behavior, measurements and verification of the read slice."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "docs-inventory-design-to-review-compare-plan",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "The note relates the delivered reads to the committed design without rewriting it."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:be50fb35cb681ffa8b13678acb294a11ec53c9357ab17be234cd0bfca3db3660",
+      "parent_snapshots": [
+        "sha256:ae6468865285f901fdec38442727a2b612289a9df062d5c4c4f649b5acd52a69"
+      ],
+      "request_id": "ti-query-impl-verification-docs-5",
+      "created_at": "2026-09-25T01:56:30.544248Z",
+      "asset": "24-a-a0b97819d7128f194e4f649bae3bbe7e7e8b5dda02faf6f3f126.svg",
+      "asset_digest": "sha256:a0b97819d7128f194e4f649bae3bbe7e7e8b5dda02faf6f3f12645c35824cde6",
+      "slide": {
+        "version": 4,
+        "id": "ti-query-impl-verification",
+        "deck": "technical-inventory",
+        "title": "Implemented: inventory read contract and verification",
+        "rank": 205,
+        "section": "Implemented reads and coverage",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-a0b97819d7128f194e4f649bae3bbe7e7e8b5dda02faf6f3f126.svg",
+        "takeaway": "The inventory reads are a public, schema-described contract, exercised from pure projection fixtures to format-2 end-to-end CLI Sagas.",
+        "reading_order": [
+          "contract",
+          "unit-tests",
+          "cli-fixtures",
+          "e2e",
+          "bench",
+          "docs"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "contract",
+            "slide": "ti-query-impl-verification",
+            "rank": 10,
+            "kind": "node",
+            "label": "Public contract",
+            "description": "The query registry, schema data paths, unresolved pagination, help golden and skill references describe the inventory reads agents rely on.",
+            "selector": {
+              "type": "element",
+              "element_id": "contract"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/query.go",
+                  "start": 223,
+                  "end": 225,
+                  "digest": "sha256:b1e78e291c693248a3ee459b9686ff6288b32b283ff3f73555bcde2bd3c10786",
+                  "note": "Operation registry, usage, purpose and schema data paths for the inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/query.go",
+                  "start": 235,
+                  "end": 268,
+                  "digest": "sha256:f50fda20c33972c960dfdcbdcde4926b4e84615c0a4897ab04b76d9da29fe6d5",
+                  "note": "Operation registry, usage, purpose and schema data paths for the inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/query.go",
+                  "start": 272,
+                  "end": 306,
+                  "digest": "sha256:5200b0b6cfd62e603f3fa751bc6566310eb69814caabd29ff450e6d4ab8bc18a",
+                  "note": "Operation registry, usage, purpose and schema data paths for the inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/query.go",
+                  "start": 342,
+                  "end": 350,
+                  "digest": "sha256:1fb6e8388af8a5d1ce674f9d9270112fe4f4885ffc5ac81e3f8b71dea9fdab1e",
+                  "note": "Operation registry, usage, purpose and schema data paths for the inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/query.go",
+                  "start": 505,
+                  "end": 537,
+                  "digest": "sha256:393c2a85d5e504d74827e60e49fe00e8afe9ee513d2b7c8af8129803f72cfc6b",
+                  "note": "Operation registry, usage, purpose and schema data paths for the inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/query.go",
+                  "start": 540,
+                  "end": 566,
+                  "digest": "sha256:93e617edae8344c3c5402733e47f94b5588970b15ac6f733e7509564565c81c6",
+                  "note": "Operation registry, usage, purpose and schema data paths for the inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/query.go",
+                  "start": 581,
+                  "end": 588,
+                  "digest": "sha256:20289a9f022dd750abbad4a1638c94896ea369fe630a5aeb3f5509a67c0938b5",
+                  "note": "Operation registry, usage, purpose and schema data paths for the inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/testdata/query/help.golden",
+                  "start": 1,
+                  "end": 1,
+                  "digest": "sha256:448ea82f3ff4c290d01fcc49cd1d0f09f875a2762d5cfd8678d3e657c2fe3240",
+                  "note": "Help golden for the operation list."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "skills/change-saga/references/query.md",
+                  "start": 99,
+                  "end": 117,
+                  "digest": "sha256:f3489d0b32dd79fc92b7d268d610726e16516a7c33061262c72fcd8214695755",
+                  "note": "Agent guidance and generated operation list for inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "skills/change-saga/references/query.md",
+                  "start": 177,
+                  "end": 184,
+                  "digest": "sha256:828091f19484a58913f4caa746a645540d6629d7133e406b84d3a3e0e6cf52d9",
+                  "note": "Agent guidance and generated operation list for inventory reads."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "skills/change-saga/references/diagrams.md",
+                  "start": 240,
+                  "end": 246,
+                  "digest": "sha256:9b861fd355b5fd158bb800134d606ee6969c1cf63403172b73591e1c3435330d",
+                  "note": "Agent guidance naming the inventory reads, coverage and reconciliation."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "contract-inventory-query-technical-context-discover-definitions",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:discover-definitions",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "The public query contract describes definitions, intent and code health an agent can discover."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unit-tests",
+            "slide": "ti-query-impl-verification",
+            "rank": 20,
+            "kind": "node",
+            "label": "Projection tests",
+            "description": "Projection tests use temporary Git repositories for movement, inside and outside edits, deletion, digest mismatch, conflicts, cycles, depth cuts, legacy evidence and status parity.",
+            "selector": {
+              "type": "element",
+              "element_id": "unit-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/inventoryview/view_test.go",
+                  "start": 1,
+                  "end": 352,
+                  "digest": "sha256:be40d857063ea1da9e948343bedc1aa29a5d48837769f1294339513ac0b07837",
+                  "note": "Uses, selections, intent, newness and data-entity edges."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/inventoryview/coverage_test.go",
+                  "start": 1,
+                  "end": 61,
+                  "digest": "sha256:4ab25341a06b0e847a47b3db5e55c3240f55f1de7786116834c98b19be45eeee",
+                  "note": "Inventory coverage counting, owners and exclusions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/inventoryview/fixture_test.go",
+                  "start": 1,
+                  "end": 144,
+                  "digest": "sha256:1a5f239cbedaf054cdb3d2169526e3bb6e3b58fd954b5ec38f37b33274509ddf",
+                  "note": "Temporary Git and in-memory inventory fixtures."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/inventoryview/inherited_test.go",
+                  "start": 1,
+                  "end": 84,
+                  "digest": "sha256:6ac7c10c3d1df416d48a37a8336d0f76decf3c52a14c66b7c16add3831c000f2",
+                  "note": "Inherited coverage of exactly the selected lines."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "unit-tests-inventory-scoped-deck-coverage-exclude-unselected",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:exclude-unselected",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "Tests prove unselected lines and drifted selections earn no coverage."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "cli-fixtures",
+            "slide": "ti-query-impl-verification",
+            "rank": 30,
+            "kind": "node",
+            "label": "CLI fixtures",
+            "description": "CLI fixtures commit the Saga in its repository at absent, unreadable, base and head states to test filters, pages, coverage and reconciliation debt classes.",
+            "selector": {
+              "type": "element",
+              "element_id": "cli-fixtures"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/query_inventory_view_test.go",
+                  "start": 1,
+                  "end": 392,
+                  "digest": "sha256:5f35b609b470d20b40894bf571cc549c212fd75803ffc3e06ebea127e0039d7b",
+                  "note": "Public CLI tests over a Saga committed at four comparison states."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "cli-fixtures-inventory-query-technical-context-filter-new",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:filter-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Tests prove newness against absent, unreadable and readable baselines."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "e2e",
+            "slide": "ti-query-impl-verification",
+            "rank": 40,
+            "kind": "node",
+            "label": "Format-2 end to end",
+            "description": "The records fixture plus add-item selections prove intent, newness, scope, uses, exact inherited lines, drift routed to the Item and no pseudo evidence in any query.",
+            "selector": {
+              "type": "element",
+              "element_id": "e2e"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/cli/inventory_format2_test.go",
+                  "start": 1,
+                  "end": 210,
+                  "digest": "sha256:f70d28b3ce959de2e95f9ce4d38555da7e0f9b73a2cc6c010d66e497af9b3b2f",
+                  "note": "End-to-end reads, coverage and reconciliation over the records fixture."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "e2e-inventory-scoped-deck-coverage-inherited-evidence",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:inherited-evidence",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "The end-to-end test proves selected lines count through the Item without an authored duplicate."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "bench",
+            "slide": "ti-query-impl-verification",
+            "rank": 50,
+            "kind": "node",
+            "label": "Benchmarks",
+            "description": "Projection benchmarks measure index build, uses, counts and scope up to 8,000 records.",
+            "selector": {
+              "type": "element",
+              "element_id": "bench"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "internal/inventoryview/bench_test.go",
+                  "start": 1,
+                  "end": 91,
+                  "digest": "sha256:10b6939c0a47242444dcd0f02163a3a17b94ff01cdc9d2e57445a0d79c1bb796",
+                  "note": "Synthetic projection benchmarks."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "bench-inventory-query-technical-context-usage-navigation",
+              "criterion": "urn:change-saga:change-saga:story:inventory-query-technical-context:criterion:usage-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
+              "rationale": "Benchmarks measure the cost of the bounded usage and scope reads."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "docs",
+            "slide": "ti-query-impl-verification",
+            "rank": 60,
+            "kind": "node",
+            "label": "Implementation note",
+            "description": "The role-specific note records delivered behavior, measurements and verification, not proposals.",
+            "selector": {
+              "type": "element",
+              "element_id": "docs"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+                  "path": "docs/technical-inventory-query-implementation.md",
+                  "start": 1,
+                  "end": 187,
+                  "digest": "sha256:7a05de82a0d187e21a70b7247f379d46f636ebe234f7f555d6ce8fc81b139cc1",
                   "note": "Delivered behavior, measurements and verification of the read slice."
                 }
               ]
