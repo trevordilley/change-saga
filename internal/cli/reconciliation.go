@@ -16,6 +16,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -32,6 +33,7 @@ type reconciliationReport struct {
 	ReviewCoverage        []reviewstate.Report    `json:"reviews"`
 	HeadHealth            areas.Area              `json:"head_health"`
 	Currency              reconciliationCurrency  `json:"currency"`
+	Inventory             reconciliationInventory `json:"inventory"`
 	Changed               []changeview.Change     `json:"changed"`
 	Queue                 []reconciliationTask    `json:"queue"`
 	Diagnostics           []changeview.Diagnostic `json:"diagnostics"`
@@ -96,6 +98,7 @@ func Reconcile(ctx context.Context, args []string, out io.Writer) error {
 	}
 	fmt.Fprintf(out, "Documentation reconciliation %s..%s\n", shortOID(report.Opening.BaseOID), shortOID(report.Opening.HeadOID))
 	fmt.Fprintf(out, "HEAD currency: %d current (%d remapped), %d stale: %d pre-existing, %d regressions, %d introduced, %d baseline unknown, %d historical\n", report.Currency.Current, report.Currency.Remapped, report.Currency.Stale, report.Currency.PreExisting, report.Currency.Regressions, report.Currency.Introduced, report.Currency.Unknown, report.Currency.HistoricalStale)
+	fmt.Fprintf(out, "Technical inventory: %d/%d references current; stale %d (%d regressions, %d introduced, %d pre-existing, %d baseline unknown); %d affected by code changes; %d Item pins not current; %d unresolved; %d unreferenced need a user choice\n", report.Inventory.Current, report.Inventory.References, report.Inventory.Stale, report.Inventory.Regressions, report.Inventory.Introduced, report.Inventory.PreExisting, report.Inventory.Unknown, report.Inventory.Affected, report.Inventory.PinProblems, report.Inventory.Unresolved, report.Inventory.Unreferenced)
 	fmt.Fprintf(out, "Documentation diff coverage: %d/%d; open review decks: %d (independent ranges and coverage in --json)\n", report.DocumentationCoverage.Areas.Implementation.Covered, report.DocumentationCoverage.Areas.Implementation.Total, len(report.ReviewCoverage))
 	for _, review := range report.ReviewCoverage {
 		if review.Coverage != nil {
@@ -175,6 +178,8 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 	var document *saga.Saga
 	var head statusDocument
 	var owned []ownedReference
+	var headInventory, baseInventory *requirements.Inventory
+	baseAbsent := false
 	tests := map[string]quality.TestCase{}
 	historical := map[string][]string{}
 	err = changeview.ReadSnapshot(ctx, root, layers.Saga.Head, func(snapshot string) error {
@@ -205,6 +210,11 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		if e != nil {
 			return e
 		}
+		inventory, e := requirements.LoadInventory(snapshot, document.Manifest.ID)
+		if e != nil {
+			return e
+		}
+		headInventory = &inventory
 		head, e = buildStatus(ctx, snapshot, opened.checkout, gitdiff.Range{Head: compared.Opening.HeadOID}, allowMismatch, "")
 		if e != nil {
 			return e
@@ -260,6 +270,13 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 			for _, entry := range status.Coverage.Areas.Health.UncoveredEntries {
 				baseProblems[entry.Resource+"\x00"+entry.Reason] = true
 			}
+			if baseDoc.Manifest.ID == document.Manifest.ID {
+				inventory, e := requirements.LoadInventory(snapshot, baseDoc.Manifest.ID)
+				if e != nil {
+					return e
+				}
+				baseInventory = &inventory
+			}
 			return nil
 		})
 		if err != nil {
@@ -269,6 +286,13 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		}
 	}
 	result.Currency.BaselineAvailable = baseline
+	if baseline && layers.Saga.Base.Source == changeview.SideAbsent {
+		baseAbsent = true
+	}
+	inventorySummary, inventoryTasks := reconcileInventory(ctx, inventoryReconcileInput{root: root, repo: repo, head: compared.Opening.HeadOID, base: compared.Opening.BaseOID, mismatch: allowMismatch,
+		changes: opened.changes, document: document, inventory: headInventory, baseInventory: baseInventory, baseKnown: baseline && (baseInventory != nil || baseAbsent), baseAbsent: baseAbsent, resolver: resolver})
+	result.Inventory = inventorySummary
+	result.Queue = append(result.Queue, inventoryTasks...)
 	result.Currency.References = []reconciliationReference{}
 	for _, ref := range owned {
 		resolution := resolver.Resolve(ctx, ref.Code, compared.Opening.HeadOID)

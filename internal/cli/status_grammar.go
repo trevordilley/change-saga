@@ -99,7 +99,7 @@ func readComparison(ctx context.Context, root, repoDir string, rng gitdiff.Range
 		return comparison{}, fmt.Errorf("open source repository: %w", err)
 	}
 	defer resolver.Close()
-	report := coverage.Evaluate(ctx, document, validation, changes, resolver)
+	report := coverage.EvaluateInherited(ctx, document, inheritedSelections(ctx, document, changes.HeadOID, resolver), validation, changes, resolver)
 	return comparison{document: document, validation: validation, changes: changes, report: report, checkout: checkout}, nil
 }
 

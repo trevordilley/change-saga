@@ -22,6 +22,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -116,11 +117,17 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 		return nil, newError(CodeSourceUnavailable, "the source repository is unavailable", true, nil, err)
 	}
 	defer resolver.Close()
+	// Eligible Item selections inherit their selected lines, labeled as such.
+	// An unreadable inventory inherits nothing; it never widens coverage.
+	var inherited []coverage.InheritedReference
+	if inventory, err := requirements.LoadInventory(document.Root, document.Manifest.ID); err == nil {
+		inherited, _ = inventoryview.InheritedReferences(ctx, document, &inventory, changes.HeadOID, resolver)
+	}
 	var report coverage.Report
 	if options.SummaryOnly {
-		report = coverage.EvaluateSummary(ctx, document, validation, changes, resolver)
+		report = coverage.EvaluateSummaryInherited(ctx, document, inherited, validation, changes, resolver)
 	} else {
-		report = coverage.Evaluate(ctx, document, validation, changes, resolver)
+		report = coverage.EvaluateInherited(ctx, document, inherited, validation, changes, resolver)
 	}
 	snapshot, err := buildSnapshot(ctx, document.Root, changes)
 	if err != nil {

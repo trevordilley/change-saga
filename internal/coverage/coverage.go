@@ -33,6 +33,10 @@ type Assignment struct {
 	Target       string `json:"target"`
 	EvidenceFile string `json:"evidence_file"`
 	Reference    int    `json:"reference"`
+	// Inherited is set, with no evidence file or position, when an Item
+	// accounts for the atom through a saved inventory selection rather than
+	// an authored evidence record.
+	Inherited *Inheritance `json:"inherited,omitempty"`
 }
 
 type Overlap struct {
@@ -105,6 +109,10 @@ func Evaluate(ctx context.Context, document *saga.Saga, validation saga.Validati
 // exactly Evaluate's semantics. A pull request review evaluates its own deck's
 // Items this way, against its own range, apart from the documentation tree.
 func EvaluateTargets(ctx context.Context, walk func(visit func(string, []saga.CodeFile)), validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
+	return evaluateTargets(ctx, walk, nil, validation, changes, resolver)
+}
+
+func evaluateTargets(ctx context.Context, walk func(visit func(string, []saga.CodeFile)), inherited []InheritedReference, validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
 	report := newReport(validation, changes)
 	assignments := make([][]Assignment, len(changes.Atoms))
 	index := buildIndex(changes)
@@ -112,6 +120,9 @@ func EvaluateTargets(ctx context.Context, walk func(visit func(string, []saga.Co
 		visitReferences(ctx, target, files, index, changes, resolver, &report, func(atom int, assignment Assignment) {
 			assignments[atom] = append(assignments[atom], assignment)
 		})
+	})
+	visitInherited(ctx, inherited, index, changes, resolver, &report, func(atom int, assignment Assignment) {
+		assignments[atom] = append(assignments[atom], assignment)
 	})
 
 	targetCounts := map[string]int{}
@@ -166,6 +177,11 @@ func SelectTarget(ctx context.Context, files []saga.CodeFile, changes gitdiff.Ch
 // queries use it because their bounded response needs counts, not the complete
 // reverse indexes that gap, fragment, and atom-owner queries traverse.
 func EvaluateSummary(ctx context.Context, document *saga.Saga, validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
+	return EvaluateSummaryInherited(ctx, document, nil, validation, changes, resolver)
+}
+
+// EvaluateSummaryInherited is EvaluateSummary plus inherited selections.
+func EvaluateSummaryInherited(ctx context.Context, document *saga.Saga, inherited []InheritedReference, validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
 	report := newReport(validation, changes)
 	assignments := make([]summaryAssignment, len(changes.Atoms))
 	otherTargets := map[int][]string{}
@@ -174,6 +190,9 @@ func EvaluateSummary(ctx context.Context, document *saga.Saga, validation saga.V
 		visitReferences(ctx, target, files, index, changes, resolver, &report, func(atom int, _ Assignment) {
 			addSummaryAssignment(assignments, otherTargets, atom, target)
 		})
+	})
+	visitInherited(ctx, inherited, index, changes, resolver, &report, func(atom int, assignment Assignment) {
+		addSummaryAssignment(assignments, otherTargets, atom, assignment.Target)
 	})
 
 	targetCounts := map[string]int{}
