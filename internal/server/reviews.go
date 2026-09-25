@@ -166,7 +166,16 @@ func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []
 	}
 	reports := make([]reviewstate.Report, 0, len(reviews))
 	for _, review := range reviews {
-		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: document.Manifest.Source.Repository}))
+		repository := document.Manifest.Source.Repository
+		report := reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: repository, SkipCoverage: true})
+		if report.Range != nil && resolver != nil {
+			if covered, err := a.reviewCoverage(ctx, review, *report.Range, repository, resolver); err != nil {
+				report.Diagnostics = append(report.Diagnostics, "the review's coverage could not be read: "+err.Error())
+			} else {
+				report.Coverage = covered
+			}
+		}
+		reports = append(reports, report)
 	}
 	return reports
 }

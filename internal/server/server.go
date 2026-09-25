@@ -63,6 +63,8 @@ type app struct {
 	// files is what documentation pages read from the Saga's own files,
 	// kept while those files are unchanged.
 	files sagaFilesCache
+	// reviewCoverages is each review's coverage; see reviewcache.go.
+	reviewCoverages reviewCoverageCache
 	// fresh shares the check of whether the Saga's files or the heads
 	// have changed between the requests that ask at once.
 	fresh freshness
