@@ -87,6 +87,9 @@ type ManifestOwnerView struct {
 	// when Href opens another page, such as a feature's.
 	Anchor string
 	Slide  *SlideReferenceView
+	// Via names the definitions an Item's selection reaches these lines
+	// through, when it owns them by inheritance rather than authored evidence.
+	Via string
 }
 
 type ManifestTargetView struct {
@@ -290,6 +293,17 @@ func finalizeManifestNode(node *ManifestTreeNode, depth int) {
 	}
 }
 
+// inheritedVia names a selection's path by its last identity, so a reader
+// sees these lines are selected through an inventory definition and not an
+// authored evidence record.
+func inheritedVia(inheritance *coverage.Inheritance) string {
+	if len(inheritance.Path) == 0 {
+		return "selection " + inheritance.Selection
+	}
+	last := inheritance.Path[len(inheritance.Path)-1]
+	return lastSegment(last.Target) + " (" + inheritance.Selection + ")"
+}
+
 func distinctAssignments(assignments []coverage.Assignment) []coverage.Assignment {
 	seen := map[string]bool{}
 	result := make([]coverage.Assignment, 0, len(assignments))
@@ -313,8 +327,14 @@ func makeManifestChunks(atoms []gitdiff.Atom, ownership map[string][]coverage.As
 			assignments := distinctAssignments(ownership[atom.Key])
 			ownerTargets := make([]string, 0, len(assignments))
 			for _, assignment := range assignments {
-				ownerTargets = append(ownerTargets, assignment.Target)
-				owners = append(owners, manifestOwner(assignment.Target, locations))
+				owner := manifestOwner(assignment.Target, locations)
+				key := assignment.Target
+				if assignment.Inherited != nil {
+					owner.Via = inheritedVia(assignment.Inherited)
+					key += "\x01" + owner.Via
+				}
+				ownerTargets = append(ownerTargets, key)
+				owners = append(owners, owner)
 			}
 			ownerKey = strings.Join(ownerTargets, "\x00")
 		}

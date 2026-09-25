@@ -216,4 +216,15 @@ test("an authored ERD and an Item's exact selection open the same pinned definit
   await page.keyboard.press("Escape");
   await expect(control).toBeFocused();
   expect(page.url()).toBe(slideURL);
+
+  // The reviewer's coverage, like the CLI's, credits the Item with exactly
+  // the selected line, labelled as a selection rather than authored evidence.
+  let coverage = "";
+  for (let attempt = 0; attempt < 200 && !coverage; attempt++) {
+    const response = await fetch(saga.baseURL + "/api/coverage-file?file=src%2Fapp.go");
+    if (response.status === 200) coverage = await response.text();
+    else await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  expect(coverage).toContain("data-owner-inherited");
+  expect(coverage).toContain("selected via Store (greet-only)");
 });
