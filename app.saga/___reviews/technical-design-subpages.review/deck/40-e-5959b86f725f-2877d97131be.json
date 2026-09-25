@@ -1,0 +1,109 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 18,
+      "end": 31,
+      "digest": "sha256:a7653fb0e5646b6ad8717d85ffac825db370bdf24ab243aee2c5c42a11a98571",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 46,
+      "end": 77,
+      "digest": "sha256:d974e22617e88d4e0d641a38893dc3fccfc12c20784f233c1c756287bb1dbd97",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:d1705822b03601dab363744879d546cdbac2e2a1245377c10b25b3ca0422ac12",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 314,
+      "end": 315,
+      "digest": "sha256:2fe9a465c090c33a0f526d1f3e457e2b455899f233f5be801442c92c114a8f8e",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 317,
+      "end": 319,
+      "digest": "sha256:cfb89f118189288644e950f509ffdf5971c8b1459914e9cc14cc107b0fac9996",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:79b5b9c7349b7cb26bcc72fac1d5b51498a7924990526be0073e48fe84cd8873",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:e1ddd3a13b97f684fd472514ec9ca00ae26e7e8868b7dcefc868617e31b8b98a",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 396,
+      "end": 413,
+      "digest": "sha256:c5652f1947abd160a0ff427ba2b0edf063f3a005c31ffff091510acd4f0304f8",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:d6826fea925987582b82f3c0fbf05b2c7230a348a0eebc45a3ac864c77065e16",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:5a757673a73261b7abc19acfec74af9534af704eacb98764a8b1484612e9d2a6",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 453,
+      "end": 453,
+      "digest": "sha256:4ebeaaf9e7d6a331ac28a6abcbe1e1c1d5c6afb88413a09f26a36fd414c720b6",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 713,
+      "end": 714,
+      "digest": "sha256:271ec982641ea090ccf90bf2aae182560fb93ce97d641336d32ae4bf8c859a5b",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 719,
+      "end": 721,
+      "digest": "sha256:f910b5639b3a0b8e1e30c626f1453a118cc82b2adf67bb504087cad4d7c606a3",
+      "note": "Added: the page tree, the area table, and area pages that build only their own directory or data model."
+    }
+  ]
+}

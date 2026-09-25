@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "technical-design-subpages",
+  "title": "Technical design as a tree of pages",
+  "role": "review",
+  "rank": 0,
+  "objective": "Split the single Technical design page into a landing page and ERD, Systems and Components pages, with a matching sidebar tree and every existing address kept."
+}

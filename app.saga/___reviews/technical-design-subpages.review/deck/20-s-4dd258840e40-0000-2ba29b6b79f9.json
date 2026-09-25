@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "tdsp-review-pages",
+  "deck": "technical-design-subpages",
+  "title": "One page became a landing page and three areas",
+  "rank": 0,
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-4dd258840e40-0000-2ba29b6b79f9.svg",
+  "takeaway": "/technical is now a landing page over the ERD, Systems and Components pages, each built only when it is read.",
+  "reading_order": [
+    "before",
+    "landing",
+    "areas",
+    "routes"
+  ]
+}

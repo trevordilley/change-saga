@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 566,
+      "end": 568,
+      "digest": "sha256:ee0326effd5a649eeb0fc5afe4b39036d4f3cc9dadbc13ac83f2802c39f79f04",
+      "note": "Added: a definition records its area and its breadcrumb passes through it."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 607,
+      "end": 607,
+      "digest": "sha256:6c9d02ea5bf81225b3f5f216222cc7a2d153024cfe7f685e926f9d64a2b47b1e",
+      "note": "Added: a definition records its area and its breadcrumb passes through it."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 724,
+      "end": 724,
+      "digest": "sha256:4da9a1e8c35d5b8d62a0075dde9c6b68f8e53131edb18127e96720c23488e6b2",
+      "note": "Added: a definition records its area and its breadcrumb passes through it."
+    }
+  ]
+}

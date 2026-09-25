@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/server.go",
+      "start": 1138,
+      "end": 1138,
+      "digest": "sha256:d65d8ea3a52b9dde2aec13222b8ccc19bcde556d70f9580ff87545834497da29",
+      "note": "Replaced: marking only the exact path's row."
+    }
+  ]
+}

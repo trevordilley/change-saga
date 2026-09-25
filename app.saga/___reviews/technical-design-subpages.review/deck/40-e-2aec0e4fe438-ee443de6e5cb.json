@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 431,
+      "end": 431,
+      "digest": "sha256:0901e4293f8154a3e88bf4f8a8ef4bdf4da1bfab20317899d7aaec36d4b0b6e4",
+      "note": "Replaced: the entity view's field alignment and a breadcrumb without the area."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "internal/server/technical.go",
+      "start": 578,
+      "end": 578,
+      "digest": "sha256:ab7c9cb262f8fecacdcdc77726ec0b09a56e86feec924a4e394a4fd11f4a0bf0",
+      "note": "Replaced: the entity view's field alignment and a breadcrumb without the area."
+    }
+  ]
+}

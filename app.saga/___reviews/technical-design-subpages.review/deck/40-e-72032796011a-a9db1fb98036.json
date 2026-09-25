@@ -1,0 +1,133 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 6,
+      "end": 7,
+      "digest": "sha256:114c47b03b5e5c974c18bf259f011143680c2ad17d7bd53d8df5dcf561d42010",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:804a11112be6eafe344d6836680e978685782064accbc25f233461503bc55b96",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:9236148a6516befffe5634b7c75dbfc709c0cb2035d4b8626efe67bca4e8cb4b",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:6f157a2b8e1982af99bead0bb07b4b9aa0a3d70e091f71ac04f244e4911844c7",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:48ca5bf01135a410e48dda450b46674c2012295c02947feb2bdc6de698acdad2",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:9010e73cb02f3e7c0f0aff95c30aacac3180d8827252131f8e7c71486214aea1",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 6,
+      "end": 8,
+      "digest": "sha256:62acb881efff6ca228d8f40f98db547757009bd706989122a8a27929ecf12e89",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 43,
+      "end": 48,
+      "digest": "sha256:1ae8bc320a72d831ecb84617cd1893c461c9b14bae157d617fc8d89b7c84ad6d",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:10e72460c89d3f579f729218fb104791ab6b44da2a034ffcbd381aaf92f4a443",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:1741f55a04ce28fa500da65dbaead1a38bc7a5c37d359648f14331529ade3e44",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:cc3dd80c28f172f4ea091ecc6763acf3f6f25c605f9a092a4e132921f88395f0",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 130,
+      "end": 140,
+      "digest": "sha256:eeb5573286c03610f7b4b67967930de71d4dfb5146fa2d161dea0eb2de51d819",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 144,
+      "end": 193,
+      "digest": "sha256:e41e1c90468d80db6442c294cc6fd20cfdd93e44c7acbf632bec216b3f720ba0",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:9edff35324a83d6be65cfe81d71ce3bf914c0eb32084f63692f6ee6d40667d26",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:401a41335a14d1adc3ce9b6a89bf87b1916cdeab42bb7ab464dfd4cb1681cfd5",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/technical-inventory-ui.spec.ts",
+      "start": 244,
+      "end": 249,
+      "digest": "sha256:84116d863eebc510e27f76043deabc312860b5d9ba2b3881a67f899b61754dc9",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "e2e/tests/directory-width.spec.ts",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:9c0c2ff32b2ddbe5e8208bf1a6b6fba0d7c3174fdd9cd1609a44e6b9c05bbe4a",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "path": "e2e/tests/directory-width.spec.ts",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:08336e9934e2c7ad81e51ce48362f3bd7890bba19d0a8c6a8e4c9dcfcf50f140",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/directory-width.spec.ts",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:6079dda76f0001fd9696c2ba14116eeca1ce043c129a7fe91404cf4df958e633",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "e2e/tests/directory-width.spec.ts",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:863194ff519bbe791dafd0c8c663e908c8d82f28d5753162204e5a68261813ec",
+      "note": "Browser checks of the area pages, nested sidebar by keyboard and touch, and old addresses."
+    }
+  ]
+}

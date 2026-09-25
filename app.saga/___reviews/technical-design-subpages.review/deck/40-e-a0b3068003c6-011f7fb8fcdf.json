@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 330,
+      "end": 337,
+      "digest": "sha256:d7fcc98d8b0dd317b6fee3f1d524f0ffded72e94acdb6998784eb4fd817e3977",
+      "note": "Added: the landing page's area entries with old anchors, their counts and empty states, template and style."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 352,
+      "end": 395,
+      "digest": "sha256:7787d1531865c4f4e845d6e14d43e00dc944bfb0d5ea9e3d98dd24bcccaeb2f2",
+      "note": "Added: the landing page's area entries with old anchors, their counts and empty states, template and style."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 715,
+      "end": 718,
+      "digest": "sha256:6c02d8122b1be2c25e48ed86ad3726faf9897285845755b1563c054181b6e6d1",
+      "note": "Added: the landing page's area entries with old anchors, their counts and empty states, template and style."
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "path": "internal/server/technical.go",
+      "start": 739,
+      "end": 740,
+      "digest": "sha256:be7bd6fe8aaff6e98ff30b5fae0a67eedde6e9a1165838b91601f9065705890f",
+      "note": "Added: the landing page's area entries with old anchors, their counts and empty states, template and style."
+    }
+  ]
+}
