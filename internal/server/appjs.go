@@ -1187,7 +1187,7 @@ const appJavaScript = `(() => {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     drawer.dataset.drawerMode = mode;
-    const labels = {documentation:'Component and system explanation', fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
+    const labels = {documentation:'Technical explanation', fragment:'Related explanation', history:'History', code:'Linked code', stories:'Linked stories'};
     const icons = {documentation:'#i-book', fragment:'#i-book', history:'#i-clock', code:'#i-diff', stories:'#i-story'};
     const label = labels[mode] || labels.code;
     drawer.setAttribute('aria-label', label);
@@ -1213,7 +1213,8 @@ const appJavaScript = `(() => {
   }
 
   function showDrawer(opener) {
-    drawerOpener = opener instanceof HTMLElement && opener.isConnected
+    // A bound ERD element is an SVGElement; it takes focus like a button.
+    drawerOpener = (opener instanceof HTMLElement || opener instanceof SVGElement) && opener.isConnected
       ? opener
       : (document.activeElement instanceof HTMLElement ? document.activeElement : null);
     const drawer = q('.diff-drawer');
@@ -1253,7 +1254,7 @@ const appJavaScript = `(() => {
     if (!back) documentationTrail.push(pin);
     const request = ++documentationRequest;
     restoreDrawerContent();
-    configureDrawer('documentation', 'Component and system explanation');
+    configureDrawer('documentation', 'Technical explanation');
     const body = q('.drawer-body');
     body.textContent = 'Loading explanation…';
     showDrawer(opener);
@@ -2487,6 +2488,41 @@ const appJavaScript = `(() => {
   prepareContext();
   syncSlidePresentation();
   highlightCode();
+  // An authored ERD is inlined as drawn. Only the elements its bindings name
+  // become controls, each opening the same pinned definition its directory
+  // row opens. Nothing here reads the drawing's geometry.
+  function bindERDVisuals(root = document) {
+    for (const figure of within(root, '[data-erd-visual]')) {
+      for (const binding of within(figure, '[data-erd-bindings] [data-erd-element]')) {
+        const element = [...figure.querySelectorAll('svg [id]')].find(candidate => candidate.id === binding.dataset.erdElement);
+        if (!element || element.dataset.erdBound) continue;
+        element.dataset.erdBound = 'true';
+        element.dataset.documentationTarget = binding.dataset.erdTarget;
+        element.dataset.documentationRevision = binding.dataset.erdPin;
+        if (binding.dataset.erdRelationship) element.dataset.erdRelationship = binding.dataset.erdRelationship;
+        element.setAttribute('tabindex', '0');
+        element.setAttribute('role', 'button');
+        element.setAttribute('aria-label', 'Open ' + binding.textContent.trim() + (binding.dataset.erdIntent ? ' (' + binding.dataset.erdIntent + ')' : ''));
+        element.addEventListener('keydown', event => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          event.preventDefault();
+          element.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
+        });
+      }
+    }
+    // A directory row and the drawn element it names light up together.
+    for (const row of within(root, '[data-erd-directory-row]')) {
+      const view = row.closest('[data-erd-view]');
+      const drawn = () => within(view || document, '[data-erd-bound]').filter(element => element.dataset.documentationRevision === row.dataset.erdRowPin && !element.dataset.erdRelationship);
+      const light = on => drawn().forEach(element => element.classList.toggle('erd-highlight', on));
+      row.addEventListener('mouseenter', () => light(true));
+      row.addEventListener('mouseleave', () => light(false));
+      row.addEventListener('focusin', () => light(true));
+      row.addEventListener('focusout', () => light(false));
+    }
+  }
+  bindERDVisuals();
+
   applyDiffLayout(rememberedDiffLayout());
   addEventListener('resize', () => { applyDiffLayout(diffLayout); positionLandmarkHotspots(); });
   document.addEventListener('fullscreenchange', syncSlidePresentation);

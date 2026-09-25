@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -39,12 +40,37 @@ type documentationView struct {
 	// OnPage renders the definition on its own page: members open their own
 	// pages rather than the drawer, and the page's heading names it.
 	OnPage bool
+	// Intent is the revision's explicit intent, or unspecified. A proposal
+	// names its implemented baseline revision or says it has none; an
+	// implemented revision names the delivery commit it was asserted at.
+	Intent       string
+	BaselineHref string
+	BaselineID   string
+	BaselineNone bool
+	Delivery     *requirements.Delivery
+	// Data-entity content: curated fields, holding resources, owned and
+	// derived incoming relationships, and the ERDs listing it.
+	Fields        []entityFieldView
+	Holders       []entityHolderView
+	Relationships []relationshipView
+	Incoming      []relationshipView
+	ERDs          []erdMembershipView
 }
 
 // documentationView is one exact revision of a definition, as both the drawer
 // and the definition's page render it.
 func (a *app) documentationView(ctx context.Context, inventory requirements.Inventory, record *requirements.TechnicalRecord, revision *requirements.TechnicalRevision, pin saga.DocumentationLink) documentationView {
-	view := documentationView{Target: pin.Target, Revision: pin.Revision, Name: revision.Name, Kind: record.Kind, Explanation: revision.Explanation, Status: inventory.LinkStatus(pin), Height: len(revision.Components)*100 + 20}
+	view := documentationView{Target: pin.Target, Revision: pin.Revision, Name: revision.Name, Kind: record.Kind, Explanation: revision.Explanation, Status: inventory.LinkStatus(pin), Height: len(revision.Components)*100 + 20, Intent: revision.EffectiveIntent(), Delivery: revision.Delivery}
+	switch {
+	case revision.Baseline == requirements.BaselineNone:
+		view.BaselineNone = true
+	case revision.Baseline != "":
+		view.BaselineID = strings.TrimPrefix(revision.Baseline, record.Target+":revision:")
+		view.BaselineHref = technicalHref(record.Kind, record.Identity.ID, view.BaselineID)
+	}
+	if record.Kind == requirements.KindDataEntity {
+		dataEntityDetail(inventory, &view, revision, pin)
+	}
 	if record.CurrentRevision != nil {
 		view.CurrentPin = &saga.DocumentationLink{Target: record.Target, Revision: record.Target + ":revision:" + record.CurrentRevision.ID}
 	}
@@ -142,16 +168,18 @@ func (a *app) documentationCode(ctx context.Context, refs []coderef.Reference, s
 }
 
 const documentationTemplates = `
-{{define "documentation-control"}}{{with .}}<button type="button" class="icon-button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}" aria-label="Open component or system explanation" title="Open component or system explanation"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></button>{{end}}{{end}}
+{{define "documentation-control"}}{{with .}}<button type="button" class="icon-button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}" aria-label="Open technical explanation" title="Open technical explanation"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></button>{{end}}{{end}}
 {{define "documentation-code"}}{{range .}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}"><figcaption><code>{{.Location}}</code>{{if .Stale}} · stale{{end}}</figcaption>{{if .Note}}<p class="term-code-note">{{.Note}}</p>{{end}}<table class="term-code-lines"><tbody>{{range .Lines}}<tr{{if .Referenced}} class="referenced"{{end}}><th scope="row">{{.Number}}</th><td><code data-code>{{.Text}}</code></td></tr>{{end}}</tbody></table></figure>{{end}}{{end}}
 {{define "documentation"}}<article class="documentation-explanation" data-documentation-view="{{.Target}}" data-documentation-pin="{{.Revision}}">
-{{if not .OnPage}}<p class="trace-kind">{{.Kind}}</p><h2>{{.Name}}</h2>
+{{if not .OnPage}}<p class="trace-kind">{{kindTitle .Kind}}</p><h2>{{.Name}}</h2>
 {{end}}{{if and (ne .Status "current") (not .OnPage)}}<p role="status" class="gap" data-documentation-status="{{.Status}}">This reference is {{.Status}}. You are reading the saved revision; it has not been repinned.</p>{{with .CurrentPin}}<button type="button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}">Read current definition</button>{{end}}{{end}}
+<p class="documentation-intent" data-documentation-intent="{{.Intent}}"><span class="technical-intent intent-{{.Intent}}">{{.Intent}}</span>{{if eq .Intent "unspecified"}} <small>This revision predates recorded intent; it is neither assumed proposed nor implemented.</small>{{else if eq .Intent "proposed"}} <small>{{if .BaselineHref}}Proposed successor of the implemented baseline <a href="{{.BaselineHref}}"><code>{{.BaselineID}}</code></a>, which is retained.{{else if .BaselineNone}}A wholly new proposal: no implemented baseline.{{end}} A proposal is not implemented code.</small>{{else if eq .Intent "implemented"}}{{with .Delivery}} <small>Asserted at delivery commit <code>{{short .Commit}}</code>. Implementation is not verification or review approval.</small>{{end}}{{end}}</p>
 <p class="documentation-prose">{{.Explanation}}</p>{{if .PageHref}}<p class="documentation-page-link"><a href="{{.PageHref}}" data-documentation-page>Open this revision's full page</a></p>{{end}}
 {{if .Members}}<h3>Component interactions</h3><svg class="documentation-diagram" viewBox="0 0 430 {{.Height}}" role="group" aria-label="Directed component interactions; explanations and exact code follow."><defs><marker id="documentation-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>{{range .Edges}}<path d="{{.Path}}" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#documentation-arrow)"><title>{{.From}} → {{.To}}: {{.Description}}</title></path>{{end}}{{range .Members}}<a {{if $.OnPage}}href="{{.PageHref}}"{{else}}href="/api/documentation?target={{.Pin.Target}}&amp;revision={{.Pin.Revision}}" data-documentation-target="{{.Pin.Target}}" data-documentation-revision="{{.Pin.Revision}}"{{end}} aria-label="Open {{.Name}}"><g transform="translate(20 {{.Y}})"><rect width="230" height="50" fill="var(--bg,white)" stroke="currentColor"/><text x="12" y="30" font-size="14" fill="currentColor">{{.Name}}</text></g></a>{{end}}</svg>
 <ul class="documentation-members">{{range .Members}}<li>{{if $.OnPage}}<a href="{{.PageHref}}">{{.Name}}</a>{{else}}<button type="button" data-documentation-target="{{.Pin.Target}}" data-documentation-revision="{{.Pin.Revision}}">{{.Name}}</button>{{end}}{{if ne .Status "current"}} <span class="gap">{{.Status}}</span>{{end}}</li>{{end}}</ul>
 <ol>{{range .Edges}}<li><h4>{{.From}} → {{.To}}</h4><p>{{.Description}}</p><details data-lazy-href="{{.CodeHref}}"><summary>Interaction code</summary><div data-lazy-body>Code loads when opened.</div></details></li>{{end}}</ol>{{end}}
-<h3>Exact code</h3>{{template "documentation-code" .Code}}
+{{if eq .Kind "data-entity"}}{{template "data-entity-detail" .}}{{end}}
+<h3>Exact code</h3>{{if .Code}}{{template "documentation-code" .Code}}{{else}}<p class="term-empty" data-documentation-no-code>{{if eq .Intent "proposed"}}No code yet. A proposal remains visible and usable before implementation.{{else}}No code references.{{end}}</p>{{end}}
 {{if .UsagesHref}}<details class="documentation-usages" data-lazy-href="{{.UsagesHref}}"><summary>Used by</summary><div data-lazy-body>Usages load when opened.</div></details>{{end}}{{if not .OnPage}}<details><summary>Definition history</summary><p>Viewing <code>{{.Revision}}</code>. Opening another revision does not update this slide.</p><ul>{{range .History}}<li><button type="button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}">{{.Revision}}</button></li>{{end}}</ul></details>{{end}}
 </article>{{end}}
 `

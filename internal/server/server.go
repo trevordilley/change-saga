@@ -832,7 +832,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
 	funcs["comparing"] = func() bool { return comparing }
-	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates)
+	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates)
 }
 
 // templateFuncs is shared by the server and its rendering tests so a new
@@ -841,6 +841,7 @@ func templateFuncs() template.FuncMap {
 	return template.FuncMap{
 		"comparing": func() bool { return true },
 		"short":     shortCommit,
+		"kindTitle": technicalKindTitle,
 		"join":      strings.Join,
 		"markdown":  markdown,
 		"domID":     domID,

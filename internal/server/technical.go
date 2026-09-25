@@ -62,7 +62,9 @@ func technicalTargetParts(target string) (string, string, bool) {
 
 // technicalIntent is a revision's explicit proposal intent. Revisions that
 // predate intent report unspecified; the page never infers it.
-func technicalIntent(*requirements.TechnicalRevision) string { return "unspecified" }
+func technicalIntent(revision *requirements.TechnicalRevision) string {
+	return revision.EffectiveIntent()
+}
 
 // technicalLifecycle is the record's lifecycle, or conflicted when its heads
 // compete.
@@ -190,9 +192,9 @@ func (index technicalUsageIndex) view(target string) technicalUsagesView {
 type technicalPageView struct {
 	Systems    *directoryView
 	Components *directoryView
-	// DataModel states what the data model holds. This Saga's format has no
-	// data-entity records yet, so it says so rather than drawing an empty ERD.
-	DataModel string
+	// DataModel is the application's ERD, its other views, and every data
+	// entity.
+	DataModel *technicalDataModelView
 	Query     string
 }
 
@@ -210,18 +212,22 @@ func technicalDirectory(id, title, lede, noun, nouns, command string) *directory
 	}
 }
 
-func technicalPage(inventory requirements.Inventory, usages technicalUsageIndex, query string) *technicalPageView {
+func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUsageIndex, query string) *technicalPageView {
 	view := &technicalPageView{
 		Systems:    technicalDirectory("technical-systems", "Systems", "How Components interact and how data flows through them.", "System", "Systems", "change-saga system add"),
 		Components: technicalDirectory("technical-components", "Components", "Identifiable units of logic or transformation, reused by identity across decks.", "Component", "Components", "change-saga component add"),
-		DataModel:  "No data entities are recorded in this Saga. The data model and its authored ERD appear here once data-entity records exist.",
 		Query:      query,
 	}
+	view.DataModel = a.technicalDataModel(inventory, usages, query)
 	for index := range inventory.Records {
 		record := &inventory.Records[index]
 		directory := view.Components
-		if record.Kind == "system" {
+		switch record.Kind {
+		case "system":
 			directory = view.Systems
+		case "component":
+		default:
+			continue
 		}
 		name, explanation, codeCount := record.Identity.ID, "", 0
 		intent := gapCell("unknown — competing revisions")
@@ -255,25 +261,31 @@ func technicalPage(inventory requirements.Inventory, usages technicalUsageIndex,
 }
 
 // technicalCount is the overview directory's count for Technical design.
-func technicalCount(inventory requirements.Inventory) (int, int) {
-	systems, components := 0, 0
+func technicalCount(inventory requirements.Inventory) (int, int, int) {
+	systems, components, entities := 0, 0, 0
 	for _, record := range inventory.Records {
-		if record.Kind == "system" {
+		switch record.Kind {
+		case "system":
 			systems++
-		} else {
+		case "component":
 			components++
+		case requirements.KindDataEntity:
+			entities++
 		}
 	}
-	return systems, components
+	return systems, components, entities
 }
 
 // technicalOverviewPart is the overview directory's row for Technical design.
 func technicalOverviewPart(inventory requirements.Inventory) overviewPartView {
-	systems, components := technicalCount(inventory)
-	part := overviewPartView{Title: "Technical design", Href: technicalPath,
-		Count: plural(systems, "System", "Systems") + " · " + plural(components, "Component", "Components"),
-		Note:  "The Systems, Components, and data model decks reuse by identity."}
-	if systems+components == 0 {
+	systems, components, entities := technicalCount(inventory)
+	count := plural(systems, "System", "Systems") + " · " + plural(components, "Component", "Components")
+	if entities > 0 {
+		count += " · " + plural(entities, "data entity", "data entities")
+	}
+	part := overviewPartView{Title: "Technical design", Href: technicalPath, Count: count,
+		Note: "The Systems, Components, and data model decks reuse by identity."}
+	if systems+components+entities == 0 {
 		part.Gap = true
 		part.Note = "No technical definitions yet. Run change-saga component add to record a reusable Component."
 	}
@@ -284,7 +296,7 @@ func technicalOverviewPart(inventory requirements.Inventory) overviewPartView {
 // Components, one row per definition opening its canonical page.
 func technicalNav(inventory requirements.Inventory) []*navNodeView {
 	var nodes []*navNodeView
-	for _, kind := range []string{"system", "component"} {
+	for _, kind := range []string{"system", "component", requirements.KindERD, requirements.KindERDOverlay, requirements.KindDataEntity} {
 		for _, record := range inventory.Records {
 			if record.Kind != kind {
 				continue
@@ -294,8 +306,13 @@ func technicalNav(inventory requirements.Inventory) []*navNodeView {
 				title = record.CurrentRevision.Name
 			}
 			node := &navNodeView{Title: title, Href: technicalHref(kind, record.Identity.ID, ""), NodeID: "nav-" + domID(record.Target), Icon: "implementation"}
-			if kind == "system" {
+			switch kind {
+			case "system":
 				node.Icon = "design"
+			case requirements.KindERD, requirements.KindERDOverlay:
+				node.Icon = "split"
+			case requirements.KindDataEntity:
+				node.Icon = "square"
 			}
 			switch {
 			case record.CurrentRevision == nil || record.CurrentLifecycle == nil:
@@ -328,6 +345,7 @@ type technicalEntityView struct {
 	Heads         []technicalRevisionLink
 	CurrentHref   string
 	Definition    *documentationView
+	ERD           *erdView
 	Usages        technicalUsagesView
 	History       []technicalRevisionLink
 	LifecycleNote string
@@ -348,7 +366,7 @@ func (a *app) technicalEntityPage(ctx context.Context, inventory requirements.In
 	if record == nil {
 		return nil, errTechnicalNotFound
 	}
-	view := &technicalEntityView{Kind: kind, KindTitle: strings.ToUpper(kind[:1]) + kind[1:], ID: id, Target: target, Name: id, Lifecycle: technicalLifecycle(record), Requested: revisionID != ""}
+	view := &technicalEntityView{Kind: kind, KindTitle: technicalKindTitle(kind), ID: id, Target: target, Name: id, Lifecycle: technicalLifecycle(record), Requested: revisionID != ""}
 	current := ""
 	if record.CurrentRevision != nil {
 		current = record.CurrentRevision.ID
@@ -379,10 +397,27 @@ func (a *app) technicalEntityPage(ctx context.Context, inventory requirements.In
 	pin := saga.DocumentationLink{Target: target, Revision: target + ":revision:" + revisionID}
 	view.Revision, view.Name, view.Intent = revisionID, revision.Name, technicalIntent(revision)
 	view.PinStatus = inventory.LinkStatus(pin)
+	if kind == requirements.KindERD || kind == requirements.KindERDOverlay {
+		view.Intent = ""
+		view.ERD = a.makeERDView(inventory, record, revision)
+		return view, nil
+	}
 	definition := a.documentationView(ctx, inventory, record, revision, pin)
 	definition.OnPage = true
 	view.Definition = &definition
 	return view, nil
+}
+
+func technicalKindTitle(kind string) string {
+	switch kind {
+	case requirements.KindDataEntity:
+		return "Data entity"
+	case requirements.KindERD:
+		return "ERD"
+	case requirements.KindERDOverlay:
+		return "ERD overlay"
+	}
+	return strings.ToUpper(kind[:1]) + kind[1:]
 }
 
 // technicalRequest serves the page's routes inside the app shell.
@@ -393,7 +428,7 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 	}
 	usages := indexTechnicalUsages(document, inventory)
 	if route.kind == "technical" {
-		return technicalPage(inventory, usages, query.Get("q")), nil, nil
+		return a.technicalPage(inventory, usages, query.Get("q")), nil, nil
 	}
 	entity, err := a.technicalEntityPage(ctx, inventory, usages, route.id, route.sub, query.Get("revision"))
 	return nil, entity, err
@@ -432,15 +467,15 @@ const technicalTemplates = `
 <nav class="technical-jump" aria-label="Technical design sections"><a href="#technical-systems-section">Systems</a><a href="#technical-components-section">Components</a><a href="#technical-data-model">Data model</a></nav>
 <section class="app-page-section" id="technical-systems-section" data-technical-kind="system"><h2>Systems</h2><p class="app-lede">{{.Systems.Lede}}</p>{{template "directory" .Systems}}</section>
 <section class="app-page-section" id="technical-components-section" data-technical-kind="component"><h2>Components</h2><p class="app-lede">{{.Components.Lede}}</p>{{template "directory" .Components}}</section>
-<section class="app-page-section" id="technical-data-model" data-technical-data-model><h2>Data model</h2><p class="app-empty">{{.DataModel}}</p></section>
+<section class="app-page-section" id="technical-data-model" data-technical-data-model><h2>Data model</h2>{{with .DataModel}}{{with .Primary}}<h3><a href="/technical/erd/{{.ID}}">{{.Name}}</a></h3><p class="app-lede">{{.Explanation}}</p>{{template "erd-view" .}}{{else}}<p class="app-empty">No ERD is authored yet. The data entities below remain readable without one.</p>{{end}}{{if .Views}}<h3>ERD views</h3>{{template "trace-links" .Views}}{{end}}<h3>All data entities</h3>{{template "directory" .Entities}}{{end}}</section>
 </section>{{end}}
 
 {{define "technical-entity-page"}}<section class="app-page technical-entity-page" data-technical-entity="{{.Target}}"{{if .Revision}} data-technical-revision="{{.Revision}}"{{end}}><nav class="requirements-breadcrumbs" aria-label="Definition breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span><strong>{{.Name}}</strong></nav>
-<header class="requirement-story-hero"><div><p class="app-page-kind">{{.KindTitle}}</p><h1>{{.Name}}</h1><p class="technical-facts"><span data-technical-fact="revision">Revision <code>{{if .Revision}}{{.Revision}}{{else}}none chosen{{end}}</code></span><span data-technical-fact="intent">Intent: {{if eq .Intent "unspecified"}}<span class="gap">unspecified</span>{{else if .Intent}}{{.Intent}}{{else}}<span class="gap">unknown</span>{{end}}</span><span data-technical-fact="lifecycle">Lifecycle: {{if eq .Lifecycle "conflicted"}}<span class="gap">conflicted</span>{{else}}{{.Lifecycle}}{{end}}</span></p>
+<header class="requirement-story-hero"><div><p class="app-page-kind">{{.KindTitle}}</p><h1>{{.Name}}</h1><p class="technical-facts"><span data-technical-fact="revision">Revision <code>{{if .Revision}}{{.Revision}}{{else}}none chosen{{end}}</code></span>{{if not .ERD}}<span data-technical-fact="intent">Intent: {{if eq .Intent "unspecified"}}<span class="gap">unspecified</span>{{else if .Intent}}{{.Intent}}{{else}}<span class="gap">unknown</span>{{end}}</span>{{end}}<span data-technical-fact="lifecycle">Lifecycle: {{if eq .Lifecycle "conflicted"}}<span class="gap">conflicted</span>{{else}}{{.Lifecycle}}{{end}}</span></p>
 {{if and .Revision (ne .PinStatus "current")}}<p role="status" class="gap" data-technical-pin-status="{{.PinStatus}}">{{if .Requested}}You are reading saved revision <code>{{.Revision}}</code>. It is {{.PinStatus}}; nothing has been repinned.{{else}}This definition is {{.PinStatus}}.{{end}}{{if and .CurrentHref .Requested}} <a href="{{.CurrentHref}}">Read the current definition</a>{{end}}</p>{{end}}
 {{if gt (len .Heads) 1}}<div role="status" class="gap" data-technical-conflict><p>This definition has {{len .Heads}} competing revisions. None is chosen as current; reconciling them names every head.</p><ul>{{range .Heads}}<li><a href="{{.Href}}"{{if .Shown}} aria-current="page"{{end}}><code>{{.ID}}</code></a></li>{{end}}</ul></div>{{end}}
 {{if .LifecycleNote}}<p class="term-state">{{.LifecycleNote}}</p>{{end}}</div></header>
-{{with .Definition}}{{template "documentation" .}}{{end}}
+{{with .Definition}}{{template "documentation" .}}{{end}}{{with .ERD}}<p class="documentation-prose">{{.Explanation}}</p>{{template "erd-view" .}}{{end}}
 <section class="app-page-section" data-technical-used-by><h2>Used by</h2>{{template "technical-usages" .Usages}}</section>
 <section class="app-page-section" data-technical-history><h2>Revision history</h2><ul class="technical-history">{{range .History}}<li><a href="{{.Href}}"{{if .Shown}} aria-current="page"{{end}}><code>{{.ID}}</code></a>{{if .Current}} <small>current</small>{{end}}{{if .Shown}} <small>shown</small>{{end}}</li>{{end}}</ul><p class="term-empty">Opening another revision reads it only; it changes no slide's pin.</p></section>
 </section>{{end}}
