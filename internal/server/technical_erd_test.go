@@ -69,9 +69,9 @@ func dataModelFixture(t *testing.T) (root, repo string, pins map[string]saga.Doc
 func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 	root, repo, pins := dataModelFixture(t)
 	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
-	status, body := technicalGet(t, mux, "/technical")
+	status, body := technicalGet(t, mux, "/technical/erd")
 	if status != 200 {
-		t.Fatalf("technical page: %d %s", status, body)
+		t.Fatalf("ERD page: %d %s", status, body)
 	}
 	report := pins["report"]
 	application := (&erdView{Target: "urn:change-saga:test:erd:application"}).elementPrefix()
