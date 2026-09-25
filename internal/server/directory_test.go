@@ -81,6 +81,7 @@ func TestEachDirectoryRendersAsATableOfCounts(t *testing.T) {
 		{"/terms", "terms", `<th scope="col">Defined in code</th>`},
 		{"/personas", "personas", `<th scope="col" class="numeric">Stories served</th>`},
 		{"/features", "features", `<th scope="col" class="numeric">Accepted</th>`},
+		{"/reviews", "reviews", `<th scope="col" class="numeric">Decisions</th>`},
 	} {
 		body := dogfoodOK(t, page.path)
 		for _, want := range []string{
@@ -99,12 +100,10 @@ func TestEachDirectoryRendersAsATableOfCounts(t *testing.T) {
 			}
 		}
 	}
-	// This repository records no feature flags and no reviews yet, so those
-	// directories state the growth and name the command rather than rendering
-	// an empty table.
+	// This repository records no feature flags yet, so that directory states
+	// the growth and names the command rather than rendering an empty table.
 	for _, want := range []struct{ path, growth, command string }{
 		{"/flags", "No feature flags yet.", "change-saga flag add"},
-		{"/reviews", "No reviews yet.", "change-saga review create"},
 	} {
 		body := dogfoodOK(t, want.path)
 		if !strings.Contains(body, want.growth) || !strings.Contains(body, "<code>"+want.command+"</code>") {

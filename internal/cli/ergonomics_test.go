@@ -239,7 +239,7 @@ func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 		"one app Saga", "Do what the user asks", "smallest scope", "focused code review",
 		"valuable user stories", "accepted", "at least\none pass/fail criterion", "narrowest obligation",
 		"implementation evidence", "implementation change", "cover",
-		"status --against main", "no verdict", "check --covers implementation",
+		"reconcile --against main", "no verdict", "check --covers implementation",
 		"Product:", "prototype", "user stories",
 		"Design:", "UX, UI, and technical design",
 		"Quality:", "test cases",
