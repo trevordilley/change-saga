@@ -12,7 +12,7 @@ import (
 // assets/htmx/VERSION for where each file came from and docs/design/
 // htmx-frontend.md for why.
 //
-//go:embed assets/htmx/htmx.min.js assets/htmx/preload.min.js
+//go:embed assets/htmx/htmx.min.js
 var vendoredScripts embed.FS
 
 // shellAsset is one file every page of a session shares. Its URL names a
@@ -45,7 +45,6 @@ var shellAssets = func() map[string]*shellAsset {
 		{name: "app.css", contentType: "text/css; charset=utf-8", body: []byte(appStyles)},
 		{name: "theme.js", contentType: "text/javascript; charset=utf-8", body: []byte(themeBoot)},
 		{name: "htmx.min.js", contentType: "text/javascript; charset=utf-8", body: vendored("htmx.min.js")},
-		{name: "preload.min.js", contentType: "text/javascript; charset=utf-8", body: vendored("preload.min.js")},
 		{name: "app.js", contentType: "text/javascript; charset=utf-8", body: []byte(appJavaScript)},
 	} {
 		digest := sha256.Sum256(asset.body)

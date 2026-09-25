@@ -15,7 +15,7 @@ func TestShellAssetsAreVersionedAndImmutable(t *testing.T) {
 	fixture := newServerReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	page := getPage(t, handler, "/reviews").Body.String()
-	for _, name := range []string{"app.css", "theme.js", "htmx.min.js", "preload.min.js", "app.js"} {
+	for _, name := range []string{"app.css", "theme.js", "htmx.min.js", "app.js"} {
 		path := assetPath(name)
 		if !strings.Contains(page, `"`+path+`"`) {
 			t.Fatalf("the page does not link %s at %s", name, path)

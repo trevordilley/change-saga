@@ -1,6 +1,6 @@
 # The reviewer frontend on htmx
 
-Status: in progress on `feature/htmx-frontend`.
+Status: implemented on `feature/htmx-frontend`. The measurements are at the end.
 
 ## Why
 
@@ -46,8 +46,8 @@ CONTRIBUTING asks that the core stay dependency-light and local:
 - It is served from the reviewer's own origin. There is no CDN, and nothing is
   fetched at runtime.
 
-The only extension used is `preload`, from the same project and under the same
-license, vendored beside htmx.
+No extension is used. `preload` was considered and left out: see
+[Preloading the next page](#preloading-the-next-page).
 
 ## The persistent shell
 
@@ -56,8 +56,8 @@ layout. Only the first load of a session receives this.
 
 ```
 <head>  title · meta htmx-config · /assets/<v>/app.css · /assets/<v>/theme.js (blocking)
-        /assets/<v>/htmx.min.js, preload.min.js, app.js (defer)
-<body hx-boost="true" hx-target="#page" hx-swap="innerHTML" hx-history="false" hx-ext="preload">
+        /assets/<v>/htmx.min.js, app.js (defer)
+<body hx-boost="true" hx-target="#page" hx-swap="innerHTML" hx-history="false">
   icon sprite
   <header class="topbar"> brand · opening badge · #page-tabs (swapped) </header>
   <div class="shell" data-shell>
@@ -137,8 +137,10 @@ check. The persistent regions (the sidebar and the deck viewer) are the new risk
 the Saga can change after they loaded. The shell therefore records the
 fingerprint of the Saga state it was built from, and handles a change like this:
 
-1. **The browser reports its fingerprint.** It is `data-saga-shell` on
-   `#sidebar-nav`. `app.js` sends it with every htmx request as
+1. **The browser reports its fingerprint.** It is `data-saga-shell` on the
+   sidebar. The fingerprint covers the Saga's documentation files and the
+   source head that linked code resolves against, so a new commit also counts
+   as a new state. `app.js` sends it with every htmx request as
    `X-Saga-Shell`, from one `htmx:configRequest` listener.
 2. **The server compares it with its own.**
    - If they match, the response carries only the page's own blocks.
@@ -173,11 +175,17 @@ renders once per Saga state. The host element in the shell is:
   download then happens in the background, and the swap lands once per session.
   The viewer is hidden until a reader opens a slide. By then it is in place, so
   no slide appears late.
-- **Its slide iframes.** They load as before, eagerly and sandboxed on an opaque
-  origin (`authoredContentPolicy` is unchanged), but once per session instead of
-  once per navigation.
-- **The hotspot SVG measurements.** `prepareSVGElementHotspots` also runs once
-  per session.
+- **Its slide iframes.** They are still sandboxed on an opaque origin
+  (`authoredContentPolicy` is unchanged). The viewer names each frame in
+  `data-frame-src`, and `app.js` loads the frames two at a time in the
+  background, starting with the slide on screen and its neighbours. The first
+  version loaded all 107 frames and the SVG measurements at once. That filled
+  the browser's six HTTP/1.1 connections to the server, so the reader's next
+  page waited behind them for 1–2 s. Opening a slide loads its frame at once,
+  whatever else is loading.
+- **The hotspot SVG measurements.** `prepareSVGElementHotspots` waits until its
+  frame has loaded, so the second read of the file is a revalidation rather
+  than a second download. It runs once per session for the deck.
 - **HTTP caching.** `/decks` answers with `ETag: <fingerprint>` and
   `Cache-Control: no-cache`, so a new session that finds the Saga unchanged
   revalidates with a 304. `/f/…` files get the same validator treatment, so the
@@ -190,13 +198,18 @@ each thumbnail loads once when it first scrolls into view and then stays.
 
 ### Preloading the next page
 
-The `preload` extension fetches a link's partial on `mousedown`. That gives about
-the 80–120 ms between press and click as a head start.
+The `preload` extension fetches a link's partial on `mousedown`, which would give
+about the 80–120 ms between press and click as a head start. It is not used, for
+two reasons:
 
-The extension relies on the browser's HTTP cache, so partials are
-`Cache-Control: private, max-age=2`. A preloaded partial is therefore reused only
-within two seconds of the press that fetched it. Full pages stay uncached. If the
-measurements show no gain, preload is removed.
+- **Little to gain.** A navigation already takes about 50 ms from click to
+  visible heading, and about 15 ms of that is the server rendering the partial.
+- **A cost to correctness.** The extension works through the browser's HTTP
+  cache, so partials would have to become cacheable. A cached partial can then
+  be served after the request that fetched it, which is Saga content older than
+  the page a reader asked for.
+
+Pages and partials therefore stay uncacheable.
 
 ## app.js: run-once setup and per-swap setup
 
@@ -250,8 +263,8 @@ listener becomes a single delegated one.
 
 ## Versioned, cacheable assets
 
-`app.css` (the former inline `<style>`), `theme.js`, `app.js`, `htmx.min.js` and
-`preload.min.js` are served from `/assets/<hash>/<name>`:
+`app.css` (the former inline `<style>`), `theme.js`, `app.js` and `htmx.min.js`
+are served from `/assets/<hash>/<name>`:
 
 - **`<hash>` is a SHA-256 prefix of the file's own bytes**, computed once at
   startup, so every build gets new URLs.
@@ -311,8 +324,8 @@ sidebar links are plain links, and the sidebar state is in the markup.
 ## Links that are not pages
 
 `hx-boost` covers every local link, so a boosted request can reach something
-that is not a page, such as `/f/…` files or `/api/…`. These responses carry
-`HX-Redirect` to the same URL, and the browser loads them as a normal
+that is not a page, such as `/f/…` files or `/api/…`. These responses are a
+`204` with `HX-Redirect` to the same URL, and the browser loads them as a normal
 navigation.
 
 Anchors that `app.js` treats as actions (fragment drawers, history, surface
@@ -355,3 +368,41 @@ links.
 - **Measurements.** `/tmp/browser-measure` records first paint, time from click
   to visible heading, requests per navigation and main-thread time per
   navigation, before and after, and the results are recorded here.
+
+## Results
+
+These were measured on `app.saga` with `/tmp/browser-measure/navmeasure.js`. The
+setup:
+
+- Chromium at 1440×900, against a warm local server, on one machine.
+- Each figure is a median.
+- "Before" is `df8b3760` (the parent branch) and "after" is this branch.
+
+**First load of `/features/visual-review`:**
+
+| | before | after |
+|---|---|---|
+| document | 2.64 MB | 383 KB |
+| first contentful paint (cold cache) | 96 ms | 72 ms |
+| first contentful paint (repeat visit) | 92 ms | 92 ms |
+| load event | ~1,040 ms | 71 ms |
+
+**Per navigation (click a link, until the new page's `h1` is visible):**
+
+| to | before | after | requests before → after | main-thread task time before → after |
+|---|---|---|---|---|
+| another feature | 1,147 ms | 89 ms | 226 → 22 | 1,054 → 110 ms |
+| a persona | 1,135 ms | 47 ms | 205 → 1 | 1,010 → 41 ms |
+| the overview | 1,063 ms | 50 ms | 208 → 4 | 1,048 → 52 ms |
+| a feature | 986 ms | 66 ms | 210 → 1 | 1,038 → 44 ms |
+| terms | 1,229 ms | 232 ms | 205 → 1 | 1,072 → 45 ms |
+| reviews | 2,627 ms | 1,934 ms | 205 → 1 | 1,029 → 47 ms |
+
+- **Remaining time on terms and reviews** is on the server. `/terms` takes about
+  200 ms to render and `/reviews` takes 1.5–2 s, the same on both builds. It is
+  outside this change.
+- **The 22 requests on a feature page** are that page's own SVG hotspot
+  measurements.
+- **Partial sizes.** A partial is 7–25 KB. The sidebar (357 KB, 418 rows) and
+  the deck viewer (2.4 MB) load once per session.
+
