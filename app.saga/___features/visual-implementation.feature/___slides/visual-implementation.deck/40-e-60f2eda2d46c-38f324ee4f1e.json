@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "16b6587c91b2c608d17868b1d3bbd59ec90784fc",
+      "path": "internal/server/server.go",
+      "start": 1656,
+      "end": 1665,
+      "digest": "sha256:c13de9ec55a43c72c71720b310643cc9c3987f41f7b02badc019194097b04de7",
+      "note": "Applies a restrictive Content Security Policy before streaming a regular slide asset to the browser."
+    },
+    {
+      "commit": "16b6587c91b2c608d17868b1d3bbd59ec90784fc",
+      "path": "internal/server/server.go",
+      "start": 1817,
+      "end": 1822,
+      "digest": "sha256:835e2d2dc36442fbdfe1f4ed4baa105856261e5e1b87f2f65b1272ec787929ec",
+      "note": "Applies a restrictive Content Security Policy before streaming a regular slide asset to the browser."
+    }
+  ]
+}

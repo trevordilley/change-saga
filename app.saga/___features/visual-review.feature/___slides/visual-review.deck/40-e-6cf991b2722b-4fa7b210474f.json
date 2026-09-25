@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "16b6587c91b2c608d17868b1d3bbd59ec90784fc",
       "path": "internal/server/reviews.go",
-      "start": 479,
-      "end": 516,
-      "digest": "sha256:66306114aaf797eae31d47d70d2dfe0401382c38d511c65b6fcb2246ed4ceaaa",
+      "start": 506,
+      "end": 543,
+      "digest": "sha256:dc3267f1ac7bb26cdd4f44c0e7db8a858c8366bd009085fb791c99295e0ba119",
       "note": "Serves isolated slide assets and gates comment mutations before invoking storage."
     }
   ]
