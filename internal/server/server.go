@@ -174,6 +174,69 @@ type pageData struct {
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
+	// ShellVersion is the state of the Saga the page was read from. The
+	// sidebar and the deck viewer are loaded once and kept across pages; the
+	// version they were loaded at says whether a later page still agrees
+	// with them. Empty when the Saga could not be fingerprinted, which no
+	// kept part ever matches.
+	ShellVersion string
+	// StaleShell says the browser asking for this page as a partial holds a
+	// sidebar and deck viewer from another state of the Saga, so the partial
+	// replaces them too.
+	StaleShell bool
+}
+
+// oobView is one part of the page as the layout composes it, or as a
+// partial swaps it in out of band. Each part is defined once and says only
+// whether it is swapped out of band; nothing else differs between the two.
+type oobView struct {
+	*pageData
+	OOB bool
+}
+
+// oobPart is one part of data, swapped out of band or not. Rendering tests
+// pass the page by value; the server passes a pointer.
+func oobPart(data any, swap bool) (oobView, error) {
+	switch page := data.(type) {
+	case *pageData:
+		return oobView{pageData: page, OOB: swap}, nil
+	case pageData:
+		return oobView{pageData: &page, OOB: swap}, nil
+	}
+	return oobView{}, fmt.Errorf("oob: %T is not a page", data)
+}
+
+// Page is the page the part belongs to, for parts that compose others.
+func (view oobView) Page() *pageData { return view.pageData }
+
+// navStateView is what a page decides about the sidebar, which is otherwise
+// the same on every page: the rows it marks current, the places it opens,
+// and the sections it hides. Each is a space-separated list of row IDs.
+type navStateView struct {
+	Current, Expanded, Hidden string
+}
+
+func navState(nodes []*navNodeView) navStateView {
+	var current, expanded, hidden []string
+	var walk func([]*navNodeView)
+	walk = func(nodes []*navNodeView) {
+		for _, node := range nodes {
+			if node.NodeID != "" {
+				if node.Active {
+					current = append(current, node.NodeID)
+				}
+				if node.Expanded && len(node.Children) > 0 {
+					expanded = append(expanded, node.NodeID)
+				}
+				if node.Hidden {
+					hidden = append(hidden, node.NodeID)
+				}
+			}
+			walk(node.Children)
+		}
+	}
+	walk(nodes)
+	return navStateView{Current: strings.Join(current, " "), Expanded: strings.Join(expanded, " "), Hidden: strings.Join(hidden, " ")}
 }
 
 // coverageTotalsView is the coverage state a reviewer needs before deciding
@@ -883,6 +946,8 @@ func templateFuncs() template.FuncMap {
 		"fileIcon":             fileIcon,
 		"lower":                strings.ToLower,
 		"asset":                assetPath,
+		"oob":                  oobPart,
+		"navState":             navState,
 		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
 			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
 		},
@@ -906,7 +971,34 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
+	a.renderPage(w, r, data, "The review page could not be rendered.")
+}
+
+// renderPage answers for one page of the app: the whole page, or, when htmx
+// asks for it to replace the page on screen, the page's parts. Both are
+// rendered from the same blocks, so a page reached by a link and the same
+// URL loaded afresh cannot differ.
+func (a *app) renderPage(w http.ResponseWriter, r *http.Request, data *pageData, failure string) {
+	w.Header().Add("Vary", pageVary)
+	name := "page"
+	if partialPageRequest(r) {
+		name = "page-partial"
+		data.StaleShell = data.ShellVersion == "" || r.Header.Get("X-Saga-Shell") != data.ShellVersion
+	}
+	renderHTML(w, a.template, name, data, failure)
+}
+
+// pageVary names the request headers a page's answer depends on.
+const pageVary = "HX-Request, HX-Target, HX-History-Restore-Request, X-Saga-Shell"
+
+// partialPageRequest says htmx is asking for a page to swap into the one on
+// screen: a boosted link or form, which targets #page, or a step back or
+// forward, which restores into it.
+func partialPageRequest(r *http.Request) bool {
+	if r.Header.Get("HX-Request") != "true" {
+		return false
+	}
+	return r.Header.Get("HX-Target") == "page" || r.Header.Get("HX-History-Restore-Request") == "true"
 }
 
 // chapterRedirect keeps /chapters/{id} links working: an app chapter opens on
@@ -1071,6 +1163,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		appReport.Children = append(appReport.Children, child)
 	}
 	data := &pageData{
+		ShellVersion:  files.fingerprint,
 		Opening:       openingLabel(a.rng),
 		Comparing:     !a.rng.Observe(),
 		Saga:          document,

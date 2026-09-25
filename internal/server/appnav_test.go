@@ -164,12 +164,12 @@ func TestEachSideListsWhatItIsAbout(t *testing.T) {
 		{ReviewManifest: saga.ReviewManifest{ID: "untitled"}},
 	}
 
-	if got, want := topTitles(makeAppNavTree(sources)), "Overview|Features"; got != want {
+	if got, want := topTitles(shownNav(makeAppNavTree(sources))), "Overview|Features"; got != want {
 		t.Fatalf("documentation sidebar = %s, want %s", got, want)
 	}
 
 	sources.reviewSide = true
-	nodes := makeAppNavTree(sources)
+	nodes := shownNav(makeAppNavTree(sources))
 	if got, want := topTitles(nodes), "Overview|Reviews"; got != want {
 		t.Fatalf("review sidebar = %s, want %s", got, want)
 	}
@@ -594,7 +594,8 @@ func TestTheSidebarOpensThePagesFeatureAndStoresNothing(t *testing.T) {
 		if cookies := recorder.Result().Cookies(); len(cookies) != 0 {
 			t.Fatalf("%s wrote %#v", want.path, cookies)
 		}
-		if vary := recorder.Result().Header.Values("Vary"); len(vary) != 0 {
+		// The answer varies only by how htmx asks for it, never by the reader.
+		if vary := strings.Join(recorder.Result().Header.Values("Vary"), ", "); vary != pageVary {
 			t.Fatalf("%s varies by %v", want.path, vary)
 		}
 	}
@@ -688,8 +689,8 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 		}
 	}
 	// The onboarding slide renders under Onboarding, before the features. The
-	// billing slide renders inside Billing, on the page that opens it, and
-	// nowhere else.
+	// billing slide renders inside Billing's Implementation on every page, and
+	// is shown only where Billing is open.
 	sidebarSlide := func(body, slide string) int {
 		marker := `class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="` + saga.SlideTarget("shop", slide) + `"`
 		if count := strings.Count(body, marker); count != 1 {
@@ -701,9 +702,9 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	if welcome := sidebarSlide(html, "who-it-serves"); welcome < onboarding || welcome > features {
 		t.Fatalf("the onboarding slide is not under Onboarding: onboarding=%d slide=%d features=%d", onboarding, welcome, features)
 	}
-	chargeMarker := `class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="` + saga.SlideTarget("shop", "charge") + `"`
-	if strings.Contains(html, chargeMarker) {
-		t.Fatal("a feature's slide is in the sidebar of a page outside that feature")
+	billingChildren := `<div class="doc-children" id="` + featureNavID("billing") + `"`
+	if charge, shut := sidebarSlide(html, "charge"), strings.Index(html, billingChildren+` hidden>`); shut < 0 || charge < shut {
+		t.Fatal("a feature's slide is shown in the sidebar of a page outside that feature")
 	}
 	if charge := sidebarSlide(billing, "charge"); charge < strings.Index(billing, `id="`+featureNavID("billing")+`-implementation"`) ||
 		charge < strings.Index(billing, `id="nav-features"`) {

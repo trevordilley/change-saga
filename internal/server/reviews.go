@@ -317,7 +317,7 @@ func (a *app) inShell(w http.ResponseWriter, r *http.Request, name string, view 
 	}
 	data.Reviews = template.HTML(body.String())
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	renderHTML(w, a.template, "page", data, "The review could not be rendered.")
+	a.renderPage(w, r, data, "The review could not be rendered.")
 }
 
 // reviewCoverage renders every uncovered change as the diff row it is: a
