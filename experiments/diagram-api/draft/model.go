@@ -257,6 +257,11 @@ func (d Document) Validate() error {
 			if !ok || g.Kind != "group" {
 				return fmt.Errorf("%s: missing parent group %s", id, p)
 			}
+			// A decorative group is aria-hidden and absent from describe, which
+			// would hide this element from assistive technology and readers.
+			if g.Decorative && !e.Decorative {
+				return fmt.Errorf("%s: semantic element inside decorative group %s", id, p)
+			}
 			p = g.Parent
 		}
 	}

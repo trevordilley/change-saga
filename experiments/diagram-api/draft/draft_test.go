@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -383,5 +384,58 @@ func TestDescribeTextQuotesStructureBreakingProse(t *testing.T) {
 		if !strings.Contains(text, line+"\n") {
 			t.Fatalf("missing %q:\n%s", line, text)
 		}
+	}
+}
+
+func TestSemanticElementsCannotHideInDecorativeGroups(t *testing.T) {
+	d := New("hidden", "Hidden")
+	d.Elements["frame"] = Element{ID: "frame", Kind: "group", Style: "normal", Decorative: true}
+	d.Elements["label"] = Element{ID: "label", Kind: "text", Style: "normal", Label: "Seen", Parent: "frame", W: 100, H: 30}
+	if err := d.Validate(); err == nil || !strings.Contains(err.Error(), "semantic element inside decorative group frame") {
+		t.Fatalf("expected decorative-group refusal, got %v", err)
+	}
+	e := d.Elements["label"]
+	e.Decorative = true
+	d.Elements["label"] = e
+	if err := d.Validate(); err != nil {
+		t.Fatalf("decorative children of decorative groups stay valid: %v", err)
+	}
+}
+
+func TestStricterRulesStillAllowReadAndRepair(t *testing.T) {
+	s, r := create(t)
+	add := func(e Element) Operation { return Operation{Op: "add", Element: &e} }
+	_, err := s.Apply(Request{Version: 1, RequestID: "frame", Expected: r.Snapshot, Operations: []Operation{
+		add(Element{ID: "frame", Kind: "group", Style: "normal"}),
+		add(Element{ID: "caption", Kind: "text", Style: "normal", Label: "Seen", Parent: "frame", X: 65, Y: 600, W: 200, H: 30}),
+	}}, false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Simulate a record published before the decorative-group rule existed.
+	rec, err := s.Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	frame := rec.Source.Elements["frame"]
+	frame.Decorative = true
+	rec.Source.Elements["frame"] = frame
+	rec.Snapshot = Snapshot(rec.Source)
+	b, _ := json.Marshal(rec)
+	if err = os.WriteFile(filepath.Join(s.Root, "current.json"), b, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err = s.Load(); err != nil {
+		t.Fatalf("older record must stay readable: %v", err)
+	}
+	report, err := s.Check()
+	if err != nil || report["rebuildable"] != false || !strings.Contains(fmt.Sprint(report["validation_error"]), "inside decorative group frame") {
+		t.Fatalf("check must report the rule violation: %v %v", report, err)
+	}
+	if _, err = s.Apply(Request{Version: 1, RequestID: "unrelated", Expected: rec.Snapshot, Operations: []Operation{{Op: "move", ID: "author", DX: 1}}}, false); err == nil {
+		t.Fatal("publishing must still refuse a result that breaks the rule")
+	}
+	if _, err = s.Apply(Request{Version: 1, RequestID: "repair", Expected: rec.Snapshot, Operations: []Operation{{Op: "update", ID: "frame", Set: json.RawMessage(`{"decorative":false}`)}}}, false); err != nil {
+		t.Fatalf("repair edit must publish: %v", err)
 	}
 }

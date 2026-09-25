@@ -74,9 +74,8 @@ func (s Store) Load() (Record, error) {
 	if err = Decode(b, &r); err != nil {
 		return r, err
 	}
-	if err = r.Source.Validate(); err != nil {
-		return r, err
-	}
+	// Load checks integrity only. Authoring rules are enforced when publishing
+	// and reported by Check, so a stricter rule never locks out the repair edit.
 	if Snapshot(r.Source) != r.Snapshot || !digestPattern.MatchString(r.SVGHash) {
 		return r, fmt.Errorf("source snapshot mismatch or invalid SVG digest")
 	}
@@ -319,6 +318,9 @@ func (s Store) Check() (map[string]any, error) {
 		return nil, err
 	}
 	out := map[string]any{"snapshot": r.Snapshot, "svg_hash": r.SVGHash}
+	if err := r.Source.Validate(); err != nil {
+		out["validation_error"] = err.Error()
+	}
 	_, err = s.Visual(r)
 	out["visual_ok"] = err == nil
 	if err != nil {
