@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/technical.go",
+      "start": 719,
+      "end": 719,
+      "digest": "sha256:d2e0f2d92acd26765182100aa1ab8e10bd0e6bae314772725001ae53049e36bd",
+      "note": "Added: the ERD area page and an ERD's own page carry the full-width class."
+    },
+    {
+      "commit": "996eabc0856796311b7a0e2710358a539c2ff97c",
+      "path": "internal/server/technical.go",
+      "start": 724,
+      "end": 724,
+      "digest": "sha256:5ae3bcc70abce734062da6fd13a75a17101c7193fc8bc8ca19e8de6e4110f0a2",
+      "note": "Added: the ERD area page and an ERD's own page carry the full-width class."
+    }
+  ]
+}

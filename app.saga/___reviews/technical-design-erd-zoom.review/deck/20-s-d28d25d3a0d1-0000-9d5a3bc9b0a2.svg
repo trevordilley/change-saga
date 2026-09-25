@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">A large ERD zooms and pans in its own region</title><desc id="desc">ERD pages take the full width; the drawing opens fitted inside a focusable scroll region with a zoom toolbar, keys, mouse drag and touch panning.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">REVIEW · ERD ZOOM / 1</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">A large ERD zooms and pans in its own region</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">The 1580×1604 drawing read at 8–10px in a 940px column; now it fills the page and zooms.</text>
+<g id="page-width"><rect x="60" y="185" width="330" height="330" rx="10" fill="#fdf1f1" stroke="#9e1f1f" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="78" y="214" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#9e1f1f" letter-spacing="1">BEFORE · 940px COLUMN</text>
+<rect x="100" y="240" width="170" height="172" fill="white" stroke="#4d6278"/>
+<text x="112" y="330" font-family="Helvetica, Arial, sans-serif" font-size="9" fill="#4d6278">tiny entity text</text>
+<text x="78" y="450" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">ERD pages now drop the 940px cap:</text>
+<text x="78" y="474" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">the ERD area page and an ERD's page</text>
+<text x="78" y="498" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">take the full content width.</text>
+</g>
+<path d="M390 350L430 350" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="region"><rect x="430" y="185" width="440" height="330" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<rect x="450" y="205" width="36" height="32" rx="6" fill="white" stroke="#4d6278"/><text x="462" y="227" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">−</text>
+<text x="500" y="227" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">121%</text>
+<rect x="550" y="205" width="36" height="32" rx="6" fill="#eef1f4" stroke="#4d6278"/><text x="561" y="227" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">+</text>
+<rect x="598" y="205" width="86" height="32" rx="6" fill="white" stroke="#4d6278"/><text x="608" y="226" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#17324d">Fit width</text>
+<rect x="450" y="250" width="400" height="245" fill="#f6f8fa" stroke="#1f5f9e" stroke-dasharray="5 4"/>
+<rect x="470" y="270" width="230" height="140" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="486" y="306" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Deck</text>
+<text x="486" y="340" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">id · role · title</text>
+<text x="466" y="470" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#4d6278">focusable scroll region; opens fitted</text>
+</g>
+<path d="M870 350L910 350" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="controls"><rect x="910" y="185" width="310" height="330" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="928" y="214" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">WAYS IN</text>
+<text x="928" y="248" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#17324d">Toolbar: − level + Fit width</text>
+<text x="928" y="280" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#17324d">Keys: + − 0 in the region</text>
+<text x="928" y="312" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#17324d">Mouse: drag pans; a drag</text>
+<text x="928" y="334" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#17324d">never opens an entity</text>
+<text x="928" y="366" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#17324d">Touch: the region pans;</text>
+<text x="928" y="388" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#17324d">44px buttons</text>
+<text x="928" y="430" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">Zoom keeps the centre in place;</text>
+<text x="928" y="452" font-family="Helvetica, Arial, sans-serif" font-size="15" fill="#4d6278">bound entities stay clickable.</text>
+</g>
+<rect x="60" y="560" width="1160" height="90" rx="10" fill="#e6eef6"/><text x="84" y="598" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">No zoom control existed in the reviewer to reuse, so the toolbar uses the existing button tokens.</text>
+<text x="84" y="628" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">Pinch still zooms the whole page; the drawing zooms with the toolbar and keys.</text>
+</svg>

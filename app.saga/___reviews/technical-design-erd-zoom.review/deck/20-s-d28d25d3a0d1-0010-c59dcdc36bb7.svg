@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">How the zoom is checked</title><desc id="desc">Go tests pin the markup; a browser test zooms and pans a 1600px drawing by every input; the note records it.</desc>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">REVIEW · ERD ZOOM / 2</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">How the zoom is checked</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Markup in Go, behaviour in a browser, and the note's known gap narrowed to pinch.</text>
+<g id="go-tests"><rect x="60" y="185" width="560" height="220" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="80" y="215" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">GO · internal/server</text>
+<text x="80" y="250" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">The markup is pinned</text>
+<text x="80" y="284" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">ERD pages carry the full-width class</text>
+<text x="80" y="310" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">the toolbar ships hidden until app.js runs</text>
+<text x="80" y="336" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">the drawing sits in a focusable region</text>
+<text x="80" y="362" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">the Systems page stays in its column</text>
+</g>
+<g id="browser"><rect x="660" y="185" width="560" height="220" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="680" y="215" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">PLAYWRIGHT · a 1600px drawing</text>
+<text x="680" y="250" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#17324d">Every input, one test</text>
+<text x="680" y="284" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">toolbar widens the drawing, never the page</text>
+<text x="680" y="310" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">mouse drag pans and opens nothing</text>
+<text x="680" y="336" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">0 fits, + zooms, Tab and Enter open the entity</text>
+<text x="680" y="362" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">390px touch: 44px buttons, region pans</text>
+</g>
+<g id="note"><rect x="60" y="440" width="1160" height="150" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="80" y="470" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">IMPLEMENTATION NOTE</text>
+<text x="80" y="506" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">docs/technical-inventory-ui-implementation.md describes the ERD pages' width and zoom,</text>
+<text x="80" y="536" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">the browser test, and the one remaining gap: a pinch zooms the page, not the drawing.</text>
+</g>
+</svg>

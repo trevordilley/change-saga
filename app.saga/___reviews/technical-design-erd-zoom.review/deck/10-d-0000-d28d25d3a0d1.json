@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "technical-design-erd-zoom",
+  "title": "ERD pages: full width, zoom and pan",
+  "role": "review",
+  "rank": 0,
+  "objective": "Make the 1580x1604 application ERD readable: ERD pages take the full width and the drawing zooms and pans by toolbar, keyboard, mouse and touch."
+}
