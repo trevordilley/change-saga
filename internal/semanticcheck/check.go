@@ -167,6 +167,14 @@ func readSnapshot(ctx context.Context, repo, sagaPath, ref, commit string) (snap
 		_ = cmd.Wait()
 		return snapshot{}, fmt.Errorf("read %s at ref %q: %w", sagaPath, ref, err)
 	}
+	// The tar reader stops at the end-of-archive marker, but git pads the
+	// stream to a whole record after it. Windows pipes buffer far less than
+	// that padding, so git blocks writing it unless the rest is read.
+	if _, err := io.Copy(io.Discard, archive); err != nil {
+		_ = cmd.Process.Kill()
+		_ = cmd.Wait()
+		return snapshot{}, fmt.Errorf("read %s at ref %q: %w", sagaPath, ref, err)
+	}
 	if err := cmd.Wait(); err != nil {
 		return snapshot{}, fmt.Errorf("read %s at ref %q: %w: %s", sagaPath, ref, err, strings.TrimSpace(stderr.String()))
 	}
