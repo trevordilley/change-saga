@@ -587,7 +587,7 @@ const technicalTemplates = `
 `
 
 const technicalStyles = `
-.technical-page .directory,.technical-entity-page .documentation-explanation{max-width:100%;overflow-x:auto}
+.technical-entity-page .documentation-explanation{max-width:100%;overflow-x:auto}
 .technical-page .directory-table{min-width:640px}
 .technical-page .directory-filter{flex-wrap:wrap}
 .technical-jump{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 8px;font:500 13px var(--ui)}
