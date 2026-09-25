@@ -2,9 +2,9 @@ package server
 
 import (
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
-	"net/http/httptest"
 	"strings"
 	"testing"
 
