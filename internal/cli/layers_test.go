@@ -78,6 +78,7 @@ func affectedBy(layers *changeview.Layers, urn string) []changeview.Cause {
 // A change that edits only code still lights up the design that references
 // it, the story the design addresses, and the persona the story serves.
 func TestCodeOnlyChangeLightsUpTheChain(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "checkout", "-b", "retry")
 	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\n// Enqueue sends a job to SQS.\nfunc Enqueue(job string) error {\n\treturn retry(3, func() error { return sqs.Send(job) })\n}\n")
@@ -110,6 +111,7 @@ func TestCodeOnlyChangeLightsUpTheChain(t *testing.T) {
 // A story revision is Changed with its before and after, and the relation
 // pinned to its old revision is Affected.
 func TestStoryRevisionIsChangedWithBeforeAndAfter(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "checkout", "-b", "once")
 	mustRun(t, Story, "revise", "--story", "urn:change-saga:shop:story:pay", "--revision", "r2", "--parent", "urn:change-saga:shop:story:pay:revision:r1",
@@ -138,6 +140,7 @@ func TestStoryRevisionIsChangedWithBeforeAndAfter(t *testing.T) {
 
 // Observing has no change, so it reports no layers at all.
 func TestObserveHasNoLayers(t *testing.T) {
+	t.Parallel()
 	_, root := shopSaga(t)
 	status, raw := statusLayers(t, root)
 	if status.Opening.Mode != "observe" || status.Comparison != nil || raw["comparison"] != nil {
@@ -151,6 +154,7 @@ func TestObserveHasNoLayers(t *testing.T) {
 // A Saga created on the branch did not exist at the merge-base, so every
 // record it holds is added.
 func TestSagaAbsentAtTheBaseIsAllAdded(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "branch", "-m", "main", "feature")
 	git(t, repo, "checkout", "-b", "main", "HEAD~1")
@@ -194,6 +198,7 @@ func removeSlides(t *testing.T, repo, root string) {
 // the commit that replaced them sits beside both, and the new slide's
 // history names what it replaced and the comparison that opens it.
 func TestReplacedSlidePairsWithItsReplacementAndItsReason(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	mustRun(t, AddDeck, "--feature", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
 	addQueueSlide(t, root, "sqs", "Jobs go through SQS")
@@ -249,6 +254,7 @@ func TestReplacedSlidePairsWithItsReplacementAndItsReason(t *testing.T) {
 // When two new records could each replace the dropped one, the pair is
 // ambiguous until an explicit supersedes relation decides it.
 func TestAmbiguousReplacementNeedsAnExplicitLink(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	mustRun(t, AddDeck, "--feature", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
 	addQueueSlide(t, root, "sqs", "Jobs go through SQS")
@@ -284,6 +290,7 @@ func TestAmbiguousReplacementNeedsAnExplicitLink(t *testing.T) {
 // ___merges record repin writes keeps the branch messages, and they sit
 // beside the records the squash commit touched.
 func TestSquashMergeKeepsItsBranchReasons(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "checkout", "-b", "retry")
 	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\n// Enqueue sends a job to SQS.\nfunc Enqueue(job string) error {\n\treturn retry(3, func() error { return sqs.Send(job) })\n}\n")
@@ -314,6 +321,7 @@ func TestSquashMergeKeepsItsBranchReasons(t *testing.T) {
 // comes from the code repository and the Saga delta from the Saga commit
 // whose sync cursor named the merge-base.
 func TestCompanionSagaComparesThroughItsSyncCursor(t *testing.T) {
+	t.Parallel()
 	code := t.TempDir()
 	git(t, code, "init", "-b", "main")
 	git(t, code, "config", "user.name", "Code Author")

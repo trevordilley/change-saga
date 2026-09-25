@@ -79,6 +79,7 @@ func slideTransactionRequest(t *testing.T, repo, base, commit, sagaID, requestID
 }
 
 func TestApplySlideTransactionCreateUpdateRetryAndGuards(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
 
@@ -175,6 +176,7 @@ func TestApplySlideTransactionCreateUpdateRetryAndGuards(t *testing.T) {
 }
 
 func TestApplySlideCommandPublishesStructuredRequest(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	request := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-cli", "create", "absent", "node-cli")
 	data, err := json.Marshal(request)
@@ -277,6 +279,7 @@ func TestApplySlideTransactionPreservesReferencedAssetAfterPublishedWriteFailure
 }
 
 func TestSlideTransactionAssetPathRejectsTraversalAndSymlinks(t *testing.T) {
+	t.Parallel()
 	base := t.TempDir()
 	outside := filepath.Join(t.TempDir(), "outside.svg")
 	writeFile(t, outside, `<svg xmlns="http://www.w3.org/2000/svg"/>`)
@@ -292,6 +295,7 @@ func TestSlideTransactionAssetPathRejectsTraversalAndSymlinks(t *testing.T) {
 }
 
 func TestApplySlideTransactionMigratesLegacySlideWithoutChangingStableIDs(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	var output bytes.Buffer
 	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--id", "flow", "--intent", "explain", "--layout", "diagram", "--title", "Legacy flow", "--takeaway", "The original slide remains history.", root, "flow"}, &output); err != nil {
@@ -334,6 +338,7 @@ func TestApplySlideTransactionMigratesLegacySlideWithoutChangingStableIDs(t *tes
 }
 
 func TestLegacySlideAndCoverageCommandsRefuseTransactionManagedTargets(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)
@@ -414,6 +419,7 @@ func TestLegacySlideAndCoverageCommandsRefuseTransactionManagedTargets(t *testin
 }
 
 func TestTransactionLinksUseCanonicalQueryTraceabilityAuditAndCurrencyGraph(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)
@@ -496,6 +502,7 @@ func TestTransactionLinksUseCanonicalQueryTraceabilityAuditAndCurrencyGraph(t *t
 }
 
 func TestDivergentTransactionHistoriesPreserveHeadsAndReconcile(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)

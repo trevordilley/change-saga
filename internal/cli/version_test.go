@@ -6,6 +6,7 @@ import (
 )
 
 func TestVersionStringUsesInjectedMetadata(t *testing.T) {
+	t.Parallel()
 	info := &debug.BuildInfo{
 		Main: debug.Module{Version: "v9.8.7"},
 		Settings: []debug.BuildSetting{
@@ -20,6 +21,7 @@ func TestVersionStringUsesInjectedMetadata(t *testing.T) {
 }
 
 func TestVersionStringUsesModuleBuildInfoForGoInstall(t *testing.T) {
+	t.Parallel()
 	info := &debug.BuildInfo{
 		Main: debug.Module{Version: "v1.4.2"},
 		Settings: []debug.BuildSetting{
@@ -34,6 +36,7 @@ func TestVersionStringUsesModuleBuildInfoForGoInstall(t *testing.T) {
 }
 
 func TestVersionStringKeepsDevelopmentDefaultForLocalBuild(t *testing.T) {
+	t.Parallel()
 	info := &debug.BuildInfo{Main: debug.Module{Version: "(devel)"}}
 	if got := versionString("0.2.0-dev", "", "", info); got != "0.2.0-dev" {
 		t.Fatalf("versionString() = %q, want local development version", got)

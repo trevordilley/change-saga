@@ -74,6 +74,7 @@ func loadSlide(t *testing.T, root string) *saga.Slide {
 // A wrong label is fixed with a command, not a hand edit; repeating the same
 // revise writes nothing and says so.
 func TestReviseItemCorrectsFieldsInPlaceAndReplays(t *testing.T) {
+	t.Parallel()
 	root := contentSaga(t)
 	item := "urn:change-saga:batch:slide:flow:item:handler"
 	result, err := runContentJSON(t, ReviseItem, "--item", item, "--label", "Handler", "--rank", "40", root)
@@ -99,6 +100,7 @@ func TestReviseItemCorrectsFieldsInPlaceAndReplays(t *testing.T) {
 // An edit that would make the Saga invalid is refused and leaves every file
 // as it was.
 func TestContentEditThatInvalidatesTheSagaChangesNothing(t *testing.T) {
+	t.Parallel()
 	root := contentSaga(t)
 	before := snapshotFiles(t, root)
 	if _, err := runContentJSON(t, ReviseItem, "--item", "why", "--slide", "flow", "--kind", "node", root); err == nil || !strings.Contains(err.Error(), "callout-only") {
@@ -132,6 +134,7 @@ func snapshotFiles(t *testing.T, root string) map[string]string {
 // Removing an Item deletes its record and evidence and drops it from the
 // reading order; a callout about it must go first.
 func TestRemoveItemDeletesEvidenceAndReadingOrder(t *testing.T) {
+	t.Parallel()
 	root := contentSaga(t)
 	if _, err := runContentJSON(t, RemoveItem, "--item", "handler", "--slide", "flow", root); err == nil || !strings.Contains(err.Error(), "is about handler") {
 		t.Fatalf("remove of a callout's subject = %v", err)
@@ -156,6 +159,7 @@ func TestRemoveItemDeletesEvidenceAndReadingOrder(t *testing.T) {
 // Removing a slide, deck, or chapter removes what it contains and names the
 // relations left pointing at it.
 func TestRemoveContainers(t *testing.T) {
+	t.Parallel()
 	root := contentSaga(t)
 	var output bytes.Buffer
 	if err := Story(context.Background(), []string{"add", "--feature", testFeature, "--id", "handle", "--revision", "r1", "--event", "proposed", "--title", "Handle", "--statement", "As a user I want requests handled so that I am served", "--priority", "must", root}, &output); err != nil {
@@ -188,6 +192,7 @@ func TestRemoveContainers(t *testing.T) {
 
 // A kind mismatch is refused rather than editing some other record.
 func TestNarrativeEditsRefuseOtherKinds(t *testing.T) {
+	t.Parallel()
 	root := contentSaga(t)
 	if _, err := runContentJSON(t, ReviseFragment, "--target", "urn:change-saga:batch:chapter:service", "--title", "X", root); err == nil || !strings.Contains(err.Error(), "not a fragment") {
 		t.Fatalf("revise-fragment of a chapter = %v", err)

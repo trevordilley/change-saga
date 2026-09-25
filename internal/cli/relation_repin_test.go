@@ -17,6 +17,7 @@ import (
 // relation keeps its id, its rationale, and the record of every revision
 // anyone read it against.
 func TestRelationRepinKeepsTheRelationAndRecordsWhatWasConfirmed(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	root := newLivingSaga(t)
 	if err := addCheckoutStory(t, root, "checkout"); err != nil {

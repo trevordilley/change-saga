@@ -28,6 +28,7 @@ var shippedSkills = []struct {
 }
 
 func TestInstallSkillPrintsTheSkillFilesVerbatim(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := InstallSkill(nil, &output); err != nil {
 		t.Fatal(err)
@@ -86,6 +87,7 @@ func TestInstallSkillPrintsTheSkillFilesVerbatim(t *testing.T) {
 // it. Build a temporary installed fixture rather than reading repository files
 // so this covers the same package users receive from install-skill.
 func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
+	t.Parallel()
 	root := t.TempDir()
 	for _, file := range skills.ChangeSaga() {
 		path := filepath.Join(root, filepath.FromSlash(file.Path))
@@ -235,6 +237,7 @@ const (
 // Run with CHANGE_SAGA_UPDATE_SKILL=1 to regenerate the list after changing
 // the query operations.
 func TestSkillQueryReferenceListsExactlyTheQueryOperations(t *testing.T) {
+	t.Parallel()
 	path := filepath.Join("..", "..", "skills", "change-saga", "references", "query.md")
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -296,6 +299,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 }
 
 func TestSkillCommandTableCoversEveryCommand(t *testing.T) {
+	t.Parallel()
 	for _, command := range commandOrder {
 		if skillCommands[command] == nil {
 			t.Errorf("skillCommands has no entry for %q", command)
@@ -424,6 +428,7 @@ func skillInvocations(content string) []string {
 }
 
 func TestSkillNamesOnlyRealCommandsAndFlags(t *testing.T) {
+	t.Parallel()
 	mention := regexp.MustCompile(`(?:^|[^\w:/-])change-saga ([a-z][a-z0-9 -]*)`)
 	frontmatter := regexp.MustCompile(`(?s)\A---\n.*?\n---\n`)
 	for _, skill := range shippedSkills {

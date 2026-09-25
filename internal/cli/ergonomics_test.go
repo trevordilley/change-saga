@@ -38,6 +38,7 @@ func landmarkSaga(t *testing.T) (root, repo string) {
 // refuses to enter, so the shorthand is the only ergonomic way to name one
 // without first knowing its full URN.
 func TestCoverResolvesLandmarkShorthand(t *testing.T) {
+	t.Parallel()
 	root, repo := landmarkSaga(t)
 	if output, err := runCover(t, "", "--repo", repo,
 		"--target", testFeatureRel+"/service.chapter/overview.fragment#submit-action",
@@ -60,6 +61,7 @@ func TestCoverResolvesLandmarkShorthand(t *testing.T) {
 }
 
 func TestCoverLandmarkErrorsNameTheAvailableLandmarks(t *testing.T) {
+	t.Parallel()
 	root, repo := landmarkSaga(t)
 	_, err := runCover(t, "", "--repo", repo,
 		"--target", testFeatureRel+"/service.chapter/overview.fragment#no-such-landmark",
@@ -84,6 +86,7 @@ func TestCoverLandmarkErrorsNameTheAvailableLandmarks(t *testing.T) {
 // An unresolvable target is the most common authoring mistake. The error has to
 // point at the supported way to enumerate targets, not invite file spelunking.
 func TestResolveTargetErrorPointsAtTheQueryAPI(t *testing.T) {
+	t.Parallel()
 	root, _ := landmarkSaga(t)
 	document, _, err := saga.Load(root)
 	if err != nil {
@@ -101,6 +104,7 @@ func TestResolveTargetErrorPointsAtTheQueryAPI(t *testing.T) {
 }
 
 func TestUnknownTargetURNIsAlsoExplained(t *testing.T) {
+	t.Parallel()
 	root, _ := landmarkSaga(t)
 	document, _, err := saga.Load(root)
 	if err != nil {
@@ -115,6 +119,7 @@ func TestUnknownTargetURNIsAlsoExplained(t *testing.T) {
 // "change-saga open -h" used to print "Usage of serve:", naming a command the
 // user did not type and whose flags differ in default.
 func TestCommandHelpNamesTheInvokedCommand(t *testing.T) {
+	t.Parallel()
 	var open bytes.Buffer
 	if err := Serve(context.Background(), []string{"-h"}, &open, true); err == nil {
 		t.Fatal("-h must report flag.ErrHelp so the process exits zero without serving")
@@ -152,6 +157,7 @@ func TestCommandHelpNamesTheInvokedCommand(t *testing.T) {
 }
 
 func TestOpenIsManagedByDefaultAndAcceptsLegacyDetachFlag(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name       string
 		args       []string
@@ -183,6 +189,7 @@ func TestOpenIsManagedByDefaultAndAcceptsLegacyDetachFlag(t *testing.T) {
 // A command with no flags produced a bare "Usage of install-skill:" banner and
 // nothing else, which told the reader neither what it does nor how to use it.
 func TestInstallSkillHelpExplainsTheCommand(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := InstallSkill([]string{"-h"}, &output); err == nil {
 		t.Fatal("-h must report flag.ErrHelp")
@@ -200,6 +207,7 @@ func TestInstallSkillHelpExplainsTheCommand(t *testing.T) {
 }
 
 func TestTopLevelHelpListsEveryDispatchedCommand(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	PrintHelp(&output)
 	for _, command := range commandOrder {
@@ -214,6 +222,7 @@ func TestTopLevelHelpListsEveryDispatchedCommand(t *testing.T) {
 }
 
 func TestTopLevelHelpRecommendsTheAuthoringSkill(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	PrintHelp(&output)
 	text := output.String()
@@ -232,6 +241,7 @@ func TestTopLevelHelpRecommendsTheAuthoringSkill(t *testing.T) {
 // The help teaches scope-sensitive adoption: requirements-first and
 // implementation-first are both valid when they match the user's work.
 func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	PrintHelp(&output)
 	text := output.String()
@@ -260,6 +270,7 @@ func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 }
 
 func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
+	t.Parallel()
 	checks := []struct {
 		name string
 		run  func() string
@@ -312,6 +323,7 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 // through the versioned query API and name every operation, or an agent will
 // fall back to reading saga files whose layout is not a compatibility promise.
 func TestInstallSkillRoutesAgentsThroughTheQueryAPI(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := InstallSkill(nil, &output); err != nil {
 		t.Fatal(err)
@@ -344,6 +356,7 @@ func TestInstallSkillRoutesAgentsThroughTheQueryAPI(t *testing.T) {
 }
 
 func TestValidateFixAddsMissingHeadingAnchors(t *testing.T) {
+	t.Parallel()
 	root, _ := coveredSaga(t)
 	fragment := overviewFragment(root)
 	writeFile(t, filepath.Join(fragment, "content.md"), "# Overview\n\nProse.\n\n## Risks\n")
@@ -392,6 +405,7 @@ func TestValidateFixAddsMissingHeadingAnchors(t *testing.T) {
 // --fix must be a no-op on an already-anchored saga, so it is safe to run in a
 // loop or a pre-handoff check without generating churn.
 func TestValidateFixIsANoOpWhenNothingIsMissing(t *testing.T) {
+	t.Parallel()
 	root, _ := coveredSaga(t)
 	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Overview {#overview}\n")
 	var output bytes.Buffer
@@ -414,6 +428,7 @@ func TestValidateFixIsANoOpWhenNothingIsMissing(t *testing.T) {
 // Status has no verdict: this Saga records no story, and status still exits
 // zero because its report can be trusted.
 func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	// One record references the add event and the added lines exactly, so
 	// nothing overlaps.

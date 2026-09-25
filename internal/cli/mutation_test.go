@@ -50,6 +50,7 @@ func assertValid(t *testing.T, root string) {
 // invalid saga blocks every later review mutation. A failed add-fragment must
 // therefore leave nothing behind at all.
 func TestFailedAddFragmentLeavesNoPartialPackage(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	source := t.TempDir()
 	writeFile(t, filepath.Join(source, "styles.css"), "body{}\n")
@@ -88,6 +89,7 @@ func TestFailedAddFragmentLeavesNoPartialPackage(t *testing.T) {
 }
 
 func TestAddFragmentRejectsUnusableEntrypoints(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	cases := []string{"../escape.html", "/etc/passwd", `sub\index.html`, "___code/a.json", "fragment.json", "C:/windows/win.ini"}
 	for i, entrypoint := range cases {
@@ -105,6 +107,7 @@ func TestAddFragmentRejectsUnusableEntrypoints(t *testing.T) {
 }
 
 func TestAddFragmentSupportsNestedEntrypoints(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	source := t.TempDir()
 	writeFile(t, filepath.Join(source, "assets", "index.html"), "<p>ok</p>\n")
@@ -131,6 +134,7 @@ func TestAddFragmentSupportsNestedEntrypoints(t *testing.T) {
 // Authoring commands take the same writer lock the review overlay uses, so
 // concurrent writers serialize instead of interleaving half-built entities.
 func TestConcurrentAuthoringKeepsTheSagaValid(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	const writers = 8
 	var wait sync.WaitGroup
@@ -162,6 +166,7 @@ func TestConcurrentAuthoringKeepsTheSagaValid(t *testing.T) {
 // Two writers racing for the same chapter name must not both appear to win, and
 // the loser must not corrupt the winner's directory.
 func TestConcurrentDuplicateChapterNamesResolveToOne(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	const writers = 6
 	var wait sync.WaitGroup
@@ -192,6 +197,7 @@ func TestConcurrentDuplicateChapterNamesResolveToOne(t *testing.T) {
 }
 
 func TestInitLeavesNothingBehindWhenTheRepositoryIsUnusable(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	root := filepath.Join(t.TempDir(), "broken.saga")
@@ -209,6 +215,7 @@ func TestInitLeavesNothingBehindWhenTheRepositoryIsUnusable(t *testing.T) {
 // ordinary parents: a missing parent is created, and a symlinked ancestor (the
 // normal shape of macOS /tmp) must not be mistaken for a symlink inside a saga.
 func TestInitCreatesMissingParentsAndToleratesSymlinkedAncestors(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "T")

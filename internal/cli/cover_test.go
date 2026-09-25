@@ -85,6 +85,7 @@ func diffRecords(t *testing.T, dir string) []string {
 // delivery optimization; it must never let one record's selector widen to cover
 // another record's atoms.
 func TestCoverBatchAttachesExactAtomsPerRecord(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	batch := strings.Join([]string{
 		`{"path":"internal/service/handler.go","side":"new","lines":"1-2","note":"package declaration","name":"package-line"}`,
@@ -123,6 +124,7 @@ func TestCoverBatchAttachesExactAtomsPerRecord(t *testing.T) {
 }
 
 func TestCoverBatchAcceptsJSONArray(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	batch := `[{"path":"internal/service/handler.go","side":"new","lines":"1","name":"one"},
 	           {"path":"internal/service/handler.go","side":"new","lines":"3","name":"two"}]`
@@ -136,6 +138,7 @@ func TestCoverBatchAcceptsJSONArray(t *testing.T) {
 }
 
 func TestCoverChangedLinesSelectsExactFileAtomsAndAddEvent(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--name", "whole-file", "--json", root)
 	if err != nil {
@@ -166,6 +169,7 @@ func TestCoverChangedLinesSelectsExactFileAtomsAndAddEvent(t *testing.T) {
 }
 
 func TestCoverQuietSuppressesLargeBatchOutput(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	batch := `[{"path":"internal/service/handler.go","side":"new","lines":"1","name":"one"},
 {"path":"internal/service/handler.go","side":"new","lines":"3","name":"two"}]`
@@ -179,6 +183,7 @@ func TestCoverQuietSuppressesLargeBatchOutput(t *testing.T) {
 }
 
 func TestCoverJSONReportsFailureWithoutPartialOutput(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
 	err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--path", "internal/service/handler.go", "--side", "sideways", "--lines", "1", "--json", root}, &output)
@@ -196,6 +201,7 @@ func TestCoverJSONReportsFailureWithoutPartialOutput(t *testing.T) {
 }
 
 func TestReplaceAndRemoveCoverageCompleteRepairLoop(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	if output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--name", "broad", root); err != nil {
 		t.Fatalf("seed broad coverage: %v\n%s", err, output)
@@ -243,6 +249,7 @@ func TestReplaceAndRemoveCoverageCompleteRepairLoop(t *testing.T) {
 }
 
 func TestReplaceCoverageFailurePreservesOriginalRecord(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	if _, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--name", "broad", root); err != nil {
 		t.Fatal(err)
@@ -262,6 +269,7 @@ func TestReplaceCoverageFailurePreservesOriginalRecord(t *testing.T) {
 }
 
 func TestReplaceCoverageCanAtomicallyReuseTheRecordName(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	if _, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--name", "broad", root); err != nil {
 		t.Fatal(err)
@@ -286,6 +294,7 @@ func TestReplaceCoverageCanAtomicallyReuseTheRecordName(t *testing.T) {
 // saga exactly as it was, because a half-applied batch silently under-covers
 // while looking like it succeeded.
 func TestCoverBatchWritesNothingWhenAnyRecordFails(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	for _, test := range []struct {
 		name  string
@@ -324,6 +333,7 @@ func TestCoverBatchWritesNothingWhenAnyRecordFails(t *testing.T) {
 // A misspelled field would otherwise be dropped, producing a record that maps
 // nothing while reporting success.
 func TestCoverBatchRejectsUnknownFields(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	_, err := runCover(t, `{"path":"internal/service/handler.go","side":"new","line":"1"}`, "--repo", repo, "--batch", "-", root)
 	if err == nil || !strings.Contains(err.Error(), `unknown field "line"`) {
@@ -332,6 +342,7 @@ func TestCoverBatchRejectsUnknownFields(t *testing.T) {
 }
 
 func TestCoverBatchRejectsPerRecordFlags(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	_, err := runCover(t, `{"path":"internal/service/handler.go","side":"new","lines":"1"}`,
 		"--repo", repo, "--batch", "-", "--path", "internal/service/handler.go", root)
@@ -341,6 +352,7 @@ func TestCoverBatchRejectsPerRecordFlags(t *testing.T) {
 }
 
 func TestCoverBatchReadsFromAFile(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	path := filepath.Join(t.TempDir(), "records.jsonl")
 	writeFile(t, path, `{"path":"internal/service/handler.go","side":"new","lines":"1","name":"from-file"}`+"\n")
@@ -355,6 +367,7 @@ func TestCoverBatchReadsFromAFile(t *testing.T) {
 // --target and --note are batch-wide defaults so a batch aimed at one narrative
 // target does not have to repeat itself on every line.
 func TestCoverBatchAppliesTargetAndNoteDefaults(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
 	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--title", "Service", root, "service"}, &output); err != nil {
@@ -390,6 +403,7 @@ func readCodeFile(t *testing.T, path string) []coderef.Reference {
 }
 
 func TestCoverDryRunResolvesWithoutWriting(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--side", "new", "--lines", "1,3-4", "--dry-run", root)
 	if err != nil {
@@ -411,6 +425,7 @@ func TestCoverDryRunResolvesWithoutWriting(t *testing.T) {
 }
 
 func TestCoverExplicitNameCollisionIsReportedClearly(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	if _, err := runCover(t, "", "--repo", repo, "--name", "handler", "--path", "internal/service/handler.go", "--side", "new", "--lines", "1", root); err != nil {
 		t.Fatal(err)
@@ -432,6 +447,7 @@ func TestCoverExplicitNameCollisionIsReportedClearly(t *testing.T) {
 // Two long names slug to the same 60-character file. The author has to be told
 // which stored name they actually collided on, or the error is unexplainable.
 func TestCoverReportsTruncatedNameCollisions(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	long := strings.Repeat("a", 70)
 	if _, err := runCover(t, "", "--repo", repo, "--name", long+"-first", "--path", "internal/service/handler.go", "--side", "new", "--lines", "1", root); err != nil {
@@ -450,6 +466,7 @@ func TestCoverReportsTruncatedNameCollisions(t *testing.T) {
 // the joined string truncated it to 60 characters, which for any realistic path
 // discarded the uniquifier and made repeated coverage of one file collide.
 func TestCoverGeneratedNamesSurviveLongPaths(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -493,6 +510,7 @@ func TestCoverGeneratedNamesSurviveLongPaths(t *testing.T) {
 // explicit repair, otherwise two different explanations for the same code
 // silently survive a Git merge as an overlap neither author chose.
 func TestCoverGeneratedNamesExposeSameSelectorDisagreement(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	args := []string{"--repo", repo, "--path", "internal/service/handler.go", "--side", "new", "--lines", "1", "--note", "first explanation", root}
 	if _, err := runCover(t, "", args...); err != nil {
@@ -509,6 +527,7 @@ func TestCoverGeneratedNamesExposeSameSelectorDisagreement(t *testing.T) {
 }
 
 func TestCoverWithoutSelectorsExplainsBatch(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	_, err := runCover(t, "", "--repo", repo, root)
 	if err == nil || !strings.Contains(err.Error(), "--batch") {
@@ -517,6 +536,7 @@ func TestCoverWithoutSelectorsExplainsBatch(t *testing.T) {
 }
 
 func TestReviewEvidenceSupportsPublicReplacementAndRemoval(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	mustRun(t, Review, "approve", "--review", "pr-7", "--slide", "queue", "--reviewer-kind", "human", "--body", "Fixture decision", fixture.root)
 	document, _, err := saga.Load(fixture.root)
@@ -555,6 +575,7 @@ func TestReviewEvidenceSupportsPublicReplacementAndRemoval(t *testing.T) {
 }
 
 func TestFrozenReviewEvidenceRepairsLeaveHistoryUntouched(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	document, _, err := saga.Load(fixture.root)
 	if err != nil {

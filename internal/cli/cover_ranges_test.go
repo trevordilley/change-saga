@@ -83,6 +83,7 @@ func referenceLocations(references []coderef.Reference) []coderef.Location {
 }
 
 func TestChangedLocationsCoalesceOnlyDenseRuns(t *testing.T) {
+	t.Parallel()
 	for _, testCase := range []struct {
 		name  string
 		path  string
@@ -192,6 +193,7 @@ func TestChangedLocationsCoalesceOnlyDenseRuns(t *testing.T) {
 // reference, every file event is its own whole-file reference, and every line
 // a range spans is itself a changed line.
 func TestChangedLocationsPreserveExactAtomIdentity(t *testing.T) {
+	t.Parallel()
 	changes := rangeChanges(
 		oldLine("a.go", 4), oldLine("a.go", 5),
 		newLine("a.go", 4), newLine("a.go", 5), newLine("a.go", 6),
@@ -234,6 +236,7 @@ func TestChangedLocationsPreserveExactAtomIdentity(t *testing.T) {
 }
 
 func TestParseRangesCanonicalizesEquivalentManualSelectors(t *testing.T) {
+	t.Parallel()
 	ranges, err := parseRanges("9-10, 1, 3-5, 2-3, 8, 10")
 	if err != nil {
 		t.Fatal(err)
@@ -280,6 +283,7 @@ func changedLinesSaga(t *testing.T) (root, repo string) {
 }
 
 func TestCoverChangedLinesEmitsCanonicalRangesWithGaps(t *testing.T) {
+	t.Parallel()
 	root, repo := changedLinesSaga(t)
 	output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--note", "the modified constants", "--name", "handler", "--json", root)
 	if err != nil {
@@ -313,6 +317,7 @@ func TestCoverChangedLinesEmitsCanonicalRangesWithGaps(t *testing.T) {
 
 // Density is per identity, so ranges must not span the side they belong to.
 func TestCoverChangedLinesRespectsSideFilter(t *testing.T) {
+	t.Parallel()
 	for _, side := range []string{"old", "new"} {
 		t.Run(side, func(t *testing.T) {
 			root, repo := changedLinesSaga(t)
@@ -337,6 +342,7 @@ func TestCoverChangedLinesRespectsSideFilter(t *testing.T) {
 // lines are dense line ranges, and covering every path must still close the
 // saga exactly.
 func TestCoverChangedLinesKeepsEventsSeparateAndCoverageExact(t *testing.T) {
+	t.Parallel()
 	root, repo := changedLinesSaga(t)
 	batch := strings.Join([]string{
 		`{"path":"internal/service/handler.go","changed_lines":true,"name":"handler","note":"modified constants"}`,
@@ -372,6 +378,7 @@ func TestCoverChangedLinesKeepsEventsSeparateAndCoverageExact(t *testing.T) {
 // A range built from consecutive atoms must never reach a line that belongs to
 // another target, which is what "dense" buys over "widened".
 func TestCoverChangedLinesRangesDoNotStealNeighbouringAtoms(t *testing.T) {
+	t.Parallel()
 	root, repo := changedLinesSaga(t)
 	if output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--name", "handler", root); err != nil {
 		t.Fatalf("changed-lines cover: %v\n%s", err, output)

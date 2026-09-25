@@ -91,6 +91,7 @@ func coverJSON(t *testing.T, args ...string) coverageMutationOutput {
 // the merge-base where the deleted lines still exist. Each records the digest
 // of exactly the referenced bytes, read from the repository.
 func TestCoverSideLineReferencesPinEachSideWithItsDigest(t *testing.T) {
+	t.Parallel()
 	root, repo, base, head := fileEventSaga(t)
 	coverJSON(t, "--repo", repo, "--path", "service/modified.go", "--side", "new", "--lines", "3-4,8", "--name", "new-side", root)
 	coverJSON(t, "--repo", repo, "--path", "service/modified.go", "--side", "old", "--lines", "3-4,8", "--name", "old-side", root)
@@ -131,6 +132,7 @@ func TestCoverSideLineReferencesPinEachSideWithItsDigest(t *testing.T) {
 // digest of the whole file, and it accounts for the file event but not the
 // file's lines.
 func TestCoverFileReferencesTheWholeFileOnASide(t *testing.T) {
+	t.Parallel()
 	root, repo, base, head := fileEventSaga(t)
 	coverJSON(t, "--repo", repo, "--path", "service/added.go", "--file", "--name", "added", root)
 	coverJSON(t, "--repo", repo, "--path", "service/deleted.go", "--side", "old", "--file", "--name", "deleted", root)
@@ -171,6 +173,7 @@ func TestCoverFileReferencesTheWholeFileOnASide(t *testing.T) {
 // --commit pins a reference at any revision instead of a comparison side, and
 // --ref takes a full location; both are digested at authoring time.
 func TestCoverCommitAndRefPinOutsideTheComparison(t *testing.T) {
+	t.Parallel()
 	root, repo, base, head := fileEventSaga(t)
 	coverJSON(t, "--repo", repo, "--path", "service/modified.go", "--commit", "main", "--lines", "1", "--name", "at-main", root)
 	atMain := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "at-main.json"))
@@ -197,6 +200,7 @@ func TestCoverCommitAndRefPinOutsideTheComparison(t *testing.T) {
 // ranges for edits, and whole-file references for file events on the side the
 // file exists, plus line ranges for that file's changed lines.
 func TestCoverChangedLinesCompletesEveryFileEvent(t *testing.T) {
+	t.Parallel()
 	root, repo, base, head := fileEventSaga(t)
 	for _, test := range []struct {
 		path string
@@ -246,6 +250,7 @@ func TestCoverChangedLinesCompletesEveryFileEvent(t *testing.T) {
 // A renamed file is one file: its new path selects the deleted lines at the
 // old path too, exactly as its old path does.
 func TestCoverChangedLinesSelectsBothPathsOfARename(t *testing.T) {
+	t.Parallel()
 	for _, path := range []string{"service/relocated.go", "service/moved.go"} {
 		t.Run(path, func(t *testing.T) {
 			root, repo, base, head := fileEventSaga(t)
@@ -270,6 +275,7 @@ func TestCoverChangedLinesSelectsBothPathsOfARename(t *testing.T) {
 // A batch record spells every cover flag as a field, and each record is
 // resolved exactly as the equivalent invocation would be.
 func TestCoverBatchRecordSpellsEveryReferenceFlag(t *testing.T) {
+	t.Parallel()
 	root, repo, base, head := fileEventSaga(t)
 	batch := strings.Join([]string{
 		`{"path":"service/modified.go","side":"old","lines":"3-4","name":"old-lines","note":"old constants"}`,
@@ -308,6 +314,7 @@ func TestCoverBatchRecordSpellsEveryReferenceFlag(t *testing.T) {
 }
 
 func TestCoverRejectsContradictoryReferenceFlags(t *testing.T) {
+	t.Parallel()
 	root, repo, _, head := fileEventSaga(t)
 	for _, test := range []struct {
 		name string
@@ -346,6 +353,7 @@ func TestCoverRejectsContradictoryReferenceFlags(t *testing.T) {
 // A JSON failure keeps the success shape, with references rather than the
 // retired selectors count.
 func TestCoverJSONFailureReportsReferencesField(t *testing.T) {
+	t.Parallel()
 	root, repo, _, _ := fileEventSaga(t)
 	var output bytes.Buffer
 	err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--path", "service/modified.go", "--lines", "3", "--json", root}, &output)

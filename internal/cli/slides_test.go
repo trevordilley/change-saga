@@ -18,6 +18,7 @@ import (
 )
 
 func TestQualifiedDiagramIDs(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
 	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--feature-qualified-id", "--objective", "Explain the flow.", root, "arch"}, &output); err != nil {
@@ -46,6 +47,7 @@ func TestQualifiedDiagramIDs(t *testing.T) {
 }
 
 func TestImplementationDeckAuthoringLoop(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -139,6 +141,7 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 }
 
 func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")

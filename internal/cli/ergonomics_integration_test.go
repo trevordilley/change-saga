@@ -14,6 +14,7 @@ import (
 )
 
 func TestQuerySlidePreservesAuthoringContract(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	request := slideTransactionRequest(t, repo, base, commit, sagaID, "create-query-slide", "create", "absent", "worker-node")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false)
@@ -42,6 +43,7 @@ func TestQuerySlidePreservesAuthoringContract(t *testing.T) {
 // Exercise the actual authoring format, not a hand-built transaction record:
 // semantic consolidation must not retire intent still owned by a slide bundle.
 func TestConsolidationRefusesRealSlideTransactionLinks(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	request := slideTransactionRequest(t, repo, base, commit, sagaID, "create-linked-slide", "create", "absent", "worker-node")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, request, false)

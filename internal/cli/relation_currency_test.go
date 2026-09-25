@@ -19,6 +19,7 @@ import (
 // The writer defaults each omitted pin to the unique current head and says
 // so; a later story revision makes the link stale with a concrete reason.
 func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	root := newLivingSaga(t)
 	if err := addCheckoutStory(t, root, "checkout"); err != nil {

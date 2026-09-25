@@ -13,6 +13,7 @@ import (
 // Every command that accepts a code location resolves its revision the same
 // way: HEAD, a branch, or an abbreviated commit pins the full commit.
 func TestQualityEvidenceCodeAcceptsAnyRevision(t *testing.T) {
+	t.Parallel()
 	root := newQualityFixture(t)
 	definition := `{"id":"deadline","title":"Reject at deadline","coverage_kinds":["negative"],"automation":"automated",
 		"steps":[{"id":"submit","action":"Submit a refund request.","expected_result":"The request is rejected."}],
@@ -32,6 +33,7 @@ func TestQualityEvidenceCodeAcceptsAnyRevision(t *testing.T) {
 }
 
 func TestCoverRefAcceptsAnyRevision(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	output, err := runCover(t, "", "--repo", repo, "--target", "___overview/description.fragment", "--ref", "HEAD:internal/service/handler.go#L3", "--name", "head", root)
 	if err != nil {
@@ -45,6 +47,7 @@ func TestCoverRefAcceptsAnyRevision(t *testing.T) {
 // Reverse evidence lookup takes a current location: traceability --ref at
 // HEAD finds evidence pinned at an older commit whose lines only moved.
 func TestTraceabilityRefFindsEvidenceAtTheCurrentCommit(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
 	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {

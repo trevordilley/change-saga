@@ -16,6 +16,7 @@ import (
 )
 
 func TestInventoryPublic(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	repo, commit := sourceRepo(t, map[string]string{"flags.go": "package flags\nvar enabled = true\nfunc Read() bool { return enabled }\n"})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
@@ -153,6 +154,7 @@ func TestInventoryPublic(t *testing.T) {
 }
 
 func TestInventoryValidationPreservesMissingReviewDeckDiagnostic(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	document, validation, err := saga.Load(fixture.root)
 	if err != nil || !validation.Valid {
@@ -170,6 +172,7 @@ func TestInventoryValidationPreservesMissingReviewDeckDiagnostic(t *testing.T) {
 }
 
 func TestInventoryQueryPaginationAndMissingTarget(t *testing.T) {
+	t.Parallel()
 	repo, _ := sourceRepo(t, map[string]string{"a.go": "package a\n"})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	root := newTermSaga(t, repo)
@@ -184,6 +187,7 @@ func TestInventoryQueryPaginationAndMissingTarget(t *testing.T) {
 }
 
 func TestInventoryTransaction(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	root, repo, base, commit, id := newSlideTransactionFixture(t)
 	request := slideTransactionRequest(t, repo, base, commit, id, "with-definition", "create", "absent", "node")
@@ -247,6 +251,7 @@ func TestInventoryTransaction(t *testing.T) {
 }
 
 func TestInventoryCursor(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	repo, commit := sourceRepo(t, map[string]string{"flags.go": "package flags\n"})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")

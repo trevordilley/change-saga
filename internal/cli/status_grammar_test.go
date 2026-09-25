@@ -64,6 +64,7 @@ func runnableCommands() []string {
 // implemented shape must match the CLI's own usage line byte for byte, and
 // every flag it declares must be accepted by the real flag set.
 func TestGrammarMatchesTheImplementedCLI(t *testing.T) {
+	t.Parallel()
 	for _, command := range grammar.Commands() {
 		if command.Status != grammar.StatusImplemented {
 			continue
@@ -81,6 +82,7 @@ func TestGrammarMatchesTheImplementedCLI(t *testing.T) {
 }
 
 func TestSpecJSONDescribesTheLivingGrammar(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := Spec([]string{"--json"}, &output); err != nil {
 		t.Fatal(err)
@@ -136,6 +138,7 @@ func TestSpecJSONDescribesTheLivingGrammar(t *testing.T) {
 }
 
 func TestStatusJSONKeepsV1KeysAndAddsTheAuthoringGrammar(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
 	_ = Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output)
@@ -180,6 +183,7 @@ func assertNoReducingStatusKey(t *testing.T, value any, path string) {
 // action for it: re-pin. Recommending both re-pin and link would lead an agent
 // to create a duplicate relation.
 func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	root, repo := coveredSaga(t)
 	mustRun := func(name string, err error, output *bytes.Buffer) {

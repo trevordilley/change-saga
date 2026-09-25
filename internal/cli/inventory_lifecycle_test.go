@@ -83,6 +83,7 @@ func evidence(id, commit string, start, end int, note string) map[string]any {
 }
 
 func TestInventoryProposedToImplementedLifecycle(t *testing.T) {
+	t.Parallel()
 	h := newInventoryHarness(t)
 	urn := "urn:change-saga:atomic:component:store"
 	proposed := map[string]any{"name": "Record store", "explanation": "Persists records for later reads.", "intent": "proposed", "baseline": "none"}
@@ -195,6 +196,7 @@ func TestInventoryProposedToImplementedLifecycle(t *testing.T) {
 }
 
 func TestInventoryImplementationEvidencePolicy(t *testing.T) {
+	t.Parallel()
 	h := newInventoryHarness(t)
 	var out bytes.Buffer
 	if err := Inventory(h.ctx, []string{"adopt-format", "--format", "2", h.root}, &out); err != nil {
@@ -260,6 +262,7 @@ func TestInventoryImplementationEvidencePolicy(t *testing.T) {
 }
 
 func TestInventoryDataEntitiesAndERDAuthoring(t *testing.T) {
+	t.Parallel()
 	h := newInventoryHarness(t)
 	var out bytes.Buffer
 	if err := Inventory(h.ctx, []string{"adopt-format", "--format", "2", h.root}, &out); err != nil {
