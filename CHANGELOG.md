@@ -1,5 +1,31 @@
 # Changelog
 
+## Unreleased — Technical inventory format 2 (proposed and implemented design)
+
+- **Format:** Add inventory format 2, adopted only by an explicit
+  `change-saga inventory adopt-format --format 2`, which writes
+  `___inventory/format.json`. It adds explicit `proposed`/`implemented` intent on
+  Component, System and data-entity revisions (proposed revisions name an
+  implemented `baseline` revision or `none`; implemented revisions name a
+  `delivery` repository and full commit), stable evidence `id`s unique per
+  revision, data entities (`___inventory/data-entities/`: curated fields and key
+  roles, holding Component pins, owned association/production relationships
+  with independent intent), authored ERDs and overlays (`erds/`, `erd-overlays/`:
+  offline SVG, directory, element bindings, overlay pins and removals), and
+  Item `documentation_view` and `selections`. The Saga manifest and all record
+  `version` fields stay 5.
+  - *Older reader, newer Saga:* the marker, new directories and Item fields are
+    rejected, so an older change-saga refuses the inventory or the Saga instead
+    of dropping content. Upgrade readers before adopting.
+  - *Newer reader, older Saga:* unchanged. Legacy revisions read as
+    `unspecified` intent and their evidence has no IDs; nothing is rewritten.
+  - *Migration:* none automatic. After adoption, new Component/System revisions
+    must state intent; historical records stay as committed.
+- Implementation assertions are validated at the delivery commit through the
+  technical policy: original bytes and delivery currency for the entity and
+  every implemented edge, and exact endpoint intent without cascading
+  promotion. Any refusal writes nothing.
+
 ## Unreleased — Component and System inventory
 
 - **Format:** Add opt-in v5 Component/System identities, immutable definition

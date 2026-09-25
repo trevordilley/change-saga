@@ -240,3 +240,17 @@ then returns to the same implementation slide. Use `query inventory` for
 current heads, code and Component pin health, and selected-record history.
 This first pass does not add inventory to generic `references`/`repin`, feature
 audits, comparison layers or reconciliation; do not infer those integrations.
+
+Proposed/implemented intent, data entities, ERDs and exact Item selections are
+inventory format 2. Use them only when `___inventory/format.json` exists; never
+run `inventory adopt-format` without the user's explicit decision. Under format
+2 every new revision states `intent`. Record a design as `proposed` (with
+`baseline` naming the implemented revision it changes, or `none`) before code
+exists; record delivery with a new `implemented` revision and `--delivery` at
+the commit whose code you verified, keeping the proposal in history. Give each
+reference a stable evidence `id`. Leave a relationship or interaction
+`proposed` until its own evidence exists; nothing is promoted by implication.
+To show only the relevant code of a documented entity, add `--selections`
+naming the path of saved pins, the evidence ID and the subset range. Pin an
+older revision only with `--documentation-view` naming the saved Saga commit
+that bound it. Intent and selections are never approval or proof of coverage.
