@@ -90,7 +90,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "setup-initial-saga", "feature", "overview", "component", "system", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"serve", "open", "install-skill", "spec",
 }
@@ -98,6 +98,10 @@ var commandOrder = []string{
 var commandUsage = map[string]string{
 	"component":                   "change-saga component <add|revise|set-state> [flags] <saga>",
 	"system":                      "change-saga system <add|revise|set-state> [flags] <saga>",
+	"data-entity":                 "change-saga data-entity <add|revise|set-state> [flags] <saga>",
+	"erd":                         "change-saga erd <add|revise|set-state> [flags] <saga>",
+	"erd-overlay":                 "change-saga erd-overlay <add|revise|set-state> [flags] <saga>",
+	"inventory":                   "change-saga inventory <adopt-format> [flags] <saga>",
 	"init":                        "change-saga init [flags] <name.saga>",
 	"setup-initial-saga":          "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
 	"feature":                     "change-saga feature add [flags] <saga>",
@@ -321,6 +325,10 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 var commandDescription = map[string]string{
 	"component":                   "Define an identifiable unit of logic with exact pinned code. Use add or revise --from with a complete technical-definition JSON document; immutable revisions preserve history.",
 	"system":                      "Define a reusable interaction diagram with pinned Components, directed data flow, and exact scoped code. Implementation Items link a specific revision without inheriting coverage.",
+	"data-entity":                 "Define a logical payload or persisted record: curated fields and keys, holding Components, and owned association/production relationships. Requires inventory format 2; every revision states proposed or implemented intent.",
+	"erd":                         "Author the application ERD: an offline SVG visual, its directory of data-entity pins, and element bindings. Requires inventory format 2.",
+	"erd-overlay":                 "Propose data-model changes against an exact ERD revision without rewriting it: replacement or new entity pins, removals, and an optional visual. Requires inventory format 2.",
+	"inventory":                   "Adopt inventory format 2 explicitly. Existing records are not rewritten; legacy revisions read as unspecified intent. Older change-saga versions then refuse the inventory instead of dropping content.",
 	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Features, stories, personas, design, and quality\nare optional and can come later.",
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
 	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
