@@ -25,7 +25,7 @@ func pageParts(t *testing.T, handler http.Handler, path, shell string) *httptest
 }
 
 var (
-	shellVersionAttr   = regexp.MustCompile(`data-saga-shell="([^"]*)"`)
+	shellVersionAttr = regexp.MustCompile(`data-saga-shell="([^"]*)"`)
 )
 
 // A page reached by a link is the page's own parts: its content, and its
