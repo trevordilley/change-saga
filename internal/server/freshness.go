@@ -353,7 +353,13 @@ func skipDocumentationDirectory(base string) bool {
 func (a *app) watchSaga(ctx context.Context) {
 	handler := newMux(a)
 	warm := make(chan struct{}, 1)
+	// The warming goroutine is waited for, so nothing reads the Saga once
+	// the watcher has returned.
+	var warming sync.WaitGroup
+	defer warming.Wait()
+	warming.Add(1)
 	go func() {
+		defer warming.Done()
 		for {
 			select {
 			case <-ctx.Done():
