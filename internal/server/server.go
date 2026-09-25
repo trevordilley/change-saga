@@ -162,11 +162,11 @@ type pageData struct {
 	ReviewCoverageHref string
 	Root               *sectionView
 	Nav                []*navNodeView
-	Diagnostic string
-	Code       *CodeReviewView
-	Manifest   *CoverageManifestView
-	Error      string
-	Files      []*fileDiffView
+	Diagnostic         string
+	Code               *CodeReviewView
+	Manifest           *CoverageManifestView
+	Error              string
+	Files              []*fileDiffView
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
