@@ -106,3 +106,36 @@ later request answered 500. Cancellations are no longer cached.
   the directory is the readable path.
 - Newness is identity-level (new, revised, unchanged). Relationship-level
   additions within a revision are not yet distinguished in the UI.
+
+## Saga documentation and reconciliation
+
+The living documentation uses the legacy inventory format. `app.saga` has not
+adopted format 2.
+
+- Components `technical-design-page`, `authored-erd-view` and
+  `item-selection-drawer`, and System `technical-design-ui`, which pins them
+  with the existing `technical-explanation-drawer` and has three
+  evidence-bearing interactions. No existing shared record was revised.
+- Four implementation slides in the `technical-inventory` deck, section
+  "Technical Design UI", ranks 240–255 (`ti-ui-impl-overview`, `-erd`,
+  `-trace`, `-verification`). Items pin the new Components and own every added
+  line of this slice. 26 `ti-ui-impl-` relations read back active and not
+  stale. Visual QA reports no findings at 1280x720 or 1024x576.
+- Review `inventory-technical-design-ui` explains `172996c0..94be1293` in four
+  slides. It covers 2644 of 2644 changed lines and file events, with no overlaps
+  and no stale references. No review decision is recorded.
+
+`reconcile --against 172996c0` after authoring reports:
+
+- 16 documentation-gap entries remain: 9 file-addition events for new files
+  and 7 groups of deleted lines. Transaction-managed Items refuse whole-file
+  evidence, and living evidence at HEAD cannot cite deleted lines, so the
+  review deck owns these.
+- 19 evidence regressions are on other slides and the shared
+  `technical-explanation-drawer` Component. They cite server code that this
+  slice edited. They are handed to the coordinated repair with current ranges.
+  The drawer's label changed from "Component and system explanation" to
+  "Technical explanation", so explanations that quote the old label also need
+  revision.
+- The four new definitions show as "reassess" only because this range added
+  their code.
