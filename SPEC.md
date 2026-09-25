@@ -253,8 +253,9 @@ directory, so the visual is a subset; directory members without a binding are
 omitted from the visual, not from the model. The SVG is allowlisted: only
 static drawing elements in the SVG namespace and presentation/geometry
 attributes, links only to same-document `#fragments`, no `javascript:` or
-`data:` values, no SMIL animation, DTDs or processing instructions, and no
-external `url()`/`@import`. **Overlays** (`erd-overlays/<id>.erd-overlay/`) name an exact `erd`
+`data:` values, no SMIL animation, DTDs, CDATA sections, prefixed element
+names or processing instructions other than one leading XML declaration, and
+no external `url()`/`@import`. **Overlays** (`erd-overlays/<id>.erd-overlay/`) name an exact `erd`
 revision as their baseline, an optional `feature`, `pins` that replace a
 baseline entity's pin or add an entity, `removals {target, explanation}`, and
 an optional visual whose bindings resolve against the composed directory. An
