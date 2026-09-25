@@ -367,6 +367,26 @@ test("shows the living layers read-only beside the review of the compared change
   }
 });
 
+// A slide visual is authored content like a fragment. Opened directly, it must
+// not run on the app origin beside the review's mutation token.
+test("serves a review slide visual on an opaque origin even when opened directly", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(`${running.baseURL}/reviews/pr-1`);
+    const visual = page.locator('.review-deck-slide.active iframe.fragment-frame');
+    await expect(visual.contentFrame().getByRole("img", { name: "Review slide" })).toBeVisible();
+    await expect(page.locator('.review-deck-slide.active .landmark-hotspot[data-element-id="change"]')).toHaveCount(1);
+    const source = new URL(await visual.getAttribute("src") ?? "", running.baseURL);
+    const response = await page.goto(source.href);
+    expect(response?.headers()["content-security-policy"]).toMatch(/(^|;\s*)sandbox allow-scripts(;|$)/);
+    await expect(page.getByRole("img", { name: "Review slide" })).toBeVisible();
+    expect(await page.evaluate(() => self.origin)).toBe("null");
+  } finally {
+    await stopSagaServer(running);
+  }
+});
+
 test("async saves retain drafts on refusal and preserve the document, visual, drawer and slide", async ({ page, sagaRepositories }) => {
   authorReview(sagaRepositories);
   const running = await startSagaServer(sagaRepositories);
