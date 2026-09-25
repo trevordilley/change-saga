@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "path": "internal/server/server.go",
+      "start": 1656,
+      "end": 1656,
+      "digest": "sha256:d336fd3c3e2a52f4a187b4280a91163fa47ff4dcd665ea196d994a9022879f4f",
+      "note": "The fragment file route sends the shared authored-content policy before streaming the package file."
+    }
+  ]
+}

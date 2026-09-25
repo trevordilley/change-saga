@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "authored-content-origin",
+  "deck": "visual-implementation",
+  "title": "Authored script never runs on the app origin",
+  "rank": 45,
+  "section": "Failure boundaries",
+  "intent": "risk",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-0d89b27ce0b8-0045-5d52ed3d5998.svg",
+  "takeaway": "Fragments and review visuals carry a CSP sandbox, so author script runs on origin null whether framed or opened directly, away from pages holding the review token.",
+  "reading_order": [
+    "framed-path",
+    "direct-visit",
+    "authored-routes",
+    "authored-policy",
+    "opaque-origin",
+    "app-origin",
+    "self-fonts"
+  ]
+}

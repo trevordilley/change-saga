@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "app-origin",
+  "slide": "authored-content-origin",
+  "rank": 50,
+  "kind": "region",
+  "label": "App origin",
+  "description": "App pages keep their strict policy, and a review page carries its mutation token. The authored script, running on origin null, cannot read or frame those pages.",
+  "selector": {
+    "type": "element",
+    "element_id": "app-origin"
+  }
+}

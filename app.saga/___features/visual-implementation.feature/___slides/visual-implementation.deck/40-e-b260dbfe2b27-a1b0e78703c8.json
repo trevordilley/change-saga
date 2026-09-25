@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "path": "internal/server/server.go",
+      "start": 1824,
+      "end": 1834,
+      "digest": "sha256:7a0d2d62f85b20ba65904f86ec85f9fc2a67640680dc12996227c3bec79b4f31",
+      "note": "App pages keep the strict script-src 'self' and frame-ancestors 'none' policy that authored responses override with their own."
+    }
+  ]
+}

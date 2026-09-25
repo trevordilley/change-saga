@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "authored-policy",
+  "slide": "authored-content-origin",
+  "rank": 30,
+  "kind": "node",
+  "label": "Shared authored-content policy",
+  "description": "Both routes send one policy: the sandbox directive with allow-scripts only, no network connections, and framing only by the app itself.",
+  "selector": {
+    "type": "element",
+    "element_id": "authored-policy"
+  }
+}
