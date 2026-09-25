@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "debt",
+  "slide": "reconcile",
+  "rank": 10,
+  "kind": "node",
+  "label": "Definition evidence debt",
+  "description": "Stale definition references are classified against the base inventory as regression, introduced, pre-existing or baseline unknown and list the implementation Items that use the definition.",
+  "selector": {
+    "type": "element",
+    "element_id": "debt"
+  }
+}

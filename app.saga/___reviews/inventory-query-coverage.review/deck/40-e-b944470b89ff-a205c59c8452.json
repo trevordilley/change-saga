@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/coverage.go",
+      "start": 145,
+      "end": 199,
+      "digest": "sha256:db51b60cd5aeab8b7a5b46a1d6f423831724da36fb3cfd1376c7bad15a0aa702",
+      "note": "Unresolved, excluded, stale and proposed-edge evidence kept out of coverage."
+    }
+  ]
+}

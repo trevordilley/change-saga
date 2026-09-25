@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "path",
+  "slide": "selection",
+  "rank": 10,
+  "kind": "node",
+  "label": "Saved selection path",
+  "description": "A selection names the Item's pin, each declared hop at its saved revision, a revision-unique evidence ID and a subset; the records resolver checks structure and the selected digest is verified at its own commit.",
+  "selector": {
+    "type": "element",
+    "element_id": "path"
+  }
+}

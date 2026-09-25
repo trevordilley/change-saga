@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/saga/slides.go",
+      "start": 10,
+      "end": 11,
+      "digest": "sha256:3323f8968d43baf17bc4e858e1d17e7a48537d120d4c1b8b42763a1ad2ee9aee"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/saga/slides.go",
+      "start": 418,
+      "end": 421,
+      "digest": "sha256:3b37620dba45631607008f4ec5e2c7aed35ad2ef782a58abedc1cc3fcfcccf99"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/saga/slides.go",
+      "start": 537,
+      "end": 537,
+      "digest": "sha256:dee67a7dedba102f1956932efcbb6a9d4588b04bfc785b623a309b45b7bd3060"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/saga/slides.go",
+      "start": 591,
+      "end": 600,
+      "digest": "sha256:1d09568f4bfd80c3b2be9bd5b1879d31a21b3ef9221aef85a435d3a43c737d24"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/saga/slides.go",
+      "start": 607,
+      "end": 649,
+      "digest": "sha256:c0518682eb8ee4a75fdf8c662a2fe1487eda281f1a05d7a30130bc4f07352ae8"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/saga/slides.go",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:5aa26973a784bcd2d97215f1189543a13751e1e6e24e5433939439992656d496"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/saga/slides.go",
+      "start": 532,
+      "end": 532,
+      "digest": "sha256:70597e6f54d3dfb0481a7328301b8ea39166ce57d1e6a042a8b38e1f9a33046f"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/saga/slides.go",
+      "start": 586,
+      "end": 586,
+      "digest": "sha256:4a632e84eadb79206ca28fc8d6f25bf409fbfaca1db2b203790e0d7230b50da4"
+    }
+  ]
+}

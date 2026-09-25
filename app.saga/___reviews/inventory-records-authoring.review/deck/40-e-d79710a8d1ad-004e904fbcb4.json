@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/saga/model.go",
+      "start": 76,
+      "end": 77,
+      "digest": "sha256:594013ff1667eab31c6b84e2dbd3e5afc622634aa4115acdf621c80353c8cb4c"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/saga/model.go",
+      "start": 85,
+      "end": 97,
+      "digest": "sha256:6eb1692b396959e3bf1fee2a15be7b31391792d2a7a09a6f5efd81a027cce476"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/saga/model.go",
+      "start": 76,
+      "end": 77,
+      "digest": "sha256:693b82b4a4e28e778775a187569471e342e6477ddc3e66e7b9f2b3dcf01c36de"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/saga/model.go",
+      "start": 83,
+      "end": 101,
+      "digest": "sha256:986ca2a2c8ab4b3aa15b879606fb78101f3be9f3f1fe4d70f0c76ce6711892a9"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/saga/model.go",
+      "start": 104,
+      "end": 120,
+      "digest": "sha256:7b4a3c7cfffd87b1baf2455a9319cf2973bff0ab6a91092a3ddaf04cdfd8c859"
+    }
+  ]
+}

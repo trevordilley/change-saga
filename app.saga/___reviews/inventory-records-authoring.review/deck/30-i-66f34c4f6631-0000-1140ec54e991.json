@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "writer",
+  "slide": "ti-records-review-writers",
+  "rank": 0,
+  "kind": "region",
+  "label": "Locked revision writer",
+  "description": "WriteTechnicalRevision: replay, all-head parents, candidate history, new-pin currency, ERD/overlay references, technicalpolicy for intent, content-addressed SVG, adoption marker.",
+  "selector": {
+    "type": "element",
+    "element_id": "writer"
+  }
+}

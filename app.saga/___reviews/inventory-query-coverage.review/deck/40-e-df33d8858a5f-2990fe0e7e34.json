@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/reviewapp/session.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:8712c6cf82f31cf90ac49eb35ce452af5006070c4b92969d76c4b7b1b7263ed5",
+      "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/reviewapp/session.go",
+      "start": 120,
+      "end": 125,
+      "digest": "sha256:2e278a1f1d925e959bf78f3beeb0f2bfdd15d2bfaf9d098108e5d77fee236062",
+      "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/reviewapp/session.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:6c07b943249910348fde9f4f989836ab36866d802e4e5033585da318dc668f02",
+      "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/reviewapp/session.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:f3808fc6174636db3f95f9bf4a623d3c9382127022851e991b61b68f91a3b1c4",
+      "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/reviewapp/session.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:f46c735534760ef9b8b5b8256533ef5b4d5ba835a006443f4db72ee749cdd0ee",
+      "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/reviewapp/session.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:76b4c145b2973cfef2b098451e9078cea705d9905a905e1ee487205940b703be",
+      "note": "Query sessions evaluate coverage with inherited selections; an unreadable inventory inherits nothing."
+    }
+  ]
+}

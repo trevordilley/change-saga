@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/uses.go",
+      "start": 1,
+      "end": 187,
+      "digest": "sha256:bcfefeb5874ab25617ff768b31e42b942d2cbdb06a2f776cf37424c017b72804",
+      "note": "Use roles, the declared-links index and indexed pin status and use counts."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/uses.go",
+      "start": 263,
+      "end": 304,
+      "digest": "sha256:3dadc6c3d641820a668a8c92ce00d423b1a69731754bf809509d4c109b3165b9",
+      "note": "Use roles, the declared-links index and indexed pin status and use counts."
+    }
+  ]
+}

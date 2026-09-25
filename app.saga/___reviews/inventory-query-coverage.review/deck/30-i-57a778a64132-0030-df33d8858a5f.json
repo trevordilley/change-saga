@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "labeled",
+  "slide": "selection",
+  "rank": 30,
+  "kind": "node",
+  "label": "Labeled inherited coverage",
+  "description": "Inherited lines are Item-owned coverage assignments carrying the selection, path and evidence ID with no evidence file, so no evidence-file repair can name them; unselected lines earn nothing.",
+  "selector": {
+    "type": "element",
+    "element_id": "labeled"
+  }
+}

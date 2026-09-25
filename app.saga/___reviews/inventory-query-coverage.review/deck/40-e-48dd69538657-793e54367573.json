@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+      "path": "docs/technical-inventory-query-implementation.md",
+      "digest": "sha256:7a05de82a0d187e21a70b7247f379d46f636ebe234f7f555d6ce8fc81b139cc1",
+      "note": "Role-specific implementation note of delivered behavior, Saga artifacts and reconciliation results."
+    },
+    {
+      "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+      "path": "docs/technical-inventory-query-implementation.md",
+      "start": 1,
+      "end": 187,
+      "digest": "sha256:7a05de82a0d187e21a70b7247f379d46f636ebe234f7f555d6ce8fc81b139cc1",
+      "note": "Role-specific implementation note of delivered behavior, Saga artifacts and reconciliation results."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "contract",
+  "slide": "verify",
+  "rank": 10,
+  "kind": "node",
+  "label": "Public contract",
+  "description": "The query registry, schema data paths, additional unresolved pagination, help golden and skill references describe the new flags and operations; the large query.go diff is gofmt map realignment.",
+  "selector": {
+    "type": "element",
+    "element_id": "contract"
+  }
+}

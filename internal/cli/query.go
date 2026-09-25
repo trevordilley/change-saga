@@ -233,7 +233,7 @@ var queryOperations = []string{
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
 	"inventory":            "Component/System/data-entity/ERD definitions, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
-	"inventory-coverage":   "which tracked code at one source revision the current Component/System definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage",
+	"inventory-coverage":   "which tracked code at one source revision the current technical definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage",
 	"inventory-selections": "saved implementation Item selections with their declared path, containing evidence, pin health, and separately resolved selected-byte and containing-evidence health; whether each contributes inherited deck coverage",
 	"inventory-uses":       "declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness",
 	"schema":               "the response paths and pagination contract for a query operation; no saga is required",

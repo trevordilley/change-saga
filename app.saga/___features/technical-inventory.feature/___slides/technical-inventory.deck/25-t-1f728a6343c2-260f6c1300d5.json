@@ -1,0 +1,1825 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-records-impl-selections",
+  "current": "sha256:37a12ce58ad9938aee5b4926cb2b515b907ad885d1649ae790fd03990c360759",
+  "revisions": [
+    {
+      "snapshot": "sha256:728f3db7b77c290c87df217ce7c158c00974a67f6a181cd1c5c33a859c545a31",
+      "request_id": "ti-records-impl-selections-v1",
+      "created_at": "2026-09-25T01:32:07.68887Z",
+      "asset": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
+      "asset_digest": "sha256:e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedffb4d6d31c62e",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-selections",
+        "deck": "technical-inventory",
+        "title": "Implemented: exact Item selections and saved-view pins",
+        "rank": 190,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
+        "takeaway": "An Item selects a subset through saved pins and a stable evidence ID; historical pins need an explicit saved view, and old pins survive definition succession.",
+        "reading_order": [
+          "path",
+          "authoring",
+          "view",
+          "retention",
+          "selection-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "path",
+            "slide": "ti-records-impl-selections",
+            "rank": 10,
+            "kind": "edge",
+            "label": "Declared path of saved pins",
+            "description": "Each hop must be declared by the previous saved revision: System member, holder or relationship destination. The range must lie inside the named evidence at its commit; failures have stable codes.",
+            "selector": {
+              "type": "element",
+              "element_id": "path"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 43,
+                  "end": 89,
+                  "digest": "sha256:f14ac064b7b9cdfba62d5fab81b238e3b2a3c939f9903d0c56780ed815cdc295",
+                  "note": "ResolveSelection: path, evidence and containment with reason codes."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 102,
+                  "end": 122,
+                  "digest": "sha256:da7da51e65f8a1f87b247b30c06800443afa90f9c829d9d3991c49eacd2cb7a0",
+                  "note": "declaresHop: only declared links at the saved revision."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-subset",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "A reference stores an inspectable subset; referencing a System selects nothing implicitly."
+            },
+            {
+              "id": "ti-records-impl-selection-path",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "The saved path records the System/Component/data-entity route that coverage reports will expose."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "authoring",
+            "slide": "ti-records-impl-selections",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Selected bytes authored exactly",
+            "description": "The CLI defaults an omitted commit to the containing evidence commit, prechecks structure, then digests only the selected lines; a supplied digest must match.",
+            "selector": {
+              "type": "element",
+              "element_id": "authoring"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 65,
+                  "end": 115,
+                  "digest": "sha256:5086b85c0bd125543f7eb5774eb5cf1c58a958befd2cf67ab652c35697f453c7",
+                  "note": "authorItemLinks resolves views once and authors new selections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 148,
+                  "end": 163,
+                  "digest": "sha256:e4364a0559a9df15c3123d407f925b0e92ffbd5ba27dbcbf01aee6b7e9e6a950",
+                  "note": "defaultSelectionCommits uses the containing evidence commit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-source",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "Each selection stores its commit, path, exact range and selected-byte digest for display and currency checks."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "view",
+            "slide": "ti-records-impl-selections",
+            "rank": 30,
+            "kind": "node",
+            "label": "Explicit saved view",
+            "description": "A historical pin is admitted only when the Saga committed at the named commit binds it as its active current revision. The loader reads that commit through Git and refuses with a specific reason.",
+            "selector": {
+              "type": "element",
+              "element_id": "view"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/savedview/savedview.go",
+                  "start": 64,
+                  "end": 131,
+                  "digest": "sha256:a5d7e11efa192017cef6b90eea3c51a52dd63d5cb68d87db656a10886f79aec9",
+                  "note": "savedview.Load: commit, Saga identity, source and inventory at that commit."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 188,
+                  "end": 209,
+                  "digest": "sha256:cf3a06cd879969cc72547821a74ec7f1d6ad9d50b26ceddb8037702152c652ab",
+                  "note": "admitDocumentationPin applies technicalpolicy.AdmitPin."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-compare-plan",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A review Item can pin the committed design revision through the saved view that bound it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "retention",
+            "slide": "ti-records-impl-selections",
+            "rank": 40,
+            "kind": "node",
+            "label": "Old pins are retained",
+            "description": "An unchanged pin, view or selection is retained when an Item is revised, and a newer definition revision is never substituted in a saved path.",
+            "selector": {
+              "type": "element",
+              "element_id": "retention"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 117,
+                  "end": 146,
+                  "digest": "sha256:431b7127692e3f5b83d53a971afb00d4378057804ef00cb88a6402e646ce77be",
+                  "note": "admitItemLinks retains unchanged pins and re-resolves every selection."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-evolution",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:visible-evolution",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Definition succession leaves prior Item pins and selections intact so evolution stays traceable."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "selection-tests",
+            "slide": "ti-records-impl-selections",
+            "rank": 50,
+            "kind": "example",
+            "label": "Selection and view tests",
+            "description": "Tests cover review and implementation Items, every named refusal, saved-view admission and refusal, retention across a newer revision, and transaction selections with replayed retries.",
+            "selector": {
+              "type": "element",
+              "element_id": "selection-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 16,
+                  "end": 146,
+                  "digest": "sha256:64169cfc8928809c1fc79b4924623de44fca52118e70f8dc69a15e5ea34c3184",
+                  "note": "Review/implementation selections, refusals and saved views."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 170,
+                  "end": 215,
+                  "digest": "sha256:8f3e409d38b676e90208accb17b912571033a601c14b574168a2200530749467",
+                  "note": "apply-slide selections, replay and refusal."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 249,
+                  "end": 303,
+                  "digest": "sha256:712916a1f9bad80f9c170e248c28123fe62813fe886a5d37d25d95fe64f0f3c7",
+                  "note": "Structural resolution never substitutes newer revisions."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-review-reuse",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Review deck Items reference the same identities and select the relevant code subset."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:b0ac8a5a26e0681d8fe1f99b6d66e14ec8e80ab516e01f2caf256ea02b25e66c",
+      "parent_snapshots": [
+        "sha256:728f3db7b77c290c87df217ce7c158c00974a67f6a181cd1c5c33a859c545a31"
+      ],
+      "request_id": "ti-records-impl-selections-v2",
+      "created_at": "2026-09-25T01:38:21.161765Z",
+      "asset": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
+      "asset_digest": "sha256:e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedffb4d6d31c62e",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-selections",
+        "deck": "technical-inventory",
+        "title": "Implemented: exact Item selections and saved-view pins",
+        "rank": 190,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
+        "takeaway": "An Item selects a subset through saved pins and a stable evidence ID; historical pins need an explicit saved view, and old pins survive definition succession.",
+        "reading_order": [
+          "path",
+          "authoring",
+          "view",
+          "retention",
+          "selection-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "path",
+            "slide": "ti-records-impl-selections",
+            "rank": 10,
+            "kind": "edge",
+            "label": "Declared path of saved pins",
+            "description": "Each hop must be declared by the previous saved revision: System member, holder or relationship destination. The range must lie inside the named evidence at its commit; failures have stable codes.",
+            "selector": {
+              "type": "element",
+              "element_id": "path"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 43,
+                  "end": 89,
+                  "digest": "sha256:f14ac064b7b9cdfba62d5fab81b238e3b2a3c939f9903d0c56780ed815cdc295",
+                  "note": "ResolveSelection: path, evidence and containment with reason codes."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 102,
+                  "end": 122,
+                  "digest": "sha256:da7da51e65f8a1f87b247b30c06800443afa90f9c829d9d3991c49eacd2cb7a0",
+                  "note": "declaresHop: only declared links at the saved revision."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 1,
+                  "end": 161,
+                  "digest": "sha256:fe31d04c978dc21c7ad5ab8fc7491ee9fa728f5ae430ae6a1b0b1290673797b9",
+                  "note": "Changed lines of internal/requirements/inventory_selection.go explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/model.go",
+                  "start": 76,
+                  "end": 77,
+                  "digest": "sha256:693b82b4a4e28e778775a187569471e342e6477ddc3e66e7b9f2b3dcf01c36de",
+                  "note": "Changed lines of internal/saga/model.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/model.go",
+                  "start": 83,
+                  "end": 101,
+                  "digest": "sha256:986ca2a2c8ab4b3aa15b879606fb78101f3be9f3f1fe4d70f0c76ce6711892a9",
+                  "note": "Changed lines of internal/saga/model.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/model.go",
+                  "start": 104,
+                  "end": 120,
+                  "digest": "sha256:7b4a3c7cfffd87b1baf2455a9319cf2973bff0ab6a91092a3ddaf04cdfd8c859",
+                  "note": "Changed lines of internal/saga/model.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/model.go",
+                  "start": 76,
+                  "end": 77,
+                  "digest": "sha256:594013ff1667eab31c6b84e2dbd3e5afc622634aa4115acdf621c80353c8cb4c",
+                  "note": "Replaced or removed lines of internal/saga/model.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/model.go",
+                  "start": 85,
+                  "end": 97,
+                  "digest": "sha256:6eb1692b396959e3bf1fee2a15be7b31391792d2a7a09a6f5efd81a027cce476",
+                  "note": "Replaced or removed lines of internal/saga/model.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 10,
+                  "end": 11,
+                  "digest": "sha256:3323f8968d43baf17bc4e858e1d17e7a48537d120d4c1b8b42763a1ad2ee9aee",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 418,
+                  "end": 421,
+                  "digest": "sha256:3b37620dba45631607008f4ec5e2c7aed35ad2ef782a58abedc1cc3fcfcccf99",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 537,
+                  "end": 537,
+                  "digest": "sha256:dee67a7dedba102f1956932efcbb6a9d4588b04bfc785b623a309b45b7bd3060",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 591,
+                  "end": 600,
+                  "digest": "sha256:1d09568f4bfd80c3b2be9bd5b1879d31a21b3ef9221aef85a435d3a43c737d24",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 607,
+                  "end": 649,
+                  "digest": "sha256:c0518682eb8ee4a75fdf8c662a2fe1487eda281f1a05d7a30130bc4f07352ae8",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/slides.go",
+                  "start": 416,
+                  "end": 416,
+                  "digest": "sha256:5aa26973a784bcd2d97215f1189543a13751e1e6e24e5433939439992656d496",
+                  "note": "Replaced or removed lines of internal/saga/slides.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/slides.go",
+                  "start": 532,
+                  "end": 532,
+                  "digest": "sha256:70597e6f54d3dfb0481a7328301b8ea39166ce57d1e6a042a8b38e1f9a33046f",
+                  "note": "Replaced or removed lines of internal/saga/slides.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/slides.go",
+                  "start": 586,
+                  "end": 586,
+                  "digest": "sha256:4a632e84eadb79206ca28fc8d6f25bf409fbfaca1db2b203790e0d7230b50da4",
+                  "note": "Replaced or removed lines of internal/saga/slides.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/item-selection.schema.json",
+                  "start": 1,
+                  "end": 84,
+                  "digest": "sha256:9c38a0dace579c48c2cc73bdb5f4c3bf5c77c9d7926b1ec3d6a03696ee912b9c",
+                  "note": "Changed lines of schema/v5/item-selection.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v4/item.schema.json",
+                  "start": 21,
+                  "end": 23,
+                  "digest": "sha256:3ca5622d4bf8d6f7062fff180358cd688e09d2f4ad088f4cde3f177d23c46522",
+                  "note": "Changed lines of schema/v4/item.schema.json explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v4/item.schema.json",
+                  "start": 21,
+                  "end": 21,
+                  "digest": "sha256:db127af35111f887ed44c7a39341344f74171d0571f9de8bbcac5fdc214e216c",
+                  "note": "Replaced or removed lines of schema/v4/item.schema.json at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/slide-transaction-request.schema.json",
+                  "start": 92,
+                  "end": 94,
+                  "digest": "sha256:69d892403caa29cb3ed5cf676d077fd0c687675a248d5a66a641e97f787fe373",
+                  "note": "Changed lines of schema/v5/slide-transaction-request.schema.json explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/slide-transaction-request.schema.json",
+                  "start": 92,
+                  "end": 92,
+                  "digest": "sha256:e89190cd1b630f65ebb5ec6ee09e27d6c0621a26c9d7bc6f17f0c777e568c2b1",
+                  "note": "Replaced or removed lines of schema/v5/slide-transaction-request.schema.json at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-subset",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "A reference stores an inspectable subset; referencing a System selects nothing implicitly."
+            },
+            {
+              "id": "ti-records-impl-selection-path",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "The saved path records the System/Component/data-entity route that coverage reports will expose."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "authoring",
+            "slide": "ti-records-impl-selections",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Selected bytes authored exactly",
+            "description": "The CLI defaults an omitted commit to the containing evidence commit, prechecks structure, then digests only the selected lines; a supplied digest must match.",
+            "selector": {
+              "type": "element",
+              "element_id": "authoring"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 65,
+                  "end": 115,
+                  "digest": "sha256:5086b85c0bd125543f7eb5774eb5cf1c58a958befd2cf67ab652c35697f453c7",
+                  "note": "authorItemLinks resolves views once and authors new selections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 148,
+                  "end": 163,
+                  "digest": "sha256:e4364a0559a9df15c3123d407f925b0e92ffbd5ba27dbcbf01aee6b7e9e6a950",
+                  "note": "defaultSelectionCommits uses the containing evidence commit."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 1,
+                  "end": 229,
+                  "digest": "sha256:458eb11cbb7297b27b27b372c7f43937c4e41705425357c9094852784772dbd0",
+                  "note": "Changed lines of internal/cli/inventory_item.go explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slides.go",
+                  "start": 321,
+                  "end": 321,
+                  "digest": "sha256:5af97f85b68a7011b05570576b7f19782bba4abb51dcd6848bed2bf599f7e1a6",
+                  "note": "Changed lines of internal/cli/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slides.go",
+                  "start": 337,
+                  "end": 339,
+                  "digest": "sha256:0818cfc413dcb35020653b949a4b94d98299c7554c14f233afe440272d866bbc",
+                  "note": "Changed lines of internal/cli/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slides.go",
+                  "start": 435,
+                  "end": 446,
+                  "digest": "sha256:74ef6afeab7e8ea9abc542029d171ab097b14635e79cec882372766a399994dc",
+                  "note": "Changed lines of internal/cli/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slides.go",
+                  "start": 490,
+                  "end": 490,
+                  "digest": "sha256:113f97c3f1b9024a648bfc061bcd252a826ce61afb67d898e896d372c1066574",
+                  "note": "Changed lines of internal/cli/slides.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slides.go",
+                  "start": 321,
+                  "end": 321,
+                  "digest": "sha256:981138b81098bbbca90ecbe971d1ce2e3fde79e3fe3588dd491810df92ccdba7",
+                  "note": "Replaced or removed lines of internal/cli/slides.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slides.go",
+                  "start": 432,
+                  "end": 434,
+                  "digest": "sha256:33675973fef64dd7a8b6a5651c06b7ff68f89c81819f5f6a12c594e95e5f7e8d",
+                  "note": "Replaced or removed lines of internal/cli/slides.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slides.go",
+                  "start": 478,
+                  "end": 478,
+                  "digest": "sha256:ac168aa0e8c69937faed3335e7deccc49a58af4b1329f5519802682693173672",
+                  "note": "Replaced or removed lines of internal/cli/slides.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 594,
+                  "end": 594,
+                  "digest": "sha256:162d22e80510e94143b30c9ced1808464a85418c45d30f76d806e40b94b01399",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 611,
+                  "end": 613,
+                  "digest": "sha256:f3ba355b049338f682a5f709e87a3eb618a37fb706baa6333e3023447f622b94",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 654,
+                  "end": 663,
+                  "digest": "sha256:8a1ab3c640fc8913393854df2a55b742116048446cc4191156b1dcc7ca7977d7",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 665,
+                  "end": 676,
+                  "digest": "sha256:6bb7bcc4fc79e835fd04196d8be57a9aad3a8919e3eaf8bd257576c7d1e5200c",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 678,
+                  "end": 683,
+                  "digest": "sha256:d0a314930af6816b0dccde0e4dfd9830993458449796298f024f96e9489967dd",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 685,
+                  "end": 688,
+                  "digest": "sha256:e4b32f6a9887761a8b5b8e1a3ff4a5ebbf2c3da9e1e3c12b8912ec65a3fa1915",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 594,
+                  "end": 594,
+                  "digest": "sha256:ab8dc1d9cb30556cbfed42bd48cf866538d326d658506fa31252a001a2773164",
+                  "note": "Replaced or removed lines of internal/cli/content_edit.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 651,
+                  "end": 657,
+                  "digest": "sha256:72be8a462447526cb1da161bc38a9e6065f966561d7a394f3b90177bccfeb615",
+                  "note": "Replaced or removed lines of internal/cli/content_edit.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 659,
+                  "end": 661,
+                  "digest": "sha256:613e4c0423fbedb4c57e417057cae55fcdf76f2aa83eaa6edf25a2f96ffa1197",
+                  "note": "Replaced or removed lines of internal/cli/content_edit.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 664,
+                  "end": 664,
+                  "digest": "sha256:d75141b367cfca78006a144d7be6a76750f091195143339fcd34922ae3471ac3",
+                  "note": "Replaced or removed lines of internal/cli/content_edit.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 64,
+                  "end": 79,
+                  "digest": "sha256:745d7fa18ff2e031b8d5d779b31000ec1aa929a526ae689e98135d95d242c824",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 159,
+                  "end": 185,
+                  "digest": "sha256:fc7dcc4461c8958240b3ae5c61019092d95f0d35eeedcf0a379ca8fd3fb1fb18",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 258,
+                  "end": 261,
+                  "digest": "sha256:b8e5b66c947308d97667de97f339184948db7f97f332e6abd027cb5741aa0596",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 263,
+                  "end": 263,
+                  "digest": "sha256:8e332f3da643c78634e1270684f782cd58d80482ac6424074620a86422d5e6cb",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 265,
+                  "end": 267,
+                  "digest": "sha256:c0c62b02009975849d436e3802c02431efa2b25d6a9e6fc7b363c82f30b123d5",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 271,
+                  "end": 272,
+                  "digest": "sha256:fb3469998c4a057220dde12b734364733bdc6a4e6899174d5d721c4bef274150",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 399,
+                  "end": 399,
+                  "digest": "sha256:c67393258f06adc54e7fe5ed0404fbe4c8133e94dc2a4caaed45e7d3ce4cfb5b",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 64,
+                  "end": 77,
+                  "digest": "sha256:d18795bae3bfd8889c5b7fada7e93b69c47a2f585e35401b5fc35715910bccee",
+                  "note": "Replaced or removed lines of internal/cli/slide_transaction.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 230,
+                  "end": 230,
+                  "digest": "sha256:f2439ffc4591d7939effa213f3ee5db20f57a34b3f66bcac92db7e95d7e9590a",
+                  "note": "Replaced or removed lines of internal/cli/slide_transaction.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 232,
+                  "end": 234,
+                  "digest": "sha256:67edad1387955046815d6fe97fd46c2f46fc97ef570829cb86e9b409ad36f376",
+                  "note": "Replaced or removed lines of internal/cli/slide_transaction.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 238,
+                  "end": 242,
+                  "digest": "sha256:426f69c52ee8282711290be3935923c137d904fbf007dd491f4c03a0dd899ba1",
+                  "note": "Replaced or removed lines of internal/cli/slide_transaction.go at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-source",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "Each selection stores its commit, path, exact range and selected-byte digest for display and currency checks."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "view",
+            "slide": "ti-records-impl-selections",
+            "rank": 30,
+            "kind": "node",
+            "label": "Explicit saved view",
+            "description": "A historical pin is admitted only when the Saga committed at the named commit binds it as its active current revision. The loader reads that commit through Git and refuses with a specific reason.",
+            "selector": {
+              "type": "element",
+              "element_id": "view"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/savedview/savedview.go",
+                  "start": 64,
+                  "end": 131,
+                  "digest": "sha256:a5d7e11efa192017cef6b90eea3c51a52dd63d5cb68d87db656a10886f79aec9",
+                  "note": "savedview.Load: commit, Saga identity, source and inventory at that commit."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 188,
+                  "end": 209,
+                  "digest": "sha256:cf3a06cd879969cc72547821a74ec7f1d6ad9d50b26ceddb8037702152c652ab",
+                  "note": "admitDocumentationPin applies technicalpolicy.AdmitPin."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/savedview/savedview.go",
+                  "start": 1,
+                  "end": 263,
+                  "digest": "sha256:e1f5fd516cf2ae8598cb2c234d3b8556a17fb504ea84ad5bb77f8b04eb60ef4a",
+                  "note": "Changed lines of internal/savedview/savedview.go explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-compare-plan",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A review Item can pin the committed design revision through the saved view that bound it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "retention",
+            "slide": "ti-records-impl-selections",
+            "rank": 40,
+            "kind": "node",
+            "label": "Old pins are retained",
+            "description": "An unchanged pin, view or selection is retained when an Item is revised, and a newer definition revision is never substituted in a saved path.",
+            "selector": {
+              "type": "element",
+              "element_id": "retention"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 117,
+                  "end": 146,
+                  "digest": "sha256:431b7127692e3f5b83d53a971afb00d4378057804ef00cb88a6402e646ce77be",
+                  "note": "admitItemLinks retains unchanged pins and re-resolves every selection."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-evolution",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:visible-evolution",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Definition succession leaves prior Item pins and selections intact so evolution stays traceable."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "selection-tests",
+            "slide": "ti-records-impl-selections",
+            "rank": 50,
+            "kind": "example",
+            "label": "Selection and view tests",
+            "description": "Tests cover review and implementation Items, every named refusal, saved-view admission and refusal, retention across a newer revision, and transaction selections with replayed retries.",
+            "selector": {
+              "type": "element",
+              "element_id": "selection-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 16,
+                  "end": 146,
+                  "digest": "sha256:64169cfc8928809c1fc79b4924623de44fca52118e70f8dc69a15e5ea34c3184",
+                  "note": "Review/implementation selections, refusals and saved views."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 170,
+                  "end": 215,
+                  "digest": "sha256:8f3e409d38b676e90208accb17b912571033a601c14b574168a2200530749467",
+                  "note": "apply-slide selections, replay and refusal."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 249,
+                  "end": 303,
+                  "digest": "sha256:712916a1f9bad80f9c170e248c28123fe62813fe886a5d37d25d95fe64f0f3c7",
+                  "note": "Structural resolution never substitutes newer revisions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 1,
+                  "end": 219,
+                  "digest": "sha256:c514d1c056a3c17037b6e486fadf297785a598f54b93e6f4252373e185e4ebb9",
+                  "note": "Changed lines of internal/cli/inventory_item_test.go explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-review-reuse",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Review deck Items reference the same identities and select the relevant code subset."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:37a12ce58ad9938aee5b4926cb2b515b907ad885d1649ae790fd03990c360759",
+      "parent_snapshots": [
+        "sha256:b0ac8a5a26e0681d8fe1f99b6d66e14ec8e80ab516e01f2caf256ea02b25e66c"
+      ],
+      "request_id": "ti-records-impl-selections-v3",
+      "created_at": "2026-09-25T01:38:51.356778Z",
+      "asset": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
+      "asset_digest": "sha256:e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedffb4d6d31c62e",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-selections",
+        "deck": "technical-inventory",
+        "title": "Implemented: exact Item selections and saved-view pins",
+        "rank": 190,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
+        "takeaway": "An Item selects a subset through saved pins and a stable evidence ID; historical pins need an explicit saved view, and old pins survive definition succession.",
+        "reading_order": [
+          "path",
+          "authoring",
+          "view",
+          "retention",
+          "selection-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "path",
+            "slide": "ti-records-impl-selections",
+            "rank": 10,
+            "kind": "edge",
+            "label": "Declared path of saved pins",
+            "description": "Each hop must be declared by the previous saved revision: System member, holder or relationship destination. The range must lie inside the named evidence at its commit; failures have stable codes.",
+            "selector": {
+              "type": "element",
+              "element_id": "path"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 43,
+                  "end": 89,
+                  "digest": "sha256:f14ac064b7b9cdfba62d5fab81b238e3b2a3c939f9903d0c56780ed815cdc295",
+                  "note": "ResolveSelection: path, evidence and containment with reason codes."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 102,
+                  "end": 122,
+                  "digest": "sha256:da7da51e65f8a1f87b247b30c06800443afa90f9c829d9d3991c49eacd2cb7a0",
+                  "note": "declaresHop: only declared links at the saved revision."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_selection.go",
+                  "start": 1,
+                  "end": 161,
+                  "digest": "sha256:fe31d04c978dc21c7ad5ab8fc7491ee9fa728f5ae430ae6a1b0b1290673797b9",
+                  "note": "Changed lines of internal/requirements/inventory_selection.go explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/model.go",
+                  "start": 76,
+                  "end": 77,
+                  "digest": "sha256:693b82b4a4e28e778775a187569471e342e6477ddc3e66e7b9f2b3dcf01c36de",
+                  "note": "Changed lines of internal/saga/model.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/model.go",
+                  "start": 83,
+                  "end": 101,
+                  "digest": "sha256:986ca2a2c8ab4b3aa15b879606fb78101f3be9f3f1fe4d70f0c76ce6711892a9",
+                  "note": "Changed lines of internal/saga/model.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/model.go",
+                  "start": 104,
+                  "end": 120,
+                  "digest": "sha256:7b4a3c7cfffd87b1baf2455a9319cf2973bff0ab6a91092a3ddaf04cdfd8c859",
+                  "note": "Changed lines of internal/saga/model.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/model.go",
+                  "start": 76,
+                  "end": 77,
+                  "digest": "sha256:594013ff1667eab31c6b84e2dbd3e5afc622634aa4115acdf621c80353c8cb4c",
+                  "note": "Replaced or removed lines of internal/saga/model.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/model.go",
+                  "start": 85,
+                  "end": 97,
+                  "digest": "sha256:6eb1692b396959e3bf1fee2a15be7b31391792d2a7a09a6f5efd81a027cce476",
+                  "note": "Replaced or removed lines of internal/saga/model.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 10,
+                  "end": 11,
+                  "digest": "sha256:3323f8968d43baf17bc4e858e1d17e7a48537d120d4c1b8b42763a1ad2ee9aee",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 418,
+                  "end": 421,
+                  "digest": "sha256:3b37620dba45631607008f4ec5e2c7aed35ad2ef782a58abedc1cc3fcfcccf99",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 537,
+                  "end": 537,
+                  "digest": "sha256:dee67a7dedba102f1956932efcbb6a9d4588b04bfc785b623a309b45b7bd3060",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 591,
+                  "end": 600,
+                  "digest": "sha256:1d09568f4bfd80c3b2be9bd5b1879d31a21b3ef9221aef85a435d3a43c737d24",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/saga/slides.go",
+                  "start": 607,
+                  "end": 649,
+                  "digest": "sha256:c0518682eb8ee4a75fdf8c662a2fe1487eda281f1a05d7a30130bc4f07352ae8",
+                  "note": "Changed lines of internal/saga/slides.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/slides.go",
+                  "start": 416,
+                  "end": 416,
+                  "digest": "sha256:5aa26973a784bcd2d97215f1189543a13751e1e6e24e5433939439992656d496",
+                  "note": "Replaced or removed lines of internal/saga/slides.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/slides.go",
+                  "start": 532,
+                  "end": 532,
+                  "digest": "sha256:70597e6f54d3dfb0481a7328301b8ea39166ce57d1e6a042a8b38e1f9a33046f",
+                  "note": "Replaced or removed lines of internal/saga/slides.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/saga/slides.go",
+                  "start": 586,
+                  "end": 586,
+                  "digest": "sha256:4a632e84eadb79206ca28fc8d6f25bf409fbfaca1db2b203790e0d7230b50da4",
+                  "note": "Replaced or removed lines of internal/saga/slides.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/item-selection.schema.json",
+                  "start": 1,
+                  "end": 84,
+                  "digest": "sha256:9c38a0dace579c48c2cc73bdb5f4c3bf5c77c9d7926b1ec3d6a03696ee912b9c",
+                  "note": "Changed lines of schema/v5/item-selection.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v4/item.schema.json",
+                  "start": 21,
+                  "end": 23,
+                  "digest": "sha256:3ca5622d4bf8d6f7062fff180358cd688e09d2f4ad088f4cde3f177d23c46522",
+                  "note": "Changed lines of schema/v4/item.schema.json explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v4/item.schema.json",
+                  "start": 21,
+                  "end": 21,
+                  "digest": "sha256:db127af35111f887ed44c7a39341344f74171d0571f9de8bbcac5fdc214e216c",
+                  "note": "Replaced or removed lines of schema/v4/item.schema.json at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/slide-transaction-request.schema.json",
+                  "start": 92,
+                  "end": 94,
+                  "digest": "sha256:69d892403caa29cb3ed5cf676d077fd0c687675a248d5a66a641e97f787fe373",
+                  "note": "Changed lines of schema/v5/slide-transaction-request.schema.json explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/slide-transaction-request.schema.json",
+                  "start": 92,
+                  "end": 92,
+                  "digest": "sha256:e89190cd1b630f65ebb5ec6ee09e27d6c0621a26c9d7bc6f17f0c777e568c2b1",
+                  "note": "Replaced or removed lines of schema/v5/slide-transaction-request.schema.json at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-subset",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:selected-subset",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "A reference stores an inspectable subset; referencing a System selects nothing implicitly."
+            },
+            {
+              "id": "ti-records-impl-selection-path",
+              "criterion": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:criterion:explain-path",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-scoped-deck-coverage:revision:r2",
+              "rationale": "The saved path records the System/Component/data-entity route that coverage reports will expose."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "authoring",
+            "slide": "ti-records-impl-selections",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Selected bytes authored exactly",
+            "description": "The CLI defaults an omitted commit to the containing evidence commit, prechecks structure, then digests only the selected lines; a supplied digest must match.",
+            "selector": {
+              "type": "element",
+              "element_id": "authoring"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 65,
+                  "end": 115,
+                  "digest": "sha256:5086b85c0bd125543f7eb5774eb5cf1c58a958befd2cf67ab652c35697f453c7",
+                  "note": "authorItemLinks resolves views once and authors new selections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 148,
+                  "end": 163,
+                  "digest": "sha256:e4364a0559a9df15c3123d407f925b0e92ffbd5ba27dbcbf01aee6b7e9e6a950",
+                  "note": "defaultSelectionCommits uses the containing evidence commit."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 1,
+                  "end": 229,
+                  "digest": "sha256:458eb11cbb7297b27b27b372c7f43937c4e41705425357c9094852784772dbd0",
+                  "note": "Changed lines of internal/cli/inventory_item.go explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slides.go",
+                  "start": 321,
+                  "end": 321,
+                  "digest": "sha256:5af97f85b68a7011b05570576b7f19782bba4abb51dcd6848bed2bf599f7e1a6",
+                  "note": "Changed lines of internal/cli/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slides.go",
+                  "start": 337,
+                  "end": 339,
+                  "digest": "sha256:0818cfc413dcb35020653b949a4b94d98299c7554c14f233afe440272d866bbc",
+                  "note": "Changed lines of internal/cli/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slides.go",
+                  "start": 435,
+                  "end": 446,
+                  "digest": "sha256:74ef6afeab7e8ea9abc542029d171ab097b14635e79cec882372766a399994dc",
+                  "note": "Changed lines of internal/cli/slides.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slides.go",
+                  "start": 490,
+                  "end": 490,
+                  "digest": "sha256:113f97c3f1b9024a648bfc061bcd252a826ce61afb67d898e896d372c1066574",
+                  "note": "Changed lines of internal/cli/slides.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slides.go",
+                  "start": 321,
+                  "end": 321,
+                  "digest": "sha256:981138b81098bbbca90ecbe971d1ce2e3fde79e3fe3588dd491810df92ccdba7",
+                  "note": "Replaced or removed lines of internal/cli/slides.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slides.go",
+                  "start": 432,
+                  "end": 434,
+                  "digest": "sha256:33675973fef64dd7a8b6a5651c06b7ff68f89c81819f5f6a12c594e95e5f7e8d",
+                  "note": "Replaced or removed lines of internal/cli/slides.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slides.go",
+                  "start": 478,
+                  "end": 478,
+                  "digest": "sha256:ac168aa0e8c69937faed3335e7deccc49a58af4b1329f5519802682693173672",
+                  "note": "Replaced or removed lines of internal/cli/slides.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 594,
+                  "end": 594,
+                  "digest": "sha256:162d22e80510e94143b30c9ced1808464a85418c45d30f76d806e40b94b01399",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 611,
+                  "end": 613,
+                  "digest": "sha256:f3ba355b049338f682a5f709e87a3eb618a37fb706baa6333e3023447f622b94",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 654,
+                  "end": 663,
+                  "digest": "sha256:8a1ab3c640fc8913393854df2a55b742116048446cc4191156b1dcc7ca7977d7",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 665,
+                  "end": 676,
+                  "digest": "sha256:6bb7bcc4fc79e835fd04196d8be57a9aad3a8919e3eaf8bd257576c7d1e5200c",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 678,
+                  "end": 683,
+                  "digest": "sha256:d0a314930af6816b0dccde0e4dfd9830993458449796298f024f96e9489967dd",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 685,
+                  "end": 688,
+                  "digest": "sha256:e4b32f6a9887761a8b5b8e1a3ff4a5ebbf2c3da9e1e3c12b8912ec65a3fa1915",
+                  "note": "Changed lines of internal/cli/content_edit.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 594,
+                  "end": 594,
+                  "digest": "sha256:ab8dc1d9cb30556cbfed42bd48cf866538d326d658506fa31252a001a2773164",
+                  "note": "Replaced or removed lines of internal/cli/content_edit.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 651,
+                  "end": 657,
+                  "digest": "sha256:72be8a462447526cb1da161bc38a9e6065f966561d7a394f3b90177bccfeb615",
+                  "note": "Replaced or removed lines of internal/cli/content_edit.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 659,
+                  "end": 661,
+                  "digest": "sha256:613e4c0423fbedb4c57e417057cae55fcdf76f2aa83eaa6edf25a2f96ffa1197",
+                  "note": "Replaced or removed lines of internal/cli/content_edit.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 664,
+                  "end": 664,
+                  "digest": "sha256:d75141b367cfca78006a144d7be6a76750f091195143339fcd34922ae3471ac3",
+                  "note": "Replaced or removed lines of internal/cli/content_edit.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 64,
+                  "end": 79,
+                  "digest": "sha256:745d7fa18ff2e031b8d5d779b31000ec1aa929a526ae689e98135d95d242c824",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 159,
+                  "end": 185,
+                  "digest": "sha256:fc7dcc4461c8958240b3ae5c61019092d95f0d35eeedcf0a379ca8fd3fb1fb18",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 258,
+                  "end": 261,
+                  "digest": "sha256:b8e5b66c947308d97667de97f339184948db7f97f332e6abd027cb5741aa0596",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 263,
+                  "end": 263,
+                  "digest": "sha256:8e332f3da643c78634e1270684f782cd58d80482ac6424074620a86422d5e6cb",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 265,
+                  "end": 267,
+                  "digest": "sha256:c0c62b02009975849d436e3802c02431efa2b25d6a9e6fc7b363c82f30b123d5",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 271,
+                  "end": 272,
+                  "digest": "sha256:fb3469998c4a057220dde12b734364733bdc6a4e6899174d5d721c4bef274150",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 399,
+                  "end": 399,
+                  "digest": "sha256:c67393258f06adc54e7fe5ed0404fbe4c8133e94dc2a4caaed45e7d3ce4cfb5b",
+                  "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 64,
+                  "end": 77,
+                  "digest": "sha256:d18795bae3bfd8889c5b7fada7e93b69c47a2f585e35401b5fc35715910bccee",
+                  "note": "Replaced or removed lines of internal/cli/slide_transaction.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 230,
+                  "end": 230,
+                  "digest": "sha256:f2439ffc4591d7939effa213f3ee5db20f57a34b3f66bcac92db7e95d7e9590a",
+                  "note": "Replaced or removed lines of internal/cli/slide_transaction.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 232,
+                  "end": 234,
+                  "digest": "sha256:67edad1387955046815d6fe97fd46c2f46fc97ef570829cb86e9b409ad36f376",
+                  "note": "Replaced or removed lines of internal/cli/slide_transaction.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/slide_transaction.go",
+                  "start": 238,
+                  "end": 242,
+                  "digest": "sha256:426f69c52ee8282711290be3935923c137d904fbf007dd491f4c03a0dd899ba1",
+                  "note": "Replaced or removed lines of internal/cli/slide_transaction.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 677,
+                  "end": 677,
+                  "digest": "sha256:da17801a77af74d003c9fec6d585823ba1178d346df5130575d1f11a59b8d58b",
+                  "note": "Closing brace of the revise-item documentation block, explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/content_edit.go",
+                  "start": 684,
+                  "end": 684,
+                  "digest": "sha256:10df81b046f58065938d494eae12e57c0402dee55660f60d360946068eec23c5",
+                  "note": "Closing brace of the revise-item documentation block, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-source",
+              "criterion": "urn:change-saga:change-saga:story:inventory-trace-slide-code:criterion:source-identity",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-trace-slide-code:revision:r2",
+              "rationale": "Each selection stores its commit, path, exact range and selected-byte digest for display and currency checks."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "view",
+            "slide": "ti-records-impl-selections",
+            "rank": 30,
+            "kind": "node",
+            "label": "Explicit saved view",
+            "description": "A historical pin is admitted only when the Saga committed at the named commit binds it as its active current revision. The loader reads that commit through Git and refuses with a specific reason.",
+            "selector": {
+              "type": "element",
+              "element_id": "view"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/savedview/savedview.go",
+                  "start": 64,
+                  "end": 131,
+                  "digest": "sha256:a5d7e11efa192017cef6b90eea3c51a52dd63d5cb68d87db656a10886f79aec9",
+                  "note": "savedview.Load: commit, Saga identity, source and inventory at that commit."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 188,
+                  "end": 209,
+                  "digest": "sha256:cf3a06cd879969cc72547821a74ec7f1d6ad9d50b26ceddb8037702152c652ab",
+                  "note": "admitDocumentationPin applies technicalpolicy.AdmitPin."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/savedview/savedview.go",
+                  "start": 1,
+                  "end": 263,
+                  "digest": "sha256:e1f5fd516cf2ae8598cb2c234d3b8556a17fb504ea84ad5bb77f8b04eb60ef4a",
+                  "note": "Changed lines of internal/savedview/savedview.go explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-compare-plan",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A review Item can pin the committed design revision through the saved view that bound it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "retention",
+            "slide": "ti-records-impl-selections",
+            "rank": 40,
+            "kind": "node",
+            "label": "Old pins are retained",
+            "description": "An unchanged pin, view or selection is retained when an Item is revised, and a newer definition revision is never substituted in a saved path.",
+            "selector": {
+              "type": "element",
+              "element_id": "retention"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item.go",
+                  "start": 117,
+                  "end": 146,
+                  "digest": "sha256:431b7127692e3f5b83d53a971afb00d4378057804ef00cb88a6402e646ce77be",
+                  "note": "admitItemLinks retains unchanged pins and re-resolves every selection."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-evolution",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:visible-evolution",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Definition succession leaves prior Item pins and selections intact so evolution stays traceable."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "selection-tests",
+            "slide": "ti-records-impl-selections",
+            "rank": 50,
+            "kind": "example",
+            "label": "Selection and view tests",
+            "description": "Tests cover review and implementation Items, every named refusal, saved-view admission and refusal, retention across a newer revision, and transaction selections with replayed retries.",
+            "selector": {
+              "type": "element",
+              "element_id": "selection-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 16,
+                  "end": 146,
+                  "digest": "sha256:64169cfc8928809c1fc79b4924623de44fca52118e70f8dc69a15e5ea34c3184",
+                  "note": "Review/implementation selections, refusals and saved views."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 170,
+                  "end": 215,
+                  "digest": "sha256:8f3e409d38b676e90208accb17b912571033a601c14b574168a2200530749467",
+                  "note": "apply-slide selections, replay and refusal."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 249,
+                  "end": 303,
+                  "digest": "sha256:712916a1f9bad80f9c170e248c28123fe62813fe886a5d37d25d95fe64f0f3c7",
+                  "note": "Structural resolution never substitutes newer revisions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_item_test.go",
+                  "start": 1,
+                  "end": 219,
+                  "digest": "sha256:c514d1c056a3c17037b6e486fadf297785a598f54b93e6f4252373e185e4ebb9",
+                  "note": "Changed lines of internal/cli/inventory_item_test.go explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-selection-review-reuse",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:review-reuse",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "Review deck Items reference the same identities and select the relevant code subset."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

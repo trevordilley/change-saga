@@ -1,0 +1,1593 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-records-impl-format",
+  "current": "sha256:d513f5da1b23174d7e6aa5210386388b2c4702230b3feb06caa8540e72d82b28",
+  "revisions": [
+    {
+      "snapshot": "sha256:e2035d67a05c1f70551a9cf5c4bd5d9eb891a26ebaefcf4a2a75468af4920b20",
+      "request_id": "ti-records-impl-format-v1",
+      "created_at": "2026-09-25T01:32:07.122806Z",
+      "asset": "24-a-7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349.svg",
+      "asset_digest": "sha256:7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349fda7daa0f8be",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-format",
+        "deck": "technical-inventory",
+        "title": "Implemented: explicit inventory format 2 gate",
+        "rank": 160,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349.svg",
+        "takeaway": "Format 2 exists only after an explicit marker; legacy revisions stay byte-identical and read unspecified, and older readers refuse instead of dropping content.",
+        "reading_order": [
+          "legacy",
+          "marker",
+          "loader",
+          "refusal-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "legacy",
+            "slide": "ti-records-impl-format",
+            "rank": 10,
+            "kind": "node",
+            "label": "Legacy history reads unspecified",
+            "description": "Existing Component/System revisions keep their bytes and have no evidence IDs. Their intent reads unspecified, never inferred from code, lifecycle or age; the legacy validation rules are unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "legacy"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 252,
+                  "end": 259,
+                  "digest": "sha256:b3cd634e3958a8c41fa3bd2cfa23e3be685e5b9b011f67b0340e8758bbf7c721",
+                  "note": "EffectiveIntent reports explicit intent or unspecified for legacy revisions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 168,
+                  "end": 200,
+                  "digest": "sha256:f45ffbd0b9aff99dcc4e3f2bed5f4f96783f7c6fa2b98a0de90c4d3da52ff409",
+                  "note": "The original format-1 rules, which also refuse IDs, baseline or delivery without intent."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-legacy-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Records expose explicit proposed/implemented intent per revision and an explicit unspecified value for legacy history; displays and queries are sibling slices."
+            },
+            {
+              "id": "ti-records-impl-format-legacy-evidence",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-distinction",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "A legacy entity with or without evidence is not relabeled proposed or implemented; the stored assessment stays separate from code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "marker",
+            "slide": "ti-records-impl-format",
+            "rank": 20,
+            "kind": "node",
+            "label": "Explicit adoption marker",
+            "description": "inventory adopt-format --format 2 writes ___inventory/format.json under the Saga lock and rewrites no record. Only format 2 exists; an unknown marker value is refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "marker"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 58,
+                  "end": 85,
+                  "digest": "sha256:91a200dc9b915efdac8781028b1cbda4adc2ac92ff7dca2efa086086a365de26",
+                  "note": "AdoptInventoryFormat writes only the marker and replays when already adopted."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 64,
+                  "end": 87,
+                  "digest": "sha256:11137e115bc2687f07d12151247290dd18d183cb42d2e47eab46f628de27f7d1",
+                  "note": "readInventoryFormat treats absence as format 1 and refuses unsupported formats."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-marker-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Adoption preserves every committed revision unchanged; new structures are only ever appended as new revisions."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "loader",
+            "slide": "ti-records-impl-format",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Reader and writer gate",
+            "description": "LoadInventory reads format 1 and 2 kinds in a fixed order and refuses format-2 kinds or intent without the marker. After adoption a new Component/System revision must state intent.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 308,
+                  "end": 388,
+                  "digest": "sha256:bb7c5dfc5b2a9ac7d6162bce98ff3deb35afa2d9331020bb19fd51e3803763e9",
+                  "note": "LoadInventory: kind directories, marker, per-kind format gate and structural validation."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 206,
+                  "end": 218,
+                  "digest": "sha256:d4b238a96344461a647caf3857299d22310280e1f765bd448ea01325fd5b7727",
+                  "note": "formatAdmits refuses format-2 writes before adoption and intent-less writes after it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-loader-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "After adoption every new revision carries an explicit intent, so the selected revision status is never silently unspecified."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "refusal-tests",
+            "slide": "ti-records-impl-format",
+            "rank": 40,
+            "kind": "example",
+            "label": "Compatibility tests",
+            "description": "Tests cover legacy intent before and after adoption, refusal of intent and data entities without the marker, a future format 3 and an unknown inventory directory.",
+            "selector": {
+              "type": "element",
+              "element_id": "refusal-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 69,
+                  "end": 90,
+                  "digest": "sha256:1be95f447e8d43b540c7027d22d6f64b7de45ce9119696da81d48f3eaf3d44f2",
+                  "note": "Legacy records read unspecified before and after adoption."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 92,
+                  "end": 126,
+                  "digest": "sha256:10684b2fd485c3b4dbf6eb13eb276cdf4884afa465ad45f79a25a9c02298da18",
+                  "note": "Format-2 content without the marker and unsupported markers are refused."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-tests-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The tests prove adoption and reading never rewrite or reinterpret committed history."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:d513f5da1b23174d7e6aa5210386388b2c4702230b3feb06caa8540e72d82b28",
+      "parent_snapshots": [
+        "sha256:e2035d67a05c1f70551a9cf5c4bd5d9eb891a26ebaefcf4a2a75468af4920b20"
+      ],
+      "request_id": "ti-records-impl-format-v2",
+      "created_at": "2026-09-25T01:38:20.562697Z",
+      "asset": "24-a-7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349.svg",
+      "asset_digest": "sha256:7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349fda7daa0f8be",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-format",
+        "deck": "technical-inventory",
+        "title": "Implemented: explicit inventory format 2 gate",
+        "rank": 160,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-7e72658fdfc7be0fc390f3daf2a8d4fa199e544986d4bae61349.svg",
+        "takeaway": "Format 2 exists only after an explicit marker; legacy revisions stay byte-identical and read unspecified, and older readers refuse instead of dropping content.",
+        "reading_order": [
+          "legacy",
+          "marker",
+          "loader",
+          "refusal-tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "legacy",
+            "slide": "ti-records-impl-format",
+            "rank": 10,
+            "kind": "node",
+            "label": "Legacy history reads unspecified",
+            "description": "Existing Component/System revisions keep their bytes and have no evidence IDs. Their intent reads unspecified, never inferred from code, lifecycle or age; the legacy validation rules are unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "legacy"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 252,
+                  "end": 259,
+                  "digest": "sha256:b3cd634e3958a8c41fa3bd2cfa23e3be685e5b9b011f67b0340e8758bbf7c721",
+                  "note": "EffectiveIntent reports explicit intent or unspecified for legacy revisions."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 168,
+                  "end": 200,
+                  "digest": "sha256:f45ffbd0b9aff99dcc4e3f2bed5f4f96783f7c6fa2b98a0de90c4d3da52ff409",
+                  "note": "The original format-1 rules, which also refuse IDs, baseline or delivery without intent."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 4,
+                  "end": 4,
+                  "digest": "sha256:24781e912ed536347ce5cfd63345a6e8823cb93099a1006114a4032fec45f3a0",
+                  "note": "Changed lines of schema/v5/component-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 15,
+                  "end": 15,
+                  "digest": "sha256:ef87c0667024178e1ccf8f6c95e3e6eab1fb2debd27f5d7b756a2d1d2f11b9a4",
+                  "note": "Changed lines of schema/v5/component-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 53,
+                  "end": 80,
+                  "digest": "sha256:44caf63ebe5e3c01566a34efcd2187bcae2c903427afa932b1ab1124ef2813d1",
+                  "note": "Changed lines of schema/v5/component-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 83,
+                  "end": 83,
+                  "digest": "sha256:8349fa65d5c1c5424d1fea0e2d7485b0122d9261ce73d39e611a01ebc5fb5b13",
+                  "note": "Changed lines of schema/v5/component-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 93,
+                  "end": 94,
+                  "digest": "sha256:2e14213da94836676c22109f864fc1aef6bafc4587d49c14ceb2b530ab1e5946",
+                  "note": "Changed lines of schema/v5/component-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 97,
+                  "end": 100,
+                  "digest": "sha256:9e6345d3c74a66ff5ec429d1ecc57a9b0dbd0a4419d8a4f54fe50c2f643e6da3",
+                  "note": "Changed lines of schema/v5/component-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 128,
+                  "end": 231,
+                  "digest": "sha256:bde292a6ed9ef728c1e7342d284f68cec973513c4dddcff6176ab08f3e3ead12",
+                  "note": "Changed lines of schema/v5/component-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 14,
+                  "end": 15,
+                  "digest": "sha256:73e2b63efe8a234b7289d6768aacc795b9380ffeb578dfb0238666cab1c9c429",
+                  "note": "Replaced or removed lines of schema/v5/component-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 55,
+                  "end": 55,
+                  "digest": "sha256:76ba75cb138b2fd36d53ac331665dc040dbca337fdf163bf5892977921b69cfb",
+                  "note": "Replaced or removed lines of schema/v5/component-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 65,
+                  "end": 66,
+                  "digest": "sha256:a281d61b388ab716c6164b3673992f961c44f013934389724b045981065c9ba7",
+                  "note": "Replaced or removed lines of schema/v5/component-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/component-revision.schema.json",
+                  "start": 96,
+                  "end": 96,
+                  "digest": "sha256:27e5788d5d9d73d24a81dbc0a5a74bfa82c9c3b3af99e52af796e90b468a8a3d",
+                  "note": "Replaced or removed lines of schema/v5/component-revision.schema.json at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 4,
+                  "end": 4,
+                  "digest": "sha256:739d0828d8c490bbd8a9481a808122128281493872e6f401c21c5c4487c339fe",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 55,
+                  "end": 82,
+                  "digest": "sha256:44caf63ebe5e3c01566a34efcd2187bcae2c903427afa932b1ab1124ef2813d1",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 85,
+                  "end": 85,
+                  "digest": "sha256:8349fa65d5c1c5424d1fea0e2d7485b0122d9261ce73d39e611a01ebc5fb5b13",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 95,
+                  "end": 96,
+                  "digest": "sha256:2e14213da94836676c22109f864fc1aef6bafc4587d49c14ceb2b530ab1e5946",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 99,
+                  "end": 102,
+                  "digest": "sha256:9e6345d3c74a66ff5ec429d1ecc57a9b0dbd0a4419d8a4f54fe50c2f643e6da3",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 145,
+                  "end": 145,
+                  "digest": "sha256:639ebe12987a0c0ad3d04a8d1373da2ec1e3ef2c86d27527b1e8570aeea4af32",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 149,
+                  "end": 149,
+                  "digest": "sha256:61b18db296a3c4c08e921988362c72199b04bd53d543959cb09e01cd4b2a13cc",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 165,
+                  "end": 165,
+                  "digest": "sha256:3db2baff857bbbd7d208234a65b7104e3e296b58cc1baacb45af76311c5ca889",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 182,
+                  "end": 187,
+                  "digest": "sha256:94059137db0e4a36d0cd8d4628ef7e181ef72b6424fdcede78f9dff69492ddc6",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 190,
+                  "end": 190,
+                  "digest": "sha256:dd4715184a5af853150d7e1156fc6005583dbd7db68959fed3c8327ce78f5dd4",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 200,
+                  "end": 201,
+                  "digest": "sha256:23afae2e2bedd723e18353f2d5e37360a13f28ffac9966a0fc4c1dad0fb5814a",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 204,
+                  "end": 207,
+                  "digest": "sha256:c311d03f2defe933e3b3fbc1ac7ad9c4443fd73ba26283a9dbb189b2d5ddf1be",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 238,
+                  "end": 381,
+                  "digest": "sha256:7318b3ab830904f2f9332b7601ef0a301eb871f6b91fd5ae287b13b8b7ccb8ff",
+                  "note": "Changed lines of schema/v5/system-revision.schema.json explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 15,
+                  "end": 15,
+                  "digest": "sha256:7f90a723fcf2804ae3823f0c9b96edd0edb0b9c750c9bdcaf02f28e23540ad5e",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 57,
+                  "end": 57,
+                  "digest": "sha256:76ba75cb138b2fd36d53ac331665dc040dbca337fdf163bf5892977921b69cfb",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 67,
+                  "end": 68,
+                  "digest": "sha256:a281d61b388ab716c6164b3673992f961c44f013934389724b045981065c9ba7",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 113,
+                  "end": 113,
+                  "digest": "sha256:28af6ffec7fe20f89e6f9926182fb0290cbd2ae00d2bec8a761b10fb93ef8a24",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 117,
+                  "end": 117,
+                  "digest": "sha256:4ba984614cdc3cbee80a88ac8322453a5282d82bced64d671014060989d1e25c",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 133,
+                  "end": 134,
+                  "digest": "sha256:0279313be947f78b7e5dc531e797dd0a57e9aef2001db4ef99081be6674d97f3",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 153,
+                  "end": 153,
+                  "digest": "sha256:122d917505b9bd1f488fac34c34613e4a48dc6f0bdf050308bbee51d40f3c3a7",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 163,
+                  "end": 164,
+                  "digest": "sha256:0c373cee69b1e0cc93aaa3c204ad758167b0554edfe0c6f89774d097153a7504",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/system-revision.schema.json",
+                  "start": 197,
+                  "end": 197,
+                  "digest": "sha256:27e5788d5d9d73d24a81dbc0a5a74bfa82c9c3b3af99e52af796e90b468a8a3d",
+                  "note": "Replaced or removed lines of schema/v5/system-revision.schema.json at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 4,
+                  "end": 4,
+                  "digest": "sha256:ca7880963be468544a4098aaa22f9ca1ff4b7b44743efe49396b5b8a71cb3463",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 9,
+                  "end": 9,
+                  "digest": "sha256:ef87c0667024178e1ccf8f6c95e3e6eab1fb2debd27f5d7b756a2d1d2f11b9a4",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 21,
+                  "end": 48,
+                  "digest": "sha256:4ce457a7c74c58b8fde47d4006776b3f5690212a3d02f48eb1e19ff0882fe183",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 51,
+                  "end": 51,
+                  "digest": "sha256:8349fa65d5c1c5424d1fea0e2d7485b0122d9261ce73d39e611a01ebc5fb5b13",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 64,
+                  "end": 67,
+                  "digest": "sha256:9e6345d3c74a66ff5ec429d1ecc57a9b0dbd0a4419d8a4f54fe50c2f643e6da3",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 110,
+                  "end": 110,
+                  "digest": "sha256:639ebe12987a0c0ad3d04a8d1373da2ec1e3ef2c86d27527b1e8570aeea4af32",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 114,
+                  "end": 114,
+                  "digest": "sha256:61b18db296a3c4c08e921988362c72199b04bd53d543959cb09e01cd4b2a13cc",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 130,
+                  "end": 130,
+                  "digest": "sha256:3db2baff857bbbd7d208234a65b7104e3e296b58cc1baacb45af76311c5ca889",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 147,
+                  "end": 152,
+                  "digest": "sha256:94059137db0e4a36d0cd8d4628ef7e181ef72b6424fdcede78f9dff69492ddc6",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 155,
+                  "end": 155,
+                  "digest": "sha256:dd4715184a5af853150d7e1156fc6005583dbd7db68959fed3c8327ce78f5dd4",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 168,
+                  "end": 171,
+                  "digest": "sha256:c311d03f2defe933e3b3fbc1ac7ad9c4443fd73ba26283a9dbb189b2d5ddf1be",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 201,
+                  "end": 674,
+                  "digest": "sha256:51053265fd98430387d6b47ee8fa0f9f7c52ce8cf1a38cd897b4d84f648a7d36",
+                  "note": "Changed lines of schema/v5/technical-definition.schema.json explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 8,
+                  "end": 9,
+                  "digest": "sha256:73e2b63efe8a234b7289d6768aacc795b9380ffeb578dfb0238666cab1c9c429",
+                  "note": "Replaced or removed lines of schema/v5/technical-definition.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 23,
+                  "end": 23,
+                  "digest": "sha256:76ba75cb138b2fd36d53ac331665dc040dbca337fdf163bf5892977921b69cfb",
+                  "note": "Replaced or removed lines of schema/v5/technical-definition.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 78,
+                  "end": 78,
+                  "digest": "sha256:28af6ffec7fe20f89e6f9926182fb0290cbd2ae00d2bec8a761b10fb93ef8a24",
+                  "note": "Replaced or removed lines of schema/v5/technical-definition.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 82,
+                  "end": 82,
+                  "digest": "sha256:4ba984614cdc3cbee80a88ac8322453a5282d82bced64d671014060989d1e25c",
+                  "note": "Replaced or removed lines of schema/v5/technical-definition.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 98,
+                  "end": 99,
+                  "digest": "sha256:0279313be947f78b7e5dc531e797dd0a57e9aef2001db4ef99081be6674d97f3",
+                  "note": "Replaced or removed lines of schema/v5/technical-definition.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/technical-definition.schema.json",
+                  "start": 118,
+                  "end": 118,
+                  "digest": "sha256:122d917505b9bd1f488fac34c34613e4a48dc6f0bdf050308bbee51d40f3c3a7",
+                  "note": "Replaced or removed lines of schema/v5/technical-definition.schema.json at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/documentation-link.schema.json",
+                  "start": 13,
+                  "end": 13,
+                  "digest": "sha256:b9cbf5b0e5c26dd9edb6b66775983fa34957091ca42a8b843af732fdf5332862",
+                  "note": "Changed lines of schema/v5/documentation-link.schema.json explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/documentation-link.schema.json",
+                  "start": 17,
+                  "end": 17,
+                  "digest": "sha256:55dd09f2836c786bbfdabf4f86921e22603b2fb650d895abc5cd6fd992d42f17",
+                  "note": "Changed lines of schema/v5/documentation-link.schema.json explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/documentation-link.schema.json",
+                  "start": 13,
+                  "end": 13,
+                  "digest": "sha256:54eebee52e04e20ec00d0ebddea1a29bbd9cf5fb88cea21ed494afcb59001d46",
+                  "note": "Replaced or removed lines of schema/v5/documentation-link.schema.json at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "schema/v5/documentation-link.schema.json",
+                  "start": 17,
+                  "end": 17,
+                  "digest": "sha256:cb6dc2482530eb5a1cd5408f7d21832ee06922b1cf9087662c8d0402de861c41",
+                  "note": "Replaced or removed lines of schema/v5/documentation-link.schema.json at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-legacy-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Records expose explicit proposed/implemented intent per revision and an explicit unspecified value for legacy history; displays and queries are sibling slices."
+            },
+            {
+              "id": "ti-records-impl-format-legacy-evidence",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-distinction",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "A legacy entity with or without evidence is not relabeled proposed or implemented; the stored assessment stays separate from code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "marker",
+            "slide": "ti-records-impl-format",
+            "rank": 20,
+            "kind": "node",
+            "label": "Explicit adoption marker",
+            "description": "inventory adopt-format --format 2 writes ___inventory/format.json under the Saga lock and rewrites no record. Only format 2 exists; an unknown marker value is refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "marker"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 58,
+                  "end": 85,
+                  "digest": "sha256:91a200dc9b915efdac8781028b1cbda4adc2ac92ff7dca2efa086086a365de26",
+                  "note": "AdoptInventoryFormat writes only the marker and replays when already adopted."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 64,
+                  "end": 87,
+                  "digest": "sha256:11137e115bc2687f07d12151247290dd18d183cb42d2e47eab46f628de27f7d1",
+                  "note": "readInventoryFormat treats absence as format 1 and refuses unsupported formats."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "CHANGELOG.md",
+                  "start": 3,
+                  "end": 28,
+                  "digest": "sha256:ea8c938674672edb3f4c9212211597e03a18518b0babff0b2e83bc6d9682a5d4",
+                  "note": "Changed lines of CHANGELOG.md explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "SPEC.md",
+                  "start": 199,
+                  "end": 284,
+                  "digest": "sha256:ca1da28b0c5fff330d5cbffbbde9f4c396ee2931dc74c8fb9241a9a279e456cd",
+                  "note": "Changed lines of SPEC.md explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "docs/README.md",
+                  "start": 45,
+                  "end": 45,
+                  "digest": "sha256:62bc1691482fc546f8ac3c83cb620509cb3583a4776a0da38625a36c31963149",
+                  "note": "Changed lines of docs/README.md explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "docs/technical-inventory-records-implementation.md",
+                  "start": 1,
+                  "end": 104,
+                  "digest": "sha256:51070df7804472ea05b666e772730252a1eb0f53c90cce7e0b323d42e2086128",
+                  "note": "Changed lines of docs/technical-inventory-records-implementation.md explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "skills/change-saga/references/diagrams.md",
+                  "start": 243,
+                  "end": 256,
+                  "digest": "sha256:af4eadbc6e35a629b6a9921ac8d4e93956c2a525276dac7a723d741280a0f019",
+                  "note": "Changed lines of skills/change-saga/references/diagrams.md explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-marker-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Adoption preserves every committed revision unchanged; new structures are only ever appended as new revisions."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "loader",
+            "slide": "ti-records-impl-format",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Reader and writer gate",
+            "description": "LoadInventory reads format 1 and 2 kinds in a fixed order and refuses format-2 kinds or intent without the marker. After adoption a new Component/System revision must state intent.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 308,
+                  "end": 388,
+                  "digest": "sha256:bb7c5dfc5b2a9ac7d6162bce98ff3deb35afa2d9331020bb19fd51e3803763e9",
+                  "note": "LoadInventory: kind directories, marker, per-kind format gate and structural validation."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 206,
+                  "end": 218,
+                  "digest": "sha256:d4b238a96344461a647caf3857299d22310280e1f765bd448ea01325fd5b7727",
+                  "note": "formatAdmits refuses format-2 writes before adoption and intent-less writes after it."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 6,
+                  "end": 6,
+                  "digest": "sha256:c38b872e8f16669d10170776c2f60b599323949e1cae090c6134635c999923a0",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 23,
+                  "end": 40,
+                  "digest": "sha256:e2f553edd5b1054f689e3d5e7c1f57a29816d4e29e5dee3cb54e7bd548624ba0",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 42,
+                  "end": 112,
+                  "digest": "sha256:5a000a754735c4b8db3b859c3768a1207d7f7af1350a99dbad4e73d561b3fb4d",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 115,
+                  "end": 128,
+                  "digest": "sha256:539ec86a3779295da8d1b8ef872f3d91031e436994f37056f8f20553e58f8e0d",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 130,
+                  "end": 147,
+                  "digest": "sha256:a72bdbeb973ff0faff69bc690623d03bdc2073e4be8a5253eb47540f358ff013",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 184,
+                  "end": 186,
+                  "digest": "sha256:ed6cbd8a2ff1ccab369882275a44515ac7197d4c0ceeee9eebeb573a24e193c9",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 190,
+                  "end": 213,
+                  "digest": "sha256:7a076da5c3637c6bc21fb7a4201052b32558efcba02a688e6a1b8e0a6558554b",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 218,
+                  "end": 219,
+                  "digest": "sha256:d141f9f86894d938d38b0128d17154f6d332276d5c9daa7514191b38d778f876",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 223,
+                  "end": 226,
+                  "digest": "sha256:e736014a1337078327be8563101e2b9d444076d2c47f98b3879216307017ec07",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 244,
+                  "end": 289,
+                  "digest": "sha256:113ccf7bb4e082bb92918f046546844af39979f092f50b58d3c308e9f906e025",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 309,
+                  "end": 309,
+                  "digest": "sha256:df15a48d1c41af8b74546e30b5e972bd9870dc1ff16afe5bc4b7769b0920444c",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 314,
+                  "end": 314,
+                  "digest": "sha256:7024e25f1eb816b723fc76474a7ba7a9d26db09494a203d03912385debfac968",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 319,
+                  "end": 322,
+                  "digest": "sha256:e0eba6a9b85d9cb2e7b5942f64419523dd19692632e776e0ac7ef0c76b19522b",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 326,
+                  "end": 330,
+                  "digest": "sha256:c0b56904ecbaa4f8a1ccb2f759a32812988d715d64543351669eb877d99b6f57",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 332,
+                  "end": 337,
+                  "digest": "sha256:1303f411c5e399517bdeb09740c9699b6765433b9903849614eda16a62c2127f",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 341,
+                  "end": 343,
+                  "digest": "sha256:40ea3f4234f8ca4cc76ff974cc5f127637f1161f1f4029e480c5fd74ca3013d7",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 345,
+                  "end": 347,
+                  "digest": "sha256:18e1f25784ad77586b171cc1bbc94e30cffcb7d5fc02696c913dd3ecbe247bad",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 355,
+                  "end": 355,
+                  "digest": "sha256:5a8b5695bff132b9d9dd87e0dcf1aee6c7baa2c99f175e462e54a664950c8513",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 358,
+                  "end": 365,
+                  "digest": "sha256:d1fce0d311f4e60bb653a413223068832f34d03e4e4174ee3ba6799325a341ec",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 373,
+                  "end": 373,
+                  "digest": "sha256:ad4066fffd92e3e484a7b778e07b1e04d7c5666739a56b03878a950ac25b6422",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 390,
+                  "end": 393,
+                  "digest": "sha256:fe05c252394cff77bcfc7c6df42ea2ce61b9660d63c7d77ab3114644085f805f",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 396,
+                  "end": 396,
+                  "digest": "sha256:ffd39a3a8975052ee232886d2a328bfc1772dd00414643bd6e4f7ca42fde19a6",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 429,
+                  "end": 429,
+                  "digest": "sha256:e5934c30d1de8206f99d18e7708fa2cc11b899c4d0477b48db2d21dab62c3ab9",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 435,
+                  "end": 449,
+                  "digest": "sha256:1892a781e41563d4ca029e5eddcf9ea20ef70939902c5186a26629c715f38d8c",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 472,
+                  "end": 490,
+                  "digest": "sha256:634e4348fa2a3a04e13d852f191ebfa589c45d28eebf35c1db43454266433286",
+                  "note": "Changed lines of internal/requirements/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 23,
+                  "end": 27,
+                  "digest": "sha256:80be2307679970d1c234604930a06d9c5a4564436167640155f6eaaf37a64af0",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 31,
+                  "end": 35,
+                  "digest": "sha256:303f76a11746b4690ee80ae86c0cc58b187657cb17d1a2d2c8e84c7aaeef31b9",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 72,
+                  "end": 72,
+                  "digest": "sha256:783bb0c34bd43f50288f289230a0a7783ba244918271a1ca8e5c5023922c6f07",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 80,
+                  "end": 81,
+                  "digest": "sha256:21ef55044299364d9b8a517a1751db766d9e2471a7e1aeb66749ef1748a9cd4c",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 85,
+                  "end": 85,
+                  "digest": "sha256:68d87ae7d7526f1b4d8abc208551b5b53fc0101b4ff47737b782fb19263f738c",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 122,
+                  "end": 122,
+                  "digest": "sha256:78f25cfcfef79fc4f655d124e942fa0cf69b36d66fb6adc28a6b27de8fa5930f",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 127,
+                  "end": 127,
+                  "digest": "sha256:6acd62e32a2d0ce9eda4517714b80c0764d7ab42aac07a467b9577ad232ee333",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 132,
+                  "end": 132,
+                  "digest": "sha256:454b0810714fc2bf33d385c568cbb4e19927e70b063dab87cfc0f2ed2fd23e04",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 137,
+                  "end": 138,
+                  "digest": "sha256:05476602279ff1d844a90b1132e9efffb485e31f41c2ee47da4ce6c969eea93d",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 143,
+                  "end": 145,
+                  "digest": "sha256:433ab742a41eb69ae0872498c11f205ec1bc2ba8e25babfba81ec13440504b26",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 153,
+                  "end": 153,
+                  "digest": "sha256:56b72a646f339076c44f5be133fd507bc898213b90624689a3bd961335c8136c",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 163,
+                  "end": 163,
+                  "digest": "sha256:72228d5d59f46914611c4643d39594cf0a602c26c3df7153eab362dc08cc916c",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 180,
+                  "end": 187,
+                  "digest": "sha256:220ad05cb9bac0cd70a3e3de2cfc4086af288eab8cc656b896689ee4bb7a52a3",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 189,
+                  "end": 196,
+                  "digest": "sha256:fdec09572f81556c7677b369b815a303363d7649bda55356f2a8440a58114b39",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 198,
+                  "end": 198,
+                  "digest": "sha256:ada1d7914809e3499d4573e8bfe5826ae082ea2e2a14db7cc14172577c6a735a",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 200,
+                  "end": 207,
+                  "digest": "sha256:b51ea862a1455a290ed95dad5c7dbe990e3ab3b82d835bb64a7f5232fc80123c",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 209,
+                  "end": 249,
+                  "digest": "sha256:38187c867e16c461f6b0e7f975454d5cdad2e3d7ccef2b2923e022cd3399f98a",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 280,
+                  "end": 280,
+                  "digest": "sha256:c971b69e01e620cd22b82f2fdad6f46d3d9763e99ca75a896bcd6e8bf05facf0",
+                  "note": "Replaced or removed lines of internal/requirements/inventory.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/app_records.go",
+                  "start": 7,
+                  "end": 7,
+                  "digest": "sha256:738b5a3be3be1c8b34207c393b865f99bc1fd07b287dcabcf3ff74f92fcb6cfe",
+                  "note": "Changed lines of internal/requirements/app_records.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/app_records.go",
+                  "start": 258,
+                  "end": 260,
+                  "digest": "sha256:090fae8b2d445022fe9f5f92a43a093b43752ed3a34a4755d1e505dc4d4789d6",
+                  "note": "Changed lines of internal/requirements/app_records.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/app_records.go",
+                  "start": 280,
+                  "end": 280,
+                  "digest": "sha256:bc6389ce5f058dca4106106d369975992196bccc5ea76fb52a8b461a6fb9b50e",
+                  "note": "Changed lines of internal/requirements/app_records.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/app_records.go",
+                  "start": 287,
+                  "end": 287,
+                  "digest": "sha256:2b580c30df26ae457dfb00715d8937d9486d3aed8b253a5f25be4e25177a50a9",
+                  "note": "Changed lines of internal/requirements/app_records.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/app_records.go",
+                  "start": 257,
+                  "end": 257,
+                  "digest": "sha256:632da6a5d5bf616a9e50326ca0c3c460eaae341c7fe2402973eadbae46104490",
+                  "note": "Replaced or removed lines of internal/requirements/app_records.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/app_records.go",
+                  "start": 277,
+                  "end": 277,
+                  "digest": "sha256:d65f3e9cf8e6a382bdab95c7ca49b20d12ca13121e469e4c2bac72bf77f9f2b3",
+                  "note": "Replaced or removed lines of internal/requirements/app_records.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/app_records.go",
+                  "start": 284,
+                  "end": 284,
+                  "digest": "sha256:dd3b795422f7c12be4c97c1da9a2f189210813ac34043c3b5f73953218ac047e",
+                  "note": "Replaced or removed lines of internal/requirements/app_records.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 1,
+                  "end": 572,
+                  "digest": "sha256:3d7c99400a7ed0c218059fa74805298efd60ad713e872753763324297b2eb8d5",
+                  "note": "Changed lines of internal/requirements/inventory_validate.go explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "schema/v5/inventory-format.schema.json",
+                  "start": 1,
+                  "end": 25,
+                  "digest": "sha256:7d44035eabad87669504d01057270811aeaa3c231314a5717f35874a045d34f0",
+                  "note": "Changed lines of schema/v5/inventory-format.schema.json explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/server/inventory.go",
+                  "start": 63,
+                  "end": 63,
+                  "digest": "sha256:41c3874ccf6328dbdb323f963da2fc3b35a51d4022f3a387ca8c91ec3c39840e",
+                  "note": "Changed lines of internal/server/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/server/inventory.go",
+                  "start": 103,
+                  "end": 103,
+                  "digest": "sha256:0c17dc99115007c3053afaeda8c2da6f4b16acef2996bc29e8c3abfcc78b8de6",
+                  "note": "Changed lines of internal/server/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/server/inventory.go",
+                  "start": 63,
+                  "end": 63,
+                  "digest": "sha256:12417cdb440e70d7f61afaa74d454937fc3f3a54cbb2ad88da898734b54761a2",
+                  "note": "Replaced or removed lines of internal/server/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/server/inventory.go",
+                  "start": 103,
+                  "end": 103,
+                  "digest": "sha256:d83be7f055859cbd636085feef7e06e1310bea0637ed8e8c962fc4f6edbf0846",
+                  "note": "Replaced or removed lines of internal/server/inventory.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 116,
+                  "end": 116,
+                  "digest": "sha256:3616b2acb5811c831921b0d11768351a23e0356e2934afa5a706fb5495255686",
+                  "note": "Changed lines of internal/cli/query_inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 120,
+                  "end": 120,
+                  "digest": "sha256:c33251c6c082824583be825c0187d47290c59a4ec64fb80cc5f7708e1f9805de",
+                  "note": "Changed lines of internal/cli/query_inventory.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 116,
+                  "end": 116,
+                  "digest": "sha256:c447cafd8e346fb68b71b9ed2620b68efe7ddc48cff5569867b470c49ec773a0",
+                  "note": "Replaced or removed lines of internal/cli/query_inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/query_inventory.go",
+                  "start": 120,
+                  "end": 120,
+                  "digest": "sha256:775ac24eed4da7ea0f9dae7618e0b57a68dca13a975105426d33f8bc6f818213",
+                  "note": "Replaced or removed lines of internal/cli/query_inventory.go at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-loader-status",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:explicit-status",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "After adoption every new revision carries an explicit intent, so the selected revision status is never silently unspecified."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "refusal-tests",
+            "slide": "ti-records-impl-format",
+            "rank": 40,
+            "kind": "example",
+            "label": "Compatibility tests",
+            "description": "Tests cover legacy intent before and after adoption, refusal of intent and data entities without the marker, a future format 3 and an unknown inventory directory.",
+            "selector": {
+              "type": "element",
+              "element_id": "refusal-tests"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 69,
+                  "end": 90,
+                  "digest": "sha256:1be95f447e8d43b540c7027d22d6f64b7de45ce9119696da81d48f3eaf3d44f2",
+                  "note": "Legacy records read unspecified before and after adoption."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 92,
+                  "end": 126,
+                  "digest": "sha256:10684b2fd485c3b4dbf6eb13eb276cdf4884afa465ad45f79a25a9c02298da18",
+                  "note": "Format-2 content without the marker and unsupported markers are refused."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_format_test.go",
+                  "start": 1,
+                  "end": 359,
+                  "digest": "sha256:ead5c9c407d68e4e19124a5ca149ec1ca24882319f1ef6bc7f2482c6340d8e46",
+                  "note": "Changed lines of internal/requirements/inventory_format_test.go explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_test.go",
+                  "start": 16,
+                  "end": 16,
+                  "digest": "sha256:2fb22d8e24d0bbaa291d746085e4a79aae046556813c79994237c17f8d1d34c6",
+                  "note": "Changed lines of internal/requirements/inventory_test.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_test.go",
+                  "start": 63,
+                  "end": 91,
+                  "digest": "sha256:e685defbd3bff9cd3175a884fc38f5625ae203eb0a83f56bc312975738fbabd0",
+                  "note": "Changed lines of internal/requirements/inventory_test.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_test.go",
+                  "start": 16,
+                  "end": 16,
+                  "digest": "sha256:a23eaae10fb665bcc1fd49b91e449f65c88515bb8e7529c447e86e04c0ccccd4",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_test.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_test.go",
+                  "start": 88,
+                  "end": 110,
+                  "digest": "sha256:ac16a2ba850c7ee76396cdec525e6ce96b044591fdc5cd6fffc91ae1d4f21dda",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_test.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/server/inventory_test.go",
+                  "start": 35,
+                  "end": 35,
+                  "digest": "sha256:629affce32db090ff887666185f6193448e14af423b7cdd78612602aca35e7a9",
+                  "note": "Changed lines of internal/server/inventory_test.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/server/inventory_test.go",
+                  "start": 35,
+                  "end": 35,
+                  "digest": "sha256:62afce9c2c1cf0fbbc9218f5ec5ea50289f03881a7808d9b145de9f798da0e18",
+                  "note": "Replaced or removed lines of internal/server/inventory_test.go at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-format-tests-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The tests prove adoption and reading never rewrite or reinterpret committed history."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

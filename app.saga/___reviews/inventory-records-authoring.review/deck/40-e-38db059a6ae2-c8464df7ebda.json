@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/inventory_format_test.go",
+      "digest": "sha256:ead5c9c407d68e4e19124a5ca149ec1ca24882319f1ef6bc7f2482c6340d8e46"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/inventory_format_test.go",
+      "start": 1,
+      "end": 359,
+      "digest": "sha256:ead5c9c407d68e4e19124a5ca149ec1ca24882319f1ef6bc7f2482c6340d8e46"
+    }
+  ]
+}

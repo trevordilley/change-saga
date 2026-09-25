@@ -1,0 +1,159 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:739d0828d8c490bbd8a9481a808122128281493872e6f401c21c5c4487c339fe"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 55,
+      "end": 82,
+      "digest": "sha256:44caf63ebe5e3c01566a34efcd2187bcae2c903427afa932b1ab1124ef2813d1"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:8349fa65d5c1c5424d1fea0e2d7485b0122d9261ce73d39e611a01ebc5fb5b13"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 95,
+      "end": 96,
+      "digest": "sha256:2e14213da94836676c22109f864fc1aef6bafc4587d49c14ceb2b530ab1e5946"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 99,
+      "end": 102,
+      "digest": "sha256:9e6345d3c74a66ff5ec429d1ecc57a9b0dbd0a4419d8a4f54fe50c2f643e6da3"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:639ebe12987a0c0ad3d04a8d1373da2ec1e3ef2c86d27527b1e8570aeea4af32"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:61b18db296a3c4c08e921988362c72199b04bd53d543959cb09e01cd4b2a13cc"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:3db2baff857bbbd7d208234a65b7104e3e296b58cc1baacb45af76311c5ca889"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 182,
+      "end": 187,
+      "digest": "sha256:94059137db0e4a36d0cd8d4628ef7e181ef72b6424fdcede78f9dff69492ddc6"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:dd4715184a5af853150d7e1156fc6005583dbd7db68959fed3c8327ce78f5dd4"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 200,
+      "end": 201,
+      "digest": "sha256:23afae2e2bedd723e18353f2d5e37360a13f28ffac9966a0fc4c1dad0fb5814a"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 204,
+      "end": 207,
+      "digest": "sha256:c311d03f2defe933e3b3fbc1ac7ad9c4443fd73ba26283a9dbb189b2d5ddf1be"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 238,
+      "end": 381,
+      "digest": "sha256:7318b3ab830904f2f9332b7601ef0a301eb871f6b91fd5ae287b13b8b7ccb8ff"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:7f90a723fcf2804ae3823f0c9b96edd0edb0b9c750c9bdcaf02f28e23540ad5e"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:76ba75cb138b2fd36d53ac331665dc040dbca337fdf163bf5892977921b69cfb"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 67,
+      "end": 68,
+      "digest": "sha256:a281d61b388ab716c6164b3673992f961c44f013934389724b045981065c9ba7"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:28af6ffec7fe20f89e6f9926182fb0290cbd2ae00d2bec8a761b10fb93ef8a24"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:4ba984614cdc3cbee80a88ac8322453a5282d82bced64d671014060989d1e25c"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 133,
+      "end": 134,
+      "digest": "sha256:0279313be947f78b7e5dc531e797dd0a57e9aef2001db4ef99081be6674d97f3"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:122d917505b9bd1f488fac34c34613e4a48dc6f0bdf050308bbee51d40f3c3a7"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 163,
+      "end": 164,
+      "digest": "sha256:0c373cee69b1e0cc93aaa3c204ad758167b0554edfe0c6f89774d097153a7504"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/system-revision.schema.json",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:27e5788d5d9d73d24a81dbc0a5a74bfa82c9c3b3af99e52af796e90b468a8a3d"
+    }
+  ]
+}

@@ -42,6 +42,7 @@ not a contract — where they disagree with the code, the code is current.
 | [cli-record-queries.md](cli-record-queries.md) | The shipped persona/term read and reference-query contract, compatibility behavior, measurements, and guarded-rename safety decision. |
 | [ergonomics-handoff-audit.md](ergonomics-handoff-audit.md) | The read-only feature handoff audit, stable findings, and readiness semantics. |
 | [ergonomics-visual-qa.md](ergonomics-visual-qa.md) | Repeatable raw/reviewer rendering, managed output safety, and mechanical visual findings. |
+| [technical-inventory-records-implementation.md](technical-inventory-records-implementation.md) | Delivered inventory format 2 records, explicit adoption, proposed/implemented authoring, data entities, ERDs, Item selections and saved views, with known limits. |
 | [ergonomics-ai-instructions.md](ergonomics-ai-instructions.md) | How the shipped skill routes tasks to focused references without blanket loading. |
 
 ## Working on the project

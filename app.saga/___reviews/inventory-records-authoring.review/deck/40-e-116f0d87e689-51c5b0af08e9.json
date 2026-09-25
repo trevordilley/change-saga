@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/testfixture/inventory.go",
+      "digest": "sha256:f1c03274fa1b5129cfa3e120fa2e221bc8ac83bddaf3adffcdafb0a2acaafaa3"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/testfixture/inventory.go",
+      "start": 1,
+      "end": 179,
+      "digest": "sha256:f1c03274fa1b5129cfa3e120fa2e221bc8ac83bddaf3adffcdafb0a2acaafaa3"
+    }
+  ]
+}

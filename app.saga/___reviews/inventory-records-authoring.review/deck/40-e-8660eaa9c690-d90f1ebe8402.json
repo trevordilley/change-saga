@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/inventory-format.schema.json",
+      "digest": "sha256:7d44035eabad87669504d01057270811aeaa3c231314a5717f35874a045d34f0"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/inventory-format.schema.json",
+      "start": 1,
+      "end": 25,
+      "digest": "sha256:7d44035eabad87669504d01057270811aeaa3c231314a5717f35874a045d34f0"
+    }
+  ]
+}

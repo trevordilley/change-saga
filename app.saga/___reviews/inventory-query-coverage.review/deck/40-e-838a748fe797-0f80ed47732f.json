@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/inventory_format2_test.go",
+      "digest": "sha256:f70d28b3ce959de2e95f9ce4d38555da7e0f9b73a2cc6c010d66e497af9b3b2f",
+      "note": "Format-2 end-to-end test over the records fixture and add-item selections."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/inventory_format2_test.go",
+      "start": 1,
+      "end": 210,
+      "digest": "sha256:f70d28b3ce959de2e95f9ce4d38555da7e0f9b73a2cc6c010d66e497af9b3b2f",
+      "note": "Format-2 end-to-end test over the records fixture and add-item selections."
+    }
+  ]
+}

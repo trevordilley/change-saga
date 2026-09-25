@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/view_test.go",
+      "digest": "sha256:be40d857063ea1da9e948343bedc1aa29a5d48837769f1294339513ac0b07837",
+      "note": "Projection tests over temporary Git repositories."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/view_test.go",
+      "start": 1,
+      "end": 352,
+      "digest": "sha256:be40d857063ea1da9e948343bedc1aa29a5d48837769f1294339513ac0b07837",
+      "note": "Projection tests over temporary Git repositories."
+    }
+  ]
+}

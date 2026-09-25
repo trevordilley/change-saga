@@ -147,3 +147,41 @@ filters, scope paths, conflicted records under filters, both cursor pages,
 coverage overlap and staleness, and reconciliation debt classes. The full race
 suite was not rerun; `TestTopLevelHelpDescribesIncrementalAdoption` is a known
 baseline failure.
+
+## Saga documentation and reconciliation
+
+Living documentation (legacy inventory format; `app.saga` is not adopted):
+
+- Components `inventory-read-projection`, `inventory-read-queries`,
+  `inventory-coverage-report`, `inventory-selection-coverage` and
+  `inventory-reconciliation`, and System `inventory-read-coverage` with four
+  evidence-bearing interactions.
+- Six implementation slides in the `technical-inventory` deck, section
+  "Implemented reads and coverage", ranks 200–205 (`ti-query-impl-reads`,
+  `-uses`, `-selection`, `-coverage`, `-reconcile`, `-verification`). Items
+  pin the components above, own every added line of this slice, and link
+  exact criterion revisions. Visual QA reports no mechanical findings at
+  1280x720 or 1024x576; the rendered slides were inspected.
+- Review `inventory-query-coverage` explains `b6c07006..HEAD` in six slides:
+  4176 of 4176 changed lines and file events owned, no overlaps, no stale
+  references. No review decision is recorded.
+
+`reconcile --against b6c07006` after authoring reports, for this range:
+
+- 21 documentation-gap entries remain. 16 are file-addition events of new
+  files and the rest are deleted or gofmt-realigned lines in `query.go` and
+  `query_inventory.go`. Complete-slide transactions refuse whole-file
+  references and living evidence at HEAD cannot reference deleted lines;
+  the review deck owns all of them.
+- 20 evidence regressions on other features' slides whose referenced files
+  this slice edited (`reviewapp/session.go`, `coverage/coverage.go`,
+  `cli/query.go`, `cli/reconciliation.go`, `cli/status_grammar.go`,
+  `help.golden` and two skill references). They are handed to the parent's
+  coordinated repair with suggested current ranges; the explanation of
+  `technical-inventory-verification:contracts` also needs revision because
+  the skill no longer says reconciliation ignores the inventory.
+- Nine stale references on the pre-existing shared inventory records are
+  pre-existing against this base and belong to the same coordinated repair.
+  The five new components are "reassess" only because their code was added
+  in this range.
+

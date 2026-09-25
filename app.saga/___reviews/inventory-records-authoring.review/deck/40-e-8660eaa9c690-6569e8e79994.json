@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/erd-overlay.schema.json",
+      "digest": "sha256:da8640347e9004ddac43e73ad339cab8ebb67c0e014a19d8496913055b3d3d16"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/erd-overlay.schema.json",
+      "start": 1,
+      "end": 37,
+      "digest": "sha256:da8640347e9004ddac43e73ad339cab8ebb67c0e014a19d8496913055b3d3d16"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/selection.go",
+      "start": 131,
+      "end": 150,
+      "digest": "sha256:3141aee959c900de1d7bb52aee7ddb1ba4a69e8e807037122194a05f0d22c96f",
+      "note": "Separate selected-byte and containing-evidence health; eligibility needs current pins and bytes."
+    }
+  ]
+}

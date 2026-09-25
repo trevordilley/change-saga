@@ -1,0 +1,1533 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-records-impl-transition",
+  "current": "sha256:3e7a6031f35ebd318ed54e8489aa341f016b583771155bce026113c982535a38",
+  "revisions": [
+    {
+      "snapshot": "sha256:18b9fed7ada9907b31f2f8af04271e6e55ada4fdec02a821f1f218b67ff77253",
+      "request_id": "ti-records-impl-transition-v1",
+      "created_at": "2026-09-25T01:32:07.323165Z",
+      "asset": "24-a-4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604.svg",
+      "asset_digest": "sha256:4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604eeb83d0e2e78",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-transition",
+        "deck": "technical-inventory",
+        "title": "Implemented: proposed to implemented at a delivery commit",
+        "rank": 170,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604.svg",
+        "takeaway": "A code-free proposal and its implemented successor share one identity; implementation is refused unless the evidence verifies and is current at the delivery commit.",
+        "reading_order": [
+          "proposal",
+          "delivery",
+          "policy",
+          "publication",
+          "lifecycle-test",
+          "policy-test"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "proposal",
+            "slide": "ti-records-impl-transition",
+            "rank": 10,
+            "kind": "node",
+            "label": "Code-free proposal and successor",
+            "description": "A proposed revision needs no code and names baseline: none, or an implemented ancestor revision of the same record for a successor. The baseline is kept apart from parents and never inferred.",
+            "selector": {
+              "type": "element",
+              "element_id": "proposal"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 219,
+                  "end": 286,
+                  "digest": "sha256:ba5df1794c62b70c6565653a0a4d4455499e0fabab18dad9030bdcc4edd77c7c",
+                  "note": "validateIntentRevision: baseline, delivery and per-intent code rules."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 419,
+                  "end": 471,
+                  "digest": "sha256:518b7c0fa862d6402baa308c794c8b531c064246cc402778f63e522f653154bd",
+                  "note": "resolveTechnical checks that a baseline is an implemented ancestor."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-proposal",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:proposal-without-code",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Proposed Components, Systems and data entities are publishable without code evidence."
+            },
+            {
+              "id": "ti-records-impl-transition-successor",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "A successor proposal keeps the stable identity and pins its implemented baseline revision explicitly."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "delivery",
+            "slide": "ti-records-impl-transition",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Delivery resolved once",
+            "description": "The CLI resolves --delivery (or delivery.commit) once to a full OID and binds it to the manifest source repository; a different repository or two different commits are refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "delivery"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 170,
+                  "end": 205,
+                  "digest": "sha256:48fbddfafd55d4ad8e1c771c0f8522b8a57490993d0c337c78267fbe4dce5dc0",
+                  "note": "resolveDelivery binds the delivery commit and repository at the command boundary."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-delivery",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The explicit implementation operation records the exact source view its evidence was validated against."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "policy",
+            "slide": "ti-records-impl-transition",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Policy validation before writing",
+            "description": "Under the lock, technicalpolicy verifies original bytes and delivery currency for the entity and every implemented edge; interactions check both member endpoints. Diagnostics refuse the revision.",
+            "selector": {
+              "type": "element",
+              "element_id": "policy"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 313,
+                  "end": 361,
+                  "digest": "sha256:c2b0e54cb98fc74ae695f8759131f3f07e4b6bc3a053d5fe0968261713864a08",
+                  "note": "checkImplementationPolicy builds the candidate with exact endpoint facts and calls ValidateCandidate."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-policy",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Missing, forged or stale supplied evidence refuses the transition."
+            },
+            {
+              "id": "ti-records-impl-transition-not-approval",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:implementation-not-approval",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Validation records intent and evidence only; no verification, integration or review decision is written."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "publication",
+            "slide": "ti-records-impl-transition",
+            "rank": 40,
+            "kind": "node",
+            "label": "Locked, idempotent publication",
+            "description": "Publication requires every current head as a parent, admits only current new pins, replays identical retries and writes nothing when any check fails.",
+            "selector": {
+              "type": "element",
+              "element_id": "publication"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 92,
+                  "end": 204,
+                  "digest": "sha256:8631a056119b4d189f92eb122e3593c83ed5183aaf5f47345cee8cb2ad338b54",
+                  "note": "WriteTechnicalRevision: replay, parents, candidate history, pin, view and policy checks, then write."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 237,
+                  "end": 257,
+                  "digest": "sha256:3358333840dddc347475388a0fe77a538406afb26ff538c8f720f3edaf69e86a",
+                  "note": "admitDefinitionPins: new pins must be current unless retained or self."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Adding implementation evidence appends a revision and leaves the committed proposal intact."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "lifecycle-test",
+            "slide": "ti-records-impl-transition",
+            "rank": 50,
+            "kind": "example",
+            "label": "Lifecycle through the public CLI",
+            "description": "A temporary Git repository exercises refusal before adoption, a code-free proposal, the implemented revision at a full OID, a proposed successor, retries and pinning from a slide.",
+            "selector": {
+              "type": "element",
+              "element_id": "lifecycle-test"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 85,
+                  "end": 195,
+                  "digest": "sha256:ffdc0c6dc89d1fb3d3d9b08bd4a1d601be86153efd5bbf7180ee3d6747ac0b25",
+                  "note": "End-to-end proposed, implemented and successor lifecycle with slide pinning."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-lifecycle-preserved",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "The test proves the proposal remains readable after implementation is recorded."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "policy-test",
+            "slide": "ti-records-impl-transition",
+            "rank": 60,
+            "kind": "example",
+            "label": "Evidence policy cases",
+            "description": "Pure movement keeps the original reference; edited bytes give stale_delivery_evidence with no files written; forged digests, foreign repositories and implemented edges to proposed members refuse.",
+            "selector": {
+              "type": "element",
+              "element_id": "policy-test"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 197,
+                  "end": 260,
+                  "digest": "sha256:2523fb8a433abc9ea931a64c60daf81ebe4e180c74d8cffe054c7ffef7589d3e",
+                  "note": "Movement, drift, forged digest, foreign repository and mixed-intent System cases."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-policy-test",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The refusals and the accepted movement case are exercised against real Git history."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:3e7a6031f35ebd318ed54e8489aa341f016b583771155bce026113c982535a38",
+      "parent_snapshots": [
+        "sha256:18b9fed7ada9907b31f2f8af04271e6e55ada4fdec02a821f1f218b67ff77253"
+      ],
+      "request_id": "ti-records-impl-transition-v2",
+      "created_at": "2026-09-25T01:38:20.792759Z",
+      "asset": "24-a-4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604.svg",
+      "asset_digest": "sha256:4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604eeb83d0e2e78",
+      "slide": {
+        "version": 4,
+        "id": "ti-records-impl-transition",
+        "deck": "technical-inventory",
+        "title": "Implemented: proposed to implemented at a delivery commit",
+        "rank": 170,
+        "section": "Records and authoring implementation",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-4fab525a13dfc6531c9c1c795c58ff48b355ddf5c71516e8c604.svg",
+        "takeaway": "A code-free proposal and its implemented successor share one identity; implementation is refused unless the evidence verifies and is current at the delivery commit.",
+        "reading_order": [
+          "proposal",
+          "delivery",
+          "policy",
+          "publication",
+          "lifecycle-test",
+          "policy-test"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "proposal",
+            "slide": "ti-records-impl-transition",
+            "rank": 10,
+            "kind": "node",
+            "label": "Code-free proposal and successor",
+            "description": "A proposed revision needs no code and names baseline: none, or an implemented ancestor revision of the same record for a successor. The baseline is kept apart from parents and never inferred.",
+            "selector": {
+              "type": "element",
+              "element_id": "proposal"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_validate.go",
+                  "start": 219,
+                  "end": 286,
+                  "digest": "sha256:ba5df1794c62b70c6565653a0a4d4455499e0fabab18dad9030bdcc4edd77c7c",
+                  "note": "validateIntentRevision: baseline, delivery and per-intent code rules."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory.go",
+                  "start": 419,
+                  "end": 471,
+                  "digest": "sha256:518b7c0fa862d6402baa308c794c8b531c064246cc402778f63e522f653154bd",
+                  "note": "resolveTechnical checks that a baseline is an implemented ancestor."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-proposal",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:proposal-without-code",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Proposed Components, Systems and data entities are publishable without code evidence."
+            },
+            {
+              "id": "ti-records-impl-transition-successor",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:same-identity-successor",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "A successor proposal keeps the stable identity and pins its implemented baseline revision explicitly."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "delivery",
+            "slide": "ti-records-impl-transition",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Delivery resolved once",
+            "description": "The CLI resolves --delivery (or delivery.commit) once to a full OID and binds it to the manifest source repository; a different repository or two different commits are refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "delivery"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 170,
+                  "end": 205,
+                  "digest": "sha256:48fbddfafd55d4ad8e1c771c0f8522b8a57490993d0c337c78267fbe4dce5dc0",
+                  "note": "resolveDelivery binds the delivery commit and repository at the command boundary."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 25,
+                  "end": 27,
+                  "digest": "sha256:081b9c22aa1a8efb5fbaa41e3ac0ebf8fa2c288c1eff022b252757fc491541d5",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 34,
+                  "end": 34,
+                  "digest": "sha256:37d8ccd2b1f0e534bd84abf4e0256e32421076028dee696b4f9c996b06535a52",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 39,
+                  "end": 40,
+                  "digest": "sha256:007e2f03ccbef3d2ba4d357941f3c6f479efa7f9de199803431408c3acac5129",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 59,
+                  "end": 59,
+                  "digest": "sha256:0873070297da9525c7e8fba99709d93f5b281d8dbe8dc108e2c099a2959a2c12",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 67,
+                  "end": 67,
+                  "digest": "sha256:55083d296fcf8d8f62ff2cd154a6b923def57a4a22cc24091f52864299866767",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 75,
+                  "end": 76,
+                  "digest": "sha256:f0218f04823f039723eb032ae94185cb02fd2e21ce976b3222159dd33b4d50b8",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 79,
+                  "end": 79,
+                  "digest": "sha256:ca1d4385b4bd4d6e01eef0c8991be8203fff99e8ab89758edcac98edfec3f9b3",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 84,
+                  "end": 85,
+                  "digest": "sha256:3bffc281da732c99490cf380e452d9b094ba02759bc3624384c6f4f2d73eb61f",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 87,
+                  "end": 87,
+                  "digest": "sha256:186791f8f7c2745da627173473fde14c8f41d2d9c621ad865af9376433a9cbcb",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 90,
+                  "end": 95,
+                  "digest": "sha256:467f29c0a5fb4519194f89b986820588b95a1f047e02e61ad8712d2cc6770d48",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 99,
+                  "end": 102,
+                  "digest": "sha256:711e38e2cc13f97f573e65b7c2ddb3b8ea77fd7196426016c55a45af2d75177d",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 114,
+                  "end": 167,
+                  "digest": "sha256:7fffaf30f91eddbad3e3f5e92118b3efaf90070088d9c217287e0eaba0d67dff",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 170,
+                  "end": 183,
+                  "digest": "sha256:5c864f8376f493e9b127f8ef907e4cd069a0d0e1ad74621e2d6e5405f4b43f52",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 186,
+                  "end": 241,
+                  "digest": "sha256:5b84cf6ff2d8eb5e3ed23db590fb7f3f801ce6674092db62ef48d35b4916e711",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 243,
+                  "end": 243,
+                  "digest": "sha256:dd2b64d760fcadeb408bb26a5afcd2a78b811320c1974f986c56693775eb5adb",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 247,
+                  "end": 249,
+                  "digest": "sha256:59860aa452fc126dca878e98d16ece94c64e4f8f76253369d45becffe6ec158b",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 251,
+                  "end": 266,
+                  "digest": "sha256:3c0a120424157fd40051ccbbb4121b98121fd8c2de10b6970da8d3cb2527bc68",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 308,
+                  "end": 328,
+                  "digest": "sha256:467ff3feaea86354b72c524d6859ea020cf34640434d5d9dc4ea4bc4741b5317",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 332,
+                  "end": 332,
+                  "digest": "sha256:b31cd2fadf0ac051fcf95457e70e676dc3a2f258de613309148d30a98ab81bdb",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 343,
+                  "end": 343,
+                  "digest": "sha256:b31cd2fadf0ac051fcf95457e70e676dc3a2f258de613309148d30a98ab81bdb",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 361,
+                  "end": 361,
+                  "digest": "sha256:88b2e5b5330814c8562c62d4cb16a1b380b834dbe9356ee903edfaf286ec0b74",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 363,
+                  "end": 363,
+                  "digest": "sha256:bdd633d5957cd8f2fe4114aaa1add887125e1d264fe68034acc1d32e3966baed",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory.go",
+                  "start": 366,
+                  "end": 366,
+                  "digest": "sha256:42b22626a4b8a4a67d90abc4c855b9c47574daaab3025e80bdd68df745faa6dc",
+                  "note": "Changed lines of internal/cli/inventory.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 31,
+                  "end": 31,
+                  "digest": "sha256:e3c1f51a19dd69e60de55267bbb1e4267eb7412f20df1e3b9d774201ef284852",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 54,
+                  "end": 54,
+                  "digest": "sha256:ca4c01ae321483fa1f01a317c024eb2f5d1a43e6fd5f436fdbfe11d2f954d269",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 62,
+                  "end": 71,
+                  "digest": "sha256:4fcda5e73dd329db1e96335b8b031e07c5d3bc3bf8403988b66fdf71d4169897",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 75,
+                  "end": 77,
+                  "digest": "sha256:d86d78104b58e432c989c0e984a252fba3124c642f908588f6121d654ead5f3f",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 82,
+                  "end": 82,
+                  "digest": "sha256:39e0c0b0d3a165d906c87f0796d8f16a3017f7ad19918d811ab7133f98c048b7",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 85,
+                  "end": 85,
+                  "digest": "sha256:36b94d82d2dac6e0dd8702fb184d5929492efbff8d0c2532559ce564b5057524",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 90,
+                  "end": 105,
+                  "digest": "sha256:4d50aef3b6bfb073703ab8225ae4155730e1138068832502b76a29cd0de7d8c8",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 107,
+                  "end": 107,
+                  "digest": "sha256:5f17680973e8d3236f410f9f385cbf44b12fa71286c0ce5bcfcf4356400436a6",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 110,
+                  "end": 111,
+                  "digest": "sha256:4ffd117d3b57555be5aad568b906334dd7c27189443419f8a600b0f20846e6eb",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 115,
+                  "end": 115,
+                  "digest": "sha256:8ac528d564091eb525555012ada4d004252c016301f1d97fb4353eec5f21c6b6",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 127,
+                  "end": 128,
+                  "digest": "sha256:025be5a315ec27abca106f5f7cfde00573de04201c1bdc1a179a7c37d4085f99",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 131,
+                  "end": 132,
+                  "digest": "sha256:a36b75909abef6d8b7e99584ff77e893c87d250f591281b3dae7c1282f023d06",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 135,
+                  "end": 136,
+                  "digest": "sha256:786f9f02a0945b0509d2dd99f5fb8729e1c0f156b607bfcd32fa8b0ce8796098",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 138,
+                  "end": 138,
+                  "digest": "sha256:ea2e26f8a64ba436e6cc636b2e487b20a301ed706c405bc47d9e9fe6dc165046",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 142,
+                  "end": 143,
+                  "digest": "sha256:06016212c5dfe9cabe6465135e98116869c00779e4d163e3dff20e0ba94fd7bd",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 145,
+                  "end": 145,
+                  "digest": "sha256:ada1d7914809e3499d4573e8bfe5826ae082ea2e2a14db7cc14172577c6a735a",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 190,
+                  "end": 192,
+                  "digest": "sha256:18e223eb0d73e7c01ad9f7206e99db8bb84666bb70bea65c17b5fb167cd2c45b",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 203,
+                  "end": 205,
+                  "digest": "sha256:18e223eb0d73e7c01ad9f7206e99db8bb84666bb70bea65c17b5fb167cd2c45b",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 223,
+                  "end": 223,
+                  "digest": "sha256:d87ac38aaeaad02a90c3e8155e58a2ab2ed5a4bdc04830b85d39a9df1a03a14f",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory.go",
+                  "start": 225,
+                  "end": 226,
+                  "digest": "sha256:40ee50dcfc0a4d50d1b2b7a69fbb3919cd65bb251aaaae41bacd72c43e41708e",
+                  "note": "Replaced or removed lines of internal/cli/inventory.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/cli.go",
+                  "start": 93,
+                  "end": 93,
+                  "digest": "sha256:30e8084c0109c47af920e4d97c6e421bed995c593e73814080371c48190ff2c8",
+                  "note": "Changed lines of internal/cli/cli.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/cli.go",
+                  "start": 101,
+                  "end": 104,
+                  "digest": "sha256:5e1d5a57948d085657b960b24ba1d1b6b571116c8e513ce199951fa07afba5dd",
+                  "note": "Changed lines of internal/cli/cli.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/cli.go",
+                  "start": 328,
+                  "end": 331,
+                  "digest": "sha256:e02d5f545124e85d3a04c60582b705b759b0114f282d4b3b7138f6a38543ba7c",
+                  "note": "Changed lines of internal/cli/cli.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/cli.go",
+                  "start": 1228,
+                  "end": 1236,
+                  "digest": "sha256:a5aabad0bff868e3f92d307c0222ff8433285171b46a0011144358874d444aa5",
+                  "note": "Changed lines of internal/cli/cli.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/cli.go",
+                  "start": 93,
+                  "end": 93,
+                  "digest": "sha256:bed3da433d573e1669f9f0bb936fef361fc3ae23b5c989e3f3c3ddd5df7ad1b0",
+                  "note": "Replaced or removed lines of internal/cli/cli.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/cli.go",
+                  "start": 1220,
+                  "end": 1221,
+                  "digest": "sha256:4fedbc0a7017c2c38158e9e9b6b756ea4304cf6c293c4405fc6351ba39cde1b8",
+                  "note": "Replaced or removed lines of internal/cli/cli.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 48,
+                  "end": 48,
+                  "digest": "sha256:3b0b494c3dcb9894f6e05c9ea1c7dbb7d96bc4e94a0fc39ff5c8747392187829",
+                  "note": "Changed lines of cmd/change-saga/main.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 50,
+                  "end": 51,
+                  "digest": "sha256:89e1e30a71f0d6fccbf6218078bce8af63c7ca85dbe171f337d66fda68afc5d5",
+                  "note": "Changed lines of cmd/change-saga/main.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 48,
+                  "end": 48,
+                  "digest": "sha256:414b19435268fd115bac8e0b6fe63c296a39f06246213033337cbc108939ef52",
+                  "note": "Replaced or removed lines of cmd/change-saga/main.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 6,
+                  "end": 7,
+                  "digest": "sha256:708f76353782bfd4457ab22c2695b125dfe32c13987944f072dbe11a8242fbad",
+                  "note": "Changed lines of internal/grammar/commands_inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 11,
+                  "end": 11,
+                  "digest": "sha256:c77eebf26696b4e23de030b5a5631894b92838f0cdf322c7fbac252e33e147fe",
+                  "note": "Changed lines of internal/grammar/commands_inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 14,
+                  "end": 22,
+                  "digest": "sha256:1188e31051597080f2334edd6cc7db33d00a7ba13172890c6e9ee3575adc71f7",
+                  "note": "Changed lines of internal/grammar/commands_inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 24,
+                  "end": 24,
+                  "digest": "sha256:c02372abca0c4b9134f9ab0ca0fc8bec3bb0523445944fc3e69887713a8f067e",
+                  "note": "Changed lines of internal/grammar/commands_inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 26,
+                  "end": 26,
+                  "digest": "sha256:ddfa0295b41637bd227ab7e767da26ab51253ff1cff6527504d5c458b9b292a1",
+                  "note": "Changed lines of internal/grammar/commands_inventory.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 29,
+                  "end": 32,
+                  "digest": "sha256:8815bf2faff4a2948eaa7b0f3ff0998aa7539043e5ed614630d4a9d06ea73b55",
+                  "note": "Changed lines of internal/grammar/commands_inventory.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 6,
+                  "end": 6,
+                  "digest": "sha256:ee1b451309cb29d8de63ff963b5ee0edcc9df144abc7fffaab382c20541ca5e6",
+                  "note": "Replaced or removed lines of internal/grammar/commands_inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 10,
+                  "end": 10,
+                  "digest": "sha256:d87ac38aaeaad02a90c3e8155e58a2ab2ed5a4bdc04830b85d39a9df1a03a14f",
+                  "note": "Replaced or removed lines of internal/grammar/commands_inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 14,
+                  "end": 14,
+                  "digest": "sha256:c4163fd5ee889e173599b845017dd408bb584e61d0782f19e7b3fc6b6cc74499",
+                  "note": "Replaced or removed lines of internal/grammar/commands_inventory.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/grammar/commands_inventory.go",
+                  "start": 16,
+                  "end": 16,
+                  "digest": "sha256:b599c24807cde7ce74d169dc31409c309c3ff9aab4134a720c9b02d2bc9985fb",
+                  "note": "Replaced or removed lines of internal/grammar/commands_inventory.go at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-delivery",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The explicit implementation operation records the exact source view its evidence was validated against."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "policy",
+            "slide": "ti-records-impl-transition",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Policy validation before writing",
+            "description": "Under the lock, technicalpolicy verifies original bytes and delivery currency for the entity and every implemented edge; interactions check both member endpoints. Diagnostics refuse the revision.",
+            "selector": {
+              "type": "element",
+              "element_id": "policy"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 313,
+                  "end": 361,
+                  "digest": "sha256:c2b0e54cb98fc74ae695f8759131f3f07e4b6bc3a053d5fe0968261713864a08",
+                  "note": "checkImplementationPolicy builds the candidate with exact endpoint facts and calls ValidateCandidate."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-policy",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Missing, forged or stale supplied evidence refuses the transition."
+            },
+            {
+              "id": "ti-records-impl-transition-not-approval",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:implementation-not-approval",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Validation records intent and evidence only; no verification, integration or review decision is written."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "publication",
+            "slide": "ti-records-impl-transition",
+            "rank": 40,
+            "kind": "node",
+            "label": "Locked, idempotent publication",
+            "description": "Publication requires every current head as a parent, admits only current new pins, replays identical retries and writes nothing when any check fails.",
+            "selector": {
+              "type": "element",
+              "element_id": "publication"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 92,
+                  "end": 204,
+                  "digest": "sha256:8631a056119b4d189f92eb122e3593c83ed5183aaf5f47345cee8cb2ad338b54",
+                  "note": "WriteTechnicalRevision: replay, parents, candidate history, pin, view and policy checks, then write."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 237,
+                  "end": 257,
+                  "digest": "sha256:3358333840dddc347475388a0fe77a538406afb26ff538c8f720f3edaf69e86a",
+                  "note": "admitDefinitionPins: new pins must be current unless retained or self."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 4,
+                  "end": 8,
+                  "digest": "sha256:264e8f72dbbb3d42d7a1fff683930fda1b93f6dcd2eb927cb6b38d403c69640d",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 10,
+                  "end": 11,
+                  "digest": "sha256:80aa868cc48fd646e0a04c2215a63eac4cac6689bb6bb0d38b849216e8ab1406",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 14,
+                  "end": 14,
+                  "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 17,
+                  "end": 17,
+                  "digest": "sha256:81bf2f7372b612d7e4c2d83c27914da077408fa3a2dd1f6a4c068b8727918f2c",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 19,
+                  "end": 19,
+                  "digest": "sha256:02c38410845954c6b9dbef9f7d10e8c7b6527f486d5a957c1633c1260110153f",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 22,
+                  "end": 87,
+                  "digest": "sha256:1f1e0c2d85f3c002ca48a8242fbe4aa6b6a80e8509a779b8ac12230af60ff7e5",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 89,
+                  "end": 97,
+                  "digest": "sha256:e79bf52a8654c50b50de9f89217e5b69975ce3a626d7743959cd89b39d9694e2",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 102,
+                  "end": 103,
+                  "digest": "sha256:d53cc031e9a9ae5effbefbe7889d1211777972a1a65798e326a6ca6d09635d16",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 106,
+                  "end": 114,
+                  "digest": "sha256:832095fef45825f0a653d54a772e537a56d1a9c0109ba5d7dd8520087697f334",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 120,
+                  "end": 122,
+                  "digest": "sha256:1c33d5ef6f7a4cd3dede56ee4d29e84f7111b7d8d720582f832e906b43461ad2",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 125,
+                  "end": 125,
+                  "digest": "sha256:e546840d76be3e60735f8113f1f2331160fd7156fb555779726644650deab9f1",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 127,
+                  "end": 127,
+                  "digest": "sha256:04a216720b1158724f1e9f502a042073e27b12c23ff762ff0c6b36818aa4a686",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 132,
+                  "end": 132,
+                  "digest": "sha256:af2170c23cd17c66104b9eb878cba27e47483da4b3fffacc1152ba0853ac1bc7",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 135,
+                  "end": 135,
+                  "digest": "sha256:99a944a1fdc84df6caedc5fe5928b4514b93f8e9443eae7c1e886f90b301eeb7",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 139,
+                  "end": 139,
+                  "digest": "sha256:d724e4eec247331d72ea6e965bc4f381b91aea3656b78c426a1db8eab3c37334",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 149,
+                  "end": 149,
+                  "digest": "sha256:40587d791199185a0d5e94c738a0391b83d41c2aed9629ee49a8ad33b878ae1a",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 152,
+                  "end": 153,
+                  "digest": "sha256:2d7f26d9350e8d0a25ae41d4a62a27aedaae3a54d72cda04056a1a4f7436d4cc",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 155,
+                  "end": 177,
+                  "digest": "sha256:c912bc27ed0b4dcba7055e486095f54b6e03e3b9edb9cce1bee93ae6dbed00b9",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 181,
+                  "end": 184,
+                  "digest": "sha256:d74c1858c919bee459cfdcb179ee424b746c54423ab549ff6f6d877d76cfaab9",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 188,
+                  "end": 190,
+                  "digest": "sha256:1278b55035d6889b8f1e602781048e0268f6301c735e177c7b3a9f749e00e815",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 192,
+                  "end": 195,
+                  "digest": "sha256:8f777233d29de72d28b3ed4c9ffbd585a90945114dd09be67b430eba24ead42e",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 199,
+                  "end": 199,
+                  "digest": "sha256:5c3b692c9f2af981954faa46eb2eade2a9d3228e3b3082ee8d307885c5d9ed0c",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 206,
+                  "end": 418,
+                  "digest": "sha256:67aa2082540f0227423a308d8cf160627a17160bd986e3a083575625bc0b1797",
+                  "note": "Changed lines of internal/requirements/inventory_mutation.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 12,
+                  "end": 13,
+                  "digest": "sha256:48e7b7ee5a3a2d4d31aada22f79d6f22f556840107b412b996fc038797a79a41",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 15,
+                  "end": 15,
+                  "digest": "sha256:21d3cf76d42b964e999ae483332d48fb83e645f39837a3772dd6bf0cac1eb718",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 20,
+                  "end": 21,
+                  "digest": "sha256:cd2aa3dc1006116cf1e643c25f0b4bcaa8d993007004789a3aa1120b02a4a78f",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 24,
+                  "end": 24,
+                  "digest": "sha256:edbedf5b68ca7d072af0062052fc6e62b3f85ebb4078fd1cf10082f4d0c1b2c1",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 32,
+                  "end": 32,
+                  "digest": "sha256:370d6733064d0d245388db761462200c4a42611d884454eee122d1385fa26dc6",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 34,
+                  "end": 34,
+                  "digest": "sha256:e86b82520ef1a3fc47dd2202f4061af22ec859a09df727c736122fc899cc3d00",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 39,
+                  "end": 39,
+                  "digest": "sha256:ebd4a77d1f0fb870aa08b0b209ea55f87945e02727139e520769cbc5f8348b96",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 42,
+                  "end": 42,
+                  "digest": "sha256:012eac5ba916ca2670e8706f1a8a4ec891826399ca17492d9bf44a7ce9341c71",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 46,
+                  "end": 46,
+                  "digest": "sha256:5f69f7f6f85099a4633f06d893ff655c13d0b2b12e9d2f1ea34a0e6af0e7a001",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 56,
+                  "end": 56,
+                  "digest": "sha256:9337e408a85fc595893e6bd97cb2c4fd16d06dad3db8c1897baa1f9945ee714f",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 59,
+                  "end": 70,
+                  "digest": "sha256:d84ee0363c3054ac46b94a318219662ece4ed856fde83579572c275a91c66489",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 72,
+                  "end": 73,
+                  "digest": "sha256:6aeb0a6c5a6e83713452808f804d9eb3da8be3e3aa712618f3df1bb11af556f1",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 77,
+                  "end": 80,
+                  "digest": "sha256:8c3e156c3ed05e08fcbffdf96080fde0ab8e0639247c429866e4d6cf4b0c3a9f",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 84,
+                  "end": 85,
+                  "digest": "sha256:2d7f26d9350e8d0a25ae41d4a62a27aedaae3a54d72cda04056a1a4f7436d4cc",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 87,
+                  "end": 87,
+                  "digest": "sha256:e1f9093882aea67196afd72ae3af482205a7cf3f8a1ccfbf6f58f62cdbfb0a13",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/requirements/inventory_mutation.go",
+                  "start": 91,
+                  "end": 91,
+                  "digest": "sha256:cf54b2402e784264978dd2c387140ac23a594e0d7317b8b2af599e968c05daaa",
+                  "note": "Replaced or removed lines of internal/requirements/inventory_mutation.go at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-history",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:history",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Adding implementation evidence appends a revision and leaves the committed proposal intact."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "lifecycle-test",
+            "slide": "ti-records-impl-transition",
+            "rank": 50,
+            "kind": "example",
+            "label": "Lifecycle through the public CLI",
+            "description": "A temporary Git repository exercises refusal before adoption, a code-free proposal, the implemented revision at a full OID, a proposed successor, retries and pinning from a slide.",
+            "selector": {
+              "type": "element",
+              "element_id": "lifecycle-test"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 85,
+                  "end": 195,
+                  "digest": "sha256:ffdc0c6dc89d1fb3d3d9b08bd4a1d601be86153efd5bbf7180ee3d6747ac0b25",
+                  "note": "End-to-end proposed, implemented and successor lifecycle with slide pinning."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/testfixture/inventory.go",
+                  "start": 1,
+                  "end": 179,
+                  "digest": "sha256:f1c03274fa1b5129cfa3e120fa2e221bc8ac83bddaf3adffcdafb0a2acaafaa3",
+                  "note": "Changed lines of internal/testfixture/inventory.go explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/testfixture/inventory_test.go",
+                  "start": 1,
+                  "end": 49,
+                  "digest": "sha256:e3bc2c77ccf76ac87dd0653c500fcc9938791b8b663555c1843e7e7aa6816629",
+                  "note": "Changed lines of internal/testfixture/inventory_test.go explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-lifecycle-preserved",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "The test proves the proposal remains readable after implementation is recorded."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "policy-test",
+            "slide": "ti-records-impl-transition",
+            "rank": 60,
+            "kind": "example",
+            "label": "Evidence policy cases",
+            "description": "Pure movement keeps the original reference; edited bytes give stale_delivery_evidence with no files written; forged digests, foreign repositories and implemented edges to proposed members refuse.",
+            "selector": {
+              "type": "element",
+              "element_id": "policy-test"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 197,
+                  "end": 260,
+                  "digest": "sha256:2523fb8a433abc9ea931a64c60daf81ebe4e180c74d8cffe054c7ffef7589d3e",
+                  "note": "Movement, drift, forged digest, foreign repository and mixed-intent System cases."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_lifecycle_test.go",
+                  "start": 1,
+                  "end": 329,
+                  "digest": "sha256:ab43e18c11c085621d3a54ac3708b311c0a5e44e461924e87177ca6a1166263f",
+                  "note": "Changed lines of internal/cli/inventory_lifecycle_test.go explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_test.go",
+                  "start": 191,
+                  "end": 191,
+                  "digest": "sha256:08666a228fe92a0467dce53f2fcc6379dbfeac189e6bc243bb12aa1058b35c6d",
+                  "note": "Changed lines of internal/cli/inventory_test.go explained by this Item."
+                },
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/inventory_test.go",
+                  "start": 255,
+                  "end": 255,
+                  "digest": "sha256:2f42c4e567800994de94e7dfcddc16bc88bf902fe0b4631a29ed60abd33c04a7",
+                  "note": "Changed lines of internal/cli/inventory_test.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory_test.go",
+                  "start": 191,
+                  "end": 191,
+                  "digest": "sha256:2167fbf0e48149b2e5ba557bf6d50b355011bf8880f2cfc4f338be4fc4c0c911",
+                  "note": "Replaced or removed lines of internal/cli/inventory_test.go at the base, explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/inventory_test.go",
+                  "start": 255,
+                  "end": 255,
+                  "digest": "sha256:7d93316ec7522cd0538d654b13112a7094dc06cbf46ca2473bcc484890312595",
+                  "note": "Replaced or removed lines of internal/cli/inventory_test.go at the base, explained by this Item."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "path": "internal/cli/skill_test.go",
+                  "start": 272,
+                  "end": 282,
+                  "digest": "sha256:77a64d5596c14c4643d944bf246e781779e20d5f349b83935c0cb4ac580eee48",
+                  "note": "Changed lines of internal/cli/skill_test.go explained by this Item."
+                },
+                {
+                  "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+                  "path": "internal/cli/skill_test.go",
+                  "start": 272,
+                  "end": 272,
+                  "digest": "sha256:12154fb85c9c466140e2e06edff18164d7ceb843f8921a42d9ec53984c381d22",
+                  "note": "Replaced or removed lines of internal/cli/skill_test.go at the base, explained by this Item."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-records-impl-transition-policy-test",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:evidence-backed-transition",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "The refusals and the accepted movement case are exercised against real Git history."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:e89190cd1b630f65ebb5ec6ee09e27d6c0621a26c9d7bc6f17f0c777e568c2b1"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 92,
+      "end": 94,
+      "digest": "sha256:69d892403caa29cb3ed5cf676d077fd0c687675a248d5a66a641e97f787fe373"
+    }
+  ]
+}

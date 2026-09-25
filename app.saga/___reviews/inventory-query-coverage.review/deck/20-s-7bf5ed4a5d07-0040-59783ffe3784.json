@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "coverage",
+  "deck": "inventory-query-coverage",
+  "title": "What changed: inventory coverage report",
+  "rank": 40,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7bf5ed4a5d07-0040-59783ffe3784.svg",
+  "takeaway": "A new operation measures code accounted for by current definitions in a named scope, apart from deck and review coverage.",
+  "reading_order": [
+    "scope",
+    "owners",
+    "health",
+    "denominators"
+  ]
+}

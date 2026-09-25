@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "traverse",
+  "slide": "uses",
+  "rank": 20,
+  "kind": "node",
+  "label": "Current owners only",
+  "description": "Upward traversal follows current owner revisions; a superseded owner revision is listed with owner_current false but does not make its old users users of the member.",
+  "selector": {
+    "type": "element",
+    "element_id": "traverse"
+  }
+}

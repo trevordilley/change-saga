@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 206,
+      "end": 218,
+      "digest": "sha256:d4b238a96344461a647caf3857299d22310280e1f765bd448ea01325fd5b7727",
+      "note": "formatAdmits refuses intent-less Component/System revisions after adoption."
+    }
+  ]
+}

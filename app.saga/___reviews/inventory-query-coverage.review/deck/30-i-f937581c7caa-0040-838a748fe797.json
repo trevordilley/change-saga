@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "e2e",
+  "slide": "verify",
+  "rank": 40,
+  "kind": "node",
+  "label": "Format-2 end to end",
+  "description": "The records fixture plus add-item selections prove intent, newness, scope, uses, exact inherited lines, drift routed to the Item and no pseudo evidence in any query.",
+  "selector": {
+    "type": "element",
+    "element_id": "e2e"
+  }
+}

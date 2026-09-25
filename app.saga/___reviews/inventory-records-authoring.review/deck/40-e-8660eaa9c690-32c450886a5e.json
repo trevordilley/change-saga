@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/data-entity-revision.schema.json",
+      "digest": "sha256:10c11338fa1071ceef00d35c2df9ca51da09883f36527aaa7547c6cac0e03d0f"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "schema/v5/data-entity-revision.schema.json",
+      "start": 1,
+      "end": 463,
+      "digest": "sha256:10c11338fa1071ceef00d35c2df9ca51da09883f36527aaa7547c6cac0e03d0f"
+    }
+  ]
+}

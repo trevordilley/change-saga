@@ -218,7 +218,7 @@ func TestInventoryRevisionRules(t *testing.T) {
 }
 
 func TestInventoryVisualIsOfflineAndBound(t *testing.T) {
-	svg := []byte(`<svg xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g"/></defs><g id="report" fill="url(#g)"><rect/></g><use href="#report"/><path id="produced"/></svg>`)
+	svg := []byte(`<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 10 10" role="img"><title>ERD</title><defs><linearGradient id="g"><stop offset="0" stop-color="#fff"/></linearGradient><marker id="m" refX="1" refY="1" orient="auto"><path d="M0 0L2 1Z"/></marker></defs><g id="report" fill="url(#g)" style="stroke:#000"><rect x="1" y="1" width="2" height="2" rx="1"/><text x="1" y="1" text-anchor="middle" xml:space="preserve">Report</text></g><a href="#report"><use xlink:href="#report"/></a><path id="produced" d="M0 0L1 1" marker-end="url(#m)" stroke-dasharray="4 2"/></svg>`)
 	sum := sha256.Sum256(svg)
 	digest := "sha256:" + hex.EncodeToString(sum[:])
 	bindings := []Binding{{ID: "b", Element: "report"}}
@@ -226,16 +226,37 @@ func TestInventoryVisualIsOfflineAndBound(t *testing.T) {
 		t.Fatal(err)
 	}
 	for name, bad := range map[string][]byte{
-		"external image": []byte(`<svg xmlns="http://www.w3.org/2000/svg"><image href="https://example.com/x.png"/><g id="report"/></svg>`),
-		"script":         []byte(`<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script><g id="report"/></svg>`),
-		"handler":        []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report" onclick="x()"/></svg>`),
-		"missing":        []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="other"/></svg>`),
-		"not svg":        []byte(`<html><g id="report"/></html>`),
-		"xlink":          []byte(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="other.svg#a"/><g id="report"/></svg>`),
-		"import":         []byte(`<svg xmlns="http://www.w3.org/2000/svg"><style>@import "x.css";</style><g id="report"/></svg>`),
-		"style url":      []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report" style="fill:url(https://x/y)"/></svg>`),
-		"doctype":        []byte(`<!DOCTYPE svg [<!ENTITY x "y">]><svg xmlns="http://www.w3.org/2000/svg"><g id="report"/></svg>`),
-		"duplicate id":   []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report"/><g id="report"/></svg>`),
+		"external image":    []byte(`<svg xmlns="http://www.w3.org/2000/svg"><image href="https://example.com/x.png"/><g id="report"/></svg>`),
+		"script":            []byte(`<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script><g id="report"/></svg>`),
+		"handler":           []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report" onclick="x()"/></svg>`),
+		"missing":           []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="other"/></svg>`),
+		"not svg":           []byte(`<html><g id="report"/></html>`),
+		"xlink":             []byte(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><use xlink:href="other.svg#a"/><g id="report"/></svg>`),
+		"import":            []byte(`<svg xmlns="http://www.w3.org/2000/svg"><style>@import "x.css";</style><g id="report"/></svg>`),
+		"style url":         []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report" style="fill:url(https://x/y)"/></svg>`),
+		"doctype":           []byte(`<!DOCTYPE svg [<!ENTITY x "y">]><svg xmlns="http://www.w3.org/2000/svg"><g id="report"/></svg>`),
+		"duplicate id":      []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report"/><g id="report"/></svg>`),
+		"smil set href":     []byte(`<svg xmlns="http://www.w3.org/2000/svg"><a id="report" href="#report"><set attributeName="href" to="javascript:alert(1)"/><text>x</text></a></svg>`),
+		"smil animate href": []byte(`<svg xmlns="http://www.w3.org/2000/svg"><a id="report" href="#report"><animate attributeName="href" values="javascript:alert(1)"/><text>x</text></a></svg>`),
+		"animateMotion":     []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report"><animateMotion path="M0 0"/></g></svg>`),
+		"animateTransform":  []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report"><animateTransform attributeName="transform"/></g></svg>`),
+		"xlink javascript":  []byte(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><a id="report" xlink:href="javascript:alert(1)"><text>x</text></a></svg>`),
+		"uppercase scheme":  []byte(`<svg xmlns="http://www.w3.org/2000/svg"><a id="report" href="JAVASCRIPT:alert(1)"><text>x</text></a></svg>`),
+		"tab prefixed":      []byte("<svg xmlns=\"http://www.w3.org/2000/svg\"><a id=\"report\" href=\"\tjavascript:alert(1)\"><text>x</text></a></svg>"),
+		"space prefixed":    []byte(`<svg xmlns="http://www.w3.org/2000/svg"><a id="report" href="  javascript:alert(1)"><text>x</text></a></svg>`),
+		"embedded tab":      []byte("<svg xmlns=\"http://www.w3.org/2000/svg\"><g id=\"report\" fill=\"java\tscript:x\"/></svg>"),
+		"data value":        []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report" fill="data:image/svg+xml,x"/></svg>`),
+		"external anchor":   []byte(`<svg xmlns="http://www.w3.org/2000/svg"><a id="report" href="https://example.com/"><text>x</text></a></svg>`),
+		"unknown attribute": []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="report" formaction="x"/></svg>`),
+		"foreign namespace": []byte(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:h="http://www.w3.org/1999/xhtml"><h:div id="report"/></svg>`),
+		"image element":     []byte(`<svg xmlns="http://www.w3.org/2000/svg"><image id="report" href="#x"/></svg>`),
+		"style javascript":  []byte(`<svg xmlns="http://www.w3.org/2000/svg"><style>g { background: javascript:x }</style><g id="report"/></svg>`),
+		"pi before root":    []byte(`<?xml version="1.0" x="><img src=x onerror=alert(1)>"?><svg xmlns="http://www.w3.org/2000/svg"><g id="report"/></svg>`),
+		"pi inside svg":     []byte(`<svg xmlns="http://www.w3.org/2000/svg"><?xml version="1.0" x="><img src=x onerror=alert(1)>"?><g id="report"/></svg>`),
+		"other pi":          []byte(`<?xml version="1.0"?><?xml-stylesheet href="x.css"?><svg xmlns="http://www.w3.org/2000/svg"><g id="report"/></svg>`),
+		"cdata":             []byte(`<svg xmlns="http://www.w3.org/2000/svg"><text id="report"><![CDATA[ > <img src=x onerror=alert(1)>]]></text></svg>`),
+		"prefixed svg":      []byte(`<s:svg xmlns:s="http://www.w3.org/2000/svg"><s:text id="report"><![CDATA[ > <img src=x onerror=alert(1)>]]></s:text></s:svg>`),
+		"prefixed element":  []byte(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:s="http://www.w3.org/2000/svg"><s:g id="report"/></svg>`),
 	} {
 		if err := ValidateVisual(bad, "", bindings); err == nil {
 			t.Errorf("%s accepted", name)

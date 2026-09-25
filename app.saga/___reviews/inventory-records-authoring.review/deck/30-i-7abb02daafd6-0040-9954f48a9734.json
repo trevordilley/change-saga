@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "contract-docs",
+  "slide": "ti-records-review-records",
+  "rank": 40,
+  "kind": "statement",
+  "label": "Specification and compatibility note",
+  "description": "SPEC section, Format changelog entry with older/newer reader behavior and no migration, the implementation note and the skill rule never to adopt without the user.",
+  "selector": {
+    "type": "element",
+    "element_id": "contract-docs"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view.go",
+      "digest": "sha256:6ca7ee94a38d9c470ed1da8565d48a17c76b7158a1cc729ceade655b2c02448b",
+      "note": "File-addition event: this new file is introduced here; focused line references on the review's Items explain its parts."
+    }
+  ]
+}

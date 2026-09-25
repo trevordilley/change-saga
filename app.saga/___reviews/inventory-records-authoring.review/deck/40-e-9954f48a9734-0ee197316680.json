@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "docs/technical-inventory-records-implementation.md",
+      "digest": "sha256:51070df7804472ea05b666e772730252a1eb0f53c90cce7e0b323d42e2086128"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "docs/technical-inventory-records-implementation.md",
+      "start": 1,
+      "end": 104,
+      "digest": "sha256:51070df7804472ea05b666e772730252a1eb0f53c90cce7e0b323d42e2086128"
+    }
+  ]
+}

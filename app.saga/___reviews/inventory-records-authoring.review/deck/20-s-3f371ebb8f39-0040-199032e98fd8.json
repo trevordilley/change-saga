@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "ti-records-review-proof",
+  "deck": "inventory-records-authoring",
+  "title": "Proof and what remains open",
+  "rank": 40,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-3f371ebb8f39-0040-199032e98fd8.svg",
+  "takeaway": "Targeted suites pass; the known baseline failure, missing browser QA and unowned consumers are stated, not hidden.",
+  "reading_order": [
+    "record-tests",
+    "cli-tests",
+    "fixture",
+    "gaps"
+  ]
+}

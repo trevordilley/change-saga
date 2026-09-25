@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/classify.go",
+      "start": 49,
+      "end": 94,
+      "digest": "sha256:56ae66243ad5dc0f9bb8dc3bf88e7fbc018d9f57363a9d87c5aba006e748487e",
+      "note": "Every owned reference, with edge intent, for coverage and reconciliation."
+    }
+  ]
+}

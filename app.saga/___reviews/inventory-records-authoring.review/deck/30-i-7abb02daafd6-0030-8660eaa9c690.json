@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "schemas",
+  "slide": "ti-records-review-records",
+  "rank": 30,
+  "kind": "region",
+  "label": "Published schemas",
+  "description": "Generated revision, identity and event schemas for all five kinds, the format marker, Item selections and the transaction request; legacy branches still forbid ids.",
+  "selector": {
+    "type": "element",
+    "element_id": "schemas"
+  }
+}

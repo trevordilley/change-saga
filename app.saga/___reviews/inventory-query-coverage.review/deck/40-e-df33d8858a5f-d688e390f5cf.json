@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/status_grammar.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:0d27ce5233c58a6f649e0f3df4374b8b74cb47749d3ed5d51efaf41ec44c9eac",
+      "note": "status, check and reconcile evaluate coverage with inherited selections."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/status_grammar.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:19f8f8bfd53c7ad7142c5c298bdbb937fee3f722e7742fbeb83b5f2b819eb96d",
+      "note": "status, check and reconcile evaluate coverage with inherited selections."
+    }
+  ]
+}

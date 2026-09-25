@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "reads",
+  "deck": "inventory-query-coverage",
+  "title": "What changed: scoped, filtered reads",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7bf5ed4a5d07-0010-69031ee8fcaf.svg",
+  "takeaway": "query inventory gains explicit intent, baseline newness and feature scope; unresolved records moved to their own page instead of being filtered away.",
+  "reading_order": [
+    "scope",
+    "filters",
+    "unresolved",
+    "newness"
+  ]
+}

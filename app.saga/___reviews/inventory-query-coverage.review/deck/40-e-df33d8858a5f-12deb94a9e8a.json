@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 546,
+      "end": 556,
+      "digest": "sha256:9c43b9ad062b1980343c6759665ed842ffa0ad6ebef2d89a3d15794eb6aebaab",
+      "note": "The CLI comparison collects eligible selections at head."
+    }
+  ]
+}

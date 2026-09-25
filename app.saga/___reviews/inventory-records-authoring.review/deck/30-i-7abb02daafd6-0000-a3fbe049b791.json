@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "model",
+  "slide": "ti-records-review-records",
+  "rank": 0,
+  "kind": "region",
+  "label": "Canonical record model and loader",
+  "description": "Evidence gains a stable id; TechnicalDefinition gains kind-disjoint format-2 fields; LoadInventory reads five kinds in fixed order, the marker and baseline ancestry.",
+  "selector": {
+    "type": "element",
+    "element_id": "model"
+  }
+}

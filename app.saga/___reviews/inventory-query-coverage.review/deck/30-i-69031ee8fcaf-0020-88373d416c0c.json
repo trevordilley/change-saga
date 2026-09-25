@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "filters",
+  "slide": "reads",
+  "rank": 20,
+  "kind": "node",
+  "label": "Explicit intent filter",
+  "description": "--intent filters the selected revisions' explicit intent; legacy revisions read unspecified. Filters apply only after unresolved candidates are set aside.",
+  "selector": {
+    "type": "element",
+    "element_id": "filters"
+  }
+}

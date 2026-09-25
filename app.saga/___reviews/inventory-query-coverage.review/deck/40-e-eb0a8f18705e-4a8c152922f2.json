@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/inherited_test.go",
+      "digest": "sha256:6ac7c10c3d1df416d48a37a8336d0f76decf3c52a14c66b7c16add3831c000f2",
+      "note": "Projection tests over temporary Git repositories."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/inherited_test.go",
+      "start": 1,
+      "end": 84,
+      "digest": "sha256:6ac7c10c3d1df416d48a37a8336d0f76decf3c52a14c66b7c16add3831c000f2",
+      "note": "Projection tests over temporary Git repositories."
+    }
+  ]
+}

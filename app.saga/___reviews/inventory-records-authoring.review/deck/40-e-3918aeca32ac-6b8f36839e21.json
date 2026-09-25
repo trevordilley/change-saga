@@ -1,0 +1,306 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 25,
+      "end": 27,
+      "digest": "sha256:081b9c22aa1a8efb5fbaa41e3ac0ebf8fa2c288c1eff022b252757fc491541d5"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:37d8ccd2b1f0e534bd84abf4e0256e32421076028dee696b4f9c996b06535a52"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 39,
+      "end": 40,
+      "digest": "sha256:007e2f03ccbef3d2ba4d357941f3c6f479efa7f9de199803431408c3acac5129"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:0873070297da9525c7e8fba99709d93f5b281d8dbe8dc108e2c099a2959a2c12"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:55083d296fcf8d8f62ff2cd154a6b923def57a4a22cc24091f52864299866767"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 75,
+      "end": 76,
+      "digest": "sha256:f0218f04823f039723eb032ae94185cb02fd2e21ce976b3222159dd33b4d50b8"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:ca1d4385b4bd4d6e01eef0c8991be8203fff99e8ab89758edcac98edfec3f9b3"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 84,
+      "end": 85,
+      "digest": "sha256:3bffc281da732c99490cf380e452d9b094ba02759bc3624384c6f4f2d73eb61f"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:186791f8f7c2745da627173473fde14c8f41d2d9c621ad865af9376433a9cbcb"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 90,
+      "end": 95,
+      "digest": "sha256:467f29c0a5fb4519194f89b986820588b95a1f047e02e61ad8712d2cc6770d48"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 99,
+      "end": 102,
+      "digest": "sha256:711e38e2cc13f97f573e65b7c2ddb3b8ea77fd7196426016c55a45af2d75177d"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 114,
+      "end": 167,
+      "digest": "sha256:7fffaf30f91eddbad3e3f5e92118b3efaf90070088d9c217287e0eaba0d67dff"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 170,
+      "end": 183,
+      "digest": "sha256:5c864f8376f493e9b127f8ef907e4cd069a0d0e1ad74621e2d6e5405f4b43f52"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 186,
+      "end": 241,
+      "digest": "sha256:5b84cf6ff2d8eb5e3ed23db590fb7f3f801ce6674092db62ef48d35b4916e711"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:dd2b64d760fcadeb408bb26a5afcd2a78b811320c1974f986c56693775eb5adb"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 247,
+      "end": 249,
+      "digest": "sha256:59860aa452fc126dca878e98d16ece94c64e4f8f76253369d45becffe6ec158b"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 251,
+      "end": 266,
+      "digest": "sha256:3c0a120424157fd40051ccbbb4121b98121fd8c2de10b6970da8d3cb2527bc68"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 308,
+      "end": 328,
+      "digest": "sha256:467ff3feaea86354b72c524d6859ea020cf34640434d5d9dc4ea4bc4741b5317"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:b31cd2fadf0ac051fcf95457e70e676dc3a2f258de613309148d30a98ab81bdb"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:b31cd2fadf0ac051fcf95457e70e676dc3a2f258de613309148d30a98ab81bdb"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:88b2e5b5330814c8562c62d4cb16a1b380b834dbe9356ee903edfaf286ec0b74"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:bdd633d5957cd8f2fe4114aaa1add887125e1d264fe68034acc1d32e3966baed"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "path": "internal/cli/inventory.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:42b22626a4b8a4a67d90abc4c855b9c47574daaab3025e80bdd68df745faa6dc"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:e3c1f51a19dd69e60de55267bbb1e4267eb7412f20df1e3b9d774201ef284852"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:ca4c01ae321483fa1f01a317c024eb2f5d1a43e6fd5f436fdbfe11d2f954d269"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 62,
+      "end": 71,
+      "digest": "sha256:4fcda5e73dd329db1e96335b8b031e07c5d3bc3bf8403988b66fdf71d4169897"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 75,
+      "end": 77,
+      "digest": "sha256:d86d78104b58e432c989c0e984a252fba3124c642f908588f6121d654ead5f3f"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:39e0c0b0d3a165d906c87f0796d8f16a3017f7ad19918d811ab7133f98c048b7"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:36b94d82d2dac6e0dd8702fb184d5929492efbff8d0c2532559ce564b5057524"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 90,
+      "end": 105,
+      "digest": "sha256:4d50aef3b6bfb073703ab8225ae4155730e1138068832502b76a29cd0de7d8c8"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:5f17680973e8d3236f410f9f385cbf44b12fa71286c0ce5bcfcf4356400436a6"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 110,
+      "end": 111,
+      "digest": "sha256:4ffd117d3b57555be5aad568b906334dd7c27189443419f8a600b0f20846e6eb"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:8ac528d564091eb525555012ada4d004252c016301f1d97fb4353eec5f21c6b6"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 127,
+      "end": 128,
+      "digest": "sha256:025be5a315ec27abca106f5f7cfde00573de04201c1bdc1a179a7c37d4085f99"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 131,
+      "end": 132,
+      "digest": "sha256:a36b75909abef6d8b7e99584ff77e893c87d250f591281b3dae7c1282f023d06"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 135,
+      "end": 136,
+      "digest": "sha256:786f9f02a0945b0509d2dd99f5fb8729e1c0f156b607bfcd32fa8b0ce8796098"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:ea2e26f8a64ba436e6cc636b2e487b20a301ed706c405bc47d9e9fe6dc165046"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 142,
+      "end": 143,
+      "digest": "sha256:06016212c5dfe9cabe6465135e98116869c00779e4d163e3dff20e0ba94fd7bd"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:ada1d7914809e3499d4573e8bfe5826ae082ea2e2a14db7cc14172577c6a735a"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 190,
+      "end": 192,
+      "digest": "sha256:18e223eb0d73e7c01ad9f7206e99db8bb84666bb70bea65c17b5fb167cd2c45b"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 203,
+      "end": 205,
+      "digest": "sha256:18e223eb0d73e7c01ad9f7206e99db8bb84666bb70bea65c17b5fb167cd2c45b"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:d87ac38aaeaad02a90c3e8155e58a2ab2ed5a4bdc04830b85d39a9df1a03a14f"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "path": "internal/cli/inventory.go",
+      "start": 225,
+      "end": 226,
+      "digest": "sha256:40ee50dcfc0a4d50d1b2b7a69fbb3919cd65bb251aaaae41bacd72c43e41708e"
+    }
+  ]
+}

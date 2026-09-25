@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 98,
+      "end": 148,
+      "digest": "sha256:1308ddf1b29cad7dbecc59715ad67b6768f11501310e7d938e0f4e5cb3117ac0",
+      "note": "Reads the base inventory; any failure leaves the baseline unknown."
+    }
+  ]
+}

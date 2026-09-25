@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/classify.go",
+      "digest": "sha256:6fd68912b6e600d2ea48284f00cf1d96d218dfd9762582a2df6d7479e5988af1",
+      "note": "File-addition event: this new file is introduced here; focused line references on the review's Items explain its parts."
+    }
+  ]
+}

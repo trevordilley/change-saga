@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:component:inventory-read-queries",
+  "parents": [],
+  "name": "Inventory read queries",
+  "explanation": "Public query operations over the projection: filtered and scoped inventory pages with a separate unresolved page, declared reverse uses and saved selection explanations, all bound to one snapshot.",
+  "code": [
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 115,
+      "end": 148,
+      "digest": "sha256:9e7c36f8b3dacb0c233ce4f3548b6e99e6b3714fac64a684d163f75acda82803",
+      "note": "Reads the inventory of the Saga snapshot documenting the comparison base; any failure leaves the baseline unknown."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 183,
+      "end": 255,
+      "digest": "sha256:515d7e93ad8912c276874ef2792fa9c06c60da7827da843b30b031595499a849",
+      "note": "Applies intent and newness filters only to resolvable records and keeps every unresolved candidate on its own page."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 348,
+      "end": 428,
+      "digest": "sha256:a8b023c7fddb2496e24494d4c74ceead867b9c252bfb950bf2d878cc649dca58",
+      "note": "Pages declared reverse uses with role and depth bounds and explicit completeness."
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 450,
+      "end": 544,
+      "digest": "sha256:34eb1ffa44b3a7616f029178c1461471012b286fd9199a3d364f26bb1df3b6f0",
+      "note": "Explains every saved implementation Item selection and whether it contributes inherited coverage."
+    }
+  ],
+  "created_at": "2026-09-25T01:36:30.414677Z"
+}
