@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "drift",
+  "slide": "selection",
+  "rank": 40,
+  "kind": "node",
+  "label": "Separate selection health",
+  "description": "An edit outside the subset keeps the selected bytes current but marks the containing evidence for semantic reassessment; an edit inside makes the selection stale and it stops contributing.",
+  "selector": {
+    "type": "element",
+    "element_id": "drift"
+  }
+}

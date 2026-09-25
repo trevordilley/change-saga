@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation_inventory.go",
+      "digest": "sha256:c86359358d4ff80b8566025a9ace575976e8966166b322002d74ca3bd06744bd",
+      "note": "File-addition event: this new file is introduced here; focused line references on the review's Items explain its parts."
+    }
+  ]
+}

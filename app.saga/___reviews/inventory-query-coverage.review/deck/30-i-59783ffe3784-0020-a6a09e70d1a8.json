@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "owners",
+  "slide": "coverage",
+  "rank": 20,
+  "kind": "node",
+  "label": "Each line once, every owner",
+  "description": "Only the unique current revision of each active definition counts; each line counts once and keeps all owners, including interaction and relationship evidence as owner#edge.",
+  "selector": {
+    "type": "element",
+    "element_id": "owners"
+  }
+}

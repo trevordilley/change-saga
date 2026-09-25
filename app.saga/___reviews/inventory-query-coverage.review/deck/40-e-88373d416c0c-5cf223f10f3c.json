@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 1,
+      "end": 97,
+      "digest": "sha256:82a8a8c3ad8a4eada4a1ce8a0acc1c332c598d0c491a46cecb40488b55b83808",
+      "note": "Read facts, filter state, the resolvable/unresolved partition and per-record code and link health."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 149,
+      "end": 322,
+      "digest": "sha256:c55e099cf6821c666dc4c715b9bb2d4f31c542c07225966a45e523338e135921",
+      "note": "Read facts, filter state, the resolvable/unresolved partition and per-record code and link health."
+    }
+  ]
+}

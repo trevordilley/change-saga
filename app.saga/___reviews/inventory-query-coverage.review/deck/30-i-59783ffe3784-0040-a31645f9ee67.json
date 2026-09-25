@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "denominators",
+  "slide": "coverage",
+  "rank": 40,
+  "kind": "node",
+  "label": "Distinct denominators",
+  "description": "Inventory coverage is labeled separately from implementation-deck and review coverage; a covered line proves an explicit reference, not a correct explanation.",
+  "selector": {
+    "type": "element",
+    "element_id": "denominators"
+  }
+}

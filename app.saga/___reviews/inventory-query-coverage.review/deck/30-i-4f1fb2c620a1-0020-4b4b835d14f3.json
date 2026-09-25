@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pins",
+  "slide": "reconcile",
+  "rank": 20,
+  "kind": "node",
+  "label": "Item pins",
+  "description": "Implementation Items whose pin is stale, retired, missing or conflicted are routed to their slide for reassessment; saved pins are kept until deliberately repinned.",
+  "selector": {
+    "type": "element",
+    "element_id": "pins"
+  }
+}

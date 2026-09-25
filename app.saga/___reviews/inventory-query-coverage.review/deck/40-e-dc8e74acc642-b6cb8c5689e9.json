@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 240,
+      "end": 242,
+      "digest": "sha256:a586d54cf19f17d166db2134abced2bebf4a0f9b73aac86cadc67e8ff6fcb07d",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 240,
+      "end": 246,
+      "digest": "sha256:9b861fd355b5fd158bb800134d606ee6969c1cf63403172b73591e1c3435330d",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    }
+  ]
+}

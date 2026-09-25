@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "query",
+  "slide": "uses",
+  "rank": 40,
+  "kind": "node",
+  "label": "query inventory-uses",
+  "description": "The public operation pages uses by role and depth with the Item, slide, deck and feature URNs needed to open the referencing slide.",
+  "selector": {
+    "type": "element",
+    "element_id": "query"
+  }
+}

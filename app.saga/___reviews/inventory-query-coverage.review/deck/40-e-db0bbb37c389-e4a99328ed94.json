@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/scope.go",
+      "start": 1,
+      "end": 118,
+      "digest": "sha256:896a3d1dedecf040b75fe5a0157b14922bfca0108d5c3de5376351a9265a3152",
+      "note": "Feature scope types and declared-link descent at saved revisions, including holders and relationship destinations."
+    }
+  ]
+}

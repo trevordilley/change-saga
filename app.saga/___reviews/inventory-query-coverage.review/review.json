@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "inventory-query-coverage",
+  "title": "Technical inventory reads, coverage and reconciliation",
+  "base": "b6c0700686f88d6008172d884eab741c735d3ea8",
+  "head": "feature/inventory-query-coverage-claude",
+  "created_at": "2026-09-25T01:48:12.166954Z"
+}

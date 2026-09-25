@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/scope.go",
+      "start": 119,
+      "end": 174,
+      "digest": "sha256:b64e11c38785ce7a572ac344d9a7d4119f544bf0e5bd5a3e4acabfb52358b58c",
+      "note": "Selected revisions and the unresolved reasons filters must keep visible."
+    }
+  ]
+}

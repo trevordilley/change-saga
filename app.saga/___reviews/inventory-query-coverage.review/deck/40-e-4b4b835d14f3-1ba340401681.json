@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/reconciliation_inventory.go",
+      "start": 214,
+      "end": 239,
+      "digest": "sha256:0fbde7bb7c533ddfbfc28552fc8e4a2b1ce452cd886bd15bc364fa7062d6e4f4",
+      "note": "Non-current Item pins routed to their slide."
+    }
+  ]
+}

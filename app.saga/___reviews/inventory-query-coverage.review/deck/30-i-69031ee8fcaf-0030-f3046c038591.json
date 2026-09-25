@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unresolved",
+  "slide": "reads",
+  "rank": 30,
+  "kind": "node",
+  "label": "Separate unresolved page",
+  "description": "Missing records or revisions and competing heads go to data.unresolved with reasons and heads, paged by --conflict-cursor; no filter removes them.",
+  "selector": {
+    "type": "element",
+    "element_id": "unresolved"
+  }
+}

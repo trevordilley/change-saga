@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query_inventory_view.go",
+      "start": 441,
+      "end": 545,
+      "digest": "sha256:f3b9b1a64ffdc245196217cebb73be0f3e3868828a28a7245665883a25d02f64",
+      "note": "query inventory-selections explains every saved Item selection."
+    }
+  ]
+}

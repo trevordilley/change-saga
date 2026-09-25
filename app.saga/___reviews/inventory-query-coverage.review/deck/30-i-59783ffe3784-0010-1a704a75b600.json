@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scope",
+  "slide": "coverage",
+  "rank": 10,
+  "kind": "node",
+  "label": "Named scope",
+  "description": "The report names its head commit and path prefixes and measures tracked text files there; Saga directories are excluded and binary files are counted, not measured.",
+  "selector": {
+    "type": "element",
+    "element_id": "scope"
+  }
+}

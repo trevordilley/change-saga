@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "newness",
+  "slide": "reads",
+  "rank": 40,
+  "kind": "node",
+  "label": "Newness against a named base",
+  "description": "--new requires --against. The base Saga's inventory decides new or existing; a Saga absent at the base makes identities new; an unreadable base is unknown and --new refuses.",
+  "selector": {
+    "type": "element",
+    "element_id": "newness"
+  }
+}

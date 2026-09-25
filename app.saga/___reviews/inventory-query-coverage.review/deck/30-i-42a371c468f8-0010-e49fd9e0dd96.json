@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "index",
+  "slide": "uses",
+  "rank": 10,
+  "kind": "node",
+  "label": "Declared links index",
+  "description": "Build indexes implementation and review Item documentation pins, System members, data-entity holders, relationship destinations and ERD directory and overlay pins; nothing is inferred from prose or code.",
+  "selector": {
+    "type": "element",
+    "element_id": "index"
+  }
+}

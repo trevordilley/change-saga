@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query.go",
+      "start": 223,
+      "end": 225,
+      "digest": "sha256:b1e78e291c693248a3ee459b9686ff6288b32b283ff3f73555bcde2bd3c10786",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query.go",
+      "start": 235,
+      "end": 268,
+      "digest": "sha256:f50fda20c33972c960dfdcbdcde4926b4e84615c0a4897ab04b76d9da29fe6d5",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query.go",
+      "start": 272,
+      "end": 306,
+      "digest": "sha256:5200b0b6cfd62e603f3fa751bc6566310eb69814caabd29ff450e6d4ab8bc18a",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query.go",
+      "start": 342,
+      "end": 350,
+      "digest": "sha256:1fb6e8388af8a5d1ce674f9d9270112fe4f4885ffc5ac81e3f8b71dea9fdab1e",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query.go",
+      "start": 505,
+      "end": 537,
+      "digest": "sha256:393c2a85d5e504d74827e60e49fe00e8afe9ee513d2b7c8af8129803f72cfc6b",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query.go",
+      "start": 540,
+      "end": 566,
+      "digest": "sha256:93e617edae8344c3c5402733e47f94b5588970b15ac6f733e7509564565c81c6",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/cli/query.go",
+      "start": 581,
+      "end": 588,
+      "digest": "sha256:20289a9f022dd750abbad4a1638c94896ea369fe630a5aeb3f5509a67c0938b5",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query.go",
+      "start": 232,
+      "end": 262,
+      "digest": "sha256:b39e95b1fd4331c047338f6da2a72c3166c7b4856555124fb6f3b2a03319a33b",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query.go",
+      "start": 266,
+      "end": 297,
+      "digest": "sha256:cda48c37b541f0a75b32b35c9ff80825de8dd99954ee236e273d7ec20bd04b86",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query.go",
+      "start": 487,
+      "end": 516,
+      "digest": "sha256:06bd706d76b04ddf1d6178e3746377710ecbf1b97f845a946d68af902b770533",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "path": "internal/cli/query.go",
+      "start": 519,
+      "end": 542,
+      "digest": "sha256:237023b8ab6a3f98064e09679e2d811f749181f3bdcb7477d75d44e7808d3f67",
+      "note": "Public operation registry, schema paths, help and skill guidance for the new reads."
+    }
+  ]
+}

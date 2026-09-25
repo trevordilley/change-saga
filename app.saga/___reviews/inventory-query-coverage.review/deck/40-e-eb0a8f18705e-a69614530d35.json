@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/fixture_test.go",
+      "digest": "sha256:1a5f239cbedaf054cdb3d2169526e3bb6e3b58fd954b5ec38f37b33274509ddf",
+      "note": "Projection tests over temporary Git repositories."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/fixture_test.go",
+      "start": 1,
+      "end": 144,
+      "digest": "sha256:1a5f239cbedaf054cdb3d2169526e3bb6e3b58fd954b5ec38f37b33274509ddf",
+      "note": "Projection tests over temporary Git repositories."
+    }
+  ]
+}

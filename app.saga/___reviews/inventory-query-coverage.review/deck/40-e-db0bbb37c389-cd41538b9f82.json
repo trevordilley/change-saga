@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "internal/inventoryview/scope.go",
+      "digest": "sha256:379c8d8b45f05a48ef746dcb1e2f3ea67d499adbdf9cc0aa8babbeac728367c4",
+      "note": "File-addition event: this new file is introduced here; focused line references on the review's Items explain its parts."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "docs/technical-inventory-query-implementation.md",
+      "digest": "sha256:40385aa6d9e5a042f322bcd45cdac1bcf83d1d7fa756e262d0315e13bd5e4c10",
+      "note": "Role-specific implementation note of delivered behavior."
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "path": "docs/technical-inventory-query-implementation.md",
+      "start": 1,
+      "end": 149,
+      "digest": "sha256:40385aa6d9e5a042f322bcd45cdac1bcf83d1d7fa756e262d0315e13bd5e4c10",
+      "note": "Role-specific implementation note of delivered behavior."
+    }
+  ]
+}
