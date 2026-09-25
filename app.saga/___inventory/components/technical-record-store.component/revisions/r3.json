@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r3",
+  "record": "urn:change-saga:change-saga:component:technical-record-store",
+  "parents": [
+    "urn:change-saga:change-saga:component:technical-record-store:revision:r2"
+  ],
+  "name": "Technical record store",
+  "explanation": "Loads bounded immutable definitions and resolves revision/lifecycle heads without choosing a conflict winner; appends new records under the Saga lock.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8"
+  },
+  "code": [
+    {
+      "id": "inventory-308",
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "path": "internal/requirements/inventory.go",
+      "start": 308,
+      "end": 388,
+      "digest": "sha256:bb7c5dfc5b2a9ac7d6162bce98ff3deb35afa2d9331020bb19fd51e3803763e9",
+      "note": "Loads bounded immutable definitions of every kind and resolves revision/lifecycle heads without choosing a conflict winner."
+    },
+    {
+      "id": "inventory_mutation-92",
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "path": "internal/requirements/inventory_mutation.go",
+      "start": 92,
+      "end": 204,
+      "digest": "sha256:8631a056119b4d189f92eb122e3593c83ed5183aaf5f47345cee8cb2ad338b54",
+      "note": "Validates and appends new records under the Saga lock, requiring every current head as a parent."
+    }
+  ],
+  "created_at": "2026-09-25T15:39:10.599483Z"
+}
