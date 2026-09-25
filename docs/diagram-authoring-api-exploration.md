@@ -312,6 +312,23 @@ prepared by the harness; their file bytes are outputs of source export, not
 newly authored request text. Building the tool, reading this documentation and
 writing the harness are not included as per-diagram discovery costs.
 
+Reading is where the difference compounds. A stable diagram is written a few
+times and read many times, and each read needs only its meaning. Against the
+SVG markup an agent would otherwise read (font and notices removed), the text
+description is about an order of magnitude smaller:
+
+| Diagram | SVG markup | `describe` text | Ratio |
+| --- | ---: | ---: | ---: |
+| [Sequence](../experiments/diagram-api/evidence/sequence/) | 13,636 bytes | 1,161 bytes | ~12× |
+| [Composition](../experiments/diagram-api/evidence/composition/) | 13,968 bytes | 1,577 bytes | ~9× |
+
+Writing is needed in either format and was itself about 2× smaller through the
+API, so over a diagram's life the cost approaches the reading ratio. These are
+byte ratios; markup-heavy SVG likely costs more tokens per byte than prose, but
+no tokenizer was run. The ratio holds only while `describe` answers the reader's
+question; the trial gaps below (order, containment, external labels) currently
+force extra `get` calls or screenshots.
+
 The run includes one rejected overlong-label edit followed by a valid edit,
 an identical successful-batch retry, and hash-divergence recovery followed by
 byte-identical re-render. Eight browser render passes are separately recorded
