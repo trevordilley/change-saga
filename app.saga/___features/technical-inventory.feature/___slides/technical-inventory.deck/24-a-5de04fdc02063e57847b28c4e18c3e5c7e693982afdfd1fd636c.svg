@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Technical design reads exact revisions</title><desc id="desc">Directories lead to canonical pages; a saved pin is shown as saved.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#17324d"/></marker>
+<marker id="flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a5a00"/></marker></defs>
+<rect width="1280" height="720" fill="#f6f8fa"/>
+<text x="60" y="52" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#8a5a00" letter-spacing="1">TECHNICAL INVENTORY · IMPLEMENTED UI / 1</text>
+<text x="60" y="104" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#17324d">Technical design reads exact revisions</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="#4d6278">Directories lead to canonical pages; a saved pin is shown as saved.</text>
+<g id="overview"><rect x="60" y="190" width="230" height="150" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="78" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">OVERVIEW</text>
+<text x="78" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Technical design</text>
+<text x="78" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">Systems · Components</text>
+<text x="78" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">ERDs · data entities</text>
+</g>
+<path d="M290 265L350 265" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="directory"><rect x="350" y="190" width="280" height="150" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="368" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">DIRECTORY PER KIND</text>
+<text x="368" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Counts, never scores</text>
+<text x="368" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">intent · lifecycle · heads</text>
+<text x="368" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">code refs · Item uses</text>
+</g>
+<path d="M630 265L690 265" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/><text x="660.0" y="257.0" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="14" fill="#17324d">open</text>
+<g id="exact"><rect x="690" y="190" width="280" height="150" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="708" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">CANONICAL PAGE</text>
+<text x="708" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">One exact revision</text>
+<text x="708" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">current, or ?revision= pin</text>
+<text x="708" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">stale / conflict stated</text>
+</g>
+<path d="M970 265L1010 265" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="usages"><rect x="1010" y="190" width="210" height="150" rx="10" fill="white" stroke="#1f5f9e" stroke-width="2"/>
+<text x="1028" y="218" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">USED BY</text>
+<text x="1028" y="248" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Declared uses</text>
+<text x="1028" y="278" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">Items · owners</text>
+<text x="1028" y="304" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">exact slide Item</text>
+</g>
+<g id="facts"><rect x="690" y="380" width="530" height="190" rx="10" fill="#fff8ec" stroke="#1f5f9e" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="708" y="408" font-family="Helvetica, Arial, sans-serif" font-size="13" fill="#1f5f9e" letter-spacing="1">SEPARATE FACTS</text>
+<text x="708" y="438" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#17324d">Intent ≠ lifecycle ≠ newness</text>
+<text x="708" y="468" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">intent: proposed · implemented · unspecified</text>
+<text x="708" y="494" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">newness: new / revised / unchanged only</text>
+<text x="708" y="520" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#4d6278">against a named comparison, else unknown</text>
+</g>
+<path d="M830 340L830 380" stroke="#17324d" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<g id="boundary"><rect x="60" y="604" width="1160" height="72" rx="10" fill="#e6eef6"/><text x="84" y="646" font-family="Helvetica, Arial, sans-serif" font-size="18" fill="#17324d">Reading a pin never repins it, approves a slide, or grants coverage.</text></g>
+</svg>

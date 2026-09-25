@@ -1,0 +1,261 @@
+{
+  "version": 1,
+  "deck": "technical-inventory",
+  "slide": "ti-ui-impl-overview",
+  "current": "sha256:0930a3c2ba6b8e90325d096fd434e73474deee6ad1a411e607bace01f9fe096f",
+  "revisions": [
+    {
+      "snapshot": "sha256:0930a3c2ba6b8e90325d096fd434e73474deee6ad1a411e607bace01f9fe096f",
+      "request_id": "ti-ui-impl-overview-create-1",
+      "created_at": "2026-09-25T02:22:23.098358Z",
+      "asset": "24-a-5de04fdc02063e57847b28c4e18c3e5c7e693982afdfd1fd636c.svg",
+      "asset_digest": "sha256:5de04fdc02063e57847b28c4e18c3e5c7e693982afdfd1fd636cadd0e60e8dcf",
+      "slide": {
+        "version": 4,
+        "id": "ti-ui-impl-overview",
+        "deck": "technical-inventory",
+        "title": "Technical design reads exact revisions",
+        "rank": 240,
+        "section": "Technical Design UI",
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-5de04fdc02063e57847b28c4e18c3e5c7e693982afdfd1fd636c.svg",
+        "takeaway": "Overview → Technical design → one canonical page per exact revision, with intent, lifecycle and comparison newness as separate facts.",
+        "reading_order": [
+          "directory",
+          "exact",
+          "facts",
+          "usages",
+          "boundary"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "directory",
+            "slide": "ti-ui-impl-overview",
+            "rank": 10,
+            "kind": "region",
+            "label": "Technical design directories",
+            "description": "Overview → Technical design lists Systems, Components, ERDs and data entities in directories that state intent, lifecycle, revision heads and use counts, never a score.",
+            "selector": {
+              "type": "element",
+              "element_id": "directory"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical.go",
+                  "start": 295,
+                  "end": 351,
+                  "digest": "sha256:87a30c6e8e47f36aed10c27212edc72501f989c087549be57389214f7b90498b",
+                  "note": "Builds one directory per kind with explicit intent, lifecycle, heads and Item-use counts; newness appears only when comparing."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-directory",
+              "criterion": "urn:change-saga:change-saga:story:erd-design-implications:criterion:technical-overview",
+              "story_revision": "urn:change-saga:change-saga:story:erd-design-implications:revision:r2",
+              "rationale": "The Technical design page is the overview entry point listing Systems, Components, ERDs and data entities."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "exact",
+            "slide": "ti-ui-impl-overview",
+            "rank": 20,
+            "kind": "node",
+            "label": "Canonical page at an exact revision",
+            "description": "A definition page renders the unique current revision, or the ?revision= pin with its stale, retired or conflicted status; competing heads are named and none is chosen.",
+            "selector": {
+              "type": "element",
+              "element_id": "exact"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical.go",
+                  "start": 460,
+                  "end": 509,
+                  "digest": "sha256:e2d70e35f930c033b01230f5b841b91fe96eac24e2d38fc232f8d60ea105f682",
+                  "note": "Resolves the requested or unique current revision, lists every competing head, and reports the shown pin's status without substituting another."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-exact",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:explanation",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "The page presents the definition's description and code at the exact revision a reader asked for, with currency visible."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "facts",
+            "slide": "ti-ui-impl-overview",
+            "rank": 30,
+            "kind": "statement",
+            "label": "Intent, lifecycle and newness are separate",
+            "description": "Intent is explicit or unspecified; newness is new, revised or unchanged only against a named comparison's merge-base, and unknown with its reason when that base cannot be read.",
+            "selector": {
+              "type": "element",
+              "element_id": "facts"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical_newness.go",
+                  "start": 54,
+                  "end": 90,
+                  "digest": "sha256:6182240892edd7a379d2a9285e29fbb9d9574e77cbfcbb25cae0934dc289479c",
+                  "note": "Loads the inventory at the comparison's merge-base through savedview; an unreadable base is unknown with its reason, never an empty inventory."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-newness",
+              "criterion": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:criterion:comparison-relative-new",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
+              "rationale": "Newness is shown only relative to the named comparison, never as a badge on every proposal."
+            },
+            {
+              "id": "ti-ui-impl-overview-state",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:consistent-state",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "Directories and pages expose the same explicit intent for every kind, independent of code health."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "usages",
+            "slide": "ti-ui-impl-overview",
+            "rank": 40,
+            "kind": "node",
+            "label": "Declared uses",
+            "description": "A definition lists slide Items, owners such as System membership or ERD directories, and Items reaching it through one owner, each linking the exact slide Item or owner revision.",
+            "selector": {
+              "type": "element",
+              "element_id": "usages"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical.go",
+                  "start": 198,
+                  "end": 241,
+                  "digest": "sha256:576a06290c1460fc995e1d804005b1002fc4c3a761e16f89a4691778da5c9483",
+                  "note": "Turns each shared reverse-index use into a link to the exact slide Item, review Item or owner revision, naming any path through an owner."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-uses",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:reverse-uses",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "The definition exposes the feature, deck, slide and Item that use it."
+            },
+            {
+              "id": "ti-ui-impl-overview-navigate",
+              "criterion": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:criterion:navigate-usage",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-documentation-and-usages:revision:r2",
+              "rationale": "Following a use opens the referencing slide at the Item, not only the feature."
+            }
+          ]
+        },
+        {
+          "item": {
+            "documentation": {
+              "target": "urn:change-saga:change-saga:component:technical-design-page",
+              "revision": "urn:change-saga:change-saga:component:technical-design-page:revision:r1"
+            },
+            "version": 4,
+            "id": "boundary",
+            "slide": "ti-ui-impl-overview",
+            "rank": 50,
+            "kind": "callout",
+            "label": "Reading is not repinning",
+            "description": "Opening a saved revision reads it only: no slide pin changes, no review decision is recorded, and a link grants no coverage.",
+            "selector": {
+              "type": "element",
+              "element_id": "boundary"
+            },
+            "about": "exact",
+            "body": "Reading a pin never repins it, approves a slide, or grants coverage."
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+                  "path": "internal/server/technical.go",
+                  "start": 489,
+                  "end": 500,
+                  "digest": "sha256:035d7161c5a857a69f4a0f30c52eaf44c402173a3e284d821ea673a930d6027f",
+                  "note": "A requested revision is read exactly; a missing one is not found rather than replaced by the latest."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ti-ui-impl-overview-preserved",
+              "criterion": "urn:change-saga:change-saga:story:erd-distinguish-proposals:criterion:preserved-proposal",
+              "story_revision": "urn:change-saga:change-saga:story:erd-distinguish-proposals:revision:r1",
+              "rationale": "A saved proposal revision stays readable as saved even after later revisions."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

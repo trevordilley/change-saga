@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:component:technical-design-page",
+  "parents": [],
+  "name": "Technical design page",
+  "explanation": "Lists Systems, Components, ERDs and data entities under the overview, and renders one canonical page per definition at an exact revision: the unique current one, or a saved pin with its stale, retired or conflicted status and no repinning. Competing heads are named without choosing one.",
+  "code": [
+    {
+      "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+      "path": "internal/server/technical.go",
+      "start": 295,
+      "end": 351,
+      "digest": "sha256:87a30c6e8e47f36aed10c27212edc72501f989c087549be57389214f7b90498b",
+      "note": "Builds the per-kind directories with explicit intent, lifecycle, revision heads, code and Item-use counts, and comparison newness only when comparing."
+    },
+    {
+      "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+      "path": "internal/server/technical.go",
+      "start": 460,
+      "end": 509,
+      "digest": "sha256:e2d70e35f930c033b01230f5b841b91fe96eac24e2d38fc232f8d60ea105f682",
+      "note": "Resolves the requested or unique current revision exactly, lists competing heads, and reports the shown pin's status without substituting another revision."
+    }
+  ],
+  "created_at": "2026-09-25T02:18:41.602271Z"
+}
