@@ -1,0 +1,87 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "record": "urn:change-saga:change-saga:data-entity:query-response",
+  "parents": [],
+  "name": "Query response",
+  "explanation": "Derived on read, never stored: the AI read API's bounded, versioned JSON envelope. Each response projects a page of Saga records and carries the snapshot it read, so a changed Saga or comparison fails a later cursor instead of mixing states.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "610bd59f5627f0790d04fd87a7e62cf6a6dd0799"
+  },
+  "code": [
+    {
+      "id": "envelope",
+      "commit": "610bd59f5627f0790d04fd87a7e62cf6a6dd0799",
+      "path": "internal/cli/query.go",
+      "start": 153,
+      "end": 160,
+      "digest": "sha256:a998015f3a36eb2ba3d823cdbf61ee02653ccad63e71283a6089638247bdb3c1",
+      "note": "The versioned query envelope."
+    },
+    {
+      "id": "write",
+      "commit": "610bd59f5627f0790d04fd87a7e62cf6a6dd0799",
+      "path": "internal/cli/query.go",
+      "start": 907,
+      "end": 918,
+      "digest": "sha256:a5370e58bcf093c36ea94c463f7332474a92bf8a4792d7d06624fb533f9ed635",
+      "note": "Every success carries its snapshot and page."
+    }
+  ],
+  "fields": [
+    {
+      "id": "schema",
+      "name": "schema · ok",
+      "type": "envelope"
+    },
+    {
+      "id": "snapshot",
+      "name": "snapshot",
+      "type": "sha256",
+      "note": "Over the Saga tree and the comparison."
+    },
+    {
+      "id": "data",
+      "name": "data · page.next_cursor",
+      "type": "bounded page"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "from-saga",
+      "meaning": "production",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:saga-manifest",
+        "revision": "urn:change-saga:change-saga:data-entity:saga-manifest:revision:r1"
+      },
+      "label": "projected into",
+      "explanation": "A query session loads the Saga rooted at saga.json and fingerprints its tree with the comparison.",
+      "flow": "destination_to_owner",
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "open",
+          "commit": "610bd59f5627f0790d04fd87a7e62cf6a6dd0799",
+          "path": "internal/reviewapp/session.go",
+          "start": 82,
+          "end": 97,
+          "digest": "sha256:7e2c117a3f49f3d52030bcc4b276b10cbf4cb9cb25246191c62cc9ad1a2b84aa",
+          "note": "The session loads the Saga."
+        },
+        {
+          "id": "snapshot",
+          "commit": "610bd59f5627f0790d04fd87a7e62cf6a6dd0799",
+          "path": "internal/reviewapp/session.go",
+          "start": 853,
+          "end": 862,
+          "digest": "sha256:2c948889fdfdd8dd8699a4e54141a9dfae0e49e4a6ecff4388941db098cc9265",
+          "note": "The snapshot covers the Saga tree and the comparison."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-25T06:16:16.068928Z"
+}
