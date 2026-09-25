@@ -417,10 +417,10 @@ func (a *app) technicalDataModel(inventory requirements.Inventory, usages techni
 					holders = append(holders, entityName(inventory, holder.Component))
 				}
 			}
-			used := usages.view(record.Target)
+			items, _ := usages.itemCount(record.Target)
 			cells := []directoryCell{
 				{Text: name, Href: technicalHref(record.Kind, record.Identity.ID, ""), Note: record.Identity.ID, Target: record.Target},
-				textCell(summarise(purpose, 140)), intent, listCell(holders, "no holding resource named"), countCell(relationships), countCell(used.Total),
+				textCell(summarise(purpose, 140)), intent, listCell(holders, "no holding resource named"), countCell(relationships), countCell(items),
 			}
 			if newness != nil {
 				cells = append(cells, newnessCell(newness, record))

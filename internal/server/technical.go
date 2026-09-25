@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -77,19 +78,26 @@ func technicalLifecycle(record *requirements.TechnicalRecord) string {
 
 // ----- Reverse usages -----
 
+// Usages come from the shared reverse index of declared links, the same
+// projection the CLI's queries read. An Item that pins a definition uses it
+// directly; a System, holder, relationship or ERD that pins it is an owner;
+// an Item that pins such an owner uses the definition through it, and says
+// so. Counts are exact unless the index stopped early, which is stated.
+
 // maxTechnicalUsages bounds the usages listed for one definition. The count is
-// always exact; only the listing is cut, and the cut is stated.
+// always exact when the walk completed; only the listing is cut.
 const maxTechnicalUsages = 200
 
-// technicalUsage is one Item that pins a definition: where it is, the exact
-// revision it pinned, and whether that pin is still current.
+// technicalUsage is one declared use: where it is, the exact revision it
+// pinned, and whether that pin is still current.
 type technicalUsage struct {
 	Target  string
+	Role    string
 	Pin     saga.DocumentationLink
 	PinHref string
 	Status  string
-	// Context is "Implementation" or "Review"; Feature and Review name the
-	// place that holds the deck.
+	// Context is "Implementation" or "Review" for an Item; Feature and Review
+	// name the place that holds the deck.
 	Context     string
 	Feature     string
 	FeatureHref string
@@ -101,90 +109,160 @@ type technicalUsage struct {
 	Description string
 	// Href opens the slide at the Item.
 	Href string
+	// Owner is the definition whose revision declares the link, for owner
+	// uses; Edge is its holder role or relationship.
+	Owner, OwnerHref, Edge string
+	OwnerCurrent           bool
+	// Via names the owners an Item reaches this definition through.
+	Via []traceLink
 }
 
-// technicalUsageIndex is every Item-level definition pin in the Saga, by
-// definition target. It reads the loaded decks only; it never resolves code.
-type technicalUsageIndex map[string][]technicalUsage
+// technicalUsageIndex adapts the shared reverse index to the reviewer's
+// pages: titles and hrefs come from the loaded document.
+type technicalUsageIndex struct {
+	index     *inventoryview.Index
+	inventory requirements.Inventory
+	document  *saga.Saga
+	locations map[string]manifestTargetLocation
+	items     map[string]*saga.Item
+	// titles names every deck and slide by URN.
+	titles map[string]string
+}
 
 func indexTechnicalUsages(document *saga.Saga, inventory requirements.Inventory) technicalUsageIndex {
-	index := technicalUsageIndex{}
-	deckFeature := map[string]*saga.Feature{}
-	for _, feature := range document.Features {
-		for _, deck := range feature.Decks {
-			deckFeature[deck.Target] = feature
-		}
-	}
-	locations := indexManifestTargets(document)
-	add := func(usage technicalUsage, item *saga.Item) {
-		pin := *item.Documentation
-		usage.Target, usage.Pin, usage.Status = item.Target, pin, inventory.LinkStatus(pin)
-		usage.PinHref = technicalPinHref(pin)
-		usage.Item, usage.Description = item.Label, item.Description
-		if usage.Item == "" {
-			usage.Item = item.ID
-		}
-		index[pin.Target] = append(index[pin.Target], usage)
-	}
-	for _, deck := range document.Decks {
-		feature := deckFeature[deck.Target]
-		for _, slide := range deck.Slides {
-			for _, item := range slide.Items {
-				if item.Documentation == nil {
-					continue
-				}
-				usage := technicalUsage{Context: "Implementation", Deck: deck.Title, Slide: slide.Title}
-				if feature != nil {
-					usage.Feature, usage.FeatureHref = featureTitle(feature), featureHref(feature.ID)
-				}
-				if location, ok := locations[item.Target]; ok {
-					usage.Href = "/?view=slides" + location.Href
-				}
-				add(usage, item)
-			}
-		}
-	}
+	usages := technicalUsageIndex{index: inventoryview.Build(document, &inventory), inventory: inventory, document: document, locations: indexManifestTargets(document), items: map[string]*saga.Item{}, titles: map[string]string{}}
+	var decks []*saga.Deck
+	decks = append(decks, document.Decks...)
 	for _, review := range document.Reviews {
-		if review.Deck == nil {
-			continue
+		if review.Deck != nil {
+			decks = append(decks, review.Deck)
 		}
-		for _, slide := range review.Deck.Slides {
+	}
+	for _, deck := range decks {
+		usages.titles[deck.Target] = deck.Title
+		for _, slide := range deck.Slides {
+			usages.titles[slide.Target] = slide.Title
 			for _, item := range slide.Items {
-				if item.Documentation == nil {
-					continue
-				}
-				usage := technicalUsage{Context: "Review", Review: reviewNavTitle(review), ReviewHref: reviewHref(review.ID), Deck: review.Deck.Title, Slide: slide.Title}
-				usage.Href = reviewHref(review.ID) + "#" + domID(item.Target)
-				add(usage, item)
+				usages.items[item.Target] = item
 			}
 		}
 	}
-	return index
+	return usages
 }
 
 // technicalUsagesView is one definition's usages, bounded for display.
 type technicalUsagesView struct {
-	Target    string
-	Total     int
-	Current   int
-	Usages    []technicalUsage
-	Truncated int
+	Target string
+	// Total counts every declared use found; Items those that are slide
+	// Items, and Current the Items whose pin is current.
+	Total, Items, Current int
+	Usages                []technicalUsage
+	Truncated             int
+	// Incomplete says the walk stopped early, so the counts are lower bounds.
+	Incomplete bool
+	// DepthCut says owners exist beyond the one hop listed here.
+	DepthCut bool
 }
 
-func (index technicalUsageIndex) view(target string) technicalUsagesView {
-	usages := index[target]
-	view := technicalUsagesView{Target: target, Total: len(usages)}
-	for _, usage := range usages {
-		if usage.Status == "current" {
-			view.Current++
+func (usages technicalUsageIndex) view(target string) technicalUsagesView {
+	page := usages.index.Uses(target, inventoryview.UseOptions{Depth: 1, Limit: inventoryview.MaxLimit})
+	view := technicalUsagesView{Target: target, Total: page.Total, Incomplete: page.Truncated || page.CycleCut, DepthCut: page.DepthCut}
+	for _, use := range page.Uses {
+		usage := usages.usage(use)
+		if usage.Context != "" {
+			view.Items++
+			if use.Direct() && use.Status == "current" {
+				view.Current++
+			}
+		}
+		if len(view.Usages) < maxTechnicalUsages {
+			view.Usages = append(view.Usages, usage)
 		}
 	}
-	if len(usages) > maxTechnicalUsages {
-		view.Truncated = len(usages) - maxTechnicalUsages
-		usages = usages[:maxTechnicalUsages]
-	}
-	view.Usages = usages
+	view.Truncated = page.Total - len(view.Usages)
 	return view
+}
+
+// itemCount is the directory's "used by Items" count: direct Item pins.
+func (usages technicalUsageIndex) itemCount(target string) (int, int) {
+	page := usages.index.Uses(target, inventoryview.UseOptions{Limit: inventoryview.MaxLimit, Roles: []string{inventoryview.RoleImplementationItem, inventoryview.RoleReviewItem}})
+	current := 0
+	for _, use := range page.Uses {
+		if use.Status == "current" {
+			current++
+		}
+	}
+	return page.Total, current
+}
+
+func (usages technicalUsageIndex) usage(use inventoryview.Use) technicalUsage {
+	usage := technicalUsage{Target: use.Item, Role: use.Role, Pin: use.Pin, PinHref: technicalPinHref(use.Pin), Status: use.Status, Edge: use.Edge}
+	for _, hop := range use.Path[1:] {
+		usage.Via = append(usage.Via, traceLink{Title: entityName(usages.inventory, hop), Href: technicalPinHref(hop), Target: hop.Target})
+	}
+	switch use.Role {
+	case inventoryview.RoleImplementationItem, inventoryview.RoleReviewItem:
+		usage.Item = use.Label
+		if usage.Item == "" {
+			usage.Item = use.ItemID
+		}
+		if item := usages.items[use.Item]; item != nil {
+			usage.Description = item.Description
+		}
+		usage.Deck, usage.Slide = usages.titles[use.Deck], usages.titles[use.Slide]
+		if use.Role == inventoryview.RoleImplementationItem {
+			usage.Context = "Implementation"
+			if location, ok := usages.locations[use.Item]; ok {
+				usage.Href = "/?view=slides" + location.Href
+			}
+			if id := lastSegment(use.Feature); id != "" {
+				usage.Feature, usage.FeatureHref = id, featureHref(id)
+				for _, feature := range usages.document.Features {
+					if feature.ID == id {
+						usage.Feature = featureTitle(feature)
+					}
+				}
+			}
+		} else {
+			usage.Context = "Review"
+			id := lastSegment(use.Review)
+			usage.Review, usage.ReviewHref, usage.Href = id, reviewHref(id), reviewHref(id)+"#"+domID(use.Item)
+			for _, review := range usages.document.Reviews {
+				if review.ID == id {
+					usage.Review = reviewNavTitle(review)
+				}
+			}
+		}
+	default:
+		owner := saga.DocumentationLink{Target: use.Owner, Revision: use.OwnerRevision}
+		usage.Owner, usage.OwnerHref, usage.OwnerCurrent = entityName(usages.inventory, owner), technicalPinHref(owner), use.OwnerCurrent
+	}
+	return usage
+}
+
+// lastSegment is the identity at the end of a URN.
+func lastSegment(urn string) string {
+	if urn == "" {
+		return ""
+	}
+	return urn[strings.LastIndex(urn, ":")+1:]
+}
+
+// technicalRoleTitle says what kind of owner declares a link.
+func technicalRoleTitle(role string) string {
+	switch role {
+	case inventoryview.RoleSystemMember:
+		return "member of"
+	case inventoryview.RoleDataHolder:
+		return "holds data for"
+	case inventoryview.RoleRelationship:
+		return "related from"
+	case inventoryview.RoleERDDirectory:
+		return "listed in ERD"
+	case inventoryview.RoleERDOverlay:
+		return "pinned by ERD overlay"
+	}
+	return role
 }
 
 // ----- The Technical design page -----
@@ -252,10 +330,10 @@ func (a *app) technicalPage(inventory requirements.Inventory, usages technicalUs
 		if record.CurrentLifecycle == nil {
 			lifecycle = gapCell("conflicted")
 		}
-		used := usages.view(record.Target)
-		usedCell := countCell(used.Total)
-		if used.Total > used.Current {
-			usedCell.Note = strconv.Itoa(used.Total-used.Current) + " not current"
+		items, current := usages.itemCount(record.Target)
+		usedCell := countCell(items)
+		if items > current {
+			usedCell.Note = strconv.Itoa(items-current) + " not current"
 		}
 		cells := []directoryCell{
 			{Text: name, Href: technicalHref(record.Kind, record.Identity.ID, ""), Note: record.Identity.ID, Target: record.Target},
@@ -488,7 +566,7 @@ func (a *app) technicalUsagesPage(w http.ResponseWriter, r *http.Request) {
 }
 
 const technicalTemplates = `
-{{define "technical-usages"}}<div class="technical-usages" data-technical-usages="{{.Target}}">{{if .Usages}}<p class="technical-usage-count">{{.Total}} {{if eq .Total 1}}Item pins{{else}}Items pin{{end}} this definition{{if lt .Current .Total}}; {{.Current}} at its current revision{{end}}.</p><ul class="trace-links technical-usage-list">{{range .Usages}}<li data-technical-usage="{{.Target}}" data-usage-status="{{.Status}}">{{if .Href}}<a href="{{.Href}}" data-usage-item="{{.Target}}">{{.Item}}</a>{{else}}<span>{{.Item}}</span>{{end}} <small class="trace-kind">{{.Context}} Item</small><small class="trace-note">{{if .Feature}}<a href="{{.FeatureHref}}">{{.Feature}}</a> · {{end}}{{if .Review}}<a href="{{.ReviewHref}}">{{.Review}}</a> · {{end}}{{.Deck}} · {{.Slide}}</small><small class="technical-pin">pins <a href="{{.PinHref}}"><code>{{.Pin.Revision}}</code></a>{{if ne .Status "current"}} · <span class="gap">{{.Status}}</span>{{end}}</small>{{if .Description}}<p class="trace-rationale">{{.Description}}</p>{{end}}</li>{{end}}</ul>{{if .Truncated}}<p class="gap" role="status">{{.Truncated}} more usages are not listed here.</p>{{end}}{{else}}<p class="term-empty">No implementation or review Item pins this definition yet.</p>{{end}}</div>{{end}}
+{{define "technical-usages"}}<div class="technical-usages" data-technical-usages="{{.Target}}">{{if .Usages}}<p class="technical-usage-count">{{if .Incomplete}}At least {{end}}{{.Items}} {{if eq .Items 1}}slide Item uses{{else}}slide Items use{{end}} this definition{{if lt .Current .Items}}; {{.Current}} pin its current revision directly{{end}}. {{.Total}} declared {{if eq .Total 1}}use{{else}}uses{{end}} in all{{if .Incomplete}}; the reverse index stopped early, so these are lower bounds{{end}}.</p><ul class="trace-links technical-usage-list">{{range .Usages}}<li data-technical-usage="{{if .Target}}{{.Target}}{{else}}{{.Owner}}{{end}}" data-usage-role="{{.Role}}" data-usage-status="{{.Status}}">{{if .Context}}{{if .Href}}<a href="{{.Href}}" data-usage-item="{{.Target}}">{{.Item}}</a>{{else}}<span>{{.Item}}</span>{{end}} <small class="trace-kind">{{.Context}} Item</small><small class="trace-note">{{if .Feature}}<a href="{{.FeatureHref}}">{{.Feature}}</a> · {{end}}{{if .Review}}<a href="{{.ReviewHref}}">{{.Review}}</a> · {{end}}{{.Deck}} · {{.Slide}}</small>{{else}}<small class="trace-kind">{{roleTitle .Role}}</small> <a href="{{.OwnerHref}}">{{.Owner}}</a>{{if .Edge}} <small class="trace-note">{{.Edge}}</small>{{end}}{{if not .OwnerCurrent}} <small class="gap">an earlier revision of it</small>{{end}}{{end}}<small class="technical-pin">pins <a href="{{.PinHref}}"><code>{{.Pin.Revision}}</code></a>{{if ne .Status "current"}} · <span class="gap">{{.Status}}</span>{{end}}</small>{{if .Via}}<small class="technical-via">through {{range $i, $v := .Via}}{{if $i}} → {{end}}<a href="{{$v.Href}}">{{$v.Title}}</a>{{end}}</small>{{end}}{{if .Description}}<p class="trace-rationale">{{.Description}}</p>{{end}}</li>{{end}}</ul>{{if .Truncated}}<p class="gap" role="status">{{.Truncated}} more uses are not listed here.</p>{{end}}{{if .DepthCut}}<p class="term-empty">Owners further up are not listed here; open an owner to follow it.</p>{{end}}{{else}}<p class="term-empty">{{if .Incomplete}}The reverse index stopped before finding a use; this is unknown, not unused.{{else}}No declared use: no slide Item, System, holder, relationship or ERD pins this definition.{{end}}</p>{{end}}</div>{{end}}
 
 {{define "technical-page"}}<section class="app-page technical-page" data-technical-page><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1>{{with .Newness}}<p class="technical-newness" data-technical-newness="{{.Known}}">Compared against <code>{{.Against}}</code>: “new” means the identity did not exist at the comparison's base{{if not .Known}}. The base inventory is unknown: {{.Reason}}{{end}}.</p>{{end}}<p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
 <nav class="technical-jump" aria-label="Technical design sections"><a href="#technical-systems-section">Systems</a><a href="#technical-components-section">Components</a><a href="#technical-data-model">Data model</a></nav>

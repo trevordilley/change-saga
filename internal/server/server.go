@@ -843,6 +843,7 @@ func templateFuncs() template.FuncMap {
 		"short":                shortCommit,
 		"kindTitle":            technicalKindTitle,
 		"documentationControl": documentationControl,
+		"roleTitle":            technicalRoleTitle,
 		"join":                 strings.Join,
 		"markdown":             markdown,
 		"domID":                domID,

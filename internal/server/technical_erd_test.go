@@ -255,3 +255,21 @@ func TestWriteTechnicalPreviewFixture(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestTechnicalUsagesIncludeDeclaredOwners(t *testing.T) {
+	root, repo, _ := dataModelFixture(t)
+	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
+	status, body := technicalGet(t, mux, "/technical/component/record-store")
+	for _, want := range []string{
+		`data-usage-role="system_member"`, `member of</small> <a href="/technical/system/pdf-pipeline?revision=r1">PDF pipeline</a>`,
+		`data-usage-role="data_holder"`, `holds data for</small> <a href="/technical/data-entity/pdf-report?revision=r1">PDF report</a>`, "persists report rows",
+	} {
+		if status != 200 || !strings.Contains(body, want) {
+			t.Fatalf("owner uses lost %q: %d", want, status)
+		}
+	}
+	status, body = technicalGet(t, mux, "/technical/data-entity/pdf-report")
+	if status != 200 || !strings.Contains(body, `data-usage-role="erd_directory"`) || !strings.Contains(body, `data-usage-role="relationship_destination"`) {
+		t.Fatalf("entity owner uses: %d", status)
+	}
+}
