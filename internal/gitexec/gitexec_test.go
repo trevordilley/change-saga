@@ -189,13 +189,10 @@ func TestNestedBeginSharesTheSessionAndEndStopsProcesses(t *testing.T) {
 	}
 	innerEnd()
 	session := sessionFrom(outer)
-	if len(session.batches) != 1 {
-		t.Fatalf("the nested end stopped the shared session's processes: %d live", len(session.batches))
+	if got := liveProcesses(session); got != 1 {
+		t.Fatalf("the nested end stopped the shared session's processes: %d live", got)
 	}
-	var processes []*batch
-	for _, process := range session.batches {
-		processes = append(processes, process)
-	}
+	processes := idleProcesses(session)
 	end()
 	for _, process := range processes {
 		select {
@@ -204,7 +201,7 @@ func TestNestedBeginSharesTheSessionAndEndStopsProcesses(t *testing.T) {
 			t.Fatal("ending the session left its Git process running")
 		}
 	}
-	if _, _, ok := ReadObject(outer, repo, "HEAD"); ok || len(session.batches) != 0 {
+	if _, _, ok := ReadObject(outer, repo, "HEAD"); ok || len(idleProcesses(session)) != 0 {
 		t.Fatal("an ended session started a new process")
 	}
 }
@@ -247,7 +244,7 @@ func TestReadObjectMatchesCatFile(t *testing.T) {
 	if _, ok := ResolveCommit(ctx, repo, "HEAD"); !ok {
 		t.Fatal("ResolveCommit failed after reads")
 	}
-	if got := len(sessionFrom(ctx).batches); got != 1 {
+	if got := liveProcesses(sessionFrom(ctx)); got != 1 {
 		t.Fatalf("the session runs %d cat-file processes for one repository; want 1", got)
 	}
 	if _, _, ok := ReadObject(context.Background(), repo, commits[0]); ok {
@@ -271,7 +268,68 @@ func TestBrokenBatchInvocationIsRetiredAfterRepeatedFailures(t *testing.T) {
 	if got := session.failures[strings.Join(args, "\x00")]; got != maxBatchFailures {
 		t.Fatalf("failures = %d; want the invocation retired after %d", got, maxBatchFailures)
 	}
-	if len(session.batches) != 0 {
-		t.Fatalf("a retired invocation left %d processes", len(session.batches))
+	if got := liveProcesses(session); got != 0 {
+		t.Fatalf("a retired invocation left %d processes", got)
+	}
+}
+
+func liveProcesses(session *Session) int {
+	session.mu.Lock()
+	defer session.mu.Unlock()
+	live := 0
+	for _, pool := range session.pools {
+		live += pool.live
+	}
+	return live
+}
+
+func idleProcesses(session *Session) []*batch {
+	session.mu.Lock()
+	defer session.mu.Unlock()
+	var idle []*batch
+	for _, pool := range session.pools {
+		idle = append(idle, pool.idle...)
+	}
+	return idle
+}
+
+// Parallel callers each get a process of their own, up to a bound, so a
+// session never serializes work its caller runs concurrently.
+func TestParallelCallersShareABoundedPool(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	defer end()
+	session := sessionFrom(ctx)
+	args := []string{"-C", repo, "diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
+	var holders []func()
+	for range maxBatchProcesses {
+		process, release := session.acquire(args, true)
+		if process == nil {
+			t.Fatal("the pool refused a process below its bound")
+		}
+		holders = append(holders, release)
+	}
+	if got := liveProcesses(session); got != maxBatchProcesses {
+		t.Fatalf("%d concurrent callers ran %d processes", maxBatchProcesses, got)
+	}
+	answered := make(chan bool)
+	go func() {
+		_, ok := DiffTree(ctx, args, commits[0], commits[1])
+		answered <- ok
+	}()
+	select {
+	case <-answered:
+		t.Fatal("a caller beyond the bound started another process instead of waiting")
+	case <-time.After(200 * time.Millisecond):
+	}
+	holders[0]()
+	if ok := <-answered; !ok {
+		t.Fatal("a waiting caller was not served by the released process")
+	}
+	if got := liveProcesses(session); got != maxBatchProcesses {
+		t.Fatalf("the pool grew past its bound to %d processes", got)
+	}
+	for _, release := range holders[1:] {
+		release()
 	}
 }

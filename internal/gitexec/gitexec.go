@@ -25,9 +25,12 @@ type sessionKey struct{}
 
 // Session holds the memoized answers and batch processes of one command.
 type Session struct {
-	mu      sync.Mutex
-	memo    map[string]*call
-	batches map[string]*batch
+	mu   sync.Mutex
+	cond *sync.Cond
+	memo map[string]*call
+	// pools holds the batch processes of each invocation. Parallel callers
+	// each get their own process, up to maxBatchProcesses.
+	pools map[string]*batchPool
 	// failures counts batch processes that broke, per invocation. A Git that
 	// cannot serve an invocation at all must not cost a spawn per question.
 	failures map[string]int
@@ -49,10 +52,18 @@ type call struct {
 // batch process and waits for it to exit; on Windows a live child holds its
 // working directory open, so it must not outlive the command.
 func Begin(ctx context.Context) (context.Context, func()) {
-	if _, ok := ctx.Value(sessionKey{}).(*Session); ok {
+	if sessionFrom(ctx) != nil {
 		return ctx, func() {}
 	}
-	session := &Session{memo: map[string]*call{}, batches: map[string]*batch{}, failures: map[string]int{}, digests: map[string]string{}}
+	return BeginDetached(ctx)
+}
+
+// BeginDetached starts a session of its own even when ctx carries one, for
+// work that outlives its caller, such as a build a request starts in the
+// background: the caller's session ends when the caller returns.
+func BeginDetached(ctx context.Context) (context.Context, func()) {
+	session := &Session{memo: map[string]*call{}, pools: map[string]*batchPool{}, failures: map[string]int{}, digests: map[string]string{}}
+	session.cond = sync.NewCond(&session.mu)
 	return context.WithValue(ctx, sessionKey{}, session), session.close
 }
 
@@ -119,11 +130,16 @@ func spawn(ctx context.Context, combined bool, args []string) ([]byte, error) {
 func (session *Session) close() {
 	session.mu.Lock()
 	session.closed = true
-	batches := session.batches
-	session.batches = map[string]*batch{}
+	var idle []*batch
+	for _, pool := range session.pools {
+		idle = append(idle, pool.idle...)
+		pool.idle = nil
+	}
+	session.cond.Broadcast()
 	session.mu.Unlock()
-	for _, batch := range batches {
-		batch.close()
+	// A process still in use is stopped when its caller releases it.
+	for _, process := range idle {
+		process.close()
 	}
 }
 
@@ -131,32 +147,74 @@ func (session *Session) close() {
 // before the session stops starting it and callers spawn one-shot commands.
 const maxBatchFailures = 3
 
-// batchFor returns the session's live process for args, starting one when
-// none is running. It returns nil when the session is closed or Git cannot
-// serve args; callers then spawn a one-shot command instead.
-func (session *Session) batchFor(args []string, sentinel bool) *batch {
+// maxBatchProcesses bounds the processes one invocation may run at once.
+const maxBatchProcesses = 4
+
+type batchPool struct {
+	idle []*batch
+	live int
+}
+
+// acquire returns an idle process for args, starting one while fewer than
+// maxBatchProcesses run and otherwise waiting for one to be released. It
+// returns nil when the session is closed or Git cannot serve args; callers
+// then spawn a one-shot command instead. The caller must call release.
+func (session *Session) acquire(args []string, sentinel bool) (process *batch, release func()) {
 	key := strings.Join(args, "\x00")
+	var retired []*batch
+	defer func() {
+		for _, broken := range retired {
+			broken.close()
+		}
+	}()
 	session.mu.Lock()
 	defer session.mu.Unlock()
-	if session.closed || session.failures[key] >= maxBatchFailures {
-		return nil
+	pool := session.pools[key]
+	if pool == nil {
+		pool = &batchPool{}
+		session.pools[key] = pool
 	}
-	previous, ok := session.batches[key]
-	if ok && !previous.isBroken() {
-		return previous
-	}
-	if ok {
-		delete(session.batches, key)
-		previous.close()
-		if session.failures[key]++; session.failures[key] >= maxBatchFailures {
-			return nil
+	for {
+		if session.closed || session.failures[key] >= maxBatchFailures {
+			return nil, nil
 		}
+		for len(pool.idle) > 0 {
+			candidate := pool.idle[len(pool.idle)-1]
+			pool.idle = pool.idle[:len(pool.idle)-1]
+			if !candidate.isBroken() {
+				return candidate, session.releaser(pool, candidate)
+			}
+			pool.live--
+			retired = append(retired, candidate)
+			session.failures[key]++
+		}
+		if session.failures[key] >= maxBatchFailures {
+			return nil, nil
+		}
+		if pool.live < maxBatchProcesses {
+			started, err := startBatch(args, sentinel)
+			if err != nil {
+				session.failures[key] = maxBatchFailures
+				return nil, nil
+			}
+			pool.live++
+			return started, session.releaser(pool, started)
+		}
+		session.cond.Wait()
 	}
-	started, err := startBatch(args, sentinel)
-	if err != nil {
-		session.failures[key] = maxBatchFailures
-		return nil
+}
+
+func (session *Session) releaser(pool *batchPool, process *batch) func() {
+	return func() {
+		session.mu.Lock()
+		if session.closed {
+			pool.live--
+			session.mu.Unlock()
+			process.close()
+			return
+		}
+		pool.idle = append(pool.idle, process)
+		session.cond.Broadcast()
+		session.mu.Unlock()
 	}
-	session.batches[key] = started
-	return started
 }

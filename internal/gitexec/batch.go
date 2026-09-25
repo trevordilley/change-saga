@@ -171,10 +171,11 @@ func resolveCommit(ctx context.Context, repo, revision string) (string, bool) {
 	if session == nil || revision == "" || strings.ContainsAny(revision, "\n\r\x00") || len(revision) > maxRequest {
 		return "", false
 	}
-	process := session.batchFor(objectsArgs(repo), false)
+	process, release := session.acquire(objectsArgs(repo), false)
 	if process == nil {
 		return "", false
 	}
+	defer release()
 	answer, err := process.roundTrip(ctx, "info "+revision+"^{commit}\n", readLine)
 	if err != nil {
 		return "", false
@@ -193,10 +194,11 @@ func objectInfo(ctx context.Context, repo, object string) (string, bool) {
 	if session == nil || object == "" || strings.ContainsAny(object, "\n\r\x00") || len(object) > maxRequest {
 		return "", false
 	}
-	process := session.batchFor(objectsArgs(repo), false)
+	process, release := session.acquire(objectsArgs(repo), false)
 	if process == nil {
 		return "", false
 	}
+	defer release()
 	answer, err := process.roundTrip(ctx, "info "+object+"\n", readLine)
 	if err != nil {
 		return "", false
@@ -230,10 +232,11 @@ func DiffTree(ctx context.Context, args []string, from, to string) ([]byte, bool
 	if session == nil || !IsObjectName(from) || !IsObjectName(to) {
 		return nil, false
 	}
-	process := session.batchFor(args, true)
+	process, release := session.acquire(args, true)
 	if process == nil {
 		return nil, false
 	}
+	defer release()
 	// diff-tree reads "<commit> <parent>": the newer side comes first.
 	answer, err := process.roundTrip(ctx, to+" "+from+"\n", nil)
 	if err != nil {
@@ -251,10 +254,11 @@ func ReadObject(ctx context.Context, repo, name string) (string, []byte, bool) {
 	if session == nil || name == "" || strings.ContainsAny(name, "\n\r\x00") || len(name) > maxRequest {
 		return "", nil, false
 	}
-	process := session.batchFor(objectsArgs(repo), false)
+	process, release := session.acquire(objectsArgs(repo), false)
 	if process == nil {
 		return "", nil, false
 	}
+	defer release()
 	var objectType string
 	content, err := process.roundTrip(ctx, "contents "+name+"\n", func(reader *bufio.Reader) ([]byte, error) {
 		header, err := reader.ReadString('\n')
