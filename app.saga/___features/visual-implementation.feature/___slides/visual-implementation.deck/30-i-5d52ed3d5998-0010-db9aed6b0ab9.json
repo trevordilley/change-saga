@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "direct-visit",
+  "slide": "authored-content-origin",
+  "rank": 10,
+  "kind": "edge",
+  "label": "Opened directly",
+  "description": "A reader can open the same fragment or visual URL in its own tab. With no iframe attribute, only the response's own policy decides the origin the script runs on.",
+  "selector": {
+    "type": "element",
+    "element_id": "direct-visit"
+  }
+}

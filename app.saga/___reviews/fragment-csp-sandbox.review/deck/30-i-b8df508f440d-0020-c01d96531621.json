@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unit-proof",
+  "slide": "direct-visit",
+  "rank": 20,
+  "kind": "statement",
+  "label": "Server tests check the header",
+  "description": "Tests for both handlers read the response through the security middleware and require exactly one policy with sandbox allow-scripts, the containment directives, and inline script still allowed.",
+  "selector": {
+    "type": "element",
+    "element_id": "unit-proof"
+  }
+}

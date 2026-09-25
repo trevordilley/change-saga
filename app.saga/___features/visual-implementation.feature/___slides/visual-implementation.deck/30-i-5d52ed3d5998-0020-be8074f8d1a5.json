@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "authored-routes",
+  "slide": "authored-content-origin",
+  "rank": 20,
+  "kind": "node",
+  "label": "Authored responses",
+  "description": "The fragment file route and the review slide visual route are the two responses that serve author-provided HTML or SVG.",
+  "selector": {
+    "type": "element",
+    "element_id": "authored-routes"
+  }
+}

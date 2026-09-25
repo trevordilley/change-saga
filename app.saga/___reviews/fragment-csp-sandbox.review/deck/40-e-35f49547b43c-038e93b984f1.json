@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "path": "internal/server/server.go",
+      "start": 1656,
+      "end": 1656,
+      "digest": "sha256:07f0deff965a56a7bee02cb61e89bfbc5ca011715867ba65bcb026998ee694b0",
+      "note": "The fragment route used to send an inline-script policy with no sandbox directive, so a direct visit ran on the app origin."
+    }
+  ]
+}

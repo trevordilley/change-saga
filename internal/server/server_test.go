@@ -283,13 +283,41 @@ func TestInteractiveFragmentIsServedWithSandboxCSP(t *testing.T) {
 	request.SetPathValue("id", "demo")
 	request.SetPathValue("path", "index.html")
 	recorder := httptest.NewRecorder()
-	application.fragmentFile(recorder, request)
+	securityHeaders(http.HandlerFunc(application.fragmentFile)).ServeHTTP(recorder, request)
 	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), "onclick") {
 		t.Fatalf("interactive fragment was not served: status=%d body=%s", recorder.Code, recorder.Body.String())
 	}
-	csp := recorder.Header().Get("Content-Security-Policy")
-	if !strings.Contains(csp, "script-src") || !strings.Contains(csp, "connect-src 'none'") {
-		t.Fatalf("unexpected fragment CSP: %s", csp)
+	assertAuthoredContentPolicy(t, recorder.Header())
+}
+
+// assertAuthoredContentPolicy checks the guarantees an author's script relies
+// on and the ones that contain it: it runs, but always on an opaque origin,
+// cannot reach the network, and only frames into the app itself.
+func assertAuthoredContentPolicy(t *testing.T, header http.Header) {
+	t.Helper()
+	policies := header.Values("Content-Security-Policy")
+	if len(policies) != 1 {
+		t.Fatalf("authored content has %d CSP headers, want 1: %q", len(policies), policies)
+	}
+	directives := map[string]string{}
+	for _, directive := range strings.Split(policies[0], ";") {
+		name, value, _ := strings.Cut(strings.TrimSpace(directive), " ")
+		directives[name] = value
+	}
+	for name, want := range map[string]string{
+		"sandbox":         "allow-scripts",
+		"connect-src":     "'none'",
+		"frame-ancestors": "'self'",
+		"form-action":     "'none'",
+		"base-uri":        "'none'",
+		"object-src":      "'none'",
+	} {
+		if got, ok := directives[name]; !ok || got != want {
+			t.Fatalf("CSP %s = %q, want %q in %q", name, got, want, policies[0])
+		}
+	}
+	if !strings.Contains(directives["script-src"], "'unsafe-inline'") {
+		t.Fatalf("authored script is no longer allowed to run: %q", policies[0])
 	}
 }
 

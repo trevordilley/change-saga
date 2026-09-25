@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "path": "e2e/support/fixture-builder.ts",
+      "start": 190,
+      "end": 191,
+      "digest": "sha256:f6bbf58b55c2746f37dded1c19f79b575df208196451cf81cb00b29c5050a3fb",
+      "note": "The fixture's interactive fragment loads a package image so the browser check proves same-package assets still load under the sandbox."
+    }
+  ]
+}

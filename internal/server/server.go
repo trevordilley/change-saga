@@ -1653,7 +1653,7 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "fragment file escapes its package", http.StatusForbidden)
 		return
 	}
-	w.Header().Set("Content-Security-Policy", "default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'")
+	w.Header().Set("Content-Security-Policy", authoredContentPolicy)
 	file, err := os.Open(realPath)
 	if err != nil {
 		http.NotFound(w, r)
@@ -1813,6 +1813,13 @@ func launchBrowser(target string) error {
 	}
 	return exec.Command(command, args...).Start()
 }
+
+// authoredContentPolicy governs author-provided fragments and review visuals.
+// Their script needs 'unsafe-inline', so the sandbox directive gives the
+// response an opaque origin wherever it loads, as the sandboxed iframe that
+// embeds it already does. Without it, opening the URL directly would run that
+// script on the app's own origin, beside pages carrying review tokens.
+const authoredContentPolicy = "sandbox allow-scripts; default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'"
 
 func securityHeaders(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

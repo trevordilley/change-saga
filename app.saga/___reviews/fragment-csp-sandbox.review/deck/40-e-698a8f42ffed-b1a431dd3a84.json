@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "2af2183829a96bc6d378d1ef3bd7e629ac495992",
+      "path": "internal/server/reviews.go",
+      "start": 538,
+      "end": 538,
+      "digest": "sha256:d336fd3c3e2a52f4a187b4280a91163fa47ff4dcd665ea196d994a9022879f4f",
+      "note": "The review visual route sends the same shared policy."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "self-fonts",
+  "slide": "authored-content-origin",
+  "rank": 60,
+  "kind": "risk",
+  "label": "Fonts from the app's own URL do not load",
+  "description": "Font loads use CORS, and origin null is cross-origin to the server, so fonts served from the app's own URL fail. This already happened inside iframes. Authors should embed data: fonts.",
+  "selector": {
+    "type": "element",
+    "element_id": "self-fonts"
+  }
+}

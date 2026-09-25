@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "path": "internal/server/server.go",
+      "start": 1817,
+      "end": 1822,
+      "digest": "sha256:835e2d2dc36442fbdfe1f4ed4baa105856261e5e1b87f2f65b1272ec787929ec",
+      "note": "Defines the one authored-content policy: the sandbox directive with allow-scripts only gives the response an opaque origin, alongside connect-src 'none' and frame-ancestors 'self'."
+    }
+  ]
+}

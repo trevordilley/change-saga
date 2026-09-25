@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "visual-authored-policy-explains-media",
+  "type": "explains",
+  "from": "urn:change-saga:change-saga:slide:authored-content-origin:item:authored-policy",
+  "to": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+  "scope": "self",
+  "rationale": "The shared authored-content policy is what keeps HTML slides and fragments sandboxed. Its sandbox directive gives them an opaque origin even when opened outside their iframe.",
+  "to_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-25T03:56:34.786612Z"
+}

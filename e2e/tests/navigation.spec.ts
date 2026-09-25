@@ -163,3 +163,24 @@ test("renders Markdown, SVG, raster, and interactive HTML fragments", async ({ p
   await expect(demo.locator("output")).toHaveText("interactive ready");
   expect(saga.baseURL).toMatch(/^http:\/\/127\.0\.0\.1:/);
 });
+
+// An interactive fragment is author script. Framed or opened directly, it runs
+// with its own assets but on an opaque origin, never on the app's, so it cannot
+// reach pages that carry the review token.
+test("runs interactive fragments on an opaque origin, framed or opened directly", async ({ page, saga }) => {
+  const frame = page.locator('iframe[title="Interactive Demo"]');
+  const demo = frame.contentFrame();
+  await demo.getByRole("button", { name: "Run demo" }).click();
+  await expect(demo.locator("output")).toHaveText("interactive ready");
+  await expect.poll(() => demo.locator("#pixel").evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1);
+  expect(await demo.locator("body").evaluate(() => self.origin)).toBe("null");
+
+  const source = new URL(await frame.getAttribute("src") ?? "", saga.baseURL);
+  expect(source.origin).toBe(new URL(saga.baseURL).origin);
+  await page.goto(source.href);
+  await page.getByRole("button", { name: "Run demo" }).click();
+  await expect(page.locator("output")).toHaveText("interactive ready");
+  await expect.poll(() => page.locator("#pixel").evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(1);
+  expect(await page.evaluate(() => self.origin)).toBe("null");
+  expect(await page.evaluate(() => { try { return typeof localStorage; } catch { return "denied"; } })).toBe("denied");
+});

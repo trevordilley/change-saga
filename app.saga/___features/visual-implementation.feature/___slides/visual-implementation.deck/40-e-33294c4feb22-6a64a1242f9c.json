@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "37d0fbca55b9b87d81656c7c17458b1163f5a21b",
+      "path": "internal/server/server.go",
+      "start": 1823,
+      "end": 1823,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "The blank line that separates the authored-content policy from the app-page middleware."
+    }
+  ]
+}

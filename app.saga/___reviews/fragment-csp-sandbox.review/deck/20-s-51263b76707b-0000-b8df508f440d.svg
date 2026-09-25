@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Opening authored content directly, before and after</title>
+  <desc id="desc">Before, a framed fragment ran on origin null but the same URL opened directly ran its script on the app origin, where it could open app pages and read their review token. After, both routes send one policy with the sandbox directive, so both cases run on origin null. Server tests check the header and browser tests check both cases.</desc>
+  <defs>
+    <marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L8 3Z" fill="#223650"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#f8f5ef"/>
+  <text x="60" y="62" font-family="system-ui" font-size="32" font-weight="760" fill="#16243a">Opening authored content directly</text>
+  <text x="60" y="96" font-family="system-ui" font-size="18" fill="#526276">Same two cases, same URL. Only the direct visit changes.</text>
+
+  <text x="60" y="146" font-family="system-ui" font-size="15" font-weight="700" fill="#526276">CASE</text>
+  <text x="330" y="146" font-family="system-ui" font-size="15" font-weight="700" fill="#8a3030">BEFORE</text>
+  <text x="800" y="146" font-family="system-ui" font-size="15" font-weight="700" fill="#245b45">AFTER</text>
+
+  <text x="60" y="206" font-family="system-ui" font-size="19" font-weight="760" fill="#294f84">Framed in an app page</text>
+  <text x="60" y="232" font-family="ui-monospace,monospace" font-size="13" fill="#405976">iframe sandbox="allow-scripts"</text>
+  <text x="60" y="336" font-family="system-ui" font-size="19" font-weight="760" fill="#8a3030">Opened directly</text>
+  <text x="60" y="362" font-family="system-ui" font-size="14" fill="#6b3a3a">top-level visit to the same URL</text>
+
+  <g id="before">
+    <rect x="310" y="166" width="440" height="244" rx="26" fill="#fff" stroke="#b84444" stroke-width="3"/>
+    <rect x="330" y="182" width="400" height="70" rx="14" fill="#e5f6ed"/>
+    <text x="350" y="212" font-family="ui-monospace,monospace" font-size="16" fill="#245b45">origin "null"</text>
+    <text x="350" y="236" font-family="system-ui" font-size="14" fill="#245b45">the iframe attribute sandboxes it</text>
+    <rect x="330" y="300" width="400" height="92" rx="14" fill="#fee7e4" stroke="#b84444" stroke-width="2"/>
+    <text x="350" y="330" font-family="ui-monospace,monospace" font-size="16" fill="#8a3030">origin = the app itself</text>
+    <text x="350" y="354" font-family="system-ui" font-size="14" fill="#6b3a3a">can open app pages in a popup and</text>
+    <text x="350" y="376" font-family="system-ui" font-size="14" fill="#6b3a3a">read their review mutation token</text>
+  </g>
+
+  <g id="after-policy">
+    <path d="M750 288H778" stroke="#223650" stroke-width="4" marker-end="url(#arr)"/>
+    <rect x="786" y="166" width="434" height="244" rx="26" fill="#fff" stroke="#2a7c59" stroke-width="3"/>
+    <rect x="806" y="182" width="394" height="70" rx="14" fill="#e5f6ed"/>
+    <text x="826" y="212" font-family="ui-monospace,monospace" font-size="16" fill="#245b45">origin "null"</text>
+    <text x="826" y="236" font-family="system-ui" font-size="14" fill="#245b45">unchanged</text>
+    <rect x="806" y="300" width="394" height="92" rx="14" fill="#e5f6ed" stroke="#2a7c59" stroke-width="2"/>
+    <text x="826" y="330" font-family="ui-monospace,monospace" font-size="16" fill="#245b45">origin "null"</text>
+    <text x="826" y="354" font-family="system-ui" font-size="14" fill="#245b45">the response's own header sandboxes it:</text>
+    <text x="826" y="376" font-family="ui-monospace,monospace" font-size="13" fill="#245b45">sandbox allow-scripts</text>
+  </g>
+
+  <g id="unit-proof">
+    <rect x="60" y="456" width="560" height="200" rx="22" fill="#fff" stroke="#223650" stroke-width="3"/>
+    <text x="86" y="494" font-family="system-ui" font-size="19" font-weight="760" fill="#16243a">Server tests: the header</text>
+    <text x="86" y="530" font-family="system-ui" font-size="15" fill="#405976">Both handlers, through the security middleware:</text>
+    <text x="86" y="560" font-family="ui-monospace,monospace" font-size="14" fill="#16243a">exactly one policy · sandbox allow-scripts</text>
+    <text x="86" y="586" font-family="ui-monospace,monospace" font-size="14" fill="#16243a">connect-src 'none' · frame-ancestors 'self'</text>
+    <text x="86" y="612" font-family="ui-monospace,monospace" font-size="14" fill="#16243a">script-src keeps 'unsafe-inline'</text>
+    <text x="86" y="640" font-family="system-ui" font-size="14" fill="#8a3030">fail without the sandbox directive</text>
+  </g>
+
+  <g id="browser-proof">
+    <rect x="660" y="456" width="560" height="200" rx="22" fill="#fff" stroke="#223650" stroke-width="3"/>
+    <text x="686" y="494" font-family="system-ui" font-size="19" font-weight="760" fill="#16243a">Browser tests: both cases</text>
+    <text x="686" y="530" font-family="system-ui" font-size="15" fill="#405976">Interactive fragment, framed then opened directly:</text>
+    <text x="686" y="558" font-family="system-ui" font-size="14" fill="#16243a">click still works · package image loads · origin null</text>
+    <text x="686" y="592" font-family="system-ui" font-size="15" fill="#405976">Review slide visual opened directly:</text>
+    <text x="686" y="618" font-family="system-ui" font-size="14" fill="#16243a">sandbox header · renders · origin null</text>
+    <text x="686" y="640" font-family="system-ui" font-size="14" fill="#8a3030">fail without the sandbox directive</text>
+  </g>
+</svg>
