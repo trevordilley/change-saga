@@ -60,6 +60,8 @@ jobs:
         with:
           go-version-file: .go-version
           cache: true
+      - name: go vet
+        run: go vet ./...
       # DIAGNOSTIC ONLY (perf/windows-cli-tests): remove before merge.
       - name: diag cli timings
         if: runner.os == 'Windows'
