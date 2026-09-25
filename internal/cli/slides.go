@@ -318,7 +318,7 @@ func selectorHint(mediaType string) string {
 	return "--region X,Y,W,H"
 }
 
-func AddItem(_ context.Context, args []string, out io.Writer) error {
+func AddItem(ctx context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("add-item", commandUsage["add-item"], out)
 	slideTarget := flags.String("slide", "", "containing slide path, id, or URN")
 	id := flags.String("id", "", "stable lowercase item identifier")
@@ -334,6 +334,9 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	leader := flags.String("leader", "", "none, line, or arrow")
 	documentation := flags.String("documentation", "", "canonical Component or System URN")
 	documentationRevision := flags.String("documentation-revision", "", "exact revision URN for --documentation")
+	documentationView := flags.String("documentation-view", "", "saved Saga commit that admits a non-current --documentation-revision (inventory format 2)")
+	selectionsFile := flags.String("selections", "", "JSON array of explicit code selections through the documented entity (inventory format 2)")
+	repo := flags.String("repo", "", "source checkout for saved views and selections")
 	record := flags.String("record", "", "the record the item points at: required for onboarding items (a persona, feature, or story URN); optional for review items (a story, feature slide, or other record to open beside the change)")
 	feature := featureIDFlag(flags)
 	reviewID := flags.String("review", "", "the pull request review whose slide receives the item")
@@ -429,9 +432,18 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			target = saga.ItemTarget(document.Manifest.ID, slide.ID, *id)
 		}
 		var documentationPin *saga.DocumentationLink
-		if *documentation != "" || *documentationRevision != "" {
-			documentationPin = &saga.DocumentationLink{Target: *documentation, Revision: *documentationRevision}
-			if err := requireDocumentation(document.Root, document.Manifest.ID, documentationPin); err != nil {
+		var viewOID string
+		var selections []saga.ItemSelection
+		if *documentation != "" || *documentationRevision != "" || *documentationView != "" || *selectionsFile != "" {
+			if *documentation != "" || *documentationRevision != "" {
+				documentationPin = &saga.DocumentationLink{Target: *documentation, Revision: *documentationRevision}
+			}
+			requested, err := readItemSelections(*selectionsFile)
+			if err != nil {
+				return err
+			}
+			viewOID, selections, err = prepareItemInventoryLinks(ctx, document.Root, document.Manifest, itemInventoryLinks{Documentation: documentationPin, View: *documentationView, Selections: requested, Checkout: *repo})
+			if err != nil {
 				return err
 			}
 			if slide.DeckID != "" {
@@ -475,7 +487,7 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			return err
 		}
 		path := filepath.Join(slide.Directory, filename)
-		manifest := saga.ItemManifest{Version: saga.DeckRecordVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader, Record: *record, Documentation: documentationPin}
+		manifest := saga.ItemManifest{Version: saga.DeckRecordVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader, Record: *record, Documentation: documentationPin, DocumentationView: viewOID, Selections: selections}
 		if err := store.WriteJSON(path, manifest, true); err != nil {
 			return err
 		}
