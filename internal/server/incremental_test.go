@@ -14,6 +14,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/testfixture"
 )
@@ -287,5 +288,46 @@ func TestObservedCoverageGraphIsReusedUntilTheSagaChanges(t *testing.T) {
 	getPage(t, handler, "/api/coverage?mode=code")
 	if application.observed.builds != 2 {
 		t.Fatalf("observed graph builds after an edit = %d, want 2", application.observed.builds)
+	}
+}
+
+// Documentation pages read the narrative, requirements, test cases and
+// inventory once per state of the Saga's files, and read them afresh after
+// any of those files changes.
+func TestDocumentationPagesReadTheSagaOncePerChange(t *testing.T) {
+	fixture, _, _ := boundedFixture(t)
+	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: serverTemplate(t)}
+	handler := newMux(application)
+	open := func(path string) {
+		t.Helper()
+		recorder := httptest.NewRecorder()
+		handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("GET %s = %d: %s", path, recorder.Code, recorder.Body.String())
+		}
+	}
+	open("/")
+	first := application.files.current
+	if first == nil {
+		t.Fatal("the documentation page read nothing through the Saga files cache")
+	}
+	open("/requirements")
+	if application.files.current != first || application.files.builds != 1 {
+		t.Fatalf("an unchanged Saga was read again: builds = %d", application.files.builds)
+	}
+	writeServerFile(t, filepath.Join(fixture.Root, "README.md"), "An edit the next page must see.\n")
+	open("/")
+	if application.files.current == first || application.files.builds != 2 {
+		t.Fatalf("an edited Saga was served from the old read: builds = %d", application.files.builds)
+	}
+	// Each page projects complete-slide links into its own relations.
+	files := application.sagaFiles()
+	records, _ := files.records(files.narrative().Manifest.ID)
+	records.Relations = append(records.Relations, requirements.Relation{ID: "page-local"})
+	again, _ := files.records(files.narrative().Manifest.ID)
+	for _, relation := range again.Relations {
+		if relation.ID == "page-local" {
+			t.Fatal("a page's projected relation leaked into the shared requirements")
+		}
 	}
 }

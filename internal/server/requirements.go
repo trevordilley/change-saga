@@ -131,8 +131,8 @@ type requirementHistoryView struct {
 	Parents   int
 }
 
-func loadRequirementsSurface(root, sagaID string, r *http.Request) (*requirementsPageView, *navNodeView, requirements.Document, error) {
-	document, err := requirements.Load(root, sagaID)
+func loadRequirementsSurface(files *sagaFiles, sagaID string, r *http.Request) (*requirementsPageView, *navNodeView, requirements.Document, error) {
+	document, err := files.records(sagaID)
 	if err != nil {
 		return nil, nil, requirements.Document{}, err
 	}
