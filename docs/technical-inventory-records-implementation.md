@@ -102,3 +102,29 @@ Every test uses temporary Git repositories; none mutates `app.saga`.
   are exercised in fixtures.
 - Coverage, query filters, newness, reverse usages and the ERD UI are not in
   this slice.
+
+## Saga documentation and checks
+
+- Implementation deck: four transaction-managed slides in the
+  `technical-inventory` deck, section "Records and authoring implementation"
+  (`ti-records-impl-format`, `-transition`, `-data-model`, `-selections`,
+  ranks 160–190). 27 Item-to-criterion relations prefixed `ti-records-impl-`
+  read back active with current pins. The rationales state where display,
+  query and coverage belong to the sibling slices.
+- Living implementation coverage of `da5101a6..a0cb6cbe`: 6143 of 6164 atoms.
+  The 21 uncovered atoms are whole-file addition events; transaction-managed
+  Items refuse whole-file evidence, so they stay a visible gap.
+- Review `inventory-records-authoring` explains exactly `da5101a6..a0cb6cbe`
+  in four slides and covers all 6164 changed atoms (0 stale; 13 intentional
+  overlaps where a callout re-cites `formatAdmits`). It records no decisions.
+- `validate`: valid, with only the two existing warnings for code-free proposal
+  slides. `reconcile --against da5101a6`: 50 evidence references in other
+  slides became stale because this slice rewrote code they cite
+  (`technical-inventory-identity`, `-history`, `-authoring`, `-verification`,
+  `-navigation`, the proposal slides' pinned extension-point links, and
+  `authoring-sequence`/`slide-state` in the visual-implementation deck). Those
+  slides are shared or owned elsewhere and were reported for reassessment, not
+  edited here. The 20 pre-existing stale references are unchanged.
+- Raw slide assets were rendered and inspected. Reviewer-surface `visual-qa`
+  and browser checks were not run: Playwright is not installed in this
+  workspace and installing it needs the network.
