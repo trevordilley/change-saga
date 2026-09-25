@@ -1171,16 +1171,24 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		}
 	}
 	if data.EmbeddedDecks {
-		data.SlideRoot = makeSectionView(slideRoot, scope)
-		storyLinks := &storyLinkDecorator{document: document, records: requirementsDocument}
-		for _, deck := range data.SlideRoot.ChildViews {
-			for _, slide := range deck.FragmentViews {
-				if err := storyLinks.decorate(slide); err != nil {
-					return nil, fmt.Errorf("story links could not be resolved: %w", err)
+		// Every page shows the same decks, read from the same narrative and
+		// records, so their view is built once for each state of the files.
+		data.SlideRoot, err = files.slides(func() (*sectionView, error) {
+			root := makeSectionView(slideRoot, scope)
+			storyLinks := &storyLinkDecorator{document: document, records: requirementsDocument}
+			for _, deck := range root.ChildViews {
+				for _, slide := range deck.FragmentViews {
+					if err := storyLinks.decorate(slide); err != nil {
+						return nil, fmt.Errorf("story links could not be resolved: %w", err)
+					}
 				}
 			}
+			labelDeckRoles(root, document)
+			return root, nil
+		})
+		if err != nil {
+			return nil, err
 		}
-		labelDeckRoles(data.SlideRoot, document)
 	}
 	return data, nil
 }

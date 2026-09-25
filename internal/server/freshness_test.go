@@ -167,3 +167,33 @@ func TestAWatchedSagaIsReadBeforeAnyoneAsks(t *testing.T) {
 	}
 	waitFor("rebuilt after an edit", func() bool { return builds() == 2 })
 }
+
+// Every page shows the same decks, so their view is built once for each state
+// of the Saga's files and never outlives it.
+func TestTheDecksAreBuiltOncePerStateOfTheSaga(t *testing.T) {
+	requireDogfoodSaga(t)
+	tmpl, err := newPageTemplateFor(gitdiff.Range{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	application := &app{root: dogfoodSaga, sourceDir: filepath.Join("..", ".."), template: tmpl}
+	handler := newMux(application)
+	dogfoodGet := func(path string) {
+		t.Helper()
+		recorder := httptest.NewRecorder()
+		handler.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("GET %s = %d", path, recorder.Code)
+		}
+	}
+	dogfoodGet("/")
+	files := application.files.current
+	if files == nil || files.slidesView == nil {
+		t.Fatal("the app Saga's decks were not built through the Saga files")
+	}
+	built := files.slidesView
+	dogfoodGet("/features")
+	if application.files.current != files || files.slidesView != built {
+		t.Fatal("a second page built the unchanged decks again")
+	}
+}

@@ -46,6 +46,13 @@ type sagaFiles struct {
 	inventoryID   string
 	inventoryDoc  requirements.Inventory
 	inventoryErr  error
+
+	// slidesView is every embedded deck's slides as every page shows them,
+	// story links decorated. It is built from the narrative and records
+	// above, so it holds for as long as they do. Pages only read it.
+	slidesOnce sync.Once
+	slidesView *sectionView
+	slidesErr  error
 }
 
 // sagaFiles is the current Saga's files. When they cannot be fingerprinted
@@ -107,4 +114,13 @@ func (files *sagaFiles) inventory(sagaID string) (requirements.Inventory, error)
 		return requirements.LoadInventory(files.root, sagaID)
 	}
 	return files.inventoryDoc, files.inventoryErr
+}
+
+// slides is the embedded decks' view, built once from this fingerprint's
+// narrative and records.
+func (files *sagaFiles) slides(build func() (*sectionView, error)) (*sectionView, error) {
+	files.slidesOnce.Do(func() {
+		files.slidesView, files.slidesErr = build()
+	})
+	return files.slidesView, files.slidesErr
 }
