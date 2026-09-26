@@ -75,7 +75,13 @@ type sagaFiles struct {
 // sagaFiles is the current Saga's files. When they cannot be fingerprinted
 // nothing is kept, and each part is read afresh.
 func (a *app) sagaFiles(ctx context.Context) *sagaFiles {
-	fingerprint, err := a.sagaState(ctx, false).documentationKey()
+	return a.sagaFilesAt(a.sagaState(ctx, false))
+}
+
+// sagaFilesAt is the Saga's files under state: what is read from them is
+// keyed on state, and read no earlier than state was taken.
+func (a *app) sagaFilesAt(state *sagaState) *sagaFiles {
+	fingerprint, err := state.documentationKey()
 	if err != nil {
 		return &sagaFiles{root: a.root}
 	}

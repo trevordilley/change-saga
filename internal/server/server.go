@@ -431,9 +431,9 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 	// The Saga is read in the background as soon as the server is up, and
 	// again whenever it changes, so a reviewer's first page and the page
 	// after an edit find it already read.
-	watchCtx, stopWatching := context.WithCancel(ctx)
-	defer stopWatching()
-	go application.watchSaga(watchCtx)
+	// The server does not return while the watcher could still read the
+	// Saga or start Git.
+	defer application.startWatching(ctx)()
 	select {
 	case <-ctx.Done():
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -1270,7 +1270,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// source head changes, so the documentation pages do not pay the cross
 	// product again on every request.
 	if route.kind == "feature" || route.kind == "requirements" {
-		attachRelatedReviews(a.relatedReviews(r.Context(), document, requirementsDocument), data)
+		attachRelatedReviews(a.relatedReviews(r.Context()), data)
 	}
 	overviewActive := ""
 	switch {

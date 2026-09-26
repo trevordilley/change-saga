@@ -275,10 +275,21 @@ type sagaEntry struct {
 // together far faster than one after another.
 const sagaListers = 8
 
+// readSagaDir and sagaEntryInfo are how a listing reads the file system;
+// tests replace them to make an entry vanish at a chosen moment.
+var (
+	readSagaDir   = os.ReadDir
+	sagaEntryInfo = fs.DirEntry.Info
+)
+
 // listSaga lists every directory of the Saga, several at once, by its path
 // relative to root; the root is ".". Entries are in name order. Unless full is
-// set it never enters the directories documentation skips. Any directory or
-// entry that cannot be read fails the whole listing, as it fails a walk.
+// set it never enters the directories documentation skips.
+//
+// A file or directory removed between being listed and being read is left
+// out, as a listing taken a moment later would: writers replace files by
+// renaming a temporary one over them, and a checkout removes whole trees.
+// Any other entry that cannot be read fails the whole listing.
 func listSaga(root string, full bool) (map[string][]sagaEntry, error) {
 	listings := map[string][]sagaEntry{}
 	var (
@@ -291,7 +302,10 @@ func listSaga(root string, full bool) (map[string][]sagaEntry, error) {
 	list = func(rel string) {
 		defer wait.Done()
 		slots <- struct{}{}
-		entries, err := os.ReadDir(filepath.Join(root, filepath.FromSlash(rel)))
+		entries, err := readSagaDir(filepath.Join(root, filepath.FromSlash(rel)))
+		if rel != "." && errors.Is(err, fs.ErrNotExist) {
+			entries, err = nil, nil
+		}
 		listed := make([]sagaEntry, 0, len(entries))
 		for _, entry := range entries {
 			if err != nil {
@@ -299,8 +313,11 @@ func listSaga(root string, full bool) (map[string][]sagaEntry, error) {
 			}
 			item := sagaEntry{name: entry.Name(), dir: entry.IsDir()}
 			if !item.dir {
-				var info fs.FileInfo
-				if info, err = entry.Info(); err == nil {
+				info, infoErr := sagaEntryInfo(entry)
+				if errors.Is(infoErr, fs.ErrNotExist) {
+					continue
+				}
+				if err = infoErr; err == nil {
 					item.size, item.modTime = info.Size(), info.ModTime().UnixNano()
 				}
 			}
@@ -347,9 +364,25 @@ func skipDocumentationDirectory(base string) bool {
 	return false
 }
 
+// startWatching runs watchSaga until the returned stop is called. stop
+// returns only once the watcher, and any page it was rendering, has finished,
+// so nothing reads the Saga or starts Git after it.
+func (a *app) startWatching(ctx context.Context) (stop func()) {
+	ctx, cancel := context.WithCancel(ctx)
+	watching := make(chan struct{})
+	go func() {
+		defer close(watching)
+		a.watchSaga(ctx)
+	}()
+	return func() {
+		cancel()
+		<-watching
+	}
+}
+
 // watchSaga checks the Saga every pollInterval while reviewers are using the
 // server, and rebuilds what a change invalidated before the next request
-// asks for it. It returns when ctx is done.
+// asks for it. It returns when ctx is done, once its warming has finished.
 func (a *app) watchSaga(ctx context.Context) {
 	handler := newMux(a)
 	warm := make(chan struct{}, 1)
