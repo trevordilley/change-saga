@@ -134,6 +134,50 @@ func TestResolveWholeFileAndMissingCommitFallback(t *testing.T) {
 	}
 }
 
+// An answer that follows from the reference and the two commits alone is
+// settled; one that rests on a missing pinned commit or a read that failed,
+// such as one cut short by its caller, is provisional, since a fetch or a
+// retry may answer it differently.
+func TestResolveMarksAnswersThatMayChangeProvisional(t *testing.T) {
+	ctx := context.Background()
+	repo := t.TempDir()
+	git(t, repo, "init", "-q", "-b", "main")
+	write(t, repo, "lib.go", "one\ntwo\nthree\n")
+	pin := commit(t, repo, "pin")
+	write(t, repo, "lib.go", "one\nTWO\nthree\n")
+	next := commit(t, repo, "change")
+	resolver, err := New(ctx, repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	reference, err := resolver.Author(ctx, coderef.Location{Commit: pin, Path: "lib.go", Start: 2, End: 2}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := resolver.Resolve(ctx, reference, next); got.Current() || got.Provisional {
+		t.Fatalf("changed lines: %+v, want stale and settled", got)
+	}
+	if got := resolver.Resolve(ctx, reference, pin); !got.Current() || got.Provisional {
+		t.Fatalf("at its pin: %+v, want current and settled", got)
+	}
+	missing := reference
+	missing.Commit = strings.Repeat("f", 40)
+	if got := resolver.Resolve(ctx, missing, next); !got.Provisional {
+		t.Fatalf("missing pinned commit: %+v, want provisional", got)
+	}
+	cancelled, cancel := context.WithCancel(ctx)
+	cancel()
+	fresh, err := New(ctx, repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer fresh.Close()
+	if got := fresh.Resolve(cancelled, reference, next); got.Current() || !got.Provisional {
+		t.Fatalf("cancelled read: %+v, want stale and provisional", got)
+	}
+}
+
 func write(t *testing.T, repo, name, content string) {
 	t.Helper()
 	path := filepath.Join(repo, name)

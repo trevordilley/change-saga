@@ -4,15 +4,16 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
-	"io/fs"
-	"path/filepath"
 	"sort"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -79,34 +80,60 @@ type relatedReviewCache struct {
 	fingerprint string
 	index       *relatedReviewIndex
 	builds      int
+	// touched is the documentation targets each review's range touched, by
+	// what decides them: the range's commits and the documentation's code.
+	// Neither changes under its key, so an edit to the Saga's prose or
+	// records rebuilds the index without reading any review's diff again.
+	touched map[string][]string
 }
 
 // relatedReviews is the derived index for this request. It is empty, and
 // costs nothing, while the Saga has no reviews.
-func (a *app) relatedReviews(ctx context.Context, document *saga.Saga, records requirements.Document) *relatedReviewIndex {
-	if len(document.Reviews) == 0 {
-		return &relatedReviewIndex{byRecord: map[string][]relatedReviewView{}}
-	}
+//
+// Everything it is built from is read under the state it is kept under: the
+// records, with the complete slides' links projected in as every page reads
+// them, come from that state's files, and the Saga with its code is read
+// after that state was taken. An index is therefore never kept under a state
+// newer than what it was built from.
+func (a *app) relatedReviews(ctx context.Context) *relatedReviewIndex {
+	empty := &relatedReviewIndex{byRecord: map[string][]relatedReviewView{}}
 	a.related.mutex.Lock()
 	defer a.related.mutex.Unlock()
-	fingerprint, err := a.relatedFingerprint(ctx)
+	state := a.sagaState(ctx, true)
+	fingerprint, err := state.relatedKey()
 	if err == nil && a.related.index != nil && fingerprint == a.related.fingerprint {
 		return a.related.index
 	}
-	// The outline document carries no code, so the intersection reads the
-	// Saga once with its references. Reviews live in the same document.
+	files := a.sagaFilesAt(state)
+	narrative := files.narrative()
+	if narrative == nil || len(narrative.Reviews) == 0 {
+		return empty
+	}
+	records, recordsErr := files.projectedRecords(narrative.Manifest.ID)
+	if recordsErr != nil {
+		return empty
+	}
+	// The narrative carries no code, so the intersection reads the Saga once
+	// with its references. Reviews live in the same document.
 	full, validation, loadErr := saga.Load(a.root)
 	if loadErr != nil || !validation.Valid {
-		return &relatedReviewIndex{byRecord: map[string][]relatedReviewView{}}
+		return empty
 	}
-	resolver, resolveErr := coderesolve.New(ctx, a.sourceDir)
-	if resolveErr == nil {
-		defer resolver.Close()
-	} else {
-		resolver = nil
+	// A resolver serves one build. What it reads is kept only for the build,
+	// so a read that failed, or a pinned commit a later fetch brings in, is
+	// asked again by the next one.
+	var resolver coverage.Resolver
+	if opened, openErr := coderesolve.New(ctx, a.sourceDir); openErr == nil {
+		defer opened.Close()
+		resolver = opened
 	}
-	index := buildRelatedReviews(ctx, a.sourceDir, full, records, resolver)
-	if err == nil {
+	if a.related.touched == nil {
+		a.related.touched = map[string][]string{}
+	}
+	index := buildRelatedReviews(ctx, a.sourceDir, full, records, resolver, a.related.touched)
+	// A build the request abandoned may have read nothing for some reviews;
+	// it answers that request and is kept for no other.
+	if err == nil && ctx.Err() == nil {
 		a.related.fingerprint, a.related.index = fingerprint, index
 		a.related.builds++
 	}
@@ -117,46 +144,17 @@ func (a *app) relatedReviews(ctx context.Context, document *saga.Saga, records r
 // of the Saga, code references and reviews included, and the source head the
 // references resolve against.
 func (a *app) relatedFingerprint(ctx context.Context) (string, error) {
-	tree, err := sagaFilesFingerprint(a.root)
-	if err != nil {
-		return "", err
-	}
-	head, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "HEAD")
-	return tree + "\x00" + head, nil
-}
-
-// sagaFilesFingerprint commits to every file of the Saga at root by path,
-// size, and modification time.
-func sagaFilesFingerprint(root string) (string, error) {
-	digest := sha256.New()
-	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil {
-			return walkErr
-		}
-		rel, err := filepath.Rel(root, path)
-		if err != nil {
-			return err
-		}
-		if entry.IsDir() {
-			return nil
-		}
-		info, err := entry.Info()
-		if err != nil {
-			return err
-		}
-		fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", filepath.ToSlash(rel), info.Size(), info.ModTime().UnixNano())
-		return nil
-	})
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(digest.Sum(nil)), nil
+	return a.sagaState(ctx, true).relatedKey()
 }
 
 // buildRelatedReviews intersects every review's changed lines with the code
 // the documentation references, and attributes what it finds to the records
 // that reach that code.
-func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.Saga, records requirements.Document, resolver coverage.Resolver) *relatedReviewIndex {
+//
+// touched holds what earlier builds found for each review, keyed by the
+// review's commits and the documentation's code; it is read and refilled, and
+// keeps only what this build used.
+func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.Saga, records requirements.Document, resolver coverage.Resolver, touched map[string][]string) *relatedReviewIndex {
 	started := time.Now()
 	index := &relatedReviewIndex{byRecord: map[string][]relatedReviewView{}}
 	chain := newRecordChain(document, records)
@@ -166,6 +164,9 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 		index.Elapsed = time.Since(started)
 		return index
 	}
+	code := documentedCodeDigest(document)
+	var touchedMutex sync.Mutex
+	used := map[string]bool{}
 	// Each review is an independent intersection, and most of the cost is Git
 	// reads, so they run together. The resolver is safe for concurrent use and
 	// its blob cache is shared across them.
@@ -187,9 +188,25 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 				if err != nil {
 					continue
 				}
-				changes, err := documentedChanges(ctx, sourceDir, document, documented, rng)
-				if err != nil {
-					continue
+				key := rng.BaseOID + "\x00" + rng.HeadOID + "\x00" + code
+				touchedMutex.Lock()
+				targets, known := touched[key]
+				used[key] = true
+				touchedMutex.Unlock()
+				if !known {
+					settled := &settledResolver{resolver: resolver}
+					targets, err = touchedTargets(ctx, sourceDir, document, documented, rng, settled)
+					if err != nil {
+						continue
+					}
+					// Only an answer decided by the range and the code alone
+					// is kept under them: not one a failed or abandoned read,
+					// or a pinned commit this repository lacks, had a part in.
+					if !settled.provisional.Load() && ctx.Err() == nil {
+						touchedMutex.Lock()
+						touched[key] = targets
+						touchedMutex.Unlock()
+					}
 				}
 				view := relatedReviewView{ID: review.ID, Title: review.Title, Href: reviewHref(review.ID), Merged: review.Merged != nil}
 				if view.Title == "" {
@@ -200,19 +217,8 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 				}
 				result := &touchedReview{view: view, records: map[string]bool{}}
 				results[position] = result
-				if len(changes.Atoms) == 0 {
-					continue
-				}
-				// The documentation's own coverage of the review's range. Every
-				// target that accounts for a changed line is a place this review
-				// touched. The rest of the report describes only the files read,
-				// so only Targets is used.
-				report := coverage.EvaluateTargets(ctx, changedFileTargets(document, changes), saga.Validation{Valid: true}, changes, resolver)
-				for _, target := range report.Targets {
-					if target.Covered == 0 {
-						continue
-					}
-					for _, record := range chain.recordsFor(target.Target) {
+				for _, target := range targets {
+					for _, record := range chain.recordsFor(target) {
 						result.records[record] = true
 					}
 				}
@@ -224,6 +230,11 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 	}
 	close(jobs)
 	wait.Wait()
+	for key := range touched {
+		if !used[key] {
+			delete(touched, key)
+		}
+	}
 	for _, result := range results {
 		if result == nil {
 			continue
@@ -239,6 +250,60 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 	}
 	index.Elapsed = time.Since(started)
 	return index
+}
+
+// settledResolver notes whether any answer it passed on was provisional:
+// one that may change without the range or the code changing.
+type settledResolver struct {
+	resolver    coverage.Resolver
+	provisional atomic.Bool
+}
+
+func (settled *settledResolver) Resolve(ctx context.Context, reference coderef.Reference, view string) coderesolve.Resolution {
+	if settled.resolver == nil {
+		settled.provisional.Store(true)
+		return coderesolve.Resolution{State: coderesolve.Stale, Location: reference.Location(), Reason: "the source repository could not be read", Provisional: true}
+	}
+	resolution := settled.resolver.Resolve(ctx, reference, view)
+	if resolution.Provisional {
+		settled.provisional.Store(true)
+	}
+	return resolution
+}
+
+// touchedTargets is every documentation target that accounts for a line the
+// review's range changed: the documentation's own coverage of the range. The
+// rest of the coverage report describes only the files read, so only its
+// targets are kept.
+func touchedTargets(ctx context.Context, sourceDir string, document *saga.Saga, documented []string, rng reviewstate.Range, resolver coverage.Resolver) ([]string, error) {
+	changes, err := documentedChanges(ctx, sourceDir, document, documented, rng)
+	if err != nil {
+		return nil, err
+	}
+	targets := []string{}
+	if len(changes.Atoms) == 0 {
+		return targets, nil
+	}
+	report := coverage.EvaluateTargets(ctx, changedFileTargets(document, changes), saga.Validation{Valid: true}, changes, resolver)
+	for _, target := range report.Targets {
+		if target.Covered > 0 {
+			targets = append(targets, target.Target)
+		}
+	}
+	return targets, nil
+}
+
+// documentedCodeDigest commits to everything of the documentation a review's
+// intersection reads: the repository it names and the code every target
+// references. Prose, records, and reviews are not part of it.
+func documentedCodeDigest(document *saga.Saga) string {
+	digest := sha256.New()
+	fmt.Fprintf(digest, "%s\x00", document.Manifest.Source.Repository)
+	coverage.WalkDocumentCode(document, func(target string, code []saga.CodeFile) {
+		encoded, _ := json.Marshal(code)
+		fmt.Fprintf(digest, "%s\x00%s\x00", target, encoded)
+	})
+	return hex.EncodeToString(digest.Sum(nil))
 }
 
 // recordChain is the one chain that already reaches code, read backwards: a
