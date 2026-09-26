@@ -103,7 +103,7 @@ var commandUsage = map[string]string{
 	"erd":                         "change-saga erd <add|revise|set-state> [flags] <saga>",
 	"erd-overlay":                 "change-saga erd-overlay <add|revise|set-state> [flags] <saga>",
 	"inventory":                   "change-saga inventory <adopt-format> [flags] <saga>",
-	"init":                        "change-saga init [flags] <name.saga>",
+	"init":                        "change-saga init [flags] [name.saga]",
 	"setup-initial-saga":          "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
 	"feature":                     "change-saga feature add [flags] <saga>",
 	"feature add":                 "change-saga feature add --id ID --title TEXT [--description TEXT] [flags] <saga>",
@@ -230,12 +230,13 @@ var commandUsage = map[string]string{
 func PrintHelp(out io.Writer) {
 	fmt.Fprint(out, `Change Saga — living documentation for an application, kept honest by the code
 
-A repository has one app Saga. It documents the application: an overview,
-the personas it serves, a design system, an onboarding deck, feature flags,
-and durable features, the product domains that each hold their own stories,
-design, quality, and implementation deck. Every link is pinned, so when a
-story or the code changes, whatever relied on the old version goes visibly
-stale.
+The recommended idiom is one Saga per repository, change.saga at its root.
+It documents the application: an overview, the personas it serves, a design
+system, an onboarding deck, feature flags, and durable features, the product
+domains that each hold their own stories, design, quality, and implementation
+deck. A monorepo keeps one change.saga at its root and documents each app
+through its own features. Every link is pinned, so when a story or the code
+changes, whatever relied on the old version goes visibly stale.
 
 Do what the user asks, at the smallest scope that completely satisfies the
 request. New product work often begins with personas, valuable user stories,
@@ -246,7 +247,7 @@ one pass/fail criterion; add only the narrowest obligation supported by the
 confirmed intent rather than inventing behavior to satisfy the format.
 
 A focused change:
-  1. "init" the app Saga when the repository does not have one.
+  1. "init" the repository's Saga (change.saga) when it does not have one.
   2. Author the requested part of the lifecycle. For an implementation change,
      "add-deck", "add-slide", and "add-item" explain it, and "cover" references
      every changed line from the Item that explains it. The first command that
@@ -293,7 +294,7 @@ Usage:
 	fmt.Fprint(out, `
 Run "change-saga <command> -h" for command-specific options.
 
-Starting an app-wide Saga with a coding agent?
+Starting the repository's Saga with a coding agent?
   Run "change-saga setup-initial-saga" once. It inspects the repository and
   prints the guided interview and investigation workflow. If a Saga already
   exists, it recommends ordinary updates unless the user requests an overhaul.
@@ -336,7 +337,7 @@ var commandDescription = map[string]string{
 	"erd":                         "Author the application ERD: an offline SVG visual, its directory of data-entity pins, and element bindings. Requires inventory format 2.",
 	"erd-overlay":                 "Propose data-model changes against an exact ERD revision without rewriting it: replacement or new entity pins, removals, and an optional visual. Requires inventory format 2.",
 	"inventory":                   "Adopt inventory format 2 explicitly. Existing records are not rewritten; legacy revisions read as unspecified intent. Older change-saga versions then refuse the inventory instead of dropping content.",
-	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Features, stories, personas, design, and quality\nare optional and can come later.",
+	"init":                        "Create the repository's Saga: the saga.json manifest, a reviewer README, and the\napp overview under ___overview. With no path it creates change.saga in the current\ndirectory, identified and titled after the repository's origin remote (or, without one,\nits top-level directory). The recommended idiom is one Saga per repository; a\nmonorepo documents each app as features of it. Another Saga never blocks init, which\nonly notes it. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Features, stories, personas, design, and quality\nare optional and can come later.",
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
 	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
 	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
@@ -488,10 +489,13 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	if flags.NArg() != 1 {
+	if flags.NArg() > 1 {
 		return fmt.Errorf("usage: %s", commandUsage["init"])
 	}
-	root := flags.Arg(0)
+	root := DefaultSagaName
+	if flags.NArg() == 1 {
+		root = flags.Arg(0)
+	}
 	if !strings.HasSuffix(filepath.Base(root), ".saga") {
 		return fmt.Errorf("saga directory must end in .saga")
 	}
@@ -500,19 +504,33 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	} else if !os.IsNotExist(err) {
 		return err
 	}
+	if *id != "" && !saga.ValidID(*id) {
+		return fmt.Errorf("--id must be a stable 1-128 character identifier")
+	}
+	repositoryURI, repositoryRoot, err := discoverRepository(ctx, *repoDir, *repository, *allowLocalRepository, *allowRepositoryMismatch)
+	if err != nil {
+		return err
+	}
+	// A Saga's identity defaults to its directory name, but the default name
+	// is the tool's, not the project's: change.saga is named after the
+	// repository it documents, the name its recorded repository ends in rather
+	// than the checkout's folder, which may be named anything.
+	name := strings.TrimSuffix(filepath.Base(root), ".saga")
+	if filepath.Base(root) == DefaultSagaName {
+		name = repositoryName(repositoryURI, repositoryRoot)
+	}
 	if *title == "" {
-		*title = strings.TrimSuffix(filepath.Base(root), ".saga")
+		*title = name
 	}
 	if *id == "" {
-		*id = store.Slug(strings.TrimSuffix(filepath.Base(root), ".saga"))
+		*id = store.Slug(name)
 	}
 	if !saga.ValidID(*id) {
 		return fmt.Errorf("--id must be a stable 1-128 character identifier")
 	}
-	repositoryURI, _, err := discoverRepository(ctx, *repoDir, *repository, *allowLocalRepository, *allowRepositoryMismatch)
-	if err != nil {
-		return err
-	}
+	// One Saga per repository is the recommended idiom, not a rule: another
+	// Saga never blocks init, but the author is told so they can reconsider.
+	existing, _ := findSagaDirectories(repositoryRoot)
 	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: *id, Title: *title, Source: saga.Source{Repository: repositoryURI}}
 	// The overview's name is the manifest title. Its pitch, description, and
 	// terms, like features and personas, are authored after init; until then each
@@ -556,8 +574,11 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(out, `Created %[1]s
-Next, one of two paths.
+	fmt.Fprintf(out, "Created %s\n", root)
+	if len(existing) > 0 {
+		printExistingSagaNote(out, existing)
+	}
+	fmt.Fprintf(out, `Next, one of two paths.
 
 To cover a change (a branch or pull request): explain it with an
 implementation deck, then reference every changed line from the Item that

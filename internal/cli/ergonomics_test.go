@@ -246,7 +246,7 @@ func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 	PrintHelp(&output)
 	text := output.String()
 	for _, want := range []string{
-		"one app Saga", "Do what the user asks", "smallest scope", "focused code review",
+		"one Saga per repository, change.saga", "monorepo", "Do what the user asks", "smallest scope", "focused code review",
 		"valuable user stories", "accepted", "at least\none pass/fail criterion", "narrowest obligation",
 		"implementation evidence", "implementation change", "cover",
 		"reconcile --against main", "no verdict", "check --covers implementation",
@@ -280,7 +280,7 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 			var output bytes.Buffer
 			_ = Init(context.Background(), []string{"-h"}, &output)
 			return output.String()
-		}, want: []string{"app Saga", "___overview", "cover the change", "implementation deck", "document\nexisting code", "optional"}},
+		}, want: []string{"repository's Saga", "change.saga", "one Saga per repository", "___overview", "cover the change", "implementation deck", "document\nexisting code", "optional"}},
 		{name: "story add", run: func() string {
 			var output bytes.Buffer
 			_ = Story(context.Background(), []string{"add", "-h"}, &output)

@@ -348,7 +348,7 @@ type inventoryUsesComplete struct {
 func queryInventoryUses(ctx context.Context, args []string, out io.Writer) error {
 	flags := flag.NewFlagSet("query inventory-uses", flag.ContinueOnError)
 	flags.SetOutput(io.Discard)
-	root := flags.String("saga", "", "app Saga root")
+	root := flags.String("saga", "", "Saga root")
 	target := flags.String("target", "", "canonical technical URN")
 	flags.String("repo", "", "accepted for uniformity; declared uses read no source")
 	revision := flags.String("revision", "", "exact revision URN")
@@ -450,7 +450,7 @@ type inventorySelectionsData struct {
 func queryInventorySelections(ctx context.Context, args []string, out io.Writer) error {
 	flags := flag.NewFlagSet("query inventory-selections", flag.ContinueOnError)
 	flags.SetOutput(io.Discard)
-	root := flags.String("saga", "", "app Saga root")
+	root := flags.String("saga", "", "Saga root")
 	repo := flags.String("repo", "", "source checkout")
 	head := flags.String("head", "HEAD", "source revision to view")
 	feature := flags.String("feature", "", "feature ID or URN")
