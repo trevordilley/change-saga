@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"sync"
 	"testing"
 	"time"
 
@@ -102,16 +103,33 @@ func commitAll(t *testing.T, repo, message string) string {
 
 // advanceGitClock gives the next commit a timestamp one minute after the
 // previous one. Commits made within one second tie on date, and the order Git
-// lists tied commits in is not their ancestry order.
+// lists tied commits in is not their ancestry order. The clock belongs to the
+// test, so git applies it to the test's later commands in every repository
+// without the process-wide environment that would keep tests serial.
 func advanceGitClock(t *testing.T) {
 	t.Helper()
-	gitClock = gitClock.Add(time.Minute)
-	stamp := gitClock.Format(time.RFC3339)
-	t.Setenv("GIT_AUTHOR_DATE", stamp)
-	t.Setenv("GIT_COMMITTER_DATE", stamp)
+	clock := time.Date(2026, 1, 1, 9, 0, 0, 0, time.UTC)
+	if previous, ok := gitClocks.Load(t); ok {
+		clock = previous.(time.Time)
+	} else {
+		t.Cleanup(func() { gitClocks.Delete(t) })
+	}
+	gitClocks.Store(t, clock.Add(time.Minute))
 }
 
-var gitClock = time.Date(2026, 1, 1, 9, 0, 0, 0, time.UTC)
+// gitClocks holds each test's latest commit timestamp.
+var gitClocks sync.Map
+
+// gitClockEnv is the environment that dates a test's commits by its clock,
+// or nil when the test has not started one.
+func gitClockEnv(t *testing.T) []string {
+	clock, ok := gitClocks.Load(t)
+	if !ok {
+		return nil
+	}
+	stamp := clock.(time.Time).Format(time.RFC3339)
+	return append(os.Environ(), "GIT_AUTHOR_DATE="+stamp, "GIT_COMMITTER_DATE="+stamp)
+}
 
 func commitExists(repo, commit string) bool {
 	command := exec.Command("git", "cat-file", "-e", commit+"^{commit}")
@@ -144,6 +162,7 @@ const (
 // the referenced lines change, and survives a squash merge whose branch
 // commits are gone by being re-pinned to the landed commit.
 func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -344,6 +363,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 }
 
 func TestReferencesAndRepinRejectBadArguments(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 	for _, test := range []struct {
@@ -391,6 +411,7 @@ func repinCommand(args []string, out *bytes.Buffer) error {
 // Repinning a Saga whose evidence is already at the landed commit changes
 // nothing and records no commits.
 func TestRepinOntoTheCurrentPinChangesNothing(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	coverJSON(t, "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--name", "handler", root)
 	before := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "handler.json"))

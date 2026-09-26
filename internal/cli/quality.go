@@ -11,6 +11,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 )
@@ -24,6 +25,8 @@ var qualityOperations = []string{
 // per-criterion kind policies, exact evidence, and immutable runs. Every
 // record is append-only; the command never computes a score or percentage.
 func Quality(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return qualityCommand(ctx, args, out, os.Stdin)
 }
 

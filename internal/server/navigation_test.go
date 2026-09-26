@@ -35,6 +35,7 @@ func findNav(t *testing.T, nodes []*navNodeView, path ...string) *navNodeView {
 }
 
 func TestProductNavigationHidesEveryEmptySection(t *testing.T) {
+	t.Parallel()
 	nodes := makeProductNavTree(productNavSources{})
 	if len(nodes) != 0 {
 		t.Fatalf("empty architecture rendered %v", navTitles(nodes, 0))
@@ -44,6 +45,7 @@ func TestProductNavigationHidesEveryEmptySection(t *testing.T) {
 // The order is an information architecture, not a phase gate: authoring
 // Quality before any Design must not move Quality up.
 func TestProductNavigationDoesNotReorderAsWorkProgresses(t *testing.T) {
+	t.Parallel()
 	sources := productNavSources{
 		testCases: []*navNodeView{{Title: "Retry preserves the cart"}},
 	}
@@ -60,6 +62,7 @@ func TestProductNavigationDoesNotReorderAsWorkProgresses(t *testing.T) {
 // discovery path, and Requirements is its own overview: it never gains a
 // redundant "Overview" child.
 func TestProductPutsPrototypesBeforeRequirementsAndKeepsRequirementsItsOwnOverview(t *testing.T) {
+	t.Parallel()
 	requirements := makeRequirementsNav(&requirementsPageView{Stories: []*requirementStoryView{{
 		ID: "checkout", Label: "Story 01", Title: "Complete checkout", Href: "/requirements/checkout",
 		Criteria: []*requirementCriterionView{{Label: "AC 01", Statement: "The cart survives a retry.", Href: "/requirements/checkout/criteria/cart"}},
@@ -87,6 +90,7 @@ func TestProductPutsPrototypesBeforeRequirementsAndKeepsRequirementsItsOwnOvervi
 }
 
 func TestRequirementsWithoutStoriesIsHidden(t *testing.T) {
+	t.Parallel()
 	nodes := makeProductNavTree(productNavSources{requirements: makeRequirementsNav(&requirementsPageView{})})
 	if len(nodes) != 0 {
 		t.Fatalf("empty requirements rendered %v", navTitles(nodes, 0))
@@ -97,6 +101,7 @@ func TestRequirementsWithoutStoriesIsHidden(t *testing.T) {
 // the architecture by role: Implementation is where a deck belongs unless it
 // says otherwise, and "ux" is the one role that moves it out.
 func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
+	t.Parallel()
 	root := &saga.Section{ID: "root", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "deck", ID: "flows", Title: "Checkout flows", Target: saga.DeckTarget("test", "flows")},
 		{Kind: "deck", ID: "build", Title: "Build plan", Target: saga.DeckTarget("test", "build")},
@@ -157,6 +162,7 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 // Which technical category it satisfies is not recorded, so the chapter keeps
 // its authored title without inventing empty categories around it.
 func TestDesignChaptersJoinTechnicalWithoutClaimingAFixedRole(t *testing.T) {
+	t.Parallel()
 	root := &saga.Section{ID: "root", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "chapter", ID: "delivery", Title: "Delivery", Path: "delivery.chapter", Target: saga.ChapterTarget("test", "delivery")},
 		{Kind: "chapter", ID: "architecture", Title: "Technical architecture", Path: "___design/architecture.chapter", Target: saga.ChapterTarget("test", "architecture")},
@@ -177,6 +183,7 @@ func TestDesignChaptersJoinTechnicalWithoutClaimingAFixedRole(t *testing.T) {
 }
 
 func TestPrototypeNavigationNamesPrototypesFromTheirCurrentRevision(t *testing.T) {
+	t.Parallel()
 	document := prototypes.Document{SagaID: "test", Prototypes: []prototypes.Prototype{
 		{Identity: prototypes.Identity{ID: "checkout", CreatedAt: time.Unix(1, 0)},
 			CurrentRevision: &prototypes.Revision{ID: "r1", Title: "Checkout walkthrough"}},
@@ -196,6 +203,7 @@ func TestPrototypeNavigationNamesPrototypesFromTheirCurrentRevision(t *testing.T
 // report outline and then the same four places, so the architecture sits at a
 // stable place inside it whatever the app-level content is.
 func TestProductNavigationSitsInsideEveryFeatureBelowItsReportOutline(t *testing.T) {
+	t.Parallel()
 	sources := appNavFixture(t)
 	billing := sources.document.Features[0]
 	billing.Report.Children = []*saga.Section{
@@ -216,6 +224,7 @@ func TestProductNavigationSitsInsideEveryFeatureBelowItsReportOutline(t *testing
 }
 
 func TestEmptySectionsDoNotRender(t *testing.T) {
+	t.Parallel()
 	tmpl, err := newPageTemplate()
 	if err != nil {
 		t.Fatal(err)
@@ -233,6 +242,7 @@ func TestEmptySectionsDoNotRender(t *testing.T) {
 // opened every filled place would bury the deck a reviewer came to read under
 // rows they did not ask for.
 func TestOnlyImplementationOpensOnArrival(t *testing.T) {
+	t.Parallel()
 	deck := &navNodeView{Title: "Implementation review", NodeID: "nav-deck", Deck: true,
 		Children: []*navNodeView{{Title: "Architecture and storage", NodeID: "nav-slide"}}}
 	nodes := makeProductNavTree(productNavSources{
@@ -261,6 +271,7 @@ func TestOnlyImplementationOpensOnArrival(t *testing.T) {
 // With several implementation decks the rows stay, so a reader can tell which
 // deck a slide belongs to; each still opens to its slides.
 func TestSeveralImplementationDecksKeepTheirRows(t *testing.T) {
+	t.Parallel()
 	first := &navNodeView{Title: "Storage", NodeID: "nav-a", Deck: true, Children: []*navNodeView{{Title: "Schema"}}}
 	second := &navNodeView{Title: "Checkout", NodeID: "nav-b", Deck: true, Children: []*navNodeView{{Title: "Retry"}}}
 	nodes := makeProductNavTree(productNavSources{implementation: []*navNodeView{first, second}})
@@ -277,6 +288,7 @@ func TestSeveralImplementationDecksKeepTheirRows(t *testing.T) {
 // A collapsed place hides its children outright, so the places containing the
 // current page have to open or the reader loses the row they are standing on.
 func TestActivePageOpensThePlacesThatContainIt(t *testing.T) {
+	t.Parallel()
 	story := &navNodeView{Title: "Story 01 · Refund window", Active: true}
 	nodes := makeProductNavTree(productNavSources{
 		requirements: &navNodeView{Title: "Requirements", Children: []*navNodeView{

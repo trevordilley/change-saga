@@ -10,11 +10,14 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 func Technical(ctx context.Context, kind string, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	err := technicalOperation(ctx, kind, args, out)
 	if err != nil && jsonFlagRequested(args) {
 		return reportLivingMutationFailure(out, kind, err)
@@ -217,6 +220,8 @@ func bindVisual(svg []byte, def *requirements.TechnicalDefinition) error {
 
 // Inventory runs inventory-wide operations; today only explicit format adoption.
 func Inventory(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	err := inventoryOperation(args, out)
 	if err != nil && jsonFlagRequested(args) {
 		return reportLivingMutationFailure(out, "inventory", err)

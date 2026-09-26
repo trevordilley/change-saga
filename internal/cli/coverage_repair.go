@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -28,6 +29,8 @@ type coverageRecordLocation struct {
 }
 
 func RemoveCoverage(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	err := removeCoverage(ctx, args, out)
 	if err != nil && jsonFlagRequested(args) {
 		return reportJSONMutationFailure(out, err)
@@ -76,6 +79,8 @@ func removeCoverage(_ context.Context, args []string, out io.Writer) error {
 }
 
 func ReplaceCoverage(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	err := replaceCoverage(ctx, args, out, os.Stdin)
 	if err != nil && jsonFlagRequested(args) {
 		return reportJSONMutationFailure(out, err)

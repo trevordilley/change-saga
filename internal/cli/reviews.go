@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -19,6 +20,8 @@ var reviewOperations = []string{"create", "list", "approve", "request-changes", 
 // Review is the pull request review family. A review is a pull request's
 // slide deck; approval and comments exist only on its slides and Items.
 func Review(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("review", reviewOperations, out)
 	}

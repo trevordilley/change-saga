@@ -38,6 +38,7 @@ func boundedFixture(t *testing.T) (testfixture.LargeSaga, *app, *http.ServeMux) 
 }
 
 func TestRootNeverCallsTheComparisonLoaderOrFingerprintsEvidence(t *testing.T) {
+	t.Parallel()
 	fixture, application, handler := boundedFixture(t)
 	var calls atomic.Int32
 	release := make(chan struct{})
@@ -96,6 +97,7 @@ func TestRootNeverCallsTheComparisonLoaderOrFingerprintsEvidence(t *testing.T) {
 }
 
 func TestCodeCatalogNeverCallsTheFullComparisonLoader(t *testing.T) {
+	t.Parallel()
 	_, application, handler := boundedFixture(t)
 	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
 		t.Fatal("changed-file catalog requested the full source comparison")
@@ -137,6 +139,7 @@ func TestCodeCatalogNeverCallsTheFullComparisonLoader(t *testing.T) {
 }
 
 func TestCodeCatalogListsEveryExplanationThatUsesTheSelectedFile(t *testing.T) {
+	t.Parallel()
 	fixture, err := testfixture.GenerateLargeSaga(context.Background(), t.TempDir(), testfixture.LargeSagaOptions{
 		Chapters: 1, SectionsPerChapter: 1, FragmentsPerSection: 3,
 		SourceFiles: 1, ChangedLinesPerFile: 9, CoverageRangeWidth: 1,
@@ -173,6 +176,7 @@ func TestCodeCatalogListsEveryExplanationThatUsesTheSelectedFile(t *testing.T) {
 }
 
 func TestIncrementalComparisonEndpointsArePaginated(t *testing.T) {
+	t.Parallel()
 	_, application, handler := boundedFixture(t)
 
 	code := getPage(t, handler, "/api/code?limit=2")
@@ -237,6 +241,7 @@ func TestIncrementalComparisonEndpointsArePaginated(t *testing.T) {
 }
 
 func TestHTTPPageLimitCapsAtHardMaximum(t *testing.T) {
+	t.Parallel()
 	request := httptest.NewRequest(http.MethodGet, "/api/code?limit=100000", nil)
 	window, err := pageRequest(request, "code", 1000, defaultSurfacePageLimit, maxSurfacePageLimit)
 	if err != nil {
@@ -263,6 +268,7 @@ func getPage(t *testing.T, handler http.Handler, path string) *httptest.Response
 // Observed Coverage loads the whole Saga with its code once, and every row a
 // reviewer then opens reads that graph, until a file of the Saga changes.
 func TestObservedCoverageGraphIsReusedUntilTheSagaChanges(t *testing.T) {
+	t.Parallel()
 	fixture, _, _ := boundedFixture(t)
 	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: serverTemplate(t)}
 	handler := newMux(application)
@@ -295,6 +301,7 @@ func TestObservedCoverageGraphIsReusedUntilTheSagaChanges(t *testing.T) {
 // inventory once per state of the Saga's files, and read them afresh after
 // any of those files changes.
 func TestDocumentationPagesReadTheSagaOncePerChange(t *testing.T) {
+	t.Parallel()
 	fixture, _, _ := boundedFixture(t)
 	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: serverTemplate(t)}
 	handler := newMux(application)

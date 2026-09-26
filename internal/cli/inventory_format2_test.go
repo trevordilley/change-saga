@@ -17,6 +17,7 @@ import (
 // published through the real writers, plus Items whose selections were
 // authored through add-item.
 func TestInventoryFormatTwoReadsCoverageAndReconcile(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	repo, before := sourceRepo(t, map[string]string{"README.md": "app\n"})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")

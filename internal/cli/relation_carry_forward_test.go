@@ -16,6 +16,7 @@ import (
 // criterion; a revision that leaves the criterion alone carries its pin
 // forward, reports that it did, and asks nothing of anyone.
 func TestAddingAPersonaToAStoryStalesNothingAndSaysWhatItCarried(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	root, repo := coveredSaga(t)
 	if err := addCheckoutStory(t, root, "checkout"); err != nil {

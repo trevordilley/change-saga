@@ -33,6 +33,7 @@ func newTermSaga(t *testing.T, repo string) string {
 }
 
 func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
+	t.Parallel()
 	repo, commit := sourceRepo(t, map[string]string{"kinds.go": kindsGo})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	root := newTermSaga(t, repo)
@@ -98,6 +99,7 @@ func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
 }
 
 func TestIntentOnlyTermAndSemanticAxisValidation(t *testing.T) {
+	t.Parallel()
 	repo, _ := sourceRepo(t, map[string]string{"kinds.go": kindsGo})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	root := newTermSaga(t, repo)
@@ -164,6 +166,7 @@ func actionsIn(document statusDocument, category nextaction.Category) []nextacti
 }
 
 func TestAComparisonSuggestsNewTerminologyWithoutBlocking(t *testing.T) {
+	t.Parallel()
 	repo, _ := sourceRepo(t, map[string]string{"kinds.go": kindsGo})
 	root := newTermSaga(t, repo)
 	if err := Term(context.Background(), []string{"add", "--id", "testtaker", "--name", "Testtaker", "--definition", "One sitting of an assessment.",
@@ -272,6 +275,7 @@ func termURNs(data map[string]any) string {
 }
 
 func TestALineOfCodeAndAStoryReachTheirTerms(t *testing.T) {
+	t.Parallel()
 	repo, _ := sourceRepo(t, map[string]string{"kinds.go": kindsGo})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	root := newTermSaga(t, repo)

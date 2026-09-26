@@ -37,6 +37,7 @@ func newLivingSaga(t *testing.T) string {
 }
 
 func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name string
 		run  func(context.Context, []string, io.Writer) error
@@ -193,6 +194,7 @@ func TestStoryStructuredInputAndEditorUseExistingRevisionWriter(t *testing.T) {
 }
 
 func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	var output bytes.Buffer
 	if err := Story(context.Background(), []string{
@@ -222,6 +224,7 @@ func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
 // The installed skill teaches one Saga whose authoring scope follows the
 // user's work, from a focused review to a complete product lifecycle.
 func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := InstallSkill(nil, &output); err != nil {
 		t.Fatal(err)
@@ -260,6 +263,7 @@ func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 }
 
 func TestLivingMutationSubcommandHelpExplainsSemantics(t *testing.T) {
+	t.Parallel()
 	checks := []struct {
 		family    func(context.Context, []string, io.Writer) error
 		args      []string
@@ -285,6 +289,7 @@ func TestLivingMutationSubcommandHelpExplainsSemantics(t *testing.T) {
 }
 
 func TestRequirementsMutationCommandsReturnJSONAndReplay(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	ctx := context.Background()
 
@@ -371,6 +376,7 @@ func TestRequirementsMutationCommandsReturnJSONAndReplay(t *testing.T) {
 }
 
 func TestMutationFamiliesAdoptOnlyTheirOwnedOptionalRoot(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	featureDir := testFeatureDir(root)
 	for _, name := range []string{"___requirements", "___design", "___workplan"} {
@@ -412,6 +418,7 @@ func TestMutationFamiliesAdoptOnlyTheirOwnedOptionalRoot(t *testing.T) {
 }
 
 func TestPlanCommandsReturnJSONAndDelegateValidationAndReplay(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	ctx := context.Background()
 	var output bytes.Buffer

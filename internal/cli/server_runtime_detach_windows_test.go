@@ -9,6 +9,7 @@ import (
 )
 
 func TestConfigureDetachedProcessCreatesProcessGroup(t *testing.T) {
+	t.Parallel()
 	command := exec.Command("cmd.exe", "/c", "exit", "0")
 	configureDetachedProcess(command)
 	if command.SysProcAttr == nil {

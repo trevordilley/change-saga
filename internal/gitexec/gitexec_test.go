@@ -1,0 +1,428 @@
+package gitexec
+
+import (
+	"bytes"
+	"context"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+	"testing"
+	"time"
+)
+
+func git(t *testing.T, dir string, args ...string) string {
+	t.Helper()
+	command := exec.Command("git", append([]string{"-C", dir}, args...)...)
+	output, err := command.CombinedOutput()
+	if err != nil {
+		t.Fatalf("git %v: %v\n%s", args, err, output)
+	}
+	return strings.TrimSpace(string(output))
+}
+
+func write(t *testing.T, path, body string) {
+	t.Helper()
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, []byte(body), 0o644); err != nil {
+		t.Fatal(err)
+	}
+}
+
+// history builds commits exercising what a diff can report: additions,
+// edits, a rename, a binary file, a deletion, and a change under .saga.
+func history(t *testing.T) (repo string, commits []string) {
+	t.Helper()
+	repo = t.TempDir()
+	git(t, repo, "init", "-q", "-b", "main")
+	git(t, repo, "config", "user.name", "Test")
+	git(t, repo, "config", "user.email", "test@example.test")
+	commit := func(message string) {
+		git(t, repo, "add", "-A")
+		git(t, repo, "commit", "-q", "--allow-empty", "-m", message)
+		commits = append(commits, git(t, repo, "rev-parse", "HEAD"))
+	}
+	write(t, filepath.Join(repo, "a.go"), "package a\n\nconst A = 1\nconst B = 2\n")
+	write(t, filepath.Join(repo, "docs", "notes.md"), strings.Repeat("line\n", 40))
+	commit("base")
+	write(t, filepath.Join(repo, "a.go"), "package a\n\nconst A = 10\nconst B = 2\nconst C = 3\n")
+	write(t, filepath.Join(repo, "app.saga", "record.json"), "{}\n")
+	commit("edit")
+	git(t, repo, "mv", "docs/notes.md", "docs/renamed notes.md")
+	write(t, filepath.Join(repo, "image.bin"), "\x00\x01\x02binary\x00")
+	commit("rename")
+	if err := os.Remove(filepath.Join(repo, "a.go")); err != nil {
+		t.Fatal(err)
+	}
+	commit("delete")
+	git(t, repo, "tag", "-a", "-m", "release", "v1", commits[1])
+	return repo, commits
+}
+
+var diffConfig = []string{
+	"-c", "core.quotePath=true", "-c", "diff.algorithm=myers", "-c", "diff.renames=true",
+}
+
+var diffFlags = []string{"--no-color", "--no-ext-diff", "--no-textconv", "--src-prefix=a/", "--dst-prefix=b/", "--find-renames=50%"}
+
+// The batch process must print exactly what one `git diff` per pair prints,
+// because coverage is anchored to those bytes.
+func TestDiffTreeMatchesGitDiff(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	defer end()
+	for _, mode := range [][]string{{"-p", "--unified=0"}, {"-p", "--unified=20"}, {"--numstat", "-z"}} {
+		for _, pathspec := range [][]string{nil, {".", ":(exclude,glob)**/*.saga/**"}} {
+			treeArgs := append(append(append(append([]string{}, diffConfig...), "diff-tree", "--stdin", "--no-commit-id", "-r"), diffFlags...), mode...)
+			treeArgs = append(append(treeArgs, "--"), pathspec...)
+			for _, pair := range [][2]string{{commits[0], commits[1]}, {commits[1], commits[2]}, {commits[0], commits[3]}, {commits[3], commits[0]}, {commits[2], commits[2]}} {
+				diffArgs := append(append(append(append([]string{}, diffConfig...), "-C", repo, "diff"), diffFlags...), mode[len(mode)-1])
+				if mode[0] == "--numstat" {
+					diffArgs = append(diffArgs, "--numstat")
+				}
+				diffArgs = append(append(diffArgs, pair[0], pair[1], "--"), pathspec...)
+				want, err := exec.Command("git", diffArgs...).Output()
+				if err != nil {
+					t.Fatal(err)
+				}
+				got, ok := DiffTree(ctx, repo, treeArgs, pair[0], pair[1])
+				if !ok {
+					t.Fatalf("DiffTree %v %v could not answer", mode, pair)
+				}
+				if !bytes.Equal(got, want) {
+					t.Fatalf("DiffTree %v %v %v differs from git diff:\n--- got\n%s\n--- want\n%s", mode, pathspec, pair, got, want)
+				}
+			}
+		}
+	}
+}
+
+func TestDiffTreeDeclinesWhatItCannotAnswer(t *testing.T) {
+	repo, commits := history(t)
+	args := []string{"diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
+	if _, ok := DiffTree(context.Background(), repo, args, commits[0], commits[1]); ok {
+		t.Fatal("DiffTree answered without a session")
+	}
+	ctx, end := Begin(context.Background())
+	defer end()
+	if _, ok := DiffTree(ctx, repo, args, "main", commits[1]); ok {
+		t.Fatal("DiffTree answered for a revision that is not a full object name")
+	}
+	for range maxBatchFailures + 1 {
+		if _, ok := DiffTree(ctx, repo, args, strings.Repeat("a", 40), commits[1]); ok {
+			t.Fatal("DiffTree answered for a missing commit")
+		}
+	}
+	// An absent commit is declined before it reaches diff-tree, which would
+	// exit on it; it must never retire the process for later pairs.
+	if got := sessionFrom(ctx).failures[strings.Join(append([]string{"-C", repo}, args...), "\x00")]; got != 0 {
+		t.Fatalf("absent commits broke diff-tree %d times", got)
+	}
+	// The failed process is replaced rather than poisoning the session.
+	if _, ok := DiffTree(ctx, repo, args, commits[0], commits[1]); !ok {
+		t.Fatal("DiffTree did not recover after a failed request")
+	}
+}
+
+func TestResolveCommitMatchesRevParse(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	defer end()
+	for _, revision := range []string{"HEAD", "main", "HEAD~2", "v1", commits[0], commits[0][:12], "refs/heads/main"} {
+		want := git(t, repo, "rev-parse", "--verify", "--end-of-options", revision+"^{commit}")
+		got, ok := ResolveCommit(ctx, repo, revision)
+		if !ok || got != want {
+			t.Fatalf("ResolveCommit(%q) = %q, %v; want %q", revision, got, ok, want)
+		}
+	}
+	blob := git(t, repo, "rev-parse", commits[0]+":a.go")
+	for _, revision := range []string{"missing", strings.Repeat("a", 40), blob, "--help", "HEAD\nHEAD", ""} {
+		if got, ok := ResolveCommit(ctx, repo, revision); ok {
+			t.Fatalf("ResolveCommit(%q) = %q; want no answer", revision, got)
+		}
+	}
+	// A declined request does not break later ones.
+	if got, ok := ResolveCommit(ctx, repo, "HEAD"); !ok || got != commits[3] {
+		t.Fatalf("ResolveCommit after a miss = %q, %v", got, ok)
+	}
+}
+
+func TestOutputIsMemoizedWithinASessionOnly(t *testing.T) {
+	repo, _ := history(t)
+	counter := filepath.Join(t.TempDir(), "count")
+	// GIT_TRACE logs one line per Git process, which counts the spawns.
+	t.Setenv("GIT_TRACE", counter)
+	spawns := func() int {
+		data, _ := os.ReadFile(counter)
+		return strings.Count(string(data), "trace: built-in: git rev-parse")
+	}
+	ctx, end := Begin(context.Background())
+	for range 3 {
+		output, err := Output(ctx, "-C", repo, "rev-parse", "--show-toplevel")
+		if err != nil || strings.TrimSpace(string(output)) == "" {
+			t.Fatalf("Output = %q, %v", output, err)
+		}
+	}
+	_, missingErr := CombinedOutput(ctx, "-C", repo, "rev-parse", "--verify", "missing")
+	_, repeatErr := CombinedOutput(ctx, "-C", repo, "rev-parse", "--verify", "missing")
+	end()
+	if missingErr == nil || repeatErr == nil {
+		t.Fatal("a failing query succeeded")
+	}
+	if got := spawns(); got != 2 {
+		t.Fatalf("a session spawned rev-parse %d times; want one per distinct query", got)
+	}
+	for range 2 {
+		if _, err := Output(context.Background(), "-C", repo, "rev-parse", "--show-toplevel"); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if got := spawns(); got != 4 {
+		t.Fatalf("without a session rev-parse ran %d times in total; want every call to spawn", got)
+	}
+}
+
+func TestNestedBeginSharesTheSessionAndEndStopsProcesses(t *testing.T) {
+	repo, _ := history(t)
+	outer, end := Begin(context.Background())
+	inner, innerEnd := Begin(outer)
+	if sessionFrom(inner) != sessionFrom(outer) {
+		t.Fatal("a nested Begin started a second session")
+	}
+	if _, ok := ResolveCommit(inner, repo, "HEAD"); !ok {
+		t.Fatal("ResolveCommit failed")
+	}
+	innerEnd()
+	session := sessionFrom(outer)
+	if got := liveProcesses(session); got != 1 {
+		t.Fatalf("the nested end stopped the shared session's processes: %d live", got)
+	}
+	processes := idleProcesses(session)
+	end()
+	for _, process := range processes {
+		select {
+		case <-process.exited:
+		case <-time.After(10 * time.Second):
+			t.Fatal("ending the session left its Git process running")
+		}
+	}
+	if _, _, ok := ReadObject(outer, repo, "HEAD"); ok || len(idleProcesses(session)) != 0 {
+		t.Fatal("an ended session started a new process")
+	}
+}
+
+func TestCancelledRequestDoesNotHang(t *testing.T) {
+	repo, _ := history(t)
+	session, end := Begin(context.Background())
+	defer end()
+	ctx, cancel := context.WithCancel(session)
+	cancel()
+	if _, ok := ResolveCommit(ctx, repo, "HEAD"); ok {
+		t.Fatal("a cancelled request was answered")
+	}
+	if got, ok := ResolveCommit(session, repo, "HEAD"); !ok || got == "" {
+		t.Fatal("the session did not recover after a cancelled request")
+	}
+}
+
+func TestReadObjectMatchesCatFile(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	defer end()
+	for _, name := range []string{commits[0] + ":a.go", commits[2] + ":image.bin", commits[2] + ":docs", commits[1]} {
+		wantType := git(t, repo, "cat-file", "-t", name)
+		want, err := exec.Command("git", "-C", repo, "cat-file", wantType, name).Output()
+		if err != nil {
+			t.Fatal(err)
+		}
+		gotType, got, ok := ReadObject(ctx, repo, name)
+		if !ok || gotType != wantType || !bytes.Equal(got, want) {
+			t.Fatalf("ReadObject(%q) = %q, %q, %v; want %q, %q", name, gotType, got, ok, wantType, want)
+		}
+	}
+	for _, name := range []string{commits[0] + ":absent", commits[0] + ":name with spaces"} {
+		if gotType, _, ok := ReadObject(ctx, repo, name); !ok || gotType != "missing" {
+			t.Fatalf("ReadObject(%q) = %q, %v; want missing", name, gotType, ok)
+		}
+	}
+	// Revisions and objects share one cat-file process per repository.
+	if _, ok := ResolveCommit(ctx, repo, "HEAD"); !ok {
+		t.Fatal("ResolveCommit failed after reads")
+	}
+	if got := liveProcesses(sessionFrom(ctx)); got != 1 {
+		t.Fatalf("the session runs %d cat-file processes for one repository; want 1", got)
+	}
+	if _, _, ok := ReadObject(context.Background(), repo, commits[0]); ok {
+		t.Fatal("ReadObject answered without a session")
+	}
+}
+
+// A Git that cannot serve an invocation falls back to one-shot commands
+// instead of starting a process for every question.
+func TestBrokenBatchInvocationIsRetiredAfterRepeatedFailures(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	defer end()
+	args := []string{"diff-tree", "--stdin", "--no-such-option"}
+	for range maxBatchFailures + 2 {
+		if _, ok := DiffTree(ctx, repo, args, commits[0], commits[1]); ok {
+			t.Fatal("an invocation Git rejects answered")
+		}
+	}
+	session := sessionFrom(ctx)
+	if got := session.failures[strings.Join(append([]string{"-C", repo}, args...), "\x00")]; got != maxBatchFailures {
+		t.Fatalf("failures = %d; want the invocation retired after %d", got, maxBatchFailures)
+	}
+	if got := liveFor(session, append([]string{"-C", repo}, args...)); got != 0 {
+		t.Fatalf("a retired invocation left %d processes", got)
+	}
+}
+
+func liveProcesses(session *Session) int {
+	session.mu.Lock()
+	defer session.mu.Unlock()
+	live := 0
+	for _, pool := range session.pools {
+		live += pool.live
+	}
+	return live
+}
+
+// liveFor counts the processes running one invocation.
+func liveFor(session *Session, args []string) int {
+	session.mu.Lock()
+	defer session.mu.Unlock()
+	if pool := session.pools[strings.Join(args, "\x00")]; pool != nil {
+		return pool.live
+	}
+	return 0
+}
+
+func idleProcesses(session *Session) []*batch {
+	session.mu.Lock()
+	defer session.mu.Unlock()
+	var idle []*batch
+	for _, pool := range session.pools {
+		idle = append(idle, pool.idle...)
+	}
+	return idle
+}
+
+// Parallel callers each get a process of their own, up to a bound, so a
+// session never serializes work its caller runs concurrently.
+func TestParallelCallersShareABoundedPool(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	defer end()
+	session := sessionFrom(ctx)
+	args := []string{"diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
+	var holders []func()
+	for range maxBatchProcesses {
+		process, release := session.acquire(context.Background(), append([]string{"-C", repo}, args...), true)
+		if process == nil {
+			t.Fatal("the pool refused a process below its bound")
+		}
+		holders = append(holders, release)
+	}
+	full := append([]string{"-C", repo}, args...)
+	if got := liveFor(session, full); got != maxBatchProcesses {
+		t.Fatalf("%d concurrent callers ran %d processes", maxBatchProcesses, got)
+	}
+	answered := make(chan bool)
+	go func() {
+		_, ok := DiffTree(ctx, repo, args, commits[0], commits[1])
+		answered <- ok
+	}()
+	select {
+	case <-answered:
+		t.Fatal("a caller beyond the bound started another process instead of waiting")
+	case <-time.After(200 * time.Millisecond):
+	}
+	holders[0]()
+	if ok := <-answered; !ok {
+		t.Fatal("a waiting caller was not served by the released process")
+	}
+	if got := liveFor(session, full); got != maxBatchProcesses {
+		t.Fatalf("the pool grew past its bound to %d processes", got)
+	}
+	for _, release := range holders[1:] {
+		release()
+	}
+}
+
+// A caller that gives up while Git answers must not hand its cancellation
+// to another caller of the same question whose context is still live.
+func TestMemoizedCallerDoesNotInheritAnotherCallersCancellation(t *testing.T) {
+	original := spawnGit
+	t.Cleanup(func() { spawnGit = original })
+	inside := make(chan struct{})
+	spawnGit = func(ctx context.Context, _ bool, _ []string) ([]byte, error) {
+		select {
+		case inside <- struct{}{}:
+			<-ctx.Done()
+			return nil, ctx.Err()
+		default:
+			return []byte("answer"), nil
+		}
+	}
+	session, end := Begin(context.Background())
+	defer end()
+	first, cancel := context.WithCancel(session)
+	go func() { _, _ = Output(first, "question") }()
+	<-inside
+	answered := make(chan string)
+	go func() {
+		output, err := Output(session, "question")
+		if err != nil {
+			answered <- "error: " + err.Error()
+			return
+		}
+		answered <- string(output)
+	}()
+	time.Sleep(50 * time.Millisecond) // let the second caller wait on the first
+	cancel()
+	select {
+	case got := <-answered:
+		if got != "answer" {
+			t.Fatalf("the live caller got %q; want its own answer", got)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("the live caller never got an answer")
+	}
+}
+
+// A caller waiting for a full pool gives up when its context does, instead
+// of waiting for a process to be released.
+func TestAcquireGivesUpWithItsContext(t *testing.T) {
+	repo, commits := history(t)
+	session, end := Begin(context.Background())
+	defer end()
+	args := []string{"-C", repo, "diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
+	var holders []func()
+	for range maxBatchProcesses {
+		_, release := sessionFrom(session).acquire(session, args, true)
+		holders = append(holders, release)
+	}
+	defer func() {
+		for _, release := range holders {
+			release()
+		}
+	}()
+	ctx, cancel := context.WithTimeout(session, 100*time.Millisecond)
+	defer cancel()
+	done := make(chan bool)
+	go func() {
+		_, ok := DiffTree(ctx, repo, args[2:], commits[0], commits[1])
+		done <- ok
+	}()
+	select {
+	case ok := <-done:
+		if ok {
+			t.Fatal("a cancelled caller was answered")
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("a cancelled caller kept waiting for a busy pool")
+	}
+}

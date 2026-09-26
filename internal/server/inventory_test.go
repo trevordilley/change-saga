@@ -14,6 +14,7 @@ import (
 )
 
 func TestDocumentationReviewControl(t *testing.T) {
+	t.Parallel()
 	pin := &saga.DocumentationLink{Target: "urn:change-saga:test:component:store", Revision: "urn:change-saga:test:component:store:revision:r1"}
 	item := reviewItemView{Item: &saga.Item{ItemManifest: saga.ItemManifest{Documentation: pin, Selections: []saga.ItemSelection{{ID: "subset"}}}, Target: "urn:change-saga:test:review:pr-1:slide:s:item:i"}}
 	var rendered bytes.Buffer
@@ -26,6 +27,7 @@ func TestDocumentationReviewControl(t *testing.T) {
 }
 
 func TestDocumentationPinnedPage(t *testing.T) {
+	t.Parallel()
 	root, repo := termSaga(t)
 	commit := strings.TrimSpace(serverGit(t, repo, "rev-parse", "HEAD"))
 	digest, err := coderef.DigestRange([]byte(serverKinds), 6, 6)

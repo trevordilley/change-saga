@@ -28,6 +28,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -376,8 +377,11 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 func newMux(application *app) *http.ServeMux {
 	mux := http.NewServeMux()
 	// Every route is stamped with its arrival, so the caches one request
-	// asks share the freshness check that answers it.
-	handle := func(pattern string, handler http.HandlerFunc) { mux.HandleFunc(pattern, arriving(handler)) }
+	// asks share the freshness check that answers it, and asks Git through
+	// one session of its own.
+	handle := func(pattern string, handler http.HandlerFunc) {
+		mux.HandleFunc(pattern, arriving(withGitSession(handler)))
+	}
 	handle("GET /requirements/{story}/criteria/{criterion}", application.page)
 	handle("GET /requirements/{story}", application.page)
 	handle("GET /requirements", application.page)
@@ -429,6 +433,20 @@ func newMux(application *app) *http.ServeMux {
 	handle("POST /api/runtime-stop", application.runtimeStop)
 	handle("GET /f/{id}/{path...}", application.fragmentFile)
 	return mux
+}
+
+// withGitSession gives each request one Git session: its Git questions are
+// asked once and its revision, object, and diff reads share long-lived
+// processes that stop when the response is written. The session is
+// isolated: the server outlives edits to nested .gitattributes files, which
+// no diff cache key covers, so a diff one request reads is not served to
+// the next.
+func withGitSession(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		ctx, end := gitexec.BeginIsolated(r.Context())
+		defer end()
+		next(w, r.WithContext(ctx))
+	}
 }
 
 func (a *app) runtimeStatus(w http.ResponseWriter, _ *http.Request) {

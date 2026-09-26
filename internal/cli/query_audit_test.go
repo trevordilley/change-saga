@@ -11,6 +11,7 @@ import (
 )
 
 func TestAuditAddsOnlyStaleSelectorsOwnedByTheFeatureItems(t *testing.T) {
+	t.Parallel()
 	item := "urn:change-saga:test:slide:flow:item:handler"
 	ref := coderef.Reference{Commit: strings.Repeat("a", 40), Path: "internal/handler.go", Start: 10, End: 12, Digest: "sha256:" + strings.Repeat("b", 64)}
 	review := &auditReviewSession{gaps: reviewapp.GapPage{Gaps: []reviewapp.Gap{

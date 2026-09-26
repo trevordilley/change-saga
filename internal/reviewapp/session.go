@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -22,6 +21,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -860,7 +860,7 @@ func Snapshot(ctx context.Context, root string, changes gitdiff.ChangeSet) (stri
 func buildSnapshot(ctx context.Context, root string, changes gitdiff.ChangeSet) (string, error) {
 	hash := sha256.New()
 	_, _ = fmt.Fprintf(hash, "change-saga-reviewapp-v1\x00%s\x00%s\x00", changes.BaseOID, changes.HeadOID)
-	if output, err := exec.CommandContext(ctx, "git", "-C", root, "rev-parse", "--verify", "HEAD").Output(); err == nil {
+	if output, err := gitexec.RepoOutput(ctx, root, "rev-parse", "--verify", "HEAD"); err == nil {
 		_, _ = hash.Write(bytesTrimSpace(output))
 		_, _ = hash.Write([]byte{0})
 	}

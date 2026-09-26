@@ -53,6 +53,7 @@ func sourcedStory(t *testing.T, root string) string {
 // A revision is a complete snapshot, so a flag-built revise that restates only
 // what changed used to delete every criterion and citation it left out.
 func TestStoryReviseInheritsWhatASingleParentAlreadySays(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	storyURN := sourcedStory(t, root)
 	before := currentStoryRevisionForTest(t, root)
@@ -91,6 +92,7 @@ func TestStoryReviseInheritsWhatASingleParentAlreadySays(t *testing.T) {
 // Naming a field still replaces it, and a statement-only revise keeps the
 // title it did not restate.
 func TestStoryReviseReplacesOnlyTheFieldsItIsGiven(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	storyURN := sourcedStory(t, root)
 	ctx := context.Background()
@@ -132,6 +134,7 @@ func TestStoryReviseReplacesOnlyTheFieldsItIsGiven(t *testing.T) {
 // complete definition; nothing is inherited from a parent the author must
 // choose between.
 func TestStoryReviseWithCompetingHeadsStillNeedsTheWholeDefinition(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	storyURN := sourcedStory(t, root)
 	ctx := context.Background()

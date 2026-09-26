@@ -31,6 +31,7 @@ func runPrototype(t *testing.T, args ...string) livingMutationOutput {
 }
 
 func TestPrototypeFamilyHelpListsTheAuthoringGrammar(t *testing.T) {
+	t.Parallel()
 	var first, second bytes.Buffer
 	if err := Prototype(context.Background(), []string{"-h"}, &first); !errors.Is(err, flag.ErrHelp) {
 		t.Fatalf("first help error = %v", err)
@@ -56,6 +57,7 @@ func TestPrototypeFamilyHelpListsTheAuthoringGrammar(t *testing.T) {
 }
 
 func TestPrototypeAddHTMLCopiesAnImmutableRevisionAndReplays(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
 	args := []string{
@@ -94,6 +96,7 @@ func TestPrototypeAddHTMLCopiesAnImmutableRevisionAndReplays(t *testing.T) {
 }
 
 func TestPrototypeAuthoringDoesNotRequireAnnotationOrLinkage(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><main id=\"explore\">Exploring</main>")
 	created := runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "explore", "--revision", "r1",
@@ -123,6 +126,7 @@ func TestPrototypeAuthoringDoesNotRequireAnnotationOrLinkage(t *testing.T) {
 }
 
 func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	reference := runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "figma-link", "--revision", "r1",
 		"--title", "Figma", "--url", "https://www.figma.com/file/abc")
@@ -175,6 +179,7 @@ func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 }
 
 func TestPrototypeReviseIsAppendOnlyAndReconcilesHeads(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
 	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
@@ -219,6 +224,7 @@ func TestPrototypeReviseIsAppendOnlyAndReconcilesHeads(t *testing.T) {
 }
 
 func TestPrototypeAnnotatePinsSelectorsToStoriesAndCriteria(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
 	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
@@ -286,6 +292,7 @@ func TestPrototypeAnnotatePinsSelectorsToStoriesAndCriteria(t *testing.T) {
 }
 
 func TestPrototypeMutationFailureReportsJSONAndExitStatus(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	var output bytes.Buffer
 	err := Prototype(context.Background(), []string{
@@ -306,6 +313,7 @@ func TestPrototypeMutationFailureReportsJSONAndExitStatus(t *testing.T) {
 }
 
 func TestValidateCoversPrototypeRecords(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
 	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)

@@ -76,6 +76,7 @@ const (
 )
 
 func TestLargeSagaFirstLoadStaysWithinPayloadBudgets(t *testing.T) {
+	t.Parallel()
 	fixture, _, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
 	page := budgetRequest(t, handler, "/")
 
@@ -101,6 +102,7 @@ func TestLargeSagaFirstLoadStaysWithinPayloadBudgets(t *testing.T) {
 // by markup that shrank for an unrelated reason; a page that still contains one
 // explanation's prose has lost the boundary whatever it weighs.
 func TestLargeSagaFirstLoadShipsOnlyTheChapterShell(t *testing.T) {
+	t.Parallel()
 	fixture, _, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
 	// The fixture's chapters belong to its one feature, so its page is the
 	// shell that names them.
@@ -143,6 +145,7 @@ func TestLargeSagaFirstLoadShipsOnlyTheChapterShell(t *testing.T) {
 // carries that chapter's structure and no explanation content, and an
 // explanation response carries exactly one explanation.
 func TestChapterAndExplanationEndpointsStayWithinBudgets(t *testing.T) {
+	t.Parallel()
 	fixture, _, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
 	page := budgetRequest(t, handler, featureHref(testfixture.LargeSagaFeature))
 
@@ -205,6 +208,7 @@ func firstAttributeValue(tb testing.TB, markup, attribute string) string {
 // received that file's code. A byte budget can be satisfied by markup that
 // shrank for unrelated reasons; this cannot.
 func TestLargeSagaFirstLoadOmitsUnopenedDiffBodies(t *testing.T) {
+	t.Parallel()
 	_, application, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
 	page := budgetRequest(t, handler, "/")
 
@@ -221,6 +225,7 @@ func TestLargeSagaFirstLoadOmitsUnopenedDiffBodies(t *testing.T) {
 }
 
 func TestLargeSagaFileDiffEndpointStaysWithinBudgets(t *testing.T) {
+	t.Parallel()
 	_, application, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
 	changes := budgetChanges(t, application)
 	path := effectiveAtomPath(changes.Atoms[0])
@@ -248,6 +253,7 @@ func TestLargeSagaFileDiffEndpointStaysWithinBudgets(t *testing.T) {
 // moving diff bodies off the page: what the page stopped inlining must still
 // arrive, scoped to the narrative target that asked for it.
 func TestFileDiffEndpointServesCoverageAndTargetedBodies(t *testing.T) {
+	t.Parallel()
 	_, application, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
 	snapshot := application.snapshot(context.Background())
 	if snapshot == nil || snapshot.diffErr != nil {
@@ -479,6 +485,7 @@ func firstLine(value string) string {
 // request instead of being rebuilt per request. Run under -race, this fails if
 // any handler writes to the shared model while another reads it.
 func TestConcurrentRequestsShareOneSnapshotSafely(t *testing.T) {
+	t.Parallel()
 	_, application, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
 	changes := budgetChanges(t, application)
 	paths := []string{"/", "/"}

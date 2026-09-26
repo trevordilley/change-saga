@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 // headReader reads a repository's HEAD commit for every freshness check.
@@ -30,15 +32,13 @@ type headReader struct {
 // "" when it resolves to nothing, as git rev-parse HEAD reports it.
 func (reader *headReader) head(ctx context.Context, dir string) string {
 	reader.once.Do(func() {
-		output, err := gitOutput(ctx, dir, "rev-parse", "--path-format=absolute", "--git-dir", "--git-common-dir")
-		if err != nil {
+		// Found as TopLevel finds a repository, which works on every Git
+		// the server supports; --path-format=absolute needs Git 2.31.
+		gitDir, commonDir, ok := gitexec.GitDirs(ctx, dir)
+		if !ok {
 			return
 		}
-		lines := strings.Split(output, "\n")
-		if len(lines) != 2 {
-			return
-		}
-		reader.gitDir, reader.commonDir = strings.TrimSpace(lines[0]), strings.TrimSpace(lines[1])
+		reader.gitDir, reader.commonDir = gitDir, commonDir
 		if _, err := os.Stat(filepath.Join(reader.commonDir, "reftable")); !errors.Is(err, fs.ErrNotExist) {
 			return
 		}
@@ -49,7 +49,7 @@ func (reader *headReader) head(ctx context.Context, dir string) string {
 			return oid
 		}
 	}
-	head, _ := gitOutput(ctx, dir, "rev-parse", "HEAD")
+	head, _ := resolveCommit(ctx, dir, "HEAD")
 	return head
 }
 

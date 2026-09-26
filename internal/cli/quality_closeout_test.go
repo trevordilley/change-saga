@@ -15,6 +15,7 @@ import (
 )
 
 func TestFailedClaimVerificationRemainsVisibleInHistory(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	repo, commit := sourceRepo(t, map[string]string{
 		"worker.go": "package worker\n\nfunc Run() error { return nil }\n",
@@ -58,6 +59,7 @@ func TestFailedClaimVerificationRemainsVisibleInHistory(t *testing.T) {
 }
 
 func TestSelectedComparisonScopesStatusQueryAndReviewer(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "checkout", "-b", "retry")
 	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\nfunc Enqueue(job string) error { return retry(3, func() error { return sqs.Send(job) }) }\n")

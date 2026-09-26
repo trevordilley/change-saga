@@ -10,7 +10,6 @@ import (
 	"io/fs"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -19,6 +18,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -106,6 +106,9 @@ func (a *app) startSnapshotBuild(ctx context.Context, done func(error)) bool {
 	a.cache.building, a.cache.buildErr = true, nil
 	a.cache.mutex.Unlock()
 	go func() {
+		// The request that started the build may finish first.
+		ctx, end := gitexec.BeginDetached(ctx)
+		defer end()
 		result := a.finishSnapshotBuild(ctx)
 		a.cache.mutex.Lock()
 		err := a.cache.buildErr
@@ -554,27 +557,41 @@ func filteredTreeFingerprint(root string, selectEntry func(string, fs.DirEntry) 
 // sourceFingerprint identifies the exact comparison gitdiff.ReadRange would
 // produce for the range the reviewer was opened with.
 func (a *app) sourceFingerprint(ctx context.Context, manifest saga.Manifest) (string, error) {
-	var remote string
-	var group sync.WaitGroup
-	group.Add(1)
-	go func() {
-		defer group.Done()
-		remote, _ = gitOutput(ctx, a.sourceDir, "config", "--get", "remote.origin.url")
-	}()
+	// Every request asks this to see whether the snapshot is still current.
+	// While refs and configuration are unchanged the answers are remembered,
+	// so the check costs a few small file reads instead of Git processes.
+	remoteOutput, _ := gitexec.ConfigOutput(ctx, a.sourceDir, "config", "--get", "remote.origin.url")
+	remote := strings.TrimSpace(string(remoteOutput))
 	against := a.rng.Against
 	if a.rng.Observe() {
 		against = a.rng.HeadRevision()
 	}
-	revisions, err := gitOutput(ctx, a.sourceDir, "rev-parse", against+"^{commit}", a.rng.HeadRevision()+"^{commit}")
-	group.Wait()
+	base, err := resolveCommit(ctx, a.sourceDir, against)
 	if err != nil {
 		return "", err
 	}
-	return a.rng.Mode() + "\x00" + manifest.Source.Repository + "\x00" + strings.Join(strings.Fields(revisions), " ") + "\x00" + remote, nil
+	head, err := resolveCommit(ctx, a.sourceDir, a.rng.HeadRevision())
+	if err != nil {
+		return "", err
+	}
+	return a.rng.Mode() + "\x00" + manifest.Source.Repository + "\x00" + base + " " + head + "\x00" + remote, nil
 }
 
+// resolveCommit is what `git rev-parse --verify <revision>^{commit}` prints.
+func resolveCommit(ctx context.Context, dir, revision string) (string, error) {
+	if commit, ok := gitexec.ResolveCommit(ctx, dir, revision); ok {
+		return commit, nil
+	}
+	return gitOutput(ctx, dir, "rev-parse", "--verify", "--quiet", "--end-of-options", revision+"^{commit}")
+}
+
+// gitOutput is what `git -C dir args...` prints, trimmed and asked once per
+// request.
 func gitOutput(ctx context.Context, dir string, args ...string) (string, error) {
-	output, err := exec.CommandContext(ctx, "git", append([]string{"-C", dir}, args...)...).Output()
+	if len(args) == 2 && args[0] == "rev-parse" && args[1] == "--show-toplevel" {
+		return gitexec.TopLevel(ctx, dir)
+	}
+	output, err := gitexec.Output(ctx, append([]string{"-C", dir}, args...)...)
 	if err != nil {
 		return "", err
 	}

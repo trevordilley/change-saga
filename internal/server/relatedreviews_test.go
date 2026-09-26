@@ -89,6 +89,7 @@ func documentTheFixture(t *testing.T, fixture serverReviewFixture) {
 // touched lists none. Nothing declares the link: it is the intersection of
 // the review's changed lines with the code the record's own chain reaches.
 func TestRelatedReviewsAreDerivedFromTheChangedLines(t *testing.T) {
+	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	documentTheFixture(t, fixture)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})

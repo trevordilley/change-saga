@@ -17,6 +17,7 @@ import (
 )
 
 func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -121,6 +122,7 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 }
 
 func TestInstallSkillPrintsPortableRoutedAuthoringContract(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := InstallSkill(nil, &output); err != nil {
 		t.Fatal(err)
@@ -158,6 +160,7 @@ func TestInstallSkillPrintsPortableRoutedAuthoringContract(t *testing.T) {
 }
 
 func TestSpecJSONExposesPurposeFitVisualFormsAndAudits(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := Spec([]string{"--json"}, &output); err != nil {
 		t.Fatal(err)
@@ -185,6 +188,7 @@ func TestSpecJSONExposesPurposeFitVisualFormsAndAudits(t *testing.T) {
 }
 
 func TestInitRequiresPortableRepositoryOrExplicitLocalOptIn(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -210,6 +214,7 @@ func TestInitRequiresPortableRepositoryOrExplicitLocalOptIn(t *testing.T) {
 }
 
 func TestRepositoryDiscoveryCanonicalizesCredentialsAndChecksMismatch(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "remote", "add", "origin", "https://user:secret@EXAMPLE.TEST/acme/app.git/")
@@ -230,6 +235,7 @@ func TestRepositoryDiscoveryCanonicalizesCredentialsAndChecksMismatch(t *testing
 }
 
 func TestNormalizeRepositoryURIStripsSCPUser(t *testing.T) {
+	t.Parallel()
 	got, err := normalizeRepositoryURI("git@example.test:acme/app.git", t.TempDir())
 	if err != nil {
 		t.Fatal(err)
@@ -240,6 +246,7 @@ func TestNormalizeRepositoryURIStripsSCPUser(t *testing.T) {
 }
 
 func TestRepositoryDiscoveryRequiresOptInForLocalOrigin(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	localOrigin := t.TempDir()
@@ -257,6 +264,7 @@ func TestRepositoryDiscoveryRequiresOptInForLocalOrigin(t *testing.T) {
 // whose commit that checkout does not have cannot be digested and is refused
 // before anything is written.
 func TestCoverRejectsReferenceAbsentFromRepository(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
 	err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--ref", strings.Repeat("a", 40) + ":internal/service/handler.go", root}, &output)
@@ -277,6 +285,7 @@ func git(t *testing.T, dir string, args ...string) string {
 	t.Helper()
 	cmd := exec.Command("git", args...)
 	cmd.Dir = dir
+	cmd.Env = gitClockEnv(t)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("git %v: %v\n%s", args, err, output)

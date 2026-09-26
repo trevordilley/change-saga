@@ -12,6 +12,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -78,6 +79,8 @@ type reconciliationTask struct {
 }
 
 func Reconcile(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("reconcile", commandUsage["reconcile"], out)
 	jsonOutput := flags.Bool("json", false, "emit the complete reconciliation queue as JSON")
 	repo := flags.String("repo", "", "source repository checkout when separate")

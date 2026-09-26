@@ -11,6 +11,7 @@ import (
 )
 
 func TestSetFragmentContentSupportsStdinAndJSON(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
 	if err := AddFragment(context.Background(), []string{"--app", "designsystem", "--name", "tokens", "--title", "Tokens", root}, &output); err != nil {
@@ -36,6 +37,7 @@ func TestSetFragmentContentSupportsStdinAndJSON(t *testing.T) {
 }
 
 func TestStableIDsResolveAcrossHierarchyCommands(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
 	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--id", "architecture", root, "backend"}, &output); err != nil {

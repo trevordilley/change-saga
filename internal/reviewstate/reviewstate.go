@@ -8,7 +8,6 @@ package reviewstate
 import (
 	"context"
 	"fmt"
-	"os/exec"
 	"sort"
 	"strings"
 	"time"
@@ -16,6 +15,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -374,9 +374,9 @@ func attributions(ctx context.Context, sagaRoot string, review *saga.Review) map
 			author = strings.TrimSpace(value.Name + " <" + value.Email + ">")
 		case gitattribution.Uncommitted:
 			if local == "" {
-				name, _ := gitOutput(ctx, sagaRoot, "config", "user.name")
-				email, _ := gitOutput(ctx, sagaRoot, "config", "user.email")
-				local = strings.TrimSpace(name + " <" + email + ">")
+				name, _ := gitexec.ConfigOutput(ctx, sagaRoot, "config", "user.name")
+				email, _ := gitexec.ConfigOutput(ctx, sagaRoot, "config", "user.email")
+				local = strings.TrimSpace(strings.TrimSpace(string(name)) + " <" + strings.TrimSpace(string(email)) + ">")
 			}
 			author = local
 		}
@@ -390,12 +390,16 @@ func commitExists(ctx context.Context, dir, commit string) bool {
 	return err == nil
 }
 
+// revParse resolves revision, which every caller names as a commit.
 func revParse(ctx context.Context, dir, revision string) (string, error) {
+	if commit, ok := gitexec.ResolveCommit(ctx, dir, revision); ok {
+		return commit, nil
+	}
 	return gitOutput(ctx, dir, "rev-parse", "--verify", "--quiet", revision)
 }
 
 func gitOutput(ctx context.Context, dir string, args ...string) (string, error) {
-	output, err := exec.CommandContext(ctx, "git", append([]string{"-C", dir}, args...)...).Output()
+	output, err := gitexec.Output(ctx, append([]string{"-C", dir}, args...)...)
 	if err != nil {
 		return "", err
 	}

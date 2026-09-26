@@ -15,6 +15,7 @@ import (
 // says what referenced the rest (test-case evidence included), so its
 // numbers add up to the listing's.
 func TestComparedStatusTextStatesOneCountAndListsRanges(t *testing.T) {
+	t.Parallel()
 	implementation := areas.Area{
 		Area: areas.Implementation, Unit: areas.UnitChangedLine, Total: 20, Covered: 8, Uncovered: 12,
 		CoveredEntries: []areas.Entry{

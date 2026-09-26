@@ -36,6 +36,7 @@ func diagramSlideRequest(t *testing.T, repo, base, commit, sagaID, requestID, op
 }
 
 func TestApplySlideRendersDiagramSourceAtomically(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	deckDir := filepath.Join(testFeatureDir(root), saga.EmbeddedSlidesDir, "implementation"+saga.EmbeddedDeckSuffix)
 	create := diagramSlideRequest(t, repo, base, commit, sagaID, "diagram-create", "create", "absent", testDiagram())
@@ -93,6 +94,7 @@ func TestApplySlideRendersDiagramSourceAtomically(t *testing.T) {
 }
 
 func TestApplySlideRefusesInvalidDiagramRequests(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	cases := map[string]func(*SlideTransactionRequest){
 		"either asset or diagram": func(r *SlideTransactionRequest) { r.Asset = SlideTransactionAsset{ContentBase64: "PHN2Zy8+"} },
@@ -122,6 +124,7 @@ func TestApplySlideRefusesInvalidDiagramRequests(t *testing.T) {
 }
 
 func TestLoaderRejectsTamperedDiagramSource(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	if _, err := ApplySlideTransaction(context.Background(), root, base, repo, diagramSlideRequest(t, repo, base, commit, sagaID, "diagram-create", "create", "absent", testDiagram()), false); err != nil {
 		t.Fatal(err)
@@ -165,6 +168,7 @@ func runDiagram(t *testing.T, stdin string, args ...string) (string, error) {
 }
 
 func TestDiagramEditRepublishesTargetedChanges(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, diagramSlideRequest(t, repo, base, commit, sagaID, "diagram-create", "create", "absent", testDiagram()), false)
 	if err != nil {
@@ -209,6 +213,7 @@ func TestDiagramEditRepublishesTargetedChanges(t *testing.T) {
 }
 
 func TestDiagramEditRefusesHandAuthoredSlides(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, slideTransactionRequest(t, repo, base, commit, sagaID, "svg-create", "create", "absent", "node-a"), false)
 	if err != nil {
@@ -220,6 +225,7 @@ func TestDiagramEditRefusesHandAuthoredSlides(t *testing.T) {
 }
 
 func TestDiagramIconsLists(t *testing.T) {
+	t.Parallel()
 	output, err := runDiagram(t, "", "icons", "--query", "data")
 	if err != nil || output != "lucide:database\n" {
 		t.Fatalf("icons = %q err=%v", output, err)
@@ -227,6 +233,7 @@ func TestDiagramIconsLists(t *testing.T) {
 }
 
 func TestDiagramDescribeReadsDiagramAndHandAuthoredSlides(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, diagramSlideRequest(t, repo, base, commit, sagaID, "diagram-create", "create", "absent", testDiagram()), false)
 	if err != nil {

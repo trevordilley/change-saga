@@ -60,6 +60,7 @@ func qualityCode(t *testing.T, path string) (repo, location string) {
 }
 
 func TestQualityHelpListsTheAuthoringGrammar(t *testing.T) {
+	t.Parallel()
 	var first, second bytes.Buffer
 	if err := Quality(context.Background(), []string{"-h"}, &first); !errors.Is(err, flag.ErrHelp) {
 		t.Fatalf("help error = %v", err)
@@ -91,6 +92,7 @@ func TestQualityHelpListsTheAuthoringGrammar(t *testing.T) {
 }
 
 func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
+	t.Parallel()
 	root := newQualityFixture(t)
 	definition := `{"id":"deadline","title":"Reject at deadline","coverage_kinds":["negative","edge"],"automation":"automated",
 		"preconditions":["A purchase is exactly 30 days old."],
@@ -163,6 +165,7 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 }
 
 func TestQualityMutationFailureReportsJSONAndWritesNothing(t *testing.T) {
+	t.Parallel()
 	root := newQualityFixture(t)
 	var output bytes.Buffer
 	err := Quality(context.Background(), []string{
@@ -187,6 +190,7 @@ func TestQualityMutationFailureReportsJSONAndWritesNothing(t *testing.T) {
 }
 
 func TestValidateReportsQualityRecords(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	var output bytes.Buffer
 	if err := Validate(context.Background(), []string{"--json", root}, &output); err != nil {

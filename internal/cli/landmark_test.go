@@ -12,6 +12,7 @@ import (
 )
 
 func TestAddLandmarkMakesDiagramElementsCoverable(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	source := filepath.Join(t.TempDir(), "map.svg")
 	if err := os.WriteFile(source, []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="worker-pool"><text>Workers</text></g></svg>`), 0o644); err != nil {
@@ -50,6 +51,7 @@ func TestAddLandmarkMakesDiagramElementsCoverable(t *testing.T) {
 }
 
 func TestAddLandmarkHelpExplainsHeadingIDInvariant(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := AddLandmark(context.Background(), []string{"-h"}, &output); err == nil {
 		t.Fatal("-h must report flag.ErrHelp")
@@ -61,6 +63,7 @@ func TestAddLandmarkHelpExplainsHeadingIDInvariant(t *testing.T) {
 }
 
 func TestAddLandmarkRejectsMissingElementsWithoutPartialMetadata(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	source := filepath.Join(t.TempDir(), "map.svg")
 	if err := os.WriteFile(source, []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="present"/></svg>`), 0o644); err != nil {
@@ -80,6 +83,7 @@ func TestAddLandmarkRejectsMissingElementsWithoutPartialMetadata(t *testing.T) {
 }
 
 func TestAddLandmarkRequiresSemanticDescriptionForVisuals(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	source := filepath.Join(t.TempDir(), "map.svg")
 	if err := os.WriteFile(source, []byte(`<svg xmlns="http://www.w3.org/2000/svg"><g id="worker-pool"/></svg>`), 0o644); err != nil {
@@ -99,6 +103,7 @@ func TestAddLandmarkRequiresSemanticDescriptionForVisuals(t *testing.T) {
 }
 
 func TestParseLandmarkRegionRejectsNonFiniteCoordinates(t *testing.T) {
+	t.Parallel()
 	for _, value := range []string{"NaN,0,0.2,0.2", "0,+Inf,0.2,0.2", "0,0,-Inf,0.2"} {
 		if _, err := parseLandmarkRegion(value); err == nil {
 			t.Fatalf("parseLandmarkRegion(%q) succeeded", value)

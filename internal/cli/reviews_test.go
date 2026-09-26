@@ -96,6 +96,7 @@ func slideReport(t *testing.T, report reviewstate.Report, id string) reviewstate
 }
 
 func TestReviewDecisionsGoOutOfDateSlideBySlide(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	run(t, Review, "approve", "--review", "pr-7", "--slide", "queue", "--reviewer-kind", "human", "--body", "Clear transition", fixture.root)
 	run(t, Review, "request-changes", "--review", "pr-7", "--slide", "table", "--reviewer-kind", "ai", "--reviewer-name", "Claude 1", "--agent", "claude-code", "--model", "claude-opus-5", "--body", "Show the index", fixture.root)
@@ -157,6 +158,7 @@ func TestReviewDecisionsGoOutOfDateSlideBySlide(t *testing.T) {
 }
 
 func TestReviewCommentsThreadOnSlidesAndItemsOnly(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	output := run(t, Review, "comment", "--review", "pr-7", "--target", "table/node", "--body", "Is there an index on status?", "--reviewer-kind", "human", fixture.root)
 	id := ""
@@ -188,6 +190,7 @@ func TestReviewCommentsThreadOnSlidesAndItemsOnly(t *testing.T) {
 }
 
 func TestReviewItemsReferenceRecordsAndNeverCountAsCoverage(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	story := saga.ReviewItemTarget("app", "pr-7", "queue", "note")
 	var output bytes.Buffer
@@ -221,6 +224,7 @@ func TestReviewItemsReferenceRecordsAndNeverCountAsCoverage(t *testing.T) {
 }
 
 func TestOnePullRequestHasOneReview(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	var output bytes.Buffer
 	if err := Review(context.Background(), []string{"create", "--id", "again", "--base", "main", "--pr", "7", fixture.root}, &output); err == nil || !strings.Contains(err.Error(), "one review") {
@@ -232,6 +236,7 @@ func TestOnePullRequestHasOneReview(t *testing.T) {
 }
 
 func TestRepinFreezesTheLandedReviewAndHistoryLinksIt(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	persona := personaURNFor("app")
 	run(t, AddItem, "--review", "pr-7", "--slide", "table", "--kind", "statement", "--element-id", "note", "--description", "Who the jobs table serves", "--record", persona, fixture.root)
@@ -290,6 +295,7 @@ func TestRepinFreezesTheLandedReviewAndHistoryLinksIt(t *testing.T) {
 // added line at the head, so the deleted lines at the merge-base are
 // uncovered, and a pushed commit's new line joins them.
 func TestReviewCoverageAccountsForItsOwnRange(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	report := reviewReport(t, fixture)
 	covered := report.Coverage
@@ -327,6 +333,7 @@ func TestReviewCoverageAccountsForItsOwnRange(t *testing.T) {
 }
 
 func TestReviewListUncoveredListsOnlyGaps(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	text := run(t, Review, "list", "--uncovered", fixture.root)
 	if !strings.Contains(text, "Review pr-7") || !strings.Contains(text, "uncovered queue.go") || strings.Contains(text, "slide queue") {
@@ -353,6 +360,7 @@ func TestReviewListUncoveredListsOnlyGaps(t *testing.T) {
 // TestCoverOnAReviewItemComparesTheReviewsRange needs no --against: a review
 // Item explains its review's change, so cover reads the review's own range.
 func TestCoverOnAReviewItemComparesTheReviewsRange(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	// The checkout moves past the review's head; cover reads the head the
@@ -382,6 +390,7 @@ func TestCoverOnAReviewItemComparesTheReviewsRange(t *testing.T) {
 }
 
 func TestStatusReportsReviewCoverageAndNamesTheCoverCommand(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	var output bytes.Buffer

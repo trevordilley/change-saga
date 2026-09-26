@@ -8,6 +8,7 @@ import (
 )
 
 func TestConfigureDetachedProcessCreatesSession(t *testing.T) {
+	t.Parallel()
 	command := exec.Command("change-saga-test-child")
 	configureDetachedProcess(command)
 	if command.SysProcAttr == nil {

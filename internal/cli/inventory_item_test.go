@@ -14,6 +14,7 @@ import (
 )
 
 func TestInventoryItemSelectionsAndSavedViews(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	f := newReviewFixture(t)
 	git(t, f.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
@@ -168,6 +169,7 @@ func findTestItem(t *testing.T, root, id string) saga.ItemManifest {
 }
 
 func TestInventoryTransactionSelections(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	root, repo, base, commit, id := newSlideTransactionFixture(t)
 	var out bytes.Buffer

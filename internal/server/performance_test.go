@@ -13,6 +13,7 @@ import (
 )
 
 func TestLargeSagaCoverageAndDrawerNavigationContracts(t *testing.T) {
+	t.Parallel()
 	document, changes, report, changesByTarget := benchmarkCoverageFixture()
 	coverageView := makeCoverageManifestView(document, changes, report)
 	if len(coverageView.Files) != benchmarkCoverageFiles || len(coverageView.Targets) != benchmarkCoverageChapters*benchmarkCoverageFragmentsPerChapter {

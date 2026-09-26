@@ -237,7 +237,7 @@ func (a *app) termPlaces(ctx context.Context, document requirements.Document) ma
 	}
 	defer resolver.Close()
 	head := firstNonEmptyString(a.rng.Head, "HEAD")
-	headOID, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--end-of-options", head+"^{commit}")
+	headOID, _ := resolveCommit(ctx, a.sourceDir, head)
 	for _, term := range document.Terms {
 		if term.CurrentRevision == nil {
 			continue
@@ -274,7 +274,7 @@ func (a *app) referenceCode(ctx context.Context, references []coderef.Reference,
 	}
 	defer resolver.Close()
 	head := firstNonEmptyString(a.rng.Head, "HEAD")
-	headOID, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--end-of-options", head+"^{commit}")
+	headOID, _ := resolveCommit(ctx, a.sourceDir, head)
 	for _, reference := range references {
 		view := &termCodeView{Path: reference.Path, Location: reference.Location().String()}
 		location := reference.Location()

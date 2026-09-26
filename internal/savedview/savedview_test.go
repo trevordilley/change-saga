@@ -3,11 +3,13 @@ package savedview
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -115,5 +117,32 @@ func writeFile(t *testing.T, path, body string) {
 	}
 	if err := os.WriteFile(path, []byte(body), 0o644); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// A failed extraction must not wait on a cat-file that still has blobs to
+// write: once the pipe fills (4 KiB on Windows, 64 KiB on Unix) Git blocks
+// and would never exit.
+func TestExtractTreeFailureDoesNotWaitOnUnreadBlobs(t *testing.T) {
+	repo := t.TempDir()
+	runGit(t, repo, "init", "-q", "-b", "main")
+	writeFile(t, filepath.Join(repo, "view", "a", "first.json"), "{}\n")
+	for index := range 4 {
+		writeFile(t, filepath.Join(repo, "view", "b", fmt.Sprintf("large-%d.json", index)), strings.Repeat("x", 100_000)+"\n")
+	}
+	commit := commitAll(t, repo, "view")
+	dest := t.TempDir()
+	// A file where the first blob's directory belongs makes its write fail
+	// while every later blob is still queued in the pipe.
+	writeFile(t, filepath.Join(dest, "a"), "not a directory\n")
+	done := make(chan error, 1)
+	go func() { done <- extractTree(context.Background(), repo, commit, "view", dest) }()
+	select {
+	case err := <-done:
+		if err == nil {
+			t.Fatal("extraction into a blocked destination succeeded")
+		}
+	case <-time.After(30 * time.Second):
+		t.Fatal("extraction hung waiting on git cat-file after a write failure")
 	}
 }

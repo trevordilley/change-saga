@@ -9,6 +9,7 @@ import (
 )
 
 func TestAttachedCodeGroupsExactChangesByFileWithAuthoredReason(t *testing.T) {
+	t.Parallel()
 	document, changes, _, _, _ := codeViewFixture(t)
 	flow := document.Section.Children[0].Fragments[0]
 	linked := changes.Atoms[:2]
@@ -28,6 +29,7 @@ func TestAttachedCodeGroupsExactChangesByFileWithAuthoredReason(t *testing.T) {
 }
 
 func TestAttachedCodeKeepsFilesSeparateAndFlagsMissingSummaries(t *testing.T) {
+	t.Parallel()
 	atoms := []gitdiff.Atom{
 		{Key: "a", Kind: "line", Path: "b.go", Side: "new", Line: 2, Content: "b", Ref: testLocation(testHeadCommit, "b.go", 2, 2)},
 		{Key: "b", Kind: "line", Path: "a.go", Side: "old", Line: 1, Content: "a", Ref: testLocation(testBaseCommit, "a.go", 1, 1)},

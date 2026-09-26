@@ -5,11 +5,13 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"runtime"
 	"strings"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 func TestParseLinesAndEvents(t *testing.T) {
@@ -377,6 +379,51 @@ func TestAdversarialGitFixtureCorpus(t *testing.T) {
 	if len(changes.SagaChanges) == 0 {
 		t.Fatal("saga-only fixture was not classified separately")
 	}
+	assertSessionReadsMatch(t, repo, "https://example.test/acme/corpus.git", base, "HEAD")
+}
+
+// A gitexec session reads diffs through a shared diff-tree process. Every
+// reader must return exactly what it returns without one.
+func assertSessionReadsMatch(t *testing.T, repo, repository, base, head string) {
+	t.Helper()
+	plain := context.Background()
+	session, end := gitexec.Begin(plain)
+	defer end()
+	wantChanges, err := Read(plain, repo, repository, base, head)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantCatalog, err := ReadCatalog(plain, repo, repository, base, head)
+	if err != nil {
+		t.Fatal(err)
+	}
+	wantTree, err := TreeChanges(plain, repo, wantChanges.BaseOID, wantChanges.HeadOID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for range 2 {
+		gotChanges, err := Read(session, repo, repository, base, head)
+		if err != nil {
+			t.Fatal(err)
+		}
+		gotCatalog, err := ReadCatalog(session, repo, repository, base, head)
+		if err != nil {
+			t.Fatal(err)
+		}
+		gotTree, err := TreeChanges(session, repo, wantChanges.BaseOID, wantChanges.HeadOID)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if !reflect.DeepEqual(gotChanges, wantChanges) {
+			t.Fatalf("Read in a session differs:\n got %#v\nwant %#v", gotChanges, wantChanges)
+		}
+		if !reflect.DeepEqual(gotCatalog, wantCatalog) {
+			t.Fatalf("ReadCatalog in a session differs:\n got %#v\nwant %#v", gotCatalog, wantCatalog)
+		}
+		if !reflect.DeepEqual(gotTree, wantTree) {
+			t.Fatalf("TreeChanges in a session differs:\n got %#v\nwant %#v", gotTree, wantTree)
+		}
+	}
 }
 
 func TestEmptyFileAddAndDeleteProduceLifecycleAtoms(t *testing.T) {
@@ -543,6 +590,7 @@ func TestSubmoduleGitlinkChangeProducesAtoms(t *testing.T) {
 	if len(changes.Atoms) == 0 || !hasAtomPath(changes.Atoms, "deps/child") {
 		t.Fatalf("submodule change yielded no coverage atoms: %#v", changes)
 	}
+	assertSessionReadsMatch(t, repo, "https://example.test/acme/submodule.git", base, "HEAD")
 }
 
 func hasAtomPath(atoms []Atom, path string) bool {
@@ -600,5 +648,96 @@ func writeGitTestBytes(t *testing.T, path string, body []byte) {
 	}
 	if err := os.WriteFile(path, body, 0o644); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// Git reads attributes from the checkout even when diffing two commits, so an
+// uncommitted attribute edit must not be answered from an earlier diff.
+func TestCachedCommitDiffFollowsCheckoutAttributes(t *testing.T) {
+	repo := newGitTestRepo(t)
+	writeGitTestFile(t, filepath.Join(repo, "data.txt"), "one\n")
+	gitTest(t, repo, "add", ".")
+	gitTest(t, repo, "commit", "-m", "base")
+	base := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	writeGitTestFile(t, filepath.Join(repo, "data.txt"), "two\n")
+	gitTest(t, repo, "commit", "-am", "edit")
+	head := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	before, err := TreeChanges(context.Background(), repo, base, head)
+	if err != nil || len(before) != 1 || before[0].Binary || len(before[0].Hunks) != 1 {
+		t.Fatalf("text diff = %#v, %v", before, err)
+	}
+	writeGitTestFile(t, filepath.Join(repo, ".gitattributes"), "*.txt -diff\n")
+	after, err := TreeChanges(context.Background(), repo, base, head)
+	if err != nil || len(after) != 1 || !after[0].Binary {
+		t.Fatalf("diff after marking the file -diff = %#v, %v; want it binary", after, err)
+	}
+}
+
+// Remembered diffs key on the top-level attribute files only. A process
+// that outlives an uncommitted edit to a nested .gitattributes, as the
+// review server does, runs isolated sessions and must see the new patch.
+func TestIsolatedSessionsFollowNestedAttributes(t *testing.T) {
+	repo := newGitTestRepo(t)
+	writeGitTestFile(t, filepath.Join(repo, "sub", "data.txt"), "one\n")
+	gitTest(t, repo, "add", ".")
+	gitTest(t, repo, "commit", "-m", "base")
+	base := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	writeGitTestFile(t, filepath.Join(repo, "sub", "data.txt"), "two\n")
+	gitTest(t, repo, "commit", "-am", "edit")
+	head := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	changes := func(begin func(context.Context) (context.Context, func())) []FileChange {
+		t.Helper()
+		ctx, end := begin(context.Background())
+		defer end()
+		result, err := TreeChanges(ctx, repo, base, head)
+		if err != nil || len(result) != 1 {
+			t.Fatalf("TreeChanges = %#v, %v", result, err)
+		}
+		return result
+	}
+	if changes(gitexec.Begin)[0].Binary {
+		t.Fatal("a text edit was reported binary")
+	}
+	writeGitTestFile(t, filepath.Join(repo, "sub", ".gitattributes"), "*.txt -diff\n")
+	if changes(gitexec.Begin)[0].Binary {
+		t.Fatal("nested attributes became part of the diff key; tighten this test")
+	}
+	if !changes(gitexec.BeginIsolated)[0].Binary {
+		t.Fatal("an isolated session served a diff remembered before the nested attribute edit")
+	}
+}
+
+// git diff honors diff.orderFile and diff-tree does not; a comparison must
+// list files in the same order whether or not a session batches its diffs.
+func TestDiffOrderIgnoresOrderFile(t *testing.T) {
+	repo := newGitTestRepo(t)
+	gitTest(t, repo, "remote", "add", "origin", "https://example.test/acme/order.git")
+	for _, name := range []string{"a.txt", "z.txt"} {
+		writeGitTestFile(t, filepath.Join(repo, name), "one\n")
+	}
+	gitTest(t, repo, "add", ".")
+	gitTest(t, repo, "commit", "-m", "base")
+	base := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	for _, name := range []string{"a.txt", "z.txt"} {
+		writeGitTestFile(t, filepath.Join(repo, name), "two\n")
+	}
+	gitTest(t, repo, "commit", "-am", "edit")
+	writeGitTestFile(t, filepath.Join(repo, "order"), "z.txt\na.txt\n")
+	gitTest(t, repo, "config", "diff.orderFile", "order")
+	plain, err := Read(context.Background(), repo, "https://example.test/acme/order.git", base, "HEAD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	session, end := gitexec.Begin(context.Background())
+	defer end()
+	batched, err := Read(session, repo, "https://example.test/acme/order.git", base, "HEAD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(plain, batched) {
+		t.Fatalf("diff.orderFile changed the comparison:\n plain %#v\n batched %#v", plain.Atoms, batched.Atoms)
+	}
+	if len(plain.Atoms) == 0 || plain.Atoms[0].Path != "a.txt" {
+		t.Fatalf("files are not in canonical order: %#v", plain.Atoms)
 	}
 }

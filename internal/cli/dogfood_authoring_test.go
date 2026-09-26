@@ -12,6 +12,7 @@ import (
 // written from --source already has its content, so the hint moves on to
 // naming its elements instead of asking for the content again.
 func TestNextHintsAfterSourceSkipSettingContent(t *testing.T) {
+	t.Parallel()
 	root, _ := coveredSaga(t)
 	var output bytes.Buffer
 	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
@@ -45,6 +46,7 @@ func TestNextHintsAfterSourceSkipSettingContent(t *testing.T) {
 // The onboarding deck orients a newcomer, so its first slide is suggested
 // with the orient intent rather than explain.
 func TestOnboardingDeckSuggestsOrientIntent(t *testing.T) {
+	t.Parallel()
 	root, _ := coveredSaga(t)
 	var output bytes.Buffer
 	if err := AddDeck(context.Background(), []string{"--role", "onboarding", "--objective", "Get a newcomer up to speed.", root, "onboarding"}, &output); err != nil {
@@ -57,6 +59,7 @@ func TestOnboardingDeckSuggestsOrientIntent(t *testing.T) {
 
 // Items are valid cover targets, so the refusal of a bad target names them.
 func TestBadCoverTargetNamesItems(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	_, err := runCover(t, "", "--repo", repo, "--target", "nowhere.chapter", "--path", "internal/service/handler.go", "--side", "new", "--lines", "3", root)
 	if err == nil || !strings.Contains(err.Error(), "chapter, section, fragment, landmark, or Item") {
@@ -67,6 +70,7 @@ func TestBadCoverTargetNamesItems(t *testing.T) {
 // A citation's URN names no feature, so a story in any feature may cite it; --feature
 // only chooses where it is stored, and the help says so.
 func TestCitationIsCitableFromAnyFeature(t *testing.T) {
+	t.Parallel()
 	root, _ := coveredSaga(t)
 	var output bytes.Buffer
 	if err := Feature(context.Background(), []string{"add", "--id", "billing", "--title", "Billing", root}, &output); err != nil {
