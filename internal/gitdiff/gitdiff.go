@@ -399,7 +399,11 @@ var canonicalDiffConfig = []string{
 	"-c", "diff.renameLimit=32767",
 }
 
+// canonicalDiffFlags fix everything a user's configuration could change.
+// -O/dev/null disables diff.orderFile, which git diff honors and diff-tree
+// ignores, so both print files in the same order.
 var canonicalDiffFlags = []string{
+	"-O/dev/null",
 	"--no-color", "--no-ext-diff", "--no-textconv", "--submodule=short", "--ignore-submodules=none",
 	"--src-prefix=a/", "--dst-prefix=b/", "--diff-algorithm=myers", "--no-indent-heuristic", "--inter-hunk-context=0", "--find-renames=50%",
 }

@@ -706,3 +706,38 @@ func TestIsolatedSessionsFollowNestedAttributes(t *testing.T) {
 		t.Fatal("an isolated session served a diff remembered before the nested attribute edit")
 	}
 }
+
+// git diff honors diff.orderFile and diff-tree does not; a comparison must
+// list files in the same order whether or not a session batches its diffs.
+func TestDiffOrderIgnoresOrderFile(t *testing.T) {
+	repo := newGitTestRepo(t)
+	gitTest(t, repo, "remote", "add", "origin", "https://example.test/acme/order.git")
+	for _, name := range []string{"a.txt", "z.txt"} {
+		writeGitTestFile(t, filepath.Join(repo, name), "one\n")
+	}
+	gitTest(t, repo, "add", ".")
+	gitTest(t, repo, "commit", "-m", "base")
+	base := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
+	for _, name := range []string{"a.txt", "z.txt"} {
+		writeGitTestFile(t, filepath.Join(repo, name), "two\n")
+	}
+	gitTest(t, repo, "commit", "-am", "edit")
+	writeGitTestFile(t, filepath.Join(repo, "order"), "z.txt\na.txt\n")
+	gitTest(t, repo, "config", "diff.orderFile", "order")
+	plain, err := Read(context.Background(), repo, "https://example.test/acme/order.git", base, "HEAD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	session, end := gitexec.Begin(context.Background())
+	defer end()
+	batched, err := Read(session, repo, "https://example.test/acme/order.git", base, "HEAD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(plain, batched) {
+		t.Fatalf("diff.orderFile changed the comparison:\n plain %#v\n batched %#v", plain.Atoms, batched.Atoms)
+	}
+	if len(plain.Atoms) == 0 || plain.Atoms[0].Path != "a.txt" {
+		t.Fatalf("files are not in canonical order: %#v", plain.Atoms)
+	}
+}
