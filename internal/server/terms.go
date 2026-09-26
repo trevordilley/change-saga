@@ -260,13 +260,17 @@ func (a *app) termPlaces(ctx context.Context, document requirements.Document) ma
 		return places
 	}
 	defer resolver.Close()
+	// Only places the head and the references alone decided are kept: not
+	// ones a failed or abandoned read, or a pinned commit the repository
+	// lacks, had a part in.
+	settled := &settledResolver{resolver: resolver}
 	for _, term := range document.Terms {
 		if term.CurrentRevision == nil {
 			continue
 		}
 		for _, reference := range term.CurrentRevision.Code {
 			place := termPlace{Path: reference.Path, Where: termWhere(reference.Location())}
-			if at := resolver.Resolve(ctx, reference, headOID); at.Current() {
+			if at := settled.Resolve(ctx, reference, headOID); at.Current() {
 				place.Path, place.Where = at.Location.Path, termWhere(at.Location)
 			} else {
 				place.Stale = true
@@ -274,7 +278,7 @@ func (a *app) termPlaces(ctx context.Context, document requirements.Document) ma
 			places[term.Identity.ID] = append(places[term.Identity.ID], place)
 		}
 	}
-	if key != "" {
+	if key != "" && !settled.provisional.Load() && ctx.Err() == nil {
 		a.termPlacesCache.mutex.Lock()
 		a.termPlacesCache.key, a.termPlacesCache.places = key, places
 		a.termPlacesCache.mutex.Unlock()

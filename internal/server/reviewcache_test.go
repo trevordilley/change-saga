@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -105,5 +106,58 @@ func TestAWatchedSagaReadsReviewCoverageBeforeAnyoneAsks(t *testing.T) {
 	getPage(t, handler, "/reviews")
 	if reads() != warmed {
 		t.Fatalf("the first visit read coverage the watcher had read: %d reads, want %d", reads(), warmed)
+	}
+}
+
+// Coverage that rests on a pinned commit the repository lacks may change after
+// a fetch, so it is shown but not kept; nor is coverage read for a request
+// that was abandoned.
+func TestReviewCoverageKeepsNoProvisionalAnswer(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	application, _ := reviewApp(t, fixture, gitdiff.Range{})
+	ctx := context.Background()
+	document, _, err := saga.Load(fixture.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	review := document.FindReview("pr-7")
+	rng, err := reviewstate.ResolveRange(ctx, fixture.root, review)
+	if err != nil {
+		t.Fatal(err)
+	}
+	resolver, err := coderesolve.New(ctx, fixture.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	repository := document.Manifest.Source.Repository
+	pinned := false
+	for _, slide := range review.Deck.Slides {
+		for _, item := range slide.Items {
+			for file := range item.Code {
+				for reference := range item.Code[file].References {
+					item.Code[file].References[reference].Commit = strings.Repeat("0", 40)
+					pinned = true
+				}
+			}
+		}
+	}
+	if !pinned {
+		t.Fatal("the fixture review has no code reference")
+	}
+	for range 2 {
+		if _, err := application.reviewCoverage(ctx, review, rng, repository, resolver); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if application.reviewCoverages.reads != 2 || len(application.reviewCoverages.entries) != 0 {
+		t.Fatalf("provisional coverage was kept: %d reads, %d entries", application.reviewCoverages.reads, len(application.reviewCoverages.entries))
+	}
+	abandoned, cancel := context.WithCancel(ctx)
+	cancel()
+	fresh := document.FindReview("pr-7")
+	application.reviewCoverage(abandoned, fresh, rng, repository, resolver)
+	if len(application.reviewCoverages.entries) != 0 {
+		t.Fatal("coverage read for an abandoned request was kept")
 	}
 }

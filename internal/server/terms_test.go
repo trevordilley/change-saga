@@ -235,3 +235,28 @@ func TestTermPlacesAreKeptPerHeadAndReferences(t *testing.T) {
 		t.Fatalf("a new head did not place the code again: %#v", moved)
 	}
 }
+
+// A place that rests on a pinned commit the repository lacks may be answered
+// differently after a fetch, so it is shown but not kept.
+func TestTermPlacesKeepNoProvisionalAnswer(t *testing.T) {
+	root, repo := termSaga(t)
+	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	document, err := requirements.Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for index := range document.Terms {
+		if revision := document.Terms[index].CurrentRevision; revision != nil {
+			for code := range revision.Code {
+				revision.Code[code].Commit = strings.Repeat("0", 40)
+			}
+		}
+	}
+	// The code is still found, by its content, but only provisionally.
+	if places := application.termPlaces(t.Context(), document); len(places["testtaker"]) != 1 {
+		t.Fatalf("a reference to a missing commit was not placed: %#v", places)
+	}
+	if application.termPlacesCache.key != "" {
+		t.Fatal("a provisional answer was kept")
+	}
+}

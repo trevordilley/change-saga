@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -16,7 +17,9 @@ import (
 // the two commits of its range, the repository they are read as, and the
 // code its deck's Items reference. Commits never change, so an entry is
 // right for as long as the review's Items are; a range that moves, or an Item
-// that is edited, is a new key.
+// that is edited, is a new key. Only coverage those alone decided is kept:
+// not one a failed or abandoned read, or a pinned commit the repository
+// lacks, had a part in.
 type reviewCoverageCache struct {
 	mutex   sync.Mutex
 	entries map[string]*reviewstate.Coverage
@@ -41,13 +44,18 @@ func (a *app) reviewCoverage(ctx context.Context, review *saga.Review, rng revie
 	if ok {
 		return covered, nil
 	}
-	covered, err = reviewstate.ReadCoverage(ctx, review, rng, a.sourceDir, repository, resolver)
+	changes, err := gitdiff.ReadWithOptions(ctx, a.sourceDir, repository, rng.BaseOID, rng.HeadOID, gitdiff.ReadOptions{AllowRepositoryMismatch: true})
 	if err != nil {
 		return nil, err
 	}
+	settled := &settledResolver{resolver: resolver}
+	covered = reviewstate.Evaluate(ctx, review, changes, settled)
 	cache.mutex.Lock()
 	defer cache.mutex.Unlock()
 	cache.reads++
+	if settled.provisional.Load() || ctx.Err() != nil {
+		return covered, nil
+	}
 	if cache.entries == nil {
 		cache.entries = map[string]*reviewstate.Coverage{}
 	}
