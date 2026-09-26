@@ -66,12 +66,7 @@ jobs:
         # The race-enabled server package is intentionally broad and can take
         # longer than Go's default 10-minute per-package timeout on shared CI
         # runners. Keep the full suite and race detector; give them headroom.
-        #
-        # internal/server is the longest package, and go test ./... would start
-        # it after nearly everything else, leaving it to run alone at the end.
-        # go test starts packages in the order they are named and runs each
-        # once, so naming it first starts it first.
-        run: go test -timeout 20m ${{ matrix.race }} ./internal/server ./...
+        run: go test -timeout 20m ${{ matrix.race }} ./...
         env:
           # Test fixtures commit constantly, and after each commit Git starts
           # its automatic maintenance as another process. Throwaway fixture
