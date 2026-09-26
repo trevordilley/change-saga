@@ -46,6 +46,9 @@ func movedSagaRepository(t *testing.T) (repo string, commits map[string]string) 
 	t.Helper()
 	repo = t.TempDir()
 	moveGit(t, repo, "init", "-q", "-b", "main")
+	// Compare bytes as written, whatever line endings the platform's Git
+	// would otherwise check out.
+	moveGit(t, repo, "config", "core.autocrlf", "false")
 	commits = map[string]string{}
 	moveWrite(t, repo, "change.saga/saga.json", `{"id":"old-per-change-saga"}`+"\n")
 	commits["unrelated"] = moveCommit(t, repo, "An unrelated Saga")
