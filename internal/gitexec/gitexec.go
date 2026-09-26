@@ -41,6 +41,8 @@ type Session struct {
 	digests map[string]string
 	// diffs holds the diffs an isolated session has read.
 	diffs map[string][]byte
+	// rewritten records, per repository, whether it rewrites history.
+	rewritten map[string]bool
 	// isolated sessions remember diffs only for themselves.
 	isolated bool
 	closed   bool
@@ -86,7 +88,7 @@ func BeginDetached(ctx context.Context) (context.Context, func()) {
 }
 
 func begin(ctx context.Context, isolated bool) (context.Context, func()) {
-	session := &Session{memo: map[string]*call{}, pools: map[string]*batchPool{}, failures: map[string]int{}, digests: map[string]string{}, diffs: map[string][]byte{}, isolated: isolated}
+	session := &Session{memo: map[string]*call{}, pools: map[string]*batchPool{}, failures: map[string]int{}, digests: map[string]string{}, diffs: map[string][]byte{}, rewritten: map[string]bool{}, isolated: isolated}
 	session.cond = sync.NewCond(&session.mu)
 	return context.WithValue(ctx, sessionKey{}, session), session.close
 }

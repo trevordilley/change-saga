@@ -4,6 +4,10 @@ import (
 	"bytes"
 	"container/list"
 	"context"
+	"errors"
+	"io/fs"
+	"os"
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -40,7 +44,7 @@ type cachedAnswer struct {
 // process. Without a session it computes the answer and remembers nothing.
 // Failures are never remembered.
 func Stable(ctx context.Context, repo string, objects []string, key []string, compute func() ([]byte, error)) ([]byte, error) {
-	if sessionFrom(ctx) == nil || !NamesObjects(objects...) {
+	if sessionFrom(ctx) == nil || !NamesObjects(objects...) || rewritesHistory(ctx, repo) {
 		return compute()
 	}
 	joined := strings.Join(append([]string{repo}, key...), "\x00")
@@ -83,6 +87,62 @@ func StableDiff(ctx context.Context, repo string, objects []string, key []string
 		session.mu.Unlock()
 	}
 	return value, err
+}
+
+// rewritesHistory reports whether repo can make a commit's ID stop fixing
+// its ancestry or content: grafts, a shallow boundary, and replace refs all
+// change what Git reports for the same IDs. It is asked once per session.
+func rewritesHistory(ctx context.Context, repo string) bool {
+	session := sessionFrom(ctx)
+	session.mu.Lock()
+	rewritten, known := session.rewritten[repo]
+	session.mu.Unlock()
+	if known {
+		return rewritten
+	}
+	rewritten = true
+	if location, err := locate(ctx, repo); err == nil && os.Getenv("GIT_REPLACE_REF_BASE") == "" {
+		rewritten = exists(filepath.Join(location.commonDir, "info", "grafts")) ||
+			exists(filepath.Join(location.commonDir, "shallow")) ||
+			hasFiles(filepath.Join(location.commonDir, "refs", "replace")) ||
+			packedReplaceRefs(filepath.Join(location.commonDir, "packed-refs"))
+	}
+	session.mu.Lock()
+	session.rewritten[repo] = rewritten
+	session.mu.Unlock()
+	return rewritten
+}
+
+func exists(path string) bool {
+	_, err := os.Lstat(path)
+	return !errors.Is(err, fs.ErrNotExist)
+}
+
+// hasFiles reports whether the tree at root holds any file, or cannot be
+// read.
+func hasFiles(root string) bool {
+	found := false
+	err := filepath.WalkDir(root, func(_ string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if !entry.IsDir() {
+			found = true
+			return filepath.SkipAll
+		}
+		return nil
+	})
+	return found || (err != nil && !errors.Is(err, fs.ErrNotExist))
+}
+
+// packedReplaceRefs reports whether packed-refs names a replace ref, or
+// cannot be read.
+func packedReplaceRefs(path string) bool {
+	data, err := os.ReadFile(path)
+	if errors.Is(err, fs.ErrNotExist) {
+		return false
+	}
+	return err != nil || bytes.Contains(data, []byte(" refs/replace/"))
 }
 
 // present reports whether repo holds every object, asking the session's

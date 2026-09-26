@@ -427,10 +427,11 @@ func (location *repoLocation) digest(withRefs bool) (string, bool) {
 	}
 	// Remotes may still be defined the legacy way, one file per remote.
 	roots := []string{filepath.Join(location.commonDir, "remotes"), filepath.Join(location.commonDir, "branches")}
-	var files []string
+	// HEAD counts for configuration too: [includeIf "onbranch:..."] follows
+	// the branch it names.
+	files := []string{filepath.Join(location.gitDir, "HEAD")}
 	if withRefs {
 		files = append(files,
-			filepath.Join(location.gitDir, "HEAD"),
 			filepath.Join(location.commonDir, "packed-refs"),
 			filepath.Join(location.commonDir, "reftable", "tables.list"),
 		)

@@ -409,3 +409,32 @@ func TestPseudoRefsAreAskedEveryTime(t *testing.T) {
 		t.Fatalf("ORIG_HEAD after it moved = %q, %v; want %s", got, ok, commits[2])
 	}
 }
+
+// [includeIf "onbranch:..."] makes configuration follow the checked-out
+// branch, so a checkout alone can change a remote's URL.
+func TestRememberedConfigurationFollowsBranchConditionalIncludes(t *testing.T) {
+	repo, _ := history(t)
+	git(t, repo, "remote", "add", "origin", "https://example.test/a.git")
+	git(t, repo, "branch", "-q", "feature")
+	dir := t.TempDir()
+	write(t, filepath.Join(dir, "mirror"), "[url \"https://mirror.test/\"]\n\tinsteadOf = https://example.test/\n")
+	write(t, filepath.Join(dir, "gitconfig"), "[includeIf \"onbranch:feature\"]\n\tpath = mirror\n")
+	t.Setenv("GIT_CONFIG_GLOBAL", filepath.Join(dir, "gitconfig"))
+	origin := func() string {
+		t.Helper()
+		ctx, end := Begin(context.Background())
+		defer end()
+		output, err := ConfigOutput(ctx, repo, "remote", "get-url", "origin")
+		if err != nil {
+			t.Fatal(err)
+		}
+		return strings.TrimSpace(string(output))
+	}
+	if got := origin(); got != "https://example.test/a.git" {
+		t.Fatalf("origin on main = %q", got)
+	}
+	git(t, repo, "checkout", "-q", "feature")
+	if got := origin(); got != "https://mirror.test/a.git" {
+		t.Fatalf("origin after checking out feature = %q", got)
+	}
+}
