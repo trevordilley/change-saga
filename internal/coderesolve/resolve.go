@@ -39,6 +39,12 @@ type Resolution struct {
 	Location coderef.Location `json:"location"`
 	Moved    bool             `json:"moved,omitempty"`
 	Reason   string           `json:"reason,omitempty"`
+	// Provisional marks an answer that rests on more than the reference and
+	// the two commits: a repository read that failed, or a pinned commit
+	// this repository does not have. The same question may be answered
+	// differently later, after a retry or a fetch, so callers must not keep
+	// it beyond the resolver that gave it.
+	Provisional bool `json:"-"`
 }
 
 func (resolution Resolution) Current() bool { return resolution.State == Current }
@@ -52,7 +58,7 @@ type Resolver struct {
 	objects  *catFile
 	blobs    map[string]blobResult
 	commits  map[string]bool
-	verified map[string]string
+	verified map[string]verification
 	changes  map[[2]string]changeSet
 }
 
@@ -75,7 +81,7 @@ func New(ctx context.Context, dir string) (*Resolver, error) {
 	}
 	return &Resolver{
 		repo: repo, blobs: map[string]blobResult{},
-		commits: map[string]bool{}, changes: map[[2]string]changeSet{}, verified: map[string]string{},
+		commits: map[string]bool{}, changes: map[[2]string]changeSet{}, verified: map[string]verification{},
 	}, nil
 }
 
@@ -118,26 +124,32 @@ func (resolver *Resolver) Resolve(ctx context.Context, reference coderef.Referen
 	stale := func(format string, args ...any) Resolution {
 		return Resolution{State: Stale, Location: pinned, Reason: fmt.Sprintf(format, args...)}
 	}
+	provisional := func(resolution Resolution) Resolution {
+		resolution.Provisional = true
+		return resolution
+	}
 	exists, err := resolver.CommitExists(ctx, reference.Commit)
 	if err != nil {
-		return stale("%v", err)
+		return provisional(stale("%v", err))
 	}
 	if !exists {
 		if found, ok := resolver.findByDigest(ctx, reference, view); ok {
 			found.Reason = fmt.Sprintf("pinned commit %s is not in this repository; found by content digest", short(reference.Commit))
-			return found
+			return provisional(found)
 		}
-		return stale("pinned commit %s is not in this repository and the referenced content was not found at %s", short(reference.Commit), short(view))
+		return provisional(stale("pinned commit %s is not in this repository and the referenced content was not found at %s", short(reference.Commit), short(view)))
 	}
-	if reason := resolver.verify(ctx, reference); reason != "" {
-		return stale("%s", reason)
+	if checked := resolver.verify(ctx, reference); checked.reason != "" {
+		resolution := stale("%s", checked.reason)
+		resolution.Provisional = checked.failed
+		return resolution
 	}
 	if view == reference.Commit {
 		return Resolution{State: Current, Location: pinned}
 	}
 	changes, err := resolver.treeChanges(ctx, reference.Commit, view)
 	if err != nil {
-		return stale("%v", err)
+		return provisional(stale("%v", err))
 	}
 	change, changed := changes[reference.Path]
 	if !changed {
@@ -213,31 +225,38 @@ func (resolver *Resolver) Find(ctx context.Context, reference coderef.Reference,
 	return resolver.findByDigest(ctx, reference, commit)
 }
 
+// verification is why a reference fails against its own pin, if it does,
+// and whether that is because the pinned content could not be read.
+type verification struct {
+	reason string
+	failed bool
+}
+
 // verify checks the reference against its own pin and returns why it fails.
-func (resolver *Resolver) verify(ctx context.Context, reference coderef.Reference) string {
+func (resolver *Resolver) verify(ctx context.Context, reference coderef.Reference) verification {
 	key := reference.Key()
 	resolver.mu.Lock()
-	reason, ok := resolver.verified[key]
+	checked, ok := resolver.verified[key]
 	resolver.mu.Unlock()
 	if ok {
-		return reason
+		return checked
 	}
 	blob, err := resolver.blob(ctx, reference.Commit, reference.Path)
 	switch {
 	case err != nil:
-		reason = err.Error()
+		checked = verification{reason: err.Error(), failed: true}
 	case !blob.found:
-		reason = fmt.Sprintf("%s does not exist at pinned commit %s", reference.Path, short(reference.Commit))
+		checked.reason = fmt.Sprintf("%s does not exist at pinned commit %s", reference.Path, short(reference.Commit))
 	default:
 		digest, digestErr := resolver.digest(blob, reference.Start, reference.End)
 		if digestErr != nil || digest != reference.Digest {
-			reason = fmt.Sprintf("content digest does not match %s", reference.Location())
+			checked.reason = fmt.Sprintf("content digest does not match %s", reference.Location())
 		}
 	}
 	resolver.mu.Lock()
-	resolver.verified[key] = reason
+	resolver.verified[key] = checked
 	resolver.mu.Unlock()
-	return reason
+	return checked
 }
 
 func (resolver *Resolver) digest(blob blobResult, start, end int) (string, error) {

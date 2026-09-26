@@ -328,7 +328,7 @@ func TestDocumentationPagesReadTheSagaOncePerChange(t *testing.T) {
 		t.Fatalf("an edited Saga was served from the old read: builds = %d", application.files.builds)
 	}
 	// Each page projects complete-slide links into its own relations.
-	files := application.sagaFiles()
+	files := application.sagaFiles(context.Background())
 	records, _ := files.records(files.narrative().Manifest.ID)
 	records.Relations = append(records.Relations, requirements.Relation{ID: "page-local"})
 	again, _ := files.records(files.narrative().Manifest.ID)

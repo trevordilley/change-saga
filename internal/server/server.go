@@ -63,6 +63,9 @@ type app struct {
 	// files is what documentation pages read from the Saga's own files,
 	// kept while those files are unchanged.
 	files sagaFilesCache
+	// fresh shares the check of whether the Saga's files or the heads
+	// have changed between the requests that ask at once.
+	fresh freshness
 	// comparisonLoader is the injectable boundary around the expensive source
 	// diff and coverage build. Root and narrative shell handlers must never call
 	// it; focused comparison endpoints reach it through snapshot().
@@ -160,12 +163,15 @@ type pageData struct {
 	ReviewCoverageHref string
 	Root               *sectionView
 	SlideRoot          *sectionView
-	Nav                []*navNodeView
-	Diagnostic         string
-	Code               *CodeReviewView
-	Manifest           *CoverageManifestView
-	Error              string
-	Files              []*fileDiffView
+	// SlidesHTML is the deck viewer rendered from SlideRoot. Without it the
+	// page renders the viewer itself.
+	SlidesHTML template.HTML
+	Nav        []*navNodeView
+	Diagnostic string
+	Code       *CodeReviewView
+	Manifest   *CoverageManifestView
+	Error      string
+	Files      []*fileDiffView
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
@@ -345,6 +351,12 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 	}
 	errCh := make(chan error, 1)
 	go func() { errCh <- server.Serve(listener) }()
+	// The Saga is read in the background as soon as the server is up, and
+	// again whenever it changes, so a reviewer's first page and the page
+	// after an edit find it already read.
+	// The server does not return while the watcher could still read the
+	// Saga or start Git.
+	defer application.startWatching(ctx)()
 	select {
 	case <-ctx.Done():
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -364,8 +376,12 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 
 func newMux(application *app) *http.ServeMux {
 	mux := http.NewServeMux()
-	// Every route asks Git through one session per request.
-	handle := func(pattern string, handler http.HandlerFunc) { mux.HandleFunc(pattern, withGitSession(handler)) }
+	// Every route is stamped with its arrival, so the caches one request
+	// asks share the freshness check that answers it, and asks Git through
+	// one session of its own.
+	handle := func(pattern string, handler http.HandlerFunc) {
+		mux.HandleFunc(pattern, arriving(withGitSession(handler)))
+	}
 	handle("GET /requirements/{story}/criteria/{criterion}", application.page)
 	handle("GET /requirements/{story}", application.page)
 	handle("GET /requirements", application.page)
@@ -993,13 +1009,19 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	if !ok {
 		return nil, errAppPageNotFound
 	}
+	if route.kind == "feature" || route.kind == "requirements" {
+		// These pages also ask for the related reviews, which read every
+		// file, so the one check this request takes covers every file.
+		a.sagaState(r.Context(), true)
+	}
 	document := a.outlineDocument(r.Context())
 	if document == nil {
 		return nil, errors.New("The saga could not be loaded. Run change-saga validate for details.")
 	}
 	// One fingerprint of the Saga's files serves every part the page reads.
-	files := a.sagaFiles()
-	if len(document.Decks)+len(document.Onboarding) > 0 {
+	files := a.sagaFiles(r.Context())
+	narrated := len(document.Decks)+len(document.Onboarding) > 0
+	if narrated {
 		document = files.narrative()
 		if document == nil {
 			return nil, errors.New("The slide deck could not be loaded. Run change-saga validate for details.")
@@ -1014,7 +1036,15 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		}
 		return nil, errors.New("The requirements could not be loaded. Run change-saga validate for details.")
 	}
-	if err := semanticgraph.ProjectSlideCriterionLinks(document, &requirementsDocument); err != nil {
+	// The page reads the records with the complete slides' links projected
+	// in. Projected from the narrative, they are the same for every page of
+	// one state of the files, so they are projected once for all of them.
+	if narrated {
+		requirementsDocument, err = files.projectedRecords(document.Manifest.ID)
+	} else {
+		err = semanticgraph.ProjectSlideCriterionLinks(document, &requirementsDocument)
+	}
+	if err != nil {
 		return nil, errors.New("The complete-slide criterion links could not be loaded. Run change-saga validate for details.")
 	}
 	tests, err := files.tests()
@@ -1119,7 +1149,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// source head changes, so the documentation pages do not pay the cross
 	// product again on every request.
 	if route.kind == "feature" || route.kind == "requirements" {
-		attachRelatedReviews(a.relatedReviews(r.Context(), document, requirementsDocument), data)
+		attachRelatedReviews(a.relatedReviews(r.Context()), data)
 	}
 	overviewActive := ""
 	switch {
@@ -1171,16 +1201,30 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		}
 	}
 	if data.EmbeddedDecks {
-		data.SlideRoot = makeSectionView(slideRoot, scope)
-		storyLinks := &storyLinkDecorator{document: document, records: requirementsDocument}
-		for _, deck := range data.SlideRoot.ChildViews {
-			for _, slide := range deck.FragmentViews {
-				if err := storyLinks.decorate(slide); err != nil {
-					return nil, fmt.Errorf("story links could not be resolved: %w", err)
+		// Every page shows the same decks, read from the same narrative and
+		// records, so their view is built once for each state of the files.
+		data.SlideRoot, data.SlidesHTML, err = files.slides(func() (*sectionView, template.HTML, error) {
+			root := makeSectionView(slideRoot, scope)
+			storyLinks := &storyLinkDecorator{document: document, records: requirementsDocument}
+			for _, deck := range root.ChildViews {
+				for _, slide := range deck.FragmentViews {
+					if err := storyLinks.decorate(slide); err != nil {
+						return nil, "", fmt.Errorf("story links could not be resolved: %w", err)
+					}
 				}
 			}
+			labelDeckRoles(root, document)
+			// The deck viewer reads nothing but the decks, so it is rendered
+			// here once rather than into every page.
+			var rendered bytes.Buffer
+			if err := a.template.ExecuteTemplate(&rendered, "deck-viewer", root); err != nil {
+				return nil, "", fmt.Errorf("the decks could not be rendered: %w", err)
+			}
+			return root, template.HTML(rendered.String()), nil
+		})
+		if err != nil {
+			return nil, err
 		}
-		labelDeckRoles(data.SlideRoot, document)
 	}
 	return data, nil
 }
@@ -1247,7 +1291,7 @@ func splitReportAndDeckSections(root *saga.Section) (*saga.Section, *saga.Sectio
 }
 
 func (a *app) narrativeDocument(ctx context.Context) *saga.Saga {
-	return a.sagaFiles().narrative()
+	return a.sagaFiles(ctx).narrative()
 }
 
 // sourceReviewDocument is the narrative generation code and file responses
@@ -1650,7 +1694,9 @@ func makeFileViews(changes gitdiff.ChangeSet, target string) []*fileDiffView {
 }
 
 func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
-	index, validation, err := saga.LoadMutationIndex(a.root)
+	// A page embeds every slide's files, so the index they are found in is
+	// read once for each state of the Saga's files rather than per file.
+	index, validation, err := a.sagaFiles(r.Context()).mutation()
 	if err != nil || !validation.Valid {
 		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
 		return
@@ -1696,6 +1742,9 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 	if contentType := mime.TypeByExtension(strings.ToLower(filepath.Ext(realPath))); contentType != "" {
 		w.Header().Set("Content-Type", contentType)
 	}
+	// The browser may keep the file but must ask before each use; an
+	// unchanged file is answered by its modification time alone.
+	w.Header().Set("Cache-Control", "no-cache")
 	http.ServeContent(w, r, filepath.Base(realPath), info.ModTime(), file)
 }
 

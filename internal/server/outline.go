@@ -2,11 +2,6 @@ package server
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
-	"fmt"
-	"io/fs"
-	"path/filepath"
 	"strings"
 	"sync"
 
@@ -24,12 +19,14 @@ type outlineCache struct {
 }
 
 func (a *app) outlineDocument(ctx context.Context) *saga.Saga {
-	a.outline.mutex.Lock()
-	defer a.outline.mutex.Unlock()
-	fingerprint, err := a.outlineFingerprint(ctx)
+	// The key is taken before the Saga is read, so an edit made while it is
+	// read changes the next request's key and is never served from here.
+	fingerprint, err := a.sagaState(ctx, false).outlineKey()
 	if err != nil {
 		return nil
 	}
+	a.outline.mutex.Lock()
+	defer a.outline.mutex.Unlock()
 	if a.outline.document != nil && fingerprint == a.outline.fingerprint {
 		return a.outline.document
 	}
@@ -37,66 +34,16 @@ func (a *app) outlineDocument(ctx context.Context) *saga.Saga {
 	if err != nil || !validation.Valid {
 		return nil
 	}
-	// Fingerprint after loading. A concurrent edit cannot be mistaken for the
-	// model just read; it produces a miss on the next request.
-	after, err := a.outlineFingerprint(ctx)
-	if err != nil {
-		return document
-	}
 	a.outline.builds++
-	a.outline.fingerprint, a.outline.document = after, document
+	a.outline.fingerprint, a.outline.document = fingerprint, document
 	return document
 }
 
-func (a *app) outlineFingerprint(ctx context.Context) (string, error) {
-	tree, err := outlineFingerprint(a.root)
-	if err != nil {
-		return "", err
-	}
-	head, _ := resolveCommit(ctx, a.root, "HEAD")
-	return tree + "\x00" + head, nil
-}
-
-// outlineFingerprint commits only to files LoadOutline consumes. In
-// particular, ___code directories and fragment bodies are skipped as
+// The outline's files are what sagaFingerprints commits to as the outline.
+// In particular, ___code directories and fragment bodies are skipped as
 // directories/files rather than merely omitted from the digest after a full
 // walk. A root request therefore does not scale with per-line evidence or code
 // attachment size even during freshness checks.
-func outlineFingerprint(root string) (string, error) {
-	digest := sha256.New()
-	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
-		if walkErr != nil {
-			return walkErr
-		}
-		rel, err := filepath.Rel(root, path)
-		if err != nil {
-			return err
-		}
-		rel = filepath.ToSlash(rel)
-		if entry.IsDir() {
-			base := entry.Name()
-			if path != root && skipOutlineDirectory(rel, base) {
-				return filepath.SkipDir
-			}
-			fmt.Fprintf(digest, "d\x00%s\x00", rel)
-			return nil
-		}
-		if !outlineFile(rel, entry.Name()) {
-			return nil
-		}
-		info, err := entry.Info()
-		if err != nil {
-			return err
-		}
-		fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", rel, info.Size(), info.ModTime().UnixNano())
-		return nil
-	})
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(digest.Sum(nil)), nil
-}
-
 func skipOutlineDirectory(rel, base string) bool {
 	switch base {
 	// Reviews are read fresh by the review pages; the shell never shows them.

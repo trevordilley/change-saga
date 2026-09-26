@@ -2,9 +2,11 @@ package server
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -136,4 +138,126 @@ func relatedReviewSection(body string) string {
 		return "no related-reviews section"
 	}
 	return body[index:min(index+400, len(body))]
+}
+
+// A rebuild keeps what each review's diff touched only while the code the
+// documentation references is unchanged. Repointing a record's code at the
+// line the review changed lists the review on it at once; an edit to prose
+// alone reads no review's diff again.
+func TestRelatedReviewsFollowAnEditToTheDocumentedCode(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	documentTheFixture(t, fixture)
+	application, handler := reviewApp(t, fixture, gitdiff.Range{})
+	unrelated := requirementStoryHref("name-the-package")
+	if body := documentationPage(t, handler, unrelated); strings.Contains(body, "data-related-review=") {
+		t.Fatalf("%s lists a review before its code was repointed", unrelated)
+	}
+	kept := application.related.touched
+	if len(kept) == 0 {
+		t.Fatal("the build kept nothing of what the reviews touched")
+	}
+
+	fragmentDir := filepath.Join(serverFeatureDir(fixture.root), applayout.DesignDir, "package-design.chapter", "package-clause.fragment")
+	writeServerFile(t, filepath.Join(fragmentDir, "content.md"), "# The package {#the-package}\n\nThe package is restated here.\n")
+	documentationPage(t, handler, unrelated)
+	if application.related.builds != 2 {
+		t.Fatalf("a prose edit rebuilt the index %d times, want 2", application.related.builds)
+	}
+	for key := range kept {
+		if _, ok := application.related.touched[key]; !ok {
+			t.Fatal("a prose edit read a review's diff again")
+		}
+	}
+
+	head := strings.TrimSpace(serverGit(t, fixture.repo, "rev-parse", "HEAD"))
+	resolver, err := coderesolve.New(context.Background(), fixture.repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	reference, err := resolver.Author(context.Background(), coderef.Location{Commit: head, Path: "queue.go", Start: 3, End: 3}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeServerJSON(t, filepath.Join(fragmentDir, saga.CodeDirName, "package-clause.json"), saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{reference}})
+	if body := documentationPage(t, handler, unrelated); !strings.Contains(body, `data-related-review="pr-7"`) {
+		t.Fatalf("%s does not list the review after its code was repointed at the changed line:\n%s", unrelated, relatedReviewSection(body))
+	}
+}
+
+// A build the request abandoned keeps nothing. A reviewer who clicks away
+// while a feature page rebuilds the index must not leave it, or any review's
+// intersection, incomplete for every later page.
+func TestAnAbandonedBuildOfRelatedReviewsKeepsNothing(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	documentTheFixture(t, fixture)
+	application, handler := reviewApp(t, fixture, gitdiff.Range{})
+	abandoned, cancel := context.WithCancel(context.Background())
+	cancel()
+	application.relatedReviews(abandoned)
+	if application.related.index != nil || len(application.related.touched) != 0 {
+		t.Fatalf("an abandoned build was kept: index %v, %d intersections", application.related.index != nil, len(application.related.touched))
+	}
+	path := requirementStoryHref("place-an-order")
+	if body := documentationPage(t, handler, path); !strings.Contains(body, `data-related-review="pr-7"`) {
+		t.Fatalf("%s lost its related review after an abandoned build:\n%s", path, relatedReviewSection(body))
+	}
+	if len(application.related.touched) != 1 {
+		t.Fatalf("the complete build kept %d intersections, want 1", len(application.related.touched))
+	}
+}
+
+// An intersection that rests on a pinned commit this repository does not
+// have is not kept under the review's commits: a fetch may bring the commit
+// in without changing them.
+func TestAProvisionalIntersectionIsNotKept(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	documentTheFixture(t, fixture)
+	fragmentDir := filepath.Join(serverFeatureDir(fixture.root), applayout.DesignDir, "package-design.chapter", "package-clause.fragment")
+	codePath := filepath.Join(fragmentDir, saga.CodeDirName, "package-clause.json")
+	var code saga.CodeFile
+	data, err := os.ReadFile(codePath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(data, &code); err != nil || len(code.References) == 0 {
+		t.Fatalf("read %s: %v", codePath, err)
+	}
+	code.References[0].Commit = strings.Repeat("f", 40)
+	writeServerJSON(t, codePath, code)
+	application, handler := reviewApp(t, fixture, gitdiff.Range{})
+	path := requirementStoryHref("place-an-order")
+	if body := documentationPage(t, handler, path); !strings.Contains(body, `data-related-review="pr-7"`) {
+		t.Fatalf("%s lost its related review beside a reference to a missing commit:\n%s", path, relatedReviewSection(body))
+	}
+	if len(application.related.touched) != 0 {
+		t.Fatal("an intersection that depended on a missing pinned commit was kept")
+	}
+}
+
+// The index is built from the records of the state it is kept under. An edit
+// that relates a story to the changed design lists the review on it at once.
+func TestRelatedReviewsFollowAnEditToTheRecords(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	documentTheFixture(t, fixture)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	path := requirementStoryHref("name-the-package")
+	if body := documentationPage(t, handler, path); strings.Contains(body, "data-related-review=") {
+		t.Fatalf("%s lists a review before any record relates it", path)
+	}
+	document, validation, err := saga.Load(fixture.root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("fixture: %v %#v", err, validation.Issues)
+	}
+	digests, err := saga.CurrentDesignContentDigests(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	changed := saga.FragmentTarget("app", "enqueue-design")
+	writeServerFile(t, filepath.Join(serverFeatureDir(fixture.root), applayout.RequirementsDir, "relations", "r-named.json"), fmt.Sprintf(
+		`{"$schema":"https://changesaga.dev/schema/v5/relation.schema.json","version":5,"id":"r-named","type":"addresses","from":%q,"to":"urn:change-saga:app:story:name-the-package:criterion:named","scope":"self","rationale":"The enqueue design also names the package.","to_revision":"urn:change-saga:app:story:name-the-package:revision:r1","from_content_digest":%q,"state":"active","created_at":"2026-08-21T12:00:00Z"}`,
+		changed, digests[changed]))
+	if body := documentationPage(t, handler, path); !strings.Contains(body, `data-related-review="pr-7"`) {
+		t.Fatalf("%s does not list the review after a record related it:\n%s", path, relatedReviewSection(body))
+	}
 }
