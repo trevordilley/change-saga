@@ -4,7 +4,11 @@ import (
 	"crypto/sha256"
 	"embed"
 	"encoding/hex"
+	"fmt"
 	"net/http"
+	"runtime/debug"
+	"sort"
+	"strings"
 )
 
 // The reviewer's navigation is htmx: one vendored file with no dependencies
@@ -52,6 +56,33 @@ var shellAssets = func() map[string]*shellAsset {
 		assets[asset.name] = asset
 	}
 	return assets
+}()
+
+// rendererIdentity names what besides the Saga decides the markup this
+// binary renders: its templates, the shell assets that markup is written
+// for, and the build itself. A validator of rendered markup includes it, so
+// a browser revalidating against a newer change-saga at the same address is
+// never told to keep markup an older one made.
+var rendererIdentity = func() string {
+	digest := sha256.New()
+	digest.Write([]byte(pageTemplateSource))
+	names := make([]string, 0, len(shellAssets))
+	for name := range shellAssets {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	for _, name := range names {
+		fmt.Fprintf(digest, "\x00%s=%s", name, shellAssets[name].hash)
+	}
+	if info, ok := debug.ReadBuildInfo(); ok {
+		fmt.Fprintf(digest, "\x00%s", info.Main.Version)
+		for _, setting := range info.Settings {
+			if strings.HasPrefix(setting.Key, "vcs.") {
+				fmt.Fprintf(digest, "\x00%s=%s", setting.Key, setting.Value)
+			}
+		}
+	}
+	return hex.EncodeToString(digest.Sum(nil))[:16]
 }()
 
 // assetPath is the versioned URL of a shell asset, for the templates.

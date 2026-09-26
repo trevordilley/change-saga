@@ -173,4 +173,17 @@ func TestTheDecksLoadOnceAndRevalidate(t *testing.T) {
 	if revalidated.Code != http.StatusNotModified || revalidated.Body.Len() != 0 {
 		t.Fatalf("revalidating the unchanged decks = %d with %d bytes", revalidated.Code, revalidated.Body.Len())
 	}
+
+	// The viewer's markup is also the renderer's: a browser holding one an
+	// older change-saga rendered for the same Saga is sent the new one.
+	if !strings.Contains(etag, rendererIdentity) {
+		t.Fatalf("the decks' ETag %q does not name the renderer %q", etag, rendererIdentity)
+	}
+	older := httptest.NewRequest(http.MethodGet, "/decks", nil)
+	older.Header.Set("If-None-Match", strings.Replace(etag, rendererIdentity, strings.Repeat("0", len(rendererIdentity)), 1))
+	upgraded := httptest.NewRecorder()
+	handler.ServeHTTP(upgraded, older)
+	if upgraded.Code != http.StatusOK || !strings.Contains(upgraded.Body.String(), "data-deck-viewer") {
+		t.Fatalf("revalidating decks another renderer made = %d with %d bytes", upgraded.Code, upgraded.Body.Len())
+	}
 }

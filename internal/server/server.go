@@ -960,8 +960,11 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
 	funcs["comparing"] = func() bool { return comparing }
-	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates + technicalSelectionTemplates)
+	return template.New("page").Funcs(funcs).Parse(pageTemplateSource)
 }
+
+// pageTemplateSource is every template the reviewer renders with.
+var pageTemplateSource = pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates + technicalSelectionTemplates
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
@@ -1423,9 +1426,10 @@ func (a *app) decks(ctx context.Context) (string, template.HTML, error) {
 }
 
 // decksPage serves the deck viewer to the shell. Its validator is the state
-// of the Saga it was built from, so a new session on an unchanged Saga
-// revalidates it rather than downloading it again, and a changed Saga is
-// never served from a cache.
+// of the Saga it was built from and the renderer that built it, so a new
+// session on an unchanged Saga revalidates it rather than downloading it
+// again, and neither a changed Saga nor a new change-saga is ever served from
+// a cache.
 func (a *app) decksPage(w http.ResponseWriter, r *http.Request) {
 	fingerprint, html, err := a.decks(r.Context())
 	if err != nil {
@@ -1436,7 +1440,7 @@ func (a *app) decksPage(w http.ResponseWriter, r *http.Request) {
 	if fingerprint == "" {
 		w.Header().Set("Cache-Control", "no-store")
 	} else {
-		etag := `"` + fingerprint + `"`
+		etag := decksETag(fingerprint, rendererIdentity)
 		w.Header().Set("Cache-Control", "no-cache")
 		w.Header().Set("ETag", etag)
 		if r.Header.Get("If-None-Match") == etag {
@@ -1445,6 +1449,12 @@ func (a *app) decksPage(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	_, _ = io.WriteString(w, string(html))
+}
+
+// decksETag is the deck viewer's validator: the Saga state it shows and the
+// renderer it was rendered by.
+func decksETag(fingerprint, renderer string) string {
+	return `"` + fingerprint + "-" + renderer + `"`
 }
 
 // rootNavLinks points the sidebar's in-page anchors at the overview.
