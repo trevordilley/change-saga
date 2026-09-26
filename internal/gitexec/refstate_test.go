@@ -3,7 +3,9 @@ package gitexec
 import (
 	"context"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -159,6 +161,7 @@ func TestRefCacheableRevisions(t *testing.T) {
 		strings.Repeat("a", 40): false, "abc1234": false, "abc1234~1": false, "HEAD@{1}": false,
 		"@{upstream}": false, "HEAD:path": false, "": false, "deadbeef": false, "bad": true,
 		"FETCH_HEAD": false, "ORIG_HEAD~1": false, "MERGE_HEAD^2": false, "refs/heads/MAIN": true, "HEAD^1": true,
+		"main-worktree/HEAD": false, "worktrees/other/HEAD~1": false,
 	} {
 		if got := refCacheable(revision); got != want {
 			t.Errorf("refCacheable(%q) = %v; want %v", revision, got, want)
@@ -436,5 +439,66 @@ func TestRememberedConfigurationFollowsBranchConditionalIncludes(t *testing.T) {
 	git(t, repo, "checkout", "-q", "feature")
 	if got := origin(); got != "https://mirror.test/a.git" {
 		t.Fatalf("origin after checking out feature = %q", got)
+	}
+}
+
+// Git echoes flags it does not know to standard output, as Git before 2.31
+// does with --path-format. An answer of an unexpected shape must still find
+// the repository, only without remembering it.
+func TestTopLevelSurvivesAnswersOfAnotherShape(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("the stand-in Git is a shell script")
+	}
+	repo, _ := history(t)
+	want := git(t, repo, "rev-parse", "--show-toplevel")
+	real, err := exec.LookPath("git")
+	if err != nil {
+		t.Fatal(err)
+	}
+	bin := t.TempDir()
+	write(t, filepath.Join(bin, "git"), "#!/bin/sh\ncase \"$*\" in *--git-common-dir*) echo --unknown-flag ;; esac\nexec \""+real+"\" \"$@\"\n")
+	if err := os.Chmod(filepath.Join(bin, "git"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PATH", bin+string(os.PathListSeparator)+os.Getenv("PATH"))
+	got, err := TopLevel(context.Background(), repo)
+	if err != nil || got != want {
+		t.Fatalf("TopLevel = %q, %v; want %q", got, err, want)
+	}
+	if _, _, ok := GitDirs(context.Background(), repo); ok {
+		t.Fatal("GitDirs trusted an answer it could not read in full")
+	}
+}
+
+// A session may have memoized an answer before the repository moved; the
+// digests read around a remembered answer must surround a fresh one.
+func TestRememberedOutputIsNeverASessionsOlderAnswer(t *testing.T) {
+	repo, commits := history(t)
+	session, end := Begin(context.Background())
+	defer end()
+	// The session asks, and memoizes, while HEAD is the fourth commit.
+	if output, err := Output(session, "-C", repo, "rev-parse", "--verify", "HEAD"); err != nil || strings.TrimSpace(string(output)) != commits[3] {
+		t.Fatalf("HEAD = %q, %v", output, err)
+	}
+	git(t, repo, "reset", "-q", "--hard", commits[1])
+	if output, err := RepoOutput(session, repo, "rev-parse", "--verify", "HEAD"); err != nil || strings.TrimSpace(string(output)) != commits[1] {
+		t.Fatalf("remembered HEAD asked in the old session = %q, %v; want %s", output, err, commits[1])
+	}
+	fresh, endFresh := Begin(context.Background())
+	defer endFresh()
+	if output, err := RepoOutput(fresh, repo, "rev-parse", "--verify", "HEAD"); err != nil || strings.TrimSpace(string(output)) != commits[1] {
+		t.Fatalf("a later command read HEAD %q, %v; want %s", output, err, commits[1])
+	}
+}
+
+// Grafts change what main~1 names without touching a ref.
+func TestRememberedRevisionsFollowGrafts(t *testing.T) {
+	repo, commits := history(t)
+	if got, ok := resolveIn(t, repo, "main~1"); !ok || got != commits[2] {
+		t.Fatalf("main~1 = %q, %v", got, ok)
+	}
+	write(t, filepath.Join(repo, ".git", "info", "grafts"), commits[3]+" "+commits[0]+"\n")
+	if got, ok := resolveIn(t, repo, "main~1"); !ok || got != commits[0] {
+		t.Fatalf("main~1 after a graft = %q, %v; want %s", got, ok, commits[0])
 	}
 }

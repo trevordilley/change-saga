@@ -116,3 +116,35 @@ func TestStableIgnoresRepositoriesThatRewriteHistory(t *testing.T) {
 		t.Fatalf("first parent after a graft replace = %q; want %s", got, commits[0])
 	}
 }
+
+// A replace ref added while a session runs must not let that session
+// remember what the replacement makes Git report.
+func TestStableDoesNotRememberAcrossAReplaceAddedMidSession(t *testing.T) {
+	repo, commits := history(t)
+	ctx, end := Begin(context.Background())
+	parent := func(ctx context.Context) string {
+		t.Helper()
+		output, err := Stable(ctx, repo, commits[2:3], []string{"first-parent", commits[2]}, func() ([]byte, error) {
+			return []byte(git(t, repo, "rev-parse", commits[2]+"^1")), nil
+		})
+		if err != nil {
+			t.Fatal(err)
+		}
+		return string(output)
+	}
+	// The session checks for rewritten history before any replace exists.
+	if _, err := Stable(ctx, repo, commits[1:2], []string{"probe", commits[1]}, func() ([]byte, error) { return []byte("x"), nil }); err != nil {
+		t.Fatal(err)
+	}
+	git(t, repo, "replace", "--graft", commits[2], commits[0])
+	if got := parent(ctx); got != commits[0] {
+		t.Fatalf("first parent with the replace = %q", got)
+	}
+	end()
+	git(t, repo, "replace", "-d", commits[2])
+	fresh, endFresh := Begin(context.Background())
+	defer endFresh()
+	if got := parent(fresh); got != commits[1] {
+		t.Fatalf("after the replace was removed, first parent = %q; want %s", got, commits[1])
+	}
+}

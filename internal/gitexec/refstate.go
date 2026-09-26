@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	"fmt"
 	"io/fs"
 	"os"
 	"os/exec"
@@ -60,6 +59,17 @@ func TopLevel(ctx context.Context, dir string) (string, error) {
 	return location.top, nil
 }
 
+// GitDirs returns the absolute git directory and common directory of dir's
+// checkout, found the way TopLevel finds its repository. It reports false
+// when Git's answer could not be read in full.
+func GitDirs(ctx context.Context, dir string) (gitDir, commonDir string, ok bool) {
+	location, err := locate(ctx, dir)
+	if err != nil || location.gitDir == "" || location.commonDir == "" {
+		return "", "", false
+	}
+	return location.gitDir, location.commonDir, true
+}
+
 func locate(ctx context.Context, dir string) (*repoLocation, error) {
 	abs, absErr := filepath.Abs(dir)
 	key := gitEnvironment() + "\x00" + abs
@@ -77,23 +87,24 @@ func locate(ctx context.Context, dir string) (*repoLocation, error) {
 		before, guessed = guess.digest(false)
 	}
 	// Standard output alone: GIT_TRACE and warnings write to standard error.
-	// --path-format=absolute resolves the git directories physically, so a
-	// symlink above the checkout cannot misplace them.
-	output, err := Output(ctx, "-C", dir, "rev-parse", "--show-toplevel", "--path-format=absolute", "--git-dir", "--git-common-dir")
+	// Every flag here predates Git 2.5, and Git echoes flags it does not know
+	// to standard output, so nothing newer is asked. The answer is spawned
+	// afresh, never taken from the session's memo, because it is about to be
+	// remembered under the digests read around it.
+	output, err := gitOutput(ctx, "-C", dir, "rev-parse", "--show-toplevel", "--git-dir", "--git-common-dir")
 	if err != nil {
-		var exitErr *exec.ExitError
-		if errors.As(err, &exitErr) {
-			if message := strings.TrimSpace(string(exitErr.Stderr)); message != "" {
-				return nil, errors.New(message)
-			}
-		}
 		return nil, err
 	}
-	lines := strings.Split(strings.TrimRight(string(output), "\r\n"), "\n")
-	if len(lines) != 3 {
-		return nil, fmt.Errorf("unexpected rev-parse output %q", output)
+	location, ok := parseLocation(output, abs)
+	if !ok {
+		// An answer of any other shape: find the top level alone and
+		// remember nothing.
+		top, err := gitOutput(ctx, "-C", dir, "rev-parse", "--show-toplevel")
+		if err != nil {
+			return nil, err
+		}
+		return &repoLocation{top: strings.TrimSpace(string(top))}, nil
 	}
-	location := &repoLocation{top: strings.TrimSpace(lines[0]), gitDir: filepath.FromSlash(strings.TrimSpace(lines[1])), commonDir: filepath.FromSlash(strings.TrimSpace(lines[2]))}
 	if afterDiscovery != nil {
 		afterDiscovery()
 	}
@@ -103,6 +114,49 @@ func locate(ctx context.Context, dir string) (*repoLocation, error) {
 		}
 	}
 	return location, nil
+}
+
+// gitOutput spawns `git args...` and returns its standard output, or Git's
+// own message when it fails.
+func gitOutput(ctx context.Context, args ...string) ([]byte, error) {
+	output, err := spawnGit(ctx, false, args)
+	if err != nil {
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			if message := strings.TrimSpace(string(exitErr.Stderr)); message != "" {
+				return nil, errors.New(message)
+			}
+		}
+		return nil, err
+	}
+	return output, nil
+}
+
+// parseLocation reads rev-parse --show-toplevel --git-dir --git-common-dir.
+// Git prints the directories relative to where it ran, which is dir with
+// its symlinks resolved, so they are resolved against that. It reports
+// false for output of any other shape.
+func parseLocation(output []byte, dir string) (*repoLocation, bool) {
+	lines := strings.Split(strings.TrimRight(string(output), "\r\n"), "\n")
+	if len(lines) != 3 {
+		return nil, false
+	}
+	top := strings.TrimSpace(lines[0])
+	if !filepath.IsAbs(filepath.FromSlash(top)) {
+		return nil, false
+	}
+	physical, err := filepath.EvalSymlinks(dir)
+	if err != nil {
+		return nil, false
+	}
+	resolve := func(path string) string {
+		path = filepath.FromSlash(strings.TrimSpace(path))
+		if !filepath.IsAbs(path) {
+			path = filepath.Join(physical, path)
+		}
+		return path
+	}
+	return &repoLocation{top: top, gitDir: resolve(lines[1]), commonDir: resolve(lines[2])}, true
 }
 
 // afterDiscovery lets a test change the repository while Git has answered
@@ -232,7 +286,7 @@ var refAnswers sync.Map // repository key + query -> refAnswer
 // what HEAD names. Failures are never remembered.
 func RepoOutput(ctx context.Context, repo string, args ...string) ([]byte, error) {
 	return rememberRefs(ctx, repo, true, append([]string{"output"}, args...), func() ([]byte, error) {
-		return Output(ctx, append([]string{"-C", repo}, args...)...)
+		return spawnGit(ctx, false, append([]string{"-C", repo}, args...))
 	})
 }
 
@@ -240,7 +294,7 @@ func RepoOutput(ctx context.Context, repo string, args ...string) ([]byte, error
 // such as a remote's URL, so moving a ref does not make them ask again.
 func ConfigOutput(ctx context.Context, repo string, args ...string) ([]byte, error) {
 	return rememberRefs(ctx, repo, false, append([]string{"config"}, args...), func() ([]byte, error) {
-		return Output(ctx, append([]string{"-C", repo}, args...)...)
+		return spawnGit(ctx, false, append([]string{"-C", repo}, args...))
 	})
 }
 
@@ -257,7 +311,8 @@ func rememberRefs(ctx context.Context, repo string, withRefs bool, query []strin
 	if cached, found := refAnswers.Load(key); found && cached.(refAnswer).digest == digest {
 		return bytes.Clone(cached.(refAnswer).value), nil
 	}
-	// Store only under digests read fresh on both sides of Git's answer.
+	// Store only under digests read fresh on both sides of Git's answer; compute
+	// must therefore ask Git afresh rather than through the session's memo.
 	// The session's digest may be older than the answer: the repository
 	// could have left that state and returned to it since, and the answer
 	// would then be filed under a state it does not describe.
@@ -317,6 +372,10 @@ func looksPseudoRef(revision string) bool {
 	base := revision
 	if index := strings.IndexAny(base, "^~"); index >= 0 {
 		base = base[:index]
+	}
+	// Another worktree's HEAD is a file the digest does not cover either.
+	if strings.HasPrefix(base, "main-worktree/") || strings.HasPrefix(base, "worktrees/") {
+		return true
 	}
 	if base == "HEAD" || strings.HasPrefix(base, "refs/") {
 		return false
@@ -433,6 +492,9 @@ func (location *repoLocation) digest(withRefs bool) (string, bool) {
 	if withRefs {
 		files = append(files,
 			filepath.Join(location.commonDir, "packed-refs"),
+			// Grafts and a shallow boundary change what main~3 names.
+			filepath.Join(location.commonDir, "info", "grafts"),
+			filepath.Join(location.commonDir, "shallow"),
 			filepath.Join(location.commonDir, "reftable", "tables.list"),
 		)
 		roots = append(roots, filepath.Join(location.commonDir, "refs"))

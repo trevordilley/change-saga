@@ -55,7 +55,10 @@ func Stable(ctx context.Context, repo string, objects []string, key []string, co
 		stable.remove(joined)
 	}
 	value, err := compute()
-	if err == nil {
+	// The session checked for rewritten history once, when it began; a
+	// replace ref or graft may have appeared since, so check again before
+	// remembering anything.
+	if err == nil && !rewritesHistoryNow(ctx, repo) {
 		stable.put(joined, value)
 	}
 	return value, err
@@ -100,17 +103,23 @@ func rewritesHistory(ctx context.Context, repo string) bool {
 	if known {
 		return rewritten
 	}
-	rewritten = true
-	if location, err := locate(ctx, repo); err == nil && os.Getenv("GIT_REPLACE_REF_BASE") == "" {
-		rewritten = exists(filepath.Join(location.commonDir, "info", "grafts")) ||
-			exists(filepath.Join(location.commonDir, "shallow")) ||
-			hasFiles(filepath.Join(location.commonDir, "refs", "replace")) ||
-			packedReplaceRefs(filepath.Join(location.commonDir, "packed-refs"))
-	}
+	rewritten = rewritesHistoryNow(ctx, repo)
 	session.mu.Lock()
 	session.rewritten[repo] = rewritten
 	session.mu.Unlock()
 	return rewritten
+}
+
+// rewritesHistoryNow is rewritesHistory read from the repository now.
+func rewritesHistoryNow(ctx context.Context, repo string) bool {
+	location, err := locate(ctx, repo)
+	if err != nil || location.commonDir == "" || os.Getenv("GIT_REPLACE_REF_BASE") != "" {
+		return true
+	}
+	return exists(filepath.Join(location.commonDir, "info", "grafts")) ||
+		exists(filepath.Join(location.commonDir, "shallow")) ||
+		hasFiles(filepath.Join(location.commonDir, "refs", "replace")) ||
+		packedReplaceRefs(filepath.Join(location.commonDir, "packed-refs"))
 }
 
 func exists(path string) bool {
