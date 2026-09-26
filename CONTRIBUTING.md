@@ -130,8 +130,10 @@ terms a reviewer can check. Draft PRs are welcome for early feedback. A
 maintainer's approval merges it; see [GOVERNANCE.md](GOVERNANCE.md).
 
 Since this repository is the reference implementation of Change Saga, a large
-pull request is a good excuse to author a saga for it. That is not a
-requirement — a plain, clear PR description is always fine.
+pull request is a good excuse to document it in the repository's Saga,
+[`change.saga`](change.saga): a review deck for the change, and the living
+documentation it affects. That is not a requirement — a plain, clear PR
+description is always fine.
 
 ## Reporting things
 

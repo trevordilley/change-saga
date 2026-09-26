@@ -11,19 +11,19 @@ contract is the "Technical inventory format 2" section of [SPEC.md](../SPEC.md).
 ## What a user can do
 
 ```sh
-change-saga inventory adopt-format --format 2 app.saga            # explicit, once
-change-saga component add --id store --from proposed.json app.saga # intent: proposed, baseline: none
+change-saga inventory adopt-format --format 2 change.saga             # explicit, once
+change-saga component add --id store --from proposed.json change.saga # intent: proposed, baseline: none
 change-saga component revise --id store --revision r2 \
   --parent urn:…:component:store:revision:r1 \
-  --from implemented.json --delivery HEAD app.saga                 # evidence checked at delivery
-change-saga data-entity add --id pdf-report --from report.json --delivery HEAD app.saga
-change-saga erd add --id application --from erd.json --visual erd.svg app.saga
-change-saga erd-overlay add --id pdf-jobs --from overlay.json --visual overlay.svg app.saga
+  --from implemented.json --delivery HEAD change.saga                 # evidence checked at delivery
+change-saga data-entity add --id pdf-report --from report.json --delivery HEAD change.saga
+change-saga erd add --id application --from erd.json --visual erd.svg change.saga
+change-saga erd-overlay add --id pdf-jobs --from overlay.json --visual overlay.svg change.saga
 change-saga add-item --slide S --kind node --element-id n --description … \
   --documentation urn:…:system:x --documentation-revision urn:…:system:x:revision:r1 \
-  --selections selections.json app.saga                           # exact subset through the System
+  --selections selections.json change.saga                            # exact subset through the System
 change-saga add-item … --documentation-revision urn:…:component:store:revision:r1 \
-  --documentation-view <saved commit> app.saga                     # historical pin, explicit view
+  --documentation-view <saved commit> change.saga                     # historical pin, explicit view
 ```
 
 The same Item options work on review decks (`--review ID`) and in `apply-slide`

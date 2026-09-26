@@ -24,10 +24,19 @@ decisions. Staleness is always derived from pins, never from Git history.
 A Saga documents one application. Material about the whole application sits at
 the root; everything else belongs to a **feature**, a durable area of the
 product. The manifest carries identity and source only: it adds no aggregate
-quality, coverage, relation, or deck fields.
+quality, coverage, relation, or deck fields. A Saga's identity is the manifest
+`id`, never its directory name.
+
+A Saga is any directory whose name ends in `.saga`. The recommended idiom is
+one Saga per repository, named `change.saga` at the repository root, which
+`change-saga init` creates when given no path. A monorepo of several apps
+follows the same idiom: one `change.saga` at its root, with each app
+documented through its own features. The idiom is a recommendation, not a
+validity rule: `<name>.saga` is equally valid, and a repository with more than
+one Saga is neither invalid nor reported as a problem.
 
 ```text
-<id>.saga/
+<name>.saga/                   # change.saga by default
   saga.json
   ___overview/                 # pitch, description, and terms and vocabulary
   ___designsystem/             # design-system references

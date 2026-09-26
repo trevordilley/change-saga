@@ -1,4 +1,4 @@
-# The app Saga
+# The repository's Saga
 
 Status: agreed goals and execution plan. Supersedes the single-change framing
 in [requirements-design-quality-lifecycle.md](requirements-design-quality-lifecycle.md)
@@ -20,13 +20,20 @@ code between two commits.
 
 ## Goals
 
-### 1. One app Saga
+### 1. One Saga per repository
 
-A repository has one `app.saga`. It holds material about the whole application
-plus its features:
+The recommended idiom is one Saga per repository, `change.saga` at its root,
+which `change-saga init` creates by default. It is named after the tool rather
+than an app, so it fits a monorepo of several apps as well as a single one: a
+monorepo keeps one `change.saga` at its root and documents each app through its
+own features. The idiom is a recommendation, not a rule. Any `<name>.saga`
+directory is valid, and nothing refuses, fails, or warns because a second Saga
+exists; `init` only notes the existing one so its author can reconsider.
+
+The Saga holds material about the whole application plus its features:
 
 ```text
-app.saga/
+change.saga/
   saga.json            # identity and repository only
   ___overview/         # the elevator pitch for the app
   ___personas/         # structured records, like stories
@@ -96,8 +103,8 @@ entire diff and which therefore breaks wholesale on merge.
 ### 5. One Saga, two ways to open it
 
 ```sh
-change-saga open app.saga                  # observe the app at HEAD
-change-saga open app.saga --against main   # compare what this branch changes
+change-saga open change.saga                  # observe the app at HEAD
+change-saga open change.saga --against main   # compare what this branch changes
 ```
 
 **Observe** shows everything current: personas, features, stories, designs, test
@@ -189,7 +196,7 @@ thing that happens is not "define the personas of this app".
   as recipes rather than flags. The JSON shape is therefore a contract. Counts
   and lists, never one blended score.
 - **Asking a question is one command.** `change-saga check --against main
-  --covers implementation,stories app.saga` answers whether the named areas are
+  --covers implementation,stories change.saga` answers whether the named areas are
   fully covered: exit zero if they are, non-zero with only those areas' gaps if
   not. Nothing is required unless someone asks. The areas follow the chain, so
   each is one more link:
@@ -252,7 +259,7 @@ When the Saga lives in its own repository:
 ### 11. A review is a pull request's slide deck
 
 ```text
-app.saga/
+change.saga/
   ___reviews/<id>.review/
     review.json      # the pull request, its base, and the head last reviewed
     <the review deck: slides, Items, and code references>
@@ -404,7 +411,7 @@ coverage, and the overview with terms and vocabulary, landed first. Phase 4 is
 the app view: three sections became the Documentation and Review split of goal
 13, with derived related reviews on features, stories, and criteria. Phase 5
 changed course: rather than folding the old Sagas, they were removed and this
-repository is documented afresh with one app Saga. What remains is open
+repository is documented afresh with one Saga, since renamed `change.saga`. What remains is open
 decisions 1, 2, and 4, and whatever dogfooding this repository's own Saga
 turns up.
 
