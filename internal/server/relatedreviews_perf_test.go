@@ -42,10 +42,10 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 	}
 	t.Logf("freshness check, shared by the shell and the related reviews: %s", time.Since(started))
 	started = time.Now()
-	index := application.relatedReviews(context.Background(), document, records)
+	index := application.relatedReviews(context.Background())
 	cold := time.Since(started)
 	started = time.Now()
-	application.relatedReviews(context.Background(), document, records)
+	application.relatedReviews(context.Background())
 	warm := time.Since(started)
 	t.Logf("app.saga: %d features, %d stories, %d test cases, %d reviews; %d code references; cold %s (intersection %s), warm %s, builds %d",
 		len(document.Features), len(records.Stories), len(tests.TestCases), len(document.Reviews),
@@ -57,13 +57,9 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 	// A review over the range that last changed the file app.saga documents,
 	// so the measurement includes the work of an intersection that hits.
 	touching := copyDogfoodSagaWithReview(t, "pr-resolve", lastCommitTouching(t, "internal/coderesolve/resolve.go"))
-	touched, _, err := saga.Load(touching)
-	if err != nil {
-		t.Fatal(err)
-	}
 	hitting := &app{root: touching, sourceDir: ".."}
 	started = time.Now()
-	hit := hitting.relatedReviews(context.Background(), touched, records)
+	hit := hitting.relatedReviews(context.Background())
 	t.Logf("app.saga + 1 review of the commit that changed the documented file: cold %s, %d records list it", time.Since(started), len(hit.byRecord))
 	if len(hit.byRecord) == 0 {
 		t.Fatal("a review of the very commit that changed the documented code was related to nothing")
@@ -73,16 +69,12 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 	// over a copy of it given real pull-request-sized ranges of this repository.
 	for _, reviews := range []int{1, 5, 20} {
 		root := copyDogfoodSagaWithReviews(t, reviews)
-		copied, _, err := saga.Load(root)
-		if err != nil {
-			t.Fatal(err)
-		}
 		measured := &app{root: root, sourceDir: ".."}
 		started := time.Now()
-		built := measured.relatedReviews(context.Background(), copied, records)
+		built := measured.relatedReviews(context.Background())
 		elapsed := time.Since(started)
 		started = time.Now()
-		measured.relatedReviews(context.Background(), copied, records)
+		measured.relatedReviews(context.Background())
 		t.Logf("app.saga + %d reviews: cold %s (intersection %s, %d records with a review), warm %s",
 			reviews, elapsed, built.Elapsed, len(built.byRecord), time.Since(started))
 	}

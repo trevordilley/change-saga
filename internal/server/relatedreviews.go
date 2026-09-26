@@ -9,9 +9,11 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -83,19 +85,18 @@ type relatedReviewCache struct {
 	// Neither changes under its key, so an edit to the Saga's prose or
 	// records rebuilds the index without reading any review's diff again.
 	touched map[string][]string
-	// resolver reads the source repository for every build at one source
-	// head. Its reads are keyed by commit, so it is kept until the head
-	// moves rather than opened for each build.
-	resolver     *coderesolve.Resolver
-	resolverHead string
 }
 
 // relatedReviews is the derived index for this request. It is empty, and
 // costs nothing, while the Saga has no reviews.
-func (a *app) relatedReviews(ctx context.Context, document *saga.Saga, records requirements.Document) *relatedReviewIndex {
-	if len(document.Reviews) == 0 {
-		return &relatedReviewIndex{byRecord: map[string][]relatedReviewView{}}
-	}
+//
+// Everything it is built from is read under the state it is kept under: the
+// records, with the complete slides' links projected in as every page reads
+// them, come from that state's files, and the Saga with its code is read
+// after that state was taken. An index is therefore never kept under a state
+// newer than what it was built from.
+func (a *app) relatedReviews(ctx context.Context) *relatedReviewIndex {
+	empty := &relatedReviewIndex{byRecord: map[string][]relatedReviewView{}}
 	a.related.mutex.Lock()
 	defer a.related.mutex.Unlock()
 	state := a.sagaState(ctx, true)
@@ -103,50 +104,40 @@ func (a *app) relatedReviews(ctx context.Context, document *saga.Saga, records r
 	if err == nil && a.related.index != nil && fingerprint == a.related.fingerprint {
 		return a.related.index
 	}
-	// The outline document carries no code, so the intersection reads the
-	// Saga once with its references. Reviews live in the same document.
+	files := a.sagaFilesAt(state)
+	narrative := files.narrative()
+	if narrative == nil || len(narrative.Reviews) == 0 {
+		return empty
+	}
+	records, recordsErr := files.projectedRecords(narrative.Manifest.ID)
+	if recordsErr != nil {
+		return empty
+	}
+	// The narrative carries no code, so the intersection reads the Saga once
+	// with its references. Reviews live in the same document.
 	full, validation, loadErr := saga.Load(a.root)
 	if loadErr != nil || !validation.Valid {
-		return &relatedReviewIndex{byRecord: map[string][]relatedReviewView{}}
+		return empty
 	}
-	resolver := a.relatedResolver(ctx, state.sourceHead, err == nil)
+	// A resolver serves one build. What it reads is kept only for the build,
+	// so a read that failed, or a pinned commit a later fetch brings in, is
+	// asked again by the next one.
+	var resolver coverage.Resolver
+	if opened, openErr := coderesolve.New(ctx, a.sourceDir); openErr == nil {
+		defer opened.Close()
+		resolver = opened
+	}
 	if a.related.touched == nil {
 		a.related.touched = map[string][]string{}
 	}
 	index := buildRelatedReviews(ctx, a.sourceDir, full, records, resolver, a.related.touched)
-	if resolver != nil {
-		// Stop its Git reader between builds; the reads it cached are kept,
-		// and the next build starts the reader again. A reader left running
-		// would hold the repository open, which Windows will not let anyone
-		// remove.
-		resolver.Close()
-	}
-	if err == nil {
+	// A build the request abandoned may have read nothing for some reviews;
+	// it answers that request and is kept for no other.
+	if err == nil && ctx.Err() == nil {
 		a.related.fingerprint, a.related.index = fingerprint, index
 		a.related.builds++
 	}
 	return index
-}
-
-// relatedResolver is the resolver for builds at head. A build whose state
-// could not be read, or a repository without a head, gets its own.
-func (a *app) relatedResolver(ctx context.Context, head string, known bool) *coderesolve.Resolver {
-	if known && head != "" && a.related.resolver != nil && a.related.resolverHead == head {
-		return a.related.resolver
-	}
-	if a.related.resolver != nil {
-		a.related.resolver.Close()
-		a.related.resolver, a.related.resolverHead = nil, ""
-	}
-	resolver, err := coderesolve.New(ctx, a.sourceDir)
-	if err != nil {
-		return nil
-	}
-	a.related.resolver, a.related.resolverHead = resolver, head
-	if !known || head == "" {
-		a.related.resolverHead = "\x00unknown"
-	}
-	return resolver
 }
 
 // relatedFingerprint commits to everything the intersection reads: every file
@@ -203,13 +194,19 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 				used[key] = true
 				touchedMutex.Unlock()
 				if !known {
-					targets, err = touchedTargets(ctx, sourceDir, document, documented, rng, resolver)
+					settled := &settledResolver{resolver: resolver}
+					targets, err = touchedTargets(ctx, sourceDir, document, documented, rng, settled)
 					if err != nil {
 						continue
 					}
-					touchedMutex.Lock()
-					touched[key] = targets
-					touchedMutex.Unlock()
+					// Only an answer decided by the range and the code alone
+					// is kept under them: not one a failed or abandoned read,
+					// or a pinned commit this repository lacks, had a part in.
+					if !settled.provisional.Load() && ctx.Err() == nil {
+						touchedMutex.Lock()
+						touched[key] = targets
+						touchedMutex.Unlock()
+					}
 				}
 				view := relatedReviewView{ID: review.ID, Title: review.Title, Href: reviewHref(review.ID), Merged: review.Merged != nil}
 				if view.Title == "" {
@@ -253,6 +250,25 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 	}
 	index.Elapsed = time.Since(started)
 	return index
+}
+
+// settledResolver notes whether any answer it passed on was provisional:
+// one that may change without the range or the code changing.
+type settledResolver struct {
+	resolver    coverage.Resolver
+	provisional atomic.Bool
+}
+
+func (settled *settledResolver) Resolve(ctx context.Context, reference coderef.Reference, view string) coderesolve.Resolution {
+	if settled.resolver == nil {
+		settled.provisional.Store(true)
+		return coderesolve.Resolution{State: coderesolve.Stale, Location: reference.Location(), Reason: "the source repository could not be read", Provisional: true}
+	}
+	resolution := settled.resolver.Resolve(ctx, reference, view)
+	if resolution.Provisional {
+		settled.provisional.Store(true)
+	}
+	return resolution
 }
 
 // touchedTargets is every documentation target that accounts for a line the

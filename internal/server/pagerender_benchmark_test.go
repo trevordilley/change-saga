@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
-	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
 // measureHandler builds a fresh reviewer over the repository's app Saga,
@@ -178,15 +177,14 @@ func TestMeasureFeaturePhases(t *testing.T) {
 	lap("cold outlineDocument", func() { document = application.outlineDocument(ctx) })
 	files := application.sagaFiles(context.Background())
 	lap("cold sagaFiles().narrative()", func() { document = files.narrative() })
-	var records requirements.Document
-	lap("cold sagaFiles().records()", func() { records, _ = files.records(document.Manifest.ID) })
+	lap("cold sagaFiles().records()", func() { files.records(document.Manifest.ID) })
 	lap("cold sagaFiles().tests()", func() { files.tests() })
 	lap("cold sagaFiles().inventory()", func() { files.inventory(document.Manifest.ID) })
-	lap("cold relatedReviews", func() { application.relatedReviews(ctx, document, records) })
-	lap("warm relatedReviews", func() { application.relatedReviews(ctx, document, records) })
+	lap("cold relatedReviews", func() { application.relatedReviews(ctx) })
+	lap("warm relatedReviews", func() { application.relatedReviews(ctx) })
 	lap("relatedReviews rebuild, reviews' diffs kept", func() {
 		application.related.index = nil
-		application.relatedReviews(ctx, document, records)
+		application.relatedReviews(ctx)
 	})
 	lap("first page after the above phases", func() { measureGet(t, handler, benchmarkFeaturePath) })
 	lap("warm page", func() { measureGet(t, handler, benchmarkFeaturePath) })
