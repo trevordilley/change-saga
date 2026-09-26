@@ -4,6 +4,7 @@ import (
 	"context"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -76,4 +77,33 @@ func TestReviewCoverageIsReadOncePerRangeAndItems(t *testing.T) {
 		}
 	}
 	t.Fatal("the fixture review has no Item with code")
+}
+
+// A running server reads the reviews' coverage in the background, so the
+// first visit to the reviews index finds it already read.
+func TestAWatchedSagaReadsReviewCoverageBeforeAnyoneAsks(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	application, handler := reviewApp(t, fixture, gitdiff.Range{})
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	done := make(chan struct{})
+	go func() { application.watchSaga(ctx); close(done) }()
+	defer func() { cancel(); <-done }()
+	reads := func() int {
+		application.reviewCoverages.mutex.Lock()
+		defer application.reviewCoverages.mutex.Unlock()
+		return application.reviewCoverages.reads
+	}
+	deadline := time.Now().Add(30 * time.Second)
+	for reads() == 0 {
+		if time.Now().After(deadline) {
+			t.Fatal("the watched Saga never read the reviews' coverage")
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	warmed := reads()
+	getPage(t, handler, "/reviews")
+	if reads() != warmed {
+		t.Fatalf("the first visit read coverage the watcher had read: %d reads, want %d", reads(), warmed)
+	}
 }
