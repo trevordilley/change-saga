@@ -139,3 +139,41 @@ func TestInitNotesAnExistingSagaWithoutRefusing(t *testing.T) {
 		t.Fatalf("init named the Saga it just created as pre-existing:\n%s", text)
 	}
 }
+
+// Without a path, init creates change.saga in the directory --repo names, so
+// pointing it at another checkout never leaves a Saga in the current
+// directory.
+func TestInitWithoutAPathCreatesChangeSagaInTheRepoDirectory(t *testing.T) {
+	repo := initRepository(t, "checkout", "https://example.test/acme/shop.git")
+	elsewhere := t.TempDir()
+	t.Chdir(elsewhere)
+	var output bytes.Buffer
+	if err := Init(context.Background(), []string{"--repo", repo}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if manifest := loadManifest(t, filepath.Join(repo, DefaultSagaName)); manifest.ID != "shop" {
+		t.Fatalf("change.saga in --repo has id %q", manifest.ID)
+	}
+	if _, err := os.Stat(filepath.Join(elsewhere, DefaultSagaName)); !os.IsNotExist(err) {
+		t.Fatalf("init also wrote change.saga in the current directory: %v", err)
+	}
+}
+
+// A name with nothing to slug is refused with a reason that names the
+// derivation, not a --id flag that was never passed.
+func TestInitRefusesAnIDItCannotDerive(t *testing.T) {
+	t.Parallel()
+	repo := initRepository(t, "___", "")
+	root := filepath.Join(repo, DefaultSagaName)
+	var output bytes.Buffer
+	err := Init(context.Background(), []string{"--repo", repo, "--allow-local-repository", root}, &output)
+	if err == nil || !strings.Contains(err.Error(), `cannot derive a Saga id from "___"; pass --id`) {
+		t.Fatalf("init with an underivable id = %v", err)
+	}
+	if _, statErr := os.Stat(root); !os.IsNotExist(statErr) {
+		t.Fatal("a refused init left a Saga behind")
+	}
+	if err := Init(context.Background(), []string{"--repo", repo, "--allow-local-repository", "--id", "shop", root}, &output); err != nil {
+		t.Fatalf("an explicit --id should resolve it: %v", err)
+	}
+}

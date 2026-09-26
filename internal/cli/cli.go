@@ -337,7 +337,7 @@ var commandDescription = map[string]string{
 	"erd":                         "Author the application ERD: an offline SVG visual, its directory of data-entity pins, and element bindings. Requires inventory format 2.",
 	"erd-overlay":                 "Propose data-model changes against an exact ERD revision without rewriting it: replacement or new entity pins, removals, and an optional visual. Requires inventory format 2.",
 	"inventory":                   "Adopt inventory format 2 explicitly. Existing records are not rewritten; legacy revisions read as unspecified intent. Older change-saga versions then refuse the inventory instead of dropping content.",
-	"init":                        "Create the repository's Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. With no path it creates change.saga in the current\ndirectory, identified and titled after the repository's origin remote (or, without\none, its top-level directory). The recommended idiom is one Saga per repository; a\nmonorepo documents each app as features of it. Another Saga never blocks init, which\nonly notes it. Then either cover the change: explain it with an implementation deck\nwhose Items reference every changed line; or document existing code: observe HEAD\nwith status and reference the code each Item explains at the current commit.\nFeatures, stories, personas, design, and quality are optional and can come later.",
+	"init":                        "Create the repository's Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. With no path it creates change.saga in the --repo\ndirectory (by default the current directory), identified and titled after the\nrepository's origin remote (or, without one, its top-level directory). The\nrecommended idiom is one Saga per repository; a monorepo documents each app as\nfeatures of it. Another Saga never blocks init, which only notes it. Then either\ncover the change: explain it with an implementation deck whose Items reference every\nchanged line; or document existing code: observe HEAD with status and reference the\ncode each Item explains at the current commit. Features, stories, personas, design,\nand quality are optional and can come later.",
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
 	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
 	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
@@ -492,7 +492,9 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if flags.NArg() > 1 {
 		return fmt.Errorf("usage: %s", commandUsage["init"])
 	}
-	root := DefaultSagaName
+	// Without a path the Saga is created in the directory --repo names, which
+	// is the current directory unless --repo says otherwise.
+	root := filepath.Join(*repoDir, DefaultSagaName)
 	if flags.NArg() == 1 {
 		root = flags.Arg(0)
 	}
@@ -523,10 +525,15 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 		*title = name
 	}
 	if *id == "" {
+		// A name with no letter or digit would slug to a placeholder that
+		// identifies nothing, so it is refused rather than guessed.
+		if strings.IndexFunc(strings.ToLower(name), func(r rune) bool { return r >= 'a' && r <= 'z' || r >= '0' && r <= '9' }) < 0 {
+			return fmt.Errorf("cannot derive a Saga id from %q; pass --id", name)
+		}
 		*id = store.Slug(name)
 	}
 	if !saga.ValidID(*id) {
-		return fmt.Errorf("--id must be a stable 1-128 character identifier")
+		return fmt.Errorf("cannot derive a Saga id from %q; pass --id", name)
 	}
 	// One Saga per repository is the recommended idiom, not a rule: another
 	// Saga never blocks init, but the author is told so they can reconsider.
