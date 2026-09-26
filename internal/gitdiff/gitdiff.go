@@ -438,7 +438,7 @@ func diffCommits(ctx context.Context, repo string, format []string, from, to str
 // level, belongs under it too.
 func AttributesIdentity(repo string) string {
 	var identity strings.Builder
-	for _, path := range []string{filepath.Join(repo, ".gitattributes"), filepath.Join(repo, ".git", "info", "attributes")} {
+	for _, path := range []string{filepath.Join(repo, ".gitattributes"), infoAttributesPath(repo)} {
 		if info, err := os.Stat(path); err == nil {
 			fmt.Fprintf(&identity, "%d@%d;", info.Size(), info.ModTime().UnixNano())
 		} else {
@@ -446,6 +446,38 @@ func AttributesIdentity(repo string) string {
 		}
 	}
 	return identity.String()
+}
+
+// infoAttributesPath is the info/attributes file Git reads for the checkout
+// whose top level is repo. In a linked worktree .git is a file naming the
+// worktree's own Git directory, and info/ is shared from the repository's
+// common directory, which that directory's commondir file names.
+func infoAttributesPath(repo string) string {
+	dotGit := filepath.Join(repo, ".git")
+	gitDir := dotGit
+	if info, err := os.Stat(dotGit); err == nil && !info.IsDir() {
+		data, err := os.ReadFile(dotGit)
+		if err != nil {
+			return filepath.Join(dotGit, "info", "attributes")
+		}
+		line, _, _ := strings.Cut(string(data), "\n")
+		named, ok := strings.CutPrefix(strings.TrimSpace(line), "gitdir:")
+		if !ok {
+			return filepath.Join(dotGit, "info", "attributes")
+		}
+		gitDir = strings.TrimSpace(named)
+		if !filepath.IsAbs(gitDir) {
+			gitDir = filepath.Join(repo, gitDir)
+		}
+	}
+	if data, err := os.ReadFile(filepath.Join(gitDir, "commondir")); err == nil {
+		common := strings.TrimSpace(string(data))
+		if !filepath.IsAbs(common) {
+			common = filepath.Join(gitDir, common)
+		}
+		gitDir = common
+	}
+	return filepath.Join(gitDir, "info", "attributes")
 }
 
 func diffCommitsOnce(ctx context.Context, repo string, format []string, from, to string, pathspec ...string) ([]byte, error) {

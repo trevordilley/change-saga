@@ -741,3 +741,36 @@ func TestDiffOrderIgnoresOrderFile(t *testing.T) {
 		t.Fatalf("files are not in canonical order: %#v", plain.Atoms)
 	}
 }
+
+// A linked worktree's .git is a file, and Git reads info/attributes from the
+// repository's common directory, so an edit there changes the worktree's
+// diffs and must change what they are remembered under.
+func TestAttributesIdentityFollowsALinkedWorktree(t *testing.T) {
+	repo := newGitTestRepo(t)
+	writeGitTestFile(t, filepath.Join(repo, "a.txt"), "a\n")
+	gitTest(t, repo, "add", "a.txt")
+	gitTest(t, repo, "commit", "-m", "base")
+	worktree := filepath.Join(t.TempDir(), "linked")
+	gitTest(t, repo, "worktree", "add", "-q", worktree)
+	before := AttributesIdentity(worktree)
+	writeGitTestFile(t, filepath.Join(repo, ".git", "info", "attributes"), "* binary\n")
+	if after := AttributesIdentity(worktree); after == before {
+		t.Fatalf("the worktree's attribute identity %q ignored an edit to the shared info/attributes", after)
+	}
+	if got, want := infoAttributesPath(worktree), filepath.Join(repo, ".git", "info", "attributes"); !sameFile(t, got, want) {
+		t.Fatalf("info/attributes of the worktree = %s, want %s", got, want)
+	}
+}
+
+func sameFile(t *testing.T, a, b string) bool {
+	t.Helper()
+	left, err := os.Stat(a)
+	if err != nil {
+		t.Fatal(err)
+	}
+	right, err := os.Stat(b)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return os.SameFile(left, right)
+}
