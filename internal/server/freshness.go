@@ -14,6 +14,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -165,8 +166,12 @@ func (a *app) checkedSince(ctx context.Context, floor time.Time, full, asked boo
 	f.checks++
 	f.mutex.Unlock()
 	// The check is shared, so one request going away must not cut it short
-	// for the others waiting on it.
-	pending.state = a.checkSaga(context.WithoutCancel(ctx), pending.started, full)
+	// for the others waiting on it. It asks Git through a session of its own,
+	// begun after it started: the first request's session remembers Git as
+	// it was when that request arrived, before a request that joins it.
+	checkCtx, endCheck := gitexec.BeginDetached(context.WithoutCancel(ctx))
+	pending.state = a.checkSaga(checkCtx, pending.started, full)
+	endCheck()
 	f.mutex.Lock()
 	if f.pending == pending {
 		f.pending = nil
