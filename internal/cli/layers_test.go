@@ -257,6 +257,53 @@ func TestReplacedSlidePairsWithItsReplacementAndItsReason(t *testing.T) {
 	}
 }
 
+// Renaming the Saga, as app.saga became change.saga, moves every record file
+// without changing one. History still reaches back to where each record was
+// introduced and what it replaced, and a comparison with a commit before the
+// move reads the Saga where it was then instead of treating it as new.
+func TestHistoryAndComparisonFollowAMovedSaga(t *testing.T) {
+	t.Parallel()
+	repo, root := shopSaga(t)
+	mustRun(t, AddDeck, "--feature", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
+	addQueueSlide(t, root, "sqs", "Jobs go through SQS")
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-m", "Explain the queue")
+	mustRun(t, Relation, "supersede", "--relation", "urn:change-saga:shop:relation:sqs-charged", root)
+	removeSlides(t, repo, root)
+	addQueueSlide(t, root, "postgres", "Jobs go through a Postgres table")
+	git(t, repo, "add", "-A")
+	git(t, repo, "commit", "-m", "Move jobs to a Postgres table")
+	git(t, repo, "checkout", "-b", "rename")
+	git(t, repo, "mv", "app.saga", "change.saga")
+	git(t, repo, "commit", "-m", "Rename the Saga to change.saga")
+	moved := filepath.Join(repo, "change.saga")
+
+	var output bytes.Buffer
+	if err := Query(context.Background(), []string{"history", "--saga", moved, "--node", "urn:change-saga:shop:slide:postgres"}, &output); err != nil {
+		t.Fatalf("history: %v\n%s", err, output.String())
+	}
+	var envelope struct {
+		Data changeview.History `json:"data"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &envelope); err != nil {
+		t.Fatal(err)
+	}
+	history := envelope.Data
+	if history.Introduced == nil || history.Introduced.Subject != "Move jobs to a Postgres table" || len(history.Replaced) != 1 || history.Replaced[0] != "urn:change-saga:shop:slide:sqs" {
+		t.Fatalf("history after the move = %#v", history)
+	}
+	for _, event := range history.Events {
+		if event.Subject == "Rename the Saga to change.saga" {
+			t.Fatalf("the move is listed as a change to the slide: %#v", history.Events)
+		}
+	}
+
+	status, _ := statusLayers(t, moved, "--against", "main")
+	if status.Comparison.Saga.Base.Source != changeview.SideGit || len(status.Comparison.Changed) != 0 {
+		t.Fatalf("comparing across the move: base %#v, changed %#v", status.Comparison.Saga.Base, status.Comparison.Changed)
+	}
+}
+
 // When two new records could each replace the dropped one, the pair is
 // ambiguous until an explicit supersedes relation decides it.
 func TestAmbiguousReplacementNeedsAnExplicitLink(t *testing.T) {

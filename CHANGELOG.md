@@ -15,6 +15,12 @@
   unchanged.
 - This repository's own Saga is now `change.saga`, formerly `app.saga`. The
   downloadable `change-saga-example.saga.zip` expands to `change.saga`.
+- A Saga renamed with `git mv` (for example `app.saga` to `change.saga`) keeps
+  its past. Record history follows each file the move carried unchanged, so a
+  record is still introduced where it was and the move is not one of its
+  changes, and a comparison with a commit before the move reads the Saga where
+  it was then. A commit older than the Saga never reads an unrelated Saga that
+  once had its name. Rename in a commit that only moves the Saga.
 
 ## Unreleased — Technical inventory format 2 (proposed and implemented design)
 

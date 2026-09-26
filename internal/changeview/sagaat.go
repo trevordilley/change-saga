@@ -56,6 +56,7 @@ func extract(ctx context.Context, location Location, commit, dest string) (strin
 	if location.Path == "" || location.Path == "." {
 		return "", fmt.Errorf("a Saga at the root of its repository cannot be read at a commit")
 	}
+	location.Path = sagaPathAt(ctx, location, commit)
 	command := exec.CommandContext(ctx, "git", "-C", location.Repo, "archive", "--format=tar", commit, "--", location.Path)
 	var stderr bytes.Buffer
 	command.Stderr = &stderr

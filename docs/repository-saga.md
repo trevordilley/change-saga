@@ -29,6 +29,9 @@ monorepo keeps one `change.saga` at its root and documents each app through its
 own features. The idiom is a recommendation, not a rule. Any `<name>.saga`
 directory is valid, and nothing refuses, fails, or warns because a second Saga
 exists; `init` only notes the existing one so its author can reconsider.
+An existing `app.saga` may stay as it is, or be renamed with `git mv app.saga
+change.saga` in a commit that only moves it: record history and comparisons
+follow the move, so nothing about the Saga's past is lost.
 
 The Saga holds material about the whole application plus its features:
 
