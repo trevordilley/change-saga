@@ -52,6 +52,9 @@ type call struct {
 	done   chan struct{}
 	output []byte
 	err    error
+	// cancelled means the caller gave up before Git answered; its error is
+	// not an answer, and callers waiting on it ask again.
+	cancelled bool
 }
 
 // Begin attaches a session to ctx. A context that already carries one keeps
@@ -137,30 +140,40 @@ func run(ctx context.Context, combined bool, args []string) ([]byte, error) {
 	if combined {
 		key = "combined\x00" + key
 	}
-	session.mu.Lock()
-	if existing, ok := session.memo[key]; ok {
-		session.mu.Unlock()
-		select {
-		case <-existing.done:
-		case <-ctx.Done():
-			return nil, ctx.Err()
-		}
-		return bytes.Clone(existing.output), existing.err
-	}
-	current := &call{done: make(chan struct{})}
-	session.memo[key] = current
-	session.mu.Unlock()
-
-	current.output, current.err = spawn(ctx, combined, args)
-	if ctx.Err() != nil {
-		// A cancelled caller's failure is not Git's answer.
+	for {
 		session.mu.Lock()
-		delete(session.memo, key)
+		if existing, ok := session.memo[key]; ok {
+			session.mu.Unlock()
+			select {
+			case <-existing.done:
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			}
+			if existing.cancelled {
+				continue
+			}
+			return bytes.Clone(existing.output), existing.err
+		}
+		current := &call{done: make(chan struct{})}
+		session.memo[key] = current
 		session.mu.Unlock()
+
+		current.output, current.err = spawnGit(ctx, combined, args)
+		if ctx.Err() != nil {
+			// A cancelled caller's failure is not Git's answer.
+			current.cancelled = true
+			session.mu.Lock()
+			delete(session.memo, key)
+			session.mu.Unlock()
+		}
+		close(current.done)
+		return bytes.Clone(current.output), current.err
 	}
-	close(current.done)
-	return bytes.Clone(current.output), current.err
 }
+
+// spawnGit runs one Git command; tests replace it to hold a caller inside
+// Git.
+var spawnGit = spawn
 
 func spawn(ctx context.Context, combined bool, args []string) ([]byte, error) {
 	command := exec.CommandContext(ctx, "git", args...)
@@ -203,7 +216,7 @@ type batchPool struct {
 // maxBatchProcesses run and otherwise waiting for one to be released. It
 // returns nil when the session is closed or Git cannot serve args; callers
 // then spawn a one-shot command instead. The caller must call release.
-func (session *Session) acquire(args []string, sentinel bool) (process *batch, release func()) {
+func (session *Session) acquire(ctx context.Context, args []string, sentinel bool) (process *batch, release func()) {
 	key := strings.Join(args, "\x00")
 	var retired []*batch
 	defer func() {
@@ -211,6 +224,13 @@ func (session *Session) acquire(args []string, sentinel bool) (process *batch, r
 			broken.close()
 		}
 	}()
+	// A caller waiting for a busy pool gives up with its context.
+	stop := context.AfterFunc(ctx, func() {
+		session.mu.Lock()
+		session.cond.Broadcast()
+		session.mu.Unlock()
+	})
+	defer stop()
 	session.mu.Lock()
 	defer session.mu.Unlock()
 	pool := session.pools[key]
@@ -219,7 +239,7 @@ func (session *Session) acquire(args []string, sentinel bool) (process *batch, r
 		session.pools[key] = pool
 	}
 	for {
-		if session.closed || session.failures[key] >= maxBatchFailures {
+		if session.closed || session.failures[key] >= maxBatchFailures || ctx.Err() != nil {
 			return nil, nil
 		}
 		for len(pool.idle) > 0 {

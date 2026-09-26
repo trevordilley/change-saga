@@ -171,7 +171,7 @@ func resolveCommit(ctx context.Context, repo, revision string) (string, bool) {
 	if session == nil || revision == "" || strings.ContainsAny(revision, "\n\r\x00") || len(revision) > maxRequest {
 		return "", false
 	}
-	process, release := session.acquire(objectsArgs(repo), false)
+	process, release := session.acquire(ctx, objectsArgs(repo), false)
 	if process == nil {
 		return "", false
 	}
@@ -194,7 +194,7 @@ func objectInfo(ctx context.Context, repo, object string) (string, bool) {
 	if session == nil || object == "" || strings.ContainsAny(object, "\n\r\x00") || len(object) > maxRequest {
 		return "", false
 	}
-	process, release := session.acquire(objectsArgs(repo), false)
+	process, release := session.acquire(ctx, objectsArgs(repo), false)
 	if process == nil {
 		return "", false
 	}
@@ -240,7 +240,7 @@ func DiffTree(ctx context.Context, repo string, args []string, from, to string) 
 			return nil, false
 		}
 	}
-	process, release := session.acquire(append([]string{"-C", repo}, args...), true)
+	process, release := session.acquire(ctx, append([]string{"-C", repo}, args...), true)
 	if process == nil {
 		return nil, false
 	}
@@ -262,7 +262,7 @@ func ReadObject(ctx context.Context, repo, name string) (string, []byte, bool) {
 	if session == nil || name == "" || strings.ContainsAny(name, "\n\r\x00") || len(name) > maxRequest {
 		return "", nil, false
 	}
-	process, release := session.acquire(objectsArgs(repo), false)
+	process, release := session.acquire(ctx, objectsArgs(repo), false)
 	if process == nil {
 		return "", nil, false
 	}

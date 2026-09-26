@@ -320,7 +320,7 @@ func TestParallelCallersShareABoundedPool(t *testing.T) {
 	args := []string{"diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
 	var holders []func()
 	for range maxBatchProcesses {
-		process, release := session.acquire(append([]string{"-C", repo}, args...), true)
+		process, release := session.acquire(context.Background(), append([]string{"-C", repo}, args...), true)
 		if process == nil {
 			t.Fatal("the pool refused a process below its bound")
 		}
@@ -349,5 +349,80 @@ func TestParallelCallersShareABoundedPool(t *testing.T) {
 	}
 	for _, release := range holders[1:] {
 		release()
+	}
+}
+
+// A caller that gives up while Git answers must not hand its cancellation
+// to another caller of the same question whose context is still live.
+func TestMemoizedCallerDoesNotInheritAnotherCallersCancellation(t *testing.T) {
+	original := spawnGit
+	t.Cleanup(func() { spawnGit = original })
+	inside := make(chan struct{})
+	spawnGit = func(ctx context.Context, _ bool, _ []string) ([]byte, error) {
+		select {
+		case inside <- struct{}{}:
+			<-ctx.Done()
+			return nil, ctx.Err()
+		default:
+			return []byte("answer"), nil
+		}
+	}
+	session, end := Begin(context.Background())
+	defer end()
+	first, cancel := context.WithCancel(session)
+	go func() { _, _ = Output(first, "question") }()
+	<-inside
+	answered := make(chan string)
+	go func() {
+		output, err := Output(session, "question")
+		if err != nil {
+			answered <- "error: " + err.Error()
+			return
+		}
+		answered <- string(output)
+	}()
+	time.Sleep(50 * time.Millisecond) // let the second caller wait on the first
+	cancel()
+	select {
+	case got := <-answered:
+		if got != "answer" {
+			t.Fatalf("the live caller got %q; want its own answer", got)
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("the live caller never got an answer")
+	}
+}
+
+// A caller waiting for a full pool gives up when its context does, instead
+// of waiting for a process to be released.
+func TestAcquireGivesUpWithItsContext(t *testing.T) {
+	repo, commits := history(t)
+	session, end := Begin(context.Background())
+	defer end()
+	args := []string{"-C", repo, "diff-tree", "--stdin", "--no-commit-id", "-r", "-p"}
+	var holders []func()
+	for range maxBatchProcesses {
+		_, release := sessionFrom(session).acquire(session, args, true)
+		holders = append(holders, release)
+	}
+	defer func() {
+		for _, release := range holders {
+			release()
+		}
+	}()
+	ctx, cancel := context.WithTimeout(session, 100*time.Millisecond)
+	defer cancel()
+	done := make(chan bool)
+	go func() {
+		_, ok := DiffTree(ctx, repo, args[2:], commits[0], commits[1])
+		done <- ok
+	}()
+	select {
+	case ok := <-done:
+		if ok {
+			t.Fatal("a cancelled caller was answered")
+		}
+	case <-time.After(10 * time.Second):
+		t.Fatal("a cancelled caller kept waiting for a busy pool")
 	}
 }
