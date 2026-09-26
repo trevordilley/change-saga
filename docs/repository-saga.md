@@ -30,8 +30,15 @@ own features. The idiom is a recommendation, not a rule. Any `<name>.saga`
 directory is valid, and nothing refuses, fails, or warns because a second Saga
 exists; `init` only notes the existing one so its author can reconsider.
 An existing `app.saga` may stay as it is, or be renamed with `git mv app.saga
-change.saga` in a commit that only moves it: record history and comparisons
-follow the move, so nothing about the Saga's past is lost.
+change.saga`: record history, commit reasons, comparisons, saved views, and
+pre-integration follow the move, so nothing about the Saga's past is lost.
+A move is recognised as the same Saga when its manifest `id` is unchanged and
+more than half of its files arrive byte for byte at the same relative path, so
+a rename squash-merged with record edits still counts, and the edited records
+keep their history. A commit that rewrites most of the Saga while moving it, or
+changes its `id`, starts a new Saga there, as does deleting one Saga and adding
+another in the same commit; nothing before it is read as this Saga's past.
+Renaming in a commit of its own is the safest.
 
 The Saga holds material about the whole application plus its features:
 

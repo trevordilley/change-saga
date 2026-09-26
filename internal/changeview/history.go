@@ -128,7 +128,11 @@ func codeComparison(ctx context.Context, location Location, against, head string
 		if commit == "" {
 			return ""
 		}
-		data, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "show", commit+":"+path.Join(sagaPathAt(ctx, location, commit), saga.CursorName)).Output()
+		at, exists := sagaPathAt(ctx, location, commit)
+		if !exists {
+			return ""
+		}
+		data, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "show", commit+":"+path.Join(at, saga.CursorName)).Output()
 		if err != nil {
 			return ""
 		}

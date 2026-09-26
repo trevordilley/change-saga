@@ -2,8 +2,8 @@
 
 ## Unreleased — change.saga, one Saga per repository
 
-- `change-saga init` with no path creates `change.saga` in the current
-  directory. A Saga named `change.saga` takes its default id and title from the
+- `change-saga init` with no path creates `change.saga` in the `--repo`
+  directory, the current directory by default. A Saga named `change.saga` takes its default id and title from the
   repository's origin remote (without `.git`), or from the checkout's top-level
   directory when there is no origin, so its id is the repository's name rather
   than `change`. Explicitly named Sagas and `--id`/`--title` are unchanged.
@@ -16,11 +16,14 @@
 - This repository's own Saga is now `change.saga`, formerly `app.saga`. The
   downloadable `change-saga-example.saga.zip` expands to `change.saga`.
 - A Saga renamed with `git mv` (for example `app.saga` to `change.saga`) keeps
-  its past. Record history follows each file the move carried unchanged, so a
-  record is still introduced where it was and the move is not one of its
-  changes, and a comparison with a commit before the move reads the Saga where
-  it was then. A commit older than the Saga never reads an unrelated Saga that
-  once had its name. Rename in a commit that only moves the Saga.
+  its past. Record history, comparison commit reasons, comparisons, saved
+  views (`--view`, technical newness), sync-cursor history, and `preintegrate`
+  read the Saga where it was at each commit; a record is still introduced where
+  it was, and a move that left it unchanged is not one of its changes. A move
+  is the same Saga only when the manifest `id` is unchanged and most files
+  arrive byte for byte; otherwise, and before the Saga's first commit, an
+  unrelated Saga that once had its name, or was replaced in the same commit, is
+  never read as its past.
 
 ## Unreleased — Technical inventory format 2 (proposed and implemented design)
 

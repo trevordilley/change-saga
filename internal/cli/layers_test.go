@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"io"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 
@@ -301,6 +302,99 @@ func TestHistoryAndComparisonFollowAMovedSaga(t *testing.T) {
 	status, _ := statusLayers(t, moved, "--against", "main")
 	if status.Comparison.Saga.Base.Source != changeview.SideGit || len(status.Comparison.Changed) != 0 {
 		t.Fatalf("comparing across the move: base %#v, changed %#v", status.Comparison.Saga.Base, status.Comparison.Changed)
+	}
+}
+
+// A comparison across the rename attributes each record change to the
+// commit that made it, before or after the move, and never to the move.
+func TestComparisonReasonsFollowAMovedSaga(t *testing.T) {
+	t.Parallel()
+	repo, root := shopSaga(t)
+	persona := "urn:change-saga:shop:persona:shopper"
+	git(t, repo, "checkout", "-b", "rename")
+	mustRun(t, Persona, "revise", "--persona", persona, "--revision", "r2", "--parent", persona+":revision:r1", "--name", "Shopper", "--description", "Buys things online", root)
+	git(t, repo, "add", "-A")
+	git(t, repo, "commit", "-m", "Describe the shopper before the rename")
+	git(t, repo, "mv", "app.saga", "change.saga")
+	git(t, repo, "commit", "-m", "Rename the Saga to change.saga")
+	moved := filepath.Join(repo, "change.saga")
+	mustRun(t, Persona, "revise", "--persona", persona, "--revision", "r3", "--parent", persona+":revision:r2", "--name", "Shopper", "--description", "Buys things online, often", moved)
+	git(t, repo, "add", "-A")
+	git(t, repo, "commit", "-m", "Describe the shopper after the rename")
+
+	status, _ := statusLayers(t, moved, "--against", "main")
+	subjectsOf := func(reasons []changeview.Reason) []string {
+		names := []string{}
+		for _, reason := range reasons {
+			names = append(names, reason.Subject)
+		}
+		return names
+	}
+	found := false
+	for _, change := range status.Comparison.Changed {
+		for _, subject := range subjectsOf(change.Reasons) {
+			if subject == "Rename the Saga to change.saga" {
+				t.Fatalf("%s is attributed to the move: %v", change.URN, subjectsOf(change.Reasons))
+			}
+		}
+		if change.URN == persona {
+			found = true
+			// Reasons are ordered by date, and these commits share one.
+			got := subjectsOf(change.Reasons)
+			sort.Strings(got)
+			if strings.Join(got, " | ") != "Describe the shopper after the rename | Describe the shopper before the rename" {
+				t.Fatalf("persona reasons = %v", got)
+			}
+		}
+	}
+	if !found {
+		t.Fatalf("the revised persona is not in the comparison: %#v", status.Comparison.Changed)
+	}
+	for _, reason := range status.Comparison.Unattached {
+		if reason.Subject == "Describe the shopper before the rename" {
+			t.Fatal("a record change made before the rename is unattached")
+		}
+	}
+}
+
+// Git calls one near-identical manifest a rename of another, so a Saga
+// deleted in the commit that added the repository's Saga looks like a move.
+// It is a different Saga: comparing with a commit before the repository's
+// Saga existed has no base Saga rather than the deleted one.
+func TestComparisonNeverReadsAReplacedSagaAsTheBase(t *testing.T) {
+	t.Parallel()
+	repo := t.TempDir()
+	git(t, repo, "init", "-b", "main")
+	git(t, repo, "config", "user.name", "Test Author")
+	git(t, repo, "config", "user.email", "test@example.test")
+	git(t, repo, "config", "core.autocrlf", "false")
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/shop.git")
+	writeFile(t, filepath.Join(repo, "src", "shop.go"), "package shop\n")
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-m", "Add the shop")
+	perChange := filepath.Join(repo, "pr-12.saga")
+	mustRun(t, Init, "--repo", repo, perChange)
+	mustRun(t, Persona, "add", "--id", "clerk", "--name", "Clerk", "--description", "Runs the till", perChange)
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-m", "A per-change Saga")
+	old := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
+	git(t, repo, "rm", "-q", "-r", "pr-12.saga")
+	app := filepath.Join(repo, "app.saga")
+	mustRun(t, Init, "--repo", repo, app)
+	mustRun(t, Persona, "add", "--id", "shopper", "--name", "Shopper", "--description", "Buys things", app)
+	git(t, repo, "add", "-A")
+	git(t, repo, "commit", "-m", "Replace it with one app Saga")
+	git(t, repo, "mv", "app.saga", "change.saga")
+	git(t, repo, "commit", "-m", "Rename the Saga to change.saga")
+
+	status, _ := statusLayers(t, filepath.Join(repo, "change.saga"), "--against", old)
+	if status.Comparison.Saga.Base.Source != changeview.SideAbsent {
+		t.Fatalf("the base read another Saga: %#v", status.Comparison.Saga.Base)
+	}
+	for _, change := range status.Comparison.Changed {
+		if strings.Contains(change.URN, ":persona:clerk") {
+			t.Fatalf("the replaced Saga's persona is in the comparison: %#v", change)
+		}
 	}
 }
 
