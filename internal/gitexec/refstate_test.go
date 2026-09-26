@@ -282,3 +282,67 @@ func TestIncludedConfigFiles(t *testing.T) {
 		}
 	}
 }
+
+// GIT_TRACE and Git's warnings write to standard error; they must not
+// break finding the repository.
+func TestTopLevelIgnoresStandardError(t *testing.T) {
+	repo, _ := history(t)
+	want := git(t, repo, "rev-parse", "--show-toplevel")
+	t.Setenv("GIT_TRACE", "1")
+	got, err := TopLevel(context.Background(), repo)
+	if err != nil {
+		t.Fatalf("TopLevel with GIT_TRACE=1: %v", err)
+	}
+	if got != want {
+		t.Fatalf("TopLevel = %q; want %q", got, want)
+	}
+}
+
+// Reached through a symlink, a checkout's git directories must still be
+// found where they are, or the digest would hash missing files and never
+// see HEAD move.
+func TestRememberedAnswersThroughASymlinkFollowTheRepository(t *testing.T) {
+	repo, commits := history(t)
+	inner := filepath.Join(repo, "d", "e")
+	if err := os.MkdirAll(inner, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	link := filepath.Join(t.TempDir(), "link")
+	if err := os.Symlink(inner, link); err != nil {
+		t.Skipf("symlinks unavailable: %v", err)
+	}
+	if got, ok := resolveIn(t, link, "HEAD"); !ok || got != commits[3] {
+		t.Fatalf("HEAD through the link = %q, %v", got, ok)
+	}
+	write(t, filepath.Join(repo, "moved.txt"), "moved\n")
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-q", "-m", "moved")
+	moved := git(t, repo, "rev-parse", "HEAD")
+	if got, ok := resolveIn(t, link, "HEAD"); !ok || got != moved {
+		t.Fatalf("HEAD through the link after a commit = %q, %v; want %s", got, ok, moved)
+	}
+}
+
+// A configuration change while Git answers must not be remembered as the
+// answer for the configuration that follows it.
+func TestDiscoveryIsNotRememberedAcrossAConcurrentChange(t *testing.T) {
+	repo, _ := history(t)
+	elsewhere := t.TempDir()
+	afterDiscovery = func() { git(t, repo, "config", "core.worktree", elsewhere) }
+	t.Cleanup(func() { afterDiscovery = nil })
+	if _, err := TopLevel(context.Background(), repo); err != nil {
+		t.Fatal(err)
+	}
+	afterDiscovery = nil
+	abs, _ := filepath.Abs(repo)
+	if _, ok := locations.Load(gitEnvironment() + "\x00" + abs); ok {
+		t.Fatal("an answer given before a configuration change was remembered under the changed configuration")
+	}
+	got, err := TopLevel(context.Background(), repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := git(t, repo, "rev-parse", "--show-toplevel"); got != want {
+		t.Fatalf("TopLevel after core.worktree moved = %q; want %q", got, want)
+	}
+}

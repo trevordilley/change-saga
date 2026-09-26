@@ -63,17 +63,29 @@ func TopLevel(ctx context.Context, dir string) (string, error) {
 func locate(ctx context.Context, dir string) (*repoLocation, error) {
 	abs, absErr := filepath.Abs(dir)
 	key := gitEnvironment() + "\x00" + abs
-	remember := absErr == nil
-	if remember {
+	if absErr == nil {
 		if cached, ok := locations.Load(key); ok && cached.(*repoLocation).stillAt(abs) {
 			return cached.(*repoLocation), nil
 		}
 	}
-	output, err := CombinedOutput(ctx, "-C", dir, "rev-parse", "--show-toplevel", "--absolute-git-dir", "--git-common-dir")
+	// Where the repository probably is, read without Git, so its
+	// configuration can be digested before Git answers: a change made while
+	// Git runs then shows as a different digest after it.
+	guess, guessed := guessLocation(abs)
+	var before string
+	if guessed && absErr == nil {
+		before, guessed = guess.digest(false)
+	}
+	// Standard output alone: GIT_TRACE and warnings write to standard error.
+	// --path-format=absolute resolves the git directories physically, so a
+	// symlink above the checkout cannot misplace them.
+	output, err := Output(ctx, "-C", dir, "rev-parse", "--show-toplevel", "--path-format=absolute", "--git-dir", "--git-common-dir")
 	if err != nil {
-		// Git's own message, or why Git could not run at all.
-		if message := strings.TrimSpace(string(output)); message != "" {
-			return nil, errors.New(message)
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			if message := strings.TrimSpace(string(exitErr.Stderr)); message != "" {
+				return nil, errors.New(message)
+			}
 		}
 		return nil, err
 	}
@@ -82,19 +94,72 @@ func locate(ctx context.Context, dir string) (*repoLocation, error) {
 		return nil, fmt.Errorf("unexpected rev-parse output %q", output)
 	}
 	location := &repoLocation{top: strings.TrimSpace(lines[0]), gitDir: filepath.FromSlash(strings.TrimSpace(lines[1])), commonDir: filepath.FromSlash(strings.TrimSpace(lines[2]))}
-	if !filepath.IsAbs(location.commonDir) {
-		location.commonDir = filepath.Join(abs, location.commonDir)
+	if afterDiscovery != nil {
+		afterDiscovery()
 	}
-	if remember && location.record(abs) {
-		locations.Store(key, location)
+	if guessed && absErr == nil && sameDirectory(guess.gitDir, location.gitDir) && sameDirectory(guess.commonDir, location.commonDir) {
+		if after, ok := location.digest(false); ok && after == before && location.record(abs, before) {
+			locations.Store(key, location)
+		}
 	}
 	return location, nil
 }
 
-// record notes the directories whose .git entries decide this answer. It
-// reports false when the top level cannot be found above dir, in which case
-// the answer is not remembered.
-func (location *repoLocation) record(dir string) bool {
+// afterDiscovery lets a test change the repository while Git has answered
+// but before the answer is remembered.
+var afterDiscovery func()
+
+// guessLocation finds the git directories of dir's checkout without Git: the
+// nearest .git above dir, following a gitdir file and a commondir file as
+// Git does. It is only ever checked against Git's own answer.
+func guessLocation(dir string) (*repoLocation, bool) {
+	real, err := filepath.EvalSymlinks(dir)
+	if err != nil {
+		return nil, false
+	}
+	for current := real; ; current = filepath.Dir(current) {
+		dotGit := filepath.Join(current, ".git")
+		info, err := os.Lstat(dotGit)
+		if err == nil {
+			gitDir := dotGit
+			if !info.IsDir() {
+				data, err := os.ReadFile(dotGit)
+				pointer, found := strings.CutPrefix(strings.TrimSpace(string(data)), "gitdir:")
+				if err != nil || !found {
+					return nil, false
+				}
+				gitDir = filepath.FromSlash(strings.TrimSpace(pointer))
+				if !filepath.IsAbs(gitDir) {
+					gitDir = filepath.Join(current, gitDir)
+				}
+			}
+			commonDir := gitDir
+			if data, err := os.ReadFile(filepath.Join(gitDir, "commondir")); err == nil {
+				commonDir = filepath.FromSlash(strings.TrimSpace(string(data)))
+				if !filepath.IsAbs(commonDir) {
+					commonDir = filepath.Join(gitDir, commonDir)
+				}
+			}
+			return &repoLocation{gitDir: gitDir, commonDir: commonDir}, true
+		}
+		if !errors.Is(err, fs.ErrNotExist) || filepath.Dir(current) == current {
+			return nil, false
+		}
+	}
+}
+
+// sameDirectory reports whether two paths name one existing directory.
+func sameDirectory(left, right string) bool {
+	leftInfo, leftErr := os.Stat(left)
+	rightInfo, rightErr := os.Stat(right)
+	return leftErr == nil && rightErr == nil && leftInfo.IsDir() && os.SameFile(leftInfo, rightInfo)
+}
+
+// record notes the directories whose .git entries decide this answer and the
+// configuration digest it was given under. It reports false when the top
+// level cannot be found above dir, in which case the answer is not
+// remembered.
+func (location *repoLocation) record(dir, config string) bool {
 	topInfo, err := os.Stat(filepath.FromSlash(location.top))
 	if err != nil {
 		return false
@@ -109,10 +174,8 @@ func (location *repoLocation) record(dir string) bool {
 			return false
 		}
 		if os.SameFile(info, topInfo) {
-			location.topInfo = topInfo
-			config, ok := location.digest(false)
-			location.config = config
-			return ok
+			location.topInfo, location.config = topInfo, config
+			return true
 		}
 		location.between = append(location.between, current)
 		if filepath.Dir(current) == current {
@@ -257,6 +320,10 @@ func looksAbbreviated(revision string) bool {
 // digest summarizes everything a configuration answer depends on and, with
 // withRefs, everything a ref answer depends on too.
 func (location *repoLocation) digest(withRefs bool) (string, bool) {
+	// Missing directories would hash as absent files and hide every change.
+	if !sameDirectory(location.gitDir, location.gitDir) || !sameDirectory(location.commonDir, location.commonDir) {
+		return "", false
+	}
 	hash := sha256.New()
 	budget := maxStateBytes
 	add := func(path string) bool {
