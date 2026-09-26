@@ -9,10 +9,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"mime"
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime/debug"
 	"sort"
 	"strconv"
 	"strings"
@@ -188,7 +190,7 @@ func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []
 		go func() {
 			defer workers.Done()
 			for index := range next {
-				reports[index] = build(reviews[index])
+				reports[index] = buildRecovering(reviews[index], build)
 			}
 		}()
 	}
@@ -202,6 +204,24 @@ func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []
 
 // reviewReportWorkers bounds how many reviews' reports are built at once.
 const reviewReportWorkers = 4
+
+// buildRecovering builds one review's report on a worker. A panic there
+// would stop the whole server, where inside the handler it failed only the
+// request, so it is logged with its stack and becomes that review's
+// diagnostic instead.
+func buildRecovering(review *saga.Review, build func(*saga.Review) reviewstate.Report) (report reviewstate.Report) {
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			log.Printf("change-saga: building the report of review %s panicked: %v\n%s", review.ID, recovered, debug.Stack())
+			report = reviewstate.Report{
+				ID: review.ID, Title: review.Title, Target: review.Target, Path: review.Path,
+				PullRequest: review.PullRequest, Base: review.Base, Head: review.Head, Merged: review.Merged,
+				Slides: []reviewstate.SlideReport{}, Diagnostics: []string{fmt.Sprintf("the review's report could not be built: %v", recovered)},
+			}
+		}
+	}()
+	return build(review)
+}
 
 // comparedHead is the head commit this reviewer was opened to compare, or ""
 // when it observes.

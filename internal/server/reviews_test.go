@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -15,6 +16,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -296,5 +298,21 @@ func TestReviewCoverageReportsTheChangesTheDeckDoesNotExplain(t *testing.T) {
 	}
 	if body = getPage(t, handler, "/reviews/pr-7/coverage").Body.String(); !strings.Contains(body, `data-uncovered="1"`) {
 		t.Fatalf("a frozen review does not report its frozen range's coverage:\n%s", body)
+	}
+}
+
+// A review's report is built on a worker goroutine, where a panic is not
+// recovered by net/http and would stop the server. It becomes that review's
+// diagnostic instead, and a report that does not panic is returned as built.
+func TestAPanicBuildingAReviewReportIsThatReviewsDiagnostic(t *testing.T) {
+	t.Parallel()
+	review := &saga.Review{ReviewManifest: saga.ReviewManifest{ID: "pr-9", Title: "Rename the queue", Base: "main", Head: "feature/rename"}}
+	report := buildRecovering(review, func(*saga.Review) reviewstate.Report { panic("the resolver fell over") })
+	if report.ID != "pr-9" || report.Title != "Rename the queue" || len(report.Diagnostics) != 1 || !strings.Contains(report.Diagnostics[0], "the resolver fell over") {
+		t.Fatalf("a panicking build was not reported as the review's diagnostic: %#v", report)
+	}
+	built := reviewstate.Report{ID: "pr-9", Diagnostics: []string{"the head is not in this checkout"}}
+	if got := buildRecovering(review, func(*saga.Review) reviewstate.Report { return built }); !reflect.DeepEqual(got, built) {
+		t.Fatalf("a build that did not panic was changed: %#v", got)
 	}
 }
