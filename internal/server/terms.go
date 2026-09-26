@@ -236,13 +236,16 @@ func termWhere(location coderef.Location) string {
 func (a *app) termPlaces(ctx context.Context, document requirements.Document) map[string][]termPlace {
 	head := firstNonEmptyString(a.rng.Head, "HEAD")
 	headOID, _ := resolveCommit(ctx, a.sourceDir, head)
-	// Where each term's code is follows from the head commit and the
-	// references alone, so it is kept under exactly those. The head is
+	// Where each term's code is follows from the head commit, the references,
+	// and the checkout's attribute files alone, so it is kept under exactly
+	// those. Git reads attributes when it diffs two commits, and a file it
+	// then calls binary leaves a reference into it stale. The head is
 	// resolved on every request; a commit never changes under its OID.
 	key := ""
-	if headOID != "" {
+	attributes, attributesErr := checkoutAttributes(ctx, a.sourceDir)
+	if headOID != "" && attributesErr == nil {
 		if encoded, err := json.Marshal(termReferences(document)); err == nil {
-			digest := sha256.Sum256(append([]byte(headOID+"\x00"), encoded...))
+			digest := sha256.Sum256(append([]byte(headOID+"\x00"+attributes+"\x00"), encoded...))
 			key = hex.EncodeToString(digest[:])
 		}
 	}

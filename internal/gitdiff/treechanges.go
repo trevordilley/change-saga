@@ -53,7 +53,7 @@ func TreeChanges(ctx context.Context, repo, from, to string) ([]FileChange, erro
 // showing a reader what changed since a reference was pinned.
 func FileDiff(ctx context.Context, repo, from, to string, paths ...string) (string, error) {
 	if gitexec.NamesObjects(from, to) {
-		key := append([]string{"file-diff", from, to, attributesIdentity(repo)}, paths...)
+		key := append([]string{"file-diff", from, to, AttributesIdentity(repo)}, paths...)
 		output, err := gitexec.StableDiff(ctx, repo, []string{from, to}, key, func() ([]byte, error) {
 			patch, err := fileDiffOnce(ctx, repo, from, to, paths...)
 			return []byte(patch), err

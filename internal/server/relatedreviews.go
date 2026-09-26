@@ -81,8 +81,8 @@ type relatedReviewCache struct {
 	index       *relatedReviewIndex
 	builds      int
 	// touched is the documentation targets each review's range touched, by
-	// what decides them: the range's commits and the documentation's code.
-	// Neither changes under its key, so an edit to the Saga's prose or
+	// what decides them: the range's commits, the documentation's code, and
+	// the checkout's attribute files. None changes under its key, so an edit to the Saga's prose or
 	// records rebuilds the index without reading any review's diff again.
 	touched map[string][]string
 }
@@ -101,6 +101,13 @@ func (a *app) relatedReviews(ctx context.Context) *relatedReviewIndex {
 	defer a.related.mutex.Unlock()
 	state := a.sagaState(ctx, true)
 	fingerprint, err := state.relatedKey()
+	// Git reads the checkout's attribute files when it diffs a review's
+	// range, so the index is kept under them too.
+	if attributes, attributesErr := checkoutAttributes(ctx, a.sourceDir); attributesErr != nil {
+		err = attributesErr
+	} else {
+		fingerprint += "\x00" + attributes
+	}
 	if err == nil && a.related.index != nil && fingerprint == a.related.fingerprint {
 		return a.related.index
 	}
@@ -152,7 +159,8 @@ func (a *app) relatedFingerprint(ctx context.Context) (string, error) {
 // that reach that code.
 //
 // touched holds what earlier builds found for each review, keyed by the
-// review's commits and the documentation's code; it is read and refilled, and
+// review's commits, the documentation's code, and the checkout's attribute
+// files; it is read and refilled, and
 // keeps only what this build used.
 func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.Saga, records requirements.Document, resolver coverage.Resolver, touched map[string][]string) *relatedReviewIndex {
 	started := time.Now()
@@ -165,6 +173,10 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 		return index
 	}
 	code := documentedCodeDigest(document)
+	// Git diffs each range under the checkout's attribute files, so what a
+	// range touched is kept under them as well. A checkout that cannot be
+	// found reads no range, so nothing is kept under the empty identity.
+	attributes, _ := checkoutAttributes(ctx, sourceDir)
 	var touchedMutex sync.Mutex
 	used := map[string]bool{}
 	// Each review is an independent intersection, and most of the cost is Git
@@ -188,7 +200,7 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 				if err != nil {
 					continue
 				}
-				key := rng.BaseOID + "\x00" + rng.HeadOID + "\x00" + code
+				key := rng.BaseOID + "\x00" + rng.HeadOID + "\x00" + code + "\x00" + attributes
 				touchedMutex.Lock()
 				targets, known := touched[key]
 				used[key] = true

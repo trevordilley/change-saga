@@ -241,6 +241,27 @@ func TestTermPlacesAreKeptPerHeadAndReferences(t *testing.T) {
 	}
 }
 
+// Git reads the checkout's attribute files when it diffs the pin against the
+// head, and a file it calls binary cannot be followed line by line, so kept
+// places are not reused once those files change.
+func TestTermPlacesFollowCheckoutAttributes(t *testing.T) {
+	root, repo := termSaga(t)
+	writeServerFile(t, filepath.Join(repo, "kinds.go"), serverKinds+"\n// graders arrive next\n")
+	serverGit(t, repo, "commit", "-am", "note")
+	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	document, err := requirements.Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if places := application.termPlaces(t.Context(), document); len(places["testtaker"]) != 1 || places["testtaker"][0].Stale {
+		t.Fatalf("the term's code was not followed to the head: %#v", places)
+	}
+	writeServerFile(t, filepath.Join(repo, ".gitattributes"), "* binary\n")
+	if places := application.termPlaces(t.Context(), document); len(places["testtaker"]) != 1 || !places["testtaker"][0].Stale {
+		t.Fatalf("places kept from before the attributes changed were reused: %#v", places)
+	}
+}
+
 // A place that rests on a pinned commit the repository lacks may be answered
 // differently after a fetch, so it is shown but not kept.
 func TestTermPlacesKeepNoProvisionalAnswer(t *testing.T) {

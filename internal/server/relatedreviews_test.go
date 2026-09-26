@@ -185,6 +185,24 @@ func TestRelatedReviewsFollowAnEditToTheDocumentedCode(t *testing.T) {
 	}
 }
 
+// Git reads the checkout's attribute files when it diffs a review's range, so
+// neither the index nor what a range touched is reused once they change: a
+// file Git now calls binary has no changed lines for the documentation's code
+// to meet.
+func TestRelatedReviewsFollowCheckoutAttributes(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	documentTheFixture(t, fixture)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	story := requirementStoryHref("place-an-order")
+	if body := documentationPage(t, handler, story); !strings.Contains(body, `data-related-review="pr-7"`) {
+		t.Fatalf("%s does not list the review that changed its code:\n%s", story, relatedReviewSection(body))
+	}
+	writeServerFile(t, filepath.Join(fixture.repo, ".gitattributes"), "* binary\n")
+	if body := documentationPage(t, handler, story); strings.Contains(body, `data-related-review="pr-7"`) {
+		t.Fatalf("%s still lists the review from before its file was called binary:\n%s", story, relatedReviewSection(body))
+	}
+}
+
 // A build the request abandoned keeps nothing. A reviewer who clicks away
 // while a feature page rebuilds the index must not leave it, or any review's
 // intersection, incomplete for every later page.

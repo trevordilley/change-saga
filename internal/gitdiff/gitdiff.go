@@ -425,16 +425,18 @@ func diffCommits(ctx context.Context, repo string, format []string, from, to str
 	// Two commits fix both trees. Git also reads attributes from the checkout
 	// (binary and -diff change the patch), so the answer is remembered for the
 	// checkout's attribute files as they are now.
-	key := append([]string{"diff", from, to, attributesIdentity(repo)}, format...)
+	key := append([]string{"diff", from, to, AttributesIdentity(repo)}, format...)
 	return gitexec.StableDiff(ctx, repo, []string{from, to}, append(append(key, "--"), pathspec...), func() ([]byte, error) {
 		return diffCommitsOnce(ctx, repo, format, from, to, pathspec...)
 	})
 }
 
-// attributesIdentity describes the checkout's top-level attribute files.
+// AttributesIdentity describes the checkout's top-level attribute files.
 // Nested .gitattributes files are not consulted: a long-running process may
-// show a diff cached before an uncommitted edit to one of them.
-func attributesIdentity(repo string) string {
+// show a diff cached before an uncommitted edit to one of them. Anything
+// remembered from a diff of two commits read in repo, the checkout's top
+// level, belongs under it too.
+func AttributesIdentity(repo string) string {
 	var identity strings.Builder
 	for _, path := range []string{filepath.Join(repo, ".gitattributes"), filepath.Join(repo, ".git", "info", "attributes")} {
 		if info, err := os.Stat(path); err == nil {

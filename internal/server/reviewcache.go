@@ -9,13 +9,15 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 // reviewCoverageCache keeps each review's coverage by exactly what it reads:
-// the two commits of its range, the repository they are read as, and the
-// code its deck's Items reference. Commits never change, so an entry is
+// the two commits of its range, the repository they are read as, the
+// checkout's attribute files Git diffs them under, and the code its deck's
+// Items reference. Commits never change, so an entry is
 // right for as long as the review's Items are; a range that moves, or an Item
 // that is edited, is a new key. Only coverage those alone decided is kept:
 // not one a failed or abandoned read, or a pinned commit the repository
@@ -33,7 +35,11 @@ type reviewCoverageCache struct {
 const reviewCoverageLimit = 128
 
 func (a *app) reviewCoverage(ctx context.Context, review *saga.Review, rng reviewstate.Range, repository string, resolver *coderesolve.Resolver) (*reviewstate.Coverage, error) {
-	key, err := reviewCoverageKey(review, rng, repository)
+	attributes, err := checkoutAttributes(ctx, a.sourceDir)
+	if err != nil {
+		return reviewstate.ReadCoverage(ctx, review, rng, a.sourceDir, repository, resolver)
+	}
+	key, err := reviewCoverageKey(review, rng, repository, attributes)
 	if err != nil {
 		return reviewstate.ReadCoverage(ctx, review, rng, a.sourceDir, repository, resolver)
 	}
@@ -70,8 +76,19 @@ func (a *app) reviewCoverage(ctx context.Context, review *saga.Review, rng revie
 	return covered, nil
 }
 
+// checkoutAttributes identifies the attribute files of dir's checkout. Git
+// reads them even when diffing two commits ('binary' and '-diff' change the
+// patch), so whatever is kept from such a diff is kept under them too.
+func checkoutAttributes(ctx context.Context, dir string) (string, error) {
+	top, err := gitexec.TopLevel(ctx, dir)
+	if err != nil {
+		return "", err
+	}
+	return gitdiff.AttributesIdentity(top), nil
+}
+
 // reviewCoverageKey names what one review's coverage reads.
-func reviewCoverageKey(review *saga.Review, rng reviewstate.Range, repository string) (string, error) {
+func reviewCoverageKey(review *saga.Review, rng reviewstate.Range, repository, attributes string) (string, error) {
 	type item struct {
 		Target string          `json:"target"`
 		Code   []saga.CodeFile `json:"code"`
@@ -85,9 +102,9 @@ func reviewCoverageKey(review *saga.Review, rng reviewstate.Range, repository st
 		}
 	}
 	encoded, err := json.Marshal(struct {
-		Base, Head, Repository string
-		Items                  []item
-	}{rng.BaseOID, rng.HeadOID, repository, items})
+		Base, Head, Repository, Attributes string
+		Items                              []item
+	}{rng.BaseOID, rng.HeadOID, repository, attributes, items})
 	if err != nil {
 		return "", err
 	}
