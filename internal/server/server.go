@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"crypto/subtle"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -63,6 +64,10 @@ type app struct {
 	// files is what documentation pages read from the Saga's own files,
 	// kept while those files are unchanged.
 	files sagaFilesCache
+	// reviewCoverages is each review's coverage; see reviewcache.go.
+	reviewCoverages reviewCoverageCache
+	// termPlacesCache is where the terms' code is at the head.
+	termPlacesCache termPlacesCache
 	// fresh shares the check of whether the Saga's files or the heads
 	// have changed between the requests that ask at once.
 	fresh freshness
@@ -162,19 +167,81 @@ type pageData struct {
 	ReviewCodeHref     string
 	ReviewCoverageHref string
 	Root               *sectionView
-	SlideRoot          *sectionView
-	// SlidesHTML is the deck viewer rendered from SlideRoot. Without it the
-	// page renders the viewer itself.
-	SlidesHTML template.HTML
-	Nav        []*navNodeView
-	Diagnostic string
-	Code       *CodeReviewView
-	Manifest   *CoverageManifestView
-	Error      string
-	Files      []*fileDiffView
+	Nav                []*navNodeView
+	Diagnostic         string
+	Code               *CodeReviewView
+	Manifest           *CoverageManifestView
+	Error              string
+	Files              []*fileDiffView
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
+	// ShellVersion is the state of the Saga the page was read from. The
+	// sidebar and the deck viewer are loaded once and kept across pages; the
+	// version they were loaded at says whether a later page still agrees
+	// with them. Empty when the Saga could not be fingerprinted, which no
+	// kept part ever matches.
+	ShellVersion string
+	// PageTitle names the page in its <title> and to a reader told that it
+	// has arrived. Empty on the overview, which the Saga's title names.
+	PageTitle string
+	// StaleShell says the browser asking for this page as a partial holds a
+	// sidebar and deck viewer from another state of the Saga, so the partial
+	// replaces them too.
+	StaleShell bool
+}
+
+// oobView is one part of the page as the layout composes it, or as a
+// partial swaps it in out of band. Each part is defined once and says only
+// whether it is swapped out of band; nothing else differs between the two.
+type oobView struct {
+	*pageData
+	OOB bool
+}
+
+// oobPart is one part of data, swapped out of band or not. Rendering tests
+// pass the page by value; the server passes a pointer.
+func oobPart(data any, swap bool) (oobView, error) {
+	switch page := data.(type) {
+	case *pageData:
+		return oobView{pageData: page, OOB: swap}, nil
+	case pageData:
+		return oobView{pageData: &page, OOB: swap}, nil
+	}
+	return oobView{}, fmt.Errorf("oob: %T is not a page", data)
+}
+
+// Page is the page the part belongs to, for parts that compose others.
+func (view oobView) Page() *pageData { return view.pageData }
+
+// navStateView is what a page decides about the sidebar, which is otherwise
+// the same on every page: the rows it marks current, the places it opens,
+// and the sections it hides. Each is a space-separated list of row IDs.
+type navStateView struct {
+	Current, Expanded, Hidden string
+}
+
+func navState(nodes []*navNodeView) navStateView {
+	var current, expanded, hidden []string
+	var walk func([]*navNodeView)
+	walk = func(nodes []*navNodeView) {
+		for _, node := range nodes {
+			if node.NodeID != "" {
+				if node.Active {
+					current = append(current, node.NodeID)
+				}
+				if node.Expanded && len(node.Children) > 0 {
+					expanded = append(expanded, node.NodeID)
+				}
+				if node.Hidden {
+					hidden = append(hidden, node.NodeID)
+				}
+			}
+			walk(node.Children)
+		}
+	}
+	walk(nodes)
+	return navStateView{Current: strings.Join(current, " "), Expanded: strings.Join(expanded, " "), Hidden: strings.Join(hidden, " ")}
 }
 
 // coverageTotalsView is the coverage state a reviewer needs before deciding
@@ -225,7 +292,15 @@ type navNodeView struct {
 	Slide    *SlideReferenceView
 	Active   bool
 	Expanded bool
+	// Hidden is a section the sidebar carries for the other side of the
+	// header: it is there for the next page, not this one.
+	Hidden   bool
 	Children []*navNodeView
+	// dormant marks a subtree the sidebar holds for other pages: a feature
+	// the page does not belong to, or the other side's section. The sidebar
+	// is the same on every page, so what this page marks current or opens is
+	// decided outside these subtrees.
+	dormant bool
 }
 
 type sectionView struct {
@@ -247,19 +322,22 @@ type fragmentView struct {
 	*saga.Fragment
 	// Deferred marks a descriptor: the fragment is named, linked, and
 	// reviewable, and its content arrives from /api/fragment.
-	Deferred      bool
-	DOMID         string
-	URL           string
-	Markdown      template.HTML
-	Plain         string
-	Interactive   bool
-	Image         bool
-	AspectRatio   string
-	SectionTitle  string
-	LandmarkViews []*landmarkView
-	Stories       *storyLinksView
-	ChangeCount   int
-	Attached      *attachedCodeView
+	Deferred    bool
+	DOMID       string
+	URL         string
+	Markdown    template.HTML
+	Plain       string
+	Interactive bool
+	// BackgroundFrame leaves an interactive frame for the deck viewer's
+	// script to load; see viewScope.backgroundFrames.
+	BackgroundFrame bool
+	Image           bool
+	AspectRatio     string
+	SectionTitle    string
+	LandmarkViews   []*landmarkView
+	Stories         *storyLinksView
+	ChangeCount     int
+	Attached        *attachedCodeView
 }
 
 type landmarkView struct {
@@ -379,28 +457,34 @@ func newMux(application *app) *http.ServeMux {
 	// Every route is stamped with its arrival, so the caches one request
 	// asks share the freshness check that answers it, and asks Git through
 	// one session of its own.
-	handle := func(pattern string, handler http.HandlerFunc) {
+	page := func(pattern string, handler http.HandlerFunc) {
 		mux.HandleFunc(pattern, arriving(withGitSession(handler)))
 	}
-	handle("GET /requirements/{story}/criteria/{criterion}", application.page)
-	handle("GET /requirements/{story}", application.page)
-	handle("GET /requirements", application.page)
-	handle("GET /terms/{term}", application.page)
-	handle("GET /terms", application.page)
-	handle("GET /chapters/{chapter}", application.page)
-	handle("GET /personas/{persona}", application.page)
-	handle("GET /personas", application.page)
-	handle("GET /flags", application.page)
-	handle("GET /design-system", application.page)
-	handle("GET /technical/{kind}/{id}", application.page)
-	handle("GET /technical/{area}", application.page)
-	handle("GET /technical", application.page)
-	handle("GET /features/{feature}", application.page)
-	handle("GET /features", application.page)
-	handle("GET /tests/{test}", application.page)
-	handle("GET /", application.page)
-	handle("GET /reviews", application.reviewIndex)
-	handle("GET /reviews/{id}", application.reviewPage)
+	// Everything else is a part of a page, a file, or an answer for the
+	// page's script. A boosted link that reaches one is followed by the
+	// browser instead of being swapped in as though it were a page.
+	handle := func(pattern string, handler http.HandlerFunc) {
+		mux.HandleFunc(pattern, arriving(withGitSession(notAPage(handler))))
+	}
+	page("GET /requirements/{story}/criteria/{criterion}", application.page)
+	page("GET /requirements/{story}", application.page)
+	page("GET /requirements", application.page)
+	page("GET /terms/{term}", application.page)
+	page("GET /terms", application.page)
+	page("GET /chapters/{chapter}", application.page)
+	page("GET /personas/{persona}", application.page)
+	page("GET /personas", application.page)
+	page("GET /flags", application.page)
+	page("GET /design-system", application.page)
+	page("GET /technical/{kind}/{id}", application.page)
+	page("GET /technical/{area}", application.page)
+	page("GET /technical", application.page)
+	page("GET /features/{feature}", application.page)
+	page("GET /features", application.page)
+	page("GET /tests/{test}", application.page)
+	page("GET /", application.page)
+	page("GET /reviews", application.reviewIndex)
+	page("GET /reviews/{id}", application.reviewPage)
 	handle("GET /reviews/{id}/code", application.reviewCodeSurface)
 	handle("GET /reviews/{id}/file-diff", application.reviewFileDiffSurface)
 	handle("GET /reviews/{id}/coverage", application.reviewCoverageSurface)
@@ -409,6 +493,8 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /reviews/{id}/feedback", application.reviewFeedbackSurface)
 	handle("POST /reviews/{id}/decision", application.reviewDecision)
 	handle("POST /reviews/{id}/comment", application.reviewComment)
+	handle("GET /assets/{hash}/{name}", application.shellAssetFile)
+	handle("GET /decks", application.decksPage)
 	handle("GET /app.js", application.javascript)
 	handle("GET "+diagram.FontPath, application.diagramFont)
 	handle("GET /theme.js", application.themeScript)
@@ -891,6 +977,9 @@ func templateFuncs() template.FuncMap {
 		"domID":                domID,
 		"fileIcon":             fileIcon,
 		"lower":                strings.ToLower,
+		"asset":                assetPath,
+		"oob":                  oobPart,
+		"navState":             navState,
 		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
 			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
 		},
@@ -914,7 +1003,58 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
+	a.renderPage(w, r, data, "The review page could not be rendered.")
+}
+
+// notAPage answers a boosted request, which htmx makes for a link it expects
+// to be a page, by sending the browser to the URL itself.
+func notAPage(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("HX-Boosted") == "true" {
+			w.Header().Set("HX-Redirect", r.URL.RequestURI())
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+		next(w, r)
+	}
+}
+
+// shellVersion names the state the kept parts of the shell were read from:
+// the Saga's documentation files, and the source head the code they link
+// resolves against. Empty when the Saga cannot be fingerprinted.
+func (a *app) shellVersion(ctx context.Context, files *sagaFiles) string {
+	if files.fingerprint == "" {
+		return ""
+	}
+	digest := sha256.Sum256([]byte(files.fingerprint + "\x00" + a.sagaState(ctx, false).sourceHead))
+	return hex.EncodeToString(digest[:12])
+}
+
+// renderPage answers for one page of the app: the whole page, or, when htmx
+// asks for it to replace the page on screen, the page's parts. Both are
+// rendered from the same blocks, so a page reached by a link and the same
+// URL loaded afresh cannot differ.
+func (a *app) renderPage(w http.ResponseWriter, r *http.Request, data *pageData, failure string) {
+	w.Header().Add("Vary", pageVary)
+	name := "page"
+	if partialPageRequest(r) {
+		name = "page-partial"
+		data.StaleShell = data.ShellVersion == "" || r.Header.Get("X-Saga-Shell") != data.ShellVersion
+	}
+	renderHTML(w, a.template, name, data, failure)
+}
+
+// pageVary names the request headers a page's answer depends on.
+const pageVary = "HX-Request, HX-Target, HX-History-Restore-Request, X-Saga-Shell"
+
+// partialPageRequest says htmx is asking for a page to swap into the one on
+// screen: a boosted link or form, which targets #page, or a step back or
+// forward, which restores into it.
+func partialPageRequest(r *http.Request) bool {
+	if r.Header.Get("HX-Request") != "true" {
+		return false
+	}
+	return r.Header.Get("HX-Target") == "page" || r.Header.Get("HX-History-Restore-Request") == "true"
 }
 
 // chapterRedirect keeps /chapters/{id} links working: an app chapter opens on
@@ -1079,6 +1219,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		appReport.Children = append(appReport.Children, child)
 	}
 	data := &pageData{
+		ShellVersion:  a.shellVersion(r.Context(), files),
 		Opening:       openingLabel(a.rng),
 		Comparing:     !a.rng.Observe(),
 		Saga:          document,
@@ -1192,41 +1333,118 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		pageFeature: data.PageFeature, reviewSide: data.ReviewSide,
 		technical: technicalRows,
 	})
-	if route.kind != "overview" {
-		// Off the overview, an in-page anchor would point into a page that is
-		// not there. Every such link opens the overview instead.
-		rootNavLinks(data.Nav)
-		if !data.TermsMode {
-			markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
-		}
+	// The sidebar is the same on every page, so it outlives the page it was
+	// loaded with: an in-page anchor names the overview's path rather than
+	// whichever page is showing.
+	rootNavLinks(data.Nav)
+	if route.kind != "overview" && !data.TermsMode {
+		markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
 	}
-	if data.EmbeddedDecks {
-		// Every page shows the same decks, read from the same narrative and
-		// records, so their view is built once for each state of the files.
-		data.SlideRoot, data.SlidesHTML, err = files.slides(func() (*sectionView, template.HTML, error) {
-			root := makeSectionView(slideRoot, scope)
-			storyLinks := &storyLinkDecorator{document: document, records: requirementsDocument}
-			for _, deck := range root.ChildViews {
-				for _, slide := range deck.FragmentViews {
-					if err := storyLinks.decorate(slide); err != nil {
-						return nil, "", fmt.Errorf("story links could not be resolved: %w", err)
-					}
+	data.PageTitle = pageTitle(data)
+	return data, nil
+}
+
+// pageTitle names the page as its heading does, so a reader switching tabs,
+// or told by a screen reader that a page has arrived, knows which one it is.
+func pageTitle(data *pageData) string {
+	switch {
+	case data.RequirementsMode && data.Requirements.FocusedCriterion != nil && data.Requirements.Story != nil:
+		return data.Requirements.FocusedCriterion.Label + " · " + data.Requirements.Story.Title
+	case data.RequirementsMode && data.Requirements.Story != nil:
+		return data.Requirements.Story.Title
+	case data.RequirementsMode:
+		return "Requirements"
+	case data.TermsMode && data.Terms.Term != nil:
+		return data.Terms.Term.Name
+	case data.TermsMode:
+		return "Terms and vocabulary"
+	case data.Persona != nil:
+		return data.Persona.Name
+	case data.Feature != nil:
+		return data.Feature.Title
+	case data.TestCase != nil:
+		return data.TestCase.Title
+	case data.Features != nil:
+		return data.Features.Title
+	case data.Personas != nil:
+		return data.Personas.Title
+	case data.Flags != nil:
+		return data.Flags.Title
+	case data.TechnicalEntity != nil:
+		return data.TechnicalEntity.Name
+	case data.Technical != nil && data.Technical.Area.Title != "":
+		return data.Technical.Area.Title
+	case data.Technical != nil:
+		return "Technical design"
+	case data.DesignSystemMode:
+		return "Design system"
+	}
+	return ""
+}
+
+// decks is the deck viewer: every slide of every embedded deck, as every page
+// shows them. It is the largest thing the reviewer renders and the same for
+// every page, so the pages leave it out and the shell loads it once, after
+// its first paint, from /decks. Built from the narrative and the records with
+// the complete slides' links projected in, it is built once for each state
+// of the Saga's files, whose fingerprint it returns.
+func (a *app) decks(ctx context.Context) (string, template.HTML, error) {
+	files := a.sagaFiles(ctx)
+	document := files.narrative()
+	if document == nil {
+		return "", "", errors.New("The slide deck could not be loaded. Run change-saga validate for details.")
+	}
+	if len(document.Decks)+len(document.Onboarding) == 0 {
+		return files.fingerprint, "", nil
+	}
+	_, html, err := files.slides(func() (*sectionView, template.HTML, error) {
+		records, err := files.projectedRecords(document.Manifest.ID)
+		if err != nil {
+			return nil, "", fmt.Errorf("the complete-slide criterion links could not be loaded: %w", err)
+		}
+		_, slideRoot := splitReportAndDeckSections(document.Section)
+		root := makeSectionView(slideRoot, viewScope{backgroundFrames: true})
+		storyLinks := &storyLinkDecorator{document: document, records: records}
+		for _, deck := range root.ChildViews {
+			for _, slide := range deck.FragmentViews {
+				if err := storyLinks.decorate(slide); err != nil {
+					return nil, "", fmt.Errorf("story links could not be resolved: %w", err)
 				}
 			}
-			labelDeckRoles(root, document)
-			// The deck viewer reads nothing but the decks, so it is rendered
-			// here once rather than into every page.
-			var rendered bytes.Buffer
-			if err := a.template.ExecuteTemplate(&rendered, "deck-viewer", root); err != nil {
-				return nil, "", fmt.Errorf("the decks could not be rendered: %w", err)
-			}
-			return root, template.HTML(rendered.String()), nil
-		})
-		if err != nil {
-			return nil, err
+		}
+		labelDeckRoles(root, document)
+		var rendered bytes.Buffer
+		if err := a.template.ExecuteTemplate(&rendered, "deck-viewer", root); err != nil {
+			return nil, "", fmt.Errorf("the decks could not be rendered: %w", err)
+		}
+		return root, template.HTML(rendered.String()), nil
+	})
+	return files.fingerprint, html, err
+}
+
+// decksPage serves the deck viewer to the shell. Its validator is the state
+// of the Saga it was built from, so a new session on an unchanged Saga
+// revalidates it rather than downloading it again, and a changed Saga is
+// never served from a cache.
+func (a *app) decksPage(w http.ResponseWriter, r *http.Request) {
+	fingerprint, html, err := a.decks(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	if fingerprint == "" {
+		w.Header().Set("Cache-Control", "no-store")
+	} else {
+		etag := `"` + fingerprint + `"`
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("ETag", etag)
+		if r.Header.Get("If-None-Match") == etag {
+			w.WriteHeader(http.StatusNotModified)
+			return
 		}
 	}
-	return data, nil
+	_, _ = io.WriteString(w, string(html))
 }
 
 // rootNavLinks points the sidebar's in-page anchors at the overview.
@@ -1249,6 +1467,9 @@ func markActiveNav(nodes []*navNodeView, path string) {
 	var mark func([]*navNodeView)
 	mark = func(nodes []*navNodeView) {
 		for _, node := range nodes {
+			if node.dormant {
+				continue
+			}
 			node.Active = node.Href == path
 			mark(node.Children)
 		}
@@ -1457,6 +1678,11 @@ type viewScope struct {
 	// deferContent renders every fragment as a descriptor whose content arrives
 	// from /api/fragment.
 	deferContent bool
+	// backgroundFrames names each slide's frame without loading it: the deck
+	// viewer holds every slide, hidden, and its script loads the frames a few
+	// at a time in the background, the slide on screen first, so they never
+	// crowd out the reader's next page.
+	backgroundFrames bool
 	// directoryManaged removes duplicate inline decision controls for targets
 	// whose chapter directory owns those controls.
 	directoryManaged bool
@@ -1505,7 +1731,7 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 	if title == "" {
 		title = fragment.ID
 	}
-	view := &fragmentView{Fragment: fragment, DOMID: domID(fragment.Target)}
+	view := &fragmentView{Fragment: fragment, DOMID: domID(fragment.Target), BackgroundFrame: scope.backgroundFrames}
 	view.URL = fragmentAssetURL(fragment)
 	if scope.deferContent {
 		// A descriptor names the explanation and carries its review controls.

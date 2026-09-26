@@ -150,7 +150,7 @@ func TestSlideViewerNamesSlidesByTheirDeckRole(t *testing.T) {
 			t.Fatalf("styles lack %s", label)
 		}
 	}
-	page := dogfoodOK(t, "/")
+	page := dogfoodOK(t, "/decks")
 	for _, role := range []string{`data-deck-role="change"`, `data-deck-role="onboarding"`} {
 		if !strings.Contains(page, role) {
 			t.Fatalf("slide viewer lacks %s", role)

@@ -60,7 +60,18 @@ const appJavaScript = `(() => {
     return true;
   }
 
-  function deckViewerSlides() { return qa('[data-deck-slide]'); }
+  // The deck viewer a reader is looking at: a review's own deck on its page,
+  // or the shell's viewer of every embedded deck, which is loaded once after
+  // the first paint and kept from page to page.
+  function currentDeckViewer() { return q('#page [data-deck-viewer]') || q('#view-slides [data-deck-viewer]'); }
+
+  // slideViewName is the view the current deck viewer is shown in.
+  function slideViewName() { return q('#page [data-deck-viewer]') || !q('[data-view="slides"]') ? 'saga' : 'slides'; }
+
+  function deckViewerSlides() {
+    const viewer = currentDeckViewer();
+    return viewer ? qa('[data-deck-slide]', viewer) : [];
+  }
 
   function viewerDeckSlides(slide) {
     const slides = deckViewerSlides();
@@ -69,7 +80,7 @@ const appJavaScript = `(() => {
   }
 
   function deckViewerActive() {
-    const surface = q('[data-deck-viewer]');
+    const surface = currentDeckViewer();
     const view = surface?.closest('[data-view]');
     return Boolean(surface && (!view || view.classList.contains('active')));
   }
@@ -118,6 +129,7 @@ const appJavaScript = `(() => {
       const anchor = q('.fragment', active)?.id;
       if (anchor) history.replaceState(history.state, '', location.pathname + location.search + '#' + encodeURIComponent(anchor));
     }
+    loadSlideFrames(active);
     const fragment = q('.fragment', active);
     const targetCodeButton = q(':scope > .fragment-head [data-target-code-href]', fragment);
     if (targetCodeButton) void hydrateTargetCodeSummary(targetCodeButton);
@@ -282,12 +294,81 @@ const appJavaScript = `(() => {
     stage.append(visual);
   }
 
+  // ----- Slide frames -----
+  // The deck viewer holds every slide of every deck, hidden, and is kept for
+  // the session. Its frames load in the background two at a time, the slide
+  // on screen and its neighbours first, so that a slide is ready before a
+  // reader opens it and the loading never takes the connections the reader's
+  // next page needs. A frame the page renders itself loads as any would.
+  const frameSource = frame => frame.getAttribute('src') || frame.dataset.frameSrc || '';
+  const frameQueue = [];
+  const maxFramesLoading = 2;
+  let framesLoading = 0;
+  document.addEventListener('load', event => {
+    if (event.target instanceof HTMLIFrameElement) event.target.dataset.frameLoaded = 'true';
+  }, true);
+
+  function loadFrame(frame) {
+    const source = frame.dataset.frameSrc;
+    if (!source || !frame.isConnected) return;
+    delete frame.dataset.frameSrc;
+    framesLoading++;
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      framesLoading--;
+      pumpFrames();
+    };
+    frame.addEventListener('load', finish, {once: true});
+    // A frame that never finishes does not hold the others back.
+    setTimeout(finish, 5000);
+    frame.src = source;
+  }
+
+  function pumpFrames() {
+    while (framesLoading < maxFramesLoading && frameQueue.length) loadFrame(frameQueue.shift());
+  }
+
+  function queueFrames(root) {
+    within(root, 'iframe[data-frame-src]').forEach(frame => frameQueue.push(frame));
+    pumpFrames();
+  }
+
+  // loadSlideFrames puts a slide's frames first, and its neighbours' next.
+  function loadSlideFrames(slide) {
+    const slides = deckViewerSlides();
+    const index = slides.indexOf(slide);
+    const unqueue = frame => { const at = frameQueue.indexOf(frame); if (at >= 0) frameQueue.splice(at, 1); };
+    [slides[index + 1], slides[index - 1]].filter(Boolean).forEach(neighbour => qa('iframe[data-frame-src]', neighbour).forEach(frame => {
+      unqueue(frame);
+      frameQueue.unshift(frame);
+    }));
+    qa('iframe[data-frame-src]', slide).forEach(frame => { unqueue(frame); loadFrame(frame); });
+    pumpFrames();
+  }
+
+  // whenFrameLoaded runs once the frame's document has arrived, so a second
+  // read of the same file comes from the browser's cache.
+  function whenFrameLoaded(frame, run) {
+    if (frame.dataset.frameLoaded) { run(); return; }
+    const settle = () => {
+      frame.removeEventListener('load', settle);
+      removeEventListener('load', settle);
+      run();
+    };
+    frame.addEventListener('load', settle);
+    if (document.readyState !== 'complete') addEventListener('load', settle);
+  }
+
   async function prepareSVGElementHotspots(fragment) {
     const frame = q('[data-fragment-frame]', fragment);
     const targets = qa('[data-landmark-target][data-landmark-type="element"]', fragment)
       .filter(target => target.dataset.elementId && !q('[data-landmark-visual="' + CSS.escape(target.dataset.landmarkAnchor) + '"]', fragment));
     if (!frame || targets.length === 0) return;
-    const sourceURL = new URL(frame.getAttribute('src'), location.href);
+    await new Promise(resolve => whenFrameLoaded(frame, resolve));
+    if (!fragment.isConnected) return;
+    const sourceURL = new URL(frameSource(frame), location.href);
     // SVG fragments created by the CLI have a .svg entrypoint. The aspect
     // query is also present for viewBox-based SVGs, including renamed assets.
     if (!sourceURL.pathname.toLowerCase().endsWith('.svg') && !sourceURL.searchParams.has('saga_aspect')) return;
@@ -352,7 +433,7 @@ const appJavaScript = `(() => {
 
   function prepareLandmarks(root = document) {
     within(root, '.fragment-frame').forEach(frame => {
-      const aspect = Number(new URL(frame.src, location.href).searchParams.get('saga_aspect'));
+      const aspect = Number(new URL(frameSource(frame), location.href).searchParams.get('saga_aspect'));
       if (aspect > 0) {
         frame.style.minHeight = '0';
         frame.style.aspectRatio = String(aspect);
@@ -430,11 +511,12 @@ const appJavaScript = `(() => {
     if (target.dataset.landmarkType === 'element') {
       const frame = q('[data-fragment-frame]', fragment);
       if (!frame || !target.dataset.elementId) return;
-      const base = frame.dataset.landmarkBase || frame.getAttribute('src').split('#')[0];
+      const base = frame.dataset.landmarkBase || frameSource(frame).split('#')[0];
       frame.dataset.landmarkBase = base;
       const url = new URL(base, location.href);
       url.hash = target.dataset.elementId;
-      if (frame.src !== url.toString()) frame.src = url.toString();
+      if (frame.dataset.frameSrc) { frame.dataset.frameSrc = url.toString(); loadFrame(frame); }
+      else if (frame.src !== url.toString()) frame.src = url.toString();
     }
     document.getElementById(id)?.scrollIntoView({block:'center'});
   }
@@ -684,13 +766,11 @@ const appJavaScript = `(() => {
     }
   }
 
-  function prepareDirectories() {
-    qa('[data-directory]').forEach(directory => {
-      const input = q('[data-directory-filter]', directory);
-      if (!input) return;
+  function prepareDirectories(root = document) {
+    within(root, '[data-directory]').forEach(directory => {
+      if (!q('[data-directory-filter]', directory)) return;
       // The submit button is the no-JavaScript path; typing has replaced it.
       q('[data-directory-submit]', directory)?.setAttribute('hidden', '');
-      input.addEventListener('input', () => filterDirectory(directory));
     });
   }
 
@@ -1097,7 +1177,7 @@ const appJavaScript = `(() => {
   let reviewDeckHash = location.hash;
   function setView(name, updateURL = true) {
     if (!q('[data-view="'+name+'"]')) name = 'saga';
-    const reviewDeck = q('[data-review-deck-shell]');
+    const reviewDeck = q('[data-shell][data-review-deck-shell]');
     const returningToReviewDeck = reviewDeck && name === 'saga' && !q('[data-view="saga"].active');
     if (reviewDeck && name !== 'saga' && q('[data-view="saga"].active')) reviewDeckHash = location.hash;
     qa('[data-view]').forEach(view => view.classList.toggle('active', view.dataset.view === name));
@@ -1119,7 +1199,7 @@ const appJavaScript = `(() => {
       shell.classList.toggle('code-mode', name === 'code');
       shell.classList.toggle('slide-mode', name === 'slides' || (name === 'saga' && shell.hasAttribute('data-review-deck-shell')));
     }
-    const slideView = q('[data-view="slides"]') ? 'slides' : 'saga';
+    const slideView = slideViewName();
     qa('[data-slide-present]').forEach(button => { button.hidden = name !== slideView; });
     // A hidden view measures as zero, so hotspots are placed once the saga
     // view is actually on screen.
@@ -1128,7 +1208,7 @@ const appJavaScript = `(() => {
       const url = new URL(location.href);
       if (name === 'saga') url.searchParams.delete('view'); else url.searchParams.set('view', name);
       if (returningToReviewDeck) url.hash = reviewDeckHash;
-      history.pushState({view: name}, '', url);
+      history.pushState({htmx: true, view: name}, '', url);
     }
     if (name === 'code' || name === 'manifest' || name === 'change') void hydrateReviewSurface(name);
   }
@@ -1163,7 +1243,7 @@ const appJavaScript = `(() => {
   function activateManifestMode(mode) {
     const current = new URL(location.href);
     current.searchParams.set('mode', mode);
-    history.pushState({view:'manifest', mode}, '', current);
+    history.pushState({htmx: true, view:'manifest', mode}, '', current);
     if (q('[data-manifest-panel="'+mode+'"]')) {
       setManifestMode(mode);
       return Promise.resolve();
@@ -2024,8 +2104,13 @@ const appJavaScript = `(() => {
       const slides = deckViewerSlides();
       const index = slides.findIndex(slide => slide.dataset.slideTarget === slideThumbnail.dataset.slideTarget);
       if (index >= 0) {
-        if (q('[data-view="slides"]')) setView('slides');
+        if (slideViewName() === 'slides') setView('slides');
         activateDeckSlide(index, true);
+      } else if (!slides.length && q('[data-deck-host]')) {
+        // The viewer is still arriving: show where it will be, and open this
+        // slide when it does.
+        pendingSlide = slideThumbnail.dataset.slideTarget;
+        setView('slides');
       }
       return;
     }
@@ -2067,7 +2152,7 @@ const appJavaScript = `(() => {
       const view = destination.searchParams.get('view');
       if (destination.origin === location.origin && destination.pathname === location.pathname && (view === 'code' || view === 'manifest')) {
         event.preventDefault();
-        history.pushState({view}, '', destination);
+        history.pushState({htmx: true, view}, '', destination);
         setView(view, false);
         if (boundedLink.closest('.diff-drawer.open')) closeDrawer();
         return;
@@ -2088,7 +2173,7 @@ const appJavaScript = `(() => {
       const sagaURL = new URL(location.href);
       ['view', 'file', 'ref', 'mode'].forEach(key => sagaURL.searchParams.delete(key));
       sagaURL.hash = id;
-      history.pushState({view:'saga'}, '', sagaURL);
+      history.pushState({htmx: true, view:'saga'}, '', sagaURL);
       if (sagaLink.closest('.diff-drawer.open')) closeDrawer();
       // pushState deliberately does not dispatch hashchange or perform native
       // anchor scrolling. Run the same lazy reveal, view switch, highlight,
@@ -2214,6 +2299,8 @@ const appJavaScript = `(() => {
   document.addEventListener('input', event => {
     if (event.target.matches?.('[data-file-filter]')) filterTree();
     if (event.target.matches?.('[data-manifest-filter]')) filterManifest();
+    const directory = event.target.matches?.('[data-directory-filter]') ? event.target.closest('[data-directory]') : null;
+    if (directory) filterDirectory(directory);
   });
 
   document.addEventListener('keydown', event => {
@@ -2261,8 +2348,9 @@ const appJavaScript = `(() => {
 
 ` + reviewAsyncJavaScript + `
   async function prepareReviewAnnotations() {
-    const deck = q('[data-review-deck]');
+    const deck = q('#page [data-review-deck]');
     if (!deck) return;
+    const signal = pageScope.signal;
     const reviewID = deck.dataset.review;
     const token = deck.dataset.reviewToken || '';
     const status = document.createElement('p');
@@ -2476,22 +2564,10 @@ const appJavaScript = `(() => {
     q('[data-delete]',selection).addEventListener('click',()=>{if(selected&&!annotationSaving)void post({reply_to:selected.ID,body:'Annotation deleted.',annotation_action:'delete'});});
     const replay=async(from,to,useBefore)=>{if(annotationSaving)return;const command=from.pop();if(!command)return;to.push(command);const previous=clone(latestAnchors.get(command.entry.ID)||command.entry.anchor),anchor=clone(useBefore?command.before:command.after);restore(command.entry,anchor);syncHistoryButtons();const saved=await post({reply_to:command.entry.ID,body:useBefore?'Annotation change undone.':'Annotation change redone.',annotation_action:'update',anchor:JSON.stringify(anchor)},false);if(!saved){to.pop();from.push(command);restore(command.entry,previous);syncHistoryButtons();}};
     undoButton.addEventListener('click',()=>void replay(undo,redo,true));redoButton.addEventListener('click',()=>void replay(redo,undo,false));
-    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!composer.hidden){event.preventDefault();composer.hidden=true;draft=null;clearDraftVisual();setTool('pointer');}else if(event.key==='Escape'&&!toolbar.hidden){event.preventDefault();closeToolbox(true);}else if((event.key==='Delete'||event.key==='Backspace')&&selected&&!event.target.matches('input,textarea')){event.preventDefault();q('[data-delete]',selection).click();}});
+    document.addEventListener('keydown',event=>{if(!deck.isConnected)return;if(event.key==='Escape'&&!composer.hidden){event.preventDefault();composer.hidden=true;draft=null;clearDraftVisual();setTool('pointer');}else if(event.key==='Escape'&&!toolbar.hidden){event.preventDefault();closeToolbox(true);}else if((event.key==='Delete'||event.key==='Backspace')&&selected&&!event.target.matches('input,textarea')){event.preventDefault();q('[data-delete]',selection).click();}},{signal});
     (payload.Annotations||[]).forEach(render);
   }
 
-  prepareLandmarks();
-  prepareDiffCitations();
-  const shellArriving = observeDeferredFragments();
-
-  const firstFragment = q('.fragment');
-  if (firstFragment) setActiveFragment(firstFragment);
-  q('[data-file-filter]')?.addEventListener('input', filterTree);
-  prepareDirectories();
-  q('[data-manifest-filter]')?.addEventListener('input', filterManifest);
-  prepareContext();
-  syncSlidePresentation();
-  highlightCode();
   // An authored ERD is inlined as drawn. Only the elements its bindings name
   // become controls, each opening the same pinned definition its directory
   // row opens. Nothing here reads the drawing's geometry.
@@ -2569,7 +2645,7 @@ const appJavaScript = `(() => {
       event.preventDefault();
       event.stopPropagation();
     }, true);
-    addEventListener('resize', show);
+    addEventListener('resize', show, {signal: pageScope.signal});
     bar.hidden = false;
     show();
   }
@@ -2604,38 +2680,315 @@ const appJavaScript = `(() => {
       row.addEventListener('focusout', () => light(false));
     }
   }
-  bindERDVisuals();
 
   applyDiffLayout(rememberedDiffLayout());
+  // ----- The page lifecycle -----
+  // The shell is loaded once per session: this script, the stylesheet, the
+  // sidebar, and the deck viewer. Following a link, htmx swaps the new page's
+  // content into #page and its tabs, surfaces, and sidebar state out of band.
+  // Everything above that listens to the document was registered once, when
+  // this script ran; what belongs to one page is prepared below each time a
+  // page arrives, and let go when it leaves.
+  let pageScope = new AbortController();
+  let pendingSlide = null;
+  // renderedPage is the page on screen, without the view it is shown in:
+  // ?view= and its companions, and the hash, move within a page.
+  const viewParams = ['view', 'mode', 'file', 'ref'];
+  function pageKey(href) {
+    const url = new URL(href, location.href);
+    viewParams.forEach(key => url.searchParams.delete(key));
+    url.searchParams.sort();
+    return url.pathname + url.search;
+  }
+  let renderedPage = pageKey(location.href);
+  const onRenderedPage = () => pageKey(location.href) === renderedPage;
+  const pageRoot = () => q('#page > [data-page-root]');
+  // sagaState is the state of the Saga (and of the source it resolves
+  // against) that the responses kept below were read from. The caches used
+  // to die with the page; they now live for the session, so a page from
+  // another state drops them.
+  let sagaState = pageRoot()?.dataset.sagaState || '';
+  function forgetResponses() {
+    shellCache.clear();
+    fileDiffCache.clear();
+    targetCodeResponses.clear();
+    anchorPlaces.clear();
+  }
+
+  function requestedView() {
+    const view = new URL(location.href).searchParams.get('view');
+    return view === 'code' || view === 'manifest' || view === 'slides' || view === 'change' ? view : 'saga';
+  }
+
+  // preparePage readies one page's content and resolves when what it
+  // decided to fetch has arrived.
+  function preparePage(root) {
+    const state = root.dataset.sagaState || '';
+    if (!state || state !== sagaState) forgetResponses();
+    sagaState = state;
+    renderedPage = pageKey(location.href);
+    // The shell is kept, so the page says how it is laid out: a review's
+    // deck takes the whole pane.
+    const shell = q('[data-shell]');
+    const reviewDeck = root.hasAttribute('data-review-deck-page');
+    shell?.toggleAttribute('data-review-deck-shell', reviewDeck);
+    shell?.classList.toggle('review-deck-shell', reviewDeck);
+    reviewDeckHash = location.hash;
+    prepareLandmarks(root);
+    prepareDiffCitations(root);
+    const arriving = observeDeferredFragments(root);
+    const firstFragment = q('.fragment', root);
+    if (firstFragment) setActiveFragment(firstFragment);
+    prepareDirectories(root);
+    prepareContext(root);
+    highlightCode(root);
+    bindERDVisuals(root);
+    applyDiffLayout(diffLayout);
+    syncSlidePresentation();
+    reviewAsync = makeReviewAsync(pageScope.signal);
+    const view = requestedView();
+    setView(view, false);
+    setManifestMode('code');
+    const resolving = view === 'saga' || view === 'slides' ? activateLandmark() : hydrateReviewSurface(view);
+    syncDeckSlideForHash();
+    void loadCoverageTotals();
+    positionLandmarkHotspots();
+    void prepareReviewAnnotations();
+    globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
+    return Promise.all([arriving, resolving]);
+  }
+
+  // leavePage lets go of what the page on screen started, before the next
+  // one replaces it.
+  function leavePage() {
+    closeDrawer();
+    pageScope.abort();
+    pageScope = new AbortController();
+    reviewSurfaceRequests.forEach(request => request.controller.abort());
+    reviewSurfaceRequests.clear();
+    reviewSurfaceRetries.forEach(timer => clearTimeout(timer));
+    reviewSurfaceRetries.clear();
+    relatedOwnersRequest?.controller.abort();
+    activeFragment = null;
+    reviewAsync = null;
+    q('[data-shell]')?.classList.remove('tree-hidden');
+    delete document.body.dataset.shellReady;
+  }
+
+  // The deck viewer arrives once per session, after the first paint. Until
+  // it has, the page is not settled: a reader, or a test, may open a slide.
+  let decksArrival = null;
+  function expectDecks() {
+    let resolve;
+    const promise = new Promise(accept => { resolve = accept; });
+    decksArrival = {promise, resolve};
+  }
+  if (q('[data-deck-host]') && !q('[data-deck-host] [data-deck-viewer]')) expectDecks();
+
+  function prepareDecks(viewer) {
+    queueFrames(viewer);
+    prepareLandmarks(viewer);
+    prepareDiffCitations(viewer);
+    highlightCode(viewer);
+    void observeDeferredFragments(viewer);
+    if (pendingSlide) {
+      const index = deckViewerSlides().findIndex(slide => slide.dataset.slideTarget === pendingSlide);
+      pendingSlide = null;
+      if (index >= 0) activateDeckSlide(index, true);
+    } else {
+      syncDeckSlideForHash();
+      const id = decodeURIComponent(location.hash.replace(/^#/, ''));
+      if (id && document.getElementById(id)?.closest('[data-deck-viewer]') === viewer) void activateLandmark();
+    }
+    positionLandmarkHotspots();
+    globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
+    decksArrival?.resolve();
+  }
+
+  // The sidebar is the same on every page; a page says which of its rows are
+  // current, which places are open, and which side's section is shown.
+  function applyNavState(state) {
+    const listed = name => new Set((state.dataset[name] || '').split(' ').filter(Boolean));
+    const current = listed('navCurrent'), expanded = listed('navExpanded'), hidden = listed('navHidden');
+    qa('.doc-tree [data-nav-row]').forEach(row => {
+      const id = row.dataset.navRow;
+      const active = current.has(id);
+      row.classList.toggle('current', active);
+      const link = q(':scope > a.doc-link', row);
+      if (link && active) link.setAttribute('aria-current', 'page');
+      else link?.removeAttribute('aria-current');
+      const node = row.parentElement;
+      if (node) node.hidden = hidden.has(id);
+      const children = row.nextElementSibling;
+      if (!children?.matches('.doc-children') || !children.id) return;
+      const open = expanded.has(children.id);
+      children.hidden = !open;
+      qa('[aria-controls]', row).forEach(control => control.setAttribute('aria-expanded', String(open)));
+    });
+  }
+
+  // A reader who follows a link lands at the top of the new page, or at its
+  // anchor; one who steps back or forward returns to where they were. The
+  // new page's heading takes focus and is announced, as a new document's
+  // would be.
+  const scrollPositions = new Map();
+  let recordingScroll = true, scrollFrame = 0;
+  addEventListener('scroll', () => {
+    if (!recordingScroll || scrollFrame) return;
+    scrollFrame = requestAnimationFrame(() => { scrollFrame = 0; if (recordingScroll) scrollPositions.set(location.href, scrollY); });
+  }, {passive: true});
+
+  function announcePage(root) {
+    const heading = q('h1', root) || q('.view.active', root) || root;
+    if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+    heading.focus({preventScroll: true});
+    const announcer = q('#page-announcer');
+    if (!announcer) return;
+    announcer.textContent = '';
+    globalThis.requestAnimationFrame?.(() => { announcer.textContent = (q('h1', root)?.textContent || document.title).trim(); });
+  }
+
+  let arrival = 'link';
+  function arrived(root, how) {
+    const settled = preparePage(root);
+    if (how !== 'first') {
+      if (how === 'history' && scrollPositions.has(location.href)) scrollTo(0, scrollPositions.get(location.href));
+      else if (!location.hash) scrollTo(0, 0);
+      recordingScroll = true;
+      announcePage(root);
+    }
+    // The page arrives as a shell and fills in what is on screen. Saying when
+    // that has finished is the difference between a reviewer who can see the
+    // page has settled and automation that would otherwise have to guess.
+    void Promise.all([settled, decksArrival?.promise]).then(() => {
+      if (root.isConnected) document.body.dataset.shellReady = 'true';
+    });
+  }
+
+  // followWithinPage moves to another view or anchor of the page on screen
+  // without asking for the page again.
+  function followWithinPage(destination, link) {
+    history.pushState({htmx: true}, '', destination);
+    if (link?.closest('.diff-drawer.open')) closeDrawer();
+    const view = requestedView();
+    if (view !== 'saga' && view !== 'slides') { setView(view, false); return; }
+    if (!location.hash) { setView(view, false); return; }
+    setView(view, false);
+    syncDeckSlideForHash();
+    void activateLandmark();
+  }
+
+  // Anchors this script acts on rather than follows.
+  const pageActionLinks = '[data-open-fragment],[data-documentation-target],[data-open-diffs],[data-open-stories],[data-target-code-href],[data-open-history],[data-surface-next],[data-copy-link],[data-aux-file-next]';
+
+  const boostedPage = detail => detail.target?.id === 'page';
+
+  if (globalThis.htmx) {
+    htmx.onLoad(element => {
+      if (element === document.body) return;
+      if (element.matches('[data-page-root]')) {
+        const how = arrival;
+        arrival = 'link';
+        arrived(element, how);
+      } else if (element.matches('[data-deck-viewer]')) prepareDecks(element);
+      else if (element.id === 'nav-state') applyNavState(element);
+      // A deck host from another state of the Saga loads its viewer; one
+      // hx-preserve kept is already loaded.
+      else if (element.id === 'view-slides' && !q('[data-deck-viewer]', element)) expectDecks();
+    });
+    // What this script inserts itself, into the drawer, a chapter, an
+    // explanation, or a review surface, holds links too; they are boosted
+    // like the ones htmx swapped in, so following one keeps the shell. Only
+    // links: the forms this script builds submit themselves.
+    new MutationObserver(records => {
+      for (const record of records) for (const node of record.addedNodes) {
+        if (node.nodeType !== 1 || node['htmx-internal-data']) continue;
+        within(node, 'a[href]').forEach(link => { if (!link['htmx-internal-data']) htmx.process(link); });
+      }
+    }).observe(document.body, {childList: true, subtree: true});
+    // Every request says which state of the Saga the kept sidebar and deck
+    // viewer show, so a page from another state brings them again.
+    const keptShell = () => q('#changed-files-panel')?.dataset.sagaShell;
+    document.addEventListener('htmx:configRequest', event => {
+      const shell = keptShell();
+      if (shell !== undefined) event.detail.headers['X-Saga-Shell'] = shell;
+    });
+    document.addEventListener('htmx:confirm', event => {
+      const link = event.detail.elt;
+      if (!(link instanceof HTMLAnchorElement)) return;
+      if (link.matches(pageActionLinks)) { event.preventDefault(); return; }
+      const destination = new URL(link.href, location.href);
+      if (destination.origin !== location.origin || pageKey(destination.href) !== renderedPage) return;
+      event.preventDefault();
+      followWithinPage(destination, link);
+    });
+    // From the moment another page is asked for, this one is no longer the
+    // settled page.
+    document.addEventListener('htmx:beforeRequest', event => {
+      if (!boostedPage(event.detail)) return;
+      delete document.body.dataset.shellReady;
+      recordingScroll = true;
+      scrollPositions.set(location.href, scrollY);
+    });
+    document.addEventListener('htmx:beforeSwap', event => {
+      if (boostedPage(event.detail) && event.detail.shouldSwap) leavePage();
+    });
+    // A page that cannot be swapped in is loaded the ordinary way, so the
+    // reader sees what the server said about it.
+    const loadDirectly = event => {
+      if (boostedPage(event.detail)) location.assign(event.detail.pathInfo?.requestPath || location.href);
+    };
+    document.addEventListener('htmx:responseError', loadDirectly);
+    document.addEventListener('htmx:sendError', loadDirectly);
+    document.addEventListener('htmx:responseError', event => {
+      const host = event.detail.elt?.closest?.('[data-deck-host]');
+      if (!host) return;
+      surfaceStatus(host, 'error', 'The slides could not be loaded.', 'Reload the page to try again.');
+      decksArrival?.resolve();
+    });
+    // No page is snapshotted, so every step back or forward is a miss. One
+    // that stays on the page on screen, moving between its views or anchors,
+    // needs nothing from the server: the popstate and hashchange listeners
+    // below restore it. Any other asks for the page's parts.
+    document.addEventListener('htmx:historyCacheMiss', event => {
+      if (pageKey(event.detail.path) === renderedPage) { event.preventDefault(); return; }
+      const shell = keptShell();
+      if (shell !== undefined) event.detail.xhr.setRequestHeader('X-Saga-Shell', shell);
+      delete document.body.dataset.shellReady;
+      recordingScroll = false;
+      arrival = 'history';
+    });
+    document.addEventListener('htmx:historyCacheMissLoad', () => leavePage());
+    document.addEventListener('htmx:historyCacheMissLoadError', () => location.reload());
+  } else {
+    decksArrival?.resolve();
+  }
+
   addEventListener('resize', () => { applyDiffLayout(diffLayout); positionLandmarkHotspots(); });
   document.addEventListener('fullscreenchange', syncSlidePresentation);
-  const requestedView = new URL(location.href).searchParams.get('view');
-  const initialView = requestedView === 'code' || requestedView === 'manifest' || requestedView === 'slides' || requestedView === 'change' ? requestedView : 'saga';
-  setView(initialView, false);
-  setManifestMode('code');
-  const anchorResolving = initialView === 'saga' || initialView === 'slides'
-    ? activateLandmark()
-    : hydrateReviewSurface(initialView);
-  syncDeckSlideForHash();
-  // The page arrives as a shell and fills in what is on screen. Saying when
-  // that has finished is the difference between a reviewer who can see the
-  // page has settled and automation that would otherwise have to guess.
-  void Promise.all([shellArriving, anchorResolving]).then(() => {
-    document.body.dataset.shellReady = 'true';
-  });
-  void loadLayers();
-  void loadCoverageTotals();
-  positionLandmarkHotspots();
-  void prepareReviewAnnotations();
-  globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
   addEventListener('hashchange', () => {
+    if (!onRenderedPage()) return;
     syncDeckSlideForHash();
     const view = new URL(location.href).searchParams.get('view');
     if (view === 'code' || view === 'manifest') void hydrateReviewSurface(view);
     else void activateLandmark();
   });
-  addEventListener('popstate', () => {
-    const view = new URL(location.href).searchParams.get('view');
-    setView(view === 'code' || view === 'manifest' || view === 'slides' || view === 'change' ? view : 'saga', false);
+  addEventListener('popstate', event => {
+    if (!onRenderedPage()) {
+      // htmx restores its own entries. One it did not make, such as a native
+      // anchor jump on another page, is restored the same way.
+      recordingScroll = false;
+      if (!event.state?.htmx && globalThis.htmx) {
+        arrival = 'history';
+        leavePage();
+        void htmx.ajax('GET', location.href, {target: '#page', swap: 'innerHTML', headers: {'HX-History-Restore-Request': 'true'}});
+      }
+      return;
+    }
+    setView(requestedView(), false);
   });
+
+  const firstPage = pageRoot();
+  if (firstPage) arrived(firstPage, 'first');
+  void loadLayers();
 })();`

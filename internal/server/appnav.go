@@ -43,10 +43,15 @@ import (
 //
 // One of those rows opens: the feature whose content the reader is looking at,
 // whether that is the feature's own page or a story, criterion, test case, slide,
-// or chapter inside it. Every other feature stays a single row. Listing every
-// feature expanded put this repository's own sidebar at 238 rows, which is a wall
-// rather than an architecture; listing them shut costs one row each, and the
-// one feature the reader is already in is the only one that spends more.
+// or chapter inside it. Every other feature stays shut, a single row. Listing
+// every feature expanded put this repository's own sidebar at 238 rows, which is
+// a wall rather than an architecture; listing them shut costs one row each, and
+// the one feature the reader is already in is the only one that spends more.
+//
+// The sidebar is loaded once and kept while the reader moves between pages, so
+// it holds every feature's places whichever page it was loaded with; a page
+// only says which rows are current and which are open. A shut feature's places
+// are there to disclose, like any other section's.
 //
 // Within the open feature, Implementation is the deck and opens all the way to
 // its slides. Other authored places stay shut until something inside is active;
@@ -123,18 +128,25 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	// same pitch, vocabulary, and personas a reader learning the app does.
 	// Only the second section differs, which is the whole distinction the
 	// header draws — Documentation lists the features, Review the reviews.
-	second := makeFeaturesNav(sources, deckRows)
+	// Both are in the sidebar, which is loaded once and kept as the reader
+	// moves between pages; the other side's is hidden.
+	features, reviews := makeFeaturesNav(sources, deckRows), makeReviewsNav(document)
+	other := reviews
 	if sources.reviewSide {
-		second = makeReviewsNav(document)
+		other = features
 		// The overview is here for reference, not to be read down: a reader
 		// on the Review side came for the reviews, so those are what is open.
 		// No page on this side is the overview or anything inside it, so it
 		// is neither the current page nor holding one, and stays shut.
 		overview.Expanded, overview.Active = false, false
 	}
+	other.Hidden, other.dormant = true, true
+	clearActiveNav(other.Children)
 	navigation := []*navNodeView{overview}
-	if len(second.Children) > 0 {
-		navigation = append(navigation, second)
+	for _, section := range []*navNodeView{features, reviews} {
+		if len(section.Children) > 0 {
+			navigation = append(navigation, section)
+		}
 	}
 	for _, node := range navigation {
 		revealActive(node)
@@ -202,8 +214,8 @@ func onPage(path string, nodes []*navNodeView) []*navNodeView {
 
 // makeFeaturesNav is the Features section: the header opens the table of every
 // feature, and beneath it every feature is a row of its own, in creation order. The
-// feature the reader is inside opens over its authored places; the rest are the
-// row alone. An app with no features omits the section.
+// feature the reader is inside opens over its authored places; the rest stay
+// shut over theirs. An app with no features omits the section.
 func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *navNodeView {
 	document := sources.document
 	section := navSection("Features", featuresIndexHref, "nav-features", "product", nil)
@@ -211,11 +223,15 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 		return section
 	}
 	for _, feature := range document.Features {
-		if feature.ID == sources.pageFeature {
-			section.Children = append(section.Children, makeFeatureNav(sources, feature, deckRows))
-			continue
+		node := makeFeatureNav(sources, feature, deckRows)
+		if feature.ID != sources.pageFeature {
+			// Every feature carries its places, so the sidebar serves every
+			// page; only the page's own feature is open, and nothing inside
+			// another one is the page being read.
+			node.Expanded, node.dormant = false, true
+			clearActiveNav(node.Children)
 		}
-		section.Children = append(section.Children, makeFeatureRowNav(feature))
+		section.Children = append(section.Children, node)
 	}
 	section.Expanded = true
 	return section
@@ -253,16 +269,6 @@ func reviewNavTitle(review *saga.Review) string {
 		title += " #" + strconv.Itoa(review.PullRequest.Number)
 	}
 	return title
-}
-
-// makeFeatureRowNav is a feature the reader is not reading: one row, linking to the
-// feature's page. The page is the directory of everything the row would otherwise
-// have had to list, so the row does not have to list any of it.
-func makeFeatureRowNav(feature *saga.Feature) *navNodeView {
-	return &navNodeView{
-		Title: featureTitle(feature), Href: featureHref(feature.ID),
-		NodeID: "nav-feature-" + domID(feature.ID), Icon: "product",
-	}
 }
 
 // makeFeatureNav is one feature: its own report content first, then today's four

@@ -173,18 +173,62 @@ test("@critical approves slide by slide and marks a decision out of date when it
   }
 });
 
+// Reached by a link, a review is swapped into the kept shell rather than
+// loaded whole; its deck, its annotations, and its async forms work as they
+// do when it is opened directly, and leaving and returning prepares them
+// once, not once more per visit.
+test("a review reached by a link works as one opened directly", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(`${running.baseURL}/reviews`);
+    await page.locator("body[data-shell-ready]").waitFor();
+    await page.evaluate(() => { (window as unknown as { keptDocument: boolean }).keptDocument = true; });
+    const decisions: string[] = [];
+    page.on("request", (request) => { if (request.method() === "POST") decisions.push(new URL(request.url()).pathname); });
+    const openReview = async () => {
+      await page.locator('#page a[href="/reviews/pr-1"]').first().click();
+      await page.locator("body[data-shell-ready]").waitFor();
+      await expect(page).toHaveURL(`${running.baseURL}/reviews/pr-1`);
+    };
+    await openReview();
+    // Leave and come back: the page is prepared afresh, and only once.
+    await page.getByRole("link", { name: "Review", exact: true }).click();
+    await page.locator("body[data-shell-ready]").waitFor();
+    await expect(page).toHaveURL(`${running.baseURL}/reviews`);
+    await openReview();
+
+    const greeting = page.locator('#page [data-deck-slide][data-slide-target$=":slide:greeting"]');
+    const theme = page.locator('#page [data-deck-slide][data-slide-target$=":slide:theme"]');
+    await expect(greeting).toBeVisible();
+    await expect(page.locator("#page .review-annotation-layer")).toHaveCount(2);
+    await greeting.locator("[data-review-approve]").click();
+    await expect(greeting.locator('[data-decision-state="approved"]')).toHaveAttribute("data-currency", "current");
+    expect(decisions).toEqual(["/reviews/pr-1/decision"]);
+    await page.locator('#page [data-slide-thumbnail][data-slide-target$=":slide:theme"]').click();
+    await expect(theme).toBeVisible();
+    await expect(greeting).toBeHidden();
+    expect(await page.evaluate(() => (window as unknown as { keptDocument?: boolean }).keptDocument)).toBe(true);
+  } finally {
+    await stopSagaServer(running);
+  }
+});
+
 test("keeps one review slide active with durable keyboard and narrow-screen navigation", async ({ page, sagaRepositories }) => {
   authorReview(sagaRepositories);
   const running = await startSagaServer(sagaRepositories);
   try {
     await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
-    const slides = page.locator("[data-deck-slide]");
+    // The review's own deck is the page. The shell's viewer of the Saga's
+    // embedded decks is kept across pages, and stays out of sight here.
+    const review = page.locator("#page");
+    const slides = review.locator("[data-deck-slide]");
     await expect(slides).toHaveCount(2);
     await expect(slides.filter({ visible: true })).toHaveCount(1);
-    await expect(page.locator("[data-slide-position]")).toContainText("1 / 2");
+    await expect(review.locator("[data-slide-position]")).toContainText("1 / 2");
     await expect(page.locator(".review-top,.review-slide-details")).toHaveCount(0);
     await expect(page.locator("[data-slide-present]")).toBeVisible();
-    await expect(page.locator("#view-slides")).toHaveCount(0);
+    await expect(page.locator("#view-slides")).toBeHidden();
 
     await page.locator('[data-slide-thumbnail][data-slide-target$=":slide:theme"]').click();
     await expect(page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]')).toBeVisible();
@@ -209,8 +253,8 @@ test("keeps one review slide active with durable keyboard and narrow-screen navi
     await expect(slideMenu.locator(":scope > summary")).toBeFocused();
 
     await page.setViewportSize({ width: 390, height: 844 });
-    await expect(page.locator("[data-slide-thumbnail]").first()).toBeVisible();
-    await expect(page.locator("[data-slide-next]")).toBeVisible();
+    await expect(review.locator("[data-slide-thumbnail]").first()).toBeVisible();
+    await expect(review.locator("[data-slide-next]")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.screenshot({ path: test.info().outputPath("review-narrow.png") });
   } finally {

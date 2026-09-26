@@ -271,6 +271,8 @@ it. The view tabs beside them belong to whichever side is open. */
 .shell.slide-mode>.content{width:100%;height:100%;padding:0;overflow:hidden}
 .shell.slide-mode #view-slides{height:100%}
 .code-mode .content{width:100%;padding:0 0 40px}
+#page,.page-root,.page-tabs,.page-surfaces{display:contents}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .view{display:none}
 .view.active{display:block}
 .page-heading{margin:0 0 18px}

@@ -165,12 +165,12 @@ func TestEachSideListsWhatItIsAbout(t *testing.T) {
 		{ReviewManifest: saga.ReviewManifest{ID: "untitled"}},
 	}
 
-	if got, want := topTitles(makeAppNavTree(sources)), "Overview|Features"; got != want {
+	if got, want := topTitles(shownNav(makeAppNavTree(sources))), "Overview|Features"; got != want {
 		t.Fatalf("documentation sidebar = %s, want %s", got, want)
 	}
 
 	sources.reviewSide = true
-	nodes := makeAppNavTree(sources)
+	nodes := shownNav(makeAppNavTree(sources))
 	if got, want := topTitles(nodes), "Overview|Reviews"; got != want {
 		t.Fatalf("review sidebar = %s, want %s", got, want)
 	}
@@ -222,11 +222,46 @@ func TestEveryNavigationRowHasAnIcon(t *testing.T) {
 	t.Run("review", func(t *testing.T) { check(t, "the sidebar", makeAppNavTree(sources)) })
 }
 
+// shownNav is the rows the sidebar shows: the other side's section is carried
+// for later pages but hidden.
+func shownNav(nodes []*navNodeView) []*navNodeView {
+	var shown []*navNodeView
+	for _, node := range nodes {
+		if !node.Hidden {
+			shown = append(shown, node)
+		}
+	}
+	return shown
+}
+
+func anyActive(nodes []*navNodeView) bool {
+	for _, node := range nodes {
+		if node.Active || anyActive(node.Children) {
+			return true
+		}
+	}
+	return false
+}
+
+// navStructure is the sidebar's rows and links without their state.
+func navStructure(nodes []*navNodeView) string {
+	var out strings.Builder
+	var walk func([]*navNodeView, int)
+	walk = func(nodes []*navNodeView, depth int) {
+		for _, node := range nodes {
+			fmt.Fprintf(&out, "%s%s %s %s\n", strings.Repeat(" ", depth), node.NodeID, node.Title, node.Href)
+			walk(node.Children, depth+1)
+		}
+	}
+	walk(nodes, 0)
+	return out.String()
+}
+
 func TestTheReviewSideHidesReviewsWhenThereAreNone(t *testing.T) {
 	t.Parallel()
 	sources := appNavFixture(t)
 	sources.reviewSide = true
-	if got := topTitles(makeAppNavTree(sources)); got != "Overview" {
+	if got := topTitles(shownNav(makeAppNavTree(sources))); got != "Overview" {
 		t.Fatalf("empty review sidebar = %s, want Overview", got)
 	}
 }
@@ -258,11 +293,12 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	if got, want := topTitles(findNav(t, nodes, "Features").Children), "Billing|Catalog"; got != want {
 		t.Fatalf("features section = %s, want %s", got, want)
 	}
-	// Only the feature being read opens; the other one is the row alone, linking
-	// to its page, with nothing of its own beneath it.
+	// Only the feature being read opens; the other one is shut, one row linking
+	// to its page, and nothing beneath it is current. Its places are there for
+	// the pages the sidebar is kept for after this one.
 	catalogRow := findNav(t, nodes, "Features", "Catalog")
-	if catalogRow.Href != featureHref("catalog") || len(catalogRow.Children) != 0 || catalogRow.Group || catalogRow.Expanded {
-		t.Fatalf("a feature the reader is not in must be one row: %#v", catalogRow)
+	if catalogRow.Href != featureHref("catalog") || catalogRow.Expanded || !catalogRow.dormant || anyActive(catalogRow.Children) {
+		t.Fatalf("a feature the reader is not in must be one shut row: %#v", catalogRow)
 	}
 	assertFeatureSubtree(t, findNav(t, nodes, "Features").Children, "Billing", "billing")
 	// Billing's one deck is its Implementation: the slides sit directly beneath.
@@ -277,8 +313,12 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	other.pageFeature = "catalog"
 	chosen := makeAppNavTree(other)
 	assertFeatureSubtree(t, findNav(t, chosen, "Features").Children, "Catalog", "catalog")
-	if billingRow := findNav(t, chosen, "Features", "Billing"); len(billingRow.Children) != 0 {
+	if billingRow := findNav(t, chosen, "Features", "Billing"); billingRow.Expanded {
 		t.Fatalf("both features opened at once: %v", navTitles(chosen, 0))
+	}
+	// The sidebar is the same whichever feature is open: only its state moves.
+	if got, want := navStructure(chosen), navStructure(nodes); got != want {
+		t.Fatalf("opening another feature changed the sidebar's rows:\n%s\nwant\n%s", got, want)
 	}
 	if findNavByID(chosen, featureNavID("catalog")+"-implementation") != nil {
 		t.Fatal("an empty feature Implementation must be hidden")
@@ -344,7 +384,7 @@ func TestEveryFeatureIsARowAndOnlyThePagesFeatureOpens(t *testing.T) {
 			if row.NodeID != featureNavID(id) || row.Href != featureHref(id) || row.Icon != "product" {
 				t.Fatalf("feature row = %#v", row)
 			}
-			if len(row.Children) > 0 {
+			if row.Expanded {
 				opened = append(opened, id)
 			}
 		}
@@ -539,7 +579,7 @@ func TestTheSidebarOpensThePagesFeatureAndStoresNothing(t *testing.T) {
 	// Every feature is a row wherever the reader is, and only the page's feature is
 	// opened. The app's own pages belong to no feature, so they open none.
 	opens := func(body, feature string) bool {
-		return strings.Contains(body, `<div class="doc-children" id="`+featureNavID(feature)+`"`)
+		return strings.Contains(body, `<div class="doc-children" id="`+featureNavID(feature)+`">`)
 	}
 	for _, want := range []struct {
 		path    string
@@ -565,7 +605,8 @@ func TestTheSidebarOpensThePagesFeatureAndStoresNothing(t *testing.T) {
 		if cookies := recorder.Result().Cookies(); len(cookies) != 0 {
 			t.Fatalf("%s wrote %#v", want.path, cookies)
 		}
-		if vary := recorder.Result().Header.Values("Vary"); len(vary) != 0 {
+		// The answer varies only by how htmx asks for it, never by the reader.
+		if vary := strings.Join(recorder.Result().Header.Values("Vary"), ", "); vary != pageVary {
 			t.Fatalf("%s varies by %v", want.path, vary)
 		}
 	}
@@ -660,8 +701,8 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 		}
 	}
 	// The onboarding slide renders under Onboarding, before the features. The
-	// billing slide renders inside Billing, on the page that opens it, and
-	// nowhere else.
+	// billing slide renders inside Billing's Implementation on every page, and
+	// is shown only where Billing is open.
 	sidebarSlide := func(body, slide string) int {
 		marker := `class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="` + saga.SlideTarget("shop", slide) + `"`
 		if count := strings.Count(body, marker); count != 1 {
@@ -673,9 +714,9 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	if welcome := sidebarSlide(html, "who-it-serves"); welcome < onboarding || welcome > features {
 		t.Fatalf("the onboarding slide is not under Onboarding: onboarding=%d slide=%d features=%d", onboarding, welcome, features)
 	}
-	chargeMarker := `class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="` + saga.SlideTarget("shop", "charge") + `"`
-	if strings.Contains(html, chargeMarker) {
-		t.Fatal("a feature's slide is in the sidebar of a page outside that feature")
+	billingChildren := `<div class="doc-children" id="` + featureNavID("billing") + `"`
+	if charge, shut := sidebarSlide(html, "charge"), strings.Index(html, billingChildren+` hidden>`); shut < 0 || charge < shut {
+		t.Fatal("a feature's slide is shown in the sidebar of a page outside that feature")
 	}
 	if charge := sidebarSlide(billing, "charge"); charge < strings.Index(billing, `id="`+featureNavID("billing")+`-implementation"`) ||
 		charge < strings.Index(billing, `id="nav-features"`) {

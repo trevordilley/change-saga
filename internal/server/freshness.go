@@ -437,17 +437,21 @@ func (a *app) watchSaga(ctx context.Context) {
 	}
 }
 
-// warmCaches renders a documentation page nobody asked for, so the page after
-// a change finds everything it reads already read: the Saga's files, the
-// decks, and the related reviews, which the requirements page reads as every
-// feature and story page does. Rendering a real page keeps the warming
-// exactly what a page reads.
+// warmCaches renders pages and the deck viewer nobody asked for, so the page
+// after a change finds everything it reads already read: the Saga's files,
+// the related reviews, which the requirements page reads as every feature and
+// story page does; the decks, which a shell kept from before the change loads
+// again; each review's coverage, which the reviews index reads for every
+// review; and where the terms' code is. Rendering real responses keeps the
+// warming exactly what the browser reads.
 func (a *app) warmCaches(ctx context.Context, handler http.Handler) {
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, "/requirements", nil)
-	if err != nil {
-		return
+	for _, path := range []string{"/requirements", "/decks", "/reviews", "/terms"} {
+		request, err := http.NewRequestWithContext(ctx, http.MethodGet, path, nil)
+		if err != nil {
+			return
+		}
+		handler.ServeHTTP(&discardResponse{header: http.Header{}}, request)
 	}
-	handler.ServeHTTP(&discardResponse{header: http.Header{}}, request)
 }
 
 // discardResponse is a response nobody reads.

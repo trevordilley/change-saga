@@ -1,7 +1,7 @@
 import { expectNoSeriousAccessibilityViolations, expect, openReviewSide, test } from "../support/test.js";
 
 test("@critical navigates the saga, linked code, code tree, and coverage in both directions", async ({ page, saga }) => {
-  await expect(page).toHaveTitle("Wave One Review · Change Saga");
+  await expect(page).toHaveTitle("Wave One · Wave One Review · Change Saga");
   // The fixture's narrative lives in its one feature, so the test reads that
   // feature's page.
   await expect(page.getByRole("heading", { name: "Wave One", exact: true })).toBeVisible();

@@ -4,22 +4,24 @@ import { expectNoSeriousAccessibilityViolations, expect, test, waitForSettledSag
 /**
  * The Features section is a plain list: every feature, one row each, in the order
  * they were introduced. The feature whose content is on screen opens over its
- * authored contents; every other feature is the row alone. Nothing about which
- * one is open is stored, so the list only ever says what the page already says.
+ * authored contents; every other feature stays shut, a single row. The sidebar
+ * is loaded once and kept across pages, so a shut feature still carries its
+ * contents; the page only says which feature is open. Nothing about which one
+ * is open is stored, so the list only ever says what the page already says.
  */
 
 /** Every feature's row, in order. */
 const featureRows = (page: Page) => page.locator("#nav-features > .doc-node");
 
 /** The title of each feature that is opened over its authored contents. */
-const openFeatures = (page: Page) => page.locator("#nav-features > .doc-node:has(> .doc-children) > .doc-row > .doc-link");
+const openFeatures = (page: Page) => page.locator("#nav-features > .doc-node:has(> .doc-children:not([hidden])) > .doc-row > .doc-link");
 
 test("@critical lists every feature and opens only the one being read", async ({ page, saga }) => {
   const contents = page.getByRole("navigation", { name: "Contents" });
 
   // Documentation holds two sections, in order, and both open a page.
   // Reviews are the header's other side, never repeated here.
-  const places = contents.locator(":scope > .doc-node > .doc-row > .doc-link");
+  const places = contents.locator(":scope > .doc-node:not([hidden]) > .doc-row > .doc-link");
   await expect(places).toHaveText(["Overview", "Features"]);
   await expect(places.nth(1)).toHaveAttribute("href", "/features");
   // What describes the whole app hangs off the overview, beneath its prose.
@@ -45,7 +47,7 @@ test("@critical lists every feature and opens only the one being read", async ({
     "Overview", "Architecture Diagram", "Interactive Demo", "Raster Preview",
     "Architecture"
   ]);
-  // The closed features spend nothing: one row, no twisty, no places.
+  // The closed features show nothing of their places: one row each.
   await expect(contents.getByRole("button", { name: /Toggle (Product|Design|Quality|Implementation)/ })).toHaveCount(0);
   // Every ordinary row gets a real icon; slide rows use thumbnails instead.
   const ordinaryRows = contents.locator(".doc-row > .doc-link");
