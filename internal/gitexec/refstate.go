@@ -450,7 +450,8 @@ func includedConfigFiles(file string, data []byte) ([]string, bool) {
 				return nil, false
 			}
 			value = filepath.Join(home, value[2:])
-		case !filepath.IsAbs(filepath.FromSlash(value)):
+		case !strings.HasPrefix(value, "/") && !filepath.IsAbs(filepath.FromSlash(value)):
+			// Git counts a leading slash as absolute on Windows too.
 			value = filepath.Join(filepath.Dir(file), value)
 		}
 		included = append(included, filepath.FromSlash(value))
