@@ -586,6 +586,18 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 	if chapter.Code != http.StatusFound || chapter.Header().Get("Location") != featureHref(serverFeature)+"#"+domID(alphaTarget) {
 		t.Fatalf("legacy chapter route did not redirect to its in-page target: status=%d location=%q", chapter.Code, chapter.Header().Get("Location"))
 	}
+	// htmx follows a redirect without its fragment, so a boosted request is
+	// sent to the whole target, anchor included, the way htmx keeps it.
+	boostedRequest := httptest.NewRequest(http.MethodGet, "/chapters/alpha", nil)
+	boostedRequest.SetPathValue("chapter", "alpha")
+	boostedRequest.Header.Set("HX-Request", "true")
+	boostedRequest.Header.Set("HX-Boosted", "true")
+	boostedRequest.Header.Set("HX-Target", "page")
+	boosted := httptest.NewRecorder()
+	application.page(boosted, boostedRequest)
+	if boosted.Code != http.StatusNoContent || boosted.Header().Get("HX-Redirect") != featureHref(serverFeature)+"#"+domID(alphaTarget) || boosted.Header().Get("Location") != "" {
+		t.Fatalf("a boosted legacy chapter link lost its anchor: status=%d HX-Redirect=%q Location=%q", boosted.Code, boosted.Header().Get("HX-Redirect"), boosted.Header().Get("Location"))
+	}
 
 	missingRequest := httptest.NewRequest(http.MethodGet, "/chapters/missing", nil)
 	missingRequest.SetPathValue("chapter", "missing")

@@ -1078,6 +1078,14 @@ func (a *app) chapterRedirect(w http.ResponseWriter, r *http.Request, chapterID 
 				destination = featureHref(feature.ID) + "#" + domID(child.Target)
 			}
 		}
+		// An XMLHttpRequest follows a redirect without its fragment, so htmx
+		// would swap in the page at its top. htmx is told to send the browser
+		// to the chapter instead.
+		if r.Header.Get("HX-Request") == "true" {
+			w.Header().Set("HX-Redirect", destination)
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
 		http.Redirect(w, r, destination, http.StatusFound)
 		return
 	}
