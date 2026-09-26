@@ -5,7 +5,7 @@
   "rank": 30,
   "kind": "example",
   "label": "Managed reading session",
-  "description": "The open command starts or reuses a managed background viewer. ./bin/change-saga serve status app.saga reports it; ./bin/change-saga serve stop app.saga stops managed viewers for that Saga.",
+  "description": "The open command starts or reuses a managed background viewer. ./bin/change-saga serve status change.saga reports it; ./bin/change-saga serve stop change.saga stops managed viewers for that Saga.",
   "selector": {
     "type": "element",
     "element_id": "managed"
