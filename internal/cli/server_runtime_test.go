@@ -16,6 +16,7 @@ import (
 )
 
 func TestDetachedServerActiveRequiresCompleteReviewPage(t *testing.T) {
+	t.Parallel()
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/runtime", func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = w.Write([]byte(`{"ok":true}`))

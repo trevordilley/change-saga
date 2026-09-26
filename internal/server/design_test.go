@@ -9,6 +9,7 @@ import (
 )
 
 func TestV3DesignChapterAndFragmentEnterExistingRenderTree(t *testing.T) {
+	t.Parallel()
 	root := filepath.Join(t.TempDir(), "render-design.saga")
 	writeDesignTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"render-design","title":"Render design","source":{"repository":"https://example.test/acme/app.git"}}`)
 	writeServerFeature(t, root)

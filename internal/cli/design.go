@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -177,6 +178,8 @@ var designOperations = []string{"add-chapter", "add-section", "add-fragment", "s
 // calls the same implementation used by root narrative authoring with a
 // different physical hierarchy root.
 func Design(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 {
 		return fmt.Errorf("usage: %s", commandUsage["design"])
 	}

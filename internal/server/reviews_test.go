@@ -106,6 +106,7 @@ func postReview(t *testing.T, handler http.Handler, path string, values url.Valu
 // A slide visual is author-provided like a fragment, so a direct visit must
 // not run its script on the app origin beside the review's mutation token.
 func TestReviewVisualIsServedWithSandboxCSP(t *testing.T) {
+	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	recorder := httptest.NewRecorder()
@@ -117,6 +118,7 @@ func TestReviewVisualIsServedWithSandboxCSP(t *testing.T) {
 }
 
 func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
+	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 
@@ -199,6 +201,7 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 // Finding 32: the reviews sit inside the app shell, styled like every other
 // page, with the sidebar and the tabs beside them.
 func TestReviewsRenderInsideTheAppShell(t *testing.T) {
+	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	for _, path := range []string{"/reviews", "/reviews/pr-7"} {
@@ -220,6 +223,7 @@ func TestReviewsRenderInsideTheAppShell(t *testing.T) {
 // Comparing, the Change tab shows the living layers read-only beside the
 // review of the compared head, and the documentation offers no approval.
 func TestComparingShowsTheMatchingReviewBesideTheLayers(t *testing.T) {
+	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{Against: "main", Head: "feature/pg"})
 	change := getPage(t, handler, "/api/change")
@@ -244,6 +248,7 @@ func TestComparingShowsTheMatchingReviewBesideTheLayers(t *testing.T) {
 }
 
 func TestFrozenReviewIsViewableButTakesNoDecisions(t *testing.T) {
+	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	if err := reviewstore.Freeze(fixture.root, "pr-7", saga.ReviewMerge{Base: strings.TrimSpace(serverGit(t, fixture.repo, "rev-parse", "main")), Head: fixture.head, Landed: fixture.head, MergedAt: time.Now().UTC()}); err != nil {
 		t.Fatal(err)
@@ -263,6 +268,7 @@ func TestFrozenReviewIsViewableButTakesNoDecisions(t *testing.T) {
 // Item references the added line, so the deleted line is uncovered, and a
 // pushed line joins it.
 func TestReviewCoverageReportsTheChangesTheDeckDoesNotExplain(t *testing.T) {
+	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	body := getPage(t, handler, "/reviews/pr-7/coverage").Body.String()

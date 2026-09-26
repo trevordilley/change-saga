@@ -15,6 +15,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 // Atom is the smallest independently coverable unit of a comparison. Kind
@@ -117,9 +118,7 @@ func ReadWithOptions(ctx context.Context, fromDir, repositoryURI, base, head str
 	}
 	// Twenty lines gives the renderer useful expandable context while keeping
 	// large comparisons bounded. These lines are not coverage atoms.
-	args := canonicalDiffArgs(prepared.repo, "--unified=20", prepared.comparison, "--")
-	cmd := exec.CommandContext(ctx, "git", args...)
-	output, err := cmd.Output()
+	output, err := diffCommits(ctx, prepared.repo, []string{"-p", "--unified=20"}, prepared.baseOID, prepared.headOID)
 	if err != nil {
 		var exitErr *exec.ExitError
 		if ok := errorAs(err, &exitErr); ok {
@@ -170,8 +169,7 @@ func ReadCatalogWithOptions(ctx context.Context, fromDir, repositoryURI, base, h
 	if err != nil {
 		return Catalog{}, err
 	}
-	args := canonicalDiffArgs(prepared.repo, "--numstat", "-z", prepared.comparison, "--")
-	output, err := exec.CommandContext(ctx, "git", args...).Output()
+	output, err := diffCommits(ctx, prepared.repo, []string{"--numstat", "-z"}, prepared.baseOID, prepared.headOID)
 	if err != nil {
 		return Catalog{}, fmt.Errorf("read changed-file catalog: %w", err)
 	}
@@ -210,11 +208,10 @@ func ReadFile(ctx context.Context, fromDir string, catalog Catalog, file FileSum
 	if !known {
 		return ChangeSet{}, fmt.Errorf("read file diff: file is not part of the source catalog")
 	}
-	repoOut, err := exec.CommandContext(ctx, "git", "-C", fromDir, "rev-parse", "--show-toplevel").Output()
+	repo, err := gitexec.TopLevel(ctx, fromDir)
 	if err != nil {
 		return ChangeSet{}, fmt.Errorf("locate Git repository: %w", err)
 	}
-	repo := strings.TrimSpace(string(repoOut))
 	if err := VerifyRepository(ctx, repo, catalog.Repository); err != nil {
 		return ChangeSet{}, err
 	}
@@ -271,11 +268,10 @@ func changeSetFromPatch(output []byte, prepared preparedComparison) (ChangeSet, 
 }
 
 func prepareComparison(ctx context.Context, fromDir, repositoryURI, base, head string, options ReadOptions) (preparedComparison, error) {
-	repoOut, err := exec.CommandContext(ctx, "git", "-C", fromDir, "rev-parse", "--show-toplevel").Output()
+	repo, err := gitexec.TopLevel(ctx, fromDir)
 	if err != nil {
 		return preparedComparison{}, fmt.Errorf("locate Git repository: %w", err)
 	}
-	repo := strings.TrimSpace(string(repoOut))
 	repositoryURI, err = coderef.CanonicalRepository(repositoryURI)
 	if err != nil {
 		return preparedComparison{}, fmt.Errorf("canonicalize declared repository: %w", err)
@@ -391,22 +387,73 @@ func classifyCatalogPaths(file FileSummary) (hasSaga, hasProduct bool) {
 	return hasSaga, hasProduct
 }
 
+var canonicalDiffConfig = []string{
+	"-c", "core.quotePath=true",
+	"-c", "diff.noprefix=false",
+	"-c", "diff.srcPrefix=a/",
+	"-c", "diff.dstPrefix=b/",
+	"-c", "diff.submodule=short",
+	"-c", "diff.algorithm=myers",
+	"-c", "diff.indentHeuristic=false",
+	"-c", "diff.renames=true",
+	"-c", "diff.renameLimit=32767",
+}
+
+// canonicalDiffFlags fix everything a user's configuration could change.
+// -O/dev/null disables diff.orderFile, which git diff honors and diff-tree
+// ignores, so both print files in the same order.
+var canonicalDiffFlags = []string{
+	"-O/dev/null",
+	"--no-color", "--no-ext-diff", "--no-textconv", "--submodule=short", "--ignore-submodules=none",
+	"--src-prefix=a/", "--dst-prefix=b/", "--diff-algorithm=myers", "--no-indent-heuristic", "--inter-hunk-context=0", "--find-renames=50%",
+}
+
 func canonicalDiffArgs(repo string, specific ...string) []string {
-	args := []string{
-		"-c", "core.quotePath=true",
-		"-c", "diff.noprefix=false",
-		"-c", "diff.srcPrefix=a/",
-		"-c", "diff.dstPrefix=b/",
-		"-c", "diff.submodule=short",
-		"-c", "diff.algorithm=myers",
-		"-c", "diff.indentHeuristic=false",
-		"-c", "diff.renames=true",
-		"-c", "diff.renameLimit=32767",
-		"-C", repo, "diff",
-		"--no-color", "--no-ext-diff", "--no-textconv", "--submodule=short", "--ignore-submodules=none",
-		"--src-prefix=a/", "--dst-prefix=b/", "--diff-algorithm=myers", "--no-indent-heuristic", "--inter-hunk-context=0", "--find-renames=50%",
-	}
+	args := append(append([]string{}, canonicalDiffConfig...), "-C", repo, "diff")
+	args = append(args, canonicalDiffFlags...)
 	return append(args, specific...)
+}
+
+// diffCommits prints the canonical diff of two commits in format. Within a
+// gitexec session every pair diffed with the same format and pathspec shares
+// one diff-tree process, whose output is byte-for-byte what git diff prints;
+// otherwise, or if that process cannot answer, it runs git diff itself.
+func diffCommits(ctx context.Context, repo string, format []string, from, to string, pathspec ...string) ([]byte, error) {
+	if !gitexec.NamesObjects(from, to) {
+		return diffCommitsOnce(ctx, repo, format, from, to, pathspec...)
+	}
+	// Two commits fix both trees. Git also reads attributes from the checkout
+	// (binary and -diff change the patch), so the answer is remembered for the
+	// checkout's attribute files as they are now.
+	key := append([]string{"diff", from, to, attributesIdentity(repo)}, format...)
+	return gitexec.StableDiff(ctx, repo, []string{from, to}, append(append(key, "--"), pathspec...), func() ([]byte, error) {
+		return diffCommitsOnce(ctx, repo, format, from, to, pathspec...)
+	})
+}
+
+// attributesIdentity describes the checkout's top-level attribute files.
+// Nested .gitattributes files are not consulted: a long-running process may
+// show a diff cached before an uncommitted edit to one of them.
+func attributesIdentity(repo string) string {
+	var identity strings.Builder
+	for _, path := range []string{filepath.Join(repo, ".gitattributes"), filepath.Join(repo, ".git", "info", "attributes")} {
+		if info, err := os.Stat(path); err == nil {
+			fmt.Fprintf(&identity, "%d@%d;", info.Size(), info.ModTime().UnixNano())
+		} else {
+			identity.WriteString("-;")
+		}
+	}
+	return identity.String()
+}
+
+func diffCommitsOnce(ctx context.Context, repo string, format []string, from, to string, pathspec ...string) ([]byte, error) {
+	treeArgs := append(append([]string{}, canonicalDiffConfig...), "diff-tree", "--stdin", "--no-commit-id", "-r")
+	treeArgs = append(append(append(treeArgs, canonicalDiffFlags...), format...), "--")
+	if output, ok := gitexec.DiffTree(ctx, repo, append(treeArgs, pathspec...), from, to); ok {
+		return output, nil
+	}
+	args := canonicalDiffArgs(repo, append(append(append([]string{}, format...), from, to, "--"), pathspec...)...)
+	return exec.CommandContext(ctx, "git", args...).Output()
 }
 
 func classifyAtomPaths(atom Atom) (hasSaga, hasProduct bool) {
@@ -424,7 +471,15 @@ func classifyAtomPaths(atom Atom) (hasSaga, hasProduct bool) {
 }
 
 func resolveMergeBase(ctx context.Context, repo, base, head string) (string, error) {
-	output, err := exec.CommandContext(ctx, "git", "-C", repo, "merge-base", "--", base, head).CombinedOutput()
+	query := func() ([]byte, error) { return gitexec.CombinedOutput(ctx, "-C", repo, "merge-base", "--", base, head) }
+	var output []byte
+	var err error
+	if gitexec.NamesObjects(base, head) {
+		// Commit IDs fix their ancestry, so their merge-base never changes.
+		output, err = gitexec.Stable(ctx, repo, []string{base, head}, []string{"merge-base", base, head}, query)
+	} else {
+		output, err = query()
+	}
 	if err != nil {
 		return "", fmt.Errorf("resolve merge base for %s and %s: %s", base, head, strings.TrimSpace(string(output)))
 	}
@@ -457,7 +512,7 @@ func VerifyRepository(ctx context.Context, repo, declared string) error {
 		}
 		return nil
 	}
-	remoteOutput, err := exec.CommandContext(ctx, "git", "-C", repo, "remote", "get-url", "origin").CombinedOutput()
+	remoteOutput, err := gitexec.ConfigOutput(ctx, repo, "remote", "get-url", "origin")
 	if err != nil || strings.TrimSpace(string(remoteOutput)) == "" {
 		return fmt.Errorf("source checkout has no origin and cannot be verified against declared repository %q (use the explicit repository-mismatch override only when this checkout is known to be equivalent)", declared)
 	}
@@ -516,8 +571,10 @@ func resolveRevision(ctx context.Context, repo, revision string) (string, error)
 	if strings.TrimSpace(revision) == "" {
 		return "", fmt.Errorf("Git revision cannot be empty")
 	}
-	cmd := exec.CommandContext(ctx, "git", "-C", repo, "rev-parse", "--verify", "--end-of-options", revision+"^{commit}")
-	output, err := cmd.CombinedOutput()
+	if commit, ok := gitexec.ResolveCommit(ctx, repo, revision); ok {
+		return commit, nil
+	}
+	output, err := gitexec.CombinedOutput(ctx, "-C", repo, "rev-parse", "--verify", "--end-of-options", revision+"^{commit}")
 	if err != nil {
 		return "", fmt.Errorf("resolve Git revision %q: %s", revision, strings.TrimSpace(string(output)))
 	}

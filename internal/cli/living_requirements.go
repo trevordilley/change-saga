@@ -10,11 +10,14 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/saga"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
 func Story(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return story(ctx, args, out, os.Stdin)
 }
 
@@ -48,6 +51,8 @@ func story(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 }
 
 func Citation(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("citation", []string{"add"}, out)
 	}
@@ -65,6 +70,8 @@ func Citation(ctx context.Context, args []string, out io.Writer) error {
 }
 
 func Relation(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("relation", []string{"add", "repin", "supersede", "status"}, out)
 	}

@@ -34,6 +34,7 @@ func reconciliationOf(t *testing.T, root string, args ...string) reconciliationR
 }
 
 func TestReconciliationHeadCurrencyAndRepairLoop(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "checkout", "-b", "retry")
 	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\n// Enqueue sends a job to SQS.\nfunc Enqueue(job string) error {\n\treturn retry(3, func() error { return sqs.Send(job) })\n}\n")
@@ -73,6 +74,7 @@ func TestReconciliationHeadCurrencyAndRepairLoop(t *testing.T) {
 }
 
 func TestReconciliationKeepsBaselineDebtAndShiftedCurrent(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\n// Enqueue sends a job to SQS.\nfunc Enqueue(job string) error {\n\treturn retry(job)\n}\n")
 	git(t, repo, "commit", "-am", "Existing undocumented behavior")
@@ -97,6 +99,7 @@ func TestReconciliationKeepsBaselineDebtAndShiftedCurrent(t *testing.T) {
 }
 
 func TestReconciliationRequirementsOnlyImpact(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 
 	mustRun(t, Quality, "test-case", "add", "--feature", "checkout", "--id", "charge", "--title", "Charge once", "--kind", "positive", "--automation", "automated", "--step", `{"id":"pay","action":"Pay","expected_result":"Charged once"}`, "--expected-result", "Charged once", root)
@@ -127,6 +130,7 @@ func TestReconciliationRequirementsOnlyImpact(t *testing.T) {
 }
 
 func TestReconciliationSelectedHeadAndSourcePaths(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	base := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 	git(t, repo, "checkout", "-b", "changed")
@@ -146,6 +150,7 @@ func TestReconciliationSelectedHeadAndSourcePaths(t *testing.T) {
 }
 
 func TestReconciliationTransactionRepairUsesSnapshot(t *testing.T) {
+	t.Parallel()
 	root, repo, assetDir, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, assetDir, commit, sagaID, "initial", "create", "absent", "worker")
 	publish := func(request SlideTransactionRequest) SlideTransactionResult {
@@ -194,6 +199,7 @@ func TestReconciliationTransactionRepairUsesSnapshot(t *testing.T) {
 }
 
 func TestReconciliationReviewCoverageCannotSubstituteForDocs(t *testing.T) {
+	t.Parallel()
 	fixture := newReviewFixture(t)
 	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	base := strings.TrimSpace(git(t, fixture.repo, "merge-base", "main", "HEAD"))
@@ -214,6 +220,7 @@ func TestReconciliationReviewCoverageCannotSubstituteForDocs(t *testing.T) {
 }
 
 func TestReconciliationCompanionBaselineAndSourceIdentity(t *testing.T) {
+	t.Parallel()
 	root, repo, assetDir, commit, sagaID := newSlideTransactionFixture(t)
 	request := slideTransactionRequest(t, repo, assetDir, commit, sagaID, "initial", "create", "absent", "worker")
 	data, err := json.Marshal(request)
@@ -255,6 +262,7 @@ func TestReconciliationCompanionBaselineAndSourceIdentity(t *testing.T) {
 }
 
 func TestReconciliationPreservesTestEvidenceDiffCoverage(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "checkout", "-b", "tests")
 	writeFile(t, filepath.Join(repo, "src", "queue_test.go"), "package shop\nfunc TestQueue() {}\n")
@@ -272,6 +280,7 @@ func TestReconciliationPreservesTestEvidenceDiffCoverage(t *testing.T) {
 }
 
 func TestReconciliationNewStaleEvidenceDoesNotInheritBaselineDebt(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	git(t, repo, "checkout", "-b", "drift")
 	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\nfunc Enqueue() {}\n")
@@ -285,6 +294,7 @@ func TestReconciliationNewStaleEvidenceDoesNotInheritBaselineDebt(t *testing.T) 
 }
 
 func TestReconciliationSupersededEvidenceAndRunRepair(t *testing.T) {
+	t.Parallel()
 	repo, root := shopSaga(t)
 	mustRun(t, Story, "set-state", "--story", "urn:change-saga:shop:story:pay", "--parent", "urn:change-saga:shop:story:pay:event:proposed", "--state", "accepted", "--reason", "Fixture requirement", "--event", "accepted", root)
 	test := "urn:change-saga:shop:test-case:charge"

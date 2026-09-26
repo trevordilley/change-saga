@@ -129,6 +129,7 @@ func acceptStory(t *testing.T, root, story string) {
 }
 
 func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -187,6 +188,7 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 }
 
 func TestFeatureAddCreatesReplaysAndRejectsDuplicates(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	args := []string{"add", root, "--id", "billing", "--title", "Billing", "--description", "Invoices and payments", "--request-id", "billing-request"}
 	created := mustLiving(t, "feature add", featureCommand, args...)
@@ -226,6 +228,7 @@ func TestFeatureAddCreatesReplaysAndRejectsDuplicates(t *testing.T) {
 }
 
 func TestPersonaAddReviseAndSetState(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	added := mustLiving(t, "persona add", personaCommand, "add", root, "--id", "admin", "--name", "Admin",
 		"--description", "Runs the store", "--request-id", "admin-request")
@@ -272,6 +275,7 @@ func TestPersonaAddReviseAndSetState(t *testing.T) {
 // When the app has several features, every command that creates a top-level
 // feature record must name its feature: the choice is the author's.
 func TestCreateCommandsRequireAnFeatureAmongSeveral(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	story := addStory(t, root, testFeature, "checkout", testPersonaURN).Resource
 	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
@@ -383,6 +387,7 @@ func treeListing(t *testing.T, root string) []string {
 // A command on an existing record accepts --feature only as an assertion of the
 // feature that already holds the record.
 func TestFeatureMismatchOnAnExistingRecordIsRejected(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
 	story := addStory(t, root, testFeature, "checkout", testPersonaURN).Resource
@@ -417,6 +422,7 @@ func TestFeatureMismatchOnAnExistingRecordIsRejected(t *testing.T) {
 // Moving a story between features changes where it is stored, never its
 // identity, so a relation pinned to it stays current.
 func TestStoryMoveKeepsRelationsCurrent(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
 	story := addStory(t, root, testFeature, "checkout", personaURNFor("batch")).Resource
@@ -465,6 +471,7 @@ func TestStoryMoveKeepsRelationsCurrent(t *testing.T) {
 // The onboarding deck belongs to the app, and each of its Items explains a
 // persona, feature, or story record rather than code.
 func TestOnboardingDeckItemsExplainRecords(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	ctx := context.Background()
 	var output bytes.Buffer
@@ -534,6 +541,7 @@ func TestOnboardingDeckItemsExplainRecords(t *testing.T) {
 // persona retirement as one question for all the stories it leaves without an
 // active persona.
 func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	user := personaURNFor("batch")
 	admin := mustLiving(t, "persona add", personaCommand, "add", root, "--id", "admin", "--name", "Admin", "--description", "Runs the store").Resource
@@ -605,6 +613,7 @@ func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
 // Every next action about feature content names its feature, and its commands are
 // aimed at that feature.
 func TestStatusNextActionsNameTheirFeature(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
 	core := addStory(t, root, testFeature, "checkout", personaURNFor("batch")).Resource
@@ -667,6 +676,7 @@ func actionArgv(command *struct {
 // A story gated by an off flag is implemented but not enabled once its code is
 // mapped; turning the flag on enables it.
 func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	persona := personaURNFor("batch")
 	ctx := context.Background()
@@ -739,6 +749,7 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 // explains itself with a deck, without defining a single persona. It is
 // valid, status reports it and exits zero, and personas are only ever growth.
 func TestFirstChangeNeedsNoPersonas(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -838,6 +849,7 @@ func TestOmittedFeatureDefaultsAndSaysWhatItChose(t *testing.T) {
 // The reviewer's sidebar and status list features in the order the author
 // created them, not alphabetically.
 func TestFeaturesArePresentedInCreationOrder(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	for _, id := range []string{"zebra", "accounts"} {
 		mustLiving(t, "feature add", featureCommand, "add", root, "--id", id, "--title", id)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/workplan"
 )
@@ -15,6 +16,8 @@ var planOperations = []string{
 }
 
 func Plan(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("plan", planOperations, out)
 	}

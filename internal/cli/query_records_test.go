@@ -12,6 +12,7 @@ import (
 )
 
 func TestPersonaQueriesTraverseEightStoriesWithExactIdentityAndPortablePaths(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	spacedRoot := filepath.Join(filepath.Dir(root), "batch records.saga")
 	if err := os.Rename(root, spacedRoot); err != nil {
@@ -96,6 +97,7 @@ func TestPersonaQueriesTraverseEightStoriesWithExactIdentityAndPortablePaths(t *
 }
 
 func TestTermsBoundedModePreservesLegacyCompletenessAndReferenceDetail(t *testing.T) {
+	t.Parallel()
 	repo, _ := sourceRepo(t, map[string]string{"terms.go": "package terms\n"})
 	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
 	root := newTermSaga(t, repo)
@@ -193,6 +195,7 @@ func TestTermsBoundedModePreservesLegacyCompletenessAndReferenceDetail(t *testin
 }
 
 func TestQuerySchemaAndSpecDiscoverRecordOperations(t *testing.T) {
+	t.Parallel()
 	for _, operation := range []string{"personas", "persona-references", "terms", "term-references"} {
 		var output bytes.Buffer
 		if err := Query(context.Background(), []string{"schema", operation}, &output); err != nil {
@@ -237,6 +240,7 @@ func TestQuerySchemaAndSpecDiscoverRecordOperations(t *testing.T) {
 // legacy status response is still useful, but it omits the persona description
 // and therefore cannot complete the read by itself.
 func TestRecordQueryWorkflowMeasurements(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	persona := "urn:change-saga:batch:persona:" + testPersona
 	for index := 1; index <= 8; index++ {

@@ -9,6 +9,7 @@ import (
 )
 
 func TestSetupInitialSagaPrintsOneTimeWorkflowWhenNoSagaExists(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	var output bytes.Buffer
 	if err := SetupInitialSaga([]string{"--repo", repo}, &output); err != nil {
@@ -35,6 +36,7 @@ func TestSetupInitialSagaPrintsOneTimeWorkflowWhenNoSagaExists(t *testing.T) {
 }
 
 func TestSetupInitialSagaGuardsExistingSaga(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(repo, "docs", "app.saga"), 0o755); err != nil {
 		t.Fatal(err)
@@ -61,6 +63,7 @@ func TestSetupInitialSagaGuardsExistingSaga(t *testing.T) {
 }
 
 func TestSetupInitialSagaOverhaulUpdatesInsteadOfDuplicating(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	if err := os.Mkdir(filepath.Join(repo, "app.saga"), 0o755); err != nil {
 		t.Fatal(err)
@@ -78,6 +81,7 @@ func TestSetupInitialSagaOverhaulUpdatesInsteadOfDuplicating(t *testing.T) {
 }
 
 func TestSetupInitialSagaRejectsInvalidRepository(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := SetupInitialSaga([]string{"--repo", filepath.Join(t.TempDir(), "missing")}, &output); err == nil {
 		t.Fatal("setup accepted a missing repository")
@@ -85,6 +89,7 @@ func TestSetupInitialSagaRejectsInvalidRepository(t *testing.T) {
 }
 
 func TestSetupInitialSagaHelpExplainsTheGuard(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := SetupInitialSaga([]string{"-h"}, &output); err == nil {
 		t.Fatal("-h must report flag.ErrHelp")

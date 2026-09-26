@@ -7,12 +7,15 @@ import (
 	"io"
 	"path/filepath"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/visualqa"
 )
 
 // VisualQA renders selected slides at the standard viewports and reports only
 // mechanical browser findings. It never writes to the Saga.
 func VisualQA(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("visual-qa", commandUsage["visual-qa"], out)
 	feature := flags.String("feature", "", "feature id or URN; use onboarding for the app onboarding deck")
 	deck := flags.String("deck", "", "deck id or URN")

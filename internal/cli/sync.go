@@ -4,12 +4,11 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"os/exec"
 	"path/filepath"
-	"strings"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -27,6 +26,8 @@ type syncOutput struct {
 // Saga in its code repository has no cursor: it documents the commit it is
 // read at.
 func Sync(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("sync", commandUsage["sync"], out)
 	repoDir := flags.String("repo", "", "code repository checkout the Saga documents")
 	commit := flags.String("commit", "HEAD", "the code commit the Saga now documents")
@@ -102,9 +103,9 @@ func sameCheckout(ctx context.Context, sagaRepo, checkout string) bool {
 }
 
 func gitTopLevel(ctx context.Context, dir string) (string, error) {
-	output, err := exec.CommandContext(ctx, "git", "-C", dir, "rev-parse", "--show-toplevel").Output()
+	top, err := gitexec.TopLevel(ctx, dir)
 	if err != nil {
 		return "", fmt.Errorf("%s is not a Git checkout", dir)
 	}
-	return strings.TrimSpace(string(output)), nil
+	return top, nil
 }

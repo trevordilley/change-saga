@@ -15,6 +15,7 @@ import (
 // other area as a gap and exits zero; check answers each question it is asked
 // and nothing else.
 func TestCheckAnswersOnlyTheNamedAreas(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	batch := `{"path":"internal/service/handler.go","changed_lines":true,"note":"the whole new file"}`
 	if out, err := runCover(t, batch, "--repo", repo, "--batch", "-", root); err != nil {
@@ -64,6 +65,7 @@ func TestCheckAnswersOnlyTheNamedAreas(t *testing.T) {
 // Status exits non-zero only when it cannot produce a trustworthy report,
 // such as when two features hold the same story ID.
 func TestStatusFailsOnlyWhenTheReportCannotBeTrusted(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	addStory(t, root, testFeature, "pay")
 	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "other", "--title", "Other")

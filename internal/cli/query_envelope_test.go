@@ -10,6 +10,7 @@ import (
 // Every query operation writes one envelope: the same schema, and the
 // snapshot that identifies what it read.
 func TestEveryQueryEnvelopeCarriesTheSchemaAndASnapshot(t *testing.T) {
+	t.Parallel()
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
 	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {

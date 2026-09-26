@@ -11,7 +11,6 @@ import (
 	"mime"
 	"net/url"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime/debug"
 	"sort"
@@ -24,6 +23,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -476,6 +476,8 @@ func flagWasSet(flags *flag.FlagSet, name string) bool {
 }
 
 func Init(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("init", commandUsage["init"], out)
 	title := flags.String("title", "", "saga title")
 	id := flags.String("id", "", "stable saga identifier")
@@ -581,6 +583,8 @@ are optional; status suggests them as the Saga grows.
 }
 
 func AddChapter(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return addChapter(ctx, args, out, narrativeAuthoring)
 }
 
@@ -660,6 +664,8 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 }
 
 func AddSection(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return addSection(ctx, args, out, narrativeAuthoring)
 }
 
@@ -735,6 +741,8 @@ func addSection(_ context.Context, args []string, out io.Writer, scope authoring
 }
 
 func AddFragment(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return addFragment(ctx, args, out, narrativeAuthoring)
 }
 
@@ -1012,6 +1020,8 @@ func reservedLandmarkIDs(fragment *saga.Fragment) map[string]bool {
 }
 
 func Status(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("status", commandUsage["status"], out)
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
 	maxItems := flags.Int("max", 100, "maximum uncovered items and next actions in text mode; 0 means all")
@@ -1366,11 +1376,10 @@ func parseRanges(value string) ([]lineRange, error) {
 func discoverRepository(ctx context.Context, repoDir, explicit string, options ...bool) (string, string, error) {
 	allowLocal := len(options) > 0 && options[0]
 	allowMismatch := len(options) > 1 && options[1]
-	rootOutput, err := exec.CommandContext(ctx, "git", "-C", repoDir, "rev-parse", "--show-toplevel").CombinedOutput()
+	root, err := gitexec.TopLevel(ctx, repoDir)
 	if err != nil {
-		return "", "", fmt.Errorf("locate source repository: %s", strings.TrimSpace(string(rootOutput)))
+		return "", "", fmt.Errorf("locate source repository: %s", err)
 	}
-	root := strings.TrimSpace(string(rootOutput))
 	if explicit != "" {
 		canonical, err := coderef.CanonicalRepository(explicit)
 		if err != nil {
@@ -1384,7 +1393,7 @@ func discoverRepository(ctx context.Context, repoDir, explicit string, options .
 		}
 		return canonical, root, nil
 	}
-	remoteOutput, remoteErr := exec.CommandContext(ctx, "git", "-C", root, "remote", "get-url", "origin").CombinedOutput()
+	remoteOutput, remoteErr := gitexec.ConfigOutput(ctx, root, "remote", "get-url", "origin")
 	if remoteErr == nil && strings.TrimSpace(string(remoteOutput)) != "" {
 		canonical, err := normalizeRepositoryURI(strings.TrimSpace(string(remoteOutput)), root)
 		if err != nil {
@@ -1404,7 +1413,7 @@ func discoverRepository(ctx context.Context, repoDir, explicit string, options .
 }
 
 func repositoryOriginAvailable(ctx context.Context, root string) bool {
-	output, err := exec.CommandContext(ctx, "git", "-C", root, "remote", "get-url", "origin").Output()
+	output, err := gitexec.ConfigOutput(ctx, root, "remote", "get-url", "origin")
 	return err == nil && strings.TrimSpace(string(output)) != ""
 }
 

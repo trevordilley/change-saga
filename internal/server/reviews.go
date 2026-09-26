@@ -209,7 +209,7 @@ func (a *app) comparedHead(ctx context.Context) string {
 	if a.rng.Observe() {
 		return ""
 	}
-	head, err := gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--quiet", a.rng.HeadRevision()+"^{commit}")
+	head, err := resolveCommit(ctx, a.sourceDir, a.rng.HeadRevision())
 	if err != nil {
 		return ""
 	}

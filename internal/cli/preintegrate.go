@@ -7,12 +7,15 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/semanticcheck"
 )
 
 // Preintegrate reports semantic convergence risks across explicit committed
 // refs. It never invokes a Git writer and never changes the working tree.
 func Preintegrate(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("preintegrate", commandUsage["preintegrate"], out)
 	repo := flags.String("repo", ".", "Git repository containing the refs and Saga")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")

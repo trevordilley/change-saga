@@ -17,6 +17,7 @@ func namingReference(path string, start, end int, digest string) coderef.Referen
 }
 
 func TestGeneratedCoverageNameIsSelectorIdentityNotAuthoringEvent(t *testing.T) {
+	t.Parallel()
 	record := coverRecord{Path: "internal/service/handler.go", Note: "first explanation"}
 	file := saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{
 		{Commit: namingCommit, Path: "internal/service/handler.go", Start: 10, End: 40, Digest: "sha256:" + strings.Repeat("a", 64), Note: record.Note},
@@ -35,6 +36,7 @@ func TestGeneratedCoverageNameIsSelectorIdentityNotAuthoringEvent(t *testing.T) 
 }
 
 func TestGeneratedCoverageNameSeparatesUnrelatedSelectors(t *testing.T) {
+	t.Parallel()
 	record := coverRecord{Path: "internal/service/handler.go"}
 	file := saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{namingReference("internal/service/handler.go", 1, 1, "a")}}
 	first := stableGeneratedCoverageName(record, file)
@@ -46,6 +48,7 @@ func TestGeneratedCoverageNameSeparatesUnrelatedSelectors(t *testing.T) {
 }
 
 func TestGeneratedCoverageNameIgnoresSelectorDeliveryOrder(t *testing.T) {
+	t.Parallel()
 	record := coverRecord{Path: "internal/service/handler.go"}
 	first := saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{namingReference("a.go", 1, 1, "a"), namingReference("b.go", 0, 0, "b")}}
 	second := saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{namingReference("b.go", 0, 0, "b"), namingReference("a.go", 1, 1, "a")}}
@@ -55,6 +58,7 @@ func TestGeneratedCoverageNameIgnoresSelectorDeliveryOrder(t *testing.T) {
 }
 
 func TestGeneratedCoveragePathsConflictOnlyForTheSameSelectorIdentity(t *testing.T) {
+	t.Parallel()
 	for _, testCase := range []struct {
 		name         string
 		leftLine     string

@@ -20,6 +20,7 @@ import (
 // A selected file streams its entire model. Requesting the already-supported
 // maximum reduces repeated validation/diff work without sharing mutable state.
 func TestReviewCodeStreamBatchesWithoutChangingRowsOrBounds(t *testing.T) {
+	t.Parallel()
 	fixture := newServerReviewFixture(t)
 	path := "stream & [literal].txt"
 	var content strings.Builder

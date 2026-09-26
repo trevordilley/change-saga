@@ -3,6 +3,7 @@ package cli
 import "testing"
 
 func TestTermsCursorChecksSnapshotBeforeCurrentCollectionSize(t *testing.T) {
+	t.Parallel()
 	key := `{"story":"checkout"}`
 	cursor := encodeTermsCursor(key, "old-snapshot", 3)
 	if _, err := decodeTermsCursor(cursor, key, "new-snapshot", 1); err == nil || err.Code != "stale_snapshot" || !err.Retryable {

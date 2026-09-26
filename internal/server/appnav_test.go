@@ -157,6 +157,7 @@ func topTitles(nodes []*navNodeView) string {
 // section differs. Reviews appear on the Review side alone, so the
 // Documentation sidebar never offers the same destination twice.
 func TestEachSideListsWhatItIsAbout(t *testing.T) {
+	t.Parallel()
 	sources := appNavFixture(t)
 	sources.document.Reviews = []*saga.Review{
 		{ReviewManifest: saga.ReviewManifest{ID: "postgres", Title: "Move the order queue to Postgres",
@@ -197,6 +198,7 @@ func TestEachSideListsWhatItIsAbout(t *testing.T) {
 }
 
 func TestEveryNavigationRowHasAnIcon(t *testing.T) {
+	t.Parallel()
 	sources := appNavFixture(t)
 	sources.pageFeature = "billing"
 	var check func(t *testing.T, list string, rows []*navNodeView)
@@ -256,6 +258,7 @@ func navStructure(nodes []*navNodeView) string {
 }
 
 func TestTheReviewSideHidesReviewsWhenThereAreNone(t *testing.T) {
+	t.Parallel()
 	sources := appNavFixture(t)
 	sources.reviewSide = true
 	if got := topTitles(shownNav(makeAppNavTree(sources))); got != "Overview" {
@@ -267,6 +270,7 @@ func TestTheReviewSideHidesReviewsWhenThereAreNone(t *testing.T) {
 // only the feature the reader is inside opened over its four places. Listing
 // every feature expanded put this repository's own sidebar at 238 rows.
 func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
+	t.Parallel()
 	sources := appNavFixture(t)
 	sources.pageFeature = "billing"
 	nodes := makeAppNavTree(sources)
@@ -365,6 +369,7 @@ func assertFeatureSubtree(t *testing.T, nodes []*navNodeView, title, id string) 
 // linking to its own page. A page that belongs to no feature opens none of them,
 // so the list is only ever rows.
 func TestEveryFeatureIsARowAndOnlyThePagesFeatureOpens(t *testing.T) {
+	t.Parallel()
 	for _, open := range []string{"", "not-an-feature", "billing", "catalog"} {
 		sources := appNavFixture(t)
 		sources.pageFeature = open
@@ -394,6 +399,7 @@ func TestEveryFeatureIsARowAndOnlyThePagesFeatureOpens(t *testing.T) {
 }
 
 func TestEmptyAppHidesEmptyPlaces(t *testing.T) {
+	t.Parallel()
 	page, _, err := makeRequirementsSurface(requirements.Document{SagaID: appNavSaga}, requirementRoute{})
 	if err != nil {
 		t.Fatal(err)
@@ -418,6 +424,7 @@ func TestEmptyAppHidesEmptyPlaces(t *testing.T) {
 // A persona is served only by an accepted story. A proposed story is not
 // enough, and a retired persona needs no story at all.
 func TestPersonaWithoutAnAcceptedStoryShowsItsGap(t *testing.T) {
+	t.Parallel()
 	nodes := makeAppNavTree(appNavFixture(t))
 	personas := findNav(t, nodes, "Overview", "Personas")
 	if personas.Gap || topTitles(personas.Children) != "Buyer|Seller|Auditor" {
@@ -436,6 +443,7 @@ func TestPersonaWithoutAnAcceptedStoryShowsItsGap(t *testing.T) {
 }
 
 func TestFeatureFlagRowsShowTheirState(t *testing.T) {
+	t.Parallel()
 	nodes := makeAppNavTree(appNavFixture(t))
 	flags := findNav(t, nodes, "Overview", "Feature flags")
 	if flags.Gap || len(flags.Children) != 3 {
@@ -456,6 +464,7 @@ func TestFeatureFlagRowsShowTheirState(t *testing.T) {
 // The onboarding deck is the app's, not a feature's: its slides sit directly
 // beneath Onboarding and never under any feature's Implementation.
 func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyFeature(t *testing.T) {
+	t.Parallel()
 	nodes := makeAppNavTree(appNavFixture(t))
 	onboarding := findNav(t, nodes, "Overview", "Onboarding")
 	if onboarding.Gap || topTitles(onboarding.Children) != "who-it-serves" {
@@ -480,6 +489,7 @@ func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyFeature(t *testing.T) {
 // Each story is listed, by its title, only under the feature whose directory
 // holds it.
 func TestFeatureStoriesAppearOnlyUnderThatFeaturesRequirements(t *testing.T) {
+	t.Parallel()
 	nodes := makeAppNavTree(appNavFixture(t))
 	billing := findNav(t, nodes, "Features", "Billing", "Product", "Requirements")
 	catalogSources := appNavFixture(t)
@@ -553,6 +563,7 @@ func treeDigest(t *testing.T, root string) string {
 // preference is stored: nothing is written to the Saga, and nothing is written
 // to the reader's browser either.
 func TestTheSidebarOpensThePagesFeatureAndStoresNothing(t *testing.T) {
+	t.Parallel()
 	root := writeAppNavSaga(t)
 	before := treeDigest(t, root)
 	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
@@ -608,6 +619,7 @@ func TestTheSidebarOpensThePagesFeatureAndStoresNothing(t *testing.T) {
 // two features with their own report content, one implementation deck, and the
 // onboarding deck at the app root.
 func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
+	t.Parallel()
 	root := writeAppNavSaga(t)
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git"}}`)
 	for _, feature := range []struct{ id, title string }{{"billing", "Billing"}, {"catalog", "Catalog"}} {

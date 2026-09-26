@@ -10,6 +10,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 const (
@@ -36,8 +38,7 @@ type Resolver struct {
 }
 
 func New(ctx context.Context, fromDir string) *Resolver {
-	output, err := exec.CommandContext(ctx, "git", "-C", fromDir, "rev-parse", "--show-toplevel").Output()
-	root := strings.TrimSpace(string(output))
+	root, err := gitexec.TopLevel(ctx, fromDir)
 	if resolved, resolveErr := filepath.EvalSymlinks(root); resolveErr == nil {
 		root = resolved
 	}

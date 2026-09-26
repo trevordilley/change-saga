@@ -9,6 +9,7 @@ import (
 )
 
 func TestRootTemplateDefersCodeAndCoverageModels(t *testing.T) {
+	t.Parallel()
 	definition := strings.Index(pageTemplate, `{{define "code-view"}}`)
 	if definition < 0 {
 		t.Fatal("code response template is missing")
@@ -34,6 +35,7 @@ func TestRootTemplateDefersCodeAndCoverageModels(t *testing.T) {
 }
 
 func TestRootTemplateKeepsCoverageAvailableWithoutComparisonTotals(t *testing.T) {
+	t.Parallel()
 	tmpl, err := newPageTemplate()
 	if err != nil {
 		t.Fatal(err)
@@ -56,6 +58,7 @@ func TestRootTemplateKeepsCoverageAvailableWithoutComparisonTotals(t *testing.T)
 }
 
 func TestDeferredReviewBrowserSupportsBuildingPaginationAndDeepLinks(t *testing.T) {
+	t.Parallel()
 	for _, contract := range []string{
 		"response.status === 202",
 		"response.headers.get('Retry-After')",
@@ -77,6 +80,7 @@ func TestDeferredReviewBrowserSupportsBuildingPaginationAndDeepLinks(t *testing.
 }
 
 func TestFragmentIntentPrefetchIsBoundedCancellableAndClickPromotable(t *testing.T) {
+	t.Parallel()
 	for _, contract := range []string{
 		"const maxConcurrentTargetCodeLoads = 2",
 		"const targetCodeCacheLimit = 64",
@@ -100,6 +104,7 @@ func TestFragmentIntentPrefetchIsBoundedCancellableAndClickPromotable(t *testing
 }
 
 func TestActiveSlideLoadsItsAggregateDiffSummary(t *testing.T) {
+	t.Parallel()
 	for _, contract := range []string{
 		"const targetCodeButton = q(':scope > .fragment-head [data-target-code-href]', fragment)",
 		"if (targetCodeButton) void hydrateTargetCodeSummary(targetCodeButton)",
@@ -112,6 +117,7 @@ func TestActiveSlideLoadsItsAggregateDiffSummary(t *testing.T) {
 }
 
 func TestSlideDiffSummaryPreviewsOnlyLinkedItems(t *testing.T) {
+	t.Parallel()
 	for _, contract := range []string{
 		"function slideDiffSummaryButton(node)",
 		"function setSlideDiffPreview(button, reason, visible)",
@@ -136,6 +142,7 @@ func TestSlideDiffSummaryPreviewsOnlyLinkedItems(t *testing.T) {
 }
 
 func TestSlideChromeDoesNotMaskOrIndentContent(t *testing.T) {
+	t.Parallel()
 	for _, contract := range []string{
 		`.doc-deck>.doc-children{margin:0 0 8px;padding:7px 0 2px;border-left:0;`,
 		`.slide-thumbnail-hit:hover,.slide-thumbnail-hit:active{background:transparent}`,
@@ -148,6 +155,7 @@ func TestSlideChromeDoesNotMaskOrIndentContent(t *testing.T) {
 }
 
 func TestCoverageContinuouslyLoadsSummariesAndDefersDetails(t *testing.T) {
+	t.Parallel()
 	for _, contract := range []string{
 		"beginContinuousCoverageLoad(surface)",
 		"await loadReviewSurfacePage(button)",

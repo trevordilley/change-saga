@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/diagram"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -17,6 +18,8 @@ import (
 // targeted edits to a diagram-sourced slide, bundled icon discovery, and
 // render drift checks.
 func Diagram(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
 		return livingFamilyHelp("diagram", []string{"describe", "get", "edit", "icons", "check"}, out)
 	}

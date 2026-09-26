@@ -15,6 +15,7 @@ import (
 )
 
 func TestEmbeddedDeckRendersInTheDeckViewer(t *testing.T) {
+	t.Parallel()
 	root := filepath.Join(t.TempDir(), "visual.saga")
 	assetName := writeEmbeddedSlideFixture(t, root)
 	document, validation, err := saga.LoadNarrative(root)
@@ -80,6 +81,7 @@ func TestEmbeddedDeckRendersInTheDeckViewer(t *testing.T) {
 // The asset route resolves an embedded slide's asset through its slide
 // target, even though the slide lives in a deck bundle under ___slides/.
 func TestEmbeddedDeckAssetRouteResolvesTheSlideTarget(t *testing.T) {
+	t.Parallel()
 	root := filepath.Join(t.TempDir(), "visual.saga")
 	assetName := writeEmbeddedSlideFixture(t, root)
 
@@ -92,6 +94,7 @@ func TestEmbeddedDeckAssetRouteResolvesTheSlideTarget(t *testing.T) {
 }
 
 func TestEmbeddedDeckCoverageCarriesNoReviewControls(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	serverGit(t, repo, "init", "-b", "main")
 	serverGit(t, repo, "config", "user.name", "Test")

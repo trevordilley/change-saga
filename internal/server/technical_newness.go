@@ -2,8 +2,6 @@ package server
 
 import (
 	"context"
-	"os/exec"
-	"strings"
 	"sync"
 
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -57,8 +55,7 @@ func (a *app) comparisonNewness(ctx context.Context, manifest saga.Manifest) *te
 	}
 	head := a.rng.HeadRevision()
 	newness := &technicalNewness{Against: a.rng.Against}
-	output, err := exec.CommandContext(ctx, "git", "-C", a.sourceDir, "merge-base", "--", a.rng.Against, head).Output()
-	base := strings.TrimSpace(string(output))
+	base, err := gitOutput(ctx, a.sourceDir, "merge-base", "--", a.rng.Against, head)
 	if err != nil || base == "" {
 		newness.Reason = "the comparison's merge-base could not be resolved"
 		return newness

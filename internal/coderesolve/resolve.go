@@ -16,6 +16,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 type State string
@@ -74,12 +75,12 @@ type changeSet struct {
 
 // New opens a resolver for the repository containing dir.
 func New(ctx context.Context, dir string) (*Resolver, error) {
-	output, err := exec.CommandContext(ctx, "git", "-C", dir, "rev-parse", "--show-toplevel").Output()
+	repo, err := gitexec.TopLevel(ctx, dir)
 	if err != nil {
 		return nil, fmt.Errorf("locate Git repository: %w", err)
 	}
 	return &Resolver{
-		repo: strings.TrimSpace(string(output)), blobs: map[string]blobResult{},
+		repo: repo, blobs: map[string]blobResult{},
 		commits: map[string]bool{}, changes: map[[2]string]changeSet{}, verified: map[string]verification{},
 	}, nil
 }
@@ -351,6 +352,9 @@ func (resolver *Resolver) treeChanges(ctx context.Context, from, to string) (map
 
 // readObject must be called with mu held.
 func (resolver *Resolver) readObject(ctx context.Context, name string) (string, []byte, error) {
+	if objectType, content, ok := gitexec.ReadObject(ctx, resolver.repo, name); ok {
+		return objectType, content, nil
+	}
 	if resolver.objects == nil {
 		objects, err := startCatFile(resolver.repo)
 		if err != nil {
@@ -360,7 +364,7 @@ func (resolver *Resolver) readObject(ctx context.Context, name string) (string, 
 	}
 	objectType, content, err := resolver.objects.read(name)
 	if err != nil {
-		resolver.objects.close()
+		resolver.objects.abort()
 		resolver.objects = nil
 	}
 	return objectType, content, err
@@ -418,6 +422,14 @@ func (objects *catFile) read(name string) (string, []byte, error) {
 func (objects *catFile) close() {
 	_ = objects.stdin.Close()
 	_ = objects.cmd.Wait()
+}
+
+// abort stops a reader that failed mid-answer. Git may still be writing an
+// object nobody will read, and once the pipe fills (4 KiB on Windows) it
+// blocks, so waiting without killing it would never return.
+func (objects *catFile) abort() {
+	_ = objects.cmd.Process.Kill()
+	objects.close()
 }
 
 func short(commit string) string {

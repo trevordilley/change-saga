@@ -12,6 +12,7 @@ import (
 )
 
 func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 
 	var output bytes.Buffer
@@ -71,6 +72,7 @@ func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
 }
 
 func TestDesignScopedMutationsRejectNarrativeTargets(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
 	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--name", "notes", "--title", "Notes", root}, &output); err != nil {
@@ -97,6 +99,7 @@ func TestDesignScopedMutationsRejectNarrativeTargets(t *testing.T) {
 }
 
 func TestDesignHelpListsSupportedOperations(t *testing.T) {
+	t.Parallel()
 	var output bytes.Buffer
 	if err := Design(context.Background(), []string{"--help"}, &output); err == nil {
 		t.Fatal("help should return flag.ErrHelp to the command dispatcher")

@@ -14,6 +14,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -592,6 +593,8 @@ func findEditableItem(document *saga.Saga, review, slideValue, value string) (*s
 }
 
 func ReviseItem(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags, dryRun, jsonOutput := contentEditFlags("revise-item", out)
 	itemValue := flags.String("item", "", "Item URN, or its id with --slide")
 	slideValue := flags.String("slide", "", "slide holding the Item, when --item is an id")

@@ -87,6 +87,7 @@ func fakePage(operation string) queryPage {
 }
 
 func TestQueryGoldenEnvelopes(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name string
 		args []string
@@ -137,6 +138,7 @@ func TestQueryGoldenEnvelopes(t *testing.T) {
 }
 
 func TestQueryDispatchesEveryOperationAndPreservesArguments(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		operation string
 		args      []string
@@ -194,6 +196,7 @@ func TestQueryDispatchesEveryOperationAndPreservesArguments(t *testing.T) {
 }
 
 func TestQueryMapsStableErrorsToStableExits(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		code      string
 		exit      int
@@ -230,6 +233,7 @@ func TestQueryMapsStableErrorsToStableExits(t *testing.T) {
 }
 
 func TestQueryRejectsAdversarialArgumentsBeforeOpening(t *testing.T) {
+	t.Parallel()
 	tests := []struct {
 		name string
 		args []string
@@ -285,6 +289,7 @@ func TestQueryRejectsAdversarialArgumentsBeforeOpening(t *testing.T) {
 }
 
 func TestQueryAuditUsesDocumentedFindingsExitWithoutTurningTheReportIntoAnError(t *testing.T) {
+	t.Parallel()
 	report := livingapp.AuditReport{
 		Feature: "urn:change-saga:test:feature:checkout", FeatureID: "checkout", Status: "findings",
 		Complete: true, Ready: false, ExitCode: 8, Findings: []livingapp.AuditFinding{{ID: "urn:item", Severity: "error", Code: "item_evidence_missing", Reason: "missing", Related: []string{}}},
@@ -306,6 +311,7 @@ func TestQueryAuditUsesDocumentedFindingsExitWithoutTurningTheReportIntoAnError(
 }
 
 func TestQueryHelpNeverOpensSessionAndAlwaysUsesOneEnvelope(t *testing.T) {
+	t.Parallel()
 	for _, args := range [][]string{nil, {"help"}, {"-h"}, {"--help"}, {"schema", "--help"}, {"gaps", "--help"}} {
 		var out bytes.Buffer
 		if err := queryWithOpener(context.Background(), args, &out, failIfOpened(t)); err != nil {
@@ -320,6 +326,7 @@ func TestQueryHelpNeverOpensSessionAndAlwaysUsesOneEnvelope(t *testing.T) {
 }
 
 func TestQuerySchemaDescribesEveryResponseWithoutOpeningSession(t *testing.T) {
+	t.Parallel()
 	wantCountedPaths := map[string]string{
 		"overview": "data.coverage", "children": "data.children", "fragment": "data.content.data",
 		"fragment-diffs": "data.selectors", "diff-owners": "data.atoms",
@@ -360,6 +367,7 @@ func TestQuerySchemaDescribesEveryResponseWithoutOpeningSession(t *testing.T) {
 }
 
 func TestQueryOperationHelpNamesResponsePaths(t *testing.T) {
+	t.Parallel()
 	var out bytes.Buffer
 	if err := queryWithOpener(context.Background(), []string{"gaps", "--help"}, &out, failIfOpened(t)); err != nil {
 		t.Fatal(err)
@@ -373,6 +381,7 @@ func TestQueryOperationHelpNamesResponsePaths(t *testing.T) {
 }
 
 func TestQueryRedactsUnexpectedApplicationErrors(t *testing.T) {
+	t.Parallel()
 	secret := "/absolute/private/path/review.saga"
 	session := &fakeQuerySession{snapshot: "sha256:test", err: errors.New("failed reading " + secret)}
 	var out bytes.Buffer
@@ -389,6 +398,7 @@ func TestQueryRedactsUnexpectedApplicationErrors(t *testing.T) {
 }
 
 func TestQueryUnknownOperationDetailsDoNotEchoPathShapedInput(t *testing.T) {
+	t.Parallel()
 	var out bytes.Buffer
 	err := queryWithOpener(context.Background(), []string{"/private/path"}, &out, failIfOpened(t))
 	assertStatus(t, err, 2)

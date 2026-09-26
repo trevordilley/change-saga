@@ -18,6 +18,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -110,6 +111,8 @@ type referencesOutput struct {
 // stale with a reason where the code changed, and, with --diff, the patch of
 // the referenced file since the pin.
 func References(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("references", commandUsage["references"], out)
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	opening := registerOpenFlags(flags)
@@ -254,6 +257,8 @@ type repinReview struct {
 // not rewritten; they keep resolving through the same remap and digest
 // fallback.
 func Repin(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("repin", commandUsage["repin"], out)
 	onto := flags.String("onto", "", "the commit the change landed as on its target branch")
 	branch := flags.String("branch", "", "the branch's last commit, when it is still available; widens the recorded commit messages")
@@ -506,17 +511,28 @@ func reviewToFreeze(ctx context.Context, document *saga.Saga, checkout, onto, br
 // branch is still available, the merge-base of that tip and the branch. It is
 // empty for a root commit.
 func landedBase(ctx context.Context, checkout, onto, branch string) string {
-	parent, err := exec.CommandContext(ctx, "git", "-C", checkout, "rev-parse", "--verify", "--quiet", onto+"^1").Output()
+	parent, err := firstParent(ctx, checkout, onto)
 	if err != nil {
 		return ""
 	}
 	base := strings.TrimSpace(string(parent))
 	if branch != "" {
-		if forked, err := exec.CommandContext(ctx, "git", "-C", checkout, "merge-base", base, branch).Output(); err == nil {
+		if forked, err := gitexec.Output(ctx, "-C", checkout, "merge-base", base, branch); err == nil {
 			base = strings.TrimSpace(string(forked))
 		}
 	}
 	return base
+}
+
+// firstParent is onto's first parent, which a commit ID fixes forever.
+func firstParent(ctx context.Context, checkout, onto string) ([]byte, error) {
+	query := func() ([]byte, error) {
+		return gitexec.Output(ctx, "-C", checkout, "rev-parse", "--verify", "--quiet", onto+"^1")
+	}
+	if gitexec.NamesObjects(onto) {
+		return gitexec.Stable(ctx, checkout, []string{onto}, []string{"first-parent", onto}, query)
+	}
+	return query()
 }
 
 // referenceKeyBefore returns the key the planned change expects to replace,
@@ -546,7 +562,7 @@ func branchCommits(ctx context.Context, checkout, onto string, tips map[string]b
 	}
 	sort.Strings(sorted)
 	args = append(args, sorted...)
-	if parent, err := exec.CommandContext(ctx, "git", "-C", checkout, "rev-parse", "--verify", "--quiet", onto+"^1").Output(); err == nil {
+	if parent, err := firstParent(ctx, checkout, onto); err == nil {
 		args = append(args, "^"+strings.TrimSpace(string(parent)))
 	}
 	args = append(args, "--")

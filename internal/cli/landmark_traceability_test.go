@@ -102,6 +102,7 @@ func statusCoverage(t *testing.T, root string, args ...string) areas.Report {
 // asks for, and it must not drop that code out of the story chain. A landmark
 // is a heading inside the fragment, so the fragment's design explains it.
 func TestLandmarkCodeReachesTheStoryItsFragmentAddresses(t *testing.T) {
+	t.Parallel()
 	root, repo, landmarks := twoSidesSaga(t)
 	stories := statusCoverage(t, root, "--repo", repo).Areas.Stories
 	reached := map[string][]string{}
@@ -124,6 +125,7 @@ func TestLandmarkCodeReachesTheStoryItsFragmentAddresses(t *testing.T) {
 // there is no story gap to suggest. A suggestion never offers to capture a
 // story that exists.
 func TestNoStoryIsSuggestedForCodeItsFragmentAlreadyExplains(t *testing.T) {
+	t.Parallel()
 	root, repo, _ := twoSidesSaga(t)
 	var output bytes.Buffer
 	_ = Status(context.Background(), []string{"--json", "--repo", repo, root}, &output)

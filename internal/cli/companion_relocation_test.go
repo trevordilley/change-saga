@@ -14,6 +14,7 @@ import (
 // companion Saga can move beside the source, drop the explicit --repo, and
 // still resolve the same Item to the same code reference.
 func TestCompanionSagaLinksSurviveMoveIntoSourceRepository(t *testing.T) {
+	t.Parallel()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")

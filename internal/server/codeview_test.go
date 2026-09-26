@@ -32,6 +32,7 @@ func BenchmarkMakeCodeReviewViewLargeSaga(b *testing.B) {
 }
 
 func TestCodeDiffURLPreservesPathAndExactCodeLocation(t *testing.T) {
+	t.Parallel()
 	ref := testLocation(testHeadCommit, "dir/a b&c.go", 7, 9)
 	href := CodeDiffURL("dir/a b&c.go", ref)
 	parsed, err := url.Parse(href)
@@ -44,6 +45,7 @@ func TestCodeDiffURLPreservesPathAndExactCodeLocation(t *testing.T) {
 }
 
 func TestChangedFileTreeIsNestedAndAggregatesCounts(t *testing.T) {
+	t.Parallel()
 	files := []*FileDiffView{
 		{Path: "README.md", Deleted: 3},
 		{Path: "src/api/handler.go", Added: 2, Deleted: 1, Selected: true},
@@ -67,6 +69,7 @@ func TestChangedFileTreeIsNestedAndAggregatesCounts(t *testing.T) {
 }
 
 func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) {
+	t.Parallel()
 	document, changes, report, secondRef, staleRef := codeViewFixture(t)
 	view, selectionErr := makeCodeReviewView(document, changes, report, codeSelection{filePath: "src/api/handler.go"})
 	if selectionErr != nil {
@@ -116,6 +119,7 @@ func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) 
 }
 
 func TestCodeReviewSelectionRejectsUnknownOrMismatchedValues(t *testing.T) {
+	t.Parallel()
 	document, changes, report, _, _ := codeViewFixture(t)
 	fileRef := testLocation(changes.HeadOID, "src/api/handler.go", 0, 0)
 	view, selectionErr := makeCodeReviewView(document, changes, report, codeSelection{ref: fileRef})
@@ -161,6 +165,7 @@ func TestCodeReviewSelectionRejectsUnknownOrMismatchedValues(t *testing.T) {
 }
 
 func TestRelatedSagaEmptyStateIsExplicit(t *testing.T) {
+	t.Parallel()
 	document, changes, report, _, _ := codeViewFixture(t)
 	view, selectionErr := makeCodeReviewView(document, changes, report, codeSelection{filePath: "docs/unowned.md"})
 	if selectionErr != nil {
@@ -172,6 +177,7 @@ func TestRelatedSagaEmptyStateIsExplicit(t *testing.T) {
 }
 
 func TestRelatedSagaLinksBackToExactLandmark(t *testing.T) {
+	t.Parallel()
 	fragment := &saga.Fragment{ID: "flow", Title: "Flow", Target: saga.FragmentTarget("test", "flow")}
 	landmarkTarget := saga.LandmarkTarget("test", "flow", "submit-action")
 	location := narrativeLocation{
@@ -189,6 +195,7 @@ func TestRelatedSagaLinksBackToExactLandmark(t *testing.T) {
 }
 
 func TestRelatedSagaRollsItemOwnersUpToSlidesAndGroupsByDeck(t *testing.T) {
+	t.Parallel()
 	deckTarget := saga.DeckTarget("visual", "implementation")
 	firstTarget := saga.SlideTarget("visual", "flow")
 	secondTarget := saga.SlideTarget("visual", "failure")
@@ -253,6 +260,7 @@ func TestRelatedSagaRollsItemOwnersUpToSlidesAndGroupsByDeck(t *testing.T) {
 }
 
 func TestFileViewsAttachRendererContextWithoutChangingAtoms(t *testing.T) {
+	t.Parallel()
 	old := gitdiff.Atom{Key: "line:app.go:old:2", Kind: "line", Path: "app.go", Side: "old", Line: 2, Content: "old", Ref: "old-uri"}
 	added := gitdiff.Atom{Key: "line:app.go:new:2", Kind: "line", Path: "app.go", Side: "new", Line: 2, Content: "new", Ref: "new-uri"}
 	changes := gitdiff.ChangeSet{
@@ -276,6 +284,7 @@ func TestFileViewsAttachRendererContextWithoutChangingAtoms(t *testing.T) {
 }
 
 func TestFragmentExcerptIsConciseAndCannotFollowEscapingSymlink(t *testing.T) {
+	t.Parallel()
 	directory := t.TempDir()
 	writeServerFile(t, filepath.Join(directory, "content.md"), "# Heading\n"+strings.Repeat("word ", 100))
 	fragment := &saga.Fragment{ID: "story", Title: "Story", Directory: directory, MediaType: "text/markdown", Entrypoint: "content.md"}
@@ -299,6 +308,7 @@ func TestFragmentExcerptIsConciseAndCannotFollowEscapingSymlink(t *testing.T) {
 // should read as prose: no heading label running into the first sentence and no
 // leftover Markdown delimiters.
 func TestFragmentExcerptReadsAsProseNotMarkdownSource(t *testing.T) {
+	t.Parallel()
 	directory := t.TempDir()
 	writeServerFile(t, filepath.Join(directory, "content.md"), "## CLI surface {#cli-surface}\n\nThe CLI runs `validate` and **checks** the tree.\n")
 	fragment := &saga.Fragment{ID: "cli", Title: "CLI and AI workflow", Directory: directory, MediaType: "text/markdown", Entrypoint: "content.md"}

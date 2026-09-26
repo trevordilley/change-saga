@@ -14,6 +14,7 @@ import (
 )
 
 func TestOverviewPartsAreWrittenOnceAndThenReplaced(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	document, _, err := saga.Load(root)
 	if err != nil {
@@ -61,6 +62,7 @@ func TestOverviewPartsAreWrittenOnceAndThenReplaced(t *testing.T) {
 }
 
 func TestAnythingElseInTheOverviewIsInvalid(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	writeFile(t, filepath.Join(root, "___overview", "notes.fragment", "fragment.json"), `{"version":2,"id":"notes","title":"Notes","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeFile(t, filepath.Join(root, "___overview", "notes.fragment", "content.md"), "Notes\n")

@@ -21,6 +21,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/technicalpolicy"
@@ -69,7 +70,7 @@ func Load(ctx context.Context, checkout, sagaRoot string, current saga.Manifest,
 	fail := func(reason Reason, format string, args ...any) (View, error) {
 		return View{}, &Error{Reason: reason, Message: fmt.Sprintf(format, args...)}
 	}
-	top, err := git(ctx, checkout, "rev-parse", "--show-toplevel")
+	top, err := gitexec.TopLevel(ctx, checkout)
 	if err != nil {
 		return fail(CommitUnavailable, "%s is not a Git checkout", checkout)
 	}
@@ -220,44 +221,47 @@ func extractTree(ctx context.Context, checkout, commit, treePath, dest string) e
 	if err := cmd.Start(); err != nil {
 		return err
 	}
+	// Git blocks writing blobs nobody reads once the pipe fills (4 KiB on
+	// Windows), so a failed extraction stops it before waiting.
+	abort := func(err error) error {
+		_ = cmd.Process.Kill()
+		_ = cmd.Wait()
+		return err
+	}
 	reader := bufio.NewReader(stdout)
 	for _, b := range blobs {
 		header, err := reader.ReadString('\n')
 		if err != nil {
-			_ = cmd.Wait()
-			return err
+			return abort(err)
 		}
 		fields := strings.Fields(header)
 		if len(fields) != 3 || fields[1] != "blob" {
-			_ = cmd.Wait()
-			return fmt.Errorf("blob %s is unavailable", b.oid)
+			return abort(fmt.Errorf("blob %s is unavailable", b.oid))
 		}
 		size, _ := strconv.Atoi(fields[2])
 		data := make([]byte, size+1)
 		if _, err := io.ReadFull(reader, data); err != nil {
-			_ = cmd.Wait()
-			return err
+			return abort(err)
 		}
 		target := filepath.Join(dest, filepath.FromSlash(b.path))
 		if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
-			_ = cmd.Wait()
-			return err
+			return abort(err)
 		}
 		if err := os.WriteFile(target, data[:size], 0o644); err != nil {
-			_ = cmd.Wait()
-			return err
+			return abort(err)
 		}
 	}
 	return cmd.Wait()
 }
 
 func git(ctx context.Context, dir string, args ...string) (string, error) {
-	cmd := exec.CommandContext(ctx, "git", append([]string{"-C", dir}, args...)...)
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	out, err := cmd.Output()
+	out, err := gitexec.Output(ctx, append([]string{"-C", dir}, args...)...)
 	if err != nil {
-		return "", errors.New(strings.TrimSpace(stderr.String()))
+		var exitErr *exec.ExitError
+		if errors.As(err, &exitErr) {
+			return "", errors.New(strings.TrimSpace(string(exitErr.Stderr)))
+		}
+		return "", err
 	}
 	return string(out), nil
 }

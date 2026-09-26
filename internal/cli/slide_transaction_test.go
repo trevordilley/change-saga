@@ -20,39 +20,42 @@ import (
 
 func newSlideTransactionFixture(t *testing.T) (root, repo, base, commit, sagaID string) {
 	t.Helper()
-	repo = t.TempDir()
-	git(t, repo, "init", "-b", "main")
-	git(t, repo, "config", "user.name", "Test Author")
-	git(t, repo, "config", "user.email", "test@example.test")
-	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
-	writeFile(t, filepath.Join(repo, "service.go"), "package service\n\nfunc Run() error { return nil }\n")
-	git(t, repo, "add", ".")
-	git(t, repo, "commit", "-m", "base")
-	commit = strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
+	dir, values := slideTransactionTemplate.instantiate(t, func(t *testing.T, dir string) map[string]string {
+		repo := mkdir(t, filepath.Join(dir, "repo"))
+		git(t, repo, "init", "-b", "main")
+		git(t, repo, "config", "user.name", "Test Author")
+		git(t, repo, "config", "user.email", "test@example.test")
+		git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+		writeFile(t, filepath.Join(repo, "service.go"), "package service\n\nfunc Run() error { return nil }\n")
+		git(t, repo, "add", ".")
+		git(t, repo, "commit", "-m", "base")
+		commit := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 
-	root = filepath.Join(shortTempDir(t), "transaction.saga")
-	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	addTestApp(t, root)
-	manifest, err := saga.ReadManifest(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	sagaID = manifest.ID
-	if err := Story(context.Background(), []string{
-		"add", root, "--feature", testFeature, "--persona", personaURNFor(sagaID), "--id", "run", "--revision", "r1", "--event", "proposed",
-		"--title", "Run safely", "--statement", "As a user I run the service", "--criterion", "returns=Run returns without error", "--request-id", "story-run",
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--id", "implementation", "--objective", "Explain the complete transaction.", root, "implementation"}, &output); err != nil {
-		t.Fatal(err)
-	}
-	base = t.TempDir()
-	return root, repo, base, commit, sagaID
+		root := filepath.Join(dir, "saga", "transaction.saga")
+		var output bytes.Buffer
+		if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
+			t.Fatal(err)
+		}
+		addTestApp(t, root)
+		manifest, err := saga.ReadManifest(root)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := Story(context.Background(), []string{
+			"add", root, "--feature", testFeature, "--persona", personaURNFor(manifest.ID), "--id", "run", "--revision", "r1", "--event", "proposed",
+			"--title", "Run safely", "--statement", "As a user I run the service", "--criterion", "returns=Run returns without error", "--request-id", "story-run",
+		}, &output); err != nil {
+			t.Fatal(err)
+		}
+		if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--id", "implementation", "--objective", "Explain the complete transaction.", root, "implementation"}, &output); err != nil {
+			t.Fatal(err)
+		}
+		return map[string]string{"commit": commit, "saga": manifest.ID}
+	})
+	return filepath.Join(dir, "saga", "transaction.saga"), filepath.Join(dir, "repo"), t.TempDir(), values["commit"], values["saga"]
 }
+
+var slideTransactionTemplate fixtureTemplate
 
 func slideTransactionRequest(t *testing.T, repo, base, commit, sagaID, requestID, operation, expected, element string) SlideTransactionRequest {
 	t.Helper()
@@ -79,6 +82,7 @@ func slideTransactionRequest(t *testing.T, repo, base, commit, sagaID, requestID
 }
 
 func TestApplySlideTransactionCreateUpdateRetryAndGuards(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
 
@@ -175,6 +179,7 @@ func TestApplySlideTransactionCreateUpdateRetryAndGuards(t *testing.T) {
 }
 
 func TestApplySlideCommandPublishesStructuredRequest(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	request := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-cli", "create", "absent", "node-cli")
 	data, err := json.Marshal(request)
@@ -277,6 +282,7 @@ func TestApplySlideTransactionPreservesReferencedAssetAfterPublishedWriteFailure
 }
 
 func TestSlideTransactionAssetPathRejectsTraversalAndSymlinks(t *testing.T) {
+	t.Parallel()
 	base := t.TempDir()
 	outside := filepath.Join(t.TempDir(), "outside.svg")
 	writeFile(t, outside, `<svg xmlns="http://www.w3.org/2000/svg"/>`)
@@ -292,6 +298,7 @@ func TestSlideTransactionAssetPathRejectsTraversalAndSymlinks(t *testing.T) {
 }
 
 func TestApplySlideTransactionMigratesLegacySlideWithoutChangingStableIDs(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	var output bytes.Buffer
 	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--id", "flow", "--intent", "explain", "--layout", "diagram", "--title", "Legacy flow", "--takeaway", "The original slide remains history.", root, "flow"}, &output); err != nil {
@@ -334,6 +341,7 @@ func TestApplySlideTransactionMigratesLegacySlideWithoutChangingStableIDs(t *tes
 }
 
 func TestLegacySlideAndCoverageCommandsRefuseTransactionManagedTargets(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)
@@ -414,6 +422,7 @@ func TestLegacySlideAndCoverageCommandsRefuseTransactionManagedTargets(t *testin
 }
 
 func TestTransactionLinksUseCanonicalQueryTraceabilityAuditAndCurrencyGraph(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)
@@ -496,6 +505,7 @@ func TestTransactionLinksUseCanonicalQueryTraceabilityAuditAndCurrencyGraph(t *t
 }
 
 func TestDivergentTransactionHistoriesPreserveHeadsAndReconcile(t *testing.T) {
+	t.Parallel()
 	root, repo, base, commit, sagaID := newSlideTransactionFixture(t)
 	create := slideTransactionRequest(t, repo, base, commit, sagaID, "slide-create", "create", "absent", "node-a")
 	created, err := ApplySlideTransaction(context.Background(), root, base, repo, create, false)

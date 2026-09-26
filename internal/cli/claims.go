@@ -14,6 +14,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -23,6 +24,8 @@ import (
 // then prove whether the referenced code is current and already mapped to the
 // claim's narrative target.
 func AddClaim(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("add-claim", commandUsage["add-claim"], out)
 	id := flags.String("id", "", "stable claim id; generated when omitted")
 	target := flags.String("target", "", "saga, chapter, section, fragment, or landmark target")

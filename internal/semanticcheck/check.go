@@ -21,6 +21,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
@@ -134,8 +135,10 @@ func Check(ctx context.Context, options Options) (Report, error) {
 }
 
 func resolveRef(ctx context.Context, repo, ref string) (string, error) {
-	cmd := exec.CommandContext(ctx, "git", "-C", repo, "rev-parse", "--verify", "--end-of-options", ref+"^{commit}")
-	out, err := cmd.Output()
+	if commit, ok := gitexec.ResolveCommit(ctx, repo, ref); ok {
+		return commit, nil
+	}
+	out, err := gitexec.Output(ctx, "-C", repo, "rev-parse", "--verify", "--end-of-options", ref+"^{commit}")
 	if err != nil {
 		return "", fmt.Errorf("resolve ref %q: %w", ref, err)
 	}

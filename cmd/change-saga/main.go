@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/cli"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 )
 
 func main() {
@@ -148,6 +149,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 	case "visual-qa":
 		err = cli.VisualQA(ctx, args[1:], stdout)
 	case "serve", "open":
+		// The server outlives edits that cross-command Git caches cannot see.
+		gitexec.LongRunning()
 		err = cli.Serve(ctx, args[1:], stdout, args[0] == "open")
 	case "install-skill":
 		err = cli.InstallSkill(args[1:], stdout)

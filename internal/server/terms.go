@@ -235,7 +235,7 @@ func termWhere(location coderef.Location) string {
 // places, which the table states as a gap rather than an error.
 func (a *app) termPlaces(ctx context.Context, document requirements.Document) map[string][]termPlace {
 	head := firstNonEmptyString(a.rng.Head, "HEAD")
-	headOID, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--end-of-options", head+"^{commit}")
+	headOID, _ := resolveCommit(ctx, a.sourceDir, head)
 	// Where each term's code is follows from the head commit and the
 	// references alone, so it is kept under exactly those. The head is
 	// resolved on every request; a commit never changes under its OID.
@@ -325,7 +325,7 @@ func (a *app) referenceCode(ctx context.Context, references []coderef.Reference,
 	}
 	defer resolver.Close()
 	head := firstNonEmptyString(a.rng.Head, "HEAD")
-	headOID, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--end-of-options", head+"^{commit}")
+	headOID, _ := resolveCommit(ctx, a.sourceDir, head)
 	for _, reference := range references {
 		view := &termCodeView{Path: reference.Path, Location: reference.Location().String()}
 		location := reference.Location()

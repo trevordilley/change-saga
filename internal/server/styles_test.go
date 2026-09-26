@@ -8,6 +8,7 @@ import (
 )
 
 func TestDarkPaletteTextRolesMeetWCAGContrast(t *testing.T) {
+	t.Parallel()
 	tokens := cssCustomProperties(darkTokens)
 	pairs := []struct {
 		name       string

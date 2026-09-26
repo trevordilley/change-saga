@@ -20,6 +20,7 @@ import (
 )
 
 func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
+	t.Parallel()
 	fixture := querytest.New(t)
 	largeTarget := fixture.AddLargeFragment((1 << 20) + 1)
 	fixture.AddActiveFragments()
@@ -149,6 +150,7 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 }
 
 func TestQueryCLIStaleTamperedAndCrossQueryCursors(t *testing.T) {
+	t.Parallel()
 	fixture := querytest.New(t)
 	fixture.AddLargeFragment(32)
 	fixture.AddActiveFragments()
@@ -187,6 +189,7 @@ func TestQueryCLIStaleTamperedAndCrossQueryCursors(t *testing.T) {
 }
 
 func TestQueryCLIInvalidAndAmbiguousSagasUseStableEnvelope(t *testing.T) {
+	t.Parallel()
 	for _, testCase := range []struct {
 		name  string
 		alter func(*querytest.Fixture)

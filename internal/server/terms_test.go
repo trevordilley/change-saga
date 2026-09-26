@@ -66,6 +66,7 @@ func termPage(t *testing.T, root, repo, path string) string {
 }
 
 func TestTheOverviewExpandsToItsPartsAndEveryTerm(t *testing.T) {
+	t.Parallel()
 	root, repo := termSaga(t)
 	html := termPage(t, root, repo, "/")
 	for _, want := range []string{`id="nav-overview"`, `title="Name"`, `href="/terms"`, `href="/terms/testtaker"`, "Assessments"} {
@@ -81,6 +82,7 @@ func TestTheOverviewExpandsToItsPartsAndEveryTerm(t *testing.T) {
 }
 
 func TestATermPageShowsItsDefinitionStoriesAndCode(t *testing.T) {
+	t.Parallel()
 	root, repo := termSaga(t)
 	html := termPage(t, root, repo, "/terms/testtaker")
 	for _, want := range []string{
@@ -121,6 +123,7 @@ func TestATermPageShowsItsDefinitionStoriesAndCode(t *testing.T) {
 }
 
 func TestTermPagesDistinguishObservedGapsUnknownsAndRevisionConflicts(t *testing.T) {
+	t.Parallel()
 	root, repo := termSaga(t)
 	created := time.Date(2026, 9, 2, 0, 0, 0, 0, time.UTC)
 	if _, err := requirements.AddTerm(root, "test", requirements.AddTermInput{ID: "review-annotation", RevisionID: "r1", EventID: "active", CreatedAt: created,
@@ -179,6 +182,7 @@ func TestTermPagesDistinguishObservedGapsUnknownsAndRevisionConflicts(t *testing
 }
 
 func TestAStoryPageLinksBackToItsTerms(t *testing.T) {
+	t.Parallel()
 	root, repo := termSaga(t)
 	html := termPage(t, root, repo, "/requirements/sit")
 	if !strings.Contains(html, `data-requirement-terms`) || !strings.Contains(html, `<a href="/terms/testtaker" data-term-target="urn:change-saga:test:term:testtaker">Testtaker</a>`) {
@@ -190,6 +194,7 @@ func TestAStoryPageLinksBackToItsTerms(t *testing.T) {
 }
 
 func TestTheCodeViewNamesTheTermsAFileDefines(t *testing.T) {
+	t.Parallel()
 	root, repo := termSaga(t)
 	serverGit(t, repo, "add", ".")
 	serverGit(t, repo, "commit", "-m", "saga")

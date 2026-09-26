@@ -13,6 +13,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -319,6 +320,8 @@ func selectorHint(mediaType string) string {
 }
 
 func AddItem(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	flags := commandFlags("add-item", commandUsage["add-item"], out)
 	slideTarget := flags.String("slide", "", "containing slide path, id, or URN")
 	id := flags.String("id", "", "stable lowercase item identifier")

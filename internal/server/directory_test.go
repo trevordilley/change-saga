@@ -13,6 +13,7 @@ import (
 // them click thirty-five times to read a table.
 
 func TestEverySectionHeaderIsADestination(t *testing.T) {
+	t.Parallel()
 	sources := appNavFixture(t)
 	nodes := makeAppNavTree(sources)
 	for _, want := range []struct {
@@ -48,6 +49,7 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 // A directory is a real table a reader can filter, and the same filter runs
 // on the server for a browser that cannot run the enhanced one.
 func TestADirectoryFiltersOnTheTextItShows(t *testing.T) {
+	t.Parallel()
 	_, records, _ := dogfoodRecords(t)
 	all := personasDirectory(records, "")
 	if all.Total < 2 || all.Matches() != all.Total {
@@ -77,6 +79,7 @@ func TestADirectoryFiltersOnTheTextItShows(t *testing.T) {
 // Each directory is a table with headers, carries its counts and no verdict,
 // and states a missing link as growth with the command that acts on it.
 func TestEachDirectoryRendersAsATableOfCounts(t *testing.T) {
+	t.Parallel()
 	for _, page := range []struct{ path, id, column string }{
 		{"/terms", "terms", `<th scope="col">Defined in code</th>`},
 		{"/personas", "personas", `<th scope="col" class="numeric">Stories served</th>`},
@@ -115,6 +118,7 @@ func TestEachDirectoryRendersAsATableOfCounts(t *testing.T) {
 // The server-side filter is the whole of the no-JavaScript path: ?q= comes
 // back with the rows that do not match already hidden.
 func TestTheServerAppliesTheFilterItWasGiven(t *testing.T) {
+	t.Parallel()
 	body := dogfoodOK(t, "/terms?q=persona")
 	if !strings.Contains(body, `<tr hidden data-directory-row=`) {
 		t.Fatal("?q= must hide the rows it rules out")
@@ -130,6 +134,7 @@ func TestTheServerAppliesTheFilterItWasGiven(t *testing.T) {
 // /personas used to answer 404 while /personas/{id} answered: the section had
 // records but no directory. Every app-level section has one now.
 func TestEveryAppSectionAnswersAtItsOwnPath(t *testing.T) {
+	t.Parallel()
 	for _, path := range []string{"/", "/terms", "/personas", "/flags", "/features", designSystemPath} {
 		if code, body := dogfoodPage(t, path); code != http.StatusOK {
 			t.Fatalf("GET %s = %d\n%s", path, code, body)
@@ -140,6 +145,7 @@ func TestEveryAppSectionAnswersAtItsOwnPath(t *testing.T) {
 // The overview is the one section that is prose. It still says what the app
 // is made of, and how much of each part there is.
 func TestTheOverviewNamesItsPartsWithTheirCounts(t *testing.T) {
+	t.Parallel()
 	body := dogfoodOK(t, "/")
 	for _, part := range []string{"Personas", "Terms and vocabulary", "Design system", "Onboarding", "Feature flags"} {
 		if !strings.Contains(body, `data-overview-part="`+part+`"`) {
@@ -162,6 +168,7 @@ func TestTheOverviewNamesItsPartsWithTheirCounts(t *testing.T) {
 // page itself keeps the device's width and a keyboard reader can still reach
 // every column. The table inside keeps its caption and header semantics.
 func TestDirectoryTableScrollsInsideItsOwnRegion(t *testing.T) {
+	t.Parallel()
 	tmpl, err := newPageTemplate()
 	if err != nil {
 		t.Fatal(err)

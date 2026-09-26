@@ -12,6 +12,7 @@ import (
 )
 
 func TestClaimsAndVerificationsAreIndependentAppendOnlyRecords(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	repo, commit := sourceRepo(t, map[string]string{"worker.go": "package worker\n\n// one\n// two\n// three\n// four\n// five\n"})
 	location := commit + ":worker.go#L3-L7"
@@ -63,6 +64,7 @@ func TestClaimsAndVerificationsAreIndependentAppendOnlyRecords(t *testing.T) {
 }
 
 func TestClaimFailuresDoNotWriteRecords(t *testing.T) {
+	t.Parallel()
 	root := newAuthoredSaga(t)
 	repo, commit := sourceRepo(t, map[string]string{"worker.go": "package worker\n"})
 	var output bytes.Buffer

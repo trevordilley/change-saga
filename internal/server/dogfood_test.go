@@ -129,6 +129,7 @@ func (w *disconnectedWriter) Write([]byte) (int, error) {
 // page used to report the failed write with http.Error, a second WriteHeader
 // that the server logged as superfluous.
 func TestPageWritesItsStatusOnceWhenTheClientGoesAway(t *testing.T) {
+	t.Parallel()
 	root := validServerSaga(t)
 	writer := &disconnectedWriter{header: http.Header{}}
 	(&app{root: root, sourceDir: root, template: serverTemplate(t)}).page(writer, httptest.NewRequest(http.MethodGet, "/", nil))
@@ -140,6 +141,7 @@ func TestPageWritesItsStatusOnceWhenTheClientGoesAway(t *testing.T) {
 // Only a review's slides are review slides. The slide viewer names an
 // implementation deck's and the onboarding deck's slides for what they are.
 func TestSlideViewerNamesSlidesByTheirDeckRole(t *testing.T) {
+	t.Parallel()
 	if strings.Contains(pageStyles, "Review slide") {
 		t.Fatal("the slide viewer still labels documentation slides as review slides")
 	}
@@ -159,6 +161,7 @@ func TestSlideViewerNamesSlidesByTheirDeckRole(t *testing.T) {
 // Sidebar titles wrap instead of truncating, and a row's note never squeezes
 // its title: "Design system" read as "Design syste" beside its gap note.
 func TestSidebarTitlesWrapInsteadOfTruncating(t *testing.T) {
+	t.Parallel()
 	for _, rule := range []string{
 		".doc-tree .doc-link{white-space:normal;",
 		".doc-row:has(>.doc-note){flex-wrap:wrap}",
@@ -174,6 +177,7 @@ func TestSidebarTitlesWrapInsteadOfTruncating(t *testing.T) {
 // Terms and vocabulary stays shut away from the terms pages, so a story page's
 // sidebar still shows the features.
 func TestVocabularyOpensOnlyOnTheTermsPages(t *testing.T) {
+	t.Parallel()
 	vocabularyOpen := func(page string) bool {
 		return strings.Contains(page, `aria-expanded="true" aria-controls="nav-terms"`)
 	}
@@ -186,6 +190,7 @@ func TestVocabularyOpensOnlyOnTheTermsPages(t *testing.T) {
 }
 
 func TestSlideThumbnailCaptionsWrap(t *testing.T) {
+	t.Parallel()
 	if strings.Contains(pageStyles, ".slide-thumbnail-title{display:block;min-width:0;flex:1;color:inherit;font:11.5px/1.3 var(--ui);overflow:hidden;text-overflow:ellipsis") {
 		t.Fatal("slide captions still truncate")
 	}
@@ -194,6 +199,7 @@ func TestSlideThumbnailCaptionsWrap(t *testing.T) {
 // Finding 28: every persona has a page with its description, the stories
 // that serve it, and its terms, and the sidebar links to it.
 func TestEveryPersonaHasAPage(t *testing.T) {
+	t.Parallel()
 	_, records, _ := dogfoodRecords(t)
 	if len(records.Personas) == 0 {
 		t.Skip("the app Saga names no personas")
@@ -220,6 +226,7 @@ func TestEveryPersonaHasAPage(t *testing.T) {
 // and summary, and a feature's design chapters render there, not as top-level
 // chapters of the app overview.
 func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
+	t.Parallel()
 	document, records, tests := dogfoodRecords(t)
 	root := dogfoodOK(t, "/")
 	for _, feature := range document.Features {
@@ -280,6 +287,7 @@ func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 // has a page with its definition, the criteria it verifies, its evidence
 // code, and its runs.
 func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
+	t.Parallel()
 	_, records, tests := dogfoodRecords(t)
 	if len(tests.TestCases) == 0 {
 		t.Skip("the app Saga has no test cases")
@@ -391,6 +399,7 @@ func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
 // Finding 31: /requirements groups stories under their features and no longer
 // titles the elevator pitch "Rationale".
 func TestRequirementsOverviewIsGroupedByFeature(t *testing.T) {
+	t.Parallel()
 	_, records, _ := dogfoodRecords(t)
 	page := dogfoodOK(t, "/requirements")
 	page = page[strings.Index(page, "data-requirements-page"):]
@@ -468,6 +477,7 @@ func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
 // Finding 32: the overview's coverage line is replaced once it can be read,
 // instead of saying "Building the review index…" forever.
 func TestOverviewCoverageLineIsFilledIn(t *testing.T) {
+	t.Parallel()
 	root := dogfoodOK(t, "/")
 	if !strings.Contains(root, `data-totals-href="/api/totals"`) || strings.Contains(root, "Building the review index") {
 		t.Fatal("the observed overview does not ask for its coverage line")
@@ -483,6 +493,7 @@ func TestOverviewCoverageLineIsFilledIn(t *testing.T) {
 // Comparing, the coverage line waits for the comparison: the totals endpoint
 // asks the browser to retry while it builds, so the line updates when ready.
 func TestComparedCoverageLineRetriesWhileTheComparisonBuilds(t *testing.T) {
+	t.Parallel()
 	application := &app{rng: gitdiff.Range{Against: "main"}}
 	application.cache.building = true
 	recorder := httptest.NewRecorder()
@@ -545,6 +556,7 @@ func documentationReviewControl(page string) string {
 }
 
 func TestDocumentationControlDetectionAllowsReviewActionProse(t *testing.T) {
+	t.Parallel()
 	if got := documentationReviewControl(`<p>Choosing Request changes records a decision; Approve slide records approval.</p>`); got != "" {
 		t.Fatalf("review-action prose was treated as a control: %s", got)
 	}

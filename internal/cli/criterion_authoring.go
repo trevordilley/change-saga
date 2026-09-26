@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
@@ -31,6 +32,8 @@ type criterionMutationRequest struct {
 }
 
 func Criterion(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return criterion(ctx, args, out, os.Stdin)
 }
 

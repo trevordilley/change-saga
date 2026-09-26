@@ -8,6 +8,7 @@ import (
 )
 
 func TestStoryWithdrawReplaysIdenticalRequestAndStillRefusesAcceptedIntent(t *testing.T) {
+	t.Parallel()
 	root := newLivingSaga(t)
 	withdrawn := addStory(t, root, testFeature, "duplicate").Resource
 	args := []string{

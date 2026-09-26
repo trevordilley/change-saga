@@ -139,6 +139,7 @@ func targets(records []any) []string {
 }
 
 func TestInventoryQueryIntentNewnessScopeAndUnresolved(t *testing.T) {
+	t.Parallel()
 	f := newInventoryQueryFixture(t)
 	q := func(args ...string) (map[string]any, map[string]any) {
 		data, page, _ := inventoryEnvelope(t, append([]string{"inventory", "--saga", f.root, "--repo", f.repo}, args...)...)
@@ -228,6 +229,7 @@ func TestInventoryQueryIntentNewnessScopeAndUnresolved(t *testing.T) {
 }
 
 func TestInventoryUsesQuery(t *testing.T) {
+	t.Parallel()
 	f := newInventoryQueryFixture(t)
 	q := func(args ...string) (map[string]any, map[string]any, string) {
 		return inventoryEnvelope(t, append([]string{"inventory-uses", "--saga", f.root}, args...)...)
@@ -270,6 +272,7 @@ func TestInventoryUsesQuery(t *testing.T) {
 }
 
 func TestInventoryCoverageQuery(t *testing.T) {
+	t.Parallel()
 	f := newInventoryQueryFixture(t)
 	q := func(args ...string) (map[string]any, map[string]any) {
 		data, page, _ := inventoryEnvelope(t, append([]string{"inventory-coverage", "--saga", f.root, "--repo", f.repo}, args...)...)
@@ -319,6 +322,7 @@ func TestInventoryCoverageQuery(t *testing.T) {
 }
 
 func TestReconcileInventoryImpact(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 	f := newInventoryQueryFixture(t)
 	writeFile(t, filepath.Join(f.repo, "flags.go"), "package flags\n\nvar enabled = false\n\nfunc Read() bool { return enabled }\n\nfunc Write(v bool) { enabled = v }\n")

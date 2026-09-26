@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -30,6 +31,8 @@ var overviewParts = map[string]overviewPart{
 
 // Overview dispatches the overview command family.
 func Overview(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
 	return overviewCommand(ctx, args, out, os.Stdin)
 }
 
