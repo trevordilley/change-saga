@@ -6,6 +6,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"log"
+	"runtime/debug"
 	"sort"
 	"strings"
 	"sync"
@@ -60,6 +62,9 @@ type relatedReviewIndex struct {
 	// shown to a reader.
 	Reviews int
 	Elapsed time.Duration
+	// incomplete is set when some review's intersection panicked: the index
+	// answers the request that built it without that review, and is not kept.
+	incomplete bool
 }
 
 // For names the reviews that touched one record, or nothing.
@@ -139,8 +144,9 @@ func (a *app) relatedReviews(ctx context.Context) *relatedReviewIndex {
 	}
 	index := buildRelatedReviews(ctx, a.sourceDir, full, records, resolver, a.related.touched)
 	// A build the request abandoned may have read nothing for some reviews;
-	// it answers that request and is kept for no other.
-	if err == nil && ctx.Err() == nil {
+	// it answers that request and is kept for no other. So does one that
+	// left out a review whose intersection panicked.
+	if err == nil && ctx.Err() == nil && !index.incomplete {
 		a.related.fingerprint, a.related.index = fingerprint, index
 		a.related.builds++
 	}
@@ -187,6 +193,57 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 		records map[string]bool
 	}
 	results := make([]*touchedReview, len(document.Reviews))
+	var panicked atomic.Bool
+	relate := func(position int) {
+		review := document.Reviews[position]
+		// A worker runs outside the request's handler, so nothing else would
+		// recover a panic here; it would stop the server. The review is left
+		// out of this build instead, and the build is not kept.
+		defer func() {
+			if recovered := recover(); recovered != nil {
+				panicked.Store(true)
+				log.Printf("change-saga: relating review %s to the documentation panicked: %v\n%s", review.ID, recovered, debug.Stack())
+			}
+		}()
+		rng, err := reviewstate.ResolveRange(ctx, sourceDir, review)
+		if err != nil {
+			return
+		}
+		key := rng.BaseOID + "\x00" + rng.HeadOID + "\x00" + code + "\x00" + attributes
+		touchedMutex.Lock()
+		targets, known := touched[key]
+		used[key] = true
+		touchedMutex.Unlock()
+		if !known {
+			settled := &settledResolver{resolver: resolver}
+			targets, err = touchedTargets(ctx, sourceDir, document, documented, rng, settled)
+			if err != nil {
+				return
+			}
+			// Only an answer decided by the range and the code alone
+			// is kept under them: not one a failed or abandoned read,
+			// or a pinned commit this repository lacks, had a part in.
+			if !settled.provisional.Load() && ctx.Err() == nil {
+				touchedMutex.Lock()
+				touched[key] = targets
+				touchedMutex.Unlock()
+			}
+		}
+		view := relatedReviewView{ID: review.ID, Title: review.Title, Href: reviewHref(review.ID), Merged: review.Merged != nil}
+		if view.Title == "" {
+			view.Title = review.ID
+		}
+		if review.PullRequest != nil {
+			view.Number = review.PullRequest.Number
+		}
+		result := &touchedReview{view: view, records: map[string]bool{}}
+		for _, target := range targets {
+			for _, record := range chain.recordsFor(target) {
+				result.records[record] = true
+			}
+		}
+		results[position] = result
+	}
 	jobs := make(chan int)
 	workers := min(len(document.Reviews), 8)
 	var wait sync.WaitGroup
@@ -195,45 +252,7 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 		go func() {
 			defer wait.Done()
 			for position := range jobs {
-				review := document.Reviews[position]
-				rng, err := reviewstate.ResolveRange(ctx, sourceDir, review)
-				if err != nil {
-					continue
-				}
-				key := rng.BaseOID + "\x00" + rng.HeadOID + "\x00" + code + "\x00" + attributes
-				touchedMutex.Lock()
-				targets, known := touched[key]
-				used[key] = true
-				touchedMutex.Unlock()
-				if !known {
-					settled := &settledResolver{resolver: resolver}
-					targets, err = touchedTargets(ctx, sourceDir, document, documented, rng, settled)
-					if err != nil {
-						continue
-					}
-					// Only an answer decided by the range and the code alone
-					// is kept under them: not one a failed or abandoned read,
-					// or a pinned commit this repository lacks, had a part in.
-					if !settled.provisional.Load() && ctx.Err() == nil {
-						touchedMutex.Lock()
-						touched[key] = targets
-						touchedMutex.Unlock()
-					}
-				}
-				view := relatedReviewView{ID: review.ID, Title: review.Title, Href: reviewHref(review.ID), Merged: review.Merged != nil}
-				if view.Title == "" {
-					view.Title = review.ID
-				}
-				if review.PullRequest != nil {
-					view.Number = review.PullRequest.Number
-				}
-				result := &touchedReview{view: view, records: map[string]bool{}}
-				results[position] = result
-				for _, target := range targets {
-					for _, record := range chain.recordsFor(target) {
-						result.records[record] = true
-					}
-				}
+				relate(position)
 			}
 		}()
 	}
@@ -260,6 +279,7 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 		rows := index.byRecord[record]
 		sort.SliceStable(rows, func(i, j int) bool { return rows[i].ID < rows[j].ID })
 	}
+	index.incomplete = panicked.Load()
 	index.Elapsed = time.Since(started)
 	return index
 }

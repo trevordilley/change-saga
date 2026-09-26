@@ -15,6 +15,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -277,5 +278,37 @@ func TestRelatedReviewsFollowAnEditToTheRecords(t *testing.T) {
 		changed, digests[changed]))
 	if body := documentationPage(t, handler, path); !strings.Contains(body, `data-related-review="pr-7"`) {
 		t.Fatalf("%s does not list the review after a record related it:\n%s", path, relatedReviewSection(body))
+	}
+}
+
+// panickingResolver panics on every reference it is asked about, as a bug
+// in resolving one review's code would.
+type panickingResolver struct{}
+
+func (panickingResolver) Resolve(context.Context, coderef.Reference, string) coderesolve.Resolution {
+	panic("resolving a reference failed")
+}
+
+// A review whose intersection panics is left out of that build instead of
+// stopping the server, and the build is not kept, so the next request asks
+// again rather than serving an index that is missing the review.
+func TestAPanicRelatingAReviewLeavesItOutAndKeepsNothing(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	documentTheFixture(t, fixture)
+	document, validation, err := saga.Load(fixture.root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("load the fixture Saga: %v %v", err, validation)
+	}
+	records, err := requirements.Load(fixture.root, document.Manifest.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	touched := map[string][]string{}
+	index := buildRelatedReviews(requestContext(t), fixture.root, document, records, panickingResolver{}, touched)
+	if !index.incomplete {
+		t.Fatal("a build in which a review's intersection panicked is not marked incomplete")
+	}
+	if index.Reviews != 0 || len(touched) != 0 {
+		t.Fatalf("the panicking review was related (%d reviews) or its intersection kept (%d)", index.Reviews, len(touched))
 	}
 }
