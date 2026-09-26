@@ -3,7 +3,7 @@
 #
 # Builds real archives for the host platform, windows/amd64, and the example
 # Saga. It asserts the shapes release consumers depend on: flat executable
-# bundles for each platform, one rooted app.saga tree for the example, checksum
+# bundles for each platform, one rooted change.saga tree for the example, checksum
 # sidecars `sha256sum -c` can consume, and timestamps that honor
 # SOURCE_DATE_EPOCH.
 #
@@ -210,20 +210,20 @@ example_archive="change-saga-example.saga.zip"
 "$repo_root/scripts/build-example-saga.sh" "$example_dist" >/dev/null
 unzip -Z1 "$example_dist/$example_archive" > "$work/example-names"
 
-expected_example_files="$(find "$repo_root/app.saga" -type f | wc -l | tr -d ' ')"
+expected_example_files="$(find "$repo_root/change.saga" -type f | wc -l | tr -d ' ')"
 actual_example_files="$(wc -l < "$work/example-names" | tr -d ' ')"
 assert_eq "example archive includes every Saga file" "$expected_example_files" "$actual_example_files"
 if awk '
-	index($0, "app.saga/") != 1 ||
+	index($0, "change.saga/") != 1 ||
 	$0 ~ /(^|\/)\.\.?($|\/)/ ||
 	substr($0, length($0), 1) == "/" { bad = 1 }
 	END { exit bad }
 ' "$work/example-names"; then
-	record "example archive stays under one app.saga directory" 0
+	record "example archive stays under one change.saga directory" 0
 else
-	record "example archive stays under one app.saga directory" 1
+	record "example archive stays under one change.saga directory" 1
 fi
-if grep -Fx 'app.saga/saga.json' "$work/example-names" >/dev/null; then
+if grep -Fx 'change.saga/saga.json' "$work/example-names" >/dev/null; then
 	record "example archive contains its Saga manifest" 0
 else
 	record "example archive contains its Saga manifest" 1
@@ -235,7 +235,7 @@ assert_sidecar "example archive" "$example_dist" "$example_archive"
 example_unpack="$work/unpack-example"
 mkdir -p "$example_unpack"
 unzip -q "$example_dist/$example_archive" -d "$example_unpack"
-if "$unpack/change-saga" validate "$example_unpack/app.saga" >/dev/null; then
+if "$unpack/change-saga" validate "$example_unpack/change.saga" >/dev/null; then
 	record "released binary validates the downloaded example Saga" 0
 else
 	record "released binary validates the downloaded example Saga" 1
