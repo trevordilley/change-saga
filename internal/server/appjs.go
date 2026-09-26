@@ -2918,7 +2918,16 @@ const appJavaScript = `(() => {
       if (!(link instanceof HTMLAnchorElement)) return;
       if (link.matches(pageActionLinks)) { event.preventDefault(); return; }
       const destination = new URL(link.href, location.href);
-      if (destination.origin !== location.origin || pageKey(destination.href) !== renderedPage) return;
+      // htmx boosts any link to this host name, even on another port or
+      // scheme, and then refuses to request it from another origin, having
+      // already kept the browser from following it. Such a link is followed
+      // the ordinary way instead of doing nothing.
+      if (destination.origin !== location.origin) {
+        event.preventDefault();
+        location.assign(destination.href);
+        return;
+      }
+      if (pageKey(destination.href) !== renderedPage) return;
       event.preventDefault();
       followWithinPage(destination, link);
     });

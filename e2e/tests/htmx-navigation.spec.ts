@@ -160,3 +160,18 @@ test("a Saga edited while it is read reaches the kept sidebar on the next page",
   await expect(contents.locator('a[href="/personas/navigator"]')).toHaveCount(1);
   expect((await shellKept(page)).document).toBe(true);
 });
+
+test("a link to this host on another port leaves the reviewer", async ({ page, saga }) => {
+  // htmx boosts a link by its host name alone, then refuses to request
+  // another origin; the link must still be followed.
+  const here = new URL(saga.baseURL);
+  const elsewhere = new URL(`${here.protocol}//${here.hostname}:${here.port === "3000" ? "3001" : "3000"}/elsewhere`);
+  await page.route(`${elsewhere.origin}/**`, (route) => route.fulfill({ contentType: "text/html", body: "<title>Elsewhere</title><h1>Elsewhere</h1>" }));
+  await page.evaluate((href) => {
+    document.querySelector("#page")!.insertAdjacentHTML("beforeend", `<a id="elsewhere" href="${href}">Elsewhere</a>`);
+  }, elsewhere.href);
+  await page.waitForFunction(() => Boolean((document.getElementById("elsewhere") as unknown as { "htmx-internal-data"?: unknown })["htmx-internal-data"]));
+  await page.locator("#elsewhere").click();
+  await expect(page).toHaveURL(elsewhere.href);
+  await expect(page.locator("h1")).toHaveText("Elsewhere");
+});
