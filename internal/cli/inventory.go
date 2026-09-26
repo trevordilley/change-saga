@@ -59,7 +59,7 @@ func technicalOperation(ctx context.Context, kind string, args []string, out io.
 		return err
 	}
 	if manifest.Version != 5 {
-		return fmt.Errorf("technical inventory documentation requires an app Saga (v5)")
+		return fmt.Errorf("technical inventory documentation requires a v5 Saga")
 	}
 	var result requirements.MutationResult
 	switch op {

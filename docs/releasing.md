@@ -9,7 +9,7 @@ publishing a release is a tag push and nothing else.
 | `.github/workflows/ci.yml` | Unsigned tests, lint, workflow-policy checks, and cross-platform build. Runs on every pull request, including forks. |
 | `.github/workflows/release.yml` | Tag-push publication or manual rehearsal, optional macOS signing/notarization, checksums, provenance, and the GitHub Release. |
 | `scripts/build-release.sh` | Builds and archives one `GOOS/GOARCH` target. Used by both workflows. |
-| `scripts/build-example-saga.sh` | Packages the repository's validated `app.saga` as one reproducible, platform-neutral download. |
+| `scripts/build-example-saga.sh` | Packages the repository's validated `change.saga` as one reproducible, platform-neutral download. |
 | `scripts/build-macos-standalone-installer.sh` | Wraps an Apple Silicon archive in one self-contained `.command` file for direct handoff. |
 | `scripts/install.sh` | The `curl \| sh` installer for macOS and Linux. |
 | `scripts/install.ps1` | The `irm \| iex` installer for Windows PowerShell. |
@@ -152,10 +152,10 @@ in `internal/cli` are injected with `-ldflags -X`;
 the tagged revision's object ID, and `BuildDate` is UTC.
 
 `change-saga-example.saga.zip` is platform-neutral and expands into one
-`app.saga` directory. The release workflow validates both the source Saga and
+`change.saga` directory. The release workflow validates both the source Saga and
 the packaged copy with the release binary before publication. Its entries are
 sorted, timestamped from `SOURCE_DATE_EPOCH`, normalized to mode `0644`, and
-restricted to regular files under the archive's `app.saga/` root. The stable
+restricted to regular files under the archive's `change.saga/` root. The stable
 asset name makes the latest release directly downloadable from:
 
 ```text

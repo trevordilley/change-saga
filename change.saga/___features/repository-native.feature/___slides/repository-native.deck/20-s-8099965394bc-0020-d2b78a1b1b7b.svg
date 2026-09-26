@@ -15,7 +15,7 @@
   <g id="verify-checkout"><rect x="760" y="122" width="180" height="54" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><text class="t h" x="788" y="155">Source checkout</text><path class="life" d="M850 176 V650"/></g>
   <g id="write-cursor"><rect x="1000" y="122" width="218" height="54" rx="14" fill="#fff7ed" stroke="#d97706" stroke-width="2"/><text class="t h" x="1030" y="145">Cursor store</text><text class="t mono" x="1030" y="165">sync.json</text><path class="life" d="M1109 176 V650"/></g>
 
-  <path class="msg" d="M133 224 H365"/><text class="t b" x="172" y="215">1 · sync --repo source app.saga</text>
+  <path class="msg" d="M133 224 H365"/><text class="t b" x="172" y="215">1 · sync --repo source change.saga</text>
   <path class="msg" d="M365 286 H610"/><text class="t b" x="404" y="277">2 · locate Saga repository</text>
   <rect x="512" y="304" width="196" height="48" rx="12" fill="#fee2e2" stroke="#dc2626"/><text class="t b" x="530" y="326">same checkout?</text><text class="t tag" x="530" y="344" fill="#b91c1c">RETURN: NO CURSOR MODE</text>
   <path class="ret" d="M610 352 H365"/>

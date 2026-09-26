@@ -187,8 +187,8 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "init", Status: StatusImplemented, Mutates: true, Writes: []string{"saga", "overview-pitch", "overview-description"},
-		Usage:   "change-saga init [flags] <name.saga>",
-		Summary: "create the app Saga: the saga.json manifest, a reviewer README, and the app overview under ___overview",
+		Usage:   "change-saga init [flags] [name.saga]",
+		Summary: "create the repository's Saga (by default change.saga, the recommended one per repository): the saga.json manifest, a reviewer README, and the app overview under ___overview",
 		Flags: []Flag{
 			{Name: "allow-local-repository", Description: "persist a local file:// repository identity when origin is unavailable"},
 			{Name: "allow-repository-mismatch", Description: "accept an explicitly declared repository that differs from origin"},
@@ -197,15 +197,15 @@ var contentCommands = []Command{
 			optional("repository", "REPOSITORY", "portable absolute source repository URI; defaults to origin"),
 			optional("title", "TEXT", "saga title"),
 		},
-		Positionals: []string{"<name.saga>"},
+		Positionals: []string{"[name.saga]"},
 	},
 	{
 		Name: "setup-initial-saga", Status: StatusImplemented,
 		Usage:   "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
-		Summary: "print the guarded, one-time agent workflow for establishing or intentionally overhauling the app Saga",
+		Summary: "print the guarded, one-time agent workflow for establishing or intentionally overhauling the repository's Saga",
 		Flags: []Flag{
 			{Name: "overhaul", Description: "emit the workflow despite an existing Saga; use only for an intentional documentation overhaul"},
-			optional("repo", "PATH", "repository to inspect for an existing app Saga"),
+			optional("repo", "PATH", "repository to inspect for an existing Saga"),
 		},
 		Positionals: []string(nil),
 	},

@@ -5,7 +5,7 @@
   "rank": 10,
   "kind": "example",
   "label": "Build and validate",
-  "description": "From the repository root, check Go, build ./cmd/change-saga into ./bin/change-saga, inspect help, then validate app.saga. GOTOOLCHAIN=local can enforce the installed toolchain.",
+  "description": "From the repository root, check Go, build ./cmd/change-saga into ./bin/change-saga, inspect help, then validate change.saga. GOTOOLCHAIN=local can enforce the installed toolchain.",
   "selector": {
     "type": "element",
     "element_id": "build"

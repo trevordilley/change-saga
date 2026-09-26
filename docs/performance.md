@@ -70,9 +70,10 @@ The browser suite builds its own fixed saga through the real CLI
 (`largeSagaScale` in `e2e/support/fixture-builder.ts`): 6 chapters, 18
 fragments, and 1,536 changed lines across 32 files, fully covered.
 
-This repository's former `change.saga` is the reference workload for
+This repository's former per-change `change.saga`, unrelated to today's
+repository Saga of the same name, is the reference workload for
 investigation; it was removed with the move to one app Saga, and `git show
-24fd9cfhange.saga/saga.json` (with `git worktree add` at 24fd9cf) recovers it. It has 38,209 changed lines across 183 files and 154 narrative
+24fd9cf:change.saga/saga.json` (with `git worktree add` at 24fd9cf) recovers it. It has 38,209 changed lines across 183 files and 154 narrative
 targets, which is roughly nine times the generated fixture.
 
 ## Budgets

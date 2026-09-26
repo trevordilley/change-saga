@@ -44,7 +44,7 @@ type inventoryEntry struct {
 func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 	flags := flag.NewFlagSet("query inventory", flag.ContinueOnError)
 	flags.SetOutput(io.Discard)
-	root := flags.String("saga", "", "app Saga root")
+	root := flags.String("saga", "", "Saga root")
 	repo := flags.String("repo", "", "source checkout")
 	target := flags.String("target", "", "canonical technical URN")
 	kind := flags.String("kind", "", "component, system, data-entity, erd or erd-overlay")

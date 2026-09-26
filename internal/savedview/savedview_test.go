@@ -146,3 +146,25 @@ func TestExtractTreeFailureDoesNotWaitOnUnreadBlobs(t *testing.T) {
 		t.Fatal("extraction hung waiting on git cat-file after a write failure")
 	}
 }
+
+// A Saga renamed since the view was saved, as app.saga became change.saga,
+// is read where it was at the view's commit.
+func TestLoadReadsARenamedSagaWhereItWasAtTheView(t *testing.T) {
+	ctx := context.Background()
+	repo := t.TempDir()
+	runGit(t, repo, "init", "-q", "-b", "main")
+	writeFile(t, filepath.Join(repo, "main.go"), "package main\n")
+	writeManifest(t, filepath.Join(repo, "app.saga"), "app", repository)
+	before := commitAll(t, repo, "valid saga")
+	runGit(t, repo, "mv", "app.saga", "change.saga")
+	commitAll(t, repo, "rename the Saga")
+	root := filepath.Join(repo, "change.saga")
+	current, err := saga.ReadManifest(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	view, err := Load(ctx, repo, root, current, before)
+	if err != nil || view.Commit != before || view.Artifact != "git:"+before+":app.saga" {
+		t.Fatalf("view from before the rename: %+v %v", view, err)
+	}
+}

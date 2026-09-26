@@ -25,7 +25,9 @@ review deck → reconcile living documentation → check again workflow.
 ## Design notes
 
 These record why the tool looks the way it does. They are history and intent,
-not a contract — where they disagree with the code, the code is current.
+not a contract — where they disagree with the code, the code is current. Notes
+written before this repository's Saga was renamed call it by its former name,
+`app.saga`; it is now [`change.saga`](../change.saga).
 
 | | |
 | --- | --- |
@@ -33,7 +35,7 @@ not a contract — where they disagree with the code, the code is current.
 | [ux-reframe.md](ux-reframe.md) | Historical v2/v3 chapter-reader direction and the secondary code-workspace rationale. |
 | [review-ux-improvements.md](review-ux-improvements.md) | Current v5 pull-request slide-deck contract, fidelity audit, and verification record. |
 | [review-experience-audit.md](review-experience-audit.md) | Historical audit behind the v2/v3 chapter-reader reframe; explicitly superseded for pull-request decks. |
-| [app-saga.md](app-saga.md) | The agreed goals and execution plan for one app Saga: durable features, personas, code references instead of stored diffs, and opening a Saga to observe or to compare. |
+| [repository-saga.md](repository-saga.md) | The agreed goals and execution plan for the repository's Saga (one `change.saga` per repository, the recommended idiom): durable features, personas, code references instead of stored diffs, and opening a Saga to observe or to compare. |
 | [requirements-design-quality-lifecycle.md](requirements-design-quality-lifecycle.md) | The plan behind the one Saga: from prototypes and requirements through design, exact implementation traceability, quality evidence, and completed review. |
 | [ai-facing-interface.md](ai-facing-interface.md) | The application boundary an AI client uses instead of walking `*.chapter` and `___review` paths directly. |
 | [ai-query-security-test-plan.md](ai-query-security-test-plan.md) | Adversarial acceptance cases and reusable fixture contract for the AI query boundary. |

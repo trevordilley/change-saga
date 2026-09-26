@@ -28,16 +28,16 @@ affected. Without it, the scope is the whole app. `--feature` narrows either.
 
 ```sh
 # Account for changed lines in living documentation.
-change-saga check --against origin/main --covers implementation app.saga
+change-saga check --against origin/main --covers implementation change.saga
 
 # Check current health independently from diff-side accounting.
-change-saga check --covers health app.saga
+change-saga check --covers health change.saga
 
 # Explain baseline debt, regressions and affected records with repair paths.
-change-saga reconcile --against origin/main --json app.saga
+change-saga reconcile --against origin/main --json change.saga
 
 # A stricter rule for one mature feature only.
-change-saga check --against origin/main --feature checkout --covers implementation,stories,design,quality app.saga
+change-saga check --against origin/main --feature checkout --covers implementation,stories,design,quality change.saga
 ```
 
 Comparison coverage may accept references valid at the base for deleted lines.
@@ -76,7 +76,7 @@ covers it in `via`. There is never one blended score: a rule names the areas
 and thresholds it cares about.
 
 ```sh
-status=$(change-saga status --json --against origin/main app.saga) || exit 1
+status=$(change-saga status --json --against origin/main change.saga) || exit 1
 
 # Comparison implementation and comparison health must be complete.
 # Also run the independent HEAD health/reconciliation checks above.

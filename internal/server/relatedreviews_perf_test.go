@@ -49,25 +49,25 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 	started = time.Now()
 	application.relatedReviews(requestContext(t))
 	warm := time.Since(started)
-	t.Logf("app.saga: %d features, %d stories, %d test cases, %d reviews; %d code references; cold %s (intersection %s), warm %s, builds %d",
+	t.Logf("change.saga: %d features, %d stories, %d test cases, %d reviews; %d code references; cold %s (intersection %s), warm %s, builds %d",
 		len(document.Features), len(records.Stories), len(tests.TestCases), len(document.Reviews),
 		documentedReferenceCount(document), cold, index.Elapsed, warm, application.related.builds)
 	if len(document.Reviews) == 0 && cold > 100*time.Millisecond {
 		t.Fatalf("a Saga with no reviews paid %s for related reviews", cold)
 	}
 
-	// A review over the range that last changed the file app.saga documents,
+	// A review over the range that last changed the file change.saga documents,
 	// so the measurement includes the work of an intersection that hits.
 	touching := copyDogfoodSagaWithReview(t, "pr-resolve", lastCommitTouching(t, "internal/coderesolve/resolve.go"))
 	hitting := &app{root: touching, sourceDir: ".."}
 	started = time.Now()
 	hit := hitting.relatedReviews(requestContext(t))
-	t.Logf("app.saga + 1 review of the commit that changed the documented file: cold %s, %d records list it", time.Since(started), len(hit.byRecord))
+	t.Logf("change.saga + 1 review of the commit that changed the documented file: cold %s, %d records list it", time.Since(started), len(hit.byRecord))
 	if len(hit.byRecord) == 0 {
 		t.Fatal("a review of the very commit that changed the documented code was related to nothing")
 	}
 
-	// app.saga has no reviews of its own yet, so the cross product is measured
+	// change.saga has no reviews of its own yet, so the cross product is measured
 	// over a copy of it given real pull-request-sized ranges of this repository.
 	for _, reviews := range []int{1, 5, 20} {
 		root := copyDogfoodSagaWithReviews(t, reviews)
@@ -77,7 +77,7 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 		elapsed := time.Since(started)
 		started = time.Now()
 		measured.relatedReviews(requestContext(t))
-		t.Logf("app.saga + %d reviews: cold %s (intersection %s, %d records with a review), warm %s",
+		t.Logf("change.saga + %d reviews: cold %s (intersection %s, %d records with a review), warm %s",
 			reviews, elapsed, built.Elapsed, len(built.byRecord), time.Since(started))
 	}
 }
@@ -96,7 +96,7 @@ func lastCommitTouching(t *testing.T, path string) string {
 	return commit
 }
 
-// copyDogfoodSagaWithReview is app.saga with one review of exactly commit.
+// copyDogfoodSagaWithReview is change.saga with one review of exactly commit.
 func copyDogfoodSagaWithReview(t *testing.T, id, commit string) string {
 	t.Helper()
 	root := copySaga(t)
@@ -121,14 +121,14 @@ func copySaga(t *testing.T) string {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { os.RemoveAll(dir) })
-	root := filepath.Join(dir, "app.saga")
+	root := filepath.Join(dir, "change.saga")
 	if err := os.CopyFS(root, os.DirFS(dogfoodSaga)); err != nil {
 		t.Fatal(err)
 	}
 	return root
 }
 
-// copyDogfoodSagaWithReviews is app.saga with count reviews, each over a real
+// copyDogfoodSagaWithReviews is change.saga with count reviews, each over a real
 // range of this repository. Only the range matters to the intersection: the
 // deck is what a review explains, not what it changed.
 func copyDogfoodSagaWithReviews(t *testing.T, count int) string {

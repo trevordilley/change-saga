@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased — change.saga, one Saga per repository
+
+- `change-saga init` with no path creates `change.saga` in the `--repo`
+  directory, the current directory by default. A Saga named `change.saga` takes its default id and title from the
+  repository's origin remote (without `.git`), or from the checkout's top-level
+  directory when there is no origin, so its id is the repository's name rather
+  than `change`. Explicitly named Sagas and `--id`/`--title` are unchanged.
+- One Saga per repository, `change.saga` at its root, is the recommended idiom
+  in help, `init`, `setup-initial-saga`, the skill, and the docs; a monorepo
+  documents each app as features of its one Saga. It is not enforced: when the
+  repository already has a Saga, `init` still creates the new one and only
+  prints a note naming the existing one. Validation, `status`, and `check` are
+  unchanged.
+- This repository's own Saga is now `change.saga`, formerly `app.saga`. The
+  downloadable `change-saga-example.saga.zip` expands to `change.saga`.
+- A Saga renamed with `git mv` (for example `app.saga` to `change.saga`) keeps
+  its past. Record history, comparison commit reasons, comparisons, saved
+  views (`--view`, technical newness), sync-cursor history, and `preintegrate`
+  read the Saga where it was at each commit; a record is still introduced where
+  it was, and a move that left it unchanged is not one of its changes. A move
+  is the same Saga only when the manifest `id` is unchanged and most files
+  arrive byte for byte; otherwise, and before the Saga's first commit, an
+  unrelated Saga that once had its name, or was replaced in the same commit, is
+  never read as its past.
+
 ## Unreleased — Technical inventory format 2 (proposed and implemented design)
 
 - **Format:** Add inventory format 2, adopted only by an explicit

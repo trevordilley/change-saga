@@ -18,7 +18,7 @@ var setupInitialSagaPrompt string
 // not create or modify a Saga; the coding agent follows the emitted workflow.
 func SetupInitialSaga(args []string, out io.Writer) error {
 	flags := commandFlags("setup-initial-saga", commandUsage["setup-initial-saga"], out)
-	repo := flags.String("repo", ".", "repository to inspect for an existing app Saga")
+	repo := flags.String("repo", ".", "repository to inspect for an existing Saga")
 	overhaul := flags.Bool("overhaul", false, "emit the workflow despite an existing Saga; use only for an intentional documentation overhaul")
 	if err := flags.Parse(args); err != nil {
 		return err
@@ -54,17 +54,17 @@ func SetupInitialSaga(args []string, out io.Writer) error {
 		return nil
 	}
 
-	fmt.Fprintln(out, "Follow this one-time agent workflow to establish the repository's app Saga.")
+	fmt.Fprintln(out, "Follow this one-time agent workflow to establish the repository's Saga.")
 	fmt.Fprintf(out, "Repository: %s\n", root)
 	if len(sagas) == 0 {
-		fmt.Fprintln(out, "Repository state: no .saga directory was found. Create one app Saga only after the interview establishes its initial product model.")
+		fmt.Fprintln(out, "Repository state: no .saga directory was found. Create the repository's Saga (change-saga init creates change.saga) only after the interview establishes its initial product model.")
 	} else {
-		fmt.Fprintln(out, "Repository state: the user explicitly requested a documentation overhaul. Update the existing canonical app Saga; do not create a duplicate.")
+		fmt.Fprintln(out, "Repository state: the user explicitly requested a documentation overhaul. Update the existing canonical Saga; do not create a duplicate.")
 		for _, path := range sagas {
 			fmt.Fprintf(out, "  - %s\n", path)
 		}
 		if len(sagas) > 1 {
-			fmt.Fprintln(out, "Ask which Saga is canonical before making changes.")
+			fmt.Fprintln(out, "Ask which Saga is canonical before making changes. The recommended idiom is one Saga per repository, but that is the user's choice.")
 		}
 	}
 	fmt.Fprintln(out)
@@ -113,11 +113,11 @@ func printInitialSagaHelp(out io.Writer) {
 		return
 	}
 	if len(sagas) == 0 {
-		fmt.Fprintln(out, "\nNo app Saga was detected in the current repository.")
-		fmt.Fprintln(out, "  Run \"change-saga setup-initial-saga\" once for guided setup.")
+		fmt.Fprintln(out, "\nNo Saga was detected in the current repository.")
+		fmt.Fprintln(out, "  Run \"change-saga setup-initial-saga\" once for guided setup; the recommended idiom is one Saga per repository, change.saga at its root.")
 		return
 	}
-	fmt.Fprintln(out, "\nExisting app Saga detected:")
+	fmt.Fprintln(out, "\nExisting Saga detected:")
 	for _, path := range sagas {
 		fmt.Fprintf(out, "  - %s\n", path)
 	}

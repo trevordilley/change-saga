@@ -4,10 +4,10 @@ Implement and verify the code, author the pull request's review slide deck,
 then reconcile the affected living documentation and check again:
 
 ```sh
-change-saga reconcile --against main --json app.saga
-change-saga validate --json app.saga
-change-saga check --against main --covers implementation app.saga
-change-saga check --covers health app.saga
+change-saga reconcile --against main --json change.saga
+change-saga validate --json change.saga
+change-saga check --against main --covers implementation change.saga
+change-saga check --covers health change.saga
 ```
 
 Pass `--repo PATH` to source-dependent commands when the Saga and source have

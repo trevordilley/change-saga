@@ -269,10 +269,10 @@ jobs:
           trap 'rm -rf "$check"' EXIT
           tar -xOzf "dist/change-saga_${EXPECTED_VERSION}_linux_amd64.tar.gz" change-saga > "$check/change-saga"
           chmod 0755 "$check/change-saga"
-          "$check/change-saga" validate app.saga
+          "$check/change-saga" validate change.saga
           mkdir "$check/example"
           unzip -q dist/change-saga-example.saga.zip -d "$check/example"
-          "$check/change-saga" validate "$check/example/app.saga"
+          "$check/change-saga" validate "$check/example/change.saga"
 
       - name: verify per-artifact checksums and build SHA256SUMS
         working-directory: dist
@@ -350,7 +350,7 @@ jobs:
             echo
             echo "## Example Saga"
             echo
-            echo "Download [\`change-saga-example.saga.zip\`](https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/change-saga-example.saga.zip), extract it, and run \`change-saga open app.saga\`. It is the validated, self-hosting Saga used by this repository."
+            echo "Download [\`change-saga-example.saga.zip\`](https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/change-saga-example.saga.zip), extract it, and run \`change-saga open change.saga\`. It is the validated, self-hosting Saga used by this repository."
             echo
             echo "## Verify manually"
             echo

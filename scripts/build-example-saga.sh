@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Package this repository's app.saga as a deterministic, platform-neutral
+# Package this repository's Saga, change.saga, as a deterministic, platform-neutral
 # release asset.
 #
 # Usage: scripts/build-example-saga.sh [dist-dir]
 #
 # Produces <dist-dir>/change-saga-example.saga.zip and a matching checksum
-# sidecar. The archive expands to one app.saga directory and contains regular,
+# sidecar. The archive expands to one change.saga directory and contains regular,
 # read-only data files only.
 set -euo pipefail
 
@@ -40,9 +40,9 @@ if [ "$resolved_commit" != "$checkout_commit" ]; then
 	echo "error: release commit does not match the checked-out source" >&2
 	exit 2
 fi
-if ! git diff --quiet HEAD -- app.saga ||
-	[ -n "$(git ls-files --others --exclude-standard -- app.saga)" ]; then
-	echo "error: example Saga packaging requires a clean app.saga at the checked-out commit" >&2
+if ! git diff --quiet HEAD -- change.saga ||
+	[ -n "$(git ls-files --others --exclude-standard -- change.saga)" ]; then
+	echo "error: example Saga packaging requires a clean change.saga at the checked-out commit" >&2
 	exit 1
 fi
 
@@ -106,7 +106,7 @@ trap cleanup EXIT
 trap 'exit 130' INT TERM HUP
 
 "${go_env[@]}" go run -mod=readonly ./internal/cmd/sagaarchive \
-	"$bundle_stage/$archive" "$source_date_epoch" app.saga app.saga
+	"$bundle_stage/$archive" "$source_date_epoch" change.saga change.saga
 "$repo_root/scripts/sha256.sh" "$bundle_stage/$archive" > "$bundle_stage/$sidecar"
 chmod 0644 "$bundle_stage/$sidecar"
 

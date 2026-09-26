@@ -1,9 +1,9 @@
-// Package applayout defines the physical layout of an app Saga: one saga.json,
+// Package applayout defines the physical layout of a Saga: one saga.json,
 // the app-level roots, and the durable features beneath ___features. It is a leaf
 // package so every domain loader can locate its records the same way without
 // depending on any other domain.
 //
-//	app.saga/
+//	change.saga/
 //	  saga.json
 //	  ___overview/        the project's name (saga.json title), elevator pitch,
 //	                      description, and terms and vocabulary

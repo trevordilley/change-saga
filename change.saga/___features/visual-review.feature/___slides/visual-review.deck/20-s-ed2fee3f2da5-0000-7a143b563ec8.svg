@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">Visual review ownership boundaries</title>
-  <desc id="desc">The browser review surface calls a thin HTTP adapter. Read projection belongs to reviewstate, serialized writes to reviewstore, and durable review records to app.saga. Spatial annotations use the same comment writer and a projected annotation read route; prototype annotations remain separate requirement links.</desc>
+  <desc id="desc">The browser review surface calls a thin HTTP adapter. Read projection belongs to reviewstate, serialized writes to reviewstore, and durable review records to change.saga. Spatial annotations use the same comment writer and a projected annotation read route; prototype annotations remain separate requirement links.</desc>
   <defs>
     <style>
       .ui{font-family:Inter,system-ui,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,monospace}.h{font-size:30px;font-weight:750;fill:#10213d}.sub{font-size:15px;fill:#526178}.label{font-size:20px;font-weight:700;fill:#14233e}.small{font-size:14px;fill:#42526b}.micro{font-size:12px;fill:#5c6b82}.box{stroke-width:2}.arrow{fill:none;stroke:#60718d;stroke-width:3;marker-end:url(#arrow)}
@@ -52,7 +52,7 @@
   <path class="arrow" d="M960 526L960 571L760 571"/>
   <g id="git-storage">
     <rect class="box" x="390" y="558" width="500" height="102" rx="18" fill="#e8edf5" stroke="#65758e"/>
-    <text class="ui label" x="418" y="593">Durable boundary · Git-backed app.saga</text>
+    <text class="ui label" x="418" y="593">Durable boundary · Git-backed Saga</text>
     <text class="mono small" x="418" y="620">___reviews/&lt;id&gt;.review/deck/</text>
     <text class="mono small" x="418" y="644">___reviews/&lt;id&gt;.review/comments/&lt;event&gt;.json</text>
   </g>

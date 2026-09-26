@@ -1,0 +1,487 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/erd-revision.schema.json",
+  "version": 5,
+  "id": "r5",
+  "record": "urn:change-saga:change-saga:erd:application",
+  "parents": [
+    "urn:change-saga:change-saga:erd:application:revision:r4"
+  ],
+  "name": "Change Saga data model",
+  "explanation": "How Change Saga's data fits together end to end. Persisted in the repository: the change.saga folder's records (manifest, features, personas, stories and criteria, decks, slides, Items, code references, technical definitions, reviews and merge records). In Git: the source repository and its commits, the only copy of the code. Derived on read and never stored in the Saga: the change set, coverage report, reconciliation queue and query responses, plus the disposable reviewer snapshot cache in the user cache directory. Dashed boxes and arrows mark derived data; relations and review decisions are in the directory but not drawn.",
+  "visual": {
+    "path": "assets/3f0a10115f4582489f6382b57c4db71987da02d5d44364a8770c6feb5e547da0.svg",
+    "media_type": "image/svg+xml",
+    "digest": "sha256:3f0a10115f4582489f6382b57c4db71987da02d5d44364a8770c6feb5e547da0"
+  },
+  "directory": [
+    {
+      "target": "urn:change-saga:change-saga:data-entity:saga-manifest",
+      "revision": "urn:change-saga:change-saga:data-entity:saga-manifest:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:feature",
+      "revision": "urn:change-saga:change-saga:data-entity:feature:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:persona",
+      "revision": "urn:change-saga:change-saga:data-entity:persona:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:review",
+      "revision": "urn:change-saga:change-saga:data-entity:review:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:deck",
+      "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:story",
+      "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:merge-record",
+      "revision": "urn:change-saga:change-saga:data-entity:merge-record:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:slide",
+      "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:criterion",
+      "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:technical-definition",
+      "revision": "urn:change-saga:change-saga:data-entity:technical-definition:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:item",
+      "revision": "urn:change-saga:change-saga:data-entity:item:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:code-reference",
+      "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:source-repository",
+      "revision": "urn:change-saga:change-saga:data-entity:source-repository:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:query-response",
+      "revision": "urn:change-saga:change-saga:data-entity:query-response:revision:r1"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:snapshot-cache",
+      "revision": "urn:change-saga:change-saga:data-entity:snapshot-cache:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:reconciliation-queue",
+      "revision": "urn:change-saga:change-saga:data-entity:reconciliation-queue:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:coverage-report",
+      "revision": "urn:change-saga:change-saga:data-entity:coverage-report:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:change-set",
+      "revision": "urn:change-saga:change-saga:data-entity:change-set:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:relation",
+      "revision": "urn:change-saga:change-saga:data-entity:relation:revision:r2"
+    },
+    {
+      "target": "urn:change-saga:change-saga:data-entity:review-decision",
+      "revision": "urn:change-saga:change-saga:data-entity:review-decision:revision:r1"
+    }
+  ],
+  "bindings": [
+    {
+      "id": "e-saga-manifest",
+      "element": "e-saga-manifest",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:saga-manifest",
+        "revision": "urn:change-saga:change-saga:data-entity:saga-manifest:revision:r1"
+      }
+    },
+    {
+      "id": "e-feature",
+      "element": "e-feature",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:feature",
+        "revision": "urn:change-saga:change-saga:data-entity:feature:revision:r1"
+      }
+    },
+    {
+      "id": "e-persona",
+      "element": "e-persona",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:persona",
+        "revision": "urn:change-saga:change-saga:data-entity:persona:revision:r1"
+      }
+    },
+    {
+      "id": "e-review",
+      "element": "e-review",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:review",
+        "revision": "urn:change-saga:change-saga:data-entity:review:revision:r1"
+      }
+    },
+    {
+      "id": "e-deck",
+      "element": "e-deck",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:deck",
+        "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+      }
+    },
+    {
+      "id": "e-story",
+      "element": "e-story",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:story",
+        "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+      }
+    },
+    {
+      "id": "e-merge-record",
+      "element": "e-merge-record",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:merge-record",
+        "revision": "urn:change-saga:change-saga:data-entity:merge-record:revision:r2"
+      }
+    },
+    {
+      "id": "e-slide",
+      "element": "e-slide",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:slide",
+        "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r1"
+      }
+    },
+    {
+      "id": "e-criterion",
+      "element": "e-criterion",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:criterion",
+        "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1"
+      }
+    },
+    {
+      "id": "e-technical-definition",
+      "element": "e-technical-definition",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:technical-definition",
+        "revision": "urn:change-saga:change-saga:data-entity:technical-definition:revision:r2"
+      }
+    },
+    {
+      "id": "e-item",
+      "element": "e-item",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:item",
+        "revision": "urn:change-saga:change-saga:data-entity:item:revision:r2"
+      }
+    },
+    {
+      "id": "e-code-reference",
+      "element": "e-code-reference",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:code-reference",
+        "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r2"
+      }
+    },
+    {
+      "id": "e-source-repository",
+      "element": "e-source-repository",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:source-repository",
+        "revision": "urn:change-saga:change-saga:data-entity:source-repository:revision:r2"
+      }
+    },
+    {
+      "id": "e-query-response",
+      "element": "e-query-response",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:query-response",
+        "revision": "urn:change-saga:change-saga:data-entity:query-response:revision:r1"
+      }
+    },
+    {
+      "id": "e-snapshot-cache",
+      "element": "e-snapshot-cache",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:snapshot-cache",
+        "revision": "urn:change-saga:change-saga:data-entity:snapshot-cache:revision:r2"
+      }
+    },
+    {
+      "id": "e-reconciliation-queue",
+      "element": "e-reconciliation-queue",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:reconciliation-queue",
+        "revision": "urn:change-saga:change-saga:data-entity:reconciliation-queue:revision:r2"
+      }
+    },
+    {
+      "id": "e-coverage-report",
+      "element": "e-coverage-report",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:coverage-report",
+        "revision": "urn:change-saga:change-saga:data-entity:coverage-report:revision:r2"
+      }
+    },
+    {
+      "id": "e-change-set",
+      "element": "e-change-set",
+      "entity": {
+        "target": "urn:change-saga:change-saga:data-entity:change-set",
+        "revision": "urn:change-saga:change-saga:data-entity:change-set:revision:r2"
+      }
+    },
+    {
+      "id": "r-feature-in-saga",
+      "element": "r-feature-in-saga",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:feature",
+          "revision": "urn:change-saga:change-saga:data-entity:feature:revision:r1"
+        },
+        "id": "in-saga"
+      }
+    },
+    {
+      "id": "r-story-in-feature",
+      "element": "r-story-in-feature",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:story",
+          "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+        },
+        "id": "in-feature"
+      }
+    },
+    {
+      "id": "r-story-serves",
+      "element": "r-story-serves",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:story",
+          "revision": "urn:change-saga:change-saga:data-entity:story:revision:r1"
+        },
+        "id": "serves"
+      }
+    },
+    {
+      "id": "r-criterion-of-story",
+      "element": "r-criterion-of-story",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:criterion",
+          "revision": "urn:change-saga:change-saga:data-entity:criterion:revision:r1"
+        },
+        "id": "of-story"
+      }
+    },
+    {
+      "id": "r-deck-in-feature",
+      "element": "r-deck-in-feature",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:deck",
+          "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+        },
+        "id": "in-feature"
+      }
+    },
+    {
+      "id": "r-deck-of-review",
+      "element": "r-deck-of-review",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:deck",
+          "revision": "urn:change-saga:change-saga:data-entity:deck:revision:r1"
+        },
+        "id": "of-review"
+      }
+    },
+    {
+      "id": "r-slide-in-deck",
+      "element": "r-slide-in-deck",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:slide",
+          "revision": "urn:change-saga:change-saga:data-entity:slide:revision:r1"
+        },
+        "id": "in-deck"
+      }
+    },
+    {
+      "id": "r-item-on-slide",
+      "element": "r-item-on-slide",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:item",
+          "revision": "urn:change-saga:change-saga:data-entity:item:revision:r2"
+        },
+        "id": "on-slide"
+      }
+    },
+    {
+      "id": "r-item-documents",
+      "element": "r-item-documents",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:item",
+          "revision": "urn:change-saga:change-saga:data-entity:item:revision:r2"
+        },
+        "id": "documents"
+      }
+    },
+    {
+      "id": "r-item-criterion-link",
+      "element": "r-item-criterion-link",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:item",
+          "revision": "urn:change-saga:change-saga:data-entity:item:revision:r2"
+        },
+        "id": "criterion-link"
+      }
+    },
+    {
+      "id": "r-code-reference-owned-by-item",
+      "element": "r-code-reference-owned-by-item",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:code-reference",
+          "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r2"
+        },
+        "id": "owned-by-item"
+      }
+    },
+    {
+      "id": "r-code-reference-in-definition",
+      "element": "r-code-reference-in-definition",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:code-reference",
+          "revision": "urn:change-saga:change-saga:data-entity:code-reference:revision:r2"
+        },
+        "id": "in-definition"
+      }
+    },
+    {
+      "id": "r-merge-record-freezes",
+      "element": "r-merge-record-freezes",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:merge-record",
+          "revision": "urn:change-saga:change-saga:data-entity:merge-record:revision:r2"
+        },
+        "id": "freezes"
+      }
+    },
+    {
+      "id": "r-source-repository-documented-by",
+      "element": "r-source-repository-documented-by",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:source-repository",
+          "revision": "urn:change-saga:change-saga:data-entity:source-repository:revision:r2"
+        },
+        "id": "documented-by"
+      }
+    },
+    {
+      "id": "r-source-repository-pinned-by",
+      "element": "r-source-repository-pinned-by",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:source-repository",
+          "revision": "urn:change-saga:change-saga:data-entity:source-repository:revision:r2"
+        },
+        "id": "pinned-by"
+      }
+    },
+    {
+      "id": "r-merge-record-from-source",
+      "element": "r-merge-record-from-source",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:merge-record",
+          "revision": "urn:change-saga:change-saga:data-entity:merge-record:revision:r2"
+        },
+        "id": "from-source"
+      }
+    },
+    {
+      "id": "r-change-set-from-source",
+      "element": "r-change-set-from-source",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:change-set",
+          "revision": "urn:change-saga:change-saga:data-entity:change-set:revision:r2"
+        },
+        "id": "from-source"
+      }
+    },
+    {
+      "id": "r-coverage-report-from-change-set",
+      "element": "r-coverage-report-from-change-set",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:coverage-report",
+          "revision": "urn:change-saga:change-saga:data-entity:coverage-report:revision:r2"
+        },
+        "id": "from-change-set"
+      }
+    },
+    {
+      "id": "r-coverage-report-from-code-references",
+      "element": "r-coverage-report-from-code-references",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:coverage-report",
+          "revision": "urn:change-saga:change-saga:data-entity:coverage-report:revision:r2"
+        },
+        "id": "from-code-references"
+      }
+    },
+    {
+      "id": "r-reconciliation-queue-from-coverage",
+      "element": "r-reconciliation-queue-from-coverage",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:reconciliation-queue",
+          "revision": "urn:change-saga:change-saga:data-entity:reconciliation-queue:revision:r2"
+        },
+        "id": "from-coverage"
+      }
+    },
+    {
+      "id": "r-snapshot-cache-from-coverage",
+      "element": "r-snapshot-cache-from-coverage",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:snapshot-cache",
+          "revision": "urn:change-saga:change-saga:data-entity:snapshot-cache:revision:r2"
+        },
+        "id": "from-coverage"
+      }
+    },
+    {
+      "id": "r-query-response-from-saga",
+      "element": "r-query-response-from-saga",
+      "relationship": {
+        "owner": {
+          "target": "urn:change-saga:change-saga:data-entity:query-response",
+          "revision": "urn:change-saga:change-saga:data-entity:query-response:revision:r1"
+        },
+        "id": "from-saga"
+      }
+    }
+  ],
+  "created_at": "2026-09-26T17:19:45.069144Z"
+}

@@ -8,10 +8,13 @@ infer a storage filename or edit metadata from this summary.
 
 ## App shape
 
-There is one Saga format, version 5. A repository has one app Saga:
+There is one Saga format, version 5. The recommended idiom is one Saga per
+repository, `change.saga` at its root, which `change-saga init` creates by
+default; any `<name>.saga` directory is equally valid. A monorepo keeps one
+`change.saga` and documents each app through its own features:
 
 ```text
-app.saga/
+change.saga/
   saga.json
   ___overview/
   ___personas/

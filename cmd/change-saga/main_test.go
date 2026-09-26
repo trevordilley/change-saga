@@ -5,6 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -104,5 +108,30 @@ func TestRunLivingMutationFamiliesUseTheSupportedJSONContract(t *testing.T) {
 				t.Fatalf("unexpected mutation failure: %#v", result)
 			}
 		})
+	}
+}
+
+// A second Saga is guidance, not a failure: init still exits 0.
+func TestRunInitExitsZeroBesideAnExistingSaga(t *testing.T) {
+	repo := t.TempDir()
+	for _, args := range [][]string{{"init", "-b", "main"}, {"remote", "add", "origin", "https://example.test/acme/shop.git"}} {
+		command := exec.Command("git", args...)
+		command.Dir = repo
+		if output, err := command.CombinedOutput(); err != nil {
+			t.Fatalf("git %v: %v\n%s", args, err, output)
+		}
+	}
+	if err := os.Mkdir(filepath.Join(repo, "app.saga"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	var stdout, stderr bytes.Buffer
+	if got := run([]string{"init", "--repo", repo, filepath.Join(repo, "change.saga")}, &stdout, &stderr); got != 0 {
+		t.Fatalf("exit = %d, want 0\n%s%s", got, stdout.String(), stderr.String())
+	}
+	if !strings.Contains(stdout.String(), "  - app.saga") || !strings.Contains(stdout.String(), "one Saga per repository") {
+		t.Fatalf("init did not note the existing Saga:\n%s", stdout.String())
+	}
+	if _, err := os.Stat(filepath.Join(repo, "change.saga", "saga.json")); err != nil {
+		t.Fatal(err)
 	}
 }

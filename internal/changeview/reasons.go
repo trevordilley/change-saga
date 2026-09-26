@@ -5,11 +5,13 @@ import (
 	"bytes"
 	"context"
 	"os/exec"
+	"path"
 	"sort"
 	"strconv"
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/sagalineage"
 )
 
 // Reason is one commit in the comparison, attached to a record because the
@@ -138,11 +140,32 @@ func attachReasons(ctx context.Context, layers *Layers, sources reasonSources, b
 	if sources.sagaPath == "" || sources.sagaPath == "." {
 		prefix = ""
 	}
+	// A moved Saga owned the same files at each path it had, and a commit
+	// that only moved a file changed nothing its record says.
+	prefixes := []string{prefix}
+	unchanged := map[string]map[string]bool{}
+	if prefix != "" {
+		lineage := sagalineage.Of(ctx, sources.sagaRepo, sources.sagaPath)
+		for _, move := range lineage.Moves {
+			prefixes = append(prefixes, move.From+"/")
+			carried := sagalineage.CarriedBy(ctx, sources.sagaRepo, move)
+			moved := map[string]bool{}
+			for relative, blob := range carried.Before {
+				if carried.After[relative] == blob {
+					moved[path.Join(move.From, relative)] = true
+					moved[path.Join(move.To, relative)] = true
+				}
+			}
+			unchanged[move.Commit] = moved
+		}
+	}
 	owners := map[string]string{}
 	for _, inventory := range []*Inventory{base, head} {
 		for _, node := range inventory.Nodes {
 			for _, file := range node.Files {
-				owners[prefix+file] = node.URN
+				for _, at := range prefixes {
+					owners[at+file] = node.URN
+				}
 			}
 		}
 	}
@@ -176,6 +199,9 @@ func attachReasons(ctx context.Context, layers *Layers, sources reasonSources, b
 	used := map[string]bool{}
 	for _, commit := range recordCommits {
 		for _, file := range commit.files {
+			if unchanged[commit.Commit][file] {
+				continue
+			}
 			if urn, ok := owners[file]; ok {
 				attach(urn, commit, TouchedRecord)
 				used[commit.Commit] = true

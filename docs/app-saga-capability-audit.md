@@ -7,7 +7,7 @@ Status: research for a canonical living `app.saga`, based on repository commit
 
 The current Saga captures the product thesis well, but it is not yet a canonical
 inventory of the product that exists. Its seven features and eighteen stories
-mostly restate the decisions in `docs/app-saga.md`: the format, traceability
+mostly restate the decisions in `docs/repository-saga.md`: the format, traceability
 model, compare model, review model, and incremental-adoption policy. The
 repository exposes a much wider product surface: complete living-record
 authoring, prototypes, design and quality evidence, claims and independent
