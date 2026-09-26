@@ -158,6 +158,7 @@ func TestRefCacheableRevisions(t *testing.T) {
 		"HEAD": true, "main": true, "feature/x": true, "HEAD~2": true, "main^1": true, "v1.0": true,
 		strings.Repeat("a", 40): false, "abc1234": false, "abc1234~1": false, "HEAD@{1}": false,
 		"@{upstream}": false, "HEAD:path": false, "": false, "deadbeef": false, "bad": true,
+		"FETCH_HEAD": false, "ORIG_HEAD~1": false, "MERGE_HEAD^2": false, "refs/heads/MAIN": true, "HEAD^1": true,
 	} {
 		if got := refCacheable(revision); got != want {
 			t.Errorf("refCacheable(%q) = %v; want %v", revision, got, want)
@@ -392,5 +393,19 @@ func TestRefAnswersAreNotFiledAcrossAConcurrentChange(t *testing.T) {
 	})
 	if err != nil || string(again) != commits[3] {
 		t.Fatalf("with main checked out again the answer was %q; want %s", again, commits[3])
+	}
+}
+
+// Pseudo-refs such as ORIG_HEAD and FETCH_HEAD are files the digest does
+// not cover; a merge or fetch that moves one must reach the next command.
+func TestPseudoRefsAreAskedEveryTime(t *testing.T) {
+	repo, commits := history(t)
+	git(t, repo, "update-ref", "ORIG_HEAD", commits[1])
+	if got, ok := resolveIn(t, repo, "ORIG_HEAD"); !ok || got != commits[1] {
+		t.Fatalf("ORIG_HEAD = %q, %v", got, ok)
+	}
+	git(t, repo, "update-ref", "ORIG_HEAD", commits[2])
+	if got, ok := resolveIn(t, repo, "ORIG_HEAD"); !ok || got != commits[2] {
+		t.Fatalf("ORIG_HEAD after it moved = %q, %v; want %s", got, ok, commits[2])
 	}
 }

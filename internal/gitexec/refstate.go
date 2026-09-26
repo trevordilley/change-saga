@@ -301,12 +301,32 @@ func (location *repoLocation) stateDigest(ctx context.Context, withRefs bool) (s
 // refCacheable reports whether a revision's commit is decided by refs and
 // immutable history alone. Full object IDs ask whether an object exists,
 // abbreviated ones can become ambiguous as objects arrive, @{...} reads
-// reflogs, and a path names no commit.
+// reflogs, pseudo-refs live outside the digest, and a path names no commit.
 func refCacheable(revision string) bool {
 	if revision == "" || IsObjectName(revision) || strings.ContainsAny(revision, ": \t\n\r\x00") || strings.Contains(revision, "@{") {
 		return false
 	}
-	return !looksAbbreviated(revision)
+	return !looksAbbreviated(revision) && !looksPseudoRef(revision)
+}
+
+// looksPseudoRef reports a revision rooted in a pseudo-ref such as
+// FETCH_HEAD, ORIG_HEAD, or MERGE_HEAD. Git reads those from files in the
+// git directory that the digest does not cover, so a fetch or merge could
+// move one unseen. HEAD itself is covered.
+func looksPseudoRef(revision string) bool {
+	base := revision
+	if index := strings.IndexAny(base, "^~"); index >= 0 {
+		base = base[:index]
+	}
+	if base == "HEAD" || strings.HasPrefix(base, "refs/") {
+		return false
+	}
+	for _, r := range base {
+		if !('A' <= r && r <= 'Z' || '0' <= r && r <= '9' || r == '_' || r == '-') {
+			return false
+		}
+	}
+	return base != ""
 }
 
 func looksAbbreviated(revision string) bool {
