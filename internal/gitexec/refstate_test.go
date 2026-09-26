@@ -299,10 +299,11 @@ func TestTopLevelIgnoresStandardError(t *testing.T) {
 }
 
 // Reached through a symlink, a checkout's git directories must still be
-// found where they are, or the digest would hash missing files and never
-// see HEAD move.
+// found where they are. Placed wrongly, the digest hashes missing files and
+// never sees the repository's configuration or packed refs change.
 func TestRememberedAnswersThroughASymlinkFollowTheRepository(t *testing.T) {
 	repo, commits := history(t)
+	git(t, repo, "remote", "add", "origin", "https://example.test/a.git")
 	inner := filepath.Join(repo, "d", "e")
 	if err := os.MkdirAll(inner, 0o755); err != nil {
 		t.Fatal(err)
@@ -311,15 +312,33 @@ func TestRememberedAnswersThroughASymlinkFollowTheRepository(t *testing.T) {
 	if err := os.Symlink(inner, link); err != nil {
 		t.Skipf("symlinks unavailable: %v", err)
 	}
-	if got, ok := resolveIn(t, link, "HEAD"); !ok || got != commits[3] {
-		t.Fatalf("HEAD through the link = %q, %v", got, ok)
+	origin := func() string {
+		t.Helper()
+		ctx, end := Begin(context.Background())
+		defer end()
+		output, err := ConfigOutput(ctx, link, "remote", "get-url", "origin")
+		if err != nil {
+			t.Fatal(err)
+		}
+		return strings.TrimSpace(string(output))
 	}
-	write(t, filepath.Join(repo, "moved.txt"), "moved\n")
-	git(t, repo, "add", ".")
-	git(t, repo, "commit", "-q", "-m", "moved")
-	moved := git(t, repo, "rev-parse", "HEAD")
-	if got, ok := resolveIn(t, link, "HEAD"); !ok || got != moved {
-		t.Fatalf("HEAD through the link after a commit = %q, %v; want %s", got, ok, moved)
+	if got := origin(); got != "https://example.test/a.git" {
+		t.Fatalf("origin through the link = %q", got)
+	}
+	git(t, repo, "remote", "set-url", "origin", "https://example.test/b.git")
+	if got := origin(); got != "https://example.test/b.git" {
+		t.Fatalf("origin through the link after set-url = %q", got)
+	}
+	// Packed refs live in the common directory too.
+	git(t, repo, "branch", "-q", "feature", commits[1])
+	git(t, repo, "pack-refs", "--all")
+	if got, ok := resolveIn(t, link, "feature"); !ok || got != commits[1] {
+		t.Fatalf("feature through the link = %q, %v", got, ok)
+	}
+	git(t, repo, "branch", "-q", "-f", "feature", commits[2])
+	git(t, repo, "pack-refs", "--all")
+	if got, ok := resolveIn(t, link, "feature"); !ok || got != commits[2] {
+		t.Fatalf("feature through the link after repacking = %q, %v; want %s", got, ok, commits[2])
 	}
 }
 
@@ -344,5 +363,34 @@ func TestDiscoveryIsNotRememberedAcrossAConcurrentChange(t *testing.T) {
 	}
 	if want := git(t, repo, "rev-parse", "--show-toplevel"); got != want {
 		t.Fatalf("TopLevel after core.worktree moved = %q; want %q", got, want)
+	}
+}
+
+// An answer given while refs move must not be filed under the state before
+// the move: the repository can return to that state, and the answer would
+// then describe where it went instead.
+func TestRefAnswersAreNotFiledAcrossAConcurrentChange(t *testing.T) {
+	repo, commits := history(t)
+	git(t, repo, "branch", "-q", "feature", commits[1])
+	ctx, end := Begin(context.Background())
+	defer end()
+	// The session takes its digest while main is checked out.
+	if got, ok := ResolveCommit(ctx, repo, "HEAD"); !ok || got != commits[3] {
+		t.Fatalf("HEAD = %q, %v", got, ok)
+	}
+	// Another key is answered after a checkout moves HEAD to feature.
+	moved, err := rememberRefs(ctx, repo, true, []string{"test", t.Name()}, func() ([]byte, error) {
+		git(t, repo, "checkout", "-q", "feature")
+		return []byte(git(t, repo, "rev-parse", "HEAD")), nil
+	})
+	if err != nil || string(moved) != commits[1] {
+		t.Fatalf("answer = %q, %v", moved, err)
+	}
+	git(t, repo, "checkout", "-q", "main")
+	again, err := rememberRefs(context.Background(), repo, true, []string{"test", t.Name()}, func() ([]byte, error) {
+		return []byte(git(t, repo, "rev-parse", "HEAD")), nil
+	})
+	if err != nil || string(again) != commits[3] {
+		t.Fatalf("with main checked out again the answer was %q; want %s", again, commits[3])
 	}
 }

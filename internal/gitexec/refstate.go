@@ -257,11 +257,19 @@ func rememberRefs(ctx context.Context, repo string, withRefs bool, query []strin
 	if cached, found := refAnswers.Load(key); found && cached.(refAnswer).digest == digest {
 		return bytes.Clone(cached.(refAnswer).value), nil
 	}
-	// The digest is taken before Git answers, so a change made meanwhile
-	// only makes the next lookup ask again.
+	// Store only under digests read fresh on both sides of Git's answer.
+	// The session's digest may be older than the answer: the repository
+	// could have left that state and returned to it since, and the answer
+	// would then be filed under a state it does not describe.
+	before, ok := location.digest(withRefs)
+	if !ok {
+		return compute()
+	}
 	value, err := compute()
 	if err == nil {
-		refAnswers.Store(key, refAnswer{digest: digest, value: bytes.Clone(value)})
+		if after, ok := location.digest(withRefs); ok && after == before {
+			refAnswers.Store(key, refAnswer{digest: before, value: bytes.Clone(value)})
+		}
 	}
 	return value, err
 }
