@@ -105,18 +105,9 @@ func TestAWatchedSagaIsReadBeforeAnyoneAsks(t *testing.T) {
 	fixture := newServerReviewFixture(t)
 	documentTheFixture(t, fixture)
 	application, handler := reviewApp(t, fixture, gitdiff.Range{})
-	ctx, cancel := context.WithCancel(context.Background())
-	watching := make(chan struct{})
-	go func() {
-		defer close(watching)
-		application.watchSaga(ctx)
-	}()
 	// The watcher has stopped reading the Saga before its directory is
 	// removed.
-	defer func() {
-		cancel()
-		<-watching
-	}()
+	defer application.startWatching(context.Background())()
 	builds := func() int {
 		application.related.mutex.Lock()
 		defer application.related.mutex.Unlock()
@@ -280,4 +271,75 @@ func walkedSagaFingerprints(root string, full bool) (outline, documentation, fil
 		return hex.EncodeToString(outlineDigest.Sum(nil)), hex.EncodeToString(documentationDigest.Sum(nil)), "", nil
 	}
 	return hex.EncodeToString(outlineDigest.Sum(nil)), hex.EncodeToString(documentationDigest.Sum(nil)), hex.EncodeToString(filesDigest.Sum(nil)), nil
+}
+
+// A file replaced by renaming a temporary one over it, or a directory a
+// checkout removes, can vanish between being listed and being read. The check
+// leaves it out, as a listing a moment later would, rather than failing every
+// page waiting on it.
+func TestAnEntryThatVanishesMidCheckIsLeftOut(t *testing.T) {
+	root := validServerSaga(t)
+	writeServerFile(t, filepath.Join(root, "notes", "kept.md"), "kept\n")
+	outline, documentation, files, err := sagaFingerprints(root, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeServerFile(t, filepath.Join(root, ".change-saga-write-1"), "being renamed\n")
+	writeServerFile(t, filepath.Join(root, "gone", "file.md"), "being removed\n")
+	realRead, realInfo := readSagaDir, sagaEntryInfo
+	t.Cleanup(func() { readSagaDir, sagaEntryInfo = realRead, realInfo })
+	sagaEntryInfo = func(entry fs.DirEntry) (fs.FileInfo, error) {
+		if entry.Name() == ".change-saga-write-1" {
+			return nil, fs.ErrNotExist
+		}
+		return realInfo(entry)
+	}
+	readSagaDir = func(dir string) ([]fs.DirEntry, error) {
+		if filepath.Base(dir) == "gone" {
+			return nil, fs.ErrNotExist
+		}
+		return realRead(dir)
+	}
+	_, _, vanishedFiles, err := sagaFingerprints(root, true)
+	if err != nil {
+		t.Fatalf("a vanished entry failed the check: %v", err)
+	}
+	// The files that vanished are simply not there: every file is
+	// fingerprinted as before they were written. (The emptied directory
+	// itself was listed, so the directory-aware sets name it.)
+	if vanishedFiles != files {
+		t.Fatal("a vanished file was fingerprinted as if it were still there")
+	}
+	_, _ = outline, documentation
+}
+
+// Stopping the watcher waits for it: once stop returns, it checks nothing
+// more and renders nothing more.
+func TestStoppingTheWatcherWaitsForIt(t *testing.T) {
+	fixture, _, _ := boundedFixture(t)
+	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: serverTemplate(t)}
+	stop := application.startWatching(context.Background())
+	deadline := time.Now().Add(30 * time.Second)
+	for {
+		application.fresh.mutex.Lock()
+		checks := application.fresh.checks
+		application.fresh.mutex.Unlock()
+		if checks > 0 {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("the watcher never checked the Saga")
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	stop()
+	application.fresh.mutex.Lock()
+	stopped := application.fresh.checks
+	application.fresh.mutex.Unlock()
+	time.Sleep(3 * pollInterval)
+	application.fresh.mutex.Lock()
+	defer application.fresh.mutex.Unlock()
+	if application.fresh.checks != stopped || application.fresh.pending != nil {
+		t.Fatalf("the watcher kept checking after it was stopped: %d checks, then %d", stopped, application.fresh.checks)
+	}
 }
