@@ -14,7 +14,8 @@ stays current as the application changes. With AI, a big change is often
 fastest to build in one large pull request; that speed is no reason to lose
 what the change was meant to do.
 
-A Saga documents one application:
+The recommended idiom is one Saga per repository, `change.saga` at its root,
+and it documents the application:
 
 - **Overview**: the project's name, elevator pitch, a short description, and
   its **terms and vocabulary**: the words the team uses that a newcomer would
@@ -28,6 +29,11 @@ A Saga documents one application:
   technical design), **Quality** (test cases and their evidence), and
   **Implementation** (a slide deck whose visual elements reference the exact
   code they explain).
+
+A monorepo of several apps keeps one `change.saga` at its root and documents
+each app through its own features. One Saga per repository is a
+recommendation, not a rule: any `<name>.saga` directory is valid, and nothing
+refuses a second one.
 
 Every pull request gets a **review**: a slide deck explaining what the change
 did and why, which must account for every changed line, and whose slides
@@ -67,13 +73,13 @@ change-saga help
 
 ## See a Saga
 
-This repository documents itself with [`app.saga`](app.saga), the canonical
-self-hosting example. It contains the product requirements, designs, quality
-cases, implementation explanations, and exact code references for Change Saga
-itself. After installing Change Saga, open it from a source checkout with:
+This repository documents itself with [`change.saga`](change.saga), the
+canonical self-hosting example. It contains the product requirements, designs,
+quality cases, implementation explanations, and exact code references for
+Change Saga itself. After installing Change Saga, open it from a source checkout with:
 
 ```sh
-change-saga open app.saga
+change-saga open change.saga
 ```
 
 Or download the same validated Saga without cloning the repository:
@@ -82,20 +88,20 @@ Or download the same validated Saga without cloning the repository:
 curl -fL https://github.com/twentyideas/changesaga/releases/latest/download/change-saga-example.saga.zip \
   -o change-saga-example.saga.zip
 unzip change-saga-example.saga.zip
-change-saga open app.saga
+change-saga open change.saga
 ```
 
 [Download the example Saga](https://github.com/twentyideas/changesaga/releases/latest/download/change-saga-example.saga.zip)
 directly from the latest stable release. The archive is platform-neutral and
-expands into one `app.saga` directory.
+expands into one `change.saga` directory.
 
 For one concrete path through it, inspect the reviewer story **Trace a
 requirement to current evidence and back** and its pass/fail criterion **Each
 criterion shows its current code path**:
 
 ```sh
-change-saga query requirements --saga app.saga --requirement evidence-traversal
-change-saga query traceability --saga app.saga \
+change-saga query requirements --saga change.saga --requirement evidence-traversal
+change-saga query traceability --saga change.saga \
   --criterion urn:change-saga:app:story:evidence-traversal:criterion:criterion-code
 ```
 
@@ -114,17 +120,17 @@ these prompts from the repository containing your change:
 
 > Use the change-saga cli to install its skill for this coding agent
 
-**To build the first app-wide Saga through a guided interview (once per app):**
+**To build the repository's Saga through a guided interview (once per repository):**
 
 > Run change-saga setup-initial-saga and follow its guided setup workflow
 
-**To author a PR's saga:**
+**To document a PR in the repository's Saga:**
 
-> Use the change-saga cli to create a Saga for this PR
+> Use the change-saga cli to document this PR in the repository's Saga
 
-**To review a PR's saga:**
+**To review a PR:**
 
-> Use the change-saga cli to open this PR's Saga
+> Use the change-saga cli to open this PR's changes in the repository's Saga
 
 ### How a Saga grows
 
@@ -149,8 +155,8 @@ produce a report. Your team decides what must be true before a merge, and can
 ask directly:
 
 ```sh
-change-saga check --covers implementation --against main app.saga
-change-saga check --covers implementation,stories --against main app.saga
+change-saga check --covers implementation --against main change.saga
+change-saga check --covers implementation,stories --against main change.saga
 ```
 
 `check` exits 0 when every named area is covered and 3 when one has a gap,
@@ -160,9 +166,9 @@ After implementing and verifying a change, author its PR review deck, then
 reconcile the affected living documentation:
 
 ```sh
-change-saga reconcile --against main --json app.saga
-change-saga validate --json app.saga
-change-saga check --covers health app.saga
+change-saga reconcile --against main --json change.saga
+change-saga validate --json change.saga
+change-saga check --covers health change.saga
 ```
 
 The [reconciliation workflow](docs/reconciliation.md) separates review coverage,
@@ -332,10 +338,10 @@ read-only JSON interface for the overview, hierarchy, content, reviews,
 coverage gaps, diff ownership, mapping quality, author claims, and verification:
 
 ```sh
-change-saga query overview --saga app.saga
-change-saga query gaps --saga app.saga --kind uncovered
-change-saga query mappings --saga app.saga --sort scrutiny
-change-saga query claims --saga app.saga --status unverified
+change-saga query overview --saga change.saga
+change-saga query gaps --saga change.saga --kind uncovered
+change-saga query mappings --saga change.saga --sort scrutiny
+change-saga query claims --saga change.saga --status unverified
 ```
 
 `mappings` ranks broad or thin evidence so an AI can start with the weakest
@@ -352,7 +358,7 @@ before writing anything, and leaves the saga untouched if any record fails:
 printf '%s\n' \
   '{"target":"api.chapter","path":"api.go","side":"new","lines":"18-24","note":"validates the request"}' \
   '{"target":"api.chapter/flow.fragment#submit-action","path":"ui.ts","side":"new","lines":"9","note":"wires the control"}' \
-  | change-saga cover --batch - my-change.saga
+  | change-saga cover --batch - change.saga
 ```
 
 See [the AI-facing interface](docs/ai-facing-interface.md) for the complete
@@ -375,8 +381,8 @@ automatically; when the lines change, it goes stale and says why. After a change
 lands, re-pin references to the landed commit before the branch is deleted:
 
 ```sh
-change-saga references --stale --diff --repo ../source my-change.saga
-change-saga repin --onto <landed-commit> --branch <branch> --repo ../source my-change.saga
+change-saga references --stale --diff --repo ../source change.saga
+change-saga repin --onto <landed-commit> --branch <branch> --repo ../source change.saga
 ```
 
 `repin` also records the branch's commit messages, so a squash merge keeps the
@@ -385,38 +391,40 @@ reasoning in its individual commits.
 ## Manual CLI workflow
 
 Most people should let their coding agent manage these commands. If you want to
-author a Saga directly, use a new or intentionally editable Saga rather than
-the repository's canonical `app.saga` example:
+author a Saga directly, do it in your own repository rather than in this
+repository's canonical `change.saga` example. Run with no path, `init` creates
+the repository's one Saga, `change.saga`, named after the repository's origin
+remote; every later change grows that same Saga:
 
 ```sh
-change-saga init my-change.saga
-change-saga add-deck --objective "Explain this change." my-change.saga implementation
+change-saga init
+change-saga add-deck --objective "Explain this change." change.saga implementation
 change-saga add-slide --deck implementation --intent explain --layout hero \
-  --title "Implementation" my-change.saga implementation
-change-saga set-slide-content --target implementation --source ./implementation.svg my-change.saga
+  --title "Implementation" change.saga implementation
+change-saga set-slide-content --target implementation --source ./implementation.svg change.saga
 change-saga add-item --slide implementation --kind node --id change --element-id change \
-  --description "The behavior introduced by this change" my-change.saga
+  --description "The behavior introduced by this change" change.saga
 change-saga cover --against main --target change --path path/to/file.go \
-  --changed-lines --note "Implements the described behavior." my-change.saga
+  --changed-lines --note "Implements the described behavior." change.saga
 ```
 
 The first command that needs a feature creates one named after the branch. Then
 see what is covered and what could grow, and open the reviewer:
 
 ```sh
-change-saga status --against main my-change.saga
-change-saga open --against main my-change.saga
+change-saga status --against main change.saga
+change-saga open --against main change.saga
 ```
 
 `open` leaves the reviewer running in the background so it remains available
 after the command returns. Manage it later with:
 
 ```sh
-change-saga serve status app.saga
-change-saga serve stop app.saga
+change-saga serve status change.saga
+change-saga serve stop change.saga
 ```
 
-Use `change-saga serve --open app.saga` when you deliberately want the
+Use `change-saga serve --open change.saga` when you deliberately want the
 reviewer attached to the current terminal instead.
 
 Run these commands from the changed repository on the branch containing the
@@ -428,8 +436,8 @@ work. If the saga lives in a separate repository, pass
 See what a PR's change does to an existing Saga:
 
 ```sh
-change-saga status --against <pr-base> --head <pr-head> app.saga
-change-saga query layers --saga app.saga \
+change-saga status --against <pr-base> --head <pr-head> change.saga
+change-saga query layers --saga change.saga \
   --against <pr-base> --head <pr-head> --layer affected
 ```
 

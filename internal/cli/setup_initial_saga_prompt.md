@@ -1,10 +1,13 @@
-# Establish the initial app Saga
+# Establish the repository's initial Saga
 
 Use this workflow only once for a new repository, or during the explicitly
-requested documentation overhaul named above. A repository has one app Saga.
-It captures the application's durable requirements, design, implementation,
-and quality model; future pull-request reviews update that same Saga as the
-application changes.
+requested documentation overhaul named above. The recommended idiom is one
+Saga per repository, `change.saga` at its root, which `change-saga init`
+creates by default. It captures the application's durable requirements,
+design, implementation, and quality model; future pull-request reviews update
+that same Saga as the application changes. A monorepo of several apps
+likewise gets one `change.saga` at its root, and each app is documented
+through its own durable features rather than a Saga of its own.
 
 This is a guided product interview followed by evidence gathering. Tell the
 user that incomplete answers are welcome: the goal is to record what they
@@ -106,8 +109,10 @@ stories and criteria, code-derived candidates, unexplained behavior, uncertain
 boundaries, and intentionally empty areas. Separate the user's assertions from
 agent interpretations and ask for corrections.
 
-Once confirmed, create or update the one app Saga through the installed
-`change-saga` CLI. Never create a second Saga because the first is incomplete.
+Once confirmed, create or update the repository's Saga through the installed
+`change-saga` CLI; with no existing Saga, `change-saga init` creates
+`change.saga`. Recommend extending one Saga rather than adding another, and
+never create a second Saga because the first is incomplete.
 Use `change-saga --help`, command-specific `-h`, and
 `change-saga spec --json` rather than guessing commands or editing metadata
 directly.
@@ -158,7 +163,7 @@ positive, negative, and edge test cases; relate them to acceptance criteria;
 and attach exact test evidence when it exists. Distinguish behavior that is
 implemented from behavior that is actually verified.
 
-The setup is complete when the repository has one valid app Saga, confirmed
+The setup is complete when the repository has one valid Saga, confirmed
 personas and durable features are recorded, user-confirmed stories are clearly
 requirements, implementation claims have exact code evidence where code
 exists, intended design is distinguished from implemented behavior where it

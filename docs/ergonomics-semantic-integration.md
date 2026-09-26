@@ -14,7 +14,7 @@ change-saga preintegrate \
   --ref feature/checkout-a \
   --ref feature/checkout-b \
   --json \
-  app.saga
+  change.saga
 ```
 
 Every ref is required explicitly and is resolved to a full commit. The command
@@ -46,7 +46,7 @@ change-saga story withdraw \
   --parent urn:change-saga:app:story:duplicate:event:proposed \
   --event withdrawn-as-duplicate \
   --reason "The canonical checkout proposal already covers this intent" \
-  app.saga
+  change.saga
 ```
 
 Withdrawal accepts only a uniquely current `proposed` or `deferred` story and
@@ -65,7 +65,7 @@ change-saga story consolidate \
   --map urn:change-saga:app:story:duplicate:criterion:fast=urn:change-saga:app:story:checkout:criterion:responsive \
   --reason "Both proposals express the same confirmed checkout behavior" \
   --json \
-  app.saga
+  change.saga
 ```
 
 The preview validates the complete lifecycle and relation set and writes

@@ -17,7 +17,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// Everything authored here belongs to temporary fixture directories. No app.saga
+// Everything authored here belongs to temporary fixture directories. No change.saga
 // or review state is read or changed. Evidence is real within the fixture repo.
 func TestGeneratedSVGPreservesSagaItemEvidenceAndCriterion(t *testing.T) {
 	ctx := context.Background()

@@ -23,6 +23,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/sagalineage"
 )
 
 const intentThreshold = 0.60
@@ -113,6 +114,8 @@ func Check(ctx context.Context, options Options) (Report, error) {
 	if sagaPath == "." || filepath.IsAbs(options.SagaPath) || sagaPath == ".." || strings.HasPrefix(sagaPath, "../") {
 		return Report{}, fmt.Errorf("--saga must be a repository-relative Saga path")
 	}
+	// A ref from before the Saga was renamed reads it where it was then.
+	lineage := sagalineage.Of(ctx, repo, sagaPath)
 	seen := map[string]bool{}
 	snapshots := make([]snapshot, 0, len(options.Refs))
 	for _, ref := range options.Refs {
@@ -125,7 +128,11 @@ func Check(ctx context.Context, options Options) (Report, error) {
 		if err != nil {
 			return Report{}, err
 		}
-		value, err := readSnapshot(ctx, repo, sagaPath, ref, commit)
+		at, exists := lineage.PathAt(ctx, repo, commit)
+		if !exists {
+			return Report{}, fmt.Errorf("read %s at ref %q: the Saga did not exist yet at %s", sagaPath, ref, commit)
+		}
+		value, err := readSnapshot(ctx, repo, at, ref, commit)
 		if err != nil {
 			return Report{}, err
 		}

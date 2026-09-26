@@ -84,7 +84,7 @@ func NodeHistory(ctx context.Context, root, urn string) (History, error) {
 	}
 	commits := []commitInfo{}
 	if _, err := revParse(ctx, location.Repo, "HEAD"); err == nil {
-		if commits, err = readCommits(ctx, location.Repo, "", "HEAD", paths...); err != nil {
+		if commits, err = recordCommits(ctx, location, node.Files); err != nil {
 			return History{}, err
 		}
 	}
@@ -128,7 +128,11 @@ func codeComparison(ctx context.Context, location Location, against, head string
 		if commit == "" {
 			return ""
 		}
-		data, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "show", commit+":"+path.Join(location.Path, saga.CursorName)).Output()
+		at, exists := sagaPathAt(ctx, location, commit)
+		if !exists {
+			return ""
+		}
+		data, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "show", commit+":"+path.Join(at, saga.CursorName)).Output()
 		if err != nil {
 			return ""
 		}

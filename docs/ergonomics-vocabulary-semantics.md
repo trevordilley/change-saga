@@ -23,7 +23,7 @@ change-saga term add \
   --definition-maturity accepted \
   --implementation-evidence absent \
   --story urn:change-saga:app:story:review-annotations \
-  app.saga
+  change.saga
 ```
 
 `--ref` remains optional. `term revise` accepts the same two flags because a term revision is a complete snapshot. Omitting either flag writes `unknown`. Invalid enum values are rejected without creating a package or revision.

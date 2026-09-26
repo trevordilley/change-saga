@@ -14,7 +14,7 @@ import (
 )
 
 // All source and Git mutations in this fixture are in t.TempDir. The policy
-// sees only the read-only resolver, never app.saga or a publication callback.
+// sees only the read-only resolver, never the Saga or a publication callback.
 func TestTemporaryGitDelivery(t *testing.T) {
 	ctx := context.Background()
 	repo := t.TempDir()

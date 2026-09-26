@@ -231,7 +231,8 @@ func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 	}
 	text := strings.Join(strings.Fields(output.String()), " ")
 	for _, want := range []string{
-		"A repository has one app Saga",
+		"The recommended idiom is one Saga per repository, `change.saga` at its root",
+		"A monorepo of several apps also keeps one `change.saga` at its root",
 		"Features are durable product domains",
 		"The chain is persona -> story -> design or test -> exact code",
 		"The Saga is documentation",

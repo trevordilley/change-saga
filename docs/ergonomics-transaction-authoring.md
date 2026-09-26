@@ -6,8 +6,8 @@ slide metadata, ordered semantic Items and selectors, exact code evidence, and
 Item-level criterion links.
 
 ```sh
-change-saga apply-slide --from slide.json --repo . --dry-run --json app.saga
-change-saga apply-slide --from slide.json --repo . --json app.saga
+change-saga apply-slide --from slide.json --repo . --dry-run --json change.saga
+change-saga apply-slide --from slide.json --repo . --json change.saga
 ```
 
 The Go entry point is `cli.ApplySlideTransaction(ctx, sagaRoot, requestBase,

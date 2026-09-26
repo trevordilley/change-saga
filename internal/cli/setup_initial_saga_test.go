@@ -18,6 +18,7 @@ func TestSetupInitialSagaPrintsOneTimeWorkflowWhenNoSagaExists(t *testing.T) {
 	text := output.String()
 	for _, expected := range []string{
 		"no .saga directory was found",
+		"one\nSaga per repository", "change.saga", "monorepo",
 		"Use this workflow only once",
 		"Stories added solely at the user's request are fully valid requirements",
 		"marking a confirmed story accepted, give it at least one criterion",
@@ -57,7 +58,7 @@ func TestSetupInitialSagaGuardsExistingSaga(t *testing.T) {
 	if strings.Contains(text, "dependency.saga") {
 		t.Fatalf("setup searched ignored dependency directory:\n%s", text)
 	}
-	if strings.Contains(text, "# Establish the initial app Saga") {
+	if strings.Contains(text, "# Establish the repository's initial Saga") {
 		t.Fatalf("guarded setup emitted the full workflow:\n%s", text)
 	}
 }
@@ -73,7 +74,7 @@ func TestSetupInitialSagaOverhaulUpdatesInsteadOfDuplicating(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := output.String()
-	for _, expected := range []string{"explicitly requested a documentation overhaul", "app.saga", "do not create a duplicate", "# Establish the initial app Saga"} {
+	for _, expected := range []string{"explicitly requested a documentation overhaul", "app.saga", "do not create a duplicate", "# Establish the repository's initial Saga"} {
 		if !strings.Contains(text, expected) {
 			t.Errorf("overhaul workflow omitted %q:\n%s", expected, text)
 		}

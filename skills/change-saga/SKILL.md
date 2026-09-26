@@ -7,9 +7,12 @@ description: 'Author, update, inspect, validate, and open Change Saga product, d
 
 ## Mandatory contract
 
-A Change Saga is the Git-native documentation of an application. A repository
-has one app Saga holding durable product domains and their requirements,
-design, quality, work, and implementation explanation. A pull request compares the Saga and code
+A Change Saga is the Git-native documentation of an application. The
+recommended idiom is one Saga per repository, `change.saga` at its root,
+holding durable product domains and their requirements, design, quality,
+work, and implementation explanation. A monorepo of several apps also keeps
+one `change.saga` at its root and documents each app through its own
+features. A pull request compares the Saga and code
 between commits; its review deck explains that transition. Author the thing
 submitted for human review, not the review verdict.
 
@@ -111,8 +114,11 @@ history rather than rewriting what was previously known.
 1. Select one invocation form for the task. Prefer an installed
    `change-saga`; in this source repository use `go run ./cmd/change-saga`
    when no installed executable is available.
-2. Confirm the Saga path. Create one with `change-saga init` only when the
-   repository has none and the requested work authorizes creation. Resolve the
+2. Confirm the Saga path; it is usually `change.saga` at the repository root.
+   Create one with `change-saga init` (which creates `change.saga` by default)
+   only when the repository has none and the requested work authorizes
+   creation. If the repository already has a Saga, recommend extending it
+   rather than adding another; a second Saga is allowed but not the idiom. Resolve the
    requested scope and, for comparisons, the verified base and head. Query
    current state through the API and retain its snapshot.
 3. Use the routed reference and public commands to make the smallest complete

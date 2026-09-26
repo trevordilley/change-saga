@@ -58,9 +58,9 @@ does not require restarting discovery.
    Then offer to draft the remaining stories and observable criteria for their
    review. Do not present an exhaustive invented backlog as confirmed intent.
 4. Once the user has reviewed the drafts and agreed what to record, author the
-   stories in the app Saga through the public CLI, using existing persona and
-   feature identities and truthful lifecycle state. Re-query and validate the
-   records. Commit coherent documentation changes when requested or covered by
+   stories in the repository's Saga through the public CLI, using existing
+   persona and feature identities and truthful lifecycle state. Re-query and
+   validate the records. Commit coherent documentation changes when requested or covered by
    the working agreement; stage only the intended changes and report the commit.
    Agreement to record a proposal does not itself make its lifecycle accepted.
 5. Adapt to the user's role and technical comfort: ask whether to discuss the

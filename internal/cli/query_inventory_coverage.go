@@ -45,7 +45,7 @@ type inventoryCoverageComplete struct {
 func queryInventoryCoverage(ctx context.Context, args []string, out io.Writer) error {
 	flags := flag.NewFlagSet("query inventory-coverage", flag.ContinueOnError)
 	flags.SetOutput(io.Discard)
-	root := flags.String("saga", "", "app Saga root")
+	root := flags.String("saga", "", "Saga root")
 	repo := flags.String("repo", "", "source checkout")
 	head := flags.String("head", "HEAD", "source revision to measure")
 	kind := flags.String("kind", "", "component or system")

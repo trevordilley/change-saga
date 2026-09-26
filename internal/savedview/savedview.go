@@ -24,6 +24,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/sagalineage"
 	"github.com/twentyideas/changesaga/internal/technicalpolicy"
 )
 
@@ -101,6 +102,13 @@ func Load(ctx context.Context, checkout, sagaRoot string, current saga.Manifest,
 	prefix := rel
 	if prefix == "." {
 		prefix = ""
+	} else {
+		// A Saga renamed since the view was saved is read where it was then.
+		at, exists := sagalineage.Of(ctx, checkout, rel).PathAt(ctx, checkout, oid)
+		if !exists {
+			return fail(SagaMissing, "the Saga did not exist yet at %s", oid)
+		}
+		prefix = at
 	}
 	manifestPath := path.Join(prefix, saga.ManifestName)
 	data, err := git(ctx, checkout, "show", oid+":"+manifestPath)
@@ -128,7 +136,12 @@ func Load(ctx context.Context, checkout, sagaRoot string, current saga.Manifest,
 	if err != nil {
 		return fail(InventoryInvalid, "inventory at %s: %v", oid, err)
 	}
-	return View{Commit: oid, Artifact: "git:" + oid + ":" + rel, SourceCommit: oid, Manifest: manifest, Inventory: inventory}, nil
+	// The artifact names the Saga where it was at the view's commit.
+	artifact := "git:" + oid + ":" + rel
+	if prefix != "" {
+		artifact = "git:" + oid + ":" + prefix
+	}
+	return View{Commit: oid, Artifact: artifact, SourceCommit: oid, Manifest: manifest, Inventory: inventory}, nil
 }
 
 // Facts projects the view's facts for one requested target, for AdmitPin.

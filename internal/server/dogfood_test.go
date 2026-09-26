@@ -36,20 +36,20 @@ func dogfoodRecords(t *testing.T) (*saga.Saga, requirements.Document, quality.Do
 	return document, records, tests
 }
 
-// The repository's own app Saga is the real Saga these regressions were
+// The repository's own Saga is the real Saga these regressions were
 // found on. The tests assert shapes that hold for any content it grows.
-var dogfoodSaga = filepath.Join("..", "..", "app.saga")
+var dogfoodSaga = filepath.Join("..", "..", "change.saga")
 
 func requireDogfoodSaga(t *testing.T) {
 	t.Helper()
 	if _, err := os.Stat(filepath.Join(dogfoodSaga, saga.ManifestName)); os.IsNotExist(err) {
-		t.Skip("the repository's app Saga is intentionally absent during initial-Saga setup")
+		t.Skip("the repository's Saga is intentionally absent during initial-Saga setup")
 	} else if err != nil {
 		t.Fatal(err)
 	}
 }
 
-// dogfoodServer is one reviewer observing HEAD of the repository's app Saga,
+// dogfoodServer is one reviewer observing HEAD of the repository's Saga,
 // shared by every dogfood request as a running server is shared by a
 // reviewer's requests. Its caches are keyed on what they read, so a warm
 // cache serves exactly what a cold one would build; sharing it only stops
@@ -60,7 +60,7 @@ var dogfoodServer struct {
 	err     error
 }
 
-// dogfoodPage renders one reviewer path of the repository's app Saga,
+// dogfoodPage renders one reviewer path of the repository's Saga,
 // observing HEAD.
 func dogfoodPage(t *testing.T, path string) (int, string) {
 	t.Helper()
@@ -202,7 +202,7 @@ func TestEveryPersonaHasAPage(t *testing.T) {
 	t.Parallel()
 	_, records, _ := dogfoodRecords(t)
 	if len(records.Personas) == 0 {
-		t.Skip("the app Saga names no personas")
+		t.Skip("the Saga names no personas")
 	}
 	root := dogfoodOK(t, "/")
 	for _, persona := range records.Personas {
@@ -290,7 +290,7 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 	t.Parallel()
 	_, records, tests := dogfoodRecords(t)
 	if len(tests.TestCases) == 0 {
-		t.Skip("the app Saga has no test cases")
+		t.Skip("the Saga has no test cases")
 	}
 	for _, testCase := range tests.TestCases {
 		href := testCaseHref(testCase.Identity.ID)

@@ -11,6 +11,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/sagalineage"
 )
 
 // CursorCommit is one Saga commit and the code commit its sync cursor
@@ -23,27 +24,30 @@ type CursorCommit struct {
 // CursorHistory lists, newest first, every Saga commit that recorded a sync
 // cursor and the code commit it named.
 func CursorHistory(ctx context.Context, location Location) ([]CursorCommit, error) {
-	file := path.Join(location.Path, saga.CursorName)
 	history := []CursorCommit{}
 	if _, err := revParse(ctx, location.Repo, "HEAD"); err != nil {
 		// A Saga repository with no commits yet has no cursor history.
 		return history, nil
 	}
-	output, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "log", "--format=%H", "--", file).Output()
-	if err != nil {
-		return nil, err
-	}
-	for _, commit := range strings.Fields(string(output)) {
-		data, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "show", commit+":"+file).Output()
+	// The cursor moved with the Saga; each era reads it where the Saga was.
+	for _, era := range sagalineage.Of(ctx, location.Repo, location.Path).Eras(ctx, location.Repo, "HEAD") {
+		file := path.Join(era.Path, saga.CursorName)
+		output, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "log", "--format=%H", era.Range(), "--", file).Output()
 		if err != nil {
-			continue
+			return nil, err
 		}
-		var cursor saga.Cursor
-		decoder := json.NewDecoder(bytes.NewReader(data))
-		if decoder.Decode(&cursor) != nil || saga.ValidateCursor(cursor) != nil {
-			continue
+		for _, commit := range strings.Fields(string(output)) {
+			data, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "show", commit+":"+file).Output()
+			if err != nil {
+				continue
+			}
+			var cursor saga.Cursor
+			decoder := json.NewDecoder(bytes.NewReader(data))
+			if decoder.Decode(&cursor) != nil || saga.ValidateCursor(cursor) != nil {
+				continue
+			}
+			history = append(history, CursorCommit{SagaCommit: commit, Cursor: cursor.Commit})
 		}
-		history = append(history, CursorCommit{SagaCommit: commit, Cursor: cursor.Commit})
 	}
 	return history, nil
 }
