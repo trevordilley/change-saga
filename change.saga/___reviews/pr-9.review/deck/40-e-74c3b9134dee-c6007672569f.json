@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "45ad40811b8adada80eef1010edfcef313fd4e86",
+      "path": "internal/grammar/commands.go",
+      "start": 587,
+      "end": 594,
+      "digest": "sha256:5c19a00163ec038f4496a6ac0e3402006a21faea5ff7835d5e9c11905f347b83"
+    }
+  ]
+}

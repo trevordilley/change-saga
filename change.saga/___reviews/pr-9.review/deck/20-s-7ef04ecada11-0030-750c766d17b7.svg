@@ -51,4 +51,8 @@
     <text x="700" y="543" font-size="15" fill="#1d2433">suggest a review first. A Saga with living docs is</text>
     <text x="700" y="565" font-size="15" fill="#1d2433">still guarded, as before.</text>
   </g>
+  <g id="ci-gate">
+    <rect x="40" y="672" width="1200" height="40" rx="10" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
+    <text x="60" y="698" font-size="15" fill="#1f5c34">Use it in CI (opt-in): README workflow runs check --covers review --against origin/&lt;base&gt;; this repository's CI gates its own PRs the same way.</text>
+  </g>
 </svg>

@@ -5,7 +5,7 @@
   "rank": 50,
   "kind": "node",
   "label": "Next actions follow the review",
-  "description": "Review-only Sagas drop the implementation deck's changed-source actions and growth suggestions, and ask for a review when none exists.",
+  "description": "Review-only Sagas drop the implementation deck's changed-source actions and growth suggestions; any unreviewed comparison asks for a review; a stacked review's gap points at its own base.",
   "selector": {
     "type": "element",
     "element_id": "next-actions"

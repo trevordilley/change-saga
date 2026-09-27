@@ -28,7 +28,7 @@
     <text x="720" y="215" font-size="15" fill="#1d2433">1. the PR's base</text>
     <text x="720" y="240" font-size="15" fill="#1d2433">2. origin/HEAD's branch</text>
     <text x="720" y="265" font-size="15" fill="#1d2433">3. main, then master</text>
-    <text x="720" y="295" font-size="15" fill="#1d2433">local branch, else origin/</text>
+    <text x="720" y="295" font-size="15" fill="#1d2433">origin/ first, else local</text>
   </g>
   <line x1="950" y1="220" x2="1016" y2="220" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
   <g id="id-default">
@@ -49,4 +49,13 @@
     <text x="380" y="610" font-size="13" fill="#4a5568">id and base are optional in the grammar, usage, and help</text>
   </g>
   <line x1="1130" y1="350" x2="1130" y2="436" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <g id="follow-head">
+    <rect x="40" y="440" width="290" height="200" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="60" y="475" font-size="20" font-weight="700" fill="#4c1d95">--head: the branch</text>
+    <text x="60" y="507" font-size="15" fill="#1d2433">Recorded by default, so a</text>
+    <text x="60" y="527" font-size="15" fill="#1d2433">landed review never takes the</text>
+    <text x="60" y="547" font-size="15" fill="#1d2433">next branch's change.</text>
+    <text x="60" y="577" font-size="15" fill="#1d2433">review follow pins an older</text>
+    <text x="60" y="597" font-size="15" fill="#1d2433">review to its branch.</text>
+  </g>
 </svg>
