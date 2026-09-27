@@ -135,8 +135,11 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await page.keyboard.press("Tab");
     await expect(handler).toBeFocused();
     await page.keyboard.press("Tab");
-    await expect(popover).toBeHidden();
+    // Focus moves on to the next hotspot, whose own note replaces this one.
     await expect(edge).not.toBeFocused();
+    await expect(handler).toHaveCount(0);
+    await page.keyboard.press("Escape");
+    await expect(popover).toBeHidden();
 
     // The popover never blocks the click that opens an Item's drawer.
     const greeting = slide.locator('.landmark-hotspot:not(.callout-hotspot)[data-element-id="greeting"]');
@@ -252,4 +255,92 @@ test("an implementation deck shows its diagram notes the same way, and in an Ite
   await expect(drawerNote.locator(".element-note-label")).toHaveText("Greeting");
   await expect(drawerNote.locator("strong")).toHaveText("name");
   await expect(popover).toBeHidden();
+});
+
+test("pinned notes, notes inside a selected group, and surprise badges stay reachable", async ({ page, sagaRepositories }) => {
+  const { sagaRoot, root } = sagaRepositories;
+  cli(sagaRepositories, "review", "create", "--id", "pr-4", "--base", "main", "--head", "feature/wave-one", "--pr", "4", "--title", "Polish review", sagaRoot);
+  const requestPath = join(root, "polish.json");
+  writeFileSync(requestPath, JSON.stringify({
+    version: 1, operation: "create", request_id: "polish", review: "pr-4", expected_snapshot: "absent",
+    slide: { id: "polish", title: "Polish", rank: 10, intent: "explain", layout: "diagram", takeaway: "Every note and surprise stays reachable.",
+      reading_order: ["outer", "lower", "corner", "corner-surprise", "small", "small-surprise"] },
+    diagram: { version: 1, width: 1280, height: 720, elements: [
+      { id: "outer", kind: "group", shape: "rect", label: "Outer", x: 60, y: 120, width: 560, height: 300, style: "normal" },
+      { id: "inner", kind: "node", shape: "rect", label: "Inner", parent: "outer", x: 40, y: 80, width: 240, height: 100, style: "primary", note: "The **inner** note." },
+      { id: "upper", kind: "node", shape: "rect", label: "Upper", x: 760, y: 120, width: 400, height: 80, style: "normal", note: "Upper note with [a link](https://example.com/a)." },
+      { id: "lower", kind: "node", shape: "rect", label: "Lower", x: 760, y: 230, width: 400, height: 80, style: "primary" },
+      { id: "corner", kind: "node", shape: "rect", label: "Corner", x: 20, y: 610, width: 320, height: 90, style: "normal" },
+      { id: "small", kind: "node", shape: "rect", label: "Small", x: 900, y: 420, width: 200, height: 60, style: "normal" },
+    ] },
+    items: [
+      { id: "outer", rank: 10, kind: "node", label: "Outer", description: "A group an Item selects.", selector: { type: "element", element_id: "outer" } },
+      { id: "lower", rank: 20, kind: "node", label: "Lower", description: "Between the upper note and its popover.", selector: { type: "element", element_id: "lower" } },
+      { id: "corner", rank: 30, kind: "node", label: "Corner", description: "In the corner the Surprises panel covers.", selector: { type: "element", element_id: "corner" } },
+      { id: "corner-surprise", rank: 40, kind: "callout", label: "Corner surprise", description: "A surprise in the corner.", about: "corner", body: "Its badge must stay clear of the panel.", selector: { type: "element", element_id: "corner" } },
+      { id: "small", rank: 50, kind: "node", label: "Small", description: "A short element.", selector: { type: "element", element_id: "small" } },
+      { id: "small-surprise", rank: 60, kind: "callout", label: "Small surprise", description: "A surprise on a short element.", about: "small", body: "Its badge must not crowd the controls.", selector: { type: "element", element_id: "small" } },
+    ],
+  }));
+  cli(sagaRepositories, "apply-slide", "--from", requestPath, sagaRoot);
+  git(sagaRepositories.sagaRepo, "add", ".");
+  git(sagaRepositories.sagaRepo, "commit", "-m", "Polish review slide");
+
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(`${running.baseURL}/reviews/pr-4`);
+    const slide = page.locator('[data-deck-slide][data-slide-target$=":slide:polish"]');
+    await expect(slide).toBeVisible();
+    const popover = page.locator("#element-note-popover");
+    const center = (box: { x: number; y: number; width: number; height: number }) => ({ x: box.x + box.width / 2, y: box.y + box.height / 2 });
+    const apart = (a: { x: number; y: number; width: number; height: number }, b: { x: number; y: number; width: number; height: number }) =>
+      a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y;
+
+    // B: a note inside a group an Item selects is reachable with the pointer.
+    const inner = slide.locator('.element-note-hotspot[data-element-note-visual="inner"]');
+    await expect(inner).toHaveClass(/element-note-inner/);
+    await inner.hover();
+    await expect(popover.locator("strong")).toHaveText("inner");
+
+    // A: crossing another hotspot on the way to a pinned note keeps it.
+    const upper = slide.locator('.element-note-hotspot[data-element-note-visual="upper"]');
+    const lower = slide.locator('.landmark-hotspot[data-element-id="lower"]');
+    await upper.click();
+    await expect(popover).toHaveClass(/pinned/);
+    const popoverAt = center((await popover.boundingBox())!);
+    const lowerAt = center((await lower.boundingBox())!);
+    await page.mouse.move(lowerAt.x, lowerAt.y, { steps: 2 });
+    await page.mouse.move(popoverAt.x, popoverAt.y, { steps: 2 });
+    await expect(popover.getByRole("link", { name: "a link" })).toBeVisible();
+    await page.mouse.move(5, 5);
+    await expect(popover).toBeHidden();
+
+    // C: the Surprises panel never covers a badge in the corner beneath it.
+    const cornerBadge = slide.locator('.callout-hotspot[data-element-id="corner"]').getByRole("button", { name: "Open surprise: Corner surprise" });
+    expect(apart((await cornerBadge.boundingBox())!, (await slide.locator(".review-callouts").boundingBox())!)).toBe(true);
+    await cornerBadge.click();
+    await expect(page.locator("#review-drawer .review-item-panel h2")).toHaveText("Corner surprise");
+    await page.keyboard.press("Escape");
+
+    // D: on a short element the badge stays clear of the Item's controls.
+    const smallBadge = slide.locator('.callout-hotspot[data-element-id="small"]').getByRole("button", { name: "Open surprise: Small surprise" });
+    const smallControls = slide.locator('.landmark-hotspot:not(.callout-hotspot)[data-element-id="small"] > .landmark-affordance');
+    expect(apart((await smallBadge.boundingBox())!, (await smallControls.boundingBox())!)).toBe(true);
+
+    // D: after Escape, leaving a note hotspot and returning reopens its note.
+    await page.mouse.move(5, 5);
+    await slide.locator(".fragment").focus();
+    for (let step = 0; step < 40 && !(await upper.evaluate(node => node === document.activeElement)); step++) await page.keyboard.press("Tab");
+    await expect(upper).toBeFocused();
+    await expect(popover).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(popover).toBeHidden();
+    await page.keyboard.press("Shift+Tab");
+    await expect(upper).not.toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(upper).toBeFocused();
+    await expect(popover.getByText("Upper note with")).toBeVisible();
+  } finally {
+    await stopSagaServer(running);
+  }
 });

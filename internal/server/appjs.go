@@ -450,6 +450,38 @@ const appJavaScript = `(() => {
         visual.style.width = (Number(visual.dataset.width) * mediaRect.width) + 'px';
         visual.style.height = (Number(visual.dataset.height) * mediaRect.height) + 'px';
       });
+      raiseInnerNotes(stage);
+      placeCalloutBadges(stage);
+    });
+  }
+
+  const contains = (outer, inner) => inner.left >= outer.left - 1 && inner.top >= outer.top - 1 && inner.right <= outer.right + 1 && inner.bottom <= outer.bottom + 1;
+
+  // A note on an element inside a group or region an Item selects would sit
+  // beneath that Item's hotspot, reachable only by Tab; it is lifted above.
+  function raiseInnerNotes(stage) {
+    const items = qa('.landmark-hotspot[data-landmark-visual]', stage).map(visual => visual.getBoundingClientRect());
+    qa('.element-note-hotspot', stage).forEach(note => {
+      const rect = note.getBoundingClientRect();
+      note.classList.toggle('element-note-inner', items.some(item => contains(item, rect) && (item.width > rect.width + 1 || item.height > rect.height + 1)));
+    });
+  }
+
+  // A callout's badge sits at its element's bottom-left. On a short element
+  // it drops below the element, clear of the Item's controls at the top-right,
+  // and it moves up out from under the slide's Surprises panel.
+  function placeCalloutBadges(stage) {
+    const panel = q('.review-callouts', stage.closest('.fragment') || stage);
+    const panelRect = panel?.getClientRects().length ? panel.getBoundingClientRect() : null;
+    qa('.landmark-hotspot.callout-hotspot', stage).forEach(visual => {
+      const badge = q(':scope > .landmark-affordance', visual);
+      if (!badge) return;
+      badge.style.transform = '';
+      visual.classList.toggle('callout-compact', visual.getBoundingClientRect().height < 64);
+      if (!panelRect) return;
+      const rect = badge.getBoundingClientRect();
+      const covered = rect.left < panelRect.right && panelRect.left < rect.right && rect.top < panelRect.bottom && panelRect.top < rect.bottom;
+      if (covered) badge.style.transform = 'translateY(' + (panelRect.top - rect.bottom - 4) + 'px)';
     });
   }
 
@@ -593,6 +625,9 @@ const appJavaScript = `(() => {
 
   document.addEventListener('pointerover', event => {
     const hotspot = noteHotspot(event.target);
+    // Crossing another hotspot on the way to a pinned popover's links must
+    // not swap it for that hotspot's note.
+    if (hotspot && noteOwner && noteOwner !== hotspot && notePopover.classList.contains('pinned')) return;
     if (hotspot && event.pointerType !== 'touch') showNote(hotspot);
   });
   document.addEventListener('pointerout', event => {
@@ -607,6 +642,8 @@ const appJavaScript = `(() => {
     if (hotspot && !noteFocusQuiet) showNote(hotspot, event.target.matches(':focus-visible'));
   });
   document.addEventListener('focusout', event => {
+    const left = noteHotspot(event.target);
+    if (left && !withinNote(left, event.relatedTarget)) delete left.dataset.noteDismissed;
     const owner = noteOwner;
     if (!owner || !(noteHotspot(event.target) === owner || notePopover.contains(event.target)) || withinNote(owner, event.relatedTarget)) return;
     delete owner.dataset.noteDismissed;
@@ -679,6 +716,8 @@ const appJavaScript = `(() => {
   }, true);
   addEventListener('scroll', event => { if (noteOwner && !notePopover.contains(event.target)) placeNote(); }, true);
   addEventListener('resize', () => placeNote());
+  // Opening or closing a slide's Surprises panel changes what it covers.
+  document.addEventListener('toggle', event => { if (event.target.matches?.('.review-callouts')) positionLandmarkHotspots(); }, true);
 
   // within lets a preparation pass run over one hydrated fragment as well as
   // over the whole page, including when the root is the fragment itself.
