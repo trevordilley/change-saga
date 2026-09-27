@@ -1,0 +1,102 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/data-entity-revision.schema.json",
+  "version": 5,
+  "id": "r3",
+  "record": "urn:change-saga:change-saga:data-entity:reconciliation-queue",
+  "parents": [
+    "urn:change-saga:change-saga:data-entity:reconciliation-queue:revision:r2"
+  ],
+  "name": "Reconciliation queue",
+  "explanation": "Derived on read, never stored: reconcile --against joins documentation coverage, HEAD currency of every code reference, inventory health and declared impact into an ordered queue of inspect/repair tasks, led by a summary of the references this change made stale, each with a proposed range from diff arithmetic. It records no decisions and mutates nothing; accepting a proposal is a separate, explicit repin --accept-proposed.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "24e0da6442d7097691cc814175932e0bc07c8e50"
+  },
+  "code": [
+    {
+      "id": "report",
+      "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+      "path": "internal/cli/reconciliation.go",
+      "start": 26,
+      "end": 46,
+      "digest": "sha256:82d0dfbcb232c99d0f7cac45e7bea8c6451cede2ab15f0dc292c5dc99b0ead0f",
+      "note": "The read-only reconciliation report, led by its summary."
+    },
+    {
+      "id": "summary",
+      "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+      "path": "internal/cli/reconciliation.go",
+      "start": 48,
+      "end": 58,
+      "digest": "sha256:415f328feb781aec6c87fc189b5ebc75f68266b9af9e214c46757ee90cefb51e",
+      "note": "The summary: what the change made stale, with proposals, and queue counts by kind."
+    },
+    {
+      "id": "task",
+      "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+      "path": "internal/cli/reconciliation.go",
+      "start": 103,
+      "end": 113,
+      "digest": "sha256:4561c8268ba0b99a9d1b481da48f8aef71df19234c2cba60f0d32ceba1c5dd23",
+      "note": "One queue task with inspect and repair paths."
+    },
+    {
+      "id": "currency",
+      "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+      "path": "internal/cli/reconciliation.go",
+      "start": 401,
+      "end": 474,
+      "digest": "sha256:a18f86cec9aa7ad5532e977316d68e4af17d3cd1ab51d221c726ce70ac215e96",
+      "note": "Every Saga code reference is resolved at the head, classified by debt, and a stale one carries its proposed range and accept repair."
+    }
+  ],
+  "fields": [
+    {
+      "id": "summary",
+      "name": "summary",
+      "type": "stale_by_change · queue counts"
+    },
+    {
+      "id": "currency",
+      "name": "currency",
+      "type": "current · stale · debt · proposal"
+    },
+    {
+      "id": "coverage",
+      "name": "documentation_coverage",
+      "type": "areas"
+    },
+    {
+      "id": "queue",
+      "name": "queue[]",
+      "type": "resource · debt · repair"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "from-coverage",
+      "meaning": "production",
+      "destination": {
+        "target": "urn:change-saga:change-saga:data-entity:coverage-report",
+        "revision": "urn:change-saga:change-saga:data-entity:coverage-report:revision:r2"
+      },
+      "label": "extended into",
+      "explanation": "Documentation coverage of the comparison is computed first and carried into the reconciliation report.",
+      "flow": "destination_to_owner",
+      "intent": "implemented",
+      "code": [
+        {
+          "id": "coverage",
+          "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+          "path": "internal/cli/reconciliation.go",
+          "start": 330,
+          "end": 338,
+          "digest": "sha256:e37ab3b18eefcd934da98620fa246e16b8fd5dea72ec41311b0d5bb089e63aac",
+          "note": "The comparison and its coverage report feed documentation coverage."
+        }
+      ]
+    }
+  ],
+  "created_at": "2026-09-27T07:58:57.767908Z"
+}
