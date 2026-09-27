@@ -527,7 +527,7 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		}
 		return a.Reference < b.Reference
 	})
-	result.Summary.StaleByChange = measureChangeStaleness(ctx, resolver, append(append([]ownedReference{}, owned...), inventoryReferences(document)...), historical, compared.Opening.BaseOID, compared.Opening.HeadOID, root, repo)
+	result.Summary.StaleByChange = measureChangeStaleness(ctx, resolver, append(append([]ownedReference{}, owned...), inventoryReferences(document)...), historical, compared.Opening.BaseOID, compared.Opening.HeadOID, root, repo, writtenDuringChange(ctx, root, resolver.Repository(), compared.Opening.BaseOID, compared.Opening.HeadOID))
 	counts := &result.Summary.Queue
 	for _, task := range result.Queue {
 		counts.Total++

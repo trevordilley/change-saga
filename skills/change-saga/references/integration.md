@@ -35,7 +35,9 @@ Start from the signal. The text report (and `summary` in `--json`, alone with
 per reference with owner, old range, and proposed range. `status --against`,
 `review list`, and `review create` say the same. Stale means stale at HEAD
 and either current at the merge-base or pinned during the change (deleted-side
-evidence of removed lines is counted apart); debt that was already stale is a
+evidence of removed lines written during the change is counted apart; living
+documentation that already described lines the change deleted is listed for
+repair); debt that was already stale is a
 count, listed only with `--all`.
 
 Repair each one cheaply but with judgment:

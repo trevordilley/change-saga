@@ -200,3 +200,39 @@ func TestDeletedSideEvidenceIsNotMadeStaleByTheChange(t *testing.T) {
 		t.Fatalf("stale_by_change = %+v", staleness)
 	}
 }
+
+// Living documentation that already described lines the change deletes is
+// the change's regression, even when pinned exactly at the merge-base: only
+// evidence written during the change is excused as deleted-side. A companion
+// Saga pins at the code's main head, which is the merge-base.
+func TestLivingDocumentationOfDeletedLinesIsMadeStaleByTheChange(t *testing.T) {
+	t.Parallel()
+	code := t.TempDir()
+	git(t, code, "init", "-b", "main")
+	git(t, code, "config", "user.name", "Code Author")
+	git(t, code, "config", "user.email", "code@example.test")
+	git(t, code, "remote", "add", "origin", "https://example.test/acme/app.git")
+	writeFile(t, filepath.Join(code, "app.go"), appFeature)
+	base := commitAll(t, code, "Base")
+	docs := t.TempDir()
+	git(t, docs, "init", "-b", "main")
+	git(t, docs, "config", "user.name", "Docs Author")
+	git(t, docs, "config", "user.email", "docs@example.test")
+	root := filepath.Join(docs, "app.saga")
+	mustRun(t, Init, "--repo", code, "--id", "app", root)
+	coverJSON(t, "--repo", code, "--commit", base, "--path", "app.go", "--lines", "5-7", "--name", "b", "--note", "B returns a value", root)
+	mustRun(t, Sync, "--repo", code, root)
+	commitAll(t, docs, "Document B")
+	git(t, code, "checkout", "-q", "-b", "drop-b")
+	writeFile(t, filepath.Join(code, "app.go"), "package app\n\nfunc A() {}\n")
+	commitAll(t, code, "Drop B")
+
+	status, _ := statusLayers(t, root, "--repo", code, "--against", "main")
+	staleness := status.StaleByChange
+	if staleness == nil || staleness.Count != 1 || staleness.DeletedSide != 0 || staleness.References[0].Pinned.String() != base+":app.go#L5-L7" {
+		t.Fatalf("stale_by_change = %+v", staleness)
+	}
+	if summary := reconciliationOf(t, root, "--repo", code).Summary.StaleByChange; summary.Count != 1 || summary.DeletedSide != 0 {
+		t.Fatalf("reconcile summary = %+v", summary)
+	}
+}

@@ -11,10 +11,13 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 
+	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/diagram"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -51,9 +54,11 @@ type changeStaleness struct {
 	// Proposed is how many of them have a proposed range to accept with
 	// repin --accept-proposed.
 	Proposed int `json:"proposed"`
-	// DeletedSide is how many stale references are pinned at the merge-base
-	// to lines the change removed: evidence of what the change took out,
-	// current at the base, and not something to repair.
+	// DeletedSide is how many stale references were written during the
+	// change, pinned at the merge-base to lines the change removed: evidence
+	// of what the change took out, current at the base, and not something to
+	// repair. Living documentation that already described lines the change
+	// deleted is the change's regression and is counted above instead.
 	DeletedSide int `json:"deleted_side"`
 	// PreExisting is how many other references were already stale. It is
 	// absent where only the files the change touched were read.
@@ -85,10 +90,12 @@ func historicalOwners(document *saga.Saga) map[string][]string {
 }
 
 // measureChangeStaleness classifies every stale reference at head against
-// base. root and repo shape the accept commands. With changedOnly it reads
-// only references into files base..head touches, the only ones the change
-// can make stale, and leaves the pre-existing count out.
-func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver, owned []ownedReference, historical map[string][]string, base, head, root, repo string, changedOnly ...bool) changeStaleness {
+// base. root and repo shape the accept commands. written reports evidence
+// recorded during the change (writtenDuringChange); only such evidence of
+// lines the change removed is deleted-side, and nil treats none as such. With
+// changedOnly it reads only references into files base..head touches, the
+// only ones the change can make stale, and leaves the pre-existing count out.
+func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver, owned []ownedReference, historical map[string][]string, base, head, root, repo string, written func(ownedReference) bool, changedOnly ...bool) changeStaleness {
 	result := changeStaleness{BaseOID: base, HeadOID: head, References: []staleRow{}}
 	var changed map[string]bool
 	if len(changedOnly) > 0 && changedOnly[0] {
@@ -119,7 +126,7 @@ func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver,
 		if resolution.Current() {
 			continue
 		}
-		if ref.Code.Commit == base && base != head && resolver.Removed(ctx, base, head, ref.Code.Path, ref.Code.Start, ref.Code.End) {
+		if ref.Code.Commit == base && base != head && resolver.Removed(ctx, base, head, ref.Code.Path, ref.Code.Start, ref.Code.End) && written != nil && written(ref) {
 			result.DeletedSide++
 			continue
 		}
@@ -749,8 +756,48 @@ func livingStaleness(ctx context.Context, document *saga.Saga, resolver *coderes
 	if err != nil || len(owned) == 0 || resolver == nil {
 		return nil
 	}
-	staleness := measureChangeStaleness(ctx, resolver, owned, historicalOwners(document), base, head, root, repo, changedOnly...).withoutDiffs()
+	written := writtenDuringChange(ctx, document.Root, resolver.Repository(), base, head)
+	staleness := measureChangeStaleness(ctx, resolver, owned, historicalOwners(document), base, head, root, repo, written, changedOnly...).withoutDiffs()
 	return &staleness
+}
+
+// writtenDuringChange reports whether a living reference was recorded during
+// the change base..head: the Saga that documented the merge-base (the base
+// commit's own Saga, or a companion Saga's through its sync cursor) holds no
+// identical reference for the same owner. It reads that Saga once, on first
+// use. When no snapshot documents the base it answers no, so a deletion is
+// listed for repair rather than excused; when the Saga did not exist yet,
+// every reference was written during the change.
+func writtenDuringChange(ctx context.Context, root, checkout, base, head string) func(ownedReference) bool {
+	var once sync.Once
+	var recorded map[string]bool
+	absent := false
+	key := func(ref ownedReference) string { return ref.Owner + "\x00" + ref.EvidenceFile + "\x00" + ref.Code.Key() }
+	return func(ref ownedReference) bool {
+		once.Do(func() {
+			side, _ := changeview.BaseSide(ctx, root, checkout, gitdiff.ChangeSet{BaseOID: base, HeadOID: head})
+			if side.Source != changeview.SideGit {
+				return
+			}
+			err := changeview.ReadSnapshot(ctx, root, side, func(snapshot string) error {
+				document, _, err := saga.Load(snapshot)
+				if err != nil {
+					return err
+				}
+				owned, err := documentationReferences(document)
+				if err != nil {
+					return err
+				}
+				recorded = map[string]bool{}
+				for _, prior := range owned {
+					recorded[key(prior)] = true
+				}
+				return nil
+			})
+			absent = changeview.IsSagaAbsent(err)
+		})
+		return absent || recorded != nil && !recorded[key(ref)]
+	}
 }
 
 // reviewView is the commit a review Item's reference is read at: the
