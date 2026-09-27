@@ -190,8 +190,19 @@ func ReviewItemTarget(sagaID, reviewID, slideID, itemID string) string {
 // ReviewScopedTarget reports whether target names a review or a deck, slide,
 // or Item inside one.
 func ReviewScopedTarget(target string) bool {
+	return ReviewIDOf(target) != ""
+}
+
+// ReviewIDOf returns the id of the review target names or names something
+// inside, or "" when target is not review-scoped. It reads the URN by
+// segment, so a Saga or deck whose id is "review" is never mistaken for one.
+func ReviewIDOf(target string) string {
 	parts := strings.SplitN(target, ":", 5)
-	return len(parts) == 5 && parts[0] == "urn" && parts[1] == "change-saga" && parts[3] == "review"
+	if len(parts) != 5 || parts[0] != "urn" || parts[1] != "change-saga" || parts[3] != "review" {
+		return ""
+	}
+	id, _, _ := strings.Cut(parts[4], ":")
+	return id
 }
 
 func reviewDeckTargets(sagaID, reviewID string) deckTargets {

@@ -121,9 +121,7 @@ func transactionManagedSlide(slide *saga.Slide) bool {
 
 func completeSlideMutationError(operation, target string) error {
 	slideTarget, _, _ := strings.Cut(target, ":item:")
-	if saga.ReviewScopedTarget(target) {
-		_, rest, _ := strings.Cut(target, ":review:")
-		review, _, _ := strings.Cut(rest, ":")
+	if review := saga.ReviewIDOf(target); review != "" {
 		return fmt.Errorf("%s cannot safely mutate %s because it is managed by complete-slide transaction history; read its snapshot and Items with `change-saga diagram describe --slide %s PATH`, then change its diagram with `change-saga diagram edit` or submit the complete replacement with `change-saga apply-slide --review %s --from REQUEST.json PATH`; cover its Items' code with `change-saga cover`", operation, target, slideTarget, review)
 	}
 	return fmt.Errorf("%s cannot safely mutate %s because it is managed by complete-slide transaction history; read authoring_snapshot, authoring_heads, and items (including evidence and criterion_links) with `change-saga query slide --saga PATH --target %s`, then submit the complete replacement with `change-saga apply-slide --from REQUEST.json PATH`", operation, target, slideTarget)
@@ -489,14 +487,7 @@ func transactionReview(request SlideTransactionRequest) string {
 	if request.Review != "" {
 		return request.Review
 	}
-	if !strings.HasPrefix(request.Deck, "urn:change-saga:") {
-		return ""
-	}
-	if _, rest, found := strings.Cut(request.Deck, ":review:"); found {
-		id, _, _ := strings.Cut(rest, ":")
-		return id
-	}
-	return ""
+	return saga.ReviewIDOf(request.Deck)
 }
 
 // transactionDeck resolves the deck a request publishes into: a feature's

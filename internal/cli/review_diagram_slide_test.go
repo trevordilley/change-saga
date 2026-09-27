@@ -435,3 +435,27 @@ func TestDiagramCheckTreatsMergedReviewsAsHistory(t *testing.T) {
 		}
 	}
 }
+
+// A review is found in a URN by segment: a Saga whose id is "review" names
+// an app deck, and its reviews, without being mistaken for a review.
+func TestTransactionReviewReadsTheURNBySegment(t *testing.T) {
+	t.Parallel()
+	for deck, want := range map[string]string{
+		"urn:change-saga:review:deck:implementation":     "",
+		saga.ReviewDeckTarget("review", "pr-7", "pr-7"):  "pr-7",
+		saga.ReviewDeckTarget("app", "review", "review"): "review",
+		"urn:change-saga:app:deck:review":                "",
+		"implementation":                                 "",
+	} {
+		if got := transactionReview(SlideTransactionRequest{Deck: deck}); got != want {
+			t.Errorf("transactionReview(%s) = %q, want %q", deck, got, want)
+		}
+	}
+	message := completeSlideMutationError("add-item", saga.ReviewItemTarget("review", "pr-7", "flow", "queue")).Error()
+	if !strings.Contains(message, "apply-slide --review pr-7 ") {
+		t.Fatalf("mutation error names the wrong review:\n%s", message)
+	}
+	if message := completeSlideMutationError("add-item", "urn:change-saga:review:slide:flow:item:queue").Error(); strings.Contains(message, "--review") {
+		t.Fatalf("an app slide of Saga review is treated as a review slide:\n%s", message)
+	}
+}
