@@ -545,3 +545,55 @@ test("a refused sticky-note edit retains the editable draft and confirms exactly
     expect(readJSON<{annotation_action:string}>(records[1]).annotation_action).toBe('update');
   } finally {await stopSagaServer(running);}
 });
+
+// A review slide can be published from a structured diagram source with
+// apply-slide, exactly like an implementation slide: the CLI renders the SVG,
+// its Items select semantic diagram elements, and cover references their
+// changed lines against the review's range.
+test("renders a diagram-sourced review slide published with apply-slide", async ({ page, sagaRepositories }) => {
+  const { sagaRoot, sourceRepo, root } = sagaRepositories;
+  cli(sagaRepositories, "review", "create", "--id", "pr-2", "--base", "main", "--head", "feature/wave-one", "--pr", "2", "--title", "Diagram review", sagaRoot);
+  const request = {
+    version: 1, operation: "create", request_id: "greeting-flow", review: "pr-2", expected_snapshot: "absent",
+    slide: { id: "greeting-flow", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["caller", "greeting"] },
+    diagram: {
+      version: 1, width: 1280, height: 720, background: "#fafaf8",
+      elements: [
+        { id: "caller", kind: "node", shape: "ellipse", label: "Caller", x: 120, y: 280, width: 240, height: 110, style: "normal" },
+        { id: "greeting", kind: "node", shape: "service", label: "Greeting", icon: "lucide:server", x: 760, y: 280, width: 260, height: 110, style: "primary" },
+        { id: "name", kind: "edge", from: "caller", to: "greeting", points: [{ x: 360, y: 335 }, { x: 760, y: 335 }], head: "arrow", label: "name", label_box: { x: 510, y: 297, width: 100, height: 26 }, style: "secondary" },
+      ],
+    },
+    items: [
+      { id: "caller", rank: 10, kind: "node", label: "Caller", description: "Callers now pass a name.", selector: { type: "element", element_id: "caller" } },
+      { id: "greeting", rank: 20, kind: "node", label: "Greeting", description: "Greeting returns the supplied name.", selector: { type: "element", element_id: "greeting" }, record: "urn:change-saga:wave-one:feature:wave-one" },
+    ],
+  };
+  const requestPath = join(root, "greeting-flow.json");
+  writeFileSync(requestPath, JSON.stringify(request));
+  const published = JSON.parse(cli(sagaRepositories, "apply-slide", "--from", requestPath, "--json", sagaRoot));
+  expect(published.target).toBe("urn:change-saga:wave-one:review:pr-2:slide:greeting-flow");
+  cli(sagaRepositories, "cover", "--repo", sourceRepo, "--target", `${published.target}:item:greeting`, "--path", "src/app.go", "--changed-lines", sagaRoot);
+  expect(cli(sagaRepositories, "diagram", "describe", "--slide", published.target, sagaRoot)).toContain("greeting [node] \"Greeting\" element=greeting code_files=1");
+  git(sagaRepositories.sagaRepo, "add", ".");
+  git(sagaRepositories.sagaRepo, "commit", "-m", "Diagram-sourced review slide");
+
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(`${running.baseURL}/reviews/pr-2`);
+    const slide = page.locator('[data-deck-slide][data-slide-target$=":slide:greeting-flow"]');
+    await expect(slide).toBeVisible();
+    const visual = slide.locator("iframe.fragment-frame").contentFrame();
+    await expect(visual.getByRole("img", { name: "Greeting flow" })).toBeVisible();
+    await expect(visual.locator("#greeting")).toBeVisible();
+    await expect(visual.locator("#name")).toBeAttached();
+    await expect(slide.locator('.landmark-hotspot[data-element-id="greeting"]')).toHaveCount(1);
+    await expect(slide.locator('.landmark-hotspot[data-element-id="caller"]')).toHaveCount(1);
+    await page.screenshot({ path: test.info().outputPath("review-diagram-slide.png") });
+    await slide.locator(".landmark-menu > summary").click();
+    await slide.locator(".landmark-list").getByRole("button", { name: /Open \d+ code references? for Greeting/ }).click();
+    await expect(page.locator("#review-drawer .review-line.add").filter({ hasText: `"hello, " + name` }).first()).toBeVisible();
+  } finally {
+    await stopSagaServer(running);
+  }
+});
