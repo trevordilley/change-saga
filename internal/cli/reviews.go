@@ -48,24 +48,33 @@ func Review(ctx context.Context, args []string, out io.Writer) error {
 	return err
 }
 
-func reviewCreate(_ context.Context, args []string, out io.Writer) error {
+func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 	name := "review create"
 	flags := commandFlags(name, commandUsage[name], out)
-	id := flags.String("id", "", "stable review id, for example pr-42")
-	base := flags.String("base", "", "the revision the pull request merges into, for example main")
+	id := flags.String("id", "", "stable review id, for example pr-42; defaults to pr-N for a pull request, else the branch name")
+	base := flags.String("base", "", "the revision the pull request merges into, for example main; defaults to the pull request's base, else origin's default branch")
 	head := flags.String("head", "", "the ref the review follows as commits are pushed, usually the pull request's branch; defaults to the checkout's HEAD")
 	number := flags.Int("pr", 0, "pull request number; a pull request has one review")
 	url := flags.String("url", "", "pull request URL")
 	title := flags.String("title", "", "review title; defaults to the pull request")
 	objective := flags.String("objective", "", "what the review deck explains; defaults to the transition and why it was made")
 	deckID := flags.String("deck", "", "review deck id; defaults to the review id")
+	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *id, *base); err != nil {
+	if err := requireLivingArgs(flags); err != nil {
 		return err
 	}
+	// What was not given is worked out from the checkout: the pull request
+	// (through gh, when installed), its base or origin's default branch, and
+	// an id from the pull request number or the branch.
+	filled, err := fillReviewDefaults(ctx, firstNonEmpty(*repo, flags.Arg(0)), reviewCreateInputs{id: *id, base: *base, head: *head, url: *url, title: *title, number: *number})
+	if err != nil {
+		return err
+	}
+	*id, *base, *url, *title, *number = filled.id, filled.base, filled.url, filled.title, filled.number
 	if *title == "" {
 		*title = "Review " + *id
 		if *number > 0 {
@@ -97,6 +106,9 @@ func reviewCreate(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	if !*jsonOutput {
+		if len(filled.inferred) > 0 {
+			fmt.Fprintf(out, "Using %s; pass the flags to choose otherwise\n", strings.Join(filled.inferred, ", "))
+		}
 		fmt.Fprintf(out, "Next: change-saga add-slide --review %s --intent explain --layout diagram %s first-slide\n", *id, root)
 	}
 	return nil

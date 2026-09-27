@@ -572,10 +572,11 @@ var commands = []Command{
 	},
 	{
 		Name: "review create", Status: StatusImplemented, Mutates: true, Writes: []string{"review"},
-		Usage:   "change-saga review create --id ID --base REV [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
-		Summary: "create the one review of a pull request: a slide deck viewed from the merge-base of --base and the head it follows",
+		Usage:   "change-saga review create [--id ID] [--base REV] [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
+		Summary: "create the one review of a pull request (or branch): a slide deck viewed from the merge-base of --base and the head it follows; the pull request, base, and id default from gh, origin's default branch, and the branch",
 		Flags: []Flag{
-			required("id", "ID", "stable review id, for example pr-42"), required("base", "REV", "the revision the pull request merges into"),
+			optional("id", "ID", "stable review id; defaults to pr-N for a pull request, else the branch name"), optional("base", "REV", "the revision the pull request merges into; defaults to the pull request's base, else origin's default branch"),
+			optional("repo", "PATH", "code checkout when separate"),
 			optional("head", "REF", "the ref the review follows as commits are pushed; defaults to the checkout's HEAD"),
 			optional("pr", "N", "pull request number"), optional("url", "URL", "pull request URL"), optional("title", "TEXT", "review title"),
 			optional("objective", "TEXT", "what the review deck explains"), optional("deck", "ID", "review deck id; defaults to the review id"), jsonFlag,
