@@ -772,7 +772,9 @@ func writtenDuringChange(ctx context.Context, root, checkout, base, head string)
 	var once sync.Once
 	var recorded map[string]bool
 	absent := false
-	key := func(ref ownedReference) string { return ref.Owner + "\x00" + ref.EvidenceFile + "\x00" + ref.Code.Key() }
+	key := func(ref ownedReference) string {
+		return ref.Owner + "\x00" + ref.EvidenceFile + "\x00" + ref.Code.Key()
+	}
 	return func(ref ownedReference) bool {
 		once.Do(func() {
 			side, _ := changeview.BaseSide(ctx, root, checkout, gitdiff.ChangeSet{BaseOID: base, HeadOID: head})
