@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/elementnotes_test.go",
+      "digest": "sha256:41bd0cc420a7ade2a9d5fb087b1088cccbe395d2bfd68b6de7fe25a5b8edacd0"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/elementnotes_test.go",
+      "start": 1,
+      "end": 58,
+      "digest": "sha256:41bd0cc420a7ade2a9d5fb087b1088cccbe395d2bfd68b6de7fe25a5b8edacd0"
+    }
+  ]
+}

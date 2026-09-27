@@ -49,6 +49,7 @@
         "label": {"type": "string", "maxLength": 2000},
         "detail": {"type": "string", "maxLength": 2000},
         "description": {"type": "string", "maxLength": 4000, "description": "Semantic explanation read by describe and assistive technology; not drawn."},
+        "note": {"type": "string", "minLength": 1, "maxLength": 1000, "description": "Optional depth on demand, not drawn: Markdown limited to bold, italics, inline code, lists, and http, https, or mailto links (no raw HTML, headings, images, tables, or code blocks). The reviewer shows it rendered when a reader hovers, focuses, or taps the element; describe prints it; the SVG carries it as plain text in the element's desc. Not allowed on decorative elements."},
         "x": {"type": "number"}, "y": {"type": "number"},
         "width": {"type": "number", "minimum": 0}, "height": {"type": "number", "minimum": 0},
         "z": {"type": "integer"},

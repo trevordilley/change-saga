@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
+      "path": "internal/diagram/note.go",
+      "start": 1,
+      "end": 121,
+      "digest": "sha256:faa42434450ab80b466f4be68f3d157ad616aec8e49a5f451d8aad95cc0f24d7"
+    }
+  ]
+}

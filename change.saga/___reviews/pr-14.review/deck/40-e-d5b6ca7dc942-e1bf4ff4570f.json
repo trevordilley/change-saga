@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:604ca9ba7875f6b13527a5a0775c1336c0e7261592f34eb4396cf77918ebb857"
+    }
+  ]
+}

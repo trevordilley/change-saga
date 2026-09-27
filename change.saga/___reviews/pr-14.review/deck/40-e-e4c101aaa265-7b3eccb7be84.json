@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ef4aee5677d128f62c6decaac63d616b0da12e7",
+      "path": "internal/server/template.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:ed2008b520192483d2c611386d1b9929eea72189206da16e587a3a83c035d9a5"
+    }
+  ]
+}

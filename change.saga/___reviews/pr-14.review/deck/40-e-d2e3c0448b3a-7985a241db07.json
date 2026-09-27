@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "e2e/tests/diagram-notes.spec.ts",
+      "digest": "sha256:72d480dd77db1f29db2cd196911f8ca3da2a15348f06d9291baa3b5cc4cd8b06"
+    },
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "e2e/tests/diagram-notes.spec.ts",
+      "start": 1,
+      "end": 255,
+      "digest": "sha256:72d480dd77db1f29db2cd196911f8ca3da2a15348f06d9291baa3b5cc4cd8b06"
+    }
+  ]
+}

@@ -503,7 +503,26 @@ rendered with its element ID as its SVG `id`, so an Item selects it with an
 lays out, resizes, or reroutes anything; text that does not fit its explicit
 box is refused. Generated SVGs reference one measurement font the reviewer
 serves at `/_diagram/fonts/go-regular.ttf` and fall back to a system
-sans-serif elsewhere. A reader validates a pin's digest and structure;
+sans-serif elsewhere.
+
+Any semantic element may carry an optional `note`: at most 1,000 characters
+of Markdown limited to bold, italics, inline code, lists, and `http`, `https`,
+or `mailto` links. Raw HTML, headings, images, tables, code blocks, block
+quotes, footnotes, and other link schemes are refused, as are a note that
+renders no text and a note on a decorative element. The SVG carries the note as plain text in the element's
+`desc`, so the standalone drawing and assistive technology read it, and an
+element without a note renders exactly as before. The reviewer renders the
+note with its sanitizing Markdown renderer and shows it in a popover on the
+app page, beside the element and never inside the sandboxed slide frame, when
+a reader hovers, focuses, or taps the element. A popover opened by hover lets
+the pointer through to whatever lies beneath it; a tap, a click, or keyboard
+focus pins it, and its links then follow the element in the Tab order. The
+popover of an element an Item selects also shows the Item's label and
+description, and an implementation Item's callout body, which a review slide
+lists in its Surprises panel instead; an Item's drawer repeats its note for a
+reader who cannot hover.
+
+A reader validates a pin's digest and structure;
 `change-saga diagram check` re-renders sources and reports any published SVG
 that differs from its source, for example after a renderer change.
 
@@ -511,7 +530,7 @@ that differs from its source, for example after a renderer change.
 snapshot and republishes the slide through the same transaction, carrying its
 Items, evidence, and criterion links. `change-saga diagram describe` reads any
 slide compactly: its takeaway, Items in reading order, and, for a diagram
-source, its semantic elements and connections. The description omits geometry,
+source, its semantic elements, connections, and notes. The description omits geometry,
 styling, decorative elements, and asset bytes, and cannot rebuild the drawing.
 
 A pull request review's deck uses the same transaction. A request that names

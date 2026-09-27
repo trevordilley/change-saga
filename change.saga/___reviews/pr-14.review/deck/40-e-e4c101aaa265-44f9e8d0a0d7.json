@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "internal/server/template.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:1f22858909a47ae05ff3aa5f291286bf6aaabee1185e42f79913df9e6e7a7bc9"
+    },
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "internal/server/template.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:d7513b150cc6a450521e4b4f55176f513562acc9f88703c5617022b92d6fc61b"
+    }
+  ]
+}

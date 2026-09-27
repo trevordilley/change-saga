@@ -79,6 +79,7 @@ type Element struct {
 	Label       string  `json:"label,omitempty"`
 	Detail      string  `json:"detail,omitempty"`
 	Description string  `json:"description,omitempty"`
+	Note        string  `json:"note,omitempty"`
 	X           float64 `json:"x"`
 	Y           float64 `json:"y"`
 	Width       float64 `json:"width,omitempty"`
@@ -254,6 +255,14 @@ func (d Document) Validate() error {
 		if len([]rune(e.Label)) > MaxLabelRunes || len([]rune(e.Detail)) > MaxLabelRunes || len([]rune(e.Description)) > 2*MaxLabelRunes {
 			fail("text is too long")
 		}
+		if e.Note != "" {
+			if e.Decorative {
+				fail("a decorative element is hidden from readers, so its note would never be read; remove the note or make the element semantic")
+			}
+			for _, problem := range validateNote(e.Note) {
+				fail("%s", problem)
+			}
+		}
 		for _, n := range []float64{e.X, e.Y, e.Width, e.Height, e.IconSize, e.HeadSize} {
 			if !finite(n) {
 				fail("geometry must be finite")
@@ -416,10 +425,11 @@ func Contract() map[string]any {
 		"frame_shapes":   sorted(frameShapes),
 		"alignments":     sorted(textAlignment),
 		"default_styles": styles,
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative"},
+		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative"},
 		"operations":     OperationNames,
 		"font":           FontPath,
-		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes},
+		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes, "note_runes": MaxNoteRunes},
+		"note_format":    "an optional Markdown note on any semantic element, shown when a reader hovers, focuses, or taps it: " + NoteFormat + "; no raw HTML",
 		"rules": []string{
 			"every coordinate is explicit and local to the parent group; nothing is laid out, resized, or rerouted",
 			"element order is reading order and breaks ties between equal z values",
@@ -427,6 +437,7 @@ func Contract() map[string]any {
 			"text that does not fit its box is refused",
 			"a framed group draws its frame and parents its contents",
 			"decorative elements are hidden from describe and assistive technology and may not contain semantic ones",
+			"a note is optional depth on demand: describe prints it, the SVG carries it as plain text in the element's desc, and the reviewer shows it rendered on hover or focus",
 			"graphics accept allowlisted drawing markup; currentColor follows the style's stroke",
 		},
 	}

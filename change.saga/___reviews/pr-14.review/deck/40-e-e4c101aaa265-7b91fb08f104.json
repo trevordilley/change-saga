@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "internal/server/styles.go",
+      "start": 579,
+      "end": 584,
+      "digest": "sha256:0d535c56b399339d28c9d1806d2f65bbbc7ff7f9027e9ab663d939270b698443"
+    }
+  ]
+}

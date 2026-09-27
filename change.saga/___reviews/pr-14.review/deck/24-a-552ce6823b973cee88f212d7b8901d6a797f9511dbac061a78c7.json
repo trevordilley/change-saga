@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "The popover lives on the page, not in the frame",
+      "x": 60,
+      "y": 28,
+      "width": 1100,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "loader",
+      "kind": "node",
+      "shape": "service",
+      "label": "Load slide notes",
+      "x": 60,
+      "y": 140,
+      "width": 320,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "templates",
+      "kind": "node",
+      "shape": "service",
+      "label": "Templates by landmarks",
+      "x": 520,
+      "y": 140,
+      "width": 340,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "frame",
+      "kind": "group",
+      "shape": "boundary",
+      "label": "Sandboxed slide frame",
+      "note": "Still `sandbox=\"allow-scripts\"` on an opaque origin. No note enters it, so authored script never runs on the app origin.",
+      "x": 60,
+      "y": 360,
+      "width": 360,
+      "height": 220,
+      "style": "boundary"
+    },
+    {
+      "id": "svg",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Slide SVG",
+      "x": 40,
+      "y": 80,
+      "width": 280,
+      "height": 100,
+      "parent": "frame",
+      "style": "normal"
+    },
+    {
+      "id": "script",
+      "kind": "node",
+      "shape": "service",
+      "label": "Page script",
+      "x": 540,
+      "y": 420,
+      "width": 300,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "popover",
+      "kind": "node",
+      "shape": "rect",
+      "label": "One popover",
+      "detail": "beside the hotspot, never blocking",
+      "x": 940,
+      "y": 420,
+      "width": 290,
+      "height": 100,
+      "style": "warning"
+    },
+    {
+      "id": "tests",
+      "kind": "text",
+      "label": "Tests: sanitized server output, browser hover, keyboard, tap",
+      "x": 60,
+      "y": 630,
+      "width": 1000,
+      "height": 36,
+      "style": "caption"
+    },
+    {
+      "id": "sanitize",
+      "kind": "edge",
+      "label": "sanitize",
+      "note": "`markdownWithAnchors`, the goldmark renderer authored fragments already use: raw HTML is escaped and unsafe links are neutralized, even if a source on disk skipped validation.",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "loader",
+      "to": "templates",
+      "points": [
+        {
+          "x": 380,
+          "y": 190
+        },
+        {
+          "x": 520,
+          "y": 190
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 396,
+        "y": 152,
+        "width": 110,
+        "height": 28
+      }
+    },
+    {
+      "id": "clone",
+      "kind": "edge",
+      "label": "clone",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "templates",
+      "to": "script",
+      "points": [
+        {
+          "x": 690,
+          "y": 240
+        },
+        {
+          "x": 690,
+          "y": 420
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 705,
+        "y": 316,
+        "width": 80,
+        "height": 28
+      }
+    },
+    {
+      "id": "measure",
+      "kind": "edge",
+      "label": "measure",
+      "note": "Fetches a copy of the SVG into an inert shadow root, as Item hotspots already did, to find each noted element's box.",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "svg",
+      "to": "script",
+      "points": [
+        {
+          "x": 380,
+          "y": 490
+        },
+        {
+          "x": 540,
+          "y": 490
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 424,
+        "y": 452,
+        "width": 100,
+        "height": 28
+      }
+    },
+    {
+      "id": "show",
+      "kind": "edge",
+      "label": "show",
+      "note": "- **Hover**: opens, and lets the pointer through\n- **Focus**, **click**, or **tap**: pins it, so its links take focus and clicks\n- **Escape**, moving away, or a slide change: closes",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "script",
+      "to": "popover",
+      "points": [
+        {
+          "x": 840,
+          "y": 470
+        },
+        {
+          "x": 940,
+          "y": 470
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 856,
+        "y": 432,
+        "width": 70,
+        "height": 28
+      }
+    }
+  ]
+}

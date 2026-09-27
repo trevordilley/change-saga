@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/saga/model.go",
+      "start": 211,
+      "end": 222,
+      "digest": "sha256:537d787a912590a13ef5e5d33b3ed455b6338efd91bae38fb63b2f3e023beb5f"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/saga/model.go",
+      "start": 211,
+      "end": 225,
+      "digest": "sha256:2f2591b001690afc6934c5c57b058299370b926e9b327c8db044db0fb0dd9458"
+    }
+  ]
+}

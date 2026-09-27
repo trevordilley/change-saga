@@ -7,6 +7,13 @@ const appJavaScript = `(() => {
   let diffLayout = 'inline';
   let drawerOpener = null;
   let drawerRestore = null;
+  // Element note popover state; see "Element notes" below.
+  let notePopover = null;
+  let noteOwner = null;
+  let noteHideTimer = 0;
+  let notePointer = null;
+  let noteFocusQuiet = false;
+  let noteDrawerHotspot = null;
   const slideDiffPreviewReasons = new WeakMap();
 
   const slideStoryPreviewReasons = new WeakMap();
@@ -88,6 +95,7 @@ const appJavaScript = `(() => {
   function activateDeckSlide(index, updateHash = false) {
     const slides = deckViewerSlides();
     if (!slides.length) return;
+    hideNote();
     qa('.fragment.preview-linked-items').forEach(fragment => fragment.classList.remove('preview-linked-items'));
     qa('.fragment.preview-linked-stories').forEach(fragment => {
       fragment.classList.remove('preview-linked-stories');
@@ -281,6 +289,10 @@ const appJavaScript = `(() => {
     if (!stage || q('[data-landmark-visual="' + CSS.escape(target.dataset.landmarkAnchor) + '"]', stage)) return;
     const visual = document.createElement('div');
     visual.className = 'landmark-hotspot';
+    // A callout marks a surprise about an element another Item usually
+    // explains: its hotspot lets clicks through, and its own badge sits at the
+    // element's bottom-left, clear of that Item's controls.
+    if (target.dataset.itemKind === 'callout') visual.classList.add('callout-hotspot');
     visual.dataset.landmarkVisual = target.dataset.landmarkAnchor;
     visual.dataset.autoLandmarkHotspot = 'true';
     visual.dataset.elementId = target.dataset.elementId;
@@ -365,7 +377,9 @@ const appJavaScript = `(() => {
     const frame = q('[data-fragment-frame]', fragment);
     const targets = qa('[data-landmark-target][data-landmark-type="element"]', fragment)
       .filter(target => target.dataset.elementId && !q('[data-landmark-visual="' + CSS.escape(target.dataset.landmarkAnchor) + '"]', fragment));
-    if (!frame || targets.length === 0) return;
+    const noteTargets = qa('[data-element-note-target]', fragment)
+      .filter(target => target.dataset.elementId && !q('[data-element-note-visual="' + CSS.escape(target.dataset.elementId) + '"]', fragment));
+    if (!frame || (targets.length === 0 && noteTargets.length === 0)) return;
     await new Promise(resolve => whenFrameLoaded(frame, resolve));
     if (!fragment.isConnected) return;
     const sourceURL = new URL(frameSource(frame), location.href);
@@ -404,12 +418,28 @@ const appJavaScript = `(() => {
       const region = normalizedMeasuredRegion(element?.getBoundingClientRect(), rootRect);
       if (region) appendAutomaticLandmarkHotspot(fragment, target, region);
     });
+    // Larger note hotspots go first, so a node's note stays reachable inside
+    // the group around it.
+    noteTargets
+      .map(target => ({target, region: normalizedMeasuredRegion(svg.querySelector('#' + CSS.escape(target.dataset.elementId))?.getBoundingClientRect(), rootRect)}))
+      .filter(entry => entry.region)
+      .sort((a, b) => b.region.width * b.region.height - a.region.width * a.region.height)
+      .forEach(entry => appendNoteHotspot(fragment, entry.target, entry.region));
     measure.remove();
     positionLandmarkHotspots();
   }
 
+  // A callout that shares its element or region with another Item lets
+  // clicks through to that Item's hotspot; only its badge takes the pointer.
+  function markSharedCallouts(stage) {
+    const place = visual => visual.dataset.elementId || [visual.dataset.x, visual.dataset.y, visual.dataset.width, visual.dataset.height].join(',');
+    const others = new Set(qa('.landmark-hotspot[data-landmark-visual]:not(.callout-hotspot)', stage).map(place));
+    qa('.landmark-hotspot.callout-hotspot', stage).forEach(visual => visual.classList.toggle('callout-shared', others.has(place(visual))));
+  }
+
   function positionLandmarkHotspots() {
     qa('.fragment-stage').forEach(stage => {
+      markSharedCallouts(stage);
       const media = q('.fragment-frame,.fragment-image', stage);
       if (!media) return;
       const stageRect = stage.getBoundingClientRect();
@@ -422,6 +452,233 @@ const appJavaScript = `(() => {
       });
     });
   }
+
+  // ----- Element notes -----
+  // Hovering, focusing, or tapping a slide element shows one popover with its
+  // Item's label and description and the element's own note. The popover
+  // lives on this page beside the hotspot, never inside the sandboxed slide
+  // frame, and its content is the server's sanitized rendering, cloned from a
+  // template. A popover opened by hover lets the pointer through, so it never
+  // blocks a click on a nearby hotspot; a tap, a click, or keyboard focus pins
+  // it, and only a pinned popover takes the pointer and focus for its links.
+
+  function appendNoteHotspot(fragment, target, region) {
+    const stage = q('.fragment-stage', fragment);
+    if (!stage) return;
+    const visual = document.createElement('div');
+    visual.className = 'landmark-hotspot element-note-hotspot';
+    visual.dataset.elementNoteVisual = target.dataset.elementId;
+    visual.tabIndex = 0;
+    visual.setAttribute('role', 'button');
+    visual.setAttribute('aria-expanded', 'false');
+    visual.setAttribute('aria-label', 'Note: ' + (target.dataset.elementName || target.dataset.elementId));
+    visual.dataset.x = String(region.x);
+    visual.dataset.y = String(region.y);
+    visual.dataset.width = String(region.width);
+    visual.dataset.height = String(region.height);
+    stage.append(visual);
+  }
+
+  function landmarkNoteTemplate(fragment, anchor) {
+    return anchor ? q('[data-landmark-anchor="' + CSS.escape(anchor) + '"] > [data-landmark-note-template]', fragment || document) : null;
+  }
+
+  // drawerNoteTemplate finds the popover of the landmark whose controls open
+  // the code drawer templateID names.
+  function drawerNoteTemplate(templateID) {
+    const control = '[data-open-diffs="' + CSS.escape(templateID) + '"],[data-target-code-template="' + CSS.escape(templateID) + '"]';
+    const target = qa('[data-landmark-target]').find(span => q('[data-landmark-affordance-template]', span)?.content.querySelector(control));
+    return target ? q(':scope > [data-landmark-note-template]', target) : null;
+  }
+
+  function noteTemplate(hotspot) {
+    const fragment = hotspot.closest('.fragment');
+    if (!fragment) return null;
+    if (hotspot.dataset.elementNoteVisual) return q('[data-element-note-target][data-element-id="' + CSS.escape(hotspot.dataset.elementNoteVisual) + '"] > [data-landmark-note-template]', fragment);
+    return landmarkNoteTemplate(fragment, hotspot.dataset.landmarkVisual);
+  }
+
+  function showNote(hotspot, pinned = false) {
+    clearTimeout(noteHideTimer);
+    if (hotspot.dataset.noteDismissed === 'true') return;
+    if (noteOwner !== hotspot) {
+      const template = noteTemplate(hotspot);
+      if (!template) return;
+      hideNote();
+      if (!notePopover) {
+        notePopover = document.createElement('div');
+        notePopover.id = 'element-note-popover';
+        notePopover.className = 'element-note-popover';
+        notePopover.setAttribute('role', 'note');
+        notePopover.setAttribute('aria-label', 'Element note');
+        notePopover.hidden = true;
+        notePopover.addEventListener('pointerenter', () => clearTimeout(noteHideTimer));
+        notePopover.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch') scheduleHideNote(); });
+        document.body.append(notePopover);
+      }
+      notePopover.replaceChildren(template.content.cloneNode(true));
+      notePopover.hidden = false;
+      noteOwner = hotspot;
+      hotspot.setAttribute('aria-describedby', notePopover.id);
+      if (hotspot.hasAttribute('aria-expanded')) hotspot.setAttribute('aria-expanded', 'true');
+      placeNote();
+    }
+    if (pinned) notePopover.classList.add('pinned');
+  }
+
+  const overlapping = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+
+  // placeNote puts the popover below the hotspot, or above, right, or left of
+  // it: the first side that fits the viewport without covering another
+  // hotspot, else the first that fits.
+  function placeNote() {
+    if (!noteOwner) return;
+    const rect = noteOwner.getBoundingClientRect();
+    if (!noteOwner.isConnected || (!rect.width && !rect.height)) { hideNote(); return; }
+    notePopover.style.left = '0px';
+    notePopover.style.top = '0px';
+    const box = notePopover.getBoundingClientRect();
+    const gap = 8, margin = 8;
+    const others = qa('.landmark-hotspot', noteOwner.closest('.fragment-stage') || document)
+      .filter(hotspot => hotspot !== noteOwner).map(hotspot => hotspot.getBoundingClientRect()).filter(other => other.width && other.height && !overlapping(other, rect));
+    const candidates = [
+      [rect.left, rect.bottom + gap, 'y'], [rect.left, rect.top - gap - box.height, 'y'],
+      [rect.right + gap, rect.top, 'x'], [rect.left - gap - box.width, rect.top, 'x'],
+    ].map(([x, y, axis]) => {
+      const fits = axis === 'y' ? y >= margin && y + box.height <= innerHeight - margin : x >= margin && x + box.width <= innerWidth - margin;
+      const left = Math.max(margin, Math.min(x, innerWidth - box.width - margin));
+      const top = Math.max(margin, Math.min(y, innerHeight - box.height - margin));
+      const area = {left, top, right: left + box.width, bottom: top + box.height};
+      return {left, top, fits, clear: fits && !others.some(other => overlapping(other, area))};
+    });
+    const chosen = candidates.find(candidate => candidate.clear) || candidates.find(candidate => candidate.fits) || candidates[0];
+    notePopover.style.left = chosen.left + 'px';
+    notePopover.style.top = chosen.top + 'px';
+  }
+
+  function hideNote() {
+    clearTimeout(noteHideTimer);
+    const owner = noteOwner;
+    if (!owner) return;
+    // Removing a focused link fires focusout, which may call back in here.
+    noteOwner = null;
+    notePopover.hidden = true;
+    notePopover.classList.remove('pinned');
+    notePopover.replaceChildren();
+    owner.removeAttribute('aria-describedby');
+    if (owner.hasAttribute('aria-expanded')) owner.setAttribute('aria-expanded', 'false');
+  }
+
+  // A pinned popover gives the pointer a moment to cross to its links.
+  function scheduleHideNote() {
+    clearTimeout(noteHideTimer);
+    if (notePopover?.classList.contains('pinned')) noteHideTimer = setTimeout(hideNote, 200);
+    else hideNote();
+  }
+
+  // The last control of the owner, and the first thing Tab reaches after it.
+  const tabbableSelector = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),summary,iframe,[tabindex]';
+  const tabbable = element => element.tabIndex >= 0 && !element.closest('[inert],[hidden]') && element.getClientRects().length > 0;
+  function ownerLastTabbable() {
+    const inside = qa(tabbableSelector, noteOwner).filter(tabbable);
+    return inside[inside.length - 1] || noteOwner;
+  }
+  function tabbableAfterOwner() {
+    return qa(tabbableSelector).filter(element => tabbable(element) && !noteOwner.contains(element) && !notePopover.contains(element)
+      && (noteOwner.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING)).shift() || null;
+  }
+
+  const noteHotspot = node => node?.closest?.('.landmark-hotspot');
+  const withinNote = (hotspot, node) => node instanceof Node && (hotspot.contains(node) || Boolean(notePopover?.contains(node)));
+
+  document.addEventListener('pointerover', event => {
+    const hotspot = noteHotspot(event.target);
+    if (hotspot && event.pointerType !== 'touch') showNote(hotspot);
+  });
+  document.addEventListener('pointerout', event => {
+    const hotspot = noteHotspot(event.target);
+    if (!hotspot || event.pointerType === 'touch' || withinNote(hotspot, event.relatedTarget)) return;
+    delete hotspot.dataset.noteDismissed;
+    // Keyboard focus keeps the popover; focus a click left behind does not.
+    if (hotspot === noteOwner && !hotspot.matches(':focus-visible') && !q(':focus-visible', hotspot)) scheduleHideNote();
+  });
+  document.addEventListener('focusin', event => {
+    const hotspot = noteHotspot(event.target);
+    if (hotspot && !noteFocusQuiet) showNote(hotspot, event.target.matches(':focus-visible'));
+  });
+  document.addEventListener('focusout', event => {
+    const owner = noteOwner;
+    if (!owner || !(noteHotspot(event.target) === owner || notePopover.contains(event.target)) || withinNote(owner, event.relatedTarget)) return;
+    delete owner.dataset.noteDismissed;
+    if (!owner.matches(':hover')) hideNote();
+  });
+  document.addEventListener('pointerdown', event => {
+    const hotspot = noteHotspot(event.target);
+    notePointer = hotspot ? {hotspot, type: event.pointerType, open: noteOwner === hotspot} : null;
+  }, true);
+  // A tap or click pins a note hotspot's popover, and a second tap closes it.
+  // A tap on an Item's hotspot that opens no drawer pins its popover; any
+  // other click on an Item's hotspot opens its drawer as before, so the
+  // popover steps aside; a click elsewhere dismisses it.
+  document.addEventListener('click', event => {
+    const hotspot = noteHotspot(event.target);
+    noteDrawerHotspot = hotspot || null;
+    const touch = notePointer?.hotspot === hotspot && notePointer.type === 'touch';
+    const wasOpen = touch && notePointer.open;
+    notePointer = null;
+    if (hotspot?.matches('.element-note-hotspot')) {
+      if (wasOpen) { hotspot.dataset.noteDismissed = 'true'; hideNote(); return; }
+      delete hotspot.dataset.noteDismissed;
+      showNote(hotspot, true);
+      return;
+    }
+    if (hotspot && touch && !q('[data-documentation-target],[data-open-diffs],[data-target-code-href]', hotspot)) {
+      if (wasOpen) hideNote(); else showNote(hotspot, true);
+      return;
+    }
+    if (noteOwner && !notePopover.contains(event.target)) hideNote();
+  }, true);
+  document.addEventListener('keydown', event => {
+    const hotspot = event.target.closest?.('.element-note-hotspot');
+    if (hotspot && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      if (noteOwner === hotspot) { hotspot.dataset.noteDismissed = 'true'; hideNote(); }
+      else { delete hotspot.dataset.noteDismissed; showNote(hotspot, true); }
+      return;
+    }
+    if (!noteOwner) return;
+    if (event.key === 'Tab') {
+      // The popover's links follow its hotspot in the Tab order.
+      const links = qa('a[href]', notePopover);
+      const inPopover = notePopover.contains(event.target);
+      if (!inPopover && links.length && !event.shiftKey && event.target === ownerLastTabbable()) {
+        event.preventDefault();
+        notePopover.classList.add('pinned');
+        links[0].focus();
+      } else if (inPopover && !event.shiftKey && event.target === links[links.length - 1]) {
+        event.preventDefault();
+        const next = tabbableAfterOwner();
+        hideNote();
+        next?.focus();
+      } else if (inPopover && event.shiftKey && event.target === links[0]) {
+        event.preventDefault();
+        ownerLastTabbable().focus();
+      }
+      return;
+    }
+    if (event.key === 'Escape') {
+      // Escape dismisses the popover before anything else it would close.
+      const owner = noteOwner;
+      owner.dataset.noteDismissed = 'true';
+      const refocus = notePopover.contains(document.activeElement);
+      hideNote();
+      if (refocus) owner.focus();
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }, true);
+  addEventListener('scroll', event => { if (noteOwner && !notePopover.contains(event.target)) placeNote(); }, true);
+  addEventListener('resize', () => placeNote());
 
   // within lets a preparation pass run over one hydrated fragment as well as
   // over the whole page, including when the root is the fragment itself.
@@ -1293,6 +1550,7 @@ const appJavaScript = `(() => {
   }
 
   function showDrawer(opener) {
+    hideNote();
     // A bound ERD element is an SVGElement; it takes focus like a button.
     drawerOpener = (opener instanceof HTMLElement || opener instanceof SVGElement) && opener.isConnected
       ? opener
@@ -1318,6 +1576,19 @@ const appJavaScript = `(() => {
     restoreDrawerContent();
     const body = q('.drawer-body');
     body.innerHTML = source.innerHTML;
+    // An implementation Item's note heads its code, so a reader who cannot
+    // hover, such as on a touch screen, still reads it.
+    // Lazily loaded code replaces the control that was clicked, so the hotspot
+    // it was clicked in is remembered.
+    const openerHotspot = returnOpener?.closest?.('.landmark-hotspot') || (noteDrawerHotspot?.isConnected ? noteDrawerHotspot : null);
+    noteDrawerHotspot = null;
+    const note = q('.review-item-panel', body) ? null : openerHotspot ? noteTemplate(openerHotspot) : drawerNoteTemplate(templateID);
+    if (note && q('.element-note-markdown', note.content)) {
+      const heading = document.createElement('section');
+      heading.className = 'drawer-element-note';
+      heading.append(note.content.cloneNode(true));
+      body.prepend(heading);
+    }
     const attached = q('[data-attached-title]', body);
     configureDrawer('code', attached?.dataset.attachedTitle ? 'Linked code · ' + attached.dataset.attachedTitle : 'Linked code');
     highlightCode(body);
@@ -2092,7 +2363,12 @@ const appJavaScript = `(() => {
     // Return focus before the drawer becomes inert. WebKit does not always make
     // a clicked close button active, so do not condition this on activeElement
     // still being inside the drawer.
-    if (wasOpen && drawerOpener?.isConnected) drawerOpener.focus();
+    if (wasOpen && drawerOpener?.isConnected) {
+      // Focus returning to a hotspot's control does not reopen its popover.
+      noteFocusQuiet = true;
+      drawerOpener.focus();
+      noteFocusQuiet = false;
+    }
     drawer.setAttribute('inert', '');
     q('.drawer-backdrop').classList.remove('open');
     document.body.style.overflow = '';

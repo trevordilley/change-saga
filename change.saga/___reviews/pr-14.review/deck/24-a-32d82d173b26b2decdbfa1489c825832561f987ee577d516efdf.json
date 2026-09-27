@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Notes are depth on demand",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "spec",
+      "kind": "node",
+      "shape": "service",
+      "label": "SPEC.md",
+      "detail": "the note contract",
+      "x": 60,
+      "y": 260,
+      "width": 320,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "fast-path",
+      "kind": "node",
+      "shape": "service",
+      "label": "Skill fast path",
+      "detail": "when to add a note",
+      "x": 480,
+      "y": 260,
+      "width": 320,
+      "height": 110,
+      "style": "normal"
+    },
+    {
+      "id": "reference",
+      "kind": "node",
+      "shape": "service",
+      "label": "Diagrams reference",
+      "detail": "rules and the example",
+      "note": "Its review-slide example now carries a note on the `miss` edge, and a test keeps that example rendering.",
+      "x": 900,
+      "y": 260,
+      "width": 320,
+      "height": 110,
+      "style": "normal"
+    },
+    {
+      "id": "guides",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "spec",
+      "to": "fast-path",
+      "points": [
+        {
+          "x": 380,
+          "y": 315
+        },
+        {
+          "x": 480,
+          "y": 315
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "details",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "fast-path",
+      "to": "reference",
+      "points": [
+        {
+          "x": 800,
+          "y": 315
+        },
+        {
+          "x": 900,
+          "y": 315
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "rule",
+      "kind": "text",
+      "label": "Surprises stay in callouts; a note is never padding.",
+      "note": "Omit a note when there is nothing to add. **Never manufacture detail** to fill one.",
+      "x": 60,
+      "y": 470,
+      "width": 1100,
+      "height": 40,
+      "style": "caption"
+    }
+  ]
+}
