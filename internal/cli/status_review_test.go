@@ -180,3 +180,47 @@ func TestHoldsLivingDocumentation(t *testing.T) {
 		t.Fatal("a Saga with personas holds no living documentation")
 	}
 }
+
+func TestReviewTargetsAreDiscoverable(t *testing.T) {
+	fixture := newReviewOnlyFixture(t, true)
+	children := func(parent string) []string {
+		t.Helper()
+		var envelope struct {
+			OK   bool `json:"ok"`
+			Data struct {
+				Children []struct {
+					Kind   string `json:"kind"`
+					Target string `json:"target"`
+				} `json:"children"`
+			} `json:"data"`
+		}
+		if err := json.Unmarshal([]byte(run(t, Query, "children", "--saga", fixture.root, "--repo", fixture.repo, "--parent", parent)), &envelope); err != nil || !envelope.OK {
+			t.Fatalf("query children %s: %v %+v", parent, err, envelope)
+		}
+		result := []string{}
+		for _, child := range envelope.Data.Children {
+			result = append(result, child.Kind+" "+child.Target)
+		}
+		return result
+	}
+	review := saga.ReviewTarget("app", "pr-7")
+	if got := strings.Join(children(saga.SagaTarget("app")), "\n"); !strings.Contains(got, "review "+review) {
+		t.Fatalf("the Saga's children omit its review:\n%s", got)
+	}
+	deck := saga.ReviewDeckTarget("app", "pr-7", "pr-7")
+	if got := children(review); len(got) != 1 || got[0] != "review-deck "+deck {
+		t.Fatalf("review children = %v", got)
+	}
+	if got := children(deck); len(got) != 1 || got[0] != "slide "+saga.ReviewSlideTarget("app", "pr-7", "queue") {
+		t.Fatalf("review deck children = %v", got)
+	}
+	if got := children(saga.ReviewSlideTarget("app", "pr-7", "queue")); len(got) != 1 || got[0] != "item "+saga.ReviewItemTarget("app", "pr-7", "queue", "node") {
+		t.Fatalf("review slide children = %v", got)
+	}
+
+	var output bytes.Buffer
+	err := Cover(context.Background(), []string{"--target", saga.ReviewItemTarget("app", "pr-7", "queue", "missing"), "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root}, &output)
+	if err == nil || !strings.Contains(err.Error(), saga.ReviewItemTarget("app", "pr-7", "queue", "node")) || !strings.Contains(err.Error(), "--parent "+review) {
+		t.Fatalf("an unknown review target's error does not list the review's targets: %v", err)
+	}
+}
