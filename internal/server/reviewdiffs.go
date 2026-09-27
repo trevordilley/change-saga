@@ -103,39 +103,67 @@ func (diffs *reviewDiffs) referenceDiff(ctx context.Context, reference coderef.R
 const reviewDiffContext = 3
 
 // trimDiffToRange keeps the diff lines within context lines of start..end
-// on the new side, under their hunk's header. A deleted line sits between
-// the new lines around it, so it is kept when the new line before it is.
-// Where lines inside a hunk are left out, a marker says so. A hunk that
+// on the new side, under their hunk's header. Added and context lines are
+// kept by their own line. A run of deleted lines is kept exactly when a
+// line that replaces it is, so a change is never shown as a pure deletion
+// or a pure addition; a run replaced by nothing sits after the new line
+// before it. Where lines are left out, a marker says so. A hunk that
 // already fits is kept exactly.
 func trimDiffToRange(lines []reviewDiffLine, start, end, context int) []reviewDiffLine {
+	low, high := start-context, end+context
+	within := func(position int) bool { return position >= low && position <= high }
 	var kept []reviewDiffLine
 	var header *reviewDiffLine
 	position, gap := 0, false
-	for index, line := range lines {
-		if line.Kind == "hunk" {
-			// A hunk's deleted lines before its first new line sit just
-			// before the new line it starts at.
-			_, _, newStart, _ := parseHunkHeader(line.Text)
-			position, gap = newStart-1, false
-			header = &lines[index]
-			continue
-		}
-		if line.Kind == "add" || line.Kind == "ctx" {
-			position, _ = strconv.Atoi(line.New)
-		}
-		if position < start-context || position > end+context {
-			gap = true
-			continue
-		}
-		switch {
-		case header != nil:
+	keep := func(line reviewDiffLine) {
+		if header != nil {
 			kept = append(kept, *header)
 			header = nil
-		case gap:
+		}
+		if gap {
 			kept = append(kept, reviewDiffLine{Kind: "hunk", Text: "⋯"})
 		}
 		gap = false
 		kept = append(kept, line)
+	}
+	for index := 0; index < len(lines); index++ {
+		line := lines[index]
+		switch line.Kind {
+		case "hunk":
+			// A hunk's deleted lines before its first new line sit just
+			// before the new line it starts at.
+			_, _, newStart, _ := parseHunkHeader(line.Text)
+			position, gap, header = newStart-1, false, &lines[index]
+		case "del":
+			last := index
+			for last+1 < len(lines) && lines[last+1].Kind == "del" {
+				last++
+			}
+			replaced, shown := false, false
+			for next := last + 1; next < len(lines) && lines[next].Kind == "add"; next++ {
+				replaced = true
+				added, _ := strconv.Atoi(lines[next].New)
+				shown = shown || within(added)
+			}
+			if !replaced {
+				shown = within(position)
+			}
+			for ; index <= last; index++ {
+				if shown {
+					keep(lines[index])
+				} else {
+					gap = true
+				}
+			}
+			index = last
+		default:
+			position, _ = strconv.Atoi(line.New)
+			if within(position) {
+				keep(line)
+			} else {
+				gap = true
+			}
+		}
 	}
 	return kept
 }

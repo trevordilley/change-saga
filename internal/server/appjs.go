@@ -1329,8 +1329,14 @@ const appJavaScript = `(() => {
   // request's deck would otherwise carry every diff in the page. Each
   // Item's diffs are fetched once per page.
   // An Item with many references arrives a page at a time; "Show more"
-  // fetches the next page in place of its button.
+  // fetches the next page in place of its button. Fetched pages are kept
+  // only while the page that linked them is shown: a page swapped in later
+  // may follow a newer head or a changed Saga.
   const reviewItemDiffs = new Map();
+  document.addEventListener('htmx:afterSwap', event => {
+    if (event.detail?.target?.id === 'page') reviewItemDiffs.clear();
+  });
+  document.addEventListener('htmx:historyRestore', () => reviewItemDiffs.clear());
   async function hydrateReviewItemDiffs(body) {
     const slot = q('[data-review-item-diffs-href]:not([data-review-more-diffs])', body);
     if (slot) await loadReviewItemDiffs(slot);
