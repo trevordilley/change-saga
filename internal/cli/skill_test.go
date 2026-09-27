@@ -501,7 +501,7 @@ func TestSkillLeadsWithCreatingAReview(t *testing.T) {
 		t.Fatal("the review fast path is not the skill's first section")
 	}
 	section := entry[fastPath:strings.Index(entry, "## Mandatory contract")]
-	for _, want := range []string{"review create", "add-slide --review", "set-slide-content --review", "add-item --review", "--changed-lines", "review list --uncovered", "check --covers review", "setup-initial-saga"} {
+	for _, want := range []string{"review create", "apply-slide --review", "diagram source", "--changed-lines", "review list --uncovered", "check --covers review", "setup-initial-saga"} {
 		if !strings.Contains(strings.Join(strings.Fields(section), " "), want) {
 			t.Fatalf("the fast path omits %q", want)
 		}

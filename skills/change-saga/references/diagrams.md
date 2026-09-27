@@ -110,11 +110,12 @@ Discover `apply-slide` in the installed CLI before use; otherwise use the existi
 focused slide, Item, relation, and evidence commands without inventing the
 transaction.
 
-When available, `apply-slide --from FILE|- [--repo PATH] [--dry-run] [--json]
-<saga>` accepts one versioned, complete desired slide: the visual asset, slide
-metadata, ordered semantic Items and selectors, exact code evidence, and
-pinned Item-level criterion links. Create requires `expected_snapshot:
-"absent"`; update requires the exact snapshot from the preceding result or
+When available, `apply-slide --from FILE|- [--review ID] [--repo PATH]
+[--dry-run] [--json] <saga>` accepts one versioned, complete desired slide of
+an implementation or review deck: the visual asset or diagram source, slide
+metadata, and ordered semantic Items and selectors; an implementation slide's
+Items also carry exact code evidence and pinned Item-level criterion links.
+Create requires `expected_snapshot: "absent"`; update requires the exact snapshot from the preceding result or
 `query slide`. Inspect authoring heads and preserve every conflicting head.
 For divergent history, use `operation: "reconcile"` with `expected_snapshots`
 containing every reported head, omitting the singular `expected_snapshot`.
@@ -124,9 +125,10 @@ an identical retry is a no-op and reuse with different content is rejected.
 A request supplies exactly one of `asset` or `diagram`; with a diagram,
 `media_type` is `image/svg+xml` and may be omitted.
 
-Each Item needs a resolving selector, focused line-range evidence whose digest
-matches the named commit, and an exact criterion link with its current story
-revision and rationale. The transaction refuses whole-file evidence, broad
+Each Item needs a resolving selector. An implementation Item also needs
+focused line-range evidence whose digest matches the named commit and an exact
+criterion link with its current story revision and rationale; a review Item
+carries neither (see below). The transaction refuses whole-file evidence, broad
 Deck/Slide criterion ownership, stale criteria, unsafe asset paths, and
 selector-breaking replacements. Its atomic boundary is one slide; it does not
 atomically include story edits, another slide, a Git commit, or external work.
@@ -140,11 +142,49 @@ retrying; the published record and its referenced asset must remain intact.
 Author review slides the same way: set `"review": ID` instead of `"deck"` (or
 pass `apply-slide --review ID`). A review Item carries no `evidence` or
 `criterion_links`, and may set `record` to a Saga record to open beside the
-change. After publishing, cover each Item's code with `change-saga cover
---target ITEM-URN --path PATH --changed-lines`; that coverage stays attached
-across later revisions and diagram edits. A revision that drops a covered Item
-is refused until its coverage is removed. Read review slides with `diagram
-describe`, and check them with `diagram check` and `visual-qa --review ID`.
+change. A minimal review slide with a diagram source:
+
+```json
+{
+  "version": 1, "operation": "create", "request_id": "pr-42-architecture",
+  "review": "pr-42", "expected_snapshot": "absent",
+  "slide": {
+    "id": "architecture", "title": "Reads go through the cache", "rank": 10,
+    "intent": "explain", "layout": "diagram",
+    "takeaway": "Reads hit the cache first and fall through to the database on a miss.",
+    "reading_order": ["cache", "database"]
+  },
+  "diagram": {
+    "version": 1, "width": 1280, "height": 720,
+    "elements": [
+      {"id": "title", "kind": "text", "label": "Reads go through the cache", "x": 60, "y": 28,
+       "width": 800, "height": 48, "style": "title", "decorative": true},
+      {"id": "cache", "kind": "node", "shape": "service", "label": "Read-through cache",
+       "x": 120, "y": 240, "width": 300, "height": 110, "style": "primary"},
+      {"id": "database", "kind": "node", "shape": "datastore", "label": "Database",
+       "x": 760, "y": 240, "width": 280, "height": 120, "style": "normal"},
+      {"id": "miss", "kind": "edge", "from": "cache", "to": "database", "head": "arrow",
+       "points": [{"x": 420, "y": 295}, {"x": 760, "y": 295}], "label": "on a miss",
+       "label_box": {"x": 520, "y": 255, "width": 140, "height": 28}, "style": "secondary"}
+    ]
+  },
+  "items": [
+    {"id": "cache", "rank": 10, "kind": "node", "label": "Read-through cache",
+     "description": "Why reads now go through the cache.",
+     "selector": {"type": "element", "element_id": "cache"}},
+    {"id": "database", "rank": 20, "kind": "node", "label": "Database",
+     "description": "Reached only on a cache miss.",
+     "selector": {"type": "element", "element_id": "database"}}
+  ]
+}
+```
+
+After publishing, cover each Item's code with `change-saga cover --target
+ITEM-URN --path PATH --changed-lines`; that coverage stays attached across
+later revisions and diagram edits. A revision that drops a covered Item is
+refused until its coverage is removed. Read review slides with `diagram
+describe` or `query slide`, and check them with `diagram check` and
+`visual-qa --review ID`.
 
 ## Compose semantic, reviewable visuals
 
