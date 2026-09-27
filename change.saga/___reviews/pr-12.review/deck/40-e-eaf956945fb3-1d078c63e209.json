@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "95116a5b2b241d42846efb2df8bc4c3bd2adefbb",
+      "path": ".github/workflows/ci.yml",
+      "start": 109,
+      "end": 131,
+      "digest": "sha256:7dee6a9d01c5b1fd375ea5f00a1b86534ee0d93fe06ee350786bc0c9b88d8387"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "95116a5b2b241d42846efb2df8bc4c3bd2adefbb",
+      "path": "internal/cli/repin_onto_test.go",
+      "digest": "sha256:4bfad77479189ad6df8a88c5253a092ad73c14d838e3f70b82b117db762ba5ec"
+    },
+    {
+      "commit": "95116a5b2b241d42846efb2df8bc4c3bd2adefbb",
+      "path": "internal/cli/repin_onto_test.go",
+      "start": 1,
+      "end": 105,
+      "digest": "sha256:4bfad77479189ad6df8a88c5253a092ad73c14d838e3f70b82b117db762ba5ec"
+    }
+  ]
+}

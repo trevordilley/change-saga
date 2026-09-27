@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "change.saga brought current",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "stale-references",
+      "kind": "node",
+      "shape": "rect",
+      "label": "122 stale references",
+      "detail": "92 accepted, 13 re-covered, 5 terms revised, 12 retired",
+      "x": 40,
+      "y": 110,
+      "width": 560,
+      "height": 130,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "proposed-slides",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Ten Proposed slides retired",
+      "detail": "implemented; rationale carried into Implemented slides",
+      "x": 680,
+      "y": 110,
+      "width": 550,
+      "height": 130,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "merged-reviews",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Merged reviews frozen",
+      "detail": "seven at their landing, one pinned to its head",
+      "x": 40,
+      "y": 290,
+      "width": 560,
+      "height": 130,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "living-docs",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Seven living slides",
+      "detail": "gitexec, lineage, snapshot, htmx, review-first, repair, review slides",
+      "x": 680,
+      "y": 290,
+      "width": 550,
+      "height": 130,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "left-as-history",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Left as history",
+      "detail": "11 pins on merged review decks; review-ux-improvements covers 637 of 25661 lines",
+      "x": 40,
+      "y": 470,
+      "width": 1190,
+      "height": 110,
+      "style": "warning",
+      "wrap": true
+    }
+  ]
+}

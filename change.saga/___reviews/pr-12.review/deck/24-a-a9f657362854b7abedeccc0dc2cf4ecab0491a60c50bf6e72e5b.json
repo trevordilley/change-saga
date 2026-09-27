@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "CI now keeps change.saga healthy",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "pull-request",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Pull request or push",
+      "detail": "the commit under test",
+      "x": 40,
+      "y": 250,
+      "width": 260,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "review-job",
+      "kind": "node",
+      "shape": "rect",
+      "label": "review job",
+      "detail": "check --covers review --against the base",
+      "x": 380,
+      "y": 140,
+      "width": 420,
+      "height": 120,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "health-job",
+      "kind": "node",
+      "shape": "rect",
+      "label": "health job",
+      "detail": "check --covers health change.saga",
+      "x": 380,
+      "y": 360,
+      "width": 420,
+      "height": 120,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "policy",
+      "kind": "node",
+      "shape": "rect",
+      "label": "This repository's policy",
+      "detail": "not a product default",
+      "x": 880,
+      "y": 250,
+      "width": 350,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "asks-review",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "pull-request",
+      "to": "review-job",
+      "points": [
+        {
+          "x": 300,
+          "y": 280
+        },
+        {
+          "x": 340,
+          "y": 280
+        },
+        {
+          "x": 340,
+          "y": 200
+        },
+        {
+          "x": 380,
+          "y": 200
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "asks-health",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "pull-request",
+      "to": "health-job",
+      "points": [
+        {
+          "x": 300,
+          "y": 330
+        },
+        {
+          "x": 340,
+          "y": 330
+        },
+        {
+          "x": 340,
+          "y": 420
+        },
+        {
+          "x": 380,
+          "y": 420
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

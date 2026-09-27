@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "95116a5b2b241d42846efb2df8bc4c3bd2adefbb",
+      "path": "internal/cli/stale_repair.go",
+      "start": 656,
+      "end": 656,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    }
+  ]
+}

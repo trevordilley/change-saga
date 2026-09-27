@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "documentation-coverage",
   "slide": "stale-repair",
-  "current": "sha256:50285a1a37ea8a5136585ef24f333fb2673f78e101a31a9c4bbb0d35152a3fc9",
+  "current": "sha256:f6bf93127120e63f1fb237f458d6b0d6c4a7da1af363c9504733906333226746",
   "revisions": [
     {
       "snapshot": "sha256:50285a1a37ea8a5136585ef24f333fb2673f78e101a31a9c4bbb0d35152a3fc9",
@@ -398,6 +398,440 @@
                   "start": 50,
                   "end": 105,
                   "digest": "sha256:7749130b02663c1d3f4e02ab6139f72e4b73936daa211eca43efbe89a3e90968",
+                  "note": "Managed slides re-pin through their transaction; a failed run writes nothing."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "repin-onto-freeze-source-or-companion-companion-cursor",
+              "criterion": "urn:change-saga:change-saga:story:source-or-companion:criterion:companion-cursor",
+              "story_revision": "urn:change-saga:change-saga:story:source-or-companion:revision:r1",
+              "rationale": "Landing moves a companion Saga's cursor to the landed commit its documentation now describes."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-c9937a46075a06b578c797a57ba09f64f1d3af5e1c788960fb7e.json",
+        "source_digest": "sha256:c9937a46075a06b578c797a57ba09f64f1d3af5e1c788960fb7ea8332e8cee52",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:f6bf93127120e63f1fb237f458d6b0d6c4a7da1af363c9504733906333226746",
+      "parent_snapshots": [
+        "sha256:50285a1a37ea8a5136585ef24f333fb2673f78e101a31a9c4bbb0d35152a3fc9"
+      ],
+      "request_id": "stale-repair-update-1",
+      "created_at": "2026-09-27T11:04:12.095739Z",
+      "asset": "24-a-093c9442cc026a0cf1f8d2b688b67496a0d5c9ee8ee37af800cc.svg",
+      "asset_digest": "sha256:093c9442cc026a0cf1f8d2b688b67496a0d5c9ee8ee37af800cc047263f5e4c7",
+      "slide": {
+        "version": 4,
+        "id": "stale-repair",
+        "deck": "documentation-coverage",
+        "title": "Stale evidence is repaired from a proposal",
+        "rank": 70,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-093c9442cc026a0cf1f8d2b688b67496a0d5c9ee8ee37af800cc.svg",
+        "takeaway": "Each stale reference gets a proposed range from the diff; accept, refresh and landing repairs check every edit before writing any.",
+        "reading_order": [
+          "propose-range",
+          "stale-by-change",
+          "accept-proposed-scope",
+          "refresh-coverage",
+          "validate-then-write",
+          "repin-onto-freeze"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "propose-range",
+            "slide": "stale-repair",
+            "rank": 0,
+            "kind": "node",
+            "label": "Propose maps a stale range through the diff",
+            "description": "Moves the pinned start and end through zero-context hunks, widening over lines inserted inside or at the edge; refuses when every line was removed, only trivial lines survive, or the file was deleted.",
+            "selector": {
+              "type": "element",
+              "element_id": "propose-range"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/coderesolve/propose.go",
+                  "start": 21,
+                  "end": 104,
+                  "digest": "sha256:317196cdcc23e8c40f7261a42ed0cd503beac61115ef4e4c06e59b139013caf5",
+                  "note": "Propose and the range arithmetic."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/coderesolve/propose.go",
+                  "start": 159,
+                  "end": 265,
+                  "digest": "sha256:46c449d2925e7e5a741b7dc930c07fa750f7599de1ce61eef15dca3d6f12302c",
+                  "note": "Propose and the range arithmetic."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/coderesolve/propose_test.go",
+                  "start": 12,
+                  "end": 48,
+                  "digest": "sha256:31b66741fea8b56b7e7bdfc1b1dace88e69b990bf8e21ef2898d488b66093397",
+                  "note": "Range mapping, widening, and a brace-only refusal."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/coderesolve/propose_test.go",
+                  "start": 152,
+                  "end": 170,
+                  "digest": "sha256:e524063040cf1a9d7a8419ca94c88b92de31d0447ae28c90d39237d05177f61e",
+                  "note": "Range mapping, widening, and a brace-only refusal."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "propose-range-reconcile-living-documentation-repair-loop",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "Each stale reference comes with a proposed range and diff to read before a typed accept command, never as proof the explanation holds."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stale-by-change",
+            "slide": "stale-repair",
+            "rank": 10,
+            "kind": "statement",
+            "label": "stale_by_change separates regressions from debt",
+            "description": "A reference is stale by the change when it is stale at head and was current at the merge-base or pinned during the change; deleted-side evidence and older debt are counted apart. Each row has a proposal.",
+            "selector": {
+              "type": "element",
+              "element_id": "stale-by-change"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/stale_repair.go",
+                  "start": 44,
+                  "end": 67,
+                  "digest": "sha256:b1872856a0040b6065ee73d67f004703150691127f8a95c63b082bcfe78bee43",
+                  "note": "changeStaleness, its measurement, and the reconcile summary."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/stale_repair.go",
+                  "start": 92,
+                  "end": 149,
+                  "digest": "sha256:123098734363398da2959135eada01e522a2869b51b716887e6ca4a8139ff151",
+                  "note": "changeStaleness, its measurement, and the reconcile summary."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/reconciliation.go",
+                  "start": 48,
+                  "end": 57,
+                  "digest": "sha256:81392d4c66f7461f2901c843659a546e839fefd8952dfe4e2ebeb67f4ca216ec",
+                  "note": "changeStaleness, its measurement, and the reconcile summary."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "stale-by-change-reconcile-living-documentation-separate-currency",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:separate-currency",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "The summary separates what this change made stale from debt that already existed."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "accept-proposed-scope",
+            "slide": "stale-repair",
+            "rank": 20,
+            "kind": "node",
+            "label": "repin --accept-proposed takes one scope",
+            "description": "Takes exactly one of --record [--reference], --target, --review or --all and accepts only evidence with a proposal; terms, append-only records and merged reviews are refused, unreadable reviews skipped.",
+            "selector": {
+              "type": "element",
+              "element_id": "accept-proposed-scope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/references.go",
+                  "start": 291,
+                  "end": 311,
+                  "digest": "sha256:5896353237a44132634a8a4cf8a57970388726f223b7a0e8f74b8683233dab51",
+                  "note": "Scope parsing and what an accept refuses."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/stale_repair.go",
+                  "start": 252,
+                  "end": 269,
+                  "digest": "sha256:f7a1082f8e4bf62c778927259b284e2aba11841dd78787a0926b2dfb18505322",
+                  "note": "Scope parsing and what an accept refuses."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/stale_repair.go",
+                  "start": 378,
+                  "end": 418,
+                  "digest": "sha256:c8cb0fa8caf01f6a55af0fef70288bb90983e96010f93ac0871946fc8cfe6f3a",
+                  "note": "Scope parsing and what an accept refuses."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/stale_repair_test.go",
+                  "start": 31,
+                  "end": 86,
+                  "digest": "sha256:811d926f90be7cdc0762d9c5558f23ccf32d03554a3091b424862c892ad881b7",
+                  "note": "An accept moves a stale reference and refuses one without a proposal."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "accept-proposed-scope-reconcile-living-documentation-repair-loop",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "The queue's repair path is a typed accept command naming the record and reference to move."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "refresh-coverage",
+            "slide": "stale-repair",
+            "rank": 30,
+            "kind": "node",
+            "label": "review refresh-coverage re-pins moved lines",
+            "description": "Re-pins references whose lines only moved or whose file event is still in range, lists edited ranges with a proposal, and reports new lines with the one Item covering their file as proposed owner.",
+            "selector": {
+              "type": "element",
+              "element_id": "refresh-coverage"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/refresh_coverage.go",
+                  "start": 40,
+                  "end": 74,
+                  "digest": "sha256:b0db4c745ab05f34594646cec3ec8df6d4c1908211bf5bdb7b4a5b7750257d74",
+                  "note": "Refresh, its needs-judgment list, and proposed owners."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/refresh_coverage.go",
+                  "start": 176,
+                  "end": 232,
+                  "digest": "sha256:f7573ce9437e1e45572c9bceb3e17c5a90a5d9d0e4ee5518eb6004f799a84a75",
+                  "note": "Refresh, its needs-judgment list, and proposed owners."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/refresh_coverage.go",
+                  "start": 272,
+                  "end": 319,
+                  "digest": "sha256:8ce9d92efd80a56497b579c5cca5b55e6520089ab31e070c5576cfe6104fab75",
+                  "note": "Refresh, its needs-judgment list, and proposed owners."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/refresh_coverage_test.go",
+                  "start": 33,
+                  "end": 118,
+                  "digest": "sha256:9511a030d49bddf077bb1d6c34d01d7027e41e4551fe3c2c5c20102c8abc1ea6",
+                  "note": "Moved references re-pinned, new lines reported with their owner."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "refresh-coverage-changed-code-explained-separate-states",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "A refreshed review keeps moved, stale and newly uncovered lines apart instead of silently giving new lines to an Item."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "validate-then-write",
+            "slide": "stale-repair",
+            "rank": 40,
+            "kind": "node",
+            "label": "Every evidence edit is checked before any write",
+            "description": "prepareEvidenceEdits edits plain files in memory and dry-runs one complete-slide update per managed slide; writePlain re-edits from disk under the lock before writing, then writeManaged publishes.",
+            "selector": {
+              "type": "element",
+              "element_id": "validate-then-write"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/stale_repair.go",
+                  "start": 512,
+                  "end": 560,
+                  "digest": "sha256:07bacd21bcef0dd665a9bf0cadd246589f31af81c9d5ddd7f8f191e43a8bd3f4",
+                  "note": "writeEvidenceEdits split into prepare and write phases."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/stale_repair.go",
+                  "start": 561,
+                  "end": 656,
+                  "digest": "sha256:5244ec6cff4406fdbfbb538879b3622ce274bb1a89d694140bdb215145c05b65",
+                  "note": "writeEvidenceEdits split into prepare and write phases."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/stale_repair.go",
+                  "start": 657,
+                  "end": 691,
+                  "digest": "sha256:046e1bc8629e523ec62138da8a1fbc54931f9fd6faf79f228e8c37c180f34ead",
+                  "note": "writeEvidenceEdits split into prepare and write phases."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/stale_repair_test.go",
+                  "start": 91,
+                  "end": 163,
+                  "digest": "sha256:878aa156b5f2d05ae948bb2b60fe44d35690316b70bdf6cef545037916d14e11",
+                  "note": "A managed slide is updated through its transaction."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "validate-then-write-reconcile-living-documentation-repair-loop",
+              "criterion": "urn:change-saga:change-saga:story:reconcile-living-documentation:criterion:repair-loop",
+              "story_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
+              "rationale": "A slide apply-slide manages is repaired through a complete-slide snapshot, and no edit is written unless all are valid."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "repin-onto-freeze",
+            "slide": "stale-repair",
+            "rank": 50,
+            "kind": "node",
+            "label": "repin --onto freezes a landed review",
+            "description": "Re-pins evidence to the landed commit, by content digest when the branch is gone; after preparing every edit it writes evidence, the companion cursor, the frozen review and the merge record under one lock.",
+            "selector": {
+              "type": "element",
+              "element_id": "repin-onto-freeze"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/references.go",
+                  "start": 338,
+                  "end": 340,
+                  "digest": "sha256:332b5bac6bcaf4c77f8501435b575350949f5127d208906e5416a181f44ffeb5",
+                  "note": "The landing write and the review it freezes."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/references.go",
+                  "start": 372,
+                  "end": 374,
+                  "digest": "sha256:c69949d4096fbf4bfd3f1eb7d8b45f8148fa99898013a93040366ebae584b3e5",
+                  "note": "The landing write and the review it freezes."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/references.go",
+                  "start": 408,
+                  "end": 463,
+                  "digest": "sha256:76f0b0aad5ae07332cee47f2f9b0287b4e523add6ecb6e94cc3a4fd02b307d74",
+                  "note": "The landing write and the review it freezes."
+                },
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/references.go",
+                  "start": 498,
+                  "end": 547,
+                  "digest": "sha256:9c04fbc5698132f9771d80cfb4a3c2905c43d98b26d87b416fd46943e19734df",
+                  "note": "The landing write and the review it freezes."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+                  "path": "internal/cli/repin_onto_test.go",
+                  "start": 1,
+                  "end": 105,
+                  "digest": "sha256:4bfad77479189ad6df8a88c5253a092ad73c14d838e3f70b82b117db762ba5ec",
                   "note": "Managed slides re-pin through their transaction; a failed run writes nothing."
                 }
               ]

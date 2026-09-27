@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "deck": "pr-12",
+  "slide": "repin-onto-atomic",
+  "current": "sha256:754da33fdb63bd970557427da9b9cc03941662ff83a8c2fe6c8e302ba6b67c12",
+  "revisions": [
+    {
+      "snapshot": "sha256:754da33fdb63bd970557427da9b9cc03941662ff83a8c2fe6c8e302ba6b67c12",
+      "request_id": "pr-12-repin-onto-atomic",
+      "created_at": "2026-09-27T11:02:07.063506Z",
+      "asset": "24-a-10d76d6c79e13799a4305bb7c43870d1679b1d67182944655289.svg",
+      "asset_digest": "sha256:10d76d6c79e13799a4305bb7c43870d1679b1d67182944655289338950914755",
+      "slide": {
+        "version": 4,
+        "id": "repin-onto-atomic",
+        "deck": "pr-12",
+        "title": "repin --onto checks every edit before writing any",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-10d76d6c79e13799a4305bb7c43870d1679b1d67182944655289.svg",
+        "takeaway": "repin --onto now shares accept-proposed's evidence path: every edit, plain or apply-slide, is validated before the first write.",
+        "reading_order": [
+          "before",
+          "prepare",
+          "locked-write",
+          "managed-write",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "before",
+            "slide": "repin-onto-atomic",
+            "rank": 0,
+            "kind": "risk",
+            "label": "The bug: repin --onto failed on apply-slide slides",
+            "description": "repin --onto read every evidence record as a file, so a managed slide's #items/.../evidence/N record failed with no such file, after it had already rewritten some plain evidence files.",
+            "selector": {
+              "type": "element",
+              "element_id": "before"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "prepare",
+            "slide": "repin-onto-atomic",
+            "rank": 10,
+            "kind": "node",
+            "label": "prepareEvidenceEdits validates everything first",
+            "description": "writeEvidenceEdits is split: prepare reads and edits every plain file in memory and dry-runs each managed slide's complete-slide update, returning its results; nothing is written.",
+            "selector": {
+              "type": "element",
+              "element_id": "prepare"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "locked-write",
+            "slide": "repin-onto-atomic",
+            "rank": 20,
+            "kind": "node",
+            "label": "One locked write for plain evidence and the landing",
+            "description": "repin --onto now prepares first, then under one Saga lock re-edits the plain files from disk, writes them, the companion cursor, the frozen review and the merge record. The unused referenceKeyBefore goes.",
+            "selector": {
+              "type": "element",
+              "element_id": "locked-write"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "managed-write",
+            "slide": "repin-onto-atomic",
+            "rank": 30,
+            "kind": "node",
+            "label": "Managed slides publish after the locked write",
+            "description": "Each prepared complete-slide request is applied for real; accept-proposed and refresh-coverage keep using writeEvidenceEdits, now with the same prepare-then-write order.",
+            "selector": {
+              "type": "element",
+              "element_id": "managed-write"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "repin-onto-atomic",
+            "rank": 40,
+            "kind": "example",
+            "label": "Two regression tests",
+            "description": "One re-pins a managed slide and a plain file onto a landed commit; the other revises the slide's story so its update is refused, and checks no evidence, pin or merge record was written.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-4d55c06dbab1b93d086eadd4970a8e3c177d6d72d324fc0e6e19.json",
+        "source_digest": "sha256:4d55c06dbab1b93d086eadd4970a8e3c177d6d72d324fc0e6e192b9412609134",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">repin --onto checks every edit before writing any</title>
+  <desc id="diagram-desc">repin --onto now shares accept-proposed's evidence path: every edit, plain or apply-slide, is validated before the first write.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-prepares" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-writes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-publishes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 32)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">repin --onto checks every edit before writing any</tspan></text>
+  </g>
+  <g id="before" data-diagram-kind="node" transform="translate(40 100)" role="group" aria-label="Before: one pass that wrote as it read">
+    <rect width="1190" height="100" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve"><tspan x="18" y="37">Before: one pass that wrote as it read</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve"><tspan x="18" y="73">read an apply-slide record as a file, failed, and left earlier files rewritten</tspan></text>
+  </g>
+  <g id="edits" data-diagram-kind="node" transform="translate(40 260)" role="group" aria-label="Evidence edits">
+    <rect width="250" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Evidence edits</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">from --onto,</tspan><tspan x="18" y="91.75">--accept-proposed, refresh</tspan></text>
+  </g>
+  <g id="prepare" data-diagram-kind="node" transform="translate(360 240)" role="group" aria-label="prepareEvidenceEdits">
+    <rect width="400" height="150" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">prepareEvidenceEdits</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">plain files edited in memory; each managed slide</tspan><tspan x="18" y="91.75">dry-run</tspan></text>
+  </g>
+  <g id="locked-write" data-diagram-kind="node" transform="translate(840 220)" role="group" aria-label="One locked write">
+    <rect width="390" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">One locked write</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">plain evidence, cursor, frozen review, merge</tspan><tspan x="18" y="91.75">record</tspan></text>
+  </g>
+  <g id="managed-write" data-diagram-kind="node" transform="translate(840 370)" role="group" aria-label="writeManaged">
+    <rect width="390" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">writeManaged</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">one complete-slide transaction per slide</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="node" transform="translate(360 470)" role="group" aria-label="Regression tests">
+    <rect width="400" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Regression tests</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">managed slide re-pinned; failed run writes nothing</tspan></text>
+  </g>
+  <g id="prepares" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="edits to prepare" data-from="edits" data-to="prepare">
+    <path d="M290 315 L360 315" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-prepares)"/>
+  </g>
+  <g id="writes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="prepare to locked-write" data-from="prepare" data-to="locked-write">
+    <path d="M760 275 L840 275" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-writes)"/>
+  </g>
+  <g id="publishes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="prepare to managed-write" data-from="prepare" data-to="managed-write">
+    <path d="M760 415 L840 415" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-publishes)"/>
+  </g>
+</svg>

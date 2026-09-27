@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "repin --onto checks every edit before writing any",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "before",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Before: one pass that wrote as it read",
+      "detail": "read an apply-slide record as a file, failed, and left earlier files rewritten",
+      "x": 40,
+      "y": 100,
+      "width": 1190,
+      "height": 100,
+      "style": "warning",
+      "wrap": true
+    },
+    {
+      "id": "edits",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Evidence edits",
+      "detail": "from --onto, --accept-proposed, refresh",
+      "x": 40,
+      "y": 260,
+      "width": 250,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "prepare",
+      "kind": "node",
+      "shape": "rect",
+      "label": "prepareEvidenceEdits",
+      "detail": "plain files edited in memory; each managed slide dry-run",
+      "x": 360,
+      "y": 240,
+      "width": 400,
+      "height": 150,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "locked-write",
+      "kind": "node",
+      "shape": "rect",
+      "label": "One locked write",
+      "detail": "plain evidence, cursor, frozen review, merge record",
+      "x": 840,
+      "y": 220,
+      "width": 390,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "managed-write",
+      "kind": "node",
+      "shape": "rect",
+      "label": "writeManaged",
+      "detail": "one complete-slide transaction per slide",
+      "x": 840,
+      "y": 370,
+      "width": 390,
+      "height": 90,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "tests",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Regression tests",
+      "detail": "managed slide re-pinned; failed run writes nothing",
+      "x": 360,
+      "y": 470,
+      "width": 400,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "prepares",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "edits",
+      "to": "prepare",
+      "points": [
+        {
+          "x": 290,
+          "y": 315
+        },
+        {
+          "x": 360,
+          "y": 315
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "writes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "prepare",
+      "to": "locked-write",
+      "points": [
+        {
+          "x": 760,
+          "y": 275
+        },
+        {
+          "x": 840,
+          "y": 275
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "publishes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "prepare",
+      "to": "managed-write",
+      "points": [
+        {
+          "x": 760,
+          "y": 415
+        },
+        {
+          "x": 840,
+          "y": 415
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}
