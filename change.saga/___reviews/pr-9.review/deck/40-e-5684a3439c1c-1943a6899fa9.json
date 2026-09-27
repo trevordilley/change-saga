@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "skills/change-saga/agents/openai.yaml",
+      "start": 3,
+      "end": 4,
+      "digest": "sha256:38f0111a3d4e8a53aba4da6f9652531a38bd90eda29e9ff1f2caf46fc5cabc35"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "skills/change-saga/agents/openai.yaml",
+      "start": 3,
+      "end": 4,
+      "digest": "sha256:2a0d16e36af17d5debf3d4f8ca400ac0759e5c2cb741a67369605e2422bf7403"
+    }
+  ]
+}

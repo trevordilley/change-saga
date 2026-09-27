@@ -1,5 +1,50 @@
 # Changelog
 
+## Unreleased — create a review for this PR first
+
+- Creating a review for a pull request or branch is the headline entry point.
+  `init`, top-level help, the README, and the skill lead with it: `review
+  create`, slides that explain the architecture, `cover --changed-lines`, and
+  `review list` / `check --covers review`. A Saga of reviews alone is complete;
+  personas, stories, features, and living documentation are documented as the
+  way to grow it, never pitched or required.
+- `status` answers first with the review deck's coverage of the change, and asks
+  for a review when there is none. A Saga that holds only reviews is reported
+  review first, without its documentation areas, changed-source actions, or
+  growth suggestions; `status --full` gives the full report. `status --json`
+  always carries every area, plus `.coverage.areas.review`, `.change_reviews`,
+  and `.documentation`. A Saga with living documentation keeps the full
+  report. Exit codes are unchanged.
+- `check --covers review` asks whether the pull request's review deck explains
+  every changed line (exit 0) or not (exit 3); a change with no review is
+  uncovered. Comparing, the review area is measured over the comparison's own
+  changed lines, so a stacked pull request's review (which covers only its own
+  range) never reports the whole change complete. Reviews are matched by the
+  branch they follow, also in a CI checkout without local branches or on
+  GitHub's pull request merge commit, and also when their base branch was
+  deleted; a review that follows HEAD is not taken for a later change once its
+  evidence has landed. A fork's pull request, whose branch is absent from the
+  base repository, is matched through its evidence in the change, and a review
+  that follows HEAD whose evidence was rewritten (amend, rebase, squash) gets a
+  `review follow` suggestion instead of a duplicate review.
+- Every comparison with changed lines and no matching review gets a
+  non-blocking "create a review" next action, in any Saga.
+- README: "Use it in CI", an opt-in GitHub Actions gate with `check --covers
+  review`. This repository's CI runs that gate on its own pull requests.
+- `review create` no longer needs `--id` or `--base`: it records the
+  checked-out branch as the ref the review follows, reads that branch's pull
+  request through `gh` when installed and origin is on GitHub, else uses
+  origin's default branch (preferring `origin/<branch>`) and names the review
+  after the branch (`pr-N` with `--pr`). Explicit flags still win;
+  `CHANGE_SAGA_NO_GH=1` skips `gh`. `--json` reports what was worked out.
+- `review follow --review ID --head REF` pins an existing review to its
+  branch.
+- `query children` navigates reviews (review, deck, slides, Items), an unknown
+  `cover` target lists the open reviews' slides and Items, and `review list`
+  names each stale reference's evidence record for `replace-coverage`.
+- `setup-initial-saga` grows a Saga that holds only reviews without
+  `--overhaul`, and with no Saga suggests a review first.
+
 ## Unreleased — change.saga, one Saga per repository
 
 - `change-saga init` with no path creates `change.saga` in the `--repo`

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-record",
+  "slide": "navigate",
+  "rank": 30,
+  "kind": "node",
+  "label": "Stale records named",
+  "description": "review list prints each stale reference's evidence record, and replace-coverage keeps a record with its owner by default, so repairs never move evidence off its Item.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-record"
+  }
+}

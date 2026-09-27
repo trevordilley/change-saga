@@ -135,7 +135,7 @@ func TestParse(t *testing.T) {
 	if err != nil || len(names) != 2 || names[1] != Stories {
 		t.Fatalf("Parse = %v, %v", names, err)
 	}
-	if _, err := Parse("implementation,tests"); err == nil || !strings.Contains(err.Error(), "areas are implementation, stories") {
+	if _, err := Parse("implementation,tests"); err == nil || !strings.Contains(err.Error(), "areas are review, implementation, stories") {
 		t.Fatalf("unknown area error = %v", err)
 	}
 	if _, err := Parse(" , "); err == nil {
@@ -208,5 +208,32 @@ func TestChangedLinesReachStoriesThroughContainment(t *testing.T) {
 	})
 	if area := report.Areas.Stories; area.Covered != 1 || area.Total != 1 {
 		t.Fatalf("stories = %d/%d: %+v", area.Covered, area.Total, area)
+	}
+}
+
+func TestReviewArea(t *testing.T) {
+	uncovered := []gitdiff.Atom{
+		{Kind: "line", Path: "a.go", Side: "new", Line: 3, Key: "a3"},
+		{Kind: "line", Path: "a.go", Side: "new", Line: 4, Key: "a4"},
+	}
+	area := ReviewArea([]ReviewInput{{Target: "urn:r:pr-1", Title: "PR 1", Covered: 10, Uncovered: uncovered}}, nil, "", "")
+	if area.Area != Review || area.Total != 12 || area.Covered != 10 || area.Uncovered != 2 || area.Complete {
+		t.Fatalf("partial review area = %+v", area)
+	}
+	if len(area.UncoveredEntries) != 1 || area.UncoveredEntries[0].Lines != "3-4" || !strings.Contains(area.UncoveredEntries[0].Reason, "urn:r:pr-1") {
+		t.Fatalf("uncovered entries = %+v", area.UncoveredEntries)
+	}
+	if full := ReviewArea([]ReviewInput{{Target: "urn:r:pr-1", Covered: 12}}, nil, "", ""); !full.Complete || full.Total != 12 {
+		t.Fatalf("covered review area = %+v", full)
+	}
+	none := ReviewArea(nil, uncovered, "no review explains this change yet", "")
+	if none.Complete || none.Uncovered != 2 || none.UncoveredEntries[0].Reason != "no review explains this change yet" {
+		t.Fatalf("unreviewed change = %+v", none)
+	}
+	if empty := ReviewArea(nil, nil, "", "no open reviews"); !empty.Complete || empty.Total != 0 || empty.Note != "no open reviews" {
+		t.Fatalf("empty review area = %+v", empty)
+	}
+	if unreadable := ReviewArea([]ReviewInput{{Target: "urn:r:pr-2", Unreadable: "bad base"}}, nil, "", ""); unreadable.Complete || len(unreadable.UncoveredEntries) != 1 {
+		t.Fatalf("unreadable review area = %+v", unreadable)
 	}
 }

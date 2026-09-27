@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "target-hint",
+  "slide": "navigate",
+  "rank": 20,
+  "kind": "node",
+  "label": "Unknown-target hint",
+  "description": "cover's unknown-target error lists open reviews' slides and Items, and only the named review's when the value names one.",
+  "selector": {
+    "type": "element",
+    "element_id": "target-hint"
+  }
+}

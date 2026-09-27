@@ -15,7 +15,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var reviewOperations = []string{"create", "list", "approve", "request-changes", "withdraw", "comment"}
+var reviewOperations = []string{"create", "follow", "list", "approve", "request-changes", "withdraw", "comment"}
 
 // Review is the pull request review family. A review is a pull request's
 // slide deck; approval and comments exist only on its slides and Items.
@@ -29,6 +29,8 @@ func Review(ctx context.Context, args []string, out io.Writer) error {
 	switch args[0] {
 	case "create":
 		err = reviewCreate(ctx, args[1:], out)
+	case "follow":
+		err = reviewFollow(ctx, args[1:], out)
 	case "list":
 		err = reviewList(ctx, args[1:], out)
 	case "approve":
@@ -48,24 +50,33 @@ func Review(ctx context.Context, args []string, out io.Writer) error {
 	return err
 }
 
-func reviewCreate(_ context.Context, args []string, out io.Writer) error {
+func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 	name := "review create"
 	flags := commandFlags(name, commandUsage[name], out)
-	id := flags.String("id", "", "stable review id, for example pr-42")
-	base := flags.String("base", "", "the revision the pull request merges into, for example main")
+	id := flags.String("id", "", "stable review id, for example pr-42; defaults to pr-N for a pull request, else the branch name")
+	base := flags.String("base", "", "the revision the pull request merges into, for example main; defaults to the pull request's base, else origin's default branch")
 	head := flags.String("head", "", "the ref the review follows as commits are pushed, usually the pull request's branch; defaults to the checkout's HEAD")
 	number := flags.Int("pr", 0, "pull request number; a pull request has one review")
 	url := flags.String("url", "", "pull request URL")
 	title := flags.String("title", "", "review title; defaults to the pull request")
 	objective := flags.String("objective", "", "what the review deck explains; defaults to the transition and why it was made")
 	deckID := flags.String("deck", "", "review deck id; defaults to the review id")
+	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *id, *base); err != nil {
+	if err := requireLivingArgs(flags); err != nil {
 		return err
 	}
+	// What was not given is worked out from the checkout: the pull request
+	// (through gh, when installed), its base or origin's default branch, and
+	// an id from the pull request number or the branch.
+	filled, err := fillReviewDefaults(ctx, firstNonEmpty(*repo, flags.Arg(0)), reviewCreateInputs{id: *id, base: *base, head: *head, url: *url, title: *title, number: *number})
+	if err != nil {
+		return err
+	}
+	*id, *base, *head, *url, *title, *number = filled.id, filled.base, filled.head, filled.url, filled.title, filled.number
 	if *title == "" {
 		*title = "Review " + *id
 		if *number > 0 {
@@ -93,12 +104,70 @@ func reviewCreate(_ context.Context, args []string, out io.Writer) error {
 	}
 	urn := saga.ReviewTarget(sagaManifest.ID, *id)
 	path := saga.ReviewsDir + "/" + *id + saga.ReviewSuffix
-	if err := writeLivingMutation(out, name, urn, path, []string{urn, saga.ReviewDeckTarget(sagaManifest.ID, *id, *deckID)}, nil, false, *jsonOutput); err != nil {
+	created := []string{urn, saga.ReviewDeckTarget(sagaManifest.ID, *id, *deckID)}
+	if *jsonOutput {
+		// The JSON says what the review is, including what was worked out.
+		return writeJSON(out, reviewCreateOutput{
+			livingMutationOutput: livingMutationOutput{OK: true, Operation: name, Resource: urn, Path: path, Created: created, EventIDs: []string{}},
+			Review:               reviewCreated{ID: *id, Base: *base, Head: *head, PullRequest: manifest.PullRequest, Inferred: append([]string{}, filled.inferred...)},
+		})
+	}
+	if err := writeLivingMutation(out, name, urn, path, created, nil, false, false); err != nil {
 		return err
 	}
-	if !*jsonOutput {
+	{
+		if len(filled.inferred) > 0 {
+			fmt.Fprintf(out, "Using %s; pass the flags to choose otherwise\n", strings.Join(filled.inferred, ", "))
+		}
 		fmt.Fprintf(out, "Next: change-saga add-slide --review %s --intent explain --layout diagram %s first-slide\n", *id, root)
 	}
+	return nil
+}
+
+// reviewCreateOutput is review create --json: the mutation, and the review
+// as created, with what was worked out rather than given.
+type reviewCreateOutput struct {
+	livingMutationOutput
+	Review reviewCreated `json:"review"`
+}
+
+type reviewCreated struct {
+	ID          string            `json:"id"`
+	Base        string            `json:"base"`
+	Head        string            `json:"head,omitempty"`
+	PullRequest *saga.PullRequest `json:"pull_request,omitempty"`
+	Inferred    []string          `json:"inferred"`
+}
+
+// reviewFollow sets the ref an open review follows. A review created without
+// one follows HEAD, which after its change lands would take the next branch's
+// change for its own; naming its branch pins it to its pull request.
+func reviewFollow(ctx context.Context, args []string, out io.Writer) error {
+	name := "review follow"
+	flags := commandFlags(name, commandUsage[name], out)
+	reviewID := flags.String("review", "", "review id")
+	head := flags.String("head", "", "the ref the review follows, usually the pull request's branch")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *reviewID, *head); err != nil {
+		return err
+	}
+	root := flags.Arg(0)
+	if err := reviewstore.Follow(root, *reviewID, strings.TrimSpace(*head)); err != nil {
+		return err
+	}
+	sagaManifest, err := saga.ReadManifest(root)
+	if err != nil {
+		return err
+	}
+	urn := saga.ReviewTarget(sagaManifest.ID, *reviewID)
+	path := saga.ReviewsDir + "/" + *reviewID + saga.ReviewSuffix
+	if *jsonOutput {
+		return writeLivingMutation(out, name, urn, path, []string{}, nil, false, true)
+	}
+	fmt.Fprintf(out, "Review %s now follows %s\nPath: %s\n", *reviewID, *head, path)
 	return nil
 }
 
@@ -394,6 +463,8 @@ func printReviewCoverage(out io.Writer, covered *reviewstate.Coverage) {
 	}
 	for _, stale := range covered.StaleReferences {
 		fmt.Fprintf(out, "    stale %s (%s): %s\n", stale.Reference.Location(), stale.Assignment.Target, stale.Reason)
+		// The record path is what replace-coverage and remove-coverage take.
+		fmt.Fprintf(out, "      record %s\n", stale.Assignment.EvidenceFile)
 	}
 }
 

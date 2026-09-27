@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/grammar/commands.go",
+      "start": 575,
+      "end": 576,
+      "digest": "sha256:e655ac97b58ab14084dc6f635304d5a8ef4872d1b80fb5cc2a8b708a13f5e3b3"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/grammar/commands.go",
+      "start": 578,
+      "end": 579,
+      "digest": "sha256:53d2614a56024692fbb66ddbc6986d20a396e1354b25ad03f8a295ebdcda0025"
+    }
+  ]
+}

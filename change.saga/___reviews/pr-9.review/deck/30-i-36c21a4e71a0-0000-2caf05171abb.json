@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "explicit-flags",
+  "slide": "create",
+  "rank": 0,
+  "kind": "node",
+  "label": "Explicit flags",
+  "description": "Explicit flags always win; --repo names a separate code checkout.",
+  "selector": {
+    "type": "element",
+    "element_id": "explicit-flags"
+  }
+}

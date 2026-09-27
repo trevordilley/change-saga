@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 59,
+      "end": 63,
+      "digest": "sha256:a7716a123bc35b051efa959a0bb8b902d6c817757363dabdb71289f37424b0fe"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:b640ec1193a8e298c5e3a6e869bb48c7adf618e1347fe7a0294b36c3fc2b5724"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:9530f06aa7583745beb68c12bc7eeecfa7fee558ed4bead76183895903226405"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:08da2923d241c69a77291f1f4e69659501ce24dc6018217359b304c6253c26bd"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 63,
+      "end": 64,
+      "digest": "sha256:2969a21396c087101b0d16cf6fde2a700cfc93acf344f3f34e85143655ad938e"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 66,
+      "end": 68,
+      "digest": "sha256:5a1036e420c7a4d60c2e5b7c3d0f4a2a6f659691d4d9ca9fa1ee80ae87413f38"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 75,
+      "end": 94,
+      "digest": "sha256:1d72d1e4e34e8397da94dc064fa5d67b04861a70539e92fd723507d24be95510"
+    }
+  ]
+}

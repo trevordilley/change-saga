@@ -34,7 +34,7 @@ func Check(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	flags := commandFlags("check", commandUsage["check"], out)
-	covers := flags.String("covers", "", "comma-separated coverage areas: implementation, stories, personas, design, quality, health")
+	covers := flags.String("covers", "", "comma-separated coverage areas: review, implementation, stories, personas, design, quality, health")
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
 	maxItems := flags.Int("max", 100, "maximum gaps per area in text mode; 0 means all")
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")

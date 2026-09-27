@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/review_match_test.go",
+      "start": 148,
+      "end": 180,
+      "digest": "sha256:b0d82d83d5e6db919569f323d45c685d01cd68d102850573715098cc62d811a6"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/review_match_test.go",
+      "start": 282,
+      "end": 300,
+      "digest": "sha256:4be96d73c472095791631414ef548bccecbe4fb5466bfd9c26c468db02f2c51e"
+    }
+  ]
+}

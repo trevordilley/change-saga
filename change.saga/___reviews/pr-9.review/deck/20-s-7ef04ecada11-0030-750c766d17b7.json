@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "entry",
+  "deck": "pr-9",
+  "title": "every entry point leads with a review; growth comes later",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7ef04ecada11-0030-750c766d17b7.svg",
+  "takeaway": "every entry point leads with a review; growth comes later",
+  "reading_order": [
+    "init-next-steps",
+    "top-level-help",
+    "readme",
+    "skill",
+    "setup-after-reviews",
+    "ci-gate"
+  ]
+}

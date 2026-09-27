@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 //go:embed setup_initial_saga_prompt.md
@@ -43,7 +45,10 @@ func SetupInitialSaga(args []string, out io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("inspect repository for Saga directories: %w", err)
 	}
-	if len(sagas) > 0 && !*overhaul {
+	// Growing a Saga that holds only reviews is what this workflow is for,
+	// not an overhaul.
+	growing := len(sagas) == 1 && reviewOnlySaga(filepath.Join(root, sagas[0]))
+	if len(sagas) > 0 && !*overhaul && !growing {
 		fmt.Fprintln(out, "Initial Saga setup normally runs once, and this repository already contains:")
 		for _, path := range sagas {
 			fmt.Fprintf(out, "  - %s\n", path)
@@ -56,9 +61,13 @@ func SetupInitialSaga(args []string, out io.Writer) error {
 
 	fmt.Fprintln(out, "Follow this one-time agent workflow to establish the repository's Saga.")
 	fmt.Fprintf(out, "Repository: %s\n", root)
-	if len(sagas) == 0 {
-		fmt.Fprintln(out, "Repository state: no .saga directory was found. Create the repository's Saga (change-saga init creates change.saga) only after the interview establishes its initial product model.")
-	} else {
+	switch {
+	case len(sagas) == 0:
+		fmt.Fprintln(out, "Repository state: no .saga directory was found. Most teams start with a review of a pull request instead (change-saga init, then change-saga review create on the branch) and many never need more; continue only because the user asked for this setup. Create the repository's Saga (change-saga init creates change.saga) only after the interview establishes its initial product model.")
+	case growing && !*overhaul:
+		reviews := countReviews(filepath.Join(root, sagas[0]))
+		fmt.Fprintf(out, "Repository state: %s holds %d %s and no living documentation yet. Grow it in place: do not run change-saga init or create another Saga.\n", sagas[0], reviews, plural(reviews, "review", "reviews"))
+	default:
 		fmt.Fprintln(out, "Repository state: the user explicitly requested a documentation overhaul. Update the existing canonical Saga; do not create a duplicate.")
 		for _, path := range sagas {
 			fmt.Fprintf(out, "  - %s\n", path)
@@ -70,6 +79,27 @@ func SetupInitialSaga(args []string, out io.Writer) error {
 	fmt.Fprintln(out)
 	_, err = io.WriteString(out, setupInitialSagaPrompt)
 	return err
+}
+
+// reviewOnlySaga reports whether dir is a Saga that holds nothing beyond its
+// reviews: the Saga setup grows rather than overhauls.
+func reviewOnlySaga(dir string) bool {
+	if _, err := os.Stat(filepath.Join(dir, saga.ManifestName)); err != nil {
+		return false
+	}
+	return !holdsLivingDocumentation(dir)
+}
+
+// countReviews counts the reviews a Saga directory holds.
+func countReviews(dir string) int {
+	entries, _ := os.ReadDir(filepath.Join(dir, saga.ReviewsDir))
+	count := 0
+	for _, entry := range entries {
+		if entry.IsDir() && strings.HasSuffix(entry.Name(), saga.ReviewSuffix) {
+			count++
+		}
+	}
+	return count
 }
 
 func findSagaDirectories(root string) ([]string, error) {
@@ -114,7 +144,13 @@ func printInitialSagaHelp(out io.Writer) {
 	}
 	if len(sagas) == 0 {
 		fmt.Fprintln(out, "\nNo Saga was detected in the current repository.")
-		fmt.Fprintln(out, "  Run \"change-saga setup-initial-saga\" once for guided setup; the recommended idiom is one Saga per repository, change.saga at its root.")
+		fmt.Fprintln(out, "  Start with a review of a branch or pull request: \"change-saga init\" creates change.saga at the repository's root, then \"change-saga review create change.saga\".")
+		fmt.Fprintln(out, "  If the team ever wants living documentation of the app, \"change-saga setup-initial-saga\" guides growing it.")
+		return
+	}
+	if len(sagas) == 1 && reviewOnlySaga(filepath.Join(root, sagas[0])) {
+		fmt.Fprintf(out, "\nExisting Saga detected, holding only reviews: %s\n", sagas[0])
+		fmt.Fprintln(out, "Keep creating a review for each pull request. When the team wants the app itself documented, \"change-saga setup-initial-saga\" guides growing this Saga.")
 		return
 	}
 	fmt.Fprintln(out, "\nExisting Saga detected:")

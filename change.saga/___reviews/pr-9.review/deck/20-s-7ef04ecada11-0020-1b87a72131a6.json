@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "navigate",
+  "deck": "pr-9",
+  "title": "agents can find a review's slides and Items",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7ef04ecada11-0020-1b87a72131a6.svg",
+  "takeaway": "agents can find a review's slides and Items",
+  "reading_order": [
+    "index-reviews",
+    "project-deck",
+    "target-hint",
+    "stale-record"
+  ]
+}

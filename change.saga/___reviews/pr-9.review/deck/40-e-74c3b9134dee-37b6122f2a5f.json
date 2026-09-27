@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 282,
+      "end": 304,
+      "digest": "sha256:c2a70606dd0ccbaa887945f3d6bcfcd35b19b3c200dbb567384ce12fcb46453b"
+    }
+  ]
+}

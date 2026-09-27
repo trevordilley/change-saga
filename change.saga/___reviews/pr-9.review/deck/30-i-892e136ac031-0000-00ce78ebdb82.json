@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "review-area",
+  "slide": "status",
+  "rank": 0,
+  "kind": "node",
+  "label": "Review coverage area",
+  "description": "Measured over the comparison's own changed lines against the Items of the reviews that follow its head (origin's branch or a CI merge commit too); no review leaves every line uncovered.",
+  "selector": {
+    "type": "element",
+    "element_id": "review-area"
+  }
+}

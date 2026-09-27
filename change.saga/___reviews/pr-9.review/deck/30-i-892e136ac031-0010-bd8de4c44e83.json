@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "check-review",
+  "slide": "status",
+  "rank": 10,
+  "kind": "node",
+  "label": "check --covers review",
+  "description": "check asks the review area with an exit code; help, grammar, spec, ci.md, and the docs describe it.",
+  "selector": {
+    "type": "element",
+    "element_id": "check-review"
+  }
+}

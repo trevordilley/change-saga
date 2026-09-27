@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "id-default",
+  "slide": "create",
+  "rank": 30,
+  "kind": "node",
+  "label": "Id default",
+  "description": "The id is pr-N for a pull request, else the head or branch name; on the base branch or detached it asks for --id.",
+  "selector": {
+    "type": "element",
+    "element_id": "id-default"
+  }
+}

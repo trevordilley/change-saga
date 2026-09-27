@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/status_grammar.go",
+      "start": 182,
+      "end": 197,
+      "digest": "sha256:b908037943d9afdd8ca757e1a7c87f00c21fbf77df269e3267c4ae5cb26b1f09"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/status_grammar.go",
+      "start": 199,
+      "end": 220,
+      "digest": "sha256:8757edb7bbbc8924f9030fb6290225b4079c28139a6ff8b07da1429c3461f9a5"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/status_grammar.go",
+      "start": 224,
+      "end": 225,
+      "digest": "sha256:ed800d1f24e94d81a6138b36024a4e52d611ecfc57e83f4365aeec88daf549b2"
+    }
+  ]
+}

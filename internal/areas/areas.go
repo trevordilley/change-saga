@@ -17,13 +17,16 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 )
 
-// Name is one coverage area. The areas follow the chain, so each is one more
+// Name is one coverage area. Review comes first: it asks whether a pull
+// request's review deck explains every line the change touched, and needs
+// nothing but the review. The rest follow the chain, so each is one more
 // link: implementation (changed code -> the deck), stories (-> a story),
 // personas (-> a persona), design (story -> design), quality (criterion ->
 // test), and health (the links that already exist still hold).
 type Name string
 
 const (
+	Review         Name = "review"
 	Implementation Name = "implementation"
 	Stories        Name = "stories"
 	Personas       Name = "personas"
@@ -32,9 +35,9 @@ const (
 	Health         Name = "health"
 )
 
-// Names returns every area in chain order.
+// Names returns every area: review, then the chain in order.
 func Names() []Name {
-	return []Name{Implementation, Stories, Personas, Design, Quality, Health}
+	return []Name{Review, Implementation, Stories, Personas, Design, Quality, Health}
 }
 
 // Parse reads a comma-separated list of area names, in the order given and
@@ -148,6 +151,7 @@ type Area struct {
 // Areas is every area, keyed by name so a rule can read one directly:
 // .coverage.areas.stories.complete.
 type Areas struct {
+	Review         Area `json:"review"`
 	Implementation Area `json:"implementation"`
 	Stories        Area `json:"stories"`
 	Personas       Area `json:"personas"`
@@ -165,6 +169,8 @@ type Report struct {
 // Get returns one area by name.
 func (report Report) Get(name Name) Area {
 	switch name {
+	case Review:
+		return report.Areas.Review
 	case Implementation:
 		return report.Areas.Implementation
 	case Stories:
@@ -180,7 +186,7 @@ func (report Report) Get(name Name) Area {
 	}
 }
 
-// All returns every area in chain order.
+// All returns every area: review, then the chain in order.
 func (report Report) All() []Area {
 	result := []Area{}
 	for _, name := range Names() {
@@ -270,6 +276,9 @@ func Evaluate(in Inputs) Report {
 	}
 	e := evaluator{in: in, stories: stories}
 	report := Report{Scope: in.Scope}
+	// Review coverage is read from each review's own range, not from these
+	// inputs; ReviewArea computes it and the caller sets it.
+	report.Areas.Review = newArea(Review, UnitChangedLine).finish()
 	if in.Scope.Kind == ScopeChange {
 		report.Areas.Implementation, report.Areas.Stories, report.Areas.Personas = e.lineAreas()
 	} else {
@@ -485,6 +494,71 @@ func (e evaluator) health() Area {
 		area.UncoveredEntries = append(area.UncoveredEntries, entry)
 	}
 	return area.finish()
+}
+
+// ReviewInput is one review's deck coverage of its own range: how many
+// changed lines and file events its Items explain, and the ones they do not.
+// Unreadable says why its coverage could not be read, when it could not.
+type ReviewInput struct {
+	Target     string
+	Title      string
+	Covered    int
+	Uncovered  []gitdiff.Atom
+	Unreadable string
+}
+
+// ReviewArea is the review area: whether each review's deck explains every
+// changed line and file event of its range. Unreviewed are changed lines no
+// review is about (a change with no review yet), each uncovered for
+// unreviewedReason. A review whose coverage cannot be read leaves the area
+// incomplete, since nobody can say it is covered.
+func ReviewArea(reviews []ReviewInput, unreviewed []gitdiff.Atom, unreviewedReason, note string) Area {
+	uncovered := lines{area: Review}
+	for _, atom := range unreviewed {
+		uncovered.add(atom, "", nil, nil, unreviewedReason)
+	}
+	unreadable := []Entry{}
+	for _, review := range reviews {
+		if review.Unreadable != "" {
+			unreadable = append(unreadable, Entry{Resource: review.Target, Title: review.Title, Kind: "review", Via: []string{}, Reason: "its coverage could not be read: " + review.Unreadable})
+			continue
+		}
+		for _, atom := range review.Uncovered {
+			uncovered.add(atom, "", nil, nil, "no Item of "+review.Target+" explains it")
+		}
+	}
+	area := uncovered.finish()
+	area.Note = note
+	for _, review := range reviews {
+		if review.Unreadable == "" && review.Covered > 0 {
+			area.Covered += review.Covered
+			area.CoveredEntries = append(area.CoveredEntries, Entry{Resource: review.Target, Title: review.Title, Kind: "review", Count: review.Covered, Via: []string{review.Target}})
+		}
+	}
+	area.UncoveredEntries = append(area.UncoveredEntries, unreadable...)
+	area = area.finish()
+	area.Complete = area.Complete && len(unreadable) == 0
+	return area
+}
+
+// ReviewOverChange is the review area of a comparison: every changed line
+// and file event of the change itself, covered by the reviews whose Items
+// explain it (via, keyed by atom key), or uncovered for reason(atom). It is
+// measured over the change, never over a review's own range, so a review
+// whose range is narrower than the change cannot report it complete.
+func ReviewOverChange(atoms []gitdiff.Atom, via map[string][]string, reason func(gitdiff.Atom) string, note string) Area {
+	group := lines{area: Review}
+	for _, atom := range atoms {
+		covering := via[atom.Key]
+		why := ""
+		if len(covering) == 0 {
+			why = reason(atom)
+		}
+		group.add(atom, "", covering, nil, why)
+	}
+	area := group.finish()
+	area.Note = note
+	return area
 }
 
 func newArea(name Name, unit Unit) Area {

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "follow-head",
+  "slide": "create",
+  "rank": 50,
+  "kind": "node",
+  "label": "The review follows its branch",
+  "description": "review create records the checked-out branch as --head and review follow pins an existing review, so a review never takes a later change for its own.",
+  "selector": {
+    "type": "element",
+    "element_id": "follow-head"
+  }
+}

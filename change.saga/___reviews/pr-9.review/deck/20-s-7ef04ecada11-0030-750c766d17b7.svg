@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui, sans-serif">
+  <rect width="1280" height="720" fill="#f7f8fa"/>
+  <text x="40" y="56" font-size="30" font-weight="700" fill="#1d2433">every entry point leads with a review; growth comes later</text>
+  <text x="40" y="90" font-size="17" fill="#4a5568">The same order everywhere: create a review for this PR; a Saga of reviews alone is complete; grow it only if the team wants.</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
+  <rect x="40" y="120" width="560" height="44" rx="10" fill="#3b6fd8"/><text x="60" y="149" font-size="18" font-weight="700" fill="#fff">1. Create a review for this PR (first)</text>
+  <rect x="680" y="120" width="560" height="44" rx="10" fill="#c98a1b"/><text x="700" y="149" font-size="18" font-weight="700" fill="#fff">2. If the team wants: grow the Saga</text>
+  <line x1="600" y1="142" x2="676" y2="142" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <g id="init-next-steps">
+    <rect x="40" y="190" width="370" height="180" rx="14" fill="#ffffff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="60" y="225" font-size="20" font-weight="700" fill="#1d3a7a">init</text>
+    <text x="60" y="255" font-size="15" fill="#1d2433">Next steps start with the review flow</text>
+    <text x="60" y="275" font-size="15" fill="#1d2433">and say sagafying a PR is the best way</text>
+    <text x="60" y="295" font-size="15" fill="#1d2433">to learn; documenting existing code</text>
+    <text x="60" y="315" font-size="15" fill="#1d2433">stays second; reviews alone are a</text>
+    <text x="60" y="335" font-size="15" fill="#1d2433">complete Saga.</text>
+  </g>
+  <g id="top-level-help">
+    <rect x="455" y="190" width="370" height="180" rx="14" fill="#ffffff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="475" y="225" font-size="20" font-weight="700" fill="#1d3a7a">change-saga help</text>
+    <text x="475" y="255" font-size="15" fill="#1d2433">Leads with the review story and its</text>
+    <text x="475" y="275" font-size="15" fill="#1d2433">five steps; implementation decks,</text>
+    <text x="475" y="295" font-size="15" fill="#1d2433">reconcile, and living documentation</text>
+    <text x="475" y="315" font-size="15" fill="#1d2433">move to "Growing the Saga".</text>
+  </g>
+  <g id="readme">
+    <rect x="870" y="190" width="370" height="180" rx="14" fill="#ffffff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="890" y="225" font-size="20" font-weight="700" fill="#1d3a7a">README and docs</text>
+    <text x="890" y="255" font-size="15" fill="#1d2433">1. Start with a review: the prompt,</text>
+    <text x="890" y="275" font-size="15" fill="#1d2433">what you get, the handful of commands.</text>
+    <text x="890" y="295" font-size="15" fill="#1d2433">2. Grow, if wanted. 3. A connected body</text>
+    <text x="890" y="315" font-size="15" fill="#1d2433">of knowledge that pays dividends.</text>
+    <text x="890" y="340" font-size="13" fill="#4a5568">Reference follows; changelog entry.</text>
+  </g>
+  <g id="skill">
+    <rect x="40" y="410" width="580" height="250" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="60" y="445" font-size="20" font-weight="700" fill="#1d3a7a">change-saga skill</text>
+    <text x="60" y="477" font-size="15" fill="#1d2433">Description leads with creating reviews. A top-of-file fast path:</text>
+    <text x="60" y="499" font-size="15" fill="#1d2433">review create → one slide per architectural idea → items →</text>
+    <text x="60" y="521" font-size="15" fill="#1d2433">cover --changed-lines → review list --uncovered / check --covers review.</text>
+    <text x="60" y="553" font-size="15" fill="#1d2433">It never pitches more; setup-initial-saga if the user asks.</text>
+    <text x="60" y="585" font-size="15" fill="#1d2433">reconcile after a review only when living documentation exists</text>
+    <text x="60" y="607" font-size="15" fill="#1d2433">or the user asks.</text>
+  </g>
+  <g id="setup-after-reviews">
+    <rect x="680" y="410" width="560" height="250" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>
+    <text x="700" y="445" font-size="20" font-weight="700" fill="#7a4d05">setup-initial-saga</text>
+    <text x="700" y="477" font-size="15" fill="#1d2433">For a team that wants more than reviews. It grows a Saga</text>
+    <text x="700" y="499" font-size="15" fill="#1d2433">that holds only reviews without --overhaul and reads</text>
+    <text x="700" y="521" font-size="15" fill="#1d2433">those reviews as evidence. With no Saga, it and help</text>
+    <text x="700" y="543" font-size="15" fill="#1d2433">suggest a review first. A Saga with living docs is</text>
+    <text x="700" y="565" font-size="15" fill="#1d2433">still guarded, as before.</text>
+  </g>
+  <g id="ci-gate">
+    <rect x="40" y="672" width="1200" height="40" rx="10" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
+    <text x="60" y="698" font-size="15" fill="#1f5c34">Use it in CI (opt-in): README workflow runs check --covers review --against origin/&lt;base&gt;; this repository's CI gates its own PRs the same way.</text>
+  </g>
+</svg>

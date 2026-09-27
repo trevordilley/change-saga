@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "ci-gate",
+  "slide": "entry",
+  "rank": 50,
+  "kind": "node",
+  "label": "Use it in CI",
+  "description": "The README's opt-in GitHub Actions gate and this repository's own CI job run check --covers review against origin's base.",
+  "selector": {
+    "type": "element",
+    "element_id": "ci-gate"
+  }
+}

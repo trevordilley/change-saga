@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "docs/repository-saga.md",
+      "start": 187,
+      "end": 189,
+      "digest": "sha256:e957d2ea6a98c320ad87c0be9057c2a627dfb62ba3c4bc7a468dc576e98f1efe"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "docs/repository-saga.md",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:14446e1df3dfb79a84d6dd337c1ed4b56d286974e632ee9c658faf23015e80cf"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "docs/repository-saga.md",
+      "start": 187,
+      "end": 193,
+      "digest": "sha256:c9435bd023ee32e974511f8242a14f9d34a287018bf544e55550ac4c8a8f7442"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "docs/repository-saga.md",
+      "start": 216,
+      "end": 217,
+      "digest": "sha256:6da5c7bccaea4b287b91bb78fa581ecee952d3966f082896ecaf6bf8e3c399bd"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "docs/repository-saga.md",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:1cb35f8b80c93d1c0ccde286ab038fbec7b41ed75904cd3ebb1484def91b831e"
+    }
+  ]
+}
