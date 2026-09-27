@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:8beb52da0d012e0a8fab26e804cb5246fa359ecf4af1d42b8469c547bb6a1b3e",
+      "note": "The review slide example calls out a surprise."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:40f025565f68af8330e1241ce87916d64934e659c9109a2dad2e4add1bcb851f",
+      "note": "The review slide example calls out a surprise."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:36b8b887d23aca2fb93f7df0fc6e6df05cafe5fb04bdc7e92e1e32d7f89b83d3",
+      "note": "The review slide example calls out a surprise."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:8143316227434206df3838d0c7ee77a2b041c6f3bc060a272e23b4c59a9c34e6",
+      "note": "The review slide example calls out a surprise."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 151,
+      "end": 156,
+      "digest": "sha256:4c676337f9651728a99350394ccbd55c01a55c13930e4788f93be2ad7da0ffe4",
+      "note": "The review slide example calls out a surprise."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:72970f5c7563265c8a29cbe85590504f9f241971545b8b7b3d4fb76aa9b39f95",
+      "note": "The review slide example calls out a surprise."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 188,
+      "end": 193,
+      "digest": "sha256:9222d25c11018d863d3e5731a99c700930df92d093d6d28863d47dc049959753",
+      "note": "The review slide example calls out a surprise."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 199,
+      "end": 200,
+      "digest": "sha256:5a7452a1230d9056e9104d7be8aff1261ea5adb8a6bf830a4664789680161fd3",
+      "note": "The review slide example calls out a surprise."
+    }
+  ]
+}

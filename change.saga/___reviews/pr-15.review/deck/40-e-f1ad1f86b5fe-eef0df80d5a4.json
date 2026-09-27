@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 28,
+      "end": 29,
+      "digest": "sha256:9e0df1a71e2ba86898d0deed844835b2ea9e133e980223f73dfdebe591d2aa99",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:ccf5df965c2d5cb4b2bfe4347fe2ddafce52e25de93a49eb6d860a3b820e8a29",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 41,
+      "end": 45,
+      "digest": "sha256:0c182103ed5ca4e21e1b897f8236911fb60766ec152d56c372e1031a7cb495c8",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:4cf29dd6f43cd76252b9178d7fbe6059102b471d557ebe292c0b35cd15107bf2",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:d6f3f9a5ba1f16f5a6d3a299f3b48b58c971334491fe0f6139538e830b62976a",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 28,
+      "end": 34,
+      "digest": "sha256:f6bdf440dd25eae4ca106b199f2220022b65dc7575c270285917d0a2960d1cd8",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 44,
+      "end": 51,
+      "digest": "sha256:20b60cd956449f60329bff307e3c257149560de0fd9ccbd874158a02f37cdc45",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 53,
+      "end": 59,
+      "digest": "sha256:2b5fff25904e43784b2e36a9202d590a9108f4dcfc9c36c3503a4bf35a6bc212",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:81be9780589ec728c10ea2eb2c4dc82bd6084a2fbf6aaf4db8183881089273e8",
+      "note": "The fast path step for calling out surprises."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:4f03dc73f2af81b80c9d7626369991292dee3eecfc0440eaa38da5a82074fbc0",
+      "note": "The fast path step for calling out surprises."
+    }
+  ]
+}

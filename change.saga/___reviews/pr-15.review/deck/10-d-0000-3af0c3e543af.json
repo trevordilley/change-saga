@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "pr-15",
+  "title": "Show review callouts as surprises and teach calling them out",
+  "role": "review",
+  "rank": 0,
+  "objective": "Explain what this change did and why: the transition and its reasoning."
+}
