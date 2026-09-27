@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/coderesolve/resolve.go",
-      "start": 134,
-      "end": 136,
+      "start": 147,
+      "end": 149,
       "digest": "sha256:86c29a95b32577e92801a6d67015174587e64ad67d3e37109ebf6f17438313a6",
       "note": "Returns an authenticated reference as current at its original location when viewed at the pinned commit."
     }

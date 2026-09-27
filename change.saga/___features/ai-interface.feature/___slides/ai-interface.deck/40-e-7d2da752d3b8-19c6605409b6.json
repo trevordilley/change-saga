@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/livingapp/session.go",
       "start": 156,
       "end": 215,

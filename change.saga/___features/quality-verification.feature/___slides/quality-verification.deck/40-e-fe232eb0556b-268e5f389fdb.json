@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/livingapp/status_quality.go",
       "start": 13,
       "end": 28,
@@ -10,7 +10,7 @@
       "note": "Defines distinct quality states and tests missing, stale, failed, not-run, excluded, and orphaned outcomes as visible facts."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/livingapp/status_test.go",
       "start": 318,
       "end": 373,
@@ -18,7 +18,7 @@
       "note": "Defines distinct quality states and tests missing, stale, failed, not-run, excluded, and orphaned outcomes as visible facts."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/livingapp/status_test.go",
       "start": 449,
       "end": 460,

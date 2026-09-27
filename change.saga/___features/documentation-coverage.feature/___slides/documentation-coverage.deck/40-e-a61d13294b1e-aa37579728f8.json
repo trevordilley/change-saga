@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/gitdiff/gitdiff.go",
-      "start": 20,
-      "end": 60,
+      "start": 21,
+      "end": 61,
       "digest": "sha256:89743213d650bc2e734595823fecb3ad4890b9aa0f2afdde46442859c304d967",
       "note": "Defines the atomized Git snapshot shared by coverage projections."
     }

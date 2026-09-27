@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/sync.go",
-      "start": 62,
-      "end": 83,
+      "start": 63,
+      "end": 84,
       "digest": "sha256:3e21057fd3462eab076af825565cf5a271e0fbbeb3eb5ef250d8fbda90218e67",
       "note": "Reads the previous cursor, writes the resolved commit, and reports the resulting documented version."
     }

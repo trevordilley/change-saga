@@ -2,15 +2,15 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/changeview/cursor.go",
-      "start": 72,
-      "end": 105,
+      "start": 77,
+      "end": 110,
       "digest": "sha256:a0f671ea3370dc8955827563d9832577ac2fe3afcbc38709f830339dc9a43cb2",
       "note": "Reports approximate, missing, or behind cursors and makes an unavailable base explicitly behave as an absent Saga snapshot."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/changeview/layers.go",
       "start": 239,
       "end": 254,

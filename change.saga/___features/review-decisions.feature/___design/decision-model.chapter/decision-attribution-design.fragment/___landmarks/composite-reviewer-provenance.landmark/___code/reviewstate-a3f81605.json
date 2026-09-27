@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/reviewstate/reviewstate.go",
-      "start": 105,
-      "end": 118,
+      "start": 126,
+      "end": 139,
       "digest": "sha256:36cb598893b85e798f7a85f070f8cad72f65e80e5fe9a6347d832c35b602d274",
       "note": "Decision reports combine reviewer metadata with Git/local author attribution, and the UI renders the AI seat for that actor."
     },
@@ -18,10 +18,10 @@
       "note": "Decision reports combine reviewer metadata with Git/local author attribution, and the UI renders the AI seat for that actor."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviews.go",
-      "start": 617,
-      "end": 622,
+      "start": 769,
+      "end": 774,
       "digest": "sha256:6caccd2830731651777cdba3b2cc2784d073b27d37c4d5c9b53a18ca705644ce",
       "note": "Decision reports combine reviewer metadata with Git/local author attribution, and the UI renders the AI seat for that actor."
     }

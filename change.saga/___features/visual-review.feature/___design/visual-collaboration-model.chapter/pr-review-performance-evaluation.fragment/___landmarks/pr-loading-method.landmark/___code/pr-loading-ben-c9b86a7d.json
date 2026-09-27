@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/pr_loading_benchmark_test.go",
       "start": 19,
       "end": 35,
@@ -10,7 +10,7 @@
       "note": "Opt-in disposable fixture setup and independent server load, report, shell and template measurement stages."
     },
     {
-      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/pr_loading_benchmark_test.go",
       "start": 47,
       "end": 83,
@@ -18,10 +18,10 @@
       "note": "Opt-in disposable fixture setup and independent server load, report, shell and template measurement stages."
     },
     {
-      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/pr_loading_benchmark_test.go",
-      "start": 103,
-      "end": 127,
+      "start": 104,
+      "end": 128,
       "digest": "sha256:788d0b3b884d4d0dfcbc31684964a54dcdf1fdcba5d085e0cbac65dd8dbee12d",
       "note": "Opt-in disposable fixture setup and independent server load, report, shell and template measurement stages."
     }

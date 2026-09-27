@@ -4,6 +4,6 @@
   "id": "inventory-query-coverage",
   "title": "Technical inventory reads, coverage and reconciliation",
   "base": "b6c0700686f88d6008172d884eab741c735d3ea8",
-  "head": "feature/inventory-query-coverage-claude",
+  "head": "43b67d7ff462df773b314338f1f0f92741b88f11",
   "created_at": "2026-09-25T01:48:12.166954Z"
 }

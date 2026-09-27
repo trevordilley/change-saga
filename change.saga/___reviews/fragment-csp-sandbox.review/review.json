@@ -5,5 +5,11 @@
   "title": "Sandbox authored content at any origin",
   "base": "feature/review-ux-improvements",
   "head": "feature/fragment-csp-sandbox",
+  "merged": {
+    "base": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+    "head": "13a320b7838fbf57f3a71ce571173b512d73dbfa",
+    "landed": "16b6587c91b2c608d17868b1d3bbd59ec90784fc",
+    "merged_at": "2026-09-27T10:43:57.304292Z"
+  },
   "created_at": "2026-09-25T03:53:51.616516Z"
 }

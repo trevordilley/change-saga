@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/prototypes/model.go",
       "start": 56,
       "end": 74,
@@ -10,7 +10,7 @@
       "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/prototypes/model.go",
       "start": 91,
       "end": 105,
@@ -18,7 +18,7 @@
       "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/prototypes/model.go",
       "start": 132,
       "end": 172,
@@ -26,7 +26,7 @@
       "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/quality/model.go",
       "start": 82,
       "end": 97,
@@ -34,7 +34,7 @@
       "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/quality/model.go",
       "start": 128,
       "end": 172,
@@ -42,7 +42,7 @@
       "note": "Defines prototype packages, annotation pins, quality definitions, evidence, runs, and their independent current heads."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/quality/model.go",
       "start": 192,
       "end": 211,

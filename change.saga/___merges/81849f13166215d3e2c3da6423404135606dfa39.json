@@ -1,0 +1,198 @@
+{
+  "version": 2,
+  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+  "base": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+  "commits": [
+    {
+      "commit": "de5e023295ad988f09b571a58c3feb1c859667c3",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T02:54:01Z",
+      "subject": "Publish pull request review slides through apply-slide and diagram sources",
+      "body": "apply-slide resolves the deck a request names: a feature implementation\ndeck, or with \"review\" (or --review, or the review deck's URN) an open\nreview's deck. Both share one transaction path, record, and content-\naddressed SVG and diagram sidecars; the deck names its own slide and Item\nURNs, so candidate validation and the semantic diff follow it.\n\nA review Item's code stays with cover: the request refuses evidence and\ncriterion links, the loader attaches cover's flat records to review\ntransaction Items, and apply-slide refuses to drop an Item whose coverage\nwould be orphaned. A hand-written review slide migrates on its first\nupdate with its coverage intact. diagram describe/get/edit/check accept\n--review or a review slide's URN, and add-item and set-slide-content\nguard review transaction slides like implementation ones.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "59dba7356ef84cbbce8fb775ca781092bdcc2788",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T02:56:49Z",
+      "subject": "Document review slides in apply-slide and diagram usage, grammar, spec, and schema",
+      "body": "The request schema admits \"review\" (or a review deck URN) instead of\n\"deck\", and item \"record\"; evidence and criterion links stay required\nfor implementation Items and are refused for review Items.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "f07804a5c5d95ae79de57dc4270c82352ab7903d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T02:59:10Z",
+      "subject": "Test that a diagram-sourced review slide renders in the review viewer",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "ce0445db8d24e050b824240bc230dbe5061b6ab4",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:03:23Z",
+      "subject": "Let visual-qa render a pull request review's slides",
+      "body": "--review ID selects the review's deck and checks each slide raw at its\nreview visual route and inside the review viewer. Without it, visual-qa\nselects the app's decks exactly as before.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "02ed4cfaa56912d59cafe334008b660976b0795e",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:03:49Z",
+      "subject": "Start this pull request's review deck with a diagram-sourced slide",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "feb614371b4b1e3183271b174d04c55e83f17b2c",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:06:24Z",
+      "subject": "Author this pull request's review deck with diagram sources",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "f8d22d653f2aea3d7f92a585ab0f00ddf0932c98",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:07:27Z",
+      "subject": "Name the review when a request addresses a review's deck by its id",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "6d163c615703de26ebd450e376c35e6b3c2379ca",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:08:27Z",
+      "subject": "Teach the skill to author review slides with apply-slide and diagram sources",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "ef958118049ac716df9a7a44ea3380a7096049e6",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:08:53Z",
+      "subject": "Specify review slides published through the complete-slide transaction",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:18:42Z",
+      "subject": "Keep measured reviews' pull request numbers clear of change.saga's own reviews",
+      "body": "The same fix as feature/review-first-entry: this branch's review of pull\nrequest #10 collided with the measured review numbered 10.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "7cac79ab39746d259efe944cc4ceb9c1c176b9cf",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:20:24Z",
+      "subject": "Cover every changed line of this pull request in its review deck",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "8865fd94dbc75477d59e2707f512e5140a3cbbac",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:35:22Z",
+      "subject": "gofmt the review slide tests",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "e3fa50a5535a382430f34e65220007d6879d9fa3",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T03:35:43Z",
+      "subject": "Repair the review's coverage of the reformatted test file",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "1fa13c167a7d879267bfc5e1d5ead2cb5df4dc28",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T04:13:13Z",
+      "subject": "Reconcile the living evidence this change moved",
+      "body": "Seven references regressed because this branch edited the code they pin:\nthe loader's evidence pass and deck bundle reading (visual-pipeline and\nfailure-boundaries Items), set-slide-content's guard (slide-state), and the\napply-slide request and revision builder (technical-inventory-authoring and\nti-records-impl-selections). Each explanation still holds, so each is\nre-pinned at this branch's commit with its note unchanged; the\ntransaction-managed slide was republished through apply-slide.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "88a1d3c12d7af0089efb941f1bbc995632bf128b",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:47:08Z",
+      "subject": "Merge main (PR #9: review first) into review deck diagrams",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "d4ca07326ef4af9f5925ac766e0e8d0b70f9acf6",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:49:34Z",
+      "subject": "Prove apply-slide review Items cover the change like add-item ones",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "00ef7a9eb3aa003ef6badc5f725aeff7728c9a97",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:55:38Z",
+      "subject": "Lead the skill's review fast path with apply-slide and a diagram source",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "036d3fd0a7848c0649525dbe9d794636ebe8f017",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:55:38Z",
+      "subject": "Point review create, init, and help at apply-slide for review slides",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "731f7ed25a374e532c18488bb92c15031bb4c813",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:55:38Z",
+      "subject": "Test that query slide reads a review slide's authoring snapshot",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:55:38Z",
+      "subject": "Document review decks with diagram sources in README, changelog, and spec",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "0fb1b6029f6160de3592638dea1030c86c05aa09",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T09:00:47Z",
+      "subject": "Cover the merged range in this pull request's review deck",
+      "body": "Add an entry-points slide, published with apply-slide --review from a\ndiagram source, for the skill, help, and README now leading with it;\nre-cover the changed usage lines, docs, and tests; drop coverage of the\nperf test whose change main already carries.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "155190f05e36f82aa30435f6fe9a77c2ae7bc026",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T09:38:41Z",
+      "subject": "Merge main (PR #11: stale repair) into review deck diagrams",
+      "body": "apply-slide --print-current prints a review slide's request into its\nreview (--review ID resolves a bare slide id there) and keeps each Item's\nrecord, so it applies back unchanged.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "6b0a68cc64264b7abed9dfae0f30b5b9e7c1555e",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T09:40:09Z",
+      "subject": "Refuse dropping or renaming a review Item a comment is on",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "0404ab30224af74640e0302f29a90779e36bf97a",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T09:42:02Z",
+      "subject": "Treat merged reviews' diagram slides as history in diagram check",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "535ed0a29d29de0fa8e30ad736b7189ce740bfcb",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T09:43:38Z",
+      "subject": "Read a review's id from a URN by segment, not by substring",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T09:44:08Z",
+      "subject": "Record the review in visual-qa.json and refuse a --deck that is not its deck",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "d48da10725100067c7b5d6c56a3abe7a283f62fa",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T09:51:20Z",
+      "subject": "Keep review review-deck-diagrams covering the merged range and fixes",
+      "body": "Refresh moved coverage, accept proposed ranges after reading each diff,\ncover the print-current, comment guard, diagram check, and visual-qa\nchanges on the Items that explain them, and relabel the Items whose\nexplanation grew (docs, go-tests, orphan guard, read, check). Accept the\none living-documentation range this change moved.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    }
+  ],
+  "review": "review-deck-diagrams",
+  "pinned_at": "2026-09-27T10:44:57.847986Z"
+}

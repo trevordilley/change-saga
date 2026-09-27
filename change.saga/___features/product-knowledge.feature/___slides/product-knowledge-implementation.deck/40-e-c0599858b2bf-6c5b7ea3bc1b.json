@@ -2,18 +2,18 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/livingapp/status_terms.go",
-      "start": 19,
-      "end": 30,
+      "start": 20,
+      "end": 31,
       "digest": "sha256:57b907a6898501dd9724734873d766bf29ce7ec958b4e9bc179eaca20ba4826d",
       "note": "Projects title, pitch, description, and active-term count while classifying omissions as non-blocking overview gaps."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/livingapp/status_terms.go",
-      "start": 90,
-      "end": 119,
+      "start": 96,
+      "end": 125,
       "digest": "sha256:85ccb272b15afca2da3a61d7ce55faac1dbc74f66fea6c431e859803cc245280",
       "note": "Projects title, pitch, description, and active-term count while classifying omissions as non-blocking overview gaps."
     }

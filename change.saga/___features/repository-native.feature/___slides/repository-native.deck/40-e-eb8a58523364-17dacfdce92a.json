@@ -10,10 +10,10 @@
       "note": "Selects an explicit URI or origin and only falls back to a local file identity after opt-in."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/cli.go",
-      "start": 1330,
-      "end": 1332,
+      "start": 1487,
+      "end": 1489,
       "digest": "sha256:cffae08d1e3935981cd07e88473624c9e8f12768ff077be1ce2a73391fa87709",
       "note": "Selects an explicit URI or origin and only falls back to a local file identity after opt-in."
     }

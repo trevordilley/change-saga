@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/reviewstore/reviewstore.go",
       "start": 133,
       "end": 157,
@@ -10,7 +10,7 @@
       "note": "Under the writer lock, resolve the canonical slide, recheck the current range and shown slide/source snapshot, then capture the slide digest. Approval belongs to the slide and does not approve Item evidence."
     },
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasync.go",
       "start": 121,
       "end": 150,
@@ -18,7 +18,7 @@
       "note": "Under the writer lock, resolve the canonical slide, recheck the current range and shown slide/source snapshot, then capture the slide digest. Approval belongs to the slide and does not approve Item evidence."
     },
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasync.go",
       "start": 175,
       "end": 190,

@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/grammar/commands.go",
-      "start": 603,
-      "end": 657,
+      "start": 605,
+      "end": 659,
       "digest": "sha256:9ef788f53e33ccea467bb9f666cf6d820f45a9afb53e04b978e8aef3f4171e9e",
       "note": "Published command shapes including review operations"
     }

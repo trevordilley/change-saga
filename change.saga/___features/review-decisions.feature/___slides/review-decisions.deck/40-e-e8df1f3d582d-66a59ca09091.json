@@ -10,10 +10,10 @@
       "note": "Both browser and CLI entry points construct the same reviewstore decision request."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/reviews.go",
-      "start": 171,
-      "end": 177,
+      "start": 278,
+      "end": 284,
       "digest": "sha256:845bd26421338b2d60f53b344d1da58c832ae97d260f3bf2ab7fde3459a8266b",
       "note": "Both browser and CLI entry points construct the same reviewstore decision request."
     }

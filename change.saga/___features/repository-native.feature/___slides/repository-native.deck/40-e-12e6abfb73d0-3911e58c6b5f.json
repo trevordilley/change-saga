@@ -10,10 +10,10 @@
       "note": "Initialization discovers and persists canonical source identity"
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/saga/model.go",
-      "start": 120,
-      "end": 125,
+      "start": 164,
+      "end": 169,
       "digest": "sha256:d00e26a0f7e4294b61b6608a7c09271500e65741f05e1ef566fa623ee89f0da9",
       "note": "Initialization discovers and persists canonical source identity"
     }

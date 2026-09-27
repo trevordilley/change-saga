@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/query.go",
-      "start": 804,
-      "end": 825,
+      "start": 945,
+      "end": 966,
       "digest": "sha256:065b12e399e2a798953a2a27f25f53bb94c25432db6eb8186cf00b64c72b428c",
       "note": "Collapses unknown application failures to a generic internal error instead of exposing the underlying message."
     }

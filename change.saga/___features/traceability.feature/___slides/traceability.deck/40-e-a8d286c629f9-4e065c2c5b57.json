@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "bdeb5325e405aecb9f7f56aeb3b2ddefe0b808b2",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/requirements/currency.go",
       "start": 115,
       "end": 254,

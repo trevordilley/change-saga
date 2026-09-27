@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/coverage/coverage.go",
-      "start": 43,
-      "end": 50,
+      "start": 47,
+      "end": 54,
       "digest": "sha256:1ade6cc9ad4a1925e0ea8039ea70a60cc0a340a2420a77e2363b3da6c6311ded",
       "note": "Defines stale evidence as accounting for nothing until re-authored."
     }

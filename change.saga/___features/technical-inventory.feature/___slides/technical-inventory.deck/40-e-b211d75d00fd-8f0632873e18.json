@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "docs/component-system-inventory.md",
       "start": 1,
       "end": 154,

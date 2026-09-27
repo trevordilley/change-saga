@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/reviewstate/reviewstate.go",
-      "start": 219,
-      "end": 240,
+      "start": 243,
+      "end": 264,
       "digest": "sha256:ad07bc4e5bfbc710369935e3fe4d0814cf7d006afa9a9f6071dd301bac0024b6",
       "note": "Creates an open thread projection from each root comment, honoring an explicit initial state when present."
     }

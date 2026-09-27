@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/requirements/currency.go",
       "start": 87,
       "end": 88,
@@ -10,10 +10,10 @@
       "note": "Defines current as the only currency eligible for coverage and returns the derived state."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/requirements/currency.go",
-      "start": 276,
-      "end": 278,
+      "start": 325,
+      "end": 327,
       "digest": "sha256:4de5a39321e30081923782661c201220e26dff6ed693994dd3e95a88af5bdc09",
       "note": "Defines current as the only currency eligible for coverage and returns the derived state."
     }

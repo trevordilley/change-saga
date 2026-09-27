@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/coverage/coverage.go",
-      "start": 309,
-      "end": 323,
+      "start": 328,
+      "end": 342,
       "digest": "sha256:c630dfc74059bcc5bb07f4b4be31e0da644986209d9a445a115d3434506546ac",
       "note": "Keeps whole-file event coverage separate from changed-line coverage."
     }

@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/template.go",
-      "start": 161,
-      "end": 161,
+      "start": 186,
+      "end": 186,
       "digest": "sha256:f9b66dfe5e9f8ed4cade819bb3e303500e481d7675b45f22409a72105de2ce6d",
       "note": "The Terms page renders its table through the shared directory template."
     }
