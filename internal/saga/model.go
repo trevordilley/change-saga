@@ -208,18 +208,21 @@ type FragmentManifest struct {
 }
 
 type Fragment struct {
-	Path               string         `json:"path"`
-	Directory          string         `json:"-"`
-	ID                 string         `json:"id"`
-	Title              string         `json:"title,omitempty"`
-	MediaType          string         `json:"media_type"`
-	Entrypoint         string         `json:"entrypoint"`
-	Order              int            `json:"order,omitempty"`
-	Target             string         `json:"target"`
-	Code               []CodeFile     `json:"code,omitempty"`
-	HasCode            bool           `json:"-"`
-	Landmarks          []Landmark     `json:"landmarks,omitempty"`
-	SlideMeta          *SlideManifest `json:"-"`
+	Path       string         `json:"path"`
+	Directory  string         `json:"-"`
+	ID         string         `json:"id"`
+	Title      string         `json:"title,omitempty"`
+	MediaType  string         `json:"media_type"`
+	Entrypoint string         `json:"entrypoint"`
+	Order      int            `json:"order,omitempty"`
+	Target     string         `json:"target"`
+	Code       []CodeFile     `json:"code,omitempty"`
+	HasCode    bool           `json:"-"`
+	Landmarks  []Landmark     `json:"landmarks,omitempty"`
+	SlideMeta  *SlideManifest `json:"-"`
+	// Diagram names the structured source a diagram-sourced slide rendered
+	// from, so a reader can show its element notes.
+	Diagram            *DiagramSource `json:"-"`
 	DeckRole           string         `json:"-"`
 	AuthoringSnapshot  string         `json:"-"`
 	AuthoringHeads     []string       `json:"-"`

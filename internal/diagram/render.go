@@ -121,7 +121,7 @@ func (r *renderer) element(e Element, into *node) error {
 		g.set("aria-hidden", "true")
 	} else {
 		g.set("role", "group")
-		g.set("aria-label", accessibleName(e))
+		g.set("aria-label", AccessibleName(e))
 		if strings.TrimSpace(e.Description) != "" {
 			g.add("title").text = e.Description
 		}
@@ -159,7 +159,9 @@ func (r *renderer) element(e Element, into *node) error {
 	return r.shape(e, style, g)
 }
 
-func accessibleName(e Element) string {
+// AccessibleName is the name the renderer gives e: its label, an edge's ends, or
+// its id.
+func AccessibleName(e Element) string {
 	switch {
 	case strings.TrimSpace(e.Label) != "":
 		return e.Label

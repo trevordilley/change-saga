@@ -335,9 +335,11 @@ type fragmentView struct {
 	AspectRatio     string
 	SectionTitle    string
 	LandmarkViews   []*landmarkView
-	Stories         *storyLinksView
-	ChangeCount     int
-	Attached        *attachedCodeView
+	// ElementNotes are the noted diagram elements no Item selects.
+	ElementNotes []elementNoteView
+	Stories      *storyLinksView
+	ChangeCount  int
+	Attached     *attachedCodeView
 }
 
 type landmarkView struct {
@@ -348,6 +350,8 @@ type landmarkView struct {
 	ChangeCount int
 	Attached    *attachedCodeView
 	Region      *saga.LandmarkRegion
+	// Note is the rendered note of the diagram element the Item selects.
+	Note template.HTML
 }
 
 type diffAtomView struct {
@@ -965,7 +969,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 }
 
 // pageTemplateSource is every template the reviewer renders with.
-var pageTemplateSource = pageTemplate + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates + technicalSelectionTemplates
+var pageTemplateSource = pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates + technicalSelectionTemplates
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
@@ -1761,6 +1765,8 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 	}
 	view.ChangeCount, view.Attached = scopedAttachedCode(scope, title, fragment.Target, fragment.Code)
 	view.ChangeCount = lazyChangeCount(fragment.HasCode, view.ChangeCount)
+	notes := loadSlideNotes(fragment.Directory, fragment.Diagram, view.DOMID)
+	bound := map[string]bool{}
 	for _, landmark := range fragment.Landmarks {
 		region := landmark.Hotspot
 		if region == nil && landmark.Selector.Type == "region" {
@@ -1774,8 +1780,12 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 			Attached:    attached,
 			Region:      region,
 		}
+		if landmark.Selector.Type == "element" {
+			landmarkView.Note, bound[landmark.Selector.ElementID] = notes.html[landmark.Selector.ElementID], true
+		}
 		view.LandmarkViews = append(view.LandmarkViews, landmarkView)
 	}
+	view.ElementNotes = notes.unbound(bound)
 	switch fragment.MediaType {
 	case "text/markdown":
 		if data, err := os.ReadFile(filepath.Join(fragment.Directory, filepath.FromSlash(fragment.Entrypoint))); err == nil {

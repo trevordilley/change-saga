@@ -575,6 +575,18 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .landmark-hotspot>.landmark-affordance{position:absolute;right:3px;top:3px}
 .landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active,.fragment.preview-linked-items .landmark-hotspot[data-landmark-has-diffs="true"]{border-color:#d39418;background:transparent}
 .landmark-hotspot:hover>.landmark-affordance,.landmark-hotspot:focus-within>.landmark-affordance,.landmark-hotspot.active>.landmark-affordance,.fragment.preview-linked-items .landmark-hotspot[data-landmark-has-diffs="true"]>.landmark-affordance{opacity:1}
+.element-note-hotspot{z-index:2;cursor:help}
+.element-note-hotspot:focus-visible,.review-deck-slide .element-note-hotspot:focus-visible{border-color:#d39418;outline:2px solid #d39418;outline-offset:1px}
+.element-note-popover{position:fixed;z-index:90;left:0;top:0;box-sizing:border-box;width:max-content;max-width:min(22rem,calc(100vw - 16px));max-height:min(60vh,28rem);overflow:auto;padding:10px 12px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);font-size:13px;line-height:1.45;text-align:left}
+.element-note-popover[hidden]{display:none}
+.element-note>*{margin:0}.element-note>*+*{margin-top:6px}
+.element-note-label{font-weight:600}.element-note-description{color:var(--muted)}
+.element-note-body{padding-left:8px;border-left:3px solid var(--amber)}
+.element-note>*+.element-note-markdown{padding-top:6px;border-top:1px solid var(--line)}
+.element-note-markdown>:first-child{margin-top:0}.element-note-markdown>:last-child{margin-bottom:0}
+.element-note-markdown p,.element-note-markdown ul,.element-note-markdown ol{margin:0 0 6px}.element-note-markdown ul,.element-note-markdown ol{padding-left:18px}
+.element-note-markdown code{padding:0 3px;border-radius:3px;background:var(--bg-subtle);font:12px var(--mono)}
+.review-item-note{margin:0 16px;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg-subtle)}
 
 /* Dialogs, drawers, composers -------------------------------------------- */
 .diff-drawer{position:fixed;z-index:80;inset:var(--top) 0 0 auto;width:min(1100px,92vw);background:var(--bg);border-left:1px solid var(--line);box-shadow:-12px 0 40px #1f23281f;transform:translateX(105%);transition:transform .2s ease;display:flex;flex-direction:column}

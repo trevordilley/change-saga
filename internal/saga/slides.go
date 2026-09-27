@@ -541,7 +541,7 @@ func ProjectDeck(deck *Deck) *Section {
 			meta := slide.SlideManifest
 			fragment := &Fragment{
 				Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType,
-				Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta, DeckRole: deck.Role,
+				Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta, Diagram: slide.Diagram, DeckRole: deck.Role,
 				AuthoringSnapshot: slide.AuthoringSnapshot, AuthoringHeads: append([]string{}, slide.AuthoringHeads...), AuthoringConflict: slide.AuthoringConflict, AuthoringCreatedAt: slide.AuthoringCreatedAt,
 			}
 			for _, item := range slide.Items {
