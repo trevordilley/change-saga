@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "pr-14",
+  "title": "Rich hover notes on diagram elements",
+  "role": "review",
+  "rank": 0,
+  "objective": "Explain what this change did and why: the transition and its reasoning."
+}

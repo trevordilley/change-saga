@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "81cfa39ddfb630b91eec06598c23e2e7a38acadc",
       "path": "internal/server/template.go",
       "start": 406,
       "end": 406,
-      "digest": "sha256:8a51502a652ea08ea1d4701499dffd6dc1337b5793910f125eefe24f75e7b775",
+      "digest": "sha256:020a32be3af81b847040563d985da54dc4cb6e67e853673c0f3c3fbd8f505a1c",
       "note": "Converts Item selectors into landmark views and focusable overlay affordances layered over either media branch."
     }
   ]
