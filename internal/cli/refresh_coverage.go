@@ -61,7 +61,7 @@ type refreshOutput struct {
 	// are never accepted here.
 	NeedsJudgment []staleRow `json:"needs_judgment"`
 	// Uncovered is newly changed code no single Item's files decide.
-	Uncovered []refreshGap           `json:"uncovered"`
+	Uncovered []refreshGap             `json:"uncovered"`
 	Slides    []SlideTransactionResult `json:"slide_transactions"`
 }
 
