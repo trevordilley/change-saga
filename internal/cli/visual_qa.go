@@ -20,6 +20,7 @@ func VisualQA(ctx context.Context, args []string, out io.Writer) error {
 	feature := flags.String("feature", "", "feature id or URN; use onboarding for the app onboarding deck")
 	deck := flags.String("deck", "", "deck id or URN")
 	slide := flags.String("slide", "", "slide id or URN")
+	review := flags.String("review", "", "render this pull request review's slides instead of the app's decks")
 	output := flags.String("output", "", "managed output directory; defaults to ./change-saga-visual-qa/<saga-id>")
 	repo := flags.String("repo", "", "source repository checkout when separate")
 	playwright := flags.String("playwright-dir", "", "directory containing the installed Playwright node_modules")
@@ -33,7 +34,7 @@ func VisualQA(ctx context.Context, args []string, out io.Writer) error {
 	}
 	report, err := visualqa.Run(ctx, visualqa.Options{
 		SagaRoot: flags.Arg(0), SourceDir: *repo, OutputDir: *output,
-		Feature: *feature, Deck: *deck, Slide: *slide, PlaywrightDir: *playwright,
+		Feature: *feature, Deck: *deck, Slide: *slide, Review: *review, PlaywrightDir: *playwright,
 	})
 	if err != nil {
 		return err

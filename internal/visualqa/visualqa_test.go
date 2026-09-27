@@ -189,3 +189,22 @@ func TestRealRenderProducesSurfacesContactSheetAndBrokenFindings(t *testing.T) {
 		t.Errorf("runner input leaked into output: %v", err)
 	}
 }
+
+func TestSelectionRendersAReviewDeckThroughTheReviewViewer(t *testing.T) {
+	slide := &saga.Slide{SlideManifest: saga.SlideManifest{ID: "flow", Title: "Flow", Entrypoint: "24-a-flow.svg"}, Target: saga.ReviewSlideTarget("visual", "pr-1", "flow")}
+	review := &saga.Review{ReviewManifest: saga.ReviewManifest{ID: "pr-1"}, Deck: &saga.Deck{DeckManifest: saga.DeckManifest{ID: "pr-1"}, Slides: []*saga.Slide{slide}}}
+	document := &saga.Saga{Reviews: []*saga.Review{review}}
+	selected, err := selectSlides(document, Options{Review: "pr-1"})
+	if err != nil || len(selected) != 1 || selected[0].RawURL != "/reviews/pr-1/visual/flow" || selected[0].ReviewerURL != "/reviews/pr-1" || selected[0].Target != slide.Target {
+		t.Fatalf("review selection = %#v err=%v", selected, err)
+	}
+	if _, err := selectSlides(document, Options{Review: "pr-2"}); err == nil || !strings.Contains(err.Error(), `review "pr-2" does not exist`) {
+		t.Fatalf("unknown review error = %v", err)
+	}
+	if _, err := selectSlides(document, Options{Review: "pr-1", Feature: "rendering"}); err == nil || !strings.Contains(err.Error(), "omit --feature") {
+		t.Fatalf("review with feature error = %v", err)
+	}
+	if _, err := selectSlides(document, Options{}); err == nil || !strings.Contains(err.Error(), "no slides matched") {
+		t.Fatalf("app selection must not include review slides: %v", err)
+	}
+}

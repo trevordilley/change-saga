@@ -32,12 +32,14 @@ type Viewport struct {
 }
 
 type Options struct {
-	SagaRoot      string
-	SourceDir     string
-	OutputDir     string
-	Feature       string
-	Deck          string
-	Slide         string
+	SagaRoot  string
+	SourceDir string
+	OutputDir string
+	Feature   string
+	Deck      string
+	Slide     string
+	// Review selects a pull request review's deck instead of the app's.
+	Review        string
 	PlaywrightDir string
 }
 
@@ -253,6 +255,29 @@ func selectSlides(document *saga.Saga, options Options) ([]runnerSlide, error) {
 				ReviewerURL: reviewerPath + "?view=slides", Items: slide.Items,
 			})
 		}
+	}
+	if options.Review != "" {
+		review := document.FindReview(options.Review)
+		if review == nil || review.Deck == nil {
+			return nil, fmt.Errorf("review %q does not exist or has no deck", options.Review)
+		}
+		if options.Feature != "" {
+			return nil, errors.New("a review deck belongs to its review, not a feature; omit --feature")
+		}
+		for _, slide := range review.Deck.Slides {
+			if options.Slide != "" && options.Slide != slide.ID && options.Slide != slide.Target {
+				continue
+			}
+			reviewerPath := "/reviews/" + url.PathEscape(review.ID)
+			selected = append(selected, runnerSlide{
+				Target: slide.Target, Deck: review.Deck.ID, Slide: slide.ID, Title: slide.Title,
+				RawURL: reviewerPath + "/visual/" + url.PathEscape(slide.ID), ReviewerURL: reviewerPath, Items: slide.Items,
+			})
+		}
+		if len(selected) == 0 {
+			return nil, errors.New("no slides matched the requested review and slide selection")
+		}
+		return selected, nil
 	}
 	if options.Feature == "" || options.Feature == "onboarding" {
 		for _, deck := range document.Onboarding {
