@@ -9,25 +9,73 @@
       "digest": "sha256:a6725be01dab04c693b57329afdd771b2a6ae8275bb2d6ee2aeb86a78b427107"
     },
     {
-      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "internal/server/appjs.go",
-      "start": 368,
-      "end": 370,
+      "start": 376,
+      "end": 378,
       "digest": "sha256:f0e5ce3c5b3adba848df7de9c1fc7c75cedc57f11bdac90a4495c166e6a6dc37"
     },
     {
-      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "internal/server/appjs.go",
-      "start": 409,
-      "end": 415,
+      "start": 417,
+      "end": 423,
       "digest": "sha256:94373bea2d8ca57ce5334cdd347bae40c048f6932e685ec5eadfdd4ebd8a9031"
     },
     {
-      "commit": "28d91cbfa7ff6b40001c949109d57783b98767cf",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "internal/server/appjs.go",
-      "start": 435,
-      "end": 592,
-      "digest": "sha256:9a54c318b2d01ae857c0f3e5d404cbc70db38a81bc2d6a0315e580a1a09da11d"
+      "start": 443,
+      "end": 669,
+      "digest": "sha256:a4e482bff0fc48e3aa10713eab24fc53aac2e0202c555141e81c7d502b2af56a"
+    },
+    {
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
+      "path": "internal/server/appjs.go",
+      "start": 10,
+      "end": 16,
+      "digest": "sha256:dbd9ca64666c68d5a628e519430360d36dec3d23edcafcf21b6982e1005579e0",
+      "note": "added in fc1fa3137297"
+    },
+    {
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
+      "path": "internal/server/appjs.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:2c5afd27ede86a83164ffbf6f57dbdb949d9daee309904a2af1507ea5ea446ca",
+      "note": "added in fc1fa3137297"
+    },
+    {
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
+      "path": "internal/server/appjs.go",
+      "start": 1540,
+      "end": 1540,
+      "digest": "sha256:2c5afd27ede86a83164ffbf6f57dbdb949d9daee309904a2af1507ea5ea446ca",
+      "note": "added in fc1fa3137297"
+    },
+    {
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
+      "path": "internal/server/appjs.go",
+      "start": 1566,
+      "end": 1578,
+      "digest": "sha256:447bcdd7aa3ca4146e7dea06934608ac15ab328252e64907bb7d65a2a967e5fc",
+      "note": "added in fc1fa3137297"
+    },
+    {
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
+      "path": "internal/server/appjs.go",
+      "start": 2353,
+      "end": 2358,
+      "digest": "sha256:a9b427dcacbaa19b7745a3493919447ae4adc8c5a6d21a3ba3c477d53013dee2",
+      "note": "added in fc1fa3137297"
+    },
+    {
+      "commit": "6ef4aee5677d128f62c6decaac63d616b0da12e7",
+      "path": "internal/server/appjs.go",
+      "start": 2095,
+      "end": 2095,
+      "digest": "sha256:b87c48f3b3d4d3cbb5af9d374df5d8e5344d6f5c0bbdf2948ba0030f8c78b6a9",
+      "note": "added in fc1fa3137297"
     }
   ]
 }

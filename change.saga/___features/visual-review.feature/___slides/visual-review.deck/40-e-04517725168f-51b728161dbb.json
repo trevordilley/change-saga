@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "aee01bf8c872e14dfba4303cfdda58e2a4044513",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "internal/server/reviews.go",
-      "start": 387,
-      "end": 455,
-      "digest": "sha256:b211517dd3284980c65baec6803baa972cefa18cdc57156dc64c47d660df82dd",
+      "start": 391,
+      "end": 465,
+      "digest": "sha256:4c7a0a5074b9d4e0e65076d432186aca68c5237052fa79d45be0b3210705c9ed",
       "note": "Review page composes slide visuals, Items, threads, decisions, and code context"
     }
   ]

@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "internal/diagram/note.go",
-      "start": 114,
-      "end": 185,
+      "start": 122,
+      "end": 193,
       "digest": "sha256:af68c71eaa022bf3a6d3bd063c74a8d215eefc1be8b9e926452307be06404e22"
     }
   ]

@@ -16,17 +16,17 @@
       "digest": "sha256:1b243b3c11e626891a9658f33c4c2fc2151c5b4815081356e5919275d8c3ca5f"
     },
     {
-      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "commit": "6ef4aee5677d128f62c6decaac63d616b0da12e7",
       "path": "skills/change-saga/references/diagrams.md",
-      "start": 174,
-      "end": 174,
+      "start": 179,
+      "end": 179,
       "digest": "sha256:115db61547eaca68f04d32cd87656530dd117c27d09a66347c31c5fa25f2fec1"
     },
     {
-      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "commit": "6ef4aee5677d128f62c6decaac63d616b0da12e7",
       "path": "skills/change-saga/references/diagrams.md",
-      "start": 226,
-      "end": 226,
+      "start": 237,
+      "end": 237,
       "digest": "sha256:b6ccf221c646a424c940c6d7933ad67e34d98a38ca746ab52061b4a1f67294d4"
     },
     {
@@ -51,17 +51,17 @@
       "digest": "sha256:e19ef1a690c93b65bc7f7ec5aaa3f295a4254274e14a4ec522563df4e61f0881"
     },
     {
-      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "skills/change-saga/references/diagrams.md",
-      "start": 187,
-      "end": 188,
+      "start": 192,
+      "end": 193,
       "digest": "sha256:ffe275b2f7c351e84f7197b2a623d054bb38c990daa18d595e18520d26f1dc24"
     },
     {
-      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "skills/change-saga/references/diagrams.md",
-      "start": 240,
-      "end": 242,
+      "start": 251,
+      "end": 253,
       "digest": "sha256:4cc60d21598618d8a5445bec97a25010f13fe8ef735a9db5375f1792b200647d"
     }
   ]

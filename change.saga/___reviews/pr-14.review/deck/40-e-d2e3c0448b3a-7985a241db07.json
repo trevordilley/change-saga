@@ -2,16 +2,16 @@
   "version": 2,
   "references": [
     {
-      "commit": "28d91cbfa7ff6b40001c949109d57783b98767cf",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "e2e/tests/diagram-notes.spec.ts",
-      "digest": "sha256:7d7798c80165dbf23cacc586bc81a8d4ae179f6b3c447599c1c4f58d7653a55d"
+      "digest": "sha256:37389e135daa9f0385150a64ef6f85bd19bdc77591fbcb53b4d493794a940ec3"
     },
     {
-      "commit": "28d91cbfa7ff6b40001c949109d57783b98767cf",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "e2e/tests/diagram-notes.spec.ts",
       "start": 1,
-      "end": 166,
-      "digest": "sha256:7d7798c80165dbf23cacc586bc81a8d4ae179f6b3c447599c1c4f58d7653a55d"
+      "end": 235,
+      "digest": "sha256:37389e135daa9f0385150a64ef6f85bd19bdc77591fbcb53b4d493794a940ec3"
     }
   ]
 }

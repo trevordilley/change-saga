@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-14",
   "slide": "note-popover",
-  "current": "sha256:55a895ca8fad3073f9ba4fd96f08deaaa1c566d21621204fe2b9df27df7b5d01",
+  "current": "sha256:288c6c828f611045c21365b72d00b75f4e868110f890d2cd0bc32424b5cfc970",
   "revisions": [
     {
       "snapshot": "sha256:55a895ca8fad3073f9ba4fd96f08deaaa1c566d21621204fe2b9df27df7b5d01",
@@ -139,6 +139,147 @@
       "diagram": {
         "source": "24-a-9c0b916dc8f684b68c32e1e83c0f8b78ed687814c60b658a4b3a.json",
         "source_digest": "sha256:9c0b916dc8f684b68c32e1e83c0f8b78ed687814c60b658a4b3acca05373fd42",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:288c6c828f611045c21365b72d00b75f4e868110f890d2cd0bc32424b5cfc970",
+      "parent_snapshots": [
+        "sha256:55a895ca8fad3073f9ba4fd96f08deaaa1c566d21621204fe2b9df27df7b5d01"
+      ],
+      "request_id": "note-popover-b7e3490e-edit",
+      "created_at": "2026-09-27T22:19:46.989573Z",
+      "asset": "24-a-11a92f8fc2a50aee107ffc2ed2f158fb17776a20c8a8650a5536.svg",
+      "asset_digest": "sha256:11a92f8fc2a50aee107ffc2ed2f158fb17776a20c8a8650a55368f8f87cd4c7a",
+      "slide": {
+        "version": 4,
+        "id": "note-popover",
+        "deck": "pr-14",
+        "title": "The popover lives on the page, not in the frame",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-11a92f8fc2a50aee107ffc2ed2f158fb17776a20c8a8650a5536.svg",
+        "takeaway": "The server renders each note into an inert template; the page script measures a copy of the SVG and shows one popover beside the hotspot.",
+        "reading_order": [
+          "loader",
+          "templates",
+          "script",
+          "previews",
+          "popover",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "loader",
+            "slide": "note-popover",
+            "rank": 10,
+            "kind": "node",
+            "label": "Notes come from the diagram source",
+            "description": "A projected slide now keeps its diagram pin, so both deck viewers read the source's notes and render each with the sanitizing Markdown helper.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "templates",
+            "slide": "note-popover",
+            "rank": 20,
+            "kind": "node",
+            "label": "Inert templates beside landmarks",
+            "description": "Each Item's landmark carries a popover template with its label, description, and note (an implementation callout adds its body; review slides list it under Surprises). Unselected noted elements get hidden note targets.",
+            "selector": {
+              "type": "element",
+              "element_id": "templates"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "script",
+            "slide": "note-popover",
+            "rank": 30,
+            "kind": "node",
+            "label": "Hotspots for noted elements",
+            "description": "Measures noted elements as it does Item elements, adds focusable note hotspots, and drives the popover on hover, focus, tap, Tab, and Escape; an implementation Item's code drawer heads its code with the note.",
+            "selector": {
+              "type": "element",
+              "element_id": "script"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "previews",
+            "slide": "note-popover",
+            "rank": 40,
+            "kind": "callout",
+            "label": "Every Item hotspot now previews",
+            "description": "Why existing decks change even without notes.",
+            "selector": {
+              "type": "element",
+              "element_id": "templates"
+            },
+            "about": "templates",
+            "body": "You might expect only noted elements to change; every Item hotspot now shows its label and description on hover, so existing decks gain previews too."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "popover",
+            "slide": "note-popover",
+            "rank": 50,
+            "kind": "node",
+            "label": "One popover that never blocks",
+            "description": "One fixed popover, on the first side of the hotspot that covers no other hotspot. Opened by hover it lets the pointer through; a tap, click, or keyboard focus pins it for its links.",
+            "selector": {
+              "type": "element",
+              "element_id": "popover"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "note-popover",
+            "rank": 60,
+            "kind": "statement",
+            "label": "Server and browser tests",
+            "description": "A tampered source reaches the page only sanitized. The browser test hovers, tabs through a note's links, taps, dismisses, clicks an Item beneath a note, and reads a note in an implementation code drawer.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-552ce6823b973cee88f212d7b8901d6a797f9511dbac061a78c7.json",
+        "source_digest": "sha256:552ce6823b973cee88f212d7b8901d6a797f9511dbac061a78c7d8efc5bbb203",
         "renderer": "change-saga-diagram/1"
       }
     }

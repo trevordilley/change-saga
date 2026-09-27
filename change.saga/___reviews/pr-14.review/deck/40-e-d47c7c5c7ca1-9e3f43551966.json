@@ -2,16 +2,16 @@
   "version": 2,
   "references": [
     {
-      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "internal/diagram/note_test.go",
-      "digest": "sha256:5c218f10d1294e09254f94f590327434969a7338b04069d94528ebec70d327b8"
+      "digest": "sha256:a521dc94865d1bf884886430f6f7361ddd93a994b0224ee546e756a99c2f9060"
     },
     {
-      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
       "path": "internal/diagram/note_test.go",
       "start": 1,
-      "end": 183,
-      "digest": "sha256:5c218f10d1294e09254f94f590327434969a7338b04069d94528ebec70d327b8"
+      "end": 186,
+      "digest": "sha256:a521dc94865d1bf884886430f6f7361ddd93a994b0224ee546e756a99c2f9060"
     }
   ]
 }
