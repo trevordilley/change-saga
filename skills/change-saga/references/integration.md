@@ -34,8 +34,9 @@ Start from the signal. The text report (and `summary` in `--json`, alone with
 `--json --summary`) leads with "Your change made N references stale": one line
 per reference with owner, old range, and proposed range. `status --against`,
 `review list`, and `review create` say the same. Stale means stale at HEAD
-and either current at the merge-base or pinned during the change; debt that
-was already stale is a count, listed only with `--all`.
+and either current at the merge-base or pinned during the change (deleted-side
+evidence of removed lines is counted apart); debt that was already stale is a
+count, listed only with `--all`.
 
 Repair each one cheaply but with judgment:
 

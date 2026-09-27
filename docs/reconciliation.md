@@ -38,8 +38,10 @@ Pre-existing stale references: 142 (stale before this change; their tasks: rerun
 
 A reference is made stale by the change when it is stale at the head and
 either current at the merge-base or pinned at a commit the merge-base does not
-contain. `status --against`, `review list`, and `review create` apply the same
-rule. In JSON, `summary.stale_by_change` holds the rows with their proposals
+contain. A reference pinned at the merge-base to lines the change removed is
+deleted-side evidence: it is current at the base by design, so it is counted
+as `deleted_side`, never as made stale. `status --against`, `review list`, and
+`review create` apply the same rule. In JSON, `summary.stale_by_change` holds the rows with their proposals
 and accept commands, and `summary.queue` counts the queue by kind;
 `reconcile --json --summary` emits only the summary. Debt that predates the
 change is a count; `--all` lists its tasks in the text report, and the full
