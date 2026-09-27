@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:119c9d19cd1486477be59f3f32d347c8405dc77d101a6e01cfec158f1dea3342",
+      "note": "The browser tests find an Item's code button by its added and deleted line counts."
+    },
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:5b1bc4dfdc5ae9fb94c511d65969042cd86dcd4bb964a9022980880359fc9470",
+      "note": "The browser tests find an Item's code button by its added and deleted line counts."
+    },
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 594,
+      "end": 594,
+      "digest": "sha256:6b816156a934ee8194da9c10b815dbfae28a249f00186f483f33243dc5469ee1",
+      "note": "The browser tests find an Item's code button by its added and deleted line counts."
+    },
+    {
+      "commit": "47d023c63288b145bac6c04d909b00d4e4727565",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:35d05f99dd37c374ca07aff13833f84861d887756828261097adfb8ed7f4c791",
+      "note": "The browser tests find an Item's code button by its added and deleted line counts."
+    },
+    {
+      "commit": "47d023c63288b145bac6c04d909b00d4e4727565",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:cd74462eb5f6a77fb63e1ac82b0ef81654fb31bf4e6ad49d30876dbc3ef67347",
+      "note": "The browser tests find an Item's code button by its added and deleted line counts."
+    },
+    {
+      "commit": "47d023c63288b145bac6c04d909b00d4e4727565",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 594,
+      "end": 594,
+      "digest": "sha256:783d958d2301b550dd2ee717e8fd0028c220ae0cd3462d05e8c7caaace3a248b",
+      "note": "The browser tests find an Item's code button by its added and deleted line counts."
+    }
+  ]
+}
