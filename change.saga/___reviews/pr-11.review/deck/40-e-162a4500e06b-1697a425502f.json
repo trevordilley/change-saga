@@ -10,11 +10,11 @@
       "note": "repin usage and help name --accept-proposed."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/cli.go",
       "start": 481,
       "end": 481,
-      "digest": "sha256:9f80c3baaf1a7d79d828f497425436ce761cacdd9f337f1eae7fe5d587b94625",
+      "digest": "sha256:1ca576d76f0cbad97fd34b0e8cf63a72ecd7523d6d7846195452647f0574d11b",
       "note": "repin usage and help name --accept-proposed."
     }
   ]

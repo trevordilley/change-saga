@@ -18,11 +18,11 @@
       "note": "Grammar: --from optional, --print-current added."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/grammar/commands.go",
       "start": 66,
       "end": 66,
-      "digest": "sha256:7a6a3b56daa5993a685c856df2f2ed47770d143a809622856c70cc5c78e7de24",
+      "digest": "sha256:f20385e32082c84e85b024d2f535a9b36a8ffe4a13e5ced83c7f1df65107c757",
       "note": "Grammar: --from optional, --print-current added."
     }
   ]

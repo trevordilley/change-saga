@@ -5,7 +5,7 @@
   "rank": 30,
   "kind": "node",
   "label": "apply-slide --print-current",
-  "description": "Prints a managed slide's complete current request, ready to edit and apply.",
+  "description": "Prints a managed slide's complete current request, ready to edit and apply; applied unchanged it publishes nothing, and an ID two decks share must be given as its target.",
   "selector": {
     "type": "element",
     "element_id": "print-current"

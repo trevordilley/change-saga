@@ -5,7 +5,7 @@
   "rank": 10,
   "kind": "node",
   "label": "Resolver.Propose",
-  "description": "Builds the proposal at the view with its reason and the small diff inside the range, or says why nothing is proposed.",
+  "description": "Builds the proposal at the view with its reason and the small diff inside the range between its nearest neighbouring hunks, or says why nothing is proposed, including when only braces or blank lines would anchor it.",
   "selector": {
     "type": "element",
     "element_id": "proposal"

@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/stale_repair.go",
-      "start": 157,
-      "end": 172,
+      "start": 164,
+      "end": 179,
       "digest": "sha256:b6eb5a500d508ff13fbc8c19cc50e5c3b9378965795b2b5fa5d1239d8f9fd68f",
       "note": "Scope, views and sides, refusals, and the accept report."
     },
     {
-      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/stale_repair.go",
-      "start": 227,
-      "end": 456,
-      "digest": "sha256:acf0dfd6b6110a662f69d0abee15b88027df92c298ec260efb335c1cffa9ff82",
+      "start": 234,
+      "end": 476,
+      "digest": "sha256:bf1f770fce3586602244e0ffe36aa10329a2f749caea5673724eb59c2d3801e3",
       "note": "Scope, views and sides, refusals, and the accept report."
     }
   ]

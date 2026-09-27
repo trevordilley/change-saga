@@ -8,6 +8,14 @@
       "end": 356,
       "digest": "sha256:7249cbcbed87287b34be3c4649a3f914f2790ed44ab0988bea30a809d7e4c6f0",
       "note": "The previous gap detail."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/reconciliation.go",
+      "start": 554,
+      "end": 565,
+      "digest": "sha256:1891bd95afbf46b4d79e40fbeddcb5cb2f152135d558d2dee783323e667c9867",
+      "note": "gapWhere rewords a documentation gap's detail, kept in its established JSON format, for the text report."
     }
   ]
 }

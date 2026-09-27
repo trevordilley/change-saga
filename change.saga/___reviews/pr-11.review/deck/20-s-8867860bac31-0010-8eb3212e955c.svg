@@ -10,10 +10,12 @@
     <text x="58" y="214" font-size="13" font-family="ui-monospace, monospace" fill="#1d2433">--record FILE [--reference N]</text>
     <text x="58" y="236" font-size="13" font-family="ui-monospace, monospace" fill="#1d2433">--target URN   --review ID   --all</text>
     <text x="58" y="258" font-size="15" fill="#1d2433">--head REV (a review Item uses its</text>
-    <text x="58" y="280" font-size="15" fill="#1d2433">range; old-side pins map to its base).</text>
-    <text x="58" y="302" font-size="15" fill="#1d2433">Refuses a reference with no proposal,</text>
-    <text x="58" y="324" font-size="15" fill="#1d2433">claims and quality evidence; terms</text>
-    <text x="58" y="346" font-size="15" fill="#1d2433">point at term revise. --dry-run shows diffs.</text>
+    <text x="58" y="280" font-size="15" fill="#1d2433">range; pins at or before its base map</text>
+    <text x="58" y="302" font-size="15" fill="#1d2433">there, the rest to its head). Refuses</text>
+    <text x="58" y="324" font-size="15" fill="#1d2433">no proposal, claims, quality evidence;</text>
+    <text x="58" y="346" font-size="15" fill="#1d2433">terms point at term revise. --all also</text>
+    <text x="58" y="368" font-size="15" fill="#1d2433">repairs other PRs' decks, skipping and</text>
+    <text x="58" y="390" font-size="15" fill="#1d2433">reporting one whose range cannot be read.</text>
   </g>
   <g id="write">
     <rect x="460" y="130" width="380" height="300" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
@@ -40,7 +42,8 @@
     <rect x="460" y="480" width="780" height="180" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>
     <text x="478" y="514" font-size="20" font-weight="700" fill="#7a4d05">apply-slide --print-current SLIDE</text>
     <text x="478" y="542" font-size="15" fill="#1d2433">Prints the slide&#x27;s complete current request with expected_snapshot and a fresh request_id,</text>
-    <text x="478" y="564" font-size="15" fill="#1d2433">ready to edit one field and apply. Round trip republishes unchanged (changed_ids: []).</text>
+    <text x="478" y="564" font-size="15" fill="#1d2433">ready to edit one field and apply. Applied unchanged it publishes nothing (unchanged: true).</text>
+    <text x="478" y="586" font-size="15" fill="#1d2433">An ID two decks share is ambiguous: the error names each slide's target to use instead.</text>
   </g>
   <g id="tests">
     <rect x="40" y="480" width="380" height="180" rx="14" fill="#ffffff" stroke="#6b7280" stroke-width="2"/>

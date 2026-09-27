@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/coderesolve/propose.go",
+      "start": 106,
+      "end": 146,
+      "digest": "sha256:2ae9302c146ea7992a680dfa94d2863d1875cd7a22b2a4a6c08714a6c3545075",
+      "note": "Nothing is proposed when the only lines an edit left in the range are braces, blank, or punctuation."
+    }
+  ]
+}

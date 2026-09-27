@@ -10,16 +10,19 @@
     <text x="58" y="214" font-size="15" fill="#1d2433">Whole-file references whose add, rename, mode or</text>
     <text x="58" y="236" font-size="15" fill="#1d2433">delete event is still in the range survive edits</text>
     <text x="58" y="258" font-size="15" fill="#1d2433">inside the file (a one-line gofmt no longer uncovers</text>
-    <text x="58" y="280" font-size="15" fill="#1d2433">256 lines).</text>
+    <text x="58" y="280" font-size="15" fill="#1d2433">256 lines). Each reference keeps its side: new-side</text>
+    <text x="58" y="302" font-size="15" fill="#1d2433">evidence stale at the head is never re-pinned to the</text>
+    <text x="58" y="324" font-size="15" fill="#1d2433">merge-base; it goes to judgment.</text>
   </g>
   <g id="added">
     <rect x="660" y="130" width="580" height="230" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
-    <text x="678" y="164" font-size="20" font-weight="700" fill="#1d3a7a">Added: new lines to the Item covering the file</text>
-    <text x="678" y="192" font-size="15" fill="#1d2433">Uncovered changed lines coalesce into runs per side;</text>
-    <text x="678" y="214" font-size="15" fill="#1d2433">a run goes to the one Item already holding that file,</text>
-    <text x="678" y="236" font-size="15" fill="#1d2433">as re-running cover --changed-lines for it would.</text>
-    <text x="678" y="258" font-size="15" fill="#1d2433">Several Items (or none) -&gt; reported, with candidates.</text>
-    <text x="678" y="280" font-size="15" fill="#1d2433">A whole-file reference never covers lines.</text>
+    <text x="678" y="164" font-size="20" font-weight="700" fill="#1d3a7a">New lines: reported, with a proposed owner</text>
+    <text x="678" y="192" font-size="15" fill="#1d2433">Coverage means someone linked each changed line to its</text>
+    <text x="678" y="214" font-size="15" fill="#1d2433">explanation, so no Item is extended silently. The one</text>
+    <text x="678" y="236" font-size="15" fill="#1d2433">Item already holding the file is the proposed owner;</text>
+    <text x="678" y="258" font-size="15" fill="#1d2433">--accept-proposed [--path P] gives it the lines under a</text>
+    <text x="678" y="280" font-size="15" fill="#1d2433">neutral "added in &lt;head&gt;" note unless --note says more.</text>
+    <text x="678" y="302" font-size="15" fill="#1d2433">Several Items (or none) -&gt; reported, with candidates.</text>
   </g>
   <g id="judgment">
     <rect x="40" y="410" width="580" height="250" rx="14" fill="#fdecec" stroke="#c53030" stroke-width="2"/>
@@ -33,11 +36,13 @@
   <g id="command">
     <rect x="660" y="410" width="580" height="250" rx="14" fill="#ffffff" stroke="#6b7280" stroke-width="2"/>
     <text x="678" y="444" font-size="20" font-weight="700" fill="#374151">review refresh-coverage --review ID</text>
-    <text x="678" y="472" font-size="15" fill="#1d2433">[--repo PATH] [--dry-run] [--json]. Plain records edit</text>
-    <text x="678" y="494" font-size="15" fill="#1d2433">in place; apply-slide slides take one transaction each.</text>
-    <text x="678" y="516" font-size="15" fill="#1d2433">JSON: moved, added, needs_judgment, uncovered.</text>
-    <text x="678" y="538" font-size="15" fill="#1d2433">Tested: a push that moves, edits, adds lines and a file;</text>
-    <text x="678" y="560" font-size="15" fill="#1d2433">then an added file edited again.</text>
+    <text x="678" y="472" font-size="15" fill="#1d2433">[--accept-proposed [--path P] [--note TEXT]] [--repo PATH]</text>
+    <text x="678" y="494" font-size="15" fill="#1d2433">[--dry-run] [--json]. Plain records edit in place;</text>
+    <text x="678" y="516" font-size="15" fill="#1d2433">apply-slide slides take one transaction each. JSON: moved,</text>
+    <text x="678" y="538" font-size="15" fill="#1d2433">added, needs_judgment, uncovered (proposed_owner, accept).</text>
+    <text x="678" y="560" font-size="15" fill="#1d2433">Tested: a push that moves, edits, adds lines and a file;</text>
+    <text x="678" y="582" font-size="15" fill="#1d2433">accepting per path and with a note; an added file edited</text>
+    <text x="678" y="604" font-size="15" fill="#1d2433">again; a new-side reference a later push edited.</text>
   </g>
   <line x1="620" y1="245" x2="656" y2="245" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
   <line x1="330" y1="360" x2="330" y2="406" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>

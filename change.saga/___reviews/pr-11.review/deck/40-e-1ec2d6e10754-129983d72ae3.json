@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/refresh_coverage.go",
       "start": 1,
-      "end": 31,
-      "digest": "sha256:25d31b44a8b5ff5ae3c4002fd47a54a970a977ca85717c150f40673d22befc99",
+      "end": 32,
+      "digest": "sha256:bfd21ef53300e6885c7b30116db03b7d087af5c3c0011ca106aba89f18710785",
       "note": "Moves and carried whole-file events."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/refresh_coverage.go",
-      "start": 123,
-      "end": 188,
-      "digest": "sha256:f0cf1a17b08573e8e196879ec511d89833913c925d81f48c466ab1da31ca94b3",
+      "start": 149,
+      "end": 219,
+      "digest": "sha256:3b7d7205dfc1a1319e64dcddf18c663626e26ce851db0370f56e0e312de73c38",
       "note": "Moves and carried whole-file events."
     }
   ]

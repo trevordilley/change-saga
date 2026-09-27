@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "CHANGELOG.md",
       "start": 3,
-      "end": 30,
-      "digest": "sha256:9b5f70569169698ac6322cbe1de176cf07ca4ff04ffaa19169d29b7b6b1d9dcb",
+      "end": 36,
+      "digest": "sha256:b8e5ee809641895c3165c6630b58af8bafd821b5fb7a3d1f5da990769f35fd21",
       "note": "The changelog entry."
     }
   ]

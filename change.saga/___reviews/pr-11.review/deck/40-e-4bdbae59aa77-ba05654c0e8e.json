@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/stale_repair.go",
-      "start": 616,
-      "end": 697,
+      "start": 655,
+      "end": 736,
       "digest": "sha256:702ebdffa6140c93bd2e2d693dd190a55c24b4ae4325917b9c2603658b07bbe3",
       "note": "currentSlideRequest rebuilds the complete current request."
     }

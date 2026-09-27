@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair_test.go",
+      "start": 231,
+      "end": 266,
+      "digest": "sha256:a0b6f88320cd8b33a72e46e56526e3cbd0de1941b5f717e08260ee618f1307c2",
+      "note": "A companion Saga's documentation of lines the change deleted, pinned at the merge-base, is made stale by the change, not deleted-side."
+    }
+  ]
+}

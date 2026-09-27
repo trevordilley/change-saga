@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/coderesolve/propose.go",
       "start": 1,
-      "end": 84,
-      "digest": "sha256:97aa8ea5979c0a4407b73cd660bdc9281d48851d42ccdbfbf6c626c65aeb64f5",
+      "end": 105,
+      "digest": "sha256:850c187bc5af1ed65736bd0f7055dd2b9a880593f30c07beb98360d5c04ee2c3",
       "note": "Proposal, Propose and the capped diff inside the range."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/coderesolve/propose.go",
-      "start": 184,
-      "end": 220,
-      "digest": "sha256:79018d2e6ffc14dd9e2f6d09e9b618039f98a5183d83ac65e5a258b0e677c338",
+      "start": 267,
+      "end": 326,
+      "digest": "sha256:32dfe51f9fae2017335cc54f02bfe278dba79fa255ed9d867aa31590b6d45297",
       "note": "Proposal, Propose and the capped diff inside the range."
     }
   ]

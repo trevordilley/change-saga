@@ -8,21 +8,24 @@
     <text x="58" y="164" font-size="20" font-weight="700" fill="#1d3a7a">ProposeRange: start and end through the hunks</text>
     <text x="58" y="192" font-size="15" fill="#1d2433">Unchanged boundary line: shifts by the hunks before it.</text>
     <text x="58" y="214" font-size="15" fill="#1d2433">Boundary line a hunk changed: maps to that hunk&#x27;s</text>
-    <text x="58" y="236" font-size="15" fill="#1d2433">edge on the new side (widened when it crosses).</text>
-    <text x="58" y="258" font-size="15" fill="#1d2433">Lines inserted inside the range are taken in.</text>
-    <text x="58" y="280" font-size="15" fill="#1d2433">Refuses: every line removed, or a rewrite that leaves</text>
-    <text x="58" y="302" font-size="15" fill="#1d2433">no original line and crosses the range edge.</text>
-    <text x="58" y="324" font-size="13" font-family="ui-monospace, monospace" fill="#1d2433">L220-L257  -&gt;  L238-L280   (+5 lines inside)</text>
+    <text x="58" y="236" font-size="15" fill="#1d2433">edge on the new side. Lines inserted inside are taken</text>
+    <text x="58" y="258" font-size="15" fill="#1d2433">in; widened whenever it takes in lines the range lacked.</text>
+    <text x="58" y="280" font-size="15" fill="#1d2433">Refuses: every line removed, a rewrite that leaves no</text>
+    <text x="58" y="302" font-size="15" fill="#1d2433">original line and crosses the edge, or only braces,</text>
+    <text x="58" y="324" font-size="15" fill="#1d2433">blank or punctuation lines left to anchor it.</text>
+    <text x="58" y="350" font-size="13" font-family="ui-monospace, monospace" fill="#1d2433">L220-L257  -&gt;  L238-L280 (widened: +5 lines inside)</text>
   </g>
   <g id="proposal">
     <rect x="660" y="130" width="580" height="270" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
     <text x="678" y="164" font-size="20" font-weight="700" fill="#1f5c34">Resolver.Propose: the proposal and its diff</text>
     <text x="678" y="192" font-size="15" fill="#1d2433">Location at the view, widened flag, reason, and the</text>
-    <text x="678" y="214" font-size="15" fill="#1d2433">zero-context -old/+new diff inside the range (capped).</text>
-    <text x="678" y="236" font-size="15" fill="#1d2433">Nothing proposed: deleted file (content may have moved),</text>
-    <text x="678" y="258" font-size="15" fill="#1d2433">binary, unreadable pin, or a mismatched digest.</text>
-    <text x="678" y="280" font-size="15" fill="#1d2433">A whole-file reference proposes the same file, after</text>
-    <text x="678" y="302" font-size="15" fill="#1d2433">any rename, at the view.</text>
+    <text x="678" y="214" font-size="15" fill="#1d2433">zero-context -old/+new diff inside the range (capped),</text>
+    <text x="678" y="236" font-size="15" fill="#1d2433">between the nearest hunk just before and just after it,</text>
+    <text x="678" y="258" font-size="15" fill="#1d2433">so an extracted helper or a move shows beside it.</text>
+    <text x="678" y="280" font-size="15" fill="#1d2433">Nothing proposed: deleted file (content may have moved),</text>
+    <text x="678" y="302" font-size="15" fill="#1d2433">binary, unreadable pin, or a mismatched digest.</text>
+    <text x="678" y="324" font-size="15" fill="#1d2433">A whole-file reference proposes the same file, after</text>
+    <text x="678" y="346" font-size="15" fill="#1d2433">any rename, at the view.</text>
   </g>
   <g id="surfaced">
     <rect x="40" y="450" width="1200" height="210" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>

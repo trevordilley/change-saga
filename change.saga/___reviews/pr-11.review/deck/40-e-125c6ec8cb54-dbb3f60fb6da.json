@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/stale_repair.go",
-      "start": 144,
-      "end": 156,
+      "start": 151,
+      "end": 163,
       "digest": "sha256:e627a225db356753ed5272ac9ffe3b1de5d77275569f0470590afb4bf6253d72",
       "note": "Reports that carry the signal among much else drop the per-row diffs."
     }

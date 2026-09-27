@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/stale_repair_test.go",
-      "start": 137,
-      "end": 170,
+      "start": 165,
+      "end": 198,
       "digest": "sha256:1f7d806d55be28922094a3e2a1b3c76cec0c08b91e5ab783a7c59f1742224c80",
       "note": "review create and list report the change's stale references."
     }

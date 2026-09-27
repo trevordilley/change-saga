@@ -4,8 +4,8 @@
   "slide": "refresh",
   "rank": 10,
   "kind": "node",
-  "label": "Added",
-  "description": "Gives newly changed lines to the one Item already covering their file, or reports them with candidates.",
+  "label": "New lines",
+  "description": "Reports newly changed lines uncovered, with the one Item already covering their file as the proposed owner; only --accept-proposed gives them to it, under a neutral note unless --note says more.",
   "selector": {
     "type": "element",
     "element_id": "added"

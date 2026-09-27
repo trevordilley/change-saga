@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/stale_repair.go",
-      "start": 746,
-      "end": 764,
-      "digest": "sha256:94bc8b5fee2500b74404640033a95685a5b3f6b1916777aa14e966382052a08e",
+      "start": 839,
+      "end": 854,
+      "digest": "sha256:92e0c015584ab13100cfe808bc2693eac5ed397adc4d350fca43e45d402af0b0",
       "note": "Stale review Item references with proposals at their side."
     }
   ]

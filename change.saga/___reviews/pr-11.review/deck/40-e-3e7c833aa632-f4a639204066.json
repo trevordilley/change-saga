@@ -66,59 +66,59 @@
       "note": "Summary, proposals, accept repairs, compact text and --summary/--all."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/reconciliation.go",
       "start": 194,
-      "end": 229,
-      "digest": "sha256:4f66f6cafd1c127ac3e9f7e4e2c33a1759c2c21e0ba43d3ebc433bd2e982f2d4",
+      "end": 225,
+      "digest": "sha256:920e9da7244b4edb64e68647989eef98ea5cca7653d63e384db5f8813201050f",
       "note": "Summary, proposals, accept repairs, compact text and --summary/--all."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/reconciliation.go",
-      "start": 421,
-      "end": 422,
+      "start": 417,
+      "end": 418,
       "digest": "sha256:615ee925af27acebd2428df4e064238fb302ac541027fa804b82c7604dadbaec",
       "note": "Summary, proposals, accept repairs, compact text and --summary/--all."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/reconciliation.go",
-      "start": 445,
-      "end": 448,
+      "start": 441,
+      "end": 444,
       "digest": "sha256:603a259b5eb782f64204f0e51313308dc8fda0c6f43f20409c755afc45d37eb5",
       "note": "Summary, proposals, accept repairs, compact text and --summary/--all."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/reconciliation.go",
-      "start": 453,
-      "end": 456,
+      "start": 449,
+      "end": 452,
       "digest": "sha256:025687236922421ec7ad77022bfa3056d32cff380e46dad6262e03ea7e358a9f",
       "note": "Summary, proposals, accept repairs, compact text and --summary/--all."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/reconciliation.go",
-      "start": 467,
-      "end": 470,
-      "digest": "sha256:80a82f5fdcfaa7da8ee5bba5e4a6cf4acd18215d1bb9e1bf8c4557964813fbd3",
+      "start": 463,
+      "end": 464,
+      "digest": "sha256:d499df4ba21d07f333d2f4916fb6e60f367fa453cb4daec220a814927a815e61",
       "note": "Summary, proposals, accept repairs, compact text and --summary/--all."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/reconciliation.go",
-      "start": 472,
-      "end": 472,
-      "digest": "sha256:f947555873ffb2609700e5b21e9e5c8a3231d1b3117bcd1c3938933fd224e613",
+      "start": 466,
+      "end": 466,
+      "digest": "sha256:7249cbcbed87287b34be3c4649a3f914f2790ed44ab0988bea30a809d7e4c6f0",
       "note": "Summary, proposals, accept repairs, compact text and --summary/--all."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/reconciliation.go",
-      "start": 530,
-      "end": 546,
-      "digest": "sha256:9446bd47e9099be0ad2b18ef8dbe344ecf5120b4be8c847f5e34a213f4221481",
+      "start": 524,
+      "end": 540,
+      "digest": "sha256:a9c31a2189015e3bdfeecd61e1bd500f8253ed83321f0dd065691dec35c0aab1",
       "note": "Summary, proposals, accept repairs, compact text and --summary/--all."
     }
   ]

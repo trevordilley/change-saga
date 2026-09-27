@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "skills/change-saga/references/diagrams.md",
       "start": 134,
-      "end": 137,
-      "digest": "sha256:0ef82051bd4fdd7d4ab5c1d2b59a706001b96d0c2501a3f8e373507c4fcb85d6",
+      "end": 139,
+      "digest": "sha256:6aa54ca2729569068a97b52fba24edd5ad81535b3cdbc6977dd42fb0a7e87e89",
       "note": "Evidence discipline and --print-current."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "skills/change-saga/references/diagrams.md",
-      "start": 231,
-      "end": 237,
-      "digest": "sha256:3b7e56e2c588ad3cea62806d39e67cecf972b98e5a94028429093a724efea2ab",
+      "start": 233,
+      "end": 240,
+      "digest": "sha256:59bf165c515f4c61ec5b92b2b0eca157a1e835ef83d4b47c8f22883bb1547846",
       "note": "Evidence discipline and --print-current."
     }
   ]

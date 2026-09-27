@@ -8,10 +8,11 @@
     <text x="58" y="164" font-size="20" font-weight="700" fill="#1d3a7a">One rule, everywhere</text>
     <text x="58" y="192" font-size="15" fill="#1d2433">Stale at the head AND (current at the merge-base</text>
     <text x="58" y="214" font-size="15" fill="#1d2433">OR pinned at a commit the base lacks).</text>
-    <text x="58" y="236" font-size="15" fill="#1d2433">Deleted-side evidence (pinned at the base to removed</text>
-    <text x="58" y="258" font-size="15" fill="#1d2433">lines) is counted apart: nothing to repair.</text>
-    <text x="58" y="280" font-size="15" fill="#1d2433">Counts evidence, claims, terms, quality evidence and</text>
-    <text x="58" y="302" font-size="15" fill="#1d2433">technical definitions&#x27; references.</text>
+    <text x="58" y="236" font-size="15" fill="#1d2433">Deleted-side evidence written during the change (pinned</text>
+    <text x="58" y="258" font-size="15" fill="#1d2433">at the base to removed lines) is counted apart; docs</text>
+    <text x="58" y="280" font-size="15" fill="#1d2433">that already described deleted lines are a regression.</text>
+    <text x="58" y="302" font-size="15" fill="#1d2433">Counts evidence, claims, terms, quality evidence and</text>
+    <text x="58" y="324" font-size="15" fill="#1d2433">technical definitions&#x27; references.</text>
   </g>
   <g id="reconcile">
     <rect x="660" y="130" width="580" height="250" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>

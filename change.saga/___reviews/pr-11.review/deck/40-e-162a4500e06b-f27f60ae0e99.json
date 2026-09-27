@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
       "path": "internal/cli/references.go",
       "start": 291,
       "end": 296,
-      "digest": "sha256:b3bdbdf4f1ae683e211beb4a5512400ebad932d129fd9d0ff4762b3bd17fc4fc",
+      "digest": "sha256:01b2cc17ac6ab780fd5c5f31447964e7c18a6d37d4b558e81ea291d276eca466",
       "note": "repin parses --accept-proposed and exactly one scope."
     },
     {
