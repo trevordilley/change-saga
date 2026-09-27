@@ -294,16 +294,24 @@ func planRefresh(ctx context.Context, resolver *coderesolve.Resolver, review *sa
 
 func printRefresh(out io.Writer, result refreshOutput, root string) {
 	verb := map[bool]string{true: "Would refresh", false: "Refreshed"}[result.DryRun]
-	fmt.Fprintf(out, "%s review %s's coverage over %s..%s\n", verb, result.Review, shortOID(result.BaseOID), shortOID(result.HeadOID))
-	fmt.Fprintf(out, "Moved %d %s (no judgment needed):\n", len(result.Moved), plural(len(result.Moved), "reference", "references"))
+	fmt.Fprintf(out, "%s review %s's coverage over %s..%s: %d moved, %d added, %d %s judgment, %d %s uncovered\n", verb, result.Review, shortOID(result.BaseOID), shortOID(result.HeadOID),
+		len(result.Moved), len(result.Added), len(result.NeedsJudgment), plural(len(result.NeedsJudgment), "needs", "need"), len(result.Uncovered), plural(len(result.Uncovered), "file", "files"))
+	// Only what happened is listed; an empty section says nothing.
+	if len(result.Moved) > 0 {
+		fmt.Fprintln(out, "Moved (no judgment needed):")
+	}
 	for _, move := range result.Moved {
 		fmt.Fprintf(out, "  %s #%d %s -> %s: %s\n", move.EvidenceFile, move.Reference, shortLocation(move.From), shortLocation(move.To), move.Why)
 	}
-	fmt.Fprintf(out, "Added %d newly changed %s to the Item already covering the file:\n", len(result.Added), plural(len(result.Added), "range", "ranges"))
+	if len(result.Added) > 0 {
+		fmt.Fprintln(out, "Added to the Item already covering the file:")
+	}
 	for _, added := range result.Added {
 		fmt.Fprintf(out, "  %s  %s\n", added.Item, shortLocation(added.Location))
 	}
-	fmt.Fprintf(out, "Needs judgment: %d stale %s (an edit landed inside; read the diff):\n", len(result.NeedsJudgment), plural(len(result.NeedsJudgment), "reference", "references"))
+	if len(result.NeedsJudgment) > 0 {
+		fmt.Fprintln(out, "Needs judgment (an edit landed inside; read the diff):")
+	}
 	for _, row := range result.NeedsJudgment {
 		fmt.Fprintf(out, "  %s #%d %s\n", row.EvidenceFile, row.Index, describeProposal(row.Pinned, row.Proposal))
 		for _, line := range row.Proposal.Diff {
@@ -313,7 +321,9 @@ func printRefresh(out io.Writer, result refreshOutput, root string) {
 			fmt.Fprintf(out, "    accept if the explanation still holds: %s\n", shellJoin(row.Accept.Argv))
 		}
 	}
-	fmt.Fprintf(out, "Uncovered: %d %s left for you:\n", len(result.Uncovered), plural(len(result.Uncovered), "file", "files"))
+	if len(result.Uncovered) > 0 {
+		fmt.Fprintln(out, "Uncovered, left for you:")
+	}
 	for _, gap := range result.Uncovered {
 		fmt.Fprintf(out, "  %s: %s (%s)\n", gap.Path, strings.Join(gap.Locations, " "), gap.Reason)
 		for _, candidate := range gap.Candidates {
