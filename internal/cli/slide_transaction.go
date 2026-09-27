@@ -177,6 +177,13 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		revision.Diagram = &saga.DiagramSource{Source: sourceName, SourceDigest: coderef.DigestBytes(source), Renderer: diagram.Renderer}
 	}
 	reviewID := transactionReview(request)
+	if reviewID == "" && request.Deck != "" && !strings.HasPrefix(request.Deck, "urn:") {
+		// A review's deck id defaults to its review id; name the review
+		// before evidence checks that only implementation decks need.
+		if info, statErr := os.Stat(filepath.Join(saga.ReviewDir(root, request.Deck), saga.ReviewDeckDir)); statErr == nil && info.IsDir() && !appDeckExists(root, request.Deck) {
+			return SlideTransactionResult{}, fmt.Errorf("deck %q is a pull request review's deck; set \"review\": %q or pass --review %s", request.Deck, request.Deck, request.Deck)
+		}
+	}
 	if reviewID != "" {
 		if err := refuseReviewItemEvidence(revision.Items); err != nil {
 			return SlideTransactionResult{}, err
@@ -457,6 +464,11 @@ func buildSlideTransactionRevision(request SlideTransactionRequest, assetName, a
 		revision.Items = append(revision.Items, saga.TransactionItem{Item: item, Evidence: append([]saga.CodeFile{}, input.Evidence...), CriterionLinks: append([]saga.CriterionLink{}, input.CriterionLinks...)})
 	}
 	return revision
+}
+
+func appDeckExists(root, id string) bool {
+	document, _, err := saga.Load(root)
+	return err == nil && findDeck(document, id) != nil
 }
 
 // transactionReview is the review whose deck request addresses, by its

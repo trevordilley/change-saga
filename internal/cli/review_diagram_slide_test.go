@@ -170,6 +170,7 @@ func TestApplySlideGuardsReviewSlides(t *testing.T) {
 			r.Items, r.Slide.ReadingOrder = r.Items[:1], []string{"queue"}
 		},
 		"is not review pr-7's deck": func(r *SlideTransactionRequest) { r.Deck = "implementation" },
+		"is a pull request review's deck; set \"review\"": func(r *SlideTransactionRequest) { r.Review, r.Deck = "", "pr-7" },
 	}
 	for want, mutate := range refused {
 		request := reviewSlideRequest("flow-refused", "update", created.Snapshot, reviewDiagram())
