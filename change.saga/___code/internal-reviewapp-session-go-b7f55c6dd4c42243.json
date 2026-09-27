@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "0f51465d2a1c3899b0db04cf173e39fb5d116724",
+      "path": "internal/reviewapp/session.go",
+      "start": 85,
+      "end": 192,
+      "digest": "sha256:e59a780e2c6c86ebea1339fda1889b43668dc246573a71159a74492e9bef469c"
+    }
+  ]
+}
