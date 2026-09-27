@@ -10,11 +10,11 @@
       "note": "The command, its JSON and its text report."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "ec95e503257151010e475c3cab537992a5af05e5",
       "path": "internal/cli/refresh_coverage.go",
       "start": 295,
-      "end": 328,
-      "digest": "sha256:157632b36076377c082ed8e1b8528e130b12b1147de5be095ac1d5bbac72854a",
+      "end": 338,
+      "digest": "sha256:6024a58712891e5716d93d5827f42c99395a12a4b2f4ae4f9a08fa4c0d952c3f",
       "note": "The command, its JSON and its text report."
     }
   ]

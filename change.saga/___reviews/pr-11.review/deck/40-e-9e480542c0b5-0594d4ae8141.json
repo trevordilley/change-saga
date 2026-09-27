@@ -2,9 +2,9 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "ec95e503257151010e475c3cab537992a5af05e5",
       "path": "internal/cli/refresh_coverage.go",
-      "digest": "sha256:706a331ea3bf6769100409af32f1b3bd13aa9b6c72995dd4ed42385094ab36b4",
+      "digest": "sha256:8501888e1bb8ea203691faab8ed7f222148f8e885e709d1c9fa84b3926474b54",
       "note": "New file: review refresh-coverage."
     }
   ]
