@@ -1,0 +1,77 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:4ef042a07b7a9ca7ade41784d7db0898505abe7332a1f6598d76e7e12ac37805",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:5b80b1e05245fd8443eb3be67c19f02cc3a3f0934b2bf42e1be6e86899792957",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 112,
+      "end": 116,
+      "digest": "sha256:9cb449adc5a314039501b9c880a99e0bca11ad3cf00e5d86c9926beea5c38853",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 126,
+      "end": 128,
+      "digest": "sha256:d7d750f794cb13a89d07b2719b667e2952cf8222356897078912dde69e346330",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:ac46bed086cace616796eb7b838ac4c3cd19b41f76f859d9808f364d1de198de",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 99,
+      "end": 100,
+      "digest": "sha256:a5c5a1b4f2ed3872911f7040e1abb3e6521df0814fbb1b846d5de8da6dffa973",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 113,
+      "end": 118,
+      "digest": "sha256:ca3105f72636f5b47db6345e3f6372786626f7fe5788fd394e4f31055b8f44e7",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 128,
+      "end": 131,
+      "digest": "sha256:56b0d2a484c847dd6deb545a755e95ebef9f62b38d143bf3f78b4adda8a2ede1",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 140,
+      "end": 188,
+      "digest": "sha256:40ac51ab05e76974f16d711a79f3a3536a90997ce21a7e8687fb5db5752c979b",
+      "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
+    }
+  ]
+}

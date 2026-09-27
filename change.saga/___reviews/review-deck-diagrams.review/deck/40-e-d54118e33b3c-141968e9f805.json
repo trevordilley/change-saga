@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "docs/ergonomics-transaction-authoring.md",
+      "start": 3,
+      "end": 5,
+      "digest": "sha256:675f2c6934bbca7694228a790cade90ec95cad811df2001180e9c1e2d71de7a7",
+      "note": "The transaction doc names review slides and their evidence-free Items"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "docs/ergonomics-transaction-authoring.md",
+      "start": 3,
+      "end": 6,
+      "digest": "sha256:0a5fcecf865a2c3feaa48b9e73d59564b56b85d5df6715a49c6333680d064066",
+      "note": "The transaction doc names review slides and their evidence-free Items"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "docs/ergonomics-transaction-authoring.md",
+      "start": 36,
+      "end": 39,
+      "digest": "sha256:88ab9394486fc16f044270c4bbb0827356ca0db9d66f1bfffb1f75b7dca1d2ad",
+      "note": "The transaction doc names review slides and their evidence-free Items"
+    }
+  ]
+}

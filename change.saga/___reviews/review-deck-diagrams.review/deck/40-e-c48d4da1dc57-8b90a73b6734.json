@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/review_defaults_test.go",
+      "start": 21,
+      "end": 24,
+      "digest": "sha256:2bd5cba90065c381bc44a8f4f98f5084b59c6c09bf1be94dd836ef23de3e1d05",
+      "note": "review create's Next hint must lead to apply-slide --review"
+    }
+  ]
+}

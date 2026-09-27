@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/cli.go",
+      "start": 246,
+      "end": 248,
+      "digest": "sha256:37609f4f13fa01777ef0c95648092628e5dfaf27ec43603d7cc31645300e7acd",
+      "note": "Top-level help, review create's help, and init's first steps name apply-slide --review"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/cli.go",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:04c1285faf00d13623f608925543dc362051380bd104afa82bcd0f17498c7667",
+      "note": "Top-level help, review create's help, and init's first steps name apply-slide --review"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/cli.go",
+      "start": 614,
+      "end": 614,
+      "digest": "sha256:f0f8c82d3748c305aeadee843de3e7b7079284c1bccc301a26c9ad8e94fab7cb",
+      "note": "Top-level help, review create's help, and init's first steps name apply-slide --review"
+    }
+  ]
+}

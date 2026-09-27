@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/review_diagram_slide_test.go",
+      "digest": "sha256:553b7d4824f334e418c2337517d206f9e5475047bd1b70d61a3cf5bc1dc983b2",
+      "note": "The review slide tests: publish, retry, cover, edit, describe, get, query, and check a diagram review slide; every guard; migration; and coverage identical for apply-slide and add-item review Items"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/review_diagram_slide_test.go",
+      "start": 1,
+      "end": 307,
+      "digest": "sha256:553b7d4824f334e418c2337517d206f9e5475047bd1b70d61a3cf5bc1dc983b2",
+      "note": "The review slide tests: publish, retry, cover, edit, describe, get, query, and check a diagram review slide; every guard; migration; and coverage identical for apply-slide and add-item review Items"
+    }
+  ]
+}

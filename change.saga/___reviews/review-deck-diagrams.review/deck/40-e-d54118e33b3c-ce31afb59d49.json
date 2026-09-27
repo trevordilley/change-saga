@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "SPEC.md",
+      "start": 479,
+      "end": 480,
+      "digest": "sha256:1dcd9a54b6cc5771da9a0ab70cfb6db9656c0cefe538db1d1fcec057304320a8",
+      "note": "SPEC: apply-slide publishes implementation or review slides through one transaction; review Items take their code from cover"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "SPEC.md",
+      "start": 479,
+      "end": 481,
+      "digest": "sha256:111c3f78e663eb3da337e8e6e2009f575fd22735bee23e683f06a771546699de",
+      "note": "SPEC: apply-slide publishes implementation or review slides through one transaction; review Items take their code from cover"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "SPEC.md",
+      "start": 517,
+      "end": 526,
+      "digest": "sha256:129ca052340e4628f4a44d023802f213db251d1d37777e230b798e0a5ae2af1e",
+      "note": "SPEC: apply-slide publishes implementation or review slides through one transaction; review Items take their code from cover"
+    }
+  ]
+}

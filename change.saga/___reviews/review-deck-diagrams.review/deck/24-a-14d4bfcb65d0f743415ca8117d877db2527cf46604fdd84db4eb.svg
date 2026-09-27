@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">Review-first entry points lead to apply-slide</title>
+  <desc id="diagram-desc">After #9 made the review the headline, every place that teaches it now authors slides with apply-slide --review and a diagram source.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-skill-to-apply" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#64748b"/>
+    </marker>
+    <marker id="diagram-head-cli-to-apply" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#64748b"/>
+    </marker>
+    <marker id="diagram-head-readme-to-apply" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#64748b"/>
+    </marker>
+    <marker id="diagram-head-tests-to-apply" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</metadata>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">Review-first entry points lead to apply-slide</tspan></text>
+  </g>
+  <g id="skill" data-diagram-kind="node" transform="translate(60 130)" role="group" aria-label="Skill fast path">
+    <rect width="380" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="52" y="40">Skill fast path</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">step 4: one request per slide</tspan></text>
+  </g>
+  <g id="cli" data-diagram-kind="node" transform="translate(60 305)" role="group" aria-label="review create, init, help">
+    <rect width="380" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 19h8"/>
+      <path d="m4 17 6-6-6-6"/>
+    </svg>
+    <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="52" y="40">review create, init, help</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">Next: apply-slide --review</tspan></text>
+  </g>
+  <g id="readme" data-diagram-kind="node" transform="translate(60 480)" role="group" aria-label="README and changelog">
+    <rect width="380" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+      <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+    </svg>
+    <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="52" y="40">README and changelog</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">commands and the example</tspan></text>
+  </g>
+  <g id="apply" data-diagram-kind="node" transform="translate(540 295)" role="group" aria-label="apply-slide --review">
+    <rect width="320" height="130" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">apply-slide --review</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">diagram source + Items</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="node" transform="translate(950 305)" role="group" aria-label="Tests pin the hints">
+    <rect width="270" height="110" rx="8" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <svg x="18" y="18" width="24" height="24" color="#526174" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6 9 17l-5-5"/>
+    </svg>
+    <text x="52" y="36" font-size="18" fill="#526174" xml:space="preserve"><tspan x="52" y="36">Tests pin the hints</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#526174" xml:space="preserve"><tspan x="18" y="73">skill, init, review create</tspan></text>
+  </g>
+  <g id="skill-to-apply" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="skill to apply" data-from="skill" data-to="apply">
+    <title>The skill's fast path publishes each slide with apply-slide --review.</title>
+    <path d="M440 185 L490 185 L490 335 L540 335" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-skill-to-apply)"/>
+  </g>
+  <g id="cli-to-apply" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="cli to apply" data-from="cli" data-to="apply">
+    <title>review create's Next hint, init, and help name apply-slide --review.</title>
+    <path d="M440 360 L540 360" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-cli-to-apply)"/>
+  </g>
+  <g id="readme-to-apply" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="readme to apply" data-from="readme" data-to="apply">
+    <title>The README's review commands publish a diagram-sourced slide and point at the reference's example.</title>
+    <path d="M440 535 L490 535 L490 385 L540 385" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-readme-to-apply)"/>
+  </g>
+  <g id="tests-to-apply" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="tests to apply" data-from="tests" data-to="apply">
+    <title>Tests assert every entry point names apply-slide --review.</title>
+    <path d="M950 360 L860 360" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-tests-to-apply)"/>
+  </g>
+  <g id="fallback" data-diagram-kind="text" transform="translate(80 630)" role="group" aria-label="Hand-drawn SVG stays the exception: add-slide, set-slide-content, add-item --review.">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve"><tspan x="0" y="15">Hand-drawn SVG stays the exception: add-slide, set-slide-content, add-item --review.</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/skill_test.go",
+      "start": 504,
+      "end": 504,
+      "digest": "sha256:0041a584ff90046606dd6c83ec34437e89c3a08fe4bc0fe11f7acecd48336f96",
+      "note": "The fast path must name apply-slide --review and a diagram source"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/skill_test.go",
+      "start": 504,
+      "end": 504,
+      "digest": "sha256:458b528d98fc9b046f6f8662a1f1d2e115abfa2e569e40303d3d2f5c301d1b8d",
+      "note": "The fast path must name apply-slide --review and a diagram source"
+    }
+  ]
+}
