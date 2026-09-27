@@ -3,9 +3,12 @@
 ## Unreleased — cheap, judged repair of stale evidence
 
 - Stale references come with a proposed range: the pinned start and end mapped
-  through the diff hunks, widened over lines inserted inside, with the small
-  diff inside the range. Nothing is proposed for a deleted file, a binary
-  file, or a range rewritten together with code outside it. `references
+  through the diff hunks, widened over lines inserted inside (flagged
+  `widened` whenever it takes in lines the range did not have), with the
+  small diff inside the range and the nearest hunk on each side. Nothing is
+  proposed for a deleted file, a binary file, a range rewritten together with
+  code outside it, or one whose only surviving lines are braces, blank, or
+  punctuation. `references
   --stale`, `reconcile`, `status --against`, `review list`, and
   `review refresh-coverage` show it.
 - `repin --accept-proposed` accepts proposals explicitly, per reference

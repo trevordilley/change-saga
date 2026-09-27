@@ -230,11 +230,12 @@ line movement may remap them; changed bytes make them stale. Repair or remove
 stale evidence through its public command while retaining its history.
 `references --stale`, `reconcile`, `review list`, and `review refresh-coverage`
 show each stale reference's proposed range (its start and end mapped through
-the diff, widened over lines inserted inside) with the diff inside it. After
-reading it, `repin --accept-proposed --record FILE [--reference N]` (or
-`--target URN`, `--review ID`) keeps the note and owner and pins the proposal,
-also on `apply-slide` slides. A reference with nothing proposed (deleted file,
-rewritten range) is refused: re-cover it by hand.
+the diff, widened over lines inserted inside) with the diff inside it and the
+nearest hunk on each side. After reading it, `repin --accept-proposed --record
+FILE [--reference N]` (or `--target URN`, `--review ID`) keeps the note and
+owner and pins the proposal, also on `apply-slide` slides. A reference with
+nothing proposed (deleted file, rewritten range, only braces or blank lines
+left) is refused: re-cover it by hand.
 
 - Attach code to the narrowest Item or landmark that actually explains it.
 - Each reference note says both what changed and why this target owns it.

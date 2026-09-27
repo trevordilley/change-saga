@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"unicode"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -13,6 +14,10 @@ import (
 // large rewrite still reads as a hint rather than a patch.
 const maxProposalDiff = 40
 
+// maxAdjacentDiff bounds the lines shown of each hunk just outside the range,
+// so context never crowds out the hunks inside it.
+const maxAdjacentDiff = 8
+
 // Proposal is where a stale reference's lines are at a viewed commit by diff
 // arithmetic alone: the pinned start and end mapped through the hunks, widened
 // to take in every line a hunk inside the range inserted. It is a suggestion
@@ -21,12 +26,17 @@ const maxProposalDiff = 40
 // why; otherwise Reason says what the arithmetic did.
 type Proposal struct {
 	Location *coderef.Location `json:"location,omitempty"`
-	// Widened is set when a hunk crossed a boundary of the range, so the
-	// proposal takes in lines outside the original range.
+	// Widened is set when the proposal takes in lines the original range did
+	// not have: lines a hunk inserted inside it, a replacement longer than
+	// what it replaced, or code a hunk crossing its edge rewrote. A pure move,
+	// a removal, or a replacement no longer than the original leaves it unset.
 	Widened bool   `json:"widened,omitempty"`
 	Reason  string `json:"reason"`
 	// Diff is the zero-context diff of the hunks inside the range: -old and
-	// +new lines under each hunk header, capped at maxProposalDiff lines.
+	// +new lines under each hunk header, capped at maxProposalDiff lines. The
+	// nearest hunk on each side outside the range comes first and last, its
+	// header marked "(just before the range)" or "(just after the range)",
+	// so code extracted or moved next to the range shows beside it.
 	Diff []string `json:"diff,omitempty"`
 }
 
@@ -74,22 +84,76 @@ func (resolver *Resolver) Propose(ctx context.Context, reference coderef.Referen
 	if !mapped.OK {
 		return none("%s", mapped.Reason)
 	}
+	if len(mapped.Touched) > 0 {
+		// A lone brace that survived an edit anchors nothing: it may close
+		// whatever block now sits where the range was.
+		pinned, err := resolver.blob(ctx, reference.Commit, reference.Path)
+		if err != nil {
+			return none("%v", err)
+		}
+		if onlyTrivialSurvive(pinned.lines, mapped.Touched, reference.Start, reference.End) {
+			return none("only trivial lines (braces, blank, punctuation) of L%d-L%d survive, so nothing anchors a proposal; re-cover by hand", reference.Start, reference.End)
+		}
+	}
 	proposal := Proposal{
 		Location: &coderef.Location{Commit: view, Path: change.NewPath, Start: mapped.Start, End: mapped.End},
 		Widened:  mapped.Widened, Reason: mapped.Reason,
 	}
-	proposal.Diff = resolver.rangeDiff(ctx, reference, view, change, mapped.Touched)
+	proposal.Diff = resolver.rangeDiff(ctx, reference, view, change, mapped)
 	return proposal
 }
 
+// onlyTrivialSurvive reports whether some line of start..end no touched hunk
+// removed survives, and every such line is trivial.
+func onlyTrivialSurvive(lines [][]byte, touched []gitdiff.Hunk, start, end int) bool {
+	survived := false
+	line := start
+	// survive checks the lines from line through last, which no hunk removed.
+	survive := func(last int) bool {
+		for ; line <= last; line++ {
+			if line < 1 || line > len(lines) {
+				continue
+			}
+			if !trivial(lines[line-1]) {
+				return false
+			}
+			survived = true
+		}
+		return true
+	}
+	for _, hunk := range touched {
+		if hunk.OldCount == 0 {
+			continue
+		}
+		if !survive(min(hunk.OldStart-1, end)) {
+			return false
+		}
+		line = max(line, hunk.OldStart+hunk.OldCount)
+	}
+	return survive(end) && survived
+}
+
+// trivial reports whether line is blank or only braces, brackets,
+// parentheses, and other punctuation or symbols.
+func trivial(line []byte) bool {
+	for _, r := range string(bytes.TrimSpace(line)) {
+		if !unicode.IsPunct(r) && !unicode.IsSymbol(r) {
+			return false
+		}
+	}
+	return true
+}
+
 // RangeProposal is ProposeRange's answer. Touched lists the hunks inside or
-// across the range, in order.
+// across the range, in order. Before and After are the nearest hunks wholly
+// outside the range on each side, nil when there is none.
 type RangeProposal struct {
-	Start, End int
-	Widened    bool
-	OK         bool
-	Reason     string
-	Touched    []gitdiff.Hunk
+	Start, End    int
+	Widened       bool
+	OK            bool
+	Reason        string
+	Touched       []gitdiff.Hunk
+	Before, After *gitdiff.Hunk
 }
 
 // ProposeRange maps the inclusive range start..end across zero-context
@@ -98,13 +162,14 @@ type RangeProposal struct {
 // proposal takes in the hunk's replacement lines. It refuses when every line
 // of the range was removed, and when no line of the range survives and a hunk
 // crosses its edge, because nothing then anchors the range to lines on the new
-// side.
+// side. The proposal is widened when it takes in lines the range did not
+// have.
 func ProposeRange(hunks []gitdiff.Hunk, start, end int) RangeProposal {
 	result := RangeProposal{}
 	startShift, endShift := 0, 0
 	startHunk, endHunk := -1, -1
 	survivors := end - start + 1
-	crosses := false
+	crosses, grows := false, false
 	for index, hunk := range hunks {
 		if hunk.OldCount == 0 {
 			// A pure insertion after line OldStart.
@@ -114,8 +179,16 @@ func ProposeRange(hunks []gitdiff.Hunk, start, end int) RangeProposal {
 			if hunk.OldStart < end {
 				endShift += hunk.NewCount
 			}
-			if hunk.OldStart >= start && hunk.OldStart < end {
+			switch {
+			case hunk.OldStart < start:
+				result.Before = &hunks[index]
+			case hunk.OldStart >= end:
+				if result.After == nil {
+					result.After = &hunks[index]
+				}
+			default:
 				result.Touched = append(result.Touched, hunk)
+				grows = grows || hunk.NewCount > 0
 			}
 			continue
 		}
@@ -127,10 +200,18 @@ func ProposeRange(hunks []gitdiff.Hunk, start, end int) RangeProposal {
 		if last < end {
 			endShift += delta
 		}
-		if last < start || hunk.OldStart > end {
+		if last < start {
+			result.Before = &hunks[index]
+			continue
+		}
+		if hunk.OldStart > end {
+			if result.After == nil {
+				result.After = &hunks[index]
+			}
 			continue
 		}
 		result.Touched = append(result.Touched, hunk)
+		grows = grows || hunk.NewCount > hunk.OldCount
 		survivors -= min(last, end) - max(hunk.OldStart, start) + 1
 		if hunk.OldStart <= start && start <= last {
 			startHunk = index
@@ -167,7 +248,7 @@ func ProposeRange(hunks []gitdiff.Hunk, start, end int) RangeProposal {
 		return RangeProposal{Reason: result.Reason}
 	}
 	result.OK = true
-	result.Widened = crosses
+	result.Widened = crosses || grows
 	switch {
 	case len(result.Touched) == 0:
 		result.Reason = "the lines only moved"
@@ -175,15 +256,18 @@ func ProposeRange(hunks []gitdiff.Hunk, start, end int) RangeProposal {
 		result.Reason = "every line of the range changed; proposed the lines that replaced it"
 	case crosses:
 		result.Reason = "an edit crosses the range's edge; widened to take in all of its lines"
-	default:
+	case grows:
 		result.Reason = "edits inside the range; widened to take in the lines they inserted"
+	default:
+		result.Reason = "edits inside the range only removed or replaced lines"
 	}
 	return result
 }
 
-// rangeDiff renders the touched hunks as -old and +new lines.
-func (resolver *Resolver) rangeDiff(ctx context.Context, reference coderef.Reference, view string, change gitdiff.FileChange, hunks []gitdiff.Hunk) []string {
-	if len(hunks) == 0 {
+// rangeDiff renders the touched hunks as -old and +new lines, between the
+// nearest hunks outside the range.
+func (resolver *Resolver) rangeDiff(ctx context.Context, reference coderef.Reference, view string, change gitdiff.FileChange, mapped RangeProposal) []string {
+	if len(mapped.Touched) == 0 {
 		return nil
 	}
 	oldBlob, oldErr := resolver.blob(ctx, reference.Commit, reference.Path)
@@ -199,18 +283,40 @@ func (resolver *Resolver) rangeDiff(ctx context.Context, reference coderef.Refer
 			lines = append(lines, line)
 		}
 	}
-	for _, hunk := range hunks {
-		add(fmt.Sprintf("@@ -%d,%d +%d,%d @@", hunk.OldStart, hunk.OldCount, hunk.NewStart, hunk.NewCount))
+	// render adds one hunk, showing at most limit of its lines when limit is
+	// positive.
+	render := func(hunk gitdiff.Hunk, label string, limit int) {
+		header := fmt.Sprintf("@@ -%d,%d +%d,%d @@", hunk.OldStart, hunk.OldCount, hunk.NewStart, hunk.NewCount)
+		if label != "" {
+			header += " (" + label + ")"
+		}
+		add(header)
+		var body []string
 		for line := hunk.OldStart; line < hunk.OldStart+hunk.OldCount; line++ {
 			if line >= 1 && line <= len(oldBlob.lines) {
-				add("-" + string(bytes.TrimRight(oldBlob.lines[line-1], "\r\n")))
+				body = append(body, "-"+string(bytes.TrimRight(oldBlob.lines[line-1], "\r\n")))
 			}
 		}
 		for line := hunk.NewStart; line < hunk.NewStart+hunk.NewCount; line++ {
 			if line >= 1 && line <= len(newBlob.lines) {
-				add("+" + string(bytes.TrimRight(newBlob.lines[line-1], "\r\n")))
+				body = append(body, "+"+string(bytes.TrimRight(newBlob.lines[line-1], "\r\n")))
 			}
 		}
+		if limit > 0 && len(body) > limit {
+			body = append(body[:limit], fmt.Sprintf("… %d more lines of this hunk", len(body)-limit))
+		}
+		for _, line := range body {
+			add(line)
+		}
+	}
+	if mapped.Before != nil {
+		render(*mapped.Before, "just before the range", maxAdjacentDiff)
+	}
+	for _, hunk := range mapped.Touched {
+		render(hunk, "", 0)
+	}
+	if mapped.After != nil {
+		render(*mapped.After, "just after the range", maxAdjacentDiff)
 	}
 	if total > len(lines) {
 		lines = append(lines, fmt.Sprintf("… %d more diff lines", total-len(lines)))

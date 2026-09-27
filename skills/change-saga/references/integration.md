@@ -42,7 +42,10 @@ Repair each one cheaply but with judgment:
 
 1. Read its proposal: the pinned start and end mapped through the diff hunks,
    widened over lines inserted inside, with the small diff inside the range
-   (`references --stale`, or `repin --accept-proposed --dry-run`).
+   and the nearest hunk just before and after it (`references --stale`, or
+   `repin --accept-proposed --dry-run`). `widened` means it takes in lines
+   the range did not have, such as a new sibling function git slid inside:
+   read them. A neighbouring hunk that adds a helper can mean the code moved.
 2. If the explanation still holds (lines shifted, a field or guard added),
    accept it: `change-saga repin --accept-proposed --record FILE --reference N
    <saga>`, or in bulk with `--target URN`, `--review ID`, or `--all`. It keeps

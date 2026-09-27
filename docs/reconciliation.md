@@ -53,12 +53,18 @@ re-read, and records that need a user choice print one line each.
 For a stale line-range reference the report proposes where its lines are at
 the head by diff arithmetic alone: an unchanged boundary line moves by the
 hunks before it, a boundary line a hunk changed maps to that hunk's edge, and
-lines a hunk inserted inside the range are taken in (`widened` when a hunk
-crosses the range's edge). The proposal carries the zero-context diff inside
-the range. Nothing is proposed when the file was deleted (its content may have
-moved to another file), is binary, the pin cannot be read, every referenced
-line was removed, or the range was rewritten together with code outside it. A
-whole-file reference proposes the same file, after any rename, at the head.
+lines a hunk inserted inside the range are taken in. `widened` is set
+whenever the proposal takes in lines the range did not have: an insertion
+inside it (git may slide a new sibling function inside the range), a longer
+replacement, or a hunk crossing its edge; read those lines before accepting.
+The proposal carries the zero-context diff inside the range, between the
+nearest hunk just before and just after it, so a helper extracted or code
+moved beside the range shows. Nothing is proposed when the file was deleted
+(its content may have moved to another file), is binary, the pin cannot be
+read, every referenced line was removed, the range was rewritten together with
+code outside it, or the only lines of the range an edit left are trivial
+(braces, blank, punctuation), which anchor nothing. A whole-file reference
+proposes the same file, after any rename, at the head.
 
 ### Accept or revise
 
