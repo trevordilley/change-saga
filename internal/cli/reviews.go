@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -105,11 +106,13 @@ func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 	urn := saga.ReviewTarget(sagaManifest.ID, *id)
 	path := saga.ReviewsDir + "/" + *id + saga.ReviewSuffix
 	created := []string{urn, saga.ReviewDeckTarget(sagaManifest.ID, *id, *deckID)}
+	staleness := createdReviewStaleness(ctx, root, *repo, *id)
 	if *jsonOutput {
 		// The JSON says what the review is, including what was worked out.
 		return writeJSON(out, reviewCreateOutput{
 			livingMutationOutput: livingMutationOutput{OK: true, Operation: name, Resource: urn, Path: path, Created: created, EventIDs: []string{}},
 			Review:               reviewCreated{ID: *id, Base: *base, Head: *head, PullRequest: manifest.PullRequest, Inferred: append([]string{}, filled.inferred...)},
+			StaleByChange:        staleness,
 		})
 	}
 	if err := writeLivingMutation(out, name, urn, path, created, nil, false, false); err != nil {
@@ -120,6 +123,9 @@ func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 			fmt.Fprintf(out, "Using %s; pass the flags to choose otherwise\n", strings.Join(filled.inferred, ", "))
 		}
 		fmt.Fprintf(out, "Next: change-saga add-slide --review %s --intent explain --layout diagram %s first-slide\n", *id, root)
+		if staleness != nil && staleness.Count > 0 {
+			fmt.Fprintf(out, "Then: your change made %d living documentation %s stale (%d with a proposed range); read each diff, then repair with change-saga reconcile --against %s %s\n", staleness.Count, plural(staleness.Count, "reference", "references"), staleness.Proposed, shortOID(staleness.BaseOID), root)
+		}
 	}
 	return nil
 }
@@ -129,6 +135,33 @@ func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 type reviewCreateOutput struct {
 	livingMutationOutput
 	Review reviewCreated `json:"review"`
+	// StaleByChange is what the review's change did to the living
+	// documentation's references, when the Saga records any.
+	StaleByChange *changeStaleness `json:"stale_by_change,omitempty"`
+}
+
+// createdReviewStaleness measures a new review's change against the living
+// documentation over the review's own range. It never fails the creation.
+func createdReviewStaleness(ctx context.Context, root, repo, id string) *changeStaleness {
+	document, _, err := saga.Load(root)
+	if err != nil {
+		return nil
+	}
+	review := document.FindReview(id)
+	if review == nil {
+		return nil
+	}
+	checkout := firstNonEmpty(repo, document.Root)
+	rng, err := reviewstate.ResolveRange(ctx, checkout, review)
+	if err != nil {
+		return nil
+	}
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return nil
+	}
+	defer resolver.Close()
+	return livingStaleness(ctx, document, resolver, rng.BaseOID, rng.HeadOID, root, repo, true)
 }
 
 type reviewCreated struct {
@@ -314,6 +347,52 @@ func reviewComment(ctx context.Context, args []string, out io.Writer) error {
 // reviewListOutput is review list --json.
 type reviewListOutput struct {
 	Reviews []reviewstate.Report `json:"reviews"`
+	// Repair is, per open review, what its change did to the living
+	// documentation's references and its stale Item references, each with a
+	// proposed range to accept after reading its diff.
+	Repair []reviewRepair `json:"repair,omitempty"`
+}
+
+// reviewRepair is one open review's repair signal over its own range.
+type reviewRepair struct {
+	Review string `json:"review"`
+	// StaleByChange is what the review's change did to the living
+	// documentation; absent when the Saga records no living references.
+	StaleByChange *changeStaleness `json:"stale_by_change,omitempty"`
+	// Items are the review's stale Item references with proposals.
+	Items []staleRow `json:"items"`
+}
+
+// buildReviewRepairs measures each open review whose range reads.
+func buildReviewRepairs(ctx context.Context, document *saga.Saga, checkout, root, repo string, reports []reviewstate.Report) []reviewRepair {
+	repairs := []reviewRepair{}
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return repairs
+	}
+	defer resolver.Close()
+	for _, report := range reports {
+		review := document.FindReview(report.ID)
+		if review == nil || review.Merged != nil || report.Range == nil || report.Range.Frozen {
+			continue
+		}
+		base, head := report.Range.BaseOID, report.Range.HeadOID
+		repairs = append(repairs, reviewRepair{
+			Review: report.ID, StaleByChange: livingStaleness(ctx, document, resolver, base, head, root, repo, true),
+			Items: reviewItemRows(ctx, resolver, review, base, head, root, repo),
+		})
+	}
+	return repairs
+}
+
+// repairFor finds one review's repair signal.
+func repairFor(repairs []reviewRepair, id string) *reviewRepair {
+	for index := range repairs {
+		if repairs[index].Review == id {
+			return &repairs[index]
+		}
+	}
+	return nil
 }
 
 func reviewList(ctx context.Context, args []string, out io.Writer) error {
@@ -357,8 +436,9 @@ func reviewList(ctx context.Context, args []string, out io.Writer) error {
 		}
 		reports = gaps
 	}
+	repairs := buildReviewRepairs(ctx, document, firstNonEmpty(*repo, document.Root), flags.Arg(0), *repo, reports)
 	if *jsonOutput {
-		return writeJSON(out, reviewListOutput{Reviews: reports})
+		return writeJSON(out, reviewListOutput{Reviews: reports, Repair: repairs})
 	}
 	if *uncovered {
 		if len(reports) == 0 {
@@ -369,7 +449,7 @@ func reviewList(ctx context.Context, args []string, out io.Writer) error {
 			for _, diagnostic := range report.Diagnostics {
 				fmt.Fprintf(out, "  note: %s\n", diagnostic)
 			}
-			printReviewCoverage(out, report.Coverage)
+			printReviewCoverage(out, report.Coverage, repairFor(repairs, report.ID))
 		}
 		return nil
 	}
@@ -377,7 +457,7 @@ func reviewList(ctx context.Context, args []string, out io.Writer) error {
 		fmt.Fprintln(out, "No reviews. Create one for a pull request with change-saga review create.")
 		return nil
 	}
-	printReviewReports(out, reports)
+	printReviewReports(out, reports, repairs)
 	return nil
 }
 
@@ -400,7 +480,7 @@ func buildReviewReports(ctx context.Context, document *saga.Saga, checkout strin
 
 // printReviewReports states each slide's decisions and their currency. It
 // never sums them into a verdict: the team decides what it requires.
-func printReviewReports(out io.Writer, reports []reviewstate.Report) {
+func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []reviewRepair) {
 	for _, report := range reports {
 		fmt.Fprintf(out, "Review %s: %s", report.ID, report.Title)
 		if report.PullRequest != nil {
@@ -425,7 +505,7 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report) {
 		for _, diagnostic := range report.Diagnostics {
 			fmt.Fprintf(out, "  note: %s\n", diagnostic)
 		}
-		printReviewCoverage(out, report.Coverage)
+		printReviewCoverage(out, report.Coverage, repairFor(repairs, report.ID))
 		if len(report.Slides) == 0 {
 			fmt.Fprintln(out, "  no slides yet")
 		}
@@ -451,9 +531,23 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report) {
 // printReviewCoverage states how completely the deck accounts for the
 // review's range, and every change it does not. It is reported, never a
 // verdict.
-func printReviewCoverage(out io.Writer, covered *reviewstate.Coverage) {
+func printReviewCoverage(out io.Writer, covered *reviewstate.Coverage, repair *reviewRepair) {
+	if repair != nil && repair.StaleByChange != nil {
+		staleness := *repair.StaleByChange
+		fmt.Fprintf(out, "  living documentation: your change made %d %s stale", staleness.Count, plural(staleness.Count, "reference", "references"))
+		if staleness.Count > 0 {
+			fmt.Fprintf(out, " (%d with a proposed range; change-saga reconcile --against %s lists them)", staleness.Proposed, shortOID(staleness.BaseOID))
+		}
+		fmt.Fprintln(out)
+	}
 	if covered == nil {
 		return
+	}
+	proposals := map[string]staleRow{}
+	if repair != nil {
+		for _, row := range repair.Items {
+			proposals[row.EvidenceFile+"#"+strconv.Itoa(row.Index)] = row
+		}
 	}
 	summary := covered.Summary
 	fmt.Fprintf(out, "  coverage: %d of %d changed lines and file events explained by the deck", summary.Covered, summary.Total)
@@ -465,6 +559,12 @@ func printReviewCoverage(out io.Writer, covered *reviewstate.Coverage) {
 		fmt.Fprintf(out, "    stale %s (%s): %s\n", stale.Reference.Location(), stale.Assignment.Target, stale.Reason)
 		// The record path is what replace-coverage and remove-coverage take.
 		fmt.Fprintf(out, "      record %s\n", stale.Assignment.EvidenceFile)
+		if row, ok := proposals[stale.Assignment.EvidenceFile+"#"+strconv.Itoa(stale.Assignment.Reference)]; ok {
+			fmt.Fprintf(out, "      proposed: %s\n", describeProposal(row.Pinned, row.Proposal))
+			if row.Accept != nil {
+				fmt.Fprintf(out, "      accept after reading its diff: %s\n", shellJoin(row.Accept.Argv))
+			}
+		}
 	}
 }
 

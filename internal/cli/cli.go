@@ -1177,6 +1177,9 @@ func printReportHeader(out io.Writer, status statusDocument) {
 		fmt.Fprintf(out, "COMPARING %s..%s (merge-base %s)\n", view.Against, view.Head, shortOID(view.BaseOID))
 		printCursor(out, view)
 		fmt.Fprintf(out, "Stale references: %d  Remapped: %d  Overlapping: %d  Saga-only changes: %d\n", report.Summary.Stale, report.Summary.Remapped, report.Summary.Overlapping, report.Summary.SagaChanges)
+		if status.StaleByChange != nil {
+			printChangeStaleness(out, *status.StaleByChange, "; change-saga reconcile --all lists them")
+		}
 	}
 	if len(report.SchemaIssues) > 0 {
 		fmt.Fprintln(out, "\nSchema issues:")

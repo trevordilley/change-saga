@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -76,6 +77,16 @@ func TestReconciliationHeadCurrencyAndRepairLoop(t *testing.T) {
 	lines := strings.Split(text.String(), "\n")
 	if len(lines) < 3 || lines[1] != "Your change made 1 reference stale:" || !strings.Contains(lines[2], "src/queue.go#L3-L6 -> src/queue.go#L3-L6") {
 		t.Fatalf("reconcile must lead with what the change made stale:\n%s", text.String())
+	}
+	text.Reset()
+	if err := Status(context.Background(), []string{"--against", "main", root}, &text); err != nil {
+		var exit *StatusError
+		if !errors.As(err, &exit) {
+			t.Fatal(err)
+		}
+	}
+	if !strings.Contains(text.String(), "Your change made 1 reference stale:\n  urn:change-saga:shop:fragment:queue-design  src/queue.go#L3-L6 -> src/queue.go#L3-L6") {
+		t.Fatalf("status must say what the change made stale:\n%s", text.String())
 	}
 	mustRun(t, ReplaceCoverage, "--record", repair.EvidenceFile, "--target", repair.Resource, "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
 	mustRun(t, Validate, "--json", root)

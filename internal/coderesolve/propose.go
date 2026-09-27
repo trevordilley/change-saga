@@ -217,3 +217,20 @@ func (resolver *Resolver) rangeDiff(ctx context.Context, reference coderef.Refer
 	}
 	return lines
 }
+
+// ChangedPaths names every product path a change between from and to
+// touches, on either side of a rename.
+func (resolver *Resolver) ChangedPaths(ctx context.Context, from, to string) (map[string]bool, error) {
+	changes, err := resolver.treeChanges(ctx, from, to)
+	if err != nil {
+		return nil, err
+	}
+	paths := map[string]bool{}
+	for old, change := range changes {
+		paths[old] = true
+		if change.NewPath != "" {
+			paths[change.NewPath] = true
+		}
+	}
+	return paths, nil
+}

@@ -47,8 +47,9 @@ type changeStaleness struct {
 	Count int `json:"count"`
 	// Proposed is how many of them have a proposed range to accept.
 	Proposed int `json:"proposed"`
-	// PreExisting is how many other references were already stale.
-	PreExisting int        `json:"pre_existing"`
+	// PreExisting is how many other references were already stale. It is
+	// absent where only the files the change touched were read.
+	PreExisting *int       `json:"pre_existing,omitempty"`
 	References  []staleRow `json:"references"`
 }
 
@@ -76,9 +77,22 @@ func historicalOwners(document *saga.Saga) map[string][]string {
 }
 
 // measureChangeStaleness classifies every stale reference at head against
-// base. root and repo shape the accept commands.
-func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver, owned []ownedReference, historical map[string][]string, base, head, root, repo string) changeStaleness {
+// base. root and repo shape the accept commands. With changedOnly it reads
+// only references into files base..head touches, the only ones the change
+// can make stale, and leaves the pre-existing count out.
+func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver, owned []ownedReference, historical map[string][]string, base, head, root, repo string, changedOnly ...bool) changeStaleness {
 	result := changeStaleness{BaseOID: base, HeadOID: head, References: []staleRow{}}
+	var changed map[string]bool
+	if len(changedOnly) > 0 && changedOnly[0] {
+		changed, _ = resolver.ChangedPaths(ctx, base, head)
+		if changed == nil {
+			changed = map[string]bool{}
+		}
+	}
+	preExisting := 0
+	if changed == nil {
+		result.PreExisting = &preExisting
+	}
 	inBase := map[string]bool{}
 	pinnedBefore := func(commit string) bool {
 		known, ok := inBase[commit]
@@ -90,7 +104,7 @@ func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver,
 		return known
 	}
 	for _, ref := range owned {
-		if len(historical[ref.Owner]) > 0 {
+		if len(historical[ref.Owner]) > 0 || changed != nil && !changed[ref.Code.Path] {
 			continue
 		}
 		resolution := resolver.Resolve(ctx, ref.Code, head)
@@ -99,7 +113,7 @@ func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver,
 		}
 		byChange := base != "" && base != head && (!pinnedBefore(ref.Code.Commit) || resolver.Resolve(ctx, ref.Code, base).Current())
 		if !byChange {
-			result.PreExisting++
+			preExisting++
 			continue
 		}
 		row := staleRow{ownedReference: ref, Pinned: ref.Code.Location(), Reason: resolution.Reason, Proposal: resolver.Propose(ctx, ref.Code, head)}
@@ -166,8 +180,8 @@ func printChangeStaleness(out io.Writer, staleness changeStaleness, preExistingH
 	if staleness.Proposed > 0 {
 		fmt.Fprintf(out, "  %d with a proposed range: read its diff, then accept with change-saga repin --accept-proposed --record FILE [--reference N]\n", staleness.Proposed)
 	}
-	if staleness.PreExisting > 0 {
-		fmt.Fprintf(out, "Pre-existing stale references: %d (stale before this change%s)\n", staleness.PreExisting, preExistingHint)
+	if staleness.PreExisting != nil && *staleness.PreExisting > 0 {
+		fmt.Fprintf(out, "Pre-existing stale references: %d (stale before this change%s)\n", *staleness.PreExisting, preExistingHint)
 	}
 }
 
@@ -588,12 +602,12 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 
 // livingStaleness measures what base..head did to the living documentation's
 // references, or nil when the Saga has none.
-func livingStaleness(ctx context.Context, document *saga.Saga, resolver *coderesolve.Resolver, base, head, root, repo string) *changeStaleness {
+func livingStaleness(ctx context.Context, document *saga.Saga, resolver *coderesolve.Resolver, base, head, root, repo string, changedOnly ...bool) *changeStaleness {
 	owned, err := sagaReferences(document)
 	if err != nil || len(owned) == 0 || resolver == nil {
 		return nil
 	}
-	staleness := measureChangeStaleness(ctx, resolver, owned, historicalOwners(document), base, head, root, repo)
+	staleness := measureChangeStaleness(ctx, resolver, owned, historicalOwners(document), base, head, root, repo, changedOnly...)
 	return &staleness
 }
 

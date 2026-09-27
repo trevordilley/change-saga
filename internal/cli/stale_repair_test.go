@@ -133,3 +133,38 @@ func TestAcceptProposedUpdatesAManagedSlideThroughItsTransaction(t *testing.T) {
 		t.Fatalf("the printed request must republish the slide unchanged: %#v %v", again, err)
 	}
 }
+
+// review create's next steps and review list say what the review's change
+// made stale in the living documentation, with proposals.
+func TestReviewCreateAndListSayWhatTheChangeMadeStale(t *testing.T) {
+	t.Parallel()
+	repo, root := shopSaga(t)
+	git(t, repo, "checkout", "-b", "retry")
+	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\n// Enqueue sends a job to SQS.\nfunc Enqueue(job string) error {\n\treturn retry(3, func() error { return sqs.Send(job) })\n}\n")
+	git(t, repo, "commit", "-am", "Retry enqueue")
+	var created bytes.Buffer
+	if err := Review(context.Background(), []string{"create", "--id", "retry", "--base", "main", "--head", "retry", root}, &created); err != nil {
+		t.Fatalf("%v\n%s", err, created.String())
+	}
+	if !strings.Contains(created.String(), "your change made 1 living documentation reference stale (1 with a proposed range)") {
+		t.Fatalf("review create next steps:\n%s", created.String())
+	}
+	var listed bytes.Buffer
+	if err := Review(context.Background(), []string{"list", "--json", root}, &listed); err != nil {
+		t.Fatal(err)
+	}
+	var output reviewListOutput
+	if err := json.Unmarshal(listed.Bytes(), &output); err != nil {
+		t.Fatal(err)
+	}
+	if len(output.Repair) != 1 || output.Repair[0].StaleByChange == nil || output.Repair[0].StaleByChange.Count != 1 || output.Repair[0].StaleByChange.References[0].Accept == nil {
+		t.Fatalf("review list repair = %s", listed.String())
+	}
+	listed.Reset()
+	if err := Review(context.Background(), []string{"list", root}, &listed); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(listed.String(), "living documentation: your change made 1 reference stale (1 with a proposed range") {
+		t.Fatalf("review list text:\n%s", listed.String())
+	}
+}
