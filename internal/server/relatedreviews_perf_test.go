@@ -135,12 +135,13 @@ func copyDogfoodSagaWithReviews(t *testing.T, count int) string {
 	t.Helper()
 	root := copySaga(t)
 	for index := 0; index < count; index++ {
-		// Measured ids never collide with the real reviews change.saga holds.
+		// Measured ids and pull request numbers never collide with the real
+		// reviews change.saga holds.
 		id := fmt.Sprintf("measured-%d", index+1)
 		base := fmt.Sprintf("HEAD~%d", index+2)
 		if err := reviewstore.Create(root, saga.ReviewManifest{
 			ID: id, Title: "Measured review " + id, Base: base, Head: "HEAD",
-			PullRequest: &saga.PullRequest{Number: index + 1},
+			PullRequest: &saga.PullRequest{Number: 900000 + index + 1},
 		}, saga.DeckManifest{ID: id, Title: "Measured " + id, Objective: "Measure the intersection."}); err != nil {
 			t.Fatal(err)
 		}

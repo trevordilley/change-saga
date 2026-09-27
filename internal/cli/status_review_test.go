@@ -224,3 +224,19 @@ func TestReviewTargetsAreDiscoverable(t *testing.T) {
 		t.Fatalf("an unknown review target's error does not list the review's targets: %v", err)
 	}
 }
+
+func TestReviewListNamesTheRecordOfAStaleReference(t *testing.T) {
+	fixture := newReviewOnlyFixture(t, true)
+	writeFile(t, filepath.Join(fixture.repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"postgres-v2\" }\n")
+	git(t, fixture.repo, "commit", "-am", "Rename the queue table")
+	out := run(t, Review, "list", "--uncovered", "--repo", fixture.repo, fixture.root)
+	index := strings.Index(out, "      record ___reviews/pr-7.review/")
+	if !strings.Contains(out, "stale ") || index < 0 {
+		t.Fatalf("review list does not name the stale reference's record:\n%s", out)
+	}
+	record := strings.Fields(out[index:])[1]
+	run(t, ReplaceCoverage, "--record", record, "--target", saga.ReviewItemTarget("app", "pr-7", "queue", "node"), "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root)
+	if out := run(t, Review, "list", "--uncovered", "--repo", fixture.repo, fixture.root); !strings.Contains(out, "No uncovered changes") {
+		t.Fatalf("replacing the named record did not repair the review:\n%s", out)
+	}
+}

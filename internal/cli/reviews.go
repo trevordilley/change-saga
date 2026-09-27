@@ -406,6 +406,8 @@ func printReviewCoverage(out io.Writer, covered *reviewstate.Coverage) {
 	}
 	for _, stale := range covered.StaleReferences {
 		fmt.Fprintf(out, "    stale %s (%s): %s\n", stale.Reference.Location(), stale.Assignment.Target, stale.Reason)
+		// The record path is what replace-coverage and remove-coverage take.
+		fmt.Fprintf(out, "      record %s\n", stale.Assignment.EvidenceFile)
 	}
 }
 
