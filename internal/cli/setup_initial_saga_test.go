@@ -127,7 +127,7 @@ func TestSetupInitialSagaComesAfterReviews(t *testing.T) {
 	if err := SetupInitialSaga([]string{"--repo", t.TempDir()}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if text := output.String(); !strings.Contains(text, "Most teams start with a review") || !strings.Contains(text, "after a few reviews") {
+	if text := output.String(); !strings.Contains(text, "Most teams start with a review") || !strings.Contains(text, "many never need more") {
 		t.Fatalf("setup with no Saga does not suggest a review first:\n%s", text)
 	}
 }

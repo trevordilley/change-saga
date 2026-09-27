@@ -187,10 +187,10 @@ thing that happens is not "define the personas of this app".
 - **The first thing is a review of the pull request.** Its review deck explains
   the change's architecture and covers every changed line; that is all a first
   change needs, and the Saga may hold nothing else. Personas, stories, design,
-  test cases, and an implementation deck are not asked for up front: `status`
-  offers them in one quiet line while the Saga holds only reviews, in a short
-  section once it holds more than two, and in full with `status --growth` or
-  once the Saga holds living documentation.
+  test cases, and an implementation deck are never asked for, and a Saga of
+  reviews alone is complete: while it holds only reviews, `status` reports the
+  review and nothing else, and reports every area once the Saga holds living
+  documentation or with `status --full`.
 - **Everything else is growth, not debt.** Missing personas, stories, design, and
   quality are reported as opportunities. They never block a change, and
   readiness passing with nothing defined is correct: absence is not failure.

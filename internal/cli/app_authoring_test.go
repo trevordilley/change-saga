@@ -148,7 +148,7 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	// named as optional and later.
 	for _, want := range []string{"Start with a review of this branch or pull request", "change-saga review create " + root,
 		"add-slide --review ID", "set-slide-content --review ID", "add-item --review ID", "cover --target ITEM_URN --path PATH --changed-lines",
-		"review list", "check --covers review", "after a\nfew reviews", "to document existing code instead",
+		"review list", "check --covers review", "A Saga of reviews alone is complete", "setup-initial-saga", "to document existing code instead",
 		"change-saga status " + root, "overview set-pitch", "--lines RANGES | --file"} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("init output does not lead to %q:\n%s", want, text)
@@ -174,17 +174,17 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	}
 
 	// Observing the fresh app has no change to cover. A Saga that holds only
-	// reviews offers to grow in one quiet line; asked with --growth, its loop
-	// has the overview to take as growth.
+	// reviews is never pitched documentation; asked with --full, its loop has
+	// the overview to take as growth.
 	var status bytes.Buffer
 	if err := Status(context.Background(), []string{"--repo", repo, "--allow-repository-mismatch", root}, &status); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(status.String(), "Growing the Saga is optional") || strings.Contains(status.String(), "[overview]") {
-		t.Fatalf("a fresh Saga's status does not keep growth quiet:\n%s", status.String())
+	if strings.Contains(status.String(), "Grow") || strings.Contains(status.String(), "[overview]") {
+		t.Fatalf("a fresh Saga's status pitches documentation:\n%s", status.String())
 	}
 	status.Reset()
-	if err := Status(context.Background(), []string{"--repo", repo, "--allow-repository-mismatch", "--growth", root}, &status); err != nil {
+	if err := Status(context.Background(), []string{"--repo", repo, "--allow-repository-mismatch", "--full", root}, &status); err != nil {
 		t.Fatal(err)
 	}
 	for _, want := range []string{"Next actions: none. Observing, there is no change to cover", "for the app as it is, the overview and vocabulary first",

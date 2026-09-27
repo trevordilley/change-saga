@@ -109,9 +109,9 @@ a broken Saga from passing a rule silently.
 ## Reviews
 
 `.coverage.areas.review` is the review deck's coverage of the change, and
-`.change_reviews` names the reviews it measured. `.growth` says whether the
-Saga holds living documentation and how prominently status offers to grow it;
-it never affects the exit status.
+`.change_reviews` names the reviews it measured. `.documentation` says whether
+the Saga holds living documentation and whether status gave the review-first
+or the full report; it never affects the exit status.
 
 ```sh
 # The review deck explains every changed line.

@@ -484,7 +484,7 @@ func containsString(values []string, value string) bool {
 }
 
 // The review is the headline: the skill's description and first section lead
-// with creating one, and growing the Saga is a single, later, optional offer.
+// with creating one, and growing the Saga is left to the user to ask for.
 func TestSkillLeadsWithCreatingAReview(t *testing.T) {
 	t.Parallel()
 	var entry string
@@ -506,8 +506,8 @@ func TestSkillLeadsWithCreatingAReview(t *testing.T) {
 			t.Fatalf("the fast path omits %q", want)
 		}
 	}
-	if strings.Index(section, "setup-initial-saga") < strings.Index(section, "Commit the Saga") {
-		t.Fatal("the growth offer comes before the review is done")
+	if strings.Index(section, "setup-initial-saga") < strings.Index(section, "Commit the Saga") || !strings.Contains(section, "do not pitch more") {
+		t.Fatal("the fast path pitches growing the Saga instead of leaving it to the user")
 	}
 	workflow := entry[strings.Index(entry, "## Common workflow"):]
 	if !strings.Contains(workflow, "Only when the Saga already holds living documentation") {

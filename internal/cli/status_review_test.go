@@ -73,20 +73,19 @@ func TestStatusOfAReviewOnlySagaLeadsWithTheReview(t *testing.T) {
 	for _, want := range []string{
 		"Review pr-7: its deck explains 6 of 6 changed lines and file events of the pull request — every changed line is explained.",
 		"Next actions: none. The review deck explains every changed line",
-		"Growing the Saga is optional",
 	} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("status lacks %q:\n%s", want, text)
 		}
 	}
-	for _, unwanted := range []string{"Changed lines nothing references", "Coverage of", "elevator pitch", "[personas]", "[changed_source]"} {
+	for _, unwanted := range []string{"Changed lines nothing references", "Coverage of", "elevator pitch", "[personas]", "[changed_source]", "Grow", "setup-initial-saga"} {
 		if strings.Contains(text, unwanted) {
 			t.Fatalf("review-only status shows %q:\n%s", unwanted, text)
 		}
 	}
 	document := statusJSON(t, fixture.root, "--repo", fixture.repo, "--against", "main")
-	if document.Growth != (growthState{Reviews: 1, Offer: growthOfferQuiet}) {
-		t.Fatalf("growth = %+v", document.Growth)
+	if document.Documentation != (documentationState{Report: reportReviewFirst}) {
+		t.Fatalf("documentation = %+v", document.Documentation)
 	}
 	if review := document.Coverage.Areas.Review; !review.Complete || review.Total != 6 || len(document.ChangeReviews) != 1 {
 		t.Fatalf("review area = %+v, reviews of change %v", review, document.ChangeReviews)
@@ -95,10 +94,10 @@ func TestStatusOfAReviewOnlySagaLeadsWithTheReview(t *testing.T) {
 		t.Fatalf("a covered review-only change asks for %s", action.ID)
 	}
 
-	full := statusText(t, fixture.root, "--repo", fixture.repo, "--against", "main", "--growth")
+	full := statusText(t, fixture.root, "--repo", fixture.repo, "--against", "main", "--full")
 	for _, want := range []string{"Coverage of the change", "review          6/6 changed lines explained by the review deck", "Growth ("} {
 		if !strings.Contains(full, want) {
-			t.Fatalf("status --growth lacks %q:\n%s", want, full)
+			t.Fatalf("status --full lacks %q:\n%s", want, full)
 		}
 	}
 }
@@ -115,20 +114,22 @@ func TestStatusAsksForAReviewOfAnUnreviewedChange(t *testing.T) {
 	}
 }
 
-func TestStatusOffersGrowthPastACoupleOfReviews(t *testing.T) {
+// A team may never grow its Saga beyond reviews, so however many reviews it
+// holds, status never pitches documentation.
+func TestStatusNeverPitchesGrowth(t *testing.T) {
 	fixture := newReviewOnlyFixture(t, true)
 	for _, id := range []string{"pr-8", "pr-9"} {
 		createCoveredReview(t, fixture.repo, fixture.root, id)
 	}
 	text := statusText(t, fixture.root, "--repo", fixture.repo, "--against", "main")
-	if !strings.Contains(text, "Grow the Saga (optional, never required): it holds 3 reviews") || !strings.Contains(text, "setup-initial-saga") {
-		t.Fatalf("status past a couple of reviews does not offer growth:\n%s", text)
+	for _, unwanted := range []string{"Grow", "setup-initial-saga", "persona", "[overview]", "optional"} {
+		if strings.Contains(text, unwanted) {
+			t.Fatalf("status of a Saga with three reviews pitches %q:\n%s", unwanted, text)
+		}
 	}
-	if strings.Contains(text, "why:") || strings.Count(text, "\n  1. [") != 1 {
-		t.Fatalf("the growth offer is not short:\n%s", text)
-	}
-	if document := statusJSON(t, fixture.root, "--repo", fixture.repo, "--against", "main"); document.Growth.Offer != growthOfferProminent {
-		t.Fatalf("growth = %+v", document.Growth)
+	document := statusJSON(t, fixture.root, "--repo", fixture.repo, "--against", "main")
+	for _, action := range document.NextActions {
+		t.Fatalf("a covered review-only change asks for %s", action.ID)
 	}
 }
 
@@ -139,8 +140,8 @@ func TestStatusOfALivingSagaKeepsTheFullReport(t *testing.T) {
 	if !strings.Contains(text, "Review pr-7: its deck explains") || !strings.Contains(text, "Coverage of the change") {
 		t.Fatalf("living status lacks the review headline or the areas:\n%s", text)
 	}
-	if document := statusJSON(t, fixture.root, "--repo", fixture.repo, "--against", "main"); !document.Growth.LivingDocumentation || document.Growth.Offer != growthOfferFull {
-		t.Fatalf("growth = %+v", document.Growth)
+	if document := statusJSON(t, fixture.root, "--repo", fixture.repo, "--against", "main"); !document.Documentation.LivingDocumentation || document.Documentation.Report != reportFull {
+		t.Fatalf("documentation = %+v", document.Documentation)
 	}
 }
 

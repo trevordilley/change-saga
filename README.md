@@ -56,14 +56,13 @@ needed.
 
 ## Grow gradually
 
-After a couple of reviews, the team can grow its documentation a step at a
-time, when it helps and never as a prerequisite: the personas the app serves,
-their stories and acceptance criteria, features, design, quality, terms, and
-living implementation documentation. Each step is optional and offered
-lightly: `change-saga status` mentions it in one line, offers a few concrete
-next steps once the Saga holds more than two reviews, and shows everything
-with `status --growth`. When the team is ready for a first pass,
-`change-saga setup-initial-saga` guides an interview:
+A Saga of reviews alone is complete, and many teams never need more. If the
+team wants it, the same Saga can grow a step at a time, when it helps and never
+as a prerequisite: the personas the app serves, their stories and acceptance
+criteria, features, design, quality, terms, and living implementation
+documentation. Nothing prompts you to do it; `change-saga status` stays about
+the review until the Saga holds more (`status --full` shows every area). For a
+first pass, `change-saga setup-initial-saga` guides an interview:
 
 > Run change-saga setup-initial-saga and follow its guided setup workflow
 
@@ -178,7 +177,7 @@ throughout this README: requirement → design → quality → implementation �
 
 > Use the change-saga cli to open this PR's review deck
 
-**After a few reviews, to grow the Saga into living documentation (optional):**
+**To grow the Saga into living documentation, if the team wants it:**
 
 > Run change-saga setup-initial-saga and follow its guided setup workflow
 
@@ -368,7 +367,7 @@ Attribution comes from the commit that adds the record.
 
 ## Maintain a codebase Saga
 
-After a few reviews, a Saga can document a repository over its entire
+If the team wants it, a Saga can document a repository over its entire
 lifetime, not only its pull requests.
 Its authoring and maintenance workflow is designed for AI, not manual human
 operation. Maintaining exact coverage, granular citations, diagrams, and

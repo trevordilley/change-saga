@@ -630,13 +630,13 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--growth] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
-		Summary: "report the review deck's coverage of the change first, then coverage by area (review, implementation, stories, personas, design, quality, health) with counts and lists, stale pins, and ordered next actions; a Saga that holds only reviews is reported review first with a quiet, optional growth offer; has no verdict: exits 0 whenever the report can be trusted, 1 when the Saga is malformed or the checkout does not match",
+		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--full] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+		Summary: "report the review deck's coverage of the change first, then coverage by area (review, implementation, stories, personas, design, quality, health) with counts and lists, stale pins, and ordered next actions; a Saga that holds only reviews is reported review first, without the documentation areas; has no verdict: exits 0 whenever the report can be trusted, 1 when the Saga is malformed or the checkout does not match",
 		Flags: []Flag{
 			jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 			optional("max", "N", "maximum uncovered items in text mode"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 			optional("feature", "ID", "narrow the report to one feature"), againstFlag, headFlag,
-			optional("growth", "", "report every documentation area and growth suggestion, even for a Saga that holds only reviews"),
+			optional("full", "", "report every documentation area and growth suggestion, even for a Saga that holds only reviews"),
 		},
 		Positionals: sagaOnly,
 	},

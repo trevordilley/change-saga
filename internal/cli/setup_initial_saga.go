@@ -45,8 +45,8 @@ func SetupInitialSaga(args []string, out io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("inspect repository for Saga directories: %w", err)
 	}
-	// A Saga that holds only reviews is what this workflow grows: taking it
-	// after a few reviews is the intended path, not an overhaul.
+	// Growing a Saga that holds only reviews is what this workflow is for,
+	// not an overhaul.
 	growing := len(sagas) == 1 && reviewOnlySaga(filepath.Join(root, sagas[0]))
 	if len(sagas) > 0 && !*overhaul && !growing {
 		fmt.Fprintln(out, "Initial Saga setup normally runs once, and this repository already contains:")
@@ -63,7 +63,7 @@ func SetupInitialSaga(args []string, out io.Writer) error {
 	fmt.Fprintf(out, "Repository: %s\n", root)
 	switch {
 	case len(sagas) == 0:
-		fmt.Fprintln(out, "Repository state: no .saga directory was found. Most teams start with a review of a pull request instead (change-saga init, then change-saga review create on the branch) and take this guided setup after a few reviews; continue only if the user asked for the full setup now. Create the repository's Saga (change-saga init creates change.saga) only after the interview establishes its initial product model.")
+		fmt.Fprintln(out, "Repository state: no .saga directory was found. Most teams start with a review of a pull request instead (change-saga init, then change-saga review create on the branch) and many never need more; continue only because the user asked for this setup. Create the repository's Saga (change-saga init creates change.saga) only after the interview establishes its initial product model.")
 	case growing && !*overhaul:
 		reviews := countReviews(filepath.Join(root, sagas[0]))
 		fmt.Fprintf(out, "Repository state: %s holds %d %s and no living documentation yet. Grow it in place: do not run change-saga init or create another Saga.\n", sagas[0], reviews, plural(reviews, "review", "reviews"))
@@ -145,7 +145,7 @@ func printInitialSagaHelp(out io.Writer) {
 	if len(sagas) == 0 {
 		fmt.Fprintln(out, "\nNo Saga was detected in the current repository.")
 		fmt.Fprintln(out, "  Start with a review of a branch or pull request: \"change-saga init\" creates change.saga at the repository's root, then \"change-saga review create change.saga\".")
-		fmt.Fprintln(out, "  After a few reviews, \"change-saga setup-initial-saga\" guides growing it into living documentation of the app.")
+		fmt.Fprintln(out, "  If the team ever wants living documentation of the app, \"change-saga setup-initial-saga\" guides growing it.")
 		return
 	}
 	if len(sagas) == 1 && reviewOnlySaga(filepath.Join(root, sagas[0])) {

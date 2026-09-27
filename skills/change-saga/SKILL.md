@@ -50,11 +50,9 @@ before drawing slides; nothing else is needed.
 Coverage is an omission check, not proof that a slide is right. Never widen a
 selector just to finish coverage.
 
-After the review is done, you may make one light offer, once: if the Saga
-holds only reviews and `change-saga status` offers to grow it (it does after a
-couple of reviews), mention that personas, stories, features, and living
-documentation are available when the team wants them, starting with
-`change-saga setup-initial-saga`. Author none of it unless the user asks.
+A Saga of reviews alone is complete; do not pitch more. If the user asks to
+document the application itself (personas, stories, features, design, living
+documentation), `change-saga setup-initial-saga` guides growing this Saga.
 
 ## Mandatory contract
 

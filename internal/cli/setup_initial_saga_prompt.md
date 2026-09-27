@@ -1,9 +1,9 @@
 # Establish the repository's initial Saga
 
-Use this workflow only once, when the team is ready to grow the repository's
-Saga beyond its pull-request reviews (usually after a few reviews), or during
-the explicitly requested documentation overhaul named above. Most teams start
-with a review deck for a pull request instead; this workflow comes after.
+Use this workflow only once, when the team wants to grow the repository's Saga
+beyond its pull-request reviews, or during the explicitly requested
+documentation overhaul named above. Most teams start with review decks, and a
+Saga of reviews alone is complete; this workflow is for a team that wants more.
 The recommended idiom is one Saga per repository, `change.saga` at its root,
 which `change-saga init` creates by default. It captures the application's
 durable requirements, design, implementation, and quality model; future

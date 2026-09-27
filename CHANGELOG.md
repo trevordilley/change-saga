@@ -5,15 +5,16 @@
 - Creating a review for a pull request or branch is the headline entry point.
   `init`, top-level help, the README, and the skill lead with it: `review
   create`, slides that explain the architecture, `cover --changed-lines`, and
-  `review list` / `check --covers review`. Personas, stories, features, and
-  living documentation come later, after a few reviews, and are never required.
+  `review list` / `check --covers review`. A Saga of reviews alone is complete;
+  personas, stories, features, and living documentation are documented as the
+  way to grow it, never pitched or required.
 - `status` answers first with the review deck's coverage of the change, and asks
   for a review when there is none. A Saga that holds only reviews is reported
-  review first: its documentation areas and growth suggestions shrink to one
-  quiet line, a short offer once it holds more than two reviews, and the full
-  report with `status --growth`. `status --json` always carries the full report,
-  plus `.coverage.areas.review`, `.change_reviews`, and `.growth`. A Saga with
-  living documentation keeps the full report. Exit codes are unchanged.
+  review first, without its documentation areas, changed-source actions, or
+  growth suggestions; `status --full` gives the full report. `status --json`
+  always carries every area, plus `.coverage.areas.review`, `.change_reviews`,
+  and `.documentation`. A Saga with living documentation keeps the full
+  report. Exit codes are unchanged.
 - `check --covers review` asks whether the pull request's review deck explains
   every changed line (exit 0) or not (exit 3); a change with no review is
   uncovered.
@@ -21,11 +22,11 @@
   through `gh` when installed and origin is on GitHub, else uses origin's
   default branch and names the review after the branch (`pr-N` with `--pr`).
   Explicit flags still win; `CHANGE_SAGA_NO_GH=1` skips `gh`.
-- `query children` navigates reviews (review, deck, slides, Items), and an
-  unknown `cover` target lists the open reviews' slides and Items.
-- `setup-initial-saga` is the step after a few reviews: it grows a Saga that
-  holds only reviews without `--overhaul`, and with no Saga suggests a review
-  first.
+- `query children` navigates reviews (review, deck, slides, Items), an unknown
+  `cover` target lists the open reviews' slides and Items, and `review list`
+  names each stale reference's evidence record for `replace-coverage`.
+- `setup-initial-saga` grows a Saga that holds only reviews without
+  `--overhaul`, and with no Saga suggests a review first.
 
 ## Unreleased — change.saga, one Saga per repository
 

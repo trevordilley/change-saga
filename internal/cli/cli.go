@@ -216,7 +216,7 @@ var commandUsage = map[string]string{
 	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
 	"reconcile":                   "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json] <saga>",
-	"status":                      "change-saga status [--json] [--growth] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+	"status":                      "change-saga status [--json] [--full] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"preintegrate":                "change-saga preintegrate --ref REF --ref REF [--repo PATH] [--json] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
@@ -261,7 +261,7 @@ story becomes accepted, it must have at least one pass/fail criterion; add only
 the narrowest obligation supported by the confirmed intent rather than
 inventing behavior to satisfy the format.
 
-Growing the Saga, after a few reviews and only when it helps:
+Growing the Saga, if and when the team wants it (never required):
   The same Saga can document the application itself: living documentation,
   kept honest by the code. It holds an overview, the personas the app serves,
   a design system, an onboarding deck, feature flags, and durable features,
@@ -294,7 +294,7 @@ Growing the Saga, after a few reviews and only when it helps:
     explains affected records, HEAD reference currency, baseline debt and
     regressions, with typed inspection/repair paths; reassess and update only
     what needs it, then "validate". "status" reports coverage by area, with
-    no verdict ("status --growth" shows every area for a Saga that holds only
+    no verdict ("status --full" shows every area for a Saga that holds only
     reviews). "check --covers implementation --against main" asks about
     changed-line coverage; "check --covers health" separately checks current
     health. Neither proves semantic correctness.
@@ -317,7 +317,7 @@ Using a coding agent?
   "change-saga install-skill" and give the resulting agent-agnostic bootstrap
   prompt to the agent. The command does not modify the repository or create a Saga.
 
-Growing the Saga with a coding agent, after a few reviews?
+Growing the Saga with a coding agent?
   Run "change-saga setup-initial-saga" once. It inspects the repository and
   prints the guided interview and investigation workflow. It grows a Saga that
   holds only reviews; if the Saga already holds living documentation, it
@@ -355,10 +355,10 @@ var commandDescription = map[string]string{
 	"erd":                         "Author the application ERD: an offline SVG visual, its directory of data-entity pins, and element bindings. Requires inventory format 2.",
 	"erd-overlay":                 "Propose data-model changes against an exact ERD revision without rewriting it: replacement or new entity pins, removals, and an optional visual. Requires inventory format 2.",
 	"inventory":                   "Adopt inventory format 2 explicitly. Existing records are not rewritten; legacy revisions read as unspecified intent. Older change-saga versions then refuse the inventory instead of dropping content.",
-	"init":                        "Create the repository's Saga: the saga.json manifest and a reviewer README. With no\npath it creates change.saga in the --repo directory (by default the current\ndirectory), identified and titled after the repository's origin remote (or, without\none, its top-level directory). The recommended idiom is one Saga per repository; a\nmonorepo documents each app as features of it. Another Saga never blocks init, which\nonly notes it. Then start with a review of the branch or pull request (review create):\nits deck explains the change's architecture and covers every changed line. That is the\nbest way to learn the tool. Personas, stories, features, design, and living\ndocumentation are optional and can come after a few reviews. To document existing\ncode instead, observe HEAD with status and reference the code each Item explains.",
-	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for growing the app's Saga into\nliving documentation through a product interview and evidence gathering: the step to\ntake after a few reviews, not the first one. The command does not modify the\nrepository. It grows a Saga that holds only reviews; if the Saga already holds living\ndocumentation, it stops and recommends normal authoring unless --overhaul explicitly\nrequests a major documentation rebuild.",
+	"init":                        "Create the repository's Saga: the saga.json manifest and a reviewer README. With no\npath it creates change.saga in the --repo directory (by default the current\ndirectory), identified and titled after the repository's origin remote (or, without\none, its top-level directory). The recommended idiom is one Saga per repository; a\nmonorepo documents each app as features of it. Another Saga never blocks init, which\nonly notes it. Then start with a review of the branch or pull request (review create):\nits deck explains the change's architecture and covers every changed line. That is the\nbest way to learn the tool, and a Saga of reviews alone is complete; personas,\nstories, features, design, and living documentation are there if the team ever\nwants them. To document existing\ncode instead, observe HEAD with status and reference the code each Item explains.",
+	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for growing the app's Saga into\nliving documentation through a product interview and evidence gathering, for a team that wants\nliving documentation beyond its reviews; not the first step. The command does not modify the\nrepository. It grows a Saga that holds only reviews; if the Saga already holds living\ndocumentation, it stops and recommends normal authoring unless --overhaul explicitly\nrequests a major documentation rebuild.",
 	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
-	"status":                      "Report how completely the change's review deck explains it (--against), or each\nopen review its range, then coverage by area, stale records, and ordered next\nactions: required work first (keep what exists healthy, explain every changed\nline), then optional growth suggestions. A Saga that holds only reviews is\nreported review first: its documentation areas and growth suggestions shrink to\none quiet line, a short offer once it holds more than two reviews, and the full\nreport with --growth (always in --json). Status has no verdict: it exits 0\nwhenever its report can be trusted, and 1 only when the Saga is malformed (for\nexample, a duplicate ID) or the checkout does not match the declared repository.\nTeams write their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
+	"status":                      "Report how completely the change's review deck explains it (--against), or each\nopen review its range, then coverage by area, stale records, and ordered next\nactions: required work first (keep what exists healthy, explain every changed\nline), then optional growth suggestions. A Saga that holds only reviews is\nreported review first, without its documentation areas or growth suggestions;\n--full (and --json) gives the full report. Status has no verdict: it exits 0\nwhenever its report can be trusted, and 1 only when the Saga is malformed (for\nexample, a duplicate ID) or the checkout does not match the declared repository.\nTeams write their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
 	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nThe review area asks about the pull request's review deck alone; the others\nfollow the chain persona -> story -> design -> code:\n  review          every changed line is explained by the review deck of the\n                  change (the open review whose head is HEAD), over its own\n                  range; a change with no review is uncovered\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke\n\nComparison coverage can use deleted-line evidence valid at base. Check HEAD\nhealth separately without --against; use reconcile for debt and repair paths.",
 	"visual-qa":                   "Render selected implementation or onboarding slides both as raw assets and inside the\nactual reviewer at 1280x720 and 1024x576. The managed output includes screenshots, a\ncontact sheet, and visual-qa.json with mechanical clipping, text-overflow, missing-selector,\nand reliable Item-overlap findings. The command is read-only with respect to the Saga and\nexits 3 when error-severity findings exist. It does not judge whether semantic arrows or\nrelationships are correct.",
 	"preintegrate":                "Read committed Saga snapshots from two or more explicit Git refs and report\nstable-ID collisions, different current heads, and deterministic text-overlap\ncandidates with exact ref/commit provenance. It is advisory and read-only: it\nnever chooses semantic equivalence, updates a ref, checks out, or merges Git.",
@@ -618,8 +618,9 @@ the id and base from the pull request or branch, and each command prints the nex
 Commit the Saga with the change; reviewers can collapse %[2]s in the pull
 request's file tree.
 
-Personas, stories, features, and living documentation can come later, after a
-few reviews; status offers them when the time comes, and never requires them.
+A Saga of reviews alone is complete. If the team ever wants living
+documentation of the app (personas, stories, features, design), the same Saga
+grows into it: change-saga setup-initial-saga guides a first pass.
 
 Or, to document existing code instead (no change needed): observe the app at
 HEAD, start with the overview and the project's terms, and reference the code
@@ -1078,7 +1079,7 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	opening := registerOpenFlags(flags)
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
 	feature := flags.String("feature", "", "narrow the report to one feature (id or URN)")
-	growth := flags.Bool("growth", false, "report every documentation area and growth suggestion, even for a Saga that holds only reviews")
+	full := flags.Bool("full", false, "report every documentation area and growth suggestion, even for a Saga that holds only reviews")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1089,19 +1090,18 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	// A Saga that holds only reviews is reported review first, and offers
-	// to grow gradually; asking with --growth, or a Saga that already grew,
-	// gets the full report.
-	if *growth {
-		status.Growth.Offer = growthOfferFull
+	// A Saga that holds only reviews is reported review first; asking with
+	// --full, or a Saga that documents the application, gets the full report.
+	if *full {
+		status.Documentation.Report = reportFull
 	}
-	status.NextActions = reviewFirstActions(status.NextActions, status.Growth)
+	status.NextActions = reviewFirstActions(status.NextActions, status.Documentation)
 	switch {
 	case *jsonOutput:
 		if err := writeJSON(out, status); err != nil {
 			return err
 		}
-	case status.Growth.Offer == growthOfferFull:
+	case status.Documentation.Report == reportFull:
 		printReport(out, status, *maxItems)
 		printComparison(out, status.Comparison, *maxItems)
 		printLivingStatus(out, status, *maxItems)

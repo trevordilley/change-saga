@@ -15,34 +15,25 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// Growth offers are how prominently status suggests growing the Saga beyond
-// its reviews. A review-only Saga that holds no more than growthAfterReviews
-// reviews gets one quiet line; past that, a short section; and whoever asks
-// (status --growth), or a Saga that already holds living documentation, gets
-// the full report.
+// Report shapes. A Saga that holds only reviews is reported review first:
+// the review's coverage and what it asks, and nothing about documentation it
+// never adopted. A Saga with living documentation, or anyone who asks with
+// status --full, gets the full report. Nothing is counted or offered: a team
+// may never grow its Saga beyond reviews, and that is fine.
 const (
-	growthOfferQuiet     = "quiet"
-	growthOfferProminent = "prominent"
-	growthOfferFull      = "full"
-	// growthAfterReviews is "a couple": creating the universe happens after
-	// a couple of reviews, so the offer grows louder only past it.
-	growthAfterReviews = 2
-	// prominentGrowthSuggestions is how many growth suggestions the short
-	// section shows.
-	prominentGrowthSuggestions = 3
+	reportReviewFirst = "review_first"
+	reportFull        = "full"
 )
 
-// growthState says whether the Saga has grown beyond its reviews and how
-// prominently status offers to grow it. It never blocks anything.
-type growthState struct {
+// documentationState says whether the Saga documents the application beyond
+// its reviews, and which report status gave. It never blocks anything.
+type documentationState struct {
 	// LivingDocumentation is true once the Saga holds any record beyond its
 	// pull request reviews: a feature, a deck, the overview, a persona, a
 	// story, a term, and so on.
 	LivingDocumentation bool `json:"living_documentation"`
-	// Reviews counts every review the Saga holds, open or merged.
-	Reviews int `json:"reviews"`
-	// Offer is quiet, prominent, or full.
-	Offer string `json:"offer"`
+	// Report is review_first or full.
+	Report string `json:"report"`
 }
 
 // reviewOnlyEntries are the top-level entries of a Saga that holds nothing but
@@ -77,16 +68,12 @@ func holdsLivingDocumentation(root string) bool {
 	return false
 }
 
-// growthOf decides the growth offer. A Saga with living documentation has
-// opted into it, so its report is the full one; so is every report someone
-// asks to grow.
-func growthOf(root string, document *saga.Saga, asked bool) growthState {
-	state := growthState{LivingDocumentation: holdsLivingDocumentation(root), Reviews: len(document.Reviews), Offer: growthOfferQuiet}
-	switch {
-	case asked || state.LivingDocumentation:
-		state.Offer = growthOfferFull
-	case state.Reviews > growthAfterReviews:
-		state.Offer = growthOfferProminent
+// documentationOf decides the report: full for a Saga with living
+// documentation, which opted into it, or when asked; review first otherwise.
+func documentationOf(root string, asked bool) documentationState {
+	state := documentationState{LivingDocumentation: holdsLivingDocumentation(root), Report: reportReviewFirst}
+	if asked || state.LivingDocumentation {
+		state.Report = reportFull
 	}
 	return state
 }
@@ -150,25 +137,17 @@ func ptrInvocation(value grammar.Invocation) *grammar.Invocation { return &value
 
 // reviewFirstActions keeps what a review-only Saga asks of its author: the
 // review's own gaps and anything existing that broke. The implementation
-// deck's changed-source actions are left out, because the review deck is
-// what explains the change; growth follows the offer.
-func reviewFirstActions(actions []nextaction.Action, growth growthState) []nextaction.Action {
-	if growth.Offer == growthOfferFull {
+// deck's changed-source actions and documentation growth suggestions are left
+// out, because the review deck is what explains the change.
+func reviewFirstActions(actions []nextaction.Action, documentation documentationState) []nextaction.Action {
+	if documentation.Report == reportFull {
 		return actions
 	}
 	result := []nextaction.Action{}
-	suggested := 0
 	for _, action := range actions {
-		switch action.Category {
-		case nextaction.CategorySource:
-			continue
-		case nextaction.CategoryGrowth:
-			if growth.Offer != growthOfferProminent || suggested >= prominentGrowthSuggestions {
-				continue
-			}
-			suggested++
+		if action.Category != nextaction.CategorySource && action.Category != nextaction.CategoryGrowth {
+			result = append(result, action)
 		}
-		result = append(result, action)
 	}
 	return result
 }
@@ -198,20 +177,5 @@ func printReviewHeadline(out io.Writer, status statusDocument, maxItems int) {
 	} else {
 		fmt.Fprintf(out, " (%d not yet explained).\n", area.Uncovered)
 		printGaps(out, area, maxItems)
-	}
-}
-
-// printGrowthOffer prints the growth offer of a review-only Saga: one quiet
-// line, or past a couple of reviews a short section with the guided setup and
-// the first few suggestions (printed with the other actions).
-func printGrowthOffer(out io.Writer, status statusDocument) {
-	switch status.Growth.Offer {
-	case growthOfferQuiet:
-		fmt.Fprintf(out, "\nGrowing the Saga is optional: personas, stories, features, and living documentation can come after a few reviews (change-saga status --growth %s).\n", status.sagaPath)
-	case growthOfferProminent:
-		fmt.Fprintf(out, "\nGrow the Saga (optional, never required): it holds %d reviews and no living documentation yet.\n", status.Growth.Reviews)
-		fmt.Fprintln(out, "  When the team wants the app itself documented, with personas, stories, features, and design that stay current as reviews land,")
-		fmt.Fprintln(out, "  run change-saga setup-initial-saga for a guided interview, or take one small step below.")
-		fmt.Fprintf(out, "  Every suggestion: change-saga status --growth %s\n", status.sagaPath)
 	}
 }
