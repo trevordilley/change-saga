@@ -97,10 +97,13 @@ type SlideSemanticDiff struct {
 }
 
 type SlideTransactionResult struct {
-	OK               bool              `json:"ok"`
-	Operation        string            `json:"operation"`
-	DryRun           bool              `json:"dry_run"`
-	Replayed         bool              `json:"replayed"`
+	OK        bool   `json:"ok"`
+	Operation string `json:"operation"`
+	DryRun    bool   `json:"dry_run"`
+	Replayed  bool   `json:"replayed"`
+	// Unchanged is set when an update matched the current revision exactly:
+	// nothing was published and Snapshot is still the current one.
+	Unchanged        bool              `json:"unchanged,omitempty"`
 	Target           string            `json:"target"`
 	PreviousSnapshot string            `json:"previous_snapshot,omitempty"`
 	Snapshot         string            `json:"snapshot"`
@@ -347,6 +350,15 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 				return fmt.Errorf("expected_snapshot mismatch: got %q, current is %q", request.ExpectedSnapshot, actual)
 			}
 			revision.ParentSnapshots = []string{heads[0]}
+			if recordExists && previous != nil {
+				if _, changed := slideTransactionDiff(deck, previous, &revision); len(changed) == 0 {
+					// Republishing the current revision unchanged (apply-slide
+					// --print-current applied as printed) appends nothing.
+					result = transactionResult(deck, target, recordPath, root, request.Operation, dryRun, false, previous, previous)
+					result.Unchanged = true
+					return nil
+				}
+			}
 		} else {
 			if !recordExists || existing == nil {
 				return fmt.Errorf("reconcile requires an existing complete-slide transaction with divergent heads")
@@ -1011,8 +1023,15 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 	repo := flags.String("repo", "", "code repository used to verify every exact evidence digest")
 	dryRun := flags.Bool("dry-run", false, "validate and return the semantic diff without publishing")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
+	printCurrent := flags.String("print-current", "", "print the slide's complete current request, ready to edit and apply, instead of applying one")
 	if err := flags.Parse(args); err != nil {
 		return err
+	}
+	if *printCurrent != "" {
+		if flags.NArg() != 1 || *from != "" || *dryRun {
+			return fmt.Errorf("usage: %s", commandUsage["apply-slide"])
+		}
+		return printCurrentSlideRequest(flags.Arg(0), *printCurrent, *review, out)
 	}
 	if flags.NArg() != 1 || *from == "" {
 		return fmt.Errorf("usage: %s", commandUsage["apply-slide"])
@@ -1062,7 +1081,43 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 		verb = "Would apply"
 	} else if result.Replayed {
 		verb = "Replayed"
+	} else if result.Unchanged {
+		verb = "Unchanged (nothing to publish):"
 	}
 	fmt.Fprintf(out, "%s complete slide %s\nSnapshot: %s\nChanged IDs: %s\n", verb, result.Target, result.Snapshot, strings.Join(result.ChangedIDs, ", "))
 	return nil
+}
+
+// printCurrentSlideRequest prints the complete request that republishes a
+// managed slide's current revision, with a fresh request_id, so an author
+// edits one field and applies it instead of rebuilding the whole slide.
+// With review, a slide ID or target names that review's slide.
+func printCurrentSlideRequest(root, target, review string, out io.Writer) error {
+	document, _, err := saga.Load(root)
+	if err != nil {
+		return err
+	}
+	var slide *saga.Slide
+	if review != "" {
+		owner := document.FindReview(review)
+		if owner == nil {
+			return fmt.Errorf("review %q does not exist", review)
+		}
+		slide = owner.Slide(target)
+	} else if slide, err = findManagedSlide(document, target); err != nil {
+		return err
+	}
+	if slide == nil {
+		return fmt.Errorf("slide %q does not exist", target)
+	}
+	request, err := currentSlideRequest(document, slide)
+	if err != nil {
+		return err
+	}
+	sum := sha256.Sum256([]byte(request.ExpectedSnapshot))
+	request.RequestID = request.Slide.ID + "-" + hex.EncodeToString(sum[:])[:8] + "-edit"
+	if len(request.RequestID) > 128 {
+		request.RequestID = "edit-" + hex.EncodeToString(sum[:])[:16]
+	}
+	return writeJSON(out, request)
 }

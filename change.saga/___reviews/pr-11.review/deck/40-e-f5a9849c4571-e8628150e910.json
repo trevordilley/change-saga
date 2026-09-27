@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "start": 563,
+      "end": 654,
+      "digest": "sha256:228e5265ab08433a55e1be627808102d19c573574427e4778478f7401f42c2b5",
+      "note": "One complete-slide update per managed slide with only the evidence changed."
+    }
+  ]
+}

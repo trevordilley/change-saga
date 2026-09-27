@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "rule",
+  "slide": "signal",
+  "rank": 0,
+  "kind": "node",
+  "label": "One rule",
+  "description": "Classifies stale references as made stale by the change or pre-existing, across evidence, terms, claims, quality and inventory.",
+  "selector": {
+    "type": "element",
+    "element_id": "rule"
+  }
+}

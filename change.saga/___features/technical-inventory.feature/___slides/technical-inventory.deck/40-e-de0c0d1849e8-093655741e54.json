@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "a0ddce8def26d380a77de0e119892d95abc48274",
+      "commit": "a7e1e706a0424e0bafd86729788049e057c6561f",
       "path": "internal/cli/reconciliation.go",
-      "start": 275,
-      "end": 317,
-      "digest": "sha256:970eb101bd879d0722ce68b09200d7d19adb7dd52a8f081a295616cb58a4e0ec",
+      "start": 404,
+      "end": 452,
+      "digest": "sha256:35755cedc0604dc30a41a37e1a40742e9003d105867972f94dd272c0074095dc",
       "note": "Current reconciliation classifies baseline debt, queues affected records for reassessment and routes typed slide repairs. Inventory-aware selection impact is proposed."
     },
     {

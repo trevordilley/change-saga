@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "pr-11",
+  "title": "Make repairing stale evidence and review coverage cheap for agents",
+  "role": "review",
+  "rank": 0,
+  "objective": "Make repairing stale evidence and review coverage cheap for agents: the tool says where to look and proposes the mechanical fix; the agent keeps the judgment."
+}

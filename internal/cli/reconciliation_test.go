@@ -1,7 +1,10 @@
 package cli
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
+	"errors"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -60,6 +63,30 @@ func TestReconciliationHeadCurrencyAndRepairLoop(t *testing.T) {
 	}
 	if repair == nil || !story || repair.Repair[0].Command != "replace-coverage" {
 		t.Fatalf("queue: %+v", report.Queue)
+	}
+	if last := repair.Repair[len(repair.Repair)-1]; last.Command != "repin" || !strings.Contains(strings.Join(last.Argv, " "), "--accept-proposed --record "+repair.EvidenceFile+" --reference 1") {
+		t.Fatalf("a stale reference with a proposal offers its one-line accept last: %+v", repair.Repair)
+	}
+	if report.Summary.StaleByChange.Count != 1 || report.Summary.StaleByChange.Proposed != 1 || report.Summary.Queue.StaleByChange != 1 {
+		t.Fatalf("summary: %+v", report.Summary)
+	}
+	var text bytes.Buffer
+	if err := Reconcile(context.Background(), []string{"--against", "main", root}, &text); err != nil {
+		t.Fatal(err)
+	}
+	lines := strings.Split(text.String(), "\n")
+	if len(lines) < 3 || lines[1] != "Your change made 1 reference stale:" || !strings.Contains(lines[2], "src/queue.go#L3-L6 -> src/queue.go#L3-L6") {
+		t.Fatalf("reconcile must lead with what the change made stale:\n%s", text.String())
+	}
+	text.Reset()
+	if err := Status(context.Background(), []string{"--against", "main", root}, &text); err != nil {
+		var exit *StatusError
+		if !errors.As(err, &exit) {
+			t.Fatal(err)
+		}
+	}
+	if !strings.Contains(text.String(), "Your change made 1 reference stale:\n  urn:change-saga:shop:fragment:queue-design  src/queue.go#L3-L6 -> src/queue.go#L3-L6") {
+		t.Fatalf("status must say what the change made stale:\n%s", text.String())
 	}
 	mustRun(t, ReplaceCoverage, "--record", repair.EvidenceFile, "--target", repair.Resource, "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
 	mustRun(t, Validate, "--json", root)
@@ -179,7 +206,7 @@ func TestReconciliationTransactionRepairUsesSnapshot(t *testing.T) {
 			break
 		}
 	}
-	if task == nil || len(task.Repair) != 1 || task.Repair[0].Command != "apply-slide" || task.Inspect[0].Command != "query slide" {
+	if task == nil || len(task.Repair) != 2 || task.Repair[0].Command != "apply-slide" || task.Repair[1].Command != "repin" || task.Inspect[0].Command != "query slide" {
 		t.Fatalf("transaction route: %+v", task)
 	}
 	if report.Currency.Unknown != 1 || report.Currency.BaselineAvailable {
@@ -274,8 +301,30 @@ func TestReconciliationPreservesTestEvidenceDiffCoverage(t *testing.T) {
 	if report.DocumentationCoverage.Areas.Implementation.Total != 3 || report.DocumentationCoverage.Areas.Implementation.Covered != 2 || report.DocumentationCoverage.Areas.Implementation.Uncovered != 1 {
 		t.Fatalf("lost current test evidence coverage: %+v", report.DocumentationCoverage.Areas.Implementation)
 	}
-	if gap := report.DocumentationCoverage.Areas.Implementation.UncoveredEntries[0]; gap.Event != "add" {
+	gap := report.DocumentationCoverage.Areas.Implementation.UncoveredEntries[0]
+	if gap.Event != "add" {
 		t.Fatalf("a focused line reference must not swallow the file event: %+v", gap)
+	}
+	// A documentation gap's detail keeps its established JSON format; only
+	// the text report rewords a file event as "file add".
+	found := false
+	for _, task := range report.Queue {
+		if task.Kind == "documentation_gap" && task.Resource == gap.Resource {
+			found = true
+			if want := gap.Reason + "; " + gap.Side + " lines " + gap.Lines + " " + gap.Event; task.Because[0].Detail != want {
+				t.Fatalf("documentation_gap detail = %q, want %q", task.Because[0].Detail, want)
+			}
+		}
+	}
+	if !found {
+		t.Fatalf("no documentation_gap task for %s: %+v", gap.Resource, report.Queue)
+	}
+	var text bytes.Buffer
+	if err := Reconcile(context.Background(), []string{"--against", "main", root}, &text); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(text.String(), "  "+gap.Resource+": file add\n") {
+		t.Fatalf("the text report names the file event:\n%s", text.String())
 	}
 }
 

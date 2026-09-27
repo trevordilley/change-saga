@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/references.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:7cc7c574574bc1e6c8ba4d4d398dca9e335dbf8fc60bc64e5e5ee89660ba1ca7",
+      "note": "references --stale computes and prints each proposal and accept command."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/references.go",
+      "start": 97,
+      "end": 101,
+      "digest": "sha256:b2a0bd40b070068a404b975d13e841bdee69ca5136eac63865d2a7c77a4f65ed",
+      "note": "references --stale computes and prints each proposal and accept command."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/references.go",
+      "start": 171,
+      "end": 175,
+      "digest": "sha256:4e15f4969173d3f3d35fd105d93fb5c6c6811ed8abb7062b64d45491b7921ef0",
+      "note": "references --stale computes and prints each proposal and accept command."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/references.go",
+      "start": 212,
+      "end": 222,
+      "digest": "sha256:18e1fd9e4c7068303879d4734ddf30e57b145e61547d393e60e3908b4a2341e0",
+      "note": "references --stale computes and prints each proposal and accept command."
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui, sans-serif">
+  <rect width="1280" height="720" fill="#f7f8fa"/>
+  <text x="40" y="56" font-size="30" font-weight="700" fill="#1d2433">The skill, the guide and check teach the cheaper flow</text>
+  <text x="40" y="90" font-size="17" fill="#4a5568">Nothing new blocks: accepting stays explicit, and existing commands and JSON fields keep working.</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
+  <g id="skill">
+    <rect x="40" y="130" width="580" height="260" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="58" y="164" font-size="20" font-weight="700" fill="#1d3a7a">skills/change-saga</text>
+    <text x="58" y="192" font-size="15" fill="#1d2433">Review fast path step 8: refresh-coverage after a push,</text>
+    <text x="58" y="214" font-size="15" fill="#1d2433">then accept proposals after reading their diffs.</text>
+    <text x="58" y="236" font-size="15" fill="#1d2433">Workflow: reconcile leads with what the change made</text>
+    <text x="58" y="258" font-size="15" fill="#1d2433">stale; leave older debt to an upkeep pass.</text>
+    <text x="58" y="280" font-size="15" fill="#1d2433">diagrams.md and integration.md: the repair loop,</text>
+    <text x="58" y="302" font-size="15" fill="#1d2433">--print-current instead of hand-built requests.</text>
+  </g>
+  <g id="guide">
+    <rect x="660" y="130" width="580" height="260" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
+    <text x="678" y="164" font-size="20" font-weight="700" fill="#1f5c34">docs/reconciliation.md and CHANGELOG</text>
+    <text x="678" y="192" font-size="15" fill="#1d2433">Start from what this change made stale; proposed</text>
+    <text x="678" y="214" font-size="15" fill="#1d2433">ranges and their refusals; accept or revise;</text>
+    <text x="678" y="236" font-size="15" fill="#1d2433">keeping a review deck current; the changelog entry.</text>
+  </g>
+  <g id="check-note">
+    <rect x="40" y="440" width="1200" height="220" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>
+    <text x="58" y="474" font-size="20" font-weight="700" fill="#7a4d05">check --covers review agrees with status for a rewritten review</text>
+    <text x="58" y="502" font-size="15" fill="#1d2433">A HEAD-following review whose evidence was amended, rebased or squashed away used to get &quot;no review follows HEAD; create one&quot;.</text>
+    <text x="58" y="524" font-size="15" fill="#1d2433">Now the area note says, like status: &quot;pr-d follows HEAD, but none of its evidence is in this change ...; if it is this</text>
+    <text x="58" y="546" font-size="15" fill="#1d2433">change&#x27;s review, pin it: change-saga review follow --review pr-d --head feature/d&quot;. The branch is read once and shared.</text>
+  </g>
+</svg>

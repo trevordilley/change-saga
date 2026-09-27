@@ -49,6 +49,15 @@ before drawing slides; nothing else is needed.
 7. Commit the Saga with the change. Reviewers can collapse `change.saga` in
    the pull request's file tree and open the deck with `change-saga open
    change.saga`.
+8. After each later push, `change-saga review refresh-coverage --review ID
+   change.saga` re-pins what only moved. New lines are reported uncovered,
+   with the one Item covering their file as the proposed owner: read them,
+   and only if that Item's explanation covers them accept with the printed
+   `review refresh-coverage --review ID --accept-proposed --path P
+   [--note TEXT]`. It lists stale references (an edit landed inside) with a
+   proposed range and diff: read each, then accept with the printed
+   `change-saga repin --accept-proposed --record FILE --reference N
+   change.saga`, or revise the explanation if it no longer holds.
 
 Coverage is an omission check, not proof that a slide is right. Never widen a
 selector just to finish coverage.
@@ -186,6 +195,11 @@ history rather than rewriting what was previously known.
    Only when the Saga already holds living documentation (its `status --json`
    reports `growth.living_documentation`), or the user asks, then after the
    PR review deck run `change-saga reconcile --against <base> --json <saga>`.
+   It opens with "Your change made N references stale", each with its old and
+   proposed range; read the diff and accept a proposal that still means the
+   same with `change-saga repin --accept-proposed`, or revise the explanation.
+   Debt that predates the change is a count (`--all` lists it); leave it to a
+   separate upkeep pass unless asked.
    Inspect the queue, reassess affected living documentation, make justified
    repairs through typed public paths, then reconcile again. Review coverage
    is independent of HEAD documentation currency; retain baseline debt and

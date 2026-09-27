@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "start": 477,
+      "end": 562,
+      "digest": "sha256:ce2913b4c6296ccec3e76f5aa11141ae9815a863739eefc7e19ab23f03c11fcc",
+      "note": "evidenceEdit and the in-place rewrite of plain evidence files."
+    }
+  ]
+}

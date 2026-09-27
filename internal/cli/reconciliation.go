@@ -26,6 +26,9 @@ import (
 // Reconciliation is a read-only omission/impact report, never a verdict or a
 // mutation plan. Its currency axis deliberately does not use coverage.Sides.
 type reconciliationReport struct {
+	// Summary leads with what this change did: the references it made stale,
+	// each with a proposed range, and counts for everything else.
+	Summary               reconciliationSummary   `json:"summary"`
 	Snapshot              string                  `json:"snapshot"`
 	Schema                string                  `json:"schema"`
 	Opening               opening                 `json:"opening"`
@@ -40,6 +43,35 @@ type reconciliationReport struct {
 	Diagnostics           []changeview.Diagnostic `json:"diagnostics"`
 	Limits                []string                `json:"limits"`
 	Recheck               []grammar.Invocation    `json:"recheck"`
+}
+
+// reconciliationSummary is the compact answer. StaleByChange applies one rule
+// everywhere (status, review list, reconcile): stale at the head and either
+// current at the merge-base or pinned during the change.
+type reconciliationSummary struct {
+	StaleByChange changeStaleness `json:"stale_by_change"`
+	// Queue counts the queue's tasks by what they ask: this change's stale
+	// references, documentation gaps in changed code, records to re-read,
+	// debt that predates the change, and the rest.
+	Queue reconciliationQueueCounts `json:"queue"`
+}
+
+// reconciliationSummaryReport is reconcile --json --summary.
+type reconciliationSummaryReport struct {
+	Summary  reconciliationSummary `json:"summary"`
+	Snapshot string                `json:"snapshot"`
+	Schema   string                `json:"schema"`
+	Opening  opening               `json:"opening"`
+	Recheck  []grammar.Invocation  `json:"recheck"`
+}
+
+type reconciliationQueueCounts struct {
+	Total             int `json:"total"`
+	StaleByChange     int `json:"stale_by_change"`
+	DocumentationGaps int `json:"documentation_gaps"`
+	Reassess          int `json:"reassess"`
+	PreExisting       int `json:"pre_existing"`
+	Other             int `json:"other"`
 }
 
 type reconciliationCurrency struct {
@@ -64,6 +96,8 @@ type reconciliationReference struct {
 	Head coderesolve.Resolution  `json:"head"`
 	Base *coderesolve.Resolution `json:"base,omitempty"`
 	Debt string                  `json:"debt"`
+	// Proposal is a stale reference's proposed range at the head.
+	Proposal *coderesolve.Proposal `json:"proposal,omitempty"`
 }
 
 type reconciliationTask struct {
@@ -83,6 +117,8 @@ func Reconcile(ctx context.Context, args []string, out io.Writer) error {
 	defer endGit()
 	flags := commandFlags("reconcile", commandUsage["reconcile"], out)
 	jsonOutput := flags.Bool("json", false, "emit the complete reconciliation queue as JSON")
+	summaryOnly := flags.Bool("summary", false, "with --json, emit only the summary, opening, and recheck commands")
+	all := flags.Bool("all", false, "list the tasks of stale references and health problems that predate this change too")
 	repo := flags.String("repo", "", "source repository checkout when separate")
 	opening := registerOpenFlags(flags)
 	allowMismatch := flags.Bool("allow-repository-mismatch", false, "accept a checkout whose origin differs")
@@ -96,10 +132,24 @@ func Reconcile(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if *jsonOutput && *summaryOnly {
+		return writeJSON(out, reconciliationSummaryReport{report.Summary, report.Snapshot, report.Schema, report.Opening, report.Recheck})
+	}
 	if *jsonOutput {
 		return writeJSON(out, report)
 	}
 	fmt.Fprintf(out, "Documentation reconciliation %s..%s\n", shortOID(report.Opening.BaseOID), shortOID(report.Opening.HeadOID))
+	hint := "; their tasks: rerun with --all"
+	if *all {
+		hint = "; their tasks are listed below"
+	}
+	printChangeStaleness(out, report.Summary.StaleByChange, hint)
+	for _, row := range report.Summary.StaleByChange.References {
+		if row.Accept != nil {
+			fmt.Fprintf(out, "  accept %s after reading its diff: %s\n", shortLocation(row.Pinned), renderReconciliationCommand(*row.Accept))
+		}
+	}
+	fmt.Fprintln(out)
 	fmt.Fprintf(out, "HEAD currency: %d current (%d remapped), %d stale: %d pre-existing, %d regressions, %d introduced, %d baseline unknown, %d historical\n", report.Currency.Current, report.Currency.Remapped, report.Currency.Stale, report.Currency.PreExisting, report.Currency.Regressions, report.Currency.Introduced, report.Currency.Unknown, report.Currency.HistoricalStale)
 	fmt.Fprintf(out, "Technical inventory: %d/%d references current; stale %d (%d regressions, %d introduced, %d pre-existing, %d baseline unknown); %d affected by code changes; %d Item pins not current; %d unresolved; %d unreferenced need a user choice\n", report.Inventory.Current, report.Inventory.References, report.Inventory.Stale, report.Inventory.Regressions, report.Inventory.Introduced, report.Inventory.PreExisting, report.Inventory.Unknown, report.Inventory.Affected, report.Inventory.PinProblems, report.Inventory.Unresolved, report.Inventory.Unreferenced)
 	fmt.Fprintf(out, "Documentation diff coverage: %d/%d; open review decks: %d (independent ranges and coverage in --json)\n", report.DocumentationCoverage.Areas.Implementation.Covered, report.DocumentationCoverage.Areas.Implementation.Total, len(report.ReviewCoverage))
@@ -108,7 +158,23 @@ func Reconcile(ctx context.Context, args []string, out io.Writer) error {
 			fmt.Fprintf(out, "  Review %s: %d/%d changed lines in %s..%s\n", review.ID, review.Coverage.Summary.Covered, review.Coverage.Summary.Total, shortOID(review.Coverage.BaseOID), shortOID(review.Coverage.HeadOID))
 		}
 	}
+	hidden := 0
+	var gaps, reassess, choices []reconciliationTask
 	for _, task := range report.Queue {
+		switch {
+		case task.Debt == "pre_existing" && !*all:
+			hidden++
+			continue
+		case task.Kind == "documentation_gap":
+			gaps = append(gaps, task)
+			continue
+		case task.Debt == "reassess":
+			reassess = append(reassess, task)
+			continue
+		case task.Debt == "needs_user_choice":
+			choices = append(choices, task)
+			continue
+		}
 		fmt.Fprintf(out, "\n%s [%s; %s]\n", task.Resource, task.Kind, task.Debt)
 		for _, cause := range task.Because {
 			fmt.Fprintf(out, "  %s: %s", cause.Kind, cause.Detail)
@@ -124,6 +190,38 @@ func Reconcile(ctx context.Context, args []string, out io.Writer) error {
 		for _, command := range task.Repair {
 			fmt.Fprintln(out, "  repair shape (supply author inputs): "+renderReconciliationCommand(command))
 		}
+	}
+	if len(gaps) > 0 {
+		fmt.Fprintf(out, "\nDocumentation gaps: %d changed ranges no living record explains (review-deck evidence does not fill them)\n", len(gaps))
+		for _, task := range gaps {
+			fmt.Fprintf(out, "  %s: %s\n", task.Resource, gapWhere(task.Because[0].Detail))
+		}
+		if len(gaps[0].Repair) > 0 {
+			fmt.Fprintln(out, "  Choose narrow semantic owners and cover each: "+renderReconciliationCommand(gaps[0].Repair[0]))
+		}
+	}
+	if len(reassess) > 0 {
+		fmt.Fprintf(out, "\nRe-read: %d records this change affects through declared links; edit only where the meaning no longer holds\n", len(reassess))
+		for _, task := range reassess {
+			detail := ""
+			if len(task.Because) > 0 {
+				detail = " (" + task.Because[0].Kind + ": " + task.Because[0].Detail + ")"
+			}
+			fmt.Fprintf(out, "  %s [%s]%s\n", task.Resource, task.Kind, detail)
+		}
+	}
+	if len(choices) > 0 {
+		fmt.Fprintf(out, "\nNeeds a user choice: %d records; ask the user before referencing, proposing, or retiring them (inspect and repair shapes in --json)\n", len(choices))
+		for _, task := range choices {
+			detail := ""
+			if len(task.Because) > 0 {
+				detail = " (" + task.Because[0].Detail + ")"
+			}
+			fmt.Fprintf(out, "  %s [%s]%s\n", task.Resource, task.Kind, detail)
+		}
+	}
+	if hidden > 0 {
+		fmt.Fprintf(out, "\n%d tasks for debt that predates this change are not listed; rerun with --all (or read queue in --json)\n", hidden)
 	}
 	for _, diagnostic := range report.Diagnostics {
 		fmt.Fprintf(out, "Note %s: %s\n", diagnostic.Code, diagnostic.Message)
@@ -316,6 +414,8 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 			}
 		} else {
 			result.Currency.Stale++
+			proposal := resolver.Propose(ctx, ref.Code, compared.Opening.HeadOID)
+			row.Proposal = &proposal
 			if len(row.HistoryReasons) > 0 {
 				result.Currency.HistoricalStale++
 				result.Currency.References = append(result.Currency.References, row)
@@ -338,9 +438,17 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 			task := reconciliationRoute(root, repo, compared.Opening.HeadOID, allowMismatch, document, tests, ref.Owner, ref.Kind)
 			task.Debt, task.EvidenceFile, task.Reference = row.Debt, ref.EvidenceFile, ref.Index
 			task.Because = []changeview.Cause{{Kind: "head_currency", Detail: resolution.Reason, Via: ref.Code.Location().String()}}
+			accept := acceptInvocation(ref, compared.Opening.HeadOID, root, repo)
+			if !row.Proposal.Proposed() || layers.Saga.Head.Source == changeview.SideGit {
+				accept = nil
+			}
 			if ref.Kind == "evidence" && len(task.Repair) == 0 {
 				task.Repair = []grammar.Invocation{reconciliationInvoke("replace-coverage", root, repo, allowMismatch, grammar.V("record", ref.EvidenceFile), grammar.V("target", ref.Owner), grammar.V("commit", compared.Opening.HeadOID), grammar.V("path", ref.Code.Path), grammar.V("lines", ""), grammar.V("dry-run", "true")), grammar.MustInvoke("remove-coverage", root, grammar.V("record", ref.EvidenceFile), grammar.V("dry-run", "true"))}
 				task.Guidance += " Replacement owns the whole evidence file; preserve other references in a reviewed --batch request. Remove only obsolete evidence."
+			}
+			if accept != nil {
+				task.Repair = append(task.Repair, *accept)
+				task.Guidance = "Proposed " + describeProposal(ref.Code.Location(), *row.Proposal) + ". Read the diff inside the range; if the explanation still holds, accept it with the repin --accept-proposed repair, which keeps the note and owner. Otherwise revise the explanation. " + task.Guidance
 			}
 			result.Queue = append(result.Queue, task)
 		}
@@ -352,6 +460,8 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		if entry.Side == "old" {
 			commit = compared.Opening.BaseOID
 		}
+		// The detail keeps its established JSON format; the text report
+		// rewords it (gapWhere).
 		task := reconciliationTask{Resource: entry.Resource, Kind: "documentation_gap", Debt: "uncovered_change",
 			Because:  []changeview.Cause{{Kind: "diff_coverage", Detail: entry.Reason + "; " + entry.Side + " lines " + entry.Lines + " " + entry.Event}},
 			Guidance: "Read the changed code and current explanation, then choose narrow semantic owners. Supply an exact reference per owner; review-deck evidence does not fill this documentation gap. For a transaction-managed Item, use query slide and apply-slide instead of cover.",
@@ -411,6 +521,23 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		}
 		return a.Reference < b.Reference
 	})
+	result.Summary.StaleByChange = measureChangeStaleness(ctx, resolver, append(append([]ownedReference{}, owned...), inventoryReferences(document)...), historical, compared.Opening.BaseOID, compared.Opening.HeadOID, root, repo, writtenDuringChange(ctx, root, resolver.Repository(), compared.Opening.BaseOID, compared.Opening.HeadOID))
+	counts := &result.Summary.Queue
+	for _, task := range result.Queue {
+		counts.Total++
+		switch {
+		case task.Kind == "documentation_gap":
+			counts.DocumentationGaps++
+		case task.Debt == "reassess":
+			counts.Reassess++
+		case task.Debt == "pre_existing":
+			counts.PreExisting++
+		case len(task.Because) > 0 && task.Because[0].Kind == "head_currency" && (task.Debt == "regression" || task.Debt == "introduced"):
+			counts.StaleByChange++
+		default:
+			counts.Other++
+		}
+	}
 	result.Recheck = []grammar.Invocation{grammar.MustInvoke("validate", root, grammar.V("json", "true")), reconciliationInvoke("reconcile", root, repo, allowMismatch, grammar.V("against", compared.Opening.BaseOID), grammar.V("head", compared.Opening.HeadOID), grammar.V("json", "true"))}
 	after, err := reviewapp.Snapshot(ctx, root, opened.changes)
 	if err != nil {
@@ -424,6 +551,18 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 
 // Match immutable reference identity and bytes, not merely its array position.
 // New or revised evidence cannot inherit an old record's debt classification.
+// gapWhere is where a documentation gap's detail says the gap is, for the
+// text report: its side and lines, or "file <event>" for a file event.
+func gapWhere(detail string) string {
+	if index := strings.LastIndex(detail, "; "); index >= 0 {
+		detail = detail[index+2:]
+	}
+	if _, event, ok := strings.Cut(detail, " lines  "); ok && event != "" {
+		return "file " + event
+	}
+	return strings.TrimSpace(detail)
+}
+
 func reconciliationReferenceKey(ref ownedReference) string {
 	data, _ := json.Marshal(ref)
 	return string(data)

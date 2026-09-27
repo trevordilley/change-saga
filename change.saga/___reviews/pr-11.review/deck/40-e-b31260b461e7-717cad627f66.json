@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/refresh_coverage.go",
+      "start": 33,
+      "end": 53,
+      "digest": "sha256:20941148f067405e031d5962e3226bc40beb0458076bd374b7cfcd456db5aca2",
+      "note": "What remains uncovered, coalesced into runs, reported with the one holding Item as proposed owner and given to it only with --accept-proposed under a neutral note."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/refresh_coverage.go",
+      "start": 233,
+      "end": 340,
+      "digest": "sha256:02971c1dc291f8893464e6581cda908927f0eef9e7c2e1600e1a8b2f0cfbae79",
+      "note": "What remains uncovered, coalesced into runs, reported with the one holding Item as proposed owner and given to it only with --accept-proposed under a neutral note."
+    }
+  ]
+}

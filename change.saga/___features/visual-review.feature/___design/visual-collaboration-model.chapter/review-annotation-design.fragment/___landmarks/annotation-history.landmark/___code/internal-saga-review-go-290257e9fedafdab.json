@@ -10,11 +10,11 @@
       "note": "Spatial feedback and replies persist without modifying the source visual."
     },
     {
-      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 220,
-      "end": 257,
-      "digest": "sha256:58445b5a574ea448096cd58bec6af3c5fc4ab3f24a0345661a5796ff5f1cbb33",
+      "start": 238,
+      "end": 280,
+      "digest": "sha256:b36a1300ee752b818f4b4386db23ab0dabf40593d4d87a530b2d2fe5475250dd",
       "note": "Spatial feedback and replies persist without modifying the source visual."
     }
   ]

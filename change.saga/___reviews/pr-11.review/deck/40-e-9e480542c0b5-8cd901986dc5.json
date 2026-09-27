@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/cli.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:9edea2eae84a101935921581043f77785270b18062587fcf84e5754177c16b25",
+      "note": "Usage and help for review refresh-coverage."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/cli.go",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:d0c27a8d3e37d613355e12c9427334c9f60e6502e74523a034e8af4dc3f37f04",
+      "note": "Usage and help for review refresh-coverage."
+    }
+  ]
+}

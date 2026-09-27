@@ -203,8 +203,13 @@ const unreviewedReason = "no review explains this change yet"
 // comparison (a stacked pull request) or cannot be read is never reported
 // complete for lines it does not explain. Observing, it is each open review
 // over its own range.
-func reviewArea(ctx context.Context, matched []reviewOfChange, reports []reviewstate.Report, changes gitdiff.ChangeSet, resolver coverage.Resolver) areas.Area {
+func reviewArea(ctx context.Context, matched []reviewOfChange, rewritten []*saga.Review, branch, root string, reports []reviewstate.Report, changes gitdiff.ChangeSet, resolver coverage.Resolver) areas.Area {
 	if changes.Mode == gitdiff.ModeCompare {
+		if len(matched) == 0 && len(rewritten) > 0 {
+			// Like status's headline: the review is most likely this change's,
+			// so it is pinned rather than duplicated.
+			return areas.ReviewOverChange(changes.Atoms, nil, func(gitdiff.Atom) string { return unreviewedReason }, rewrittenReviewNote(rewritten, branch, root))
+		}
 		if len(matched) == 0 {
 			return areas.ReviewOverChange(changes.Atoms, nil, func(gitdiff.Atom) string { return unreviewedReason }, "no review follows "+changes.Head+"; create one with change-saga review create")
 		}
@@ -312,6 +317,16 @@ func reviewAreaActions(area areas.Area, matched []reviewOfChange, changes gitdif
 	return actions
 }
 
+// rewrittenReviewNote says that reviews follow HEAD but their evidence was
+// rewritten, and how to pin the first to the branch.
+func rewrittenReviewNote(rewritten []*saga.Review, branch, root string) string {
+	ids := []string{}
+	for _, review := range rewritten {
+		ids = append(ids, review.ID)
+	}
+	return fmt.Sprintf("%s follows HEAD, but none of its evidence is in this change (amended, rebased, or squashed?); if it is this change's review, pin it: change-saga review follow --review %s --head %s %s", strings.Join(ids, ", "), ids[0], firstNonEmpty(branch, "BRANCH"), shellJoin([]string{root}))
+}
+
 // followReviewAction is the next action for a review that follows HEAD but
 // whose evidence was rewritten: it is most likely this change's review, so it
 // is pinned to the branch rather than duplicated.
@@ -365,7 +380,7 @@ func printReviewHeadline(out io.Writer, status statusDocument, maxItems int) {
 		return
 	case comparing && len(status.ChangeReviews) == 0 && len(status.RewrittenReviews) > 0:
 		fmt.Fprintf(out, "\nReview: none matched. %s follows HEAD, but none of its evidence is in this change (amended, rebased, or squashed?).\n", strings.Join(status.RewrittenReviews, ", "))
-		fmt.Fprintf(out, "  If it is this change's review, pin it: change-saga review follow --review %s --head BRANCH %s\n", status.RewrittenReviews[0], shellJoin([]string{status.sagaPath}))
+		fmt.Fprintf(out, "  If it is this change's review, pin it: change-saga review follow --review %s --head %s %s\n", status.RewrittenReviews[0], firstNonEmpty(status.branch, "BRANCH"), shellJoin([]string{status.sagaPath}))
 		return
 	case comparing && len(status.ChangeReviews) == 0:
 		fmt.Fprintf(out, "\nReview: none yet. No review explains the %d changed lines of this change.\n", area.Total)

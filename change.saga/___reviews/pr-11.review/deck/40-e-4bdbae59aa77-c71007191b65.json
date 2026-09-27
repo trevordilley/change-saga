@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/cli.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:93f57bff35e03ad632471d4f6911731fa50092669a9fbc5abebafb95e74a1e48",
+      "note": "apply-slide usage and help name --print-current."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/cli.go",
+      "start": 429,
+      "end": 429,
+      "digest": "sha256:25eaea4b2cdc46ed4f43ef4ea49a6f541c161014dc56f899904cd4dcc5e5fc43",
+      "note": "apply-slide usage and help name --print-current."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "command",
+  "slide": "refresh",
+  "rank": 30,
+  "kind": "node",
+  "label": "review refresh-coverage",
+  "description": "The command, its output, grammar and help, and its end-to-end tests.",
+  "selector": {
+    "type": "element",
+    "element_id": "command"
+  }
+}

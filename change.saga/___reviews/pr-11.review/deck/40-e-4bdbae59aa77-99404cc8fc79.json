@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 894,
+      "end": 894,
+      "digest": "sha256:498c1abe1674dc0ff582e67b075cd4c9e06786aaa50e1e186ed7e98578a3097a",
+      "note": "apply-slide --print-current prints it with a fresh request_id."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 898,
+      "end": 903,
+      "digest": "sha256:1efe1da73e7a0bb331399440526d9fdbca864bd07c4b777f1d1c39d41d400c70",
+      "note": "apply-slide --print-current prints it with a fresh request_id."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 952,
+      "end": 978,
+      "digest": "sha256:fa64a709f5ad23337039c104e29389aeed96c801e665023bb4a7bd3e09862689",
+      "note": "apply-slide --print-current prints it with a fresh request_id."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 95,
+      "end": 98,
+      "digest": "sha256:cfe921a33bd5844183ca0e265ec95dc5296f467cdb24afa0dac91ef676c59cbe",
+      "note": "An update identical to the current revision, such as the printed request applied as printed, publishes nothing and reports the slide unchanged."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 95,
+      "end": 101,
+      "digest": "sha256:6d5687a25fcd3ac0cce1fc91aacdd8b7dde9059fb7b592dc0f99858e9216b32e",
+      "note": "An update identical to the current revision, such as the printed request applied as printed, publishes nothing and reports the slide unchanged."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 318,
+      "end": 326,
+      "digest": "sha256:a42e5f8b35f4270e79ba7f4bc770427d46205781c7bb7b64397b65d26112eb02",
+      "note": "An update identical to the current revision, such as the printed request applied as printed, publishes nothing and reports the slide unchanged."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 946,
+      "end": 947,
+      "digest": "sha256:3430213b2e154dea902d5bfd8bfd654c2f384476d7a21cf1965b07fb92769b03",
+      "note": "An update identical to the current revision, such as the printed request applied as printed, publishes nothing and reports the slide unchanged."
+    }
+  ]
+}

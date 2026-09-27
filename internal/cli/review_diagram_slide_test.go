@@ -305,3 +305,51 @@ func TestReviewCoverageIsTheSameForApplySlideItems(t *testing.T) {
 		t.Fatalf("check --covers review of an apply-slide review deck:\n%s", out)
 	}
 }
+
+// publishedReviewSlide is newEmptyReviewFixture with review pr-7's
+// diagram-sourced flow slide published and its two Items covered.
+func publishedReviewSlide(t *testing.T) (reviewFixture, SlideTransactionResult) {
+	t.Helper()
+	fixture, _ := newEmptyReviewFixture(t)
+	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	created, err := ApplySlideTransaction(context.Background(), fixture.root, t.TempDir(), fixture.repo, reviewSlideRequest("flow-create", "create", "absent", reviewDiagram()), false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "flow", "queue"), "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root)
+	run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "flow", "table"), "--path", "store.go", "--changed-lines", "--repo", fixture.repo, fixture.root)
+	return fixture, created
+}
+
+// apply-slide --print-current prints a review slide's request into its
+// review, with each Item's record, so it applies back unchanged and an edit
+// of one field publishes.
+func TestApplySlidePrintsCurrentReviewSlide(t *testing.T) {
+	t.Parallel()
+	fixture, created := publishedReviewSlide(t)
+	root := fixture.root
+	var printed SlideTransactionRequest
+	if err := json.Unmarshal([]byte(run(t, ApplySlide, "--print-current", "flow", "--review", "pr-7", root)), &printed); err != nil {
+		t.Fatal(err)
+	}
+	if printed.Review != "pr-7" || printed.Deck != "" || printed.ExpectedSnapshot != created.Snapshot || printed.Items[0].Record == "" || len(printed.Items[0].Evidence) != 0 {
+		t.Fatalf("printed request = %+v", printed)
+	}
+	byURN := run(t, ApplySlide, "--print-current", saga.ReviewSlideTarget("app", "pr-7", "flow"), root)
+	if !strings.Contains(byURN, `"review": "pr-7"`) {
+		t.Fatalf("print-current by URN:\n%s", byURN)
+	}
+	unchanged, err := ApplySlideTransaction(context.Background(), root, t.TempDir(), fixture.repo, printed, false)
+	if err != nil || !unchanged.Unchanged || unchanged.Snapshot != created.Snapshot {
+		t.Fatalf("applying the printed request = %+v err=%v", unchanged, err)
+	}
+	printed.Items[1].Label = "Postgres jobs table"
+	printed.RequestID = "flow-relabel"
+	edited, err := ApplySlideTransaction(context.Background(), root, t.TempDir(), fixture.repo, printed, false)
+	if err != nil || edited.Unchanged || edited.Snapshot == created.Snapshot {
+		t.Fatalf("an edited printed request = %+v err=%v", edited, err)
+	}
+	if slide := loadReviewSlide(t, root, "flow"); slide.Items[1].Label != "Postgres jobs table" || len(slide.Items[1].Code) != 1 {
+		t.Fatalf("relabelled slide lost coverage: %+v", slide.Items[1])
+	}
+}

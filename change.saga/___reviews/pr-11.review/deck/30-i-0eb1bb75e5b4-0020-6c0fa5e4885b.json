@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "status",
+  "slide": "signal",
+  "rank": 20,
+  "kind": "node",
+  "label": "status --against",
+  "description": "Prints the same lines under the header and adds stale_by_change to the JSON.",
+  "selector": {
+    "type": "element",
+    "element_id": "status"
+  }
+}

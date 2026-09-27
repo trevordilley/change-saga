@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/status_grammar.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:5525f82af50c2927e19c45b8859ff96f5b391439d1f3556f8bd2a303bd820e5c",
+      "note": "The previous call."
+    }
+  ]
+}

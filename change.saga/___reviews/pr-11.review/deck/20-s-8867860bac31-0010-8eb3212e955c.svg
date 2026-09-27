@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui, sans-serif">
+  <rect width="1280" height="720" fill="#f7f8fa"/>
+  <text x="40" y="56" font-size="30" font-weight="700" fill="#1d2433">One explicit accept keeps the note, the owner and the side</text>
+  <text x="40" y="90" font-size="17" fill="#4a5568">repin --accept-proposed replaces hand-mapping ranges with difflib and rebuilding slide requests with throwaway programs.</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
+  <g id="scope">
+    <rect x="40" y="130" width="380" height="300" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="58" y="164" font-size="20" font-weight="700" fill="#1d3a7a">repin --accept-proposed</text>
+    <text x="58" y="192" font-size="15" fill="#1d2433">Exactly one scope:</text>
+    <text x="58" y="214" font-size="13" font-family="ui-monospace, monospace" fill="#1d2433">--record FILE [--reference N]</text>
+    <text x="58" y="236" font-size="13" font-family="ui-monospace, monospace" fill="#1d2433">--target URN   --review ID   --all</text>
+    <text x="58" y="258" font-size="15" fill="#1d2433">--head REV (a review Item uses its</text>
+    <text x="58" y="280" font-size="15" fill="#1d2433">range; pins at or before its base map</text>
+    <text x="58" y="302" font-size="15" fill="#1d2433">there, the rest to its head). Refuses</text>
+    <text x="58" y="324" font-size="15" fill="#1d2433">no proposal, claims, quality evidence;</text>
+    <text x="58" y="346" font-size="15" fill="#1d2433">terms point at term revise. --all also</text>
+    <text x="58" y="368" font-size="15" fill="#1d2433">repairs other PRs' decks, skipping and</text>
+    <text x="58" y="390" font-size="15" fill="#1d2433">reporting one whose range cannot be read.</text>
+  </g>
+  <g id="write">
+    <rect x="460" y="130" width="380" height="300" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
+    <text x="478" y="164" font-size="20" font-weight="700" fill="#1f5c34">Plain evidence file</text>
+    <text x="478" y="192" font-size="15" fill="#1d2433">Rewritten in place under the Saga lock:</text>
+    <text x="478" y="214" font-size="15" fill="#1d2433">same path, so the same owner; every</text>
+    <text x="478" y="236" font-size="15" fill="#1d2433">other reference untouched.</text>
+    <text x="478" y="258" font-size="15" fill="#1d2433">The accepted reference keeps its note</text>
+    <text x="478" y="280" font-size="15" fill="#1d2433">and gets a fresh pin and digest.</text>
+    <text x="478" y="302" font-size="15" fill="#1d2433">A concurrent edit is detected, never</text>
+    <text x="478" y="324" font-size="15" fill="#1d2433">overwritten.</text>
+  </g>
+  <g id="managed">
+    <rect x="880" y="130" width="360" height="300" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="898" y="164" font-size="20" font-weight="700" fill="#4c1d95">apply-slide slide</text>
+    <text x="898" y="192" font-size="15" fill="#1d2433">The current revision is rebuilt as a</text>
+    <text x="898" y="214" font-size="15" fill="#1d2433">complete request (diagram source or</text>
+    <text x="898" y="236" font-size="15" fill="#1d2433">base64 asset, Items, links); only the</text>
+    <text x="898" y="258" font-size="15" fill="#1d2433">accepted evidence changes. One update</text>
+    <text x="898" y="280" font-size="15" fill="#1d2433">per slide, expected_snapshot filled,</text>
+    <text x="898" y="302" font-size="15" fill="#1d2433">request_id derived from the edits.</text>
+  </g>
+  <g id="print-current">
+    <rect x="460" y="480" width="780" height="180" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>
+    <text x="478" y="514" font-size="20" font-weight="700" fill="#7a4d05">apply-slide --print-current SLIDE</text>
+    <text x="478" y="542" font-size="15" fill="#1d2433">Prints the slide&#x27;s complete current request with expected_snapshot and a fresh request_id,</text>
+    <text x="478" y="564" font-size="15" fill="#1d2433">ready to edit one field and apply. Applied unchanged it publishes nothing (unchanged: true).</text>
+    <text x="478" y="586" font-size="15" fill="#1d2433">An ID two decks share is ambiguous: the error names each slide's target to use instead.</text>
+  </g>
+  <g id="tests">
+    <rect x="40" y="480" width="380" height="180" rx="14" fill="#ffffff" stroke="#6b7280" stroke-width="2"/>
+    <text x="58" y="514" font-size="20" font-weight="700" fill="#374151">Proved end to end</text>
+    <text x="58" y="542" font-size="15" fill="#1d2433">Edit inside a range -&gt; proposal -&gt; accept;</text>
+    <text x="58" y="564" font-size="15" fill="#1d2433">deleted file refused; managed slide</text>
+    <text x="58" y="586" font-size="15" fill="#1d2433">updates only the worker Item.</text>
+  </g>
+  <line x1="420" y1="280" x2="456" y2="280" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="840" y1="280" x2="876" y2="280" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1060" y1="430" x2="1060" y2="476" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "e2e/support/fixture-builder.ts",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:c69367d86144a986edcdaeb15f5623d83c5be98dbb728f1ccb0273c135c119f7",
+      "note": "The e2e harness reads a large status report without Node's 1 MiB cap."
+    },
+    {
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "path": "e2e/support/fixture-builder.ts",
+      "start": 90,
+      "end": 93,
+      "digest": "sha256:ec109a222bd8d5f47f8fdde7c6a0d30b2a33216bb2829f49fd5ed96fe3f7a956",
+      "note": "The e2e harness reads a large status report without Node's 1 MiB cap."
+    }
+  ]
+}

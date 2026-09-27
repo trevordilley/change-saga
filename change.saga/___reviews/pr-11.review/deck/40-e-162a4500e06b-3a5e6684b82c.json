@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "start": 164,
+      "end": 179,
+      "digest": "sha256:b6eb5a500d508ff13fbc8c19cc50e5c3b9378965795b2b5fa5d1239d8f9fd68f",
+      "note": "Scope, views and sides, refusals, and the accept report."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "start": 234,
+      "end": 476,
+      "digest": "sha256:bf1f770fce3586602244e0ffe36aa10329a2f749caea5673724eb59c2d3801e3",
+      "note": "Scope, views and sides, refusals, and the accept report."
+    }
+  ]
+}

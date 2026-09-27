@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/cli.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:70a918abeed80d00c3f96587a5a0ef97092b63346f28be503c66abfb20f1fb4e",
+      "note": "The previous repin usage and help."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/cli.go",
+      "start": 479,
+      "end": 479,
+      "digest": "sha256:3b2c1fc37c9c8bd2005e6b485ba4dc39700183340482b824c9a5b7cd64f8cd36",
+      "note": "The previous repin usage and help."
+    }
+  ]
+}

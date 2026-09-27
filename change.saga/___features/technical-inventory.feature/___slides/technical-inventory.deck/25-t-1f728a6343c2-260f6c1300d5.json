@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "technical-inventory",
   "slide": "ti-records-impl-selections",
-  "current": "sha256:cf4abfdae2a193f18261d731629a31cc87c3628308ed1466d157cbb2605e18ae",
+  "current": "sha256:c8f076fcb3cd3d45160510736f372c8a50b08181c209b34ef48b662087ad3fc5",
   "revisions": [
     {
       "snapshot": "sha256:728f3db7b77c290c87df217ce7c158c00974a67f6a181cd1c5c33a859c545a31",
@@ -2452,12 +2452,12 @@
       ]
     },
     {
-      "snapshot": "sha256:cf4abfdae2a193f18261d731629a31cc87c3628308ed1466d157cbb2605e18ae",
+      "snapshot": "sha256:c8f076fcb3cd3d45160510736f372c8a50b08181c209b34ef48b662087ad3fc5",
       "parent_snapshots": [
         "sha256:4243c61d70b56e7cedaf24728a5e3f1b2ff6b680fd200e2bdf9ecc7c2002d2d1"
       ],
-      "request_id": "repin-review-deck-diagrams",
-      "created_at": "2026-09-27T04:11:57.106009Z",
+      "request_id": "accept-proposed-0ce438c43c369648",
+      "created_at": "2026-09-27T07:52:11.775255Z",
       "asset": "24-a-e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedf.svg",
       "asset_digest": "sha256:e1cddef230df5a0f97e1e537b2862a0355fd30cb8aa91d94eedffb4d6d31c62e",
       "slide": {
@@ -2812,11 +2812,11 @@
               "version": 2,
               "references": [
                 {
-                  "commit": "e3fa50a5535a382430f34e65220007d6879d9fa3",
+                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
                   "path": "internal/cli/slide_transaction.go",
-                  "start": 71,
-                  "end": 87,
-                  "digest": "sha256:a05bba5c00d588153ff63a595e06ac3bb41395a8d8d16239eb69f30dd220364e",
+                  "start": 64,
+                  "end": 79,
+                  "digest": "sha256:745d7fa18ff2e031b8d5d779b31000ec1aa929a526ae689e98135d95d242c824",
                   "note": "Changed lines of internal/cli/slide_transaction.go explained by this Item."
                 },
                 {
@@ -2919,11 +2919,11 @@
               "version": 2,
               "references": [
                 {
-                  "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+                  "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
                   "path": "internal/savedview/savedview.go",
-                  "start": 64,
-                  "end": 131,
-                  "digest": "sha256:a5d7e11efa192017cef6b90eea3c51a52dd63d5cb68d87db656a10886f79aec9",
+                  "start": 66,
+                  "end": 145,
+                  "digest": "sha256:cf8d223d154220db02ef3ec624711f0a5ed8943d3ded01dade1f941d8f14cebf",
                   "note": "savedview.Load: commit, Saga identity, source and inventory at that commit."
                 }
               ]

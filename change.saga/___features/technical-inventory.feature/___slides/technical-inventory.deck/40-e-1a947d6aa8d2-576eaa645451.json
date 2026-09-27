@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
+      "path": "internal/server/inventory.go",
+      "start": 120,
+      "end": 137,
+      "digest": "sha256:ba864b5b58b72e66d0b0b2567b5c9503d111f347305b79884795fc13fd54f618",
+      "note": "The saved-revision lookup and the on-demand drawer request are the navigation boundary for technical explanations; the drawer request now also names the selecting Item so the drawer shows the exact code that Item selects."
+    },
+    {
+      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
+      "path": "internal/server/appjs.go",
+      "start": 1327,
+      "end": 1366,
+      "digest": "sha256:09dc1a4597b5912d7ac1513dbacf6d509d046c39207bd3baddfc4b5ccfb7ced1",
+      "note": "The saved-revision lookup and the on-demand drawer request are the navigation boundary for technical explanations; the drawer request now also names the selecting Item so the drawer shows the exact code that Item selects."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/cli.go",
+      "start": 1182,
+      "end": 1184,
+      "digest": "sha256:594ee6b1854c9e9bc62f28902bcae07b905b3ceace532d3b8752e5fb0f4e0475",
+      "note": "The headline under COMPARING."
+    }
+  ]
+}

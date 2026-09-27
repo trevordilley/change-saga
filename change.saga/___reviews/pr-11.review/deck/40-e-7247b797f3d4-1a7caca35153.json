@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "start": 823,
+      "end": 838,
+      "digest": "sha256:ddacc41e557c5be7b6328685a34d632ac378065d9440fdf3f3e64e1721afd585",
+      "note": "reviewView reads a review Item's reference at its own side: the merge-base when pinned at or before it, else the head; refresh, accept and review list share it."
+    }
+  ]
+}

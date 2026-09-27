@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scope",
+  "slide": "accept",
+  "rank": 0,
+  "kind": "node",
+  "label": "repin --accept-proposed",
+  "description": "Takes one scope (--all skips and reports a review whose range cannot be read), reads each reference at its own side, and refuses references without a proposal or of append-only kinds.",
+  "selector": {
+    "type": "element",
+    "element_id": "scope"
+  }
+}

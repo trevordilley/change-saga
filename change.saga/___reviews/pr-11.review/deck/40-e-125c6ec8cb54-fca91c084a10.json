@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "start": 1,
+      "end": 150,
+      "digest": "sha256:1c55529c9a9d3963bb4c7a251d28651ba6b1d9bb975d94ed87826f430f7d5982",
+      "note": "The rule, headline printing, and documentation references including inventory; only evidence the change itself wrote is deleted-side."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "start": 180,
+      "end": 233,
+      "digest": "sha256:c189c68415e85ef70de5a8dbfd0e71e88c78775a22ba3bcced7b99e15033cd2a",
+      "note": "The rule, headline printing, and documentation references including inventory; only evidence the change itself wrote is deleted-side."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "start": 737,
+      "end": 822,
+      "digest": "sha256:b54b500207948022c3c7765a4bf81f74199bd7bbc3a5796d66c99c180da570fa",
+      "note": "The rule, headline printing, and documentation references including inventory; only evidence the change itself wrote is deleted-side."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "arithmetic",
+  "slide": "propose",
+  "rank": 0,
+  "kind": "node",
+  "label": "ProposeRange",
+  "description": "Maps the pinned start and end through zero-context hunks, widening over inserted lines; refuses removed or unanchored rewrites.",
+  "selector": {
+    "type": "element",
+    "element_id": "arithmetic"
+  }
+}

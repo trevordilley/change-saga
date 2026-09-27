@@ -23,6 +23,107 @@ remain. A structural or source error prevents a trustworthy report. Baseline
 read failures are explicit diagnostics: debt becomes `baseline_unknown`,
 never silently pre-existing or clean. Teams choose their own acceptance rules.
 
+## Start from what this change made stale
+
+The text report opens with the one number that matters first:
+
+```text
+Documentation reconciliation a0966485a728..93a113ab3c84
+Your change made 2 references stale:
+  urn:...:fragment:queue-design  src/queue.go#L3-L6 -> src/queue.go#L3-L8
+  urn:...:slide:flow:item:worker  service.go#L3 -> nothing proposed: service.go was deleted; ...
+  1 with a proposed range: read its diff, then accept with change-saga repin --accept-proposed --record FILE [--reference N]
+Pre-existing stale references: 142 (stale before this change; their tasks: rerun with --all)
+```
+
+A reference is made stale by the change when it is stale at the head and
+either current at the merge-base or pinned at a commit the merge-base does not
+contain. A reference written during the change (the Saga that documented the
+merge-base has no identical one) and pinned at the merge-base to lines the
+change removed is deleted-side evidence: it is current at the base by design,
+so it is counted as `deleted_side`, never as made stale. Documentation that
+already described lines the change deleted is the change's regression and is
+listed for repair. `status --against`, `review list`, and
+`review create` apply the same rule. In JSON, `summary.stale_by_change` holds the rows with their proposals
+and accept commands, and `summary.queue` counts the queue by kind;
+`reconcile --json --summary` emits only the summary. Debt that predates the
+change is a count; `--all` lists its tasks in the text report, and the full
+`queue` in `--json` still contains them. Documentation gaps, records to
+re-read, and records that need a user choice print one line each.
+
+### Proposed ranges
+
+For a stale line-range reference the report proposes where its lines are at
+the head by diff arithmetic alone: an unchanged boundary line moves by the
+hunks before it, a boundary line a hunk changed maps to that hunk's edge, and
+lines a hunk inserted inside the range are taken in. `widened` is set
+whenever the proposal takes in lines the range did not have: an insertion
+inside it (git may slide a new sibling function inside the range), a longer
+replacement, or a hunk crossing its edge; read those lines before accepting.
+The proposal carries the zero-context diff inside the range, between the
+nearest hunk just before and just after it, so a helper extracted or code
+moved beside the range shows. Nothing is proposed when the file was deleted
+(its content may have moved to another file), is binary, the pin cannot be
+read, every referenced line was removed, the range was rewritten together with
+code outside it, or the only lines of the range an edit left are trivial
+(braces, blank, punctuation), which anchor nothing. A whole-file reference
+proposes the same file, after any rename, at the head.
+
+### Accept or revise
+
+Read the diff. If the explanation still holds, accept the proposal:
+
+```sh
+change-saga repin --accept-proposed --record FILE --reference N change.saga
+change-saga repin --accept-proposed --target URN change.saga    # a target and its descendants
+change-saga repin --accept-proposed --review pr-12 change.saga  # a review deck's Items
+change-saga repin --accept-proposed --all --dry-run change.saga # preview everything
+```
+
+`--all` reaches every open review deck as well as the living documentation,
+so it also repairs other pull requests' decks; a review whose range cannot be
+read is skipped and reported, and a merged review is never touched.
+
+Accept keeps the note, the owner, the record, and the side (a review Item's
+deleted-side evidence, pinned at or before the merge-base, maps to the
+review's merge-base; its other evidence to the head), and pins the proposal
+with a fresh digest. On a slide `apply-slide` manages it publishes one
+complete-slide update that changes only the evidence. It refuses a reference
+with no proposal, and claims and quality evidence, which are append-only.
+Accepting is always explicit: staleness still forces the re-read.
+
+`apply-slide --print-current SLIDE` prints a managed slide's complete current
+request, with `expected_snapshot` and a fresh `request_id`, for any other edit.
+Applied unchanged it publishes nothing and reports the slide `unchanged`. A
+slide ID that several decks share (a review slide named like an
+implementation slide) is ambiguous: give the slide's target instead.
+
+### Keep a review deck current while the pull request iterates
+
+`change-saga review refresh-coverage --review ID` re-reads the review's
+current range. It re-pins references whose lines only moved and whole-file
+references whose add, rename, mode, or delete event is still in the range.
+Each reference keeps its side: deleted-side evidence (pinned at or before the
+merge-base) is read at the merge-base, everything else at the head, so a
+new-side reference a later push edited needs judgment even when the
+merge-base still has its lines; it is never re-pinned there.
+
+Coverage is the reviewer's guarantee that someone linked every changed line
+to its explanation, so refresh never extends an Item on its own. Newly
+changed lines are reported uncovered. When exactly one Item covers their file
+it is the proposed owner, with the command that accepts it:
+
+```sh
+change-saga review refresh-coverage --review pr-12 --accept-proposed --path src/queue.go change.saga
+```
+
+Read the new lines first: accept only if that Item's explanation covers them,
+otherwise cover them with the Item that does. Accepted lines get a neutral
+note, `added in <head>`, unless `--note` says more; they never borrow another
+reference's note. Stale references are listed with their proposals and
+`repin --accept-proposed` commands, never accepted for you, and new lines in
+files several Items, or none, cover are listed for you to place.
+
 ## Read the independent results
 
 - `documentation_coverage` accounts for changed lines through the living
@@ -64,17 +165,21 @@ contains typed command shapes with known values and explicit author inputs,
 not commands to run blindly. An affected record may need no edit after review.
 Current bytes can still support obsolete prose or an incorrect diagram.
 
-For transaction-backed slides, read `query slide` for the authoring snapshot,
-all heads, Items, exact evidence, and criterion links. Prepare the complete
-replacement request and preview `apply-slide --dry-run`; then publish through
-`apply-slide`. Preserve conflicts and stable request identity. Partial
+For transaction-backed slides, stale evidence moves with
+`repin --accept-proposed`. For other edits, start from
+`apply-slide --print-current SLIDE` (or read `query slide` for all heads,
+Items, exact evidence, and criterion links), change what needs changing,
+preview `apply-slide --dry-run`, then publish through `apply-slide`. Preserve conflicts and stable request identity. Partial
 `replace-coverage` and Item writers cannot update transaction history.
 
-For legacy evidence, use the returned `evidence_file` with
+A stale reference with a proposal lists `repin --accept-proposed` as its last
+repair shape; accept it only after reading the diff. For legacy evidence that
+needs new selectors, use the returned `evidence_file` with
 `replace-coverage`, or remove genuinely obsolete evidence with
 `remove-coverage`. A replacement replaces the entire file: preserve its other
 references in a reviewed batch. Choose new narrow selectors after reading the
-code and explanation, never widen or mechanically repin to erase staleness.
+code and explanation, never widen or accept a proposal unread to erase
+staleness.
 For requirement relations, read both endpoints before `relation repin` with an
 updated rationale, or supersede a relationship that no longer holds. For test
 evidence, rerun the relevant tests and append evidence and actual run results.

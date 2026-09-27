@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "commit": "a7e1e706a0424e0bafd86729788049e057c6561f",
       "path": "internal/cli/status_grammar.go",
-      "start": 156,
-      "end": 221,
-      "digest": "sha256:c10e0649d9459ffa36a283ede901adc23dab9a41ae0bf8c29c31c0815fa69516"
+      "start": 164,
+      "end": 235,
+      "digest": "sha256:bcc8d9c0665679071065311d94b38ec76e157d5bc1d5fa6ace83645519a99c8d"
     }
   ]
 }
