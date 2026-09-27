@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/component-revision.schema.json",
+  "version": 5,
+  "id": "r4",
+  "record": "urn:change-saga:change-saga:component:technical-inventory-query",
+  "parents": [
+    "urn:change-saga:change-saga:component:technical-inventory-query:revision:r3"
+  ],
+  "name": "Technical inventory query",
+  "explanation": "Projects current definitions, explicit heads, code/link health and optional selected history through snapshot-bound pages.",
+  "intent": "implemented",
+  "delivery": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "b5ee553e73574c289fe834ce7551563b422ad8b1"
+  },
+  "code": [
+    {
+      "id": "query_inventory-44",
+      "commit": "b5ee553e73574c289fe834ce7551563b422ad8b1",
+      "path": "internal/cli/query_inventory.go",
+      "start": 44,
+      "end": 196,
+      "digest": "sha256:6a3c86683cf4776a7b61ae15906a441a3544967f350023cbe502bca44d57a4d8",
+      "note": "Projects current definitions, explicit heads, code/link health and optional selected history through snapshot-bound pages."
+    }
+  ],
+  "created_at": "2026-09-27T11:24:08.851396Z"
+}
