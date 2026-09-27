@@ -46,7 +46,7 @@ before drawing slides; nothing else is needed.
    `"body"` (at most 240 characters) states what a reviewer would expect,
    what the change does instead, why, and the consequence. Cover the code
    that shows the actual behavior from the callout itself. Reviewers see
-   callouts under the slide, labelled Surprise. Never manufacture one: if
+   callouts in a Surprises panel on the slide. Never manufacture one: if
    nothing surprises, say so in the concluding slide's takeaway.
 6. Cover every changed line from the narrowest Item that explains it:
    `change-saga cover --target ITEM_URN --path PATH --changed-lines

@@ -151,7 +151,7 @@ pass `apply-slide --review ID`). A review Item carries no `evidence` or
 change. Call out each surprise (see "Reviewer surprises" below) with a
 `"kind": "callout"` Item whose `about` names the responsible element's Item
 and whose `body` gives expectation, actual behavior, reason, and consequence;
-reviewers see callouts under the slide, labelled Surprise, and
+reviewers see callouts in a Surprises panel on the slide, and
 `review list` names them. A minimal review slide with a diagram source and
 one surprise:
 

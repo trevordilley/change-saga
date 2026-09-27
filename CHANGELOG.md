@@ -4,8 +4,9 @@
 
 - A review slide's `callout` Items are its surprises: what a reviewer would
   expect, what the change does instead, why, and the consequence. The review
-  viewer shows them under each slide and in the element's panel, labelled
-  Surprise and linked to the element they are about.
+  viewer shows them in a collapsible Surprises panel on each slide and in the
+  element's panel, labelled Surprise and linked to the element they are
+  about.
 - `review list` names each slide's surprises and counts them per review; its
   JSON carries them per slide as `callouts`. The count is reported, never
   required.

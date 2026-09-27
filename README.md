@@ -34,8 +34,8 @@ What you get:
 - The surprises called out. Whatever would break a reviewer's reasonable
   expectation is a callout on the responsible part of the diagram: what you
   would expect, what the change does instead, why, and the consequence.
-  Reviewers see them under each slide, and `change-saga review list` names
-  them.
+  Reviewers see them in a Surprises panel on each slide, and
+  `change-saga review list` names them.
 - Every changed line linked to the slide Item that explains it.
   `change-saga check --covers review` exits 0 only when nothing is left out.
   Coverage is an omission check, not proof: reviewers still judge each slide,
