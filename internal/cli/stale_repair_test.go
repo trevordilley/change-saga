@@ -168,3 +168,35 @@ func TestReviewCreateAndListSayWhatTheChangeMadeStale(t *testing.T) {
 		t.Fatalf("review list text:\n%s", listed.String())
 	}
 }
+
+// Deleted-side evidence (pinned at the merge-base to lines the change
+// removed) is current at the base by design; it is counted apart, never as a
+// reference the change made stale.
+func TestDeletedSideEvidenceIsNotMadeStaleByTheChange(t *testing.T) {
+	t.Parallel()
+	repo := t.TempDir()
+	git(t, repo, "init", "-b", "main")
+	git(t, repo, "config", "user.name", "Test Author")
+	git(t, repo, "config", "user.email", "test@example.test")
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	writeFile(t, filepath.Join(repo, "app.go"), appFeature)
+	commitAll(t, repo, "Base")
+	root := filepath.Join(repo, "change.saga")
+	var output bytes.Buffer
+	if err := Init(context.Background(), []string{"--repo", repo, "--title", "App", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	commitAll(t, repo, "Saga")
+	git(t, repo, "checkout", "-q", "-b", "two")
+	writeFile(t, filepath.Join(repo, "app.go"), appChanged)
+	commitAll(t, repo, "Return two")
+	coverJSON(t, "--against", "main", "--path", "app.go", "--changed-lines", "--name", "app", root)
+	_, report := statusComplete(t, root)
+	var staleness changeStaleness
+	if err := json.Unmarshal(report["stale_by_change"], &staleness); err != nil {
+		t.Fatalf("stale_by_change: %v %s", err, report["stale_by_change"])
+	}
+	if staleness.Count != 0 || staleness.DeletedSide != 1 {
+		t.Fatalf("stale_by_change = %+v", staleness)
+	}
+}

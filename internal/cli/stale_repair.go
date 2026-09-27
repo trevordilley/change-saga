@@ -51,6 +51,10 @@ type changeStaleness struct {
 	// Proposed is how many of them have a proposed range to accept with
 	// repin --accept-proposed.
 	Proposed int `json:"proposed"`
+	// DeletedSide is how many stale references are pinned at the merge-base
+	// to lines the change removed: evidence of what the change took out,
+	// current at the base, and not something to repair.
+	DeletedSide int `json:"deleted_side"`
 	// PreExisting is how many other references were already stale. It is
 	// absent where only the files the change touched were read.
 	PreExisting *int       `json:"pre_existing,omitempty"`
@@ -115,6 +119,10 @@ func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver,
 		if resolution.Current() {
 			continue
 		}
+		if ref.Code.Commit == base && base != head && resolver.Removed(ctx, base, head, ref.Code.Path, ref.Code.Start, ref.Code.End) {
+			result.DeletedSide++
+			continue
+		}
 		byChange := base != "" && base != head && (!pinnedBefore(ref.Code.Commit) || resolver.Resolve(ctx, ref.Code, base).Current())
 		if !byChange {
 			preExisting++
@@ -131,6 +139,19 @@ func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver,
 		result.References = append(result.References, row)
 	}
 	return result
+}
+
+// withoutDiffs keeps the rows' proposals but drops their diffs, for reports
+// that carry the signal alongside much else; references --stale and
+// reconcile show the diffs.
+func (staleness changeStaleness) withoutDiffs() changeStaleness {
+	rows := make([]staleRow, len(staleness.References))
+	for index, row := range staleness.References {
+		row.Proposal.Diff = nil
+		rows[index] = row
+	}
+	staleness.References = rows
+	return staleness
 }
 
 // acceptInvocation is the one-line accept for one evidence reference.
@@ -194,6 +215,9 @@ func printChangeStaleness(out io.Writer, staleness changeStaleness, preExistingH
 	}
 	if staleness.Proposed > 0 {
 		fmt.Fprintf(out, "  %d with a proposed range: read its diff, then accept with change-saga repin --accept-proposed --record FILE [--reference N]\n", staleness.Proposed)
+	}
+	if staleness.DeletedSide > 0 {
+		fmt.Fprintf(out, "Deleted-side evidence: %d %s document lines this change removed (current at the merge-base; nothing to repair)\n", staleness.DeletedSide, plural(staleness.DeletedSide, "reference", "references"))
 	}
 	if staleness.PreExisting != nil && *staleness.PreExisting > 0 {
 		fmt.Fprintf(out, "Pre-existing stale references: %d (stale before this change%s)\n", *staleness.PreExisting, preExistingHint)
@@ -712,7 +736,7 @@ func livingStaleness(ctx context.Context, document *saga.Saga, resolver *coderes
 	if err != nil || len(owned) == 0 || resolver == nil {
 		return nil
 	}
-	staleness := measureChangeStaleness(ctx, resolver, owned, historicalOwners(document), base, head, root, repo, changedOnly...)
+	staleness := measureChangeStaleness(ctx, resolver, owned, historicalOwners(document), base, head, root, repo, changedOnly...).withoutDiffs()
 	return &staleness
 }
 

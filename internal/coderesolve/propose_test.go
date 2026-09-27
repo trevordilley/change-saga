@@ -87,3 +87,26 @@ func TestProposeFollowsAnEditInsideTheRange(t *testing.T) {
 		t.Fatalf("whole-file proposal = %+v", got)
 	}
 }
+
+func TestRemovedNamesOnlyLinesTheChangeTookOut(t *testing.T) {
+	ctx := context.Background()
+	repo := t.TempDir()
+	git(t, repo, "init", "-q", "-b", "main")
+	write(t, repo, "app.go", "a\nb\nc\nd\ne\n")
+	base := commit(t, repo, "base")
+	write(t, repo, "app.go", "a\nB\nC\nd\ne\n")
+	head := commit(t, repo, "edit")
+	resolver, err := New(ctx, repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	for _, test := range []struct {
+		start, end int
+		want       bool
+	}{{2, 3, true}, {3, 3, true}, {2, 4, false}, {1, 1, false}, {0, 0, false}} {
+		if got := resolver.Removed(ctx, base, head, "app.go", test.start, test.end); got != test.want {
+			t.Errorf("Removed(%d-%d) = %v, want %v", test.start, test.end, got, test.want)
+		}
+	}
+}

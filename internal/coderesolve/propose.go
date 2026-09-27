@@ -234,3 +234,37 @@ func (resolver *Resolver) ChangedPaths(ctx context.Context, from, to string) (ma
 	}
 	return paths, nil
 }
+
+// Removed reports whether every line of start..end of path at from is a line
+// the change from..to removes or replaces: deleted-side evidence, which
+// documents what a change took out rather than code it left behind.
+func (resolver *Resolver) Removed(ctx context.Context, from, to, path string, start, end int) bool {
+	if start == 0 && end == 0 {
+		return false
+	}
+	changes, err := resolver.treeChanges(ctx, from, to)
+	if err != nil {
+		return false
+	}
+	change, ok := changes[path]
+	if !ok {
+		return false
+	}
+	if change.Deleted {
+		return true
+	}
+	line := start
+	for _, hunk := range change.Hunks {
+		if hunk.OldCount == 0 || hunk.OldStart+hunk.OldCount-1 < line {
+			continue
+		}
+		if hunk.OldStart > line {
+			return false
+		}
+		line = hunk.OldStart + hunk.OldCount
+		if line > end {
+			return true
+		}
+	}
+	return false
+}

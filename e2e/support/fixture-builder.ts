@@ -87,7 +87,10 @@ function runSaga(args: string[], cwd: string): string {
 function statusReport(sourceRepo: string, sagaRoot: string): StatusReport {
   const result = spawnSync(binaryPath, ["status", "--json", "--repo", sourceRepo, "--against", "main", sagaRoot], {
     cwd: dirname(sagaRoot),
-    encoding: "utf8"
+    encoding: "utf8",
+    // A large fixture's complete report exceeds Node's 1 MiB default, which
+    // would kill the process and read as "status failed (null)".
+    maxBuffer: 64 * 1024 * 1024
   });
   // `status` deliberately exits 3 while a valid saga still has uncovered
   // changes. Fixture construction consumes that report and closes the gaps.
