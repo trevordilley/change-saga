@@ -18,6 +18,10 @@ func TestReviewCreateWorksOutItsDefaults(t *testing.T) {
 	if !strings.Contains(out, "Created urn:change-saga:app:review:feature-pg") || !strings.Contains(out, "Using head feature/pg, base main (the repository's main branch), id feature-pg") {
 		t.Fatalf("review create without flags:\n%s", out)
 	}
+	// The next step publishes a slide from a diagram source.
+	if !strings.Contains(out, "Next: change-saga apply-slide --review feature-pg --from SLIDE.json "+fixture.root) {
+		t.Fatalf("review create does not lead to apply-slide:\n%s", out)
+	}
 	out = run(t, Review, "create", "--pr", "12", fixture.root)
 	if !strings.Contains(out, "review:pr-12") {
 		t.Fatalf("review create --pr:\n%s", out)
