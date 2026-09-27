@@ -608,6 +608,16 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "review refresh-coverage", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence", "slide-transaction"},
+		Usage:   "change-saga review refresh-coverage --review ID [--repo PATH] [--dry-run] [--json] <saga>",
+		Summary: "refresh a review deck's coverage over its current range: re-pin moved references and whole-file references whose file event persists, give newly changed lines to the one Item covering their file, and report stale references with proposals for judgment",
+		Flags: []Flag{
+			required("review", "ID", "review id"), optional("repo", "PATH", "code checkout when separate"),
+			optional("dry-run", "", "report without writing"), jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "review approve", Status: StatusImplemented, Mutates: true, Writes: []string{"review-approval"},
 		Usage:       "change-saga review approve --review ID --slide ID --reviewer-kind human|ai [--body TEXT] [flags] <saga>",
 		Summary:     "approve one review slide at the pull request's current head; it goes out of date when the slide or its code changes",

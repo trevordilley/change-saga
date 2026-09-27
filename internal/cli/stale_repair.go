@@ -431,19 +431,52 @@ func managedEvidence(file string) (string, string, int, bool) {
 	return record, item, number, true
 }
 
-// writeAcceptedEvidence writes accepted references. A plain evidence file is
-// rewritten in place, keeping its path (so its owner) and every other
-// reference; a slide apply-slide manages gets one complete-slide update built
-// from its current revision with only the accepted evidence changed.
+// evidenceEdit is one change to a recorded evidence file: Reference (1-based)
+// is replaced when previous still matches, or, when 0, replacement is
+// appended to the file.
+type evidenceEdit struct {
+	EvidenceFile string
+	Reference    int
+	previous     coderef.Reference
+	replacement  coderef.Reference
+}
+
+// writeAcceptedEvidence writes accepted references.
 func writeAcceptedEvidence(ctx context.Context, root, repo string, accepted []acceptChange, dryRun bool) ([]SlideTransactionResult, error) {
-	plain := map[string][]acceptChange{}
-	managed := map[string][]acceptChange{}
+	edits := make([]evidenceEdit, 0, len(accepted))
 	for _, change := range accepted {
-		if record, _, _, ok := managedEvidence(change.EvidenceFile); ok {
-			managed[record] = append(managed[record], change)
+		edits = append(edits, evidenceEdit{EvidenceFile: change.EvidenceFile, Reference: change.Reference, previous: change.previous, replacement: change.replacement})
+	}
+	return writeEvidenceEdits(ctx, root, repo, edits, "accept-proposed", dryRun)
+}
+
+// writeEvidenceEdits writes edits. A plain evidence file is rewritten in
+// place, keeping its path (so its owner) and every other reference; a slide
+// apply-slide manages gets one complete-slide update built from its current
+// revision with only the edited evidence changed. A dry run writes nothing
+// and still validates each slide update.
+func writeEvidenceEdits(ctx context.Context, root, repo string, edits []evidenceEdit, requestPrefix string, dryRun bool) ([]SlideTransactionResult, error) {
+	plain := map[string][]evidenceEdit{}
+	managed := map[string][]evidenceEdit{}
+	for _, edit := range edits {
+		if record, _, _, ok := managedEvidence(edit.EvidenceFile); ok {
+			managed[record] = append(managed[record], edit)
 		} else {
-			plain[change.EvidenceFile] = append(plain[change.EvidenceFile], change)
+			plain[edit.EvidenceFile] = append(plain[edit.EvidenceFile], edit)
 		}
+	}
+	apply := func(label string, references []coderef.Reference, fileEdits []evidenceEdit) ([]coderef.Reference, error) {
+		for _, edit := range fileEdits {
+			if edit.Reference == 0 {
+				references = append(references, edit.replacement)
+				continue
+			}
+			if edit.Reference > len(references) || references[edit.Reference-1].Key() != edit.previous.Key() {
+				return nil, fmt.Errorf("%s changed while its evidence was being repaired; run the command again", label)
+			}
+			references[edit.Reference-1] = edit.replacement
+		}
+		return references, nil
 	}
 	if !dryRun && len(plain) > 0 {
 		err := authorMutation(root, func(locked *saga.Saga) error {
@@ -453,12 +486,11 @@ func writeAcceptedEvidence(ctx context.Context, root, repo string, accepted []ac
 				if err := readStrictJSONFile(path, &file); err != nil {
 					return fmt.Errorf("read %s: %w", relative, err)
 				}
-				for _, change := range plain[relative] {
-					if change.Reference < 1 || change.Reference > len(file.References) || file.References[change.Reference-1].Key() != change.previous.Key() {
-						return fmt.Errorf("%s changed while accepting proposals; run the command again", relative)
-					}
-					file.References[change.Reference-1] = change.replacement
+				references, err := apply(relative, file.References, plain[relative])
+				if err != nil {
+					return err
 				}
+				file.References = references
 				if err := store.WriteJSON(path, file, false); err != nil {
 					return err
 				}
@@ -475,7 +507,7 @@ func writeAcceptedEvidence(ctx context.Context, root, repo string, accepted []ac
 		if err != nil {
 			return nil, err
 		}
-		slide := findSlide(document, record)
+		slide := findManagedSlide(document, record)
 		if slide == nil {
 			return nil, fmt.Errorf("no slide is recorded at %s", record)
 		}
@@ -485,26 +517,31 @@ func writeAcceptedEvidence(ctx context.Context, root, repo string, accepted []ac
 		}
 		fingerprint := sha256.New()
 		fmt.Fprint(fingerprint, request.ExpectedSnapshot)
-		for _, change := range managed[record] {
-			_, itemID, evidenceIndex, _ := managedEvidence(change.EvidenceFile)
-			replaced := false
+		byEvidence := map[string][]evidenceEdit{}
+		for _, edit := range managed[record] {
+			byEvidence[edit.EvidenceFile] = append(byEvidence[edit.EvidenceFile], edit)
+			fmt.Fprint(fingerprint, edit.EvidenceFile, edit.Reference, edit.replacement.Key())
+		}
+		for _, file := range sortedKeys(byEvidence) {
+			_, itemID, evidenceIndex, _ := managedEvidence(file)
+			found := false
 			for itemIndex := range request.Items {
 				item := &request.Items[itemIndex]
 				if item.ID != itemID || evidenceIndex >= len(item.Evidence) {
 					continue
 				}
-				references := item.Evidence[evidenceIndex].References
-				if change.Reference >= 1 && change.Reference <= len(references) && references[change.Reference-1].Key() == change.previous.Key() {
-					references[change.Reference-1] = change.replacement
-					replaced = true
+				references, err := apply(file, item.Evidence[evidenceIndex].References, byEvidence[file])
+				if err != nil {
+					return nil, err
 				}
+				item.Evidence[evidenceIndex].References = references
+				found = true
 			}
-			if !replaced {
-				return nil, fmt.Errorf("%s changed while accepting proposals; run the command again", change.EvidenceFile)
+			if !found {
+				return nil, fmt.Errorf("%s changed while its evidence was being repaired; run the command again", file)
 			}
-			fmt.Fprint(fingerprint, change.EvidenceFile, change.Reference, change.replacement.Key())
 		}
-		request.RequestID = "accept-proposed-" + hex.EncodeToString(fingerprint.Sum(nil))[:16]
+		request.RequestID = requestPrefix + "-" + hex.EncodeToString(fingerprint.Sum(nil))[:16]
 		base, err := os.Getwd()
 		if err != nil {
 			return nil, err
@@ -516,6 +553,25 @@ func writeAcceptedEvidence(ctx context.Context, root, repo string, accepted []ac
 		results = append(results, result)
 	}
 	return results, nil
+}
+
+// findManagedSlide finds the slide recorded at path in any deck, a review's
+// included.
+func findManagedSlide(document *saga.Saga, path string) *saga.Slide {
+	if slide := findSlide(document, path); slide != nil {
+		return slide
+	}
+	for _, review := range document.Reviews {
+		if review.Deck == nil {
+			continue
+		}
+		for _, slide := range review.Deck.Slides {
+			if filepath.Clean(slide.Path) == filepath.Clean(path) || slide.ID == path || slide.Target == path {
+				return slide
+			}
+		}
+	}
+	return nil
 }
 
 // currentSlideRequest rebuilds the complete apply-slide request that

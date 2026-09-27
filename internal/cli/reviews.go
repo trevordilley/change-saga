@@ -16,7 +16,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-var reviewOperations = []string{"create", "follow", "list", "approve", "request-changes", "withdraw", "comment"}
+var reviewOperations = []string{"create", "follow", "list", "refresh-coverage", "approve", "request-changes", "withdraw", "comment"}
 
 // Review is the pull request review family. A review is a pull request's
 // slide deck; approval and comments exist only on its slides and Items.
@@ -34,6 +34,8 @@ func Review(ctx context.Context, args []string, out io.Writer) error {
 		err = reviewFollow(ctx, args[1:], out)
 	case "list":
 		err = reviewList(ctx, args[1:], out)
+	case "refresh-coverage":
+		err = reviewRefreshCoverage(ctx, args[1:], out)
 	case "approve":
 		err = reviewDecide(ctx, "review approve", saga.ApprovalApproved, args[1:], out)
 	case "request-changes":

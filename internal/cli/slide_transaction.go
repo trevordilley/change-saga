@@ -944,19 +944,7 @@ func printCurrentSlideRequest(root, target string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	slide := findSlide(document, target)
-	if slide == nil {
-		for _, review := range document.Reviews {
-			if review.Deck == nil {
-				continue
-			}
-			for _, candidate := range review.Deck.Slides {
-				if target == candidate.ID || target == candidate.Target {
-					slide = candidate
-				}
-			}
-		}
-	}
+	slide := findManagedSlide(document, target)
 	if slide == nil {
 		return fmt.Errorf("slide %q does not exist", target)
 	}
