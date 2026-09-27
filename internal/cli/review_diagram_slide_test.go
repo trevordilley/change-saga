@@ -353,3 +353,38 @@ func TestApplySlidePrintsCurrentReviewSlide(t *testing.T) {
 		t.Fatalf("relabelled slide lost coverage: %+v", slide.Items[1])
 	}
 }
+
+// Review comments are append-only, so apply-slide refuses a revision that
+// drops or renames an Item a comment is on; relabelling it is fine.
+func TestApplySlideKeepsCommentedReviewItems(t *testing.T) {
+	t.Parallel()
+	fixture, _ := newEmptyReviewFixture(t)
+	root, repo := fixture.root, fixture.repo
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	ctx := context.Background()
+	created, err := ApplySlideTransaction(ctx, root, t.TempDir(), repo, reviewSlideRequest("flow-create", "create", "absent", reviewDiagram()), false)
+	if err != nil {
+		t.Fatal(err)
+	}
+	run(t, Review, "comment", "--review", "pr-7", "--target", "flow/queue", "--body", "Why not keep SQS for retries?", "--reviewer-kind", "human", root)
+
+	for name, mutate := range map[string]func(*SlideTransactionRequest){
+		"drop": func(r *SlideTransactionRequest) { r.Items, r.Slide.ReadingOrder = r.Items[1:], []string{"table"} },
+		"rename": func(r *SlideTransactionRequest) {
+			r.Items[0].ID, r.Slide.ReadingOrder = "enqueue", []string{"enqueue", "table"}
+		},
+	} {
+		request := reviewSlideRequest("flow-"+name, "update", created.Snapshot, reviewDiagram())
+		mutate(&request)
+		if _, err := ApplySlideTransaction(ctx, root, t.TempDir(), repo, request, false); err == nil || !strings.Contains(err.Error(), `item "queue" would be removed or renamed but review comment`) {
+			t.Errorf("%s a commented Item: err = %v", name, err)
+		}
+	}
+	assertValid(t, root)
+	relabel := reviewSlideRequest("flow-relabel", "update", created.Snapshot, reviewDiagram())
+	relabel.Items[0].Label = "Enqueue into Postgres"
+	if _, err := ApplySlideTransaction(ctx, root, t.TempDir(), repo, relabel, false); err != nil {
+		t.Fatalf("relabelling a commented Item: %v", err)
+	}
+	assertValid(t, root)
+}

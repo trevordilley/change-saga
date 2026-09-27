@@ -320,7 +320,7 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			}
 		}
 		if review != nil {
-			if err := admitReviewItems(document, deck, existing, revision.Items); err != nil {
+			if err := admitReviewItems(document, review, existing, revision.Items); err != nil {
 				return err
 			}
 		} else if err := validateTransactionCriteria(document, revision.Items); err != nil {
@@ -542,8 +542,10 @@ func refuseReviewItemEvidence(items []saga.TransactionItem) error {
 }
 
 // admitReviewItems checks what a review slide's Items may point at, and
-// refuses to drop an Item whose coverage records would be left behind.
-func admitReviewItems(document *saga.Saga, deck *saga.Deck, existing *saga.Slide, items []saga.TransactionItem) error {
+// refuses to drop (or rename) an Item that coverage records or the review's
+// append-only comments still name: either would be left pointing at nothing.
+func admitReviewItems(document *saga.Saga, review *saga.Review, existing *saga.Slide, items []saga.TransactionItem) error {
+	deck := review.Deck
 	kept := map[string]bool{}
 	for _, item := range items {
 		kept[item.Item.ID] = true
@@ -568,6 +570,11 @@ func admitReviewItems(document *saga.Saga, deck *saga.Deck, existing *saga.Slide
 		for _, entry := range entries {
 			if strings.HasPrefix(entry.Name(), prefix) {
 				return fmt.Errorf("item %q would be removed but still has coverage record %s; keep the Item, or cover its code on another Item and delete the record with `change-saga remove-coverage --record %s`", item.ID, entry.Name(), filepath.ToSlash(relativePathForOutput(document.Root, filepath.Join(deck.Directory, entry.Name()))))
+			}
+		}
+		for _, comment := range review.Comments {
+			if comment.Target == item.Target {
+				return fmt.Errorf("item %q would be removed or renamed but review comment %s is on it; comments are append-only, so keep the Item (its label, description, and element may change)", item.ID, comment.ID)
 			}
 		}
 	}
