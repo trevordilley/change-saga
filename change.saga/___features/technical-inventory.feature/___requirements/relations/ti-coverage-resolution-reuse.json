@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "Existing byte remapping, per-atom ownership and separate HEAD currency are code-linked foundations. Inventory-path resolution remains proposed; deletion-side diff evidence does not establish HEAD currency.",
   "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-24T23:01:00.973011Z"
+  "state": "superseded",
+  "created_at": "2026-09-24T23:01:00.973011Z",
+  "superseded_at": "2026-09-27T10:27:24.006503Z"
 }

@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "Newness names a baseline/head comparison; proposal status describes the selected revision. Implementation, source currency, tests, integration and human approval remain independent facts.",
   "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
-  "state": "active",
-  "created_at": "2026-09-24T22:40:18.702084Z"
+  "state": "superseded",
+  "created_at": "2026-09-24T22:40:18.702084Z",
+  "superseded_at": "2026-09-27T10:27:27.557357Z"
 }

@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "The existing r1 System pins canonical member Components. The proposed selection follows its record-store member without selecting the entire graph.",
   "to_revision": "urn:change-saga:change-saga:story:inventory-query-technical-context:revision:r2",
-  "state": "active",
-  "created_at": "2026-09-24T23:00:54.146148Z"
+  "state": "superseded",
+  "created_at": "2026-09-24T23:00:54.146148Z",
+  "superseded_at": "2026-09-27T10:27:33.398779Z"
 }
