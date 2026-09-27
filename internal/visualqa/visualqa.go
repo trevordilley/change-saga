@@ -86,6 +86,13 @@ type Selection struct {
 	Feature string `json:"feature,omitempty"`
 	Deck    string `json:"deck,omitempty"`
 	Slide   string `json:"slide,omitempty"`
+	// Review is the pull request review whose deck was rendered.
+	Review string `json:"review,omitempty"`
+}
+
+// selectionOf records what options asked to render.
+func selectionOf(options Options) Selection {
+	return Selection{Feature: options.Feature, Deck: options.Deck, Slide: options.Slide, Review: options.Review}
 }
 
 type runnerInput struct {
@@ -188,7 +195,7 @@ func Run(ctx context.Context, options Options) (Report, error) {
 
 	input := runnerInput{
 		BaseURL: baseURL, OutputDir: stage, PlaywrightDir: playwright,
-		Saga: document.Manifest.ID, Selection: Selection{Feature: options.Feature, Deck: options.Deck, Slide: options.Slide},
+		Saga: document.Manifest.ID, Selection: selectionOf(options),
 		Viewports: StandardViewports, Slides: selected, SemanticArrows: "not_evaluated",
 	}
 	inputPath := filepath.Join(stage, "input.json")
@@ -263,6 +270,9 @@ func selectSlides(document *saga.Saga, options Options) ([]runnerSlide, error) {
 		}
 		if options.Feature != "" {
 			return nil, errors.New("a review deck belongs to its review, not a feature; omit --feature")
+		}
+		if options.Deck != "" && options.Deck != review.Deck.ID && options.Deck != review.Deck.Target {
+			return nil, fmt.Errorf("deck %q is not review %s's deck %s; omit --deck or name that one", options.Deck, review.ID, review.Deck.Target)
 		}
 		for _, slide := range review.Deck.Slides {
 			if options.Slide != "" && options.Slide != slide.ID && options.Slide != slide.Target {

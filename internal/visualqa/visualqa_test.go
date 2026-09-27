@@ -208,3 +208,22 @@ func TestSelectionRendersAReviewDeckThroughTheReviewViewer(t *testing.T) {
 		t.Fatalf("app selection must not include review slides: %v", err)
 	}
 }
+
+// visual-qa --review records the review in visual-qa.json's selection, and
+// a --deck that is not the review's deck is refused rather than ignored.
+func TestReviewSelectionIsRecordedAndDeckHonored(t *testing.T) {
+	slide := &saga.Slide{SlideManifest: saga.SlideManifest{ID: "flow", Title: "Flow", Entrypoint: "24-a-flow.svg"}, Target: saga.ReviewSlideTarget("visual", "pr-1", "flow")}
+	deck := &saga.Deck{DeckManifest: saga.DeckManifest{ID: "pr-1"}, Target: saga.ReviewDeckTarget("visual", "pr-1", "pr-1"), Slides: []*saga.Slide{slide}}
+	document := &saga.Saga{Reviews: []*saga.Review{{ReviewManifest: saga.ReviewManifest{ID: "pr-1"}, Deck: deck}}}
+	if got := selectionOf(Options{Review: "pr-1", Slide: "flow"}); got != (Selection{Review: "pr-1", Slide: "flow"}) {
+		t.Fatalf("selection = %+v", got)
+	}
+	if _, err := selectSlides(document, Options{Review: "pr-1", Deck: "implementation"}); err == nil || !strings.Contains(err.Error(), `deck "implementation" is not review pr-1's deck`) {
+		t.Fatalf("review with another deck = %v", err)
+	}
+	for _, named := range []string{"pr-1", deck.Target} {
+		if selected, err := selectSlides(document, Options{Review: "pr-1", Deck: named}); err != nil || len(selected) != 1 {
+			t.Fatalf("review with its own deck %s = %v, %v", named, selected, err)
+		}
+	}
+}
