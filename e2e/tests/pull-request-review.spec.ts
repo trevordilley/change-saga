@@ -110,7 +110,7 @@ test("@critical approves slide by slide and marks a decision out of date when it
     const theme = page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]');
     await expect(greeting).toBeVisible();
     await greeting.locator(".landmark-menu > summary").click();
-    const codeReference = greeting.locator(".landmark-list").getByRole("button", { name: "Open 1 code reference for The change" });
+    const codeReference = greeting.locator(".landmark-list").getByRole("button", { name: /Open linked code with \d+ additions? and \d+ deletions? for The change/ });
     await expect(codeReference).toBeVisible();
     await codeReference.click();
     // The Item's code reference is shown as a diff against the review's base.
@@ -131,7 +131,7 @@ test("@critical approves slide by slide and marks a decision out of date when it
     await theme.locator("[data-review-request-changes]").click();
     await expect(theme.locator('[data-decision-state="changes_requested"]')).toHaveAttribute("data-currency", "current");
     await theme.locator(".landmark-menu > summary").click();
-    await theme.locator(".landmark-list").getByRole("button", { name: "Open 1 code reference for The change" }).click();
+    await theme.locator(".landmark-list").getByRole("button", { name: /Open linked code with \d+ additions? and \d+ deletions? for The change/ }).click();
     const commentForm = page.locator('#review-drawer [data-review-comment-form$=":item:change"]');
     await commentForm.locator("xpath=preceding-sibling::summary").click();
     await commentForm.locator("textarea").fill("Is this contrast checked?");
@@ -591,7 +591,7 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
     await expect(slide.locator('.landmark-hotspot[data-element-id="caller"]')).toHaveCount(1);
     await page.screenshot({ path: test.info().outputPath("review-diagram-slide.png") });
     await slide.locator(".landmark-menu > summary").click();
-    await slide.locator(".landmark-list").getByRole("button", { name: /Open \d+ code references? for Greeting/ }).click();
+    await slide.locator(".landmark-list").getByRole("button", { name: /Open linked code with \d+ additions? and \d+ deletions? for Greeting/ }).click();
     await expect(page.locator("#review-drawer .review-line.add").filter({ hasText: `"hello, " + name` }).first()).toBeVisible();
   } finally {
     await stopSagaServer(running);
