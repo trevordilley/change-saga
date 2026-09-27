@@ -129,6 +129,9 @@ type Deck struct {
 	DeckManifest
 	Target string   `json:"target"`
 	Slides []*Slide `json:"slides"`
+	// targets names this deck's slides and Items: in the app's URN space,
+	// or inside the review that owns the deck.
+	targets *deckTargets
 }
 
 type Slide struct {

@@ -34,6 +34,26 @@ func run(t *testing.T, command func(context.Context, []string, io.Writer) error,
 
 func newReviewFixture(t *testing.T) reviewFixture {
 	t.Helper()
+	fixture, head := newEmptyReviewFixture(t)
+	repo, root := fixture.repo, fixture.root
+	visual := filepath.Join(t.TempDir(), "slide.svg")
+	writeFile(t, visual, reviewSlideSVG)
+	for _, slide := range []string{"queue", "table"} {
+		run(t, AddSlide, "--review", "pr-7", "--intent", "explain", "--layout", "diagram", "--source", visual, root, slide)
+		run(t, AddItem, "--review", "pr-7", "--slide", slide, "--kind", "node", "--element-id", "node", "--description", "The changed code", root)
+	}
+	run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "queue", "node"), "--ref", head+":queue.go#L3", "--repo", repo, root)
+	run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "table", "node"), "--ref", head+":store.go#L3", "--repo", repo, root)
+	assertValid(t, root)
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-m", "Review deck")
+	return fixture
+}
+
+// newEmptyReviewFixture is newReviewFixture before its deck has slides: the
+// feature branch's change and review pr-7 of it. It returns the head commit.
+func newEmptyReviewFixture(t *testing.T) (reviewFixture, string) {
+	t.Helper()
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Dev")
@@ -57,18 +77,7 @@ func newReviewFixture(t *testing.T) reviewFixture {
 	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 
 	run(t, Review, "create", "--id", "pr-7", "--base", "main", "--head", "feature/pg", "--pr", "7", "--url", "https://github.com/acme/app/pull/7", "--title", "Move the queue to Postgres", root)
-	visual := filepath.Join(t.TempDir(), "slide.svg")
-	writeFile(t, visual, reviewSlideSVG)
-	for _, slide := range []string{"queue", "table"} {
-		run(t, AddSlide, "--review", "pr-7", "--intent", "explain", "--layout", "diagram", "--source", visual, root, slide)
-		run(t, AddItem, "--review", "pr-7", "--slide", slide, "--kind", "node", "--element-id", "node", "--description", "The changed code", root)
-	}
-	run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "queue", "node"), "--ref", head+":queue.go#L3", "--repo", repo, root)
-	run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "table", "node"), "--ref", head+":store.go#L3", "--repo", repo, root)
-	assertValid(t, root)
-	git(t, repo, "add", ".")
-	git(t, repo, "commit", "-m", "Review deck")
-	return reviewFixture{repo: repo, root: root}
+	return reviewFixture{repo: repo, root: root}, head
 }
 
 func reviewReport(t *testing.T, fixture reviewFixture) reviewstate.Report {

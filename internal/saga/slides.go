@@ -83,6 +83,22 @@ type deckTargets struct {
 	item  func(slideID, itemID string) string
 }
 
+// namer returns the URN namer the loader recorded for deck, or the app's for
+// a deck constructed without one.
+func (deck *Deck) namer() deckTargets {
+	if deck.targets != nil {
+		return *deck.targets
+	}
+	return appDeckTargets(manifestSagaID(deck.Target))
+}
+
+// SlideTarget is the URN of slide id in this deck: an app slide, or a slide
+// named inside the review that owns the deck.
+func (deck *Deck) SlideTarget(id string) string { return deck.namer().slide(id) }
+
+// ItemTarget is the URN of Item id on slide slideID of this deck.
+func (deck *Deck) ItemTarget(slideID, id string) string { return deck.namer().item(slideID, id) }
+
 func appDeckTargets(sagaID string) deckTargets {
 	return deckTargets{
 		deck:  func(id string) string { return DeckTarget(sagaID, id) },
@@ -102,6 +118,10 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 	itemsByKey := map[string]*Item{}
 	transactionSlides := map[string]bool{}
 	transactionItems := map[string]bool{}
+	// A review Item's coverage is written by cover as flat evidence records,
+	// whether its slide is hand-written or published by apply-slide, so those
+	// records attach to review transaction Items too.
+	coveredTransactionItems := map[string]bool{}
 	allowedAssets := map[string]bool{}
 	regular := map[string]bool{}
 	for _, entry := range entries {
@@ -125,7 +145,7 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 			addIssue(validation, "error", name, err.Error())
 			continue
 		}
-		deck := &Deck{Path: diagnostic, Directory: recordRoot, DeckManifest: value, Target: targets.deck(value.ID)}
+		deck := &Deck{Path: diagnostic, Directory: recordRoot, DeckManifest: value, Target: targets.deck(value.ID), targets: &targets}
 		validateDeckManifest(value, name, deck.Target, validation)
 		key := FlatTargetKey(deck.Target)
 		if matches[2] != key {
@@ -201,6 +221,7 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 			item.HasCode = len(item.Code) > 0
 			itemKey := FlatTargetKey(item.Target)
 			transactionItems[itemKey] = true
+			coveredTransactionItems[itemKey] = deck.Role == DeckRoleReview
 			itemsByKey[itemKey] = item
 			slide.Items = append(slide.Items, item)
 		}
@@ -288,7 +309,7 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 			if matches == nil || !regular[name] {
 				continue
 			}
-			if transactionItems[matches[1]] {
+			if transactionItems[matches[1]] && !coveredTransactionItems[matches[1]] {
 				continue
 			}
 			item := itemsByKey[matches[1]]

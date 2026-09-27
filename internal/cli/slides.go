@@ -410,6 +410,9 @@ func AddItem(ctx context.Context, args []string, out io.Writer) error {
 			if slide = findReviewSlide(review, *slideTarget); slide == nil {
 				return fmt.Errorf("review %s has no slide %q", review.ID, *slideTarget)
 			}
+			if err := guardCompleteSlideMutation("add-item", slide); err != nil {
+				return err
+			}
 			if *feature != "" {
 				return fmt.Errorf("a review deck belongs to its review, not a feature; omit --feature")
 			}
@@ -553,6 +556,9 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 			}
 			if slide = findReviewSlide(review, *targetValue); slide == nil {
 				return fmt.Errorf("review %s has no slide %q", review.ID, *targetValue)
+			}
+			if err := guardCompleteSlideMutation("set-slide-content", slide); err != nil {
+				return err
 			}
 		} else {
 			if slide = findSlide(document, *targetValue); slide == nil {

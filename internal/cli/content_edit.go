@@ -416,6 +416,38 @@ func findEditableSlide(document *saga.Saga, review, value string) (*saga.Slide, 
 	return nil, fmt.Errorf("--slide must identify an existing slide")
 }
 
+// findAuthoredSlide finds a slide for reading or republishing, and its deck:
+// by path, id, or URN among the app's slides, by a review slide's URN, or
+// with review by id, URN, or path among that review's slides. owner is the
+// review holding the slide, or "". A merged review's slides stay readable;
+// apply-slide refuses to change them.
+func findAuthoredSlide(document *saga.Saga, review, value string) (deck *saga.Deck, slide *saga.Slide, owner string, err error) {
+	if review != "" {
+		found := document.FindReview(review)
+		if found == nil || found.Deck == nil {
+			return nil, nil, "", fmt.Errorf("review %q does not exist or has no deck%s", review, knownReviews(document))
+		}
+		if slide = findReviewSlide(found, value); slide == nil {
+			return nil, nil, "", fmt.Errorf("review %s has no slide %q", found.ID, value)
+		}
+		return found.Deck, slide, found.ID, nil
+	}
+	if slide = findSlide(document, value); slide != nil {
+		return slideDeck(document, slide), slide, "", nil
+	}
+	for _, found := range document.Reviews {
+		if found.Deck == nil {
+			continue
+		}
+		for _, candidate := range found.Deck.Slides {
+			if value == candidate.Target || filepath.Clean(value) == filepath.Clean(candidate.Path) {
+				return found.Deck, candidate, found.ID, nil
+			}
+		}
+	}
+	return nil, nil, "", fmt.Errorf("slide %q does not exist; name a review's slide by its URN or with --review", value)
+}
+
 func slideDeck(document *saga.Saga, slide *saga.Slide) *saga.Deck {
 	decks := allDecks(document)
 	for _, review := range document.Reviews {

@@ -187,6 +187,13 @@ func ReviewItemTarget(sagaID, reviewID, slideID, itemID string) string {
 	return ReviewSlideTarget(sagaID, reviewID, slideID) + ":item:" + itemID
 }
 
+// ReviewScopedTarget reports whether target names a review or a deck, slide,
+// or Item inside one.
+func ReviewScopedTarget(target string) bool {
+	parts := strings.SplitN(target, ":", 5)
+	return len(parts) == 5 && parts[0] == "urn" && parts[1] == "change-saga" && parts[3] == "review"
+}
+
 func reviewDeckTargets(sagaID, reviewID string) deckTargets {
 	return deckTargets{
 		deck:  func(id string) string { return ReviewDeckTarget(sagaID, reviewID, id) },
