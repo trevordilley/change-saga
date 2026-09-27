@@ -2,17 +2,17 @@
   "version": 2,
   "references": [
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8865fd94dbc75477d59e2707f512e5140a3cbbac",
       "path": "internal/cli/review_diagram_slide_test.go",
-      "digest": "sha256:040dde5e1d6315f735d39b4b4e3e3de875db36d66ad863cec2f35c2916aaed90",
+      "digest": "sha256:2b9aab6138dec84c054138d36e8715b04cd86a533ae672c8fd3452fdb9f0776e",
       "note": "Go tests for publishing, covering, editing, describing, guarding, and migrating review slides."
     },
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8865fd94dbc75477d59e2707f512e5140a3cbbac",
       "path": "internal/cli/review_diagram_slide_test.go",
       "start": 1,
       "end": 255,
-      "digest": "sha256:040dde5e1d6315f735d39b4b4e3e3de875db36d66ad863cec2f35c2916aaed90",
+      "digest": "sha256:2b9aab6138dec84c054138d36e8715b04cd86a533ae672c8fd3452fdb9f0776e",
       "note": "Go tests for publishing, covering, editing, describing, guarding, and migrating review slides."
     }
   ]
