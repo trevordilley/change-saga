@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Every note and surprise stays reachable",
+      "x": 60,
+      "y": 28,
+      "width": 1000,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "pinned",
+      "kind": "node",
+      "shape": "rect",
+      "label": "A. Pinned note holds",
+      "detail": "crossing a hotspot no longer swaps it",
+      "note": "While a popover is **pinned**, hovering another hotspot is ignored, so the pointer can reach the pinned note's links.",
+      "x": 60,
+      "y": 130,
+      "width": 540,
+      "height": 150,
+      "style": "primary"
+    },
+    {
+      "id": "inner",
+      "kind": "node",
+      "shape": "rect",
+      "label": "B. Inner note rises",
+      "detail": "above the Item hotspot of its group",
+      "note": "A note hotspot inside an Item's hotspot gets `z-index: 4`; others stay beneath Items.",
+      "x": 680,
+      "y": 130,
+      "width": 540,
+      "height": 150,
+      "style": "normal"
+    },
+    {
+      "id": "badge",
+      "kind": "node",
+      "shape": "rect",
+      "label": "C/D. Badge stays clear",
+      "detail": "of the Surprises panel and Item controls",
+      "note": "- Under the panel: moves up above it\n- Under 64px tall: drops below the element\n- Re-placed when the panel opens or closes",
+      "x": 60,
+      "y": 350,
+      "width": 540,
+      "height": 150,
+      "style": "warning"
+    },
+    {
+      "id": "escape",
+      "kind": "node",
+      "shape": "rect",
+      "label": "D. Escape resets on leave",
+      "detail": "returning to a note reopens it",
+      "x": 680,
+      "y": 350,
+      "width": 540,
+      "height": 150,
+      "style": "normal"
+    },
+    {
+      "id": "tests",
+      "kind": "text",
+      "label": "Browser test: pinned, inner, corner, and short-element cases",
+      "x": 680,
+      "y": 560,
+      "width": 560,
+      "height": 36,
+      "style": "caption"
+    }
+  ]
+}
