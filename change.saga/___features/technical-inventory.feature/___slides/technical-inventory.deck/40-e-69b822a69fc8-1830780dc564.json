@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/server/server.go",
+      "start": 501,
+      "end": 501,
+      "digest": "sha256:e650705444de801ee01cd2d041e3f3d1fbab1ed9134e7b776fa9169c3260325b",
+      "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
+    },
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/server/server.go",
+      "start": 963,
+      "end": 963,
+      "digest": "sha256:5596a5746835b49cb36cd2d6edf5491b8237b6cc93e3b0883c7a8eb7eb09c82c",
+      "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
+    },
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/server/server.go",
+      "start": 967,
+      "end": 967,
+      "digest": "sha256:e99ee33d6ddb205d37124c3e3bab0f6074357468ff67be824f5178882d704460",
+      "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
+    }
+  ]
+}

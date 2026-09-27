@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/template.go",
-      "start": 29,
-      "end": 29,
-      "digest": "sha256:0881947591dc09fea5188e81b3edacc25ccd5105b60a3afe760867d00297b120",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:6cc6e294f37926e5bdadedc164bdbf8aaf6bf656ef775bd6103940ca70d7f38d",
       "note": "The app view renders Features, Personas and Flags through directory-page, which embeds the shared directory template."
     }
   ]
