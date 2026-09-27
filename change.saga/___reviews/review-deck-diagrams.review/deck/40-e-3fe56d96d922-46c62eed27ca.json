@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/cli.go",
+      "start": 435,
+      "end": 435,
+      "digest": "sha256:c235a3aa273345246a1c7ffce3ac488f9a968c9fde7cd27a9eca1f87a173f96a",
+      "note": "diagram check's description: a merged review's slides are history"
+    }
+  ]
+}

@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
       "path": "internal/cli/slide_transaction.go",
-      "start": 169,
-      "end": 170,
+      "start": 172,
+      "end": 173,
       "digest": "sha256:a8a267e21bb5d3b5e1642b63ec79e3a82f67976ebc04807b34b1746132db1de4",
       "note": "Evidence verification used to run for every request."
     }

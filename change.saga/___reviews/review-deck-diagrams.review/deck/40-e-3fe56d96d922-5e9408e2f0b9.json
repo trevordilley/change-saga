@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/diagram.go",
+      "start": 226,
+      "end": 228,
+      "digest": "sha256:b80ed76662fe21287810c02f0a4e9be4897d3b7328c985ac18d9b69c06d4b3ad",
+      "note": "The fields and deck loop it replaces"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/diagram.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:c88ca5c49544c794cd6703d9510d06d4adf37706e2cb9824cd9df005814ddb77",
+      "note": "The fields and deck loop it replaces"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/diagram.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:8ca7a69d7ad2fb2d220551e63dce6c1bc823b93fff395fa87bfc390b08e5d4ad",
+      "note": "The fields and deck loop it replaces"
+    }
+  ]
+}

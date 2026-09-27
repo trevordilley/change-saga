@@ -26,42 +26,42 @@
       "note": "The request names a review by its review field, --review, or a review deck URN; a bare review deck id gets a hint."
     },
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "internal/cli/slide_transaction.go",
-      "start": 179,
-      "end": 186,
+      "start": 180,
+      "end": 187,
       "digest": "sha256:ca578ab3db15731dd09ec676c1b71963ef828c1cfd4fa4e3c08e60f82cbcbdbf",
       "note": "The request names a review by its review field, --review, or a review deck URN; a bare review deck id gets a hint."
     },
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "internal/cli/slide_transaction.go",
-      "start": 461,
-      "end": 461,
+      "start": 471,
+      "end": 471,
       "digest": "sha256:5cce59b2d8fbfc0fe4fe68cf4b265972f8c446a8dbbd3dfed6db6069559e382f",
       "note": "The request names a review by its review field, --review, or a review deck URN; a bare review deck id gets a hint."
     },
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "internal/cli/slide_transaction.go",
-      "start": 469,
-      "end": 489,
-      "digest": "sha256:20f32a703122058c47ef34d6c3abdb6c95138a78aba621d80e463af989d3ec74",
+      "start": 479,
+      "end": 492,
+      "digest": "sha256:af0e57c90ad7b83cbad3bbb1ac89d3ed52efdd2802cc64bac26cb8e8b5f037c7",
       "note": "The request names a review by its review field, --review, or a review deck URN; a bare review deck id gets a hint."
     },
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "internal/cli/slide_transaction.go",
-      "start": 1010,
-      "end": 1010,
+      "start": 1020,
+      "end": 1020,
       "digest": "sha256:cbf1656d59ba42b3793bbca59f8e1dee5db5faead6169eff9cd6a20072246be6",
       "note": "The request names a review by its review field, --review, or a review deck URN; a bare review deck id gets a hint."
     },
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "internal/cli/slide_transaction.go",
-      "start": 1047,
-      "end": 1052,
+      "start": 1064,
+      "end": 1069,
       "digest": "sha256:7565f1972b5b57a6b0af1fbd8909297e728a7da8fcac9ccafc6ebb0b8c523b87",
       "note": "The request names a review by its review field, --review, or a review deck URN; a bare review deck id gets a hint."
     }

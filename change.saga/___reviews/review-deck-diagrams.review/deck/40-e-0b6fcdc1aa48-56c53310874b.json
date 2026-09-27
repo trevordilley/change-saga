@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "CHANGELOG.md",
-      "start": 47,
-      "end": 57,
+      "start": 81,
+      "end": 91,
       "digest": "sha256:ce76d4a205537e177df36dbbc2399b9df15e2cbe16f4d970b7a4a4b5e62b279a",
       "note": "The changelog entry for review decks with diagram sources"
     }

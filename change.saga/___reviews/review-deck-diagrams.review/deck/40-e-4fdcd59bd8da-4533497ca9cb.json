@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/stale_repair.go",
+      "start": 704,
+      "end": 710,
+      "digest": "sha256:7b39fa7090fd252dfd67738f388493d19d81f2764202aefc8df61b9d1d07fb95",
+      "note": "A printed review slide request names its review and keeps each Item's record"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/stale_repair.go",
+      "start": 738,
+      "end": 738,
+      "digest": "sha256:1975dc52710097df23fc1da6b4f17cbbd600424e9a10b5e38fba8528fa09fc05",
+      "note": "A printed review slide request names its review and keeps each Item's record"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/stale_repair.go",
+      "start": 731,
+      "end": 731,
+      "digest": "sha256:0275ed9c3e42d2b5b143dc0ea04da1932faaeb6022a9cc96a4201b218c9a3535",
+      "note": "A printed review slide request names its review and keeps each Item's record"
+    }
+  ]
+}

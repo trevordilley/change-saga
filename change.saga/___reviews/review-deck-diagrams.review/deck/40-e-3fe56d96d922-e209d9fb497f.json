@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 35,
+      "end": 40,
+      "digest": "sha256:dd8070c44a9288172c46e7ac174796484bdb4c3c2cfdce08f33deab4fb43b219",
+      "note": "visual-qa --review selects a review's slides (refusing --feature, or a --deck that is not the review's), renders them through the review viewer, and records the review in visual-qa.json"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:e2c7b0ab31a6426df779f13599816086129a387f7841fd2ae907b3349ba8d18a",
+      "note": "visual-qa --review selects a review's slides (refusing --feature, or a --deck that is not the review's), renders them through the review viewer, and records the review in visual-qa.json"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 35,
+      "end": 42,
+      "digest": "sha256:bdb47e36fe0efca454e34741a64454e042af3d0264fbf7a6260ac41ad21b7a24",
+      "note": "visual-qa --review selects a review's slides (refusing --feature, or a --deck that is not the review's), renders them through the review viewer, and records the review in visual-qa.json"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 89,
+      "end": 95,
+      "digest": "sha256:bc4826f8500410da39dfedba3ae22b51712eaf13eb42abe3b8c3e684afa59244",
+      "note": "visual-qa --review selects a review's slides (refusing --feature, or a --deck that is not the review's), renders them through the review viewer, and records the review in visual-qa.json"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:6c00e9168932b9f3273faedb0fd3b131395383e7016b4416ab4300da4465a7a1",
+      "note": "visual-qa --review selects a review's slides (refusing --feature, or a --deck that is not the review's), renders them through the review viewer, and records the review in visual-qa.json"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 266,
+      "end": 291,
+      "digest": "sha256:8e1a2c5fddcd625324666a5e2c7b89eae20ad689b6455a0d6e75a5a5533663af",
+      "note": "visual-qa --review selects a review's slides (refusing --feature, or a --deck that is not the review's), renders them through the review viewer, and records the review in visual-qa.json"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 902,
+      "end": 902,
+      "digest": "sha256:d38e71919503d47f5362e1b59e9852155804c55d472ed8abde3fa949a8353ef0",
+      "note": "The print-current lookup it replaces"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 956,
+      "end": 956,
+      "digest": "sha256:8fa6ca88f4c11cc4e59e3162f04d392c539e2d330883955a48d694c901511b2f",
+      "note": "The print-current lookup it replaces"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 961,
+      "end": 962,
+      "digest": "sha256:851902cd6d0de6b9e13119eb5ea303cca1f469c9e30491a8fa8ab80f56fca10d",
+      "note": "The print-current lookup it replaces"
+    }
+  ]
+}

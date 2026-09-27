@@ -2,18 +2,18 @@
   "version": 2,
   "references": [
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "internal/cli/slide_transaction.go",
-      "start": 187,
-      "end": 199,
+      "start": 188,
+      "end": 200,
       "digest": "sha256:23e38812047296bd17393fbfb1ae808da9fabcaa14666e4e91c2de579674bb79",
       "note": "Review Items may not carry evidence or criterion links; implementation Items may not carry a review record."
     },
     {
-      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "internal/cli/slide_transaction.go",
-      "start": 521,
-      "end": 531,
+      "start": 524,
+      "end": 534,
       "digest": "sha256:ffe6443f28ad0f63b2ce8258379167f3b4346fe8ac7a68759221cf878b52b54e",
       "note": "Review Items may not carry evidence or criterion links; implementation Items may not carry a review record."
     }

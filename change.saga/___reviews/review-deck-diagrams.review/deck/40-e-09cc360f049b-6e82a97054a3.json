@@ -18,10 +18,10 @@
       "note": "The request struct and revision builder before review and record existed."
     },
     {
-      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
       "path": "internal/cli/slide_transaction.go",
-      "start": 426,
-      "end": 426,
+      "start": 438,
+      "end": 438,
       "digest": "sha256:237704e6e283e65c76e8249c92a56010e0a6c6559bd0d6641db301013d816167",
       "note": "The request struct and revision builder before review and record existed."
     }

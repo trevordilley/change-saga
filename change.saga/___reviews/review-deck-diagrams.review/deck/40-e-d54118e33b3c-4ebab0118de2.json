@@ -66,10 +66,10 @@
       "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
     },
     {
-      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
       "path": "skills/change-saga/references/diagrams.md",
-      "start": 140,
-      "end": 188,
+      "start": 146,
+      "end": 194,
       "digest": "sha256:40ac51ab05e76974f16d711a79f3a3536a90997ce21a7e8687fb5db5752c979b",
       "note": "The diagrams reference: apply-slide publishes implementation or review slides, only implementation Items carry evidence and criterion links, and the review deck section with a complete diagram-sourced example"
     }
