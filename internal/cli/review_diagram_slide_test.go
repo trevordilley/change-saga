@@ -253,3 +253,39 @@ func TestApplySlideMigratesHandWrittenReviewSlide(t *testing.T) {
 		t.Fatalf("coverage after migration = %#v, before %#v", report.Coverage, before)
 	}
 }
+
+// A review Item published by apply-slide is covered exactly like one added
+// with add-item: cover writes the same flat evidence records for both, and
+// the comparison's review area (status and check --covers review) reads
+// them. A reader that skips a transaction Item's flat records would score an
+// apply-slide review deck as explaining none of its change.
+func TestReviewCoverageIsTheSameForApplySlideItems(t *testing.T) {
+	t.Parallel()
+	byAddItem := newReviewOnlyFixture(t, true)
+	byApplySlide := newReviewOnlyFixture(t, false)
+	run(t, Review, "create", "--id", "pr-7", "--base", "main", byApplySlide.root)
+	d := diagram.New()
+	d.Elements = []diagram.Element{{ID: "node", Kind: "node", Shape: "service", Label: "Queue", X: 80, Y: 120, Width: 260, Height: 100, Style: "primary"}}
+	request := SlideTransactionRequest{
+		Version: 1, Operation: "create", RequestID: "queue-create", Review: "pr-7", ExpectedSnapshot: "absent",
+		Slide:   SlideTransactionSlide{ID: "queue", Title: "The queue moves to a table", Intent: "explain", Layout: "diagram", Takeaway: "Jobs are stored in Postgres.", ReadingOrder: []string{"node"}},
+		Diagram: &d,
+		Items:   []SlideTransactionItemRequest{{ID: "node", Rank: 10, Kind: "node", Label: "Queue", Description: "The queue moves to a table", Selector: saga.LandmarkSelector{Type: "element", ElementID: "node"}}},
+	}
+	if _, err := ApplySlideTransaction(context.Background(), byApplySlide.root, t.TempDir(), byApplySlide.repo, request, false); err != nil {
+		t.Fatal(err)
+	}
+	for _, path := range []string{"queue.go", "store.go"} {
+		run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "queue", "node"), "--path", path, "--changed-lines", "--repo", byApplySlide.repo, byApplySlide.root)
+	}
+	assertValid(t, byApplySlide.root)
+
+	want := statusJSON(t, byAddItem.root, "--repo", byAddItem.repo, "--against", "main").Coverage.Areas.Review
+	got := statusJSON(t, byApplySlide.root, "--repo", byApplySlide.repo, "--against", "main").Coverage.Areas.Review
+	if !want.Complete || want.Total != 6 || got.Total != want.Total || got.Covered != want.Covered || got.Complete != want.Complete {
+		t.Fatalf("apply-slide review area = %+v, add-item review area = %+v", got, want)
+	}
+	if out := run(t, Check, "--covers", "review", "--repo", byApplySlide.repo, "--against", "main", byApplySlide.root); !strings.Contains(out, "fully covered") {
+		t.Fatalf("check --covers review of an apply-slide review deck:\n%s", out)
+	}
+}
