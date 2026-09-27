@@ -29,8 +29,13 @@ What you get:
 - `change.saga`, one folder at the repository's root, committed with the
   change. Reviewers can collapse it in GitHub's file tree.
 - A review deck for the pull request. Each slide explains one architectural
-  idea, such as components and how they relate, a data flow, a state change,
-  or a decision that would surprise a reviewer.
+  idea, such as components and how they relate, a data flow, or a state
+  change.
+- The surprises called out. Whatever would break a reviewer's reasonable
+  expectation is a callout on the responsible part of the diagram: what you
+  would expect, what the change does instead, why, and the consequence.
+  Reviewers see them in a Surprises panel on each slide, and
+  `change-saga review list` names them.
 - Every changed line linked to the slide Item that explains it.
   `change-saga check --covers review` exits 0 only when nothing is left out.
   Coverage is an omission check, not proof: reviewers still judge each slide,

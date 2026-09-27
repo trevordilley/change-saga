@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "internal/cli/reviews_test.go",
+      "start": 440,
+      "end": 464,
+      "digest": "sha256:5c01a2f277a5ab72759a6ad7fba8226678ddc68b7629706275b6c2a45dff6643",
+      "note": "review list and JSON name and count callouts."
+    }
+  ]
+}

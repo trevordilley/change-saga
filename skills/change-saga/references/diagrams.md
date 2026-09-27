@@ -148,7 +148,12 @@ retrying; the published record and its referenced asset must remain intact.
 Author review slides the same way: set `"review": ID` instead of `"deck"` (or
 pass `apply-slide --review ID`). A review Item carries no `evidence` or
 `criterion_links`, and may set `record` to a Saga record to open beside the
-change. A minimal review slide with a diagram source:
+change. Call out each surprise (see "Reviewer surprises" below) with a
+`"kind": "callout"` Item whose `about` names the responsible element's Item
+and whose `body` gives expectation, actual behavior, reason, and consequence;
+reviewers see callouts in a Surprises panel on the slide, and
+`review list` names them. A minimal review slide with a diagram source and
+one surprise:
 
 ```json
 {
@@ -158,7 +163,7 @@ change. A minimal review slide with a diagram source:
     "id": "architecture", "title": "Reads go through the cache", "rank": 10,
     "intent": "explain", "layout": "diagram",
     "takeaway": "Reads hit the cache first and fall through to the database on a miss.",
-    "reading_order": ["cache", "database"]
+    "reading_order": ["cache", "database", "stale-reads"]
   },
   "diagram": {
     "version": 1, "width": 1280, "height": 720,
@@ -180,13 +185,19 @@ change. A minimal review slide with a diagram source:
      "selector": {"type": "element", "element_id": "cache"}},
     {"id": "database", "rank": 20, "kind": "node", "label": "Database",
      "description": "Reached only on a cache miss.",
-     "selector": {"type": "element", "element_id": "database"}}
+     "selector": {"type": "element", "element_id": "database"}},
+    {"id": "stale-reads", "rank": 30, "kind": "callout", "label": "Reads can be stale",
+     "about": "cache",
+     "body": "You would expect writes to invalidate the cache; entries expire after 60s instead, so a read can lag a write by up to a minute. Invalidation would couple every writer to the cache.",
+     "description": "Why the cache expires entries instead of invalidating them.",
+     "selector": {"type": "element", "element_id": "cache"}}
   ]
 }
 ```
 
 After publishing, cover each Item's code with `change-saga cover --target
-ITEM-URN --path PATH --changed-lines`; that coverage stays attached across
+ITEM-URN --path PATH --changed-lines` (cover a surprise's actual behavior,
+such as the expiry setting, from its callout); that coverage stays attached across
 later revisions and diagram edits. A revision that drops a covered Item is
 refused until its coverage is removed. Read review slides with `diagram
 describe` or `query slide`, and check them with `diagram check` and

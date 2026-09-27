@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/reviews.go",
+      "start": 885,
+      "end": 885,
+      "digest": "sha256:04ac408d70b703be7c066051d58faffd0b5576a4999a988b8ae8e2875c5ccaec",
+      "note": "The old panel showed only a label and description."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "internal/server/reviews.go",
+      "start": 99,
+      "end": 101,
+      "digest": "sha256:37dbb2954becf7cefd283c0431cbfd80983572df8f1792674b1489761ea8c7dc",
+      "note": "The Surprises list under each slide and its styles."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "internal/server/reviews.go",
+      "start": 120,
+      "end": 121,
+      "digest": "sha256:38c0d48833436b6ddf18525f39974218167f458d8053714a9f33313afbb37149",
+      "note": "The Surprises list under each slide and its styles."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "internal/server/reviews.go",
+      "start": 434,
+      "end": 444,
+      "digest": "sha256:8902cc27c8d8ae8164db20a09b0056d6880fdcc68dd147f73eeaa241ef731862",
+      "note": "The Surprises list under each slide and its styles."
+    },
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "internal/server/reviews.go",
+      "start": 904,
+      "end": 904,
+      "digest": "sha256:c4a0a946a65f9588699dbbbba05edc21af7fa886c7d7b63a66f7dffcf36e7450",
+      "note": "The Surprises list under each slide and its styles."
+    },
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "internal/server/reviews.go",
+      "start": 961,
+      "end": 961,
+      "digest": "sha256:bb4d1f80e8025cbcb334a305fff0b4bef0cbbfe16589ee483fc7ac2244b2f0fe",
+      "note": "The Surprises list under each slide and its styles."
+    }
+  ]
+}

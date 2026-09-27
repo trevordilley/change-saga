@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "README.md",
+      "start": 32,
+      "end": 33,
+      "digest": "sha256:836440b68c0605e68a4f6c3929059f30b23a860a29e6b1de72146d374354f8fa",
+      "note": "What you get names the surprises called out."
+    },
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "README.md",
+      "start": 32,
+      "end": 38,
+      "digest": "sha256:e7885bdd8bdaeef0ab4b73301eb2baa49684aae1d705bdd6b1ccbb571eb9c0ea",
+      "note": "What you get names the surprises called out."
+    }
+  ]
+}

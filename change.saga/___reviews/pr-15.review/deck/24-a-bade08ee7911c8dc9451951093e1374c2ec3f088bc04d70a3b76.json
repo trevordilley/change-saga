@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Surprises reach the reviewer",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "guidance",
+      "kind": "node",
+      "shape": "service",
+      "label": "Skill: call out every surprise",
+      "x": 60,
+      "y": 160,
+      "width": 360,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "report",
+      "kind": "node",
+      "shape": "service",
+      "label": "Report: callouts per slide",
+      "x": 60,
+      "y": 420,
+      "width": 360,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "list",
+      "kind": "node",
+      "shape": "service",
+      "label": "review list: surprises",
+      "x": 560,
+      "y": 300,
+      "width": 320,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "viewer",
+      "kind": "node",
+      "shape": "service",
+      "label": "Viewer: Surprises list",
+      "x": 560,
+      "y": 520,
+      "width": 320,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "tests",
+      "kind": "node",
+      "shape": "service",
+      "label": "Tests",
+      "x": 1000,
+      "y": 160,
+      "width": 220,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "authored",
+      "kind": "edge",
+      "label": "callout Items",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "guidance",
+      "to": "report",
+      "points": [
+        {
+          "x": 240,
+          "y": 260
+        },
+        {
+          "x": 240,
+          "y": 420
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 255,
+        "y": 325,
+        "width": 130,
+        "height": 28
+      }
+    },
+    {
+      "id": "to-list",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "report",
+      "to": "list",
+      "points": [
+        {
+          "x": 420,
+          "y": 450
+        },
+        {
+          "x": 490,
+          "y": 450
+        },
+        {
+          "x": 490,
+          "y": 350
+        },
+        {
+          "x": 560,
+          "y": 350
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "to-viewer",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "report",
+      "to": "viewer",
+      "points": [
+        {
+          "x": 420,
+          "y": 490
+        },
+        {
+          "x": 490,
+          "y": 490
+        },
+        {
+          "x": 490,
+          "y": 570
+        },
+        {
+          "x": 560,
+          "y": 570
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

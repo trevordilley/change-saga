@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "internal/server/reviews_test.go",
+      "start": 401,
+      "end": 452,
+      "digest": "sha256:3b463b466cce3e8c019e2e058523834d9d4e3037a5ca8e7520e87a66ddf89806",
+      "note": "The page shows the Surprises list, panel body and about link."
+    }
+  ]
+}

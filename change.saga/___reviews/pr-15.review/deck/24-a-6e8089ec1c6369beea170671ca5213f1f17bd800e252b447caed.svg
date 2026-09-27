@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">Surprises reach the reviewer</title>
+  <desc id="diagram-desc">A callout Item is a surprise: the report carries it, review list names it, and the viewer shows it under the slide and in its element's panel.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-authored" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-to-list" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-to-viewer" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">Surprises reach the reviewer</tspan></text>
+  </g>
+  <g id="guidance" data-diagram-kind="node" transform="translate(60 160)" role="group" aria-label="Skill: call out every surprise">
+    <rect width="360" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Skill: call out every surprise</tspan></text>
+  </g>
+  <g id="report" data-diagram-kind="node" transform="translate(60 420)" role="group" aria-label="Report: callouts per slide">
+    <rect width="360" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Report: callouts per slide</tspan></text>
+  </g>
+  <g id="list" data-diagram-kind="node" transform="translate(560 300)" role="group" aria-label="review list: surprises">
+    <rect width="320" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">review list: surprises</tspan></text>
+  </g>
+  <g id="viewer" data-diagram-kind="node" transform="translate(560 520)" role="group" aria-label="Viewer: Surprises list">
+    <rect width="320" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Viewer: Surprises list</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="node" transform="translate(1000 160)" role="group" aria-label="Tests">
+    <rect width="220" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Tests</tspan></text>
+  </g>
+  <g id="authored" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="callout Items" data-from="guidance" data-to="report">
+    <path d="M240 260 L240 420" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-authored)"/>
+    <text x="255" y="343" font-size="18" fill="#526174" xml:space="preserve"><tspan x="255" y="343">callout Items</tspan></text>
+  </g>
+  <g id="to-list" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="report to list" data-from="report" data-to="list">
+    <path d="M420 450 L490 450 L490 350 L560 350" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-to-list)"/>
+  </g>
+  <g id="to-viewer" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="report to viewer" data-from="report" data-to="viewer">
+    <path d="M420 490 L490 490 L490 570 L560 570" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-to-viewer)"/>
+  </g>
+</svg>

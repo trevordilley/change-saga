@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/reviews.go",
+      "start": 888,
+      "end": 888,
+      "digest": "sha256:8adcd619651955b8fcbe07b2f0759bad5d9dcf290a1e884eab21de8704397296",
+      "note": "The page and styles before the Surprises list."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/reviews.go",
+      "start": 945,
+      "end": 945,
+      "digest": "sha256:baddf0b45b6f0e4f0977ec73fb24ef69ea8d4f4ac50523336f40c5f6a92fc850",
+      "note": "The page and styles before the Surprises list."
+    }
+  ]
+}
