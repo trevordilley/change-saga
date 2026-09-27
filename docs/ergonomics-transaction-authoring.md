@@ -1,8 +1,9 @@
 # Complete-slide transactions
 
-`change-saga apply-slide` publishes one coherent implementation slide from a
-versioned JSON request. The request is a complete desired state: visual asset,
-slide metadata, ordered semantic Items and selectors, exact code evidence, and
+`change-saga apply-slide` publishes one coherent implementation or pull request
+review slide from a versioned JSON request. The request is a complete desired
+state: visual asset or diagram source, slide metadata, ordered semantic Items
+and selectors, and, for an implementation slide, exact code evidence and
 Item-level criterion links.
 
 ```sh
@@ -31,6 +32,10 @@ Each Item must provide:
   the named Git commit;
 - at least one exact criterion URN, its current story-revision URN, and a
   rationale.
+
+A review slide (`"review": ID`, or `apply-slide --review ID`) is the exception:
+its Items carry only a selector (and optionally a `record` to open beside the
+change), and `cover --changed-lines` references their code after publishing.
 
 The command rejects whole-file evidence, broad Deck/Slide criterion sources,
 stale criterion revisions, missing criteria, selector-breaking visual

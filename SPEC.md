@@ -476,8 +476,9 @@ explains it.
 
 ### Complete-slide transactions and diagram sources
 
-`apply-slide` publishes one complete slide atomically: its visual, Items,
-exact evidence, and pinned criterion links. The slide's single
+`apply-slide` publishes one complete slide of an implementation or review deck
+atomically: its visual and Items and, for an implementation slide, each Item's
+exact evidence and pinned criterion links. The slide's single
 `25-t-<deck-key>-<slide-key>.json` record holds its immutable revision history
 and names the current revision; visuals are content-addressed
 `24-a-<digest-prefix>.<ext>` sidecars committed before the record that
