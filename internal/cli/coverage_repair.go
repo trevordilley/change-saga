@@ -26,6 +26,9 @@ type coverageRepairOutput struct {
 type coverageRecordLocation struct {
 	relative string
 	absolute string
+	// target owns the record; a replacement stays with it unless --target
+	// (or a batch record's target) says otherwise.
+	target string
 }
 
 func RemoveCoverage(ctx context.Context, args []string, out io.Writer) error {
@@ -110,9 +113,20 @@ func replaceCoverage(ctx context.Context, args []string, out io.Writer, stdin io
 	if err != nil {
 		return err
 	}
+	// A replacement explains the same thing unless told otherwise: without
+	// --target it stays with the record's owner rather than falling to the
+	// Saga root.
+	if !flagWasSet(flags, "target") && old.target != "" {
+		*options.target = old.target
+	}
 	records, err := coverRecords(*options.batch, stdin, options.record(), flags)
 	if err != nil {
 		return err
+	}
+	for index := range records {
+		if records[index].Target == "" && old.target != "" {
+			records[index].Target = old.target
+		}
 	}
 	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, options.opening.rng(), flagWasSet(flags, "head"), *options.allowMismatch)
 	if err != nil {
@@ -158,11 +172,11 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 	if clean == "." || clean == ".." || strings.HasPrefix(clean, "../") {
 		return coverageRecordLocation{}, fmt.Errorf("--record must stay within the saga")
 	}
-	var found, transactionTarget string
-	consider := func(files []saga.CodeFile) {
+	var found, owner, transactionTarget string
+	consider := func(target string, files []saga.CodeFile) {
 		for _, file := range files {
 			if filepath.ToSlash(file.Path) == clean {
-				found = clean
+				found, owner = clean, target
 				if strings.Contains(clean, "#items/") {
 					for _, deck := range allDecks(document) {
 						for _, slide := range deck.Slides {
@@ -177,11 +191,11 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 	}
 	var walk func(*saga.Section)
 	walk = func(section *saga.Section) {
-		consider(section.Code)
+		consider(section.Target, section.Code)
 		for _, fragment := range section.Fragments {
-			consider(fragment.Code)
+			consider(fragment.Target, fragment.Code)
 			for index := range fragment.Landmarks {
-				consider(fragment.Landmarks[index].Code)
+				consider(fragment.Landmarks[index].Target, fragment.Landmarks[index].Code)
 			}
 		}
 		for _, child := range section.Children {
@@ -200,7 +214,7 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 						return coverageRecordLocation{}, fmt.Errorf("review %q is history: its evidence cannot be repaired after landing", review.ID)
 					}
 				}
-				consider(item.Code)
+				consider(item.Target, item.Code)
 			}
 		}
 	}
@@ -210,7 +224,7 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 	if found == "" {
 		return coverageRecordLocation{}, fmt.Errorf("coverage record %q does not exist; use query mappings to list evidence_file values", requested)
 	}
-	return coverageRecordLocation{relative: found, absolute: filepath.Join(document.Root, filepath.FromSlash(found))}, nil
+	return coverageRecordLocation{relative: found, absolute: filepath.Join(document.Root, filepath.FromSlash(found)), target: owner}, nil
 }
 
 func removeCoverageFile(path string) error {

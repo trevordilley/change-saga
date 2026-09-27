@@ -16,6 +16,7 @@ is named.
 
 | Area | Covered when |
 | --- | --- |
+| `review` | every changed line of the comparison is explained by the pull request's review deck: the open review that follows the comparison's head; a change with no review is uncovered |
 | `implementation` | every changed line is referenced by the implementation deck, or test code by its test case's evidence |
 | `stories` | every changed line reaches a story through the chain |
 | `personas` | every changed line reaches a persona |
@@ -26,7 +27,33 @@ is named.
 With `--against`, the scope is the change: what it changed and what it
 affected. Without it, the scope is the whole app. `--feature` narrows either.
 
+`review` needs nothing but the review deck, so it is the rule most teams start
+with: does this pull request's review deck explain every changed line? It is
+measured over the comparison's own changed lines, so a stacked pull request's
+review, which covers only its own range, does not answer for its base branch's
+lines. A CI checkout needs the full history (`fetch-depth: 0`); compare against
+`origin/<base branch>`, since CI rarely has local branches. Reviews are found by
+the branch they follow (review create records it), including in a detached
+checkout of the pull request's head or of GitHub's merge commit. The README's
+"Use it in CI" section has a complete GitHub Actions workflow; it installs a
+pinned release that includes `check --covers review` (v0.2.0-rc.6 or later).
+A pull request from a fork is matched too: its branch is absent from the base
+repository, so its review is found through its evidence in the change.
+
+```yaml
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: change-saga check --covers review --against origin/${{ github.base_ref }} change.saga
+      # Once the Saga holds living documentation:
+      # - run: change-saga check --covers health change.saga
+```
+
 ```sh
+# The pull request's review deck explains every changed line.
+change-saga check --against origin/main --covers review change.saga
+
 # Account for changed lines in living documentation.
 change-saga check --against origin/main --covers implementation change.saga
 
@@ -54,6 +81,7 @@ fresh pins and complete coverage do not prove semantic correctness.
   "coverage": {
     "scope": { "kind": "change", "against": "origin/main", "head": "HEAD" },
     "areas": {
+      "review": { "area": "review", "unit": "changed_line", "total": 412, "covered": 412, "uncovered": 0, "complete": true, "note": "measured over this change's changed lines" },
       "implementation": {
         "area": "implementation", "unit": "changed_line",
         "total": 412, "covered": 412, "uncovered": 0, "complete": true,
@@ -100,8 +128,18 @@ a broken Saga from passing a rule silently.
 
 ## Reviews
 
-Pull request reviews are reported slide by slide in `.reviews`, never in the
-exit status: each slide lists every reviewer's latest decision with its
+`.coverage.areas.review` is the review deck's coverage of the change, and
+`.change_reviews` names the reviews it measured. `.documentation` says whether
+the Saga holds living documentation and whether status gave the review-first
+or the full report; it never affects the exit status.
+
+```sh
+# The review deck explains every changed line.
+echo "$status" | jq -e '.coverage.areas.review.complete'
+```
+
+Pull request reviews are also reported slide by slide in `.reviews`, never in
+the exit status: each slide lists every reviewer's latest decision with its
 `state` and `currency` (`current` or `out_of_date`). A team that requires
 every slide to carry a current approval writes that rule too:
 

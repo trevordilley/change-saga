@@ -80,6 +80,33 @@ jobs:
         if: runner.os != 'Windows'
         run: ./scripts/build_release_test.sh
 
+  review:
+    # This repository's own pull requests carry a review deck (change.saga
+    # ___reviews); the gate asks that it explain every changed line. Only the
+    # review area is asked: the health gate waits until main's pre-existing
+    # stale records are cleared.
+    name: review deck explains the change
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The pull request's own head, not GitHub's merge commit, with the
+          # full history review ranges and merge-bases need.
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: .go-version
+          cache: true
+      - name: build change-saga from this pull request
+        run: go build -o "$RUNNER_TEMP/change-saga" ./cmd/change-saga
+      - name: the review deck explains every changed line
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: '"$RUNNER_TEMP/change-saga" check --covers review --against "origin/$BASE_REF" change.saga'
+
   lint:
     name: lint
     runs-on: ubuntu-latest

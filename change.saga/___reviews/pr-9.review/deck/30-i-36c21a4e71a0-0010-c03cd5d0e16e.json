@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "gh-detect",
+  "slide": "create",
+  "rank": 10,
+  "kind": "node",
+  "label": "gh detection",
+  "description": "gh pr view reads the pull request when gh is installed and origin is on GitHub; any failure means nothing to detect.",
+  "selector": {
+    "type": "element",
+    "element_id": "gh-detect"
+  }
+}

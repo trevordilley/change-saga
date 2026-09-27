@@ -1,0 +1,124 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 29,
+      "end": 31,
+      "digest": "sha256:9604a10f1d43de403dae7e64488a0088ff9aad521e8ae970e6ae691282772abe"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 116,
+      "end": 121,
+      "digest": "sha256:88bdf50e2b1b3fa5e7fddec660dd1a17a8bc009d4c6d7989a506dba6ca593583"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 126,
+      "end": 130,
+      "digest": "sha256:40f403c4e6477f3e4fe4bc2bfcebe940ac0447facef51bfe5c278e83e8d6a07a"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 175,
+      "end": 176,
+      "digest": "sha256:9cf6f9b780585b887ca8a6578d0b8d9ffd3305c4399c212c596b75cf992c8f45"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:24d46d4ae72fa5096058ae17be24b341337af1260e21ad991e3cc5993ceeeaeb"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:8916176fd8de4213ed0102faa989bcff66130bb2a0ad0dba62152e75f648202c"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:ca2acabeeb6e5e1a38bcbd21840bea2e71d2e2366f7bacb6d9b49f06488c3e91"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:7c2920120a99b8c67a26c3e47ec0e8fa5256874828848928557887d7978a8eae"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:b6c9b2fe3580961f87a378b90ca00822d5ecb3eedb071e95709e5363302ad099"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:aaec5edd2fadd7c169211b3c1b698d7b385ef38f9325cc632282e9dd78891a4d"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 161,
+      "end": 162,
+      "digest": "sha256:91ba68bbe6a0414fb07de52f637d072712cc47aa1c6243c81fb58c77d7fa31ee"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:9641f4d229ba12696c0d62b10b570574cb0b7fa5cc5c4e2412589d73ddd9b4f0"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:b2b1fefd64cf88684b84674c184ea52a78ab02a720abb70edbcd6a9280352130"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:7cc281c257055633f10eb41c22afa9bde26b602a26c053017bfcbcabd28dcef5"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:3918c7f057c36d10d627a9c8651aa4a03e978cceca3c9292f1dbc8925083d9ca"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:6882ded15a3e75944974f77aa34238720593400d40f656c46ce3ff2e04c56972"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:962b3e725e3b2ee0a66c833720f40eebcaa120e1ede2191aaf0181f65345393e"
+    }
+  ]
+}

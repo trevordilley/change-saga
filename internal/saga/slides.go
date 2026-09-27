@@ -526,7 +526,17 @@ func validateSlideComposition(slide *Slide, validation *Validation) {
 func projectDecks(manifest Manifest, decks []*Deck) *Section {
 	root := &Section{Kind: "saga", ID: manifest.ID + "-root", Title: manifest.Title, Target: SagaTarget(manifest.ID)}
 	for _, deck := range decks {
-		section := &Section{Path: deck.Path, Kind: "deck", ID: deck.ID, Title: deck.Title, Order: deck.Rank, Target: deck.Target}
+		root.Children = append(root.Children, ProjectDeck(deck))
+	}
+	return root
+}
+
+// ProjectDeck addresses one deck's slides and Items through the section model:
+// the deck as a section, each slide as a fragment, and each Item as one of its
+// landmarks. A review deck is projected the same way so it can be navigated.
+func ProjectDeck(deck *Deck) *Section {
+	section := &Section{Path: deck.Path, Kind: "deck", ID: deck.ID, Title: deck.Title, Order: deck.Rank, Target: deck.Target}
+	{
 		for _, slide := range deck.Slides {
 			meta := slide.SlideManifest
 			fragment := &Fragment{
@@ -541,9 +551,8 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 			}
 			section.Fragments = append(section.Fragments, fragment)
 		}
-		root.Children = append(root.Children, section)
 	}
-	return root
+	return section
 }
 
 // validateDeckRole enforces what each deck location may hold. A feature's

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "top-level-help",
+  "slide": "entry",
+  "rank": 10,
+  "kind": "node",
+  "label": "Top-level help",
+  "description": "Help leads with the review story; implementation decks, reconcile, and living documentation become Growing the Saga.",
+  "selector": {
+    "type": "element",
+    "element_id": "top-level-help"
+  }
+}

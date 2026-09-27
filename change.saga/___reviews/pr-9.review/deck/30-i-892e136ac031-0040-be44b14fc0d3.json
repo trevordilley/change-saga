@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "full-report",
+  "slide": "status",
+  "rank": 40,
+  "kind": "node",
+  "label": "Full report",
+  "description": "A Saga with living documentation keeps today's report with the review headline first.",
+  "selector": {
+    "type": "element",
+    "element_id": "full-report"
+  }
+}

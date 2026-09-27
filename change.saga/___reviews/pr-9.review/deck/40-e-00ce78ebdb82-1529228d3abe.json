@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/review_match_test.go",
+      "start": 1,
+      "end": 147,
+      "digest": "sha256:50c6a866d600f856df46ab7d93c1c709373ef659c9d059d7af6d251bbc3e453e"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/review_match_test.go",
+      "start": 181,
+      "end": 220,
+      "digest": "sha256:cda888e569809e8d27b1a67c262df879b61306669e0f3bd495bb2e80aa27e2c5"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/review_match_test.go",
+      "start": 241,
+      "end": 249,
+      "digest": "sha256:e810bac8e8453d2ec3795e4746c8000e8c024ce872ddc41baf04b2ba281369b6"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/review_match_test.go",
+      "start": 301,
+      "end": 311,
+      "digest": "sha256:814a60b481218e09b813bdcbf0975d1bd2e82fc0a75eb14463cb00cd044eac28"
+    }
+  ]
+}

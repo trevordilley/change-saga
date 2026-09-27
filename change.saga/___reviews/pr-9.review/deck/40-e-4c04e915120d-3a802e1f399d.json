@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/ergonomics_test.go",
+      "start": 249,
+      "end": 251,
+      "digest": "sha256:d5c4a60fd292d4d6218880eed248f2c551f8c41998b6bf8914fea457b59bb598"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/ergonomics_test.go",
+      "start": 262,
+      "end": 263,
+      "digest": "sha256:f19bdac62e9d6ffba7819e90e7672a3c01a53127c2e1ab4cf4c3ae511b80c7ca"
+    }
+  ]
+}

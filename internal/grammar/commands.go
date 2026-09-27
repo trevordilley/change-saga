@@ -574,13 +574,23 @@ var commands = []Command{
 	},
 	{
 		Name: "review create", Status: StatusImplemented, Mutates: true, Writes: []string{"review"},
-		Usage:   "change-saga review create --id ID --base REV [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
-		Summary: "create the one review of a pull request: a slide deck viewed from the merge-base of --base and the head it follows",
+		Usage:   "change-saga review create [--id ID] [--base REV] [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
+		Summary: "create the one review of a pull request (or branch): a slide deck viewed from the merge-base of --base and the head it follows; the pull request, base, and id default from gh, origin's default branch, and the branch",
 		Flags: []Flag{
-			required("id", "ID", "stable review id, for example pr-42"), required("base", "REV", "the revision the pull request merges into"),
-			optional("head", "REF", "the ref the review follows as commits are pushed; defaults to the checkout's HEAD"),
+			optional("id", "ID", "stable review id; defaults to pr-N for a pull request, else the branch name"), optional("base", "REV", "the revision the pull request merges into; defaults to the pull request's base, else origin's default branch"),
+			optional("repo", "PATH", "code checkout when separate"),
+			optional("head", "REF", "the ref the review follows as commits are pushed; defaults to the checked-out branch"),
 			optional("pr", "N", "pull request number"), optional("url", "URL", "pull request URL"), optional("title", "TEXT", "review title"),
 			optional("objective", "TEXT", "what the review deck explains"), optional("deck", "ID", "review deck id; defaults to the review id"), jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "review follow", Status: StatusImplemented, Mutates: true, Writes: []string{"review"},
+		Usage:   "change-saga review follow --review ID --head REF [--json] <saga>",
+		Summary: "set the ref an open review follows, usually its pull request's branch, so it never takes a later change for its own",
+		Flags: []Flag{
+			required("review", "ID", "review id"), required("head", "REF", "the ref the review follows"), jsonFlag,
 		},
 		Positionals: sagaOnly,
 	},
@@ -631,12 +641,13 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
-		Summary: "report coverage by area (implementation, stories, personas, design, quality, health) with counts and lists, stale pins, and ordered next actions; has no verdict: exits 0 whenever the report can be trusted, 1 when the Saga is malformed or the checkout does not match",
+		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--full] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+		Summary: "report the review deck's coverage of the change first, then coverage by area (review, implementation, stories, personas, design, quality, health) with counts and lists, stale pins, and ordered next actions; a Saga that holds only reviews is reported review first, without the documentation areas; has no verdict: exits 0 whenever the report can be trusted, 1 when the Saga is malformed or the checkout does not match",
 		Flags: []Flag{
 			jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 			optional("max", "N", "maximum uncovered items in text mode"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 			optional("feature", "ID", "narrow the report to one feature"), againstFlag, headFlag,
+			optional("full", "", "report every documentation area and growth suggestion, even for a Saga that holds only reviews"),
 		},
 		Positionals: sagaOnly,
 	},
@@ -650,7 +661,7 @@ var commands = []Command{
 		Name: "check", Status: StatusImplemented, Usage: "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 		Summary: "ask whether the named coverage areas are fully covered in scope; exits 0 when they are, 3 with only those areas' gaps when not, and 1 when the report cannot be trusted",
 		Flags: []Flag{
-			required("covers", "AREA,...", "coverage areas to ask about: implementation, stories, personas, design, quality, health"),
+			required("covers", "AREA,...", "coverage areas to ask about: review, implementation, stories, personas, design, quality, health"),
 			jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 			optional("max", "N", "maximum gaps per area in text mode"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 			optional("feature", "ID", "narrow the question to one feature"), againstFlag, headFlag,

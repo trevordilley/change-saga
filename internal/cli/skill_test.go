@@ -114,6 +114,11 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 		unwanted []string
 	}{
 		{
+			name: "create a review for a PR", fixture: "Create a review for this PR.",
+			rowHint: "Create a review for a PR or branch", want: []string{"references/diagrams.md"},
+			unwanted: []string{"references/query.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
 			name: "compact feature context", fixture: "Load bounded context for the checkout feature without reading the whole Saga.",
 			rowHint: "load compact feature context", want: []string{"references/query.md"},
 			unwanted: []string{"references/diagrams.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
@@ -476,4 +481,36 @@ func containsString(values []string, value string) bool {
 		}
 	}
 	return false
+}
+
+// The review is the headline: the skill's description and first section lead
+// with creating one, and growing the Saga is left to the user to ask for.
+func TestSkillLeadsWithCreatingAReview(t *testing.T) {
+	t.Parallel()
+	var entry string
+	for _, file := range skills.ChangeSaga() {
+		if file.Path == "SKILL.md" {
+			entry = normalizeSkillNewlines(file.Content)
+		}
+	}
+	if !strings.Contains(entry, "description: 'Create a review for a pull request or branch") {
+		t.Fatalf("the skill's description does not lead with creating a review:\n%s", entry[:300])
+	}
+	fastPath := strings.Index(entry, "## Create a review for this PR")
+	if fastPath < 0 || fastPath > strings.Index(entry, "## Mandatory contract") {
+		t.Fatal("the review fast path is not the skill's first section")
+	}
+	section := entry[fastPath:strings.Index(entry, "## Mandatory contract")]
+	for _, want := range []string{"review create", "add-slide --review", "set-slide-content --review", "add-item --review", "--changed-lines", "review list --uncovered", "check --covers review", "setup-initial-saga"} {
+		if !strings.Contains(strings.Join(strings.Fields(section), " "), want) {
+			t.Fatalf("the fast path omits %q", want)
+		}
+	}
+	if strings.Index(section, "setup-initial-saga") < strings.Index(section, "Commit the Saga") || !strings.Contains(section, "do not pitch more") {
+		t.Fatal("the fast path pitches growing the Saga instead of leaving it to the user")
+	}
+	workflow := entry[strings.Index(entry, "## Common workflow"):]
+	if !strings.Contains(workflow, "Only when the Saga already holds living documentation") {
+		t.Fatal("the common workflow still reconciles living documentation after every review")
+	}
 }

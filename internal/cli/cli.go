@@ -208,7 +208,8 @@ var commandUsage = map[string]string{
 	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --ref LOCATION [--ref LOCATION...] <saga>",
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
 	"review":                      "change-saga review <create|list|approve|request-changes|withdraw|comment> [flags] <saga>",
-	"review create":               "change-saga review create --id ID --base REV [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
+	"review create":               "change-saga review create [--id ID] [--base REV] [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
+	"review follow":               "change-saga review follow --review ID --head REF [--json] <saga>",
 	"review list":                 "change-saga review list [--review ID] [--uncovered] [--repo PATH] [--json] <saga>",
 	"review approve":              "change-saga review approve --review ID --slide ID --reviewer-kind human|ai [--body TEXT] [flags] <saga>",
 	"review request-changes":      "change-saga review request-changes --review ID --slide ID --reviewer-kind human|ai --body TEXT [flags] <saga>",
@@ -216,7 +217,7 @@ var commandUsage = map[string]string{
 	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
 	"reconcile":                   "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json] <saga>",
-	"status":                      "change-saga status [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+	"status":                      "change-saga status [--json] [--full] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"preintegrate":                "change-saga preintegrate --ref REF --ref REF [--repo PATH] [--json] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
@@ -228,43 +229,55 @@ var commandUsage = map[string]string{
 }
 
 func PrintHelp(out io.Writer) {
-	fmt.Fprint(out, `Change Saga — living documentation for an application, kept honest by the code
+	fmt.Fprint(out, `Change Saga — review a large change by its architecture, not line by line
 
-The recommended idiom is one Saga per repository, change.saga at its root.
-It documents the application: an overview, the personas it serves, a design
-system, an onboarding deck, feature flags, and durable features, the product
-domains that each hold their own stories, design, quality, and implementation
-deck. A monorepo keeps one change.saga at its root and documents each app
-through its own features. Every link is pinned, so when a story or the code
-changes, whatever relied on the old version goes visibly stale.
+Change Saga makes large changes, often AI-written, easy to digest. The author,
+or their coding agent, creates a review deck for the pull request: slides that
+explain the change's architecture, so a person reviews the architecture instead
+of every line of code. Coverage makes that review trustworthy: every changed
+line is linked to the slide Item that explains it.
+
+Create a review for this pull request (or branch):
+  1. "init" the repository's Saga, change.saga at its root, if it has none.
+     Reviewers can collapse it in the pull request's file tree.
+  2. "review create" works out the pull request, its base, and the review id
+     (through gh when installed, else origin's default branch and the branch
+     name); pass --pr, --base, or --id to choose.
+  3. Explain the architecture, one idea per slide: "add-slide --review",
+     "set-slide-content --review" (an SVG diagram), and "add-item --review"
+     for each element that explains part of the change.
+  4. "cover --target ITEM --path PATH --changed-lines" links every changed
+     line to the Item that explains it.
+  5. "review list" or "status --against BASE" reports the deck's coverage;
+     "check --covers review --against BASE" asks it with an exit code, for CI.
+     Reviewers decide and discuss per slide ("review approve", "review
+     request-changes", "review comment"); the Saga itself carries no approvals.
+Coverage is not semantic proof: a person still judges whether each slide is right.
 
 Do what the user asks, at the smallest scope that completely satisfies the
-request. New product work often begins with personas, valuable user stories,
-and pass/fail criteria. An existing change or focused code review may begin
-with its implementation evidence. Neither path requires inventing the whole
-product model up front. Before a story becomes accepted, it must have at least
-one pass/fail criterion; add only the narrowest obligation supported by the
-confirmed intent rather than inventing behavior to satisfy the format.
+request. A focused code review begins with its review deck; new product work
+often begins with personas, valuable user stories, and pass/fail criteria.
+Neither path requires inventing the whole product model up front. Before a
+story becomes accepted, it must have at least one pass/fail criterion; add only
+the narrowest obligation supported by the confirmed intent rather than
+inventing behavior to satisfy the format.
 
-A focused change:
-  1. "init" the repository's Saga (change.saga) when it does not have one.
-  2. Author the requested part of the lifecycle. For an implementation change,
-     "add-deck", "add-slide", and "add-item" explain it, and "cover" references
-     every changed line from the Item that explains it. The first command that
-     needs a feature creates one named after the branch (or pass --feature);
-     with one feature, --feature is implied.
-  3. Verify the implementation and author its PR review slide deck ("review").
-     The review deck explains the transition; living documentation explains
-     the current application. Each has independent coverage.
-  4. "reconcile --against main" explains affected records, HEAD reference
-     currency, baseline debt and regressions, with typed inspection/repair
-     paths. Reassess affected documentation and update only what needs it.
-  5. Run relevant tests, "validate", and "reconcile" again. "status" reports
-     coverage by area with no verdict. "check --covers implementation
-     --against main" asks about changed-line coverage; "check --covers health"
-     separately checks current health. Neither proves semantic correctness.
-
-Growing the Saga, a step at a time and only when it helps:
+Growing the Saga, if and when the team wants it (never required):
+  The same Saga can document the application itself: living documentation,
+  kept honest by the code. It holds an overview, the personas the app serves,
+  a design system, an onboarding deck, feature flags, and durable features,
+  the product domains that each hold their own stories, design, quality, and
+  implementation deck. A monorepo keeps one change.saga at its root and
+  documents each app through its own features. Every link is pinned, so when a
+  story or the code changes, whatever relied on the old version goes visibly
+  stale. "setup-initial-saga" guides a first pass; or take one step at a time:
+  - Implementation: for an implementation change, "add-deck", "add-slide", and
+    "add-item" explain it in a feature's implementation deck, and "cover"
+    references every changed line from the Item that explains it. The first
+    command that needs a feature creates one named after the branch (or pass
+    --feature); with one feature, --feature is implied. The review deck
+    explains the transition; living documentation explains the current
+    application. Each has independent coverage.
   - Product: write user stories with acceptance criteria ("story",
     "criterion"). An accepted story has at least one criterion; use the
     narrowest pass/fail obligation confirmed by the user. Relate the slides
@@ -278,10 +291,14 @@ Growing the Saga, a step at a time and only when it helps:
   - Quality: test cases that verify acceptance criteria ("quality").
   - Language: the overview's pitch and description ("overview") and the
     project's own vocabulary ("term").
-  - Review: each pull request has one review, a slide deck explaining what
-    it did and why ("review create", "add-slide --review"). Approval and
-    comments happen only there ("review approve", "review comment"); the
-    Saga itself is documentation and carries no approvals.
+  - Upkeep: once living documentation exists, "reconcile --against main"
+    explains affected records, HEAD reference currency, baseline debt and
+    regressions, with typed inspection/repair paths; reassess and update only
+    what needs it, then "validate". "status" reports coverage by area, with
+    no verdict ("status --full" shows every area for a Saga that holds only
+    reviews). "check --covers implementation --against main" asks about
+    changed-line coverage; "check --covers health" separately checks current
+    health. Neither proves semantic correctness.
 
 Records are Git-native and partitioned so parallel workspaces can author them
 and merge cleanly; "plan" organizes larger work into dependency-aware waves.
@@ -294,16 +311,18 @@ Usage:
 	fmt.Fprint(out, `
 Run "change-saga <command> -h" for command-specific options.
 
-Starting the repository's Saga with a coding agent?
-  Run "change-saga setup-initial-saga" once. It inspects the repository and
-  prints the guided interview and investigation workflow. If a Saga already
-  exists, it recommends ordinary updates unless the user requests an overhaul.
-
 Using a coding agent?
-  For ongoing authoring, use the regular Change Saga skill.
+  Ask it to "create a review for this PR" (or branch) with the Change Saga
+  skill, which also covers ongoing authoring.
   If its Change Saga skill is not installed or current, run
   "change-saga install-skill" and give the resulting agent-agnostic bootstrap
   prompt to the agent. The command does not modify the repository or create a Saga.
+
+Growing the Saga with a coding agent?
+  Run "change-saga setup-initial-saga" once. It inspects the repository and
+  prints the guided interview and investigation workflow. It grows a Saga that
+  holds only reviews; if the Saga already holds living documentation, it
+  recommends ordinary updates unless the user requests an overhaul.
 `)
 	printInitialSagaHelp(out)
 }
@@ -337,11 +356,11 @@ var commandDescription = map[string]string{
 	"erd":                         "Author the application ERD: an offline SVG visual, its directory of data-entity pins, and element bindings. Requires inventory format 2.",
 	"erd-overlay":                 "Propose data-model changes against an exact ERD revision without rewriting it: replacement or new entity pins, removals, and an optional visual. Requires inventory format 2.",
 	"inventory":                   "Adopt inventory format 2 explicitly. Existing records are not rewritten; legacy revisions read as unspecified intent. Older change-saga versions then refuse the inventory instead of dropping content.",
-	"init":                        "Create the repository's Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. With no path it creates change.saga in the --repo\ndirectory (by default the current directory), identified and titled after the\nrepository's origin remote (or, without one, its top-level directory). The\nrecommended idiom is one Saga per repository; a monorepo documents each app as\nfeatures of it. Another Saga never blocks init, which only notes it. Then either\ncover the change: explain it with an implementation deck whose Items reference every\nchanged line; or document existing code: observe HEAD with status and reference the\ncode each Item explains at the current commit. Features, stories, personas, design,\nand quality are optional and can come later.",
-	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
+	"init":                        "Create the repository's Saga: the saga.json manifest and a reviewer README. With no\npath it creates change.saga in the --repo directory (by default the current\ndirectory), identified and titled after the repository's origin remote (or, without\none, its top-level directory). The recommended idiom is one Saga per repository; a\nmonorepo documents each app as features of it. Another Saga never blocks init, which\nonly notes it. Then start with a review of the branch or pull request (review create):\nits deck explains the change's architecture and covers every changed line. That is the\nbest way to learn the tool, and a Saga of reviews alone is complete; personas,\nstories, features, design, and living documentation are there if the team ever\nwants them. To document existing\ncode instead, observe HEAD with status and reference the code each Item explains.",
+	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for growing the app's Saga into\nliving documentation through a product interview and evidence gathering, for a team that wants\nliving documentation beyond its reviews; not the first step. The command does not modify the\nrepository. It grows a Saga that holds only reviews; if the Saga already holds living\ndocumentation, it stops and recommends normal authoring unless --overhaul explicitly\nrequests a major documentation rebuild.",
 	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
-	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
-	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke\n\nComparison coverage can use deleted-line evidence valid at base. Check HEAD\nhealth separately without --against; use reconcile for debt and repair paths.",
+	"status":                      "Report how completely the change's review deck explains it (--against), or each\nopen review its range, then coverage by area, stale records, and ordered next\nactions: required work first (keep what exists healthy, explain every changed\nline), then optional growth suggestions. A Saga that holds only reviews is\nreported review first, without its documentation areas or growth suggestions;\n--full (and --json) gives the full report. Status has no verdict: it exits 0\nwhenever its report can be trusted, and 1 only when the Saga is malformed (for\nexample, a duplicate ID) or the checkout does not match the declared repository.\nTeams write their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
+	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nThe review area asks about the pull request's review deck alone; the others\nfollow the chain persona -> story -> design -> code:\n  review          every changed line of the change is explained by its review\n                  deck (the open review that follows HEAD); a change with no\n                  review is uncovered\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke\n\nComparison coverage can use deleted-line evidence valid at base. Check HEAD\nhealth separately without --against; use reconcile for debt and repair paths.",
 	"visual-qa":                   "Render selected implementation or onboarding slides, or with --review a pull request\nreview's slides, both as raw assets and inside the actual reviewer at 1280x720 and\n1024x576. The managed output includes screenshots, a contact sheet, and visual-qa.json\nwith mechanical clipping, text-overflow, missing-selector, and reliable Item-overlap\nfindings. The command is read-only with respect to the Saga and\nexits 3 when error-severity findings exist. It does not judge whether semantic arrows or\nrelationships are correct.",
 	"preintegrate":                "Read committed Saga snapshots from two or more explicit Git refs and report\nstable-ID collisions, different current heads, and deterministic text-overlap\ncandidates with exact ref/commit provenance. It is advisory and read-only: it\nnever chooses semantic equivalence, updates a ref, checks out, or merges Git.",
 	"feature":                     "Add a durable product domain. A feature holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames a feature, so a story can move between features without breaking a link.",
@@ -416,7 +435,8 @@ var commandDescription = map[string]string{
 	"set-slide-content":           "Replace a slide's visual entrypoint while preserving its stable target and items.",
 	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Code references attach here.",
 	"review":                      "A review is a pull request's slide deck: one review per pull request, viewed from the\nmerge-base of its base and its head, and following the head as commits are pushed. The deck\nexplains what the change did and why, the transition the current documentation no longer\nshows. Its Items reference the code the change touched (shown as a diff against the base)\nand the Saga records it revised. Approval and comments exist only here, per review slide:\nthe documentation itself has none. The tool records decisions and reports whether each is\nout of date for the current head; it never declares a review approved.",
-	"review create":               "Create the review for one pull request and its empty review deck. --base is what the pull\nrequest merges into; --head is the ref the review follows (the pull request's branch),\ndefaulting to the checkout's HEAD. Author the deck with add-slide --review, add-item --review,\nset-slide-content --review, and cover --target <review Item URN>.",
+	"review create":               "Create the review for one pull request (or branch) and its empty review deck: the usual\nfirst step with Change Saga. --base is what the pull request merges into; --head is the ref\nthe review follows (the pull request's branch), defaulting to the checked-out branch. What is\nnot given is worked out: the pull request's number, URL, title, and base through gh when it\nis installed and origin is on GitHub (set CHANGE_SAGA_NO_GH=1 to skip it), else --base is\norigin's default branch, and --id is pr-N for a pull request, else the branch name.\nAuthor the deck with add-slide --review, set-slide-content --review, add-item --review, and\ncover --target <review Item URN> --path PATH --changed-lines; confirm with review list.",
+	"review follow":               "Set the ref an open review follows, usually its pull request's branch. review create\nrecords the checked-out branch; a review created without one follows HEAD, and after\nits change lands would take the next branch's change for its own.",
 	"review list":                 "Report every review slide by slide: each reviewer's current decision, the head commit it\nwas given at, and whether it is out of date because the slide or the code it references changed\nsince. Reports how completely each review's deck covers the review's own range: every changed\nline covered by a review Item reference, with the uncovered lines as ready-to-use locations,\nstale references, and overlap. --uncovered lists only the gaps. There is no verdict; a team\nwrites its own rule over the JSON.",
 	"review approve":              "Approve one review slide at the pull request's current head. Declare the reviewer seat:\n--reviewer-kind human for your own decision, or ai with --reviewer-name, --agent, and the exact\n--model. The decision goes out of date when the slide or the code it references changes.",
 	"review request-changes":      "Request changes on one review slide at the pull request's current head, saying what\nshould change.",
@@ -585,28 +605,32 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if len(existing) > 0 {
 		printExistingSagaNote(out, existing)
 	}
-	fmt.Fprintf(out, `Next, one of two paths.
+	fmt.Fprintf(out, `Start with a review of this branch or pull request. Creating one is the best
+way to learn Change Saga: its slide deck explains the change's architecture, so
+a reviewer reads the architecture instead of every line, and coverage links
+every changed line to the slide Item that explains it. review create works out
+the id and base from the pull request or branch, and each command prints the next:
+  change-saga review create %[1]s
+  change-saga add-slide --review ID --intent explain --layout diagram %[1]s SLIDE
+  change-saga set-slide-content --review ID --target SLIDE --source FILE.svg %[1]s
+  change-saga add-item --review ID --slide SLIDE --kind node --element-id ELEMENT --label TEXT --description TEXT --id ITEM %[1]s
+  change-saga cover --target ITEM_URN --path PATH --changed-lines %[1]s
+  change-saga review list %[1]s
+  change-saga check --covers review --against BASE %[1]s
+Commit the Saga with the change; reviewers can collapse %[2]s in the pull
+request's file tree.
 
-To cover a change (a branch or pull request): explain it with an
-implementation deck, then reference every changed line from the Item that
-explains it (the first command that needs a feature creates one named after the
-branch):
-  change-saga add-deck --objective TEXT %[1]s NAME
-  change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT %[1]s NAME
-  change-saga add-item --slide TARGET --kind KIND %[1]s
-  change-saga cover --against main --target ITEM --path PATH --changed-lines %[1]s
-  change-saga status --against main %[1]s
+A Saga of reviews alone is complete. If the team ever wants living
+documentation of the app (personas, stories, features, design), the same Saga
+grows into it: change-saga setup-initial-saga guides a first pass.
 
-To document existing code (no change needed): observe the app at HEAD, start
-with the overview and the project's terms, and reference the code each Item
-explains at the current commit, a range or a whole file at a time:
+Or, to document existing code instead (no change needed): observe the app at
+HEAD, start with the overview and the project's terms, and reference the code
+each Item explains at the current commit, a range or a whole file at a time:
   change-saga status %[1]s
   change-saga overview set-pitch --text TEXT %[1]s
   change-saga cover --target ITEM --path PATH (--lines RANGES | --file) %[1]s
-
-Either way, stories, personas, design, test cases, the overview, and terms
-are optional; status suggests them as the Saga grows.
-`, root)
+`, root, filepath.Base(root))
 	return nil
 }
 
@@ -1057,6 +1081,7 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	opening := registerOpenFlags(flags)
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
 	feature := flags.String("feature", "", "narrow the report to one feature (id or URN)")
+	full := flags.Bool("full", false, "report every documentation area and growth suggestion, even for a Saga that holds only reviews")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1067,14 +1092,23 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if *jsonOutput {
+	// A Saga that holds only reviews is reported review first; asking with
+	// --full, or a Saga that documents the application, gets the full report.
+	if *full {
+		status.Documentation.Report = reportFull
+	}
+	status.NextActions = reviewFirstActions(status.NextActions, status.Documentation)
+	switch {
+	case *jsonOutput:
 		if err := writeJSON(out, status); err != nil {
 			return err
 		}
-	} else {
+	case status.Documentation.Report == reportFull:
 		printReport(out, status, *maxItems)
 		printComparison(out, status.Comparison, *maxItems)
 		printLivingStatus(out, status, *maxItems)
+	default:
+		printReviewFirst(out, status, *maxItems)
 	}
 	// Status has no verdict: it exits zero whenever its report can be
 	// trusted, whatever the report finds.
@@ -1114,6 +1148,26 @@ func printCursor(out io.Writer, view opening) {
 // range), and stale references. It passes no verdict; the coverage report
 // that follows counts every area.
 func printReport(out io.Writer, status statusDocument, maxItems int) {
+	printReportHeader(out, status)
+	printReviewHeadline(out, status, maxItems)
+	if implementation := status.Coverage.Areas.Implementation; len(implementation.UncoveredEntries) > 0 {
+		fmt.Fprintf(out, "\nChanged lines nothing references (%d lines in %d file ranges):\n", implementation.Uncovered, len(implementation.UncoveredEntries))
+		limit := len(implementation.UncoveredEntries)
+		if maxItems > 0 && maxItems < limit {
+			limit = maxItems
+		}
+		for _, entry := range implementation.UncoveredEntries[:limit] {
+			fmt.Fprintf(out, "  %s\n", describeLines(entry))
+		}
+		if limit < len(implementation.UncoveredEntries) {
+			fmt.Fprintf(out, "  … and %d more file ranges (use --max 0 or --json)\n", len(implementation.UncoveredEntries)-limit)
+		}
+	}
+	printStaleReferences(out, status.Report)
+}
+
+// printReportHeader prints how the Saga was opened and its schema issues.
+func printReportHeader(out io.Writer, status statusDocument) {
 	report, view := status.Report, status.Opening
 	if view.Mode == gitdiff.ModeObserve {
 		fmt.Fprintf(out, "OBSERVING %s (%s) — no change to account for; pass --against REV to compare\n", view.Head, shortOID(view.HeadOID))
@@ -1130,19 +1184,10 @@ func printReport(out io.Writer, status statusDocument, maxItems int) {
 			fmt.Fprintf(out, "  %s: %s: %s\n", issue.Severity, issue.Path, issue.Message)
 		}
 	}
-	if implementation := status.Coverage.Areas.Implementation; len(implementation.UncoveredEntries) > 0 {
-		fmt.Fprintf(out, "\nChanged lines nothing references (%d lines in %d file ranges):\n", implementation.Uncovered, len(implementation.UncoveredEntries))
-		limit := len(implementation.UncoveredEntries)
-		if maxItems > 0 && maxItems < limit {
-			limit = maxItems
-		}
-		for _, entry := range implementation.UncoveredEntries[:limit] {
-			fmt.Fprintf(out, "  %s\n", describeLines(entry))
-		}
-		if limit < len(implementation.UncoveredEntries) {
-			fmt.Fprintf(out, "  … and %d more file ranges (use --max 0 or --json)\n", len(implementation.UncoveredEntries)-limit)
-		}
-	}
+}
+
+// printStaleReferences prints the code references that went stale.
+func printStaleReferences(out io.Writer, report coverage.Report) {
 	if len(report.StaleReferences) > 0 {
 		fmt.Fprintln(out, "\nStale code references:")
 		for _, stale := range report.StaleReferences {
@@ -1489,7 +1534,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 			foundDir = reviewTargetDirectory(document, value)
 		}
 		if foundDir == "" {
-			return "", "", fmt.Errorf("target %q does not exist%s", value, targetHint(document, allowFragment))
+			return "", "", fmt.Errorf("target %q does not exist%s", value, targetHint(document, allowFragment, value))
 		}
 		return foundDir, value, nil
 	}
@@ -1520,7 +1565,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 		// Report content lives beneath reserved roots (___features, ___overview),
 		// so a missing path there fails section resolution; still point the
 		// author at the query API rather than only at the path rule.
-		return "", "", fmt.Errorf("target %q is not a valid %s: %v%s", value, targetKinds, err, targetHint(document, allowFragment))
+		return "", "", fmt.Errorf("target %q is not a valid %s: %v%s", value, targetKinds, err, targetHint(document, allowFragment, value))
 	}
 	abs, _ := filepath.Abs(dir)
 	if abs == document.Root {
@@ -1535,7 +1580,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 		}
 	})
 	if foundTarget == "" || isFragment && !allowFragment {
-		return "", "", fmt.Errorf("target %q is not a valid %s%s", value, targetKinds, targetHint(document, allowFragment))
+		return "", "", fmt.Errorf("target %q is not a valid %s%s", value, targetKinds, targetHint(document, allowFragment, value))
 	}
 	return abs, foundTarget, nil
 }
@@ -1738,7 +1783,7 @@ const maxTargetHints = 12
 // targetHint turns "that target does not exist" into something actionable. The
 // query API is the supported way to enumerate targets, so the hint names it
 // rather than inviting the reader to go read metadata files.
-func targetHint(document *saga.Saga, allowFragment bool) string {
+func targetHint(document *saga.Saga, allowFragment bool, value string) string {
 	var targets []string
 	targets = append(targets, saga.SagaTarget(document.Manifest.ID))
 	walkTargets(document.Root, document.Section, func(target, _ string, fragment bool) {
@@ -1747,7 +1792,34 @@ func targetHint(document *saga.Saga, allowFragment bool) string {
 		}
 	})
 	sort.Strings(targets)
-	hint := "; run \"change-saga query children --saga " + filepath.Base(document.Root) + " --parent " + saga.SagaTarget(document.Manifest.ID) + "\" to list targets"
+	parent := saga.SagaTarget(document.Manifest.ID)
+	// Open reviews' slides and Items are targets too (cover accepts them).
+	// A value naming a review lists only that review's; otherwise they
+	// follow the documentation's.
+	if allowFragment {
+		var reviewTargets []string
+		for _, review := range document.Reviews {
+			if review.Deck == nil || review.Merged != nil {
+				continue
+			}
+			named := strings.HasPrefix(value, review.Target+":") || value == review.Target
+			if named {
+				reviewTargets, parent = nil, review.Target
+			}
+			for _, slide := range review.Deck.Slides {
+				reviewTargets = append(reviewTargets, slide.Target)
+				for _, item := range slide.Items {
+					reviewTargets = append(reviewTargets, item.Target)
+				}
+			}
+			if named {
+				targets = nil
+				break
+			}
+		}
+		targets = append(targets, reviewTargets...)
+	}
+	hint := "; run \"change-saga query children --saga " + filepath.Base(document.Root) + " --parent " + parent + "\" to list targets"
 	if len(targets) == 0 {
 		return hint
 	}

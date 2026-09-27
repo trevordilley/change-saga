@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "id": "status",
+  "deck": "pr-9",
+  "title": "status and check answer with the review first",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7ef04ecada11-0000-892e136ac031.svg",
+  "takeaway": "status and check answer with the review first",
+  "reading_order": [
+    "review-area",
+    "check-review",
+    "growth-rule",
+    "review-first-report",
+    "full-report",
+    "next-actions"
+  ]
+}

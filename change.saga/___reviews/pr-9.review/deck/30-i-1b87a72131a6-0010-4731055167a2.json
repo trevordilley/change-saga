@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "project-deck",
+  "slide": "navigate",
+  "rank": 10,
+  "kind": "node",
+  "label": "ProjectDeck",
+  "description": "One deck's section projection, shared by implementation and review decks.",
+  "selector": {
+    "type": "element",
+    "element_id": "project-deck"
+  }
+}

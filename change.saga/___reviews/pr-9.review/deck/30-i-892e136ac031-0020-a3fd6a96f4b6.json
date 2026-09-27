@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "growth-rule",
+  "slide": "status",
+  "rank": 20,
+  "kind": "node",
+  "label": "Which report",
+  "description": "A Saga with anything beyond its reviews holds living documentation and gets the full report, as does status --full; a Saga of reviews alone gets the review-first report. Reviews are not counted and growth is never offered.",
+  "selector": {
+    "type": "element",
+    "element_id": "growth-rule"
+  }
+}

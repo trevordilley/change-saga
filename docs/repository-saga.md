@@ -184,9 +184,13 @@ line of the codebase to be owned: ownership accumulates as changes land.
 The first time someone tries Change Saga on a 30-file pull request, the first
 thing that happens is not "define the personas of this app".
 
-- **The one thing asked of a first change is that the implementation covers
-  it.** Every changed line is referenced by the implementation deck. Personas,
-  stories, design, and test cases are not asked for up front.
+- **The first thing is a review of the pull request.** Its review deck explains
+  the change's architecture and covers every changed line; that is all a first
+  change needs, and the Saga may hold nothing else. Personas, stories, design,
+  test cases, and an implementation deck are never asked for, and a Saga of
+  reviews alone is complete: while it holds only reviews, `status` reports the
+  review and nothing else, and reports every area once the Saga holds living
+  documentation or with `status --full`.
 - **Everything else is growth, not debt.** Missing personas, stories, design, and
   quality are reported as opportunities. They never block a change, and
   readiness passing with nothing defined is correct: absence is not failure.
@@ -209,10 +213,12 @@ thing that happens is not "define the personas of this app".
   --covers implementation,stories change.saga` answers whether the named areas are
   fully covered: exit zero if they are, non-zero with only those areas' gaps if
   not. Nothing is required unless someone asks. The areas follow the chain, so
-  each is one more link:
+  each is one more link (the review area stands apart: it asks about the review
+  deck alone):
 
   | Area | Covered when |
   | --- | --- |
+  | `review` | every changed line is explained by the pull request's review deck |
   | `implementation` | every changed line is referenced by the deck |
   | `stories` | every changed line reaches a story through the chain |
   | `personas` | every changed line reaches a persona |

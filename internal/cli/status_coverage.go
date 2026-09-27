@@ -302,6 +302,7 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 // areaSentence says what an area counts, in the words of the report: the
 // plural form, then the singular.
 var areaSentence = map[areas.Name][2]string{
+	areas.Review:         {"explained by the review deck", "explained by the review deck"},
 	areas.Implementation: {"referenced by the Saga", "referenced by the Saga"},
 	areas.Stories:        {"reach a story", "reaches a story"},
 	areas.Personas:       {"reach a persona", "reaches a persona"},

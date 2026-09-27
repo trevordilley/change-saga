@@ -143,16 +143,19 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := output.String()
-	// Both first runs are named: covering a change, and documenting existing
-	// code by observing HEAD.
-	for _, want := range []string{"To cover a change", "add-deck", "cover --against main", "status --against main", "To document existing code",
-		"change-saga status " + root, "overview set-pitch", "--lines RANGES | --file", "optional"} {
+	// A review of the branch or pull request is the first path; documenting
+	// existing code by observing HEAD is the second. Growing the Saga is
+	// named as optional and later.
+	for _, want := range []string{"Start with a review of this branch or pull request", "change-saga review create " + root,
+		"add-slide --review ID", "set-slide-content --review ID", "add-item --review ID", "cover --target ITEM_URN --path PATH --changed-lines",
+		"review list", "check --covers review", "A Saga of reviews alone is complete", "setup-initial-saga", "to document existing code instead",
+		"change-saga status " + root, "overview set-pitch", "--lines RANGES | --file"} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("init output does not lead to %q:\n%s", want, text)
 		}
 	}
-	if strings.Index(text, "cover --against main") > strings.Index(text, "optional") {
-		t.Fatalf("init leads with covering the change before anything optional:\n%s", text)
+	if strings.Contains(text, "add-deck") || strings.Index(text, "review create") > strings.Index(text, "document existing code") {
+		t.Fatalf("init does not lead with the review:\n%s", text)
 	}
 	for _, absent := range []string{"overview.fragment", applayout.OverviewDir, applayout.FeaturesDir, applayout.PersonasDir, "___requirements"} {
 		if _, err := os.Stat(filepath.Join(root, absent)); !os.IsNotExist(err) {
@@ -170,10 +173,18 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 		t.Fatalf("init app = features %d, fragments %#v", len(document.Features), document.Section.Fragments)
 	}
 
-	// Observing the fresh app, the path that documents existing code, has no
-	// change to cover, and its loop has the overview to take as growth.
+	// Observing the fresh app has no change to cover. A Saga that holds only
+	// reviews is never pitched documentation; asked with --full, its loop has
+	// the overview to take as growth.
 	var status bytes.Buffer
 	if err := Status(context.Background(), []string{"--repo", repo, "--allow-repository-mismatch", root}, &status); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(status.String(), "Grow") || strings.Contains(status.String(), "[overview]") {
+		t.Fatalf("a fresh Saga's status pitches documentation:\n%s", status.String())
+	}
+	status.Reset()
+	if err := Status(context.Background(), []string{"--repo", repo, "--allow-repository-mismatch", "--full", root}, &status); err != nil {
 		t.Fatal(err)
 	}
 	for _, want := range []string{"Next actions: none. Observing, there is no change to cover", "for the app as it is, the overview and vocabulary first",

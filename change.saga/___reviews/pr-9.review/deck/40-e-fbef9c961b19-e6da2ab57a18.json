@@ -1,0 +1,75 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/reviewapp/session.go",
+      "start": 69,
+      "end": 70,
+      "digest": "sha256:0ff84d37ca5c817b3cc4bfa59e77d1f202fb5d920b64a05a2ea85de85bab4c25"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/reviewapp/session.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:bb1c1ba3446159301913545056403dd2b0bca314b517fe1921297b0dd617e8c2"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/reviewapp/session.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:c94f213780a5e80c7adf57ec9f36172178c7efc69e43a270e40efd0c1381bfaf"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/reviewapp/session.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:f8db6611f945ec3e8d4afdca6f1c1659c0023549bd1cc3347e4bb6a58dad9eed"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewapp/session.go",
+      "start": 69,
+      "end": 73,
+      "digest": "sha256:52a60ef83183d08b4dc66733fc05f873960b38fc185eec6abb8b84687ec553a0"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewapp/session.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:2e34f82a2c806f44a3beedd341a435fba150be014485d3389f7125cb43cd645f"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewapp/session.go",
+      "start": 285,
+      "end": 310,
+      "digest": "sha256:ea4d38272d6d56fee191bda5a4aac7152eed059a83976b7637ecb212aa5609dc"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewapp/session.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:2a4c081953e122298a5de3c98ed689b9de03279f5460a6db86bbfd4982c98b96"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewapp/session.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:cfee75dae950c081a22c3fad2fc72f5934e9a0c64a7880c452146acf3e150333"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewapp/session.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:6433e58436997001be95f1a70f9cd4d5713fd2849fc6145413f8f530fe9721b2"
+    }
+  ]
+}

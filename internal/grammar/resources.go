@@ -185,7 +185,7 @@ var resources = []Resource{
 	{
 		Kind: "review", URN: "urn:change-saga:<saga>:review:<review>", Storage: "___reviews/<review>.review/review.json and deck/ (a flat deck bundle, role review)",
 		Schema: schemaBase + "v5/review.schema.json", Versions: []int{5}, History: "one per pull request; its head follows a ref until repin freezes the merged base and head",
-		Writers: []string{"review create", "repin"},
+		Writers: []string{"review create", "review follow", "repin"},
 		Notes:   "a review is the pull request's slide deck; its slide and Item URNs are <review>:slide:<slide>[:item:<item>], its Items reference code (viewed as a diff against the base) and may reference records; it never counts toward coverage",
 	},
 	{

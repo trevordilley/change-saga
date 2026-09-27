@@ -18,7 +18,7 @@ func TestSetupInitialSagaPrintsOneTimeWorkflowWhenNoSagaExists(t *testing.T) {
 	text := output.String()
 	for _, expected := range []string{
 		"no .saga directory was found",
-		"one\nSaga per repository", "change.saga", "monorepo",
+		"one Saga per repository", "change.saga", "monorepo",
 		"Use this workflow only once",
 		"Stories added solely at the user's request are fully valid requirements",
 		"marking a confirmed story accepted, give it at least one criterion",
@@ -100,5 +100,34 @@ func TestSetupInitialSagaHelpExplainsTheGuard(t *testing.T) {
 		if !strings.Contains(text, expected) {
 			t.Errorf("setup help omitted %q:\n%s", expected, text)
 		}
+	}
+}
+
+func TestSetupInitialSagaGrowsASagaOfOnlyReviews(t *testing.T) {
+	t.Setenv("CHANGE_SAGA_NO_GH", "1")
+	fixture := newReviewOnlyFixture(t, true)
+	var output bytes.Buffer
+	if err := SetupInitialSaga([]string{"--repo", fixture.repo}, &output); err != nil {
+		t.Fatal(err)
+	}
+	text := output.String()
+	for _, expected := range []string{"app.saga holds 1 review and no living documentation yet", "Grow it in place", "# Establish the repository's initial Saga", "read them first"} {
+		if !strings.Contains(text, expected) {
+			t.Errorf("growing setup omitted %q:\n%s", expected, text)
+		}
+	}
+	if strings.Contains(text, "normally runs once") {
+		t.Fatalf("setup guarded a Saga that holds only reviews:\n%s", text)
+	}
+}
+
+func TestSetupInitialSagaComesAfterReviews(t *testing.T) {
+	t.Parallel()
+	var output bytes.Buffer
+	if err := SetupInitialSaga([]string{"--repo", t.TempDir()}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if text := output.String(); !strings.Contains(text, "Most teams start with a review") || !strings.Contains(text, "many never need more") {
+		t.Fatalf("setup with no Saga does not suggest a review first:\n%s", text)
 	}
 }

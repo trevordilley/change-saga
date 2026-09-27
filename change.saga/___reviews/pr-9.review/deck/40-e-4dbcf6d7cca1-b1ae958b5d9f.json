@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/ergonomics_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:77f84035342ca6eb217206af3ad75071cdb3242badf8e2ac544764ff18e097e4"
+    }
+  ]
+}

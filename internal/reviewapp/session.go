@@ -66,8 +66,11 @@ type session struct {
 	fragments       map[string]fragmentValue
 	sourceDir       string
 	summaryOnly     bool
-	directCurrent   map[string]int
-	directStale     map[string]int
+	// indexingReview is set while a review deck is indexed, whose code
+	// references are not documentation diff selectors.
+	indexingReview bool
+	directCurrent  map[string]int
+	directStale    map[string]int
 	// termCode is every current term reference viewed at the base and the
 	// head, so a changed line reaches the terms that name it.
 	termCode []termLocation
@@ -161,6 +164,7 @@ func (s *session) Snapshot() string { return s.snapshot }
 
 func (s *session) build(ctx context.Context, resolver coverage.Resolver) error {
 	s.indexSection(s.document.Section, "")
+	s.indexReviews()
 	if s.summaryOnly {
 		for _, target := range s.report.Targets {
 			s.directCurrent[target.Target] = target.Covered
@@ -278,13 +282,39 @@ func (s *session) resolveStaleSelectors() {
 	}
 }
 
+// indexReviews makes every review navigable beneath the Saga's root: the
+// review, its deck, its slides, and their Items. A review is not
+// documentation, so its Items' code references are not indexed as diff
+// selectors; review list reports the review's own coverage.
+func (s *session) indexReviews() {
+	root := s.targets[s.document.Section.Target]
+	for _, review := range s.document.Reviews {
+		if review.Deck == nil || s.targets[review.Target] != nil {
+			continue
+		}
+		deck := saga.ProjectDeck(review.Deck)
+		s.indexingReview = true
+		s.indexSection(deck, review.Target)
+		s.indexingReview = false
+		s.targets[deck.Target].node.Kind = "review-deck"
+		s.targets[review.Target] = &targetEntry{
+			node:     Node{Kind: "review", Target: review.Target, Parent: s.document.Section.Target, ID: review.ID, Title: review.Title, HasChildren: true},
+			children: []string{deck.Target},
+		}
+		if root != nil {
+			root.children = append(root.children, review.Target)
+			root.node.HasChildren = true
+		}
+	}
+}
+
 func (s *session) indexSection(section *saga.Section, parent string) {
 	entry := &targetEntry{
 		node:  Node{Kind: section.Kind, Target: section.Target, Parent: parent, ID: section.ID, Title: section.Title, Order: section.Order},
 		diffs: section.Code,
 	}
 	s.targets[section.Target] = entry
-	if !s.summaryOnly {
+	if !s.summaryOnly && !s.indexingReview {
 		s.indexDiffs(section.Target, section.Code)
 	}
 	for _, fragment := range section.Fragments {
@@ -307,7 +337,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 			}
 		}
 		s.targets[fragment.Target] = fragmentEntry
-		if !s.summaryOnly {
+		if !s.summaryOnly && !s.indexingReview {
 			s.indexDiffs(fragment.Target, fragment.Code)
 		}
 		entry.children = append(entry.children, fragment.Target)
@@ -329,7 +359,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 				landmarkEntry.node.Leader = landmark.ItemMeta.Leader
 			}
 			s.targets[landmark.Target] = landmarkEntry
-			if !s.summaryOnly {
+			if !s.summaryOnly && !s.indexingReview {
 				s.indexDiffs(landmark.Target, landmark.Code)
 			}
 			fragmentEntry.children = append(fragmentEntry.children, landmark.Target)

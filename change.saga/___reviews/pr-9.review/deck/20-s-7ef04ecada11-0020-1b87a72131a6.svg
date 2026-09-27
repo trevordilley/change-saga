@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui, sans-serif">
+  <rect width="1280" height="720" fill="#f7f8fa"/>
+  <text x="40" y="56" font-size="30" font-weight="700" fill="#1d2433">agents can find a review's slides and Items</text>
+  <text x="40" y="90" font-size="17" fill="#4a5568">query children walks into reviews, and an unknown cover target names the review's real targets.</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
+  <g id="index-reviews">
+    <rect x="40" y="130" width="720" height="380" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="60" y="165" font-size="20" font-weight="700" fill="#1d3a7a">query session indexes every review</text>
+    <rect x="70" y="190" width="200" height="50" rx="8" fill="#fff" stroke="#6b7280"/><text x="85" y="221" font-size="15">Saga root (saga)</text>
+    <rect x="130" y="265" width="200" height="50" rx="8" fill="#fff" stroke="#6b7280"/><text x="145" y="296" font-size="15">review:pr-9 (review)</text>
+    <rect x="190" y="340" width="230" height="50" rx="8" fill="#fff" stroke="#6b7280"/><text x="205" y="371" font-size="15">deck:pr-9 (review-deck)</text>
+    <rect x="250" y="415" width="220" height="50" rx="8" fill="#fff" stroke="#6b7280"/><text x="265" y="446" font-size="15">slide:status (slide)</text>
+    <rect x="500" y="415" width="230" height="50" rx="8" fill="#fff" stroke="#6b7280"/><text x="515" y="446" font-size="15">item:growth-rule (item)</text>
+    <path d="M100 240 V290 H126" fill="none" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M160 315 V365 H186" fill="none" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M220 390 V440 H246" fill="none" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="470" y1="440" x2="496" y2="440" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="60" y="495" font-size="13" fill="#4a5568">Review Items' code is not indexed as documentation diff selectors.</text>
+  </g>
+  <g id="project-deck">
+    <rect x="800" y="130" width="440" height="170" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>
+    <text x="820" y="165" font-size="20" font-weight="700" fill="#7a4d05">saga.ProjectDeck</text>
+    <text x="820" y="198" font-size="15" fill="#1d2433">One deck as a section: slides become</text>
+    <text x="820" y="218" font-size="15" fill="#1d2433">fragments and Items their landmarks.</text>
+    <text x="820" y="238" font-size="15" fill="#1d2433">Implementation decks and review decks</text>
+    <text x="820" y="258" font-size="15" fill="#1d2433">now share one projection.</text>
+  </g>
+  <g id="target-hint">
+    <rect x="800" y="340" width="440" height="170" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
+    <text x="820" y="375" font-size="20" font-weight="700" fill="#1f5c34">cover's unknown-target hint</text>
+    <text x="820" y="408" font-size="15" fill="#1d2433">A value naming a review lists only that</text>
+    <text x="820" y="428" font-size="15" fill="#1d2433">review's slides and Items and points query</text>
+    <text x="820" y="448" font-size="15" fill="#1d2433">children at it; otherwise open reviews'</text>
+    <text x="820" y="468" font-size="15" fill="#1d2433">targets follow the documentation's.</text>
+  </g>
+  <line x1="800" y1="215" x2="764" y2="215" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="40" y="560" font-size="17" fill="#1d2433">Before: query children --parent &lt;review slide&gt; → not_found; "Known targets" listed only the Saga root.</text>
+  <text x="40" y="588" font-size="17" fill="#1d2433">After: every level of a review is reachable through query.</text>
+  <g id="stale-record">
+    <rect x="800" y="530" width="440" height="150" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="820" y="565" font-size="20" font-weight="700" fill="#4c1d95">review list names stale records</text>
+    <text x="820" y="597" font-size="15" fill="#1d2433">After new commits, each stale reference</text>
+    <text x="820" y="617" font-size="15" fill="#1d2433">prints its evidence record, ready for</text>
+    <text x="820" y="637" font-size="15" fill="#1d2433">replace-coverage (found while dogfooding).</text>
+  </g>
+</svg>
