@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "04f3beac0998a8c619ba85eef0c4ce706ebd07b6",
+      "path": "internal/server/appjs.go",
+      "start": 628,
+      "end": 630,
+      "digest": "sha256:de44c20e0b1f9a167acead787a6d280318bc555f81ae90da3352520fa10bf36a"
+    }
+  ]
+}
