@@ -1,20 +1,72 @@
 ---
 name: change-saga
-description: 'Author, update, inspect, validate, and open Change Saga product, design, quality, implementation, and pull-request documentation linked to exact code. Use for a requested slice of the lifecycle without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
+description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"): a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, design, quality, implementation, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
 ---
 
 # Change Saga
 
+Change Saga makes large changes, often AI-written, easy to digest. The author,
+or their coding agent, creates a review deck for the pull request: slides that
+explain the change's architecture, so a person reviews the architecture
+instead of every line. Coverage makes the review trustworthy: every changed
+line is linked to the slide Item that explains it.
+
+## Create a review for this PR (the usual first task)
+
+When asked to "create a review for this PR" (or to sagafy a pull request or
+branch), do this. Read [diagrams and evidence](references/diagrams.md)
+before drawing slides; nothing else is needed.
+
+1. If the repository has no Saga, `change-saga init` creates `change.saga` at
+   its root.
+2. `change-saga review create change.saga` works out the pull request, base,
+   and review id (through `gh` when installed, else origin's default branch
+   and the branch name) and prints the next command. Pass `--pr`, `--base`,
+   or `--id` when they are known.
+3. Read the diff against the base and find its architecture: the few ideas a
+   reviewer must understand, such as the components and how they relate, the
+   data flow, a state change, the decision that would surprise a reviewer.
+   Plan one slide per idea, usually two to six; never one slide per file.
+4. For each slide: `change-saga add-slide --review ID --intent explain
+   --layout diagram change.saga SLIDE`; draw an SVG diagram whose meaningful
+   elements carry `id`s; `change-saga set-slide-content --review ID --target
+   SLIDE --source FILE.svg change.saga`; then, for each element that explains
+   part of the change, `change-saga add-item --review ID --slide SLIDE --kind
+   node --element-id ELEMENT --label TEXT --description TEXT --id ITEM
+   change.saga`.
+5. Cover every changed line from the narrowest Item that explains it:
+   `change-saga cover --target ITEM_URN --path PATH --changed-lines
+   change.saga`, or `--lines RANGES` for part of a file. On a review Item,
+   cover compares the review's own range. `change-saga query children --saga
+   change.saga --parent REVIEW_URN` lists the review's slides and Items.
+6. Confirm: `change-saga review list --uncovered change.saga` names what no
+   Item explains yet; `change-saga check --covers review --against BASE
+   change.saga` exits 0 once every changed line is explained. Run
+   `change-saga validate change.saga`.
+7. Commit the Saga with the change. Reviewers can collapse `change.saga` in
+   the pull request's file tree and open the deck with `change-saga open
+   change.saga`.
+
+Coverage is an omission check, not proof that a slide is right. Never widen a
+selector just to finish coverage.
+
+After the review is done, you may make one light offer, once: if the Saga
+holds only reviews and `change-saga status` offers to grow it (it does after a
+couple of reviews), mention that personas, stories, features, and living
+documentation are available when the team wants them, starting with
+`change-saga setup-initial-saga`. Author none of it unless the user asks.
+
 ## Mandatory contract
 
-A Change Saga is the Git-native documentation of an application. The
-recommended idiom is one Saga per repository, `change.saga` at its root,
-holding durable product domains and their requirements, design, quality,
-work, and implementation explanation. A monorepo of several apps also keeps
-one `change.saga` at its root and documents each app through its own
-features. A pull request compares the Saga and code
-between commits; its review deck explains that transition. Author the thing
-submitted for human review, not the review verdict.
+A Change Saga is Git-native: the recommended idiom is one Saga per
+repository, `change.saga` at its root. It always holds the pull requests'
+review decks. When a team grows it, it also documents the application: durable
+product domains (features) and their requirements, design, quality, work, and
+implementation explanation. A monorepo of several apps also keeps one
+`change.saga` at its root and documents each app through its own features. A
+pull request compares the Saga and code between commits; its review deck
+explains that transition. Author the thing submitted for human review, not the
+review verdict.
 
 These rules apply to every Change Saga task:
 
@@ -61,6 +113,7 @@ reference. When a task crosses rows, combine only those rows.
 
 | Requested work | Read before acting |
 | --- | --- |
+| Create a review for a PR or branch (the usual first task) | The fast path above, then [diagrams and evidence](references/diagrams.md) |
 | Inspect or navigate an existing Saga; load compact feature context; resolve current heads, conflicts, evidence, or history | [Reading through the query API](references/query.md) |
 | Audit whether one feature has a current, exact implementation handoff | [Reading through the query API](references/query.md) |
 | Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
@@ -70,7 +123,7 @@ reference. When a task crosses rows, combine only those rows.
 | Render slides and run mechanical visual QA | [Diagrams and evidence](references/diagrams.md) |
 | Reconcile a comparison, work with a companion repository, repin landed evidence, recover, or hand off work without changing visuals | [Query](references/query.md), then [integration and recovery](references/integration.md) |
 | Compare parallel proposal branches or deliberately withdraw/consolidate a duplicate proposal | [Query](references/query.md), [integration](references/integration.md), and [stories](references/stories.md); use only capabilities confirmed by the installed CLI |
-| Prepare or update a pull-request review artifact, or change visuals while integrating | [Query](references/query.md), [integration](references/integration.md), and [diagrams](references/diagrams.md) |
+| Prepare or update a pull-request review artifact alongside living documentation, or change visuals while integrating | [Query](references/query.md), [integration](references/integration.md), and [diagrams](references/diagrams.md) |
 | Define a CI acceptance rule | [CI rules](references/ci.md); add [query](references/query.md) only when inspecting real Saga state |
 | Look up resource shapes, stable target identities, or command families | [Format quick reference](references/format.md), only when the CLI's `spec`, help, or query schema is insufficient |
 
@@ -90,8 +143,8 @@ observable pass/fail criteria. A proposed story may remain criterion-free
 while intent is uncertain; an accepted story needs at least one criterion. Add
 only the narrowest obligation confirmed by the user.
 
-For an existing code change, it is valid to begin with its implementation or
-review deck and offer missing product context as optional follow-up. For new
+For an existing code change, begin with its review deck (the fast path above)
+and offer missing product context only as optional follow-up. For new
 work whose whole lifecycle is requested, begin with personas and stories,
 develop relevant design and quality, and connect exact implementation evidence
 as it is built. Never manufacture product intent to make coverage complete.
@@ -124,15 +177,18 @@ history rather than rewriting what was previously known.
 3. Use the routed reference and public commands to make the smallest complete
    change. Follow returned URNs and evidence record paths; do not reconstruct
    them from storage.
-4. After implementing, verifying, and preparing a PR review deck, run
-   `change-saga reconcile --against <base> --json <saga>`. Inspect the queue,
-   reassess affected living documentation, make justified repairs through
-   typed public paths, then reconcile again. Review coverage is independent
-   of HEAD documentation currency; retain baseline debt and uncertainty.
-   Run `change-saga validate --json <saga>` and the task-relevant bounded
-   queries. Use `status --json` and its ordered `next_actions` as a work queue,
-   not a verdict. Use
-   `check --covers ...` only for the areas the user or team actually requires.
+4. Run `change-saga validate --json <saga>` and the task-relevant bounded
+   queries. Use `status --json` and its ordered `next_actions` as a work
+   queue, not a verdict; for a Saga that holds only reviews they follow the
+   review. Use `check --covers ...` only for the areas the user or team
+   actually requires.
+   Only when the Saga already holds living documentation (its `status --json`
+   reports `growth.living_documentation`), or the user asks, then after the
+   PR review deck run `change-saga reconcile --against <base> --json <saga>`.
+   Inspect the queue, reassess affected living documentation, make justified
+   repairs through typed public paths, then reconcile again. Review coverage
+   is independent of HEAD documentation currency; retain baseline debt and
+   uncertainty. A Saga of reviews alone needs none of this.
 5. Stop when the requested outcome is complete. Offer unrequested growth as
    optional and never present a clean status as proof that the explanation is
    correct.

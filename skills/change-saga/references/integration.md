@@ -25,8 +25,10 @@ the result in the Saga rather than replacing that workflow.
 
 ## Reconcile from structured evidence
 
-Run `change-saga reconcile --against <base> --json <saga>` after implementing,
-verifying, and authoring the PR review deck. Its queue separates HEAD code
+When the Saga holds living documentation (or the user asks), run
+`change-saga reconcile --against <base> --json <saga>` after implementing,
+verifying, and authoring the PR review deck. A Saga that holds only reviews
+has nothing to reconcile; its review's coverage is the whole answer. Its queue separates HEAD code
 reference currency from documentation diff coverage and each review's own
 coverage. It retains baseline debt, identifies newly stale references, and
 reports the reason and typed inspection/repair paths for each implicated

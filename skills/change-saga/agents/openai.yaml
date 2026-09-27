@@ -1,4 +1,4 @@
 interface:
   display_name: "Change Saga"
-  short_description: "Author visual PRs for large code changes"
-  default_prompt: "Use $change-saga to author the visual, coverage-complete change proposal that will be submitted for review."
+  short_description: "Create architecture review decks for large pull requests"
+  default_prompt: "Use $change-saga to create a review for this PR: a slide deck that explains the change's architecture, with every changed line covered."
