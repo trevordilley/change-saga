@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "96d0ade59986e62478db6e850dc2cbdaadd5dc41",
+      "path": "internal/reviewstate/coverage.go",
+      "start": 37,
+      "end": 47,
+      "digest": "sha256:a28898ca5e0bc9410f80d1fb51e0f24bb519d7543840d0b777806d3802b7167e",
+      "note": "Each Item's added and deleted lines, counted from the coverage ownership."
+    },
+    {
+      "commit": "96d0ade59986e62478db6e850dc2cbdaadd5dc41",
+      "path": "internal/reviewstate/coverage.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:5905b0a7cac9f651ab4cf100e9fcfde85aff8455a7046f5d23759b0ec3d68978",
+      "note": "Each Item's added and deleted lines, counted from the coverage ownership."
+    },
+    {
+      "commit": "96d0ade59986e62478db6e850dc2cbdaadd5dc41",
+      "path": "internal/reviewstate/coverage.go",
+      "start": 91,
+      "end": 122,
+      "digest": "sha256:cd33c4cc792dce398be2b1ea2092e55c0e6918e2d887923174b3f8513a14de3f",
+      "note": "Each Item's added and deleted lines, counted from the coverage ownership."
+    }
+  ]
+}
