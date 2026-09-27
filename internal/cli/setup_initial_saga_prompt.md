@@ -1,11 +1,13 @@
 # Establish the repository's initial Saga
 
-Use this workflow only once for a new repository, or during the explicitly
-requested documentation overhaul named above. The recommended idiom is one
-Saga per repository, `change.saga` at its root, which `change-saga init`
-creates by default. It captures the application's durable requirements,
-design, implementation, and quality model; future pull-request reviews update
-that same Saga as the application changes. A monorepo of several apps
+Use this workflow only once, when the team is ready to grow the repository's
+Saga beyond its pull-request reviews (usually after a few reviews), or during
+the explicitly requested documentation overhaul named above. Most teams start
+with a review deck for a pull request instead; this workflow comes after.
+The recommended idiom is one Saga per repository, `change.saga` at its root,
+which `change-saga init` creates by default. It captures the application's
+durable requirements, design, implementation, and quality model; future
+pull-request reviews update that same Saga as the application changes. A monorepo of several apps
 likewise gets one `change.saga` at its root, and each app is documented
 through its own durable features rather than a Saga of its own.
 
@@ -22,8 +24,11 @@ top-level files, Git history and status, build manifests, runnable entry
 points, tests, prototypes, existing documentation, and any Saga reported
 above. Determine whether the repository is blank, prototype-only, a scaffold
 or partial implementation, an established application, or documentation for
-an application implemented elsewhere. Tell the user what you found and ask
-them to confirm the larger context.
+an application implemented elsewhere. If the Saga already holds reviews,
+read them first (`change-saga review list`, then `change-saga query children`
+under each review's URN): they record what recent changes did and why, and
+are evidence for the interview. Tell the user what you found and ask them to
+confirm the larger context.
 
 That context determines the evidence hierarchy:
 

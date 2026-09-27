@@ -246,9 +246,10 @@ func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 	PrintHelp(&output)
 	text := output.String()
 	for _, want := range []string{
-		"one Saga per repository, change.saga", "monorepo", "Do what the user asks", "smallest scope", "focused code review",
-		"valuable user stories", "accepted", "at least\none pass/fail criterion", "narrowest obligation",
-		"implementation evidence", "implementation change", "cover",
+		"change.saga at its root", "monorepo", "Do what the user asks", "smallest scope", "focused code review",
+		"valuable user stories", "accepted", "at least one pass/fail criterion", "narrowest obligation",
+		"review deck", "implementation change", "cover",
+		"Create a review for this pull request", "review create", "check --covers review",
 		"reconcile --against main", "no verdict", "check --covers implementation",
 		"Product:", "prototype", "user stories",
 		"Design:", "UX, UI, and technical design",
@@ -259,8 +260,8 @@ func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 			t.Fatalf("top-level help omitted workflow guidance %q:\n%s", want, text)
 		}
 	}
-	if strings.Index(text, "A focused change:") > strings.Index(text, "Growing the Saga") {
-		t.Fatalf("the focused change comes before growth:\n%s", text)
+	if strings.Index(text, "Create a review for this pull request") > strings.Index(text, "Growing the Saga") {
+		t.Fatalf("the review comes before growth:\n%s", text)
 	}
 	for _, unwanted := range []string{"The one thing asked", "never asked for up front", "big change", "starts with the big work", "Choose the workflow", "normal PR may be enough", "--mode", "upgrade"} {
 		if strings.Contains(text, unwanted) {
