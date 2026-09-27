@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -64,9 +65,13 @@ func (diffs *reviewDiffs) referenceDiff(ctx context.Context, reference coderef.R
 	view := &reviewDiffView{Path: reference.Path, Location: reference.Location().String()}
 	start, end := reference.Start, reference.End
 	path := reference.Path
+	// Only lines resolved at the head are numbered on the new side, the side
+	// a diff can be trimmed to.
+	atHead := false
 	if diffs.resolve != nil {
 		if resolution := diffs.resolve(ctx, reference, diffs.rng.HeadOID); resolution.Current() {
 			path, start, end = resolution.Location.Path, resolution.Location.Start, resolution.Location.End
+			atHead = true
 		} else if !reference.WholeFile() {
 			view.Note = "The referenced lines changed after the reference was written; showing every change to the file."
 			start, end = 0, 0
@@ -79,6 +84,9 @@ func (diffs *reviewDiffs) referenceDiff(ctx context.Context, reference coderef.R
 	}
 	view.Path = path
 	view.Lines = diffLinesTouching(patch, start, end)
+	if atHead && start > 0 {
+		view.Lines = trimDiffToRange(view.Lines, start, end, reviewDiffContext)
+	}
 	if len(view.Lines) == 0 {
 		if start > 0 {
 			view.Note = fmt.Sprintf("Lines %d-%d are unchanged between the base and the head.", start, end)
@@ -87,4 +95,47 @@ func (diffs *reviewDiffs) referenceDiff(ctx context.Context, reference coderef.R
 		}
 	}
 	return view
+}
+
+// reviewDiffContext is how many lines around a referenced range its diff
+// shows. A hunk can be a whole new file, and a reference to three of its
+// lines should show those lines, not the file.
+const reviewDiffContext = 3
+
+// trimDiffToRange keeps the diff lines within context lines of start..end
+// on the new side, under their hunk's header. A deleted line sits between
+// the new lines around it, so it is kept when the new line before it is.
+// Where lines inside a hunk are left out, a marker says so. A hunk that
+// already fits is kept exactly.
+func trimDiffToRange(lines []reviewDiffLine, start, end, context int) []reviewDiffLine {
+	var kept []reviewDiffLine
+	var header *reviewDiffLine
+	position, gap := 0, false
+	for index, line := range lines {
+		if line.Kind == "hunk" {
+			// A hunk's deleted lines before its first new line sit just
+			// before the new line it starts at.
+			_, _, newStart, _ := parseHunkHeader(line.Text)
+			position, gap = newStart-1, false
+			header = &lines[index]
+			continue
+		}
+		if line.Kind == "add" || line.Kind == "ctx" {
+			position, _ = strconv.Atoi(line.New)
+		}
+		if position < start-context || position > end+context {
+			gap = true
+			continue
+		}
+		switch {
+		case header != nil:
+			kept = append(kept, *header)
+			header = nil
+		case gap:
+			kept = append(kept, reviewDiffLine{Kind: "hunk", Text: "⋯"})
+		}
+		gap = false
+		kept = append(kept, line)
+	}
+	return kept
 }

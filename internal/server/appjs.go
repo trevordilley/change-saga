@@ -1322,7 +1322,52 @@ const appJavaScript = `(() => {
     configureDrawer('code', attached?.dataset.attachedTitle ? 'Linked code · ' + attached.dataset.attachedTitle : 'Linked code');
     highlightCode(body);
     showDrawer(returnOpener);
+    void hydrateReviewItemDiffs(body);
   }
+
+  // A review Item's diffs are fetched when its panel opens: a large pull
+  // request's deck would otherwise carry every diff in the page. Each
+  // Item's diffs are fetched once per page.
+  // An Item with many references arrives a page at a time; "Show more"
+  // fetches the next page in place of its button.
+  const reviewItemDiffs = new Map();
+  async function hydrateReviewItemDiffs(body) {
+    const slot = q('[data-review-item-diffs-href]:not([data-review-more-diffs])', body);
+    if (slot) await loadReviewItemDiffs(slot);
+  }
+  async function loadReviewItemDiffs(slot) {
+    const href = slot.dataset.reviewItemDiffsHref;
+    if (!href || slot.dataset.reviewItemDiffsLoading === 'true') return;
+    slot.dataset.reviewItemDiffsLoading = 'true';
+    try {
+      if (!reviewItemDiffs.has(href)) {
+        reviewItemDiffs.set(href, fetch(href, {headers:{Accept:'text/html'},credentials:'same-origin'}).then(response => {
+          if (!response.ok) throw new Error('request failed');
+          return response.text();
+        }));
+      }
+      const html = await reviewItemDiffs.get(href);
+      if (!slot.isConnected) return;
+      const page = document.createElement('div');
+      page.innerHTML = html;
+      highlightCode(page);
+      slot.replaceWith(...page.childNodes);
+    } catch (_) {
+      reviewItemDiffs.delete(href);
+      delete slot.dataset.reviewItemDiffsLoading;
+      if (!slot.isConnected) return;
+      const retry = q('.review-more-diffs', slot);
+      if (retry) { retry.disabled = false; retry.textContent = 'This code could not be loaded. Try again.'; }
+      else slot.innerHTML = '<p class="review-note">This code could not be loaded. Close and reopen the element to try again.</p>';
+    }
+  }
+  document.addEventListener('click', event => {
+    const more = event.target.closest?.('[data-review-more-diffs] .review-more-diffs');
+    if (!more) return;
+    event.preventDefault();
+    more.disabled = true;
+    void loadReviewItemDiffs(more.closest('[data-review-more-diffs]'));
+  });
 
   let documentationRequest = 0;
   let documentationTrail = [];

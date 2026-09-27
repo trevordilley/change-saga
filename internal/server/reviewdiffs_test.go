@@ -236,9 +236,11 @@ func uncachedReferenceDiff(ctx context.Context, sourceDir string, resolver *code
 	view := &reviewDiffView{Path: reference.Path, Location: reference.Location().String()}
 	start, end := reference.Start, reference.End
 	path := reference.Path
+	atHead := false
 	if resolver != nil {
 		if resolution := resolver.Resolve(ctx, reference, rng.HeadOID); resolution.Current() {
 			path, start, end = resolution.Location.Path, resolution.Location.Start, resolution.Location.End
+			atHead = true
 		} else if !reference.WholeFile() {
 			view.Note = "The referenced lines changed after the reference was written; showing every change to the file."
 			start, end = 0, 0
@@ -257,6 +259,9 @@ func uncachedReferenceDiff(ctx context.Context, sourceDir string, resolver *code
 	}
 	view.Path = path
 	view.Lines = diffLinesTouching(patch, start, end)
+	if atHead && start > 0 {
+		view.Lines = trimDiffToRange(view.Lines, start, end, reviewDiffContext)
+	}
 	if len(view.Lines) == 0 {
 		if start > 0 {
 			view.Note = fmt.Sprintf("Lines %d-%d are unchanged between the base and the head.", start, end)

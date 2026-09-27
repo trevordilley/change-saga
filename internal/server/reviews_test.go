@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -147,7 +148,8 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 	for _, want := range []string{
 		`data-review-deck-shell`, `data-review-deck`, `data-deck-slide`, `data-slide-target="urn:change-saga:app:review:pr-7:slide:queue"`,
 		`data-decision-state="approved" data-currency="current"`, `data-review-decision-form="queue"`,
-		`data-review-diff=`, `review-line add`, `postgres`, `review-line del`, `sqs`,
+		`data-review-item-diffs-href="/reviews/pr-7/item-diffs?target=urn%3Achange-saga%3Aapp%3Areview%3Apr-7%3Aslide%3Aqueue%3Aitem%3Anode"`,
+		`Loading 1 linked code reference…`,
 		`data-review-record="urn:change-saga:app:feature:` + serverFeature + `"`, `Index on status?`, `/reviews/pr-7/visual/queue`,
 		`https://github.com/acme/app/pull/7`, `data-slide-thumbnail`, `data-slide-previous`, `data-slide-next`,
 		`data-open-diffs="review-item-`, `data-open-stories="review-record-`, `data-review-reply-form=`,
@@ -156,6 +158,21 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 		if !strings.Contains(body, want) {
 			t.Fatalf("review page is missing %q:\n%s", want, body)
 		}
+	}
+	// The page carries no diffs: an Item's code is fetched when it is opened.
+	if strings.Contains(body, `review-line add`) || strings.Contains(body, `data-review-diff=`) {
+		t.Fatal("the review page renders its Items' diffs inline")
+	}
+	diffs := getPage(t, handler, "/reviews/pr-7/item-diffs?target="+url.QueryEscape("urn:change-saga:app:review:pr-7:slide:queue:item:node")).Body.String()
+	for _, want := range []string{`data-review-diff=`, `review-line add`, `postgres`, `review-line del`, `sqs`} {
+		if !strings.Contains(diffs, want) {
+			t.Fatalf("an Item's diffs are missing %q:\n%s", want, diffs)
+		}
+	}
+	missing := httptest.NewRecorder()
+	handler.ServeHTTP(missing, httptest.NewRequest(http.MethodGet, "/reviews/pr-7/item-diffs?target=urn:change-saga:app:review:pr-7:slide:queue:item:nothing", nil))
+	if missing.Code != http.StatusNotFound {
+		t.Fatalf("diffs of an unknown Item = %d", missing.Code)
 	}
 	for _, discarded := range []string{`<details class="review-slide-details"`, `data-review-workspace`, `Code · 1`, `Affected · Feature`} {
 		if strings.Contains(body, discarded) {
@@ -257,7 +274,8 @@ func TestFrozenReviewIsViewableButTakesNoDecisions(t *testing.T) {
 	}
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	body := getPage(t, handler, "/reviews/pr-7").Body.String()
-	if !strings.Contains(body, "Frozen at") || strings.Contains(body, "data-review-decision-form") || !strings.Contains(body, "review-line add") {
+	diffs := getPage(t, handler, "/reviews/pr-7/item-diffs?target="+url.QueryEscape("urn:change-saga:app:review:pr-7:slide:queue:item:node")).Body.String()
+	if !strings.Contains(body, "Frozen at") || strings.Contains(body, "data-review-decision-form") || !strings.Contains(diffs, "review-line add") {
 		t.Fatalf("frozen review page:\n%s", body)
 	}
 	if refused := postReview(t, handler, "/reviews/pr-7/decision", url.Values{"token": {"review-token"}, "slide": {"queue"}, "state": {"approved"}}); refused.Code != http.StatusConflict {
@@ -314,5 +332,67 @@ func TestAPanicBuildingAReviewReportIsThatReviewsDiagnostic(t *testing.T) {
 	built := reviewstate.Report{ID: "pr-9", Diagnostics: []string{"the head is not in this checkout"}}
 	if got := buildRecovering(review, func(*saga.Review) reviewstate.Report { return built }); !reflect.DeepEqual(got, built) {
 		t.Fatalf("a build that did not panic was changed: %#v", got)
+	}
+}
+
+// An Item of a large pull request can link thousands of references. Its
+// diffs arrive a page at a time, and one very long diff is cut short with a
+// pointer to the Code Diff tab, so opening any Item stays fast.
+func TestAnItemsDiffsArriveAPageAtATime(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	var long strings.Builder
+	long.WriteString("package queue\n\n")
+	for line := 0; line < 480; line++ {
+		fmt.Fprintf(&long, "var v%d = %d\n", line, line)
+	}
+	writeServerFile(t, filepath.Join(fixture.repo, "long.go"), long.String())
+	serverGit(t, fixture.repo, "add", "long.go")
+	serverGit(t, fixture.repo, "commit", "-m", "A long file")
+	head := strings.TrimSpace(serverGit(t, fixture.repo, "rev-parse", "HEAD"))
+	resolver, err := coderesolve.New(context.Background(), fixture.repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	longReference, err := resolver.Author(context.Background(), coderef.Location{Commit: head, Path: "long.go", Start: 3, End: 452}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	references := []coderef.Reference{longReference}
+	for line := 453; len(references) < 30; line++ {
+		reference, err := resolver.Author(context.Background(), coderef.Location{Commit: head, Path: "long.go", Start: line, End: line}, "")
+		if err != nil {
+			t.Fatal(err)
+		}
+		references = append(references, reference)
+	}
+	deckDir := filepath.Join(saga.ReviewDir(fixture.root, "pr-7"), saga.ReviewDeckDir)
+	writeServerJSON(t, filepath.Join(deckDir, saga.FlatEvidenceFilename(saga.ReviewItemTarget("app", "pr-7", "queue", "node"), "queue")), saga.CodeFile{Version: saga.CurrentVersion, References: references})
+	if _, validation, err := saga.Load(fixture.root); err != nil || !validation.Valid {
+		t.Fatalf("fixture: %v %#v", err, validation.Issues)
+	}
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	if page := getPage(t, handler, "/reviews/pr-7").Body.String(); !strings.Contains(page, "Loading 30 linked code references…") {
+		t.Fatal("the review page does not say how much code the Item links")
+	}
+	target := url.QueryEscape("urn:change-saga:app:review:pr-7:slide:queue:item:node")
+	first := getPage(t, handler, "/reviews/pr-7/item-diffs?target="+target).Body.String()
+	if got := strings.Count(first, "data-review-diff="); got != 25 {
+		t.Fatalf("the first page holds %d diffs, want 25", got)
+	}
+	for _, want := range []string{"more lines of this diff are not shown here", `data-review-more-diffs`, "offset=25", "5 more references"} {
+		if !strings.Contains(first, want) {
+			t.Fatalf("the first page is missing %q", want)
+		}
+	}
+	// The long diff shows at most 400 lines; each one-line reference shows
+	// its line and three lines either side.
+	if got := strings.Count(first, `class="review-line add"`); got > 400+24*(1+2*reviewDiffContext) {
+		t.Fatalf("a long diff was not cut short: %d added lines on the first page", got)
+	}
+	rest := getPage(t, handler, "/reviews/pr-7/item-diffs?target="+target+"&offset=25").Body.String()
+	if got := strings.Count(rest, "data-review-diff="); got != 5 || strings.Contains(rest, "data-review-more-diffs") {
+		t.Fatalf("the last page holds %d diffs (want 5) and offers more: %v", got, strings.Contains(rest, "data-review-more-diffs"))
 	}
 }

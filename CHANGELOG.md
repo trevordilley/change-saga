@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased — large reviews open instantly
+
+- A review page no longer renders its Items' diffs. An Item's code is fetched
+  when a reviewer opens it (`GET /reviews/{id}/item-diffs?target=`), a page
+  of about 25 references or 1,500 diff lines at a time with "Show more".
+  One diff shows at most 400 lines; the Code Diff tab shows the whole file.
+- A reference's diff shows its lines with three lines of context instead of
+  the whole hunk, so a reference into a newly added file shows that part of
+  the file, not all of it.
+- A 53,743-line pull request's review page went from 288 MB (timing out) to
+  228 KB; its largest Item opens in under half a second.
+
 ## Unreleased — cheap, judged repair of stale evidence
 
 - Stale references come with a proposed range: the pinned start and end mapped
