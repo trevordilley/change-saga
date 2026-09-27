@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -513,19 +514,18 @@ func writeAcceptedEvidence(ctx context.Context, root, repo string, accepted []ac
 // place, keeping its path (so its owner) and every other reference; a slide
 // apply-slide manages gets one complete-slide update built from its current
 // revision with only the edited evidence changed. Every edit is resolved and
-// validated before any is written, so a failure leaves the Saga untouched. A
-// dry run writes nothing and still validates each slide update.
+// validated before any is written, and every edit is written under one Saga
+// lock. A dry run writes nothing and still validates each slide update.
 func writeEvidenceEdits(ctx context.Context, root, repo string, edits []evidenceEdit, requestPrefix string, dryRun bool) ([]SlideTransactionResult, error) {
 	prepared, results, err := prepareEvidenceEdits(ctx, root, repo, edits, requestPrefix)
 	if err != nil || dryRun {
 		return results, err
 	}
-	if len(prepared.plain) > 0 {
-		if err := authorMutation(root, prepared.writePlain); err != nil {
-			return nil, err
-		}
-	}
-	return prepared.writeManaged(ctx)
+	err = authorMutation(root, func(locked *saga.Saga) error {
+		results, err = prepared.write(ctx, locked)
+		return err
+	})
+	return results, err
 }
 
 // preparedEvidence is a set of evidence edits every one of which has been
@@ -586,6 +586,7 @@ func prepareEvidenceEdits(ctx context.Context, root, repo string, edits []eviden
 	if err != nil {
 		return nil, nil, err
 	}
+	var blocked []error
 	for _, record := range sortedKeys(managed) {
 		slide, err := findManagedSlide(document, record)
 		if err != nil {
@@ -627,12 +628,22 @@ func prepareEvidenceEdits(ctx context.Context, root, repo string, edits []eviden
 		request.RequestID = requestPrefix + "-" + hex.EncodeToString(fingerprint.Sum(nil))[:16]
 		result, err := ApplySlideTransaction(ctx, root, base, repo, request, true)
 		if err != nil {
-			return nil, nil, fmt.Errorf("update slide %s: %w", slide.Target, err)
+			blocked = append(blocked, blockedSlide(root, slide.Target, err))
+			continue
 		}
 		results = append(results, result)
 		prepared.managed = append(prepared.managed, preparedSlide{target: slide.Target, request: request})
 	}
+	if len(blocked) > 0 {
+		return nil, nil, errors.Join(blocked...)
+	}
 	return prepared, results, nil
+}
+
+// blockedSlide names a slide whose complete-slide update is refused, and how
+// to repair it, so every blocker is reported at once rather than one per run.
+func blockedSlide(root, target string, err error) error {
+	return fmt.Errorf("update slide %s: %w\n  repair it with change-saga apply-slide --print-current %s %s (edit the request, then apply-slide --from it), and run this command again", target, err, target, root)
 }
 
 // editPlain reads every plain evidence file under sagaRoot and applies its
@@ -654,38 +665,41 @@ func (prepared *preparedEvidence) editPlain(sagaRoot string) (map[string]saga.Co
 	return files, nil
 }
 
-// writePlain writes the plain evidence files under the Saga lock. It edits
-// every file again from what is on disk before writing the first one, so a
-// file changed since preparation refuses the whole write.
-func (prepared *preparedEvidence) writePlain(locked *saga.Saga) error {
+// write publishes every prepared edit under the caller's Saga lock. It first
+// checks every edit again against what is on disk, plain files edited in
+// memory and each slide update dry-run, so a change since preparation
+// refuses the whole write before anything is written; then it publishes the
+// slide updates and writes the plain evidence files.
+func (prepared *preparedEvidence) write(ctx context.Context, locked *saga.Saga) ([]SlideTransactionResult, error) {
 	files, err := prepared.editPlain(locked.Root)
 	if err != nil {
-		return err
-	}
-	for _, relative := range sortedKeys(files) {
-		if err := store.WriteJSON(filepath.Join(locked.Root, filepath.FromSlash(relative)), files[relative], false); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// writeManaged publishes the prepared complete-slide updates.
-func (prepared *preparedEvidence) writeManaged(ctx context.Context) ([]SlideTransactionResult, error) {
-	results := []SlideTransactionResult{}
-	if len(prepared.managed) == 0 {
-		return results, nil
+		return nil, err
 	}
 	base, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
+	var blocked []error
 	for _, slide := range prepared.managed {
-		result, err := ApplySlideTransaction(ctx, prepared.root, base, prepared.repo, slide.request, false)
+		if _, err := applySlideTransaction(ctx, prepared.root, base, prepared.repo, slide.request, true, true); err != nil {
+			blocked = append(blocked, blockedSlide(prepared.root, slide.target, err))
+		}
+	}
+	if len(blocked) > 0 {
+		return nil, errors.Join(blocked...)
+	}
+	results := []SlideTransactionResult{}
+	for _, slide := range prepared.managed {
+		result, err := applySlideTransaction(ctx, prepared.root, base, prepared.repo, slide.request, false, true)
 		if err != nil {
 			return nil, fmt.Errorf("update slide %s: %w", slide.target, err)
 		}
 		results = append(results, result)
+	}
+	for _, relative := range sortedKeys(files) {
+		if err := store.WriteJSON(filepath.Join(locked.Root, filepath.FromSlash(relative)), files[relative], false); err != nil {
+			return nil, err
+		}
 	}
 	return results, nil
 }
