@@ -55,8 +55,13 @@ Repair each one cheaply but with judgment:
 Accepting is explicit and never automatic: staleness still forces a re-read.
 While a pull request iterates, `review refresh-coverage --review ID` re-pins
 its deck's moved references and whole-file references whose file event
-persists, gives new lines to the one Item covering their file, and lists the
-rest (stale references with proposals, files several Items cover) for you.
+persists, and lists the rest for you: stale references with proposals, and
+new lines, uncovered, with the one Item covering their file as the proposed
+owner. It never extends an Item on its own; after reading the new lines,
+`--accept-proposed [--path P] [--note TEXT]` gives them to that owner under a
+neutral "added in <head>" note unless you write one. `repin --accept-proposed
+--all` reaches every open review deck, other pull requests' too; a review
+whose range cannot be read is skipped and reported.
 
 The full queue separates HEAD code
 reference currency from documentation diff coverage and each review's own

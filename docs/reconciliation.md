@@ -71,8 +71,13 @@ change-saga repin --accept-proposed --review pr-12 change.saga  # a review deck'
 change-saga repin --accept-proposed --all --dry-run change.saga # preview everything
 ```
 
+`--all` reaches every open review deck as well as the living documentation,
+so it also repairs other pull requests' decks; a review whose range cannot be
+read is skipped and reported, and a merged review is never touched.
+
 Accept keeps the note, the owner, the record, and the side (a review Item's
-deleted-side evidence maps to the review's merge-base), and pins the proposal
+deleted-side evidence, pinned at or before the merge-base, maps to the
+review's merge-base; its other evidence to the head), and pins the proposal
 with a fresh digest. On a slide `apply-slide` manages it publishes one
 complete-slide update that changes only the evidence. It refuses a reference
 with no proposal, and claims and quality evidence, which are append-only.
@@ -85,11 +90,27 @@ request, with `expected_snapshot` and a fresh `request_id`, for any other edit.
 
 `change-saga review refresh-coverage --review ID` re-reads the review's
 current range. It re-pins references whose lines only moved and whole-file
-references whose add, rename, mode, or delete event is still in the range, and
-gives newly changed lines to the one Item already covering their file, as
-re-running `cover --changed-lines` for it would. It reports the rest: stale
-references with proposals (never accepted for you) and new lines in files
-several Items, or none, cover.
+references whose add, rename, mode, or delete event is still in the range.
+Each reference keeps its side: deleted-side evidence (pinned at or before the
+merge-base) is read at the merge-base, everything else at the head, so a
+new-side reference a later push edited needs judgment even when the
+merge-base still has its lines; it is never re-pinned there.
+
+Coverage is the reviewer's guarantee that someone linked every changed line
+to its explanation, so refresh never extends an Item on its own. Newly
+changed lines are reported uncovered. When exactly one Item covers their file
+it is the proposed owner, with the command that accepts it:
+
+```sh
+change-saga review refresh-coverage --review pr-12 --accept-proposed --path src/queue.go change.saga
+```
+
+Read the new lines first: accept only if that Item's explanation covers them,
+otherwise cover them with the Item that does. Accepted lines get a neutral
+note, `added in <head>`, unless `--note` says more; they never borrow another
+reference's note. Stale references are listed with their proposals and
+`repin --accept-proposed` commands, never accepted for you, and new lines in
+files several Items, or none, cover are listed for you to place.
 
 ## Read the independent results
 

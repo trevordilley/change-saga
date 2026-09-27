@@ -283,6 +283,11 @@ type acceptRefusal struct {
 	Reason       string           `json:"reason"`
 }
 
+type acceptSkip struct {
+	Review string `json:"review"`
+	Reason string `json:"reason"`
+}
+
 type acceptOutput struct {
 	OK       bool            `json:"ok"`
 	DryRun   bool            `json:"dry_run"`
@@ -290,6 +295,9 @@ type acceptOutput struct {
 	Refused  []acceptRefusal `json:"refused"`
 	// Current counts references in scope that needed nothing.
 	Current int `json:"current"`
+	// Skipped are open reviews left alone because their range cannot be
+	// read; their Items were not repaired.
+	Skipped []acceptSkip `json:"skipped,omitempty"`
 	// Slides are the complete-slide transactions that carried accepted
 	// evidence of slides apply-slide manages.
 	Slides []SlideTransactionResult `json:"slide_transactions"`
@@ -317,6 +325,7 @@ func acceptProposed(ctx context.Context, root, repoDir, headRev string, scope ac
 		base, head string
 	}
 	var candidates []candidate
+	skipped := []acceptSkip{}
 	if scope.review == "" {
 		owned, err := sagaReferences(document)
 		if err != nil {
@@ -345,13 +354,19 @@ func acceptProposed(ctx context.Context, root, repoDir, headRev string, scope ac
 		}
 		rng, err := reviewstate.ResolveRange(ctx, checkout, review)
 		if err != nil {
-			return fmt.Errorf("read review %s's range: %w", review.ID, err)
+			if scope.review != "" {
+				return fmt.Errorf("read review %s's range: %w", review.ID, err)
+			}
+			// One review whose range cannot be read (its branch gone, its
+			// base unknown) does not stop the repair of the others.
+			skipped = append(skipped, acceptSkip{Review: review.ID, Reason: err.Error()})
+			continue
 		}
 		for _, ref := range refs {
 			candidates = append(candidates, candidate{ref: ref, review: review.ID, base: rng.BaseOID, head: rng.HeadOID})
 		}
 	}
-	result := acceptOutput{OK: true, DryRun: dryRun, Accepted: []acceptChange{}, Refused: []acceptRefusal{}, Slides: []SlideTransactionResult{}}
+	result := acceptOutput{OK: true, DryRun: dryRun, Accepted: []acceptChange{}, Refused: []acceptRefusal{}, Skipped: skipped, Slides: []SlideTransactionResult{}}
 	matched := 0
 	for _, value := range candidates {
 		if !scope.includes(value.ref, value.review) {
@@ -360,15 +375,7 @@ func acceptProposed(ctx context.Context, root, repoDir, headRev string, scope ac
 		matched++
 		view := value.head
 		if value.review != "" {
-			// A review Item's deleted-side evidence lives at the merge-base; it
-			// keeps its side when the base moves.
-			if value.ref.Code.Commit == value.base || isAncestor(ctx, checkout, value.ref.Code.Commit, value.base) {
-				view = value.base
-			}
-			if resolver.Resolve(ctx, value.ref.Code, value.base).Current() {
-				result.Current++
-				continue
-			}
+			view = reviewView(ctx, resolver, value.ref.Code, value.base, value.head)
 		}
 		if resolver.Resolve(ctx, value.ref.Code, view).Current() {
 			result.Current++
@@ -403,6 +410,9 @@ func acceptProposed(ctx context.Context, root, repoDir, headRev string, scope ac
 		})
 	}
 	if matched == 0 {
+		if len(skipped) > 0 {
+			return fmt.Errorf("no evidence reference matches the scope among the reviews whose range reads; skipped %s: %s", skipped[0].Review, skipped[0].Reason)
+		}
 		return fmt.Errorf("no evidence reference matches the scope; list them with change-saga references --stale")
 	}
 	if scope.record != "" && scope.reference != 0 && len(result.Refused) > 0 {
@@ -436,6 +446,9 @@ func acceptProposed(ctx context.Context, root, repoDir, headRev string, scope ac
 	}
 	for _, refused := range result.Refused {
 		fmt.Fprintf(out, "  refused %s #%d %s: %s\n", firstNonEmpty(refused.EvidenceFile, refused.Owner), refused.Reference, shortLocation(refused.Pinned), refused.Reason)
+	}
+	for _, skip := range result.Skipped {
+		fmt.Fprintf(out, "  skipped review %s: its range cannot be read (%s)\n", skip.Review, skip.Reason)
 	}
 	for _, slide := range result.Slides {
 		fmt.Fprintf(out, "  slide %s: snapshot %s\n", slide.Target, slide.Snapshot)
@@ -740,21 +753,30 @@ func livingStaleness(ctx context.Context, document *saga.Saga, resolver *coderes
 	return &staleness
 }
 
+// reviewView is the commit a review Item's reference is read at: the
+// merge-base for deleted-side evidence, which is pinned at or before it, and
+// the head for everything else. A reference keeps its side. New-side
+// evidence stale at the head needs judgment even when the merge-base still
+// has its lines; reading it there would quietly turn it into deleted-side
+// evidence.
+func reviewView(ctx context.Context, resolver *coderesolve.Resolver, code coderef.Reference, base, head string) string {
+	if code.Commit == base || isAncestor(ctx, resolver.Repository(), code.Commit, base) {
+		return base
+	}
+	return head
+}
+
 // reviewItemRows lists a review's stale Item references with proposals at
-// the side each lives on: deleted-side evidence at the merge-base, the rest
-// at the head.
+// the side each lives on (reviewView).
 func reviewItemRows(ctx context.Context, resolver *coderesolve.Resolver, review *saga.Review, base, head, root, repo string) []staleRow {
 	rows := []staleRow{}
 	for _, ref := range reviewReferences(review) {
-		atHead := resolver.Resolve(ctx, ref.Code, head)
-		if atHead.Current() || resolver.Resolve(ctx, ref.Code, base).Current() {
+		view := reviewView(ctx, resolver, ref.Code, base, head)
+		atView := resolver.Resolve(ctx, ref.Code, view)
+		if atView.Current() {
 			continue
 		}
-		view := head
-		if ref.Code.Commit == base || isAncestor(ctx, resolver.Repository(), ref.Code.Commit, base) {
-			view = base
-		}
-		row := staleRow{ownedReference: ref, Pinned: ref.Code.Location(), Reason: atHead.Reason, Proposal: resolver.Propose(ctx, ref.Code, view)}
+		row := staleRow{ownedReference: ref, Pinned: ref.Code.Location(), Reason: atView.Reason, Proposal: resolver.Propose(ctx, ref.Code, view)}
 		if row.Proposal.Proposed() {
 			row.Accept = acceptInvocation(ref, "", root, repo)
 		}

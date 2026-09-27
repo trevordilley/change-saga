@@ -16,8 +16,11 @@
   slide's complete current request.
 - `review refresh-coverage --review ID` keeps a review deck current as a pull
   request iterates: it re-pins moved references and whole-file references whose
-  file event persists, gives new lines to the one Item covering their file, and
-  reports stale references with proposals for judgment.
+  file event persists, keeping each reference's side, and reports stale
+  references with proposals for judgment. New lines are reported uncovered
+  with the one Item covering their file as the proposed owner; only
+  `--accept-proposed [--path P] [--note TEXT]` gives them to it, under a
+  neutral "added in <head>" note by default.
 - `reconcile` leads with "Your change made N references stale", one line each
   with owner and old -> proposed range; pre-existing debt is a count (`--all`
   lists its tasks) and documentation gaps, re-reads, and user choices print

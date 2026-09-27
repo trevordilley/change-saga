@@ -292,7 +292,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	record := flags.String("record", "", "with --accept-proposed: the evidence_file to repair")
 	reference := flags.Int("reference", 0, "with --accept-proposed and --record: the 1-based reference in that file")
 	target := flags.String("target", "", "with --accept-proposed: repair the evidence of this target and its descendants")
-	all := flags.Bool("all", false, "with --accept-proposed: repair every stale evidence reference in the Saga")
+	all := flags.Bool("all", false, "with --accept-proposed: repair every stale evidence reference in the Saga, including every open review deck (other pull requests' too); a review whose range cannot be read is skipped and reported")
 	head := flags.String("head", "", "with --accept-proposed: the commit proposals map to; defaults to HEAD (a review Item uses its review's range)")
 	if err := flags.Parse(args); err != nil {
 		return err

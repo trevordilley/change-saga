@@ -47,10 +47,13 @@ before drawing slides; nothing else is needed.
    the pull request's file tree and open the deck with `change-saga open
    change.saga`.
 8. After each later push, `change-saga review refresh-coverage --review ID
-   change.saga` re-pins what only moved and gives new lines to the Item
-   already covering their file. It lists stale references (an edit landed
-   inside) with a proposed range and diff: read each, then accept with the
-   printed `change-saga repin --accept-proposed --record FILE --reference N
+   change.saga` re-pins what only moved. New lines are reported uncovered,
+   with the one Item covering their file as the proposed owner: read them,
+   and only if that Item's explanation covers them accept with the printed
+   `review refresh-coverage --review ID --accept-proposed --path P
+   [--note TEXT]`. It lists stale references (an edit landed inside) with a
+   proposed range and diff: read each, then accept with the printed
+   `change-saga repin --accept-proposed --record FILE --reference N
    change.saga`, or revise the explanation if it no longer holds.
 
 Coverage is an omission check, not proof that a slide is right. Never widen a
