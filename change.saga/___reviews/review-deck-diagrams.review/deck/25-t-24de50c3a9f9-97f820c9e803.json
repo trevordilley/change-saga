@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "deck": "review-deck-diagrams",
+  "slide": "one-transaction",
+  "current": "sha256:3a36406319648f7347e13f71ef5605fe7aec4c2c74a4dfcf62c5cfbdaca84a21",
+  "revisions": [
+    {
+      "snapshot": "sha256:3a36406319648f7347e13f71ef5605fe7aec4c2c74a4dfcf62c5cfbdaca84a21",
+      "request_id": "rdd-s1-create",
+      "created_at": "2026-09-27T03:01:22.46435Z",
+      "asset": "24-a-dc849e6fcc0b7935936e0568faa4eb2f3e50d4934c6d0c4ec3ad.svg",
+      "asset_digest": "sha256:dc849e6fcc0b7935936e0568faa4eb2f3e50d4934c6d0c4ec3adf10a3759e1bf",
+      "slide": {
+        "version": 4,
+        "id": "one-transaction",
+        "deck": "review-deck-diagrams",
+        "title": "One apply-slide transaction, keyed by the deck",
+        "rank": 10,
+        "intent": "orient",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-dc849e6fcc0b7935936e0568faa4eb2f3e50d4934c6d0c4ec3ad.svg",
+        "takeaway": "apply-slide resolves an implementation or an open review deck, then runs the same transaction into that deck's own URNs and storage.",
+        "reading_order": [
+          "request",
+          "resolve",
+          "review-deck",
+          "record"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "request",
+            "slide": "one-transaction",
+            "rank": 10,
+            "kind": "node",
+            "label": "Request names a deck or a review",
+            "description": "The request's review field, --review, or a review deck URN selects an open review's deck; deck alone selects a feature implementation deck.",
+            "selector": {
+              "type": "element",
+              "element_id": "request"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "resolve",
+            "slide": "one-transaction",
+            "rank": 20,
+            "kind": "node",
+            "label": "transactionDeck",
+            "description": "Resolves the one deck the slide belongs to and refuses onboarding decks, merged reviews, and a deck that is not the named review's.",
+            "selector": {
+              "type": "element",
+              "element_id": "resolve"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-deck",
+            "slide": "one-transaction",
+            "rank": 30,
+            "kind": "node",
+            "label": "Review deck slides",
+            "description": "A review slide is found and created within its review, so its id only has to be unique in that review.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-deck"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "record",
+            "slide": "one-transaction",
+            "rank": 40,
+            "kind": "node",
+            "label": "Shared record and URN namer",
+            "description": "Both decks get the same 25-t record and content-addressed sidecars; the loaded deck names its slide and Item URNs, so validation and the semantic diff follow it.",
+            "selector": {
+              "type": "element",
+              "element_id": "record"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-856070e37444e21d2c3be5883ab53374f30f6e8e6347e8e4f338.json",
+        "source_digest": "sha256:856070e37444e21d2c3be5883ab53374f30f6e8e6347e8e4f33895509dadfbe5",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

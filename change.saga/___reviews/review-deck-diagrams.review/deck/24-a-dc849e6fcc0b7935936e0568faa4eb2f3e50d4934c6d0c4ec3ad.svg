@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">One apply-slide transaction, keyed by the deck</title>
+  <desc id="diagram-desc">apply-slide resolves an implementation or an open review deck, then runs the same transaction into that deck's own URNs and storage.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-asks" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-to-impl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-to-review" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-impl-writes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-review-writes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</metadata>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <g id="heading" data-diagram-kind="text" transform="translate(60 40)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">apply-slide publishes into the deck the request names</tspan></text>
+  </g>
+  <g id="request" data-diagram-kind="node" transform="translate(40 290)" role="group" aria-label="apply-slide request">
+    <rect width="290" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+      <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+    </svg>
+    <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="52" y="40">apply-slide request</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">deck, or review / --review</tspan></text>
+  </g>
+  <g id="resolve" data-diagram-kind="node" transform="translate(400 290)" role="group" aria-label="transactionDeck">
+    <rect width="220" height="120" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">transactionDeck</tspan></text>
+  </g>
+  <g id="impl-deck" data-diagram-kind="node" transform="translate(720 150)" role="group" aria-label="Implementation deck">
+    <rect width="250" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Implementation deck</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">evidence + criterion links</tspan></text>
+  </g>
+  <g id="review-deck" data-diagram-kind="node" transform="translate(720 440)" role="group" aria-label="Open review deck">
+    <rect width="250" height="110" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Open review deck</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">Items covered by cover</tspan></text>
+  </g>
+  <g id="record" data-diagram-kind="node" transform="translate(1040 285)" role="group" aria-label="25-t record">
+    <path d="M0 14C0 -4.667 200 -4.667 200 14V116C200 134.667 0 134.667 0 116Z" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <path d="M0 14C0 33 200 33 200 14" fill="none" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="62" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="62">25-t record</tspan></text>
+    <text x="18" y="95" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="95">24-a SVG + diagram</tspan></text>
+  </g>
+  <g id="asks" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="request to resolve" data-from="request" data-to="resolve">
+    <path d="M330 350 L400 350" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-asks)"/>
+  </g>
+  <g id="to-impl" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="deck" data-from="resolve" data-to="impl-deck">
+    <path d="M510 290 L510 205 L720 205" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-to-impl)"/>
+    <text x="560" y="188" font-size="18" fill="#526174" xml:space="preserve"><tspan x="560" y="188">deck</tspan></text>
+  </g>
+  <g id="to-review" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="review" data-from="resolve" data-to="review-deck">
+    <path d="M510 410 L510 495 L720 495" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-to-review)"/>
+    <text x="560" y="518" font-size="18" fill="#526174" xml:space="preserve"><tspan x="560" y="518">review</tspan></text>
+  </g>
+  <g id="impl-writes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="impl-deck to record" data-from="impl-deck" data-to="record">
+    <path d="M970 205 L1140 205 L1140 285" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-impl-writes)"/>
+  </g>
+  <g id="review-writes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="same path" data-from="review-deck" data-to="record">
+    <path d="M970 495 L1140 495 L1140 415" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-review-writes)"/>
+    <text x="1000" y="518" font-size="18" fill="#526174" xml:space="preserve"><tspan x="1000" y="518">same path</tspan></text>
+  </g>
+  <g id="urns" data-diagram-kind="text" transform="translate(60 610)" role="group" aria-label="Each deck names its own slide and Item URNs: app URNs, or URNs inside the review.">
+    <text x="0" y="22" font-size="22" fill="#172033" xml:space="preserve"><tspan x="0" y="22">Each deck names its own slide and Item URNs: app URNs, or URNs inside the review.</tspan></text>
+  </g>
+</svg>

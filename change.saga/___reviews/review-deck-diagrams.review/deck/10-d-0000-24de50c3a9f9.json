@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "review-deck-diagrams",
+  "title": "Author review deck slides with apply-slide and diagram sources",
+  "role": "review",
+  "rank": 0,
+  "objective": "How review decks reuse the implementation deck's complete-slide transaction and diagram sources while their Items keep cover-based coverage."
+}
