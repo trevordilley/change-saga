@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/server/relatedreviews_perf_test.go",
+      "start": 70,
+      "end": 71,
+      "digest": "sha256:977bd6cc11603aa77264c7da80a644cf667cabb813bb9af0045e69a0bcaf7566"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/server/relatedreviews_perf_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:76d5e407c7f5386d7a1944aa1d3f164e7187b8de29c8576b2852c496879bab9b"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/server/relatedreviews_perf_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:871e94eed601211721c474bacb6db9004301f991faf40bcf499a198c22d7bcc7"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/server/relatedreviews_perf_test.go",
+      "start": 70,
+      "end": 71,
+      "digest": "sha256:be28f4a37add430fe4d9bef4991625b4ac0b081b2ed968e66762ad1437c6c284"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/server/relatedreviews_perf_test.go",
+      "start": 138,
+      "end": 140,
+      "digest": "sha256:969a55fdd2fce3ea499e7873d66049b3ac48514ea714d0b9cc607062abff0ef7"
+    },
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/server/relatedreviews_perf_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:754757247db3370a02fd3a52ef287e2f5024cbae2d3d0b7177e668b7dd0e1442"
+    }
+  ]
+}

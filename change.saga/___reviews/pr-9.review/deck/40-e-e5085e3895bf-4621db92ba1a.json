@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/cli/review_match_test.go",
+      "start": 250,
+      "end": 281,
+      "digest": "sha256:e9c47876bc52782b0cdc046eaa873fa4a69f309c96d8ae4f9758fc1f14253f3e"
+    }
+  ]
+}

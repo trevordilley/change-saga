@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 43,
+      "end": 93,
+      "digest": "sha256:39df465c2707ae19ed61835455411284d2d984a8c2eccaf541d0a33b17b9d2f6"
+    }
+  ]
+}

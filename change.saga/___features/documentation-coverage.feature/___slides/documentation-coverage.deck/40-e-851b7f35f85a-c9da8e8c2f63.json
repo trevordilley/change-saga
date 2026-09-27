@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ac706f78e9f6e7c78a3607f5f97955d032fb5578",
+      "path": "internal/areas/areas.go",
+      "start": 271,
+      "end": 291,
+      "digest": "sha256:c1d746a8b36d081f8a0ffc21546ed9426388e4826ec8cff77639060fb050cc09"
+    }
+  ]
+}
