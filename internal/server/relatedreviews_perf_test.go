@@ -67,8 +67,8 @@ func TestRelatedReviewsCostOnThisRepository(t *testing.T) {
 		t.Fatal("a review of the very commit that changed the documented code was related to nothing")
 	}
 
-	// change.saga has no reviews of its own yet, so the cross product is measured
-	// over a copy of it given real pull-request-sized ranges of this repository.
+	// The cross product is measured over a copy of change.saga given more
+	// reviews of real pull-request-sized ranges of this repository.
 	for _, reviews := range []int{1, 5, 20} {
 		root := copyDogfoodSagaWithReviews(t, reviews)
 		measured := &app{root: root, sourceDir: ".."}
@@ -135,7 +135,8 @@ func copyDogfoodSagaWithReviews(t *testing.T, count int) string {
 	t.Helper()
 	root := copySaga(t)
 	for index := 0; index < count; index++ {
-		id := fmt.Sprintf("pr-%d", index+1)
+		// Measured ids never collide with the real reviews change.saga holds.
+		id := fmt.Sprintf("measured-%d", index+1)
 		base := fmt.Sprintf("HEAD~%d", index+2)
 		if err := reviewstore.Create(root, saga.ReviewManifest{
 			ID: id, Title: "Measured review " + id, Base: base, Head: "HEAD",

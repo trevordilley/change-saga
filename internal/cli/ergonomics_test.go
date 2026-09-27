@@ -281,7 +281,7 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 			var output bytes.Buffer
 			_ = Init(context.Background(), []string{"-h"}, &output)
 			return output.String()
-		}, want: []string{"repository's Saga", "change.saga", "one Saga per repository", "___overview", "cover the change", "implementation deck", "document existing code", "optional"}},
+		}, want: []string{"repository's Saga", "change.saga", "one Saga per repository", "review create", "architecture", "after a few reviews", "document existing\ncode", "optional"}},
 		{name: "story add", run: func() string {
 			var output bytes.Buffer
 			_ = Story(context.Background(), []string{"add", "-h"}, &output)
