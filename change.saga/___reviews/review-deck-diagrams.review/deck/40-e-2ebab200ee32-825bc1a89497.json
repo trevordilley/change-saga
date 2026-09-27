@@ -1,0 +1,77 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:c660b761ca4d4f3fb66781f323fcd3d72d35aa484a026198071c54e30cf5ebaf",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:52c1b8f980f01add5973a7765d51eb8d21c3ed86ce60f9c6a1c50d7358b8a69a",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 68,
+      "end": 70,
+      "digest": "sha256:69883a7694e9093e273195334812bcc64547f39c3edaf5b738759e49943f9850",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:5f651501eee24f2094fe6e65d3241d63dfbe8b4852e546a9d61b4a5ff35b5262",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:3a6c080e66c6cd35de4d630b3a39156b9da17310348bc0228be5f47c8a974582",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:dfdb69dab17f16ca9620ce38b322fef94b3a0300a4724e6b40be396f35b70ee3",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:af1f385b248af3bd13c871b11a9830b632f64fc098485dc683b52b3ac4857d04",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:7d3b6ec337b27755262d5daae4a6553615ea8fcbf4f3c966c2246a654cc43702",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:df7b0ed92d95a13798a4a2e1a4de59f86f190eb5fd5025ff1ec5a18d27c7c928",
+      "note": "diagram edit and get resolve review slides and republish with the owning review and each Item's record and documentation pins."
+    }
+  ]
+}

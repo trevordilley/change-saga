@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slide_transaction.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:9c59bdb8db64e9355f645ac356a16eed55590d20a455db354309d01a374935d5",
+      "note": "Candidate validation names slides with the deck's own namer."
+    }
+  ]
+}

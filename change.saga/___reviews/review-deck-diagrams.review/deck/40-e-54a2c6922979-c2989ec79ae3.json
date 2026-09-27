@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slide_transaction.go",
+      "start": 125,
+      "end": 127,
+      "digest": "sha256:b3bcb820209c0a8ec540ea0a7e194ef8a85b57a9b3d3497793698108683d5aee",
+      "note": "A migrated review slide's root revision omits evidence, which stays in cover records."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slide_transaction.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:6bd49554d803c5b9c3e9220f4d01e54559075339955d2cd5ecce874d96aeebcb",
+      "note": "A migrated review slide's root revision omits evidence, which stays in cover records."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slide_transaction.go",
+      "start": 144,
+      "end": 148,
+      "digest": "sha256:a08797f04681c3b14423fcec61dbd3a719226aea898b2ee0d5107592b2b1eb10",
+      "note": "A migrated review slide's root revision omits evidence, which stays in cover records."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 33,
+      "end": 34,
+      "digest": "sha256:07ef54ea014a82b5a774bd022b37f698bde2ada3b0398de102dcb12c85810a9f",
+      "note": "The request struct and revision builder before review and record existed."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 36,
+      "end": 39,
+      "digest": "sha256:195d1e0a9bfe6ded54de395175ea458f4e0c54829a83b2387238feca406740e8",
+      "note": "The request struct and revision builder before review and record existed."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 426,
+      "end": 426,
+      "digest": "sha256:237704e6e283e65c76e8249c92a56010e0a6c6559bd0d6641db301013d816167",
+      "note": "The request struct and revision builder before review and record existed."
+    }
+  ]
+}

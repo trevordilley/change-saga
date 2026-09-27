@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:f5a253216c939cf3c17c80e01c35ed65e0ac0a2657fc05ab6fa9198571304c92",
+      "note": "Criteria validation now runs only for implementation decks."
+    }
+  ]
+}

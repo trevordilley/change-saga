@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:9951cc1fe1576c38d69692e6bca1d59ef32841bbe7408e556bf4034bae5b1766",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:76cc5af6599c0ba11605be8ccec991b4f699b89f0d96b0000f9c1685d8713353",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:e347b1ae403c05068bcb7b728f68a3e0e2169fd6a78030217a02dfca6f3ae2a8",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:04053447428e6bb3d20f1942d329432a46a6e277d9eaa7883486e75248133c55",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:fc9bd6adcff5b0633bef547d26833c33f6dffcbc81734c621c0162d63e6f7413",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:d40df6703c3dde40e6dac8681dd050577731c6d45649da388e23639fd84b8146",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 12,
+      "end": 13,
+      "digest": "sha256:364c882d03e53f4b8da146f2cd74f8b58f9558e101659f324b79003b3c70a5ab",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 22,
+      "end": 27,
+      "digest": "sha256:db75f9e2e47f8096b48f7c9ce600e8c2f5902e5b29d2d098a3408e745ed1fb26",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:10077de4548c3d9e6351d3e2f63c7d868a51fc2ddf973712851c50a31b77ecdd",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 102,
+      "end": 103,
+      "digest": "sha256:0294df50536ea326f50b948f9b46409c9e4f47ef724b9d2e17ebdf2ce58f4cbc",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "schema/v5/slide-transaction-request.schema.json",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:c89627afd22e600f7c90d1671d6de199c85041562e28d2217477c1fd0c44ce14",
+      "note": "The request schema admits review, record, and review Items without evidence."
+    }
+  ]
+}

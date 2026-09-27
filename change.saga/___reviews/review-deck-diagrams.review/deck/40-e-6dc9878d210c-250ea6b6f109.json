@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/slides.go",
+      "start": 413,
+      "end": 415,
+      "digest": "sha256:2d309d7585ac1018073dec6422f4e55bf8ca861f14741114faa218a7466a72a1",
+      "note": "add-item and set-slide-content --review refuse transaction-managed review slides."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/slides.go",
+      "start": 560,
+      "end": 562,
+      "digest": "sha256:2c897d91628129bbe9784aea3c72ba3abcf014ddbe35042d123c92d107f297e1",
+      "note": "add-item and set-slide-content --review refuse transaction-managed review slides."
+    }
+  ]
+}

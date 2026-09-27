@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/model.go",
+      "start": 132,
+      "end": 134,
+      "digest": "sha256:9d8687324e68068432364149b5e875230f222a980604e6431146ae4fb25ea374",
+      "note": "Deck holds its URN namer."
+    }
+  ]
+}

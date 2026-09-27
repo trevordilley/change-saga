@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:76b85d8db7886bfc79be3b53e41eb2bab9341697f4ff6a8f49a40ce000f38546",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:004c4120d96a4a9bdcd302c0abff71523bae885d0fdcc2f7729926ffbfcfc90b",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 530,
+      "end": 530,
+      "digest": "sha256:5e42a3dc1678c1f8f6ebf9575ce4f5518c6617cea394eb5b472c462d9672486c",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 535,
+      "end": 535,
+      "digest": "sha256:068b16d2f7ae339af7a9928d517b8c95b57826f1b32998aa336165ea5a581006",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 539,
+      "end": 539,
+      "digest": "sha256:c45abc571c3d6c651a1834626216db0b54819236fd0bca6b528c064c1ef6f876",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 542,
+      "end": 542,
+      "digest": "sha256:a84be00cfff72b12f8ad760a4c3696f762539aa51df40303da6dcd8a144bff65",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 547,
+      "end": 547,
+      "digest": "sha256:22fe8f1c159ab36e12440ce679a8f775ccb54b45b0994e8c7bb1a37daa4cd23b",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 554,
+      "end": 554,
+      "digest": "sha256:8a24a1066e10cf292cb1e901ac64f64073586e055b9df62b554ab966893f4d24",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 566,
+      "end": 566,
+      "digest": "sha256:0ae2a0970bdf9b048fff638aa13c1c707f3699dcd45ff8e305eb41354d24380d",
+      "note": "Results and the diff used app URNs only."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 582,
+      "end": 582,
+      "digest": "sha256:2ba12c9ac1725ff3b6ab3b94ad9788f07e921b441482f15f230adfccfaf4b42c",
+      "note": "Results and the diff used app URNs only."
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">The public contract and its proof</title>
+  <desc id="diagram-desc">The schema, usage, grammar, spec, and skill admit review requests; Go and browser tests prove create, edit, cover, describe, guards, migration, and rendering.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-schema-proved" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-usage-proved" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</metadata>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <g id="heading" data-diagram-kind="text" transform="translate(40 36)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">What an agent can rely on, and what checks it</tspan></text>
+  </g>
+  <g id="contract-frame" data-diagram-kind="group" transform="translate(40 120)" role="group" aria-label="Contract">
+    <rect width="560" height="440" rx="10" fill="#f0f3f6" stroke="#c3cdd8" stroke-width="1" stroke-dasharray="7 6"/>
+    <text x="18" y="30" font-size="18" fill="#526174" xml:space="preserve"><tspan x="18" y="30">Contract</tspan></text>
+    <g id="schema" data-diagram-kind="node" transform="translate(30 70)" role="group" aria-label="Request schema">
+      <rect width="500" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Request schema</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">review or deck; record; evidence only for implementation</tspan></text>
+    </g>
+    <g id="usage" data-diagram-kind="node" transform="translate(30 280)" role="group" aria-label="Usage, grammar, spec">
+      <rect width="500" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19h8"/>
+        <path d="m4 17 6-6-6-6"/>
+      </svg>
+      <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="52" y="40">Usage, grammar, spec</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">--review on apply-slide, diagram, visual-qa</tspan></text>
+    </g>
+  </g>
+  <g id="proof-frame" data-diagram-kind="group" transform="translate(680 120)" role="group" aria-label="Proof">
+    <rect width="560" height="440" rx="10" fill="#f0f3f6" stroke="#c3cdd8" stroke-width="1" stroke-dasharray="7 6"/>
+    <text x="18" y="30" font-size="18" fill="#526174" xml:space="preserve"><tspan x="18" y="30">Proof</tspan></text>
+    <g id="go-tests" data-diagram-kind="node" transform="translate(30 70)" role="group" aria-label="Go tests">
+      <rect width="500" height="120" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+      <svg x="18" y="18" width="24" height="24" color="#153869" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <text x="52" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="52" y="40">Go tests</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">publish, cover, edit, describe, guards, migrate</tspan></text>
+    </g>
+    <g id="e2e" data-diagram-kind="node" transform="translate(30 280)" role="group" aria-label="Browser E2E">
+      <rect width="500" height="120" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+      <svg x="18" y="18" width="24" height="24" color="#153869" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+      <text x="52" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="52" y="40">Browser E2E</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">diagram review slide renders in the viewer</tspan></text>
+    </g>
+  </g>
+  <g id="schema-proved" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="schema to go-tests" data-from="schema" data-to="go-tests">
+    <path d="M570 250 L710 250" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-schema-proved)"/>
+  </g>
+  <g id="usage-proved" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="usage to e2e" data-from="usage" data-to="e2e">
+    <path d="M570 460 L710 460" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-usage-proved)"/>
+  </g>
+  <g id="docs" data-diagram-kind="node" transform="translate(40 590)" role="group" aria-label="SPEC and skill">
+    <rect width="1200" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+      <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+    </svg>
+    <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="52" y="40">SPEC and skill</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">review slides are authored with apply-slide and diagram sources</tspan></text>
+  </g>
+</svg>

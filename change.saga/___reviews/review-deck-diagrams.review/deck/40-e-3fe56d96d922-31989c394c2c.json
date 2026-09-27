@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 35,
+      "end": 40,
+      "digest": "sha256:dd8070c44a9288172c46e7ac174796484bdb4c3c2cfdce08f33deab4fb43b219",
+      "note": "visual-qa selects review slides and renders them at the review routes."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 35,
+      "end": 42,
+      "digest": "sha256:bdb47e36fe0efca454e34741a64454e042af3d0264fbf7a6260ac41ad21b7a24",
+      "note": "visual-qa selects review slides and renders them at the review routes."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 259,
+      "end": 281,
+      "digest": "sha256:2202143fb2b1b4c0d977c77761bf54fc38046784765730435a451e6f75a150ae",
+      "note": "visual-qa selects review slides and renders them at the review routes."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/visualqa/visualqa_test.go",
+      "start": 192,
+      "end": 210,
+      "digest": "sha256:bf9570e717770b587d3c73113362c5d70f4686b61a8a4fc096530d4082e93438",
+      "note": "visual-qa selects review slides at their review routes."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 206,
+      "end": 211,
+      "digest": "sha256:476644a433e677ab3be5a314b7eeb5ffdaa7c98a959fa2ed94517ba38ea04ea3",
+      "note": "Deck lookup was limited to feature implementation decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 217,
+      "end": 218,
+      "digest": "sha256:a10adf4d9d246de1ad723ac26969df08a207256b7c496033f048391da04e6311",
+      "note": "Deck lookup was limited to feature implementation decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:78de78b7d666d8facf2e9305f0677bf0da850c9f4b42b542dfe5ab0c948aa03a",
+      "note": "Deck lookup was limited to feature implementation decks."
+    }
+  ]
+}

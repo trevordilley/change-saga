@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:70883e9c0c4580ed178c2059458e96391180250b0d1fb304d26045a7a6f1d135",
+      "note": "diagram check covers review decks and --review narrows it."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 245,
+      "end": 265,
+      "digest": "sha256:79d5841688701c2ff2399d09daeaf4d3fa6bfb32eb0ef4fbe3ff728cbd003022",
+      "note": "diagram check covers review decks and --review narrows it."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:c1fdf14fa9f82a012f691d723be25d75e26df8f020fb0f6aba703c34ce9f7502",
+      "note": "diagram check covers review decks and --review narrows it."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:084983d81ed0b1a5a00de3235f714a67d041340975bd8fa48cc0177cf6063d9a",
+      "note": "diagram check covers review decks and --review narrows it."
+    }
+  ]
+}

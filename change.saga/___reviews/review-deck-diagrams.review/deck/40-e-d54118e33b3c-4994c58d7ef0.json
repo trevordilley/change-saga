@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "SPEC.md",
+      "start": 516,
+      "end": 525,
+      "digest": "sha256:129ca052340e4628f4a44d023802f213db251d1d37777e230b798e0a5ae2af1e",
+      "note": "SPEC describes review slides in the complete-slide transaction."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slides.go",
+      "start": 86,
+      "end": 101,
+      "digest": "sha256:922784f5169c30558dec38a93de7466447e55eb4792395e32bfd0b5b3bdf7329",
+      "note": "Each loaded deck records its URN namer; SlideTarget and ItemTarget expose it."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slides.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:c99552903fab3377e69d2646c6dcd81473cd9f78a8f317ddc0533e4bb192b3a7",
+      "note": "Each loaded deck records its URN namer; SlideTarget and ItemTarget expose it."
+    }
+  ]
+}

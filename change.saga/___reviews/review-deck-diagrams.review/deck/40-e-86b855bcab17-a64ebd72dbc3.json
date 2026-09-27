@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/saga/slides.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:95f50e98d7929dabca0b4351d94a9086383668bdceaa736889c708ba10211f81",
+      "note": "Flat evidence was always skipped for transaction Items."
+    }
+  ]
+}

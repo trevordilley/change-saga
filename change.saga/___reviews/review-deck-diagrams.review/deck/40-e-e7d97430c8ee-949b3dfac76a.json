@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 319,
+      "end": 323,
+      "digest": "sha256:700c616aa51b4246f80951471aab85f24aa86e00f0c163780d7b88ad77fe2e87",
+      "note": "A review revision may not drop an Item that still has cover records; records are checked against the Saga."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 532,
+      "end": 564,
+      "digest": "sha256:9ecba2f5e0702802a5bb74e72daccd0dfb8be9690df2bd346d5fcfa8d0a081da",
+      "note": "A review revision may not drop an Item that still has cover records; records are checked against the Saga."
+    }
+  ]
+}

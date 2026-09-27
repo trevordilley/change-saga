@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:ae605570fdf11601523307fd881c87a9179a4582bb25e89630b911f5d91a6de8",
+      "note": "The diagram revision loader only searched app decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 67,
+      "end": 77,
+      "digest": "sha256:e007554f4b895af0a10aeeae616c1222a8e39677483db45c4c336e07af3fe872",
+      "note": "The diagram revision loader only searched app decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:d432c9bddc94d78b336932f40c51343f2c780021a8bbd323ae37225dc9738204",
+      "note": "The diagram revision loader only searched app decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:a054b6f9d153e3a44614ef5a3285fc9949a8ecb2161549d70e735f7bcacc6578",
+      "note": "The diagram revision loader only searched app decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:f4648ae9fc465e99718c810af193df525526c4d543416c0213250139296203f1",
+      "note": "The diagram revision loader only searched app decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:12cb90d2f7ee0d4af8bda4f64497bce12c2a795654fd25de92c40d56c71ab761",
+      "note": "The diagram revision loader only searched app decks."
+    }
+  ]
+}
