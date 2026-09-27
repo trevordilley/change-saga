@@ -150,6 +150,8 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 		`data-decision-state="approved" data-currency="current"`, `data-review-decision-form="queue"`,
 		`data-review-item-diffs-href="/reviews/pr-7/item-diffs?target=urn%3Achange-saga%3Aapp%3Areview%3Apr-7%3Aslide%3Aqueue%3Aitem%3Anode"`,
 		`Loading 1 linked code reference…`,
+		`aria-label="Open linked code with 1 addition and 0 deletions for Enqueue"`,
+		`<span class="diff-counts"><span class="add">+1</span><span class="del">−0</span></span>`,
 		`data-review-record="urn:change-saga:app:feature:` + serverFeature + `"`, `Index on status?`, `/reviews/pr-7/visual/queue`,
 		`https://github.com/acme/app/pull/7`, `data-slide-thumbnail`, `data-slide-previous`, `data-slide-next`,
 		`data-open-diffs="review-item-`, `data-open-stories="review-record-`, `data-review-reply-form=`,
