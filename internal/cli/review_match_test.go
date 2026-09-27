@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -208,6 +209,9 @@ func TestAReviewIsFoundInACICheckout(t *testing.T) {
 
 // review create --head names the branch whose pull request it is.
 func TestReviewCreateAsksGHAboutTheHeadBranch(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("the stand-in gh is a shell script")
+	}
 	repo, root := reviewRepo(t)
 	git(t, repo, "checkout", "-b", "feature/top")
 	git(t, repo, "remote", "set-url", "origin", "https://github.com/acme/app.git")
