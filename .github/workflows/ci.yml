@@ -82,9 +82,8 @@ jobs:
 
   review:
     # This repository's own pull requests carry a review deck (change.saga
-    # ___reviews); the gate asks that it explain every changed line. Only the
-    # review area is asked: the health gate waits until main's pre-existing
-    # stale records are cleared.
+    # ___reviews); the gate asks that it explain every changed line. The
+    # health job below separately keeps the living documentation current.
     name: review deck explains the change
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -106,6 +105,29 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
         run: '"$RUNNER_TEMP/change-saga" check --covers review --against "origin/$BASE_REF" change.saga'
+
+  health:
+    # This repository's policy, not a product default: change.saga is the
+    # showcase Saga, so nothing it already documents may be left stale or
+    # broken. Asked of the whole app at the commit under test.
+    name: change.saga stays healthy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # A pull request's own head, not GitHub's merge commit; evidence pins
+          # resolve against the full history.
+          ref: ${{ github.event.pull_request.head.sha || inputs.ref || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: .go-version
+          cache: true
+      - name: build change-saga from this commit
+        run: go build -o "$RUNNER_TEMP/change-saga" ./cmd/change-saga
+      - name: nothing change.saga documents is stale or broken
+        run: '"$RUNNER_TEMP/change-saga" check --covers health change.saga'
 
   lint:
     name: lint
