@@ -585,3 +585,37 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 	}
 	return request, nil
 }
+
+// livingStaleness measures what base..head did to the living documentation's
+// references, or nil when the Saga has none.
+func livingStaleness(ctx context.Context, document *saga.Saga, resolver *coderesolve.Resolver, base, head, root, repo string) *changeStaleness {
+	owned, err := sagaReferences(document)
+	if err != nil || len(owned) == 0 || resolver == nil {
+		return nil
+	}
+	staleness := measureChangeStaleness(ctx, resolver, owned, historicalOwners(document), base, head, root, repo)
+	return &staleness
+}
+
+// reviewItemRows lists a review's stale Item references with proposals at
+// the side each lives on: deleted-side evidence at the merge-base, the rest
+// at the head.
+func reviewItemRows(ctx context.Context, resolver *coderesolve.Resolver, review *saga.Review, base, head, root, repo string) []staleRow {
+	rows := []staleRow{}
+	for _, ref := range reviewReferences(review) {
+		atHead := resolver.Resolve(ctx, ref.Code, head)
+		if atHead.Current() || resolver.Resolve(ctx, ref.Code, base).Current() {
+			continue
+		}
+		view := head
+		if ref.Code.Commit == base || isAncestor(ctx, resolver.Repository(), ref.Code.Commit, base) {
+			view = base
+		}
+		row := staleRow{ownedReference: ref, Pinned: ref.Code.Location(), Reason: atHead.Reason, Proposal: resolver.Propose(ctx, ref.Code, view)}
+		if row.Proposal.Proposed() {
+			row.Accept = acceptInvocation(ref, "", root, repo)
+		}
+		rows = append(rows, row)
+	}
+	return rows
+}

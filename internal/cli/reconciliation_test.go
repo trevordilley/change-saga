@@ -1,6 +1,8 @@
 package cli
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
 	"path/filepath"
 	"strings"
@@ -60,6 +62,20 @@ func TestReconciliationHeadCurrencyAndRepairLoop(t *testing.T) {
 	}
 	if repair == nil || !story || repair.Repair[0].Command != "replace-coverage" {
 		t.Fatalf("queue: %+v", report.Queue)
+	}
+	if last := repair.Repair[len(repair.Repair)-1]; last.Command != "repin" || !strings.Contains(strings.Join(last.Argv, " "), "--accept-proposed --record "+repair.EvidenceFile+" --reference 1") {
+		t.Fatalf("a stale reference with a proposal offers its one-line accept last: %+v", repair.Repair)
+	}
+	if report.Summary.StaleByChange.Count != 1 || report.Summary.StaleByChange.Proposed != 1 || report.Summary.Queue.StaleByChange != 1 {
+		t.Fatalf("summary: %+v", report.Summary)
+	}
+	var text bytes.Buffer
+	if err := Reconcile(context.Background(), []string{"--against", "main", root}, &text); err != nil {
+		t.Fatal(err)
+	}
+	lines := strings.Split(text.String(), "\n")
+	if len(lines) < 3 || lines[1] != "Your change made 1 reference stale:" || !strings.Contains(lines[2], "src/queue.go#L3-L6 -> src/queue.go#L3-L6") {
+		t.Fatalf("reconcile must lead with what the change made stale:\n%s", text.String())
 	}
 	mustRun(t, ReplaceCoverage, "--record", repair.EvidenceFile, "--target", repair.Resource, "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
 	mustRun(t, Validate, "--json", root)
@@ -179,7 +195,7 @@ func TestReconciliationTransactionRepairUsesSnapshot(t *testing.T) {
 			break
 		}
 	}
-	if task == nil || len(task.Repair) != 1 || task.Repair[0].Command != "apply-slide" || task.Inspect[0].Command != "query slide" {
+	if task == nil || len(task.Repair) != 2 || task.Repair[0].Command != "apply-slide" || task.Repair[1].Command != "repin" || task.Inspect[0].Command != "query slide" {
 		t.Fatalf("transaction route: %+v", task)
 	}
 	if report.Currency.Unknown != 1 || report.Currency.BaselineAvailable {

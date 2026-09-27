@@ -657,9 +657,10 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "reconcile", Status: StatusImplemented, Usage: "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json] <saga>",
-		Summary:     "read-only documentation reconciliation queue with independent HEAD currency, baseline debt, review coverage, declared-link impact and typed repair paths; no verdict",
-		Flags:       []Flag{jsonFlag, required("against", "REV", "comparison baseline"), headFlag, optional("repo", "PATH", "source checkout when separate"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs")},
+		Name: "reconcile", Status: StatusImplemented, Usage: "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json [--summary]] [--all] <saga>",
+		Summary: "read-only documentation reconciliation queue with independent HEAD currency, baseline debt, review coverage, declared-link impact and typed repair paths; no verdict",
+		Flags: []Flag{jsonFlag, required("against", "REV", "comparison baseline"), headFlag, optional("repo", "PATH", "source checkout when separate"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
+			optional("summary", "", "with --json, emit only the summary, opening, and recheck commands"), optional("all", "", "list the tasks of debt that predates this change too")},
 		Positionals: sagaOnly,
 	},
 	{
