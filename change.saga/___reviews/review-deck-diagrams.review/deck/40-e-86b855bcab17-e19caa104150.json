@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slides.go",
+      "start": 121,
+      "end": 124,
+      "digest": "sha256:6ec8d3cd37cdd219f1d42df07a641092dfbe36c844203ad5fa83bd8cea332b5e",
+      "note": "The loader attaches cover records to review transaction Items."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slides.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:bb0410e80b5e528b4efec969d38926e3e781796bed1ed5930e9a8d306ab4d054",
+      "note": "The loader attaches cover records to review transaction Items."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/saga/slides.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:2678d0d5b227656333dd3a8f4b22911be97986f521f8e5739c0ea937568a31f0",
+      "note": "The loader attaches cover records to review transaction Items."
+    }
+  ]
+}

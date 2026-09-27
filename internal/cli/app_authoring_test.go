@@ -147,7 +147,7 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	// existing code by observing HEAD is the second. Growing the Saga is
 	// named as optional and later.
 	for _, want := range []string{"Start with a review of this branch or pull request", "change-saga review create " + root,
-		"add-slide --review ID", "set-slide-content --review ID", "add-item --review ID", "cover --target ITEM_URN --path PATH --changed-lines",
+		"apply-slide --review ID --from SLIDE.json", "cover --target ITEM_URN --path PATH --changed-lines",
 		"review list", "check --covers review", "A Saga of reviews alone is complete", "setup-initial-saga", "to document existing code instead",
 		"change-saga status " + root, "overview set-pitch", "--lines RANGES | --file"} {
 		if !strings.Contains(text, want) {

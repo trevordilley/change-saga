@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "One resolver lets every slide command reach a review slide",
+      "x": 40,
+      "y": 36,
+      "width": 1200,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "address",
+      "kind": "node",
+      "shape": "rect",
+      "label": "--review ID --slide ID",
+      "detail": "or the review slide URN",
+      "x": 40,
+      "y": 290,
+      "width": 300,
+      "height": 110,
+      "style": "normal"
+    },
+    {
+      "id": "resolver",
+      "kind": "node",
+      "shape": "service",
+      "label": "findAuthoredSlide",
+      "detail": "deck, slide, owning review",
+      "x": 420,
+      "y": 290,
+      "width": 300,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "read",
+      "kind": "node",
+      "shape": "rect",
+      "label": "diagram describe / get",
+      "detail": "compact reading; merged reviews too",
+      "x": 820,
+      "y": 110,
+      "width": 420,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "edit",
+      "kind": "node",
+      "shape": "rect",
+      "label": "diagram edit",
+      "detail": "republishes through apply-slide",
+      "x": 820,
+      "y": 250,
+      "width": 420,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "check",
+      "kind": "node",
+      "shape": "rect",
+      "label": "diagram check, visual-qa",
+      "detail": "--review renders review slides",
+      "x": 820,
+      "y": 390,
+      "width": 420,
+      "height": 100,
+      "style": "normal",
+      "icon": "lucide:check"
+    },
+    {
+      "id": "asks",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "address",
+      "to": "resolver",
+      "points": [
+        {
+          "x": 340,
+          "y": 345
+        },
+        {
+          "x": 420,
+          "y": 345
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "to-read",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "resolver",
+      "to": "read",
+      "points": [
+        {
+          "x": 720,
+          "y": 305
+        },
+        {
+          "x": 770,
+          "y": 305
+        },
+        {
+          "x": 770,
+          "y": 160
+        },
+        {
+          "x": 820,
+          "y": 160
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "to-edit",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "resolver",
+      "to": "edit",
+      "points": [
+        {
+          "x": 720,
+          "y": 330
+        },
+        {
+          "x": 820,
+          "y": 330
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "to-check",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "resolver",
+      "to": "check",
+      "points": [
+        {
+          "x": 720,
+          "y": 370
+        },
+        {
+          "x": 770,
+          "y": 370
+        },
+        {
+          "x": 770,
+          "y": 440
+        },
+        {
+          "x": 820,
+          "y": 440
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "guard",
+      "kind": "node",
+      "shape": "rect",
+      "label": "add-item and set-slide-content --review refuse",
+      "detail": "and point at diagram describe, diagram edit, and apply-slide --review",
+      "x": 40,
+      "y": 560,
+      "width": 1200,
+      "height": 100,
+      "style": "warning",
+      "icon": "lucide:lock"
+    }
+  ]
+}

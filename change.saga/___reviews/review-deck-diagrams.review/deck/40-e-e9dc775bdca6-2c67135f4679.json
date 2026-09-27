@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/cli.go",
+      "start": 247,
+      "end": 249,
+      "digest": "sha256:adf36cb0b8f5dae7490d45dac246e3f506a12ba23c78523854f3c6c64bc805cf",
+      "note": "The hand-written SVG steps they replace"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/cli.go",
+      "start": 439,
+      "end": 439,
+      "digest": "sha256:d962c18121757a7ffc51bdbfd63151d1e92ab80a14dd4fdfdd7f1a5bd49b11b0",
+      "note": "The hand-written SVG steps they replace"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/cli.go",
+      "start": 616,
+      "end": 618,
+      "digest": "sha256:328087ee84d20d8704fe18d98b20bf0f127dad0ecc11d9184694fff7468e6c82",
+      "note": "The hand-written SVG steps they replace"
+    }
+  ]
+}

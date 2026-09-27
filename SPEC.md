@@ -476,8 +476,9 @@ explains it.
 
 ### Complete-slide transactions and diagram sources
 
-`apply-slide` publishes one complete slide atomically: its visual, Items,
-exact evidence, and pinned criterion links. The slide's single
+`apply-slide` publishes one complete slide of an implementation or review deck
+atomically: its visual and Items and, for an implementation slide, each Item's
+exact evidence and pinned criterion links. The slide's single
 `25-t-<deck-key>-<slide-key>.json` record holds its immutable revision history
 and names the current revision; visuals are content-addressed
 `24-a-<digest-prefix>.<ext>` sidecars committed before the record that
@@ -512,6 +513,16 @@ Items, evidence, and criterion links. `change-saga diagram describe` reads any
 slide compactly: its takeaway, Items in reading order, and, for a diagram
 source, its semantic elements and connections. The description omits geometry,
 styling, decorative elements, and asset bytes, and cannot rebuild the drawing.
+
+A pull request review's deck uses the same transaction. A request that names
+`"review"` (or a review deck's URN) publishes into that open review's
+`deck/` directory, and the slide and its Items are named inside the review.
+A review Item carries no evidence or criterion links in the request; `cover`
+writes its code references as ordinary `40-e-` records keyed by the Item's
+URN, and readers attach them to the current revision's Items, so coverage
+survives later revisions and diagram edits. A revision that would drop a
+covered Item is refused. The diagram commands take `--review` or a review
+slide's URN, and a merged review's slides are read-only.
 
 Stories and their acceptance criteria are the traceability backbone. A deck,
 slide, or Item relates to a story or criterion through an active relation that

@@ -78,6 +78,17 @@
   names each stale reference's evidence record for `replace-coverage`.
 - `setup-initial-saga` grows a Saga that holds only reviews without
   `--overhaul`, and with no Saga suggests a review first.
+- Review decks are authored like implementation decks: `apply-slide --review
+  ID` (or `"review"` in the request) publishes a complete review slide from a
+  diagram source or visual through the same transaction, stored under the
+  review's `deck/`. Review Items carry no evidence or criterion links; `cover
+  --changed-lines` covers them after publishing, and that coverage stays with
+  them across revisions and diagram edits, in `review list`, `status`, and
+  `check --covers review`. A revision that drops a covered Item is refused.
+  `diagram describe|get|edit|check`, `visual-qa --review ID`, and `query
+  slide` read review slides by URN or `--review`. `review create`, `init`,
+  help, the README, and the skill now lead with `apply-slide --review` and a
+  diagram source instead of hand-written SVG.
 
 ## Unreleased — change.saga, one Saga per repository
 

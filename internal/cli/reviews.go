@@ -124,7 +124,7 @@ func reviewCreate(ctx context.Context, args []string, out io.Writer) error {
 		if len(filled.inferred) > 0 {
 			fmt.Fprintf(out, "Using %s; pass the flags to choose otherwise\n", strings.Join(filled.inferred, ", "))
 		}
-		fmt.Fprintf(out, "Next: change-saga add-slide --review %s --intent explain --layout diagram %s first-slide\n", *id, root)
+		fmt.Fprintf(out, "Next: change-saga apply-slide --review %s --from SLIDE.json %s (one slide: a diagram source and its Items; the change-saga skill's diagrams reference has an example)\n", *id, root)
 		if staleness != nil && staleness.Count > 0 {
 			fmt.Fprintf(out, "Then: your change made %d living documentation %s stale (%d with a proposed range); read each diff, then repair with change-saga reconcile --against %s %s\n", staleness.Count, plural(staleness.Count, "reference", "references"), staleness.Proposed, shortOID(staleness.BaseOID), root)
 		}

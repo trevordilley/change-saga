@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram_describe.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:7d3b6ec337b27755262d5daae4a6553615ea8fcbf4f3c966c2246a654cc43702",
+      "note": "describe and get take --review and review slide URNs."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram_describe.go",
+      "start": 163,
+      "end": 165,
+      "digest": "sha256:1043e7919b8ce74b9701faf50e6d02972108c3dd50d163c2184db8ad71e13fd6",
+      "note": "describe and get take --review and review slide URNs."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram_describe.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:7d3b6ec337b27755262d5daae4a6553615ea8fcbf4f3c966c2246a654cc43702",
+      "note": "describe and get take --review and review slide URNs."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/diagram_describe.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:ed0cb9fc667dbd3214439f9f74bd92dc81822908596fdd429ec811191f924812",
+      "note": "describe and get take --review and review slide URNs."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram_describe.go",
+      "start": 162,
+      "end": 164,
+      "digest": "sha256:1fc1a94c69410de6836c0accf22cf63c6427404ec8269a24d65be35eb3c19189",
+      "note": "describe and get take --review and review slide URNs."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram_describe.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:5e6db8339c6debd30e64154f32adcef2c1cab14ed7d25ec274315260d8781a0f",
+      "note": "describe and get take --review and review slide URNs."
+    }
+  ]
+}

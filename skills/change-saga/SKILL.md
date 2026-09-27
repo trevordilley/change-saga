@@ -27,13 +27,15 @@ before drawing slides; nothing else is needed.
    reviewer must understand, such as the components and how they relate, the
    data flow, a state change, the decision that would surprise a reviewer.
    Plan one slide per idea, usually two to six; never one slide per file.
-4. For each slide: `change-saga add-slide --review ID --intent explain
-   --layout diagram change.saga SLIDE`; draw an SVG diagram whose meaningful
-   elements carry `id`s; `change-saga set-slide-content --review ID --target
-   SLIDE --source FILE.svg change.saga`; then, for each element that explains
-   part of the change, `change-saga add-item --review ID --slide SLIDE --kind
-   node --element-id ELEMENT --label TEXT --description TEXT --id ITEM
-   change.saga`.
+4. For each slide, write one request: a `"diagram"` source (explicitly
+   positioned nodes, edges, and groups the CLI renders to SVG) and an Item for
+   each element that explains part of the change. Publish it with `change-saga
+   apply-slide --review ID --from SLIDE.json change.saga` (`--dry-run` first).
+   The request's shape and an example are under "Review deck slides" in
+   [diagrams and evidence](references/diagrams.md); revise a slide with
+   `diagram edit`. Hand-write SVG only for what a diagram source cannot
+   express, through `add-slide --review`, `set-slide-content --review`, and
+   `add-item --review`.
 5. Cover every changed line from the narrowest Item that explains it:
    `change-saga cover --target ITEM_URN --path PATH --changed-lines
    change.saga`, or `--lines RANGES` for part of a file. On a review Item,
@@ -42,7 +44,8 @@ before drawing slides; nothing else is needed.
 6. Confirm: `change-saga review list --uncovered change.saga` names what no
    Item explains yet; `change-saga check --covers review --against BASE
    change.saga` exits 0 once every changed line is explained. Run
-   `change-saga validate change.saga`.
+   `change-saga diagram check --review ID change.saga` and `change-saga
+   validate change.saga`.
 7. Commit the Saga with the change. Reviewers can collapse `change.saga` in
    the pull request's file tree and open the deck with `change-saga open
    change.saga`.

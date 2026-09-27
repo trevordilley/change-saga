@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/saga/slides.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:6ce3810fb1779e87bfe92f3eb2886bb008b6660340c41f77e990e2d2228bd0cc",
+      "note": "Decks did not record how their URNs are named."
+    }
+  ]
+}

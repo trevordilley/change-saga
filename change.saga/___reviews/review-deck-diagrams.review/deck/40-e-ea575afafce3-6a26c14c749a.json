@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 548,
+      "end": 599,
+      "digest": "sha256:5af5fb3377aefe70c755e7603e35e158fe0246a0777acad76aef99ff001944e7",
+      "note": "A diagram review slide renders in the review viewer."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 236,
+      "end": 238,
+      "digest": "sha256:be7354ec0bb3d364e190988de1e0132c4a407db7686c868d836f508275a566ca",
+      "note": "transactionDeck resolves an implementation or open review deck; review slides are found and created within their review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 244,
+      "end": 250,
+      "digest": "sha256:2ea1059130428e31de30a0377353fc0d1e9c836e08d93c05de0c983686cce32b",
+      "note": "transactionDeck resolves an implementation or open review deck; review slides are found and created within their review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:ca8abbdf18169f33df56ecd4189cccaf9014c996ce46ad5da4dfd6e982045f4b",
+      "note": "transactionDeck resolves an implementation or open review deck; review slides are found and created within their review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 493,
+      "end": 523,
+      "digest": "sha256:5f13ff1a9607b05a4267d3bf17c98932aa11873a542339473a8050cc6f1840ed",
+      "note": "transactionDeck resolves an implementation or open review deck; review slides are found and created within their review."
+    }
+  ]
+}

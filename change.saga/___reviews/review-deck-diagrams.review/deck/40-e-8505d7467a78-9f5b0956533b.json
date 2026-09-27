@@ -1,0 +1,165 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 61,
+      "end": 62,
+      "digest": "sha256:1063ab80f2638c9c99f6aabd0fa487de5247c95d1961817b63a05223e7ad11f5",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:0a2867c2fc6e7f54172c9ebef20e1c5f4c9ba31cd28aabe941f126dbc375b051",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 72,
+      "end": 73,
+      "digest": "sha256:b8456dae675585f79e8bb0c58dfdaf06e30eab05d2eae16b856252b44e444d6f",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:5c4d8708c03d94a37b2407c8aec3ff8cc22af04aad2c79e656142aa00281ff2c",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:9f1f4ee27e6de8d834eb994205049be6b070997ebcaaf5818b5a3416737e9308",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:2e8b67c8de63b8fc16b2c8d2ed0d7d6e1db6c92f2741283ab4fae524afa3c05e",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:2d996df459fd7f3d685d6e6498b7b5c81f2636656e6bc6cf46b0e2bf5fcedbbe",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:c381f4b60221b3977d41182f8793a05b7a7859446f857a1506d34bf3c4e4bebf",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:2e1e97fe941e39e51b9247c322d812aec2144019855ae12d1e757d1b25abb77f",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/grammar/commands.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:b9cda62b691a6dc65da052fcbc4ce9d4b44b557cb197750564c899827e19bdd6",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 61,
+      "end": 62,
+      "digest": "sha256:edca4f6f6cc43206fc679d8fef9879d35150c3445b8986fb179232b078abaad0",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 64,
+      "end": 65,
+      "digest": "sha256:f763adc797d35d0bf7174e06ed33e540ae4f37b5ea41d7f73ac94b6d88ef7066",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 73,
+      "end": 74,
+      "digest": "sha256:3e93c365b8755f4be1e4fd2c936c8e45f7367bf22aa0aee9a1932ad94dc1cb9b",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:91244faa35b026469b2565447c80740563e5da6a1de2371688de6241478a11c8",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:85ca6bd3cc603c06afa5cfd205ef494e66f9ff806f9b8beb6d3adc69a4ceeb6e",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:e2262be54c5446ff7bf9aa5b7245f8c889b22dbe39b40c38b63752867c48cea0",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:e4928052d35f384f9a2b76d58f7929b39bcea30cb66c76a939f43a468b16bf93",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 96,
+      "end": 97,
+      "digest": "sha256:16531067750978315fc4c99ee4d64bce3ee12ce6bfa8b8a38aabedb91fdb8973",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:2f7f7f6816278d52856b15469ada3347cae53c54235db59c7fa0b2c71229d616",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/grammar/commands.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:f06c2df08194923aa91c4b549d950b731ad471b6e9981974b8616889ec534229",
+      "note": "Grammar entries for apply-slide and the diagram commands take --review."
+    }
+  ]
+}

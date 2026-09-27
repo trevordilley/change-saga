@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:62b6c57f002e0b60f30691551c75f2338522861ea89c6148b3827f83599d55e7",
+      "note": "An unchanged update is detected with the deck's own URN namer, so a review slide applied as printed publishes nothing"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:59e99b1e5d6f111387626de7fc9958fb7b515bfa069cc3a2296b6c4d1f95dcda",
+      "note": "An unchanged update is detected with the deck's own URN namer, so a review slide applied as printed publishes nothing"
+    }
+  ]
+}

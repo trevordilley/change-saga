@@ -1,0 +1,368 @@
+{
+  "version": 1,
+  "deck": "review-deck-diagrams",
+  "slide": "review-slide-commands",
+  "current": "sha256:ec747a9c4140e911a39904a6686cf7aa55a438f14a6bcd9f3d49a4999e881c9c",
+  "revisions": [
+    {
+      "snapshot": "sha256:54224081d36838b063ab52ae58fd220c34b3f6eb60450cdab84af1199aebf7dc",
+      "request_id": "rdd-s3-create",
+      "created_at": "2026-09-27T03:04:55.920326Z",
+      "asset": "24-a-56276b4e6095495ccc7fae2185bc5fb14bfdf580bada7a918121.svg",
+      "asset_digest": "sha256:56276b4e6095495ccc7fae2185bc5fb14bfdf580bada7a918121a8d546b5307f",
+      "slide": {
+        "version": 4,
+        "id": "review-slide-commands",
+        "deck": "review-deck-diagrams",
+        "title": "Diagram commands address review slides",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-56276b4e6095495ccc7fae2185bc5fb14bfdf580bada7a918121.svg",
+        "takeaway": "describe, get, edit, check, and visual-qa find a review slide by --review or its URN; partial writers refuse transaction-managed review slides.",
+        "reading_order": [
+          "find",
+          "read",
+          "edit",
+          "check",
+          "guard"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "find",
+            "slide": "review-slide-commands",
+            "rank": 10,
+            "kind": "node",
+            "label": "findAuthoredSlide",
+            "description": "Finds a slide and its deck by app id, path, or URN, by a review slide's URN, or by id with --review; reading a merged review is allowed.",
+            "selector": {
+              "type": "element",
+              "element_id": "resolver"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "read",
+            "slide": "review-slide-commands",
+            "rank": 20,
+            "kind": "node",
+            "label": "describe and get",
+            "description": "diagram describe and get take --review and review URNs, so an agent reads a review slide compactly instead of its SVG.",
+            "selector": {
+              "type": "element",
+              "element_id": "read"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "edit",
+            "slide": "review-slide-commands",
+            "rank": 30,
+            "kind": "node",
+            "label": "diagram edit keeps Items whole",
+            "description": "The republished request names the owning review and now carries each Item's record and documentation pins along with its selector.",
+            "selector": {
+              "type": "element",
+              "element_id": "edit"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "check",
+            "slide": "review-slide-commands",
+            "rank": 40,
+            "kind": "node",
+            "label": "check and visual-qa",
+            "description": "diagram check also checks review slides, --review narrows it; visual-qa --review renders review slides raw and in the review viewer.",
+            "selector": {
+              "type": "element",
+              "element_id": "check"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "guard",
+            "slide": "review-slide-commands",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Partial writers refuse",
+            "description": "add-item and set-slide-content --review refuse transaction-managed review slides, and the error names the review-aware commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "guard"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-2b71fffa4e9f1b4ee8ae7497552d741ba130cf45c9dd1a5fdd50.json",
+        "source_digest": "sha256:2b71fffa4e9f1b4ee8ae7497552d741ba130cf45c9dd1a5fdd5034633508bcf5",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:3aa505fc8d01d3f2afb414c2db7d41e2376529a0e6809b1b8c132f4e54a0b71f",
+      "parent_snapshots": [
+        "sha256:54224081d36838b063ab52ae58fd220c34b3f6eb60450cdab84af1199aebf7dc"
+      ],
+      "request_id": "rdd-s3-uncross",
+      "created_at": "2026-09-27T03:05:17.813579Z",
+      "asset": "24-a-beb50101ce703004ba4f4cf74a9a5481ded5d1028823c319f6a3.svg",
+      "asset_digest": "sha256:beb50101ce703004ba4f4cf74a9a5481ded5d1028823c319f6a3eec1e744fe64",
+      "slide": {
+        "version": 4,
+        "id": "review-slide-commands",
+        "deck": "review-deck-diagrams",
+        "title": "Diagram commands address review slides",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-beb50101ce703004ba4f4cf74a9a5481ded5d1028823c319f6a3.svg",
+        "takeaway": "describe, get, edit, check, and visual-qa find a review slide by --review or its URN; partial writers refuse transaction-managed review slides.",
+        "reading_order": [
+          "find",
+          "read",
+          "edit",
+          "check",
+          "guard"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "find",
+            "slide": "review-slide-commands",
+            "rank": 10,
+            "kind": "node",
+            "label": "findAuthoredSlide",
+            "description": "Finds a slide and its deck by app id, path, or URN, by a review slide's URN, or by id with --review; reading a merged review is allowed.",
+            "selector": {
+              "type": "element",
+              "element_id": "resolver"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "read",
+            "slide": "review-slide-commands",
+            "rank": 20,
+            "kind": "node",
+            "label": "describe and get",
+            "description": "diagram describe and get take --review and review URNs, so an agent reads a review slide compactly instead of its SVG.",
+            "selector": {
+              "type": "element",
+              "element_id": "read"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "edit",
+            "slide": "review-slide-commands",
+            "rank": 30,
+            "kind": "node",
+            "label": "diagram edit keeps Items whole",
+            "description": "The republished request names the owning review and now carries each Item's record and documentation pins along with its selector.",
+            "selector": {
+              "type": "element",
+              "element_id": "edit"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "check",
+            "slide": "review-slide-commands",
+            "rank": 40,
+            "kind": "node",
+            "label": "check and visual-qa",
+            "description": "diagram check also checks review slides, --review narrows it; visual-qa --review renders review slides raw and in the review viewer.",
+            "selector": {
+              "type": "element",
+              "element_id": "check"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "guard",
+            "slide": "review-slide-commands",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Partial writers refuse",
+            "description": "add-item and set-slide-content --review refuse transaction-managed review slides, and the error names the review-aware commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "guard"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-52e74c00b61c3876585d614a6d4a9816b2f492f96947993e70e4.json",
+        "source_digest": "sha256:52e74c00b61c3876585d614a6d4a9816b2f492f96947993e70e4b5f57f84b8b7",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:ec747a9c4140e911a39904a6686cf7aa55a438f14a6bcd9f3d49a4999e881c9c",
+      "parent_snapshots": [
+        "sha256:3aa505fc8d01d3f2afb414c2db7d41e2376529a0e6809b1b8c132f4e54a0b71f"
+      ],
+      "request_id": "review-slide-commands-7a883aff-edit",
+      "created_at": "2026-09-27T09:45:43.131492Z",
+      "asset": "24-a-beb50101ce703004ba4f4cf74a9a5481ded5d1028823c319f6a3.svg",
+      "asset_digest": "sha256:beb50101ce703004ba4f4cf74a9a5481ded5d1028823c319f6a3eec1e744fe64",
+      "slide": {
+        "version": 4,
+        "id": "review-slide-commands",
+        "deck": "review-deck-diagrams",
+        "title": "Diagram commands address review slides",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-beb50101ce703004ba4f4cf74a9a5481ded5d1028823c319f6a3.svg",
+        "takeaway": "describe, get, edit, check, and visual-qa find a review slide by --review or its URN; partial writers refuse transaction-managed review slides.",
+        "reading_order": [
+          "find",
+          "read",
+          "edit",
+          "check",
+          "guard"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "find",
+            "slide": "review-slide-commands",
+            "rank": 10,
+            "kind": "node",
+            "label": "findAuthoredSlide",
+            "description": "Finds a slide and its deck by app id, path, or URN, by a review slide's URN, or by id with --review; reading a merged review is allowed.",
+            "selector": {
+              "type": "element",
+              "element_id": "resolver"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "read",
+            "slide": "review-slide-commands",
+            "rank": 20,
+            "kind": "node",
+            "label": "describe, get, print-current",
+            "description": "diagram describe and get, and apply-slide --print-current, take --review and review URNs, so an agent reads or edits a review slide's request instead of its SVG.",
+            "selector": {
+              "type": "element",
+              "element_id": "read"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "edit",
+            "slide": "review-slide-commands",
+            "rank": 30,
+            "kind": "node",
+            "label": "diagram edit keeps Items whole",
+            "description": "The republished request names the owning review and now carries each Item's record and documentation pins along with its selector.",
+            "selector": {
+              "type": "element",
+              "element_id": "edit"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "check",
+            "slide": "review-slide-commands",
+            "rank": 40,
+            "kind": "node",
+            "label": "check and visual-qa",
+            "description": "diagram check checks open reviews' slides (a merged review's only when named, as history); visual-qa --review renders review slides raw and in the viewer and records the review.",
+            "selector": {
+              "type": "element",
+              "element_id": "check"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "guard",
+            "slide": "review-slide-commands",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Partial writers refuse",
+            "description": "add-item and set-slide-content --review refuse transaction-managed review slides, and the error names the review-aware commands.",
+            "selector": {
+              "type": "element",
+              "element_id": "guard"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-52e74c00b61c3876585d614a6d4a9816b2f492f96947993e70e4.json",
+        "source_digest": "sha256:52e74c00b61c3876585d614a6d4a9816b2f492f96947993e70e4b5f57f84b8b7",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

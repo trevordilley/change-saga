@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/review_diagram_slide_test.go",
+      "start": 308,
+      "end": 461,
+      "digest": "sha256:1649de1b86071fbf9a78def555d97efba86133ac54d09d39ffdec735cc5627e0",
+      "note": "Tests for print-current, the comment guard, merged reviews in diagram check, and URN parsing"
+    }
+  ]
+}

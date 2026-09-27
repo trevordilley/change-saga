@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/cli.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:93f57bff35e03ad632471d4f6911731fa50092669a9fbc5abebafb95e74a1e48",
+      "note": "The usage lines and descriptions they replace"
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/cli.go",
+      "start": 178,
+      "end": 180,
+      "digest": "sha256:e6cd8fe089d73d17f92aa0bf767fa184cf06633f34af225f050f9617bf2660f0",
+      "note": "The usage lines and descriptions they replace"
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/cli.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:66e1136fdaed79261ee50d781db0767ae6a6cb43e8da7366c4f0504af2bc445d",
+      "note": "The usage lines and descriptions they replace"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/cli.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:0f8c941f33b8553e125fc2802e2e79ee4bf34442dcb9134651f6a2d7de8e6e1a",
+      "note": "The usage lines and descriptions they replace"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/cli.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:533859505fb1b2efc40ba364978d364c0d9e332aad14b352c61a2b808f5d6c09",
+      "note": "The usage lines and descriptions they replace"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/cli.go",
+      "start": 429,
+      "end": 430,
+      "digest": "sha256:e0263db3d376b5583135371288e992267b76b51cfcc0da69c7cb6733f34bf47a",
+      "note": "The usage lines and descriptions they replace"
+    }
+  ]
+}

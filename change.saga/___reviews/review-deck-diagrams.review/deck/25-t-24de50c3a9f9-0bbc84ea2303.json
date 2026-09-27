@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "deck": "review-deck-diagrams",
+  "slide": "entry-points",
+  "current": "sha256:eee90b535faa99c5eabbceb1ba423b199ff4c82b0a3944ec5386c4de51e0d9c9",
+  "revisions": [
+    {
+      "snapshot": "sha256:c5a6992c371e11c0d62bd807dbf4d522196724f53e86932059163e04555e6cfc",
+      "request_id": "review-deck-diagrams-entry-points",
+      "created_at": "2026-09-27T08:57:09.096378Z",
+      "asset": "24-a-ff5bead7caede8d80d74c34e53ea9cc3739379cb61d5113cccb5.svg",
+      "asset_digest": "sha256:ff5bead7caede8d80d74c34e53ea9cc3739379cb61d5113cccb5e0ebfff7c616",
+      "slide": {
+        "version": 4,
+        "id": "entry-points",
+        "deck": "review-deck-diagrams",
+        "title": "Review-first entry points lead to apply-slide",
+        "rank": 35,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-ff5bead7caede8d80d74c34e53ea9cc3739379cb61d5113cccb5.svg",
+        "takeaway": "After #9 made the review the headline, every place that teaches it now authors slides with apply-slide --review and a diagram source.",
+        "reading_order": [
+          "skill",
+          "cli",
+          "readme",
+          "apply",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "skill",
+            "slide": "entry-points",
+            "rank": 10,
+            "kind": "node",
+            "label": "Skill fast path",
+            "description": "The skill's review fast path writes one apply-slide request per slide with a diagram source, and its diagrams reference shows a complete review request.",
+            "selector": {
+              "type": "element",
+              "element_id": "skill"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "cli",
+            "slide": "entry-points",
+            "rank": 20,
+            "kind": "node",
+            "label": "review create, init, help",
+            "description": "review create's help and Next hint, init's first steps, and top-level help name apply-slide --review; hand-drawn SVG remains the named fallback.",
+            "selector": {
+              "type": "element",
+              "element_id": "cli"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "readme",
+            "slide": "entry-points",
+            "rank": 30,
+            "kind": "node",
+            "label": "README, changelog, spec",
+            "description": "The README's review commands use apply-slide --review; the changelog, SPEC, and transaction doc say a review slide's Items carry no evidence or criterion links.",
+            "selector": {
+              "type": "element",
+              "element_id": "readme"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "apply",
+            "slide": "entry-points",
+            "rank": 40,
+            "kind": "node",
+            "label": "apply-slide --review",
+            "description": "The one path every entry point now teaches: a complete review slide from a diagram source, covered afterwards with cover --changed-lines.",
+            "selector": {
+              "type": "element",
+              "element_id": "apply"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "entry-points",
+            "rank": 50,
+            "kind": "example",
+            "label": "Tests pin the hints",
+            "description": "The skill, init, and review create tests assert the new guidance, so a later rewrite cannot silently fall back to hand-written SVG.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-71faee0c2eef9d6505e43d318bdc83c80b69ce74f17a56ef5811.json",
+        "source_digest": "sha256:71faee0c2eef9d6505e43d318bdc83c80b69ce74f17a56ef58111df5d6ef2d99",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:eee90b535faa99c5eabbceb1ba423b199ff4c82b0a3944ec5386c4de51e0d9c9",
+      "parent_snapshots": [
+        "sha256:c5a6992c371e11c0d62bd807dbf4d522196724f53e86932059163e04555e6cfc"
+      ],
+      "request_id": "review-deck-diagrams-entry-points-2",
+      "created_at": "2026-09-27T08:57:28.397826Z",
+      "asset": "24-a-14d4bfcb65d0f743415ca8117d877db2527cf46604fdd84db4eb.svg",
+      "asset_digest": "sha256:14d4bfcb65d0f743415ca8117d877db2527cf46604fdd84db4ebff2c99768ba4",
+      "slide": {
+        "version": 4,
+        "id": "entry-points",
+        "deck": "review-deck-diagrams",
+        "title": "Review-first entry points lead to apply-slide",
+        "rank": 35,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-14d4bfcb65d0f743415ca8117d877db2527cf46604fdd84db4eb.svg",
+        "takeaway": "After #9 made the review the headline, every place that teaches it now authors slides with apply-slide --review and a diagram source.",
+        "reading_order": [
+          "skill",
+          "cli",
+          "readme",
+          "apply",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "skill",
+            "slide": "entry-points",
+            "rank": 10,
+            "kind": "node",
+            "label": "Skill fast path",
+            "description": "The skill's review fast path writes one apply-slide request per slide with a diagram source and points at the diagrams reference's example.",
+            "selector": {
+              "type": "element",
+              "element_id": "skill"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "cli",
+            "slide": "entry-points",
+            "rank": 20,
+            "kind": "node",
+            "label": "review create, init, help",
+            "description": "review create's help and Next hint, init's first steps, and top-level help name apply-slide --review; hand-drawn SVG remains the named fallback.",
+            "selector": {
+              "type": "element",
+              "element_id": "cli"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "readme",
+            "slide": "entry-points",
+            "rank": 30,
+            "kind": "node",
+            "label": "README and changelog",
+            "description": "The README's review commands use apply-slide --review and point at the example; the changelog records review decks authored from diagram sources.",
+            "selector": {
+              "type": "element",
+              "element_id": "readme"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "apply",
+            "slide": "entry-points",
+            "rank": 40,
+            "kind": "node",
+            "label": "apply-slide --review",
+            "description": "The one path every entry point now teaches: a complete review slide from a diagram source, covered afterwards with cover --changed-lines.",
+            "selector": {
+              "type": "element",
+              "element_id": "apply"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "entry-points",
+            "rank": 50,
+            "kind": "example",
+            "label": "Tests pin the hints",
+            "description": "The skill, init, and review create tests assert the new guidance, so a later rewrite cannot silently fall back to hand-written SVG.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-6412b67d33f87f4fc253864fdac3c2d146e29a45986d3bb2797b.json",
+        "source_digest": "sha256:6412b67d33f87f4fc253864fdac3c2d146e29a45986d3bb2797bd82948fe6529",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

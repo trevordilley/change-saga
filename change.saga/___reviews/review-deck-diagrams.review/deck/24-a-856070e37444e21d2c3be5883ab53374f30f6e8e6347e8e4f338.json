@@ -1,0 +1,226 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "apply-slide publishes into the deck the request names",
+      "x": 60,
+      "y": 40,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "request",
+      "kind": "node",
+      "shape": "rect",
+      "label": "apply-slide request",
+      "detail": "deck, or review / --review",
+      "x": 40,
+      "y": 290,
+      "width": 290,
+      "height": 120,
+      "style": "normal",
+      "icon": "lucide:file"
+    },
+    {
+      "id": "resolve",
+      "kind": "node",
+      "shape": "service",
+      "label": "transactionDeck",
+      "x": 400,
+      "y": 290,
+      "width": 220,
+      "height": 120,
+      "style": "primary"
+    },
+    {
+      "id": "impl-deck",
+      "kind": "node",
+      "shape": "service",
+      "label": "Implementation deck",
+      "detail": "evidence + criterion links",
+      "x": 720,
+      "y": 150,
+      "width": 250,
+      "height": 110,
+      "style": "normal"
+    },
+    {
+      "id": "review-deck",
+      "kind": "node",
+      "shape": "service",
+      "label": "Open review deck",
+      "detail": "Items covered by cover",
+      "x": 720,
+      "y": 440,
+      "width": 250,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "record",
+      "kind": "node",
+      "shape": "datastore",
+      "label": "25-t record",
+      "detail": "24-a SVG + diagram",
+      "x": 1040,
+      "y": 285,
+      "width": 200,
+      "height": 130,
+      "style": "normal"
+    },
+    {
+      "id": "asks",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "request",
+      "to": "resolve",
+      "points": [
+        {
+          "x": 330,
+          "y": 350
+        },
+        {
+          "x": 400,
+          "y": 350
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "to-impl",
+      "kind": "edge",
+      "label": "deck",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "resolve",
+      "to": "impl-deck",
+      "points": [
+        {
+          "x": 510,
+          "y": 290
+        },
+        {
+          "x": 510,
+          "y": 205
+        },
+        {
+          "x": 720,
+          "y": 205
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 560,
+        "y": 170,
+        "width": 90,
+        "height": 26
+      }
+    },
+    {
+      "id": "to-review",
+      "kind": "edge",
+      "label": "review",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "resolve",
+      "to": "review-deck",
+      "points": [
+        {
+          "x": 510,
+          "y": 410
+        },
+        {
+          "x": 510,
+          "y": 495
+        },
+        {
+          "x": 720,
+          "y": 495
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 560,
+        "y": 500,
+        "width": 90,
+        "height": 26
+      }
+    },
+    {
+      "id": "impl-writes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "impl-deck",
+      "to": "record",
+      "points": [
+        {
+          "x": 970,
+          "y": 205
+        },
+        {
+          "x": 1140,
+          "y": 205
+        },
+        {
+          "x": 1140,
+          "y": 285
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "review-writes",
+      "kind": "edge",
+      "label": "same path",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "review-deck",
+      "to": "record",
+      "points": [
+        {
+          "x": 970,
+          "y": 495
+        },
+        {
+          "x": 1140,
+          "y": 495
+        },
+        {
+          "x": 1140,
+          "y": 415
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 1000,
+        "y": 500,
+        "width": 120,
+        "height": 26
+      }
+    },
+    {
+      "id": "urns",
+      "kind": "text",
+      "label": "Each deck names its own slide and Item URNs: app URNs, or URNs inside the review.",
+      "x": 60,
+      "y": 610,
+      "width": 1160,
+      "height": 40,
+      "style": "normal"
+    }
+  ]
+}

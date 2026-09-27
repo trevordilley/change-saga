@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/visual_qa.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:0c6f5630c4b47f5eac7ecd2fec8e7433ac0787b15ca5b39b12ab4547dbebeff4",
+      "note": "visual-qa --review flag."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/visual_qa.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:ba0e95c7b335fe1483a658004b33c1bb437f925b7ffb7d63f85bb971f6a729d1",
+      "note": "visual-qa --review flag."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/visual_qa.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:1456089293b5a2e57b4e3786f01b65a464bb6fff8d41570b74bace151e700267",
+      "note": "visual-qa --review flag."
+    }
+  ]
+}

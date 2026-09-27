@@ -122,7 +122,9 @@ func SlideRevisionSnapshot(revision SlideTransactionRevision) (string, error) {
 // LegacySlideTransactionRevision projects one flat slide into the exact root
 // revision apply-slide will preserve when it migrates that slide. This is also
 // the public authoring snapshot returned by query slide, so callers never need
-// to read compact metadata files to obtain expected_snapshot.
+// to read compact metadata files to obtain expected_snapshot. A review
+// slide's coverage stays in the flat records cover writes, which keep
+// attaching to its Items after migration, so its revision carries none.
 func LegacySlideTransactionRevision(slide *Slide) (SlideTransactionRevision, error) {
 	assetPath := filepath.Join(slide.Directory, filepath.FromSlash(slide.Entrypoint))
 	asset, err := os.ReadFile(assetPath)
@@ -137,8 +139,13 @@ func LegacySlideTransactionRevision(slide *Slide) (SlideTransactionRevision, err
 		ParentSnapshots: []string{}, RequestID: "legacy-" + FlatTargetKey(slide.Target), CreatedAt: info.ModTime().UTC(),
 		Asset: slide.Entrypoint, AssetDigest: coderef.DigestBytes(asset), Slide: slide.SlideManifest, Items: []TransactionItem{},
 	}
+	review := ReviewScopedTarget(slide.Target)
 	for _, item := range slide.Items {
-		revision.Items = append(revision.Items, TransactionItem{Item: item.ItemManifest, Evidence: append([]CodeFile{}, item.Code...), CriterionLinks: append([]CriterionLink{}, item.CriterionLinks...)})
+		evidence := append([]CodeFile{}, item.Code...)
+		if review {
+			evidence = []CodeFile{}
+		}
+		revision.Items = append(revision.Items, TransactionItem{Item: item.ItemManifest, Evidence: evidence, CriterionLinks: append([]CriterionLink{}, item.CriterionLinks...)})
 	}
 	revision.Snapshot, err = SlideRevisionSnapshot(revision)
 	return revision, err
@@ -291,7 +298,7 @@ func validateSlideTransactionRecord(root, recordRoot, name, sagaID string, deck 
 // to Saga readers.
 func ValidateSlideTransactionCandidate(root string, deck *Deck, record SlideTransactionRecord) Validation {
 	validation := Validation{Valid: true, Issues: []Issue{}}
-	targets := appDeckTargets(manifestSagaID(deck.Target))
+	targets := deck.namer()
 	name := SlideTransactionFilename(deck.Target, targets.slide(record.SlideID))
 	validateSlideTransactionRecord(root, deck.Directory, name, manifestSagaID(deck.Target), deck, targets, record, &validation)
 	validation.Valid = !hasErrors(validation.Issues)

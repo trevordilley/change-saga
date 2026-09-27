@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "README.md",
+      "start": 44,
+      "end": 47,
+      "digest": "sha256:72c52329b2c2bca56a3c58a3a50dff39c0399a541db1473389a0de514be498ce",
+      "note": "The README's review commands use apply-slide --review and point at the example"
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "README.md",
+      "start": 505,
+      "end": 508,
+      "digest": "sha256:e8c4a174c2d2d04e102b05426f0bac74dd6272036b624f8b6a38c8f53102d4e9",
+      "note": "The README's review commands use apply-slide --review and point at the example"
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "README.md",
+      "start": 514,
+      "end": 514,
+      "digest": "sha256:1fe43042f02b25dd902f226be396e4378b99b72e2a1e004f619077281111170f",
+      "note": "The README's review commands use apply-slide --review and point at the example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "README.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:53bca264513ee6d5b1e1cd53c735493c7a9dbadd80c05daa229ec7479e16e83a",
+      "note": "The README's review commands use apply-slide --review and point at the example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "README.md",
+      "start": 51,
+      "end": 57,
+      "digest": "sha256:b45e17a4800fcbdfc2f00a15c73de5af456849cc58840fe9ef9753bba48c18a2",
+      "note": "The README's review commands use apply-slide --review and point at the example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "README.md",
+      "start": 509,
+      "end": 510,
+      "digest": "sha256:a8f667a57bfcef3f149fc7653638de1dbc2749d57bbac864886465ec0f2692c0",
+      "note": "The README's review commands use apply-slide --review and point at the example"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "README.md",
+      "start": 516,
+      "end": 519,
+      "digest": "sha256:848525f840f3eb4656e06d5ccda253ccbfc78f5e8dcea2c3bf2d38de2ac1af62",
+      "note": "The README's review commands use apply-slide --review and point at the example"
+    }
+  ]
+}

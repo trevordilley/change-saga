@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:314a206b1f478bbcb8db329fb99bb09b4157f1cd14511e80372bc94c77a4ad0d",
+      "note": "The app-only namer it replaces"
+    },
+    {
+      "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:a1d284fb3e90e78792c44a15b924cef7d6feece58e6206bef327f6a5d7d94562",
+      "note": "The app-only namer it replaces"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 30,
+      "end": 36,
+      "digest": "sha256:743e2b0e9c8348e3bf21e41a1467a0ce398f198ad1c50c7d112fc48ee3556587",
+      "note": "The fast path publishes each review slide with apply-slide --review and a diagram source"
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:7b238d1ccff6b228a4dd4969d566d1f331f1c37c2ca47fba29540f846d85a261",
+      "note": "The fast path publishes each review slide with apply-slide --review and a diagram source"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 30,
+      "end": 38,
+      "digest": "sha256:3eec228759abee085b41833c7a04e58719f9a9ebabe4969b67dd79c1c1241d7c",
+      "note": "The fast path publishes each review slide with apply-slide --review and a diagram source"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 47,
+      "end": 48,
+      "digest": "sha256:33209146ca35ffc66cafe5783f9b21f01b3955bcc2accabe993f67698fadd8b1",
+      "note": "The fast path publishes each review slide with apply-slide --review and a diagram source"
+    }
+  ]
+}

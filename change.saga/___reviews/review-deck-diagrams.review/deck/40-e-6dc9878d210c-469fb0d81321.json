@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 124,
+      "end": 126,
+      "digest": "sha256:22a3e8aeeddd65d4b15f3a06b32581cc21bca8b679fb2352020dd8129d2f6dbb",
+      "note": "The guard error for a review slide points at diagram describe, diagram edit, and apply-slide --review."
+    }
+  ]
+}

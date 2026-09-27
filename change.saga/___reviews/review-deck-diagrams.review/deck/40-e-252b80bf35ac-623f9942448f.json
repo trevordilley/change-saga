@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/content_edit.go",
+      "start": 419,
+      "end": 450,
+      "digest": "sha256:9441b537b9d1436a1b38b4c60fb510ce9faee6785ad02d1e49072f884b7cc178",
+      "note": "findAuthoredSlide resolves app and review slides for reading and republishing."
+    }
+  ]
+}

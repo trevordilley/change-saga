@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/diagram.go",
+      "start": 221,
+      "end": 226,
+      "digest": "sha256:9c614a889153db97a229d955e6cf4a4fcbb3daa3a0e25abe1c342926859d11f1",
+      "note": "diagram check skips merged reviews unless named, and reports them as history without failing"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/diagram.go",
+      "start": 281,
+      "end": 285,
+      "digest": "sha256:d1ad1a62d703fee956f9fb9ff2779e6c24c44ffcce1a5c86c8d5ffcb3af11a52",
+      "note": "diagram check skips merged reviews unless named, and reports them as history without failing"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/diagram.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:8f9357f3ebf517a20cf4edc824b4396b9f09d79b4eb3bfaeaf110287bc2b47de",
+      "note": "diagram check skips merged reviews unless named, and reports them as history without failing"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/diagram.go",
+      "start": 305,
+      "end": 306,
+      "digest": "sha256:ac44d76ae03f7a0993c0d741e35a873cab01fcdab5001df877d136c4fb695e2b",
+      "note": "diagram check skips merged reviews unless named, and reports them as history without failing"
+    }
+  ]
+}

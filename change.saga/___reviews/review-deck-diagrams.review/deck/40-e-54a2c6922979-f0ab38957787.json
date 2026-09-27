@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/saga/slide_transaction.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:6c9d0479106d96fc0927d6628c3ea28769b8544f6c51faa63e7299ba30cfd7fd",
+      "note": "Legacy revisions always copied evidence."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/saga/slide_transaction.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:9867c1add310c50debc3d05ce779f2282ddd7b752847981c207a2a52dccfa1ea",
+      "note": "Legacy revisions always copied evidence."
+    }
+  ]
+}

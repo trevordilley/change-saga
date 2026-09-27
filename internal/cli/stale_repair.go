@@ -701,6 +701,13 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 		},
 		Items: []SlideTransactionItemRequest{},
 	}
+	// A review deck's slide is republished into its review, which names the
+	// deck; its Items keep their record links.
+	for _, review := range document.Reviews {
+		if review.Deck == deck {
+			request.Deck, request.Review = "", review.ID
+		}
+	}
 	if revision.Diagram != nil {
 		data, err := os.ReadFile(filepath.Join(deck.Directory, revision.Diagram.Source))
 		if err != nil {
@@ -728,7 +735,7 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 			Documentation: manifest.Documentation, DocumentationView: manifest.DocumentationView, Selections: append([]saga.ItemSelection(nil), manifest.Selections...),
 			ID: manifest.ID, Rank: manifest.Rank, Kind: manifest.Kind, Label: manifest.Label, Description: manifest.Description,
 			Selector: manifest.Selector, Hotspot: manifest.Hotspot, About: manifest.About, Body: manifest.Body, Placement: manifest.Placement, Leader: manifest.Leader,
-			Evidence: evidence, CriterionLinks: append([]saga.CriterionLink{}, item.CriterionLinks...),
+			Record: manifest.Record, Evidence: evidence, CriterionLinks: append([]saga.CriterionLink{}, item.CriterionLinks...),
 		})
 	}
 	return request, nil

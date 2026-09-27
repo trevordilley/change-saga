@@ -41,15 +41,19 @@ The handful of commands the agent runs (each one prints the next):
 ```sh
 change-saga init                                   # creates change.saga
 change-saga review create change.saga              # works out the PR, base, and id
-change-saga add-slide --review pr-42 --intent explain --layout diagram change.saga architecture
-change-saga set-slide-content --review pr-42 --target architecture --source architecture.svg change.saga
-change-saga add-item --review pr-42 --slide architecture --kind node --element-id cache \
-  --id cache --label "Read-through cache" --description "Why reads now go through the cache" change.saga
+change-saga apply-slide --review pr-42 --from architecture.json change.saga   # a diagram and its Items
 change-saga cover --target urn:change-saga:shop:review:pr-42:slide:architecture:item:cache \
   --path cache.go --changed-lines change.saga
 change-saga check --covers review --against main change.saga
 change-saga open --against main change.saga          # the reviewer
 ```
+
+Each slide is one JSON request: a diagram source (explicitly positioned nodes,
+edges, and groups the CLI renders to SVG) and the Items a reviewer can open,
+each selecting one element. `diagram edit` revises a slide in place and
+`diagram describe` reads it back as text. The skill's
+[diagrams reference](skills/change-saga/references/diagrams.md) has a complete
+example.
 
 Sagafying a pull request is the best way to learn the tool. Nothing else is
 needed.
@@ -502,16 +506,17 @@ slides, and cover every changed line:
 ```sh
 change-saga init
 change-saga review create change.saga
-change-saga add-slide --review pr-42 --intent explain --layout diagram change.saga architecture
-change-saga set-slide-content --review pr-42 --target architecture --source ./architecture.svg change.saga
-change-saga add-item --review pr-42 --slide architecture --kind node --id cache --element-id cache \
-  --label "Read-through cache" --description "Why reads now go through the cache" change.saga
+change-saga apply-slide --review pr-42 --from ./architecture.json --dry-run change.saga
+change-saga apply-slide --review pr-42 --from ./architecture.json change.saga
 change-saga cover --target urn:change-saga:shop:review:pr-42:slide:architecture:item:cache \
   --path path/to/cache.go --changed-lines change.saga
 ```
 
 `review create` prints the review id it chose (here `pr-42`) and each command
-prints the next. See what is covered, ask it as CI would, and open the
+prints the next. `architecture.json` is one complete slide: its diagram source
+and an Item per element that explains part of the change (review Items carry
+no code; `cover` adds it). A slide that needs hand-drawn SVG uses `add-slide
+--review`, `set-slide-content --review`, and `add-item --review` instead. See what is covered, ask it as CI would, and open the
 reviewer:
 
 ```sh

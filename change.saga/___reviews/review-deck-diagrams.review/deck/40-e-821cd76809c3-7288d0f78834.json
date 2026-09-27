@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/saga/slide_transaction.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:82f675db332922c2858c7c73273031e56d45bfbaba2b4a1657987c265f48123b",
+      "note": "Candidate validation assumed app URNs."
+    }
+  ]
+}

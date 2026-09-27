@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "commit": "e3fa50a5535a382430f34e65220007d6879d9fa3",
       "path": "internal/saga/slides.go",
-      "start": 105,
-      "end": 137,
-      "digest": "sha256:832da89961557d339076f5acf599032982a32b88f8c7edc5112625d2c9aa4988",
+      "start": 127,
+      "end": 159,
+      "digest": "sha256:ce64a03bf06cca137a09ac156ed8e13e87d9580e639260d634c9442746367b97",
       "note": "Reconstructs deck parentage from compact target keys and reports collisions or unknown parents as validation issues."
     }
   ]

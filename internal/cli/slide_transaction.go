@@ -30,13 +30,17 @@ import (
 )
 
 // SlideTransactionRequest is the public structured authoring contract for one
-// complete implementation slide. Every list is a complete replacement, not a
-// patch, so validation happens before one commit record makes it visible.
+// complete implementation or pull request review slide. Every list is a
+// complete replacement, not a patch, so validation happens before one commit
+// record makes it visible.
 type SlideTransactionRequest struct {
-	Version           int                           `json:"version"`
-	Operation         string                        `json:"operation"`
-	RequestID         string                        `json:"request_id"`
-	Deck              string                        `json:"deck"`
+	Version   int    `json:"version"`
+	Operation string `json:"operation"`
+	RequestID string `json:"request_id"`
+	Deck      string `json:"deck,omitempty"`
+	// Review names the pull request review whose deck holds the slide. Its
+	// Items take their code from cover, not from evidence in the request.
+	Review            string                        `json:"review,omitempty"`
 	ExpectedSnapshot  string                        `json:"expected_snapshot,omitempty"`
 	ExpectedSnapshots []string                      `json:"expected_snapshots,omitempty"`
 	Slide             SlideTransactionSlide         `json:"slide"`
@@ -78,6 +82,7 @@ type SlideTransactionItemRequest struct {
 	Body              string                  `json:"body,omitempty"`
 	Placement         string                  `json:"placement,omitempty"`
 	Leader            string                  `json:"leader,omitempty"`
+	Record            string                  `json:"record,omitempty"`
 	Evidence          []saga.CodeFile         `json:"evidence"`
 	CriterionLinks    []saga.CriterionLink    `json:"criterion_links"`
 }
@@ -116,6 +121,9 @@ func transactionManagedSlide(slide *saga.Slide) bool {
 
 func completeSlideMutationError(operation, target string) error {
 	slideTarget, _, _ := strings.Cut(target, ":item:")
+	if review := saga.ReviewIDOf(target); review != "" {
+		return fmt.Errorf("%s cannot safely mutate %s because it is managed by complete-slide transaction history; read its snapshot and Items with `change-saga diagram describe --slide %s PATH`, then change its diagram with `change-saga diagram edit` or submit the complete replacement with `change-saga apply-slide --review %s --from REQUEST.json PATH`; cover its Items' code with `change-saga cover`", operation, target, slideTarget, review)
+	}
 	return fmt.Errorf("%s cannot safely mutate %s because it is managed by complete-slide transaction history; read authoring_snapshot, authoring_heads, and items (including evidence and criterion_links) with `change-saga query slide --saga PATH --target %s`, then submit the complete replacement with `change-saga apply-slide --from REQUEST.json PATH`", operation, target, slideTarget)
 }
 
@@ -169,8 +177,27 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		}
 		revision.Diagram = &saga.DiagramSource{Source: sourceName, SourceDigest: coderef.DigestBytes(source), Renderer: diagram.Renderer}
 	}
-	if err := verifyTransactionEvidence(ctx, firstNonEmpty(repo, root), revision.Items); err != nil {
-		return SlideTransactionResult{}, err
+	reviewID := transactionReview(request)
+	if reviewID == "" && request.Deck != "" && !strings.HasPrefix(request.Deck, "urn:") {
+		// A review's deck id defaults to its review id; name the review
+		// before evidence checks that only implementation decks need.
+		if info, statErr := os.Stat(filepath.Join(saga.ReviewDir(root, request.Deck), saga.ReviewDeckDir)); statErr == nil && info.IsDir() && !appDeckExists(root, request.Deck) {
+			return SlideTransactionResult{}, fmt.Errorf("deck %q is a pull request review's deck; set \"review\": %q or pass --review %s", request.Deck, request.Deck, request.Deck)
+		}
+	}
+	if reviewID != "" {
+		if err := refuseReviewItemEvidence(revision.Items); err != nil {
+			return SlideTransactionResult{}, err
+		}
+	} else {
+		for _, item := range revision.Items {
+			if item.Item.Record != "" {
+				return SlideTransactionResult{}, fmt.Errorf("item %q: record is for review Items; implementation Items explain code", item.Item.ID)
+			}
+		}
+		if err := verifyTransactionEvidence(ctx, firstNonEmpty(repo, root), revision.Items); err != nil {
+			return SlideTransactionResult{}, err
+		}
 	}
 	manifest, err := saga.ReadManifest(root)
 	if err != nil {
@@ -206,19 +233,21 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		if loadErr != nil {
 			return loadErr
 		}
-		deck := findDeck(document, request.Deck)
-		if deck == nil {
-			return fmt.Errorf("deck %q does not exist", request.Deck)
-		}
-		if deck.Role != saga.DeckRoleChange {
-			return fmt.Errorf("complete-slide transactions are scoped to feature implementation decks")
+		deck, review, err := transactionDeck(document, request, reviewID)
+		if err != nil {
+			return err
 		}
 		revision.Slide.DeckID = deck.ID
 		if reason := transactionMediaExtension(request.Slide.MediaType, extension); reason != "" {
 			return fmt.Errorf("asset: %s", reason)
 		}
-		target := saga.SlideTarget(document.Manifest.ID, request.Slide.ID)
-		existing := findSlide(document, target)
+		target := deck.SlideTarget(request.Slide.ID)
+		var existing *saga.Slide
+		if review != nil {
+			existing = review.Slide(request.Slide.ID)
+		} else {
+			existing = findSlide(document, target)
+		}
 		recordPath := filepath.Join(deck.Directory, saga.SlideTransactionFilename(deck.Target, target))
 		record := saga.SlideTransactionRecord{Version: saga.SlideTransactionVersion, DeckID: deck.ID, SlideID: request.Slide.ID, Revisions: []saga.SlideTransactionRevision{}}
 		var previous *saga.SlideTransactionRevision
@@ -267,7 +296,7 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			if stored.Snapshot != candidate.Snapshot || storedOperation != request.Operation || !storedExpectationMatches(request, record, storedIndex) {
 				return fmt.Errorf("request_id %q was already used with a different complete-slide payload or operation", request.RequestID)
 			}
-			result = transactionResult(document.Manifest.ID, target, recordPath, root, request.Operation, dryRun, true, &stored, &stored)
+			result = transactionResult(deck, target, recordPath, root, request.Operation, dryRun, true, &stored, &stored)
 			result.PreviousSnapshot = storedPreviousSnapshot(record, storedIndex)
 			return nil
 		}
@@ -288,12 +317,16 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 				return fmt.Errorf("item %s: %w", item.Item.ID, err)
 			}
 		}
-		if err := validateTransactionCriteria(document, revision.Items); err != nil {
+		if review != nil {
+			if err := admitReviewItems(document, review, existing, revision.Items); err != nil {
+				return err
+			}
+		} else if err := validateTransactionCriteria(document, revision.Items); err != nil {
 			return err
 		}
 
 		if request.Operation == "create" {
-			if existing != nil || targetIDExists(document, request.Slide.ID) {
+			if existing != nil || (review == nil && targetIDExists(document, request.Slide.ID)) {
 				return fmt.Errorf("slide id %q already exists", request.Slide.ID)
 			}
 			revision.ParentSnapshots = []string{}
@@ -316,10 +349,10 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			}
 			revision.ParentSnapshots = []string{heads[0]}
 			if recordExists && previous != nil {
-				if _, changed := slideTransactionDiff(document.Manifest.ID, previous, &revision); len(changed) == 0 {
+				if _, changed := slideTransactionDiff(deck, previous, &revision); len(changed) == 0 {
 					// Republishing the current revision unchanged (apply-slide
 					// --print-current applied as printed) appends nothing.
-					result = transactionResult(document.Manifest.ID, target, recordPath, root, request.Operation, dryRun, false, previous, previous)
+					result = transactionResult(deck, target, recordPath, root, request.Operation, dryRun, false, previous, previous)
 					result.Unchanged = true
 					return nil
 				}
@@ -354,7 +387,7 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		if len(encodedRecord) > saga.MaxSlideTransactionBytes {
 			return fmt.Errorf("slide transaction exceeds the %d-byte limit", saga.MaxSlideTransactionBytes)
 		}
-		result = transactionResult(document.Manifest.ID, target, recordPath, root, request.Operation, dryRun, false, previous, &revision)
+		result = transactionResult(deck, target, recordPath, root, request.Operation, dryRun, false, previous, &revision)
 		staged := map[string][]byte{assetName: asset}
 		if source != nil {
 			staged[sourceName] = source
@@ -435,12 +468,108 @@ func buildSlideTransactionRevision(request SlideTransactionRequest, assetName, a
 		item := saga.ItemManifest{
 			Version: saga.DeckRecordVersion, ID: input.ID, SlideID: request.Slide.ID, Rank: input.Rank, Kind: input.Kind,
 			Label: input.Label, Description: strings.TrimSpace(input.Description), Selector: input.Selector, Hotspot: input.Hotspot,
-			About: input.About, Body: input.Body, Placement: input.Placement, Leader: input.Leader, Documentation: input.Documentation,
+			About: input.About, Body: input.Body, Placement: input.Placement, Leader: input.Leader, Record: input.Record, Documentation: input.Documentation,
 			DocumentationView: input.DocumentationView, Selections: append([]saga.ItemSelection(nil), input.Selections...),
 		}
 		revision.Items = append(revision.Items, saga.TransactionItem{Item: item, Evidence: append([]saga.CodeFile{}, input.Evidence...), CriterionLinks: append([]saga.CriterionLink{}, input.CriterionLinks...)})
 	}
 	return revision
+}
+
+func appDeckExists(root, id string) bool {
+	document, _, err := saga.Load(root)
+	return err == nil && findDeck(document, id) != nil
+}
+
+// transactionReview is the review whose deck request addresses, by its
+// review field or by the review deck's URN, or "" for an implementation deck.
+func transactionReview(request SlideTransactionRequest) string {
+	if request.Review != "" {
+		return request.Review
+	}
+	return saga.ReviewIDOf(request.Deck)
+}
+
+// transactionDeck resolves the deck a request publishes into: a feature's
+// implementation deck, or the deck of an open pull request review.
+func transactionDeck(document *saga.Saga, request SlideTransactionRequest, reviewID string) (*saga.Deck, *saga.Review, error) {
+	if reviewID != "" {
+		review, err := findReviewDeck(document, reviewID)
+		if err != nil {
+			return nil, nil, err
+		}
+		if request.Deck != "" && request.Deck != review.Deck.ID && request.Deck != review.Deck.Target {
+			return nil, nil, fmt.Errorf("deck %q is not review %s's deck %s; omit deck or name that one", request.Deck, review.ID, review.Deck.Target)
+		}
+		return review.Deck, review, nil
+	}
+	if request.Deck == "" {
+		return nil, nil, fmt.Errorf("request needs deck (a feature implementation deck) or review (a pull request review)")
+	}
+	deck := findDeck(document, request.Deck)
+	if deck == nil {
+		for _, review := range document.Reviews {
+			if review.Deck != nil && review.Deck.ID == request.Deck {
+				return nil, nil, fmt.Errorf("deck %q does not exist; a pull request review's slide is addressed by review: set \"review\": %q or pass --review %s", request.Deck, review.ID, review.ID)
+			}
+		}
+		return nil, nil, fmt.Errorf("deck %q does not exist", request.Deck)
+	}
+	if deck.Role != saga.DeckRoleChange {
+		return nil, nil, fmt.Errorf("complete-slide transactions publish feature implementation and pull request review slides; the onboarding deck is authored with add-slide and add-item")
+	}
+	return deck, nil, nil
+}
+
+// refuseReviewItemEvidence keeps one source of a review Item's code: the
+// coverage records cover writes against the review's own range.
+func refuseReviewItemEvidence(items []saga.TransactionItem) error {
+	for _, item := range items {
+		if len(item.Evidence) > 0 || len(item.CriterionLinks) > 0 {
+			return fmt.Errorf("review item %q carries evidence or criterion_links; a review Item's code is covered after publishing with `change-saga cover --target ITEM-URN --path PATH --changed-lines`, and criterion links belong to implementation decks", item.Item.ID)
+		}
+	}
+	return nil
+}
+
+// admitReviewItems checks what a review slide's Items may point at, and
+// refuses to drop (or rename) an Item that coverage records or the review's
+// append-only comments still name: either would be left pointing at nothing.
+func admitReviewItems(document *saga.Saga, review *saga.Review, existing *saga.Slide, items []saga.TransactionItem) error {
+	deck := review.Deck
+	kept := map[string]bool{}
+	for _, item := range items {
+		kept[item.Item.ID] = true
+		if item.Item.Record != "" {
+			if err := requireReviewRecord(document, item.Item.Record); err != nil {
+				return fmt.Errorf("item %s: %w", item.Item.ID, err)
+			}
+		}
+	}
+	if existing == nil {
+		return nil
+	}
+	entries, err := os.ReadDir(deck.Directory)
+	if err != nil {
+		return err
+	}
+	for _, item := range existing.Items {
+		if kept[item.ID] {
+			continue
+		}
+		prefix := "40-e-" + saga.FlatTargetKey(item.Target) + "-"
+		for _, entry := range entries {
+			if strings.HasPrefix(entry.Name(), prefix) {
+				return fmt.Errorf("item %q would be removed but still has coverage record %s; keep the Item, or cover its code on another Item and delete the record with `change-saga remove-coverage --record %s`", item.ID, entry.Name(), filepath.ToSlash(relativePathForOutput(document.Root, filepath.Join(deck.Directory, entry.Name()))))
+			}
+		}
+		for _, comment := range review.Comments {
+			if comment.Target == item.Target {
+				return fmt.Errorf("item %q would be removed or renamed but review comment %s is on it; comments are append-only, so keep the Item (its label, description, and element may change)", item.ID, comment.ID)
+			}
+		}
+	}
+	return nil
 }
 
 func verifyTransactionEvidence(ctx context.Context, repo string, items []saga.TransactionItem) error {
@@ -539,31 +668,31 @@ func legacySlideRevision(slide *saga.Slide) (saga.SlideTransactionRevision, erro
 	return saga.LegacySlideTransactionRevision(slide)
 }
 
-func transactionResult(sagaID, target, recordPath, root, operation string, dryRun, replayed bool, before, after *saga.SlideTransactionRevision) SlideTransactionResult {
+func transactionResult(deck *saga.Deck, target, recordPath, root, operation string, dryRun, replayed bool, before, after *saga.SlideTransactionRevision) SlideTransactionResult {
 	result := SlideTransactionResult{OK: true, Operation: operation, DryRun: dryRun, Replayed: replayed, Target: target, Snapshot: after.Snapshot, ChangedIDs: []string{}, Path: relativePathForOutput(root, recordPath)}
 	if before != nil {
 		result.PreviousSnapshot = before.Snapshot
 	}
-	result.Diff, result.ChangedIDs = slideTransactionDiff(sagaID, before, after)
+	result.Diff, result.ChangedIDs = slideTransactionDiff(deck, before, after)
 	return result
 }
 
-func slideTransactionDiff(sagaID string, before, after *saga.SlideTransactionRevision) (SlideSemanticDiff, []string) {
+func slideTransactionDiff(deck *saga.Deck, before, after *saga.SlideTransactionRevision) (SlideSemanticDiff, []string) {
 	diff := SlideSemanticDiff{CreatedItems: []string{}, UpdatedItems: []string{}, RemovedItems: []string{}, SelectorChanges: []string{}}
 	if before == nil {
-		changed := []string{saga.SlideTarget(sagaID, after.Slide.ID)}
+		changed := []string{deck.SlideTarget(after.Slide.ID)}
 		diff.AssetChanged = true
 		diff.DiagramChanged = after.Diagram != nil
 		for _, item := range after.Items {
 			diff.CreatedItems = append(diff.CreatedItems, item.Item.ID)
-			changed = append(changed, saga.ItemTarget(sagaID, after.Slide.ID, item.Item.ID))
+			changed = append(changed, deck.ItemTarget(after.Slide.ID, item.Item.ID))
 		}
 		return diff, changed
 	}
 	if before.AssetDigest == after.AssetDigest && reflect.DeepEqual(before.Slide, after.Slide) && reflect.DeepEqual(before.Items, after.Items) && reflect.DeepEqual(before.Diagram, after.Diagram) {
 		return diff, []string{}
 	}
-	changed := []string{saga.SlideTarget(sagaID, after.Slide.ID)}
+	changed := []string{deck.SlideTarget(after.Slide.ID)}
 	diff.AssetChanged = before.AssetDigest != after.AssetDigest || before.Slide.MediaType != after.Slide.MediaType
 	diff.DiagramChanged = !reflect.DeepEqual(before.Diagram, after.Diagram)
 	oldItems, newItems := map[string]saga.TransactionItem{}, map[string]saga.TransactionItem{}
@@ -575,7 +704,7 @@ func slideTransactionDiff(sagaID string, before, after *saga.SlideTransactionRev
 	}
 	for id, item := range newItems {
 		old, found := oldItems[id]
-		itemTarget := saga.ItemTarget(sagaID, after.Slide.ID, id)
+		itemTarget := deck.ItemTarget(after.Slide.ID, id)
 		switch {
 		case !found:
 			diff.CreatedItems = append(diff.CreatedItems, id)
@@ -591,7 +720,7 @@ func slideTransactionDiff(sagaID string, before, after *saga.SlideTransactionRev
 	for id := range oldItems {
 		if _, found := newItems[id]; !found {
 			diff.RemovedItems = append(diff.RemovedItems, id)
-			changed = append(changed, saga.ItemTarget(sagaID, after.Slide.ID, id))
+			changed = append(changed, deck.ItemTarget(after.Slide.ID, id))
 		}
 	}
 	sort.Strings(diff.CreatedItems)
@@ -888,6 +1017,7 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 	defer endGit()
 	flags := commandFlags("apply-slide", commandUsage["apply-slide"], out)
 	from := flags.String("from", "", "complete slide transaction JSON file, or - for standard input")
+	review := flags.String("review", "", "publish into this pull request review's deck; the same as the request's review field")
 	repo := flags.String("repo", "", "code repository used to verify every exact evidence digest")
 	dryRun := flags.Bool("dry-run", false, "validate and return the semantic diff without publishing")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
@@ -899,7 +1029,7 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 		if flags.NArg() != 1 || *from != "" || *dryRun {
 			return fmt.Errorf("usage: %s", commandUsage["apply-slide"])
 		}
-		return printCurrentSlideRequest(flags.Arg(0), *printCurrent, out)
+		return printCurrentSlideRequest(flags.Arg(0), *printCurrent, *review, out)
 	}
 	if flags.NArg() != 1 || *from == "" {
 		return fmt.Errorf("usage: %s", commandUsage["apply-slide"])
@@ -931,6 +1061,12 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("read slide transaction: %w", err)
 	}
+	if *review != "" {
+		if request.Review != "" && request.Review != *review {
+			return fmt.Errorf("--review %s conflicts with the request's review %q", *review, request.Review)
+		}
+		request.Review = *review
+	}
 	result, err := ApplySlideTransaction(ctx, flags.Arg(0), base, *repo, request, *dryRun)
 	if err != nil {
 		return err
@@ -953,13 +1089,20 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 // printCurrentSlideRequest prints the complete request that republishes a
 // managed slide's current revision, with a fresh request_id, so an author
 // edits one field and applies it instead of rebuilding the whole slide.
-func printCurrentSlideRequest(root, target string, out io.Writer) error {
+// With review, a slide ID or target names that review's slide.
+func printCurrentSlideRequest(root, target, review string, out io.Writer) error {
 	document, _, err := saga.Load(root)
 	if err != nil {
 		return err
 	}
-	slide, err := findManagedSlide(document, target)
-	if err != nil {
+	var slide *saga.Slide
+	if review != "" {
+		owner := document.FindReview(review)
+		if owner == nil {
+			return fmt.Errorf("review %q does not exist", review)
+		}
+		slide = owner.Slide(target)
+	} else if slide, err = findManagedSlide(document, target); err != nil {
 		return err
 	}
 	if slide == nil {

@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 1032,
+      "end": 1032,
+      "digest": "sha256:60685f849f6bb079baf9a2d4c47126202e2c1424722ba9e189abf17a39742fa4",
+      "note": "apply-slide --print-current --review resolves a slide in that review"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 1092,
+      "end": 1093,
+      "digest": "sha256:1eca8824ba99f596cd7d09040a060244a4a8355bc4a9973ec55885e1091dd009",
+      "note": "apply-slide --print-current --review resolves a slide in that review"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 1098,
+      "end": 1105,
+      "digest": "sha256:4a1e48b6cd3f6a883377162473323ed55beae940585613015c7acabee3d226a2",
+      "note": "apply-slide --print-current --review resolves a slide in that review"
+    }
+  ]
+}

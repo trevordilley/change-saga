@@ -49,6 +49,7 @@ type DiagramEditResult struct {
 // diagramSlideState is one diagram-sourced revision of a slide and the
 // complete Items, evidence, and criterion links published with it.
 type diagramSlideState struct {
+	review   string
 	deck     *saga.Deck
 	slide    *saga.Slide
 	revision saga.SlideTransactionRevision
@@ -59,24 +60,16 @@ type diagramSlideState struct {
 // revision when snapshot is empty. Reading an older revision keeps a retried
 // edit idempotent: the same operations on the same base reproduce the same
 // complete payload, which apply-slide replays instead of refusing.
-func loadDiagramRevision(root, target, snapshot string) (diagramSlideState, error) {
+func loadDiagramRevision(root, review, target, snapshot string) (diagramSlideState, error) {
 	document, _, err := saga.Load(root)
 	if err != nil {
 		return diagramSlideState{}, err
 	}
-	slide := findSlide(document, target)
-	if slide == nil {
-		return diagramSlideState{}, fmt.Errorf("slide %q does not exist", target)
+	deck, slide, owner, err := findAuthoredSlide(document, review, target)
+	if err != nil {
+		return diagramSlideState{}, err
 	}
-	var deck *saga.Deck
-	for _, candidate := range allDecks(document) {
-		for _, owned := range candidate.Slides {
-			if owned == slide {
-				deck = candidate
-			}
-		}
-	}
-	if !transactionManagedSlide(slide) || slide.Diagram == nil || deck == nil {
+	if !transactionManagedSlide(slide) || slide.Diagram == nil {
 		return diagramSlideState{}, fmt.Errorf("slide %s has no diagram source; publish one with `change-saga apply-slide` using a \"diagram\" instead of an \"asset\"", slide.Target)
 	}
 	var record saga.SlideTransactionRecord
@@ -101,7 +94,7 @@ func loadDiagramRevision(root, target, snapshot string) (diagramSlideState, erro
 		if err != nil {
 			return diagramSlideState{}, fmt.Errorf("diagram source %s: %w", revision.Diagram.Source, err)
 		}
-		return diagramSlideState{deck: deck, slide: slide, revision: revision, source: source}, nil
+		return diagramSlideState{review: owner, deck: deck, slide: slide, revision: revision, source: source}, nil
 	}
 	return diagramSlideState{}, fmt.Errorf("expected snapshot %s is not a revision of %s; read the current authoring_snapshot with `change-saga query diagram`", snapshot, slide.Target)
 }
@@ -111,7 +104,7 @@ func loadDiagramRevision(root, target, snapshot string) (diagramSlideState, erro
 func requestFromRevision(state diagramSlideState, requestID, expected string, source diagram.Document) SlideTransactionRequest {
 	value := state.revision.Slide
 	request := SlideTransactionRequest{
-		Version: saga.SlideTransactionVersion, Operation: "update", RequestID: requestID, Deck: state.deck.ID, ExpectedSnapshot: expected,
+		Version: saga.SlideTransactionVersion, Operation: "update", RequestID: requestID, Deck: state.deck.ID, Review: state.review, ExpectedSnapshot: expected,
 		Slide: SlideTransactionSlide{
 			ID: value.ID, Title: value.Title, Rank: value.Rank, Section: value.Section, Intent: value.Intent, Layout: value.Layout,
 			MediaType: value.MediaType, Takeaway: value.Takeaway, ReadingOrder: append([]string{}, value.ReadingOrder...), ExceptionRationale: value.ExceptionRationale,
@@ -124,6 +117,7 @@ func requestFromRevision(state diagramSlideState, requestID, expected string, so
 		request.Items = append(request.Items, SlideTransactionItemRequest{
 			ID: manifest.ID, Rank: manifest.Rank, Kind: manifest.Kind, Label: manifest.Label, Description: manifest.Description,
 			Selector: manifest.Selector, Hotspot: manifest.Hotspot, About: manifest.About, Body: manifest.Body, Placement: manifest.Placement, Leader: manifest.Leader,
+			Record: manifest.Record, Documentation: manifest.Documentation, DocumentationView: manifest.DocumentationView, Selections: append([]saga.ItemSelection(nil), manifest.Selections...),
 			Evidence: append([]saga.CodeFile{}, item.Evidence...), CriterionLinks: append([]saga.CriterionLink{}, item.CriterionLinks...),
 		})
 	}
@@ -134,6 +128,7 @@ func diagramEdit(ctx context.Context, args []string, out io.Writer) error {
 	name := "diagram edit"
 	flags := commandFlags(name, commandUsage[name], out)
 	target := flags.String("slide", "", "slide target whose diagram to edit")
+	review := flags.String("review", "", "the pull request review whose slide this is")
 	expected := flags.String("expected", "", "exact authoring snapshot the operations apply to")
 	requestID := flags.String("request-id", "", "idempotency key; retrying the same edit is a no-op")
 	from := flags.String("from", "", "JSON array of diagram operations, or - for standard input; [] re-renders unchanged source")
@@ -155,7 +150,7 @@ func diagramEdit(ctx context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("read diagram operations: %w", err)
 	}
 	root := flags.Arg(0)
-	state, err := loadDiagramRevision(root, *target, *expected)
+	state, err := loadDiagramRevision(root, *review, *target, *expected)
 	if err != nil {
 		return err
 	}
@@ -223,9 +218,12 @@ func diagramIcons(args []string, out io.Writer) error {
 // DiagramCheckSlide reports whether a slide's current diagram source still
 // renders to its published SVG with this binary's renderer.
 type DiagramCheckSlide struct {
-	Target        string `json:"target"`
-	Renderer      string `json:"renderer"`
-	Current       bool   `json:"current"`
+	Target   string `json:"target"`
+	Renderer string `json:"renderer"`
+	Current  bool   `json:"current"`
+	// History marks a merged review's slide: it is read-only, so a stale one
+	// is reported but cannot be repaired and never fails the check.
+	History       bool   `json:"history,omitempty"`
 	Problem       string `json:"problem,omitempty"`
 	RepairCommand string `json:"repair_command,omitempty"`
 }
@@ -234,6 +232,7 @@ func diagramCheck(args []string, out io.Writer) error {
 	name := "diagram check"
 	flags := commandFlags(name, commandUsage[name], out)
 	target := flags.String("slide", "", "check only this slide")
+	review := flags.String("review", "", "check only this pull request review's slides, or with --slide one of them")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -246,20 +245,52 @@ func diagramCheck(args []string, out io.Writer) error {
 		return err
 	}
 	report := []DiagramCheckSlide{}
-	for _, deck := range allDecks(document) {
+	var only *saga.Slide
+	if *target != "" {
+		if _, only, _, err = findAuthoredSlide(document, *review, *target); err != nil {
+			return err
+		}
+	}
+	// A merged review is history: its slides cannot be republished, so it is
+	// checked only when named, and then reported without failing the check.
+	decks := allDecks(document)
+	merged := map[*saga.Deck]bool{}
+	for _, candidate := range document.Reviews {
+		if candidate.Deck == nil {
+			continue
+		}
+		if candidate.Merged != nil {
+			merged[candidate.Deck] = true
+		}
+		if *review == "" && (candidate.Merged == nil || (only != nil && candidate.Slide(only.Target) == only)) {
+			decks = append(decks, candidate.Deck)
+		}
+	}
+	if *review != "" {
+		found := document.FindReview(*review)
+		if found == nil || found.Deck == nil {
+			return fmt.Errorf("review %q does not exist or has no deck%s", *review, knownReviews(document))
+		}
+		decks = []*saga.Deck{found.Deck}
+	}
+	for _, deck := range decks {
 		for _, slide := range deck.Slides {
-			if slide.Diagram == nil || (*target != "" && findSlide(document, *target) != slide) {
+			if slide.Diagram == nil || (only != nil && only != slide) {
 				continue
 			}
-			report = append(report, checkDiagramSlide(deck, slide))
+			entry := checkDiagramSlide(deck, slide)
+			if merged[deck] {
+				entry.History, entry.RepairCommand = true, ""
+			}
+			report = append(report, entry)
 		}
 	}
 	if *target != "" && len(report) == 0 {
-		return fmt.Errorf("slide %q does not exist or has no diagram source", *target)
+		return fmt.Errorf("slide %q has no diagram source", *target)
 	}
 	stale := 0
 	for _, entry := range report {
-		if !entry.Current {
+		if !entry.Current && !entry.History {
 			stale++
 		}
 	}
@@ -271,6 +302,8 @@ func diagramCheck(args []string, out io.Writer) error {
 		for _, entry := range report {
 			if entry.Current {
 				fmt.Fprintf(out, "current  %s\n", entry.Target)
+			} else if entry.History {
+				fmt.Fprintf(out, "stale    %s (merged review, history; not repairable): %s\n", entry.Target, entry.Problem)
 			} else {
 				fmt.Fprintf(out, "stale    %s: %s\n", entry.Target, entry.Problem)
 			}

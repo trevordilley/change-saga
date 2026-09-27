@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Review-first entry points lead to apply-slide",
+      "x": 60,
+      "y": 28,
+      "width": 1000,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "skill",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Skill fast path",
+      "detail": "step 4: one request per slide",
+      "x": 60,
+      "y": 130,
+      "width": 380,
+      "height": 110,
+      "style": "normal",
+      "icon": "lucide:user"
+    },
+    {
+      "id": "cli",
+      "kind": "node",
+      "shape": "rect",
+      "label": "review create, init, help",
+      "detail": "Next: apply-slide --review",
+      "x": 60,
+      "y": 305,
+      "width": 380,
+      "height": 110,
+      "style": "normal",
+      "icon": "lucide:terminal"
+    },
+    {
+      "id": "readme",
+      "kind": "node",
+      "shape": "rect",
+      "label": "README and changelog",
+      "detail": "commands and the example",
+      "x": 60,
+      "y": 480,
+      "width": 380,
+      "height": 110,
+      "style": "normal",
+      "icon": "lucide:file"
+    },
+    {
+      "id": "apply",
+      "kind": "node",
+      "shape": "service",
+      "label": "apply-slide --review",
+      "detail": "diagram source + Items",
+      "x": 540,
+      "y": 295,
+      "width": 320,
+      "height": 130,
+      "style": "primary"
+    },
+    {
+      "id": "tests",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Tests pin the hints",
+      "detail": "skill, init, review create",
+      "x": 950,
+      "y": 305,
+      "width": 270,
+      "height": 110,
+      "style": "secondary",
+      "icon": "lucide:check"
+    },
+    {
+      "id": "skill-to-apply",
+      "kind": "edge",
+      "description": "The skill's fast path publishes each slide with apply-slide --review.",
+      "x": 0,
+      "y": 0,
+      "style": "normal",
+      "from": "skill",
+      "to": "apply",
+      "points": [
+        {
+          "x": 440,
+          "y": 185
+        },
+        {
+          "x": 490,
+          "y": 185
+        },
+        {
+          "x": 490,
+          "y": 335
+        },
+        {
+          "x": 540,
+          "y": 335
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "cli-to-apply",
+      "kind": "edge",
+      "description": "review create's Next hint, init, and help name apply-slide --review.",
+      "x": 0,
+      "y": 0,
+      "style": "normal",
+      "from": "cli",
+      "to": "apply",
+      "points": [
+        {
+          "x": 440,
+          "y": 360
+        },
+        {
+          "x": 540,
+          "y": 360
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "readme-to-apply",
+      "kind": "edge",
+      "description": "The README's review commands publish a diagram-sourced slide and point at the reference's example.",
+      "x": 0,
+      "y": 0,
+      "style": "normal",
+      "from": "readme",
+      "to": "apply",
+      "points": [
+        {
+          "x": 440,
+          "y": 535
+        },
+        {
+          "x": 490,
+          "y": 535
+        },
+        {
+          "x": 490,
+          "y": 385
+        },
+        {
+          "x": 540,
+          "y": 385
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "tests-to-apply",
+      "kind": "edge",
+      "description": "Tests assert every entry point names apply-slide --review.",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "tests",
+      "to": "apply",
+      "points": [
+        {
+          "x": 950,
+          "y": 360
+        },
+        {
+          "x": 860,
+          "y": 360
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "fallback",
+      "kind": "text",
+      "label": "Hand-drawn SVG stays the exception: add-slide, set-slide-content, add-item --review.",
+      "x": 80,
+      "y": 630,
+      "width": 1120,
+      "height": 40,
+      "style": "caption"
+    }
+  ]
+}

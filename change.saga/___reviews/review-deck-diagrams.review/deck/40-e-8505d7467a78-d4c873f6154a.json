@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/cli.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:924d91f283f01560851ced87632171e9a4af3d33f004bba634ab9ab1ce4a8329",
+      "note": "Usage lines, descriptions, and spec --json name --review for apply-slide, the diagram commands, and visual-qa"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/cli.go",
+      "start": 178,
+      "end": 180,
+      "digest": "sha256:3d71201a92e5a75cf00195da6cdb2d72bdaec0edc8fdc89c70c94a2b0c12243a",
+      "note": "Usage lines, descriptions, and spec --json name --review for apply-slide, the diagram commands, and visual-qa"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/cli.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:85360b08ac075e3b08db9d8a5a5dca914c39ed9ad9a552d1469f1a985778aa28",
+      "note": "Usage lines, descriptions, and spec --json name --review for apply-slide, the diagram commands, and visual-qa"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/cli.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:270a7312cca5987b33d59f37cc09966c2499065f8f10515179a36aaae3851030",
+      "note": "Usage lines, descriptions, and spec --json name --review for apply-slide, the diagram commands, and visual-qa"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/cli.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:1525fc81682957f6b839121bd74449415a53286743b3103e819db1ecf407391e",
+      "note": "Usage lines, descriptions, and spec --json name --review for apply-slide, the diagram commands, and visual-qa"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/cli.go",
+      "start": 429,
+      "end": 430,
+      "digest": "sha256:2a19d5dac0ce7c53b42a221d4152da60d34f7a974c91cd9d19427f6fa27d1fd7",
+      "note": "Usage lines, descriptions, and spec --json name --review for apply-slide, the diagram commands, and visual-qa"
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/cli.go",
+      "start": 1352,
+      "end": 1352,
+      "digest": "sha256:ef4b8ead1a62efc768ed95e9440a06970c5085cf735e6be31e841c3fc91d9595",
+      "note": "Usage lines, descriptions, and spec --json name --review for apply-slide, the diagram commands, and visual-qa"
+    }
+  ]
+}

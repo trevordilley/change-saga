@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/grammar/commands_content.go",
+      "start": 521,
+      "end": 521,
+      "digest": "sha256:ac6e481bb5bbee5a69fe6605e8d8188dd76b7761255231f3768ba45b8519782e",
+      "note": "Grammar entry for visual-qa takes --review."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/grammar/commands_content.go",
+      "start": 525,
+      "end": 526,
+      "digest": "sha256:013accdcc9ad802664f99288d4197f38a00fab16558e3c7354c15a498803ff4e",
+      "note": "Grammar entry for visual-qa takes --review."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/grammar/commands_content.go",
+      "start": 521,
+      "end": 521,
+      "digest": "sha256:07a5ca0f595db1814359a3f0b42cc942c74e736cf1d02a1ef7d127377d818e45",
+      "note": "Grammar entry for visual-qa takes --review."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/grammar/commands_content.go",
+      "start": 525,
+      "end": 526,
+      "digest": "sha256:81af52444ebe5c4091641ca0d628e89a4066685abdb0f27e6a4a63889d6c103c",
+      "note": "Grammar entry for visual-qa takes --review."
+    }
+  ]
+}

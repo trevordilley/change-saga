@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:3b972ed1d57fcb527e4c9ff1c6539f716cc953a08d16017b47f5614a2e8ef805",
+      "note": "init must lead to apply-slide --review"
+    },
+    {
+      "commit": "a915e306912c3fbfb2ac527debc42a21cb40a5bf",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:cf53b2d2ef767c48a904c141b4182183448e92a7caf19591ef380930d4852698",
+      "note": "init must lead to apply-slide --review"
+    }
+  ]
+}

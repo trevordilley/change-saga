@@ -140,6 +140,7 @@ func diagramDescribe(args []string, out io.Writer) error {
 	name := "diagram describe"
 	flags := commandFlags(name, commandUsage[name], out)
 	target := flags.String("slide", "", "slide to describe")
+	review := flags.String("review", "", "the pull request review whose slide this is")
 	format := flags.String("format", "text", "text or json")
 	offset := flags.Int("offset", 0, "first diagram element to include")
 	limit := flags.Int("limit", 60, "diagram elements per page, 1-100")
@@ -159,9 +160,9 @@ func diagramDescribe(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	slide := findSlide(document, *target)
-	if slide == nil {
-		return fmt.Errorf("slide %q does not exist", *target)
+	_, slide, _, err := findAuthoredSlide(document, *review, *target)
+	if err != nil {
+		return err
 	}
 	value, err := describeSlide(slide, *offset, *limit)
 	if err != nil {
@@ -177,6 +178,7 @@ func diagramGet(args []string, out io.Writer) error {
 	name := "diagram get"
 	flags := commandFlags(name, commandUsage[name], out)
 	target := flags.String("slide", "", "slide whose diagram holds the element")
+	review := flags.String("review", "", "the pull request review whose slide this is")
 	id := flags.String("id", "", "diagram element id")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -184,7 +186,7 @@ func diagramGet(args []string, out io.Writer) error {
 	if flags.NArg() != 1 || *target == "" || *id == "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
 	}
-	state, err := loadDiagramRevision(flags.Arg(0), *target, "")
+	state, err := loadDiagramRevision(flags.Arg(0), *review, *target, "")
 	if err != nil {
 		return err
 	}

@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "deck": "review-deck-diagrams",
+  "slide": "cover-stays",
+  "current": "sha256:b135e54a99f437fc4433a50d0e22e36ce4d8841e544976a7898738d0ccba40d9",
+  "revisions": [
+    {
+      "snapshot": "sha256:208afa9b758931b681ff40723e52de1326b34acf02599baf22b64df62068ee54",
+      "request_id": "rdd-s2-create",
+      "created_at": "2026-09-27T03:04:23.473142Z",
+      "asset": "24-a-8a6a6849bb23546e16e68c50458f89e2a543561b8306084b4cfb.svg",
+      "asset_digest": "sha256:8a6a6849bb23546e16e68c50458f89e2a543561b8306084b4cfb14bedd63da10",
+      "slide": {
+        "version": 4,
+        "id": "cover-stays",
+        "deck": "review-deck-diagrams",
+        "title": "Review Items keep cover as their one source of code",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-8a6a6849bb23546e16e68c50458f89e2a543561b8306084b4cfb.svg",
+        "takeaway": "A review request carries no evidence; cover writes coverage keyed by the Item URN, and the loader attaches it to transaction Items across revisions.",
+        "reading_order": [
+          "refuse",
+          "cover",
+          "attach",
+          "orphan-guard",
+          "migrate"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "refuse",
+            "slide": "cover-stays",
+            "rank": 10,
+            "kind": "node",
+            "label": "No evidence in a review request",
+            "description": "A review Item that carries evidence or criterion links is refused with the cover command to use; an implementation Item may not carry a review record.",
+            "selector": {
+              "type": "element",
+              "element_id": "request"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "cover",
+            "slide": "cover-stays",
+            "rank": 20,
+            "kind": "node",
+            "label": "cover writes coverage",
+            "description": "cover --changed-lines keeps working unchanged: it writes flat 40-e records keyed by the review Item's URN against the review's range.",
+            "selector": {
+              "type": "element",
+              "element_id": "evidence"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "attach",
+            "slide": "cover-stays",
+            "rank": 30,
+            "kind": "node",
+            "label": "Loader attaches coverage",
+            "description": "For review decks only, the loader attaches flat coverage records to the current transaction Items, so coverage survives slide revisions and diagram edits.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "orphan-guard",
+            "slide": "cover-stays",
+            "rank": 40,
+            "kind": "risk",
+            "label": "No orphaned coverage",
+            "description": "apply-slide refuses a revision that drops a review Item which still has coverage records, and names the remove-coverage command.",
+            "selector": {
+              "type": "element",
+              "element_id": "guard"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "migrate",
+            "slide": "cover-stays",
+            "rank": 50,
+            "kind": "transition",
+            "label": "Migration keeps coverage",
+            "description": "A hand-written review slide's migrated root revision carries no evidence, because its cover records keep attaching to the same Item URNs.",
+            "selector": {
+              "type": "element",
+              "element_id": "migration"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-f91eae80d29327f8b557757b6570f7b4e71bef1a7165378daae9.json",
+        "source_digest": "sha256:f91eae80d29327f8b557757b6570f7b4e71bef1a7165378daae98ffb4242ee14",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:b135e54a99f437fc4433a50d0e22e36ce4d8841e544976a7898738d0ccba40d9",
+      "parent_snapshots": [
+        "sha256:208afa9b758931b681ff40723e52de1326b34acf02599baf22b64df62068ee54"
+      ],
+      "request_id": "cover-stays-54c3ab67-edit",
+      "created_at": "2026-09-27T09:45:42.974967Z",
+      "asset": "24-a-8a6a6849bb23546e16e68c50458f89e2a543561b8306084b4cfb.svg",
+      "asset_digest": "sha256:8a6a6849bb23546e16e68c50458f89e2a543561b8306084b4cfb14bedd63da10",
+      "slide": {
+        "version": 4,
+        "id": "cover-stays",
+        "deck": "review-deck-diagrams",
+        "title": "Review Items keep cover as their one source of code",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-8a6a6849bb23546e16e68c50458f89e2a543561b8306084b4cfb.svg",
+        "takeaway": "A review request carries no evidence; cover writes coverage keyed by the Item URN, and the loader attaches it to transaction Items across revisions.",
+        "reading_order": [
+          "refuse",
+          "cover",
+          "attach",
+          "orphan-guard",
+          "migrate"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "refuse",
+            "slide": "cover-stays",
+            "rank": 10,
+            "kind": "node",
+            "label": "No evidence in a review request",
+            "description": "A review Item that carries evidence or criterion links is refused with the cover command to use; an implementation Item may not carry a review record.",
+            "selector": {
+              "type": "element",
+              "element_id": "request"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "cover",
+            "slide": "cover-stays",
+            "rank": 20,
+            "kind": "node",
+            "label": "cover writes coverage",
+            "description": "cover --changed-lines keeps working unchanged: it writes flat 40-e records keyed by the review Item's URN against the review's range.",
+            "selector": {
+              "type": "element",
+              "element_id": "evidence"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "attach",
+            "slide": "cover-stays",
+            "rank": 30,
+            "kind": "node",
+            "label": "Loader attaches coverage",
+            "description": "For review decks only, the loader attaches flat coverage records to the current transaction Items, so coverage survives slide revisions and diagram edits.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "orphan-guard",
+            "slide": "cover-stays",
+            "rank": 40,
+            "kind": "risk",
+            "label": "Nothing left pointing at nothing",
+            "description": "apply-slide refuses a revision that drops or renames a review Item which still has coverage records (naming remove-coverage) or an append-only review comment on it.",
+            "selector": {
+              "type": "element",
+              "element_id": "guard"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "migrate",
+            "slide": "cover-stays",
+            "rank": 50,
+            "kind": "transition",
+            "label": "Migration keeps coverage",
+            "description": "A hand-written review slide's migrated root revision carries no evidence, because its cover records keep attaching to the same Item URNs.",
+            "selector": {
+              "type": "element",
+              "element_id": "migration"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-f91eae80d29327f8b557757b6570f7b4e71bef1a7165378daae9.json",
+        "source_digest": "sha256:f91eae80d29327f8b557757b6570f7b4e71bef1a7165378daae98ffb4242ee14",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

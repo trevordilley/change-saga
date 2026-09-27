@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/saga/review.go",
+      "start": 190,
+      "end": 207,
+      "digest": "sha256:27005253882bf2caa7f0fce3b99e0d9216817a595a0074b9aec76439353825a0",
+      "note": "ReviewScopedTarget recognizes URNs inside a review."
+    }
+  ]
+}

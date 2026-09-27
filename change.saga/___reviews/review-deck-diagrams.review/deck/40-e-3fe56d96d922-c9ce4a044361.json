@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:7a506ca3297fea543de24a9ed47599391345b9a2a1dbaee33c1ba887309c4c4d",
+      "note": "diagram check only walked app decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:f9079cdcf24d77395856f7003676aac51d6122d91eb67e9ab717ea4d43024485",
+      "note": "diagram check only walked app decks."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/diagram.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:cbc753d1f7d320fd819da2932b7e874e6dde904a6a9af76e79179304a5177d45",
+      "note": "diagram check only walked app decks."
+    }
+  ]
+}

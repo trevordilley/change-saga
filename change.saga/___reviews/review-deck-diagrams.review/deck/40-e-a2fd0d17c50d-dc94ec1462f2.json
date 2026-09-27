@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/reviews_test.go",
+      "start": 37,
+      "end": 56,
+      "digest": "sha256:536cabc8cf0f4c949a0cf6789bc40898a6a4c054153d118ed61990581e336f6c",
+      "note": "The review fixture can start with an empty deck."
+    },
+    {
+      "commit": "5d882b1e9a8d898a528cfb38d9b9a85d4911f249",
+      "path": "internal/cli/reviews_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:7480acdab205bf15d97bb61b178dd0a454bc8175322592ab926adac107ce46c1",
+      "note": "The review fixture can start with an empty deck."
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/reviews_test.go",
+      "start": 60,
+      "end": 71,
+      "digest": "sha256:af64ae67ed27bd01f8b82c9c84b27aec0c27b04a521ee6ee80928476e6a6d27d",
+      "note": "The review fixture can start with an empty deck."
+    }
+  ]
+}

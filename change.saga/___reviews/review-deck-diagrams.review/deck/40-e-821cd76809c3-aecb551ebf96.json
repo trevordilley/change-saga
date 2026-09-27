@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:60b155ce14be6b33f43af3c24bf020d0da14d14a25c6c4bbb35b522f03bd8fb3",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:bbc5e6fb80a5f42477b7bad3b4b86eb02fecea5984d08f07299f50854c507d5e",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 671,
+      "end": 671,
+      "digest": "sha256:9fcc91845bd331b9ccc57c25949c7bb6adb99f364f09c62d80c20a012ab7fb07",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 676,
+      "end": 676,
+      "digest": "sha256:f789306332955ad034cd8cb53a20d234153195f3f7360394aa86348828140ab0",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 680,
+      "end": 680,
+      "digest": "sha256:c6f2caa4ca2eadfde0c6af926aafd9b00606603510bd7ef0f8b555273335e76f",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 683,
+      "end": 683,
+      "digest": "sha256:77e49401235aa8acb55b212d7c36c2890f04800b57b813c0120d03137b27b835",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 688,
+      "end": 688,
+      "digest": "sha256:b68ee9a4908df23c9acceba6670cbe5adf18a27eaf925fe81f4d048637e14c2e",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 695,
+      "end": 695,
+      "digest": "sha256:d2419619d310ad7b696785a3254b1c21abe39690b07dce71358617a9dc1f671e",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 707,
+      "end": 707,
+      "digest": "sha256:7f33d4ed58f5a750f02ece41f3616b927deeea2196ffb282cda748530af070fb",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    },
+    {
+      "commit": "8b380847cd5db5ef63df639bc958904b27fe44dc",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 723,
+      "end": 723,
+      "digest": "sha256:0e3c704eef63bee8d6d3d0b440d34eb6d3e900c5ad70fbcb3ce89a3d6daaaadc",
+      "note": "Results and the semantic diff name slides and Items through the deck's own URN namer."
+    }
+  ]
+}
