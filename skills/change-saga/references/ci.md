@@ -35,7 +35,10 @@ lines. A CI checkout needs the full history (`fetch-depth: 0`); compare against
 `origin/<base branch>`, since CI rarely has local branches. Reviews are found by
 the branch they follow (review create records it), including in a detached
 checkout of the pull request's head or of GitHub's merge commit. The README's
-"Use it in CI" section has a complete GitHub Actions workflow:
+"Use it in CI" section has a complete GitHub Actions workflow; it installs a
+pinned release that includes `check --covers review` (v0.2.0-rc.6 or later).
+A pull request from a fork is matched too: its branch is absent from the base
+repository, so its review is found through its evidence in the change.
 
 ```yaml
       - uses: actions/checkout@v4

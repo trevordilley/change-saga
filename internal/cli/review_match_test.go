@@ -158,6 +158,9 @@ func TestALandedReviewDoesNotClaimTheNextChange(t *testing.T) {
 			explain(t, repo, root, "pr-a", []string{"a.go"}, create...)
 			git(t, repo, "checkout", "main")
 			git(t, repo, "merge", "--no-ff", "-m", "Merge feature/a", "feature/a")
+			// The merged branch is deleted, so a review that names it no longer
+			// resolves; its landed evidence still says it is not this change.
+			git(t, repo, "branch", "-D", "feature/a")
 			git(t, repo, "checkout", "-b", "feature/b")
 			commitFile(t, repo, "b.go", "package app\n\nvar B = 2\n")
 
@@ -196,6 +199,13 @@ func TestAReviewIsFoundInACICheckout(t *testing.T) {
 	ciRoot := filepath.Join(ci, "app.saga")
 	if code, out := checkReview(t, ci, ciRoot, "origin/main"); code != 0 {
 		t.Fatalf("check --against origin/main in a CI checkout = %d, want 0:\n%s", code, out)
+	}
+
+	// A fork's branch never exists in the base repository's CI clone: the
+	// review is still found, through its evidence in this change.
+	_, _ = gitErr(ci, "update-ref", "-d", "refs/remotes/origin/feature/pg")
+	if code, out := checkReview(t, ci, ciRoot, "origin/main"); code != 0 {
+		t.Fatalf("check --against origin/main of a fork's pull request = %d, want 0:\n%s", code, out)
 	}
 
 	// actions/checkout's default for a pull request is GitHub's merge commit
@@ -263,5 +273,39 @@ func TestALivingSagaAsksForAReviewOfAnUnreviewedChange(t *testing.T) {
 	explain(t, repo, root, "pr-c", []string{"c.go"}, "--base", "main")
 	if _, actions := changeReviews(t, repo, root, "main"); strings.Contains(strings.Join(actions, " "), "review:create") {
 		t.Fatalf("a reviewed change still asks for a review: %v", actions)
+	}
+}
+
+// A review that follows HEAD whose branch was rewritten (squashed here, as
+// amend and rebase also do) is pinned, not duplicated: status suggests review
+// follow instead of review create.
+func TestARewrittenReviewIsPinnedNotDuplicated(t *testing.T) {
+	repo, root := reviewRepo(t)
+	git(t, repo, "checkout", "-b", "feature/d")
+	commitFile(t, repo, "d.go", "package app\n\nvar D = 4\n")
+	explain(t, repo, root, "pr-d", []string{"d.go"}, "--base", "main", "--head", "HEAD")
+	git(t, repo, "reset", "--soft", "main")
+	git(t, repo, "commit", "-m", "Squashed")
+	reviews, actions := changeReviews(t, repo, root, "main")
+	joined := strings.Join(actions, " ")
+	if len(reviews) != 0 || !strings.Contains(joined, "review:follow:pr-d") || strings.Contains(joined, "review:create") {
+		t.Fatalf("an amended review: reviews %v, actions %v; want review:follow:pr-d and no review:create", reviews, actions)
+	}
+	if text := run(t, Status, "--repo", repo, "--against", "main", root); !strings.Contains(text, "review follow --review pr-d") {
+		t.Fatalf("status does not suggest pinning the amended review:\n%s", text)
+	}
+}
+
+// A review whose Items explain only deleted lines pins the comparison's base;
+// that evidence is this change's.
+func TestAReviewOfDeletedLinesIsThisChanges(t *testing.T) {
+	repo, root := reviewRepo(t)
+	commitFile(t, repo, "old.go", "package app\n\nvar Old = 1\n")
+	git(t, repo, "checkout", "-b", "feature/e")
+	git(t, repo, "rm", "-q", "old.go")
+	git(t, repo, "commit", "-m", "remove old.go")
+	explain(t, repo, root, "pr-e", []string{"old.go"}, "--base", "main", "--head", "HEAD")
+	if code, out := checkReview(t, repo, root, "main"); code != 0 {
+		t.Fatalf("a review of deleted lines = %d, want 0:\n%s", code, out)
 	}
 }

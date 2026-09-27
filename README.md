@@ -77,9 +77,11 @@ jobs:
           # Check the pull request's own head rather than GitHub's merge commit.
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Install change-saga
-        # Pin a release that has check --covers review (v0.2.0 or later).
+        env:
+          # Replace with the release tag to pin (see the note below).
+          CHANGE_SAGA_VERSION: vX.Y.Z
         run: |
-          curl -fsSL https://raw.githubusercontent.com/twentyideas/changesaga/v0.2.0/scripts/install.sh | sh -s -- --version v0.2.0 --dir "$HOME/.local/bin"
+          curl -fsSL "https://raw.githubusercontent.com/twentyideas/changesaga/$CHANGE_SAGA_VERSION/scripts/install.sh" | sh -s -- --version "$CHANGE_SAGA_VERSION" --dir "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: The review deck explains every changed line
         run: change-saga check --covers review --against origin/${{ github.base_ref }} change.saga
@@ -88,6 +90,9 @@ jobs:
       # - name: Existing documentation stays healthy
       #   run: change-saga check --covers health change.saga
 ```
+
+Use a release that includes `check --covers review` (v0.2.0-rc.6 or later)
+for `CHANGE_SAGA_VERSION`.
 
 `check` exits 0 when the named areas are covered, 3 when one has a gap (it
 prints only those gaps), and 1 when its report cannot be trusted, such as a

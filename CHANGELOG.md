@@ -23,7 +23,10 @@
   branch they follow, also in a CI checkout without local branches or on
   GitHub's pull request merge commit, and also when their base branch was
   deleted; a review that follows HEAD is not taken for a later change once its
-  evidence has landed.
+  evidence has landed. A fork's pull request, whose branch is absent from the
+  base repository, is matched through its evidence in the change, and a review
+  that follows HEAD whose evidence was rewritten (amend, rebase, squash) gets a
+  `review follow` suggestion instead of a duplicate review.
 - Every comparison with changed lines and no matching review gets a
   non-blocking "create a review" next action, in any Saga.
 - README: "Use it in CI", an opt-in GitHub Actions gate with `check --covers

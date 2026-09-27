@@ -89,14 +89,17 @@ type reviewOfChange struct {
 	report reviewstate.Report
 }
 
-// matchReviews finds the open reviews a comparison is about: the reviews
-// whose followed head is the comparison's head, or its second parent when
-// the head is a pull request's merge commit (as a CI checkout of a pull
-// request has). A review is matched by its head alone, so one whose base no
-// longer resolves is still found; a review that follows HEAD without naming
-// a branch is left out once its evidence shows it explained an earlier
-// change. Merged reviews are history and never match.
-func matchReviews(ctx context.Context, checkout string, reviews []*saga.Review, reports []reviewstate.Report, changes gitdiff.ChangeSet) []reviewOfChange {
+// matchReviews finds the open reviews a comparison is about, and the
+// reviews that follow HEAD whose evidence was rewritten (an amend, rebase,
+// or squash), which likely are this change's review and only need pinning.
+//
+// A review that names a branch matches when that branch (or origin's) is
+// the comparison's head, or the second parent of GitHub's pull request merge
+// commit. When the branch does not resolve here, as a fork's branch never
+// does in the base repository's CI, it matches when its evidence is part of
+// this change. A review that follows HEAD matches unless its evidence shows
+// another change. Merged reviews are history and never match.
+func matchReviews(ctx context.Context, checkout string, reviews []*saga.Review, reports []reviewstate.Report, changes gitdiff.ChangeSet) ([]reviewOfChange, []*saga.Review) {
 	byID := map[string]reviewstate.Report{}
 	for _, report := range reports {
 		byID[report.ID] = report
@@ -105,28 +108,46 @@ func matchReviews(ctx context.Context, checkout string, reviews []*saga.Review, 
 	if parents := strings.Fields(gitText(ctx, checkout, "rev-list", "--parents", "-n", "1", changes.HeadOID)); len(parents) == 3 {
 		heads[parents[2]] = true
 	}
-	result := []reviewOfChange{}
+	result, rewritten := []reviewOfChange{}, []*saga.Review{}
 	for _, review := range reviews {
 		if review.Merged != nil {
 			continue
 		}
+		matched := false
+		followsHEAD := review.Head == "" || review.Head == "HEAD"
 		head, _, err := reviewstate.ResolveHead(ctx, checkout, review)
-		if err != nil || !heads[head] {
-			continue
+		switch evidence := evidenceOf(ctx, checkout, review, changes); {
+		case !followsHEAD && err == nil:
+			matched = heads[head]
+		case !followsHEAD:
+			matched = evidence == evidenceInChange
+		case evidence == evidenceNone || evidence == evidenceInChange:
+			matched = true
+		case evidence == evidenceRewritten:
+			rewritten = append(rewritten, review)
 		}
-		if (review.Head == "" || review.Head == "HEAD") && explainedAnEarlierChange(ctx, checkout, review, changes) {
-			continue
+		if matched {
+			result = append(result, reviewOfChange{review: review, report: byID[review.ID]})
 		}
-		result = append(result, reviewOfChange{review: review, report: byID[review.ID]})
 	}
-	return result
+	return result, rewritten
 }
 
-// explainedAnEarlierChange reports whether a review that follows HEAD
-// explains a change other than this one: it references code, and none of the
-// commits it pinned is part of this change (an ancestor of the head but not
-// of the comparison's base). Its change landed, or lived on another branch.
-func explainedAnEarlierChange(ctx context.Context, checkout string, review *saga.Review, changes gitdiff.ChangeSet) bool {
+// Evidence states: what a review's pinned code says about which change it
+// explains.
+const (
+	evidenceNone      = "none"
+	evidenceInChange  = "in_change"
+	evidenceLanded    = "landed"
+	evidenceRewritten = "rewritten"
+)
+
+// evidenceOf reads which change a review's evidence belongs to. Evidence is
+// part of this change when a pinned commit is the comparison's base (the
+// deleted side) or an ancestor of its head but not of its base. Otherwise it
+// landed when every pinned commit is in the base, and was rewritten (amended,
+// rebased, squashed, or another branch's) when some commit is in neither.
+func evidenceOf(ctx context.Context, checkout string, review *saga.Review, changes gitdiff.ChangeSet) string {
 	commits := map[string]bool{}
 	if review.Deck != nil {
 		for _, slide := range review.Deck.Slides {
@@ -140,14 +161,23 @@ func explainedAnEarlierChange(ctx context.Context, checkout string, review *saga
 		}
 	}
 	if len(commits) == 0 {
-		return false
+		return evidenceNone
 	}
+	landed := true
 	for commit := range commits {
-		if isAncestor(ctx, checkout, commit, changes.HeadOID) && !isAncestor(ctx, checkout, commit, changes.BaseOID) {
-			return false
+		if commit == changes.BaseOID {
+			return evidenceInChange
 		}
+		inBase := isAncestor(ctx, checkout, commit, changes.BaseOID)
+		if !inBase && isAncestor(ctx, checkout, commit, changes.HeadOID) {
+			return evidenceInChange
+		}
+		landed = landed && inBase
 	}
-	return true
+	if landed {
+		return evidenceLanded
+	}
+	return evidenceRewritten
 }
 
 func isAncestor(ctx context.Context, checkout, ancestor, descendant string) bool {
@@ -282,6 +312,17 @@ func reviewAreaActions(area areas.Area, matched []reviewOfChange, changes gitdif
 	return actions
 }
 
+// followReviewAction is the next action for a review that follows HEAD but
+// whose evidence was rewritten: it is most likely this change's review, so it
+// is pinned to the branch rather than duplicated.
+func followReviewAction(review *saga.Review, branch, root string) nextaction.Action {
+	return nextaction.Action{
+		ID: "review:follow:" + review.ID, Kind: nextaction.KindCommand, Category: nextaction.CategoryReview, Resource: review.Target,
+		Reason:  "review " + review.ID + " follows HEAD, but none of its evidence is in this change (an amend, rebase, or squash rewrites it); if it is this change's review, pin it to the branch, then re-cover what moved",
+		Command: ptrInvocation(grammar.MustInvoke("review follow", root, grammar.V("review", review.ID), grammar.V("head", branch))),
+	}
+}
+
 // createReviewAction is the next action for a change no review explains yet.
 func createReviewAction(changes gitdiff.ChangeSet, root, repo string) nextaction.Action {
 	values := []grammar.Value{grammar.V("base", changes.Base)}
@@ -321,6 +362,10 @@ func printReviewHeadline(out io.Writer, status statusDocument, maxItems int) {
 	comparing := status.Opening.Mode == gitdiff.ModeCompare
 	switch {
 	case comparing && len(status.ChangeReviews) == 0 && area.Total == 0:
+		return
+	case comparing && len(status.ChangeReviews) == 0 && len(status.RewrittenReviews) > 0:
+		fmt.Fprintf(out, "\nReview: none matched. %s follows HEAD, but none of its evidence is in this change (amended, rebased, or squashed?).\n", strings.Join(status.RewrittenReviews, ", "))
+		fmt.Fprintf(out, "  If it is this change's review, pin it: change-saga review follow --review %s --head BRANCH %s\n", status.RewrittenReviews[0], shellJoin([]string{status.sagaPath}))
 		return
 	case comparing && len(status.ChangeReviews) == 0:
 		fmt.Fprintf(out, "\nReview: none yet. No review explains the %d changed lines of this change.\n", area.Total)

@@ -53,6 +53,10 @@ type statusDocument struct {
 	// the open reviews that follow the comparison's head; observing, every
 	// open review.
 	ChangeReviews []string `json:"change_reviews"`
+	// RewrittenReviews names reviews that follow HEAD but whose evidence was
+	// rewritten (amended, rebased, squashed): likely this change's review,
+	// to pin with review follow rather than duplicate.
+	RewrittenReviews []string `json:"rewritten_reviews,omitempty"`
 	// Documentation says whether the Saga documents the application beyond
 	// its reviews, and which report this is; it never blocks.
 	Documentation documentationState  `json:"documentation"`
@@ -177,8 +181,9 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 	document.Coverage = areas.Evaluate(coverageInputs(value.document, value.changes, value.report, living, document.Comparison, feature))
 	document.ChangeReviews = []string{}
 	var matched []reviewOfChange
+	var rewritten []*saga.Review
 	if value.changes.Mode == gitdiff.ModeCompare {
-		matched = matchReviews(ctx, value.checkout, open, document.Reviews, value.changes)
+		matched, rewritten = matchReviews(ctx, value.checkout, open, document.Reviews, value.changes)
 		for _, match := range matched {
 			document.ChangeReviews = append(document.ChangeReviews, match.review.ID)
 		}
@@ -198,10 +203,19 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		reviewActions = nextaction.Reviews(document.Reviews, root)
 	case len(matched) > 0:
 		reviewActions = reviewAreaActions(document.Coverage.Areas.Review, matched, value.changes, root, repoDir)
+	case len(rewritten) > 0:
+		// A review whose evidence was rewritten is pinned, not duplicated.
+		branch := firstNonEmpty(currentBranch(ctx, value.checkout), "BRANCH")
+		for _, review := range rewritten {
+			reviewActions = append(reviewActions, followReviewAction(review, branch, root))
+		}
 	case len(value.changes.Atoms) > 0:
 		// Every pull request gets a review, so a change no review explains
 		// asks for one. It is a suggestion, never part of the exit status.
 		reviewActions = []nextaction.Action{createReviewAction(value.changes, root, repoDir)}
+	}
+	for _, review := range rewritten {
+		document.RewrittenReviews = append(document.RewrittenReviews, review.ID)
 	}
 	document.NextActions = beforeGrowth(document.NextActions, reviewActions)
 	return document, nil
