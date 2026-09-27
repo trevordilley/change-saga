@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui, sans-serif">
   <rect width="1280" height="720" fill="#f7f8fa"/>
   <text x="40" y="56" font-size="30" font-weight="700" fill="#1d2433">status and check answer with the review first</text>
-  <text x="40" y="90" font-size="17" fill="#4a5568">The review deck's coverage of the change is the first-class answer; the rest of the Saga grows only when asked or earned.</text>
+  <text x="40" y="90" font-size="17" fill="#4a5568">The review deck's coverage of the change is the first-class answer; nothing else is pitched.</text>
   <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
   <g id="review-area">
     <rect x="40" y="130" width="360" height="170" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
@@ -23,26 +23,26 @@
   <line x1="220" y1="300" x2="220" y2="336" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
   <g id="growth-rule">
     <rect x="470" y="130" width="360" height="360" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>
-    <text x="490" y="165" font-size="20" font-weight="700" fill="#7a4d05">growth rule</text>
+    <text x="490" y="165" font-size="20" font-weight="700" fill="#7a4d05">which report</text>
     <text x="490" y="200" font-size="15" fill="#1d2433">Living documentation = any record</text>
     <text x="490" y="220" font-size="15" fill="#1d2433">beyond reviews at the Saga's top level.</text>
-    <text x="490" y="258" font-size="16" font-weight="600" fill="#1d2433">--growth or living docs → full</text>
-    <text x="490" y="290" font-size="16" font-weight="600" fill="#1d2433">only reviews, more than 2 → prominent</text>
-    <text x="490" y="322" font-size="16" font-weight="600" fill="#1d2433">only reviews, 0–2 → quiet</text>
+    <text x="490" y="258" font-size="16" font-weight="600" fill="#1d2433">living docs or --full → full</text>
+    <text x="490" y="290" font-size="16" font-weight="600" fill="#1d2433">only reviews → review first</text>
+    <text x="490" y="322" font-size="15" fill="#1d2433">No review counting, no growth offer.</text>
     <text x="490" y="362" font-size="15" fill="#1d2433">Never blocks: exit codes unchanged;</text>
     <text x="490" y="382" font-size="15" fill="#1d2433">JSON always has every area plus a</text>
-    <text x="490" y="402" font-size="15" fill="#1d2433">growth object.</text>
-    <text x="490" y="470" font-size="13" fill="#4a5568">holdsLivingDocumentation · growthOf</text>
+    <text x="490" y="402" font-size="15" fill="#1d2433">documentation object.</text>
+    <text x="490" y="470" font-size="13" fill="#4a5568">holdsLivingDocumentation · documentationOf</text>
   </g>
   <line x1="400" y1="215" x2="466" y2="215" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
   <g id="review-first-report">
     <rect x="900" y="130" width="340" height="170" rx="14" fill="#ffffff" stroke="#3b6fd8" stroke-width="2"/>
     <text x="920" y="165" font-size="20" font-weight="700" fill="#1d3a7a">review-first report</text>
     <text x="920" y="195" font-size="15" fill="#1d2433">Review headline, the review's</text>
-    <text x="920" y="215" font-size="15" fill="#1d2433">decisions, then one quiet growth line</text>
-    <text x="920" y="235" font-size="15" fill="#1d2433">or a short offer with the top three</text>
-    <text x="920" y="255" font-size="15" fill="#1d2433">suggestions and setup-initial-saga.</text>
-    <text x="920" y="283" font-size="13" fill="#4a5568">printReviewFirst · printGrowthOffer</text>
+    <text x="920" y="215" font-size="15" fill="#1d2433">decisions, and its next actions.</text>
+    <text x="920" y="235" font-size="15" fill="#1d2433">No documentation areas, and no</text>
+    <text x="920" y="255" font-size="15" fill="#1d2433">pitch to grow the Saga.</text>
+    <text x="920" y="283" font-size="13" fill="#4a5568">printReviewFirst · printReviewHeadline</text>
   </g>
   <g id="full-report">
     <rect x="900" y="340" width="340" height="150" rx="14" fill="#ffffff" stroke="#6b7280" stroke-width="2"/>
@@ -57,7 +57,7 @@
     <rect x="40" y="530" width="1200" height="150" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
     <text x="60" y="565" font-size="20" font-weight="700" fill="#4c1d95">next actions follow the review</text>
     <text x="60" y="597" font-size="15" fill="#1d2433">In a review-only Saga the implementation deck's changed_source actions are dropped (the review deck explains the change),</text>
-    <text x="60" y="619" font-size="15" fill="#1d2433">a change with no review gets "review create", and growth actions appear only when the offer is prominent (three) or full.</text>
+    <text x="60" y="619" font-size="15" fill="#1d2433">a change with no review gets "review create", and growth suggestions appear only in the full report.</text>
     <text x="60" y="655" font-size="13" fill="#4a5568">reviewFirstActions · createReviewAction</text>
   </g>
 </svg>

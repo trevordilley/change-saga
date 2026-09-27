@@ -4,8 +4,8 @@
   "slide": "status",
   "rank": 20,
   "kind": "node",
-  "label": "Growth rule",
-  "description": "A Saga with anything beyond its reviews holds living documentation and gets the full report; a review-only Saga gets a quiet line, or a prominent offer past two reviews; --growth asks for the full report.",
+  "label": "Which report",
+  "description": "A Saga with anything beyond its reviews holds living documentation and gets the full report, as does status --full; a Saga of reviews alone gets the review-first report. Reviews are not counted and growth is never offered.",
   "selector": {
     "type": "element",
     "element_id": "growth-rule"

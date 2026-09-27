@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/reviews.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:1bb214864606610b2a6e892134a4c7f5318e02969ceb02692ffa206adb08548d"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/reviews.go",
+      "start": 54,
+      "end": 55,
+      "digest": "sha256:da89372a11fbc8ad893da1c1b6fd5eee72cb4a2c1c866171cd7a44d3787c7971"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/reviews.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:06017dd80ddf0218b310f39e01e031b737bf16f61fab9017f6dfc13a34cf5070"
+    }
+  ]
+}

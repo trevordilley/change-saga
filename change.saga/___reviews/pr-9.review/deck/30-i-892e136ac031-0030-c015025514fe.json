@@ -5,7 +5,7 @@
   "rank": 30,
   "kind": "node",
   "label": "Review-first report",
-  "description": "A review-only Saga's status prints the review headline, the review's decisions, and the growth offer instead of the documentation areas.",
+  "description": "A review-only Saga's status prints the review headline, the review's decisions, and its next actions, with no documentation areas and no pitch to grow.",
   "selector": {
     "type": "element",
     "element_id": "review-first-report"

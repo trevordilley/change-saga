@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "095b96da872fde5a510e518612f666aaedf71bfe",
+      "path": "internal/cli/reviews.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:e1f75a5b20f217baf854265bc7842a74f412aad4ad765d198021d2e6bb226f0c"
+    },
+    {
+      "commit": "095b96da872fde5a510e518612f666aaedf71bfe",
+      "path": "internal/cli/reviews.go",
+      "start": 54,
+      "end": 55,
+      "digest": "sha256:3cacbc7e85f0fd7eef1571b5b4f76c8233f78954cc2668ddf01a003bbd809963"
+    },
+    {
+      "commit": "095b96da872fde5a510e518612f666aaedf71bfe",
+      "path": "internal/cli/reviews.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:e5ffd32d9c20c3721d67bf8cf851a5172c7c5c7056c0837a4fbd0ea844b06687"
+    },
+    {
+      "commit": "095b96da872fde5a510e518612f666aaedf71bfe",
+      "path": "internal/cli/reviews.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:37d2e98360da60e0fbf19b938ecb93528bc65748479d20d7b5b4fe2579967b8c"
+    },
+    {
+      "commit": "095b96da872fde5a510e518612f666aaedf71bfe",
+      "path": "internal/cli/reviews.go",
+      "start": 70,
+      "end": 77,
+      "digest": "sha256:1484d6e0a55ac96a6f8d7747323ac34d1426567f00d29f7f1cfbb1d825b266fd"
+    },
+    {
+      "commit": "095b96da872fde5a510e518612f666aaedf71bfe",
+      "path": "internal/cli/reviews.go",
+      "start": 109,
+      "end": 111,
+      "digest": "sha256:590226219b9d6b335737db665ce3b5be80d5cef56d1711071dfa67713276d3ab"
+    }
+  ]
+}

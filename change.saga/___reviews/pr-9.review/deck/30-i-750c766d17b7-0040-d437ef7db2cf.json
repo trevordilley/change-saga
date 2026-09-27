@@ -4,8 +4,8 @@
   "slide": "entry",
   "rank": 40,
   "kind": "node",
-  "label": "setup-initial-saga after reviews",
-  "description": "setup-initial-saga grows a review-only Saga and, with no Saga, suggests a review first.",
+  "label": "setup-initial-saga for more",
+  "description": "setup-initial-saga grows a review-only Saga for a team that wants living documentation and, with no Saga, suggests a review first.",
   "selector": {
     "type": "element",
     "element_id": "setup-after-reviews"
