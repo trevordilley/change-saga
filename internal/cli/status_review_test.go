@@ -241,3 +241,25 @@ func TestReviewListNamesTheRecordOfAStaleReference(t *testing.T) {
 		t.Fatalf("replacing the named record did not repair the review:\n%s", out)
 	}
 }
+
+// replace-coverage without --target keeps the replaced record's owner: the
+// repair reconcile prints names no target, and must not move the evidence
+// to the Saga root.
+func TestReplaceCoverageKeepsTheRecordsOwner(t *testing.T) {
+	fixture := newReviewOnlyFixture(t, true)
+	writeFile(t, filepath.Join(fixture.repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"postgres-v2\" }\n")
+	git(t, fixture.repo, "commit", "-am", "Rename the queue table")
+	out := run(t, Review, "list", "--uncovered", "--repo", fixture.repo, fixture.root)
+	index := strings.Index(out, "      record ")
+	if index < 0 {
+		t.Fatalf("no stale record:\n%s", out)
+	}
+	record := strings.Fields(out[index:])[1]
+	run(t, ReplaceCoverage, "--record", record, "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root)
+	if out := run(t, Review, "list", "--uncovered", "--repo", fixture.repo, fixture.root); !strings.Contains(out, "No uncovered changes") {
+		t.Fatalf("replace-coverage without --target moved the evidence off its Item:\n%s", out)
+	}
+	if entries, _ := os.ReadDir(filepath.Join(fixture.root, saga.CodeDirName)); len(entries) != 0 {
+		t.Fatalf("replace-coverage without --target wrote %d records to the Saga root", len(entries))
+	}
+}
