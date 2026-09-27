@@ -197,14 +197,13 @@ test("an implementation deck shows its diagram notes the same way, and in an Ite
   const request = {
     version: 1, operation: "create", request_id: "noted-implementation", deck: "noted-flow", expected_snapshot: "absent",
     slide: { id: "noted-implementation", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["greeting"] },
-    diagram: notedDiagram,
+    diagram: { ...notedDiagram, elements: notedDiagram.elements.map((element): Record<string, unknown> => element.id === "greeting" ? { ...element, note: "Formats the **name** it is given." } : element) },
     items: [{
       id: "greeting", rank: 10, kind: "node", label: "Greeting", description: "Greeting returns the supplied name.", selector: { type: "element", element_id: "greeting" },
       evidence: [{ version: 2, references: [{ commit: head, path: "src/app.go", start: 3, end: 3, digest: codeDigest(saga.sourceRepo, head, "src/app.go", 3), note: "The greeting names the caller." }] }],
       criterion_links: [{ id: "greeting-named", criterion: `${story}:criterion:named`, story_revision: `${story}:revision:r1`, rationale: "The greeting is the named line." }],
     }],
   };
-  request.diagram = { ...notedDiagram, elements: notedDiagram.elements.map(element => element.id === "greeting" ? { ...element, note: "Formats the **name** it is given." } : element) };
   const requestPath = join(saga.root, "noted-implementation.json");
   writeFileSync(requestPath, JSON.stringify(request));
   run("apply-slide", "--from", requestPath, "--repo", saga.sourceRepo, saga.sagaRoot);
