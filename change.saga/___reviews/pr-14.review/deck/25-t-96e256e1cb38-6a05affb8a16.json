@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "deck": "pr-14",
+  "slide": "note-guidance",
+  "current": "sha256:52fc79944106808c29f69dfe73b4fa5916bda66615d6d4d5302efbd97e7af85c",
+  "revisions": [
+    {
+      "snapshot": "sha256:52fc79944106808c29f69dfe73b4fa5916bda66615d6d4d5302efbd97e7af85c",
+      "request_id": "pr-14-note-guidance",
+      "created_at": "2026-09-27T21:38:12.631021Z",
+      "asset": "24-a-5a5fc98f0e5f34f0a94aba04a3d465a4201059497c9a3b67eeca.svg",
+      "asset_digest": "sha256:5a5fc98f0e5f34f0a94aba04a3d465a4201059497c9a3b67eeca8124f066713a",
+      "slide": {
+        "version": 4,
+        "id": "note-guidance",
+        "deck": "pr-14",
+        "title": "Notes are depth on demand",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-5a5fc98f0e5f34f0a94aba04a3d465a4201059497c9a3b67eeca.svg",
+        "takeaway": "The spec defines the note contract; the skill tells authors to use notes for the why a label cannot hold, and to keep surprises in callouts.",
+        "reading_order": [
+          "spec",
+          "fast-path",
+          "reference"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "spec",
+            "slide": "note-guidance",
+            "rank": 10,
+            "kind": "node",
+            "label": "The contract",
+            "description": "SPEC.md states the format, the 1,000-character limit, what is refused, the SVG desc, and where the reviewer shows the popover.",
+            "selector": {
+              "type": "element",
+              "element_id": "spec"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "fast-path",
+            "slide": "note-guidance",
+            "rank": 20,
+            "kind": "node",
+            "label": "When to add a note",
+            "description": "The review fast path asks for a note only when a reader would want the why a label cannot hold, and never as padding.",
+            "selector": {
+              "type": "element",
+              "element_id": "fast-path"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "reference",
+            "slide": "note-guidance",
+            "rank": 30,
+            "kind": "node",
+            "label": "Rules and example",
+            "description": "The diagrams reference explains notes, how to clear one with an update op, that a noted title stays semantic, and keeps surprises in callouts.",
+            "selector": {
+              "type": "element",
+              "element_id": "reference"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-32d82d173b26b2decdbfa1489c825832561f987ee577d516efdf.json",
+        "source_digest": "sha256:32d82d173b26b2decdbfa1489c825832561f987ee577d516efdf4105cef1439b",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

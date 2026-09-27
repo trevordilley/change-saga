@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">The popover lives on the page, not in the frame</title>
+  <desc id="diagram-desc">The server renders each note into an inert template; the page script measures a copy of the SVG and shows one popover beside the hotspot.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-sanitize" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-clone" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-measure" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-show" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">The popover lives on the page, not in the frame</tspan></text>
+  </g>
+  <g id="loader" data-diagram-kind="node" transform="translate(60 140)" role="group" aria-label="Load slide notes">
+    <rect width="320" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Load slide notes</tspan></text>
+  </g>
+  <g id="templates" data-diagram-kind="node" transform="translate(520 140)" role="group" aria-label="Templates by landmarks">
+    <rect width="340" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Templates by landmarks</tspan></text>
+  </g>
+  <g id="frame" data-diagram-kind="group" transform="translate(60 360)" role="group" aria-label="Sandboxed slide frame">
+    <desc>Still sandbox="allow-scripts" on an opaque origin. No note enters it, so authored script never runs on the app origin.</desc>
+    <rect width="360" height="220" rx="10" fill="#f0f3f6" stroke="#c3cdd8" stroke-width="1" stroke-dasharray="7 6"/>
+    <text x="18" y="30" font-size="18" fill="#526174" xml:space="preserve"><tspan x="18" y="30">Sandboxed slide frame</tspan></text>
+    <g id="svg" data-diagram-kind="node" transform="translate(40 80)" role="group" aria-label="Slide SVG">
+      <rect width="280" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Slide SVG</tspan></text>
+    </g>
+  </g>
+  <g id="script" data-diagram-kind="node" transform="translate(540 420)" role="group" aria-label="Page script">
+    <rect width="300" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Page script</tspan></text>
+  </g>
+  <g id="popover" data-diagram-kind="node" transform="translate(940 420)" role="group" aria-label="One popover">
+    <rect width="290" height="100" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve"><tspan x="18" y="37">One popover</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve"><tspan x="18" y="73">beside the hotspot, never over it</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="text" transform="translate(60 630)" role="group" aria-label="Tests: sanitized server output, browser hover, keyboard, tap">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve"><tspan x="0" y="15">Tests: sanitized server output, browser hover, keyboard, tap</tspan></text>
+  </g>
+  <g id="sanitize" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="sanitize" data-from="loader" data-to="templates">
+    <desc>markdownWithAnchors, the goldmark renderer authored fragments already use: raw HTML is escaped and unsafe links are neutralized, even if a source on disk skipped validation.</desc>
+    <path d="M380 190 L520 190" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-sanitize)"/>
+    <text x="396" y="170" font-size="18" fill="#526174" xml:space="preserve"><tspan x="396" y="170">sanitize</tspan></text>
+  </g>
+  <g id="clone" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="clone" data-from="templates" data-to="script">
+    <path d="M690 240 L690 420" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-clone)"/>
+    <text x="705" y="334" font-size="18" fill="#526174" xml:space="preserve"><tspan x="705" y="334">clone</tspan></text>
+  </g>
+  <g id="measure" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="measure" data-from="svg" data-to="script">
+    <desc>Fetches a copy of the SVG into an inert shadow root, as Item hotspots already did, to find each noted element's box.</desc>
+    <path d="M380 490 L540 490" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-measure)"/>
+    <text x="424" y="470" font-size="18" fill="#526174" xml:space="preserve"><tspan x="424" y="470">measure</tspan></text>
+  </g>
+  <g id="show" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="show" data-from="script" data-to="popover">
+    <desc>- Hover or focus: opens
+- Tap: toggles a note hotspot
+- Escape or moving away: closes</desc>
+    <path d="M840 470 L940 470" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-show)"/>
+    <text x="856" y="450" font-size="18" fill="#526174" xml:space="preserve"><tspan x="856" y="450">show</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/saga/slides.go",
+      "start": 544,
+      "end": 544,
+      "digest": "sha256:cab903aece85b6f51884b83d657e180c6b6ec4c18f5d66e43970bff890ef1a49"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/saga/slides.go",
+      "start": 544,
+      "end": 544,
+      "digest": "sha256:1894f9783aaa23bcd5e01b5480dcd140482bebbef35e82b68d510886937d8a57"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/reviews.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:fb678f33e4fe2cfff64b4c0c9aeabbdf48f3ca00e9c86fffd3df288a48763b8a"
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/reviews.go",
+      "start": 874,
+      "end": 874,
+      "digest": "sha256:3221df3b5dc1a98f7c0328d2fdf195a9b715c8a0aea9f2f71c95f840639ea7ae"
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/reviews.go",
+      "start": 885,
+      "end": 885,
+      "digest": "sha256:04ac408d70b703be7c066051d58faffd0b5576a4999a988b8ae8e2875c5ccaec"
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/reviews.go",
+      "start": 888,
+      "end": 888,
+      "digest": "sha256:8adcd619651955b8fcbe07b2f0759bad5d9dcf290a1e884eab21de8704397296"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/reviews.go",
+      "start": 98,
+      "end": 100,
+      "digest": "sha256:910e63c1716c3ab4ee62dc9a943b26b6f9cccaa58a9209e0e69dfef9e5c791aa"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/reviews.go",
+      "start": 119,
+      "end": 120,
+      "digest": "sha256:6e66a4f7d33a06c3b121a8a5af33c8af12110e9e2e37412c41735c4fbdcfa0fc"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/reviews.go",
+      "start": 413,
+      "end": 414,
+      "digest": "sha256:fcd4988bab2c3aee9d61a12977b552899558919d96a8badb9e6be75e154fa7ef"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/reviews.go",
+      "start": 421,
+      "end": 423,
+      "digest": "sha256:5c8102346195a328bbeca08c500e0a6086835292bef124b38bdc357378c5c679"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/reviews.go",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:4450d654b4506b23d489a2d10232510c3bbe6cafb5794e9d08dbba75eb861b6b"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/reviews.go",
+      "start": 884,
+      "end": 884,
+      "digest": "sha256:15f9a8e989f83e80828a43f82e22b45573b207f0d63ff1d74166079296dd5507"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/reviews.go",
+      "start": 895,
+      "end": 895,
+      "digest": "sha256:4ab1645ab1f1297601a2ff721ed1794a1827b8431efd425127ac1714f98e745e"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/reviews.go",
+      "start": 898,
+      "end": 898,
+      "digest": "sha256:fd8eec8256fd1b37eaf0f2be9ec0d4e80106b3b6a015799c158a71e517e08e74"
+    }
+  ]
+}

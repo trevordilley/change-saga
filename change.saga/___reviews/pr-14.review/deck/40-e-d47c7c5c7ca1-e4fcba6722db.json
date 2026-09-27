@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/cli/diagram_note_test.go",
+      "digest": "sha256:61deb8ef7533097d3b2231357fa386bebb1f8689fd1630b1a71c8884ae7bd598"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/cli/diagram_note_test.go",
+      "start": 1,
+      "end": 223,
+      "digest": "sha256:61deb8ef7533097d3b2231357fa386bebb1f8689fd1630b1a71c8884ae7bd598"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/elementnotes.go",
+      "start": 58,
+      "end": 97,
+      "digest": "sha256:668ca46afc9fb7103f0e897c3578a22296c749b363f658f442f15bcf77efc65a"
+    }
+  ]
+}

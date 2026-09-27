@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/server.go",
+      "start": 338,
+      "end": 340,
+      "digest": "sha256:d4cc64edafc90f2ad1a5474aae6abc1f5c7643c93e697371acb45c64961e90f4"
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "internal/server/server.go",
+      "start": 968,
+      "end": 968,
+      "digest": "sha256:e99ee33d6ddb205d37124c3e3bab0f6074357468ff67be824f5178882d704460"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/server.go",
+      "start": 338,
+      "end": 342,
+      "digest": "sha256:06bd242b049f5de4d23e879880cb5b0d3708dae121afcbeb69033302c537cb75"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/server.go",
+      "start": 353,
+      "end": 354,
+      "digest": "sha256:6e66a4f7d33a06c3b121a8a5af33c8af12110e9e2e37412c41735c4fbdcfa0fc"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/server.go",
+      "start": 972,
+      "end": 972,
+      "digest": "sha256:a771387593e681f60d1a53f43c40feee415493c8be79061d91a1059930ad66ac"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/server.go",
+      "start": 1768,
+      "end": 1769,
+      "digest": "sha256:4ce7fa2671e56de0e6da6e5b961eb21ddd2ee3d4a8f81251c1066f46abcd7f20"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/server.go",
+      "start": 1783,
+      "end": 1785,
+      "digest": "sha256:bb07bd648a4d2e05b83a98c03595b1225cf20cc18c276bfe2ed055c41cc107d9"
+    },
+    {
+      "commit": "1df937dce8f6ad7021bc9accbdfe735dbbd83fc5",
+      "path": "internal/server/server.go",
+      "start": 1788,
+      "end": 1788,
+      "digest": "sha256:0dba13310ec1189e1c7b4fa9afb7b2e0186b82cdddfbf5c7160eca1942d75c8a"
+    }
+  ]
+}
