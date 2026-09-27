@@ -577,9 +577,18 @@ var commands = []Command{
 		Flags: []Flag{
 			optional("id", "ID", "stable review id; defaults to pr-N for a pull request, else the branch name"), optional("base", "REV", "the revision the pull request merges into; defaults to the pull request's base, else origin's default branch"),
 			optional("repo", "PATH", "code checkout when separate"),
-			optional("head", "REF", "the ref the review follows as commits are pushed; defaults to the checkout's HEAD"),
+			optional("head", "REF", "the ref the review follows as commits are pushed; defaults to the checked-out branch"),
 			optional("pr", "N", "pull request number"), optional("url", "URL", "pull request URL"), optional("title", "TEXT", "review title"),
 			optional("objective", "TEXT", "what the review deck explains"), optional("deck", "ID", "review deck id; defaults to the review id"), jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "review follow", Status: StatusImplemented, Mutates: true, Writes: []string{"review"},
+		Usage:   "change-saga review follow --review ID --head REF [--json] <saga>",
+		Summary: "set the ref an open review follows, usually its pull request's branch, so it never takes a later change for its own",
+		Flags: []Flag{
+			required("review", "ID", "review id"), required("head", "REF", "the ref the review follows"), jsonFlag,
 		},
 		Positionals: sagaOnly,
 	},

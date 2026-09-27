@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -8,7 +9,9 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/areas"
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/nextaction"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
@@ -37,9 +40,10 @@ type documentationState struct {
 }
 
 // reviewOnlyEntries are the top-level entries of a Saga that holds nothing but
-// reviews: what init creates, the reviews, and the review-side records.
+// reviews: what init creates, a companion Saga's sync cursor, the reviews,
+// and the review-side records.
 var reviewOnlyEntries = map[string]bool{
-	saga.ManifestName: true, "README.md": true, saga.ReviewsDir: true, saga.MergesDir: true,
+	saga.ManifestName: true, "README.md": true, saga.CursorName: true, saga.ReviewsDir: true, saga.MergesDir: true,
 	"___claims": true, "___verifications": true,
 }
 
@@ -78,30 +82,125 @@ func documentationOf(root string, asked bool) documentationState {
 	return state
 }
 
-// reviewsOfChange are the open review reports a status is about. Comparing,
-// they are the reviews whose head is the comparison's head: the pull request
-// under review. Observing, every open review is.
-func reviewsOfChange(reports []reviewstate.Report, changes gitdiff.ChangeSet) []reviewstate.Report {
-	if changes.Mode != gitdiff.ModeCompare {
-		return reports
-	}
-	result := []reviewstate.Report{}
+// reviewOfChange is an open review a comparison is about, with its report
+// and, when its own range differs from the comparison, why.
+type reviewOfChange struct {
+	review *saga.Review
+	report reviewstate.Report
+}
+
+// matchReviews finds the open reviews a comparison is about: the reviews
+// whose followed head is the comparison's head, or its second parent when
+// the head is a pull request's merge commit (as a CI checkout of a pull
+// request has). A review is matched by its head alone, so one whose base no
+// longer resolves is still found; a review that follows HEAD without naming
+// a branch is left out once its evidence shows it explained an earlier
+// change. Merged reviews are history and never match.
+func matchReviews(ctx context.Context, checkout string, reviews []*saga.Review, reports []reviewstate.Report, changes gitdiff.ChangeSet) []reviewOfChange {
+	byID := map[string]reviewstate.Report{}
 	for _, report := range reports {
-		if report.Range != nil && report.Range.HeadOID == changes.HeadOID {
-			result = append(result, report)
+		byID[report.ID] = report
+	}
+	heads := map[string]bool{changes.HeadOID: true}
+	if parents := strings.Fields(gitText(ctx, checkout, "rev-list", "--parents", "-n", "1", changes.HeadOID)); len(parents) == 3 {
+		heads[parents[2]] = true
+	}
+	result := []reviewOfChange{}
+	for _, review := range reviews {
+		if review.Merged != nil {
+			continue
 		}
+		head, _, err := reviewstate.ResolveHead(ctx, checkout, review)
+		if err != nil || !heads[head] {
+			continue
+		}
+		if (review.Head == "" || review.Head == "HEAD") && explainedAnEarlierChange(ctx, checkout, review, changes) {
+			continue
+		}
+		result = append(result, reviewOfChange{review: review, report: byID[review.ID]})
 	}
 	return result
+}
+
+// explainedAnEarlierChange reports whether a review that follows HEAD
+// explains a change other than this one: it references code, and none of the
+// commits it pinned is part of this change (an ancestor of the head but not
+// of the comparison's base). Its change landed, or lived on another branch.
+func explainedAnEarlierChange(ctx context.Context, checkout string, review *saga.Review, changes gitdiff.ChangeSet) bool {
+	commits := map[string]bool{}
+	if review.Deck != nil {
+		for _, slide := range review.Deck.Slides {
+			for _, item := range slide.Items {
+				for _, file := range item.Code {
+					for _, reference := range file.References {
+						commits[reference.Commit] = true
+					}
+				}
+			}
+		}
+	}
+	if len(commits) == 0 {
+		return false
+	}
+	for commit := range commits {
+		if isAncestor(ctx, checkout, commit, changes.HeadOID) && !isAncestor(ctx, checkout, commit, changes.BaseOID) {
+			return false
+		}
+	}
+	return true
+}
+
+func isAncestor(ctx context.Context, checkout, ancestor, descendant string) bool {
+	_, err := gitexec.Output(ctx, "-C", checkout, "merge-base", "--is-ancestor", ancestor, descendant)
+	return err == nil
+}
+
+func gitText(ctx context.Context, checkout string, args ...string) string {
+	output, err := gitexec.Output(ctx, append([]string{"-C", checkout}, args...)...)
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(string(output))
 }
 
 // unreviewedReason is why a changed line is uncovered when no review is about
 // the change.
 const unreviewedReason = "no review explains this change yet"
 
-// reviewArea computes the review coverage area: each review of the change
-// over its own range. A comparison with no review of its head leaves every
-// changed line unreviewed.
-func reviewArea(reports []reviewstate.Report, changes gitdiff.ChangeSet) areas.Area {
+// reviewArea computes the review coverage area. Comparing, it is measured
+// over the comparison's own changed lines: each review of the change's Items
+// are evaluated against them, so a review whose range is narrower than the
+// comparison (a stacked pull request) or cannot be read is never reported
+// complete for lines it does not explain. Observing, it is each open review
+// over its own range.
+func reviewArea(ctx context.Context, matched []reviewOfChange, reports []reviewstate.Report, changes gitdiff.ChangeSet, resolver coverage.Resolver) areas.Area {
+	if changes.Mode == gitdiff.ModeCompare {
+		if len(matched) == 0 {
+			return areas.ReviewOverChange(changes.Atoms, nil, func(gitdiff.Atom) string { return unreviewedReason }, "no review follows "+changes.Head+"; create one with change-saga review create")
+		}
+		via := map[string][]string{}
+		notes := []string{}
+		for _, match := range matched {
+			covered := reviewstate.Evaluate(ctx, match.review, changes, resolver)
+			uncovered := map[string]bool{}
+			for _, atom := range covered.Uncovered {
+				uncovered[atom.Key] = true
+			}
+			for _, atom := range changes.Atoms {
+				if !uncovered[atom.Key] {
+					via[atom.Key] = append(via[atom.Key], match.review.Target)
+				}
+			}
+			if note := rangeNote(match, changes); note != "" {
+				notes = append(notes, note)
+			}
+		}
+		reason := "no Item of " + strings.Join(matchedTargets(matched), " or ") + " explains it"
+		if len(notes) > 0 {
+			reason += "; " + strings.Join(notes, "; ")
+		}
+		return areas.ReviewOverChange(changes.Atoms, via, func(gitdiff.Atom) string { return reason }, "measured over this change's changed lines")
+	}
 	inputs := []areas.ReviewInput{}
 	for _, report := range reports {
 		input := areas.ReviewInput{Target: report.Target, Title: report.Title}
@@ -112,24 +211,87 @@ func reviewArea(reports []reviewstate.Report, changes gitdiff.ChangeSet) areas.A
 		}
 		inputs = append(inputs, input)
 	}
-	if changes.Mode == gitdiff.ModeCompare {
-		if len(reports) == 0 {
-			return areas.ReviewArea(nil, changes.Atoms, unreviewedReason, "no review follows "+changes.Head+"; create one with change-saga review create")
-		}
-		return areas.ReviewArea(inputs, nil, "", "each review over its own range")
-	}
 	if len(reports) == 0 {
 		return areas.ReviewArea(nil, nil, "", "no open reviews")
 	}
 	return areas.ReviewArea(inputs, nil, "", "each open review over its own range")
 }
 
+// rangeNote says how a review's own range differs from the comparison: a
+// different base (a stacked pull request), or a range that cannot be read.
+func rangeNote(match reviewOfChange, changes gitdiff.ChangeSet) string {
+	switch rng := match.report.Range; {
+	case rng == nil:
+		return "review " + match.review.ID + "'s own range could not be read (" + firstNonEmpty(strings.Join(match.report.Diagnostics, "; "), "unknown") + ")"
+	case rng.BaseOID != changes.BaseOID:
+		return "review " + match.review.ID + " reviews its own range from " + match.review.Base + ", which differs from this comparison against " + changes.Base
+	}
+	return ""
+}
+
+func matchedTargets(matched []reviewOfChange) []string {
+	result := []string{}
+	for _, match := range matched {
+		result = append(result, match.review.ID)
+	}
+	return result
+}
+
+// reviewAreaActions are the next actions for a comparison's review gaps: a
+// cover command for each file whose lines lie in the review's own range, or,
+// when the review's range differs from the comparison, one action that says
+// so and compares against the review's own base.
+func reviewAreaActions(area areas.Area, matched []reviewOfChange, changes gitdiff.ChangeSet, root, repo string) []nextaction.Action {
+	if len(matched) == 0 || area.Complete {
+		return nil
+	}
+	for _, match := range matched {
+		if note := rangeNote(match, changes); note != "" {
+			values := []grammar.Value{grammar.V("against", match.review.Base)}
+			if repo != "" {
+				values = append(values, grammar.V("repo", repo))
+			}
+			return []nextaction.Action{{
+				ID: "review:range:" + match.review.ID, Kind: nextaction.KindCommand, Category: nextaction.CategoryReview, Resource: match.review.Target,
+				Reason:  fmt.Sprintf("%d changed lines of %s..%s are explained by no review Item; %s. Explain the rest in the review of that base, or compare against the review's own base", area.Uncovered, changes.Base, changes.Head, note),
+				Command: ptrInvocation(grammar.MustInvoke("status", root, values...)),
+			}}
+		}
+	}
+	files := map[string]int{}
+	order := []string{}
+	for _, entry := range area.UncoveredEntries {
+		if _, seen := files[entry.Resource]; !seen {
+			order = append(order, entry.Resource)
+		}
+		files[entry.Resource] += entry.Count
+	}
+	actions := []nextaction.Action{}
+	target := matched[0].review.Target
+	for _, path := range order {
+		values := []grammar.Value{grammar.V("target", ""), grammar.V("path", path), grammar.V("changed-lines", "true")}
+		if repo != "" {
+			values = append(values, grammar.V("repo", repo))
+		}
+		actions = append(actions, nextaction.Action{
+			ID: "review:uncovered:" + matched[0].review.ID + ":" + path, Kind: nextaction.KindCommand, Category: nextaction.CategoryReview, Resource: target,
+			Reason:  fmt.Sprintf("%d changed lines or file events of %s are explained by no review Item; cover them from the review Item that explains them (%s:slide:<slide>:item:<item>)", files[path], path, target),
+			Command: ptrInvocation(grammar.MustInvoke("cover", root, values...)),
+		})
+	}
+	return actions
+}
+
 // createReviewAction is the next action for a change no review explains yet.
-func createReviewAction(changes gitdiff.ChangeSet, root string) nextaction.Action {
+func createReviewAction(changes gitdiff.ChangeSet, root, repo string) nextaction.Action {
+	values := []grammar.Value{grammar.V("base", changes.Base)}
+	if repo != "" {
+		values = append(values, grammar.V("repo", repo))
+	}
 	return nextaction.Action{
 		ID: "review:create", Kind: nextaction.KindCommand, Category: nextaction.CategoryReview,
 		Reason:  fmt.Sprintf("no review explains the %d changed lines of %s..%s yet; create one, then explain the change's architecture on its slides", len(changes.Atoms), changes.Base, changes.Head),
-		Command: ptrInvocation(grammar.MustInvoke("review create", root, grammar.V("base", changes.Base))),
+		Command: ptrInvocation(grammar.MustInvoke("review create", root, values...)),
 	}
 }
 
@@ -162,7 +324,11 @@ func printReviewHeadline(out io.Writer, status statusDocument, maxItems int) {
 		return
 	case comparing && len(status.ChangeReviews) == 0:
 		fmt.Fprintf(out, "\nReview: none yet. No review explains the %d changed lines of this change.\n", area.Total)
-		fmt.Fprintf(out, "  Create one: change-saga review create --base %s %s\n", status.Opening.Against, status.sagaPath)
+		repo := ""
+		if status.repoFlag != "" {
+			repo = " --repo " + shellJoin([]string{status.repoFlag})
+		}
+		fmt.Fprintf(out, "  Create one: change-saga review create --base %s%s %s\n", shellJoin([]string{status.Opening.Against}), repo, shellJoin([]string{status.sagaPath}))
 		return
 	case len(status.ChangeReviews) == 0:
 		return
@@ -171,7 +337,14 @@ func printReviewHeadline(out io.Writer, status statusDocument, maxItems int) {
 	if len(status.ChangeReviews) > 1 {
 		label = "Reviews " + strings.Join(status.ChangeReviews, ", ") + ": their decks explain"
 	}
-	fmt.Fprintf(out, "\n%s %d of %d changed lines and file events of the pull request", label, area.Covered, area.Total)
+	subject := "this change"
+	if !comparing {
+		subject = "their own ranges"
+		if len(status.ChangeReviews) == 1 {
+			subject = "its own range"
+		}
+	}
+	fmt.Fprintf(out, "\n%s %d of %d changed lines and file events of %s", label, area.Covered, area.Total, subject)
 	if area.Complete {
 		fmt.Fprintln(out, " — every changed line is explained.")
 	} else {

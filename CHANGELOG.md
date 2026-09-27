@@ -17,11 +17,25 @@
   report. Exit codes are unchanged.
 - `check --covers review` asks whether the pull request's review deck explains
   every changed line (exit 0) or not (exit 3); a change with no review is
-  uncovered.
-- `review create` no longer needs `--id` or `--base`: it reads the pull request
-  through `gh` when installed and origin is on GitHub, else uses origin's
-  default branch and names the review after the branch (`pr-N` with `--pr`).
-  Explicit flags still win; `CHANGE_SAGA_NO_GH=1` skips `gh`.
+  uncovered. Comparing, the review area is measured over the comparison's own
+  changed lines, so a stacked pull request's review (which covers only its own
+  range) never reports the whole change complete. Reviews are matched by the
+  branch they follow, also in a CI checkout without local branches or on
+  GitHub's pull request merge commit, and also when their base branch was
+  deleted; a review that follows HEAD is not taken for a later change once its
+  evidence has landed.
+- Every comparison with changed lines and no matching review gets a
+  non-blocking "create a review" next action, in any Saga.
+- README: "Use it in CI", an opt-in GitHub Actions gate with `check --covers
+  review`. This repository's CI runs that gate on its own pull requests.
+- `review create` no longer needs `--id` or `--base`: it records the
+  checked-out branch as the ref the review follows, reads that branch's pull
+  request through `gh` when installed and origin is on GitHub, else uses
+  origin's default branch (preferring `origin/<branch>`) and names the review
+  after the branch (`pr-N` with `--pr`). Explicit flags still win;
+  `CHANGE_SAGA_NO_GH=1` skips `gh`. `--json` reports what was worked out.
+- `review follow --review ID --head REF` pins an existing review to its
+  branch.
 - `query children` navigates reviews (review, deck, slides, Items), an unknown
   `cover` target lists the open reviews' slides and Items, and `review list`
   names each stale reference's evidence record for `replace-coverage`.

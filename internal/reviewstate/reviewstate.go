@@ -56,19 +56,40 @@ func ResolveRange(ctx context.Context, checkout string, review *saga.Review) (Ra
 		}
 		return Range{}, fmt.Errorf("review %s is frozen at %s..%s, and neither those commits nor the landed commit %s are in %s", review.ID, short(merged.Base), short(merged.Head), short(merged.Landed), checkout)
 	}
-	following := review.Head
-	if following == "" {
-		following = "HEAD"
-	}
-	head, err := revParse(ctx, checkout, following+"^{commit}")
+	head, following, err := ResolveHead(ctx, checkout, review)
 	if err != nil {
-		return Range{}, fmt.Errorf("review %s follows %s, which does not resolve in %s", review.ID, following, checkout)
+		return Range{}, err
 	}
+	// A CI checkout often has origin's branches but no local ones, so a base
+	// named as a branch falls back to origin's.
 	base, err := gitOutput(ctx, checkout, "merge-base", review.Base, head)
+	if err != nil && !strings.HasPrefix(review.Base, "origin/") {
+		base, err = gitOutput(ctx, checkout, "merge-base", "origin/"+review.Base, head)
+	}
 	if err != nil {
 		return Range{}, fmt.Errorf("review %s: no merge-base between %s and %s", review.ID, review.Base, short(head))
 	}
 	return Range{BaseOID: base, HeadOID: head, Following: following}, nil
+}
+
+// ResolveHead resolves the head an open review follows: its --head ref (or
+// origin's branch of that name, as a CI checkout has), or HEAD when it names
+// none. It returns the commit and the ref that resolved.
+func ResolveHead(ctx context.Context, checkout string, review *saga.Review) (string, string, error) {
+	following := review.Head
+	if following == "" {
+		following = "HEAD"
+	}
+	candidates := []string{following}
+	if following != "HEAD" && !strings.HasPrefix(following, "origin/") {
+		candidates = append(candidates, "origin/"+following)
+	}
+	for _, candidate := range candidates {
+		if head, err := revParse(ctx, checkout, candidate+"^{commit}"); err == nil {
+			return head, candidate, nil
+		}
+	}
+	return "", "", fmt.Errorf("review %s follows %s, which does not resolve in %s", review.ID, following, checkout)
 }
 
 // Report is one review, slide by slide.

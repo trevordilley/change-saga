@@ -279,6 +279,29 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 	return written, err
 }
 
+// Follow sets the ref an open review follows, rewriting review.json. A
+// merged review is history and keeps its frozen range.
+func Follow(root, reviewID, head string) error {
+	if head == "" || strings.ContainsAny(head, " \t\n") {
+		return fmt.Errorf("--head must name one ref, for example the pull request's branch")
+	}
+	return mutate(root, func(document *saga.Saga) error {
+		review := document.FindReview(reviewID)
+		if review == nil {
+			return fmt.Errorf("review %q does not exist", reviewID)
+		}
+		if review.Merged != nil {
+			return fmt.Errorf("review %q is history: its change landed as %s", review.ID, review.Merged.Landed)
+		}
+		manifest := review.ReviewManifest
+		manifest.Head = head
+		if err := saga.ValidateReviewManifest(manifest); err != nil {
+			return err
+		}
+		return store.WriteJSON(filepath.Join(review.Directory, saga.ReviewManifestName), manifest, false)
+	})
+}
+
 // Freeze records the exact commits of a landed review in review.json.
 func Freeze(root, reviewID string, merged saga.ReviewMerge) error {
 	return mutate(root, func(document *saga.Saga) error {

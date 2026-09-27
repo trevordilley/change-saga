@@ -54,6 +54,47 @@ change-saga open --against main change.saga          # the reviewer
 Sagafying a pull request is the best way to learn the tool. Nothing else is
 needed.
 
+## Use it in CI
+
+Once a team creates reviews, it can make them part of its pull request gate.
+That is the team's policy, opted into in its own workflow; the tool never
+requires it. This GitHub Actions workflow fails a pull request whose review
+deck does not explain every changed line:
+
+```yaml
+name: Change Saga
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Review ranges and merge-bases need the full history.
+          fetch-depth: 0
+          # Check the pull request's own head rather than GitHub's merge commit.
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Install change-saga
+        # Pin a release that has check --covers review (v0.2.0 or later).
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/twentyideas/changesaga/v0.2.0/scripts/install.sh | sh -s -- --version v0.2.0 --dir "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: The review deck explains every changed line
+        run: change-saga check --covers review --against origin/${{ github.base_ref }} change.saga
+      # Once the Saga holds living documentation, a team may also keep it
+      # from going stale:
+      # - name: Existing documentation stays healthy
+      #   run: change-saga check --covers health change.saga
+```
+
+`check` exits 0 when the named areas are covered, 3 when one has a gap (it
+prints only those gaps), and 1 when its report cannot be trusted, such as a
+malformed Saga. A team names only the areas it wants; the
+[CI rules](skills/change-saga/references/ci.md) describe the others and how
+to write rules over `status --json`.
+
 ## Grow gradually
 
 A Saga of reviews alone is complete, and many teams never need more. If the

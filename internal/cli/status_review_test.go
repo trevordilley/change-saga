@@ -71,7 +71,7 @@ func TestStatusOfAReviewOnlySagaLeadsWithTheReview(t *testing.T) {
 	fixture := newReviewOnlyFixture(t, true)
 	text := statusText(t, fixture.root, "--repo", fixture.repo, "--against", "main")
 	for _, want := range []string{
-		"Review pr-7: its deck explains 6 of 6 changed lines and file events of the pull request — every changed line is explained.",
+		"Review pr-7: its deck explains 6 of 6 changed lines and file events of this change — every changed line is explained.",
 		"Next actions: none. The review deck explains every changed line",
 	} {
 		if !strings.Contains(text, want) {

@@ -30,7 +30,7 @@ const ghTimeout = 10 * time.Second
 // for the pull request of the checkout's branch. Anything that goes wrong
 // means there is nothing to detect: gh is never required.
 // CHANGE_SAGA_NO_GH=1 turns detection off.
-func detectPullRequest(ctx context.Context, repo string) (pullRequestInfo, bool) {
+func detectPullRequest(ctx context.Context, repo, branch string) (pullRequestInfo, bool) {
 	if os.Getenv("CHANGE_SAGA_NO_GH") != "" {
 		return pullRequestInfo{}, false
 	}
@@ -43,8 +43,16 @@ func detectPullRequest(ctx context.Context, repo string) (pullRequestInfo, bool)
 	}
 	ctx, cancel := context.WithTimeout(ctx, ghTimeout)
 	defer cancel()
-	command := exec.CommandContext(ctx, "gh", "pr", "view", "--json", "number,url,title,baseRefName")
+	// Asked about the branch the review follows, not whatever is checked out.
+	args := []string{"pr", "view", "--json", "number,url,title,baseRefName"}
+	if branch != "" {
+		args = append(args, strings.TrimPrefix(branch, "origin/"))
+	}
+	command := exec.CommandContext(ctx, "gh", args...)
 	command.Dir = repo
+	// gh may run child processes that keep its output open; the timeout must
+	// still bound the whole call.
+	command.WaitDelay = time.Second
 	output, err := command.Output()
 	if err != nil {
 		return pullRequestInfo{}, false
@@ -56,10 +64,12 @@ func detectPullRequest(ctx context.Context, repo string) (pullRequestInfo, bool)
 	return value, true
 }
 
-// localOrOriginRef names branch as the checkout knows it: the local branch
-// when there is one, else origin's remote-tracking branch.
+// localOrOriginRef names branch as every checkout knows it: origin's
+// remote-tracking branch when there is one, since a CI checkout has origin's
+// branches but rarely local ones (and a local branch may be stale), else the
+// local branch.
 func localOrOriginRef(ctx context.Context, repo, branch string) (string, bool) {
-	for _, candidate := range []string{branch, "origin/" + branch} {
+	for _, candidate := range []string{"origin/" + branch, branch} {
 		if _, err := gitexec.RepoOutput(ctx, repo, "rev-parse", "--verify", "-q", candidate+"^{commit}"); err == nil {
 			return candidate, true
 		}
@@ -107,8 +117,16 @@ type reviewCreateInputs struct {
 // and the id from the pull request number or the branch name. Explicit flags
 // always win.
 func fillReviewDefaults(ctx context.Context, repo string, in reviewCreateInputs) (reviewCreateInputs, error) {
+	// A review follows its branch, not whatever HEAD later points at, so a
+	// review created on a branch records it: once the change lands, the next
+	// branch's comparisons are not taken for this review's.
+	branch := currentBranch(ctx, repo)
+	if in.head == "" && branch != "" {
+		in.head = branch
+		in.inferred = append(in.inferred, "head "+branch)
+	}
 	if in.id == "" || in.base == "" || (in.number == 0 && in.url == "") {
-		if pr, ok := detectPullRequest(ctx, repo); ok && (in.number == 0 || in.number == pr.Number) {
+		if pr, ok := detectPullRequest(ctx, repo, in.head); ok && (in.number == 0 || in.number == pr.Number) {
 			if in.number == 0 && in.url == "" {
 				in.number, in.url = pr.Number, pr.URL
 				in.inferred = append(in.inferred, fmt.Sprintf("pull request #%d (gh)", pr.Number))
@@ -133,13 +151,11 @@ func fillReviewDefaults(ctx context.Context, repo string, in reviewCreateInputs)
 		in.inferred = append(in.inferred, "base "+base+" ("+source+")")
 	}
 	if in.id == "" {
-		switch branch := currentBranch(ctx, repo); {
+		switch {
 		case in.number > 0:
 			in.id = fmt.Sprintf("pr-%d", in.number)
-		case in.head != "":
+		case in.head != "" && strings.TrimPrefix(in.head, "origin/") != strings.TrimPrefix(in.base, "origin/"):
 			in.id = store.Slug(strings.TrimPrefix(in.head, "origin/"))
-		case branch != "" && branch != strings.TrimPrefix(in.base, "origin/"):
-			in.id = store.Slug(branch)
 		default:
 			return in, fmt.Errorf("cannot name the review: the checkout is not on a pull request's branch; pass --id (for example pr-42) or --pr N")
 		}

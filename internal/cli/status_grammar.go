@@ -50,7 +50,7 @@ type statusDocument struct {
 	// status.
 	Reviews []reviewstate.Report `json:"reviews"`
 	// ChangeReviews names the reviews the review area measured: comparing,
-	// the open reviews whose head is the comparison's head; observing, every
+	// the open reviews that follow the comparison's head; observing, every
 	// open review.
 	ChangeReviews []string `json:"change_reviews"`
 	// Documentation says whether the Saga documents the application beyond
@@ -58,8 +58,9 @@ type statusDocument struct {
 	Documentation documentationState  `json:"documentation"`
 	NextActions   []nextaction.Action `json:"next_actions"`
 	AuthoringLoop nextaction.Loop     `json:"authoring_loop"`
-	// sagaPath is the Saga as the command was given it, for printed commands.
-	sagaPath string
+	// sagaPath is the Saga as the command was given it, and repoFlag the
+	// --repo it was given, for printed commands.
+	sagaPath, repoFlag string
 }
 
 // opening names how a Saga was opened: observe one commit, or compare head
@@ -174,22 +175,51 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		document.Comparison = &layers
 	}
 	document.Coverage = areas.Evaluate(coverageInputs(value.document, value.changes, value.report, living, document.Comparison, feature))
-	ofChange := reviewsOfChange(document.Reviews, value.changes)
 	document.ChangeReviews = []string{}
-	for _, report := range ofChange {
-		document.ChangeReviews = append(document.ChangeReviews, report.ID)
+	var matched []reviewOfChange
+	if value.changes.Mode == gitdiff.ModeCompare {
+		matched = matchReviews(ctx, value.checkout, open, document.Reviews, value.changes)
+		for _, match := range matched {
+			document.ChangeReviews = append(document.ChangeReviews, match.review.ID)
+		}
+	} else {
+		for _, report := range document.Reviews {
+			document.ChangeReviews = append(document.ChangeReviews, report.ID)
+		}
 	}
-	document.Coverage.Areas.Review = reviewArea(ofChange, value.changes)
+	document.Coverage.Areas.Review = reviewArea(ctx, matched, document.Reviews, value.changes, resolver)
 	document.Documentation = documentationOf(root, false)
-	document.sagaPath = root
+	document.sagaPath, document.repoFlag = root, repoDir
 	document.NextActions = nextaction.Derive(living, root, nextaction.Context{Coverage: document.Coverage, Places: storyPlaces(value.document), DesignFeatures: designFeatures(value.document)})
-	document.NextActions = append(document.NextActions, nextaction.Reviews(document.Reviews, root)...)
-	// A review-only Saga explains a change with its review, so a change no
-	// review explains yet asks for one.
-	if !document.Documentation.LivingDocumentation && value.changes.Mode == gitdiff.ModeCompare && len(ofChange) == 0 && len(value.changes.Atoms) > 0 {
-		document.NextActions = append(document.NextActions, createReviewAction(value.changes, root))
+	var reviewActions []nextaction.Action
+	switch {
+	case value.changes.Mode != gitdiff.ModeCompare:
+		// Observing, each open review's own gaps are the review's work.
+		reviewActions = nextaction.Reviews(document.Reviews, root)
+	case len(matched) > 0:
+		reviewActions = reviewAreaActions(document.Coverage.Areas.Review, matched, value.changes, root, repoDir)
+	case len(value.changes.Atoms) > 0:
+		// Every pull request gets a review, so a change no review explains
+		// asks for one. It is a suggestion, never part of the exit status.
+		reviewActions = []nextaction.Action{createReviewAction(value.changes, root, repoDir)}
 	}
+	document.NextActions = beforeGrowth(document.NextActions, reviewActions)
 	return document, nil
+}
+
+// beforeGrowth inserts review actions after the required work and before
+// the growth suggestions, which always come last.
+func beforeGrowth(actions, review []nextaction.Action) []nextaction.Action {
+	index := len(actions)
+	for position, action := range actions {
+		if action.Category == nextaction.CategoryGrowth {
+			index = position
+			break
+		}
+	}
+	result := append([]nextaction.Action{}, actions[:index]...)
+	result = append(result, review...)
+	return append(result, actions[index:]...)
 }
 
 // trustworthy reports why the status report cannot be trusted, if it
@@ -578,7 +608,7 @@ func livingSpec() map[string]any {
 		"coverage_report": map[string]any{
 			"areas": areaNames(),
 			"area_rules": map[string]string{
-				"review":         "every changed line is explained by the change's review deck: comparing, the open reviews whose head is the comparison's head, each over its own range (a change with no review is uncovered); observing, every open review over its own range",
+				"review":         "every changed line is explained by the change's review deck: comparing, measured over the comparison's own changed lines against the Items of the open reviews that follow its head (a stacked review answers only for the lines its Items explain; a change with no review is uncovered); observing, every open review over its own range",
 				"implementation": "every changed line is referenced by the implementation deck (or a narrative target), or, for test code, by its test case's evidence",
 				"stories":        "every changed line reaches a story through the chain",
 				"personas":       "every changed line reaches a persona",

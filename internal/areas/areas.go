@@ -541,6 +541,26 @@ func ReviewArea(reviews []ReviewInput, unreviewed []gitdiff.Atom, unreviewedReas
 	return area
 }
 
+// ReviewOverChange is the review area of a comparison: every changed line
+// and file event of the change itself, covered by the reviews whose Items
+// explain it (via, keyed by atom key), or uncovered for reason(atom). It is
+// measured over the change, never over a review's own range, so a review
+// whose range is narrower than the change cannot report it complete.
+func ReviewOverChange(atoms []gitdiff.Atom, via map[string][]string, reason func(gitdiff.Atom) string, note string) Area {
+	group := lines{area: Review}
+	for _, atom := range atoms {
+		covering := via[atom.Key]
+		why := ""
+		if len(covering) == 0 {
+			why = reason(atom)
+		}
+		group.add(atom, "", covering, nil, why)
+	}
+	area := group.finish()
+	area.Note = note
+	return area
+}
+
 func newArea(name Name, unit Unit) Area {
 	return Area{Area: name, Unit: unit, CoveredEntries: []Entry{}, UncoveredEntries: []Entry{}}
 }

@@ -16,7 +16,7 @@ is named.
 
 | Area | Covered when |
 | --- | --- |
-| `review` | every changed line is explained by the pull request's review deck: the open review whose head is the comparison's head, over its own range; a change with no review is uncovered |
+| `review` | every changed line of the comparison is explained by the pull request's review deck: the open review that follows the comparison's head; a change with no review is uncovered |
 | `implementation` | every changed line is referenced by the implementation deck, or test code by its test case's evidence |
 | `stories` | every changed line reaches a story through the chain |
 | `personas` | every changed line reaches a persona |
@@ -28,7 +28,24 @@ With `--against`, the scope is the change: what it changed and what it
 affected. Without it, the scope is the whole app. `--feature` narrows either.
 
 `review` needs nothing but the review deck, so it is the rule most teams start
-with: does this pull request's review deck explain every changed line?
+with: does this pull request's review deck explain every changed line? It is
+measured over the comparison's own changed lines, so a stacked pull request's
+review, which covers only its own range, does not answer for its base branch's
+lines. A CI checkout needs the full history (`fetch-depth: 0`); compare against
+`origin/<base branch>`, since CI rarely has local branches. Reviews are found by
+the branch they follow (review create records it), including in a detached
+checkout of the pull request's head or of GitHub's merge commit. The README's
+"Use it in CI" section has a complete GitHub Actions workflow:
+
+```yaml
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: change-saga check --covers review --against origin/${{ github.base_ref }} change.saga
+      # Once the Saga holds living documentation:
+      # - run: change-saga check --covers health change.saga
+```
 
 ```sh
 # The pull request's review deck explains every changed line.
@@ -61,7 +78,7 @@ fresh pins and complete coverage do not prove semantic correctness.
   "coverage": {
     "scope": { "kind": "change", "against": "origin/main", "head": "HEAD" },
     "areas": {
-      "review": { "area": "review", "unit": "changed_line", "total": 412, "covered": 412, "uncovered": 0, "complete": true, "note": "each review over its own range" },
+      "review": { "area": "review", "unit": "changed_line", "total": 412, "covered": 412, "uncovered": 0, "complete": true, "note": "measured over this change's changed lines" },
       "implementation": {
         "area": "implementation", "unit": "changed_line",
         "total": 412, "covered": 412, "uncovered": 0, "complete": true,
