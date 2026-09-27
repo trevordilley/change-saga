@@ -2,12 +2,1086 @@
   "version": 1,
   "deck": "documentation-coverage",
   "slide": "review-first-status",
-  "current": "sha256:e5447c7497b3f52fcceb0127568d2412a67e25e13b9ed613e061091f7201352d",
+  "current": "sha256:28839b1c92d5655caca68adec28d2d26f84984560d50e1aa8e9d7faa4c88b434",
   "revisions": [
     {
       "snapshot": "sha256:e5447c7497b3f52fcceb0127568d2412a67e25e13b9ed613e061091f7201352d",
       "request_id": "review-first-status-create",
       "created_at": "2026-09-27T10:55:22.826992Z",
+      "asset": "24-a-1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882.svg",
+      "asset_digest": "sha256:1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882246900d7d83e",
+      "slide": {
+        "version": 4,
+        "id": "review-first-status",
+        "deck": "documentation-coverage",
+        "title": "Status leads with the review deck",
+        "rank": 60,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882.svg",
+        "takeaway": "A comparison finds its open review by branch or evidence; status leads with how much of the change its deck explains, and check --covers review asks it for CI.",
+        "reading_order": [
+          "review-match",
+          "review-area",
+          "review-headline",
+          "check-covers-review",
+          "report-kind",
+          "review-create-defaults"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "review-match",
+            "slide": "review-first-status",
+            "rank": 0,
+            "kind": "node",
+            "label": "matchReviews: which open review this change is",
+            "description": "A review naming a branch matches when that branch, or origin's, is the head or the merge commit's second parent; if the branch is absent, when its evidence is in the change. Merged reviews never match.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-match"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_review.go",
+                  "start": 92,
+                  "end": 181,
+                  "digest": "sha256:096711b8dca74aa2f8a88466a38d02a818846e6849ca72b77e297aec9f98a66c",
+                  "note": "Matching reviews to a comparison."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/review_match_test.go",
+                  "start": 148,
+                  "end": 219,
+                  "digest": "sha256:8b9321d1e99e5bb6227181afb88c348151df444a19923da880d42d8aae13b0f2",
+                  "note": "A landed review does not claim the next change; CI checkouts, forks and merge commits match."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-match-scoped-coverage-check-selected-scope",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "With --against, the review measured is the open review whose branch or evidence this comparison is."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-area",
+            "slide": "review-first-status",
+            "rank": 10,
+            "kind": "node",
+            "label": "The review area is measured over the change",
+            "description": "Each matched review's Items are evaluated per atom of the comparison, so a stacked review never covers lines it does not explain; with no review, every line is uncovered and status says so.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-area"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_review.go",
+                  "start": 196,
+                  "end": 265,
+                  "digest": "sha256:7967342a7a7cd2e11fadc50c21a11b2fa5d78144322df7f89fe8610d46f3a6ed",
+                  "note": "reviewArea and the review area's place in the area list."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/areas/areas.go",
+                  "start": 544,
+                  "end": 562,
+                  "digest": "sha256:099508997a048e9c5f79ac91a863101323504df9d5a856a05c4cf7426fe0a970",
+                  "note": "reviewArea and the review area's place in the area list."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-area-changed-code-explained-separate-states",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The review area reports each changed line as covered, uncovered or stale by the matched review's Items."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-headline",
+            "slide": "review-first-status",
+            "rank": 20,
+            "kind": "node",
+            "label": "The headline: how much the deck explains",
+            "description": "Status leads with the review deck explaining N of M changed lines, or none yet with the review create command to run, and prints only the review, its stale references and its actions.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-headline"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_review.go",
+                  "start": 373,
+                  "end": 414,
+                  "digest": "sha256:981107ae32fd2c920ece1d00ff616c802c723c3782783db1eda7c96417ced9bc",
+                  "note": "The review headline and the review-first printer."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_grammar.go",
+                  "start": 330,
+                  "end": 338,
+                  "digest": "sha256:8f85dab4571155d6366f311e507f55c43ee78b2c66efe24f63bff0c7fa025461",
+                  "note": "The review headline and the review-first printer."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_review_test.go",
+                  "start": 70,
+                  "end": 170,
+                  "digest": "sha256:9e1b22862cd4ef93cc3ee5a246057f62ceed1d46d2a1bd41e920e0e1d39ff7a5",
+                  "note": "Review-only headline, --full, the unreviewed ask and the living report."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-headline-changed-code-explained-no-verdict",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The headline reports how many changed lines the deck explains and never declares the change approved."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "check-covers-review",
+            "slide": "review-first-status",
+            "rank": 30,
+            "kind": "node",
+            "label": "check --covers review exits 0 or 3",
+            "description": "areas.Parse validates the named areas and keeps their order; check reports only those areas, exits 0 when all are complete, 3 on any gap, and 1 when the report cannot be trusted. Review is the first area.",
+            "selector": {
+              "type": "element",
+              "element_id": "check-covers-review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/check.go",
+                  "start": 28,
+                  "end": 81,
+                  "digest": "sha256:e04c195aa52783637224a04ec13e87d57efe0b67003d7bb85a19b41bf72956f8",
+                  "note": "Check and the area list."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/areas/areas.go",
+                  "start": 20,
+                  "end": 65,
+                  "digest": "sha256:a24a429570b10481e49134b861b8fda41373ad5d2e559b770afad7f34c4a2a11",
+                  "note": "Check and the area list."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "check-covers-review-scoped-coverage-check-result-codes",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:result-codes",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "check --covers review exits 0 when the deck explains every changed line, 3 on a gap, and never 3 for an untrusted report."
+            },
+            {
+              "id": "check-covers-review-scoped-coverage-check-selected-areas",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-areas",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "Only the named areas are evaluated and returned, in the order given."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "report-kind",
+            "slide": "review-first-status",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Review-first or full report",
+            "description": "A Saga holding only reviews, merges, claims and verifications is reported review first; any living documentation, or status --full, gives the full report. JSON always carries every area.",
+            "selector": {
+              "type": "element",
+              "element_id": "report-kind"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_review.go",
+                  "start": 21,
+                  "end": 83,
+                  "digest": "sha256:6687ef11c69f7c5d9ad7c56057c9dc36b995263c38e2fb26bafd324803920028",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_review.go",
+                  "start": 356,
+                  "end": 371,
+                  "digest": "sha256:a8a58d60a03b711df2cfde0fe121a5494e71b4aa53e353f63f49b05b1b88b580",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/cli.go",
+                  "start": 1084,
+                  "end": 1115,
+                  "digest": "sha256:e80bafe50eb8e6c866b7b8dbda172cce8d096f88a99b70c89cdcff437bed2c66",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "report-kind-documentation-gaps-visible-separate-areas",
+              "criterion": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:separate-areas",
+              "story_revision": "urn:change-saga:change-saga:story:documentation-gaps-visible:revision:r1",
+              "rationale": "With living documentation, --full or --json, status reports every area separately with its covered and uncovered entries."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-create-defaults",
+            "slide": "review-first-status",
+            "rank": 50,
+            "kind": "node",
+            "label": "review create works out PR, base and id",
+            "description": "The head is the current branch; gh supplies PR number, URL, title and base when installed and origin is on GitHub. Otherwise the base is origin's default branch, then main or master; the id is pr-N or the branch.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-create-defaults"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/review_defaults.go",
+                  "start": 33,
+                  "end": 96,
+                  "digest": "sha256:04639005bc41681f655c9c29d02b84a75c5a2cabcfdb919ba4abdcc596af2d11",
+                  "note": "Pull request detection and the defaults it fills."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/review_defaults.go",
+                  "start": 115,
+                  "end": 168,
+                  "digest": "sha256:b726e8e6b84c936116fc83287ef27afc2ef12b64782ebf8d3670b104909735b6",
+                  "note": "Pull request detection and the defaults it fills."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/review_defaults_test.go",
+                  "start": 14,
+                  "end": 66,
+                  "digest": "sha256:38174fd829fd59ed520f9aa928ae2519b8039631f55e3e0bb74c5d73f7098fae",
+                  "note": "Defaults from gh and from origin."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-create-defaults-scoped-coverage-check-selected-scope",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "review create records the branch and base by which a later comparison finds this review."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-ca2b56a77e6637b35c238f9f105bc51e81dc3f1c9508e77055ba.json",
+        "source_digest": "sha256:ca2b56a77e6637b35c238f9f105bc51e81dc3f1c9508e77055baf4c7ae17be53",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:c8605cad7807456dcdee917e249d591491883ca74c4d5fa2bb0e2e40c68744ca",
+      "parent_snapshots": [
+        "sha256:e5447c7497b3f52fcceb0127568d2412a67e25e13b9ed613e061091f7201352d"
+      ],
+      "request_id": "repin-onto-9e11d73c6790cd07",
+      "created_at": "2026-09-27T11:42:55.554218Z",
+      "asset": "24-a-1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882.svg",
+      "asset_digest": "sha256:1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882246900d7d83e",
+      "slide": {
+        "version": 4,
+        "id": "review-first-status",
+        "deck": "documentation-coverage",
+        "title": "Status leads with the review deck",
+        "rank": 60,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882.svg",
+        "takeaway": "A comparison finds its open review by branch or evidence; status leads with how much of the change its deck explains, and check --covers review asks it for CI.",
+        "reading_order": [
+          "review-match",
+          "review-area",
+          "review-headline",
+          "check-covers-review",
+          "report-kind",
+          "review-create-defaults"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "review-match",
+            "slide": "review-first-status",
+            "rank": 0,
+            "kind": "node",
+            "label": "matchReviews: which open review this change is",
+            "description": "A review naming a branch matches when that branch, or origin's, is the head or the merge commit's second parent; if the branch is absent, when its evidence is in the change. Merged reviews never match.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-match"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/status_review.go",
+                  "start": 92,
+                  "end": 181,
+                  "digest": "sha256:096711b8dca74aa2f8a88466a38d02a818846e6849ca72b77e297aec9f98a66c",
+                  "note": "Matching reviews to a comparison."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/review_match_test.go",
+                  "start": 148,
+                  "end": 219,
+                  "digest": "sha256:8b9321d1e99e5bb6227181afb88c348151df444a19923da880d42d8aae13b0f2",
+                  "note": "A landed review does not claim the next change; CI checkouts, forks and merge commits match."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-match-scoped-coverage-check-selected-scope",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "With --against, the review measured is the open review whose branch or evidence this comparison is."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-area",
+            "slide": "review-first-status",
+            "rank": 10,
+            "kind": "node",
+            "label": "The review area is measured over the change",
+            "description": "Each matched review's Items are evaluated per atom of the comparison, so a stacked review never covers lines it does not explain; with no review, every line is uncovered and status says so.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-area"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_review.go",
+                  "start": 196,
+                  "end": 265,
+                  "digest": "sha256:7967342a7a7cd2e11fadc50c21a11b2fa5d78144322df7f89fe8610d46f3a6ed",
+                  "note": "reviewArea and the review area's place in the area list."
+                },
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/areas/areas.go",
+                  "start": 544,
+                  "end": 562,
+                  "digest": "sha256:099508997a048e9c5f79ac91a863101323504df9d5a856a05c4cf7426fe0a970",
+                  "note": "reviewArea and the review area's place in the area list."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-area-changed-code-explained-separate-states",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The review area reports each changed line as covered, uncovered or stale by the matched review's Items."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-headline",
+            "slide": "review-first-status",
+            "rank": 20,
+            "kind": "node",
+            "label": "The headline: how much the deck explains",
+            "description": "Status leads with the review deck explaining N of M changed lines, or none yet with the review create command to run, and prints only the review, its stale references and its actions.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-headline"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/status_review.go",
+                  "start": 373,
+                  "end": 414,
+                  "digest": "sha256:981107ae32fd2c920ece1d00ff616c802c723c3782783db1eda7c96417ced9bc",
+                  "note": "The review headline and the review-first printer."
+                },
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/status_grammar.go",
+                  "start": 316,
+                  "end": 324,
+                  "digest": "sha256:8f85dab4571155d6366f311e507f55c43ee78b2c66efe24f63bff0c7fa025461",
+                  "note": "The review headline and the review-first printer."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/status_review_test.go",
+                  "start": 70,
+                  "end": 170,
+                  "digest": "sha256:9e1b22862cd4ef93cc3ee5a246057f62ceed1d46d2a1bd41e920e0e1d39ff7a5",
+                  "note": "Review-only headline, --full, the unreviewed ask and the living report."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-headline-changed-code-explained-no-verdict",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The headline reports how many changed lines the deck explains and never declares the change approved."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "check-covers-review",
+            "slide": "review-first-status",
+            "rank": 30,
+            "kind": "node",
+            "label": "check --covers review exits 0 or 3",
+            "description": "areas.Parse validates the named areas and keeps their order; check reports only those areas, exits 0 when all are complete, 3 on any gap, and 1 when the report cannot be trusted. Review is the first area.",
+            "selector": {
+              "type": "element",
+              "element_id": "check-covers-review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/check.go",
+                  "start": 28,
+                  "end": 81,
+                  "digest": "sha256:e04c195aa52783637224a04ec13e87d57efe0b67003d7bb85a19b41bf72956f8",
+                  "note": "Check and the area list."
+                },
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/areas/areas.go",
+                  "start": 20,
+                  "end": 65,
+                  "digest": "sha256:a24a429570b10481e49134b861b8fda41373ad5d2e559b770afad7f34c4a2a11",
+                  "note": "Check and the area list."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "check-covers-review-scoped-coverage-check-result-codes",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:result-codes",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "check --covers review exits 0 when the deck explains every changed line, 3 on a gap, and never 3 for an untrusted report."
+            },
+            {
+              "id": "check-covers-review-scoped-coverage-check-selected-areas",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-areas",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "Only the named areas are evaluated and returned, in the order given."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "report-kind",
+            "slide": "review-first-status",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Review-first or full report",
+            "description": "A Saga holding only reviews, merges, claims and verifications is reported review first; any living documentation, or status --full, gives the full report. JSON always carries every area.",
+            "selector": {
+              "type": "element",
+              "element_id": "report-kind"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/status_review.go",
+                  "start": 21,
+                  "end": 83,
+                  "digest": "sha256:6687ef11c69f7c5d9ad7c56057c9dc36b995263c38e2fb26bafd324803920028",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                },
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/status_review.go",
+                  "start": 341,
+                  "end": 356,
+                  "digest": "sha256:a8a58d60a03b711df2cfde0fe121a5494e71b4aa53e353f63f49b05b1b88b580",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                },
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/cli.go",
+                  "start": 1084,
+                  "end": 1115,
+                  "digest": "sha256:e80bafe50eb8e6c866b7b8dbda172cce8d096f88a99b70c89cdcff437bed2c66",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "report-kind-documentation-gaps-visible-separate-areas",
+              "criterion": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:separate-areas",
+              "story_revision": "urn:change-saga:change-saga:story:documentation-gaps-visible:revision:r1",
+              "rationale": "With living documentation, --full or --json, status reports every area separately with its covered and uncovered entries."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-create-defaults",
+            "slide": "review-first-status",
+            "rank": 50,
+            "kind": "node",
+            "label": "review create works out PR, base and id",
+            "description": "The head is the current branch; gh supplies PR number, URL, title and base when installed and origin is on GitHub. Otherwise the base is origin's default branch, then main or master; the id is pr-N or the branch.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-create-defaults"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/review_defaults.go",
+                  "start": 33,
+                  "end": 96,
+                  "digest": "sha256:04639005bc41681f655c9c29d02b84a75c5a2cabcfdb919ba4abdcc596af2d11",
+                  "note": "Pull request detection and the defaults it fills."
+                },
+                {
+                  "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+                  "path": "internal/cli/review_defaults.go",
+                  "start": 115,
+                  "end": 168,
+                  "digest": "sha256:b726e8e6b84c936116fc83287ef27afc2ef12b64782ebf8d3670b104909735b6",
+                  "note": "Pull request detection and the defaults it fills."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/review_defaults_test.go",
+                  "start": 14,
+                  "end": 66,
+                  "digest": "sha256:38174fd829fd59ed520f9aa928ae2519b8039631f55e3e0bb74c5d73f7098fae",
+                  "note": "Defaults from gh and from origin."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-create-defaults-scoped-coverage-check-selected-scope",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "review create records the branch and base by which a later comparison finds this review."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-ca2b56a77e6637b35c238f9f105bc51e81dc3f1c9508e77055ba.json",
+        "source_digest": "sha256:ca2b56a77e6637b35c238f9f105bc51e81dc3f1c9508e77055baf4c7ae17be53",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:c07c8b4973745079eb34fb48cd1cae2e6b574848219102e3b625f95d8fd3d45f",
+      "parent_snapshots": [
+        "sha256:c8605cad7807456dcdee917e249d591491883ca74c4d5fa2bb0e2e40c68744ca"
+      ],
+      "request_id": "repin-onto-094a1a168aa7772c",
+      "created_at": "2026-09-27T11:43:20.59788Z",
+      "asset": "24-a-1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882.svg",
+      "asset_digest": "sha256:1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882246900d7d83e",
+      "slide": {
+        "version": 4,
+        "id": "review-first-status",
+        "deck": "documentation-coverage",
+        "title": "Status leads with the review deck",
+        "rank": 60,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882.svg",
+        "takeaway": "A comparison finds its open review by branch or evidence; status leads with how much of the change its deck explains, and check --covers review asks it for CI.",
+        "reading_order": [
+          "review-match",
+          "review-area",
+          "review-headline",
+          "check-covers-review",
+          "report-kind",
+          "review-create-defaults"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "review-match",
+            "slide": "review-first-status",
+            "rank": 0,
+            "kind": "node",
+            "label": "matchReviews: which open review this change is",
+            "description": "A review naming a branch matches when that branch, or origin's, is the head or the merge commit's second parent; if the branch is absent, when its evidence is in the change. Merged reviews never match.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-match"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/status_review.go",
+                  "start": 92,
+                  "end": 181,
+                  "digest": "sha256:096711b8dca74aa2f8a88466a38d02a818846e6849ca72b77e297aec9f98a66c",
+                  "note": "Matching reviews to a comparison."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/review_match_test.go",
+                  "start": 148,
+                  "end": 219,
+                  "digest": "sha256:8b9321d1e99e5bb6227181afb88c348151df444a19923da880d42d8aae13b0f2",
+                  "note": "A landed review does not claim the next change; CI checkouts, forks and merge commits match."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-match-scoped-coverage-check-selected-scope",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "With --against, the review measured is the open review whose branch or evidence this comparison is."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-area",
+            "slide": "review-first-status",
+            "rank": 10,
+            "kind": "node",
+            "label": "The review area is measured over the change",
+            "description": "Each matched review's Items are evaluated per atom of the comparison, so a stacked review never covers lines it does not explain; with no review, every line is uncovered and status says so.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-area"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/status_review.go",
+                  "start": 196,
+                  "end": 265,
+                  "digest": "sha256:7967342a7a7cd2e11fadc50c21a11b2fa5d78144322df7f89fe8610d46f3a6ed",
+                  "note": "reviewArea and the review area's place in the area list."
+                },
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/areas/areas.go",
+                  "start": 544,
+                  "end": 562,
+                  "digest": "sha256:099508997a048e9c5f79ac91a863101323504df9d5a856a05c4cf7426fe0a970",
+                  "note": "reviewArea and the review area's place in the area list."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-area-changed-code-explained-separate-states",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The review area reports each changed line as covered, uncovered or stale by the matched review's Items."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-headline",
+            "slide": "review-first-status",
+            "rank": 20,
+            "kind": "node",
+            "label": "The headline: how much the deck explains",
+            "description": "Status leads with the review deck explaining N of M changed lines, or none yet with the review create command to run, and prints only the review, its stale references and its actions.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-headline"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/status_review.go",
+                  "start": 373,
+                  "end": 414,
+                  "digest": "sha256:981107ae32fd2c920ece1d00ff616c802c723c3782783db1eda7c96417ced9bc",
+                  "note": "The review headline and the review-first printer."
+                },
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/status_grammar.go",
+                  "start": 330,
+                  "end": 338,
+                  "digest": "sha256:8f85dab4571155d6366f311e507f55c43ee78b2c66efe24f63bff0c7fa025461",
+                  "note": "The review headline and the review-first printer."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/status_review_test.go",
+                  "start": 70,
+                  "end": 170,
+                  "digest": "sha256:9e1b22862cd4ef93cc3ee5a246057f62ceed1d46d2a1bd41e920e0e1d39ff7a5",
+                  "note": "Review-only headline, --full, the unreviewed ask and the living report."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-headline-changed-code-explained-no-verdict",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:no-verdict",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The headline reports how many changed lines the deck explains and never declares the change approved."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "check-covers-review",
+            "slide": "review-first-status",
+            "rank": 30,
+            "kind": "node",
+            "label": "check --covers review exits 0 or 3",
+            "description": "areas.Parse validates the named areas and keeps their order; check reports only those areas, exits 0 when all are complete, 3 on any gap, and 1 when the report cannot be trusted. Review is the first area.",
+            "selector": {
+              "type": "element",
+              "element_id": "check-covers-review"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/check.go",
+                  "start": 28,
+                  "end": 81,
+                  "digest": "sha256:e04c195aa52783637224a04ec13e87d57efe0b67003d7bb85a19b41bf72956f8",
+                  "note": "Check and the area list."
+                },
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/areas/areas.go",
+                  "start": 20,
+                  "end": 65,
+                  "digest": "sha256:a24a429570b10481e49134b861b8fda41373ad5d2e559b770afad7f34c4a2a11",
+                  "note": "Check and the area list."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "check-covers-review-scoped-coverage-check-result-codes",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:result-codes",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "check --covers review exits 0 when the deck explains every changed line, 3 on a gap, and never 3 for an untrusted report."
+            },
+            {
+              "id": "check-covers-review-scoped-coverage-check-selected-areas",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-areas",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "Only the named areas are evaluated and returned, in the order given."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "report-kind",
+            "slide": "review-first-status",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Review-first or full report",
+            "description": "A Saga holding only reviews, merges, claims and verifications is reported review first; any living documentation, or status --full, gives the full report. JSON always carries every area.",
+            "selector": {
+              "type": "element",
+              "element_id": "report-kind"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/status_review.go",
+                  "start": 21,
+                  "end": 83,
+                  "digest": "sha256:6687ef11c69f7c5d9ad7c56057c9dc36b995263c38e2fb26bafd324803920028",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                },
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/status_review.go",
+                  "start": 356,
+                  "end": 371,
+                  "digest": "sha256:a8a58d60a03b711df2cfde0fe121a5494e71b4aa53e353f63f49b05b1b88b580",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                },
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/cli.go",
+                  "start": 1086,
+                  "end": 1117,
+                  "digest": "sha256:e80bafe50eb8e6c866b7b8dbda172cce8d096f88a99b70c89cdcff437bed2c66",
+                  "note": "documentationOf, the review-first actions, and the --full flag."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "report-kind-documentation-gaps-visible-separate-areas",
+              "criterion": "urn:change-saga:change-saga:story:documentation-gaps-visible:criterion:separate-areas",
+              "story_revision": "urn:change-saga:change-saga:story:documentation-gaps-visible:revision:r1",
+              "rationale": "With living documentation, --full or --json, status reports every area separately with its covered and uncovered entries."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-create-defaults",
+            "slide": "review-first-status",
+            "rank": 50,
+            "kind": "node",
+            "label": "review create works out PR, base and id",
+            "description": "The head is the current branch; gh supplies PR number, URL, title and base when installed and origin is on GitHub. Otherwise the base is origin's default branch, then main or master; the id is pr-N or the branch.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-create-defaults"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/review_defaults.go",
+                  "start": 33,
+                  "end": 96,
+                  "digest": "sha256:04639005bc41681f655c9c29d02b84a75c5a2cabcfdb919ba4abdcc596af2d11",
+                  "note": "Pull request detection and the defaults it fills."
+                },
+                {
+                  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+                  "path": "internal/cli/review_defaults.go",
+                  "start": 115,
+                  "end": 168,
+                  "digest": "sha256:b726e8e6b84c936116fc83287ef27afc2ef12b64782ebf8d3670b104909735b6",
+                  "note": "Pull request detection and the defaults it fills."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/review_defaults_test.go",
+                  "start": 14,
+                  "end": 66,
+                  "digest": "sha256:38174fd829fd59ed520f9aa928ae2519b8039631f55e3e0bb74c5d73f7098fae",
+                  "note": "Defaults from gh and from origin."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "review-create-defaults-scoped-coverage-check-selected-scope",
+              "criterion": "urn:change-saga:change-saga:story:scoped-coverage-check:criterion:selected-scope",
+              "story_revision": "urn:change-saga:change-saga:story:scoped-coverage-check:revision:r1",
+              "rationale": "review create records the branch and base by which a later comparison finds this review."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-ca2b56a77e6637b35c238f9f105bc51e81dc3f1c9508e77055ba.json",
+        "source_digest": "sha256:ca2b56a77e6637b35c238f9f105bc51e81dc3f1c9508e77055baf4c7ae17be53",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:28839b1c92d5655caca68adec28d2d26f84984560d50e1aa8e9d7faa4c88b434",
+      "parent_snapshots": [
+        "sha256:c07c8b4973745079eb34fb48cd1cae2e6b574848219102e3b625f95d8fd3d45f"
+      ],
+      "request_id": "repin-onto-3b98619c89fff528",
+      "created_at": "2026-09-27T11:43:46.055184Z",
       "asset": "24-a-1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882.svg",
       "asset_digest": "sha256:1039e0ac985be7c00fd2e5d4a157faa88e5a2629dc185490a882246900d7d83e",
       "slide": {

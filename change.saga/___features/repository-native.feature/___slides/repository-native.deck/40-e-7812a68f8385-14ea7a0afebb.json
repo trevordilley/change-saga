@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "f24b5f3e40d0ad8e586e91f02f0fb8e3c8363be8",
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
       "path": "internal/cli/references.go",
       "start": 403,
-      "end": 428,
-      "digest": "sha256:b4c42e0f3ce2206585df35ec2d2d01c8e68561c3f643e066e18bcf81b7e1ef05",
+      "end": 432,
+      "digest": "sha256:fa8468cea788db3a15aeb315b333bae941072fdd72ddc8c3060cb5ae14bee395",
       "note": "Moves the companion cursor automatically only in the explicit landing-time repin mutation."
     }
   ]

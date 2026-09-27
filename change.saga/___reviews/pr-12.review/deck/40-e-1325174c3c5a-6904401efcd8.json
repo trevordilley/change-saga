@@ -18,6 +18,13 @@
     {
       "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/references.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:657d6b6f284c6502ba5bd162684ca4b576f3aa0d451dd0613838a17feaf0e1f6"
+    },
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/cli/references.go",
       "start": 411,
       "end": 411,
       "digest": "sha256:a72db42445c2a1bc673e914d99862950f7283b31c8bd6bdd1481debba5df0cd6"
@@ -35,6 +42,13 @@
       "start": 436,
       "end": 440,
       "digest": "sha256:45e726fd487ceb1b493aee16189bc9655e9899e9cc5f5d95741d9ac1d6747e00"
+    },
+    {
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "path": "internal/cli/references.go",
+      "start": 547,
+      "end": 547,
+      "digest": "sha256:90f3975ab622e6dc18e1b7c22efe523d59e1428ceec1926f7f03489bc1e48913"
     },
     {
       "commit": "81849f13166215d3e2c3da6423404135606dfa39",
