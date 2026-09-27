@@ -294,6 +294,10 @@ func TestARewrittenReviewIsPinnedNotDuplicated(t *testing.T) {
 	if text := run(t, Status, "--repo", repo, "--against", "main", root); !strings.Contains(text, "review follow --review pr-d") {
 		t.Fatalf("status does not suggest pinning the amended review:\n%s", text)
 	}
+	// check's review note says the same as status, not "create one".
+	if code, out := checkReview(t, repo, root, "main"); code != 3 || !strings.Contains(out, "pin it: change-saga review follow --review pr-d --head feature/d") || strings.Contains(out, "create one") {
+		t.Fatalf("check --covers review for a rewritten review = %d:\n%s", code, out)
+	}
 }
 
 // A review whose Items explain only deleted lines pins the comparison's base;

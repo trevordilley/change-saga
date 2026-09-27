@@ -70,6 +70,9 @@ type statusDocument struct {
 	// sagaPath is the Saga as the command was given it, and repoFlag the
 	// --repo it was given, for printed commands.
 	sagaPath, repoFlag string
+	// branch is the checkout's branch, read when a rewritten review is to be
+	// pinned to it.
+	branch string
 }
 
 // opening names how a Saga was opened: observe one commit, or compare head
@@ -197,7 +200,10 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 			document.ChangeReviews = append(document.ChangeReviews, report.ID)
 		}
 	}
-	document.Coverage.Areas.Review = reviewArea(ctx, matched, document.Reviews, value.changes, resolver)
+	if len(rewritten) > 0 {
+		document.branch = currentBranch(ctx, value.checkout)
+	}
+	document.Coverage.Areas.Review = reviewArea(ctx, matched, rewritten, document.branch, root, document.Reviews, value.changes, resolver)
 	if value.changes.Mode == gitdiff.ModeCompare {
 		document.StaleByChange = livingStaleness(ctx, value.document, resolver, value.changes.BaseOID, value.changes.HeadOID, root, repoDir)
 	}
@@ -213,7 +219,7 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		reviewActions = reviewAreaActions(document.Coverage.Areas.Review, matched, value.changes, root, repoDir)
 	case len(rewritten) > 0:
 		// A review whose evidence was rewritten is pinned, not duplicated.
-		branch := firstNonEmpty(currentBranch(ctx, value.checkout), "BRANCH")
+		branch := firstNonEmpty(document.branch, "BRANCH")
 		for _, review := range rewritten {
 			reviewActions = append(reviewActions, followReviewAction(review, branch, root))
 		}
