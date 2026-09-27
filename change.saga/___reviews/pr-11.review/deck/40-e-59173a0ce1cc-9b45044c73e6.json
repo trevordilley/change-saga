@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/coderesolve/propose.go",
+      "start": 147,
+      "end": 266,
+      "digest": "sha256:52377d75db3211dd94e87300a2eb35bbe409c57ec291bf88cc09aebc721ad846",
+      "note": "ProposeRange: boundary mapping, widening and refusals."
+    }
+  ]
+}

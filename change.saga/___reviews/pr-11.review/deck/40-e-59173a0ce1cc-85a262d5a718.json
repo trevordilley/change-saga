@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/coderesolve/propose_test.go",
+      "start": 50,
+      "end": 66,
+      "digest": "sha256:917518ec06123cdb4628459931f09eb4bbada9db0591f810abd4d0efdabebc90",
+      "note": "ProposeRange names the nearest hunk outside the range on each side."
+    }
+  ]
+}

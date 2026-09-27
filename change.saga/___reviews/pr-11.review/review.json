@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "pr-11",
+  "title": "Make repairing stale evidence and review coverage cheap for agents",
+  "pull_request": {
+    "number": 11
+  },
+  "base": "main",
+  "head": "feature/stale-repair-ergonomics",
+  "created_at": "2026-09-27T08:01:27.722561Z"
+}

@@ -10,11 +10,11 @@
       "note": "Turns failure to locate Saga Git history into a diagnostic and an all-added historical view instead of fabricating prior state."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
       "path": "internal/changeview/sagaat.go",
-      "start": 25,
-      "end": 50,
-      "digest": "sha256:c14d31e344ca2d2df25e419b88fdb5d01d2b329a151f3e0c6e28864a81220582",
+      "start": 27,
+      "end": 51,
+      "digest": "sha256:b69c84f9b2c11b6a7b56321421a080cafc1357ef8f1c5db0d7dd649b9017016b",
       "note": "Turns failure to locate Saga Git history into a diagnostic and an all-added historical view instead of fabricating prior state."
     }
   ]

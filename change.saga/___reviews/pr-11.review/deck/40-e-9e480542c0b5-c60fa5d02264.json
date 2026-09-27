@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/refresh_coverage.go",
+      "start": 54,
+      "end": 148,
+      "digest": "sha256:1f3a778d67e6d43c077ba269701ec3d198a7f78c458dff4340ca29424ac95b9f",
+      "note": "The command, its JSON and its text report."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/refresh_coverage.go",
+      "start": 341,
+      "end": 391,
+      "digest": "sha256:e358303ee8887128d7a0939123f83a93519dcbba3bbb1fbe87d37d12f9907b69",
+      "note": "The command, its JSON and its text report."
+    }
+  ]
+}

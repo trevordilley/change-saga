@@ -57,6 +57,11 @@ type statusDocument struct {
 	// rewritten (amended, rebased, squashed): likely this change's review,
 	// to pin with review follow rather than duplicate.
 	RewrittenReviews []string `json:"rewritten_reviews,omitempty"`
+	// StaleByChange, comparing, is what the change did to the living
+	// documentation's references: those it made stale, each with a proposed
+	// range, and a count of those stale before it. Absent when observing or
+	// when the Saga records no living references.
+	StaleByChange *changeStaleness `json:"stale_by_change,omitempty"`
 	// Documentation says whether the Saga documents the application beyond
 	// its reviews, and which report this is; it never blocks.
 	Documentation documentationState  `json:"documentation"`
@@ -65,6 +70,9 @@ type statusDocument struct {
 	// sagaPath is the Saga as the command was given it, and repoFlag the
 	// --repo it was given, for printed commands.
 	sagaPath, repoFlag string
+	// branch is the checkout's branch, read when a rewritten review is to be
+	// pinned to it.
+	branch string
 }
 
 // opening names how a Saga was opened: observe one commit, or compare head
@@ -192,7 +200,13 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 			document.ChangeReviews = append(document.ChangeReviews, report.ID)
 		}
 	}
-	document.Coverage.Areas.Review = reviewArea(ctx, matched, document.Reviews, value.changes, resolver)
+	if len(rewritten) > 0 {
+		document.branch = currentBranch(ctx, value.checkout)
+	}
+	document.Coverage.Areas.Review = reviewArea(ctx, matched, rewritten, document.branch, root, document.Reviews, value.changes, resolver)
+	if value.changes.Mode == gitdiff.ModeCompare {
+		document.StaleByChange = livingStaleness(ctx, value.document, resolver, value.changes.BaseOID, value.changes.HeadOID, root, repoDir)
+	}
 	document.Documentation = documentationOf(root, false)
 	document.sagaPath, document.repoFlag = root, repoDir
 	document.NextActions = nextaction.Derive(living, root, nextaction.Context{Coverage: document.Coverage, Places: storyPlaces(value.document), DesignFeatures: designFeatures(value.document)})
@@ -205,7 +219,7 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		reviewActions = reviewAreaActions(document.Coverage.Areas.Review, matched, value.changes, root, repoDir)
 	case len(rewritten) > 0:
 		// A review whose evidence was rewritten is pinned, not duplicated.
-		branch := firstNonEmpty(currentBranch(ctx, value.checkout), "BRANCH")
+		branch := firstNonEmpty(document.branch, "BRANCH")
 		for _, review := range rewritten {
 			reviewActions = append(reviewActions, followReviewAction(review, branch, root))
 		}
@@ -328,7 +342,7 @@ func printReviewFirst(out io.Writer, status statusDocument, maxItems int) {
 func printReviewsAndActions(out io.Writer, status statusDocument, maxItems int) {
 	if len(status.Reviews) > 0 {
 		fmt.Fprintln(out, "\nReviews (decisions per slide and each deck's coverage of its range; the team decides what it requires):")
-		printReviewReports(out, status.Reviews)
+		printReviewReports(out, status.Reviews, nil)
 	}
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))

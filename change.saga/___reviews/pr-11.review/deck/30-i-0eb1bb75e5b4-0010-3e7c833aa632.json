@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reconcile",
+  "slide": "signal",
+  "rank": 10,
+  "kind": "node",
+  "label": "reconcile",
+  "description": "Leads the text and JSON with the change's stale references and proposals; pre-existing debt is a count.",
+  "selector": {
+    "type": "element",
+    "element_id": "reconcile"
+  }
+}

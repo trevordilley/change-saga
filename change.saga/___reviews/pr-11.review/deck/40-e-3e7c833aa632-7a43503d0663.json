@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 4,
+      "end": 5,
+      "digest": "sha256:bc6c7e9868fbc8614664e27f7198e2907c2cf4888befe3f63a46d93105a6edf2",
+      "note": "Summary, accept repair, text and status headlines are asserted."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:685cee49599a9c34054ff01a772039f6d7f6d02a2468fcccedd8b3a60f3b87d9",
+      "note": "Summary, accept repair, text and status headlines are asserted."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 67,
+      "end": 90,
+      "digest": "sha256:a7e99c081e908b3cb8b295abcff2d23fd57e1f4b5460f2180bcb64b76d283dcf",
+      "note": "Summary, accept repair, text and status headlines are asserted."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:95975c8060486d3b679814321b78c0baefcf7ff1f0275db18776911cdb207174",
+      "note": "Summary, accept repair, text and status headlines are asserted."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:87691b26f9e7480e548d6c8825270ed22758698898a8967114b12e3029fdb5b1",
+      "note": "A documentation gap's detail keeps its established JSON format; the text report names the file event."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 304,
+      "end": 305,
+      "digest": "sha256:11063b168db6aa7e177349621daac80fbf4ea33166a08fbf6a412b2dc2db68e9",
+      "note": "A documentation gap's detail keeps its established JSON format; the text report names the file event."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 308,
+      "end": 328,
+      "digest": "sha256:172addd22cc97ae876899d5f5a26b25667e0cae2c6881a67084efe825fc44f01",
+      "note": "A documentation gap's detail keeps its established JSON format; the text report names the file event."
+    }
+  ]
+}

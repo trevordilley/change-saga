@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "guide",
+  "slide": "docs",
+  "rank": 10,
+  "kind": "node",
+  "label": "Guide and changelog",
+  "description": "Documents the signal, proposals, accept, and keeping a review deck current.",
+  "selector": {
+    "type": "element",
+    "element_id": "guide"
+  }
+}

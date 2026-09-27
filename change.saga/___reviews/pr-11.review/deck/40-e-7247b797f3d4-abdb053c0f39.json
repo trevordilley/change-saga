@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reviews.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:e051a65b99fee9f8f22e94fa2259700d558e0f6b091257ae6cd0d62c0c8bd45b",
+      "note": "The previous review list printing."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reviews.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:2025ad415bb28c606a61f6be9a3250dd4910f414b589ec061100c3e37a62b0a8",
+      "note": "The previous review list printing."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reviews.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:4e077fd60f20d1d62fb64e3b180cc132edee5aa1802ed0ae26dd63ef01c4be6c",
+      "note": "The previous review list printing."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reviews.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:80a2e1d8e04adf3b381209ca0d1ae73e14b8403591f465d8124aea8c8b715dd6",
+      "note": "The previous review list printing."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reviews.go",
+      "start": 428,
+      "end": 428,
+      "digest": "sha256:b32cbed39064709503d29982d7835f5a6a56871a0a3caecfd4196db63f44d4eb",
+      "note": "The previous review list printing."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reviews.go",
+      "start": 454,
+      "end": 454,
+      "digest": "sha256:7fd37f89024533f58186e58959ced7f175afb460354a702b996b9ef79e2a1fa6",
+      "note": "The previous review list printing."
+    }
+  ]
+}

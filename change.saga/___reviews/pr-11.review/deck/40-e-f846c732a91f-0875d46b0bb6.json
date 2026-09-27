@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/status_grammar.go",
+      "start": 73,
+      "end": 75,
+      "digest": "sha256:d250d647b660596d1c7a2ec75360c8e4cc8972d7354c7ce8a32a8437a2bd6806",
+      "note": "The branch is read once for the note and the follow action."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/status_grammar.go",
+      "start": 203,
+      "end": 206,
+      "digest": "sha256:5ad30018fae7eeb9722521f17b1d5ae0e8939d3afcc48fcd418d26a6dc0ddf88",
+      "note": "The branch is read once for the note and the follow action."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/status_grammar.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:6661d542ecfa3e91ee992468179e3e822fbf0dc917eaafc690d9b9f699e12c73",
+      "note": "The branch is read once for the note and the follow action."
+    }
+  ]
+}

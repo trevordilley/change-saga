@@ -131,6 +131,12 @@ selector-breaking replacements. Its atomic boundary is one slide; it does not
 atomically include story edits, another slide, a Git commit, or external work.
 Once a slide is transaction-managed, update its complete desired state through
 `apply-slide`; older partial slide, Item, and evidence mutations refuse it.
+`apply-slide --print-current SLIDE <saga>` prints the slide's complete current
+request with `expected_snapshot` and a fresh `request_id`: edit the field that
+changes and apply it, never rebuild the slide by hand (applied unchanged, it
+publishes nothing; give the slide's target when its ID is shared by another
+deck's slide). Stale evidence moves
+with `repin --accept-proposed` without a request at all.
 After a post-publication durability error, query the current snapshot before
 retrying; the published record and its referenced asset must remain intact.
 
@@ -224,6 +230,14 @@ replace implementation evidence.
 Code references are pinned to a commit and digest of the exact bytes. Pure
 line movement may remap them; changed bytes make them stale. Repair or remove
 stale evidence through its public command while retaining its history.
+`references --stale`, `reconcile`, `review list`, and `review refresh-coverage`
+show each stale reference's proposed range (its start and end mapped through
+the diff, widened over lines inserted inside) with the diff inside it and the
+nearest hunk on each side. After reading it, `repin --accept-proposed --record
+FILE [--reference N]` (or `--target URN`, `--review ID`) keeps the note and
+owner and pins the proposal, also on `apply-slide` slides. A reference with
+nothing proposed (deleted file, rewritten range, only braces or blank lines
+left) is refused: re-cover it by hand.
 
 - Attach code to the narrowest Item or landmark that actually explains it.
 - Each reference note says both what changed and why this target owns it.

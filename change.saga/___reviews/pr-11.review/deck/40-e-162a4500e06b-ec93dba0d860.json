@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/cli/stale_repair.go",
+      "digest": "sha256:ce66020e83d7a15d39640c0f83d29485247e83423bb0f7b794556541786d3c47",
+      "note": "New file: the stale-repair rule, accept, and evidence writers."
+    }
+  ]
+}

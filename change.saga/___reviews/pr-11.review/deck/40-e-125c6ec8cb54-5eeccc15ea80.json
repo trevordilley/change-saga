@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/coderesolve/propose_test.go",
+      "start": 192,
+      "end": 213,
+      "digest": "sha256:0046acf9b8dd957fd2bdc96211059378709c0db36889d088a4bbac5f804dbb25",
+      "note": "Removed names only fully removed ranges."
+    }
+  ]
+}

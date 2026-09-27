@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "accept",
+  "deck": "pr-11",
+  "title": "One explicit accept keeps the note, the owner and the side",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8867860bac31-0010-8eb3212e955c.svg",
+  "takeaway": "One explicit accept keeps the note, the owner and the side",
+  "reading_order": [
+    "scope",
+    "write",
+    "managed",
+    "print-current",
+    "tests"
+  ]
+}

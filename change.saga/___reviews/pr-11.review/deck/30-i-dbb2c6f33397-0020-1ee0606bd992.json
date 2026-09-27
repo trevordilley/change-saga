@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "judgment",
+  "slide": "refresh",
+  "rank": 20,
+  "kind": "node",
+  "label": "Needs judgment",
+  "description": "Lists stale references with proposals and reserves their proposed lines; never accepts.",
+  "selector": {
+    "type": "element",
+    "element_id": "judgment"
+  }
+}

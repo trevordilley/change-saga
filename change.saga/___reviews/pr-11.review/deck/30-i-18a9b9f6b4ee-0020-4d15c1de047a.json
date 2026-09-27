@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "surfaced",
+  "slide": "propose",
+  "rank": 20,
+  "kind": "node",
+  "label": "references --stale",
+  "description": "Prints each stale reference's proposal, diff and accept command; JSON gains proposal and accept.",
+  "selector": {
+    "type": "element",
+    "element_id": "surfaced"
+  }
+}

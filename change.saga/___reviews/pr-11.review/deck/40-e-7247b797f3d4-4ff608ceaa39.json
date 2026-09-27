@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/status_grammar.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:58bf3a9be48f8e3f475ba205ae8c9dd34f463e3a9adcb35251fb412eaeed0f2a",
+      "note": "status passes no repair signal to its review listing."
+    }
+  ]
+}

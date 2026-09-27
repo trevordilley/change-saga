@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/status_review.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:02f24f5171e675dd8a2e6cc786eae0dba6aa3c21ac367b83681032bd77d26cdb",
+      "note": "The review area's rewritten-review note and the shared branch."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/status_review.go",
+      "start": 208,
+      "end": 212,
+      "digest": "sha256:cc6f072a5442ab4b99795d738040e4ad4dee40f86e106e3b7505e366e9524cb2",
+      "note": "The review area's rewritten-review note and the shared branch."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/status_review.go",
+      "start": 320,
+      "end": 329,
+      "digest": "sha256:bb985c413241d4c3d915773fa9f1a3b5cc738caf3be5014c3ecead9978be96ac",
+      "note": "The review area's rewritten-review note and the shared branch."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/status_review.go",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:92ac585b4ff7113c2688509a1b5fb25ae3d71242157037eaffc0a6804e9a5862",
+      "note": "The review area's rewritten-review note and the shared branch."
+    }
+  ]
+}

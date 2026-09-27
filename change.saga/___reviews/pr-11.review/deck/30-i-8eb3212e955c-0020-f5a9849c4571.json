@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "managed",
+  "slide": "accept",
+  "rank": 20,
+  "kind": "node",
+  "label": "apply-slide slide",
+  "description": "Rebuilds the slide's current revision as a complete request and publishes one update that changes only the accepted evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "managed"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "docs",
+  "deck": "pr-11",
+  "title": "The skill, the guide and check teach the cheaper flow",
+  "rank": 40,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8867860bac31-0040-3b86aa046eb9.svg",
+  "takeaway": "The skill, the guide and check teach the cheaper flow",
+  "reading_order": [
+    "skill",
+    "guide",
+    "check-note"
+  ]
+}

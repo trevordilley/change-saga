@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "write",
+  "slide": "accept",
+  "rank": 10,
+  "kind": "node",
+  "label": "Plain evidence file",
+  "description": "Rewrites the evidence file in place under the lock, keeping its path, owner and other references, and detects concurrent edits.",
+  "selector": {
+    "type": "element",
+    "element_id": "write"
+  }
+}

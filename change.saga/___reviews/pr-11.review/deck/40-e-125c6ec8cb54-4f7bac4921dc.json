@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/coderesolve/propose.go",
+      "start": 327,
+      "end": 342,
+      "digest": "sha256:aff4ab22b4ce3c737dbb55780b43b922dcf680d614a493971c373d0902ac5611",
+      "note": "ChangedPaths: the files a range touches, for the cheap review reads."
+    }
+  ]
+}

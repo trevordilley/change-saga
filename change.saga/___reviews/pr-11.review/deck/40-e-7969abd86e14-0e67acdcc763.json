@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "internal/coderesolve/propose_test.go",
+      "start": 111,
+      "end": 191,
+      "digest": "sha256:8fcfeb58bf33cdadfa6ddc71dc81cf17cfec5c2b1501b0925e4b4fca73d338eb",
+      "note": "Real repositories: an extracted helper shows beside the range, a lone surviving brace is refused, and a sibling slid inside the range widens the proposal."
+    }
+  ]
+}

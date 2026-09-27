@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "docs/reconciliation.md",
+      "start": 26,
+      "end": 126,
+      "digest": "sha256:fc001ef9e8f629816e4d30fd4a99adfc4f4a180d937c5e33d01444d1f1426aef",
+      "note": "The reconciliation guide starts from what the change made stale."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "docs/reconciliation.md",
+      "start": 168,
+      "end": 172,
+      "digest": "sha256:b47df923521cc8b96c3db2319520393f41a3053db27f6d7894da8c90a33bf207",
+      "note": "The reconciliation guide starts from what the change made stale."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "docs/reconciliation.md",
+      "start": 175,
+      "end": 177,
+      "digest": "sha256:466cd846276fbb9a7d298155d1d12e5bbb6a149c94287485f72c2c520a1ff3ae",
+      "note": "The reconciliation guide starts from what the change made stale."
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "path": "docs/reconciliation.md",
+      "start": 181,
+      "end": 182,
+      "digest": "sha256:efc1f784db4bcc228a4d6c196ff09522985b9c63d091bc5c282101fa605a303b",
+      "note": "The reconciliation guide starts from what the change made stale."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "docs/reconciliation.md",
+      "start": 67,
+      "end": 70,
+      "digest": "sha256:da939eb21764b7ceb88d9c99bfbc671f46ee46c5e730a7714748b831b5361ff2",
+      "note": "The reconciliation guide starts from what the change made stale."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "docs/reconciliation.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:0fbcf62bd1afb3eb7834ce04e4a79be3e2914513dfe914b11aee37aa3552473e",
+      "note": "The reconciliation guide starts from what the change made stale."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "docs/reconciliation.md",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:d4c242c5af43b368abf5c74414d0a6f0cc25b590035dbccbf6cdee1a30521f67",
+      "note": "The reconciliation guide starts from what the change made stale."
+    }
+  ]
+}

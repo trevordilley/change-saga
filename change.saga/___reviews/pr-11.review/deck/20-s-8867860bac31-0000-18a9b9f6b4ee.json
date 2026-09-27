@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "propose",
+  "deck": "pr-11",
+  "title": "A stale reference comes with a proposed range",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8867860bac31-0000-18a9b9f6b4ee.svg",
+  "takeaway": "A stale reference comes with a proposed range",
+  "reading_order": [
+    "arithmetic",
+    "proposal",
+    "surfaced"
+  ]
+}

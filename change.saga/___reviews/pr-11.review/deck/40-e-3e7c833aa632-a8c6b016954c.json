@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reconciliation_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:28267e6a6486d54c8f2554b26e094558dcc5e4b9e21aeb0bd68a256f5c08c278",
+      "note": "The previous single-repair assertion."
+    }
+  ]
+}

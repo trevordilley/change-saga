@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "refresh",
+  "deck": "pr-11",
+  "title": "review refresh-coverage keeps a review deck current",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8867860bac31-0020-dbb2c6f33397.svg",
+  "takeaway": "review refresh-coverage keeps a review deck current",
+  "reading_order": [
+    "moved",
+    "added",
+    "judgment",
+    "command"
+  ]
+}

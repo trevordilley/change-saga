@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reviews.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:befcb55d47a968c5377e9b789f3670384f4b641e3848c1cc6e7a7a4c5b574dd7",
+      "note": "The previous review operations."
+    }
+  ]
+}

@@ -28,7 +28,47 @@ the result in the Saga rather than replacing that workflow.
 When the Saga holds living documentation (or the user asks), run
 `change-saga reconcile --against <base> --json <saga>` after implementing,
 verifying, and authoring the PR review deck. A Saga that holds only reviews
-has nothing to reconcile; its review's coverage is the whole answer. Its queue separates HEAD code
+has nothing to reconcile; its review's coverage is the whole answer.
+
+Start from the signal. The text report (and `summary` in `--json`, alone with
+`--json --summary`) leads with "Your change made N references stale": one line
+per reference with owner, old range, and proposed range. `status --against`,
+`review list`, and `review create` say the same. Stale means stale at HEAD
+and either current at the merge-base or pinned during the change (deleted-side
+evidence of removed lines written during the change is counted apart; living
+documentation that already described lines the change deleted is listed for
+repair); debt that was already stale is a
+count, listed only with `--all`.
+
+Repair each one cheaply but with judgment:
+
+1. Read its proposal: the pinned start and end mapped through the diff hunks,
+   widened over lines inserted inside, with the small diff inside the range
+   and the nearest hunk just before and after it (`references --stale`, or
+   `repin --accept-proposed --dry-run`). `widened` means it takes in lines
+   the range did not have, such as a new sibling function git slid inside:
+   read them. A neighbouring hunk that adds a helper can mean the code moved.
+2. If the explanation still holds (lines shifted, a field or guard added),
+   accept it: `change-saga repin --accept-proposed --record FILE --reference N
+   <saga>`, or in bulk with `--target URN`, `--review ID`, or `--all`. It keeps
+   the note, owner, record, and side, pins the proposal at a fresh digest, and
+   updates an `apply-slide` slide through one complete-slide transaction.
+3. If it no longer holds, revise the explanation and re-cover. Nothing is
+   proposed when the file was deleted (content may have moved) or the range
+   was rewritten together with code outside it; accept refuses those.
+
+Accepting is explicit and never automatic: staleness still forces a re-read.
+While a pull request iterates, `review refresh-coverage --review ID` re-pins
+its deck's moved references and whole-file references whose file event
+persists, and lists the rest for you: stale references with proposals, and
+new lines, uncovered, with the one Item covering their file as the proposed
+owner. It never extends an Item on its own; after reading the new lines,
+`--accept-proposed [--path P] [--note TEXT]` gives them to that owner under a
+neutral "added in <head>" note unless you write one. `repin --accept-proposed
+--all` reaches every open review deck, other pull requests' too; a review
+whose range cannot be read is skipped and reported.
+
+The full queue separates HEAD code
 reference currency from documentation diff coverage and each review's own
 coverage. It retains baseline debt, identifies newly stale references, and
 reports the reason and typed inspection/repair paths for each implicated
@@ -36,11 +76,12 @@ record. An affected record needs reassessment, not necessarily an edit.
 Requirement-only changes prompt traceability inspection of declared
 implementation and test paths even when no code changed.
 
-Read query pages to completion. For transaction-backed slides, inspect
-`query slide` and preserve the snapshot, all authoring heads, Items, evidence,
-and criterion links in an `apply-slide` request; partial coverage repair is
-not supported. Other evidence uses the returned evidence file with
-`replace-coverage` or deliberate removal. Replacing a file replaces all its
+Read query pages to completion. For transaction-backed slides, stale evidence
+moves with `repin --accept-proposed`; for any other change start from
+`apply-slide --print-current SLIDE`, which prints the complete current request
+(snapshot, Items, evidence, criterion links) to edit and apply. Preserve every
+authoring head. Other evidence that needs new selectors uses the returned
+evidence file with `replace-coverage` or deliberate removal. Replacing a file replaces all its
 references, so preserve still-valid ones in the complete request. Reassess
 meaning before repinning relations or changing evidence.
 
@@ -59,8 +100,8 @@ changed atoms beneath their current owners and reports unreferenced lines.
 
 Follow returned record URNs and evidence record paths. Do not compare prose,
 SVG, HTML, or raw metadata bytes to infer impact. Query history for why a
-record changed. Re-author stale evidence through supported replace/remove
-commands; do not hand-edit it. Read current diff context before assigning a
+record changed. Re-author stale evidence through `repin --accept-proposed` or
+the supported replace/remove commands; do not hand-edit it. Read current diff context before assigning a
 new owner, and update visual content when behavior changes even if an old code
 reference remaps cleanly.
 

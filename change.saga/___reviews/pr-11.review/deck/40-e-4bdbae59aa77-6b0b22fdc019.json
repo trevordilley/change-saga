@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/grammar/commands.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:771d237ea3ad2174bb96b665e061f0efed135585723a7b5e84d19918fcba7c61",
+      "note": "The previous apply-slide grammar."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/grammar/commands.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:5f5f471574e7d04a0c9ae3b8f2549215caba43801e5d5c58a533533e1bcc0cbd",
+      "note": "The previous apply-slide grammar."
+    }
+  ]
+}
