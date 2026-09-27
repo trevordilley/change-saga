@@ -125,6 +125,11 @@ func (r *renderer) element(e Element, into *node) error {
 		if strings.TrimSpace(e.Description) != "" {
 			g.add("title").text = e.Description
 		}
+		// The note travels with the standalone SVG as plain text, so a screen
+		// reader announces it as the group's description.
+		if e.Note != "" {
+			g.add("desc").text = NoteText(e.Note)
+		}
 	}
 	switch e.Kind {
 	case "group":

@@ -14,6 +14,7 @@ type Summary struct {
 	Label       string `json:"label,omitempty"`
 	Detail      string `json:"detail,omitempty"`
 	Description string `json:"description,omitempty"`
+	Note        string `json:"note,omitempty"`
 	From        string `json:"from,omitempty"`
 	To          string `json:"to,omitempty"`
 	Parent      string `json:"parent,omitempty"`
@@ -42,7 +43,7 @@ func Describe(d Document, offset, limit int) Description {
 		if e.Decorative {
 			continue
 		}
-		all = append(all, Summary{ID: e.ID, Kind: e.Kind, Shape: e.Shape, Label: e.Label, Detail: e.Detail, Description: e.Description, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon})
+		all = append(all, Summary{ID: e.ID, Kind: e.Kind, Shape: e.Shape, Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon})
 	}
 	offset = max(0, min(offset, len(all)))
 	end := min(offset+max(limit, 0), len(all))
@@ -77,7 +78,7 @@ func (v Description) WriteText(b *strings.Builder) {
 				}
 			}
 			b.WriteString("\n")
-			for _, field := range [][2]string{{"detail", e.Detail}, {"description", e.Description}} {
+			for _, field := range [][2]string{{"detail", e.Detail}, {"description", e.Description}, {"note", e.Note}} {
 				if field[1] != "" {
 					fmt.Fprintf(b, "    %s: %s\n", field[0], Plain(field[1]))
 				}
