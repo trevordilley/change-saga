@@ -94,6 +94,9 @@ Accepting is always explicit: staleness still forces the re-read.
 
 `apply-slide --print-current SLIDE` prints a managed slide's complete current
 request, with `expected_snapshot` and a fresh `request_id`, for any other edit.
+Applied unchanged it publishes nothing and reports the slide `unchanged`. A
+slide ID that several decks share (a review slide named like an
+implementation slide) is ambiguous: give the slide's target instead.
 
 ### Keep a review deck current while the pull request iterates
 

@@ -92,10 +92,13 @@ type SlideSemanticDiff struct {
 }
 
 type SlideTransactionResult struct {
-	OK               bool              `json:"ok"`
-	Operation        string            `json:"operation"`
-	DryRun           bool              `json:"dry_run"`
-	Replayed         bool              `json:"replayed"`
+	OK        bool   `json:"ok"`
+	Operation string `json:"operation"`
+	DryRun    bool   `json:"dry_run"`
+	Replayed  bool   `json:"replayed"`
+	// Unchanged is set when an update matched the current revision exactly:
+	// nothing was published and Snapshot is still the current one.
+	Unchanged        bool              `json:"unchanged,omitempty"`
 	Target           string            `json:"target"`
 	PreviousSnapshot string            `json:"previous_snapshot,omitempty"`
 	Snapshot         string            `json:"snapshot"`
@@ -312,6 +315,15 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 				return fmt.Errorf("expected_snapshot mismatch: got %q, current is %q", request.ExpectedSnapshot, actual)
 			}
 			revision.ParentSnapshots = []string{heads[0]}
+			if recordExists && previous != nil {
+				if _, changed := slideTransactionDiff(document.Manifest.ID, previous, &revision); len(changed) == 0 {
+					// Republishing the current revision unchanged (apply-slide
+					// --print-current applied as printed) appends nothing.
+					result = transactionResult(document.Manifest.ID, target, recordPath, root, request.Operation, dryRun, false, previous, previous)
+					result.Unchanged = true
+					return nil
+				}
+			}
 		} else {
 			if !recordExists || existing == nil {
 				return fmt.Errorf("reconcile requires an existing complete-slide transaction with divergent heads")
@@ -931,6 +943,8 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 		verb = "Would apply"
 	} else if result.Replayed {
 		verb = "Replayed"
+	} else if result.Unchanged {
+		verb = "Unchanged (nothing to publish):"
 	}
 	fmt.Fprintf(out, "%s complete slide %s\nSnapshot: %s\nChanged IDs: %s\n", verb, result.Target, result.Snapshot, strings.Join(result.ChangedIDs, ", "))
 	return nil
@@ -944,7 +958,10 @@ func printCurrentSlideRequest(root, target string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	slide := findManagedSlide(document, target)
+	slide, err := findManagedSlide(document, target)
+	if err != nil {
+		return err
+	}
 	if slide == nil {
 		return fmt.Errorf("slide %q does not exist", target)
 	}

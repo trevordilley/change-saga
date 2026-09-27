@@ -63,7 +63,7 @@ var commands = []Command{
 		Flags: []Flag{
 			optional("from", "FILE|-", "complete versioned JSON request"), optional("repo", "PATH", "code checkout used to verify exact evidence digests"),
 			{Name: "dry-run", Description: "validate and return the semantic diff without publishing"}, jsonFlag,
-			optional("print-current", "SLIDE", "print the slide's complete current request, ready to edit and apply"),
+			optional("print-current", "SLIDE", "print the slide's complete current request, ready to edit and apply; SLIDE is an ID, target, or path (an ID several decks share needs the target)"),
 		},
 		Positionals: sagaOnly,
 	},

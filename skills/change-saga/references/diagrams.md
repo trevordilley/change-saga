@@ -133,7 +133,9 @@ Once a slide is transaction-managed, update its complete desired state through
 `apply-slide`; older partial slide, Item, and evidence mutations refuse it.
 `apply-slide --print-current SLIDE <saga>` prints the slide's complete current
 request with `expected_snapshot` and a fresh `request_id`: edit the field that
-changes and apply it, never rebuild the slide by hand. Stale evidence moves
+changes and apply it, never rebuild the slide by hand (applied unchanged, it
+publishes nothing; give the slide's target when its ID is shared by another
+deck's slide). Stale evidence moves
 with `repin --accept-proposed` without a request at all.
 After a post-publication durability error, query the current snapshot before
 retrying; the published record and its referenced asset must remain intact.

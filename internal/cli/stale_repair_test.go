@@ -132,6 +132,34 @@ func TestAcceptProposedUpdatesAManagedSlideThroughItsTransaction(t *testing.T) {
 	if err != nil || len(again.ChangedIDs) != 0 {
 		t.Fatalf("the printed request must republish the slide unchanged: %#v %v", again, err)
 	}
+	// Applying it as printed publishes nothing: no revision is appended.
+	revisions := func() int {
+		var record saga.SlideTransactionRecord
+		if err := readStrictJSONPath(filepath.Join(root, filepath.FromSlash(slide.Path)), &record); err != nil {
+			t.Fatal(err)
+		}
+		return len(record.Revisions)
+	}
+	before := revisions()
+	applied, err := ApplySlideTransaction(context.Background(), root, base, repo, current, false)
+	if err != nil || !applied.Unchanged || applied.Snapshot != current.ExpectedSnapshot || revisions() != before {
+		t.Fatalf("an unchanged apply must not append a revision: %#v %v (%d -> %d revisions)", applied, err, before, revisions())
+	}
+
+	// A review slide sharing the bare ID makes it ambiguous; each target
+	// still names its slide.
+	run(t, Review, "create", "--id", "flows", "--base", commit, "--head", "main", "--repo", repo, root)
+	visual := filepath.Join(t.TempDir(), "slide.svg")
+	writeFile(t, visual, reviewSlideSVG)
+	run(t, AddSlide, "--review", "flows", "--intent", "explain", "--layout", "diagram", "--source", visual, root, "flow")
+	printed.Reset()
+	if err := ApplySlide(context.Background(), []string{"--print-current", "flow", root}, &printed); err == nil || !strings.Contains(err.Error(), "name one by its target") {
+		t.Fatalf("an ID two decks share must be ambiguous: %v", err)
+	}
+	printed.Reset()
+	if err := ApplySlide(context.Background(), []string{"--print-current", slide.Target, root}, &printed); err != nil {
+		t.Fatalf("the target names the implementation slide: %v", err)
+	}
 }
 
 // review create's next steps and review list say what the review's change

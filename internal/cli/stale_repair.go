@@ -566,7 +566,10 @@ func writeEvidenceEdits(ctx context.Context, root, repo string, edits []evidence
 		if err != nil {
 			return nil, err
 		}
-		slide := findManagedSlide(document, record)
+		slide, err := findManagedSlide(document, record)
+		if err != nil {
+			return nil, err
+		}
 		if slide == nil {
 			return nil, fmt.Errorf("no slide is recorded at %s", record)
 		}
@@ -614,23 +617,39 @@ func writeEvidenceEdits(ctx context.Context, root, repo string, edits []evidence
 	return results, nil
 }
 
-// findManagedSlide finds the slide recorded at path in any deck, a review's
-// included.
-func findManagedSlide(document *saga.Saga, path string) *saga.Slide {
-	if slide := findSlide(document, path); slide != nil {
-		return slide
-	}
+// findManagedSlide finds the slide recorded at a path, or named by its
+// target or ID, in any deck, a review's included; nil when none is. A bare
+// ID that slides of several decks share is ambiguous: the error names each
+// one's target to use instead.
+func findManagedSlide(document *saga.Saga, value string) (*saga.Slide, error) {
+	decks := allDecks(document)
 	for _, review := range document.Reviews {
-		if review.Deck == nil {
-			continue
+		if review.Deck != nil {
+			decks = append(decks, review.Deck)
 		}
-		for _, slide := range review.Deck.Slides {
-			if filepath.Clean(slide.Path) == filepath.Clean(path) || slide.ID == path || slide.Target == path {
-				return slide
+	}
+	var byID []*saga.Slide
+	for _, deck := range decks {
+		for _, slide := range deck.Slides {
+			if slide.Target == value || filepath.Clean(slide.Path) == filepath.Clean(value) {
+				return slide, nil
+			}
+			if slide.ID == value {
+				byID = append(byID, slide)
 			}
 		}
 	}
-	return nil
+	if len(byID) <= 1 {
+		if len(byID) == 1 {
+			return byID[0], nil
+		}
+		return nil, nil
+	}
+	targets := make([]string, 0, len(byID))
+	for _, slide := range byID {
+		targets = append(targets, slide.Target)
+	}
+	return nil, fmt.Errorf("slide id %q names %d slides in different decks; name one by its target: %s", value, len(byID), strings.Join(targets, ", "))
 }
 
 // currentSlideRequest rebuilds the complete apply-slide request that
