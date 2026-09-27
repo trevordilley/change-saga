@@ -86,30 +86,38 @@ func validateNote(note string) []string {
 		}
 		switch link := n.(type) {
 		case *ast.Link:
-			if !safeNoteURL(string(link.Destination), false) {
+			if !safeNoteURL(string(link.Destination), false, false) {
 				report(fmt.Sprintf("note link %s must use http, https, or mailto", strconv.Quote(string(link.Destination))))
 			}
 		case *ast.AutoLink:
-			if !safeNoteURL(string(link.URL(source)), link.AutoLinkType == ast.AutoLinkEmail) {
+			if !safeNoteURL(string(link.URL(source)), link.AutoLinkType == ast.AutoLinkEmail, true) {
 				report(fmt.Sprintf("note link %s must use http, https, or mailto", strconv.Quote(string(link.URL(source)))))
 			}
 		}
 		return ast.WalkContinue, nil
 	})
+	// A note of only link reference definitions, or of links without text,
+	// renders nothing a reader could see.
+	if len(problems) == 0 && NoteText(note) == "" {
+		problems = append(problems, "note renders no text; omit it instead")
+	}
 	return problems
 }
 
-func safeNoteURL(destination string, email bool) bool {
+// safeNoteURL accepts http, https, and mailto links. A bare www. address is
+// accepted only as a GFM autolink, which renders it as http; as an ordinary
+// link destination it would render as a broken relative link.
+func safeNoteURL(destination string, email, autolink bool) bool {
 	if email {
 		return true
 	}
 	lower := strings.ToLower(strings.TrimSpace(destination))
-	for _, prefix := range []string{"https://", "http://", "mailto:", "www."} {
+	for _, prefix := range []string{"https://", "http://", "mailto:"} {
 		if strings.HasPrefix(lower, prefix) {
 			return true
 		}
 	}
-	return false
+	return autolink && strings.HasPrefix(lower, "www.")
 }
 
 // NoteText projects a note's Markdown to plain text for places that cannot

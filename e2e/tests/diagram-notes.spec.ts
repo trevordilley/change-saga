@@ -1,6 +1,6 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { git, runCLI, startSagaServer, stopSagaServer, type SagaRepositories } from "../support/fixture-builder.js";
+import { codeDigest, git, runCLI, startSagaServer, stopSagaServer, type SagaRepositories } from "../support/fixture-builder.js";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
 
 // An author can annotate any diagram element with a short Markdown note. A
@@ -40,6 +40,19 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
   const requestPath = join(root, "noted-flow.json");
   writeFileSync(requestPath, JSON.stringify(request));
   const published = JSON.parse(cli(sagaRepositories, "apply-slide", "--from", requestPath, "--json", sagaRoot));
+  // Two stacked elements: a long note on the upper one would cover the lower.
+  const stackedPath = join(root, "stacked.json");
+  writeFileSync(stackedPath, JSON.stringify({
+    version: 1, operation: "create", request_id: "stacked", review: "pr-3", expected_snapshot: "absent",
+    slide: { id: "stacked", title: "Stacked", rank: 20, intent: "explain", layout: "diagram", takeaway: "Two elements sit close together.", reading_order: ["lower"] },
+    diagram: { version: 1, width: 1280, height: 720, elements: [
+      { id: "upper", kind: "node", shape: "rect", label: "Upper", x: 440, y: 200, width: 400, height: 80, style: "normal",
+        note: "A long note.\n\n- one\n- two\n- three\n- four\n- five\n- six" },
+      { id: "lower", kind: "node", shape: "rect", label: "Lower", x: 440, y: 320, width: 400, height: 80, style: "primary" },
+    ] },
+    items: [{ id: "lower", rank: 10, kind: "node", label: "Lower", description: "The element beneath the note.", selector: { type: "element", element_id: "lower" } }],
+  }));
+  cli(sagaRepositories, "apply-slide", "--from", stackedPath, sagaRoot);
   cli(sagaRepositories, "cover", "--repo", sourceRepo, "--target", `${published.target}:item:greeting`, "--path", "src/app.go", "--changed-lines", sagaRoot);
   expect(cli(sagaRepositories, "diagram", "describe", "--slide", published.target, sagaRoot)).toContain("  caller \"Caller\" shape=ellipse\n    note: Any HTTP client; `name` is *required*.\n");
   git(sagaRepositories.sagaRepo, "add", ".");
@@ -63,9 +76,12 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await expect(popover.locator("li")).toHaveText(["empty names are refused", "see the handler"]);
     await expect(popover.getByRole("link", { name: "the handler" })).toHaveAttribute("href", "https://example.com/handler");
     await expect(popover.locator(".element-note-label")).toHaveCount(0);
-    // A click keeps it open, and moving away still closes it.
+    // A hover popover lets the pointer through to anything beneath it.
+    await expect(popover).toHaveCSS("pointer-events", "none");
+    // A click pins it for its links, and moving away still closes it.
     await edge.click();
     await expect(popover).toBeVisible();
+    await expect(popover).toHaveCSS("pointer-events", "auto");
     await page.mouse.move(5, 5);
     await expect(popover).toBeHidden();
     await edge.hover();
@@ -106,6 +122,21 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await page.keyboard.press("Escape");
     await expect(popover).toBeHidden();
 
+    // A note's links follow its hotspot in the Tab order, and Tab leaves them.
+    for (let step = 0; step < 30 && !(await edge.evaluate(node => node === document.activeElement)); step++) await page.keyboard.press("Tab");
+    await expect(edge).toBeFocused();
+    await expect(popover).toHaveAttribute("role", "note");
+    await page.keyboard.press("Tab");
+    const handler = popover.getByRole("link", { name: "the handler" });
+    await expect(handler).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    await expect(edge).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(handler).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(popover).toBeHidden();
+    await expect(edge).not.toBeFocused();
+
     // The popover never blocks the click that opens an Item's drawer.
     const greeting = slide.locator('.landmark-hotspot[data-element-id="greeting"]');
     await greeting.hover();
@@ -113,6 +144,24 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await greeting.click({ position: { x: 20, y: 60 } });
     await expect(page.locator("#review-drawer")).toBeVisible();
     await expect(popover).toBeHidden();
+    // Closing the drawer returns focus without reopening the popover.
+    await page.mouse.move(5, 5);
+    await page.keyboard.press("Escape");
+    await expect(page.locator("#review-drawer")).toHaveAttribute("aria-hidden", "true");
+    await expect(popover).toBeHidden();
+
+    // A popover never takes the click meant for a hotspot beneath it.
+    await page.getByRole("button", { name: "Show slide: Stacked" }).click();
+    const stacked = page.locator('[data-deck-slide][data-slide-target$=":slide:stacked"]');
+    const upper = stacked.locator('.element-note-hotspot[data-element-note-visual="upper"]');
+    const lower = stacked.locator('.landmark-hotspot[data-element-id="lower"]');
+    await upper.hover();
+    await expect(popover).toBeVisible();
+    const lowerBox = (await lower.boundingBox())!;
+    await page.mouse.move(lowerBox.x + lowerBox.width / 2, lowerBox.y + lowerBox.height / 2, { steps: 4 });
+    await page.mouse.click(lowerBox.x + lowerBox.width / 2, lowerBox.y + lowerBox.height / 2);
+    await expect(page.locator("#review-drawer")).toBeVisible();
+    await expect(page.locator("#review-drawer h2", { hasText: "Lower" })).toBeVisible();
   } finally {
     await stopSagaServer(running);
   }
@@ -135,21 +184,30 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
   }
 });
 
-test("an implementation deck shows its diagram notes the same way", async ({ page, saga }) => {
+test("an implementation deck shows its diagram notes the same way, and in an Item's code drawer", async ({ page, saga }) => {
   const run = (...args: string[]): void => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, `${args[0]} failed\n${result.stdout}\n${result.stderr}`).toBe(0);
   };
   run("add-deck", "--feature", "wave-one", "--id", "noted-flow", "--title", "Noted flow", "--objective", "Explain the greeting flow.", saga.sagaRoot, "Noted flow");
+  const story = "urn:change-saga:wave-one:story:noted-greeting";
+  run("story", "add", "--feature", "wave-one", "--id", "noted-greeting", "--revision", "r1", "--event", "proposed",
+    "--title", "Greet by name", "--statement", "As a caller I am greeted by name.", "--criterion", "named=The greeting names the caller", saga.sagaRoot);
+  const head = saga.identity.head;
   const request = {
     version: 1, operation: "create", request_id: "noted-implementation", deck: "noted-flow", expected_snapshot: "absent",
-    slide: { id: "noted-implementation", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: [] },
+    slide: { id: "noted-implementation", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["greeting"] },
     diagram: notedDiagram,
-    items: [],
+    items: [{
+      id: "greeting", rank: 10, kind: "node", label: "Greeting", description: "Greeting returns the supplied name.", selector: { type: "element", element_id: "greeting" },
+      evidence: [{ version: 2, references: [{ commit: head, path: "src/app.go", start: 3, end: 3, digest: codeDigest(saga.sourceRepo, head, "src/app.go", 3), note: "The greeting names the caller." }] }],
+      criterion_links: [{ id: "greeting-named", criterion: `${story}:criterion:named`, story_revision: `${story}:revision:r1`, rationale: "The greeting is the named line." }],
+    }],
   };
+  request.diagram = { ...notedDiagram, elements: notedDiagram.elements.map(element => element.id === "greeting" ? { ...element, note: "Formats the **name** it is given." } : element) };
   const requestPath = join(saga.root, "noted-implementation.json");
   writeFileSync(requestPath, JSON.stringify(request));
-  run("apply-slide", "--from", requestPath, saga.sagaRoot);
+  run("apply-slide", "--from", requestPath, "--repo", saga.sourceRepo, saga.sagaRoot);
 
   await page.reload();
   await waitForSettledSaga(page);
@@ -162,5 +220,16 @@ test("an implementation deck shows its diagram notes the same way", async ({ pag
   await expect(popover.locator("code")).toHaveText("name");
   await caller.focus();
   await page.keyboard.press("Escape");
+  await expect(popover).toBeHidden();
+
+  // A reader who cannot hover, such as on a touch screen, opens the Item and
+  // reads its note at the head of its code.
+  const greeting = slide.locator('.landmark-hotspot[data-element-id="greeting"]');
+  await greeting.hover();
+  await expect(popover.locator(".element-note-label")).toHaveText("Greeting");
+  await greeting.click({ position: { x: 20, y: 60 } });
+  const drawerNote = page.locator(".diff-drawer.open .drawer-element-note");
+  await expect(drawerNote.locator(".element-note-label")).toHaveText("Greeting");
+  await expect(drawerNote.locator("strong")).toHaveText("name");
   await expect(popover).toBeHidden();
 });

@@ -54,6 +54,9 @@ func TestNoteValidation(t *testing.T) {
 		"see[^1]\n\n[^1]: cite":             "note uses footnotes",
 		"~~gone~~":                          "note uses strikethrough",
 		"- [x] done":                        "note uses task checkboxes",
+		"[x](www.example.com)":              `note link "www.example.com" must use http, https, or mailto`,
+		"[ref]: https://example.com":        "note renders no text; omit it instead",
+		"[](https://example.com)":           "note renders no text; omit it instead",
 	} {
 		d := New()
 		d.Elements = []Element{{ID: "box", Kind: "node", Shape: "rect", Width: 100, Height: 60, Style: "normal", Note: note}}

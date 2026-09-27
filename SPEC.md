@@ -508,14 +508,19 @@ sans-serif elsewhere.
 Any semantic element may carry an optional `note`: at most 1,000 characters
 of Markdown limited to bold, italics, inline code, lists, and `http`, `https`,
 or `mailto` links. Raw HTML, headings, images, tables, code blocks, block
-quotes, footnotes, and other link schemes are refused, as is a note on a
-decorative element. The SVG carries the note as plain text in the element's
+quotes, footnotes, and other link schemes are refused, as are a note that
+renders no text and a note on a decorative element. The SVG carries the note as plain text in the element's
 `desc`, so the standalone drawing and assistive technology read it, and an
 element without a note renders exactly as before. The reviewer renders the
 note with its sanitizing Markdown renderer and shows it in a popover on the
 app page, beside the element and never inside the sandboxed slide frame, when
-a reader hovers, focuses, or taps the element; the popover of an element an
-Item selects also shows the Item's label, description, and callout body.
+a reader hovers, focuses, or taps the element. A popover opened by hover lets
+the pointer through to whatever lies beneath it; a tap, a click, or keyboard
+focus pins it, and its links then follow the element in the Tab order. The
+popover of an element an Item selects also shows the Item's label and
+description, and an implementation Item's callout body, which a review slide
+lists in its Surprises panel instead; an Item's drawer repeats its note for a
+reader who cannot hover.
 
 A reader validates a pin's digest and structure;
 `change-saga diagram check` re-renders sources and reports any published SVG

@@ -75,8 +75,10 @@ type notePopoverView struct {
 	Note        template.HTML
 }
 
+// A review slide already lists every callout's body in its Surprises panel,
+// so a review Item's popover leaves the body out.
 func (v *reviewItemView) Popover() notePopoverView {
-	return notePopoverView{Label: v.Item.Label, Description: v.Item.Description, Body: v.Item.Body, Note: v.Note}
+	return notePopoverView{Label: v.Item.Label, Description: v.Item.Description, Note: v.Note}
 }
 
 func (v *landmarkView) Popover() notePopoverView {
