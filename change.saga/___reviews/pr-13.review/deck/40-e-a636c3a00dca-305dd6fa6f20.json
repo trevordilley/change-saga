@@ -18,11 +18,11 @@
       "note": "Trim a diff to its referenced lines with context."
     },
     {
-      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "commit": "f541bc656f3af4a24694d58e02aaa6422b67aa04",
       "path": "internal/server/reviewdiffs.go",
       "start": 104,
-      "end": 141,
-      "digest": "sha256:07ed5ecfc3b3797eeda2fd36854c6a2f5c94aa8358aab6e4c513750dbb60660e",
+      "end": 169,
+      "digest": "sha256:971a79bb758a58bf0fd60857e905addecc558a5768c48aced90f3a8fb90e8d67",
       "note": "Trim a diff to its referenced lines with context."
     }
   ]

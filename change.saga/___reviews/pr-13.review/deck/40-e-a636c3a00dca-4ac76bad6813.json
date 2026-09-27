@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f541bc656f3af4a24694d58e02aaa6422b67aa04",
+      "path": "internal/server/reviewdiffs_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:d7c13472432b49bc3449735b494389e2fbf6bab4fb98ea35c40aedb55cc0d0a9",
+      "note": "Unit tests: change pairs stay whole, a new file is trimmed, a fitting hunk is exact."
+    },
+    {
+      "commit": "f541bc656f3af4a24694d58e02aaa6422b67aa04",
+      "path": "internal/server/reviewdiffs_test.go",
+      "start": 400,
+      "end": 458,
+      "digest": "sha256:ef47eb89db36d86d4779f0b80bf3d9b20e10610b8bfb08fb75517c9fc972323e",
+      "note": "Unit tests: change pairs stay whole, a new file is trimmed, a fitting hunk is exact."
+    }
+  ]
+}

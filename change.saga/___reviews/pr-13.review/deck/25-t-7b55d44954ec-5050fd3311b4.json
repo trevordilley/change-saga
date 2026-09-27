@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-13",
   "slide": "trimmed-diffs",
-  "current": "sha256:99db8be9a9cf009b3caf11f681aa0278d6a04d6afcff7175ba535adedc35ea5d",
+  "current": "sha256:4cf5dec32677f23706e200bac2f5d8e406f1a39822bcba7c2c7a0032efb77f08",
   "revisions": [
     {
       "snapshot": "sha256:99db8be9a9cf009b3caf11f681aa0278d6a04d6afcff7175ba535adedc35ea5d",
@@ -37,6 +37,93 @@
             "kind": "node",
             "label": "Trim to the referenced lines",
             "description": "Keeps lines within three of the reference on the new side under their hunk header, marks gaps, and leaves hunks that already fit exact.",
+            "selector": {
+              "type": "element",
+              "element_id": "trim"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "trimmed",
+            "slide": "trimmed-diffs",
+            "rank": 20,
+            "kind": "callout",
+            "label": "Not the whole hunk any more",
+            "description": "Why the diff a reviewer sees can be shorter than the hunk it comes from.",
+            "selector": {
+              "type": "element",
+              "element_id": "trim"
+            },
+            "about": "trim",
+            "body": "You would expect the whole hunk; a one-line reference into a new 500-line file now shows about 7 lines. Only references resolved at the head are trimmed: deleted-line ones keep the old view."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "oracle",
+            "slide": "trimmed-diffs",
+            "rank": 30,
+            "kind": "node",
+            "label": "The oracle test trims too",
+            "description": "The uncached reference implementation applies the same trim, so cached and uncached diffs still match exactly.",
+            "selector": {
+              "type": "element",
+              "element_id": "oracle"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-884899f2ff6fd17d86d18ca0e3b3af6d83dff00328515ca69bbf.json",
+        "source_digest": "sha256:884899f2ff6fd17d86d18ca0e3b3af6d83dff00328515ca69bbfd5669b8e6b8a",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:4cf5dec32677f23706e200bac2f5d8e406f1a39822bcba7c2c7a0032efb77f08",
+      "parent_snapshots": [
+        "sha256:99db8be9a9cf009b3caf11f681aa0278d6a04d6afcff7175ba535adedc35ea5d"
+      ],
+      "request_id": "trimmed-diffs-6afaf368-edit",
+      "created_at": "2026-09-27T17:07:02.87423Z",
+      "asset": "24-a-d2973039b0ca5bc3d69d5ea438aaf8e5e1f457cc918665e20bd9.svg",
+      "asset_digest": "sha256:d2973039b0ca5bc3d69d5ea438aaf8e5e1f457cc918665e20bd98f3327baf5e3",
+      "slide": {
+        "version": 4,
+        "id": "trimmed-diffs",
+        "deck": "pr-13",
+        "title": "A diff shows its lines, not its hunk",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-d2973039b0ca5bc3d69d5ea438aaf8e5e1f457cc918665e20bd9.svg",
+        "takeaway": "A reference's diff is cut to its lines plus three either side, so a reference into a newly added file shows that part, not the file.",
+        "reading_order": [
+          "trim",
+          "trimmed",
+          "oracle"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "trim",
+            "slide": "trimmed-diffs",
+            "rank": 10,
+            "kind": "node",
+            "label": "Trim to the referenced lines",
+            "description": "Keeps lines within three of the reference under their hunk header, marks gaps, keeps a deletion with the line replacing it, and leaves hunks that fit exact.",
             "selector": {
               "type": "element",
               "element_id": "trim"

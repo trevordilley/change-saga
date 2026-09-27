@@ -2,18 +2,18 @@
   "version": 2,
   "references": [
     {
-      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "commit": "f541bc656f3af4a24694d58e02aaa6422b67aa04",
       "path": "internal/server/appjs.go",
       "start": 1325,
-      "end": 1362,
-      "digest": "sha256:501dedeec6baaaaf49b5a5b27f7e238ce50c554fdb0580e23d3cd6a8d45ad6ea",
+      "end": 1368,
+      "digest": "sha256:ca555259fb14f13a0236bf4071940ccc64057260863dbd56354e34ee24fc35f2",
       "note": "Fetch an Item's diffs on open and Show more in place."
     },
     {
-      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "commit": "f541bc656f3af4a24694d58e02aaa6422b67aa04",
       "path": "internal/server/appjs.go",
-      "start": 1364,
-      "end": 1370,
+      "start": 1370,
+      "end": 1376,
       "digest": "sha256:14410923ccad3d96f3b274803acd1ebde304227c8b0b8217e0cc5195358963a3",
       "note": "Fetch an Item's diffs on open and Show more in place."
     }
