@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
       "path": "internal/coderesolve/resolve.go",
-      "start": 125,
-      "end": 129,
-      "digest": "sha256:9eb21e7623eca10019717ec0fd43f509c40ab0da4a60b6f66b26c81c80032828",
+      "start": 136,
+      "end": 140,
+      "digest": "sha256:7b2e6f3db59265366270c2f4b38936f1128dfa128c75132288b9fbb9befd5e85",
       "note": "Recovers a reference with a missing commit only when its digest has one unique match in the requested view."
     },
     {

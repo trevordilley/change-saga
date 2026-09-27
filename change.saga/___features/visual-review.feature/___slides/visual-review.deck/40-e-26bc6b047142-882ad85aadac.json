@@ -10,11 +10,11 @@
       "note": "JavaScript posts a comment, reply, or annotation with the process token and immutable shown-slide snapshot; ordinary HTML forms retain a redirect fallback."
     },
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
       "path": "internal/server/reviewasyncjs.go",
-      "start": 111,
-      "end": 135,
-      "digest": "sha256:d18b34bb6f7d56ba6d0d301544c1d3e77053e0063457c973eb1f40453883e926",
+      "start": 114,
+      "end": 138,
+      "digest": "sha256:c0297849ecb6c949202cdcacf063f2980985d320d08aeeb0f3e213d606769765",
       "note": "JavaScript posts a comment, reply, or annotation with the process token and immutable shown-slide snapshot; ordinary HTML forms retain a redirect fallback."
     }
   ]

@@ -10,11 +10,11 @@
       "note": "Pins term links to stories, records, and code and proves reverse lookup from either a source line or story."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
       "path": "internal/cli/terms_test.go",
-      "start": 214,
-      "end": 237,
-      "digest": "sha256:5dee4b5f98243ac500384a14ab2137a38a84568630052923db4425edbf6f44b9",
+      "start": 277,
+      "end": 301,
+      "digest": "sha256:111245e93395397b3e8050eb71da2381decb35e027667f8f1adf75210d715b58",
       "note": "Pins term links to stories, records, and code and proves reverse lookup from either a source line or story."
     }
   ]
