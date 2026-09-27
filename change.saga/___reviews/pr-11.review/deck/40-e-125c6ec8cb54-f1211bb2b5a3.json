@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "path": "internal/coderesolve/propose.go",
+      "start": 237,
+      "end": 270,
+      "digest": "sha256:4deddf42d29d22aaeed0269a55bdc181c8fbddf8b87b516c5a4e1077c1fc628c",
+      "note": "Removed: whether a pinned range is lines the change took out."
+    }
+  ]
+}

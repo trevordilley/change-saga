@@ -2,9 +2,9 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
       "path": "internal/coderesolve/propose.go",
-      "digest": "sha256:1c1f825d9ff51af3d7d2bca950642fc6c0f714db3ed8f0f3d3fa967752d0c822",
+      "digest": "sha256:42ba66fc92c64b070e3604cfff61fc5cd69b9c7141159c404ce62b01cdcad689",
       "note": "New file: proposals by diff arithmetic."
     }
   ]

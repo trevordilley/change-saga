@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "path": "internal/cli/stale_repair_test.go",
+      "start": 171,
+      "end": 202,
+      "digest": "sha256:09ad65fe4a479435d5d89128df000b6afed2bf219f1ce5305c3832df51c94317",
+      "note": "Deleted-side evidence is counted apart, never as made stale."
+    }
+  ]
+}

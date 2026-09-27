@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
       "path": "internal/cli/stale_repair.go",
-      "start": 722,
-      "end": 740,
+      "start": 746,
+      "end": 764,
       "digest": "sha256:94bc8b5fee2500b74404640033a95685a5b3f6b1916777aa14e966382052a08e",
       "note": "Stale review Item references with proposals at their side."
     }

@@ -2,27 +2,27 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
       "path": "internal/cli/stale_repair.go",
       "start": 1,
-      "end": 135,
-      "digest": "sha256:4f22a98cdbcbe23090a49df977a0b8a90b94b8ab84142ba79ae04c9056a91c1f",
+      "end": 143,
+      "digest": "sha256:4ca93c144ede134b4fbe0180d1fa308ee2ec7d0c3035929f3117a38ead31382b",
       "note": "The rule, headline printing, and documentation references including inventory."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
       "path": "internal/cli/stale_repair.go",
-      "start": 152,
-      "end": 202,
-      "digest": "sha256:8ba36a5212b7278c2506cfe567158bd828d387615177fad9c8bc9efdda429c3a",
+      "start": 173,
+      "end": 226,
+      "digest": "sha256:c189c68415e85ef70de5a8dbfd0e71e88c78775a22ba3bcced7b99e15033cd2a",
       "note": "The rule, headline printing, and documentation references including inventory."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
       "path": "internal/cli/stale_repair.go",
-      "start": 674,
-      "end": 721,
-      "digest": "sha256:9b53640b682315f777c9adc457c2b1c116787458147e51a8954a0d3561989a9c",
+      "start": 698,
+      "end": 745,
+      "digest": "sha256:969f3169e95beba8c3fd4e82284e567b13369a731cb6d79c5c5ed0124332bd02",
       "note": "The rule, headline printing, and documentation references including inventory."
     }
   ]

@@ -2,9 +2,9 @@
   "version": 2,
   "references": [
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
       "path": "internal/cli/stale_repair_test.go",
-      "digest": "sha256:e5d679a7cd9305c4f4787700024f329a12b6bf40e299fbc05ae5bd57b1f1be97",
+      "digest": "sha256:dff41d4a2d40c078b7371cdb0a0e6f4223c7ae1c556d5ce9a6af647472b73f69",
       "note": "New file: accept and headline tests."
     }
   ]
