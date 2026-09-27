@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
       "path": "CHANGELOG.md",
       "start": 3,
-      "end": 14,
-      "digest": "sha256:a1f0f429e522289cde2782a81299d6490c80b4cbb79f3151c4d7c15e57434b7d",
+      "end": 15,
+      "digest": "sha256:87f1769734edf84baeeab74cb01da5d449ac0db9b91163ddbc4e17d559b97ca0",
       "note": "The changelog entry for review surprises."
     }
   ]

@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 558,
+      "end": 558,
+      "digest": "sha256:2378e7f071f54dc878d6351b8b49238428068215a0aa53b5eeaa041062d58d88",
+      "note": "A browser test sees the Surprises panel within the slide."
+    },
+    {
+      "commit": "f0bd082dea0cad53a1c1a6e490356197c32fc613",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 590,
+      "end": 590,
+      "digest": "sha256:82acfd71beb49f2209d2b81e9aba2e0cada9945c1e6bc904ffd9f07d1126169e",
+      "note": "A browser test sees the Surprises panel within the slide."
+    },
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 558,
+      "end": 558,
+      "digest": "sha256:190f096c291e70852eda1560ad73ed6594dddb7c85bf2de402cb215d62bc2eee",
+      "note": "A browser test sees the Surprises panel within the slide."
+    },
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 570,
+      "end": 570,
+      "digest": "sha256:9749bbf7671eee145cde47391e6f96e3f30ccb1b22f6faee282cb23d9b217598",
+      "note": "A browser test sees the Surprises panel within the slide."
+    },
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 591,
+      "end": 592,
+      "digest": "sha256:df0e2f1cdf5ec309ae5f2ec19e35ec7c5a1f1a423cb005c41a235bee137914e8",
+      "note": "A browser test sees the Surprises panel within the slide."
+    },
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 594,
+      "end": 601,
+      "digest": "sha256:e49f4c6348eb16d68ba69d253a89bf4ee9e358c64c8af6b05ce66a321dfdcc7f",
+      "note": "A browser test sees the Surprises panel within the slide."
+    }
+  ]
+}

@@ -50,11 +50,11 @@
       "note": "The fast path step for calling out surprises."
     },
     {
-      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
       "path": "skills/change-saga/SKILL.md",
       "start": 44,
       "end": 51,
-      "digest": "sha256:20b60cd956449f60329bff307e3c257149560de0fd9ccbd874158a02f37cdc45",
+      "digest": "sha256:7df39edd1bb67e251553f4f9f37e293887f67f640f039520f5eb1e09abbcf6ef",
       "note": "The fast path step for calling out surprises."
     },
     {

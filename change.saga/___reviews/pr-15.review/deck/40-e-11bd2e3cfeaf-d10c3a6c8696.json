@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
       "path": "internal/server/reviews_test.go",
       "start": 401,
       "end": 452,
-      "digest": "sha256:0dd805e30a19744d71b2d223889ddc8c716b9f76a995d4ec2082e0005a26c256",
+      "digest": "sha256:3b463b466cce3e8c019e2e058523834d9d4e3037a5ca8e7520e87a66ddf89806",
       "note": "The page shows the Surprises list, panel body and about link."
     }
   ]
