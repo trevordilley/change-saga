@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "internal/server/appjs.go",
+      "start": 292,
+      "end": 295,
+      "digest": "sha256:6974c7d9ab74d87f20c2863a5f985bae628c2aa4d6384b2f8100a679bd1fa452"
+    },
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "internal/server/appjs.go",
+      "start": 432,
+      "end": 439,
+      "digest": "sha256:3924257bea4624922b04373cfe7ee6800e993b0b864baf7e38d1b3eb0529e0da"
+    },
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "internal/server/appjs.go",
+      "start": 442,
+      "end": 442,
+      "digest": "sha256:82e15875c127cedb451f8147e487ce9e74b5da4f0353a8cd6d484755bcd6adc6"
+    }
+  ]
+}

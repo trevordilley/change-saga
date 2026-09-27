@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-14",
   "slide": "note-popover",
-  "current": "sha256:288c6c828f611045c21365b72d00b75f4e868110f890d2cd0bc32424b5cfc970",
+  "current": "sha256:659573d630b438390ef1afc4a91947634de90fad4ee2159c625c6a45e04cfba6",
   "revisions": [
     {
       "snapshot": "sha256:55a895ca8fad3073f9ba4fd96f08deaaa1c566d21621204fe2b9df27df7b5d01",
@@ -280,6 +280,324 @@
       "diagram": {
         "source": "24-a-552ce6823b973cee88f212d7b8901d6a797f9511dbac061a78c7.json",
         "source_digest": "sha256:552ce6823b973cee88f212d7b8901d6a797f9511dbac061a78c7d8efc5bbb203",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:9748d9b56d25f32d26ed0b8a64b36a870835867c5b38dbcc55b4179d79ecff1d",
+      "parent_snapshots": [
+        "sha256:288c6c828f611045c21365b72d00b75f4e868110f890d2cd0bc32424b5cfc970"
+      ],
+      "request_id": "note-popover-0f6813f5-edit",
+      "created_at": "2026-09-27T22:35:57.439179Z",
+      "asset": "24-a-69040470dfedd0d175cbdf2199e55542015813854ca2c2dd2a5a.svg",
+      "asset_digest": "sha256:69040470dfedd0d175cbdf2199e55542015813854ca2c2dd2a5ac1908b3afeac",
+      "slide": {
+        "version": 4,
+        "id": "note-popover",
+        "deck": "pr-14",
+        "title": "The popover lives on the page, not in the frame",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-69040470dfedd0d175cbdf2199e55542015813854ca2c2dd2a5a.svg",
+        "takeaway": "The server renders each note into an inert template; the page script measures a copy of the SVG and shows one popover beside the hotspot.",
+        "reading_order": [
+          "loader",
+          "templates",
+          "script",
+          "previews",
+          "badge",
+          "popover",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "loader",
+            "slide": "note-popover",
+            "rank": 10,
+            "kind": "node",
+            "label": "Notes come from the diagram source",
+            "description": "A projected slide now keeps its diagram pin, so both deck viewers read the source's notes and render each with the sanitizing Markdown helper.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "templates",
+            "slide": "note-popover",
+            "rank": 20,
+            "kind": "node",
+            "label": "Inert templates beside landmarks",
+            "description": "Each Item's landmark carries a popover template with its label, description, and note (an implementation callout adds its body; review slides list it under Surprises). Unselected noted elements get hidden note targets.",
+            "selector": {
+              "type": "element",
+              "element_id": "templates"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "script",
+            "slide": "note-popover",
+            "rank": 30,
+            "kind": "node",
+            "label": "Hotspots for noted elements",
+            "description": "Measures noted elements as it does Item elements, adds focusable note hotspots, and drives the popover on hover, focus, tap, Tab, and Escape; an implementation Item's code drawer heads its code with the note.",
+            "selector": {
+              "type": "element",
+              "element_id": "script"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "previews",
+            "slide": "note-popover",
+            "rank": 40,
+            "kind": "callout",
+            "label": "Every Item hotspot now previews",
+            "description": "Why existing decks change even without notes.",
+            "selector": {
+              "type": "element",
+              "element_id": "templates"
+            },
+            "about": "templates",
+            "body": "You might expect only noted elements to change; every Item hotspot now shows its label and description on hover, so existing decks gain previews too."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "popover",
+            "slide": "note-popover",
+            "rank": 50,
+            "kind": "node",
+            "label": "One popover that never blocks",
+            "description": "One fixed popover, on the first side of the hotspot that covers no other hotspot. Opened by hover it lets the pointer through; a tap, click, or keyboard focus pins it for its links.",
+            "selector": {
+              "type": "element",
+              "element_id": "popover"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "note-popover",
+            "rank": 60,
+            "kind": "statement",
+            "label": "Server and browser tests",
+            "description": "A tampered source reaches the page only sanitized. The browser test hovers, tabs through a note's links, taps, dismisses, clicks an Item beneath a note, and reads a note in an implementation code drawer.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "badge",
+            "slide": "note-popover",
+            "rank": 45,
+            "kind": "node",
+            "label": "Surprises get their own badge",
+            "description": "A callout renders as a warning badge at its element's bottom-left. When another Item explains the same element, the callout lets clicks through, so that Item's code stays reachable.",
+            "selector": {
+              "type": "element",
+              "element_id": "badge"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-441845123b9309833e16aac364a9099f3af9980538e68b173a28.json",
+        "source_digest": "sha256:441845123b9309833e16aac364a9099f3af9980538e68b173a281698285b9e98",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:659573d630b438390ef1afc4a91947634de90fad4ee2159c625c6a45e04cfba6",
+      "parent_snapshots": [
+        "sha256:9748d9b56d25f32d26ed0b8a64b36a870835867c5b38dbcc55b4179d79ecff1d"
+      ],
+      "request_id": "note-popover-cb11208c-edit",
+      "created_at": "2026-09-27T22:36:23.333548Z",
+      "asset": "24-a-69040470dfedd0d175cbdf2199e55542015813854ca2c2dd2a5a.svg",
+      "asset_digest": "sha256:69040470dfedd0d175cbdf2199e55542015813854ca2c2dd2a5ac1908b3afeac",
+      "slide": {
+        "version": 4,
+        "id": "note-popover",
+        "deck": "pr-14",
+        "title": "The popover lives on the page, not in the frame",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-69040470dfedd0d175cbdf2199e55542015813854ca2c2dd2a5a.svg",
+        "takeaway": "The server renders each note into an inert template; the page script measures a copy of the SVG and shows one popover beside the hotspot.",
+        "reading_order": [
+          "loader",
+          "templates",
+          "script",
+          "previews",
+          "badge",
+          "popover",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "loader",
+            "slide": "note-popover",
+            "rank": 10,
+            "kind": "node",
+            "label": "Notes come from the diagram source",
+            "description": "A projected slide now keeps its diagram pin, so both deck viewers read the source's notes and render each with the sanitizing Markdown helper.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "templates",
+            "slide": "note-popover",
+            "rank": 20,
+            "kind": "node",
+            "label": "Inert templates beside landmarks",
+            "description": "Each Item's landmark carries a popover template with its label, description, and note (an implementation callout adds its body; review slides list it under Surprises). Unselected noted elements get hidden note targets.",
+            "selector": {
+              "type": "element",
+              "element_id": "templates"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "script",
+            "slide": "note-popover",
+            "rank": 30,
+            "kind": "node",
+            "label": "Hotspots for noted elements",
+            "description": "Measures noted elements as it does Item elements, adds focusable note hotspots, and drives the popover on hover, focus, tap, Tab, and Escape; an implementation Item's code drawer heads its code with the note.",
+            "selector": {
+              "type": "element",
+              "element_id": "script"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "previews",
+            "slide": "note-popover",
+            "rank": 40,
+            "kind": "callout",
+            "label": "Every Item hotspot now previews",
+            "description": "Why existing decks change even without notes.",
+            "selector": {
+              "type": "element",
+              "element_id": "templates"
+            },
+            "about": "templates",
+            "body": "You might expect only noted elements to change; every Item hotspot now shows its label and description on hover, so existing decks gain previews too."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "popover",
+            "slide": "note-popover",
+            "rank": 50,
+            "kind": "node",
+            "label": "One popover that never blocks",
+            "description": "One fixed popover, on the first side of the hotspot that covers no other hotspot. Opened by hover it lets the pointer through; a tap, click, or keyboard focus pins it for its links.",
+            "selector": {
+              "type": "element",
+              "element_id": "popover"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "note-popover",
+            "rank": 60,
+            "kind": "statement",
+            "label": "Server and browser tests",
+            "description": "A tampered source reaches the page only sanitized. The browser test hovers, tabs through a note's links, taps, dismisses, clicks an Item beneath a note and beside a surprise badge, and reads a drawer's note.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "badge",
+            "slide": "note-popover",
+            "rank": 45,
+            "kind": "node",
+            "label": "Surprises get their own badge",
+            "description": "A callout renders as a warning badge at its element's bottom-left. When another Item explains the same element, the callout lets clicks through, so that Item's code stays reachable.",
+            "selector": {
+              "type": "element",
+              "element_id": "badge"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-441845123b9309833e16aac364a9099f3af9980538e68b173a28.json",
+        "source_digest": "sha256:441845123b9309833e16aac364a9099f3af9980538e68b173a281698285b9e98",
         "renderer": "change-saga-diagram/1"
       }
     }

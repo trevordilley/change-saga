@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "internal/server/reviews.go",
+      "start": 912,
+      "end": 912,
+      "digest": "sha256:493e2013d984e74e85476693fe08ee84edb8622880506ca8f4c3f7a042d9e15b"
+    },
+    {
+      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "path": "internal/server/reviews.go",
+      "start": 914,
+      "end": 914,
+      "digest": "sha256:5c71e0a458c50550a525034de2e012b0971cfc2977c6e38e01638a7adef4bf0e"
+    }
+  ]
+}
