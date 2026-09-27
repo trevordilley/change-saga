@@ -63,6 +63,13 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await expect(popover.locator("li")).toHaveText(["empty names are refused", "see the handler"]);
     await expect(popover.getByRole("link", { name: "the handler" })).toHaveAttribute("href", "https://example.com/handler");
     await expect(popover.locator(".element-note-label")).toHaveCount(0);
+    // A click keeps it open, and moving away still closes it.
+    await edge.click();
+    await expect(popover).toBeVisible();
+    await page.mouse.move(5, 5);
+    await expect(popover).toBeHidden();
+    await edge.hover();
+    await expect(popover).toBeVisible();
     const edgeBox = (await edge.boundingBox())!;
     const popoverBox = (await popover.boundingBox())!;
     const overlaps = popoverBox.x < edgeBox.x + edgeBox.width && edgeBox.x < popoverBox.x + popoverBox.width && popoverBox.y < edgeBox.y + edgeBox.height && edgeBox.y < popoverBox.y + popoverBox.height;

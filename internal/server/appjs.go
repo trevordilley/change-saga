@@ -539,7 +539,8 @@ const appJavaScript = `(() => {
     const hotspot = noteHotspot(event.target);
     if (!hotspot || event.pointerType === 'touch' || withinNote(hotspot, event.relatedTarget)) return;
     delete hotspot.dataset.noteDismissed;
-    if (hotspot === noteOwner && !hotspot.contains(document.activeElement)) scheduleHideNote();
+    // Keyboard focus keeps the popover; focus a click left behind does not.
+    if (hotspot === noteOwner && !hotspot.matches(':focus-visible') && !q(':focus-visible', hotspot)) scheduleHideNote();
   });
   document.addEventListener('focusin', event => {
     const hotspot = noteHotspot(event.target);
