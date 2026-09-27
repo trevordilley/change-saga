@@ -25,8 +25,13 @@ before drawing slides; nothing else is needed.
    or `--id` when they are known.
 3. Read the diff against the base and find its architecture: the few ideas a
    reviewer must understand, such as the components and how they relate, the
-   data flow, a state change, the decision that would surprise a reviewer.
-   Plan one slide per idea, usually two to six; never one slide per file.
+   data flow, and a state change. Then find its surprises: whatever breaks a
+   reasonable maintainer's expectation (counterintuitive behavior, a
+   convention it changes, hidden coupling, a displaced cost, an ordering or
+   ownership constraint, a tradeoff or rejected alternative, failure and
+   recovery behavior). Surprises are what a reviewer most needs to see; the
+   rest of the deck is the model that makes them legible. Plan one slide per
+   idea, usually two to six; never one slide per file.
 4. For each slide, write one request: a `"diagram"` source (explicitly
    positioned nodes, edges, and groups the CLI renders to SVG) and an Item for
    each element that explains part of the change. Publish it with `change-saga
@@ -36,20 +41,29 @@ before drawing slides; nothing else is needed.
    `diagram edit`. Hand-write SVG only for what a diagram source cannot
    express, through `add-slide --review`, `set-slide-content --review`, and
    `add-item --review`.
-5. Cover every changed line from the narrowest Item that explains it:
+5. Call out every surprise with a `"kind": "callout"` Item in that slide's
+   request: `"about"` names the Item for the responsible element, and
+   `"body"` (at most 240 characters) states what a reviewer would expect,
+   what the change does instead, why, and the consequence. Cover the code
+   that shows the actual behavior from the callout itself. Reviewers see
+   callouts under the slide, labelled Surprise. Never manufacture one: if
+   nothing surprises, say so in the concluding slide's takeaway.
+6. Cover every changed line from the narrowest Item that explains it:
    `change-saga cover --target ITEM_URN --path PATH --changed-lines
-   change.saga`, or `--lines RANGES` for part of a file. On a review Item,
-   cover compares the review's own range. `change-saga query children --saga
-   change.saga --parent REVIEW_URN` lists the review's slides and Items.
-6. Confirm: `change-saga review list --uncovered change.saga` names what no
-   Item explains yet; `change-saga check --covers review --against BASE
+   change.saga`, or `--lines RANGES --side new` for part of a file
+   (`--side old` for deleted lines). On a review Item, cover compares the
+   review's own range. `change-saga query children --saga change.saga
+   --parent REVIEW_URN` lists the review's slides and Items.
+7. Confirm: `change-saga review list --uncovered change.saga` names what no
+   Item explains yet, and `change-saga review list --review ID change.saga`
+   lists the surprises called out; `change-saga check --covers review --against BASE
    change.saga` exits 0 once every changed line is explained. Run
    `change-saga diagram check --review ID change.saga` and `change-saga
    validate change.saga`.
-7. Commit the Saga with the change. Reviewers can collapse `change.saga` in
+8. Commit the Saga with the change. Reviewers can collapse `change.saga` in
    the pull request's file tree and open the deck with `change-saga open
    change.saga`.
-8. After each later push, `change-saga review refresh-coverage --review ID
+9. After each later push, `change-saga review refresh-coverage --review ID
    change.saga` re-pins what only moved. New lines are reported uncovered,
    with the one Item covering their file as the proposed owner: read them,
    and only if that Item's explanation covers them accept with the printed

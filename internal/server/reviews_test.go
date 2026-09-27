@@ -398,3 +398,55 @@ func TestAnItemsDiffsArriveAPageAtATime(t *testing.T) {
 		t.Fatalf("the last page holds %d diffs (want 5) and offers more: %v", got, strings.Contains(rest, "data-review-more-diffs"))
 	}
 }
+
+// A callout is the surprise its author called out: what a reviewer would
+// expect, and what the change does instead. The reviewer sees it under the
+// slide and in the element's panel, linked to the element it is about, and
+// the review's report lists it.
+func TestReviewSlideShowsTheSurprisesItsAuthorCalledOut(t *testing.T) {
+	t.Parallel()
+	fixture := newServerReviewFixture(t)
+	deckDir := filepath.Join(saga.ReviewDir(fixture.root, "pr-7"), saga.ReviewDeckDir)
+	slide, callout := saga.ReviewSlideTarget("app", "pr-7", "queue"), saga.ReviewItemTarget("app", "pr-7", "queue", "why-postgres")
+	calloutName, _ := saga.FlatItemFilename(slide, callout, 10)
+	slideName, _ := saga.FlatSlideFilename(saga.ReviewDeckTarget("app", "pr-7", "pr-7"), slide, 0)
+	var manifest saga.SlideManifest
+	data, err := os.ReadFile(filepath.Join(deckDir, slideName))
+	if err != nil || json.Unmarshal(data, &manifest) != nil {
+		t.Fatalf("read the slide: %v", err)
+	}
+	manifest.ReadingOrder = append(manifest.ReadingOrder, "why-postgres")
+	writeServerJSON(t, filepath.Join(deckDir, slideName), manifest)
+	body := "You would expect a queue service; the queue is a Postgres table so a job commits with its data."
+	writeServerJSON(t, filepath.Join(deckDir, calloutName), saga.ItemManifest{
+		Version: saga.DeckRecordVersion, ID: "why-postgres", SlideID: "queue", Rank: 10, Kind: "callout",
+		Label: "No queue service", Description: "Why Enqueue writes to Postgres.", About: "node", Body: body,
+		Selector: saga.LandmarkSelector{Type: "element", ElementID: "node"},
+	})
+	document, validation, err := saga.Load(fixture.root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("fixture with a callout: %v %#v", err, validation.Issues)
+	}
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	page := getPage(t, handler, "/reviews/pr-7").Body.String()
+	for _, want := range []string{
+		`<aside class="review-callouts" aria-label="Surprises on this slide">`,
+		`data-review-callout="why-postgres"`,
+		`No queue service</a> You would expect a queue service; the queue is a Postgres table so a job commits with its data.`,
+		`<p class="eyebrow">Surprise</p><h2>No queue service</h2><p class="review-callout-body">` + body,
+		`<p class="review-callout-about">About <a href="#`,
+		`>Enqueue</a>`,
+	} {
+		if !strings.Contains(page, want) {
+			t.Fatalf("the review page does not show %q", want)
+		}
+	}
+	if strings.Contains(page, `<p class="eyebrow">Surprise</p><h2>Enqueue</h2>`) {
+		t.Fatal("an ordinary element is labelled a surprise")
+	}
+	report := reviewstate.Build(context.Background(), document.FindReview("pr-7"), reviewstate.Options{Checkout: fixture.repo, SagaRoot: fixture.root})
+	want := []reviewstate.CalloutReport{{ID: "why-postgres", Label: "No queue service", Body: body, About: "node"}}
+	if len(report.Slides) != 1 || !reflect.DeepEqual(report.Slides[0].Callouts, want) {
+		t.Fatalf("the report's callouts = %#v, want %#v", report.Slides, want)
+	}
+}
