@@ -9,7 +9,7 @@
   "rank": 10,
   "kind": "node",
   "label": "Saved explanation",
-  "description": "The endpoint loads the requested saved definition and generates its directed Component diagram with explicit noncurrent status.",
+  "description": "The endpoint loads the saved definition and draws its directed Component diagram with explicit noncurrent status. It reads the record store itself; the drawer and query inventory are independent readers, not a request chain.",
   "selector": {
     "type": "element",
     "element_id": "fetch"
