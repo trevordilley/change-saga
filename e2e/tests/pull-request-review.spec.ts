@@ -555,7 +555,7 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
   cli(sagaRepositories, "review", "create", "--id", "pr-2", "--base", "main", "--head", "feature/wave-one", "--pr", "2", "--title", "Diagram review", sagaRoot);
   const request = {
     version: 1, operation: "create", request_id: "greeting-flow", review: "pr-2", expected_snapshot: "absent",
-    slide: { id: "greeting-flow", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["caller", "greeting"] },
+    slide: { id: "greeting-flow", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["caller", "greeting", "no-default"] },
     diagram: {
       version: 1, width: 1280, height: 720, background: "#fafaf8",
       elements: [
@@ -567,6 +567,7 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
     items: [
       { id: "caller", rank: 10, kind: "node", label: "Caller", description: "Callers now pass a name.", selector: { type: "element", element_id: "caller" } },
       { id: "greeting", rank: 20, kind: "node", label: "Greeting", description: "Greeting returns the supplied name.", selector: { type: "element", element_id: "greeting" }, record: "urn:change-saga:wave-one:feature:wave-one" },
+      { id: "no-default", rank: 30, kind: "callout", label: "No default name", about: "greeting", body: "You would expect a default when the name is empty; the greeting now prints it as given.", description: "Why an empty name reaches the greeting.", selector: { type: "element", element_id: "greeting" } },
     ],
   };
   const requestPath = join(root, "greeting-flow.json");
@@ -587,8 +588,17 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
     await expect(visual.getByRole("img", { name: "Greeting flow" })).toBeVisible();
     await expect(visual.locator("#greeting")).toBeVisible();
     await expect(visual.locator("#name")).toBeAttached();
-    await expect(slide.locator('.landmark-hotspot[data-element-id="greeting"]')).toHaveCount(1);
+    // The Greeting Item and the callout about it both mark the greeting.
+    await expect(slide.locator('.landmark-hotspot[data-element-id="greeting"]')).toHaveCount(2);
     await expect(slide.locator('.landmark-hotspot[data-element-id="caller"]')).toHaveCount(1);
+    // The slide's surprises are shown on the slide, not below its frame.
+    const surprises = slide.locator(".review-callouts");
+    await expect(surprises).toBeVisible();
+    await expect(surprises.locator("summary")).toHaveText("Surprises (1)");
+    await expect(surprises).toContainText("the greeting now prints it as given");
+    const slideBox = await slide.boundingBox();
+    const surprisesBox = await surprises.boundingBox();
+    expect(slideBox && surprisesBox && surprisesBox.y + surprisesBox.height <= slideBox.y + slideBox.height + 1).toBeTruthy();
     await page.screenshot({ path: test.info().outputPath("review-diagram-slide.png") });
     await slide.locator(".landmark-menu > summary").click();
     await slide.locator(".landmark-list").getByRole("button", { name: /Open linked code with \d+ additions? and \d+ deletions? for Greeting/ }).click();

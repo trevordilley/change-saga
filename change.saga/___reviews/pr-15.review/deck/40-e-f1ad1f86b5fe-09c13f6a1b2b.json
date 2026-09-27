@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "250dbc53d8b550b76be81beffea6aaeaf5ff22ae",
+      "path": "CHANGELOG.md",
+      "start": 3,
+      "end": 15,
+      "digest": "sha256:87f1769734edf84baeeab74cb01da5d449ac0db9b91163ddbc4e17d559b97ca0",
+      "note": "The changelog entry for review surprises."
+    }
+  ]
+}

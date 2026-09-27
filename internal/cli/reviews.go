@@ -508,11 +508,21 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []r
 			fmt.Fprintf(out, "  note: %s\n", diagnostic)
 		}
 		printReviewCoverage(out, report.Coverage, repairFor(repairs, report.ID))
+		if len(report.Slides) > 0 {
+			callouts := 0
+			for _, slide := range report.Slides {
+				callouts += len(slide.Callouts)
+			}
+			fmt.Fprintf(out, "  surprises called out: %d\n", callouts)
+		}
 		if len(report.Slides) == 0 {
 			fmt.Fprintln(out, "  no slides yet")
 		}
 		for _, slide := range report.Slides {
 			fmt.Fprintf(out, "  slide %s: %s\n", slide.ID, slide.Title)
+			for _, callout := range slide.Callouts {
+				fmt.Fprintf(out, "    surprise %s: %s\n", callout.Label, callout.Body)
+			}
 			if len(slide.Decisions) == 0 {
 				fmt.Fprintln(out, "    no decision")
 			}

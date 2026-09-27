@@ -121,6 +121,19 @@ type SlideReport struct {
 	Decisions   []DecisionReport `json:"decisions"`
 	Comments    int              `json:"comments"`
 	OpenThreads int              `json:"open_threads"`
+	// Callouts are the slide's callout Items: the surprises its author
+	// called out, each saying what a reviewer would expect and what the
+	// change does instead.
+	Callouts []CalloutReport `json:"callouts,omitempty"`
+}
+
+// CalloutReport is one callout Item on a review slide. About names the
+// Item on the same slide that the callout explains, when it names one.
+type CalloutReport struct {
+	ID    string `json:"id"`
+	Label string `json:"label"`
+	Body  string `json:"body"`
+	About string `json:"about,omitempty"`
 }
 
 // DecisionReport is one reviewer's latest decision on a slide.
@@ -186,6 +199,11 @@ func Build(ctx context.Context, review *saga.Review, options Options) Report {
 	threads := Threads(review.Comments)
 	for _, slide := range review.Deck.Slides {
 		slideReport := SlideReport{ID: slide.ID, Title: slide.Title, Target: slide.Target, Decisions: []DecisionReport{}}
+		for _, item := range slide.Items {
+			if item.Kind == "callout" {
+				slideReport.Callouts = append(slideReport.Callouts, CalloutReport{ID: item.ID, Label: item.Label, Body: item.Body, About: item.About})
+			}
+		}
 		digest, digestErr := saga.SlideDigest(slide)
 		for _, approval := range latest[slide.ID] {
 			if approval.State == saga.ApprovalNone {

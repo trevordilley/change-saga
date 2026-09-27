@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "internal/server/reviews.go",
+      "start": 901,
+      "end": 901,
+      "digest": "sha256:8fe1f3fd445087712ef90048f6abf22feada8d8f7018e09f83842d77b827b113",
+      "note": "The panel now shows a callout's body and the element it is about."
+    }
+  ]
+}

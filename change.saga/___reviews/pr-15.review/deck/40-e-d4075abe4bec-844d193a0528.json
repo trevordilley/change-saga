@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 124,
+      "end": 136,
+      "digest": "sha256:dbd499fdb3ab86be5f1aa0d50eb75548775bd0e399107281795c464cd49e9b3a",
+      "note": "Each slide report lists its callouts."
+    },
+    {
+      "commit": "e2ebda4f08bde9c764c65adb227aac6be34219ed",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 202,
+      "end": 206,
+      "digest": "sha256:975f7a6f4b667e5fa7e6339650799a44b2e5d3dd12b035aedbc11606f4bce411",
+      "note": "Each slide report lists its callouts."
+    }
+  ]
+}

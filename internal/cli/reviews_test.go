@@ -437,3 +437,28 @@ func TestStatusReportsReviewCoverageAndNamesTheCoverCommand(t *testing.T) {
 		t.Fatalf("review next actions = %d:\n%s", found, output.String())
 	}
 }
+
+// review list names every surprise a slide calls out, and counts them, so
+// an author sees at a glance whether the deck says what would surprise a
+// reviewer. The count is reported, never required.
+func TestReviewListNamesTheSurprisesCalledOut(t *testing.T) {
+	t.Parallel()
+	fixture := newReviewFixture(t)
+	before := run(t, Review, "list", "--review", "pr-7", fixture.root)
+	if !strings.Contains(before, "  surprises called out: 0\n") {
+		t.Fatalf("review list does not count a deck's surprises:\n%s", before)
+	}
+	run(t, AddItem, "--review", "pr-7", "--slide", "table", "--kind", "callout", "--element-id", "node", "--id", "no-queue",
+		"--label", "No queue service", "--about", "node", "--body", "Expected a queue service; jobs are rows in the same transaction.",
+		"--description", "Why jobs are table rows.", fixture.root)
+	after := run(t, Review, "list", "--review", "pr-7", fixture.root)
+	for _, want := range []string{"  surprises called out: 1\n", "    surprise No queue service: Expected a queue service; jobs are rows in the same transaction.\n"} {
+		if !strings.Contains(after, want) {
+			t.Fatalf("review list does not show %q:\n%s", want, after)
+		}
+	}
+	table := slideReport(t, reviewReport(t, fixture), "table")
+	if len(table.Callouts) != 1 || table.Callouts[0].ID != "no-queue" || table.Callouts[0].About != "node" {
+		t.Fatalf("the JSON report's callouts = %#v", table.Callouts)
+	}
+}
