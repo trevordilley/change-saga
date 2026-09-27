@@ -1,5 +1,33 @@
 # Changelog
 
+## Unreleased — cheap, judged repair of stale evidence
+
+- Stale references come with a proposed range: the pinned start and end mapped
+  through the diff hunks, widened over lines inserted inside, with the small
+  diff inside the range. Nothing is proposed for a deleted file, a binary
+  file, or a range rewritten together with code outside it. `references
+  --stale`, `reconcile`, `status --against`, `review list`, and
+  `review refresh-coverage` show it.
+- `repin --accept-proposed` accepts proposals explicitly, per reference
+  (`--record FILE [--reference N]`) or in bulk (`--target`, `--review`,
+  `--all`), keeping each note, owner, record, and side. It refuses a reference
+  with no proposal, and works on `apply-slide` slides through one
+  complete-slide update. `apply-slide --print-current SLIDE` prints a managed
+  slide's complete current request.
+- `review refresh-coverage --review ID` keeps a review deck current as a pull
+  request iterates: it re-pins moved references and whole-file references whose
+  file event persists, gives new lines to the one Item covering their file, and
+  reports stale references with proposals for judgment.
+- `reconcile` leads with "Your change made N references stale", one line each
+  with owner and old -> proposed range; pre-existing debt is a count (`--all`
+  lists its tasks) and documentation gaps, re-reads, and user choices print
+  one line each. JSON adds a leading `summary` and per-reference `proposal`;
+  `--json --summary` emits only the summary. `status --against` (JSON
+  `stale_by_change`), `review list` (JSON `repair`), and `review create`
+  (JSON `stale_by_change`) say the same. Existing fields are unchanged.
+- `check --covers review` for a rewritten review now says to pin it with
+  `review follow`, matching `status`, instead of "create one".
+
 ## Unreleased — create a review for this PR first
 
 - Creating a review for a pull request or branch is the headline entry point.
