@@ -301,8 +301,30 @@ func TestReconciliationPreservesTestEvidenceDiffCoverage(t *testing.T) {
 	if report.DocumentationCoverage.Areas.Implementation.Total != 3 || report.DocumentationCoverage.Areas.Implementation.Covered != 2 || report.DocumentationCoverage.Areas.Implementation.Uncovered != 1 {
 		t.Fatalf("lost current test evidence coverage: %+v", report.DocumentationCoverage.Areas.Implementation)
 	}
-	if gap := report.DocumentationCoverage.Areas.Implementation.UncoveredEntries[0]; gap.Event != "add" {
+	gap := report.DocumentationCoverage.Areas.Implementation.UncoveredEntries[0]
+	if gap.Event != "add" {
 		t.Fatalf("a focused line reference must not swallow the file event: %+v", gap)
+	}
+	// A documentation gap's detail keeps its established JSON format; only
+	// the text report rewords a file event as "file add".
+	found := false
+	for _, task := range report.Queue {
+		if task.Kind == "documentation_gap" && task.Resource == gap.Resource {
+			found = true
+			if want := gap.Reason + "; " + gap.Side + " lines " + gap.Lines + " " + gap.Event; task.Because[0].Detail != want {
+				t.Fatalf("documentation_gap detail = %q, want %q", task.Because[0].Detail, want)
+			}
+		}
+	}
+	if !found {
+		t.Fatalf("no documentation_gap task for %s: %+v", gap.Resource, report.Queue)
+	}
+	var text bytes.Buffer
+	if err := Reconcile(context.Background(), []string{"--against", "main", root}, &text); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(text.String(), "  "+gap.Resource+": file add\n") {
+		t.Fatalf("the text report names the file event:\n%s", text.String())
 	}
 }
 

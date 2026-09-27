@@ -194,11 +194,7 @@ func Reconcile(ctx context.Context, args []string, out io.Writer) error {
 	if len(gaps) > 0 {
 		fmt.Fprintf(out, "\nDocumentation gaps: %d changed ranges no living record explains (review-deck evidence does not fill them)\n", len(gaps))
 		for _, task := range gaps {
-			detail := task.Because[0].Detail
-			if _, where, ok := strings.Cut(detail, "; "); ok {
-				detail = where
-			}
-			fmt.Fprintf(out, "  %s: %s\n", task.Resource, detail)
+			fmt.Fprintf(out, "  %s: %s\n", task.Resource, gapWhere(task.Because[0].Detail))
 		}
 		if len(gaps[0].Repair) > 0 {
 			fmt.Fprintln(out, "  Choose narrow semantic owners and cover each: "+renderReconciliationCommand(gaps[0].Repair[0]))
@@ -464,12 +460,10 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		if entry.Side == "old" {
 			commit = compared.Opening.BaseOID
 		}
-		where := entry.Side + " lines " + entry.Lines
-		if entry.Event != "" {
-			where = "file " + entry.Event
-		}
+		// The detail keeps its established JSON format; the text report
+		// rewords it (gapWhere).
 		task := reconciliationTask{Resource: entry.Resource, Kind: "documentation_gap", Debt: "uncovered_change",
-			Because:  []changeview.Cause{{Kind: "diff_coverage", Detail: entry.Reason + "; " + where}},
+			Because:  []changeview.Cause{{Kind: "diff_coverage", Detail: entry.Reason + "; " + entry.Side + " lines " + entry.Lines + " " + entry.Event}},
 			Guidance: "Read the changed code and current explanation, then choose narrow semantic owners. Supply an exact reference per owner; review-deck evidence does not fill this documentation gap. For a transaction-managed Item, use query slide and apply-slide instead of cover.",
 			Inspect:  []grammar.Invocation{reconciliationQuery(root, repo, compared.Opening.HeadOID, "query gaps", grammar.V("against", compared.Opening.BaseOID), grammar.V("kind", "uncovered"))},
 			Repair:   []grammar.Invocation{reconciliationInvoke("cover", root, repo, allowMismatch, grammar.V("target", ""), grammar.V("ref", ""), grammar.V("dry-run", "true"))},
@@ -557,6 +551,18 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 
 // Match immutable reference identity and bytes, not merely its array position.
 // New or revised evidence cannot inherit an old record's debt classification.
+// gapWhere is where a documentation gap's detail says the gap is, for the
+// text report: its side and lines, or "file <event>" for a file event.
+func gapWhere(detail string) string {
+	if index := strings.LastIndex(detail, "; "); index >= 0 {
+		detail = detail[index+2:]
+	}
+	if _, event, ok := strings.Cut(detail, " lines  "); ok && event != "" {
+		return "file " + event
+	}
+	return strings.TrimSpace(detail)
+}
+
 func reconciliationReferenceKey(ref ownedReference) string {
 	data, _ := json.Marshal(ref)
 	return string(data)
