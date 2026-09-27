@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "3122a2b5f447bfc2c588aee9c5cdf960b7e993bf",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/appjs.go",
-      "start": 1240,
-      "end": 1247,
+      "start": 1368,
+      "end": 1375,
       "digest": "sha256:09d0b516cde4cab044d154956daee293d50a12fa31e00ce5361bedb85a945fbd",
       "note": "Story and Code controls route to independent drawer content, leaving linked-code activation distinct from story inspection."
     }

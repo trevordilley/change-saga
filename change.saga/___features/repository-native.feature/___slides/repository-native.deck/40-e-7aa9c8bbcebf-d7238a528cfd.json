@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/sync.go",
-      "start": 29,
-      "end": 45,
-      "digest": "sha256:0a0da316f8cafb0e0ae1314261a391a869764a6db8e3dc6231b3bbe4517cf909",
+      "start": 28,
+      "end": 46,
+      "digest": "sha256:7576e9085c55392924d881b7e8b1bcdbecb618adfe27c265ac8b7ab48315846c",
       "note": "Parses the required source checkout, optional revision, and manifest before any cursor write."
     }
   ]

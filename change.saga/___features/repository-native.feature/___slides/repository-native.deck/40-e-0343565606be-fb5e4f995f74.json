@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/cli.go",
-      "start": 468,
-      "end": 507,
-      "digest": "sha256:1efeb51249d886d519b81a1577fe59615d1a8043d7ee1513dca2719138b2a386",
+      "start": 558,
+      "end": 598,
+      "digest": "sha256:5786d14ac9a8cc7235977bda93ecef1adf6dd3323ba0bb6ec078b480e014675b",
       "note": "Builds the manifest with the accepted identity and stages the complete initial Saga tree."
     }
   ]

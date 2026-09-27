@@ -1,0 +1,198 @@
+{
+  "version": 2,
+  "commit": "b011154a1d75e74c15b0e2c7fcf4c226860479a6",
+  "base": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+  "commits": [
+    {
+      "commit": "5184eb01137dae0d8ce0d9d6c559a7b3168e4a43",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:29:21Z",
+      "subject": "Propose where a stale reference's lines are by diff arithmetic",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "93a113ab3c849f323d493cfe6d1a6d7f6d4cd665",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:34:16Z",
+      "subject": "Accept a stale reference's proposed range with one explicit repin, including on apply-slide slides",
+      "body": "references --stale shows each stale reference's proposal, its diff, and the\naccept command. repin --accept-proposed takes a scope, keeps the note and the\nrecord, and refuses a reference with nothing proposed. apply-slide\n--print-current prints a managed slide's complete current request.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "56edcfa57091011cbab7e757dd820331aa8ffa84",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:38:59Z",
+      "subject": "Lead reconcile with the references this change made stale",
+      "body": "The text report opens with one line per reference the change made stale,\nold range -\u003e proposed range, and the accept command. Pre-existing debt is a\ncount; --all lists its tasks. Documentation gaps, re-reads, and user\nchoices print one line each. JSON gains a leading summary and\nproposals; --json --summary emits only the summary.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "19c376b40e0ed28f5f37866aa5af60648a1ccb47",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:44:02Z",
+      "subject": "Say what the change made stale in status, review list, and review create",
+      "body": "One rule everywhere: stale at the head and either current at the merge-base\nor pinned during the change. status (comparing) prints it under the header\nand adds stale_by_change; review list reports it per open review, with\nproposals for stale Item references; review create's next steps name it.\nReview list and create read only references into files the range touches.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "ea25ed4e80017e4c3bdfa6ac39d89877d464feb6",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:47:57Z",
+      "subject": "Refresh a review deck's coverage after a push with one command",
+      "body": "review refresh-coverage re-pins references whose lines only moved and\nwhole-file references whose file event is still in the range, gives newly\nchanged lines to the one Item already covering their file, and reports stale\nreferences with their proposals and accept commands, never accepting them.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "d6f3edb1d9490acc954856f3653aa54c6b0822c9",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:48:07Z",
+      "subject": "gofmt refresh-coverage",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "afd2e69d7a2aeb404eff8ec92cfe0571ae1e98d1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:49:46Z",
+      "subject": "Make check's rewritten-review note match status: pin it, don't create one",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "e8c664cdd92a2867d53ab768508c3c0b77522fd4",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:51:04Z",
+      "subject": "Teach the cheaper stale-repair flow in the skill and reconciliation guide",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:51:22Z",
+      "subject": "Record the stale-repair ergonomics in the changelog",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "48412c12133d8031e1732933e3a1c4d26d95f413",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:53:29Z",
+      "subject": "Repair a sample of pre-existing stale evidence with the new flow",
+      "body": "18 of 20 sampled references kept their meaning (a guard or field added, a\ngitexec refactor, t.Parallel, a doc path rename) and were one-line\nrepin --accept-proposed accepts, five of them on apply-slide slides. Two no\nlonger said what the code does and were revised with replace-coverage.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "a7e1e706a0424e0bafd86729788049e057c6561f",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:57:37Z",
+      "subject": "Count technical definitions' evidence in what the change made stale",
+      "body": "A stale definition reference shows its proposal and says to revise the\ndefinition; only coverage evidence counts as a one-line accept.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "24e0da6442d7097691cc814175932e0bc07c8e50",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:58:39Z",
+      "subject": "Accept the proposals for the four living references this change moved",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T07:59:47Z",
+      "subject": "Revise the reconciliation queue definition for its summary and proposals",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "bb50d6da3037fc51c761270da0f93b815920eb34",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:04:26Z",
+      "subject": "Author PR #11's review deck with every changed line explained",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "ec95e503257151010e475c3cab537992a5af05e5",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:06:17Z",
+      "subject": "List only what refresh-coverage did, under a one-line summary",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "87a58911a00b6a00000187a595c257941cbc1339",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:06:48Z",
+      "subject": "Keep review pr-11 current with refresh-coverage and one accepted proposal",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "88de981a6c1587f6e8ac78d389182bd76a4af468",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:14:28Z",
+      "subject": "Keep deleted-side evidence out of what the change made stale",
+      "body": "A reference pinned at the merge-base to lines the change removed documents\nwhat the change took out; it is current at the base by design. It is now\ncounted as deleted_side instead of being flagged with a misleading proposal.\nStatus, review list, and review create carry proposals without their diffs,\nand the e2e harness reads a large status report without Node's 1 MiB cap.\n\nCo-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "b46a46248d97dbf3d08b9f193e0eb25ee68de324",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:15:01Z",
+      "subject": "Keep review pr-11 current after the deleted-side fix",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "3f73c33e89d734389798de28441488293e93d0e3",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:15:17Z",
+      "subject": "State the deleted-side exception wherever the rule is taught",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "8ee6e12a820917e904c1695a85cf2b7805f1abb7",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:15:46Z",
+      "subject": "Keep review pr-11 current after teaching the deleted-side exception",
+      "body": "Co-Authored-By: Claude Opus 5.5 \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "c1d788ac182c93e3654b1ef3648293f9d229f6d1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:51:35Z",
+      "subject": "Report new lines with a proposed owner instead of assigning them, and keep each review reference's side",
+      "body": "refresh-coverage no longer extends an Item on its own: newly changed lines\nare reported uncovered with the one Item covering their file as the\nproposed owner and the exact accept command. --accept-proposed [--path P]\ngives them to it under a neutral \"added in \u003chead\u003e\" note unless --note says\nmore. A new-side reference stale at the head now needs judgment in\nrefresh-coverage, repin --accept-proposed, and review list instead of being\nre-pinned to or counted current at the merge-base. repin --accept-proposed\n--all skips and reports an open review whose range cannot be read.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "2a747f489da1aa5e27b807e20e3acad50a540107",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:53:29Z",
+      "subject": "Flag proposals that take in new lines, show neighbouring hunks, and refuse brace-only anchors",
+      "body": "A proposal is widened whenever it takes in lines the pinned range did not\nhave, not only when a hunk crosses its edge, so a sibling function git slid\ninside the range is flagged. Its diff shows the nearest hunk just before and\nafter the range, so an extracted helper or move is visible. Nothing is\nproposed when the only lines an edit left in the range are braces, blank, or\npunctuation, which anchor nothing.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "e2e1dda2a7483b2822712b6f054840e62759a04b",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:55:01Z",
+      "subject": "Excuse only evidence written during the change as deleted-side",
+      "body": "A living reference pinned at the merge-base to lines the change deleted\nwas counted deleted_side, hiding the change's own regression when the\ndocumentation predates it (a companion Saga pins at the code's main head).\nThe exception now applies only when the Saga that documented the merge-base\nhas no identical reference; documentation that already described the\ndeleted lines is listed as made stale.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "8ce50cf9434974e3b4d3efce0bbdaa38c2b6e652",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:55:06Z",
+      "subject": "gofmt stale_repair",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "0620b19ac2d53d5107d6a0f44edb13968969f9e0",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:57:35Z",
+      "subject": "Publish nothing for an unchanged slide update and refuse an ambiguous slide ID",
+      "body": "An apply-slide update identical to the current revision (apply-slide\n--print-current applied as printed) no longer appends a no-op revision; it\nreports the slide unchanged. --print-current and managed evidence repair\nrefuse a bare slide ID that slides of several decks share and name each\ntarget instead of silently taking the first deck's.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "28a92941b96232bf7e95ba14a4a6ee4a36b21988",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T08:58:37Z",
+      "subject": "Keep documentation_gap detail in its established JSON format",
+      "body": "The detail of a documentation_gap cause is back to \"\u003creason\u003e; \u003cside\u003e lines\n\u003clines\u003e \u003cevent\u003e\"; only the text report rewords a file event as \"file\n\u003cevent\u003e\".\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "695d495dcffdef0726375aa39d0e0571e75d2b70",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-27T09:08:30Z",
+      "subject": "Keep review pr-11 current after the review fixes",
+      "body": "Revise the refresh, propose, accept and signal slides and their Items for\nreported new lines, kept sides, flagged widened proposals, the no-op\napply-slide update and the narrowed deleted-side rule. Accept the proposed\nranges whose explanation still holds, re-cover the two whose proposal took in\nunrelated code, and cover the new code with the Items that explain it.\nRepin two living references and revise the reconciliation queue definition\n(r4) whose lines this change moved, so reconcile shows no regressions.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    }
+  ],
+  "review": "pr-11",
+  "pinned_at": "2026-09-27T11:43:31.061875Z"
+}

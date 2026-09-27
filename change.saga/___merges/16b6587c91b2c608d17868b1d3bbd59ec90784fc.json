@@ -1,0 +1,57 @@
+{
+  "version": 2,
+  "commit": "16b6587c91b2c608d17868b1d3bbd59ec90784fc",
+  "base": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+  "commits": [
+    {
+      "commit": "1c9078036edb0cb11ba399aec2b07b96a697c29d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:11:52Z",
+      "subject": "Sandbox authored fragments and review visuals at any origin",
+      "body": "Fragments and review slide visuals run author script with 'unsafe-inline'.\nTheir sandboxed iframes already give that script an opaque origin, but a\ndirect top-level visit to /f/... or /reviews/{id}/visual/{slide} ran it on\nthe app origin, where it could read pages carrying the review mutation token.\n\nBoth handlers now share one policy that adds the CSP sandbox directive with\nallow-scripts only, so the document is opaque-origin wherever it loads. The\nexisting connect-src 'none' and frame-ancestors 'self' are kept, and tests\nassert the header on both handlers through the security middleware.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "f1daf09fb0701066c5689a1bb7fdbc4212b84616",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:16:12Z",
+      "subject": "Check authored content runs on an opaque origin in the browser",
+      "body": "The interactive fragment now also loads an image asset from its own package.\nOne test clicks it inside its iframe and after a direct top-level visit,\nchecking that the script and the image still work and that the document's\norigin is opaque both times. A second opens a review slide visual directly\nand checks the sandbox directive and the opaque origin. Both tests fail\nagainst the policy without the sandbox directive.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:48:59Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/fragment-csp-sandbox"
+    },
+    {
+      "commit": "2af2183829a96bc6d378d1ef3bd7e629ac495992",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:53:15Z",
+      "subject": "Explain why authored script never runs on the app origin",
+      "body": "A new visual-implementation slide, in the Failure boundaries section,\nshows both ways to reach a fragment or review visual: framed in an app\npage, or opened directly. Both routes send one authored-content policy, so\nthe author script always runs on origin null, away from pages carrying the\nreview token. The slide also shows a pre-existing surprise: fonts served\nfrom the app's own URL don't load under the sandbox, so authors should\nembed data: fonts. Items hold exact evidence for the policy, both routes,\nthe unit and browser tests, and the strict app-page policy.\n\nOnly new records were added; existing shared slides and Items are\nuntouched while the evidence relay is running.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "37d0fbca55b9b87d81656c7c17458b1163f5a21b",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:55:28Z",
+      "subject": "Author the review deck for sandboxed authored content",
+      "body": "One before/after slide shows the change: a framed fragment already ran on\norigin null, but opening the same URL directly ran its script on the app\norigin. Now the response's own sandbox directive makes it origin null too.\nOld-side lines sit on the before Item and new-side lines on the after Item,\nwhich also points to the living slide. The server and browser test lines\nsit on two proof Items. The deck explains all 104 changed lines against\nfeature/review-ux-improvements, with no stale references or overlaps.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "5a5db9a426d8801154c63ee45db4783b142b5d67",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:56:42Z",
+      "subject": "Close the living evidence gaps for the sandboxed-content slide",
+      "body": "The living slide's Items now also cover the policy's trailing blank line\nand the replaced old-side lines in the fragment test and fixture, so every\nline this branch changes has a living owner. The policy Item also links,\nwith a pinned rationale, to the criterion that deck HTML slides are\nsandboxed.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "13a320b7838fbf57f3a71ce571173b512d73dbfa",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T04:01:35Z",
+      "subject": "Keep deleted-line evidence in the review deck, not the living slide",
+      "body": "The previous commit pinned replaced old-side test and fixture lines on\nliving Items. Reconcile reports those references as newly stale at HEAD,\nbecause the lines no longer exist, and a living deck should only reference\ncurrent code. The review deck already owns those deleted lines, so the two\nold-side living records are removed. The current-code evidence, including\nthe policy's blank line, and the criterion link are kept.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    }
+  ],
+  "review": "fragment-csp-sandbox",
+  "pinned_at": "2026-09-27T11:42:20.94419Z"
+}

@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
+      "path": "internal/cli/stale_repair.go",
+      "start": 516,
+      "end": 518,
+      "digest": "sha256:4795604c582a26db5183a4baaeae6113f8445b205b017701a3ef1a9cc05bb9f6"
+    },
+    {
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
+      "path": "internal/cli/stale_repair.go",
+      "start": 520,
+      "end": 530,
+      "digest": "sha256:45c3640eb1dc42f6d57058e58946435231418f4b0a6cba08b8cd8b6d9a67562b"
+    },
+    {
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
+      "path": "internal/cli/stale_repair.go",
+      "start": 668,
+      "end": 693,
+      "digest": "sha256:fd7b412b0d06d8fa929ec4dda9e75f35c35ce5034077457ac19707bfcf7e3691"
+    },
+    {
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
+      "path": "internal/cli/stale_repair.go",
+      "start": 695,
+      "end": 695,
+      "digest": "sha256:077d5dbd0369b8a0647d6f51a8d858c065056838fc9049dc4217173fa9cbf7df"
+    },
+    {
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
+      "path": "internal/cli/stale_repair.go",
+      "start": 699,
+      "end": 703,
+      "digest": "sha256:cce74985ef77dbfd557dcd034a7682fde4827ef09280d76ffb7056a7669856f9"
+    }
+  ]
+}

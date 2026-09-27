@@ -2,15 +2,15 @@
   "version": 2,
   "references": [
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasyncjs.go",
-      "start": 84,
-      "end": 104,
+      "start": 87,
+      "end": 107,
       "digest": "sha256:a59ce87c1866d6aaef8343004f01439f1b1ca4c8570284dfde0deb853c696864",
       "note": "JavaScript posts a comment, reply, or annotation with the process token and immutable shown-slide snapshot; ordinary HTML forms retain a redirect fallback."
     },
     {
-      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasyncjs.go",
       "start": 114,
       "end": 138,

@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/quality/model.go",
       "start": 45,
       "end": 50,
@@ -10,7 +10,7 @@
       "note": "Defines and constructs the durable run facts: exact source identity, claimed outcome, command text, and evidence references."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/quality/model.go",
       "start": 155,
       "end": 172,
@@ -18,7 +18,7 @@
       "note": "Defines and constructs the durable run facts: exact source identity, claimed outcome, command text, and evidence references."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/quality/mutation.go",
       "start": 479,
       "end": 484,

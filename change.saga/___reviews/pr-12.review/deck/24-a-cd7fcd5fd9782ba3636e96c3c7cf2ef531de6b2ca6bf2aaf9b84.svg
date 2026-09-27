@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">repin --onto checks every edit, then writes under one lock</title>
+  <desc id="diagram-desc">repin --onto validates every edit, writes under one lock, and records only the landing's own commits with its real merge date.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-prepares" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-writes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 32)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">repin --onto checks every edit, then writes under one lock</tspan></text>
+  </g>
+  <g id="before" data-diagram-kind="node" transform="translate(40 95)" role="group" aria-label="Before: two bugs in repin --onto">
+    <rect width="1190" height="95" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve"><tspan x="18" y="37">Before: two bugs in repin --onto</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve"><tspan x="18" y="73">it wrote as it read, and recorded every commit any evidence was pinned at</tspan></text>
+  </g>
+  <g id="edits" data-diagram-kind="node" transform="translate(40 240)" role="group" aria-label="Evidence edits">
+    <rect width="230" height="130" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Evidence edits</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">--onto,</tspan><tspan x="18" y="91.75">--accept-proposed,</tspan><tspan x="18" y="110.5">refresh</tspan></text>
+  </g>
+  <g id="prepare" data-diagram-kind="node" transform="translate(330 230)" role="group" aria-label="prepareEvidenceEdits">
+    <rect width="400" height="150" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">prepareEvidenceEdits</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">files edited in memory, slides dry-run; every</tspan><tspan x="18" y="91.75">blocker named</tspan></text>
+  </g>
+  <g id="locked-write" data-diagram-kind="node" transform="translate(800 230)" role="group" aria-label="One locked write">
+    <rect width="430" height="150" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">One locked write</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">re-check; slides; files; cursor, frozen review, merge</tspan><tspan x="18" y="91.75">record last</tspan></text>
+  </g>
+  <g id="landed-commits" data-diagram-kind="node" transform="translate(40 440)" role="group" aria-label="Only the landing's commits">
+    <rect width="560" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Only the landing's commits</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">pins that are ancestors of the landing or its branch</tspan></text>
+  </g>
+  <g id="freeze-details" data-diagram-kind="node" transform="translate(660 440)" role="group" aria-label="Freeze details">
+    <rect width="570" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Freeze details</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">merged at the landing's date; an exact recorded base kept</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="node" transform="translate(40 585)" role="group" aria-label="Regression tests">
+    <rect width="1190" height="95" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Regression tests</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">managed slide; refused slide; failed write; older landing</tspan></text>
+  </g>
+  <g id="prepares" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="edits to prepare" data-from="edits" data-to="prepare">
+    <path d="M270 305 L330 305" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-prepares)"/>
+  </g>
+  <g id="writes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="prepare to locked-write" data-from="prepare" data-to="locked-write">
+    <path d="M730 305 L800 305" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-writes)"/>
+  </g>
+</svg>

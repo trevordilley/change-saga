@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/requirements/model.go",
       "start": 71,
       "end": 90,
@@ -10,7 +10,7 @@
       "note": "Defines and appends the separate story lifecycle graph with optimistic current-head checks."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/requirements/mutation.go",
       "start": 368,
       "end": 417,

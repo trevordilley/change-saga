@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">change.saga brought current</title>
+  <desc id="diagram-desc">Stale evidence cleared, superseded proposals retired, merged reviews frozen with exact merge records, inventory and recent work current.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 32)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">change.saga brought current</tspan></text>
+  </g>
+  <g id="stale-references" data-diagram-kind="node" transform="translate(40 100)" role="group" aria-label="122 stale references">
+    <rect width="560" height="120" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">122 stale references</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">92 accepted, 13 re-covered, 5 terms revised, 12 retired</tspan></text>
+  </g>
+  <g id="proposed-slides" data-diagram-kind="node" transform="translate(680 100)" role="group" aria-label="Ten Proposed slides retired">
+    <rect width="550" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Ten Proposed slides retired</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">implemented; rationale carried into Implemented slides</tspan></text>
+  </g>
+  <g id="merged-reviews" data-diagram-kind="node" transform="translate(40 250)" role="group" aria-label="Eight merged reviews frozen">
+    <rect width="560" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Eight merged reviews frozen</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">at their landings; merge records list exactly their commits</tspan></text>
+  </g>
+  <g id="inventory-definitions" data-diagram-kind="node" transform="translate(680 250)" role="group" aria-label="Inventory definitions current">
+    <rect width="550" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Inventory definitions current</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">five fixed; their Systems, entities, ERD and Items repinned</tspan></text>
+  </g>
+  <g id="living-docs" data-diagram-kind="node" transform="translate(40 400)" role="group" aria-label="Seven living slides">
+    <rect width="1190" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Seven living slides</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">gitexec, lineage, snapshot, htmx, review-first, repair, review slides</tspan></text>
+  </g>
+  <g id="left-as-history" data-diagram-kind="node" transform="translate(40 530)" role="group" aria-label="Left as history">
+    <rect width="1190" height="110" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve"><tspan x="18" y="37">Left as history</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve"><tspan x="18" y="73">11 pins on merged review decks; review-ux-improvements covers 637 of 25661 lines</tspan></text>
+  </g>
+</svg>

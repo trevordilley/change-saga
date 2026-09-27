@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "The shell loads once; each page swaps into it",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "persistent-shell",
+      "kind": "group",
+      "shape": "boundary",
+      "label": "Browser shell, kept for the session",
+      "x": 40,
+      "y": 100,
+      "width": 580,
+      "height": 500,
+      "style": "boundary"
+    },
+    {
+      "id": "sidebar",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Sidebar",
+      "x": 30,
+      "y": 60,
+      "width": 230,
+      "height": 120,
+      "parent": "persistent-shell",
+      "style": "normal"
+    },
+    {
+      "id": "page",
+      "kind": "node",
+      "shape": "rect",
+      "label": "#page",
+      "detail": "swapped on each link",
+      "x": 290,
+      "y": 60,
+      "width": 260,
+      "height": 120,
+      "parent": "persistent-shell",
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "deck-viewer-once",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Deck viewer",
+      "detail": "every deck, loaded once from /decks",
+      "x": 30,
+      "y": 220,
+      "width": 520,
+      "height": 110,
+      "parent": "persistent-shell",
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "slide-frame-queue",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Slide frames",
+      "detail": "two at a time, the slide on screen first",
+      "x": 30,
+      "y": 360,
+      "width": 520,
+      "height": 100,
+      "parent": "persistent-shell",
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "page-handler",
+      "kind": "node",
+      "shape": "rect",
+      "label": "page() routes",
+      "detail": "full page, or its parts for htmx",
+      "x": 720,
+      "y": 130,
+      "width": 510,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "shell-version",
+      "kind": "node",
+      "shape": "rect",
+      "label": "X-Saga-Shell",
+      "detail": "resend sidebar and decks when the Saga changed",
+      "x": 720,
+      "y": 290,
+      "width": 510,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "hashed-assets",
+      "kind": "node",
+      "shape": "rect",
+      "label": "/assets/\u003chash\u003e/name",
+      "detail": "app.css, theme.js, htmx, app.js, immutable",
+      "x": 720,
+      "y": 450,
+      "width": 510,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "partial-vs-full",
+      "kind": "edge",
+      "label": "page-partial",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "page-handler",
+      "to": "page",
+      "points": [
+        {
+          "x": 720,
+          "y": 200
+        },
+        {
+          "x": 590,
+          "y": 200
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 600,
+        "y": 160,
+        "width": 110,
+        "height": 32
+      }
+    },
+    {
+      "id": "decks",
+      "kind": "edge",
+      "label": "/decks, 304",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "page-handler",
+      "to": "deck-viewer-once",
+      "points": [
+        {
+          "x": 760,
+          "y": 240
+        },
+        {
+          "x": 760,
+          "y": 375
+        },
+        {
+          "x": 590,
+          "y": 375
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 636,
+        "y": 338,
+        "width": 110,
+        "height": 32
+      }
+    }
+  ]
+}

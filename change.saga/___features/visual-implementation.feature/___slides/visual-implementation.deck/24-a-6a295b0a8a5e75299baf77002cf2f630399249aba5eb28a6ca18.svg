@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">The shell loads once; each page swaps into it</title>
+  <desc id="diagram-desc">Links swap only #page; the sidebar and deck viewer stay for the session and are resent only when the Saga changed; assets are cached by content hash.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-partial-vs-full" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-decks" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 32)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">The shell loads once; each page swaps into it</tspan></text>
+  </g>
+  <g id="persistent-shell" data-diagram-kind="group" transform="translate(40 100)" role="group" aria-label="Browser shell, kept for the session">
+    <rect width="580" height="500" rx="10" fill="#f0f3f6" stroke="#c3cdd8" stroke-width="1" stroke-dasharray="7 6"/>
+    <text x="18" y="30" font-size="18" fill="#526174" xml:space="preserve"><tspan x="18" y="30">Browser shell, kept for the session</tspan></text>
+    <g id="sidebar" data-diagram-kind="node" transform="translate(30 60)" role="group" aria-label="Sidebar">
+      <rect width="230" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Sidebar</tspan></text>
+    </g>
+    <g id="page" data-diagram-kind="node" transform="translate(290 60)" role="group" aria-label="#page">
+      <rect width="260" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">#page</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">swapped on each link</tspan></text>
+    </g>
+    <g id="deck-viewer-once" data-diagram-kind="node" transform="translate(30 220)" role="group" aria-label="Deck viewer">
+      <rect width="520" height="110" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Deck viewer</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">every deck, loaded once from /decks</tspan></text>
+    </g>
+    <g id="slide-frame-queue" data-diagram-kind="node" transform="translate(30 360)" role="group" aria-label="Slide frames">
+      <rect width="520" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Slide frames</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">two at a time, the slide on screen first</tspan></text>
+    </g>
+  </g>
+  <g id="page-handler" data-diagram-kind="node" transform="translate(720 130)" role="group" aria-label="page() routes">
+    <rect width="510" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">page() routes</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">full page, or its parts for htmx</tspan></text>
+  </g>
+  <g id="shell-version" data-diagram-kind="node" transform="translate(720 290)" role="group" aria-label="X-Saga-Shell">
+    <rect width="510" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">X-Saga-Shell</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">resend sidebar and decks when the Saga changed</tspan></text>
+  </g>
+  <g id="hashed-assets" data-diagram-kind="node" transform="translate(720 450)" role="group" aria-label="/assets/&lt;hash&gt;/name">
+    <rect width="510" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">/assets/&lt;hash&gt;/name</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">app.css, theme.js, htmx, app.js, immutable</tspan></text>
+  </g>
+  <g id="partial-vs-full" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="page-partial" data-from="page-handler" data-to="page">
+    <path d="M720 200 L590 200" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-partial-vs-full)"/>
+    <text x="600" y="178" font-size="18" fill="#526174" xml:space="preserve"><tspan x="600" y="178">page-partial</tspan></text>
+  </g>
+  <g id="decks" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="/decks, 304" data-from="page-handler" data-to="deck-viewer-once">
+    <path d="M760 240 L760 375 L590 375" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-decks)"/>
+    <text x="636" y="356" font-size="18" fill="#526174" xml:space="preserve"><tspan x="636" y="356">/decks, 304</tspan></text>
+  </g>
+</svg>

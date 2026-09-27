@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/gitdiff/gitdiff.go",
-      "start": 299,
-      "end": 306,
+      "start": 295,
+      "end": 302,
       "digest": "sha256:312d0e632513ef14589c11bb0419b3a2f81d88ecba2aa4d8879ef1562d178c97",
       "note": "Resolves the common ancestor and makes merge-base through head the canonical source delta, including a no-common-ancestor failure."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/gitdiff/gitdiff.go",
-      "start": 426,
-      "end": 435,
-      "digest": "sha256:ec707a515297c8f730c6f2fbdfee23fcd93c55863ffd1e0407a996f0683b4a4a",
+      "start": 507,
+      "end": 524,
+      "digest": "sha256:34b2985860141de7b498d8bcefc59d103f91821fa466da419ec97368129b59ff",
       "note": "Resolves the common ancestor and makes merge-base through head the canonical source delta, including a no-common-ancestor failure."
     }
   ]

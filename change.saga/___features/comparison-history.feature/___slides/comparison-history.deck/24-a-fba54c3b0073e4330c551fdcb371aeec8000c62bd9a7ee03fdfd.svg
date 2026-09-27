@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">Git is asked once per command</title>
+  <desc id="diagram-desc">Each command or request asks Git through one session; answers are kept only while they cannot change: by ref digest, or by immutable commit ID.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-cli-opens" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-http-opens" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-refs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-stable" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 32)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">Git is asked once per command</tspan></text>
+  </g>
+  <g id="cli" data-diagram-kind="node" transform="translate(30 175)" role="group" aria-label="CLI command">
+    <rect width="250" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">CLI command</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">gitexec.Begin</tspan></text>
+  </g>
+  <g id="http" data-diagram-kind="node" transform="translate(30 385)" role="group" aria-label="Reviewer request">
+    <rect width="250" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Reviewer request</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">BeginIsolated</tspan></text>
+  </g>
+  <g id="git-session" data-diagram-kind="group" transform="translate(300 110)" role="group" aria-label="One Git session: memoized output, stopped at end()">
+    <rect width="500" height="430" rx="10" fill="#f0f3f6" stroke="#c3cdd8" stroke-width="1" stroke-dasharray="7 6"/>
+    <text x="18" y="30" font-size="18" fill="#526174" xml:space="preserve"><tspan x="18" y="30">One Git session: memoized output, stopped at end()</tspan></text>
+    <g id="batch-processes" data-diagram-kind="node" transform="translate(30 70)" role="group" aria-label="Long-lived cat-file process">
+      <rect width="440" height="110" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Long-lived cat-file process</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">revisions and objects, pooled per repo</tspan></text>
+    </g>
+    <g id="diff-commits-shared" data-diagram-kind="node" transform="translate(30 220)" role="group" aria-label="Shared diff-tree --stdin">
+      <rect width="440" height="110" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Shared diff-tree --stdin</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">one process per diff format and pathspec</tspan></text>
+    </g>
+  </g>
+  <g id="ref-state-cache" data-diagram-kind="node" transform="translate(910 130)" role="group" aria-label="Ref and config answers">
+    <rect width="340" height="150" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Ref and config answers</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">kept while the refs and config digest holds</tspan></text>
+  </g>
+  <g id="stable-cache" data-diagram-kind="node" transform="translate(910 350)" role="group" aria-label="Stable answers, 64 MiB LRU">
+    <rect width="340" height="150" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Stable answers, 64 MiB LRU</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">merge-bases and diffs of commit IDs</tspan></text>
+  </g>
+  <g id="server-isolation" data-diagram-kind="node" transform="translate(300 590)" role="group" aria-label="The server keeps commit diffs for one request only">
+    <rect width="940" height="70" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve"><tspan x="18" y="37">The server keeps commit diffs for one request only</tspan></text>
+  </g>
+  <g id="cli-opens" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="cli to batch-processes" data-from="cli" data-to="batch-processes">
+    <path d="M280 225 L330 225" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-cli-opens)"/>
+  </g>
+  <g id="http-opens" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="http to diff-commits-shared" data-from="http" data-to="diff-commits-shared">
+    <path d="M280 410 L330 410" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-http-opens)"/>
+  </g>
+  <g id="refs" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="refs, config" data-from="batch-processes" data-to="ref-state-cache">
+    <path d="M800 235 L910 235" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-refs)"/>
+    <text x="806" y="214" font-size="18" fill="#526174" xml:space="preserve"><tspan x="806" y="214">refs, config</tspan></text>
+  </g>
+  <g id="stable" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="commit IDs" data-from="diff-commits-shared" data-to="stable-cache">
+    <path d="M800 395 L910 395" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-stable)"/>
+    <text x="806" y="374" font-size="18" fill="#526174" xml:space="preserve"><tspan x="806" y="374">commit IDs</tspan></text>
+  </g>
+</svg>

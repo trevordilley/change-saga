@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "Only selected, resolvable evidence reaches the code union. Failed or unknown resolution goes to reassessment without masking other valid selections.",
   "to_revision": "urn:change-saga:change-saga:story:inventory-code-coverage:revision:r2",
-  "state": "active",
-  "created_at": "2026-09-24T23:01:00.599364Z"
+  "state": "superseded",
+  "created_at": "2026-09-24T23:01:00.599364Z",
+  "superseded_at": "2026-09-27T10:27:23.415386Z"
 }

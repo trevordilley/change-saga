@@ -337,7 +337,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	pins := map[string]bool{}
-	updates := map[string]map[int]coderef.Reference{}
+	edits := []evidenceEdit{}
 	for _, value := range owned {
 		exists, _ := resolver.CommitExists(ctx, value.Code.Commit)
 		if exists {
@@ -371,10 +371,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		}
 		repinned := value.Code
 		repinned.Commit, repinned.Path, repinned.Start, repinned.End = ontoCommit, resolution.Location.Path, resolution.Location.Start, resolution.Location.End
-		if updates[value.EvidenceFile] == nil {
-			updates[value.EvidenceFile] = map[int]coderef.Reference{}
-		}
-		updates[value.EvidenceFile][value.Index] = repinned
+		edits = append(edits, evidenceEdit{EvidenceFile: value.EvidenceFile, Reference: value.Index, previous: value.Code, replacement: repinned})
 		result.Repinned = append(result.Repinned, repinChange{EvidenceFile: value.EvidenceFile, Reference: value.Index, From: value.Code.Location(), To: repinned.Location(), ByDigest: byDigest})
 	}
 	if *branch != "" {
@@ -394,7 +391,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		pins[frozen.Head] = true
 	}
 	delete(pins, ontoCommit)
-	result.Commits, err = branchCommits(ctx, checkout, ontoCommit, pins)
+	result.Commits, err = branchCommits(ctx, checkout, ontoCommit, landedTips(ctx, checkout, ontoCommit, *branch, frozen, pins))
 	if err != nil {
 		return err
 	}
@@ -408,23 +405,26 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	if companion {
 		result.Cursor = ontoCommit
 	}
-	if !*dryRun && (len(updates) > 0 || len(result.Commits) > 0 || companion || frozen != nil) {
+	// Every edit is resolved and validated before anything is written: plain
+	// evidence files in memory, slides apply-slide manages by a dry run of
+	// their complete-slide update. Every refused slide is reported at once.
+	prepared, _, err := prepareEvidenceEdits(ctx, root, *repoDir, edits, "repin-onto")
+	if err != nil {
+		return err
+	}
+	if !*dryRun && (len(edits) > 0 || len(result.Commits) > 0 || companion || frozen != nil) {
 		err = authorMutation(root, func(locked *saga.Saga) error {
-			for relative, changed := range updates {
-				path := filepath.Join(locked.Root, filepath.FromSlash(relative))
-				var file saga.CodeFile
-				if err := readStrictJSONFile(path, &file); err != nil {
-					return fmt.Errorf("read %s: %w", relative, err)
+			if frozen != nil {
+				if review := locked.FindReview(frozen.ID); review == nil || review.Merged != nil {
+					return fmt.Errorf("review %s changed while re-pinning; run repin again", frozen.ID)
 				}
-				for index, reference := range changed {
-					if index < 1 || index > len(file.References) || file.References[index-1].Location().String() != referenceKeyBefore(result.Repinned, relative, index) {
-						return fmt.Errorf("%s changed while re-pinning; run repin again", relative)
-					}
-					file.References[index-1] = reference
-				}
-				if err := store.WriteJSON(path, file, false); err != nil {
-					return err
-				}
+			}
+			// Everything is written under this one lock: the evidence first,
+			// checked again against what is on disk before any of it is
+			// written, and the cursor, frozen review and merge record last,
+			// so a failed write never leaves a record claiming the landing.
+			if _, err := prepared.write(ctx, locked); err != nil {
+				return err
 			}
 			if companion {
 				// A companion Saga now documents the landed commit.
@@ -433,11 +433,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 				}
 			}
 			if frozen != nil {
-				review := locked.FindReview(frozen.ID)
-				if review == nil || review.Merged != nil {
-					return fmt.Errorf("review %s changed while re-pinning; run repin again", frozen.ID)
-				}
-				if err := reviewstore.WriteFrozen(review, frozen.ReviewMerge); err != nil {
+				if err := reviewstore.WriteFrozen(locked.FindReview(frozen.ID), frozen.ReviewMerge); err != nil {
 					return err
 				}
 			}
@@ -544,9 +540,62 @@ func reviewToFreeze(ctx context.Context, document *saga.Saga, checkout, onto, br
 	if base == "" {
 		return nil, fmt.Errorf("freeze review %s: %s has no parent to compare from", review.ID, shortOID(onto))
 	}
-	frozen := &repinReview{ID: review.ID, ReviewMerge: saga.ReviewMerge{Base: base, Head: head, Landed: onto, MergedAt: time.Now().UTC()}}
+	// A review created against an exact commit, such as one stacked on
+	// another branch, keeps the range it was measured over.
+	if gitexec.NamesObjects(review.Base) && review.Base != head && isAncestor(ctx, checkout, review.Base, head) {
+		base = review.Base
+	}
+	frozen := &repinReview{ID: review.ID, ReviewMerge: saga.ReviewMerge{Base: base, Head: head, Landed: onto, MergedAt: landedAt(ctx, checkout, onto)}}
 	result.Review = frozen
 	return frozen, nil
+}
+
+// landedAt is when onto landed: its committer date, so a review frozen
+// after the fact still records when its change merged. It falls back to now
+// when the date cannot be read.
+func landedAt(ctx context.Context, checkout, onto string) time.Time {
+	output, err := gitexec.Output(ctx, "-C", checkout, "show", "-s", "--format=%cI", onto)
+	if err == nil {
+		if at, err := time.Parse(time.RFC3339, strings.TrimSpace(string(output))); err == nil {
+			return at.UTC()
+		}
+	}
+	return time.Now().UTC()
+}
+
+// landedTips keeps the pinned commits that belong to the landed change. A
+// merge or rebase landing brings its branch's commits, so they are ancestors
+// of onto, and a merge's second parent is its branch's last commit; a squash
+// does not, so its branch's commits are ancestors of --branch or of the
+// frozen review's head. Evidence pinned after the landing, or on another
+// branch, is neither, and its commits are not this change's.
+func landedTips(ctx context.Context, checkout, onto, branch string, frozen *repinReview, pins map[string]bool) map[string]bool {
+	sides := []string{onto}
+	if second, err := gitexec.Output(ctx, "-C", checkout, "rev-parse", "--verify", "--quiet", onto+"^2"); err == nil {
+		sides = append(sides, strings.TrimSpace(string(second)))
+	}
+	if branch != "" {
+		if commit, err := resolveCommit(ctx, checkout, branch); err == nil {
+			sides = append(sides, commit)
+		}
+	}
+	if frozen != nil {
+		sides = append(sides, frozen.Head)
+	}
+	tips := map[string]bool{}
+	for _, side := range sides[1:] {
+		tips[side] = true
+	}
+	for pin := range pins {
+		for _, side := range sides {
+			if pin == side || isAncestor(ctx, checkout, pin, side) {
+				tips[pin] = true
+				break
+			}
+		}
+	}
+	delete(tips, onto)
+	return tips
 }
 
 // landedBase is the commit the landed change is compared from: the target
@@ -576,17 +625,6 @@ func firstParent(ctx context.Context, checkout, onto string) ([]byte, error) {
 		return gitexec.Stable(ctx, checkout, []string{onto}, []string{"first-parent", onto}, query)
 	}
 	return query()
-}
-
-// referenceKeyBefore returns the key the planned change expects to replace,
-// so a concurrent edit to the record is detected rather than overwritten.
-func referenceKeyBefore(changes []repinChange, file string, index int) string {
-	for _, change := range changes {
-		if change.EvidenceFile == file && change.Reference == index {
-			return change.From.String()
-		}
-	}
-	return ""
 }
 
 // branchCommits returns the commits the change brought, ancestors first: every

@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "deck": "pr-12",
+  "slide": "health-gate",
+  "current": "sha256:e99ea603077b1bc0033aa5d59c5b856beb89ea69f747e1470b506454abac98b7",
+  "revisions": [
+    {
+      "snapshot": "sha256:e99ea603077b1bc0033aa5d59c5b856beb89ea69f747e1470b506454abac98b7",
+      "request_id": "pr-12-health-gate",
+      "created_at": "2026-09-27T11:02:07.404372Z",
+      "asset": "24-a-23df046d5c7069ccaa2727116f2fa1db01f17c1a60add684582b.svg",
+      "asset_digest": "sha256:23df046d5c7069ccaa2727116f2fa1db01f17c1a60add684582bc745be36f97b",
+      "slide": {
+        "version": 4,
+        "id": "health-gate",
+        "deck": "pr-12",
+        "title": "CI now keeps change.saga healthy",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-23df046d5c7069ccaa2727116f2fa1db01f17c1a60add684582b.svg",
+        "takeaway": "Beside the review gate, a health job fails CI when anything change.saga already documents goes stale or breaks.",
+        "reading_order": [
+          "review-job",
+          "health-job",
+          "policy"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "review-job",
+            "slide": "health-gate",
+            "rank": 0,
+            "kind": "node",
+            "label": "The review job is unchanged",
+            "description": "It still asks, for pull requests only, that the pull request's review deck explain every changed line; its comment no longer says the health gate is waiting.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-job"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "health-job",
+            "slide": "health-gate",
+            "rank": 10,
+            "kind": "node",
+            "label": "A health job gates the Saga",
+            "description": "Builds change-saga from the commit under test (a pull request's own head, with full history) and runs check --covers health change.saga, which exits 3 when anything the Saga documents went stale or broke.",
+            "selector": {
+              "type": "element",
+              "element_id": "health-job"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "policy",
+            "slide": "health-gate",
+            "rank": 20,
+            "kind": "statement",
+            "label": "A policy for this repository's showcase Saga",
+            "description": "change.saga ships as the example Saga, so this repository requires its health on every pull request and push; teams choose their own rules, and the product requires none.",
+            "selector": {
+              "type": "element",
+              "element_id": "policy"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-a9f657362854b7abedeccc0dc2cf4ecab0491a60c50bf6e72e5b.json",
+        "source_digest": "sha256:a9f657362854b7abedeccc0dc2cf4ecab0491a60c50bf6e72e5bb77ac5c62301",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

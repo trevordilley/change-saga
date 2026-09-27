@@ -1,0 +1,58 @@
+{
+  "version": 2,
+  "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+  "base": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+  "commits": [
+    {
+      "commit": "82f636465d260c22d4be0ee523d46c02ac7dce71",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:36:53Z",
+      "subject": "Document the inventory read and coverage components",
+      "body": "Add five legacy-format Component definitions for the delivered read\nprojection, public read queries, inventory coverage, inherited selection\ncoverage and inventory reconciliation, and one System explaining how the\nconsumers use the projection. Each reference names an exact current\nrange. Existing shared inventory records are left for the coordinated\nrepair; app.saga does not adopt inventory format 2.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:39:42Z",
+      "subject": "Describe inventory coverage over every definition kind",
+      "body": "The coverage response and operation purpose still named only Components\nand Systems; they now describe current technical definitions, edge\nevidence and the separate count of proposed edges.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:46:57Z",
+      "subject": "Explain the implemented inventory reads, coverage and reconciliation",
+      "body": "Add five implementation slides to the technical inventory deck, ranks\n200-204 under 'Implemented reads and coverage': scoped and filtered\nreads with a separate unresolved page, declared reverse uses with\nexplicit completeness, inherited coverage from exact selections,\ninventory coverage of a named scope, and inventory reconciliation. Each\nItem carries exact evidence at the current code and pinned links to the\ncriteria it explains; Items pin the new read and coverage components.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:50:51Z",
+      "subject": "Author the inventory-query-coverage review deck",
+      "body": "Six review slides explain the b6c07006..HEAD transition: scoped and\nfiltered reads, declared reverse uses, inherited selection coverage,\nthe inventory coverage report, inventory reconciliation, and the public\ncontract with its verification. All 4176 changed lines and file events\nare owned by the narrowest Item, with no overlaps or stale references.\nNo review decision is recorded.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "eab4b1cd1f18b9405789183f311a38b70455bb7f",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:54:32Z",
+      "subject": "Document every added line of the inventory read slice in the living deck",
+      "body": "Extend the five implementation slides' Items to own all added lines of\nthis slice, split by behavior exactly as the review deck does, and add a\nverification slide for the public contract, tests, benchmarks and the\nimplementation note. Deleted lines and file-addition events remain with\nthe review deck: living evidence at HEAD cannot reference them and\ncomplete-slide transactions refuse whole-file references.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:56:25Z",
+      "subject": "Record Saga artifacts and reconciliation results of the read slice",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "43b67d7ff462df773b314338f1f0f92741b88f11",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:57:39Z",
+      "subject": "Repin the implementation note evidence after recording results",
+      "body": "The verification slide's evidence and the review's docs record are\nre-authored at the commit that records the Saga artifacts, keeping the\nreview at 4214 of 4214 changed lines with no stale references.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    }
+  ],
+  "review": "inventory-query-coverage",
+  "pinned_at": "2026-09-27T11:42:01.59709Z"
+}

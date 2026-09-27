@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "commit": "89404fc6fa5063592b13958a93c2a04733ddc651",
+  "base": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+  "commits": [
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:18:22Z",
+      "subject": "feat: add reusable Component and System documentation",
+      "body": "Give implementation slides shared technical identities with immutable revisions, exact code evidence, and explicit System interactions. Keep documentation pins separate from Item.Record and scoped coverage so canonical edits do not rewrite saved slides or review currency.\n\nAdd public authoring and snapshot-bound queries, validation, lazy explanation/code drill-down, schema and compatibility guidance, and a disposable FeatureFlag preview with regression tests."
+    },
+    {
+      "commit": "684c62c008c0116559dde047b23ffafca49220a3",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T21:00:25Z",
+      "subject": "docs: explain reusable technical inventory in app Saga",
+      "body": "Author Components, their System, five implementation slides and a five-slide transition review through the public CLI with exact fcd3422 evidence. Repair only the twelve newly stale existing references while preserving unaffected evidence and the baseline stale set. Update the runtime diagram for saved documentation pins; author no review decisions."
+    }
+  ],
+  "review": "component-system-inventory",
+  "pinned_at": "2026-09-27T11:41:45.611864Z"
+}

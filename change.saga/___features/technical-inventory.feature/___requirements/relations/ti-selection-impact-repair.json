@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "Inspect meaning; revise definitions, selections or explanations only as needed; preserve history and saved review content; recheck. No automatic approval or resolution acknowledgement.",
   "to_revision": "urn:change-saga:change-saga:story:reconcile-living-documentation:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-24T23:01:05.506461Z"
+  "state": "superseded",
+  "created_at": "2026-09-24T23:01:05.506461Z",
+  "superseded_at": "2026-09-27T10:27:34.188104Z"
 }

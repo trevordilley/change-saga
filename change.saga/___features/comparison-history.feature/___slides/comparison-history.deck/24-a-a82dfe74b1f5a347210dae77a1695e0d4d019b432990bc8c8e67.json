@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Git is asked once per command",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "cli",
+      "kind": "node",
+      "shape": "rect",
+      "label": "CLI command",
+      "detail": "gitexec.Begin",
+      "x": 30,
+      "y": 175,
+      "width": 250,
+      "height": 90,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "http",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Reviewer request",
+      "detail": "BeginIsolated",
+      "x": 30,
+      "y": 385,
+      "width": 250,
+      "height": 90,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "git-session",
+      "kind": "group",
+      "shape": "boundary",
+      "label": "One Git session: memoized output, stopped at end()",
+      "x": 300,
+      "y": 110,
+      "width": 500,
+      "height": 430,
+      "style": "boundary"
+    },
+    {
+      "id": "batch-processes",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Long-lived cat-file process",
+      "detail": "revisions and objects, pooled per repo",
+      "x": 30,
+      "y": 70,
+      "width": 440,
+      "height": 110,
+      "parent": "git-session",
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "diff-commits-shared",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Shared diff-tree --stdin",
+      "detail": "one process per diff format and pathspec",
+      "x": 30,
+      "y": 220,
+      "width": 440,
+      "height": 110,
+      "parent": "git-session",
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "ref-state-cache",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Ref and config answers",
+      "detail": "kept while the refs and config digest holds",
+      "x": 910,
+      "y": 130,
+      "width": 340,
+      "height": 150,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "stable-cache",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Stable answers, 64 MiB LRU",
+      "detail": "merge-bases and diffs of commit IDs",
+      "x": 910,
+      "y": 350,
+      "width": 340,
+      "height": 150,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "server-isolation",
+      "kind": "node",
+      "shape": "rect",
+      "label": "The server keeps commit diffs for one request only",
+      "x": 300,
+      "y": 590,
+      "width": 940,
+      "height": 70,
+      "style": "warning"
+    },
+    {
+      "id": "cli-opens",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "cli",
+      "to": "batch-processes",
+      "points": [
+        {
+          "x": 280,
+          "y": 225
+        },
+        {
+          "x": 330,
+          "y": 225
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "http-opens",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "http",
+      "to": "diff-commits-shared",
+      "points": [
+        {
+          "x": 280,
+          "y": 410
+        },
+        {
+          "x": 330,
+          "y": 410
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "refs",
+      "kind": "edge",
+      "label": "refs, config",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "batch-processes",
+      "to": "ref-state-cache",
+      "points": [
+        {
+          "x": 800,
+          "y": 235
+        },
+        {
+          "x": 910,
+          "y": 235
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 806,
+        "y": 196,
+        "width": 100,
+        "height": 32
+      }
+    },
+    {
+      "id": "stable",
+      "kind": "edge",
+      "label": "commit IDs",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "diff-commits-shared",
+      "to": "stable-cache",
+      "points": [
+        {
+          "x": 800,
+          "y": 395
+        },
+        {
+          "x": 910,
+          "y": 395
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 806,
+        "y": 356,
+        "width": 100,
+        "height": 32
+      }
+    }
+  ]
+}

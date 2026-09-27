@@ -5,5 +5,11 @@
   "title": "PR as a slide deck — fidelity pass",
   "base": "main",
   "head": "feature/review-ux-improvements",
+  "merged": {
+    "base": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+    "head": "bdf80fa123a1a1bff26bc58534f243b8acfa0edb",
+    "landed": "993c62ef796a3ab599f8db63bfff245ff49e73c2",
+    "merged_at": "2026-09-25T16:13:26Z"
+  },
   "created_at": "2026-09-24T20:28:33.412997Z"
 }

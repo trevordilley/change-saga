@@ -2,15 +2,15 @@
   "version": 2,
   "references": [
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviews.go",
-      "start": 596,
-      "end": 605,
+      "start": 621,
+      "end": 630,
       "digest": "sha256:298ae3eb9fbea6a2db91d928037e99c53fec77a7158d923618a5cbefda359265",
       "note": "Reject frozen or unresolved reviews. The fresh review and resolved range are checked again under the writer lock against the immutable snapshot shown to the browser."
     },
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasync.go",
       "start": 175,
       "end": 190,

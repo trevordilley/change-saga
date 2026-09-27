@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/gitdiff/gitdiff.go",
-      "start": 438,
-      "end": 471,
-      "digest": "sha256:4b814d25675dfa259ad072d0360466a6ec1626552ca4417b7dce2bf7c2fb9dde",
+      "start": 527,
+      "end": 560,
+      "digest": "sha256:2f9c8bc7565aa8cbd9e28b0fb2e5bd3f3250675fb08394f92c419f9c0a7cc800",
       "note": "Checks a file identity against the resolved path or a remote identity against normalized origin."
     }
   ]

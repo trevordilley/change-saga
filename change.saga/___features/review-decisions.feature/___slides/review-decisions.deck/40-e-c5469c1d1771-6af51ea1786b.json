@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasync_test.go",
-      "start": 96,
-      "end": 140,
-      "digest": "sha256:c7b8a45876b2cc905b19c5cc485a36f79edcc1fcbbb10b00d74e329f5e226c9f",
+      "start": 97,
+      "end": 142,
+      "digest": "sha256:89a8a1ac2a4c1f5176dacbcf1b28b37e7936983ed8d30c452b94e6df4c4b6836",
       "note": "Frozen or unresolved reviews are refused. The shown snapshot is checked under the writer lock so changed source, visual, Items, or evidence cannot be silently approved."
     }
   ]

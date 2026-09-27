@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "cmd/change-saga/main.go",
-      "start": 48,
-      "end": 51,
+      "start": 49,
+      "end": 52,
       "digest": "sha256:03769b0dc325d75f9aa959331f5235d1125b3f7ba0f3075996979bded5475a1a",
       "note": "Component/System authoring resolves source identity, commits and digests before calling the record writer."
     }

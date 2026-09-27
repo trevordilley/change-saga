@@ -1,0 +1,62 @@
+{
+  "version": 2,
+  "commit": "32e35985cb0fb2afa16e8bac6fd773c202c1e97b",
+  "base": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+  "commits": [
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T19:24:23Z",
+      "subject": "feat(cli): add documentation reconciliation queue",
+      "body": "Separate living documentation currency at HEAD from diff-side coverage and PR review coverage. Read the actual base and head Saga snapshots to distinguish existing debt from regressions, expose declared-link impact and typed repair paths, and preserve transaction-backed slide authoring.\n\nDocument the implement, verify, review-deck, reconcile, recheck workflow. Add public-command fixtures for code and requirement impact, debt, remapping, independent review coverage, companion source identity, historical heads, exact test evidence and repair loops."
+    },
+    {
+      "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:26:02Z",
+      "subject": "Keep superseded test evidence historical during reconciliation",
+      "body": "Exclude superseded evidence from active debt and route stale test runs through typed feature status with explicit current run parents. Exercise inspection commands and immutable repair history."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:34:48Z",
+      "subject": "Allow public repair of mutable review evidence",
+      "body": "Locate review Item evidence alongside living documentation records. Refuse changes to frozen review history and keep transaction guards. Test successful replacement/removal, invalid targets, unchanged history, and decision currency."
+    },
+    {
+      "commit": "9d93ba756a369f31cba7628f925d28035d7db497",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:38:45Z",
+      "subject": "Reconcile living Saga explanations and restore the review deck",
+      "body": "Reassess annotation, query, storage and authoring documentation against current code; replace obsolete claims and narrow stale evidence. Restore the parent review as an authored deck without importing fixture feedback. Document reconciliation through a snapshot-guarded implementation slide and its own review."
+    },
+    {
+      "commit": "2240bdcb738ae6eb50c998a4539c2ef2aaa3d9a9",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:39:31Z",
+      "subject": "Reconcile review evidence with this branch synchronous handlers",
+      "body": "Isolate nine branch-local stale-reference repairs on the comment round trip, mutation guardrails and decision failure slides. Preserve current sync explanations and Item identities. Integrators must reconcile these exact records with newer async code and its authored Saga; this commit does not import or claim async behavior."
+    },
+    {
+      "commit": "cd01b0decc45967bdb84080fefa7ffc4f3c5df22",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:40:50Z",
+      "subject": "Complete reconciliation review evidence after publishing the Saga"
+    },
+    {
+      "commit": "05553b94d9c0dd824db1c0768649e4664a19a8b6",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:41:21Z",
+      "subject": "Disambiguate review evidence at the command registry boundary"
+    },
+    {
+      "commit": "c147cc79669eb0b8a4f650505de5c9aa585c16a5",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:46:14Z",
+      "subject": "Remove redundant review evidence for the reconciliation command"
+    }
+  ],
+  "review": "cli-documentation-reconciliation",
+  "pinned_at": "2026-09-27T11:41:34.711127Z"
+}

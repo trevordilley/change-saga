@@ -1,0 +1,1042 @@
+{
+  "version": 2,
+  "commit": "993c62ef796a3ab599f8db63bfff245ff49e73c2",
+  "base": "6d717b2c9c7489ecf693e1c1202cb317dc9b3a58",
+  "commits": [
+    {
+      "commit": "5b087cf9ed14919c6515a063c37cded29b184ef0",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T02:52:16Z",
+      "subject": "ui: make pull request reviews slide-first",
+      "body": "Bound each review session to one URL-addressable slide with deck navigation, keyboard support, compact action disclosures, and reply UI. Keep evidence and diffs secondary under Slide details while preserving slide approval and append-only review targets."
+    },
+    {
+      "commit": "cff05f34b0edfbd33cbf7a8ca6b2b9b1e57eacdc",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T04:48:44Z",
+      "subject": "ui: make each review the slide deck",
+      "body": "Reuse the native implementation deck as the complete individual review surface. Open exact Item diffs and affected records from on-slide affordances while keeping decisions and discussion as quiet overlays."
+    },
+    {
+      "commit": "effacc40f871d9a68267f553b0b0b12a2a796aeb",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T06:37:34Z",
+      "subject": "feat: restore visual annotations to review decks",
+      "body": "Bring highlights, shapes, freehand marks, sticky notes, anchored discussions, movement, recoloring, deletion, and append-only undo/redo onto the native pull-request slide deck. Keep normalized slide coordinates stable across fitted and narrow layouts while preserving exact Item links to diffs and affected records."
+    },
+    {
+      "commit": "4afdb2d1352607b66b894b31cdb768a421812ce5",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T06:42:37Z",
+      "subject": "ui: complete annotation editing controls",
+      "body": "Add accessible resize actions, a direct resize handle, and in-place sticky-note editing while keeping each edit as an append-only annotation event."
+    },
+    {
+      "commit": "4cf59a19d50772e5647f20fe5a6d4246ecd61854",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T15:53:22Z",
+      "subject": "fix: make review evidence and annotations trustworthy"
+    },
+    {
+      "commit": "b9132dfb6c473780246caa7a7f5e64f69e89a80e",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T16:00:11Z",
+      "subject": "fix: keep review decks independent of presentation mode"
+    },
+    {
+      "commit": "781e2288577fc7f19aa2528be02a97a0f065d09b",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T16:11:04Z",
+      "subject": "docs: record the fidelity review audit"
+    },
+    {
+      "commit": "c0d7f7e35e1a7fa41aba4a3da7a0b255872ec3c8",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T16:12:03Z",
+      "subject": "fix: keep review evidence compact on narrow slides"
+    },
+    {
+      "commit": "ad6161d3ba5a1caf09ebac0c895db5d019fef613",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T16:14:21Z",
+      "subject": "fix: shorten evidence labels on narrow slides"
+    },
+    {
+      "commit": "951011591e8b0ff2d8b6fdcfde5c26372d36756f",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T16:16:29Z",
+      "subject": "docs: report full server test timeout accurately"
+    },
+    {
+      "commit": "15016798b332df0a1e86fd9fb5d9be2cb07c8b94",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T16:56:03Z",
+      "subject": "ui: restore the released review deck experience"
+    },
+    {
+      "commit": "f9d80cfb7d2975888c9a3beb301ffffc0f45f2c0",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T17:28:03Z",
+      "subject": "docs: align review guidance with slide decks"
+    },
+    {
+      "commit": "2fdf26fec900b08f618f8f8aa5f7db2720ebd469",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T18:53:08Z",
+      "subject": "Merge branch 'main' into feature/review-ux-improvements"
+    },
+    {
+      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T19:24:23Z",
+      "subject": "feat(cli): add documentation reconciliation queue",
+      "body": "Separate living documentation currency at HEAD from diff-side coverage and PR review coverage. Read the actual base and head Saga snapshots to distinguish existing debt from regressions, expose declared-link impact and typed repair paths, and preserve transaction-backed slide authoring.\n\nDocument the implement, verify, review-deck, reconcile, recheck workflow. Add public-command fixtures for code and requirement impact, debt, remapping, independent review coverage, companion source identity, historical heads, exact test evidence and repair loops."
+    },
+    {
+      "commit": "9c2e9e0502ecd473035d42129d889cc2f90f8f76",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:26:02Z",
+      "subject": "Keep superseded test evidence historical during reconciliation",
+      "body": "Exclude superseded evidence from active debt and route stale test runs through typed feature status with explicit current run parents. Exercise inspection commands and immutable repair history."
+    },
+    {
+      "commit": "8d557cb4e9e595ddd6e862f7b1e92a3eef8ec2ad",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:34:48Z",
+      "subject": "Allow public repair of mutable review evidence",
+      "body": "Locate review Item evidence alongside living documentation records. Refuse changes to frozen review history and keep transaction guards. Test successful replacement/removal, invalid targets, unchanged history, and decision currency."
+    },
+    {
+      "commit": "9d93ba756a369f31cba7628f925d28035d7db497",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:38:45Z",
+      "subject": "Reconcile living Saga explanations and restore the review deck",
+      "body": "Reassess annotation, query, storage and authoring documentation against current code; replace obsolete claims and narrow stale evidence. Restore the parent review as an authored deck without importing fixture feedback. Document reconciliation through a snapshot-guarded implementation slide and its own review."
+    },
+    {
+      "commit": "2240bdcb738ae6eb50c998a4539c2ef2aaa3d9a9",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:39:31Z",
+      "subject": "Reconcile review evidence with this branch synchronous handlers",
+      "body": "Isolate nine branch-local stale-reference repairs on the comment round trip, mutation guardrails and decision failure slides. Preserve current sync explanations and Item identities. Integrators must reconcile these exact records with newer async code and its authored Saga; this commit does not import or claim async behavior."
+    },
+    {
+      "commit": "cd01b0decc45967bdb84080fefa7ffc4f3c5df22",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:40:50Z",
+      "subject": "Complete reconciliation review evidence after publishing the Saga"
+    },
+    {
+      "commit": "05553b94d9c0dd824db1c0768649e4664a19a8b6",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:41:21Z",
+      "subject": "Disambiguate review evidence at the command registry boundary"
+    },
+    {
+      "commit": "c147cc79669eb0b8a4f650505de5c9aa585c16a5",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:46:14Z",
+      "subject": "Remove redundant review evidence for the reconciliation command"
+    },
+    {
+      "commit": "32e35985cb0fb2afa16e8bac6fd773c202c1e97b",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:57:45Z",
+      "subject": "Merge reviewed documentation reconciliation and current Saga evidence"
+    },
+    {
+      "commit": "7f60cfc8b8351c1df1cdc3187bd3043fd7aae2a4",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T19:18:40Z",
+      "subject": "Profile realistic PR review loading and bound the first optimization proposal",
+      "body": "Measure the copied application Saga across server stages, Git subprocesses, browser navigation, and paginated Code Diff loading. Keep production behavior unchanged and retain raw distributions plus reproducible opt-in harnesses.\n\nA benchmark-only request-local patch reuse experiment verifies identical reference views and isolates the dominant repeated Git work. Document freshness boundaries, uncertainty, and regression requirements before production optimization."
+    },
+    {
+      "commit": "170e4d6cb6dcf0126f4bdf9dba1a079452b18512",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:14:31Z",
+      "subject": "docs: record measured PR performance implementation handoff"
+    },
+    {
+      "commit": "f01a0c0129d85639f11bee6715d162d0e7b96c07",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:18:49Z",
+      "subject": "docs: record PR loading evaluation and exact evidence in app Saga"
+    },
+    {
+      "commit": "cd97917a687ed4428f1e2dcb5eea102cd8148b5f",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:32:22Z",
+      "subject": "docs: finish performance implementation and Saga handoff"
+    },
+    {
+      "commit": "a39e147fa2b2fe7c8f068ae32acae417c61001fe",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T19:39:28Z",
+      "subject": "Reuse PR reference file patches within each request",
+      "body": "Resolve the checkout root once and reuse successful raw patches for each effective path in one review range. Continue resolving and filtering every reference independently, preserving notes and exact locations. Retry failed root and patch reads instead of retaining negative results.\n\nAdd deterministic call counts, an uncached semantic oracle across Git edge cases, recovery tests, and a realistic paired benchmark. Update the stage harness to measure the production request-scoped helper."
+    },
+    {
+      "commit": "2cbe5d07b69f64e54a52df092e3685b800cfaec5",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T19:46:14Z",
+      "subject": "Record request-local PR diff reuse measurements",
+      "body": "Preserve paired stage and full-response measurements against pinned source refs, complete HTML equality evidence, reproduction commands, and the bounded full-suite timeout alongside focused passing checks."
+    },
+    {
+      "commit": "ad0b1311ac594499f27764010d35e8a94d8ea30e",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:31:28Z",
+      "subject": "docs(saga): explain request-local PR patch reuse"
+    },
+    {
+      "commit": "e25c0c8569ec5e68ae043015d7df23b8e1d0606d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:43:21Z",
+      "subject": "Merge reviewed request-local PR patch reuse"
+    },
+    {
+      "commit": "1c3cc6977fa5b23702fcbb84a89161efb25fd8dd",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T19:39:05Z",
+      "subject": "perf(server): batch streamed PR file diffs at the supported limit",
+      "body": "A full selected-file traversal repeats validation, range/catalog resolution,\nand file-model construction for every 50-row page. Request the existing\n200-row maximum from the PR code surface, reducing the measured 573-row\nfixture from 12 requests to three while preserving the public 50-row default\nand 200-row cap. All other callers retain their existing page size.\n\nKeep every request fresh rather than retaining Saga data or feedback. The\nisolated cache-key experiment costs roughly 12 ms against 19 ms of reusable\nfile work, so broad cache invalidation is not justified for this slice.\nThe all-hunks benchmark drops from 2.16 s to 0.62 s; five browser samples\nshow a 6.58 s to 4.66 s median, with no first-row speedup claim.\n\nTest exact rendered row/action equality, literal paths, bounded pagination,\nunchanged comparison defaults, dirty Saga validation/retry, and stale cursors."
+    },
+    {
+      "commit": "496f4e764ef2f1f1e419da7cd4fb68958d921dda",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T19:44:32Z",
+      "subject": "docs: record PR code batching measurements and validation limits",
+      "body": "Preserve the full before/after samples and reproduction commands for the smaller batching slice, including unchanged first-row latency, the rejected cache-key experiment, and explicit broad-suite limitations."
+    },
+    {
+      "commit": "81b890a07f42155a3ca88e211f789400603a1b85",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:30:34Z",
+      "subject": "docs(saga): explain bounded PR code page batching"
+    },
+    {
+      "commit": "af51c381021d11bad47dd85b240679a0417f0ac4",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:43:21Z",
+      "subject": "Merge reviewed bounded PR Code Diff batching"
+    },
+    {
+      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T19:55:11Z",
+      "subject": "Save review feedback without navigating the slide workspace",
+      "body": "Return explicit async write receipts and project fresh decisions and discussion without rebuilding code, coverage, or visual frames. Guard the viewed source and slide under the append-only writer lock, retain refused drafts, and block ambiguous retries. Preserve ordinary form redirects and existing reviewer attribution."
+    },
+    {
+      "commit": "de5d5000d03413fc69bee990012ef523bc877430",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:10:44Z",
+      "subject": "Record the lazy Item drawer latency gate and preserve its prototype",
+      "body": "The standalone lazy path shrank initial HTML but substantially delayed exact evidence, especially the largest Item. Keep production on the confirmed async save implementation and retain the complete experimental patch, paired measurements, helper-only control, and limitations for a future design."
+    },
+    {
+      "commit": "91b9966268951d8ae0b149b69eff1b0edcb056a5",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:23:00Z",
+      "subject": "Document confirmed async review saves and snapshot refusal boundaries"
+    },
+    {
+      "commit": "50aa12bb1694fede62b90413fe4eb14887215ebf",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:43:21Z",
+      "subject": "Merge reviewed asynchronous PR feedback saves"
+    },
+    {
+      "commit": "67cf55561f5925cbffdf3626359b0236811c012a",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:51:50Z",
+      "subject": "docs: record child integration and combined verification"
+    },
+    {
+      "commit": "32a4f90d35d791827466ca1269c79fcb239abbd3",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T21:02:27Z",
+      "subject": "Merge reviewed PR performance improvements and reconcile async evidence",
+      "body": "Keep the newer async explanations and remove ten superseded synchronous evidence records through the public Saga CLI. Preserve append-only review feedback, exact references, and all three performance child histories."
+    },
+    {
+      "commit": "fcd342210cd438267cc0c0ffb07282b4682c107f",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T20:18:22Z",
+      "subject": "feat: add reusable Component and System documentation",
+      "body": "Give implementation slides shared technical identities with immutable revisions, exact code evidence, and explicit System interactions. Keep documentation pins separate from Item.Record and scoped coverage so canonical edits do not rewrite saved slides or review currency.\n\nAdd public authoring and snapshot-bound queries, validation, lazy explanation/code drill-down, schema and compatibility guidance, and a disposable FeatureFlag preview with regression tests."
+    },
+    {
+      "commit": "684c62c008c0116559dde047b23ffafca49220a3",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T21:00:25Z",
+      "subject": "docs: explain reusable technical inventory in app Saga",
+      "body": "Author Components, their System, five implementation slides and a five-slide transition review through the public CLI with exact fcd3422 evidence. Repair only the twelve newly stale existing references while preserving unaffected evidence and the baseline stale set. Update the runtime diagram for saved documentation pins; author no review decisions."
+    },
+    {
+      "commit": "89404fc6fa5063592b13958a93c2a04733ddc651",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T21:03:21Z",
+      "subject": "Merge reviewed Component and System inventory with canonical documentation links",
+      "body": "Preserve both reconciliation command discovery and Component/System authoring. Combine canonical Item documentation controls with asynchronous thread projection and immutable shown-slide snapshots."
+    },
+    {
+      "commit": "ff7033522c78cca6fb2df25f21130298c59ac052",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T21:19:13Z",
+      "subject": "Fix integration review navigation and invalid-deck validation"
+    },
+    {
+      "commit": "a4047d00dcfb6a528c1c2da06176d15c15eb6cf7",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T21:23:57Z",
+      "subject": "Save reviewer annotation on review UX improvements"
+    },
+    {
+      "commit": "f141db4d58bb84f02cd4c2ad79a27936d5e36624",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T21:28:55Z",
+      "subject": "Ground feature interviews in existing Saga personas and requirements",
+      "body": "Require structured context before conversational candidate stories, not only before persistence. Route feature interviews to the query and story guidance and retain unresolved persona choices explicitly."
+    },
+    {
+      "commit": "303e67c651dc98d3374cb980d4828fcc99dc7b6b",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T21:33:33Z",
+      "subject": "Guide conversational discovery through queried Saga context",
+      "body": "Confirm personas, explore intent conversationally, request representative stories, and review drafts before persisting and committing. Offer technical planning afterward and use focused public queries across existing documentation domains."
+    },
+    {
+      "commit": "1118e223c2b4aae2d94802d31134013af78013ee",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T22:00:52Z",
+      "subject": "Document technical inventory reuse and scoped coverage stories",
+      "body": "Record nine proposed stories and 32 acceptance criteria from the user interview, linked to the existing Architect and Developer personas. Preserve interview provenance, explicit proposed entities, user-led orphan reconciliation, and exact subset inheritance rather than whole-system coverage."
+    },
+    {
+      "commit": "e7d312f3826d8a62e80a7b02a0f90949a0cd0fda",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T22:23:11Z",
+      "subject": "Extend technical inventory stories to ERD and entity roadmaps",
+      "body": "Add four ERD stories for logical and persisted application data. Revise inventory stories for data entities, explicit proposed versus implemented status, comparison-relative newness, scoped filters and evidence-backed reconciliation. Extend existing work delivery for entity-based delegation while preserving prior revisions and lifecycle state."
+    },
+    {
+      "commit": "a0ddce8def26d380a77de0e119892d95abc48274",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T22:44:57Z",
+      "subject": "Start the technical inventory implementation design deck",
+      "body": "Capture the authored architectural ERD and same-identity proposed revisions. Add three explicitly proposed slides with current-code anchors, canonical component links and pinned criterion explanations; retain code-free proposals as visible gaps rather than inventing evidence."
+    },
+    {
+      "commit": "5d6e0d4119f02e51a37306bf258290a7d7069a38",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T23:06:12Z",
+      "subject": "Explain scoped inventory coverage and reconciliation in the design deck",
+      "body": "Trace a real System and Component to a selected code subset. Separate unique coverage totals from full ownership provenance, selected-byte drift from semantic impact, and HEAD currency from PR review coverage. Link existing resolver and reconciliation extension points without claiming the proposal is implemented."
+    },
+    {
+      "commit": "02869a7de0e3b9970a50fd7d64dc73bab485ab49",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T23:19:55Z",
+      "subject": "Specify technical inventory record and query design contracts",
+      "body": "Continue the proposed implementation deck with canonical data-entity records, bounded roadmap queries, and compatibility-gated delivery. Link each Item to agreed criteria and current extension-point code without claiming the proposed behavior is implemented. Record validation, visual/browser checks, and the remaining mobile-canvas limitation."
+    },
+    {
+      "commit": "3237e5254a231e7c7bd975104072a9b1eceec704",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T23:37:36Z",
+      "subject": "Record cold technical-inventory handoff and repair evidence",
+      "body": "An independent workspace reconstructed the design without conversation history and identified historical-pin, delivery-source and mixed-intent contract gates. Make the detailed design discoverable from the deck, preserve the assessment and next task packet, and reconcile two stale foundation references after verifying the existing guard and tests."
+    },
+    {
+      "commit": "d67ad809b6c3828046c7549b0b5e00b914327bb3",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T23:52:27Z",
+      "subject": "Set inventory historical-view and implementation policy",
+      "body": "Resolve cold-handoff behavior gaps with explicit view admission, original and delivery-commit evidence checks, and independent entity/relationship intent. Specify a bounded internal policy slice and acceptance matrix without changing persisted formats or public authoring guards."
+    },
+    {
+      "commit": "d1a6c7c656df01723a32375859a29d426f1bd291",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-24T23:59:35Z",
+      "subject": "Explain inventory policy decisions in the implementation deck"
+    },
+    {
+      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T00:03:01Z",
+      "subject": "Add isolated technical inventory policy gates",
+      "body": "Enforce explicit saved-view pin admission, original and delivery evidence checks, and independent entity/edge intent without public wiring or persistence. Exercise fail-closed diagnostics, finite bounds, input immutability and actual temporary Git delivery scenarios through the existing resolver."
+    },
+    {
+      "commit": "8422469047c318660b927eed1294dac33046b67d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T00:09:27Z",
+      "subject": "Document the isolated inventory policy foundation and review",
+      "body": "Append the rank-150 foundation with exact source/test evidence and current story links through public authoring commands. Bind a two-slide child review to d67ad809..d62bcb84, keep proposals and review history intact, and explicitly leave public authoring, coverage and persistence unconnected."
+    },
+    {
+      "commit": "7315c64cce45cb0f935ad8ecc82230a6c68cc4a4",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T00:15:40Z",
+      "subject": "Merge technical inventory policy foundation"
+    },
+    {
+      "commit": "da5101a6ec48e078069f5821bd71e90ad050bbcd",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T00:18:06Z",
+      "subject": "Record policy integration checks and remaining boundaries"
+    },
+    {
+      "commit": "52162337ea854ec9b03b9f25f12d610e054ffe6d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:02:03Z",
+      "subject": "Add Technical design overview and canonical definition pages",
+      "body": "Systems and Components get a directory under the overview and one page per\ndefinition that renders an exact revision: the current one, or a saved pin\nwith its stale/retired/conflicted status stated and nothing repinned.\nCompeting heads are named without choosing one. Legacy revisions report\nunspecified intent. Item pins in implementation and review decks become\nreverse usages linking the exact slide Item; the drawer links the full\npage and loads usages on request.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "c010f8ffd6aee99587a04252d363e73fe948a540",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:02:09Z",
+      "subject": "Format technical page tests",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "81a5d3c0f8ae43e1de3eae03bd21313dfa1e9bd1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:15:13Z",
+      "subject": "Check Technical design in the browser and keep it at device width",
+      "body": "The e2e spec follows a slide Item to its pinned System page and back,\nopens the drawer's usages and full-page link, checks Escape focus and the\nunchanged slide URL, reads a stale saved pin after a revision, and taps\nthrough at 390px. Mobile browsers widen the layout viewport to fit wide\ntables, so the directories now scroll within their section and the test\ncompares against the device width rather than innerWidth.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "1fa8db15dcf25ad89ea251ba660f34c53af0b5e7",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:00:21Z",
+      "subject": "Add inventory format 2 record types and read compatibility",
+      "body": "Introduce the canonical persisted contract for proposed/implemented technical\ninventory without adding any writer: evidence references with stable IDs\nunique per revision, explicit revision intent with an implemented baseline or\nexplicit none, delivery {repository, commit}, data entities (curated fields,\nholding Component pins, owned association/production relationships), authored\nERD roots with offline SVG visuals, directory and bindings, and ERD overlays\nwith pins and proposed removals. Items gain documentation_view and explicit\nselections.\n\nFormat 2 is opt-in: ___inventory/format.json must exist before any new kind or\nintent is read, and older readers refuse the marker, the new directories and\nthe new Item fields rather than silently dropping them. Legacy revisions are\nunchanged and read as unspecified intent. Loading validates each record\nstructurally (baseline must be an implemented ancestor, unsafe or external SVG\ncontent is refused); cross-record policy checks belong to the writers.\n\nResolveSelection gives consumers one structural path/evidence resolver with\nstable reason codes, and ComposeOverlay applies an overlay to its baseline ERD\ndirectory without modifying the canonical record. Query and server call sites\nonly adapt to the Evidence type.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "fae76ed1df1df2c1ae6bf0b928f6d46eef25c421",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:15:53Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/inventory-technical-design-ui-claude",
+      "body": "# Conflicts:\n#\tinternal/server/inventory.go"
+    },
+    {
+      "commit": "f39c03d18c6968441f298debf9bd17b98f08ba02",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:25:15Z",
+      "subject": "Render data entities and authored ERDs in Technical design",
+      "body": "Data entities show intent (proposed with its retained baseline or none,\nimplemented with its delivery commit), curated fields and keys, holding\nComponents as separate resources, owned relationships and incoming ones\nderived from other entities' current revisions, and the ERDs that list\nthem. The ERD view inlines the author's validated offline SVG as drawn\nand makes only bound elements selectable; each opens the same pinned\ndefinition as its directory row, with focus returned on Escape. The\ndirectory states which entities are drawn and which are not. Associations\nshow crow's-foot endpoints with textual cardinality, including declared\nunknown; productions are labelled dashed flows, not foreign keys.\nOverlays compose over their exact baseline ERD revision without\nrewriting it. A drawing that fails validation at render time is refused\nand the directory remains.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "b5ecfa4548fba174cca6fd51ac2bd4334b8c0500",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:18:20Z",
+      "subject": "Author proposed and implemented inventory revisions through the public CLI",
+      "body": "Add explicit `inventory adopt-format --format 2` and public writers for\nComponents, Systems, data entities, ERDs and ERD overlays. After adoption\nevery new Component/System revision states proposed or implemented intent;\nbefore adoption format-2 content is refused and nothing is written.\n\nAn implemented revision names its delivery commit, resolved once at the\ncommand boundary and bound to the Saga's canonical source repository. Under\nthe Saga lock the writer checks all-head parents, baseline ancestry, new-pin\ncurrency (retained and self pins excepted), ERD/overlay bindings, and then\ntechnicalpolicy.ValidateCandidate: original bytes plus delivery currency for\nthe entity and every implemented edge, and exact endpoint intent without\ncascading promotion. Any refusal leaves no files; identical retries replay.\nERD visuals are validated and stored content-addressed in the record package.\n\ntestfixture.WriteInventoryFixture publishes a realistic format-2 inventory\nthrough these writers for query and renderer tests.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "b6c0700686f88d6008172d884eab741c735d3ea8",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:24:40Z",
+      "subject": "Author exact Item selections and saved-view documentation pins",
+      "body": "add-item, revise-item and apply-slide now accept --documentation-view and\n--selections (documentation_view/selections in transactions) on\nimplementation and review deck Items once inventory format 2 is adopted.\n\nA documentation pin is admitted through technicalpolicy.AdmitPin: current by\ndefault, or, for a historical pin, only when the named saved view binds that\nexact revision as its unambiguous active definition. internal/savedview loads\nthat view from the Saga committed at one commit of its canonical source\nrepository and refuses with a specific reason (unavailable/shallow commit,\nSaga missing or kept in a companion repository, different source identity,\nunreadable inventory); there is no fallback to a newer revision.\n\nEach selection names a path of saved pins from the documentation pin, a\nstable evidence ID and a subset range. The CLI defaults an omitted commit to\nthe containing evidence's commit, authors the digest of the selected bytes,\nand checks every hop and the containment through ResolveSelection. Unchanged\npins and selections are retained honestly when an Item is revised, and\nvalidate reports selections that no longer resolve or format-2 Item content\nwithout the marker.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "5f0c11685ed4b5249fe2365dea282731e0301cda",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:25:28Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/inventory-technical-design-ui-claude"
+    },
+    {
+      "commit": "f3c5b12a43cf721803e0b8eb1d2a88bd1c94baee",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:27:07Z",
+      "subject": "Test the data model on the shared writer-built fixture",
+      "body": "Replace the hand-written format-2 records with testfixture's inventory,\npublished through the real writers, plus a proposed job successor with an\nexplicitly unknown association endpoint and a second ERD that lists an\nentity it does not draw, both through WriteTechnicalRevision. System\ninteractions now show their own intent; proposed interactions are drawn\ndashed.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "08510127609bc098c47f1bf052ac06cb4b86a379",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:37:59Z",
+      "subject": "Do not cache a comparison error caused by a cancelled request",
+      "body": "When a reader navigated away while the comparison layers were being\nderived, git was killed with the request's context and the resulting\nerror was cached for the comparison, so every later /api/layers request\nanswered 500 until the Saga or head changed. A cancellation now returns\nwithout being cached and the next request derives again.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "d21670cb89231ff15bb31b8e3c92ec8893e2b2b7",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:37:59Z",
+      "subject": "Show an Item's exact selections when its definition opens from the slide",
+      "body": "The Item's control now names the Item, so the drawer shows what that use\nselects before the definition's complete code: the declared path of\npinned revisions, the evidence and its containing reference, the\nselected lines at the observed head, containing-reference staleness as a\nseparate fact, and whether the saved digest still matches the selected\nlines at their commit. Unresolved paths report their stable reason and\nstill show the saved lines; nothing is substituted or widened. A pin\nadmitted from a saved view says so. Definitions reached from the drawer\nshow no selection, and Back returns to it.\n\nThe e2e spec authors format 2 records, an ERD and an Item selection\nthrough the public CLI and checks the ERD element, its directory row and\nthe slide Item open the same pins, with focus returned on Escape.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "99a22e2611c7872eaeb4e9cd09b45a3eb631ff02",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:40:14Z",
+      "subject": "Say what is new only against a named comparison",
+      "body": "When the reviewer compares a head against a base, Technical design loads\nthe inventory at the comparison's merge-base through savedview and states,\nper identity, whether it is new since the base, revised, or unchanged. A\nbase whose Saga cannot be read (for example one kept in a companion\nrepository) is unknown with its reason, never an empty inventory. Observing\none commit shows no newness at all. The review Item control test now\nchecks the Item URN and selection count it carries.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "7e09b1da8d112c2847fa518e4943812438a8b7ad",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T00:39:51Z",
+      "subject": "Add read-only inventory reverse-use and exact selection projections",
+      "body": "Derive declared uses of Component/System revisions from implementation\nand review deck Items and System membership, with bounded upward\ntraversal that reports depth, cycle and traversal cuts instead of\npresenting a partial graph as complete. Superseded owner revisions are\nreported but never traversed.\n\nResolve an exact Item selection hop by hop at its saved pins, requiring\neach hop to be declared, the evidence to exist in the owner revision and\nthe subset to lie within it with a digest true at its own commit.\nSelected-byte health, containing-evidence health and pin currency stay\nseparate so an edit outside the subset asks for semantic reassessment\nwithout claiming the selected bytes changed.\n\nLegacy revisions read as unspecified intent; newness is unknown without\na readable baseline rather than treating everything as new.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "a06fd0330a04758fee941cb6bcc2ea607ceb9cd1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T00:54:07Z",
+      "subject": "Filter and scope inventory reads; page declared reverse uses",
+      "body": "query inventory now reports, per record, the exact revisions it answers\nabout with their explicit intent (legacy revisions are unspecified),\nidentity newness relative to a named --against baseline, declared use\ncounts and, with --feature, the declared Item-to-member paths that put\neach pinned revision in scope. --intent and --new filter only resolvable\nrecords: conflicted or missing candidates stay on a separate\nsnapshot-bound unresolved page. --new requires a baseline, and a baseline\nSaga that cannot be read is unknown rather than making everything new;\na baseline where the Saga did not yet exist is reported as absent.\n\nquery inventory-uses pages the implementation Items, review Items and\ntechnical owners that declare a target, following current owner\nrevisions to a bounded depth and reporting depth and cycle cuts.\n\nThe comparison base Saga snapshot is located with the same same-repo and\ncompanion-cursor rules as the change view.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "3ce1dd5ea6aa5822c3cbc09c848bc37b73ddfb81",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T00:56:11Z",
+      "subject": "Match Item selection projection to the records contract",
+      "body": "Selections name a revision-unique evidence ID and derive the owning edge,\ninstead of storing an evidence owner. Legacy references without a\npersisted ID are not selectable: their location is no longer offered as\na selection identity. The evidence lookup is a single seam that the\nrecords contract's EvidenceByID will replace.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "b6daeb0b209283493ca39583dc595af3f538506d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:02:22Z",
+      "subject": "Report code accounted for by the technical inventory",
+      "body": "query inventory-coverage measures the tracked files at one source\nrevision inside named path prefixes (Saga directories excluded, binary\nfiles counted but not measured) against the unique current revision of\nevery active Component and System, including interaction evidence.\nEach line counts once and keeps every owner, overlap is counted\nseparately, and stale references account for nothing. Conflicted owners\nare unresolved and retired or proposed owners are excluded, each with\nits reason and its own page, so absent evidence is never read as\ncoverage. The report is labeled as inventory coverage only, separate\nfrom implementation-deck and review coverage.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "08f65e682067c02a823af9b87391e18167527d44",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:06:47Z",
+      "subject": "Reconcile technical-inventory impact against the comparison base",
+      "body": "reconcile now reports an inventory section and queue entries for the\ntechnical inventory: current definition evidence that is stale at head,\nclassified as regression, introduced, pre-existing or baseline unknown\nagainst the base inventory; definitions whose referenced code changed\nin the comparison; implementation Items whose documentation pin is not\ncurrent; definitions with competing heads; and active definitions with\nno declared implementation-deck use. Each entry names the Items that\nuse the definition through declared paths and offers inspect and\nrevise shapes.\n\nAn unreferenced definition that is neither explicitly proposed nor new\nagainst a readable base asks the user what to do; nothing is deleted,\nretired, reclassified or attached to a feature, and an unknown baseline\nnever exempts a definition as new.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "d314ada7cccdc17712bee103ebaf38736e8b16e2",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:14:38Z",
+      "subject": "Index pin status in linear time and document the read slice",
+      "body": "Building the reverse-use index asked the loaded inventory for each pin's\nstatus, and its Find is a linear scan: 8,000 records took 296 ms. The\nindex now answers status from its own map, kept equal to LinkStatus by a\nparity test, and the page selection uses the same map (41 ms).\n\nAdd projection benchmarks, the role-specific implementation note, and\nskill guidance for the new inventory reads, uses and coverage, replacing\nthe statement that reconciliation ignores the inventory.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "c93ed5aaf8c11fea04b75c6b90095427ef02a688",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:14:43Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/inventory-query-coverage-claude"
+    },
+    {
+      "commit": "8329c61d9b7b8ccef0f05610869635aa51f9551d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:20:18Z",
+      "subject": "Read the records contract: intent, evidence IDs, data-entity edges",
+      "body": "Projections now read explicit revision intent (legacy stays unspecified)\nand follow the contract's declared links: data-entity holding Components\nand relationship destinations join System members as traversable owner\nedges, and ERD directories and overlays are reported as uses. Selection\nstructure comes from requirements.ResolveSelection and\nVerifySelectedBytes, with pin, selected-byte and containing-evidence\nhealth layered on top; the local structural checks are gone.\n\nEvery read of owned evidence (query code health, inventory coverage,\nreconciliation) now includes relationship evidence and its evidence ID.\nEvidence on explicitly proposed interactions or relationships is not\ncounted as coverage or assessed for currency, and is reported as such.\nQueries accept every inventory kind as a target or --kind.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "9f019f28aa6b6516a8d7a3711ddf444a541c9dcd",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:26:00Z",
+      "subject": "Inherit selected code into implementation-deck coverage",
+      "body": "An implementation Item's saved selection whose path resolves at its saved\nrevisions with every pin current now adds exactly its selected lines to\nthe Item's evidence for documentation coverage, as a labeled pseudo\nevidence file \u003citem\u003e#selections/\u003cid\u003e. Coverage then judges the selected\nbytes itself, so drifted bytes account for nothing, and unselected code\nin the same entity earns nothing. Unresolved, conflicted, retired or\nsuperseded paths contribute nothing. Review deck Items never inherit.\nThe status/check/reconcile comparison and the query session attach\nselections the same way; an unreadable inventory attaches nothing.\n\nquery inventory-selections explains every saved selection: its declared\npath, containing evidence and owning edge, pin health and separately\nresolved selected-byte and containing-evidence health. reconcile queues\nselections that no longer resolve, whose selected bytes drifted, or\nwhose containing evidence changed outside the subset and needs semantic\nreassessment.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "08188fd5be0271d3c34923ddf59ae2cbbc40c3f0",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:26:00Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/inventory-query-coverage-claude"
+    },
+    {
+      "commit": "7b467d69ec73f1e19a7b0a3eef17eaf0ad494d86",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:28:24Z",
+      "subject": "Prove the read slice end to end on the format-2 inventory fixture",
+      "body": "Drive query, coverage and reconciliation over the records fixture\nwritten through the real writers, with Item selections authored through\nadd-item: explicit intent filters that ignore proposals in history,\nnewness independent of intent, feature scope through System members,\ndata-entity holders and relationship destinations, relationship and\noverlay uses, implementation-deck coverage of exactly the selected\nlines, and edits outside versus inside a selected subset.\n\ninventory-uses accepts --repo like the other inventory reads, and\nreconciliation offers the revise shape for every inventory kind that has\none.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "67b944d7be09fb1f0e341f7b132b9edd477a43e5",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:35:25Z",
+      "subject": "Label inherited selections inside coverage instead of injecting evidence",
+      "body": "Injecting pseudo evidence files into Items made every generic evidence\nconsumer treat a selection as an authored record: reconciliation could\nadvise replace-coverage or remove-coverage for a file that does not exist,\nand mappings, selectors and audits would list it. The document is no\nlonger modified. coverage.EvaluateInherited adds the selected lines of\neligible selections as assignments owned by the Item, labeled with the\nselection's provenance and no evidence file; a selection is eligible only\nwhen its structure resolves, every pin is current and its selected bytes\nare current at head, so drifted selections contribute nothing and are\nreported through selection health, whose repair path is the Item.\n\nThe format-2 end-to-end test now checks that a drifted selection yields\nno evidence-file repair naming it, yields the selection task instead, and\nthat mappings and gap queries never present a selection as a record.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "c4fffd67e92394770681582bc0e21ece73e1f872",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:40:47Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/inventory-technical-design-ui-claude"
+    },
+    {
+      "commit": "1a24106ad3981395e945409b2e7a9b8ad88e8928",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:50:53Z",
+      "subject": "Draw authored ERDs from an allowlist, never the author's bytes",
+      "body": "The drawing is parsed as XML and re-serialized from its tokens, keeping\nonly static shapes, text, gradients, markers and presentation attributes,\nwith links limited to same-document fragments. Every id is namespaced to\nits view so a drawing cannot shadow the page's ids or another drawing's,\nand bindings follow the namespaced ids. A drawing that needs anything\nelse (animation, script, handlers, style or class, external links or\ndirectives) is not shown in part: the page says it is unavailable and\nwhy, and the directory still lists every entity. This closes the\n\u003canimate\u003e/\u003cset\u003e javascript: path that the loader's validator allowed.\n\nThe e2e spec now reads the usage column explicitly and checks that a\ncomparison whose Saga lives in a companion repository reports newness as\nunknown rather than new.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "763cec3d7c200055cb5cc149480cc64c2e596f85",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:54:26Z",
+      "subject": "Read usages from the shared reverse index",
+      "body": "Technical design now lists uses from inventoryview, the same projection\nthe CLI queries read, instead of its own Item scan. A definition's page\nand drawer show direct slide Item pins, declared owners (System\nmembership, data holders, relationship destinations, ERD directories and\noverlays, with an earlier owner revision marked), and Items that reach it\nthrough one owner, naming the path. Counts are exact unless the index\nstopped early, which the page states as lower bounds; an empty page says\nno declared use rather than none at all.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "0f2891d704bb671fbf2aae1dec9366beb3b7bae2",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:17:01Z",
+      "subject": "Credit inherited selections in the reviewer's coverage",
+      "body": "The reviewer's comparison coverage now evaluates lines that Items inherit\nthrough eligible inventory selections, through the same\ninventoryview.InheritedReferences and coverage.EvaluateInherited the CLI\nuses, so the two reports agree. Those owners are labelled \"selected via\"\ntheir selection rather than presented as authored evidence. The derived\nsnapshot format moves to v4 so cached indexes built without inheritance\nare not reused.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "b2689a86bd64f639752c182c50376a258a9fea8c",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:17:01Z",
+      "subject": "Describe the delivered Technical Design UI",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "3b4556b53e554e8d6fb23f9e36a860735af3f61a",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:24:06Z",
+      "subject": "Document the Technical Design UI in the technical-inventory deck",
+      "body": "Three implemented slides (ti-ui-impl-overview, -erd, -trace) explain the\nTechnical design pages, the authored ERD view and the slide-to-selection\ndrawer with exact code evidence at b2689a86 and criterion links pinned\nto the current story revisions. New legacy-format Components\n(technical-design-page, authored-erd-view, item-selection-drawer) and the\ntechnical-design-ui System give the UI its own canonical definitions; no\nexisting shared record or slide was revised. Validation passes with only\nthe two existing code-free proposal warnings; visual-qa reports no\nfindings at 1280x720 or 1024x576.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "26eef1f578c6f1e1e2576b0648b1cf234ac09b37",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:27:32Z",
+      "subject": "Document inventory format 2 in SPEC, spec --json and the changelog",
+      "body": "Record the persisted contract that the previous commits implement: the\nexplicit adoption marker, intent/baseline/delivery, evidence IDs, data\nentities, ERDs and overlays, Item documentation views and selections, bounds,\nand the implementation assertion. The Format changelog entry states what older\nreaders do (refuse rather than drop), what newer readers do (legacy reads as\nunspecified) and that there is no automatic migration. The skill reference\ntells agents never to adopt the format without the user's decision.\n\ndocs/technical-inventory-records-implementation.md explains the delivered\nbehavior, tests and known limits for this slice.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "a0cb6cbea02934a89fa0b8adb3cc54709c562a09",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:28:41Z",
+      "subject": "Accept documentation views and selections in slide transaction requests",
+      "body": "The request schema now matches the apply-slide item fields added with Item\nselections: data-entity documentation pins, documentation_view, and\nselections whose commit may be omitted and whose digest is authored.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "1f14cc3704cb01a462b4f395dc86a34fdebb260a",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:33:10Z",
+      "subject": "Explain the delivered inventory records slice in the implementation deck",
+      "body": "Four complete-slide transactions (ranks 160-190, section \"Records and\nauthoring implementation\") explain the explicit format gate, the proposed to\nimplemented transition through technicalpolicy, data entities/ERDs/overlays,\nand exact Item selections with saved-view pins. Every Item carries focused\nevidence at a0cb6cbe and a pinned criterion link (27 relations prefixed\nti-records-impl-); rationales name the parts owned by the query and UI\nslices. No proposal slide, story or persona was modified.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "158f5a6a7612a723e5f8ea3a1620cfa86683ce65",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:35:53Z",
+      "subject": "Author the bounded review deck for the inventory records slice",
+      "body": "Review inventory-records-authoring explains exactly da5101a6..a0cb6cbe in four\nslides: the record model and format gate, the validated writers (with a\ncallout for the intent-required-after-adoption surprise), Item selections and\nsaved views, and the proof with what is not claimed. All 6164 changed lines\nare mapped to the Item that explains them. No review decision or comment is\nrecorded.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "058d72646a7c023bf2c2dded6cd59049c5828fb7",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:39:07Z",
+      "subject": "Reference every changed line of the records slice from its implementation Items",
+      "body": "Update the four ti-records-impl- slides through apply-slide so each Item\nreferences the changed lines of the files it explains (new side at a0cb6cbe,\nreplaced lines at da5101a6), keeping the focused evidence. Living\nimplementation coverage of da5101a6..a0cb6cbe is now 6143 of 6164 atoms; the\n21 remaining are whole-file addition events, which transaction-managed Items\ncannot hold.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "2464390a089858b4e4d2d9b4d8a3e2774aa21529",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:39:37Z",
+      "subject": "Record Saga documentation checks for the records slice",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "eef620ecb709e15e0f6b67eb09731c812396b988",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:40:48Z",
+      "subject": "Test every saved-view refusal reason",
+      "body": "Cover a commit without the Saga, a companion Saga outside the checkout, a\ndifferent source repository, an unreadable inventory, an unknown revision and\na shallow clone that lacks the view commit, plus a valid view's identity.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "72e1338bed3817fa5076078ae39200e16ad9f9c1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:46:51Z",
+      "subject": "Allowlist ERD SVG content instead of denylisting it",
+      "body": "The renderer inlines ERD visuals into pages that carry review mutation\ntokens, and the previous denylist accepted SMIL animation that rewrites href\nto javascript: at runtime. ValidateVisual now admits only static drawing\nelements in the SVG namespace and presentation/geometry attributes (plus\nnamespace declarations, xlink:href and xml:space/lang), rejects any\nattribute or style text containing javascript:, data: or vbscript: after\nremoving whitespace and control characters, and keeps the same-document\n#fragment link rule and the url()/@import checks.\n\nTests cover SMIL set/animate/animateMotion/animateTransform, xlink:href,\nuppercase, tab- and space-prefixed and embedded-tab schemes, data values,\nexternal anchors, unknown attributes, foreign namespaces and image elements,\nand a realistic static SVG that must still pass.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "250ead16c2f58d84e0374b8bdd3d6fc0af1fb6fa",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:47:05Z",
+      "subject": "Describe the ERD SVG allowlist in the specification",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "5d0af7744ffba4dd899b83f69b0e3d741a2f8113",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:54:56Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/inventory-records-authoring-claude",
+      "body": "# Conflicts:\n#\tskills/change-saga/references/diagrams.md"
+    },
+    {
+      "commit": "ccb8c271bcc6624b08d9a0675b31b0cd2451db7d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:07:11Z",
+      "subject": "Refuse SVG constructs that parse differently when inlined as HTML",
+      "body": "Defense in depth for consumers that inline raw ERD bytes: accept only one\nleading XML declaration of version/encoding/standalone attributes and no\nother processing instruction, refuse CDATA sections, and require unprefixed\nelement names, because an HTML parser reads each of these as markup that can\ncarry a live \u003cimg onerror\u003e. Table tests cover a hostile declaration before\nthe root and inside svg, an xml-stylesheet instruction, CDATA, and prefixed\nsvg/g elements.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "3b4de069818220f313fb4ca01e1b9db85558ff38",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:07:20Z",
+      "subject": "Specify the remaining SVG parsing restrictions",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "82f636465d260c22d4be0ee523d46c02ac7dce71",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:36:53Z",
+      "subject": "Document the inventory read and coverage components",
+      "body": "Add five legacy-format Component definitions for the delivered read\nprojection, public read queries, inventory coverage, inherited selection\ncoverage and inventory reconciliation, and one System explaining how the\nconsumers use the projection. Each reference names an exact current\nrange. Existing shared inventory records are left for the coordinated\nrepair; app.saga does not adopt inventory format 2.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "746cbf7ac9b8cb51c3d2c1d560fbbbde569dc8f2",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:39:42Z",
+      "subject": "Describe inventory coverage over every definition kind",
+      "body": "The coverage response and operation purpose still named only Components\nand Systems; they now describe current technical definitions, edge\nevidence and the separate count of proposed edges.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "3b9a4020fc238f81483429b2b518c0b42d359cb4",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:46:57Z",
+      "subject": "Explain the implemented inventory reads, coverage and reconciliation",
+      "body": "Add five implementation slides to the technical inventory deck, ranks\n200-204 under 'Implemented reads and coverage': scoped and filtered\nreads with a separate unresolved page, declared reverse uses with\nexplicit completeness, inherited coverage from exact selections,\ninventory coverage of a named scope, and inventory reconciliation. Each\nItem carries exact evidence at the current code and pinned links to the\ncriteria it explains; Items pin the new read and coverage components.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "8b2e2f53c463640f731de557a68f19799ea8fdf6",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:50:51Z",
+      "subject": "Author the inventory-query-coverage review deck",
+      "body": "Six review slides explain the b6c07006..HEAD transition: scoped and\nfiltered reads, declared reverse uses, inherited selection coverage,\nthe inventory coverage report, inventory reconciliation, and the public\ncontract with its verification. All 4176 changed lines and file events\nare owned by the narrowest Item, with no overlaps or stale references.\nNo review decision is recorded.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "eab4b1cd1f18b9405789183f311a38b70455bb7f",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:54:32Z",
+      "subject": "Document every added line of the inventory read slice in the living deck",
+      "body": "Extend the five implementation slides' Items to own all added lines of\nthis slice, split by behavior exactly as the review deck does, and add a\nverification slide for the public contract, tests, benchmarks and the\nimplementation note. Deleted lines and file-addition events remain with\nthe review deck: living evidence at HEAD cannot reference them and\ncomplete-slide transactions refuse whole-file references.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "60cdd2ef62d420dc11d1ba5e29c32fb8666b5dbb",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:56:25Z",
+      "subject": "Record Saga artifacts and reconciliation results of the read slice",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "43b67d7ff462df773b314338f1f0f92741b88f11",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T01:57:39Z",
+      "subject": "Repin the implementation note evidence after recording results",
+      "body": "The verification slide's evidence and the review's docs record are\nre-authored at the commit that records the Saga artifacts, keeping the\nreview at 4214 of 4214 changed lines with no stale references.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "172996c02b4f9f0e9dba776eaa8f70f58af88622",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:09:09Z",
+      "subject": "Merge inventory query and coverage slice",
+      "body": "Reads, reverse uses, selections, inventory coverage and reconciliation\nfrom feature/inventory-query-coverage-claude, with its implementation\nslides and bounded review deck. Merged after the records slice; the\ncombined Saga validates with only the two existing proposal warnings.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "94be129341e0dd0843b45a7c45a542ff41321216",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:24:41Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/inventory-technical-design-ui-claude"
+    },
+    {
+      "commit": "a88278c8a1b23e4e90b60f9fc4e7c5d13d482a17",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:29:10Z",
+      "subject": "Author the inventory-technical-design-ui review deck",
+      "body": "Four review slides explain the change from 172996c0 to 94be1293: the\nTechnical design pages and shared definition view, the allowlisted ERD\nview, Item selections with reviewer coverage parity, and the browser\nproof, the /api/layers fix and the implementation note. Every one of the\n2644 changed lines and file events is referenced from the Item that\nexplains it, with no overlap or stale reference. No review decision or\ncomment is recorded.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "e65f81b3b465bbbd7882f750e6bf60aac86a6578",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:33:13Z",
+      "subject": "Own every added Technical Design UI line from the living deck",
+      "body": "The three implementation slides now reference every added line of this\nslice from the Item that explains it, and a fourth slide,\nti-ui-impl-verification, owns the Go tests, the browser flows, the\n/api/layers fix and the implementation note, with criterion links pinned\nto current story revisions. Deleted lines and file-addition events remain\nwith the review deck: transaction-managed Items refuse whole-file\nevidence and living evidence cannot cite deleted lines.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "60d4bed22c863bafee8289c18678b74704aa96d7",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:34:47Z",
+      "subject": "Record the Saga documentation and reconciliation results",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "5a07b0fa2b56cba4f78011b8544303f604078171",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:35:10Z",
+      "subject": "Repin the implementation note evidence after recording results",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "5bc6430510b2766b04e844d167f85c1b30098b20",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:36:23Z",
+      "subject": "Drop list markers beside System members on definition pages",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "50055150a0fe7a746fc43b68b15f9567ba9654f9",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T02:36:55Z",
+      "subject": "Repin Technical Design UI living evidence at 5bc64305",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "dca4ddc4d1ffd5876a90c885b508267c84a6a834",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:33:22Z",
+      "subject": "Scroll every directory table inside its own region",
+      "body": "On a 390px touch screen the /features, /personas, /reviews and /terms\ntables (670-1063px) widened the mobile layout viewport, so the whole page\npanned sideways. Technical design had fixed the same thing by making its\nown directories scroll; that rule now lives in the shared directory\ntemplate as a .directory-scroll region around the table alone, so every\ndirectory gets it and the filter stays put.\n\nThe region is named after the directory and focusable, so a keyboard\nreader can scroll to the columns that do not fit; the table keeps its\ncaption and header cells. Edge shadows show that more columns are off to\none side, which also matters on desktop, where /terms is wider than its\ncolumn and used to spill past it.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:34:11Z",
+      "subject": "Check every directory at 390px and at desktop width in the browser",
+      "body": "At a 390px touch viewport each directory page (features, personas, flags,\nterms, reviews, technical) must keep the document at the device's width,\nits table must sit in a named, focusable region that scrolls sideways\nwithout panning the page, and arrow keys must scroll that region once it\nhas focus. At 1440px no directory table needs to scroll. The fixture adds\na review and a Component so no directory is left in its growth state.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "d8084da1fe577effb3f096f9bb06acfc75feaa9b",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:49:39Z",
+      "subject": "Revise shared technical inventory records at current code",
+      "body": "The records, query and Technical Design UI slices rewrote the code that\ntechnical-explanation-drawer, technical-inventory-query,\ntechnical-record-author and technical-record-store cite, so each gets an\nr2 with exact current references. The drawer and author explanations gain\none sentence for behavior they now have (page link, usages, Item\nselections; delivery and visual inputs). technical-documentation r2\nrepins its members to those revisions and fixes its own evidence;\ntechnical-design-ui r2 only repins its drawer member.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "913f0208951dfebcf841701c3d3fa732bc5bd6ab",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:51:17Z",
+      "subject": "Repin other features' living evidence moved by the inventory slices",
+      "body": "The records, query and Technical Design UI work edited shared files that\nauthoring-sequence, slide-state, reviewer-runtime, visual-pipeline,\ncoverage-evaluation, coverage-ownership, status-runtime, structured-query,\nquery-failure-boundaries and comparison-architecture cite. Each changed\nrange was reread; every explanation still holds, so only the stale\nreferences are repinned at 4e47d2c1 and the other references in each\nrecord keep their original pins. reviewer-runtime:code-drawer now pins\ntechnical-documentation r2.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "c7b183ac5f097deb94797d769b186b6b3beba186",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:52:24Z",
+      "subject": "Repin technical inventory living slides at current code",
+      "body": "identity, history, authoring, navigation and verification cited inventory\ncode that the records, query and UI slices rewrote or moved. Each range\nwas reread and repinned at 4e47d2c1; moved functions follow their new\nfiles (exactTechnicalCode and validateTechnicalRevision now live in\ninventory_validate.go, requireDocumentation became admitDocumentationPin).\nDescriptions change only where the code now does more or differently:\nformat-2 fields on component/system/pin/writer, saved-view admission on\nthe reference guard, and the skill contract now saying reconciliation\nreports inventory. identity:system and navigation:fetch pin\ntechnical-documentation r2.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "c67a6b2744a383d5a548bb48f298aac0400c45a1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T04:00:01Z",
+      "subject": "Repin moved evidence on transaction-managed implementation slides",
+      "body": "reconciliation-loop:currency skips the inventory reconciliation lines\ninserted inside its range; ti-records-impl-format, -data-model and\nti-ui-impl-overview follow code that later slices edited (SVG allowlist,\ndocumentationView move, directory scroll CSS). The loader Item drops its\ntwo query_inventory.go lines because the query slice replaced them with\ninventoryCodeHealthOf, which its own slide explains. Base-side\n(deleted-line) references are republished unchanged. Descriptions are\nunchanged; every explanation still holds.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "d2757fd7310775a1d6001e06d1e77ce037180eab",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T04:01:40Z",
+      "subject": "Cover the whole records implementation note from its marker Item",
+      "body": "The marker Item covered the entire note when it was written; the records\nslice later appended its Saga documentation checks, leaving lines\n106-131 uncovered after the repin. Cite the whole current note again.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "1c9078036edb0cb11ba399aec2b07b96a697c29d",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:11:52Z",
+      "subject": "Sandbox authored fragments and review visuals at any origin",
+      "body": "Fragments and review slide visuals run author script with 'unsafe-inline'.\nTheir sandboxed iframes already give that script an opaque origin, but a\ndirect top-level visit to /f/... or /reviews/{id}/visual/{slide} ran it on\nthe app origin, where it could read pages carrying the review mutation token.\n\nBoth handlers now share one policy that adds the CSP sandbox directive with\nallow-scripts only, so the document is opaque-origin wherever it loads. The\nexisting connect-src 'none' and frame-ancestors 'self' are kept, and tests\nassert the header on both handlers through the security middleware.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "f1daf09fb0701066c5689a1bb7fdbc4212b84616",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:16:12Z",
+      "subject": "Check authored content runs on an opaque origin in the browser",
+      "body": "The interactive fragment now also loads an image asset from its own package.\nOne test clicks it inside its iframe and after a direct top-level visit,\nchecking that the script and the image still work and that the document's\norigin is opaque both times. A second opens a review slide visual directly\nand checks the sandbox directive and the opaque origin. Both tests fail\nagainst the policy without the sandbox directive.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:48:59Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/fragment-csp-sandbox"
+    },
+    {
+      "commit": "2af2183829a96bc6d378d1ef3bd7e629ac495992",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:53:15Z",
+      "subject": "Explain why authored script never runs on the app origin",
+      "body": "A new visual-implementation slide, in the Failure boundaries section,\nshows both ways to reach a fragment or review visual: framed in an app\npage, or opened directly. Both routes send one authored-content policy, so\nthe author script always runs on origin null, away from pages carrying the\nreview token. The slide also shows a pre-existing surprise: fonts served\nfrom the app's own URL don't load under the sandbox, so authors should\nembed data: fonts. Items hold exact evidence for the policy, both routes,\nthe unit and browser tests, and the strict app-page policy.\n\nOnly new records were added; existing shared slides and Items are\nuntouched while the evidence relay is running.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "37d0fbca55b9b87d81656c7c17458b1163f5a21b",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:55:28Z",
+      "subject": "Author the review deck for sandboxed authored content",
+      "body": "One before/after slide shows the change: a framed fragment already ran on\norigin null, but opening the same URL directly ran its script on the app\norigin. Now the response's own sandbox directive makes it origin null too.\nOld-side lines sit on the before Item and new-side lines on the after Item,\nwhich also points to the living slide. The server and browser test lines\nsit on two proof Items. The deck explains all 104 changed lines against\nfeature/review-ux-improvements, with no stale references or overlaps.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "5a5db9a426d8801154c63ee45db4783b142b5d67",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T03:56:42Z",
+      "subject": "Close the living evidence gaps for the sandboxed-content slide",
+      "body": "The living slide's Items now also cover the policy's trailing blank line\nand the replaced old-side lines in the fragment test and fixture, so every\nline this branch changes has a living owner. The policy Item also links,\nwith a pinned rationale, to the criterion that deck HTML slides are\nsandboxed.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "13a320b7838fbf57f3a71ce571173b512d73dbfa",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T04:01:35Z",
+      "subject": "Keep deleted-line evidence in the review deck, not the living slide",
+      "body": "The previous commit pinned replaced old-side test and fixture lines on\nliving Items. Reconcile reports those references as newly stale at HEAD,\nbecause the lines no longer exist, and a living deck should only reference\ncurrent code. The review deck already owns those deleted lines, so the two\nold-side living records are removed. The current-code evidence, including\nthe policy's blank line, and the criterion link are kept.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "16b6587c91b2c608d17868b1d3bbd59ec90784fc",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T04:02:53Z",
+      "subject": "Merge commit '13a320b7' into feature/review-ux-improvements"
+    },
+    {
+      "commit": "b12a41c5cd80e57b747830d2166e631a6c6f6960",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T04:04:13Z",
+      "subject": "Repin living evidence moved by the fragment CSP merge",
+      "body": "The CSP branch moved the inline policy into the shared\nauthoredContentPolicy const. failure-boundaries:csp-boundary now cites\nfragmentFile's header-through-Stat range and the const itself.\nreview-ownership:http-adapter, comment-round-trip:serve-visual and\ncontextual-review:slide follow reviewVisual. Explanations still hold.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "2b4f7c250271270ffbc9bfb0d091fda59abaf7a1",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T04:05:06Z",
+      "subject": "Drop deleted-line evidence from the records implementation slides",
+      "body": "ti-records-impl-format, -transition and -selections cited 113 lines of the\nda5101a6 base that the records slice replaced or removed. Living\ndocumentation explains the code at HEAD, where those lines cannot be\ncurrent, so every such reference stayed stale. The review deck\ninventory-records-authoring still explains the deletions, matching the\nquery and UI slices. Each Item keeps its current evidence and its\ndescription; none of the descriptions claimed the removed lines.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "85ae3825c880001dfcfb2572c43cd08160292cfa",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T05:56:07Z",
+      "subject": "Adopt technical inventory format 2 for the app Saga",
+      "body": "The user explicitly asked to upgrade app.saga to inventory format 2 so\nthe Saga can document its own persisted data model as data entities and\nan authored ERD. Adoption only writes the marker; no record is rewritten.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "0319b2b18e2ac922cb62632b807551745bd9089e",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:00:55Z",
+      "subject": "Document Change Saga's persisted records as data entities",
+      "body": "Thirteen implemented format-2 data entities describe how a Saga is stored:\nthe manifest, feature, persona, story, acceptance criterion, relation,\ndeck, slide, Item, code reference, technical definition, review and review\ndecision. Each lists a curated set of fields with real key roles and owns\nassociations with the cardinality the code enforces, evidenced by the\nexact types and checks at 85ae3825. Only the technical definition has a\nholding Component (technical-record-store); no production edges are\nclaimed because derived facts are computed on read, never stored.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "610bd59f5627f0790d04fd87a7e62cf6a6dd0799",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:06:31Z",
+      "subject": "Draw the application ERD of Change Saga's own data model",
+      "body": "ERD 'application' binds a hand-authored static SVG to all thirteen data\nentities and their seventeen associations: crow's-foot endpoints with\ntext cardinality, stable element ids, allowlisted shapes and text only.\nr1 was the first layout; r2 regroups it into four columns so the\ndrawing stays legible in the Technical Design page's content column.\nThe directory lists every entity; the drawing omits nothing from it.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "574fe2397c3ef9cd83dfd116d8017bb7f98438eb",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:16:25Z",
+      "subject": "Add Git and derived data to the documented data model",
+      "body": "The user asked the data model to explain Change Saga end to end rather\nthan mirror stored records. Seven implemented data entities add the\nsource repository and its commits (persisted in Git), the merge record\n(persisted in the Saga, produced from Git), and the change set, coverage\nreport, reconciliation queue, reviewer snapshot cache and query response,\neach labelled as derived with a production relationship to what it is\ncomputed from. Evidence is exact at 610bd59f.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "83672282d7ff78d475a144da7318cc086fe96513",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:19:29Z",
+      "subject": "Redraw the application ERD around Saga, Git and derived data",
+      "body": "ERD r3 groups the model into three bands: records persisted in the\nrepository's app.saga folder, the Git source of truth for code, and data\nderived on read (change set, coverage report, reconciliation queue, query\nresponse) plus the disposable reviewer snapshot cache. Production edges\nare dashed labelled arrows and derived boxes are dashed, with a legend.\nRelation and Review decision stay in the directory but are no longer\ndrawn; 18 of 20 entities and 22 relationships are bound. r1 and r2\nremain in history.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "bcd6abece1f941fcb57152d6b1e3cefc54ac4983",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:22:29Z",
+      "subject": "Explain the directory scroll region in the product-knowledge deck",
+      "body": "Adds one living implementation slide, directory-scroll-region, showing\nthat every directory's table scrolls inside a named, focusable region so\nthe page keeps the device's width. Its five Items cite the template doc\ncomment, the region markup, the .directory-scroll rule, the templates\nthat render each directory, and the Go and browser tests, all pinned at\n4e47d2c1.\n\nNo product-knowledge (or other) criterion states a directory-width or\nnarrow-screen obligation, so the Items carry no criterion links. That is\nwhy the slide uses the focused add-slide/add-item/cover path: apply-slide\nrefuses an Item without at least one exact criterion link.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "a85bf75b666a335a5c46fda55490db53de05df3e",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:25:18Z",
+      "subject": "Author the directory-mobile-width review deck",
+      "body": "A bounded review of 50055150..4e47d2c1, the change that stops directory\npages widening past a 390px phone. Four slides reuse the drafted\nvisuals: the same swipe before and after, the shared scroll region in the\ndirectory template (and Technical design's removed scroller), what\nchanges at desktop width including the sticky-header surprise, and the\nbrowser and Go checks. Every one of the 153 changed atoms, including the\ndeleted template and style lines and the new spec's file event, is\ncovered by the Item that explains it. No approvals or decisions are\nrecorded.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "96f29f54af6eb3ca77f8ba4d4052eb5eccdc83a2",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:26:41Z",
+      "subject": "Merge commit 'a85bf75b' into feature/review-ux-improvements"
+    },
+    {
+      "commit": "04e34048a47485cff2dde3fa914497eecf034ce7",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:18:37Z",
+      "subject": "Split Technical design into ERD, Systems and Components pages",
+      "body": "/technical was one long page holding every directory and the whole data\nmodel. It is now a short landing page naming the three areas, and each area\nis a page of its own: /technical/erd draws the application ERD with its\nother views and every data entity, /technical/systems and\n/technical/components are their directories. The sidebar nests the same\ntree: Technical design opens into the three areas, each disclosing its\ndefinitions, and a definition page marks its row current inside its area.\nERDs and overlays have no row, so their pages mark the ERD area.\n\nDefinition pages keep their /technical/{kind}/{id} addresses and ?revision=\npins, because slides, drawers and reviews link to them; their breadcrumbs\nnow pass through their area. The landing page's areas carry the single\npage's old section ids so bookmarked fragments still land.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "35897bb2501b754693b1e8f7ab33c226aca91b2a",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:20:11Z",
+      "subject": "Cover Technical design's area pages in the browser suite",
+      "body": "The technical spec now walks the landing page into an area, checks the\nsidebar nests the areas with the current definition marked inside its open\narea, opens an area by keyboard and by touch at 390px, lists the ERD's data\nentities beneath it, and follows old addresses: a definition page with a\nsaved pin and a fragment of the single page. The directory-width check reads\nthe Components directory at its own page.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "72844c8c991ab545a05eeab2773577606e021279",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:20:48Z",
+      "subject": "Merge branch 'feature/review-ux-improvements' into feature/technical-design-subpages"
+    },
+    {
+      "commit": "1885573387e95a2e78690784403d67f116c714fa",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:27:01Z",
+      "subject": "Revise the Technical Design UI definitions for the area pages",
+      "body": "The technical-design-page Component's code moved when /technical split\ninto a landing page and ERD, Systems and Components pages, so its evidence\nwent stale and its explanation described one page. r2 explains the page\ntree and pins the current code, stated as implemented at the delivery\ncommit, as inventory format 2 requires of a new revision.\n\nThe technical-design-ui System's entry-point evidence went stale the same\nway. Its r3 pins the new Component revision and describes the landing and\narea pages. Format 2 allows an implemented interaction only between\nimplemented endpoints, so the three legacy members it joins\n(authored-erd-view, item-selection-drawer, technical-explanation-drawer)\nare restated as implemented with unchanged explanations and their current\ncode. technical-documentation still pins the drawer's r2, whose content is\nthe same; revising it would cascade through its legacy members into the\napplication ERD, so it is left for the owner of those records.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "3db9d8b4d25d5eb3131e5916522f9bd20002b119",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:33:33Z",
+      "subject": "Explain Technical design's page tree in the technical-inventory deck",
+      "body": "A new implementation slide, ti-ui-impl-areas (rank 242, Technical Design\nUI), draws the landing page, the three area pages, the matching sidebar\ntree, the area route and the unchanged definition addresses. Its Items own\nthe code this change added and the new navigation test, and link the\ntechnical-overview, diagram-and-directory and explanation criteria.\n\nThe overview, ERD and trace slides are republished through apply-slide:\ntheir Items now pin the current Component revisions, the overview's\ndirectory and exact-page Items own the code that moved, and the ERD\nmembership Item owns the data-model code at its current lines. Their\nexplanations still hold; only the directory's wording changed, because\ndirectories now live on their area pages.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "4c73c69d5e2d1857a86adb5c52b8f4f237889339",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:35:32Z",
+      "subject": "Document Technical design's page tree in the UI implementation note",
+      "body": "The note now describes the landing page, the three area pages, the sidebar\ntree and its current marking, which addresses stayed and which fragments\nstill land, where design chapters live, and how the change was verified and\ndocumented in the Saga. The known gap about directories widening a phone's\nlayout is replaced by the shared scroll region the directories now use.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "12b577259a32911e31f23095baced0124ee2b85a",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:36:05Z",
+      "subject": "Repin the Technical Design UI verification slide to its current checks",
+      "body": "The Go tests, browser spec and implementation note changed with the area\npages, so the verification Items' evidence went stale. They now cite the\ncurrent files, and the browser Item's description names the area pages,\nthe nested sidebar and the old addresses it checks.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "f85890f69109e131343f9d9f402a776510d8bf5e",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T06:40:29Z",
+      "subject": "Author the technical-design-subpages review deck",
+      "body": "Three slides explain 83672282..4c73c69d: the single page replaced by a\nlanding page and three area pages with their route, the nested sidebar and\nthe addresses that were kept, and the tests, note and Saga records that\ncheck and document it. Every changed and deleted line in the range belongs\nto one Item: 670 of 670, no overlaps, no stale references. No review\ndecision is recorded.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "daa05d11df9fe31016edf35ac3123e7df11093e8",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T15:37:33Z",
+      "subject": "Merge commit 'f85890f6' into feature/review-ux-improvements"
+    },
+    {
+      "commit": "2521060d7c77e8ef8a187de7bff383f507712ad0",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T15:39:23Z",
+      "subject": "Restate the record store, author and query Components as implemented",
+      "body": "Under inventory format 2 a System's implemented interactions need\nexplicitly implemented endpoints. technical-record-store,\ntechnical-record-author and technical-inventory-query keep their r2\nexplanations, which still match their code, and gain r3 revisions with\nimplemented intent, stable evidence IDs and delivery at daa05d11.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    },
+    {
+      "commit": "bdf80fa123a1a1bff26bc58534f243b8acfa0edb",
+      "author": "trevor@twentyideas.com \u003ctrevor@twentyideas.com\u003e",
+      "date": "2026-09-25T15:39:32Z",
+      "subject": "Repin technical-documentation to its implemented member revisions",
+      "body": "technical-documentation r3 restates the System as implemented at\ndaa05d11, pins every member at its current head (record store, author\nand query r3, explanation drawer r3) and marks its three interactions\nimplemented with stable evidence IDs. Explanations are unchanged; this\nclears the stale-member warning on the System.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) \u003cnoreply@anthropic.com\u003e"
+    }
+  ],
+  "review": "review-ux-improvements",
+  "pinned_at": "2026-09-27T11:42:41.442635Z"
+}

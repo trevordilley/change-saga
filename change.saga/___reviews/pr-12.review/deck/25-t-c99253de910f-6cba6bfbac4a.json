@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "deck": "pr-12",
+  "slide": "saga-upkeep",
+  "current": "sha256:ac9891fafb8ccce5d913a4a4118e416895bcae85a8570d31954863453704045c",
+  "revisions": [
+    {
+      "snapshot": "sha256:be7d6204628df7b7cf5b1007f4a5534dcb6ae8cc2907b83e563291e438f80ab5",
+      "request_id": "pr-12-saga-upkeep",
+      "created_at": "2026-09-27T11:02:30.391346Z",
+      "asset": "24-a-a7ebc8ad311bdf4a2a4716c647ab022565c3b4b62a7958a99ad2.svg",
+      "asset_digest": "sha256:a7ebc8ad311bdf4a2a4716c647ab022565c3b4b62a7958a99ad2c41f48b7fe88",
+      "slide": {
+        "version": 4,
+        "id": "saga-upkeep",
+        "deck": "pr-12",
+        "title": "change.saga brought current",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-a7ebc8ad311bdf4a2a4716c647ab022565c3b4b62a7958a99ad2.svg",
+        "takeaway": "Stale evidence is cleared, superseded proposals retired, merged reviews frozen at their landings, and recent work documented; health is 100%.",
+        "reading_order": [
+          "stale-references",
+          "proposed-slides",
+          "merged-reviews",
+          "living-docs",
+          "left-as-history"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "stale-references",
+            "slide": "saga-upkeep",
+            "rank": 0,
+            "kind": "node",
+            "label": "All 122 stale living references cleared",
+            "description": "Each proposal's diff was read: 92 accepted as proposed, 13 re-covered at new lines with the explanation unchanged, 5 terms revised, and 12 removed with the superseded slides they sat on.",
+            "selector": {
+              "type": "element",
+              "element_id": "stale-references"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "proposed-slides",
+            "slide": "saga-upkeep",
+            "rank": 10,
+            "kind": "node",
+            "label": "Superseded Proposed slides retired",
+            "description": "Ten technical-inventory Proposed slides described work now implemented. Still-true rationale moved to Implemented Items; their 66 story relations were superseded, and every criterion keeps an explainer.",
+            "selector": {
+              "type": "element",
+              "element_id": "proposed-slides"
+            },
+            "record": "urn:change-saga:change-saga:feature:technical-inventory"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "merged-reviews",
+            "slide": "saga-upkeep",
+            "rank": 20,
+            "kind": "node",
+            "label": "Merged reviews report their real range",
+            "description": "Seven reviews following merged branches were frozen at their landings with repin --onto; inventory-query-coverage keeps its recorded base and now follows its head commit.",
+            "selector": {
+              "type": "element",
+              "element_id": "merged-reviews"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "living-docs",
+            "slide": "saga-upkeep",
+            "rank": 30,
+            "kind": "node",
+            "label": "Living slides for the recently merged work",
+            "description": "Seven diagram-sourced implementation slides in comparison-history, visual-implementation and documentation-coverage, each Item with exact evidence and an existing criterion it realizes.",
+            "selector": {
+              "type": "element",
+              "element_id": "living-docs"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "left-as-history",
+            "slide": "saga-upkeep",
+            "rank": 40,
+            "kind": "risk",
+            "label": "What stays as history",
+            "description": "Eleven validate warnings are merged review decks' historical documentation pins. review-ux-improvements' deck was a partial pass: frozen at its first landing, it explains 637 of 25661 lines.",
+            "selector": {
+              "type": "element",
+              "element_id": "left-as-history"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-53b3fa2d4d35c2bcb95bbafc54d4367740a927d6495005e9591e.json",
+        "source_digest": "sha256:53b3fa2d4d35c2bcb95bbafc54d4367740a927d6495005e9591e3d5f2390d974",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:ac9891fafb8ccce5d913a4a4118e416895bcae85a8570d31954863453704045c",
+      "parent_snapshots": [
+        "sha256:be7d6204628df7b7cf5b1007f4a5534dcb6ae8cc2907b83e563291e438f80ab5"
+      ],
+      "request_id": "pr-12-saga-upkeep-update-1",
+      "created_at": "2026-09-27T11:47:42.82894Z",
+      "asset": "24-a-044615256101e6a5cbe6a1f27c4d08443b092a0f1f44b7009861.svg",
+      "asset_digest": "sha256:044615256101e6a5cbe6a1f27c4d08443b092a0f1f44b7009861485e622ad3fe",
+      "slide": {
+        "version": 4,
+        "id": "saga-upkeep",
+        "deck": "pr-12",
+        "title": "change.saga brought current",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-044615256101e6a5cbe6a1f27c4d08443b092a0f1f44b7009861.svg",
+        "takeaway": "Stale evidence cleared, superseded proposals retired, merged reviews frozen with exact merge records, inventory and recent work current.",
+        "reading_order": [
+          "stale-references",
+          "proposed-slides",
+          "merged-reviews",
+          "inventory-definitions",
+          "living-docs",
+          "left-as-history"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "stale-references",
+            "slide": "saga-upkeep",
+            "rank": 0,
+            "kind": "node",
+            "label": "All 122 stale living references cleared",
+            "description": "Each proposal's diff was read: 92 accepted as proposed, 13 re-covered at new lines with the explanation unchanged, 5 terms revised, and 12 removed with the superseded slides they sat on.",
+            "selector": {
+              "type": "element",
+              "element_id": "stale-references"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "proposed-slides",
+            "slide": "saga-upkeep",
+            "rank": 10,
+            "kind": "node",
+            "label": "Superseded Proposed slides retired",
+            "description": "Ten technical-inventory Proposed slides described work now implemented. Still-true rationale moved to Implemented Items; their 66 story relations were superseded, and every criterion keeps an explainer.",
+            "selector": {
+              "type": "element",
+              "element_id": "proposed-slides"
+            },
+            "record": "urn:change-saga:change-saga:feature:technical-inventory"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "merged-reviews",
+            "slide": "saga-upkeep",
+            "rank": 20,
+            "kind": "node",
+            "label": "Merged reviews report their real range",
+            "description": "Eight reviews are frozen at their landings with repin --onto, oldest first; each merge record lists exactly git rev-list landing^2 ^landing^1, and inventory-query-coverage keeps its recorded stacked base.",
+            "selector": {
+              "type": "element",
+              "element_id": "merged-reviews"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "inventory-definitions",
+            "slide": "saga-upkeep",
+            "rank": 30,
+            "kind": "node",
+            "label": "Technical inventory definitions current",
+            "description": "Five definitions with stale evidence got revisions at the current lines; inventory-read-coverage's legacy members were restated as implemented; Systems, data entities, the ERD and eight Items were repinned.",
+            "selector": {
+              "type": "element",
+              "element_id": "inventory-definitions"
+            },
+            "record": "urn:change-saga:change-saga:feature:technical-inventory"
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "living-docs",
+            "slide": "saga-upkeep",
+            "rank": 40,
+            "kind": "node",
+            "label": "Living slides for the recently merged work",
+            "description": "Seven diagram-sourced implementation slides in comparison-history, visual-implementation and documentation-coverage, each Item with exact evidence and an existing criterion it realizes.",
+            "selector": {
+              "type": "element",
+              "element_id": "living-docs"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "left-as-history",
+            "slide": "saga-upkeep",
+            "rank": 50,
+            "kind": "risk",
+            "label": "What stays as history",
+            "description": "Eleven validate warnings are merged review decks' historical documentation pins. review-ux-improvements' deck was a partial pass: frozen at its first landing, it explains 637 of 25661 lines.",
+            "selector": {
+              "type": "element",
+              "element_id": "left-as-history"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-33a81803e3d789abf8075c611f92006b8b32cbe430ee1be08bb0.json",
+        "source_digest": "sha256:33a81803e3d789abf8075c611f92006b8b32cbe430ee1be08bb0685183a7441f",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

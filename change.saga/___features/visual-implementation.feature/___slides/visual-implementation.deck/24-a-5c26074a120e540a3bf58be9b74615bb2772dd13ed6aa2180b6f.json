@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Pages render from an in-memory Saga, checked per request",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "request",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Request",
+      "detail": "stamped on arrival",
+      "x": 40,
+      "y": 150,
+      "width": 230,
+      "height": 90,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "background-watcher",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Watcher",
+      "detail": "every 500 ms while reviewers are active",
+      "x": 40,
+      "y": 430,
+      "width": 230,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "freshness-check",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Shared freshness check",
+      "detail": "stat walk of the Saga, both HEADs read alongside",
+      "x": 340,
+      "y": 130,
+      "width": 400,
+      "height": 150,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "git-head-reader",
+      "kind": "node",
+      "shape": "rect",
+      "label": "headReader",
+      "detail": "HEAD from .git files, no git process",
+      "x": 340,
+      "y": 340,
+      "width": 400,
+      "height": 100,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "saga-files-memo",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Saga files memo",
+      "detail": "by documentation digest",
+      "x": 820,
+      "y": 110,
+      "width": 410,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "related-review-memo",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Related-review index",
+      "detail": "by files digest, source HEAD, attributes",
+      "x": 820,
+      "y": 250,
+      "width": 410,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "outline-scope",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Outline",
+      "detail": "shell pages skip code evidence and reviews",
+      "x": 820,
+      "y": 390,
+      "width": 410,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "asks",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "request",
+      "to": "freshness-check",
+      "points": [
+        {
+          "x": 270,
+          "y": 195
+        },
+        {
+          "x": 340,
+          "y": 195
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "polls",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "background-watcher",
+      "to": "freshness-check",
+      "points": [
+        {
+          "x": 270,
+          "y": 485
+        },
+        {
+          "x": 300,
+          "y": 485
+        },
+        {
+          "x": 300,
+          "y": 250
+        },
+        {
+          "x": 340,
+          "y": 250
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "heads",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "freshness-check",
+      "to": "git-head-reader",
+      "points": [
+        {
+          "x": 540,
+          "y": 280
+        },
+        {
+          "x": 540,
+          "y": 340
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "keys-files",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "freshness-check",
+      "to": "saga-files-memo",
+      "points": [
+        {
+          "x": 740,
+          "y": 165
+        },
+        {
+          "x": 820,
+          "y": 165
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "keys-related",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "freshness-check",
+      "to": "related-review-memo",
+      "points": [
+        {
+          "x": 740,
+          "y": 225
+        },
+        {
+          "x": 780,
+          "y": 225
+        },
+        {
+          "x": 780,
+          "y": 305
+        },
+        {
+          "x": 820,
+          "y": 305
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "keys-outline",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "freshness-check",
+      "to": "outline-scope",
+      "points": [
+        {
+          "x": 740,
+          "y": 260
+        },
+        {
+          "x": 760,
+          "y": 260
+        },
+        {
+          "x": 760,
+          "y": 445
+        },
+        {
+          "x": 820,
+          "y": 445
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "writes",
+      "kind": "text",
+      "label": "Decisions and comments are written to disk; the next request's check sees them. Nothing is invalidated by hand.",
+      "x": 60,
+      "y": 600,
+      "width": 1170,
+      "height": 48,
+      "style": "caption",
+      "decorative": true
+    }
+  ]
+}

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/server_test.go",
-      "start": 277,
-      "end": 322,
-      "digest": "sha256:83f1d3a5bcdfdde9f6e41aa521586f2b5e8460301c5b55575ce3ee9629da8e68",
+      "start": 288,
+      "end": 334,
+      "digest": "sha256:b5efe5d786920f17c05aa84db0b0e1bcdaae4c0ce16692b68974623286e317f7",
       "note": "Asserts, through the security middleware, that a served fragment carries exactly one policy with sandbox allow-scripts and the containment directives, and that its script may still run."
     }
   ]

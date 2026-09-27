@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 142,
+      "end": 147,
+      "digest": "sha256:3c730e42631298d2f5e0bcefcc1e0b3c877939d750af9e46179b1219f265759c"
+    },
+    {
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:0eee70581eef64d338107c7ee0c4480ec9c71b038a63aee48855271ad006e8c0"
+    },
+    {
+      "commit": "ab34dc516c2a1594bb477bd2b3e78734187c3b24",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 453,
+      "end": 458,
+      "digest": "sha256:673aaeb8d609f67a6b23f7a5c3b545bd02a76b080cba781e9ebfb744b01582cf"
+    }
+  ]
+}

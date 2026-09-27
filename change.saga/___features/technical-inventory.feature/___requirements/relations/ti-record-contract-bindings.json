@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "Proposed design: Bind the authored diagram, expandable directory and deck Items to canonical identity plus exact revision, preserving contextual explanation without duplicating definitions.",
   "to_revision": "urn:change-saga:change-saga:story:erd-entity-context:revision:r2",
-  "state": "active",
-  "created_at": "2026-09-24T23:14:59.439165Z"
+  "state": "superseded",
+  "created_at": "2026-09-24T23:14:59.439165Z",
+  "superseded_at": "2026-09-27T10:27:29.360846Z"
 }

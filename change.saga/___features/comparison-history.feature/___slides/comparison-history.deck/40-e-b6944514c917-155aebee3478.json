@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/changeview/open.go",
       "start": 30,
       "end": 40,
@@ -10,7 +10,7 @@
       "note": "Turns failure to locate Saga Git history into a diagnostic and an all-added historical view instead of fabricating prior state."
     },
     {
-      "commit": "1ca2e728aa976f6b085f594b8275002844f3d6e2",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/changeview/sagaat.go",
       "start": 27,
       "end": 51,

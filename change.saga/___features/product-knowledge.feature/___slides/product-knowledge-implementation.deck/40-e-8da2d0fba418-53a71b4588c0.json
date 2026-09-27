@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/directory_test.go",
-      "start": 162,
-      "end": 188,
-      "digest": "sha256:196554d293665ae4ecef2005182aa7369439cc7792cbfc36c5e1b5483f8b3c62",
+      "start": 167,
+      "end": 194,
+      "digest": "sha256:7ff22831b4444f126a20f150be0092e0f8389eb6e765c716d4e861aaadae491d",
       "note": "TestDirectoryTableScrollsInsideItsOwnRegion renders the directory template and checks the named focusable region holds only the table, and that the overflow rule exists."
     }
   ]

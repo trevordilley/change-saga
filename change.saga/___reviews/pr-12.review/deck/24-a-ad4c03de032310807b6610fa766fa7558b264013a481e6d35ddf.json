@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "repin --onto checks every edit, then writes under one lock",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "before",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Before: two bugs in repin --onto",
+      "detail": "it wrote as it read, and recorded every commit any evidence was pinned at",
+      "x": 40,
+      "y": 95,
+      "width": 1190,
+      "height": 95,
+      "style": "warning",
+      "wrap": true
+    },
+    {
+      "id": "edits",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Evidence edits",
+      "detail": "--onto, --accept-proposed, refresh",
+      "x": 40,
+      "y": 240,
+      "width": 230,
+      "height": 130,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "prepare",
+      "kind": "node",
+      "shape": "rect",
+      "label": "prepareEvidenceEdits",
+      "detail": "files edited in memory, slides dry-run; every blocker named",
+      "x": 330,
+      "y": 230,
+      "width": 400,
+      "height": 150,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "locked-write",
+      "kind": "node",
+      "shape": "rect",
+      "label": "One locked write",
+      "detail": "re-check; slides; files; cursor, frozen review, merge record last",
+      "x": 800,
+      "y": 230,
+      "width": 430,
+      "height": 150,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "landed-commits",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Only the landing's commits",
+      "detail": "pins that are ancestors of the landing or its branch",
+      "x": 40,
+      "y": 440,
+      "width": 560,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "freeze-details",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Freeze details",
+      "detail": "merged at the landing's date; an exact recorded base kept",
+      "x": 660,
+      "y": 440,
+      "width": 570,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "tests",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Regression tests",
+      "detail": "managed slide; refused slide; failed write; older landing",
+      "x": 40,
+      "y": 585,
+      "width": 1190,
+      "height": 95,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "prepares",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "edits",
+      "to": "prepare",
+      "points": [
+        {
+          "x": 270,
+          "y": 305
+        },
+        {
+          "x": 330,
+          "y": 305
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "writes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "prepare",
+      "to": "locked-write",
+      "points": [
+        {
+          "x": 730,
+          "y": 305
+        },
+        {
+          "x": 800,
+          "y": 305
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

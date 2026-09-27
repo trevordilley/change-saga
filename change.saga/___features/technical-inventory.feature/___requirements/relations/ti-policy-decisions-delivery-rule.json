@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "Implementation policy: Validate the original reference and digest, then resolve its bytes at the named delivery OID. Pure movement may pass; changed, missing or unverifiable bytes refuse the transition without publishing.",
   "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
-  "state": "active",
-  "created_at": "2026-09-24T23:54:53.789672Z"
+  "state": "superseded",
+  "created_at": "2026-09-24T23:54:53.789672Z",
+  "superseded_at": "2026-09-27T10:27:25.263661Z"
 }

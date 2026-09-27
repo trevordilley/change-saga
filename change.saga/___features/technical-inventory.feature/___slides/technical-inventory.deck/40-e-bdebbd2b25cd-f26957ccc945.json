@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/saga/model.go",
       "start": 76,
       "end": 81,
@@ -10,7 +10,7 @@
       "note": "An implementation or review Item links a canonical revision separately from its existing record/evidence fields."
     },
     {
-      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/saga/model.go",
       "start": 102,
       "end": 122,

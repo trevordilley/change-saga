@@ -139,6 +139,12 @@ func guardCompleteSlideMutation(operation string, slide *saga.Slide) error {
 // then the record is atomically created/replaced. The operation does not claim
 // atomicity with unrelated Saga records or arbitrary filesystem writes.
 func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, request SlideTransactionRequest, dryRun bool) (SlideTransactionResult, error) {
+	return applySlideTransaction(ctx, root, requestBase, repo, request, dryRun, false)
+}
+
+// applySlideTransaction is ApplySlideTransaction; with locked, the caller
+// already holds the Saga writer lock, so several writes can share it.
+func applySlideTransaction(ctx context.Context, root, requestBase, repo string, request SlideTransactionRequest, dryRun, locked bool) (SlideTransactionResult, error) {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	asset, extension, source, err := slideTransactionContent(requestBase, &request)
@@ -228,7 +234,7 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 	}
 
 	var result SlideTransactionResult
-	err = store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+	commit := func() error {
 		document, _, loadErr := saga.Load(root)
 		if loadErr != nil {
 			return loadErr
@@ -444,7 +450,12 @@ func ApplySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			return err
 		}
 		return nil
-	})
+	}
+	if locked {
+		err = commit()
+	} else {
+		err = store.WithSagaLock(root, store.DefaultLockTimeout, commit)
+	}
 	return result, err
 }
 

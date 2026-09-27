@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "An explicit reconciliation records a later implemented revision with scoped, resolvable supporting code; the original proposal remains in history.",
   "to_revision": "urn:change-saga:change-saga:story:inventory-proposed-and-existing:revision:r3",
-  "state": "active",
-  "created_at": "2026-09-24T22:40:16.79519Z"
+  "state": "superseded",
+  "created_at": "2026-09-24T22:40:16.79519Z",
+  "superseded_at": "2026-09-27T10:27:27.356065Z"
 }

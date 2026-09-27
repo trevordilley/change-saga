@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 214,
-      "end": 257,
-      "digest": "sha256:af9477d0722aff53e82611be33cb294433b350e8410d52acf3b859591735a90e",
+      "start": 229,
+      "end": 280,
+      "digest": "sha256:6f9f44603c686c7c13f1e01ed5e80fbd8fb7c7b87869bf2963c62fcd620471d0",
       "note": "Contextual comment model, append-only persistence, and browser mutation"
     }
   ]

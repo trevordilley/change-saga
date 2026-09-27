@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/testdata/query/help.golden",
       "start": 1,
       "end": 1,

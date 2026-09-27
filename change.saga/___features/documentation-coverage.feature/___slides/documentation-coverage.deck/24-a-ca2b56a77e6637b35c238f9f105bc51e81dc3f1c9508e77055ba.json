@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Status leads with the review deck",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "comparison",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Comparison",
+      "detail": "the change, base to head",
+      "x": 40,
+      "y": 130,
+      "width": 260,
+      "height": 100,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "review-create-defaults",
+      "kind": "node",
+      "shape": "rect",
+      "label": "review create",
+      "detail": "PR, base and id from gh or origin",
+      "x": 40,
+      "y": 300,
+      "width": 260,
+      "height": 140,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "review-match",
+      "kind": "node",
+      "shape": "rect",
+      "label": "matchReviews",
+      "detail": "the open review this change is",
+      "x": 380,
+      "y": 130,
+      "width": 380,
+      "height": 110,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "review-area",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Review area",
+      "detail": "the change's lines, by the review's Items",
+      "x": 380,
+      "y": 300,
+      "width": 380,
+      "height": 110,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "review-headline",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Status headline",
+      "detail": "explains N of M changed lines",
+      "x": 840,
+      "y": 110,
+      "width": 390,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "check-covers-review",
+      "kind": "node",
+      "shape": "rect",
+      "label": "check --covers review",
+      "detail": "exit 0 complete, 3 gap, 1 untrusted",
+      "x": 840,
+      "y": 260,
+      "width": 390,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "report-kind",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Review-first or full report",
+      "detail": "full once the Saga documents the app",
+      "x": 840,
+      "y": 410,
+      "width": 390,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "compares",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "comparison",
+      "to": "review-match",
+      "points": [
+        {
+          "x": 300,
+          "y": 185
+        },
+        {
+          "x": 380,
+          "y": 185
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "follows",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "review-create-defaults",
+      "to": "review-match",
+      "points": [
+        {
+          "x": 300,
+          "y": 370
+        },
+        {
+          "x": 340,
+          "y": 370
+        },
+        {
+          "x": 340,
+          "y": 215
+        },
+        {
+          "x": 380,
+          "y": 215
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "measures",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "review-match",
+      "to": "review-area",
+      "points": [
+        {
+          "x": 570,
+          "y": 240
+        },
+        {
+          "x": 570,
+          "y": 300
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "reports",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "review-area",
+      "to": "review-headline",
+      "points": [
+        {
+          "x": 760,
+          "y": 330
+        },
+        {
+          "x": 800,
+          "y": 330
+        },
+        {
+          "x": 800,
+          "y": 165
+        },
+        {
+          "x": 840,
+          "y": 165
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "asks",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "review-area",
+      "to": "check-covers-review",
+      "points": [
+        {
+          "x": 760,
+          "y": 370
+        },
+        {
+          "x": 820,
+          "y": 370
+        },
+        {
+          "x": 820,
+          "y": 315
+        },
+        {
+          "x": 840,
+          "y": 315
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "no-verdict",
+      "kind": "text",
+      "label": "Coverage is not approval: status exits 0 whenever its report can be trusted, and says what the deck explains.",
+      "x": 60,
+      "y": 600,
+      "width": 1170,
+      "height": 48,
+      "style": "caption",
+      "decorative": true
+    }
+  ]
+}

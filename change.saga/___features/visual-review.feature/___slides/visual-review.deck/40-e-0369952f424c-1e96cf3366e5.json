@@ -2,7 +2,7 @@
   "version": 2,
   "references": [
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasync.go",
       "start": 88,
       "end": 106,
@@ -10,10 +10,10 @@
       "note": "A JSON receipt confirms the event ID and canonical target. Authoritative decisions, thumbnails, and threads update in place without rebuilding code or coverage HTML or navigating the slide iframe. Annotation projection uses a separate read."
     },
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasyncjs.go",
-      "start": 38,
-      "end": 82,
+      "start": 41,
+      "end": 85,
       "digest": "sha256:6471b323162ce94715750accba67ab9eef2a494040e9f97bc179ce596ba2313b",
       "note": "A JSON receipt confirms the event ID and canonical target. Authoritative decisions, thumbnails, and threads update in place without rebuilding code or coverage HTML or navigating the slide iframe. Annotation projection uses a separate read."
     }
