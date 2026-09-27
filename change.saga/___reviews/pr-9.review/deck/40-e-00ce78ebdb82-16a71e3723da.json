@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/areas/areas_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:8222be4fff4216a822e49b7b5945c3272c8faea65a716be1cfd6b467f19f949c"
+    },
+    {
+      "commit": "94c9e14237082a3af70bf3f4de2b43edfdbe699f",
+      "path": "internal/areas/areas_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:81364c08b35542b783c0d7384b7bf03866e04ca936f9aa8e9d4700bad9d085c8"
+    },
+    {
+      "commit": "94c9e14237082a3af70bf3f4de2b43edfdbe699f",
+      "path": "internal/areas/areas_test.go",
+      "start": 213,
+      "end": 239,
+      "digest": "sha256:2fae7da37398efa4a80cc78e81eced35de1a641f16e2f07696665bdcc7db4907"
+    }
+  ]
+}

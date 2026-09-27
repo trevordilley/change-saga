@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94c9e14237082a3af70bf3f4de2b43edfdbe699f",
+      "path": "internal/cli/status_grammar.go",
+      "start": 51,
+      "end": 63,
+      "digest": "sha256:bf433d09c3024354cdb1c8690d9ff2152d48c09a094623bc7ddb1769bc82d32c"
+    }
+  ]
+}

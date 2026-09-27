@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "94c9e14237082a3af70bf3f4de2b43edfdbe699f",
+      "path": "internal/cli/status_coverage.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:57b2ecb1cda2a64fc21c019b5962efdf95a8f386c1ce95fa1f5de53bea54caaf"
+    }
+  ]
+}
