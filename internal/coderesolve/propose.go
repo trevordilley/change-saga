@@ -1,0 +1,219 @@
+package coderesolve
+
+import (
+	"bytes"
+	"context"
+	"fmt"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
+)
+
+// maxProposalDiff bounds the diff a proposal shows, so a range swallowed by a
+// large rewrite still reads as a hint rather than a patch.
+const maxProposalDiff = 40
+
+// Proposal is where a stale reference's lines are at a viewed commit by diff
+// arithmetic alone: the pinned start and end mapped through the hunks, widened
+// to take in every line a hunk inside the range inserted. It is a suggestion
+// for an author who has read the diff, never a judgment that the explanation
+// still holds. Location is nil when nothing can be proposed, and Reason says
+// why; otherwise Reason says what the arithmetic did.
+type Proposal struct {
+	Location *coderef.Location `json:"location,omitempty"`
+	// Widened is set when a hunk crossed a boundary of the range, so the
+	// proposal takes in lines outside the original range.
+	Widened bool   `json:"widened,omitempty"`
+	Reason  string `json:"reason"`
+	// Diff is the zero-context diff of the hunks inside the range: -old and
+	// +new lines under each hunk header, capped at maxProposalDiff lines.
+	Diff []string `json:"diff,omitempty"`
+}
+
+// Proposed reports whether the proposal names a location.
+func (proposal Proposal) Proposed() bool { return proposal.Location != nil }
+
+// Propose computes the proposal for reference at view, which must be a full
+// object name. A reference already current at view is proposed where it
+// resolves.
+func (resolver *Resolver) Propose(ctx context.Context, reference coderef.Reference, view string) Proposal {
+	none := func(format string, args ...any) Proposal { return Proposal{Reason: fmt.Sprintf(format, args...)} }
+	if resolution := resolver.Resolve(ctx, reference, view); resolution.Current() {
+		location := resolution.Location
+		return Proposal{Location: &location, Reason: "current at " + short(view)}
+	}
+	exists, err := resolver.CommitExists(ctx, reference.Commit)
+	if err != nil || !exists {
+		return none("pinned commit %s is not in this repository, so its diff cannot be read", short(reference.Commit))
+	}
+	if checked := resolver.verify(ctx, reference); checked.reason != "" {
+		return none("%s; re-cover it by hand", checked.reason)
+	}
+	changes, err := resolver.treeChanges(ctx, reference.Commit, view)
+	if err != nil {
+		return none("%v", err)
+	}
+	change, changed := changes[reference.Path]
+	switch {
+	case !changed:
+		return none("%s did not change between %s and %s", reference.Path, short(reference.Commit), short(view))
+	case change.Deleted:
+		return none("%s was deleted; if its content moved to another file, re-cover it there", reference.Path)
+	case change.Binary:
+		return none("%s is binary; its lines cannot be mapped", reference.Path)
+	}
+	if reference.WholeFile() {
+		added, removed := 0, 0
+		for _, hunk := range change.Hunks {
+			added, removed = added+hunk.NewCount, removed+hunk.OldCount
+		}
+		location := coderef.Location{Commit: view, Path: change.NewPath}
+		return Proposal{Location: &location, Reason: fmt.Sprintf("the whole file at %s (+%d -%d lines since the pin)", short(view), added, removed)}
+	}
+	mapped := ProposeRange(change.Hunks, reference.Start, reference.End)
+	if !mapped.OK {
+		return none("%s", mapped.Reason)
+	}
+	proposal := Proposal{
+		Location: &coderef.Location{Commit: view, Path: change.NewPath, Start: mapped.Start, End: mapped.End},
+		Widened:  mapped.Widened, Reason: mapped.Reason,
+	}
+	proposal.Diff = resolver.rangeDiff(ctx, reference, view, change, mapped.Touched)
+	return proposal
+}
+
+// RangeProposal is ProposeRange's answer. Touched lists the hunks inside or
+// across the range, in order.
+type RangeProposal struct {
+	Start, End int
+	Widened    bool
+	OK         bool
+	Reason     string
+	Touched    []gitdiff.Hunk
+}
+
+// ProposeRange maps the inclusive range start..end across zero-context
+// hunks. An unchanged boundary line moves by the hunks before it. A boundary
+// line a hunk changed maps to that hunk's edge on the new side, so the
+// proposal takes in the hunk's replacement lines. It refuses when every line
+// of the range was removed, and when no line of the range survives and a hunk
+// crosses its edge, because nothing then anchors the range to lines on the new
+// side.
+func ProposeRange(hunks []gitdiff.Hunk, start, end int) RangeProposal {
+	result := RangeProposal{}
+	startShift, endShift := 0, 0
+	startHunk, endHunk := -1, -1
+	survivors := end - start + 1
+	crosses := false
+	for index, hunk := range hunks {
+		if hunk.OldCount == 0 {
+			// A pure insertion after line OldStart.
+			if hunk.OldStart < start {
+				startShift += hunk.NewCount
+			}
+			if hunk.OldStart < end {
+				endShift += hunk.NewCount
+			}
+			if hunk.OldStart >= start && hunk.OldStart < end {
+				result.Touched = append(result.Touched, hunk)
+			}
+			continue
+		}
+		last := hunk.OldStart + hunk.OldCount - 1
+		delta := hunk.NewCount - hunk.OldCount
+		if last < start {
+			startShift += delta
+		}
+		if last < end {
+			endShift += delta
+		}
+		if last < start || hunk.OldStart > end {
+			continue
+		}
+		result.Touched = append(result.Touched, hunk)
+		survivors -= min(last, end) - max(hunk.OldStart, start) + 1
+		if hunk.OldStart <= start && start <= last {
+			startHunk = index
+		}
+		if hunk.OldStart <= end && end <= last {
+			endHunk = index
+		}
+		if hunk.OldStart < start || last > end {
+			crosses = true
+		}
+	}
+	result.Start, result.End = start+startShift, end+endShift
+	if startHunk >= 0 {
+		hunk := hunks[startHunk]
+		result.Start = hunk.NewStart
+		if hunk.NewCount == 0 {
+			// A deletion's NewStart is the line before it.
+			result.Start = hunk.NewStart + 1
+		}
+	}
+	if endHunk >= 0 {
+		hunk := hunks[endHunk]
+		result.End = hunk.NewStart + hunk.NewCount - 1
+		if hunk.NewCount == 0 {
+			result.End = hunk.NewStart
+		}
+	}
+	switch {
+	case result.End < result.Start || result.Start < 1:
+		result.Reason = fmt.Sprintf("every line of %d-%d was removed", start, end)
+		return RangeProposal{Reason: result.Reason}
+	case survivors == 0 && crosses:
+		result.Reason = fmt.Sprintf("lines %d-%d were rewritten together with code outside them, so no line anchors a proposal; re-cover by hand", start, end)
+		return RangeProposal{Reason: result.Reason}
+	}
+	result.OK = true
+	result.Widened = crosses
+	switch {
+	case len(result.Touched) == 0:
+		result.Reason = "the lines only moved"
+	case survivors == 0:
+		result.Reason = "every line of the range changed; proposed the lines that replaced it"
+	case crosses:
+		result.Reason = "an edit crosses the range's edge; widened to take in all of its lines"
+	default:
+		result.Reason = "edits inside the range; widened to take in the lines they inserted"
+	}
+	return result
+}
+
+// rangeDiff renders the touched hunks as -old and +new lines.
+func (resolver *Resolver) rangeDiff(ctx context.Context, reference coderef.Reference, view string, change gitdiff.FileChange, hunks []gitdiff.Hunk) []string {
+	if len(hunks) == 0 {
+		return nil
+	}
+	oldBlob, oldErr := resolver.blob(ctx, reference.Commit, reference.Path)
+	newBlob, newErr := resolver.blob(ctx, view, change.NewPath)
+	if oldErr != nil || newErr != nil {
+		return nil
+	}
+	var lines []string
+	total := 0
+	add := func(line string) {
+		total++
+		if len(lines) < maxProposalDiff {
+			lines = append(lines, line)
+		}
+	}
+	for _, hunk := range hunks {
+		add(fmt.Sprintf("@@ -%d,%d +%d,%d @@", hunk.OldStart, hunk.OldCount, hunk.NewStart, hunk.NewCount))
+		for line := hunk.OldStart; line < hunk.OldStart+hunk.OldCount; line++ {
+			if line >= 1 && line <= len(oldBlob.lines) {
+				add("-" + string(bytes.TrimRight(oldBlob.lines[line-1], "\r\n")))
+			}
+		}
+		for line := hunk.NewStart; line < hunk.NewStart+hunk.NewCount; line++ {
+			if line >= 1 && line <= len(newBlob.lines) {
+				add("+" + string(bytes.TrimRight(newBlob.lines[line-1], "\r\n")))
+			}
+		}
+	}
+	if total > len(lines) {
+		lines = append(lines, fmt.Sprintf("… %d more diff lines", total-len(lines)))
+	}
+	return lines
+}
