@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/living_plan.go",
-      "start": 12,
-      "end": 48,
-      "digest": "sha256:48f87f7004c0c6bffae4f2931741af4a063ba8a6f71c93224ef4ebf37480721e",
+      "start": 13,
+      "end": 51,
+      "digest": "sha256:03265737d53960f6f29aa60baaf2918d06629a5856c8f7d19df5a89afb40d3b8",
       "note": "Enumerates and dispatches every public plan command; contract-state is absent from both the registry and switch."
     }
   ]

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/changeview/cursor.go",
-      "start": 15,
-      "end": 105,
-      "digest": "sha256:28549c51d8b2aae0e2207f3d185d0d2262526edd3ffef9270ea8defabbeda058",
+      "start": 17,
+      "end": 110,
+      "digest": "sha256:99244265e798354f150a3223972317df41506c9b69932575ac365551d1f9076a",
       "note": "Builds cursor history and selects companion Saga commits that document the source merge base and head."
     }
   ]

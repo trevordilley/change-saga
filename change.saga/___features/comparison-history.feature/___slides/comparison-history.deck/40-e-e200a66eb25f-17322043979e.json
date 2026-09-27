@@ -10,11 +10,11 @@
       "note": "Locates the Saga repository and routes snapshot selection between in-repository history, companion cursor history, and unavailable history."
     },
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/changeview/open.go",
       "start": 61,
-      "end": 70,
-      "digest": "sha256:6f0aa6ad3c02a18602d56ff5c707726a5a4f2b8d30b2f05cb94a0081a5957828",
+      "end": 69,
+      "digest": "sha256:29c9e258547f1e3ed020113c088e9161ba1b3ecf89927b7265995ea7c7542a40",
       "note": "Locates the Saga repository and routes snapshot selection between in-repository history, companion cursor history, and unavailable history."
     }
   ]

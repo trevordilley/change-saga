@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "4e47d2c1bd0f555fb4a8ab3dee55e940496d1c96",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/template.go",
-      "start": 378,
-      "end": 381,
-      "digest": "sha256:5d5d443c6c5b95bad2627c9d9d59dcddedd6054bdc13a1ee2ef17c919249d1a7",
+      "start": 403,
+      "end": 406,
+      "digest": "sha256:5ff411d74ccd0bc1eaded0e12cd7bf5f4c0439349184cabb68181b239ed51c0a",
       "note": "Item affordances expose separate story, code and saved Component/System explanation controls beside the semantic overlay."
     }
   ]

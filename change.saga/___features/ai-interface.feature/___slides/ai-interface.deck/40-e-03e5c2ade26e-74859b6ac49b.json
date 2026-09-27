@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "e05a5a4b1e7ccd55afd8a72947989ad30bd2aa07",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/cli/query_test.go",
-      "start": 232,
-      "end": 284,
-      "digest": "sha256:dd35c2f9b07a68cfc2865015d9db4e6c78324019296135d139d390654f48407b",
+      "start": 235,
+      "end": 288,
+      "digest": "sha256:f70ed2e36920881d838f4ca77479621bc2869b5ace20d0739d501808ff984f0f",
       "note": "Proves adversarial and malformed requests fail as invalid_argument without invoking the session opener."
     }
   ]

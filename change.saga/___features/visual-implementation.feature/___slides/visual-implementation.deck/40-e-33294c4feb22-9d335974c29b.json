@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "17784a64a5fed92c590db30d5eb199f0e01100c1",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviews_test.go",
-      "start": 106,
-      "end": 118,
-      "digest": "sha256:dfbb6d5514775189dd68dfb5edac28b0092aabc106cebcede283b547b8ee34cf",
+      "start": 108,
+      "end": 121,
+      "digest": "sha256:f6157070b078de64690cb6a5491843539fd0d7ebca0acf0054a84a09b26ae605",
       "note": "Asserts the same authored-content policy on a review slide visual served through the full mux and security middleware."
     }
   ]

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "a1074512e50545972e8f73234872b39f278cb521",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/reviewasync_test.go",
-      "start": 142,
-      "end": 214,
-      "digest": "sha256:bcdf3efe3fe1269f364fd3338313e5c38f9cdf7e72ab7423787b5e05a039656e",
+      "start": 144,
+      "end": 217,
+      "digest": "sha256:82443ea5ebf6325d75860132cfd3cfce2dc72795af052f02fe2a4a68aacbb5a7",
       "note": "Only a valid slide decision reaches the append-only event write. The enhanced browser waits for an event receipt; missing confirmation is uncertain, so it retains the draft and requires inspection rather than automatically posting again."
     },
     {

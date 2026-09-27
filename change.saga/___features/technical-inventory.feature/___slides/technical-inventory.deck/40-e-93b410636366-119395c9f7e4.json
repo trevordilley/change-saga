@@ -2,9 +2,9 @@
   "version": 2,
   "references": [
     {
-      "commit": "d62bcb843e31d2c5cd3ed833d56e4610fe08cb9a",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/technicalpolicy/git_test.go",
-      "digest": "sha256:fb302592a68a3d7d559b70c13a0e9bc4b108cf959652269c119b3dbf85b569ef",
+      "digest": "sha256:1ce164e323587ebb5ddea8afa0b0f0ef82bab62cb741b8ca5788edcb0fac73e2",
       "note": "File-addition event: introduce this isolated policy source/test file. Focused line references separately explain its behavior; this whole-file record preserves the file event."
     }
   ]

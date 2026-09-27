@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "7fa39949c9c6c2b2da4e2dd445ca6e1399987130",
+      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
       "path": "internal/server/server.go",
-      "start": 1361,
-      "end": 1414,
-      "digest": "sha256:b898c92966c0344f8b8a430de8398ee02a6755a69994c1c6a6fdd06362f8208a",
+      "start": 1747,
+      "end": 1800,
+      "digest": "sha256:59a149925d41f2719b2dfc5e2b6a0a8f63c2242ade3612366a1b532b9aec05ef",
       "note": "Builds the reviewer view, preserving Item landmarks and selecting the visual rendering path from media type."
     }
   ]
