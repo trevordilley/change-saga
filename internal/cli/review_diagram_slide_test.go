@@ -140,6 +140,22 @@ func TestApplySlidePublishesDiagramSourcedReviewSlide(t *testing.T) {
 	if check, err := runDiagram(t, "", "check", "--review", "pr-7", "--json", root); err != nil || !strings.Contains(check, `"current": true`) || !strings.Contains(check, slideURN) {
 		t.Fatalf("check = %s err=%v", check, err)
 	}
+	// query slide reads a review slide like an implementation slide, with
+	// the authoring snapshot an update names.
+	queried := run(t, Query, "slide", "--saga", root, "--repo", repo, "--target", slideURN)
+	var slideQuery struct {
+		Data struct {
+			Target            string `json:"target"`
+			AuthoringSnapshot string `json:"authoring_snapshot"`
+			Items             []struct {
+				Target string `json:"target"`
+			} `json:"items"`
+		} `json:"data"`
+	}
+	if err := json.Unmarshal([]byte(queried), &slideQuery); err != nil || slideQuery.Data.Target != slideURN || slideQuery.Data.AuthoringSnapshot != edited.Snapshot ||
+		len(slideQuery.Data.Items) != 2 || slideQuery.Data.Items[0].Target != queueURN {
+		t.Fatalf("query slide = %s err=%v", queried, err)
+	}
 	asJSON, err := runDiagram(t, "", "describe", "--slide", slideURN, "--format", "json", root)
 	var described SlideDescription
 	if err != nil || json.Unmarshal([]byte(asJSON), &described) != nil || described.Snapshot != edited.Snapshot || described.Source != "diagram" || len(described.Items) != 2 || described.Items[1].CodeFiles != 1 {
