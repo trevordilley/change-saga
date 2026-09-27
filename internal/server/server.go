@@ -485,6 +485,7 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /", application.page)
 	page("GET /reviews", application.reviewIndex)
 	page("GET /reviews/{id}", application.reviewPage)
+	handle("GET /reviews/{id}/item-diffs", application.reviewItemDiffs)
 	handle("GET /reviews/{id}/code", application.reviewCodeSurface)
 	handle("GET /reviews/{id}/file-diff", application.reviewFileDiffSurface)
 	handle("GET /reviews/{id}/coverage", application.reviewCoverageSurface)

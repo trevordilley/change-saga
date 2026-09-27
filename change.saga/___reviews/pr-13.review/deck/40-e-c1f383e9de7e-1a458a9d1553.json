@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "96d0ade59986e62478db6e850dc2cbdaadd5dc41",
+      "path": "internal/server/reviews.go",
+      "start": 383,
+      "end": 388,
+      "digest": "sha256:0c03e1a65847e48cdc09e74fea04cd93742c438da1e7b9e0ea73ef09f95b8d83",
+      "note": "The page reads each Item's line counts for its code button."
+    },
+    {
+      "commit": "96d0ade59986e62478db6e850dc2cbdaadd5dc41",
+      "path": "internal/server/reviews.go",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:8052270fb818fedbc09ddc7396adb68f482e8b554c15e2aa0019b3477130964f",
+      "note": "The page reads each Item's line counts for its code button."
+    }
+  ]
+}

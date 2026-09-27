@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "96d0ade59986e62478db6e850dc2cbdaadd5dc41",
+      "path": "internal/server/reviews_test.go",
+      "start": 153,
+      "end": 154,
+      "digest": "sha256:38745c267a4bb1a869ab89ef7ec383b75ad8179c1943630449f2ab381e465fda",
+      "note": "The code button shows +1 -0 for the fixture's Item."
+    }
+  ]
+}

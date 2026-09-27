@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -236,9 +237,11 @@ func uncachedReferenceDiff(ctx context.Context, sourceDir string, resolver *code
 	view := &reviewDiffView{Path: reference.Path, Location: reference.Location().String()}
 	start, end := reference.Start, reference.End
 	path := reference.Path
+	atHead := false
 	if resolver != nil {
 		if resolution := resolver.Resolve(ctx, reference, rng.HeadOID); resolution.Current() {
 			path, start, end = resolution.Location.Path, resolution.Location.Start, resolution.Location.End
+			atHead = true
 		} else if !reference.WholeFile() {
 			view.Note = "The referenced lines changed after the reference was written; showing every change to the file."
 			start, end = 0, 0
@@ -257,6 +260,9 @@ func uncachedReferenceDiff(ctx context.Context, sourceDir string, resolver *code
 	}
 	view.Path = path
 	view.Lines = diffLinesTouching(patch, start, end)
+	if atHead && start > 0 {
+		view.Lines = trimDiffToRange(view.Lines, start, end, reviewDiffContext)
+	}
 	if len(view.Lines) == 0 {
 		if start > 0 {
 			view.Note = fmt.Sprintf("Lines %d-%d are unchanged between the base and the head.", start, end)
@@ -389,5 +395,64 @@ func TestReviewDiffsRootLookupRecovers(t *testing.T) {
 				t.Fatalf("root recovery: %+v %+v %+v roots=%d reads=%d", first, second, third, roots, reads)
 			}
 		})
+	}
+}
+
+// A reference's diff shows its lines and three either side. A deleted line
+// and the line that replaces it stay together, so a change is never shown
+// as a pure deletion or a pure addition, and a hunk that fits is untouched.
+func TestTrimDiffToRangeKeepsChangesWhole(t *testing.T) {
+	t.Parallel()
+	hunk := func(text string) reviewDiffLine { return reviewDiffLine{Kind: "hunk", Text: text} }
+	ctx := func(n int) reviewDiffLine {
+		return reviewDiffLine{Kind: "ctx", Old: strconv.Itoa(n), New: strconv.Itoa(n), Text: "c" + strconv.Itoa(n)}
+	}
+	del := func(n int) reviewDiffLine {
+		return reviewDiffLine{Kind: "del", Old: strconv.Itoa(n), Text: "o" + strconv.Itoa(n)}
+	}
+	add := func(n int) reviewDiffLine {
+		return reviewDiffLine{Kind: "add", New: strconv.Itoa(n), Text: "n" + strconv.Itoa(n)}
+	}
+	texts := func(lines []reviewDiffLine) string {
+		var parts []string
+		for _, line := range lines {
+			parts = append(parts, line.Text)
+		}
+		return strings.Join(parts, " ")
+	}
+	// Lines 1-14 are unchanged, line 15 is replaced, lines 16-30 unchanged.
+	changed := []reviewDiffLine{hunk("@@ -1,30 +1,30 @@")}
+	for n := 1; n <= 14; n++ {
+		changed = append(changed, ctx(n))
+	}
+	changed = append(changed, del(15), add(15))
+	for n := 16; n <= 30; n++ {
+		changed = append(changed, ctx(n))
+	}
+	for _, test := range []struct {
+		name       string
+		start, end int
+		want       string
+	}{
+		{"the replacement falls outside the window, so the deletion goes too", 11, 11, "@@ -1,30 +1,30 @@ ⋯ c8 c9 c10 c11 c12 c13 c14"},
+		{"the replacement is inside the window, so its deletion stays", 18, 18, "@@ -1,30 +1,30 @@ ⋯ o15 n15 c16 c17 c18 c19 c20 c21"},
+	} {
+		if got := texts(trimDiffToRange(changed, test.start, test.end, 3)); got != test.want {
+			t.Errorf("%s:\n got %s\nwant %s", test.name, got, test.want)
+		}
+	}
+	// A new 40-line file is one run of additions; a reference to line 20
+	// shows lines 17-23, not the file.
+	added := []reviewDiffLine{hunk("@@ -0,0 +1,40 @@")}
+	for n := 1; n <= 40; n++ {
+		added = append(added, add(n))
+	}
+	if got, want := texts(trimDiffToRange(added, 20, 20, 3)), "@@ -0,0 +1,40 @@ ⋯ n17 n18 n19 n20 n21 n22 n23"; got != want {
+		t.Errorf("a new file:\n got %s\nwant %s", got, want)
+	}
+	// A hunk that already fits is kept exactly.
+	small := []reviewDiffLine{hunk("@@ -1,3 +1,3 @@"), ctx(1), del(2), add(2), ctx(3)}
+	if got := trimDiffToRange(small, 2, 2, 3); !reflect.DeepEqual(got, small) {
+		t.Errorf("a hunk that fits was changed: %v", got)
 	}
 }

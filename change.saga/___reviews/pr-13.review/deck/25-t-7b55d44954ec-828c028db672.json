@@ -1,0 +1,374 @@
+{
+  "version": 1,
+  "deck": "pr-13",
+  "slide": "lazy-item-diffs",
+  "current": "sha256:f5840c7ff001a994fa980d06439e25268ed1312da9e7f24aad967de534a4ff04",
+  "revisions": [
+    {
+      "snapshot": "sha256:0f236f80020cbbe555097cbcec8650d4e63a18c1bdd744e2c157e574dd3957db",
+      "request_id": "pr-13-lazy-item-diffs",
+      "created_at": "2026-09-27T16:55:49.00373Z",
+      "asset": "24-a-c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1.svg",
+      "asset_digest": "sha256:c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1a1b85712dfba",
+      "slide": {
+        "version": 4,
+        "id": "lazy-item-diffs",
+        "deck": "pr-13",
+        "title": "Diffs load when an Item opens",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1.svg",
+        "takeaway": "The review page carries panels but no diffs; an Item's code arrives from its own endpoint, a page at a time, when a reviewer opens it.",
+        "reading_order": [
+          "page",
+          "drawer",
+          "endpoint",
+          "paged",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "page",
+            "slide": "lazy-item-diffs",
+            "rank": 10,
+            "kind": "node",
+            "label": "Review page carries no diffs",
+            "description": "Each Item's panel keeps its label, record, threads and forms; its code is a placeholder naming how many references it links.",
+            "selector": {
+              "type": "element",
+              "element_id": "page"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "drawer",
+            "slide": "lazy-item-diffs",
+            "rank": 20,
+            "kind": "node",
+            "label": "The drawer fetches on open",
+            "description": "Opening an Item fetches its diffs once per page load and fills the placeholder; Show more fetches the next page in place.",
+            "selector": {
+              "type": "element",
+              "element_id": "drawer"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "endpoint",
+            "slide": "lazy-item-diffs",
+            "rank": 30,
+            "kind": "node",
+            "label": "One Item's diffs",
+            "description": "Resolves the review's range and renders only the requested Item's references, from the review templates.",
+            "selector": {
+              "type": "element",
+              "element_id": "endpoint"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "paged",
+            "slide": "lazy-item-diffs",
+            "rank": 40,
+            "kind": "callout",
+            "label": "Big Items arrive in pages",
+            "description": "Why an Item with thousands of references stays fast to open.",
+            "selector": {
+              "type": "element",
+              "element_id": "endpoint"
+            },
+            "about": "endpoint",
+            "body": "You would expect an Item to show all its code at once; a page stops at 25 references or 1,500 lines, and one diff at 400 lines. The Code Diff tab still shows whole files."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "lazy-item-diffs",
+            "rank": 50,
+            "kind": "node",
+            "label": "Page, paging and cap tests",
+            "description": "The page renders no diffs, the endpoint serves them and 404s unknown Items, pages follow Show more, and a long diff is cut.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-e57887d45dd29c40a8fbac4fdb704f6eb1cb4ee9cec9f3e0860f.json",
+        "source_digest": "sha256:e57887d45dd29c40a8fbac4fdb704f6eb1cb4ee9cec9f3e0860fecf7f439f430",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:91cb54b13ec40cdfca693a6338c9d503be62ee46bc29fd1cec9609f07e7050a7",
+      "parent_snapshots": [
+        "sha256:0f236f80020cbbe555097cbcec8650d4e63a18c1bdd744e2c157e574dd3957db"
+      ],
+      "request_id": "lazy-item-diffs-6ca8557d-edit",
+      "created_at": "2026-09-27T17:07:02.414131Z",
+      "asset": "24-a-c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1.svg",
+      "asset_digest": "sha256:c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1a1b85712dfba",
+      "slide": {
+        "version": 4,
+        "id": "lazy-item-diffs",
+        "deck": "pr-13",
+        "title": "Diffs load when an Item opens",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1.svg",
+        "takeaway": "The review page carries panels but no diffs; an Item's code arrives from its own endpoint, a page at a time, when a reviewer opens it.",
+        "reading_order": [
+          "page",
+          "drawer",
+          "endpoint",
+          "paged",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "page",
+            "slide": "lazy-item-diffs",
+            "rank": 10,
+            "kind": "node",
+            "label": "Review page carries no diffs",
+            "description": "Each Item's panel keeps its label, record, threads and forms; its code is a placeholder naming how many references it links.",
+            "selector": {
+              "type": "element",
+              "element_id": "page"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "drawer",
+            "slide": "lazy-item-diffs",
+            "rank": 20,
+            "kind": "node",
+            "label": "The drawer fetches on open",
+            "description": "Opening an Item fetches its diffs and fills the placeholder; Show more fetches the next page in place. Fetched pages are forgotten when the page is swapped.",
+            "selector": {
+              "type": "element",
+              "element_id": "drawer"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "endpoint",
+            "slide": "lazy-item-diffs",
+            "rank": 30,
+            "kind": "node",
+            "label": "One Item's diffs",
+            "description": "Resolves the review's range and renders only the requested Item's references, from the review templates.",
+            "selector": {
+              "type": "element",
+              "element_id": "endpoint"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "paged",
+            "slide": "lazy-item-diffs",
+            "rank": 40,
+            "kind": "callout",
+            "label": "Big Items arrive in pages",
+            "description": "Why an Item with thousands of references stays fast to open.",
+            "selector": {
+              "type": "element",
+              "element_id": "endpoint"
+            },
+            "about": "endpoint",
+            "body": "You would expect an Item to show all its code at once; a page stops at 25 references or 1,500 lines, and one diff at 400 lines. The Code Diff tab still shows whole files."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "lazy-item-diffs",
+            "rank": 50,
+            "kind": "node",
+            "label": "Page, paging and cap tests",
+            "description": "The page renders no diffs, the endpoint serves them and 404s unknown Items, pages follow Show more, and a long diff is cut.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-e57887d45dd29c40a8fbac4fdb704f6eb1cb4ee9cec9f3e0860f.json",
+        "source_digest": "sha256:e57887d45dd29c40a8fbac4fdb704f6eb1cb4ee9cec9f3e0860fecf7f439f430",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:f5840c7ff001a994fa980d06439e25268ed1312da9e7f24aad967de534a4ff04",
+      "parent_snapshots": [
+        "sha256:91cb54b13ec40cdfca693a6338c9d503be62ee46bc29fd1cec9609f07e7050a7"
+      ],
+      "request_id": "lazy-item-diffs-6178710b-edit",
+      "created_at": "2026-09-27T20:27:52.990036Z",
+      "asset": "24-a-c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1.svg",
+      "asset_digest": "sha256:c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1a1b85712dfba",
+      "slide": {
+        "version": 4,
+        "id": "lazy-item-diffs",
+        "deck": "pr-13",
+        "title": "Diffs load when an Item opens",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-c316d79b4d110d69e4d3bf8083381ec596405a66e4479aa195a1.svg",
+        "takeaway": "The review page carries panels but no diffs; an Item's code arrives from its own endpoint, a page at a time, when a reviewer opens it.",
+        "reading_order": [
+          "page",
+          "drawer",
+          "endpoint",
+          "paged",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "page",
+            "slide": "lazy-item-diffs",
+            "rank": 10,
+            "kind": "node",
+            "label": "Review page carries no diffs",
+            "description": "Each Item's panel keeps its label, record, threads and forms; its code button shows the lines it accounts for, +added −deleted, and its code is a placeholder.",
+            "selector": {
+              "type": "element",
+              "element_id": "page"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "drawer",
+            "slide": "lazy-item-diffs",
+            "rank": 20,
+            "kind": "node",
+            "label": "The drawer fetches on open",
+            "description": "Opening an Item fetches its diffs and fills the placeholder; Show more fetches the next page in place. Fetched pages are forgotten when the page is swapped.",
+            "selector": {
+              "type": "element",
+              "element_id": "drawer"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "endpoint",
+            "slide": "lazy-item-diffs",
+            "rank": 30,
+            "kind": "node",
+            "label": "One Item's diffs",
+            "description": "Resolves the review's range and renders only the requested Item's references, from the review templates.",
+            "selector": {
+              "type": "element",
+              "element_id": "endpoint"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "paged",
+            "slide": "lazy-item-diffs",
+            "rank": 40,
+            "kind": "callout",
+            "label": "Big Items arrive in pages",
+            "description": "Why an Item with thousands of references stays fast to open.",
+            "selector": {
+              "type": "element",
+              "element_id": "endpoint"
+            },
+            "about": "endpoint",
+            "body": "You would expect an Item to show all its code at once; a page stops at 25 references or 1,500 lines, and one diff at 400 lines. The Code Diff tab still shows whole files."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "lazy-item-diffs",
+            "rank": 50,
+            "kind": "node",
+            "label": "Page, paging and cap tests",
+            "description": "The page renders no diffs, the endpoint serves them and 404s unknown Items, pages follow Show more, and a long diff is cut.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-e57887d45dd29c40a8fbac4fdb704f6eb1cb4ee9cec9f3e0860f.json",
+        "source_digest": "sha256:e57887d45dd29c40a8fbac4fdb704f6eb1cb4ee9cec9f3e0860fecf7f439f430",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "96d0ade59986e62478db6e850dc2cbdaadd5dc41",
+      "path": "internal/server/reviews.go",
+      "start": 885,
+      "end": 885,
+      "digest": "sha256:04ac408d70b703be7c066051d58faffd0b5576a4999a988b8ae8e2875c5ccaec",
+      "note": "The panel's placeholder the drawer fills."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "internal/server/reviews.go",
+      "start": 785,
+      "end": 785,
+      "digest": "sha256:accf75308fa077b9f384fe971470cb3e8dcaafd7d3b03d5fadc1b445b18bd591",
+      "note": "The panel's inline diffs, now fetched into the drawer."
+    }
+  ]
+}

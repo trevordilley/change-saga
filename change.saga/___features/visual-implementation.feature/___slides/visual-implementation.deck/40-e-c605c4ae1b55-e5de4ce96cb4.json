@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "3a3b70462ce81ea392d473379c946a161aa53924",
       "path": "internal/server/reviewdiffs.go",
-      "start": 75,
-      "end": 89,
-      "digest": "sha256:80da1eac263be0cd5b1e4df581ec883d0878ba40e07018ebf50c922b2d34de90",
+      "start": 80,
+      "end": 97,
+      "digest": "sha256:46da08591477f3371c5714337b444746b29e324908a055cb1587e5663ada5ff4",
       "note": "Raw-patch reuse is followed by per-reference row filtering and independent diagnostic output."
     }
   ]

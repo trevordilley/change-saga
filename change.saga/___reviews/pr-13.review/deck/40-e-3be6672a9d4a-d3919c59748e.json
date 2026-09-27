@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs.go",
+      "start": 68,
+      "end": 70,
+      "digest": "sha256:1e7524b8d2348e6323fc6a073004978f73c3f75b25af0acfe9122d16aef166ab",
+      "note": "Only head-resolved references are trimmed, three lines of context."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:927a81babcd9578a684d901c952aa6ae3693fd37f4043d75a9844157f95e05bf",
+      "note": "Only head-resolved references are trimmed, three lines of context."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs.go",
+      "start": 99,
+      "end": 103,
+      "digest": "sha256:8592dcca2d16401cf1ee98056712e68eeadd3ffc5166e85353db7ecd9463dd29",
+      "note": "Only head-resolved references are trimmed, three lines of context."
+    }
+  ]
+}

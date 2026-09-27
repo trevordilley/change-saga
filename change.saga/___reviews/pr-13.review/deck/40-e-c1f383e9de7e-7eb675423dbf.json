@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "CHANGELOG.md",
+      "start": 3,
+      "end": 14,
+      "digest": "sha256:8802e676f8af2b3692c14ca5a3b9eba4b94c987fd3cb60ea21d45ed137f163ab",
+      "note": "The changelog entry for lazy review diffs."
+    }
+  ]
+}

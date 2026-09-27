@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "internal/server/reviews.go",
+      "start": 107,
+      "end": 108,
+      "digest": "sha256:24ad9c14faec07ea2f2a20610aa622bdfc3a78e9dc7569e7965f8704caafddd0",
+      "note": "The page no longer builds each Item's diffs."
+    },
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "internal/server/reviews.go",
+      "start": 323,
+      "end": 325,
+      "digest": "sha256:5e3115062cadfc79d7254a210a07d1ec680022765fd7901af84feb60ebb1f75d",
+      "note": "The page no longer builds each Item's diffs."
+    },
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "internal/server/reviews.go",
+      "start": 786,
+      "end": 786,
+      "digest": "sha256:c978d353e24c3e9510ae11005e8680c0cf05b6a92bd6120643d4316db51c7f54",
+      "note": "The page no longer builds each Item's diffs."
+    }
+  ]
+}

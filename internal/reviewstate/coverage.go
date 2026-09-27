@@ -34,6 +34,17 @@ type Coverage struct {
 	StaleReferences []coverage.StaleReference `json:"stale_references"`
 	// Items is how many changed atoms each review Item accounts for.
 	Items []coverage.TargetSummary `json:"items"`
+	// ItemLines splits each Item's changed lines into lines the change adds
+	// and lines it deletes, as a reader sees them: +added −deleted.
+	ItemLines []ItemLines `json:"item_lines"`
+}
+
+// ItemLines is how many of the lines a review Item accounts for the change
+// adds and deletes. File events such as a rename count as neither.
+type ItemLines struct {
+	Target  string `json:"target"`
+	Added   int    `json:"added"`
+	Deleted int    `json:"deleted"`
 }
 
 // UncoveredFile is one file's uncovered atoms.
@@ -73,7 +84,40 @@ func Evaluate(ctx context.Context, review *saga.Review, changes gitdiff.ChangeSe
 		BaseOID: changes.BaseOID, HeadOID: changes.HeadOID, Summary: report.Summary,
 		Uncovered: report.Uncovered, UncoveredFiles: uncoveredFiles(changes, report.Uncovered),
 		Overlaps: report.Overlaps, StaleReferences: report.StaleReferences, Items: report.Targets,
+		ItemLines: itemLines(changes, report.Ownership),
 	}
+}
+
+// itemLines counts, for each Item, the added and deleted lines it owns. A
+// line two Items share counts for both, as it does in Items.
+func itemLines(changes gitdiff.ChangeSet, ownership map[string][]coverage.Assignment) []ItemLines {
+	byTarget := map[string]*ItemLines{}
+	for _, atom := range changes.Atoms {
+		seen := map[string]bool{}
+		for _, owner := range ownership[atom.Key] {
+			if seen[owner.Target] {
+				continue
+			}
+			seen[owner.Target] = true
+			lines := byTarget[owner.Target]
+			if lines == nil {
+				lines = &ItemLines{Target: owner.Target}
+				byTarget[owner.Target] = lines
+			}
+			switch atom.Side {
+			case "new":
+				lines.Added++
+			case "old":
+				lines.Deleted++
+			}
+		}
+	}
+	result := make([]ItemLines, 0, len(byTarget))
+	for _, lines := range byTarget {
+		result = append(result, *lines)
+	}
+	sort.Slice(result, func(i, j int) bool { return result[i].Target < result[j].Target })
+	return result
 }
 
 // uncoveredFiles groups atoms by the file they live in, in path order.
