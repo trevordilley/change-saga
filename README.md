@@ -7,15 +7,32 @@
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue)
 [![Made with ❤️ using DevSwarm](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20using-DevSwarm-5F2AFF?labelColor=0A022E&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAEAAAAAiCAQAAABFXBcEAAACEElEQVR42s1Y63mDMAw8ugErsAIdwR2BjsAKrMAKWSEdgRXICGQEMsL1RwhIIIFpXhX%2F7E%2F2WY%2BTBKCEAFhxko7TemDPGOmZXzUAQumUt3VHCIKpUimGVRA8MlaONx2ApYKWcg0CAfAgFJrhEAAsuEeKQQsEG7F%2BWLEBQTBXx4Tx%2FSnbXQDa61sJzM%2FMXRss0QpDVtwrlXCeYdWbJNP1CVjgOO5c8JmcCSABM7RIx50TTo4RMwRHv0E27nwnP5wuVuHXyRfQfgFZiB39aUfVYkdn1jIUCYC19iFsH%2BoAUx%2FAoP09njGDNgvF4Zo%2BIopJsnQtAOhklVlUKhvkAoIXKPTSz6UTAmC2tBbdAJcsp5iM0%2Fu7eACDRq3OmgDoO8JwCl2ycNNvC4AO5lqcZlh5aeae2Yg5M9l%2FldFXz9M0Xw4A5uknENvsvwFgYdGjY9GO6VVhVv1oxQXja5qhG2DHVMVF1AYRte1fASxqZ%2BMyRaaviWP%2Frap%2BS8fOqQwK2gcuQjPFK0TfuOKC5mEuaNdc8O4gxDPSMI1NQw4KRt%2F2FCLKjIK3QcX13VRcbVCx2XLLUOz3AYATU5wX%2FICpGr65HI8NSbe85IENSWGPLv%2BjJdtsSuvoprSziH2tKfXb8jO%2BHtaW52iEvtWWv28wecVoFiJHs7cPp%2BZ4Xt49nhc7xnNYE703uqz9oAjiB4VBy1J%2BAQwDuoYAr7YrAAAAAElFTkSuQmCC)](https://devswarm.ai)
 
-Change Saga is living documentation for an application, kept honest by the
-code. It records what the application is for, who it serves, what it must do,
-how it is designed and verified, and exactly which code implements it, and it
-stays current as the application changes. With AI, a big change is often
-fastest to build in one large pull request; that speed is no reason to lose
-what the change was meant to do.
+Change Saga makes large changes, often AI-written, easy to digest. With AI, a
+big change is often fastest to build in one large pull request, and nobody
+should have to review that line by line. The author, or their coding agent,
+creates a **review deck** for the pull request: slides that explain the
+change's architecture, so a person reviews the architecture instead of every
+line of code.
 
-The recommended idiom is one Saga per repository, `change.saga` at its root,
-and it documents the application:
+The coverage tooling makes that review trustworthy. Every changed line is
+linked to the slide Item that explains it, and
+`change-saga check --covers review` confirms that nothing was left out.
+Coverage is an omission check, not proof: reviewers still judge whether each
+slide is right, and approve or discuss the deck slide by slide.
+
+The review lives in the repository's Saga, one `change.saga` directory at its
+root, committed with the change. Reviewers can collapse it in the pull
+request's file tree and open the deck with `change-saga open`.
+
+### Grow into living documentation, when you want to
+
+After a few reviews, the same Saga can document the application itself:
+living documentation, kept honest by the code. It records what the application
+is for, who it serves, what it must do, how it is designed and verified, and
+exactly which code implements it, and it stays current as the application
+changes. Nothing requires this: `change-saga status` offers it lightly once a
+Saga holds a couple of reviews, and `change-saga setup-initial-saga` guides a
+first pass when the team is ready. A grown Saga holds:
 
 - **Overview**: the project's name, elevator pitch, a short description, and
   its **terms and vocabulary**: the words the team uses that a newcomer would
@@ -29,26 +46,21 @@ and it documents the application:
   technical design), **Quality** (test cases and their evidence), and
   **Implementation** (a slide deck whose visual elements reference the exact
   code they explain).
+- **Reviews**, one per pull request, as before.
 
 A monorepo of several apps keeps one `change.saga` at its root and documents
 each app through its own features. One Saga per repository is a
 recommendation, not a rule: any `<name>.saga` directory is valid, and nothing
 refuses a second one.
 
-Every pull request gets a **review**: a slide deck explaining what the change
-did and why, which must account for every changed line, and whose slides
-reviewers approve one by one.
-
 Code maps back to user stories through designs, specifications, and test
 cases rather than hand-written code-to-story links. Every link pins what it
 relied on: evidence pins code at a commit and follows it as it moves, and
 records pin the revisions they depend on. When a story or the code changes,
 whatever depended on the old version becomes visibly stale, and the tool says
-exactly what to revisit. A Saga starts at the scope the work actually needs:
-requirements first for planned product work, implementation first for an
-existing change, or a focused review of just the evidence in question. It can
-grow from there without requiring you to invent the whole product up front.
-Change Saga is experimental, and its format may change before 1.0.
+exactly what to revisit. A Saga grows from the scope the work actually needs,
+without requiring you to invent the whole product up front. Change Saga is
+experimental, and its format may change before 1.0.
 
 ## Install
 
@@ -120,32 +132,47 @@ these prompts from the repository containing your change:
 
 > Use the change-saga cli to install its skill for this coding agent
 
-**To build the repository's Saga through a guided interview (once per repository):**
+**To create a review for a PR (start here):**
+
+> Create a review for this PR with change-saga
+
+For a branch without a pull request yet, ask for a review of the branch. The
+agent creates `change.saga` if the repository has none, creates the review
+(`change-saga review create` works out the pull request, base, and id), draws
+slides that explain the change's architecture, links every changed line to the
+Item that explains it, and confirms with `change-saga check --covers review`.
+Sagafying a pull request is the best way to learn the tool.
+
+**To review a PR that has a review deck:**
+
+> Use the change-saga cli to open this PR's review deck
+
+**After a few reviews, to grow the Saga into living documentation (optional):**
 
 > Run change-saga setup-initial-saga and follow its guided setup workflow
 
-**To document a PR in the repository's Saga:**
+**Once the Saga has living documentation, to keep it current for a PR:**
 
-> Use the change-saga cli to document this PR in the repository's Saga
-
-**To review a PR:**
-
-> Use the change-saga cli to open this PR's changes in the repository's Saga
+> Create a review for this PR with change-saga, then update the Saga's living documentation for the change
 
 ### How a Saga grows
 
-Start with the work the user asked for. New product work often begins with
-personas, valuable user stories, and pass/fail acceptance criteria before design
-and implementation. An existing pull request or a focused code review may begin
-with the implementation and its exact changed-line references. A small story or
-review does not require you to invent the entire product model first.
+Start with the work the user asked for, which is usually a review of one pull
+request. `change-saga status --against main` answers first with how completely
+the review deck explains the change, and asks for a review when there is none.
+While the Saga holds only reviews, everything else stays out of the way: one
+quiet line says that personas, stories, features, and living documentation can
+come later, and after a couple of reviews a short section offers them, with
+`setup-initial-saga` for a guided start. `status --growth` shows the full
+report whenever you ask.
 
-From there the Saga grows a step at a time. `change-saga status` reports a
-coverage report for six areas (implementation, stories, personas, design,
-quality, and the health of what already exists) with every gap listed, and
-offers growth suggestions tied to the change: "this change touched checkout; no
-story says why; capture the checkout story?" Each suggestion explains the
-practice it teaches and the one command that acts on it; take it or ignore it.
+Once a team grows the Saga, `status` reports seven coverage areas (the review,
+implementation, stories, personas, design, quality, and the health of what
+already exists) with every gap listed, and offers growth suggestions tied to
+the change: "this change touched checkout; no story says why; capture the
+checkout story?" Each suggestion explains the practice it teaches and the one
+command that acts on it; take it or ignore it. New product work may instead
+begin with personas, valuable user stories, and pass/fail acceptance criteria.
 Over time prototypes, stories, design, test cases, and terms fill in, and a
 discovery during implementation becomes an explicit revision of the story it
 changes.
@@ -155,15 +182,15 @@ produce a report. Your team decides what must be true before a merge, and can
 ask directly:
 
 ```sh
-change-saga check --covers implementation --against main change.saga
+change-saga check --covers review --against main change.saga
 change-saga check --covers implementation,stories --against main change.saga
 ```
 
 `check` exits 0 when every named area is covered and 3 when one has a gap,
 printing only those gaps. Nothing is reduced to a score.
 
-After implementing and verifying a change, author its PR review deck, then
-reconcile the affected living documentation:
+When the Saga holds living documentation, reconcile it after authoring a PR's
+review deck:
 
 ```sh
 change-saga reconcile --against main --json change.saga
@@ -223,15 +250,18 @@ model while reading isolated files in an arbitrary order.
 
 A Saga gives the reviewer that context first and keeps it attached to the code:
 
-1. Prototypes and stories establish what the change is for and what done means.
-2. Design shows the flows, interface, data models, and system structure.
-3. Test cases state how each acceptance criterion is verified.
-4. The implementation deck explains the change as a sequence of visual
-   arguments. Diagrams, interactive HTML, screenshots, and examples show the
-   important flows, and expectation/actual callouts expose surprising
+1. The review deck explains the change as a sequence of visual arguments.
+   Diagrams, interactive HTML, screenshots, and examples show the architecture
+   and the important flows, and expectation/actual callouts expose surprising
    behavior, tradeoffs, hidden coupling, and intentional deviations.
-5. Semantic items inside each slide link to the exact diff ranges they explain.
-6. `change-saga status` reports what is missing, stale, or unaccounted for.
+2. Semantic items inside each slide link to the exact diff ranges they explain.
+3. `change-saga check --covers review` and `change-saga status` report what is
+   unaccounted for.
+4. In a Saga grown into living documentation, prototypes and stories also
+   establish what the change is for and what done means, design shows the
+   flows, interface, data models, and system structure, test cases state how
+   each acceptance criterion is verified, and each feature's implementation
+   deck explains the current code.
 
 The tool does not review the code or generate a verdict. It helps the author
 prepare the material that other people will review. AI is useful here because
@@ -312,7 +342,8 @@ Attribution comes from the commit that adds the record.
 
 ## Maintain a codebase Saga
 
-A Saga can document a repository over its entire lifetime, not only one PR.
+After a few reviews, a Saga can document a repository over its entire
+lifetime, not only its pull requests.
 Its authoring and maintenance workflow is designed for AI, not manual human
 operation. Maintaining exact coverage, granular citations, diagrams, and
 structured evidence by hand would be unreasonable. That exhaustive bookkeeping
@@ -394,27 +425,34 @@ Most people should let their coding agent manage these commands. If you want to
 author a Saga directly, do it in your own repository rather than in this
 repository's canonical `change.saga` example. Run with no path, `init` creates
 the repository's one Saga, `change.saga`, named after the repository's origin
-remote; every later change grows that same Saga:
+remote. Then create a review of the branch, explain its architecture on
+slides, and cover every changed line:
 
 ```sh
 change-saga init
-change-saga add-deck --objective "Explain this change." change.saga implementation
-change-saga add-slide --deck implementation --intent explain --layout hero \
-  --title "Implementation" change.saga implementation
-change-saga set-slide-content --target implementation --source ./implementation.svg change.saga
-change-saga add-item --slide implementation --kind node --id change --element-id change \
-  --description "The behavior introduced by this change" change.saga
-change-saga cover --against main --target change --path path/to/file.go \
-  --changed-lines --note "Implements the described behavior." change.saga
+change-saga review create change.saga
+change-saga add-slide --review pr-42 --intent explain --layout diagram change.saga architecture
+change-saga set-slide-content --review pr-42 --target architecture --source ./architecture.svg change.saga
+change-saga add-item --review pr-42 --slide architecture --kind node --id cache --element-id cache \
+  --label "Read-through cache" --description "Why reads now go through the cache" change.saga
+change-saga cover --target urn:change-saga:shop:review:pr-42:slide:architecture:item:cache \
+  --path path/to/cache.go --changed-lines change.saga
 ```
 
-The first command that needs a feature creates one named after the branch. Then
-see what is covered and what could grow, and open the reviewer:
+`review create` prints the review id it chose (here `pr-42`) and each command
+prints the next. See what is covered, ask it as CI would, and open the
+reviewer:
 
 ```sh
-change-saga status --against main change.saga
+change-saga review list change.saga
+change-saga check --covers review --against main change.saga
 change-saga open --against main change.saga
 ```
+
+Once the Saga documents the application, a feature's implementation deck
+explains the current code in the same way (`add-deck`, `add-slide --deck`,
+`add-item --slide`, `cover --against main`); the first command that needs a
+feature creates one named after the branch.
 
 `open` leaves the reviewer running in the background so it remains available
 after the command returns. Manage it later with:
