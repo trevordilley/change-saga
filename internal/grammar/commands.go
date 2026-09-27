@@ -71,7 +71,7 @@ var commands = []Command{
 	{
 		Name: "diagram check", Status: StatusImplemented,
 		Usage:   "change-saga diagram check [--review ID] [--slide TARGET] [--json] <saga>",
-		Summary: "re-render every diagram-sourced slide, review slides included, and report any whose published SVG differs from its source; exits 3 when one is stale",
+		Summary: "re-render every diagram-sourced slide, open reviews' slides included, and report any whose published SVG differs from its source; exits 3 when one is stale (a merged review's slides are history: checked only when named, never failing the check)",
 		Flags: []Flag{
 			optional("review", "ID", "check only this pull request review's slides"), optional("slide", "TARGET", "check only this slide"), jsonFlag,
 		},

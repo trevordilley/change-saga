@@ -218,9 +218,12 @@ func diagramIcons(args []string, out io.Writer) error {
 // DiagramCheckSlide reports whether a slide's current diagram source still
 // renders to its published SVG with this binary's renderer.
 type DiagramCheckSlide struct {
-	Target        string `json:"target"`
-	Renderer      string `json:"renderer"`
-	Current       bool   `json:"current"`
+	Target   string `json:"target"`
+	Renderer string `json:"renderer"`
+	Current  bool   `json:"current"`
+	// History marks a merged review's slide: it is read-only, so a stale one
+	// is reported but cannot be repaired and never fails the check.
+	History       bool   `json:"history,omitempty"`
 	Problem       string `json:"problem,omitempty"`
 	RepairCommand string `json:"repair_command,omitempty"`
 }
@@ -248,26 +251,38 @@ func diagramCheck(args []string, out io.Writer) error {
 			return err
 		}
 	}
+	// A merged review is history: its slides cannot be republished, so it is
+	// checked only when named, and then reported without failing the check.
 	decks := allDecks(document)
+	merged := map[*saga.Deck]bool{}
+	for _, candidate := range document.Reviews {
+		if candidate.Deck == nil {
+			continue
+		}
+		if candidate.Merged != nil {
+			merged[candidate.Deck] = true
+		}
+		if *review == "" && (candidate.Merged == nil || (only != nil && candidate.Slide(only.Target) == only)) {
+			decks = append(decks, candidate.Deck)
+		}
+	}
 	if *review != "" {
 		found := document.FindReview(*review)
 		if found == nil || found.Deck == nil {
 			return fmt.Errorf("review %q does not exist or has no deck%s", *review, knownReviews(document))
 		}
 		decks = []*saga.Deck{found.Deck}
-	} else {
-		for _, candidate := range document.Reviews {
-			if candidate.Deck != nil {
-				decks = append(decks, candidate.Deck)
-			}
-		}
 	}
 	for _, deck := range decks {
 		for _, slide := range deck.Slides {
 			if slide.Diagram == nil || (only != nil && only != slide) {
 				continue
 			}
-			report = append(report, checkDiagramSlide(deck, slide))
+			entry := checkDiagramSlide(deck, slide)
+			if merged[deck] {
+				entry.History, entry.RepairCommand = true, ""
+			}
+			report = append(report, entry)
 		}
 	}
 	if *target != "" && len(report) == 0 {
@@ -275,7 +290,7 @@ func diagramCheck(args []string, out io.Writer) error {
 	}
 	stale := 0
 	for _, entry := range report {
-		if !entry.Current {
+		if !entry.Current && !entry.History {
 			stale++
 		}
 	}
@@ -287,6 +302,8 @@ func diagramCheck(args []string, out io.Writer) error {
 		for _, entry := range report {
 			if entry.Current {
 				fmt.Fprintf(out, "current  %s\n", entry.Target)
+			} else if entry.History {
+				fmt.Fprintf(out, "stale    %s (merged review, history; not repairable): %s\n", entry.Target, entry.Problem)
 			} else {
 				fmt.Fprintf(out, "stale    %s: %s\n", entry.Target, entry.Problem)
 			}

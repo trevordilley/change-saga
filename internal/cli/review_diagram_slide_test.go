@@ -388,3 +388,50 @@ func TestApplySlideKeepsCommentedReviewItems(t *testing.T) {
 	}
 	assertValid(t, root)
 }
+
+// diagram check skips a merged review's slides by default: they are
+// history, which diagram edit refuses to republish, so a renderer change
+// would otherwise fail the check forever. Named, they are reported as
+// history without failing it.
+func TestDiagramCheckTreatsMergedReviewsAsHistory(t *testing.T) {
+	t.Parallel()
+	fixture, head := newEmptyReviewFixture(t)
+	root, repo := fixture.root, fixture.repo
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	if _, err := ApplySlideTransaction(context.Background(), root, t.TempDir(), repo, reviewSlideRequest("flow-create", "create", "absent", reviewDiagram()), false); err != nil {
+		t.Fatal(err)
+	}
+	// Stand in for a renderer change: the published SVG no longer matches
+	// what this binary renders from the source.
+	slide := loadReviewSlide(t, root, "flow")
+	asset := filepath.Join(saga.ReviewDir(root, "pr-7"), saga.ReviewDeckDir, slide.Entrypoint)
+	data, err := os.ReadFile(asset)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(asset, append(data, '\n'), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if out, err := runDiagram(t, "", "check", root); err == nil || !strings.Contains(out, "stale    "+slide.Target) {
+		t.Fatalf("an open review's stale slide: err=%v\n%s", err, out)
+	}
+
+	manifestPath := filepath.Join(saga.ReviewDir(root, "pr-7"), saga.ReviewManifestName)
+	var manifest saga.ReviewManifest
+	if err := readStrictJSONPath(manifestPath, &manifest); err != nil {
+		t.Fatal(err)
+	}
+	manifest.Merged = &saga.ReviewMerge{Base: head, Head: head, Landed: head, MergedAt: manifest.CreatedAt}
+	if err := store.WriteJSON(manifestPath, manifest, false); err != nil {
+		t.Fatal(err)
+	}
+	if out, err := runDiagram(t, "", "check", root); err != nil || strings.Contains(out, slide.Target) {
+		t.Fatalf("diagram check of a merged review's slide: err=%v\n%s", err, out)
+	}
+	for _, args := range [][]string{{"check", "--review", "pr-7", root}, {"check", "--slide", slide.Target, root}} {
+		out, err := runDiagram(t, "", args...)
+		if err != nil || !strings.Contains(out, "merged review, history") || !strings.Contains(out, "0 stale") {
+			t.Errorf("diagram %v: err=%v\n%s", args, err, out)
+		}
+	}
+}
