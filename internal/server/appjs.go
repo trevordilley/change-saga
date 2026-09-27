@@ -289,6 +289,10 @@ const appJavaScript = `(() => {
     if (!stage || q('[data-landmark-visual="' + CSS.escape(target.dataset.landmarkAnchor) + '"]', stage)) return;
     const visual = document.createElement('div');
     visual.className = 'landmark-hotspot';
+    // A callout marks a surprise about an element another Item usually
+    // explains: its hotspot lets clicks through, and its own badge sits at the
+    // element's bottom-left, clear of that Item's controls.
+    if (target.dataset.itemKind === 'callout') visual.classList.add('callout-hotspot');
     visual.dataset.landmarkVisual = target.dataset.landmarkAnchor;
     visual.dataset.autoLandmarkHotspot = 'true';
     visual.dataset.elementId = target.dataset.elementId;
@@ -425,8 +429,17 @@ const appJavaScript = `(() => {
     positionLandmarkHotspots();
   }
 
+  // A callout that shares its element or region with another Item lets
+  // clicks through to that Item's hotspot; only its badge takes the pointer.
+  function markSharedCallouts(stage) {
+    const place = visual => visual.dataset.elementId || [visual.dataset.x, visual.dataset.y, visual.dataset.width, visual.dataset.height].join(',');
+    const others = new Set(qa('.landmark-hotspot[data-landmark-visual]:not(.callout-hotspot)', stage).map(place));
+    qa('.landmark-hotspot.callout-hotspot', stage).forEach(visual => visual.classList.toggle('callout-shared', others.has(place(visual))));
+  }
+
   function positionLandmarkHotspots() {
     qa('.fragment-stage').forEach(stage => {
+      markSharedCallouts(stage);
       const media = q('.fragment-frame,.fragment-image', stage);
       if (!media) return;
       const stageRect = stage.getBoundingClientRect();

@@ -30,11 +30,12 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
   cli(sagaRepositories, "review", "create", "--id", "pr-3", "--base", "main", "--head", "feature/wave-one", "--pr", "3", "--title", "Noted review", sagaRoot);
   const request = {
     version: 1, operation: "create", request_id: "noted-flow", review: "pr-3", expected_snapshot: "absent",
-    slide: { id: "noted-flow", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["caller", "greeting"] },
+    slide: { id: "noted-flow", title: "Greeting flow", rank: 10, intent: "explain", layout: "diagram", takeaway: "The caller's name flows into the greeting.", reading_order: ["caller", "greeting", "echo"] },
     diagram: notedDiagram,
     items: [
       { id: "caller", rank: 10, kind: "node", label: "Caller", description: "Callers now pass a name.", selector: { type: "element", element_id: "caller" } },
       { id: "greeting", rank: 20, kind: "node", label: "Greeting", description: "Greeting returns the supplied name.", selector: { type: "element", element_id: "greeting" } },
+      { id: "echo", rank: 30, kind: "callout", label: "Names are echoed", description: "Why an empty name still greets.", about: "greeting", body: "You might expect an empty name to be refused here; the greeting echoes it.", selector: { type: "element", element_id: "greeting" } },
     ],
   };
   const requestPath = join(root, "noted-flow.json");
@@ -138,17 +139,37 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await expect(edge).not.toBeFocused();
 
     // The popover never blocks the click that opens an Item's drawer.
-    const greeting = slide.locator('.landmark-hotspot[data-element-id="greeting"]');
+    const greeting = slide.locator('.landmark-hotspot:not(.callout-hotspot)[data-element-id="greeting"]');
     await greeting.hover();
     await expect(popover.locator(".element-note-label")).toHaveText("Greeting");
     await greeting.click({ position: { x: 20, y: 60 } });
     await expect(page.locator("#review-drawer")).toBeVisible();
     await expect(popover).toBeHidden();
+    await expect(page.locator("#review-drawer .review-item-panel h2")).toHaveText("Greeting");
     // Closing the drawer returns focus without reopening the popover.
     await page.mouse.move(5, 5);
     await page.keyboard.press("Escape");
     await expect(page.locator("#review-drawer")).toHaveAttribute("aria-hidden", "true");
     await expect(popover).toBeHidden();
+
+    // A surprise about the same element is its own badge at the element's
+    // bottom-left, so it never covers the element's own controls.
+    const surprise = slide.locator('.callout-hotspot[data-element-id="greeting"]');
+    await expect(surprise).toHaveClass(/callout-shared/);
+    await expect(surprise).toHaveCSS("pointer-events", "none");
+    const badge = surprise.getByRole("button", { name: "Open surprise: Names are echoed" });
+    const greetingBox = (await greeting.boundingBox())!;
+    const badgeBox = (await badge.boundingBox())!;
+    expect(badgeBox.x - greetingBox.x).toBeLessThan(40);
+    expect(greetingBox.y + greetingBox.height - (badgeBox.y + badgeBox.height)).toBeLessThan(40);
+    await greeting.getByRole("button", { name: /Open linked code .* for Greeting/ }).click();
+    await expect(page.locator("#review-drawer .review-item-panel h2")).toHaveText("Greeting");
+    await page.keyboard.press("Escape");
+    await badge.hover();
+    await expect(popover.locator(".element-note-label")).toHaveText("Names are echoed");
+    await badge.click();
+    await expect(page.locator("#review-drawer .review-item-panel h2")).toHaveText("Names are echoed");
+    await page.keyboard.press("Escape");
 
     // A popover never takes the click meant for a hotspot beneath it.
     await page.getByRole("button", { name: "Show slide: Stacked" }).click();
