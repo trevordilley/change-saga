@@ -216,7 +216,7 @@ var commandUsage = map[string]string{
 	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
 	"reconcile":                   "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json] <saga>",
-	"status":                      "change-saga status [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+	"status":                      "change-saga status [--json] [--growth] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"preintegrate":                "change-saga preintegrate --ref REF --ref REF [--repo PATH] [--json] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
@@ -340,8 +340,8 @@ var commandDescription = map[string]string{
 	"init":                        "Create the repository's Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. With no path it creates change.saga in the --repo\ndirectory (by default the current directory), identified and titled after the\nrepository's origin remote (or, without one, its top-level directory). The\nrecommended idiom is one Saga per repository; a monorepo documents each app as\nfeatures of it. Another Saga never blocks init, which only notes it. Then either\ncover the change: explain it with an implementation deck whose Items reference every\nchanged line; or document existing code: observe HEAD with status and reference the\ncode each Item explains at the current commit. Features, stories, personas, design,\nand quality are optional and can come later.",
 	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
 	"reconcile":                   "Build a read-only documentation reconciliation queue: separate review and documentation\ndiff coverage, living reference currency at HEAD, baseline debt and regressions,\nand affected records with reasons and typed inspection/repair paths. Requires\n--against. Exits 0 when the report is produced, regardless of findings.\nAffected means reassess, not automatically edit. Fresh pins are not semantic proof.\nUse after implementing, verifying, and authoring the PR review deck; reconcile\ncurrent documentation, then validate and run this command again.",
-	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
-	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke\n\nComparison coverage can use deleted-line evidence valid at base. Check HEAD\nhealth separately without --against; use reconcile for debt and repair paths.",
+	"status":                      "Report how completely the change's review deck explains it (--against), or each\nopen review its range, then coverage by area, stale records, and ordered next\nactions: required work first (keep what exists healthy, explain every changed\nline), then optional growth suggestions. A Saga that holds only reviews is\nreported review first: its documentation areas and growth suggestions shrink to\none quiet line, a short offer once it holds more than two reviews, and the full\nreport with --growth (always in --json). Status has no verdict: it exits 0\nwhenever its report can be trusted, and 1 only when the Saga is malformed (for\nexample, a duplicate ID) or the checkout does not match the declared repository.\nTeams write their own rules over --json, or ask check. Use reconcile --against REV\nfor a documentation repair queue with independent HEAD currency and baseline debt.",
+	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nThe review area asks about the pull request's review deck alone; the others\nfollow the chain persona -> story -> design -> code:\n  review          every changed line is explained by the review deck of the\n                  change (the open review whose head is HEAD), over its own\n                  range; a change with no review is uncovered\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke\n\nComparison coverage can use deleted-line evidence valid at base. Check HEAD\nhealth separately without --against; use reconcile for debt and repair paths.",
 	"visual-qa":                   "Render selected implementation or onboarding slides both as raw assets and inside the\nactual reviewer at 1280x720 and 1024x576. The managed output includes screenshots, a\ncontact sheet, and visual-qa.json with mechanical clipping, text-overflow, missing-selector,\nand reliable Item-overlap findings. The command is read-only with respect to the Saga and\nexits 3 when error-severity findings exist. It does not judge whether semantic arrows or\nrelationships are correct.",
 	"preintegrate":                "Read committed Saga snapshots from two or more explicit Git refs and report\nstable-ID collisions, different current heads, and deterministic text-overlap\ncandidates with exact ref/commit provenance. It is advisory and read-only: it\nnever chooses semantic equivalence, updates a ref, checks out, or merges Git.",
 	"feature":                     "Add a durable product domain. A feature holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames a feature, so a story can move between features without breaking a link.",
@@ -1057,6 +1057,7 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	opening := registerOpenFlags(flags)
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
 	feature := flags.String("feature", "", "narrow the report to one feature (id or URN)")
+	growth := flags.Bool("growth", false, "report every documentation area and growth suggestion, even for a Saga that holds only reviews")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -1067,14 +1068,24 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if *jsonOutput {
+	// A Saga that holds only reviews is reported review first, and offers
+	// to grow gradually; asking with --growth, or a Saga that already grew,
+	// gets the full report.
+	if *growth {
+		status.Growth.Offer = growthOfferFull
+	}
+	status.NextActions = reviewFirstActions(status.NextActions, status.Growth)
+	switch {
+	case *jsonOutput:
 		if err := writeJSON(out, status); err != nil {
 			return err
 		}
-	} else {
+	case status.Growth.Offer == growthOfferFull:
 		printReport(out, status, *maxItems)
 		printComparison(out, status.Comparison, *maxItems)
 		printLivingStatus(out, status, *maxItems)
+	default:
+		printReviewFirst(out, status, *maxItems)
 	}
 	// Status has no verdict: it exits zero whenever its report can be
 	// trusted, whatever the report finds.
@@ -1114,6 +1125,26 @@ func printCursor(out io.Writer, view opening) {
 // range), and stale references. It passes no verdict; the coverage report
 // that follows counts every area.
 func printReport(out io.Writer, status statusDocument, maxItems int) {
+	printReportHeader(out, status)
+	printReviewHeadline(out, status, maxItems)
+	if implementation := status.Coverage.Areas.Implementation; len(implementation.UncoveredEntries) > 0 {
+		fmt.Fprintf(out, "\nChanged lines nothing references (%d lines in %d file ranges):\n", implementation.Uncovered, len(implementation.UncoveredEntries))
+		limit := len(implementation.UncoveredEntries)
+		if maxItems > 0 && maxItems < limit {
+			limit = maxItems
+		}
+		for _, entry := range implementation.UncoveredEntries[:limit] {
+			fmt.Fprintf(out, "  %s\n", describeLines(entry))
+		}
+		if limit < len(implementation.UncoveredEntries) {
+			fmt.Fprintf(out, "  … and %d more file ranges (use --max 0 or --json)\n", len(implementation.UncoveredEntries)-limit)
+		}
+	}
+	printStaleReferences(out, status.Report)
+}
+
+// printReportHeader prints how the Saga was opened and its schema issues.
+func printReportHeader(out io.Writer, status statusDocument) {
 	report, view := status.Report, status.Opening
 	if view.Mode == gitdiff.ModeObserve {
 		fmt.Fprintf(out, "OBSERVING %s (%s) — no change to account for; pass --against REV to compare\n", view.Head, shortOID(view.HeadOID))
@@ -1130,19 +1161,10 @@ func printReport(out io.Writer, status statusDocument, maxItems int) {
 			fmt.Fprintf(out, "  %s: %s: %s\n", issue.Severity, issue.Path, issue.Message)
 		}
 	}
-	if implementation := status.Coverage.Areas.Implementation; len(implementation.UncoveredEntries) > 0 {
-		fmt.Fprintf(out, "\nChanged lines nothing references (%d lines in %d file ranges):\n", implementation.Uncovered, len(implementation.UncoveredEntries))
-		limit := len(implementation.UncoveredEntries)
-		if maxItems > 0 && maxItems < limit {
-			limit = maxItems
-		}
-		for _, entry := range implementation.UncoveredEntries[:limit] {
-			fmt.Fprintf(out, "  %s\n", describeLines(entry))
-		}
-		if limit < len(implementation.UncoveredEntries) {
-			fmt.Fprintf(out, "  … and %d more file ranges (use --max 0 or --json)\n", len(implementation.UncoveredEntries)-limit)
-		}
-	}
+}
+
+// printStaleReferences prints the code references that went stale.
+func printStaleReferences(out io.Writer, report coverage.Report) {
 	if len(report.StaleReferences) > 0 {
 		fmt.Fprintln(out, "\nStale code references:")
 		for _, stale := range report.StaleReferences {
@@ -1488,7 +1510,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 			foundDir = reviewTargetDirectory(document, value)
 		}
 		if foundDir == "" {
-			return "", "", fmt.Errorf("target %q does not exist%s", value, targetHint(document, allowFragment))
+			return "", "", fmt.Errorf("target %q does not exist%s", value, targetHint(document, allowFragment, value))
 		}
 		return foundDir, value, nil
 	}
@@ -1519,7 +1541,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 		// Report content lives beneath reserved roots (___features, ___overview),
 		// so a missing path there fails section resolution; still point the
 		// author at the query API rather than only at the path rule.
-		return "", "", fmt.Errorf("target %q is not a valid %s: %v%s", value, targetKinds, err, targetHint(document, allowFragment))
+		return "", "", fmt.Errorf("target %q is not a valid %s: %v%s", value, targetKinds, err, targetHint(document, allowFragment, value))
 	}
 	abs, _ := filepath.Abs(dir)
 	if abs == document.Root {
@@ -1534,7 +1556,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 		}
 	})
 	if foundTarget == "" || isFragment && !allowFragment {
-		return "", "", fmt.Errorf("target %q is not a valid %s%s", value, targetKinds, targetHint(document, allowFragment))
+		return "", "", fmt.Errorf("target %q is not a valid %s%s", value, targetKinds, targetHint(document, allowFragment, value))
 	}
 	return abs, foundTarget, nil
 }
@@ -1737,7 +1759,7 @@ const maxTargetHints = 12
 // targetHint turns "that target does not exist" into something actionable. The
 // query API is the supported way to enumerate targets, so the hint names it
 // rather than inviting the reader to go read metadata files.
-func targetHint(document *saga.Saga, allowFragment bool) string {
+func targetHint(document *saga.Saga, allowFragment bool, value string) string {
 	var targets []string
 	targets = append(targets, saga.SagaTarget(document.Manifest.ID))
 	walkTargets(document.Root, document.Section, func(target, _ string, fragment bool) {
@@ -1746,7 +1768,34 @@ func targetHint(document *saga.Saga, allowFragment bool) string {
 		}
 	})
 	sort.Strings(targets)
-	hint := "; run \"change-saga query children --saga " + filepath.Base(document.Root) + " --parent " + saga.SagaTarget(document.Manifest.ID) + "\" to list targets"
+	parent := saga.SagaTarget(document.Manifest.ID)
+	// Open reviews' slides and Items are targets too (cover accepts them).
+	// A value naming a review lists only that review's; otherwise they
+	// follow the documentation's.
+	if allowFragment {
+		var reviewTargets []string
+		for _, review := range document.Reviews {
+			if review.Deck == nil || review.Merged != nil {
+				continue
+			}
+			named := strings.HasPrefix(value, review.Target+":") || value == review.Target
+			if named {
+				reviewTargets, parent = nil, review.Target
+			}
+			for _, slide := range review.Deck.Slides {
+				reviewTargets = append(reviewTargets, slide.Target)
+				for _, item := range slide.Items {
+					reviewTargets = append(reviewTargets, item.Target)
+				}
+			}
+			if named {
+				targets = nil
+				break
+			}
+		}
+		targets = append(targets, reviewTargets...)
+	}
+	hint := "; run \"change-saga query children --saga " + filepath.Base(document.Root) + " --parent " + parent + "\" to list targets"
 	if len(targets) == 0 {
 		return hint
 	}

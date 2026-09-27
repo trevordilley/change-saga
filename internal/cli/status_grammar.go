@@ -48,9 +48,18 @@ type statusDocument struct {
 	// reviewer's decision and whether it is out of date, and how completely
 	// its deck covers its range. It is a report, never part of the exit
 	// status.
-	Reviews       []reviewstate.Report `json:"reviews"`
-	NextActions   []nextaction.Action  `json:"next_actions"`
-	AuthoringLoop nextaction.Loop      `json:"authoring_loop"`
+	Reviews []reviewstate.Report `json:"reviews"`
+	// ChangeReviews names the reviews the review area measured: comparing,
+	// the open reviews whose head is the comparison's head; observing, every
+	// open review.
+	ChangeReviews []string `json:"change_reviews"`
+	// Growth says whether the Saga has grown beyond its reviews and how
+	// prominently this report offers to grow it; it never blocks.
+	Growth        growthState         `json:"growth"`
+	NextActions   []nextaction.Action `json:"next_actions"`
+	AuthoringLoop nextaction.Loop     `json:"authoring_loop"`
+	// sagaPath is the Saga as the command was given it, for printed commands.
+	sagaPath string
 }
 
 // opening names how a Saga was opened: observe one commit, or compare head
@@ -165,8 +174,21 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		document.Comparison = &layers
 	}
 	document.Coverage = areas.Evaluate(coverageInputs(value.document, value.changes, value.report, living, document.Comparison, feature))
+	ofChange := reviewsOfChange(document.Reviews, value.changes)
+	document.ChangeReviews = []string{}
+	for _, report := range ofChange {
+		document.ChangeReviews = append(document.ChangeReviews, report.ID)
+	}
+	document.Coverage.Areas.Review = reviewArea(ofChange, value.changes)
+	document.Growth = growthOf(root, value.document, false)
+	document.sagaPath = root
 	document.NextActions = nextaction.Derive(living, root, nextaction.Context{Coverage: document.Coverage, Places: storyPlaces(value.document), DesignFeatures: designFeatures(value.document)})
 	document.NextActions = append(document.NextActions, nextaction.Reviews(document.Reviews, root)...)
+	// A review-only Saga explains a change with its review, so a change no
+	// review explains yet asks for one.
+	if !document.Growth.LivingDocumentation && value.changes.Mode == gitdiff.ModeCompare && len(ofChange) == 0 && len(value.changes.Atoms) > 0 {
+		document.NextActions = append(document.NextActions, createReviewAction(value.changes, root))
+	}
 	return document, nil
 }
 
@@ -244,6 +266,22 @@ func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
 func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 	printCoverage(out, status.Coverage)
 	printAppStatus(out, status.Status)
+	printReviewsAndActions(out, status, maxItems)
+}
+
+// printReviewFirst prints a review-only Saga's status: the review deck's
+// coverage of the change is the answer, then what the review asks, then the
+// growth offer. The documentation areas stay in --json and --growth.
+func printReviewFirst(out io.Writer, status statusDocument, maxItems int) {
+	printReportHeader(out, status)
+	printReviewHeadline(out, status, maxItems)
+	printStaleReferences(out, status.Report)
+	printReviewsAndActions(out, status, maxItems)
+}
+
+// printReviewsAndActions prints the reviews, stale and carried-forward pins,
+// the next actions, and the growth suggestions.
+func printReviewsAndActions(out io.Writer, status statusDocument, maxItems int) {
 	if len(status.Reviews) > 0 {
 		fmt.Fprintln(out, "\nReviews (decisions per slide and each deck's coverage of its range; the team decides what it requires):")
 		printReviewReports(out, status.Reviews)
@@ -267,8 +305,19 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 		printActions(out, work, maxItems, false)
 	case observing:
 		fmt.Fprintln(out, "\nNext actions: none. Observing, there is no change to cover, and nothing existing is stale or broken; that is not a claim of correctness.")
+	case status.Growth.Offer != growthOfferFull:
+		fmt.Fprintln(out, "\nNext actions: none. The review deck explains every changed line and nothing existing is stale or broken; that is not a claim of correctness.")
 	default:
 		fmt.Fprintln(out, "\nNext actions: none. Every changed line is covered and nothing existing is stale or broken; that is not a claim of correctness.")
+	}
+	if status.Growth.Offer != growthOfferFull {
+		printGrowthOffer(out, status)
+		// The short offer keeps each suggestion to its question and command.
+		for index := range growth {
+			growth[index].Practice = ""
+		}
+		printActions(out, growth, maxItems, true)
+		return
 	}
 	if len(growth) > 0 {
 		order := "most valuable to this change first"
@@ -538,6 +587,7 @@ func livingSpec() map[string]any {
 		"coverage_report": map[string]any{
 			"areas": areaNames(),
 			"area_rules": map[string]string{
+				"review":         "every changed line is explained by the change's review deck: comparing, the open reviews whose head is the comparison's head, each over its own range (a change with no review is uncovered); observing, every open review over its own range",
 				"implementation": "every changed line is referenced by the implementation deck (or a narrative target), or, for test code, by its test case's evidence",
 				"stories":        "every changed line reaches a story through the chain",
 				"personas":       "every changed line reaches a persona",
@@ -548,6 +598,7 @@ func livingSpec() map[string]any {
 			"units":             []string{string(areas.UnitChangedLine), string(areas.UnitCodeTarget), string(areas.UnitStory), string(areas.UnitCriterion), string(areas.UnitRecord)},
 			"scope":             "with --against, the change: what it changed and what it affected; without, the whole app, where the line areas count documented code targets instead of changed lines; --feature narrows either, keeping changed lines no record owns",
 			"shape":             "status --json .coverage.areas.<area> has total, covered, uncovered, complete, covered_entries, and uncovered_entries; counts are the sums of the entries' counts; never a blended score",
+			"growth":            "status .growth says whether the Saga holds living documentation (any record beyond its reviews) and how prominently it offers to grow: quiet for a review-only Saga with at most two reviews, prominent past that, full when asked with --growth or once living documentation exists; next_actions follow the offer, and a review-only Saga leaves out the implementation deck's changed-source actions",
 			"verdict":           "none: status reports every gap as a finding; a team that wants a gap to fail its build asks check --covers or writes its own rule over the JSON",
 			"status_exit_codes": map[string]string{"0": "the report was produced; every gap is a finding", "1": "the report cannot be trusted: a malformed Saga (such as a duplicate ID), unreadable records, or a checkout that does not match the declared repository"},
 			"check_exit_codes":  map[string]string{"0": "every named area is fully covered in scope", "3": "a named area has a gap; only the named areas' gaps are printed", "1": "the report cannot be trusted, as for status"},

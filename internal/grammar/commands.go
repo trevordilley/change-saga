@@ -629,12 +629,13 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
-		Summary: "report coverage by area (implementation, stories, personas, design, quality, health) with counts and lists, stale pins, and ordered next actions; has no verdict: exits 0 whenever the report can be trusted, 1 when the Saga is malformed or the checkout does not match",
+		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--growth] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+		Summary: "report the review deck's coverage of the change first, then coverage by area (review, implementation, stories, personas, design, quality, health) with counts and lists, stale pins, and ordered next actions; a Saga that holds only reviews is reported review first with a quiet, optional growth offer; has no verdict: exits 0 whenever the report can be trusted, 1 when the Saga is malformed or the checkout does not match",
 		Flags: []Flag{
 			jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 			optional("max", "N", "maximum uncovered items in text mode"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 			optional("feature", "ID", "narrow the report to one feature"), againstFlag, headFlag,
+			optional("growth", "", "report every documentation area and growth suggestion, even for a Saga that holds only reviews"),
 		},
 		Positionals: sagaOnly,
 	},
@@ -648,7 +649,7 @@ var commands = []Command{
 		Name: "check", Status: StatusImplemented, Usage: "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 		Summary: "ask whether the named coverage areas are fully covered in scope; exits 0 when they are, 3 with only those areas' gaps when not, and 1 when the report cannot be trusted",
 		Flags: []Flag{
-			required("covers", "AREA,...", "coverage areas to ask about: implementation, stories, personas, design, quality, health"),
+			required("covers", "AREA,...", "coverage areas to ask about: review, implementation, stories, personas, design, quality, health"),
 			jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 			optional("max", "N", "maximum gaps per area in text mode"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 			optional("feature", "ID", "narrow the question to one feature"), againstFlag, headFlag,

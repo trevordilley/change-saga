@@ -170,10 +170,18 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 		t.Fatalf("init app = features %d, fragments %#v", len(document.Features), document.Section.Fragments)
 	}
 
-	// Observing the fresh app, the path that documents existing code, has no
-	// change to cover, and its loop has the overview to take as growth.
+	// Observing the fresh app has no change to cover. A Saga that holds only
+	// reviews offers to grow in one quiet line; asked with --growth, its loop
+	// has the overview to take as growth.
 	var status bytes.Buffer
 	if err := Status(context.Background(), []string{"--repo", repo, "--allow-repository-mismatch", root}, &status); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(status.String(), "Growing the Saga is optional") || strings.Contains(status.String(), "[overview]") {
+		t.Fatalf("a fresh Saga's status does not keep growth quiet:\n%s", status.String())
+	}
+	status.Reset()
+	if err := Status(context.Background(), []string{"--repo", repo, "--allow-repository-mismatch", "--growth", root}, &status); err != nil {
 		t.Fatal(err)
 	}
 	for _, want := range []string{"Next actions: none. Observing, there is no change to cover", "for the app as it is, the overview and vocabulary first",
