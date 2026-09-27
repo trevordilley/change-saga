@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/grammar/commands.go",
+      "start": 554,
+      "end": 555,
+      "digest": "sha256:fe0398c4e0b5b2f2cb4b598e503189fdc617d0f3f2a5786f91b1ef333d72e92c",
+      "note": "The previous repin grammar."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/grammar/commands.go",
+      "start": 557,
+      "end": 558,
+      "digest": "sha256:da66ea64b2da1bb342b00a367e21aef97925d0f18970e4bbcb106a41e77428e1",
+      "note": "The previous repin grammar."
+    }
+  ]
+}

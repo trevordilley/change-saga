@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/refresh_coverage.go",
+      "start": 189,
+      "end": 205,
+      "digest": "sha256:7b64f7adb3f6baf54122c11ce79f8a1e171e2cccbe98f4c6c2088e01de576a85",
+      "note": "Stale references keep their proposal and reserve its lines."
+    }
+  ]
+}

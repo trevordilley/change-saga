@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 49,
+      "end": 54,
+      "digest": "sha256:5cf26cf93ad62f4a0b32a69204d9f7bdbf31e182caaf5c39ee51dd9d32834a39",
+      "note": "The skill teaches refresh-coverage and accept after reading."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 192,
+      "end": 196,
+      "digest": "sha256:147826fd4d8bf6f3a1d5d4955e14598529b3d301ded051b73aaebbd8a912db9b",
+      "note": "The skill teaches refresh-coverage and accept after reading."
+    }
+  ]
+}

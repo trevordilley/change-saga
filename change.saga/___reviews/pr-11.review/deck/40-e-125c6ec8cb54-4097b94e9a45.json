@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/stale_repair.go",
+      "start": 1,
+      "end": 135,
+      "digest": "sha256:4f22a98cdbcbe23090a49df977a0b8a90b94b8ab84142ba79ae04c9056a91c1f",
+      "note": "The rule, headline printing, and documentation references including inventory."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/stale_repair.go",
+      "start": 152,
+      "end": 202,
+      "digest": "sha256:8ba36a5212b7278c2506cfe567158bd828d387615177fad9c8bc9efdda429c3a",
+      "note": "The rule, headline printing, and documentation references including inventory."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/stale_repair.go",
+      "start": 674,
+      "end": 721,
+      "digest": "sha256:9b53640b682315f777c9adc457c2b1c116787458147e51a8954a0d3561989a9c",
+      "note": "The rule, headline printing, and documentation references including inventory."
+    }
+  ]
+}

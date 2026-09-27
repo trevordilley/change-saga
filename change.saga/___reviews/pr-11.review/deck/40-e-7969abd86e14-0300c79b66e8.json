@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/coderesolve/propose.go",
+      "digest": "sha256:1c1f825d9ff51af3d7d2bca950642fc6c0f714db3ed8f0f3d3fa967752d0c822",
+      "note": "New file: proposals by diff arithmetic."
+    }
+  ]
+}

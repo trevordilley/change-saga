@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "proposal",
+  "slide": "propose",
+  "rank": 10,
+  "kind": "node",
+  "label": "Resolver.Propose",
+  "description": "Builds the proposal at the view with its reason and the small diff inside the range, or says why nothing is proposed.",
+  "selector": {
+    "type": "element",
+    "element_id": "proposal"
+  }
+}

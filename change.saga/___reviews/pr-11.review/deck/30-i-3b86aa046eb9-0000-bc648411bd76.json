@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "skill",
+  "slide": "docs",
+  "rank": 0,
+  "kind": "node",
+  "label": "Skill",
+  "description": "Teaches refresh-coverage, accept after reading, and --print-current.",
+  "selector": {
+    "type": "element",
+    "element_id": "skill"
+  }
+}

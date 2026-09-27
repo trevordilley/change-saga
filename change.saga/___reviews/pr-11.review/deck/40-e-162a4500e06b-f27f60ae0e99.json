@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/references.go",
+      "start": 291,
+      "end": 296,
+      "digest": "sha256:b3bdbdf4f1ae683e211beb4a5512400ebad932d129fd9d0ff4762b3bd17fc4fc",
+      "note": "repin parses --accept-proposed and exactly one scope."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/references.go",
+      "start": 300,
+      "end": 311,
+      "digest": "sha256:3955b412b6188097821ea2df7ae47c9fcc5243ec36778bee47a92cbbcef0f4ea",
+      "note": "repin parses --accept-proposed and exactly one scope."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/references.go",
+      "start": 315,
+      "end": 317,
+      "digest": "sha256:ead03cfd899255066445f1ce7ad4e82ddffa1c73ad9b54e9a81ed6e8d155d755",
+      "note": "repin parses --accept-proposed and exactly one scope."
+    }
+  ]
+}

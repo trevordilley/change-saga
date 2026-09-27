@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/refresh_coverage_test.go",
+      "digest": "sha256:a8bae0cbc6ec544438cb24a7b100fb67a31a29cfe4e7a99df50683d80608eebb",
+      "note": "New file: refresh-coverage tests."
+    }
+  ]
+}

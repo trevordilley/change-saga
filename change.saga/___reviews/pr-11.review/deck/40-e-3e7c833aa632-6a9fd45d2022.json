@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "internal/cli/reconciliation.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:7249cbcbed87287b34be3c4649a3f914f2790ed44ab0988bea30a809d7e4c6f0",
+      "note": "The previous gap detail."
+    }
+  ]
+}

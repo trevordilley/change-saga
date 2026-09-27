@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "print-current",
+  "slide": "accept",
+  "rank": 30,
+  "kind": "node",
+  "label": "apply-slide --print-current",
+  "description": "Prints a managed slide's complete current request, ready to edit and apply.",
+  "selector": {
+    "type": "element",
+    "element_id": "print-current"
+  }
+}

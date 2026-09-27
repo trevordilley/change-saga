@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/coderesolve/propose_test.go",
+      "start": 1,
+      "end": 48,
+      "digest": "sha256:639e4091a42589ba5f74937a800bcd71620c4b82405a502f36cfd25f46d50376",
+      "note": "Table of hunk shapes and the ranges they propose."
+    }
+  ]
+}

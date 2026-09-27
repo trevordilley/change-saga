@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 882,
+      "end": 882,
+      "digest": "sha256:498c1abe1674dc0ff582e67b075cd4c9e06786aaa50e1e186ed7e98578a3097a",
+      "note": "apply-slide --print-current prints it with a fresh request_id."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 886,
+      "end": 891,
+      "digest": "sha256:1efe1da73e7a0bb331399440526d9fdbca864bd07c4b777f1d1c39d41d400c70",
+      "note": "apply-slide --print-current prints it with a fresh request_id."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/slide_transaction.go",
+      "start": 938,
+      "end": 961,
+      "digest": "sha256:11031a023314f145bd8b1a363b8953f4044046d0e1a56ace0f04cc607f3c2de8",
+      "note": "apply-slide --print-current prints it with a fresh request_id."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/coderesolve/propose_test.go",
+      "start": 49,
+      "end": 89,
+      "digest": "sha256:fcbe6f86175b246cc7ebc9d5106aae2ba9ddb4e4b55a142075f296480e85b408",
+      "note": "A real repository: edit inside, deleted file, whole file."
+    }
+  ]
+}

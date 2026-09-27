@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui, sans-serif">
+  <rect width="1280" height="720" fill="#f7f8fa"/>
+  <text x="40" y="56" font-size="30" font-weight="700" fill="#1d2433">review refresh-coverage keeps a review deck current as the PR iterates</text>
+  <text x="40" y="90" font-size="17" fill="#4a5568">One command re-runs the deck over the review&#x27;s current range and reports what changed; it never accepts a proposal.</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
+  <g id="moved">
+    <rect x="40" y="130" width="580" height="230" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
+    <text x="58" y="164" font-size="20" font-weight="700" fill="#1f5c34">Moved: re-pinned without judgment</text>
+    <text x="58" y="192" font-size="15" fill="#1d2433">Current references whose lines only moved.</text>
+    <text x="58" y="214" font-size="15" fill="#1d2433">Whole-file references whose add, rename, mode or</text>
+    <text x="58" y="236" font-size="15" fill="#1d2433">delete event is still in the range survive edits</text>
+    <text x="58" y="258" font-size="15" fill="#1d2433">inside the file (a one-line gofmt no longer uncovers</text>
+    <text x="58" y="280" font-size="15" fill="#1d2433">256 lines).</text>
+  </g>
+  <g id="added">
+    <rect x="660" y="130" width="580" height="230" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="678" y="164" font-size="20" font-weight="700" fill="#1d3a7a">Added: new lines to the Item covering the file</text>
+    <text x="678" y="192" font-size="15" fill="#1d2433">Uncovered changed lines coalesce into runs per side;</text>
+    <text x="678" y="214" font-size="15" fill="#1d2433">a run goes to the one Item already holding that file,</text>
+    <text x="678" y="236" font-size="15" fill="#1d2433">as re-running cover --changed-lines for it would.</text>
+    <text x="678" y="258" font-size="15" fill="#1d2433">Several Items (or none) -&gt; reported, with candidates.</text>
+    <text x="678" y="280" font-size="15" fill="#1d2433">A whole-file reference never covers lines.</text>
+  </g>
+  <g id="judgment">
+    <rect x="40" y="410" width="580" height="250" rx="14" fill="#fdecec" stroke="#c53030" stroke-width="2"/>
+    <text x="58" y="444" font-size="20" font-weight="700" fill="#7b1d1d">Needs judgment: an edit landed inside</text>
+    <text x="58" y="472" font-size="15" fill="#1d2433">Stale references are listed with the proposed range,</text>
+    <text x="58" y="494" font-size="15" fill="#1d2433">its diff and the accept command. The proposed lines</text>
+    <text x="58" y="516" font-size="15" fill="#1d2433">are reserved, not handed out again as new.</text>
+    <text x="58" y="538" font-size="15" fill="#1d2433">Accept with repin --accept-proposed --review ID</text>
+    <text x="58" y="560" font-size="15" fill="#1d2433">after reading.</text>
+  </g>
+  <g id="command">
+    <rect x="660" y="410" width="580" height="250" rx="14" fill="#ffffff" stroke="#6b7280" stroke-width="2"/>
+    <text x="678" y="444" font-size="20" font-weight="700" fill="#374151">review refresh-coverage --review ID</text>
+    <text x="678" y="472" font-size="15" fill="#1d2433">[--repo PATH] [--dry-run] [--json]. Plain records edit</text>
+    <text x="678" y="494" font-size="15" fill="#1d2433">in place; apply-slide slides take one transaction each.</text>
+    <text x="678" y="516" font-size="15" fill="#1d2433">JSON: moved, added, needs_judgment, uncovered.</text>
+    <text x="678" y="538" font-size="15" fill="#1d2433">Tested: a push that moves, edits, adds lines and a file;</text>
+    <text x="678" y="560" font-size="15" fill="#1d2433">then an added file edited again.</text>
+  </g>
+  <line x1="620" y1="245" x2="656" y2="245" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="330" y1="360" x2="330" y2="406" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>

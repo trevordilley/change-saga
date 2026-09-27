@@ -1,0 +1,125 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:d7c13472432b49bc3449735b494389e2fbf6bab4fb98ea35c40aedb55cc0d0a9",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:a4349331cc0a406c4dba23831ad09a8cf7e2c2a422f3818c1892f3dbada9633e",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:84e72a6818fc908cc9bfba54a9bccb205dfdcde299f44b09e7066d090ff95559",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 128,
+      "end": 130,
+      "digest": "sha256:5a8f1ff6a936dd2314c290afc2992be6ff81fff0a429bf5001b68e9e5a2be006",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 140,
+      "end": 166,
+      "digest": "sha256:f23cbc863507935acb32cf5171d7decca6266563df81abd58bfec47863f5d858",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 352,
+      "end": 397,
+      "digest": "sha256:3fcaceaf3a83e8ed258e76beda2f1d351b48f48600394911fac87623a22cf900",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:442faa66cb2c046ee7fb903a45ac504b77bde44f514e85919e23734870659164",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:22e1f94ff107bee7193abe96e3df5b00494ff1cdea35e3b517f08e5b0ecc45c5",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 454,
+      "end": 454,
+      "digest": "sha256:f6bc9dae84f9993c92b72ecbb669183afbc8e2781195a44af36d6900e4704f0a",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 462,
+      "end": 462,
+      "digest": "sha256:876e56060c1c1a32cf6565d44d8585fb22e236b4ae4fa2f8b3664eef34aefccd",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 485,
+      "end": 485,
+      "digest": "sha256:27572432c8f6f1770322b0cb5c2774e2b8006efff1220dc4bf13a51770b93849",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 510,
+      "end": 510,
+      "digest": "sha256:595c550320f036888f346c1f3721da60c08c5fa18933d079292d0c898245701f",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 536,
+      "end": 544,
+      "digest": "sha256:4017417997fcf4c51fecc20e77c28db1b366ffff853673cd1b86b42c91c7418b",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 548,
+      "end": 553,
+      "digest": "sha256:4955395a247f19223b88f220b8be52bc4a20ae94d2f06435229c1a3a353f445c",
+      "note": "review create next steps and review list repair output."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/reviews.go",
+      "start": 564,
+      "end": 569,
+      "digest": "sha256:29259dbf519792df94118d2e0701c78493c6952fe11531c885f10b43cdfb87f1",
+      "note": "review create next steps and review list repair output."
+    }
+  ]
+}

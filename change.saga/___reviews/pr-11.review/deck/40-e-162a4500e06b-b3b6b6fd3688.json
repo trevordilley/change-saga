@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/grammar/commands.go",
+      "start": 555,
+      "end": 556,
+      "digest": "sha256:5aa3a57f34ca3d168b3eadba39524253322921222c89004db9fc87ad62f49bff",
+      "note": "Grammar: repin --accept-proposed and its scope flags."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/grammar/commands.go",
+      "start": 558,
+      "end": 565,
+      "digest": "sha256:abe349ea84ce464052ffa495c126567a36ec05464979534352f15c9c39868f1e",
+      "note": "Grammar: repin --accept-proposed and its scope flags."
+    }
+  ]
+}

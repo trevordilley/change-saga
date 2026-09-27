@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/review_match_test.go",
+      "start": 297,
+      "end": 300,
+      "digest": "sha256:60ef4dbc3dd259ffa8ea92f4ec7b2027a27cd5c683ab4a4ab36b31ddf6a260c9",
+      "note": "check agrees with status for a rewritten review."
+    }
+  ]
+}

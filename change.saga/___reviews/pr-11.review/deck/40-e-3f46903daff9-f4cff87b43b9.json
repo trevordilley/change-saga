@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/cli/stale_repair_test.go",
+      "start": 1,
+      "end": 136,
+      "digest": "sha256:2276d2df528262381bc93997a74c285300badd6135d5a175f3768a49cf1434ba",
+      "note": "Accept, refusal and managed-slide tests."
+    }
+  ]
+}

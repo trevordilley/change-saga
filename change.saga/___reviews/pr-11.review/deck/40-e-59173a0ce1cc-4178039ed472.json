@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/coderesolve/propose_test.go",
+      "digest": "sha256:56b4d880c288749b288eeef5ad59f06b48e248f951bf496d11f33c841a9fed99",
+      "note": "New file: proposal tests."
+    }
+  ]
+}

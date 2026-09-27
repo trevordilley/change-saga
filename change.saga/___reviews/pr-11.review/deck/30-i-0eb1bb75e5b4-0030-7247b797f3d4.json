@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reviews",
+  "slide": "signal",
+  "rank": 30,
+  "kind": "node",
+  "label": "review list and create",
+  "description": "Report the review's change against living references and propose ranges for stale Item references.",
+  "selector": {
+    "type": "element",
+    "element_id": "reviews"
+  }
+}

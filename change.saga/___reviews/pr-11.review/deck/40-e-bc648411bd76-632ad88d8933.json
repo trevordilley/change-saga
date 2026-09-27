@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/references/integration.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:45273c49d2591b357d76bc41c920c95c3a3900443c12d8db5d044f3aa7581abf",
+      "note": "The integration reference's cheaper repair loop."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/references/integration.md",
+      "start": 39,
+      "end": 43,
+      "digest": "sha256:dd3b89f49f637f5dc6316cca67991c83eecb9748f92e101b5b4cc24b7f21d94d",
+      "note": "The integration reference's cheaper repair loop."
+    },
+    {
+      "commit": "a0966485a7285ccccc1cc42ed7135ac68526904f",
+      "path": "skills/change-saga/references/integration.md",
+      "start": 62,
+      "end": 63,
+      "digest": "sha256:cffcf6ed9d4ba6af046451bdd0481ea9672eb131acf82f5d4f344d54cd93810e",
+      "note": "The integration reference's cheaper repair loop."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "skills/change-saga/references/integration.md",
+      "start": 31,
+      "end": 60,
+      "digest": "sha256:b26b10e34e0182f0bada374e301cd89b0022a7eae99e9b09997690dd4082f066",
+      "note": "The integration reference's cheaper repair loop."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "skills/change-saga/references/integration.md",
+      "start": 68,
+      "end": 73,
+      "digest": "sha256:c0b3a318d23d5886e8f076656919bca82e591010981c2f4d018f86f6022efa99",
+      "note": "The integration reference's cheaper repair loop."
+    },
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "skills/change-saga/references/integration.md",
+      "start": 92,
+      "end": 93,
+      "digest": "sha256:2ec605e024982f52781c239979061c6bdb6ab6611aabc88920fb96c1d0b0dae2",
+      "note": "The integration reference's cheaper repair loop."
+    }
+  ]
+}

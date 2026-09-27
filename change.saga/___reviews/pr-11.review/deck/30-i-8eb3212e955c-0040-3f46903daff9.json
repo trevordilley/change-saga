@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "tests",
+  "slide": "accept",
+  "rank": 40,
+  "kind": "node",
+  "label": "Accept tests",
+  "description": "Prove accept, refusal and the managed-slide transaction end to end.",
+  "selector": {
+    "type": "element",
+    "element_id": "tests"
+  }
+}

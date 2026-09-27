@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui, sans-serif">
+  <rect width="1280" height="720" fill="#f7f8fa"/>
+  <text x="40" y="56" font-size="30" font-weight="700" fill="#1d2433">Every report leads with what your change made stale</text>
+  <text x="40" y="90" font-size="17" fill="#4a5568">On PR #10 the one number that mattered took a Python script over a 379 KB JSON; now it is the first line.</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
+  <g id="rule">
+    <rect x="40" y="130" width="560" height="250" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="58" y="164" font-size="20" font-weight="700" fill="#1d3a7a">One rule, everywhere</text>
+    <text x="58" y="192" font-size="15" fill="#1d2433">Stale at the head AND (current at the merge-base</text>
+    <text x="58" y="214" font-size="15" fill="#1d2433">OR pinned at a commit the base lacks).</text>
+    <text x="58" y="236" font-size="15" fill="#1d2433">Counts coverage evidence, claims, terms, quality</text>
+    <text x="58" y="258" font-size="15" fill="#1d2433">evidence and technical definitions&#x27; references.</text>
+    <text x="58" y="280" font-size="15" fill="#1d2433">Review list/create read only files the range touches.</text>
+  </g>
+  <g id="reconcile">
+    <rect x="660" y="130" width="580" height="250" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
+    <text x="678" y="164" font-size="20" font-weight="700" fill="#1f5c34">reconcile</text>
+    <text x="678" y="192" font-size="15" fill="#1d2433">&quot;Your change made N references stale&quot;, one line</text>
+    <text x="678" y="214" font-size="15" fill="#1d2433">each: owner, old -&gt; proposed range, accept command.</text>
+    <text x="678" y="236" font-size="15" fill="#1d2433">Pre-existing debt is a count; --all lists its tasks.</text>
+    <text x="678" y="258" font-size="15" fill="#1d2433">Gaps, re-reads, user choices: one line each.</text>
+    <text x="678" y="280" font-size="15" fill="#1d2433">JSON: leading summary; --json --summary alone.</text>
+    <text x="678" y="302" font-size="15" fill="#1d2433">This repo: 1,449 lines -&gt; 167; 3.8 MB -&gt; 17 KB.</text>
+  </g>
+  <g id="status">
+    <rect x="40" y="430" width="560" height="230" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>
+    <text x="58" y="464" font-size="20" font-weight="700" fill="#7a4d05">status --against</text>
+    <text x="58" y="492" font-size="15" fill="#1d2433">Under the header, the same lines;</text>
+    <text x="58" y="514" font-size="15" fill="#1d2433">JSON stale_by_change (absent when observing).</text>
+    <text x="58" y="536" font-size="13" font-family="ui-monospace, monospace" fill="#1d2433">Your change made 1 reference stale:</text>
+    <text x="58" y="558" font-size="13" font-family="ui-monospace, monospace" fill="#1d2433">  urn:...:fragment:queue-design  src/queue.go#L3-L6 -&gt; ...</text>
+  </g>
+  <g id="reviews">
+    <rect x="660" y="430" width="580" height="230" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="678" y="464" font-size="20" font-weight="700" fill="#4c1d95">review list and review create</text>
+    <text x="678" y="492" font-size="15" fill="#1d2433">review list: per open review, the living references its</text>
+    <text x="678" y="514" font-size="15" fill="#1d2433">change made stale, and proposals on stale Item</text>
+    <text x="678" y="536" font-size="15" fill="#1d2433">references (JSON repair). review create: next steps</text>
+    <text x="678" y="558" font-size="15" fill="#1d2433">say &quot;your change made N ... stale&quot; when it did.</text>
+  </g>
+  <line x1="600" y1="255" x2="656" y2="255" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="320" y1="380" x2="320" y2="426" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="940" y1="380" x2="940" y2="426" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>

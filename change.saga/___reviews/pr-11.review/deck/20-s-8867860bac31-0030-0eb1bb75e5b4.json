@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "signal",
+  "deck": "pr-11",
+  "title": "Every report leads with what your change made stale",
+  "rank": 30,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-8867860bac31-0030-0eb1bb75e5b4.svg",
+  "takeaway": "Every report leads with what your change made stale",
+  "reading_order": [
+    "rule",
+    "reconcile",
+    "status",
+    "reviews"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "path": "internal/grammar/commands.go",
+      "start": 670,
+      "end": 673,
+      "digest": "sha256:1d3236471f84eb6d9ebc9a4c2c4a1ccb666ceb75ebc5d5f946afd316d2ce0af0",
+      "note": "Grammar: reconcile --summary and --all."
+    }
+  ]
+}

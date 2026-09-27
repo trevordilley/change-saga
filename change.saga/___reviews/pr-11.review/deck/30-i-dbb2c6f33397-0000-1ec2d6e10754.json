@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "moved",
+  "slide": "refresh",
+  "rank": 0,
+  "kind": "node",
+  "label": "Moved",
+  "description": "Re-pins references whose lines only moved and whole-file references whose file event persists.",
+  "selector": {
+    "type": "element",
+    "element_id": "moved"
+  }
+}
