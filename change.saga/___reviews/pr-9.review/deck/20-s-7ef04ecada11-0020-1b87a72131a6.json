@@ -12,6 +12,7 @@
   "reading_order": [
     "index-reviews",
     "project-deck",
-    "target-hint"
+    "target-hint",
+    "stale-record"
   ]
 }

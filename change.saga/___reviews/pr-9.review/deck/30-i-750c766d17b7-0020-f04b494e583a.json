@@ -5,7 +5,7 @@
   "rank": 20,
   "kind": "node",
   "label": "README and docs",
-  "description": "The README, adoption doc, and changelog lead with creating a review for a PR.",
+  "description": "The README starts with a review (the prompt, what you get, the commands), then grows gradually, then explains the connected body of knowledge that pays dividends; the adoption doc and changelog follow.",
   "selector": {
     "type": "element",
     "element_id": "readme"

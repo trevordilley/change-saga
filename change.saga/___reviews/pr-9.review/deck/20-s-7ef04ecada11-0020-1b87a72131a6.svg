@@ -34,6 +34,13 @@
     <text x="820" y="468" font-size="15" fill="#1d2433">targets follow the documentation's.</text>
   </g>
   <line x1="800" y1="215" x2="764" y2="215" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="40" y="580" font-size="18" fill="#1d2433">Before: query children --parent &lt;review slide&gt; → not_found, and "Known targets" listed only the Saga root.</text>
-  <text x="40" y="615" font-size="18" fill="#1d2433">After: every level of a review is reachable, so an agent that reads only through query can navigate it.</text>
+  <text x="40" y="560" font-size="17" fill="#1d2433">Before: query children --parent &lt;review slide&gt; → not_found; "Known targets" listed only the Saga root.</text>
+  <text x="40" y="588" font-size="17" fill="#1d2433">After: every level of a review is reachable through query.</text>
+  <g id="stale-record">
+    <rect x="800" y="530" width="440" height="150" rx="14" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="820" y="565" font-size="20" font-weight="700" fill="#4c1d95">review list names stale records</text>
+    <text x="820" y="597" font-size="15" fill="#1d2433">After new commits, each stale reference</text>
+    <text x="820" y="617" font-size="15" fill="#1d2433">prints its evidence record, ready for</text>
+    <text x="820" y="637" font-size="15" fill="#1d2433">replace-coverage (found while dogfooding).</text>
+  </g>
 </svg>
