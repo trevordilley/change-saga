@@ -63,7 +63,7 @@ state understandable without interaction.
 
 A diagram source is an ordered list of explicitly positioned elements; the CLI
 renders it to the slide's SVG. Pass it as `"diagram"` instead of `"asset"` in
-an `apply-slide` request. `change-saga spec --json` publishes its vocabulary
+an `apply-slide` request, for an implementation or a review deck alike. `change-saga spec --json` publishes its vocabulary
 under `implementation_deck.diagram_source`; list icons with `change-saga
 diagram icons`.
 
@@ -96,7 +96,8 @@ Revise a published diagram with `change-saga diagram edit --slide TARGET
 `move` (`dx`, `dy`), `remove` (`cascade` for dependents), `style`, `align`,
 `distribute`, and `canvas`. The edit republishes through `apply-slide` with
 the slide's Items, evidence, and criterion links unchanged, so stale evidence
-or criteria still refuse it. Use `change-saga diagram get` for one element's
+or criteria still refuse it. Name a review slide by its URN or with
+`--review ID`. Use `change-saga diagram get` for one element's
 exact properties before editing it, and `change-saga diagram describe` to read
 the slide; do not read or edit the stored source or SVG. Validation reports
 every problem in a batch at once; fix them all before retrying. Run
@@ -133,6 +134,17 @@ Once a slide is transaction-managed, update its complete desired state through
 `apply-slide`; older partial slide, Item, and evidence mutations refuse it.
 After a post-publication durability error, query the current snapshot before
 retrying; the published record and its referenced asset must remain intact.
+
+### Review deck slides
+
+Author review slides the same way: set `"review": ID` instead of `"deck"` (or
+pass `apply-slide --review ID`). A review Item carries no `evidence` or
+`criterion_links`, and may set `record` to a Saga record to open beside the
+change. After publishing, cover each Item's code with `change-saga cover
+--target ITEM-URN --path PATH --changed-lines`; that coverage stays attached
+across later revisions and diagram edits. A revision that drops a covered Item
+is refused until its coverage is removed. Read review slides with `diagram
+describe`, and check them with `diagram check` and `visual-qa --review ID`.
 
 ## Compose semantic, reviewable visuals
 
