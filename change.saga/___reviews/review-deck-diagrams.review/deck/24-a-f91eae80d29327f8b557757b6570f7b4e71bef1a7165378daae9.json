@@ -1,0 +1,202 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "Slides come from apply-slide; a review Item's code still comes from cover",
+      "x": 40,
+      "y": 36,
+      "width": 1200,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "request",
+      "kind": "node",
+      "shape": "rect",
+      "label": "apply-slide --review",
+      "detail": "Items: no evidence, no criteria",
+      "x": 40,
+      "y": 140,
+      "width": 330,
+      "height": 110,
+      "style": "normal",
+      "icon": "lucide:file"
+    },
+    {
+      "id": "item",
+      "kind": "node",
+      "shape": "service",
+      "label": "Review Item",
+      "detail": "25-t record, revisioned",
+      "x": 470,
+      "y": 140,
+      "width": 280,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "cover",
+      "kind": "node",
+      "shape": "rect",
+      "label": "cover --changed-lines",
+      "detail": "the review's own range",
+      "x": 40,
+      "y": 420,
+      "width": 330,
+      "height": 110,
+      "style": "normal",
+      "icon": "lucide:terminal"
+    },
+    {
+      "id": "evidence",
+      "kind": "node",
+      "shape": "datastore",
+      "label": "40-e coverage",
+      "detail": "keyed by Item URN",
+      "x": 470,
+      "y": 405,
+      "width": 280,
+      "height": 140,
+      "style": "normal"
+    },
+    {
+      "id": "loader",
+      "kind": "node",
+      "shape": "service",
+      "label": "Loader",
+      "detail": "review decks attach both",
+      "x": 880,
+      "y": 280,
+      "width": 340,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "publishes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "request",
+      "to": "item",
+      "points": [
+        {
+          "x": 370,
+          "y": 195
+        },
+        {
+          "x": 470,
+          "y": 195
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "writes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "cover",
+      "to": "evidence",
+      "points": [
+        {
+          "x": 370,
+          "y": 475
+        },
+        {
+          "x": 470,
+          "y": 475
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "item-loaded",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "item",
+      "to": "loader",
+      "points": [
+        {
+          "x": 750,
+          "y": 195
+        },
+        {
+          "x": 1050,
+          "y": 195
+        },
+        {
+          "x": 1050,
+          "y": 280
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "evidence-attached",
+      "kind": "edge",
+      "label": "attach",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "evidence",
+      "to": "loader",
+      "points": [
+        {
+          "x": 750,
+          "y": 475
+        },
+        {
+          "x": 1050,
+          "y": 475
+        },
+        {
+          "x": 1050,
+          "y": 390
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 800,
+        "y": 480,
+        "width": 90,
+        "height": 26
+      }
+    },
+    {
+      "id": "guard",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Dropping a covered Item is refused",
+      "detail": "remove its coverage first; nothing is orphaned",
+      "x": 40,
+      "y": 590,
+      "width": 560,
+      "height": 90,
+      "style": "warning",
+      "icon": "lucide:triangle-alert"
+    },
+    {
+      "id": "migration",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Hand-written slides migrate",
+      "detail": "first update keeps their cover records",
+      "x": 660,
+      "y": 590,
+      "width": 560,
+      "height": 90,
+      "style": "normal",
+      "icon": "lucide:git-branch"
+    }
+  ]
+}

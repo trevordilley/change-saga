@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "What an agent can rely on, and what checks it",
+      "x": 40,
+      "y": 36,
+      "width": 1200,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "contract-frame",
+      "kind": "group",
+      "shape": "boundary",
+      "label": "Contract",
+      "x": 40,
+      "y": 120,
+      "width": 560,
+      "height": 520,
+      "style": "boundary"
+    },
+    {
+      "id": "schema",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Request schema",
+      "detail": "review or deck; record; evidence only for implementation",
+      "x": 30,
+      "y": 70,
+      "width": 500,
+      "height": 120,
+      "parent": "contract-frame",
+      "style": "normal"
+    },
+    {
+      "id": "usage",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Usage, grammar, spec",
+      "detail": "--review on apply-slide, diagram, visual-qa",
+      "x": 30,
+      "y": 280,
+      "width": 500,
+      "height": 120,
+      "parent": "contract-frame",
+      "style": "normal",
+      "icon": "lucide:terminal"
+    },
+    {
+      "id": "proof-frame",
+      "kind": "group",
+      "shape": "boundary",
+      "label": "Proof",
+      "x": 680,
+      "y": 120,
+      "width": 560,
+      "height": 520,
+      "style": "boundary"
+    },
+    {
+      "id": "go-tests",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Go tests",
+      "detail": "publish, cover, edit, describe, guards, migrate",
+      "x": 30,
+      "y": 70,
+      "width": 500,
+      "height": 120,
+      "parent": "proof-frame",
+      "style": "primary",
+      "icon": "lucide:check"
+    },
+    {
+      "id": "e2e",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Browser E2E",
+      "detail": "diagram review slide renders in the viewer",
+      "x": 30,
+      "y": 280,
+      "width": 500,
+      "height": 120,
+      "parent": "proof-frame",
+      "style": "primary",
+      "icon": "lucide:check"
+    },
+    {
+      "id": "schema-proved",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "schema",
+      "to": "go-tests",
+      "points": [
+        {
+          "x": 570,
+          "y": 250
+        },
+        {
+          "x": 710,
+          "y": 250
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "usage-proved",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "usage",
+      "to": "e2e",
+      "points": [
+        {
+          "x": 570,
+          "y": 460
+        },
+        {
+          "x": 710,
+          "y": 460
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

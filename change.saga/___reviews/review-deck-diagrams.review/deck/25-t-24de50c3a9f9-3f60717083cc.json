@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "deck": "review-deck-diagrams",
+  "slide": "contract-and-proof",
+  "current": "sha256:25e5f5872a3a619d2de79bdc74bba09ff02ff360665141c24a642b6a9495652a",
+  "revisions": [
+    {
+      "snapshot": "sha256:25e5f5872a3a619d2de79bdc74bba09ff02ff360665141c24a642b6a9495652a",
+      "request_id": "rdd-s4-create",
+      "created_at": "2026-09-27T03:05:38.29691Z",
+      "asset": "24-a-e0342cf5fa03b9584e06cb2bc2e7616187a2d077912bb0a176c9.svg",
+      "asset_digest": "sha256:e0342cf5fa03b9584e06cb2bc2e7616187a2d077912bb0a176c9f7fa1a58e1fa",
+      "slide": {
+        "version": 4,
+        "id": "contract-and-proof",
+        "deck": "review-deck-diagrams",
+        "title": "The public contract and its proof",
+        "rank": 40,
+        "intent": "prove",
+        "layout": "evidence",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e0342cf5fa03b9584e06cb2bc2e7616187a2d077912bb0a176c9.svg",
+        "takeaway": "The schema, usage, and grammar admit review requests; Go and browser tests prove create, edit, cover, describe, guards, migration, and rendering.",
+        "reading_order": [
+          "schema",
+          "usage",
+          "go-tests",
+          "e2e"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "schema",
+            "slide": "contract-and-proof",
+            "rank": 10,
+            "kind": "statement",
+            "label": "Request schema",
+            "description": "The request admits review (or a review deck URN) instead of deck, and item record; evidence and criterion links stay required for implementation Items and are refused for review Items.",
+            "selector": {
+              "type": "element",
+              "element_id": "schema"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "usage",
+            "slide": "contract-and-proof",
+            "rank": 20,
+            "kind": "statement",
+            "label": "Usage, grammar, spec",
+            "description": "apply-slide, the diagram commands, and visual-qa document --review in their usage lines, the command grammar, and spec --json.",
+            "selector": {
+              "type": "element",
+              "element_id": "usage"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "go-tests",
+            "slide": "contract-and-proof",
+            "rank": 30,
+            "kind": "example",
+            "label": "Go tests",
+            "description": "Tests publish, retry, cover, edit, describe, get, and check a diagram review slide; exercise every guard and a merged review; migrate a hand-written slide; select review slides for visual QA.",
+            "selector": {
+              "type": "element",
+              "element_id": "go-tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "e2e",
+            "slide": "contract-and-proof",
+            "rank": 40,
+            "kind": "example",
+            "label": "Browser E2E",
+            "description": "A diagram review slide published with apply-slide and covered with cover renders in the review viewer with element hotspots and its code diff.",
+            "selector": {
+              "type": "element",
+              "element_id": "e2e"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-b75dea575a536a1a98b1532a12eba3b0d6ac1ada049956c5c30a.json",
+        "source_digest": "sha256:b75dea575a536a1a98b1532a12eba3b0d6ac1ada049956c5c30a2303a9e08829",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}
