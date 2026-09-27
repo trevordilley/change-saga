@@ -337,7 +337,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	pins := map[string]bool{}
-	updates := map[string]map[int]coderef.Reference{}
+	edits := []evidenceEdit{}
 	for _, value := range owned {
 		exists, _ := resolver.CommitExists(ctx, value.Code.Commit)
 		if exists {
@@ -371,10 +371,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		}
 		repinned := value.Code
 		repinned.Commit, repinned.Path, repinned.Start, repinned.End = ontoCommit, resolution.Location.Path, resolution.Location.Start, resolution.Location.End
-		if updates[value.EvidenceFile] == nil {
-			updates[value.EvidenceFile] = map[int]coderef.Reference{}
-		}
-		updates[value.EvidenceFile][value.Index] = repinned
+		edits = append(edits, evidenceEdit{EvidenceFile: value.EvidenceFile, Reference: value.Index, previous: value.Code, replacement: repinned})
 		result.Repinned = append(result.Repinned, repinChange{EvidenceFile: value.EvidenceFile, Reference: value.Index, From: value.Code.Location(), To: repinned.Location(), ByDigest: byDigest})
 	}
 	if *branch != "" {
@@ -408,23 +405,22 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	if companion {
 		result.Cursor = ontoCommit
 	}
-	if !*dryRun && (len(updates) > 0 || len(result.Commits) > 0 || companion || frozen != nil) {
+	// Every edit is resolved and validated before anything is written: plain
+	// evidence files in memory, slides apply-slide manages by a dry run of
+	// their complete-slide update. A failure here leaves the Saga untouched.
+	prepared, _, err := prepareEvidenceEdits(ctx, root, *repoDir, edits, "repin-onto")
+	if err != nil {
+		return err
+	}
+	if !*dryRun && (len(edits) > 0 || len(result.Commits) > 0 || companion || frozen != nil) {
 		err = authorMutation(root, func(locked *saga.Saga) error {
-			for relative, changed := range updates {
-				path := filepath.Join(locked.Root, filepath.FromSlash(relative))
-				var file saga.CodeFile
-				if err := readStrictJSONFile(path, &file); err != nil {
-					return fmt.Errorf("read %s: %w", relative, err)
+			if frozen != nil {
+				if review := locked.FindReview(frozen.ID); review == nil || review.Merged != nil {
+					return fmt.Errorf("review %s changed while re-pinning; run repin again", frozen.ID)
 				}
-				for index, reference := range changed {
-					if index < 1 || index > len(file.References) || file.References[index-1].Location().String() != referenceKeyBefore(result.Repinned, relative, index) {
-						return fmt.Errorf("%s changed while re-pinning; run repin again", relative)
-					}
-					file.References[index-1] = reference
-				}
-				if err := store.WriteJSON(path, file, false); err != nil {
-					return err
-				}
+			}
+			if err := prepared.writePlain(locked); err != nil {
+				return err
 			}
 			if companion {
 				// A companion Saga now documents the landed commit.
@@ -433,11 +429,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 				}
 			}
 			if frozen != nil {
-				review := locked.FindReview(frozen.ID)
-				if review == nil || review.Merged != nil {
-					return fmt.Errorf("review %s changed while re-pinning; run repin again", frozen.ID)
-				}
-				if err := reviewstore.WriteFrozen(review, frozen.ReviewMerge); err != nil {
+				if err := reviewstore.WriteFrozen(locked.FindReview(frozen.ID), frozen.ReviewMerge); err != nil {
 					return err
 				}
 			}
@@ -461,6 +453,11 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 			return nil
 		})
 		if err != nil {
+			return err
+		}
+		// Slides apply-slide manages were validated above; each is published
+		// through its own complete-slide transaction.
+		if _, err := prepared.writeManaged(ctx); err != nil {
 			return err
 		}
 	}
@@ -576,17 +573,6 @@ func firstParent(ctx context.Context, checkout, onto string) ([]byte, error) {
 		return gitexec.Stable(ctx, checkout, []string{onto}, []string{"first-parent", onto}, query)
 	}
 	return query()
-}
-
-// referenceKeyBefore returns the key the planned change expects to replace,
-// so a concurrent edit to the record is detected rather than overwritten.
-func referenceKeyBefore(changes []repinChange, file string, index int) string {
-	for _, change := range changes {
-		if change.EvidenceFile == file && change.Reference == index {
-			return change.From.String()
-		}
-	}
-	return ""
 }
 
 // branchCommits returns the commits the change brought, ancestors first: every

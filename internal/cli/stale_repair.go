@@ -512,70 +512,91 @@ func writeAcceptedEvidence(ctx context.Context, root, repo string, accepted []ac
 // writeEvidenceEdits writes edits. A plain evidence file is rewritten in
 // place, keeping its path (so its owner) and every other reference; a slide
 // apply-slide manages gets one complete-slide update built from its current
-// revision with only the edited evidence changed. A dry run writes nothing
-// and still validates each slide update.
+// revision with only the edited evidence changed. Every edit is resolved and
+// validated before any is written, so a failure leaves the Saga untouched. A
+// dry run writes nothing and still validates each slide update.
 func writeEvidenceEdits(ctx context.Context, root, repo string, edits []evidenceEdit, requestPrefix string, dryRun bool) ([]SlideTransactionResult, error) {
-	plain := map[string][]evidenceEdit{}
+	prepared, results, err := prepareEvidenceEdits(ctx, root, repo, edits, requestPrefix)
+	if err != nil || dryRun {
+		return results, err
+	}
+	if len(prepared.plain) > 0 {
+		if err := authorMutation(root, prepared.writePlain); err != nil {
+			return nil, err
+		}
+	}
+	return prepared.writeManaged(ctx)
+}
+
+// preparedEvidence is a set of evidence edits every one of which has been
+// resolved and validated: plain files by applying their edits in memory,
+// managed slides by a dry run of their complete-slide update.
+type preparedEvidence struct {
+	root, repo string
+	plain      map[string][]evidenceEdit
+	managed    []preparedSlide
+}
+
+type preparedSlide struct {
+	target  string
+	request SlideTransactionRequest
+}
+
+// applyEvidenceEdits applies fileEdits to references, refusing when a
+// replaced reference is no longer the one the edit was made from.
+func applyEvidenceEdits(label string, references []coderef.Reference, fileEdits []evidenceEdit) ([]coderef.Reference, error) {
+	for _, edit := range fileEdits {
+		if edit.Reference == 0 {
+			references = append(references, edit.replacement)
+			continue
+		}
+		if edit.Reference > len(references) || references[edit.Reference-1].Key() != edit.previous.Key() {
+			return nil, fmt.Errorf("%s changed while its evidence was being repaired; run the command again", label)
+		}
+		references[edit.Reference-1] = edit.replacement
+	}
+	return references, nil
+}
+
+// prepareEvidenceEdits resolves and validates edits without writing: each
+// plain file is read and edited in memory, and each managed slide's update is
+// built and checked with a dry run, whose results it returns.
+func prepareEvidenceEdits(ctx context.Context, root, repo string, edits []evidenceEdit, requestPrefix string) (*preparedEvidence, []SlideTransactionResult, error) {
+	prepared := &preparedEvidence{root: root, repo: repo, plain: map[string][]evidenceEdit{}}
 	managed := map[string][]evidenceEdit{}
 	for _, edit := range edits {
 		if record, _, _, ok := managedEvidence(edit.EvidenceFile); ok {
 			managed[record] = append(managed[record], edit)
 		} else {
-			plain[edit.EvidenceFile] = append(plain[edit.EvidenceFile], edit)
+			prepared.plain[edit.EvidenceFile] = append(prepared.plain[edit.EvidenceFile], edit)
 		}
 	}
-	apply := func(label string, references []coderef.Reference, fileEdits []evidenceEdit) ([]coderef.Reference, error) {
-		for _, edit := range fileEdits {
-			if edit.Reference == 0 {
-				references = append(references, edit.replacement)
-				continue
-			}
-			if edit.Reference > len(references) || references[edit.Reference-1].Key() != edit.previous.Key() {
-				return nil, fmt.Errorf("%s changed while its evidence was being repaired; run the command again", label)
-			}
-			references[edit.Reference-1] = edit.replacement
-		}
-		return references, nil
-	}
-	if !dryRun && len(plain) > 0 {
-		err := authorMutation(root, func(locked *saga.Saga) error {
-			for _, relative := range sortedKeys(plain) {
-				path := filepath.Join(locked.Root, filepath.FromSlash(relative))
-				var file saga.CodeFile
-				if err := readStrictJSONFile(path, &file); err != nil {
-					return fmt.Errorf("read %s: %w", relative, err)
-				}
-				references, err := apply(relative, file.References, plain[relative])
-				if err != nil {
-					return err
-				}
-				file.References = references
-				if err := store.WriteJSON(path, file, false); err != nil {
-					return err
-				}
-			}
-			return nil
-		})
-		if err != nil {
-			return nil, err
-		}
+	if _, err := prepared.editPlain(root); err != nil {
+		return nil, nil, err
 	}
 	results := []SlideTransactionResult{}
+	if len(managed) == 0 {
+		return prepared, results, nil
+	}
+	document, _, err := saga.Load(root)
+	if err != nil {
+		return nil, nil, err
+	}
+	base, err := os.Getwd()
+	if err != nil {
+		return nil, nil, err
+	}
 	for _, record := range sortedKeys(managed) {
-		document, _, err := saga.Load(root)
-		if err != nil {
-			return nil, err
-		}
 		slide, err := findManagedSlide(document, record)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		if slide == nil {
-			return nil, fmt.Errorf("no slide is recorded at %s", record)
+			return nil, nil, fmt.Errorf("no slide is recorded at %s", record)
 		}
 		request, err := currentSlideRequest(document, slide)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		fingerprint := sha256.New()
 		fmt.Fprint(fingerprint, request.ExpectedSnapshot)
@@ -592,25 +613,77 @@ func writeEvidenceEdits(ctx context.Context, root, repo string, edits []evidence
 				if item.ID != itemID || evidenceIndex >= len(item.Evidence) {
 					continue
 				}
-				references, err := apply(file, item.Evidence[evidenceIndex].References, byEvidence[file])
+				references, err := applyEvidenceEdits(file, item.Evidence[evidenceIndex].References, byEvidence[file])
 				if err != nil {
-					return nil, err
+					return nil, nil, err
 				}
 				item.Evidence[evidenceIndex].References = references
 				found = true
 			}
 			if !found {
-				return nil, fmt.Errorf("%s changed while its evidence was being repaired; run the command again", file)
+				return nil, nil, fmt.Errorf("%s changed while its evidence was being repaired; run the command again", file)
 			}
 		}
 		request.RequestID = requestPrefix + "-" + hex.EncodeToString(fingerprint.Sum(nil))[:16]
-		base, err := os.Getwd()
+		result, err := ApplySlideTransaction(ctx, root, base, repo, request, true)
+		if err != nil {
+			return nil, nil, fmt.Errorf("update slide %s: %w", slide.Target, err)
+		}
+		results = append(results, result)
+		prepared.managed = append(prepared.managed, preparedSlide{target: slide.Target, request: request})
+	}
+	return prepared, results, nil
+}
+
+// editPlain reads every plain evidence file under sagaRoot and applies its
+// edits in memory, writing nothing.
+func (prepared *preparedEvidence) editPlain(sagaRoot string) (map[string]saga.CodeFile, error) {
+	files := map[string]saga.CodeFile{}
+	for _, relative := range sortedKeys(prepared.plain) {
+		var file saga.CodeFile
+		if err := readStrictJSONFile(filepath.Join(sagaRoot, filepath.FromSlash(relative)), &file); err != nil {
+			return nil, fmt.Errorf("read %s: %w", relative, err)
+		}
+		references, err := applyEvidenceEdits(relative, file.References, prepared.plain[relative])
 		if err != nil {
 			return nil, err
 		}
-		result, err := ApplySlideTransaction(ctx, root, base, repo, request, dryRun)
+		file.References = references
+		files[relative] = file
+	}
+	return files, nil
+}
+
+// writePlain writes the plain evidence files under the Saga lock. It edits
+// every file again from what is on disk before writing the first one, so a
+// file changed since preparation refuses the whole write.
+func (prepared *preparedEvidence) writePlain(locked *saga.Saga) error {
+	files, err := prepared.editPlain(locked.Root)
+	if err != nil {
+		return err
+	}
+	for _, relative := range sortedKeys(files) {
+		if err := store.WriteJSON(filepath.Join(locked.Root, filepath.FromSlash(relative)), files[relative], false); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// writeManaged publishes the prepared complete-slide updates.
+func (prepared *preparedEvidence) writeManaged(ctx context.Context) ([]SlideTransactionResult, error) {
+	results := []SlideTransactionResult{}
+	if len(prepared.managed) == 0 {
+		return results, nil
+	}
+	base, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+	for _, slide := range prepared.managed {
+		result, err := ApplySlideTransaction(ctx, prepared.root, base, prepared.repo, slide.request, false)
 		if err != nil {
-			return nil, fmt.Errorf("update slide %s: %w", slide.Target, err)
+			return nil, fmt.Errorf("update slide %s: %w", slide.target, err)
 		}
 		results = append(results, result)
 	}
