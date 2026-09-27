@@ -85,7 +85,8 @@ diagram icons`.
   wrap, or shorten the text.
 - Name styles; define custom ones under `styles`. Graphics use `currentColor`
   for their style's stroke instead of hard-coded colors.
-- Mark titles, lifelines, and chrome `decorative`. Everything else is semantic,
+- Mark lifelines and chrome `decorative`, and a title unless it carries a
+  `note` (a decorative element is hidden from readers, so it cannot). Everything else is semantic,
   appears in the description, and needs a `description` when its label does
   not stand alone. A semantic element cannot sit in a decorative group.
 - Give every Item an `element` selector naming a semantic element ID.
