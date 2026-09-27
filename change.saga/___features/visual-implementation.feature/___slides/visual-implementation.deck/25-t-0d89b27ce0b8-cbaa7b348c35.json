@@ -1,0 +1,362 @@
+{
+  "version": 1,
+  "deck": "visual-implementation",
+  "slide": "in-memory-saga",
+  "current": "sha256:e8d6de5dbdf5e939acf29d2dc9997b18082b831e7b11213c143d2ad7f088f5d2",
+  "revisions": [
+    {
+      "snapshot": "sha256:e8d6de5dbdf5e939acf29d2dc9997b18082b831e7b11213c143d2ad7f088f5d2",
+      "request_id": "in-memory-saga-create",
+      "created_at": "2026-09-27T10:54:02.368366Z",
+      "asset": "24-a-96822578dcb6c7107443cd34f1d31f4dd7873514b504bbb99032.svg",
+      "asset_digest": "sha256:96822578dcb6c7107443cd34f1d31f4dd7873514b504bbb99032b57463e2c868",
+      "slide": {
+        "version": 4,
+        "id": "in-memory-saga",
+        "deck": "visual-implementation",
+        "title": "Pages render from an in-memory Saga",
+        "rank": 60,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-96822578dcb6c7107443cd34f1d31f4dd7873514b504bbb99032.svg",
+        "takeaway": "Every request takes a shared stat-based freshness check; memoized Saga files, related reviews and the outline are rebuilt only when their digest changes.",
+        "reading_order": [
+          "freshness-check",
+          "saga-files-memo",
+          "git-head-reader",
+          "related-review-memo",
+          "background-watcher",
+          "outline-scope"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "freshness-check",
+            "slide": "in-memory-saga",
+            "rank": 0,
+            "kind": "node",
+            "label": "One shared freshness check per request",
+            "description": "One check serves every request that arrived before it began: it hashes path, size and mtime of the Saga's files into outline, documentation and files digests, and reads both HEADs alongside.",
+            "selector": {
+              "type": "element",
+              "element_id": "freshness-check"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/freshness.go",
+                  "start": 143,
+                  "end": 204,
+                  "digest": "sha256:804bee04cd95232b5db78f77e162e4fe7f372892aa7794b0c5e27d1bc243de01",
+                  "note": "checkedSince and the stat walk it shares."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/freshness.go",
+                  "start": 218,
+                  "end": 268,
+                  "digest": "sha256:cf9110811faafdbda2a64fa734dc31bdf7fea54ffeef94d1a4c7560fcae2afc7",
+                  "note": "checkedSince and the stat walk it shares."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/freshness_test.go",
+                  "start": 25,
+                  "end": 70,
+                  "digest": "sha256:9aa42d5c4be9c601cdcdedec8443c22f4de38319de8f50d9b37ce06a5a8e2605",
+                  "note": "One check per page, never answering a request that arrived after it began."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "freshness-check-review-decision-freshness-current",
+              "criterion": "urn:change-saga:change-saga:story:review-decision-freshness:criterion:current",
+              "story_revision": "urn:change-saga:change-saga:story:review-decision-freshness:revision:r1",
+              "rationale": "Each page is built from a check begun after its request arrived, so a decision's currency is judged against the Saga and heads on disk."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "saga-files-memo",
+            "slide": "in-memory-saga",
+            "rank": 10,
+            "kind": "node",
+            "label": "Saga files memoized by documentation digest",
+            "description": "Narrative, records, projected records, tests, inventory and the deck viewer HTML are each decoded at most once per documentation digest; a new digest replaces the whole set.",
+            "selector": {
+              "type": "element",
+              "element_id": "saga-files-memo"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/sagafiles.go",
+                  "start": 21,
+                  "end": 95,
+                  "digest": "sha256:aa005ba76d4ef36e96b26eac857641173823c903cf9cc317562cae7b18ef9f08",
+                  "note": "The sagaFiles memo and its per-part builds."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/sagafiles.go",
+                  "start": 189,
+                  "end": 196,
+                  "digest": "sha256:d8a94be37f5e66e33a9be68fa70c4b17eb509d39c37303a3d3de5edbdde1d692",
+                  "note": "The sagaFiles memo and its per-part builds."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "saga-files-memo-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The deck viewer a feature page opens is rendered once per Saga state from these memoized files."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "git-head-reader",
+            "slide": "in-memory-saga",
+            "rank": 20,
+            "kind": "node",
+            "label": "headReader reads HEAD from .git files",
+            "description": "Resolves HEAD from .git/HEAD, the loose ref, then packed-refs, with no git process, falling back to git rev-parse for reftable or refs it cannot find. The heads are part of the cache keys.",
+            "selector": {
+              "type": "element",
+              "element_id": "git-head-reader"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/githead.go",
+                  "start": 17,
+                  "end": 88,
+                  "digest": "sha256:a2232f26a392ea5d5a65ed34b291743debe26bb580b2cd8faf9855874c873a82",
+                  "note": "headReader and its use in the freshness check."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/freshness.go",
+                  "start": 41,
+                  "end": 71,
+                  "digest": "sha256:30101f1e986083fecb2dbc0b1c7ce451c9c1643c5df2c21fdb5b5a01faafea27",
+                  "note": "headReader and its use in the freshness check."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/githead_test.go",
+                  "start": 15,
+                  "end": 40,
+                  "digest": "sha256:2cdf3a102f6bcd81b4c1af08ab5b387a0533911610a378ca863411122fd48b3c",
+                  "note": "HEAD read from loose and packed refs."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "git-head-reader-source-checkout-context-in-repository-checkout",
+              "criterion": "urn:change-saga:change-saga:story:source-checkout-context:criterion:in-repository-checkout",
+              "story_revision": "urn:change-saga:change-saga:story:source-checkout-context:revision:r1",
+              "rationale": "Pages resolve the source checkout's HEAD from its own .git files, the context of a Saga opened without --repo."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "related-review-memo",
+            "slide": "in-memory-saga",
+            "rank": 30,
+            "kind": "node",
+            "label": "Related-review index memoized by its inputs",
+            "description": "Keyed by the full files digest, source HEAD and checkout attribute files; per-review touched targets are cached by commits and documented code, and an incomplete build is never kept.",
+            "selector": {
+              "type": "element",
+              "element_id": "related-review-memo"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/relatedreviews.go",
+                  "start": 78,
+                  "end": 154,
+                  "digest": "sha256:114c7c93b6badbc6ba886e4549bc60b0cd215c532f9ada092f9df686be01ed9d",
+                  "note": "relatedReviewCache and its key."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/relatedreviews_test.go",
+                  "start": 259,
+                  "end": 282,
+                  "digest": "sha256:6ef33631aca1007c867813e05d77df2d21e591f7e0fea5b40ee2803a56ce3983",
+                  "note": "A rebuilt index follows a changed input."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "related-review-memo-reverse-impact-reverse-path",
+              "criterion": "urn:change-saga:change-saga:story:reverse-impact:criterion:reverse-path",
+              "story_revision": "urn:change-saga:change-saga:story:reverse-impact:revision:r1",
+              "rationale": "A page's related reviews are found from the code its evidence pins, a reverse path from that code to the reviews that changed it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "background-watcher",
+            "slide": "in-memory-saga",
+            "rank": 40,
+            "kind": "node",
+            "label": "A 500 ms poll warms caches after an edit",
+            "description": "While requests arrived in the last two minutes, a check runs every 500 ms; when the outline or related key changes it renders requirements, decks, reviews and terms in the background. Pages never wait on it.",
+            "selector": {
+              "type": "element",
+              "element_id": "background-watcher"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/freshness.go",
+                  "start": 84,
+                  "end": 110,
+                  "digest": "sha256:45ec292763d46499a568487245c3192ffa3155e54110d27961b9e5da79867a93",
+                  "note": "The watcher and the cache warm-up."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/freshness.go",
+                  "start": 388,
+                  "end": 455,
+                  "digest": "sha256:90364a875713be49b8b78345b44e5f0b75be3222a46cb78120d85b56aeb3e8d7",
+                  "note": "The watcher and the cache warm-up."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/freshness_test.go",
+                  "start": 104,
+                  "end": 175,
+                  "digest": "sha256:7dee72406137ac29eef253b3b9d0d3ad8b3e9114c9803a5bdbdd79d9f79ec85d",
+                  "note": "The watcher rebuilds after an edit; decks are built once per Saga state."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "background-watcher-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "After an edit the deck viewer is rebuilt in the background, so opening a deck does not wait on the rebuild."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "outline-scope",
+            "slide": "in-memory-saga",
+            "rank": 50,
+            "kind": "statement",
+            "label": "The shell's outline skips evidence and reviews",
+            "description": "The outline digest leaves out code evidence, reviews, claims, verifications, landmarks and fragment bodies, and a shell walk never enters them, so shell pages do not grow with evidence.",
+            "selector": {
+              "type": "element",
+              "element_id": "outline-scope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/outline.go",
+                  "start": 11,
+                  "end": 73,
+                  "digest": "sha256:69d42d145b65f842a439429eacf7e4198347cc5c9a8e3efad07743accec8b2c7",
+                  "note": "The outline cache and the shell walk's scope."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/freshness.go",
+                  "start": 362,
+                  "end": 370,
+                  "digest": "sha256:da88db080a6aefa8b7a886307375a78176d6043812fe75291f55e0b96e595c51",
+                  "note": "The outline cache and the shell walk's scope."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "outline-scope-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The sidebar and deck navigation are rebuilt only when the outline changes, not when evidence or reviews do."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-5c26074a120e540a3bf58be9b74615bb2772dd13ed6aa2180b6f.json",
+        "source_digest": "sha256:5c26074a120e540a3bf58be9b74615bb2772dd13ed6aa2180b6f676bb74d16dc",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

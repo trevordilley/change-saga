@@ -1,0 +1,276 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Stale evidence is repaired from a proposal",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "stale-ref",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Stale reference",
+      "detail": "an edit landed inside its range",
+      "x": 40,
+      "y": 150,
+      "width": 250,
+      "height": 100,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "propose-range",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Propose",
+      "detail": "the pinned range mapped through the diff hunks",
+      "x": 360,
+      "y": 130,
+      "width": 380,
+      "height": 140,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "stale-by-change",
+      "kind": "node",
+      "shape": "rect",
+      "label": "stale_by_change",
+      "detail": "made stale by this change, or older debt",
+      "x": 360,
+      "y": 320,
+      "width": 380,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "repin-onto-freeze",
+      "kind": "node",
+      "shape": "rect",
+      "label": "repin --onto",
+      "detail": "a landed change: re-pin, freeze, record",
+      "x": 360,
+      "y": 480,
+      "width": 380,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "accept-proposed-scope",
+      "kind": "node",
+      "shape": "rect",
+      "label": "repin --accept-proposed",
+      "detail": "one scope: record, target, review or all",
+      "x": 820,
+      "y": 130,
+      "width": 390,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "refresh-coverage",
+      "kind": "node",
+      "shape": "rect",
+      "label": "review refresh-coverage",
+      "detail": "re-pins moves, reports new lines",
+      "x": 820,
+      "y": 280,
+      "width": 390,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "validate-then-write",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Prepare, then write",
+      "detail": "every edit checked before the first is written",
+      "x": 820,
+      "y": 440,
+      "width": 390,
+      "height": 150,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "proposes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "stale-ref",
+      "to": "propose-range",
+      "points": [
+        {
+          "x": 290,
+          "y": 200
+        },
+        {
+          "x": 360,
+          "y": 200
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "accepts",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "propose-range",
+      "to": "accept-proposed-scope",
+      "points": [
+        {
+          "x": 740,
+          "y": 185
+        },
+        {
+          "x": 820,
+          "y": 185
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "refreshes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "propose-range",
+      "to": "refresh-coverage",
+      "points": [
+        {
+          "x": 740,
+          "y": 245
+        },
+        {
+          "x": 780,
+          "y": 245
+        },
+        {
+          "x": 780,
+          "y": 335
+        },
+        {
+          "x": 820,
+          "y": 335
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "counts",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "propose-range",
+      "to": "stale-by-change",
+      "points": [
+        {
+          "x": 550,
+          "y": 270
+        },
+        {
+          "x": 550,
+          "y": 320
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "accept-writes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "accept-proposed-scope",
+      "to": "validate-then-write",
+      "points": [
+        {
+          "x": 1210,
+          "y": 185
+        },
+        {
+          "x": 1250,
+          "y": 185
+        },
+        {
+          "x": 1250,
+          "y": 515
+        },
+        {
+          "x": 1210,
+          "y": 515
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "refresh-writes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "refresh-coverage",
+      "to": "validate-then-write",
+      "points": [
+        {
+          "x": 1015,
+          "y": 390
+        },
+        {
+          "x": 1015,
+          "y": 440
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "onto-writes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "repin-onto-freeze",
+      "to": "validate-then-write",
+      "points": [
+        {
+          "x": 740,
+          "y": 535
+        },
+        {
+          "x": 820,
+          "y": 535
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "explicit",
+      "kind": "text",
+      "label": "Accepting is explicit: a proposal says where the lines went, never that the explanation still holds.",
+      "x": 60,
+      "y": 628,
+      "width": 1170,
+      "height": 48,
+      "style": "caption",
+      "decorative": true
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">Review slides publish through the same transaction</title>
+  <desc id="diagram-desc">apply-slide --review publishes review slides like deck slides; their Items get code only from cover, which stays attached across revisions.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-applies" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-publishes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-covers" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 32)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">Review slides publish through the same transaction</tspan></text>
+  </g>
+  <g id="request" data-diagram-kind="node" transform="translate(40 140)" role="group" aria-label="Slide request">
+    <rect width="260" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Slide request</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">a diagram source, or an asset</tspan></text>
+  </g>
+  <g id="review-transaction-route" data-diagram-kind="node" transform="translate(380 120)" role="group" aria-label="apply-slide --review">
+    <rect width="400" height="150" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">apply-slide --review</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">locked, idempotent, snapshot-checked</tspan></text>
+  </g>
+  <g id="review-deck" data-diagram-kind="node" transform="translate(860 130)" role="group" aria-label="Open review's deck">
+    <path d="M0 14C0 -4.667 370 -4.667 370 14V116C370 134.667 0 134.667 0 116Z" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <path d="M0 14C0 33 370 33 370 14" fill="none" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="62" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="62">Open review's deck</tspan></text>
+    <text x="18" y="95" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="95">slide record and rendered SVG</tspan></text>
+  </g>
+  <g id="no-evidence-on-review-items" data-diagram-kind="node" transform="translate(380 320)" role="group" aria-label="Review Items carry no evidence">
+    <rect width="400" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Review Items carry no evidence</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">their code comes from cover</tspan></text>
+  </g>
+  <g id="cover-survives-revisions" data-diagram-kind="node" transform="translate(860 320)" role="group" aria-label="Coverage stays attached">
+    <rect width="370" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Coverage stays attached</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">cover records follow the Item</tspan></text>
+  </g>
+  <g id="keep-referenced-items" data-diagram-kind="node" transform="translate(380 480)" role="group" aria-label="Covered or commented Items stay">
+    <rect width="400" height="110" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve"><tspan x="18" y="37">Covered or commented Items stay</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve"><tspan x="18" y="73">dropping or renaming one is refused</tspan></text>
+  </g>
+  <g id="review-diagram-commands" data-diagram-kind="node" transform="translate(860 470)" role="group" aria-label="diagram edit, describe, check">
+    <rect width="370" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">diagram edit, describe, check</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">with --review</tspan></text>
+  </g>
+  <g id="visual-qa-review" data-diagram-kind="node" transform="translate(860 580)" role="group" aria-label="visual-qa --review">
+    <rect width="370" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">visual-qa --review</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">rendered in the review viewer</tspan></text>
+  </g>
+  <g id="applies" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="request to review-transaction-route" data-from="request" data-to="review-transaction-route">
+    <path d="M300 195 L380 195" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-applies)"/>
+  </g>
+  <g id="publishes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="review-transaction-route to review-deck" data-from="review-transaction-route" data-to="review-deck">
+    <path d="M780 195 L860 195" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-publishes)"/>
+  </g>
+  <g id="covers" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="review-deck to cover-survives-revisions" data-from="review-deck" data-to="cover-survives-revisions">
+    <path d="M1045 260 L1045 320" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-covers)"/>
+  </g>
+</svg>

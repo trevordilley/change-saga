@@ -1,0 +1,757 @@
+{
+  "version": 1,
+  "deck": "comparison-history",
+  "slide": "git-sessions",
+  "current": "sha256:af7e126c12cab9c1b12f23f287fc7d21c528d440e6627726abaf216e31ccf581",
+  "revisions": [
+    {
+      "snapshot": "sha256:e1cbd51c2ed2fa7c9123ea2f807b08810f15ad4fa328c7c2f2d278519379ec59",
+      "request_id": "git-sessions-create",
+      "created_at": "2026-09-27T10:51:26.645682Z",
+      "asset": "24-a-a571ab083c75f12407a75bd579f2cbb7251bde0c60f4173a6a4b.svg",
+      "asset_digest": "sha256:a571ab083c75f12407a75bd579f2cbb7251bde0c60f4173a6a4be2d228627c68",
+      "slide": {
+        "version": 4,
+        "id": "git-sessions",
+        "deck": "comparison-history",
+        "title": "Git is asked once per command",
+        "rank": 60,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-a571ab083c75f12407a75bd579f2cbb7251bde0c60f4173a6a4b.svg",
+        "takeaway": "Each command or request asks Git through one session; answers are kept only while they cannot change: by ref digest, or by immutable commit ID.",
+        "reading_order": [
+          "git-session",
+          "batch-processes",
+          "diff-commits-shared",
+          "ref-state-cache",
+          "stable-cache",
+          "server-isolation"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "git-session",
+            "slide": "git-sessions",
+            "rank": 0,
+            "kind": "region",
+            "label": "One Git session per command or request",
+            "description": "gitexec.Begin opens one session per CLI command and BeginIsolated one per reviewer request; nested calls share it, output is memoized by arguments, and the outermost end() stops its processes.",
+            "selector": {
+              "type": "element",
+              "element_id": "git-session"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/gitexec.go",
+                  "start": 60,
+                  "end": 97,
+                  "digest": "sha256:9ed72599b638af77590baf654b29c534e7af48c9ead475e25d429a8aaa9be4d4",
+                  "note": "Begin, BeginIsolated and the session they attach."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/gitexec.go",
+                  "start": 134,
+                  "end": 172,
+                  "digest": "sha256:a705feffcf9c656e4f160e52662b90919d24abe1b8dc217ae9677702c77eec59",
+                  "note": "Begin, BeginIsolated and the session they attach."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/check.go",
+                  "start": 33,
+                  "end": 35,
+                  "digest": "sha256:d09e3f18c36662f8bfefdb6a1e1178adb05aabf67853e37ecc495d7b3e503097",
+                  "note": "Begin, BeginIsolated and the session they attach."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/gitexec_test.go",
+                  "start": 152,
+                  "end": 214,
+                  "digest": "sha256:cc718c9406cd83c05c42eb128577dc2b4cf684fa74ad1931b4bdce2a2ed96254",
+                  "note": "A session memoizes per session, a nested Begin shares it, and end() stops its processes."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "git-session-comparison-context-merge-base-range",
+              "criterion": "urn:change-saga:change-saga:story:comparison-context:criterion:merge-base-range",
+              "story_revision": "urn:change-saga:change-saga:story:comparison-context:revision:r1",
+              "rationale": "A comparison resolves its base, head and merge-base inside one session, so Git is asked each question once per command."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "batch-processes",
+            "slide": "git-sessions",
+            "rank": 10,
+            "kind": "node",
+            "label": "Long-lived cat-file batch process",
+            "description": "ResolveCommit, ReadObject and object lookups share one cat-file --batch-command per repository, pooled up to GOMAXPROCS; after repeated failures callers fall back to a one-shot git process.",
+            "selector": {
+              "type": "element",
+              "element_id": "batch-processes"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/gitexec.go",
+                  "start": 202,
+                  "end": 269,
+                  "digest": "sha256:3554553f3e85e47e458b104eafb0d345a974facf8913935cc80e8b76c051e7d3",
+                  "note": "Revision and object reads through the batch process."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/batch.go",
+                  "start": 136,
+                  "end": 254,
+                  "digest": "sha256:2eda7943e405c9bdc9814380db35e165f057a8332cb99f78d395d791f8608e15",
+                  "note": "Revision and object reads through the batch process."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "batch-processes-comparison-context-merge-base-range",
+              "criterion": "urn:change-saga:change-saga:story:comparison-context:criterion:merge-base-range",
+              "story_revision": "urn:change-saga:change-saga:story:comparison-context:revision:r1",
+              "rationale": "The revisions a comparison names are resolved to commits through the session's cat-file process."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "diff-commits-shared",
+            "slide": "git-sessions",
+            "rank": 20,
+            "kind": "node",
+            "label": "diffCommits shares one diff-tree process",
+            "description": "Diffs of two full commit IDs go through one diff-tree --stdin process per format and pathspec, whose output is what git diff prints; other revisions, or a failed process, run git diff itself.",
+            "selector": {
+              "type": "element",
+              "element_id": "diff-commits-shared"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitdiff/gitdiff.go",
+                  "start": 417,
+                  "end": 449,
+                  "digest": "sha256:6eb9393ab75b544d4f342648df5870542a5438e23eb08379845e8ef8b8dc9546",
+                  "note": "diffCommits and its one-shot fallback."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitdiff/gitdiff.go",
+                  "start": 483,
+                  "end": 491,
+                  "digest": "sha256:12788684bf4421d01126cc550086bffe94713f0bfeea5039b9c3c8bdddce70ba",
+                  "note": "diffCommits and its one-shot fallback."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "diff-commits-shared-changed-code-explained-separate-states",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The canonical diff it returns is the set of changed lines that coverage classifies as covered, uncovered, overlapping or stale."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "ref-state-cache",
+            "slide": "git-sessions",
+            "rank": 30,
+            "kind": "node",
+            "label": "Ref and config answers kept by state digest",
+            "description": "TopLevel, RepoOutput, ConfigOutput and branch or HEAD commits are kept across commands and served only while a digest of HEAD, refs, packed-refs and every config file is unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "ref-state-cache"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/refstate.go",
+                  "start": 283,
+                  "end": 354,
+                  "digest": "sha256:a9973fa5bc1ea97ec60218471c7144262b9c60bf0c6c15a332e010b25a4e2447",
+                  "note": "The ref-state cache and the digest that guards it."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/refstate.go",
+                  "start": 407,
+                  "end": 516,
+                  "digest": "sha256:358f0b4fa115614be26fba00dcb7ec1e6f75d6e17d9699d6781edfd49c6b0dfb",
+                  "note": "The ref-state cache and the digest that guards it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ref-state-cache-source-checkout-context-in-repository-checkout",
+              "criterion": "urn:change-saga:change-saga:story:source-checkout-context:criterion:in-repository-checkout",
+              "story_revision": "urn:change-saga:change-saga:story:source-checkout-context:revision:r1",
+              "rationale": "The checkout a Saga lives in is found with TopLevel, answered from this cache while the repository's refs and config are unchanged."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stable-cache",
+            "slide": "git-sessions",
+            "rank": 40,
+            "kind": "node",
+            "label": "Stable answers of immutable commit IDs",
+            "description": "Ancestry, merge-base and diff answers of full commit IDs are kept in a 64 MiB LRU, served only after cat-file confirms the objects still exist, never with grafts, shallow or replace refs, and never for failures.",
+            "selector": {
+              "type": "element",
+              "element_id": "stable-cache"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable.go",
+                  "start": 15,
+                  "end": 65,
+                  "digest": "sha256:17f29fdcfd15055620feedcf0060df0cc9e9ff784d7d6c59659f73a508cf7cdf",
+                  "note": "The Stable cache and its safety checks."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable.go",
+                  "start": 95,
+                  "end": 123,
+                  "digest": "sha256:c1eed21c5538cf1e73900e1bcea7af8266d43d6af6f1d7c0c4b0c7dba4248e83",
+                  "note": "The Stable cache and its safety checks."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable.go",
+                  "start": 214,
+                  "end": 225,
+                  "digest": "sha256:155a05ea58486de6f01f540a3a1e96bbd0fb299a39739c7222e6539ade8bdbc2",
+                  "note": "The Stable cache and its safety checks."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable_test.go",
+                  "start": 14,
+                  "end": 73,
+                  "digest": "sha256:576dfb8efb49ba093bab1b202b90049eb5964625dc7229273594c693acb7d380",
+                  "note": "Stable keeps successes across sessions, never failures, and forgets pruned commits."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "stable-cache-comparison-context-merge-base-range",
+              "criterion": "urn:change-saga:change-saga:story:comparison-context:criterion:merge-base-range",
+              "story_revision": "urn:change-saga:change-saga:story:comparison-context:revision:r1",
+              "rationale": "The merge-base of two commit IDs never changes, so compare mode reads it from Git once and then from this cache."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "server-isolation",
+            "slide": "git-sessions",
+            "rank": 50,
+            "kind": "risk",
+            "label": "The server keeps commit diffs per request",
+            "description": "A nested .gitattributes edit can change a patch and no cache key covers it, so serve marks the process long-running and each request's isolated session keeps its diffs only until the response is written.",
+            "selector": {
+              "type": "element",
+              "element_id": "server-isolation"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 524,
+                  "end": 536,
+                  "digest": "sha256:72859665b3efe5f0e82860615ae01c07eb1d95d368890f27a88352b93940664c",
+                  "note": "withGitSession and the isolated diff store."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable.go",
+                  "start": 67,
+                  "end": 93,
+                  "digest": "sha256:9cb5f1f0d87208788e12734f0cdd6157000bcba5046e019a8acb281afb0b0908",
+                  "note": "withGitSession and the isolated diff store."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 151,
+                  "end": 154,
+                  "digest": "sha256:0aad49ee40deba050f5cb52aa1dfa796ae80bd530272773141f626ceafbbb18b",
+                  "note": "withGitSession and the isolated diff store."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitdiff/gitdiff_test.go",
+                  "start": 679,
+                  "end": 708,
+                  "digest": "sha256:ec4bd0f2b67adc9906631caacf425cd13a7e4e7a109f4451a0c7472dd0841383",
+                  "note": "An isolated session ignores a diff cached before a nested attributes edit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "server-isolation-changed-code-explained-separate-states",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The reviewer re-reads commit diffs for each request, so its coverage never classifies lines from a patch read before an attributes edit."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-a3b02a5191c38e2558b71babef67c3402b6ef8009497b595b4c9.json",
+        "source_digest": "sha256:a3b02a5191c38e2558b71babef67c3402b6ef8009497b595b4c9add2d3a0b31c",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:af7e126c12cab9c1b12f23f287fc7d21c528d440e6627726abaf216e31ccf581",
+      "parent_snapshots": [
+        "sha256:e1cbd51c2ed2fa7c9123ea2f807b08810f15ad4fa328c7c2f2d278519379ec59"
+      ],
+      "request_id": "git-sessions-update-1",
+      "created_at": "2026-09-27T10:52:48.019974Z",
+      "asset": "24-a-fba54c3b0073e4330c551fdcb371aeec8000c62bd9a7ee03fdfd.svg",
+      "asset_digest": "sha256:fba54c3b0073e4330c551fdcb371aeec8000c62bd9a7ee03fdfdeae0059f8b88",
+      "slide": {
+        "version": 4,
+        "id": "git-sessions",
+        "deck": "comparison-history",
+        "title": "Git is asked once per command",
+        "rank": 60,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-fba54c3b0073e4330c551fdcb371aeec8000c62bd9a7ee03fdfd.svg",
+        "takeaway": "Each command or request asks Git through one session; answers are kept only while they cannot change: by ref digest, or by immutable commit ID.",
+        "reading_order": [
+          "git-session",
+          "batch-processes",
+          "diff-commits-shared",
+          "ref-state-cache",
+          "stable-cache",
+          "server-isolation"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "git-session",
+            "slide": "git-sessions",
+            "rank": 0,
+            "kind": "region",
+            "label": "One Git session per command or request",
+            "description": "gitexec.Begin opens one session per CLI command and BeginIsolated one per reviewer request; nested calls share it, output is memoized by arguments, and the outermost end() stops its processes.",
+            "selector": {
+              "type": "element",
+              "element_id": "git-session"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/gitexec.go",
+                  "start": 60,
+                  "end": 97,
+                  "digest": "sha256:9ed72599b638af77590baf654b29c534e7af48c9ead475e25d429a8aaa9be4d4",
+                  "note": "Begin, BeginIsolated and the session they attach."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/gitexec.go",
+                  "start": 134,
+                  "end": 172,
+                  "digest": "sha256:a705feffcf9c656e4f160e52662b90919d24abe1b8dc217ae9677702c77eec59",
+                  "note": "Begin, BeginIsolated and the session they attach."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/check.go",
+                  "start": 33,
+                  "end": 35,
+                  "digest": "sha256:d09e3f18c36662f8bfefdb6a1e1178adb05aabf67853e37ecc495d7b3e503097",
+                  "note": "Begin, BeginIsolated and the session they attach."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/gitexec_test.go",
+                  "start": 152,
+                  "end": 214,
+                  "digest": "sha256:cc718c9406cd83c05c42eb128577dc2b4cf684fa74ad1931b4bdce2a2ed96254",
+                  "note": "A session memoizes per session, a nested Begin shares it, and end() stops its processes."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "git-session-comparison-context-merge-base-range",
+              "criterion": "urn:change-saga:change-saga:story:comparison-context:criterion:merge-base-range",
+              "story_revision": "urn:change-saga:change-saga:story:comparison-context:revision:r1",
+              "rationale": "A comparison resolves its base, head and merge-base inside one session, so Git is asked each question once per command."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "batch-processes",
+            "slide": "git-sessions",
+            "rank": 10,
+            "kind": "node",
+            "label": "Long-lived cat-file batch process",
+            "description": "ResolveCommit, ReadObject and object lookups share one cat-file --batch-command per repository, pooled up to GOMAXPROCS; after repeated failures callers fall back to a one-shot git process.",
+            "selector": {
+              "type": "element",
+              "element_id": "batch-processes"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/gitexec.go",
+                  "start": 202,
+                  "end": 269,
+                  "digest": "sha256:3554553f3e85e47e458b104eafb0d345a974facf8913935cc80e8b76c051e7d3",
+                  "note": "Revision and object reads through the batch process."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/batch.go",
+                  "start": 136,
+                  "end": 254,
+                  "digest": "sha256:2eda7943e405c9bdc9814380db35e165f057a8332cb99f78d395d791f8608e15",
+                  "note": "Revision and object reads through the batch process."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "batch-processes-comparison-context-merge-base-range",
+              "criterion": "urn:change-saga:change-saga:story:comparison-context:criterion:merge-base-range",
+              "story_revision": "urn:change-saga:change-saga:story:comparison-context:revision:r1",
+              "rationale": "The revisions a comparison names are resolved to commits through the session's cat-file process."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "diff-commits-shared",
+            "slide": "git-sessions",
+            "rank": 20,
+            "kind": "node",
+            "label": "diffCommits shares one diff-tree process",
+            "description": "Diffs of two full commit IDs go through one diff-tree --stdin process per format and pathspec, whose output is what git diff prints; other revisions, or a failed process, run git diff itself.",
+            "selector": {
+              "type": "element",
+              "element_id": "diff-commits-shared"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitdiff/gitdiff.go",
+                  "start": 417,
+                  "end": 449,
+                  "digest": "sha256:6eb9393ab75b544d4f342648df5870542a5438e23eb08379845e8ef8b8dc9546",
+                  "note": "diffCommits and its one-shot fallback."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitdiff/gitdiff.go",
+                  "start": 483,
+                  "end": 491,
+                  "digest": "sha256:12788684bf4421d01126cc550086bffe94713f0bfeea5039b9c3c8bdddce70ba",
+                  "note": "diffCommits and its one-shot fallback."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "diff-commits-shared-changed-code-explained-separate-states",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The canonical diff it returns is the set of changed lines that coverage classifies as covered, uncovered, overlapping or stale."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "ref-state-cache",
+            "slide": "git-sessions",
+            "rank": 30,
+            "kind": "node",
+            "label": "Ref and config answers kept by state digest",
+            "description": "TopLevel, RepoOutput, ConfigOutput and branch or HEAD commits are kept across commands and served only while a digest of HEAD, refs, packed-refs and every config file is unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "ref-state-cache"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/refstate.go",
+                  "start": 283,
+                  "end": 354,
+                  "digest": "sha256:a9973fa5bc1ea97ec60218471c7144262b9c60bf0c6c15a332e010b25a4e2447",
+                  "note": "The ref-state cache and the digest that guards it."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/refstate.go",
+                  "start": 407,
+                  "end": 516,
+                  "digest": "sha256:358f0b4fa115614be26fba00dcb7ec1e6f75d6e17d9699d6781edfd49c6b0dfb",
+                  "note": "The ref-state cache and the digest that guards it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ref-state-cache-source-checkout-context-in-repository-checkout",
+              "criterion": "urn:change-saga:change-saga:story:source-checkout-context:criterion:in-repository-checkout",
+              "story_revision": "urn:change-saga:change-saga:story:source-checkout-context:revision:r1",
+              "rationale": "The checkout a Saga lives in is found with TopLevel, answered from this cache while the repository's refs and config are unchanged."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stable-cache",
+            "slide": "git-sessions",
+            "rank": 40,
+            "kind": "node",
+            "label": "Stable answers of immutable commit IDs",
+            "description": "Ancestry, merge-base and diff answers of full commit IDs are kept in a 64 MiB LRU, served only after cat-file confirms the objects still exist, never with grafts, shallow or replace refs, and never for failures.",
+            "selector": {
+              "type": "element",
+              "element_id": "stable-cache"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable.go",
+                  "start": 15,
+                  "end": 65,
+                  "digest": "sha256:17f29fdcfd15055620feedcf0060df0cc9e9ff784d7d6c59659f73a508cf7cdf",
+                  "note": "The Stable cache and its safety checks."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable.go",
+                  "start": 95,
+                  "end": 123,
+                  "digest": "sha256:c1eed21c5538cf1e73900e1bcea7af8266d43d6af6f1d7c0c4b0c7dba4248e83",
+                  "note": "The Stable cache and its safety checks."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable.go",
+                  "start": 214,
+                  "end": 225,
+                  "digest": "sha256:155a05ea58486de6f01f540a3a1e96bbd0fb299a39739c7222e6539ade8bdbc2",
+                  "note": "The Stable cache and its safety checks."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable_test.go",
+                  "start": 14,
+                  "end": 73,
+                  "digest": "sha256:576dfb8efb49ba093bab1b202b90049eb5964625dc7229273594c693acb7d380",
+                  "note": "Stable keeps successes across sessions, never failures, and forgets pruned commits."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "stable-cache-comparison-context-merge-base-range",
+              "criterion": "urn:change-saga:change-saga:story:comparison-context:criterion:merge-base-range",
+              "story_revision": "urn:change-saga:change-saga:story:comparison-context:revision:r1",
+              "rationale": "The merge-base of two commit IDs never changes, so compare mode reads it from Git once and then from this cache."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "server-isolation",
+            "slide": "git-sessions",
+            "rank": 50,
+            "kind": "risk",
+            "label": "The server keeps commit diffs per request",
+            "description": "A nested .gitattributes edit can change a patch and no cache key covers it, so serve marks the process long-running and each request's isolated session keeps its diffs only until the response is written.",
+            "selector": {
+              "type": "element",
+              "element_id": "server-isolation"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 524,
+                  "end": 536,
+                  "digest": "sha256:72859665b3efe5f0e82860615ae01c07eb1d95d368890f27a88352b93940664c",
+                  "note": "withGitSession and the isolated diff store."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitexec/stable.go",
+                  "start": 67,
+                  "end": 93,
+                  "digest": "sha256:9cb5f1f0d87208788e12734f0cdd6157000bcba5046e019a8acb281afb0b0908",
+                  "note": "withGitSession and the isolated diff store."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 151,
+                  "end": 154,
+                  "digest": "sha256:0aad49ee40deba050f5cb52aa1dfa796ae80bd530272773141f626ceafbbb18b",
+                  "note": "withGitSession and the isolated diff store."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/gitdiff/gitdiff_test.go",
+                  "start": 679,
+                  "end": 708,
+                  "digest": "sha256:ec4bd0f2b67adc9906631caacf425cd13a7e4e7a109f4451a0c7472dd0841383",
+                  "note": "An isolated session ignores a diff cached before a nested attributes edit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "server-isolation-changed-code-explained-separate-states",
+              "criterion": "urn:change-saga:change-saga:story:changed-code-explained:criterion:separate-states",
+              "story_revision": "urn:change-saga:change-saga:story:changed-code-explained:revision:r1",
+              "rationale": "The reviewer re-reads commit diffs for each request, so its coverage never classifies lines from a patch read before an attributes edit."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-a82dfe74b1f5a347210dae77a1695e0d4d019b432990bc8c8e67.json",
+        "source_digest": "sha256:a82dfe74b1f5a347210dae77a1695e0d4d019b432990bc8c8e674f5e26d4c83a",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

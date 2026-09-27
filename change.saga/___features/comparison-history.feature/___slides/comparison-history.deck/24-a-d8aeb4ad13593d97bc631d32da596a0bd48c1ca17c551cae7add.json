@@ -1,0 +1,258 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "A renamed Saga keeps its history",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "app-era",
+      "kind": "node",
+      "shape": "rect",
+      "label": "app.saga era",
+      "x": 60,
+      "y": 105,
+      "width": 380,
+      "height": 64,
+      "style": "secondary"
+    },
+    {
+      "id": "move",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Move commit",
+      "x": 490,
+      "y": 105,
+      "width": 260,
+      "height": 64,
+      "style": "secondary"
+    },
+    {
+      "id": "change-era",
+      "kind": "node",
+      "shape": "rect",
+      "label": "change.saga era",
+      "x": 800,
+      "y": 105,
+      "width": 430,
+      "height": 64,
+      "style": "secondary"
+    },
+    {
+      "id": "then-move",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "app-era",
+      "to": "move",
+      "points": [
+        {
+          "x": 440,
+          "y": 137
+        },
+        {
+          "x": 490,
+          "y": 137
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "then-change",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "move",
+      "to": "change-era",
+      "points": [
+        {
+          "x": 750,
+          "y": 137
+        },
+        {
+          "x": 800,
+          "y": 137
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "lineage-of",
+      "kind": "node",
+      "shape": "rect",
+      "label": "sagalineage.Of",
+      "detail": "verified moves and birth, cached per repository, path and head",
+      "x": 60,
+      "y": 220,
+      "width": 300,
+      "height": 240,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "path-at-commit",
+      "kind": "node",
+      "shape": "rect",
+      "label": "PathAt(commit)",
+      "detail": "where the Saga was, or not yet born",
+      "x": 450,
+      "y": 220,
+      "width": 360,
+      "height": 100,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "eras-history",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Eras",
+      "detail": "one commit range per path",
+      "x": 450,
+      "y": 360,
+      "width": 360,
+      "height": 100,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "saved-view-renamed",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Saved views",
+      "detail": "read where the Saga was then",
+      "x": 900,
+      "y": 220,
+      "width": 330,
+      "height": 100,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "move-reasons",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Change reasons",
+      "detail": "a pure move revises nothing",
+      "x": 900,
+      "y": 360,
+      "width": 330,
+      "height": 100,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "to-path",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "lineage-of",
+      "to": "path-at-commit",
+      "points": [
+        {
+          "x": 360,
+          "y": 270
+        },
+        {
+          "x": 450,
+          "y": 270
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "to-eras",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "lineage-of",
+      "to": "eras-history",
+      "points": [
+        {
+          "x": 360,
+          "y": 410
+        },
+        {
+          "x": 450,
+          "y": 410
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "path-used",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "path-at-commit",
+      "to": "saved-view-renamed",
+      "points": [
+        {
+          "x": 810,
+          "y": 270
+        },
+        {
+          "x": 900,
+          "y": 270
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "moves-used",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "eras-history",
+      "to": "move-reasons",
+      "points": [
+        {
+          "x": 810,
+          "y": 410
+        },
+        {
+          "x": 900,
+          "y": 410
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "init-change-saga",
+      "kind": "node",
+      "shape": "rect",
+      "label": "init creates change.saga, named after the repository it records",
+      "x": 60,
+      "y": 520,
+      "width": 1170,
+      "height": 80,
+      "style": "normal"
+    },
+    {
+      "id": "same-saga",
+      "kind": "text",
+      "label": "A move is followed only when the manifest id is unchanged and most files arrive byte for byte; a reused name is not the same Saga.",
+      "x": 60,
+      "y": 628,
+      "width": 1170,
+      "height": 48,
+      "style": "caption",
+      "decorative": true
+    }
+  ]
+}

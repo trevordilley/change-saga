@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Review slides publish through the same transaction",
+      "x": 60,
+      "y": 32,
+      "width": 1160,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "request",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Slide request",
+      "detail": "a diagram source, or an asset",
+      "x": 40,
+      "y": 140,
+      "width": 260,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "review-transaction-route",
+      "kind": "node",
+      "shape": "rect",
+      "label": "apply-slide --review",
+      "detail": "locked, idempotent, snapshot-checked",
+      "x": 380,
+      "y": 120,
+      "width": 400,
+      "height": 150,
+      "style": "primary",
+      "wrap": true
+    },
+    {
+      "id": "review-deck",
+      "kind": "node",
+      "shape": "datastore",
+      "label": "Open review's deck",
+      "detail": "slide record and rendered SVG",
+      "x": 860,
+      "y": 130,
+      "width": 370,
+      "height": 130,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "no-evidence-on-review-items",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Review Items carry no evidence",
+      "detail": "their code comes from cover",
+      "x": 380,
+      "y": 320,
+      "width": 400,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "cover-survives-revisions",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Coverage stays attached",
+      "detail": "cover records follow the Item",
+      "x": 860,
+      "y": 320,
+      "width": 370,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "keep-referenced-items",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Covered or commented Items stay",
+      "detail": "dropping or renaming one is refused",
+      "x": 380,
+      "y": 480,
+      "width": 400,
+      "height": 110,
+      "style": "warning",
+      "wrap": true
+    },
+    {
+      "id": "review-diagram-commands",
+      "kind": "node",
+      "shape": "rect",
+      "label": "diagram edit, describe, check",
+      "detail": "with --review",
+      "x": 860,
+      "y": 470,
+      "width": 370,
+      "height": 90,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "visual-qa-review",
+      "kind": "node",
+      "shape": "rect",
+      "label": "visual-qa --review",
+      "detail": "rendered in the review viewer",
+      "x": 860,
+      "y": 580,
+      "width": 370,
+      "height": 90,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "applies",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "request",
+      "to": "review-transaction-route",
+      "points": [
+        {
+          "x": 300,
+          "y": 195
+        },
+        {
+          "x": 380,
+          "y": 195
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "publishes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "review-transaction-route",
+      "to": "review-deck",
+      "points": [
+        {
+          "x": 780,
+          "y": 195
+        },
+        {
+          "x": 860,
+          "y": 195
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "covers",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "review-deck",
+      "to": "cover-survives-revisions",
+      "points": [
+        {
+          "x": 1045,
+          "y": 260
+        },
+        {
+          "x": 1045,
+          "y": 320
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}
