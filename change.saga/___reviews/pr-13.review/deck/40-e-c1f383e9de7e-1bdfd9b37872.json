@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "internal/server/reviews.go",
+      "start": 281,
+      "end": 290,
+      "digest": "sha256:03689ae2e780b571aad1d7830301bb75a026427a03beddb5c78e83b198e0e24a",
+      "note": "The page no longer opens a resolver or builds diffs."
+    }
+  ]
+}

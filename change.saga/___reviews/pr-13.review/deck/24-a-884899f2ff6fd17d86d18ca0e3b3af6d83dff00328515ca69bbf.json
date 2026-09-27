@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "A diff shows its lines, not its hunk",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "hunk",
+      "kind": "node",
+      "shape": "service",
+      "label": "Hunk: may be a new file",
+      "x": 60,
+      "y": 260,
+      "width": 320,
+      "height": 110,
+      "style": "normal"
+    },
+    {
+      "id": "trim",
+      "kind": "node",
+      "shape": "service",
+      "label": "trimDiffToRange: lines ±3",
+      "x": 480,
+      "y": 260,
+      "width": 320,
+      "height": 110,
+      "style": "primary"
+    },
+    {
+      "id": "panel",
+      "kind": "node",
+      "shape": "service",
+      "label": "Diff in the drawer",
+      "x": 900,
+      "y": 260,
+      "width": 320,
+      "height": 110,
+      "style": "normal"
+    },
+    {
+      "id": "oracle",
+      "kind": "node",
+      "shape": "service",
+      "label": "Oracle test mirrors the trim",
+      "x": 480,
+      "y": 490,
+      "width": 320,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "cut",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "hunk",
+      "to": "trim",
+      "points": [
+        {
+          "x": 380,
+          "y": 315
+        },
+        {
+          "x": 480,
+          "y": 315
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "show",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "trim",
+      "to": "panel",
+      "points": [
+        {
+          "x": 800,
+          "y": 315
+        },
+        {
+          "x": 900,
+          "y": 315
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

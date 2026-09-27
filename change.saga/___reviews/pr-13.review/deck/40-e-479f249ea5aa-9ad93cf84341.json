@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:9169268b92fede05576006962e90627083aa55e0cc8ae4133ba2c04889864330",
+      "note": "The oracle applies the same trim."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:927a81babcd9578a684d901c952aa6ae3693fd37f4043d75a9844157f95e05bf",
+      "note": "The oracle applies the same trim."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs_test.go",
+      "start": 262,
+      "end": 264,
+      "digest": "sha256:e9c2cef87aceb5cd920aea711ced4fc61fa1ac6eec07dbf478ce834cba755d5c",
+      "note": "The oracle applies the same trim."
+    }
+  ]
+}

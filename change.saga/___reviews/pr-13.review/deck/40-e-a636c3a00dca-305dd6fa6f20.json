@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:d7c13472432b49bc3449735b494389e2fbf6bab4fb98ea35c40aedb55cc0d0a9",
+      "note": "Trim a diff to its referenced lines with context."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs.go",
+      "start": 87,
+      "end": 89,
+      "digest": "sha256:e9c2cef87aceb5cd920aea711ced4fc61fa1ac6eec07dbf478ce834cba755d5c",
+      "note": "Trim a diff to its referenced lines with context."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviewdiffs.go",
+      "start": 104,
+      "end": 141,
+      "digest": "sha256:07ed5ecfc3b3797eeda2fd36854c6a2f5c94aa8358aab6e4c513750dbb60660e",
+      "note": "Trim a diff to its referenced lines with context."
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews.go",
+      "start": 255,
+      "end": 284,
+      "digest": "sha256:3f459e5efe6ba5fdde9c5cabdeb55223673fbf33030462c4290cd64b5e3e05fa",
+      "note": "The item-diffs handler and its template."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews.go",
+      "start": 287,
+      "end": 294,
+      "digest": "sha256:55cfd6fece983f6e35c4f7b75cc98b636990275342ee509b159e0af6ea530dda",
+      "note": "The item-diffs handler and its template."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews.go",
+      "start": 313,
+      "end": 329,
+      "digest": "sha256:fbbadd717c8cfd25faefd3a158362df13466726ef1d56f90fdcf17f14a6e247f",
+      "note": "The item-diffs handler and its template."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews.go",
+      "start": 874,
+      "end": 874,
+      "digest": "sha256:7667f03d72bb385401e4ab0de0edb2d01f378184b0fc9c77255d1a18b05ecfd3",
+      "note": "The item-diffs handler and its template."
+    }
+  ]
+}

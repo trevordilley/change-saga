@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Diffs load when an Item opens",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "page",
+      "kind": "node",
+      "shape": "service",
+      "label": "Review page: panels, no diffs",
+      "x": 60,
+      "y": 150,
+      "width": 340,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "tests",
+      "kind": "node",
+      "shape": "service",
+      "label": "Regression tests",
+      "x": 960,
+      "y": 150,
+      "width": 260,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "drawer",
+      "kind": "node",
+      "shape": "service",
+      "label": "Item drawer (viewer script)",
+      "x": 60,
+      "y": 420,
+      "width": 340,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "endpoint",
+      "kind": "node",
+      "shape": "service",
+      "label": "GET /reviews/{id}/item-diffs",
+      "x": 500,
+      "y": 420,
+      "width": 360,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "differ",
+      "kind": "node",
+      "shape": "service",
+      "label": "reviewDiffs, per reference",
+      "x": 940,
+      "y": 420,
+      "width": 300,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "open",
+      "kind": "edge",
+      "label": "open an Item",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "page",
+      "to": "drawer",
+      "points": [
+        {
+          "x": 230,
+          "y": 250
+        },
+        {
+          "x": 230,
+          "y": 420
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 245,
+        "y": 320,
+        "width": 140,
+        "height": 28
+      }
+    },
+    {
+      "id": "fetch",
+      "kind": "edge",
+      "label": "fetch",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "drawer",
+      "to": "endpoint",
+      "points": [
+        {
+          "x": 400,
+          "y": 470
+        },
+        {
+          "x": 500,
+          "y": 470
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 415,
+        "y": 432,
+        "width": 70,
+        "height": 28
+      }
+    },
+    {
+      "id": "compute",
+      "kind": "edge",
+      "label": "one page",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "endpoint",
+      "to": "differ",
+      "points": [
+        {
+          "x": 860,
+          "y": 470
+        },
+        {
+          "x": 940,
+          "y": 470
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 858,
+        "y": 432,
+        "width": 84,
+        "height": 28
+      }
+    }
+  ]
+}

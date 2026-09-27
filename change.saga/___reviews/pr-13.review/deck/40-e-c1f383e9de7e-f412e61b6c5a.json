@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:2687cf8ba8737b6155548121841a1a74c90dce6633adb6429b325cd1e9f2cc58",
+      "note": "The page counts references and links the endpoint instead of rendering diffs."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews.go",
+      "start": 108,
+      "end": 113,
+      "digest": "sha256:9757b11a2cde22f9db9881167f977928e65b46efc0878d382a2b7af071ffd683",
+      "note": "The page counts references and links the endpoint instead of rendering diffs."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews.go",
+      "start": 411,
+      "end": 414,
+      "digest": "sha256:e0b7e71222a0ee1aee2fbacbec5553d603050cbc37027603d34d9e5a12e6eeb2",
+      "note": "The page counts references and links the endpoint instead of rendering diffs."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews.go",
+      "start": 876,
+      "end": 876,
+      "digest": "sha256:e6e397888ddc37fd1abfd2ed181c4cfdeb9e286bcbc34ec63342ed2c1bf11abe",
+      "note": "The page counts references and links the endpoint instead of rendering diffs."
+    }
+  ]
+}

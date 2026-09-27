@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/server.go",
+      "start": 488,
+      "end": 488,
+      "digest": "sha256:4f7b9cb79c8ed08387991a1fbeb2ab2acaaa138f653cd9b13c52172497d8035e",
+      "note": "The item-diffs route."
+    }
+  ]
+}

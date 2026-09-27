@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Review page, frozen review, paging and cap tests."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews_test.go",
+      "start": 151,
+      "end": 152,
+      "digest": "sha256:42e245a41981ca6c7d5851324fb846a1d2cbdd39a6eab8a4140791c780a20b1a",
+      "note": "Review page, frozen review, paging and cap tests."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews_test.go",
+      "start": 162,
+      "end": 176,
+      "digest": "sha256:22844e4963ea63fd15a4570431f895b5888bda9fded7691e3f0545d1bdd8e7a5",
+      "note": "Review page, frozen review, paging and cap tests."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews_test.go",
+      "start": 277,
+      "end": 278,
+      "digest": "sha256:dd6c17c832fc0567a207133d09d424724b42367b7bb18082e8b77fccc726d844",
+      "note": "Review page, frozen review, paging and cap tests."
+    },
+    {
+      "commit": "8f6f142f11ee1065c258b6cd6ea676d3a823183f",
+      "path": "internal/server/reviews_test.go",
+      "start": 337,
+      "end": 398,
+      "digest": "sha256:5c2a141f0541a14a1261a327c4c614f2e9f5709f6a560f1d82246ba45add3294",
+      "note": "Review page, frozen review, paging and cap tests."
+    },
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "internal/server/reviews_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:0b55dad62c26972efe6d4675e032374854b33c333462857a67c4fc02c78bbf88",
+      "note": "Review page, frozen review, paging and cap tests."
+    },
+    {
+      "commit": "9a663c942192e36c905947dd22eb0a445e9897aa",
+      "path": "internal/server/reviews_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:e21a2d214acb6075379cb7e7029daa7fb8912ebe4d3842a2af30913b1fabfe45",
+      "note": "Review page, frozen review, paging and cap tests."
+    }
+  ]
+}
