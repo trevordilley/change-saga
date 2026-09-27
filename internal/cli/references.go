@@ -19,6 +19,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/gitexec"
+	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -93,6 +94,11 @@ type referenceHealth struct {
 	Reason string            `json:"reason,omitempty"`
 	Diff   string            `json:"diff_since_pin,omitempty"`
 	Pinned coderef.Location  `json:"pinned"`
+	// Proposal is where a stale reference's lines are at the head by diff
+	// arithmetic, for an author to accept after reading, or why nothing is
+	// proposed.
+	Proposal *coderesolve.Proposal `json:"proposal,omitempty"`
+	Accept   *grammar.Invocation   `json:"accept,omitempty"`
 }
 
 type referencesOutput struct {
@@ -162,6 +168,11 @@ func References(ctx context.Context, args []string, out io.Writer) error {
 		}
 		if health.State == coderesolve.Stale {
 			health.Reason = head.Reason
+			proposal := resolver.Propose(ctx, value.Code, changes.HeadOID)
+			health.Proposal = &proposal
+			if proposal.Proposed() {
+				health.Accept = acceptInvocation(value, changes.HeadOID, flags.Arg(0), *repoDir)
+			}
 			if *withDiff {
 				health.Diff, _ = resolver.DiffSince(ctx, value.Code, changes.HeadOID)
 			}
@@ -198,6 +209,17 @@ func References(ctx context.Context, args []string, out io.Writer) error {
 			fmt.Fprintf(out, "\n          %s", health.Reason)
 		}
 		fmt.Fprintln(out)
+		if health.Proposal != nil {
+			fmt.Fprintf(out, "          proposed: %s\n", describeProposal(health.Pinned, *health.Proposal))
+			if health.Proposal.Proposed() {
+				for _, line := range health.Proposal.Diff {
+					fmt.Fprintf(out, "            %s\n", line)
+				}
+			}
+			if health.Accept != nil {
+				fmt.Fprintf(out, "          accept after reading: %s\n", shellJoin(health.Accept.Argv))
+			}
+		}
 		if health.Diff != "" {
 			for _, line := range strings.Split(strings.TrimRight(health.Diff, "\n"), "\n") {
 				fmt.Fprintf(out, "          %s\n", line)
@@ -266,11 +288,32 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	dryRun := flags.Bool("dry-run", false, "report what would be re-pinned without writing")
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
+	accept := flags.Bool("accept-proposed", false, "accept the proposed range of each stale reference in scope, after reading its diff")
+	record := flags.String("record", "", "with --accept-proposed: the evidence_file to repair")
+	reference := flags.Int("reference", 0, "with --accept-proposed and --record: the 1-based reference in that file")
+	target := flags.String("target", "", "with --accept-proposed: repair the evidence of this target and its descendants")
+	all := flags.Bool("all", false, "with --accept-proposed: repair every stale evidence reference in the Saga")
+	head := flags.String("head", "", "with --accept-proposed: the commit proposals map to; defaults to HEAD (a review Item uses its review's range)")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
+	if *accept {
+		scopes := 0
+		for _, set := range []bool{*record != "", *target != "", *reviewID != "", *all} {
+			if set {
+				scopes++
+			}
+		}
+		if flags.NArg() != 1 || *onto != "" || *branch != "" || scopes != 1 || (*reference != 0 && *record == "") {
+			return fmt.Errorf("usage: %s (--accept-proposed takes exactly one of --record, --target, --review, or --all, and no --onto)", commandUsage["repin"])
+		}
+		return acceptProposed(ctx, flags.Arg(0), *repoDir, *head, acceptScope{record: *record, reference: *reference, target: *target, review: *reviewID, all: *all}, *dryRun, *jsonOutput, out)
+	}
 	if flags.NArg() != 1 || strings.TrimSpace(*onto) == "" {
 		return fmt.Errorf("usage: %s", commandUsage["repin"])
+	}
+	if *record != "" || *reference != 0 || *target != "" || *all || *head != "" {
+		return fmt.Errorf("--record, --reference, --target, --all, and --head go with --accept-proposed")
 	}
 	root := flags.Arg(0)
 	document, _, err := saga.Load(root)

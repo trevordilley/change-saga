@@ -879,8 +879,15 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 	repo := flags.String("repo", "", "code repository used to verify every exact evidence digest")
 	dryRun := flags.Bool("dry-run", false, "validate and return the semantic diff without publishing")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
+	printCurrent := flags.String("print-current", "", "print the slide's complete current request, ready to edit and apply, instead of applying one")
 	if err := flags.Parse(args); err != nil {
 		return err
+	}
+	if *printCurrent != "" {
+		if flags.NArg() != 1 || *from != "" || *dryRun {
+			return fmt.Errorf("usage: %s", commandUsage["apply-slide"])
+		}
+		return printCurrentSlideRequest(flags.Arg(0), *printCurrent, out)
 	}
 	if flags.NArg() != 1 || *from == "" {
 		return fmt.Errorf("usage: %s", commandUsage["apply-slide"])
@@ -927,4 +934,40 @@ func ApplySlide(ctx context.Context, args []string, out io.Writer) error {
 	}
 	fmt.Fprintf(out, "%s complete slide %s\nSnapshot: %s\nChanged IDs: %s\n", verb, result.Target, result.Snapshot, strings.Join(result.ChangedIDs, ", "))
 	return nil
+}
+
+// printCurrentSlideRequest prints the complete request that republishes a
+// managed slide's current revision, with a fresh request_id, so an author
+// edits one field and applies it instead of rebuilding the whole slide.
+func printCurrentSlideRequest(root, target string, out io.Writer) error {
+	document, _, err := saga.Load(root)
+	if err != nil {
+		return err
+	}
+	slide := findSlide(document, target)
+	if slide == nil {
+		for _, review := range document.Reviews {
+			if review.Deck == nil {
+				continue
+			}
+			for _, candidate := range review.Deck.Slides {
+				if target == candidate.ID || target == candidate.Target {
+					slide = candidate
+				}
+			}
+		}
+	}
+	if slide == nil {
+		return fmt.Errorf("slide %q does not exist", target)
+	}
+	request, err := currentSlideRequest(document, slide)
+	if err != nil {
+		return err
+	}
+	sum := sha256.Sum256([]byte(request.ExpectedSnapshot))
+	request.RequestID = request.Slide.ID + "-" + hex.EncodeToString(sum[:])[:8] + "-edit"
+	if len(request.RequestID) > 128 {
+		request.RequestID = "edit-" + hex.EncodeToString(sum[:])[:16]
+	}
+	return writeJSON(out, request)
 }
