@@ -26,26 +26,26 @@
       "note": "The integration reference's cheaper repair loop."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "3f73c33e89d734389798de28441488293e93d0e3",
       "path": "skills/change-saga/references/integration.md",
       "start": 31,
-      "end": 60,
-      "digest": "sha256:b26b10e34e0182f0bada374e301cd89b0022a7eae99e9b09997690dd4082f066",
+      "end": 61,
+      "digest": "sha256:2f2a308d030acc3f4e2b1c1203d71edcf2b53d957d974db5d3a6d328fa07576a",
       "note": "The integration reference's cheaper repair loop."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "3f73c33e89d734389798de28441488293e93d0e3",
       "path": "skills/change-saga/references/integration.md",
-      "start": 68,
-      "end": 73,
+      "start": 69,
+      "end": 74,
       "digest": "sha256:c0b3a318d23d5886e8f076656919bca82e591010981c2f4d018f86f6022efa99",
       "note": "The integration reference's cheaper repair loop."
     },
     {
-      "commit": "11ed0e72289cd6ea414efe2893db64abb622ffad",
+      "commit": "3f73c33e89d734389798de28441488293e93d0e3",
       "path": "skills/change-saga/references/integration.md",
-      "start": 92,
-      "end": 93,
+      "start": 93,
+      "end": 94,
       "digest": "sha256:2ec605e024982f52781c239979061c6bdb6ab6611aabc88920fb96c1d0b0dae2",
       "note": "The integration reference's cheaper repair loop."
     }
