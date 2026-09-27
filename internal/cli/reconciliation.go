@@ -527,7 +527,7 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 		}
 		return a.Reference < b.Reference
 	})
-	result.Summary.StaleByChange = measureChangeStaleness(ctx, resolver, owned, historical, compared.Opening.BaseOID, compared.Opening.HeadOID, root, repo)
+	result.Summary.StaleByChange = measureChangeStaleness(ctx, resolver, append(append([]ownedReference{}, owned...), inventoryReferences(document)...), historical, compared.Opening.BaseOID, compared.Opening.HeadOID, root, repo)
 	counts := &result.Summary.Queue
 	for _, task := range result.Queue {
 		counts.Total++
@@ -538,7 +538,7 @@ func buildReconciliation(ctx context.Context, root, repo string, rng gitdiff.Ran
 			counts.Reassess++
 		case task.Debt == "pre_existing":
 			counts.PreExisting++
-		case len(task.Because) > 0 && task.Because[0].Kind == "head_currency" && task.Debt != "baseline_unknown":
+		case len(task.Because) > 0 && task.Because[0].Kind == "head_currency" && (task.Debt == "regression" || task.Debt == "introduced"):
 			counts.StaleByChange++
 		default:
 			counts.Other++

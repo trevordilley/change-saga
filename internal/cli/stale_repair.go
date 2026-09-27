@@ -16,11 +16,14 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/grammar"
+	"github.com/twentyideas/changesaga/internal/inventoryview"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
+	"github.com/twentyideas/changesaga/internal/technicalpolicy"
 )
 
 // staleRow is one stale reference with where its diff proposes it now is.
@@ -45,7 +48,8 @@ type changeStaleness struct {
 	HeadOID string `json:"head_oid"`
 	// Count is how many references the change made stale.
 	Count int `json:"count"`
-	// Proposed is how many of them have a proposed range to accept.
+	// Proposed is how many of them have a proposed range to accept with
+	// repin --accept-proposed.
 	Proposed int `json:"proposed"`
 	// PreExisting is how many other references were already stale. It is
 	// absent where only the files the change touched were read.
@@ -118,8 +122,10 @@ func measureChangeStaleness(ctx context.Context, resolver *coderesolve.Resolver,
 		}
 		row := staleRow{ownedReference: ref, Pinned: ref.Code.Location(), Reason: resolution.Reason, Proposal: resolver.Propose(ctx, ref.Code, head)}
 		if row.Proposal.Proposed() {
-			result.Proposed++
 			row.Accept = acceptInvocation(ref, head, root, repo)
+		}
+		if row.Accept != nil {
+			result.Proposed++
 		}
 		result.Count++
 		result.References = append(result.References, row)
@@ -175,7 +181,16 @@ func printChangeStaleness(out io.Writer, staleness changeStaleness, preExistingH
 		fmt.Fprintf(out, "Your change made %d references stale:\n", staleness.Count)
 	}
 	for _, row := range staleness.References {
-		fmt.Fprintf(out, "  %s  %s\n", row.Owner, describeProposal(row.Pinned, row.Proposal))
+		fmt.Fprintf(out, "  %s  %s", row.Owner, describeProposal(row.Pinned, row.Proposal))
+		switch row.Kind {
+		case "inventory":
+			fmt.Fprint(out, " (revise the definition with focused current references)")
+		case "term":
+			fmt.Fprint(out, " (revise the term with change-saga term revise)")
+		case "claim", "quality_evidence":
+			fmt.Fprint(out, " (append-only: record a new one)")
+		}
+		fmt.Fprintln(out)
 	}
 	if staleness.Proposed > 0 {
 		fmt.Fprintf(out, "  %d with a proposed range: read its diff, then accept with change-saga repin --accept-proposed --record FILE [--reference N]\n", staleness.Proposed)
@@ -656,10 +671,44 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 	return request, nil
 }
 
+// inventoryReferences lists the code references of every active technical
+// definition's current revision, except evidence of proposed intent, which
+// asserts no implementation. A stale one is repaired by revising the
+// definition, so it has no one-line accept.
+func inventoryReferences(document *saga.Saga) []ownedReference {
+	inventory, err := requirements.LoadInventory(document.Root, document.Manifest.ID)
+	if err != nil {
+		return nil
+	}
+	var result []ownedReference
+	for _, record := range inventory.Records {
+		if record.CurrentRevision == nil || record.CurrentLifecycle == nil || record.CurrentLifecycle.State == "retired" {
+			continue
+		}
+		for index, owned := range inventoryview.Evidence(record.CurrentRevision) {
+			if owned.Intent == technicalpolicy.Proposed {
+				continue
+			}
+			result = append(result, ownedReference{Kind: "inventory", Owner: record.Target + owned.Suffix(), Index: index + 1, Code: owned.Evidence.Reference})
+		}
+	}
+	return result
+}
+
+// documentationReferences is every living reference the headline counts:
+// sagaReferences plus technical definitions' evidence.
+func documentationReferences(document *saga.Saga) ([]ownedReference, error) {
+	owned, err := sagaReferences(document)
+	if err != nil {
+		return nil, err
+	}
+	return append(owned, inventoryReferences(document)...), nil
+}
+
 // livingStaleness measures what base..head did to the living documentation's
 // references, or nil when the Saga has none.
 func livingStaleness(ctx context.Context, document *saga.Saga, resolver *coderesolve.Resolver, base, head, root, repo string, changedOnly ...bool) *changeStaleness {
-	owned, err := sagaReferences(document)
+	owned, err := documentationReferences(document)
 	if err != nil || len(owned) == 0 || resolver == nil {
 		return nil
 	}
