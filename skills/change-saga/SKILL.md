@@ -33,7 +33,11 @@ before drawing slides; nothing else is needed.
    apply-slide --review ID --from SLIDE.json change.saga` (`--dry-run` first).
    The request's shape and an example are under "Review deck slides" in
    [diagrams and evidence](references/diagrams.md); revise a slide with
-   `diagram edit`. Hand-write SVG only for what a diagram source cannot
+   `diagram edit`. Give an element a short Markdown `note` when a reader
+   would want the why its label cannot hold (an edge's protocol or failure
+   behavior, a node's responsibility); readers see it on hover. Surprises
+   still go in callout Items, and a note is never padding: omit it when there
+   is nothing to add. Hand-write SVG only for what a diagram source cannot
    express, through `add-slide --review`, `set-slide-content --review`, and
    `add-item --review`.
 5. Cover every changed line from the narrowest Item that explains it:

@@ -89,10 +89,22 @@ diagram icons`.
   appears in the description, and needs a `description` when its label does
   not stand alone. A semantic element cannot sit in a decorative group.
 - Give every Item an `element` selector naming a semantic element ID.
+- Any semantic element may carry an optional `note`: depth on demand that a
+  reader sees, rendered, when they hover, focus, or tap the element, and that
+  `diagram describe` prints. Use it for the why its label cannot hold: an
+  edge's protocol or failure behavior, a node's responsibility, the context of
+  a title. An Item's element already shows the Item's label, description, and
+  callout body on hover, so a note adds to them rather than repeating them.
+  Keep notes to a few sentences (at most 1,000 characters) of Markdown limited
+  to bold, italics, inline code, lists, and http, https, or mailto links; raw
+  HTML, headings, images, tables, and code blocks are refused. Notes are
+  optional detail: a surprise still belongs in a callout Item, which is
+  prominent. Never manufacture detail to fill a note; omit it instead.
 
 Revise a published diagram with `change-saga diagram edit --slide TARGET
 --expected SNAPSHOT --request-id ID --from OPS.json <saga>`. Operations are
-`add` (optionally `before` an ID), `update` (`set` fields; `null` removes one),
+`add` (optionally `before` an ID), `update` (`set` fields; `null` removes one,
+so `{"op": "update", "id": "miss", "set": {"note": null}}` clears a note),
 `move` (`dx`, `dy`), `remove` (`cascade` for dependents), `style`, `align`,
 `distribute`, and `canvas`. The edit republishes through `apply-slide` with
 the slide's Items, evidence, and criterion links unchanged, so stale evidence
@@ -171,7 +183,8 @@ change. A minimal review slide with a diagram source:
        "x": 760, "y": 240, "width": 280, "height": 120, "style": "normal"},
       {"id": "miss", "kind": "edge", "from": "cache", "to": "database", "head": "arrow",
        "points": [{"x": 420, "y": 295}, {"x": 760, "y": 295}], "label": "on a miss",
-       "label_box": {"x": 520, "y": 255, "width": 140, "height": 28}, "style": "secondary"}
+       "label_box": {"x": 520, "y": 255, "width": 140, "height": 28}, "style": "secondary",
+       "note": "A miss reads the row and **writes it back** with a 5-minute TTL; a database error reaches the caller and is not cached."}
     ]
   },
   "items": [
@@ -223,7 +236,9 @@ failure or recovery behavior.
 
 For each material surprise, show expectation, actual behavior, rationale, and
 consequence together. Attach a callout Item to the responsible visual element
-and give the actual behavior and consequence exact evidence. Ground the
+and give the actual behavior and consequence exact evidence; an element
+`note` is optional detail a reader has to seek out, never the place for a
+surprise. Ground the
 contrast in source material or a plausible reviewer mental model. Do not
 manufacture novelty; when none exists, teach system shape, risk boundaries,
 and verification instead.

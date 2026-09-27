@@ -194,3 +194,30 @@ func getPage(t *testing.T, address string) string {
 	}
 	return string(body)
 }
+
+// The skill's review-slide example is what an agent copies, so it must stay a
+// valid request whose diagram renders and demonstrates a note.
+func TestSkillReviewSlideExampleRendersWithANote(t *testing.T) {
+	t.Parallel()
+	data, err := os.ReadFile(filepath.Join("..", "..", "skills", "change-saga", "references", "diagrams.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	section := string(data)[strings.Index(string(data), "### Review deck slides"):]
+	start := strings.Index(section, "```json\n") + len("```json\n")
+	example := section[start : start+strings.Index(section[start:], "```")]
+	var request SlideTransactionRequest
+	if err := json.Unmarshal([]byte(example), &request); err != nil || request.Diagram == nil {
+		t.Fatalf("example request: %v", err)
+	}
+	if _, err := diagram.Render(*request.Diagram, diagram.Options{Title: request.Slide.Title, Description: request.Slide.Takeaway}); err != nil {
+		t.Fatalf("example diagram does not render: %v", err)
+	}
+	noted := false
+	for _, element := range request.Diagram.Elements {
+		noted = noted || element.Note != ""
+	}
+	if !noted {
+		t.Fatal("the review-slide example should demonstrate a note")
+	}
+}
