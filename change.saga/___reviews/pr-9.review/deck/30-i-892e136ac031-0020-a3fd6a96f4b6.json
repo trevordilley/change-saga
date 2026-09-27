@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "growth-rule",
+  "slide": "status",
+  "rank": 20,
+  "kind": "node",
+  "label": "Growth rule",
+  "description": "A Saga with anything beyond its reviews holds living documentation and gets the full report; a review-only Saga gets a quiet line, or a prominent offer past two reviews; --growth asks for the full report.",
+  "selector": {
+    "type": "element",
+    "element_id": "growth-rule"
+  }
+}

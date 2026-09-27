@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "create",
+  "deck": "pr-9",
+  "title": "review create works out what it was not told",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-7ef04ecada11-0010-36c21a4e71a0.svg",
+  "takeaway": "review create works out what it was not told",
+  "reading_order": [
+    "explicit-flags",
+    "gh-detect",
+    "base-default",
+    "id-default",
+    "create-review"
+  ]
+}

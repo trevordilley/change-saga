@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "index-reviews",
+  "slide": "navigate",
+  "rank": 0,
+  "kind": "node",
+  "label": "Query session indexes reviews",
+  "description": "The query session indexes each review, its deck, slides, and Items beneath the Saga root, without their code as documentation selectors.",
+  "selector": {
+    "type": "element",
+    "element_id": "index-reviews"
+  }
+}

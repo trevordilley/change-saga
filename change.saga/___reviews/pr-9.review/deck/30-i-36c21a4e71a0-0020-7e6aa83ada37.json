@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "base-default",
+  "slide": "create",
+  "rank": 20,
+  "kind": "node",
+  "label": "Base default",
+  "description": "The base is the pull request's base, else origin's default branch, else main or master, as a local branch or origin's.",
+  "selector": {
+    "type": "element",
+    "element_id": "base-default"
+  }
+}

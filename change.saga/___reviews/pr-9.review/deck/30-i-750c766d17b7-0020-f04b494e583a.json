@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "readme",
+  "slide": "entry",
+  "rank": 20,
+  "kind": "node",
+  "label": "README and docs",
+  "description": "The README, adoption doc, and changelog lead with creating a review for a PR.",
+  "selector": {
+    "type": "element",
+    "element_id": "readme"
+  }
+}

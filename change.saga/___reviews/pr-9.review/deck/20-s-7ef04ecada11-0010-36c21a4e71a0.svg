@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui, sans-serif">
+  <rect width="1280" height="720" fill="#f7f8fa"/>
+  <text x="40" y="56" font-size="30" font-weight="700" fill="#1d2433">review create works out what it was not told</text>
+  <text x="40" y="90" font-size="17" fill="#4a5568">"change-saga review create change.saga" is enough; explicit flags always win, and gh is used only if present.</text>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
+  <g id="explicit-flags">
+    <rect x="40" y="150" width="250" height="140" rx="14" fill="#ffffff" stroke="#6b7280" stroke-width="2"/>
+    <text x="60" y="185" font-size="20" font-weight="700" fill="#374151">explicit flags</text>
+    <text x="60" y="215" font-size="15" fill="#1d2433">--id --base --pr --url</text>
+    <text x="60" y="235" font-size="15" fill="#1d2433">--title --head --repo</text>
+    <text x="60" y="265" font-size="13" fill="#4a5568">always win</text>
+  </g>
+  <line x1="290" y1="220" x2="356" y2="220" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <g id="gh-detect">
+    <rect x="360" y="150" width="270" height="200" rx="14" fill="#e6f0ff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="380" y="185" font-size="20" font-weight="700" fill="#1d3a7a">gh pr view</text>
+    <text x="380" y="215" font-size="15" fill="#1d2433">only when gh is installed</text>
+    <text x="380" y="235" font-size="15" fill="#1d2433">and origin is on GitHub;</text>
+    <text x="380" y="255" font-size="15" fill="#1d2433">10 s timeout; any failure</text>
+    <text x="380" y="275" font-size="15" fill="#1d2433">means nothing to detect.</text>
+    <text x="380" y="305" font-size="15" fill="#1d2433">→ number, URL, title, base</text>
+    <text x="380" y="333" font-size="13" fill="#4a5568">CHANGE_SAGA_NO_GH=1 skips it</text>
+  </g>
+  <line x1="630" y1="220" x2="696" y2="220" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <g id="base-default">
+    <rect x="700" y="150" width="250" height="200" rx="14" fill="#fff7e6" stroke="#c98a1b" stroke-width="2"/>
+    <text x="720" y="185" font-size="20" font-weight="700" fill="#7a4d05">--base</text>
+    <text x="720" y="215" font-size="15" fill="#1d2433">1. the PR's base</text>
+    <text x="720" y="240" font-size="15" fill="#1d2433">2. origin/HEAD's branch</text>
+    <text x="720" y="265" font-size="15" fill="#1d2433">3. main, then master</text>
+    <text x="720" y="295" font-size="15" fill="#1d2433">local branch, else origin/</text>
+  </g>
+  <line x1="950" y1="220" x2="1016" y2="220" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <g id="id-default">
+    <rect x="1020" y="150" width="220" height="200" rx="14" fill="#eaf7ee" stroke="#2f8f4e" stroke-width="2"/>
+    <text x="1040" y="185" font-size="20" font-weight="700" fill="#1f5c34">--id</text>
+    <text x="1040" y="215" font-size="15" fill="#1d2433">pr-N for a PR,</text>
+    <text x="1040" y="240" font-size="15" fill="#1d2433">else --head, else</text>
+    <text x="1040" y="265" font-size="15" fill="#1d2433">the branch name;</text>
+    <text x="1040" y="290" font-size="15" fill="#1d2433">on the base branch</text>
+    <text x="1040" y="315" font-size="15" fill="#1d2433">or detached: ask.</text>
+  </g>
+  <g id="create-review">
+    <rect x="360" y="440" width="880" height="200" rx="14" fill="#ffffff" stroke="#3b6fd8" stroke-width="2"/>
+    <text x="380" y="478" font-size="20" font-weight="700" fill="#1d3a7a">review.json and an empty deck, then the next command</text>
+    <text x="380" y="512" font-size="15" fill="#1d2433">Created urn:change-saga:change-saga:review:pr-9</text>
+    <text x="380" y="536" font-size="15" fill="#1d2433">Using pull request #9 (gh), base main (the pull request's base), id pr-9; pass the flags to choose otherwise</text>
+    <text x="380" y="560" font-size="15" fill="#1d2433">Next: change-saga add-slide --review pr-9 --intent explain --layout diagram change.saga first-slide</text>
+    <text x="380" y="610" font-size="13" fill="#4a5568">id and base are optional in the grammar, usage, and help</text>
+  </g>
+  <line x1="1130" y1="350" x2="1130" y2="436" stroke="#4a5568" stroke-width="2" marker-end="url(#arrow)"/>
+</svg>

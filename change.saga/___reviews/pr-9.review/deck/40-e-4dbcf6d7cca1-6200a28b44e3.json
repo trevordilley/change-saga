@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 146,
+      "end": 149,
+      "digest": "sha256:25101c2b6646a4471324223dfbff7a1b211d43cbc048e1021e098c444a1e89ca"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 154,
+      "end": 155,
+      "digest": "sha256:4aad8af64118f20659e312d70b3734494e53202428a23040b6310c15a7ca28bb"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 173,
+      "end": 174,
+      "digest": "sha256:976ac254b63a78b364d90c0dee2aee44009964dadb35b1f8e7fde1539b556669"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 146,
+      "end": 152,
+      "digest": "sha256:86b61989cdb63404e11c2a1bdb904ee3270fb54dc4fc9e5319d22172fa21d701"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 157,
+      "end": 158,
+      "digest": "sha256:baad61cc020a955fa934a1e706382e0f2ec69612cd5899ed2c947e2c0bb4dd39"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 176,
+      "end": 178,
+      "digest": "sha256:f0a3b2bdc90585f897b8828dbfd34ff58dde373c39c0dd607665f85d880740ac"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "internal/cli/app_authoring_test.go",
+      "start": 183,
+      "end": 189,
+      "digest": "sha256:be775eeabfc9a7fb86adb82394802efad23c0b9c1a02aebb17acf123e186a2d7"
+    }
+  ]
+}

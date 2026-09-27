@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "review-area",
+  "slide": "status",
+  "rank": 0,
+  "kind": "node",
+  "label": "Review coverage area",
+  "description": "The review area measures the open reviews whose head is the comparison's head, each over its own range; a change with no review is uncovered.",
+  "selector": {
+    "type": "element",
+    "element_id": "review-area"
+  }
+}

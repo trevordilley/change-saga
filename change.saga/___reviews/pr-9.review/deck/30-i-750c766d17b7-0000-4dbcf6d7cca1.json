@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "init-next-steps",
+  "slide": "entry",
+  "rank": 0,
+  "kind": "node",
+  "label": "init next steps",
+  "description": "init leads with the review flow and puts personas, stories, and features after a few reviews.",
+  "selector": {
+    "type": "element",
+    "element_id": "init-next-steps"
+  }
+}

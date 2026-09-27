@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "skill",
+  "slide": "entry",
+  "rank": 30,
+  "kind": "node",
+  "label": "Skill",
+  "description": "The skill leads with a create-a-review fast path and makes reconcile conditional on living documentation.",
+  "selector": {
+    "type": "element",
+    "element_id": "skill"
+  }
+}

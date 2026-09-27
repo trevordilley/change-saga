@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "internal/cli/check.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:65f43fd6013f0f2cd29581521e0cc3ce2613cd207f82d606ee23106a787addaa"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "internal/cli/check.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:c6d4e1a761a0b20e4a7f27fdc964ab50aed14f3d9003c8ebe7b2d9c6e1a157ad"
+    }
+  ]
+}

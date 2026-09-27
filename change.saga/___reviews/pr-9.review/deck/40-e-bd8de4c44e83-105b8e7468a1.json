@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:e2fff4401938af98e275f4012b0d60e1f34a72061a341927805c51a475c9f285"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 30,
+      "end": 32,
+      "digest": "sha256:7eb5e449c199ce73f82872d6fe09da14881ff1d7f5418b256f77c13d09ef5d4e"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 34,
+      "end": 36,
+      "digest": "sha256:4f874e6a8fef81a2b71bc15099c612c8a116b4dd9f81c8402322142e0450fd76"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:6213b86068f8872c24825a48188979bfec249417bb3a5580ec07751f09ce56f0"
+    },
+    {
+      "commit": "14d9a3d57ee38e67e65c4413e80f7736dd979f04",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 111,
+      "end": 122,
+      "digest": "sha256:f7a1cd957443a1cc06a690571164bb795f95e9fa99ba66d14cdceda8fde9f855"
+    },
+    {
+      "commit": "6ebe49571586bae84245c1783b9ff36b5d81387c",
+      "path": "skills/change-saga/references/ci.md",
+      "start": 103,
+      "end": 104,
+      "digest": "sha256:6ff8851eb628b1e5febf8831a5f7a4d2834e7530813d08bd1a5c64506b80594b"
+    }
+  ]
+}
