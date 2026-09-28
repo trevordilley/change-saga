@@ -9,10 +9,10 @@
       "digest": "sha256:58068751cd514ab0e0015c08c7f92e2129fec73509fafcf825c5454f6fbf633c"
     },
     {
-      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "commit": "0b46bbdbd47dcdd9376de71829a7ebb00dc716c3",
       "path": "internal/cli/cli.go",
-      "start": 1356,
-      "end": 1356,
+      "start": 1359,
+      "end": 1359,
       "digest": "sha256:2116abd173ea9b785ae585b720b5f6d72cb1414f2d94d9d7f5e39b277c7daba9"
     }
   ]
