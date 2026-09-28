@@ -50,6 +50,16 @@ func TestReviewIndexSetsMergedReviewsAside(t *testing.T) {
 			t.Fatalf("review index is missing %q:\n%s", want, index)
 		}
 	}
+	// The sidebar sets the merged review aside the same way, and counts it
+	// in one row that opens the Reviews page showing it.
+	for _, want := range []string{`data-nav-row="nav-review-target-pr-8-`, `data-nav-row="nav-reviews-merged"`, `href="/reviews?archived=show"`, `>1 merged</a>`} {
+		if !strings.Contains(index, want) {
+			t.Fatalf("the sidebar is missing %q:\n%s", want, index)
+		}
+	}
+	if strings.Contains(index, `data-nav-row="nav-review-target-pr-7-`) {
+		t.Fatal("the sidebar still lists the merged review")
+	}
 	if strings.Index(index, `data-directory-row="pr-8"`) > strings.Index(index, `data-directory-row="pr-7"`) {
 		t.Fatal("a merged review came before an open one")
 	}
@@ -75,7 +85,7 @@ func TestReviewIndexKeepsTheComparedMergedReviewInView(t *testing.T) {
 	fixture := newMergedReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{Against: "main~1", Head: "feature/pg"})
 	index := getPage(t, handler, "/reviews").Body.String()
-	if !strings.Contains(index, `<tr class="current" data-directory-row="pr-7" data-directory-archived-row`) || !strings.Contains(index, `data-review-state-badge="merged"`) || strings.Contains(index, "merged hidden") {
+	if !strings.Contains(index, `<tr class="current" data-directory-row="pr-7" data-directory-archived-row`) || !strings.Contains(index, `data-review-state-badge="merged"`) || strings.Contains(index, "merged hidden") || !strings.Contains(index, `data-nav-row="nav-review-target-pr-7-`) || strings.Contains(index, `nav-reviews-merged`) {
 		t.Fatalf("the compared review was set aside:\n%s", index)
 	}
 }

@@ -48,7 +48,7 @@ func TestReviewListDetectsAMergedReviewWithoutWritingIt(t *testing.T) {
 	}
 	for _, args := range [][]string{{"list", "--all", fixture.root}, {"list", "--review", "pr-7", fixture.root}} {
 		output := run(t, Review, args...)
-		if !strings.Contains(output, "merged: detected, its change is in main") || !strings.Contains(output, "change-saga repin --onto "+landed+" --review pr-7 "+fixture.root) {
+		if !strings.Contains(output, "merged: detected, its change is in main") || !strings.Contains(output, shellJoin([]string{"change-saga", "repin", "--onto", landed, "--review", "pr-7", fixture.root})) {
 			t.Fatalf("review %v:\n%s", args, output)
 		}
 	}

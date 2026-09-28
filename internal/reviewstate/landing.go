@@ -188,11 +188,47 @@ func (landings *Landings) hasFile(ctx context.Context, commit, path string) bool
 		return false
 	}
 	name := commit + ":" + path
-	if kind, _, ok := gitexec.ReadObject(ctx, landings.checkout, name); ok {
-		return kind == "blob"
+	return settle(ctx, landings.checkout, "file", name, func() bool {
+		if kind, _, ok := gitexec.ReadObject(ctx, landings.checkout, name); ok {
+			return kind == "blob"
+		}
+		kind, err := gitOutput(ctx, landings.checkout, "cat-file", "-t", name)
+		return err == nil && kind == "blob"
+	})
+}
+
+// settled remembers answers about commits, which never change: whether a
+// commit holds a file, and whether a head adds anything to a base. A page
+// that lists every review asks them on each render, and after the first
+// only the refs are looked up again.
+var settled struct {
+	sync.Mutex
+	answers map[string]bool
+}
+
+// settledLimit bounds settled; it starts over rather than evicting.
+const settledLimit = 20000
+
+func settle(ctx context.Context, checkout, kind, key string, ask func() bool) bool {
+	key = checkout + "\x00" + kind + "\x00" + key
+	settled.Lock()
+	answer, ok := settled.answers[key]
+	settled.Unlock()
+	if ok {
+		return answer
 	}
-	kind, err := gitOutput(ctx, landings.checkout, "cat-file", "-t", name)
-	return err == nil && kind == "blob"
+	answer = ask()
+	// A canceled read may have answered false for want of time.
+	if ctx.Err() != nil {
+		return answer
+	}
+	settled.Lock()
+	if settled.answers == nil || len(settled.answers) >= settledLimit {
+		settled.answers = map[string]bool{}
+	}
+	settled.answers[key] = answer
+	settled.Unlock()
+	return answer
 }
 
 // changeIn reports whether the branch review follows adds nothing to base:
@@ -210,6 +246,11 @@ func (landings *Landings) changeIn(ctx context.Context, review *saga.Review, bas
 	if head == base {
 		return true
 	}
+	return settle(ctx, landings.checkout, "within", head+" "+base, func() bool { return landings.addsNothing(ctx, head, base) })
+}
+
+// addsNothing reports whether merging head into base would change nothing.
+func (landings *Landings) addsNothing(ctx context.Context, head, base string) bool {
 	if _, err := gitOutput(ctx, landings.checkout, "merge-base", "--is-ancestor", head, base); err == nil {
 		return true
 	}

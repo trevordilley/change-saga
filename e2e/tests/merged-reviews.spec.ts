@@ -51,6 +51,13 @@ test("merged reviews show Merged and stay hidden until searched for or shown", a
     await expect(directory.locator("[data-directory-none]")).toBeHidden();
     await expectNoSeriousAccessibilityViolations(page);
 
+    // The sidebar sets it aside the same way, counting it in one row that
+    // opens this page with the merged reviews shown.
+    const contents = page.getByRole("navigation", { name: "Contents" });
+    await expect(contents.getByRole("link", { name: "Open theme review #2" })).toBeVisible();
+    await expect(contents.getByRole("link", { name: /Landed greeting review/ })).toHaveCount(0);
+    await expect(contents.getByRole("link", { name: "1 merged", exact: true })).toHaveAttribute("href", "/reviews?archived=show");
+
     // Typing a filter searches merged reviews too.
     const filter = directory.getByRole("searchbox", { name: "Filter reviews" });
     await filter.fill("greeting");

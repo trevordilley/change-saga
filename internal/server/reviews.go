@@ -178,6 +178,34 @@ func matchingReview(report reviewstate.Report, headOID string) bool {
 	return report.Merged != nil && report.Merged.Landed == headOID
 }
 
+// mergedReviews names the reviews whose change has merged, recorded or
+// detected, except the review of the compared head, which stays in view as
+// it does on the Reviews page. It resolves no ranges, so the sidebar can ask
+// on every page.
+func (a *app) mergedReviews(ctx context.Context, document *saga.Saga) map[string]bool {
+	merged := map[string]bool{}
+	if len(document.Reviews) == 0 {
+		return merged
+	}
+	landings := reviewstate.NewLandings(a.sourceDir)
+	head := a.comparedHead(ctx)
+	for _, review := range document.Reviews {
+		if !landings.Detect(ctx, review).Merged() {
+			continue
+		}
+		if head != "" {
+			if review.Merged != nil && (review.Merged.Head == head || review.Merged.Landed == head) {
+				continue
+			}
+			if followed, _, err := reviewstate.ResolveHead(ctx, a.sourceDir, review); err == nil && followed == head {
+				continue
+			}
+		}
+		merged[review.ID] = true
+	}
+	return merged
+}
+
 // reviewReports builds the slide-by-slide report of reviews against the
 // source checkout. It never fails: a review whose head cannot be read is
 // reported with that diagnostic.
