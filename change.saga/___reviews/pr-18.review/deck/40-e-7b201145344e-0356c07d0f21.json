@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 75,
+      "end": 81,
+      "digest": "sha256:4097451d7c7d8f3768795a080675089461053541e6fcd0fcbf1ab5e552415886",
+      "note": "The skill says which shape fits what a node is and how text centers."
+    }
+  ]
+}

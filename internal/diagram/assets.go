@@ -1,9 +1,7 @@
 package diagram
 
 import (
-	"crypto/sha256"
 	"embed"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"sort"
@@ -13,10 +11,11 @@ import (
 	"golang.org/x/image/font/gofont/goregular"
 )
 
-//go:embed assets/lucide/*.svg assets/lucide/LICENSE assets/lucide/manifest.json assets/GO-FONT-LICENSE
+//go:embed assets/lucide/icons.json assets/lucide/LICENSE assets/GO-FONT-LICENSE
 var bundled embed.FS
 
 // LucideRevision pins the upstream commit the bundled icons were copied from.
+// Regenerate the bundle with internal/diagram/lucidebundle.
 const LucideRevision = "66d8f9fc394b8530377e5f6112f0b8908ba01280"
 
 // FontPath is where the reviewer serves the measurement font. Generated SVGs
@@ -26,71 +25,74 @@ const FontPath = "/_diagram/fonts/go-regular.ttf"
 // FontFamily is the CSS family name generated SVGs declare.
 const FontFamily = "Change Saga Diagram"
 
-type iconManifest struct {
+// iconBundle is the complete Lucide set: every upstream icon shares one <svg>
+// root, stored once, and keeps its drawing markup and search tags.
+type iconBundle struct {
 	Upstream string `json:"upstream"`
 	Revision string `json:"revision"`
+	Root     string `json:"root"`
 	Icons    map[string]struct {
-		File   string `json:"file"`
-		SHA256 string `json:"sha256"`
+		SVG  string   `json:"svg"`
+		Tags []string `json:"tags"`
 	} `json:"icons"`
 }
 
-var loadIcons = sync.OnceValues(func() (iconManifest, error) {
-	var manifest iconManifest
-	data, err := bundled.ReadFile("assets/lucide/manifest.json")
+const iconPrefix = "lucide:"
+
+var loadIcons = sync.OnceValues(func() (iconBundle, error) {
+	var bundle iconBundle
+	data, err := bundled.ReadFile("assets/lucide/icons.json")
 	if err != nil {
-		return manifest, err
+		return bundle, err
 	}
-	if err := json.Unmarshal(data, &manifest); err != nil {
-		return manifest, err
+	if err := json.Unmarshal(data, &bundle); err != nil {
+		return bundle, err
 	}
-	if manifest.Revision != LucideRevision {
-		return manifest, fmt.Errorf("bundled Lucide manifest revision %s does not match %s", manifest.Revision, LucideRevision)
+	if bundle.Revision != LucideRevision {
+		return bundle, fmt.Errorf("bundled Lucide revision %s does not match %s", bundle.Revision, LucideRevision)
 	}
-	return manifest, nil
+	return bundle, nil
 })
 
 // IconExists reports whether name is a bundled icon, such as lucide:database.
 func IconExists(name string) bool {
-	manifest, err := loadIcons()
-	if err != nil {
+	bundle, err := loadIcons()
+	if err != nil || !strings.HasPrefix(name, iconPrefix) {
 		return false
 	}
-	_, ok := manifest.Icons[name]
+	_, ok := bundle.Icons[strings.TrimPrefix(name, iconPrefix)]
 	return ok
 }
 
-// Icon returns a bundled icon's SVG bytes after checking its pinned digest.
+// Icon returns a bundled icon as a standalone SVG document.
 func Icon(name string) ([]byte, error) {
-	manifest, err := loadIcons()
+	bundle, err := loadIcons()
 	if err != nil {
 		return nil, err
 	}
-	entry, ok := manifest.Icons[name]
-	if !ok {
+	entry, ok := bundle.Icons[strings.TrimPrefix(name, iconPrefix)]
+	if !ok || !strings.HasPrefix(name, iconPrefix) {
 		return nil, fmt.Errorf("unknown icon %q", name)
 	}
-	data, err := bundled.ReadFile("assets/lucide/" + entry.File)
-	if err != nil {
-		return nil, err
-	}
-	digest := sha256.Sum256(data)
-	if hex.EncodeToString(digest[:]) != entry.SHA256 {
-		return nil, fmt.Errorf("bundled icon %s does not match its pinned digest", name)
-	}
-	return data, nil
+	return []byte(bundle.Root + entry.SVG + "</svg>"), nil
 }
 
-// Icons lists bundled icon names containing query, sorted.
+// Icons lists bundled icon names whose name or a search tag contains query,
+// sorted, so a query can name what an icon depicts rather than its exact name.
 func Icons(query string) []string {
-	manifest, err := loadIcons()
+	bundle, err := loadIcons()
 	if err != nil {
 		return []string{}
 	}
+	query = strings.ToLower(query)
 	names := []string{}
-	for name := range manifest.Icons {
-		if strings.Contains(name, strings.ToLower(query)) {
-			names = append(names, name)
+	for name, entry := range bundle.Icons {
+		matched := strings.Contains(iconPrefix+name, query)
+		for _, tag := range entry.Tags {
+			matched = matched || strings.Contains(strings.ToLower(tag), query)
+		}
+		if matched {
+			names = append(names, iconPrefix+name)
 		}
 	}
 	sort.Strings(names)

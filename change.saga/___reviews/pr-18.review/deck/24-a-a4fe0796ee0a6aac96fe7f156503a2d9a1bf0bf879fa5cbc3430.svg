@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">New shapes lay out inside their outline</title>
+  <desc id="diagram-desc">shape() sends nine library shapes and entity tables to new code; the original shapes keep their layout byte for byte.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-to-original" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-to-library" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-to-entity" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-read" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</metadata>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">New shapes lay out inside their outline</tspan></text>
+  </g>
+  <g id="source" data-diagram-kind="node" transform="translate(40 300)" role="group" aria-label="Node source">
+    <desc>Only shape changes. Placement stays explicit: a new shape is still drawn at its own x, y, width, and height.</desc>
+    <path d="M50 0L250 0L200 110L0 110Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="125" y="41.5" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="125" y="41.5">Node source</tspan></text>
+    <text x="125" y="68" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="125" y="68">shape names the</tspan><tspan x="125" y="86.75">outline</tspan></text>
+  </g>
+  <g id="dispatch" data-diagram-kind="node" transform="translate(330 290)" role="group" aria-label="shape()">
+    <desc>Two early returns: entity goes to entity(), the nine library shapes to library(). Everything below them is the original switch, unchanged.</desc>
+    <path d="M37.7 0L182.3 0L220 65L182.3 130L37.7 130L0 65Z" stroke-linejoin="round" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <svg x="98" y="22.875" width="24" height="24" color="#153869" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 3h5v5"/>
+      <path d="M8 3H3v5"/>
+      <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/>
+      <path d="m15 9 6-6"/>
+    </svg>
+    <text x="110" y="76.875" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle"><tspan x="110" y="76.875">shape()</tspan></text>
+    <text x="110" y="103.375" font-size="15" fill="#153869" xml:space="preserve" text-anchor="middle"><tspan x="110" y="103.375">render.go</tspan></text>
+  </g>
+  <g id="original" data-diagram-kind="node" transform="translate(640 96)" role="group" aria-label="Original layout">
+    <desc>Not touched, so sample.svg and notes.svg stay byte-identical and Renderer stays change-saga-diagram/1.</desc>
+    <rect width="400" height="110" rx="8" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <text x="18" y="36" font-size="18" fill="#526174" xml:space="preserve"><tspan x="18" y="36">Original layout</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#526174" xml:space="preserve"><tspan x="18" y="73">service, datastore, decision, rect, ellipse</tspan></text>
+  </g>
+  <g id="library" data-diagram-kind="group" transform="translate(640 236)" role="group" aria-label="Library: centered in a text area">
+    <rect width="600" height="250" rx="10" fill="#f0f3f6" stroke="#c3cdd8" stroke-width="1" stroke-dasharray="7 6"/>
+    <text x="18" y="30" font-size="18" fill="#526174" xml:space="preserve"><tspan x="18" y="30">Library: centered in a text area</tspan></text>
+    <g id="layout" data-diagram-kind="node" transform="translate(24 54)" role="group" aria-label="library()">
+      <desc>Measures the label and detail with the pinned font, then stacks icon, label, and detail in the middle of the shape's text area. Too much text is refused, never shrunk.</desc>
+      <circle cx="65" cy="65" r="65" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="65" y="73.25" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle"><tspan x="65" y="73.25">library()</tspan></text>
+    </g>
+    <g id="s-triangle" data-diagram-kind="node" transform="translate(180 40)" aria-hidden="true">
+      <path d="M35 0L70 62L0 62Z" stroke-linejoin="round" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    </g>
+    <g id="s-hexagon" data-diagram-kind="node" transform="translate(270 44)" aria-hidden="true">
+      <path d="M16.24 0L73.76 0L90 28L73.76 56L16.24 56L0 28Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    </g>
+    <g id="s-parallelogram" data-diagram-kind="node" transform="translate(380 44)" aria-hidden="true">
+      <path d="M20 0L100 0L80 56L0 56Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    </g>
+    <g id="s-document" data-diagram-kind="node" transform="translate(500 38)" aria-hidden="true">
+      <path d="M0 0H70V62.56C46.667 43.717 23.333 81.403 0 62.56Z" stroke-linejoin="round" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    </g>
+    <g id="s-cloud" data-diagram-kind="node" transform="translate(180 146)" aria-hidden="true">
+      <path d="M16.55 65.795A14.19 14.804 0 0 1 5.2 39.745A15.89 16.579 0 0 1 25.63 16.064A22.7 23.681 0 0 1 66.49 11.326A17.02 17.761 0 0 1 91.45 32.637A17.02 17.761 0 0 1 82.37 65.795Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    </g>
+    <g id="s-actor" data-diagram-kind="node" transform="translate(300 134)" aria-hidden="true">
+      <circle cx="25" cy="7.56" r="7.056" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <path d="M25 14.616V31.248M12.904 21.168H37.096M25 31.248L14.92 49.392M25 31.248L35.08 49.392" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g id="s-queue" data-diagram-kind="node" transform="translate(370 150)" aria-hidden="true">
+      <path d="M14 0H86A14 28 0 0 1 86 56H14A14 28 0 0 1 14 0Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <path d="M86 0A14 28 0 0 0 86 56" fill="none" stroke="#64748b" stroke-width="2"/>
+    </g>
+    <g id="s-star" data-diagram-kind="node" transform="translate(490 142)" aria-hidden="true">
+      <path d="M35 0L45.816 22.384L70 25.974L52.5 43.397L56.631 68L35 56.384L13.369 68L17.5 43.397L0 25.974L24.184 22.384Z" stroke-linejoin="round" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    </g>
+  </g>
+  <g id="entity" data-diagram-kind="node" transform="translate(640 520)" aria-hidden="true">
+    <rect width="400" height="104" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <path d="M0 43.5V8A8 8 0 0 1 8 0H392A8 8 0 0 1 400 8V43.5Z" fill="#64748b" fill-opacity=".12"/>
+    <path d="M0 43.5H400" stroke="#64748b" stroke-width="2"/>
+    <text x="200" y="30" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="200" y="30">entity()</tspan></text>
+    <g data-field="header">
+      <text x="12" y="63.5" font-size="16" fill="#172033" xml:space="preserve">header</text>
+      <text x="388" y="63.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve">label and icon</text>
+    </g>
+    <path d="M0 71.5H400" stroke="#64748b" stroke-opacity=".35" stroke-width="1"/>
+    <g data-field="one row per field">
+      <text x="12" y="91.5" font-size="16" fill="#172033" xml:space="preserve">one row per field</text>
+      <text x="388" y="91.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve">key, name, type</text>
+    </g>
+  </g>
+  <g id="to-original" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="dispatch to original" data-from="dispatch" data-to="original">
+    <path d="M536 330 L600 330 L600 151 L640 151" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-to-original)"/>
+  </g>
+  <g id="to-library" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="dispatch to layout" data-from="dispatch" data-to="layout">
+    <path d="M550 355 L664 355" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-to-library)"/>
+  </g>
+  <g id="to-entity" data-diagram-kind="edge" transform="translate(0 0)" aria-hidden="true" data-from="dispatch" data-to="entity">
+    <path d="M536 380 L600 380 L600 578 L640 578" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-to-entity)"/>
+  </g>
+  <g id="read" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="source to dispatch" data-from="source" data-to="dispatch">
+    <path d="M283 355 L330 355" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-read)"/>
+  </g>
+</svg>

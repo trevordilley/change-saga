@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/diagram_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:5ad59eae3dc835a9ba7f9c2309293b0c5b74968d7896692a32b5dbb62408d66e",
+      "note": "The search test before."
+    }
+  ]
+}

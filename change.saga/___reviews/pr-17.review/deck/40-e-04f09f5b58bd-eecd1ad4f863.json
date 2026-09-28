@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bcc664415b371c29881989bd7bf7c2aefc981e50",
+      "path": "internal/cli/diagram_connectors_test.go",
+      "digest": "sha256:3e296bf7ffe5cdec641f0cad15644fac1b3af6ac5a31575156336a97dd2d3b59"
+    },
+    {
+      "commit": "bcc664415b371c29881989bd7bf7c2aefc981e50",
+      "path": "internal/cli/diagram_connectors_test.go",
+      "start": 1,
+      "end": 41,
+      "digest": "sha256:3e296bf7ffe5cdec641f0cad15644fac1b3af6ac5a31575156336a97dd2d3b59"
+    }
+  ]
+}

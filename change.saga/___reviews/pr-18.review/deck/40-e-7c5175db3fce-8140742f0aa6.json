@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/render.go",
+      "start": 225,
+      "end": 230,
+      "digest": "sha256:39101a9facb796b3e5f3dd9d5abce5956fab21fa633f7d395b080f29f806c724",
+      "note": "shape() returns early to entity() and library(); the original switch is untouched."
+    }
+  ]
+}

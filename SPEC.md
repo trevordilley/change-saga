@@ -506,6 +506,18 @@ box is refused. Generated SVGs reference one measurement font the reviewer
 serves at `/_diagram/fonts/go-regular.ttf` and fall back to a system
 sans-serif elsewhere.
 
+An edge's `head` and `tail` take one terminator vocabulary: `arrow`, `open`,
+`triangle` (UML generalization), `diamond` and `filled-diamond` (aggregation
+and composition), `circle`, `dot`, `bar`, and the ERD crow's-foot
+cardinalities `one`, `only-one`, `zero-or-one`, `many`, `one-or-many`, and
+`zero-or-many`. A tail is drawn facing outward, so each reads the same at
+either end. `head_label` and `tail_label` place text such as a cardinality at
+an end, each in its own explicit box. `curve: smooth` draws a curve through an
+edge's points, and `line` (`solid`, `dashed`, or `dotted`) overrides its
+style's dash. Terminators grow with strokes thicker than 2 unless `head_size`
+sets their size. `describe` prints an edge's terminators and end labels when
+they say more than a plain arrow.
+
 Any semantic element may carry an optional `note`: at most 1,000 characters
 of Markdown limited to bold, italics, inline code, lists, and `http`, `https`,
 or `mailto` links. Raw HTML, headings, images, tables, code blocks, block
@@ -522,6 +534,22 @@ popover of an element an Item selects also shows the Item's label and
 description, and an implementation Item's callout body, which a review slide
 lists in its Surprises panel instead; an Item's drawer repeats its note for a
 reader who cannot hover.
+
+Beyond the original `service`, `datastore`, `decision`, `rect`, `ellipse`,
+and `boundary`, a node may be a `triangle`, `hexagon`, `parallelogram`,
+`document`, `cloud`, `actor`, `queue`, `circle` (equal width and height), or
+`star`. These shapes center their icon, label, and detail in a text area
+inside the outline, default to `middle` alignment, and refuse text that does
+not fit it. An `entity` node draws an ERD table: a header naming it and one
+row per entry of its `fields` (`name`, optional `type`, and `key` `pk`, `fk`,
+or `pk,fk`). Rows have fixed metrics, published by `change-saga spec`, so an
+author can aim an edge at a row, and an edge's optional `from_field` or
+`to_field` names the field it ends on, which must exist on that endpoint. The
+description prints an entity's fields and an edge's field endpoints, such as
+`orders.customer_id -> customers.id`, and omits purely geometric shapes. Icons
+name any of the bundled Lucide set, listed and searched by tag with
+`change-saga diagram icons`; a generated SVG that uses one carries Lucide's
+license notice.
 
 A diagram may also carry a board layer. A **section** is a group with shape
 `section`: a tinted frame whose label sits in a title tab inside its top-left

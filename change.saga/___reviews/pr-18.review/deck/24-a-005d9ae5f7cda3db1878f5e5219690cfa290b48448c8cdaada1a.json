@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "New shapes lay out inside their outline",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "source",
+      "kind": "node",
+      "shape": "parallelogram",
+      "label": "Node source",
+      "detail": "shape names the outline",
+      "note": "Only `shape` changes. Placement stays explicit: a new shape is still drawn at its own `x`, `y`, `width`, and `height`.",
+      "x": 40,
+      "y": 300,
+      "width": 250,
+      "height": 110,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "dispatch",
+      "kind": "node",
+      "shape": "hexagon",
+      "label": "shape()",
+      "detail": "render.go",
+      "note": "Two early returns: `entity` goes to `entity()`, the nine library shapes to `library()`. Everything below them is the original switch, unchanged.",
+      "x": 330,
+      "y": 290,
+      "width": 220,
+      "height": 130,
+      "style": "primary",
+      "icon": "lucide:split"
+    },
+    {
+      "id": "original",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Original layout",
+      "detail": "service, datastore, decision, rect, ellipse",
+      "note": "Not touched, so `sample.svg` and `notes.svg` stay byte-identical and `Renderer` stays `change-saga-diagram/1`.",
+      "x": 640,
+      "y": 96,
+      "width": 400,
+      "height": 110,
+      "style": "secondary"
+    },
+    {
+      "id": "library",
+      "kind": "group",
+      "shape": "boundary",
+      "label": "Library: centered in a text area",
+      "x": 640,
+      "y": 236,
+      "width": 600,
+      "height": 250,
+      "style": "boundary"
+    },
+    {
+      "id": "layout",
+      "kind": "node",
+      "shape": "circle",
+      "label": "library()",
+      "note": "Measures the label and detail with the pinned font, then stacks icon, label, and detail in the middle of the shape's text area. Too much text is refused, never shrunk.",
+      "x": 24,
+      "y": 54,
+      "width": 130,
+      "height": 130,
+      "parent": "library",
+      "style": "primary"
+    },
+    {
+      "id": "s-triangle",
+      "kind": "node",
+      "shape": "triangle",
+      "x": 180,
+      "y": 40,
+      "width": 70,
+      "height": 62,
+      "parent": "library",
+      "style": "warning",
+      "decorative": true
+    },
+    {
+      "id": "s-hexagon",
+      "kind": "node",
+      "shape": "hexagon",
+      "x": 270,
+      "y": 44,
+      "width": 90,
+      "height": 56,
+      "parent": "library",
+      "style": "normal",
+      "decorative": true
+    },
+    {
+      "id": "s-parallelogram",
+      "kind": "node",
+      "shape": "parallelogram",
+      "x": 380,
+      "y": 44,
+      "width": 100,
+      "height": 56,
+      "parent": "library",
+      "style": "normal",
+      "decorative": true
+    },
+    {
+      "id": "s-document",
+      "kind": "node",
+      "shape": "document",
+      "x": 500,
+      "y": 38,
+      "width": 70,
+      "height": 68,
+      "parent": "library",
+      "style": "primary",
+      "decorative": true
+    },
+    {
+      "id": "s-cloud",
+      "kind": "node",
+      "shape": "cloud",
+      "x": 180,
+      "y": 146,
+      "width": 100,
+      "height": 66,
+      "parent": "library",
+      "style": "normal",
+      "decorative": true
+    },
+    {
+      "id": "s-actor",
+      "kind": "node",
+      "shape": "actor",
+      "x": 300,
+      "y": 134,
+      "width": 50,
+      "height": 84,
+      "parent": "library",
+      "style": "normal",
+      "decorative": true
+    },
+    {
+      "id": "s-queue",
+      "kind": "node",
+      "shape": "queue",
+      "x": 370,
+      "y": 150,
+      "width": 100,
+      "height": 56,
+      "parent": "library",
+      "style": "normal",
+      "decorative": true
+    },
+    {
+      "id": "s-star",
+      "kind": "node",
+      "shape": "star",
+      "x": 490,
+      "y": 142,
+      "width": 70,
+      "height": 68,
+      "parent": "library",
+      "style": "warning",
+      "decorative": true
+    },
+    {
+      "id": "entity",
+      "kind": "node",
+      "shape": "entity",
+      "label": "entity()",
+      "x": 640,
+      "y": 520,
+      "width": 400,
+      "height": 104,
+      "style": "normal",
+      "decorative": true,
+      "fields": [
+        {
+          "name": "header",
+          "type": "label and icon"
+        },
+        {
+          "name": "one row per field",
+          "type": "key, name, type"
+        }
+      ]
+    },
+    {
+      "id": "to-original",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "dispatch",
+      "to": "original",
+      "points": [
+        {
+          "x": 536,
+          "y": 330
+        },
+        {
+          "x": 600,
+          "y": 330
+        },
+        {
+          "x": 600,
+          "y": 151
+        },
+        {
+          "x": 640,
+          "y": 151
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "to-library",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "dispatch",
+      "to": "layout",
+      "points": [
+        {
+          "x": 550,
+          "y": 355
+        },
+        {
+          "x": 664,
+          "y": 355
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "to-entity",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "dispatch",
+      "to": "entity",
+      "points": [
+        {
+          "x": 536,
+          "y": 380
+        },
+        {
+          "x": 600,
+          "y": 380
+        },
+        {
+          "x": 600,
+          "y": 578
+        },
+        {
+          "x": 640,
+          "y": 578
+        }
+      ],
+      "head": "arrow",
+      "decorative": true
+    },
+    {
+      "id": "read",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "source",
+      "to": "dispatch",
+      "points": [
+        {
+          "x": 283,
+          "y": 355
+        },
+        {
+          "x": 330,
+          "y": 355
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "start": 184,
+      "end": 210,
+      "digest": "sha256:469adfe7e40873b7db8fef293263a86ea682139cb8507a35cb7c95fa8d6e79ca",
+      "note": "library() stacks icon, label, and detail in the text area and refuses overflow."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "start": 215,
+      "end": 286,
+      "digest": "sha256:6c45bd19868987d7eef2272019380b573607b412367587a6cfffb42bd685fb8e",
+      "note": "library() stacks icon, label, and detail in the text area and refuses overflow."
+    }
+  ]
+}

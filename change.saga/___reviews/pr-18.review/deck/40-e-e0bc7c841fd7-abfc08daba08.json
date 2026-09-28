@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/diagram_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:e00b57c8f144202bb69bfc18d8fcafc66e9775c6bf8bd58af4f07020d5851cc8",
+      "note": "hexagon is now a shape, so the invalid-shape case uses octagon."
+    }
+  ]
+}

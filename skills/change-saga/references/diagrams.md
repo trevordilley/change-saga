@@ -68,9 +68,40 @@ under `implementation_deck.diagram_source`; list icons with `change-saga
 diagram icons`.
 
 - Kinds: `node` (shape `service`, `datastore`, `decision`, `rect`, `ellipse`,
-  `boundary`), `edge` (`from`/`to` nodes plus explicit `points` or `path`),
-  `text`, `group`, `graphic` (allowlisted SVG drawing markup), `sticky`, and
-  `annotation` (below).
+  `boundary`, `triangle`, `hexagon`, `parallelogram`, `document`, `cloud`,
+  `actor`, `queue`, `circle`, `star`, or `entity`), `edge` (`from`/`to` nodes
+  plus explicit `points` or `path`), `text`, `group`, `graphic`
+  (allowlisted SVG drawing markup), `sticky`, and `annotation` (below).
+- Pick a shape for what a node is: `actor` for a person or external role,
+  `queue` for a queue or stream, `document` for a file or report, `cloud` for
+  an external or hosted system, `datastore` for storage. The shapes from
+  `triangle` on center their icon, label, and detail inside the outline and
+  default to `middle` alignment; a `circle` needs equal width and height. The
+  description omits purely geometric shapes, so a label must say what the
+  node is.
+- Draw an ERD with `entity` nodes: the label names the table and `fields`
+  lists its rows. An edge's `from_field`/`to_field` names the row it ends on;
+  aim its points at that row's middle, `header + 28 * index + 14` below the
+  entity's top, where `header` is the style's `font_size * 1.25 + 16` (43.5
+  for `normal`):
+
+  ```json
+  {"id": "orders", "kind": "node", "shape": "entity", "label": "orders",
+   "x": 600, "y": 480, "width": 320, "height": 128, "style": "normal",
+   "fields": [{"name": "id", "type": "uuid", "key": "pk"},
+              {"name": "customer_id", "type": "uuid", "key": "fk"},
+              {"name": "total", "type": "numeric"}]},
+  {"id": "places", "kind": "edge", "from": "orders", "to": "customers",
+   "from_field": "customer_id", "to_field": "id", "style": "secondary",
+   "tail": "zero-or-many", "head": "only-one",
+   "points": [{"x": 600, "y": 565.5}, {"x": 360, "y": 537.5}]}
+  ```
+
+  `diagram describe` reads it as `fields: id uuid pk, customer_id uuid fk,
+  total numeric` and `places: orders.customer_id -> customers.id
+  tail=zero-or-many head=only-one`.
+- `icon` names any bundled Lucide icon; search by what it depicts with
+  `change-saga diagram icons --query storage`.
 - Every coordinate is explicit and local to the parent group. Nothing is laid
   out, resized, or rerouted for you: moving a node leaves its edges where they
   are, so update their `points` in the same batch.
@@ -79,6 +110,14 @@ diagram icons`.
 - A group with `shape` `rect` or `boundary` draws a frame and parents its
   contents; use one for containers, lanes, trust boundaries, and `alt`/`loop`
   fragments, so moving the frame moves what it contains.
+- Edges end in terminators: `head` and `tail` take `arrow`, `open`, `triangle`,
+  `diamond`, `filled-diamond`, `circle`, `dot`, `bar`, or an ERD cardinality
+  (`one`, `only-one`, `zero-or-one`, `many`, `one-or-many`, `zero-or-many`).
+  For an ERD, draw `orders -> customers` with `"tail": "zero-or-many", "head":
+  "only-one"` and put `N` and `1` in `tail_label`/`head_label` with their own
+  boxes. Use `curve: "smooth"` for a flowing line through its points, `line:
+  "dashed"` or `"dotted"` for optional or asynchronous flows, and a style with
+  a thick `stroke_width` for an emphatic arrow; its head grows with it.
 - Edge labels need a `label_box`; a node whose shape is too small for its
   label may place it in a `label_box` outside the shape. `align` is `start`,
   `middle`, or `end`.

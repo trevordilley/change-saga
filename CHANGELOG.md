@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased — diagram shapes, ERD entities, and every Lucide icon
+
+- Diagram nodes gain `triangle`, `hexagon`, `parallelogram`, `document`,
+  `cloud`, `actor`, `queue`, `circle`, and `star`. Each centers its icon,
+  label, and detail inside the outline and still refuses text that does not
+  fit.
+- An `entity` node draws an ERD table from its `fields` (name, type, and a
+  `pk`/`fk` key marker), and an edge may name the field it ends on with
+  `from_field`/`to_field`. `diagram describe` reads
+  `fields: id uuid pk, customer_id uuid fk` and
+  `orders.customer_id -> customers.id`, and omits purely geometric shapes.
+- The full Lucide set (1,856 icons) is bundled at the same pinned revision,
+  about 0.6 MB of the binary; `diagram icons --query` also matches what an
+  icon depicts, so `--query storage` finds `lucide:database`.
+- Diagrams that use none of these render byte-identically.
+
 ## Unreleased — surprises called out in review decks
 
 - A review slide's `callout` Items are its surprises: what a reviewer would

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "pr-18",
+  "title": "Diagram shapes: shape library, ERD entity tables, full Lucide icon set",
+  "pull_request": {
+    "number": 18
+  },
+  "base": "origin/main",
+  "head": "feature/diagram-shapes",
+  "created_at": "2026-09-28T01:24:10.794409Z"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "CHANGELOG.md",
+      "start": 17,
+      "end": 18,
+      "digest": "sha256:d41057930f0f22db5ce972cdededfb8d1c4b82aa4364ddbbaea7f64f40667f97",
+      "note": "Changelog: sources without the new features render byte-identically."
+    }
+  ]
+}
