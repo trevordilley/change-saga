@@ -126,3 +126,17 @@ func TestSidebarFollowsAMergeOfAnOpenReview(t *testing.T) {
 		t.Fatalf("after pr-8 merged:\n%s", index)
 	}
 }
+
+// A review created a moment ago has no slides yet. Its page says so and
+// names the command that adds the first, instead of failing.
+func TestReviewWithNoSlidesRendersItsEmptyDeck(t *testing.T) {
+	t.Parallel()
+	fixture := newMergedReviewFixture(t)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	page := getPage(t, handler, "/reviews/pr-8").Body.String()
+	for _, want := range []string{`data-review-empty="pr-8"`, `Name the queue table`, `apply-slide --review pr-8`} {
+		if !strings.Contains(page, want) {
+			t.Fatalf("the empty review page is missing %q:\n%s", want, page)
+		}
+	}
+}
