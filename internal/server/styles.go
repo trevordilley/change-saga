@@ -39,7 +39,7 @@ a{color:var(--accent)}
 .slide-section-divider::after{content:'';height:1px;min-width:12px;flex:1;background:var(--line)}
 .slide-thumbnail-card{position:relative;min-width:0;counter-increment:slide-thumbnail;padding-left:22px;color:var(--muted)}
 .slide-thumbnail-card::before{content:counter(slide-thumbnail);position:absolute;left:0;top:4px;width:17px;text-align:right;color:var(--faint);font:10px/1 var(--mono)}
-.slide-thumbnail-preview{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:2px solid var(--line);border-radius:5px;background:#fff;box-shadow:0 1px 2px #1f23281f;transition:border-color .12s,box-shadow .12s}
+.slide-thumbnail-preview{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:2px solid var(--line);border-radius:5px;background:var(--bg);box-shadow:0 1px 2px #1f23281f;transition:border-color .12s,box-shadow .12s}
 .slide-thumbnail-preview iframe,.slide-thumbnail-preview img{display:block;width:100%;height:100%;border:0;object-fit:contain;pointer-events:none}
 .slide-thumbnail-caption{display:flex;align-items:center;gap:5px;margin-top:4px}
 .slide-thumbnail-title{display:block;min-width:0;flex:1;color:inherit;font:11.5px/1.3 var(--ui);overflow-wrap:anywhere}
@@ -137,7 +137,7 @@ it. The view tabs beside them belong to whichever side is open. */
 .doc-deck>.doc-children{margin:0 0 8px;padding:7px 0 2px;border-left:0;counter-reset:slide-thumbnail}
 .doc-slide-thumbnail{margin:0 0 10px;min-width:0}
 .doc-slide-thumbnail .slide-thumbnail-card{padding-left:22px}
-.doc-slide-thumbnail .slide-thumbnail-preview{border-width:1px;background:#fff}
+.doc-slide-thumbnail .slide-thumbnail-preview{border-width:1px;background:var(--bg)}
 .doc-slide-thumbnail .slide-thumbnail-card.active .slide-thumbnail-preview{border-width:2px}
 .doc-children{margin-left:10px;border-left:1px solid var(--line);padding-left:4px}
 .doc-children[hidden]{display:none}
@@ -639,7 +639,7 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .related-fragment strong{display:block;font-size:12.5px}
 .related-fragment span{display:block;margin-top:2px;color:var(--muted);font-size:11.5px;line-height:1.45}
 .related-slide{display:block;margin-top:7px;color:var(--ink);text-decoration:none}
-.related-slide-preview{display:block;aspect-ratio:16/9;overflow:hidden;border:2px solid var(--line);border-radius:5px;background:#fff;box-shadow:0 1px 2px #1f23281f;transition:border-color .12s,box-shadow .12s}
+.related-slide-preview{display:block;aspect-ratio:16/9;overflow:hidden;border:2px solid var(--line);border-radius:5px;background:var(--bg);box-shadow:0 1px 2px #1f23281f;transition:border-color .12s,box-shadow .12s}
 .related-slide-preview iframe,.related-slide-preview img{display:block;width:100%;height:100%;border:0;object-fit:contain;pointer-events:none}
 .related-slide-caption{display:flex;align-items:center;gap:5px;margin-top:5px}
 .related-slide-caption strong{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px}
@@ -750,7 +750,7 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .manifest-owners>a strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
 .manifest-owners>a small{color:var(--faint)}
 .manifest-owners>a.manifest-slide-owner{display:grid;grid-template-columns:72px minmax(0,1fr);gap:7px;padding:3px;border-radius:5px}
-.manifest-slide-preview,.manifest-target-slide-preview{display:block;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);border-radius:3px;background:#fff}
+.manifest-slide-preview,.manifest-target-slide-preview{display:block;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--line);border-radius:3px;background:var(--bg)}
 .manifest-slide-preview iframe,.manifest-slide-preview img,.manifest-target-slide-preview iframe,.manifest-target-slide-preview img{display:block;width:100%;height:100%;border:0;object-fit:contain;pointer-events:none}
 .manifest-slide-copy{display:grid;min-width:0;align-content:center}
 .manifest-owners>a .manifest-slide-copy strong,.manifest-owners>a .manifest-slide-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

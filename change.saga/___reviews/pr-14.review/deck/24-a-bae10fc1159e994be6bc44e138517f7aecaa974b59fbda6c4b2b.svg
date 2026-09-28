@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">A note travels with its element</title>
+  <desc id="diagram-desc">A diagram element may carry a short Markdown note; the model validates it once, and the SVG, the CLI, and the reviewer each read it.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-canvas:#fafaf8;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;--diagram-warning-fill:#fff7e6;--diagram-warning-ink:#805015;--diagram-warning-stroke:#b7791f;}@media (prefers-color-scheme:dark){:root{--diagram-canvas:#0d1117;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;--diagram-warning-fill:#2d240c;--diagram-warning-ink:#f2cc60;--diagram-warning-stroke:#d29922;}}</style>
+    <marker id="diagram-head-writes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-checked" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-renders" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-reads" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-serves" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</metadata>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" role="group" aria-label="A note travels with its element">
+    <desc>An AI author can annotate any node, edge, group, text, or title it draws. Hover, focus, or tap an element on this slide to read its note.</desc>
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">A note travels with its element</tspan></text>
+  </g>
+  <g id="author" data-diagram-kind="node" transform="translate(60 150)" role="group" aria-label="AI author">
+    <desc>Writes note in an apply-slide request, or sets it later with a diagram edit update op; null clears it.</desc>
+    <rect width="240" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-normal-ink,#172033)">
+      <path d="M12 19h8"/>
+      <path d="m4 17 6-6-6-6"/>
+    </svg>
+    <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="52" y="40">AI author</tspan></text>
+  </g>
+  <g id="source" data-diagram-kind="node" transform="translate(420 150)" role="group" aria-label="Element note">
+    <rect width="340" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Element note</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">optional, in the diagram source</tspan></text>
+  </g>
+  <g id="validate" data-diagram-kind="node" transform="translate(900 130)" role="group" aria-label="Validate">
+    <path d="M160 0L320 70L160 140L0 70Z" fill="#fff7e6" stroke="#b7791f" stroke-width="2" style="fill:var(--diagram-warning-fill,#fff7e6);stroke:var(--diagram-warning-stroke,#b7791f)"/>
+    <text x="80" y="68" font-size="19" fill="#805015" xml:space="preserve" style="fill:var(--diagram-warning-ink,#805015)"><tspan x="80" y="68">Validate</tspan></text>
+  </g>
+  <g id="svg" data-diagram-kind="node" transform="translate(60 440)" role="group" aria-label="SVG desc, plain text">
+    <rect width="340" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">SVG desc, plain text</tspan></text>
+  </g>
+  <g id="cli" data-diagram-kind="node" transform="translate(470 440)" role="group" aria-label="describe, get, edit">
+    <rect width="340" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">describe, get, edit</tspan></text>
+  </g>
+  <g id="reviewer" data-diagram-kind="node" transform="translate(880 440)" role="group" aria-label="Reviewer popover">
+    <desc>Rendered with the reviewer's sanitizing Markdown helper and shown beside the element. The next slide shows how.</desc>
+    <rect width="340" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Reviewer popover</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="text" transform="translate(60 620)" role="group" aria-label="Tests: validation, byte-stable rendering, round trips">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="15">Tests: validation, byte-stable rendering, round trips</tspan></text>
+  </g>
+  <g id="writes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="writes" data-from="author" data-to="source">
+    <path d="M300 200 L420 200" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-writes)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="316" y="180" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="316" y="180">writes</tspan></text>
+  </g>
+  <g id="checked" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="checked" data-from="source" data-to="validate">
+    <desc>On every apply-slide and diagram edit, and again whenever a Saga loads, so validate reports a hand-edited unsafe note.</desc>
+    <path d="M760 200 L900 200" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-checked)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="780" y="180" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="780" y="180">checked</tspan></text>
+  </g>
+  <g id="renders" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="renders" data-from="source" data-to="svg">
+    <path d="M500 250 L230 440" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-renders)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="250" y="338" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="250" y="338">renders</tspan></text>
+  </g>
+  <g id="reads" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="reads" data-from="source" data-to="cli">
+    <path d="M590 250 L640 440" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-reads)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="628" y="348" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="628" y="348">reads</tspan></text>
+  </g>
+  <g id="serves" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="serves" data-from="source" data-to="reviewer">
+    <path d="M700 250 L1000 440" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-serves)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="880" y="338" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="880" y="338">serves</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/tokens_test.go",
+      "digest": "sha256:c97fff0fb78ff17f01c8bdb0a0522b15476111f964511f4de692b31e930921ff"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/tokens_test.go",
+      "start": 1,
+      "end": 128,
+      "digest": "sha256:c97fff0fb78ff17f01c8bdb0a0522b15476111f964511f4de692b31e930921ff"
+    }
+  ]
+}

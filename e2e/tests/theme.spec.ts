@@ -66,16 +66,19 @@ test("a theme file recolours the reviewer and a slide in light and dark mode", a
     await expect.poll(frameCanvas).toBe("rgb(0, 31, 39)");
     await page.locator("[data-theme-toggle]").click();
     await expect.poll(background).toBe("rgb(253, 246, 227)");
+    await expect.poll(frameCanvas).toBe("rgb(253, 246, 227)");
     await page.emulateMedia({ colorScheme: "light" });
     await page.locator("[data-theme-toggle]").click();
     await expect.poll(background).toBe("rgb(0, 43, 54)");
+    await expect.poll(frameCanvas).toBe("rgb(0, 31, 39)");
 
     // The served slide declares the tokens with the theme applied, for the
     // reader's scheme; its own committed bytes declare none.
-    const visualURL = await slide.getAttribute("src");
+    const visualURL = new URL((await slide.getAttribute("src"))!, running.baseURL);
+    visualURL.searchParams.delete("saga_scheme");
     const canvas = () => page.evaluate(() => getComputedStyle(document.getElementById("canvas")!).fill);
     await page.emulateMedia({ colorScheme: "light" });
-    await page.goto(new URL(visualURL!, running.baseURL).href);
+    await page.goto(visualURL.href);
     expect(await canvas()).toBe("rgb(253, 246, 227)");
     expect(await page.evaluate(() => getComputedStyle(document.getElementById("card")!).fill)).toBe("rgb(237, 245, 255)");
     await page.emulateMedia({ colorScheme: "dark" });

@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/model.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:0b26934d56a1ec2811b8a48924296fd982874c6b15464c0c47f78d17c45c2235"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/model.go",
+      "start": 138,
+      "end": 145,
+      "digest": "sha256:a37214360d3f05bb3beebcb56bcdf28168ab33d3bf892f466e7f5807f523c677"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/model.go",
+      "start": 228,
+      "end": 229,
+      "digest": "sha256:e3b14ab6ec5a6a6765eef740028515a0ea4cd62b9d2b66be455e69a5c834887d"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/model.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:c32eaafedf2cbfdf3fda8bb431348b1f47340b245f0d3508727be907c3ea7602"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/model.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:cb799838a80c233cb12255efdfb54205e711596c3cf87359110339568ea3ce77"
+    }
+  ]
+}

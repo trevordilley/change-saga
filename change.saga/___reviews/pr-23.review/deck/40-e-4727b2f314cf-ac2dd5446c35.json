@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/manifest.go",
+      "start": 471,
+      "end": 471,
+      "digest": "sha256:5037cb07f30be14ebe89f91da127f46d5369fdb1016908e3ac439735ed21ded1"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/server/manifest.go",
+      "start": 471,
+      "end": 471,
+      "digest": "sha256:d0949ec2ba14b721d441590dcced05a1b0fb3c1b05dccfb5dbeded3a8fb1acdd"
+    }
+  ]
+}

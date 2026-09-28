@@ -58,21 +58,20 @@ func (file *File) Resolved(scheme string) map[string]string {
 	return values
 }
 
-// FrameCSS declares every token for a slide served into a frame: the light
-// values with the theme applied, and the dark ones when the frame prefers
-// dark. The reviewer sets each slide frame's color-scheme from its own light
-// or dark choice, so a frame's preference follows the reviewer's toggle, and
-// the data-theme selectors never match inside one. It sets no color-scheme
-// itself: a slide that does not support dark mode keeps the light scheme the
-// reviewer gives its frame.
-func (file *File) FrameCSS() string {
-	declare := func(scheme string) string {
-		values := file.Resolved(scheme)
-		var b strings.Builder
-		for _, token := range tokens {
-			b.WriteString("--" + token.Name + ":" + values[token.Name] + ";")
-		}
-		return b.String()
+// Declare declares every token with its value in scheme, the theme applied.
+func (file *File) Declare(scheme string) string {
+	values := file.Resolved(scheme)
+	var b strings.Builder
+	for _, token := range tokens {
+		b.WriteString("--" + token.Name + ":" + values[token.Name] + ";")
 	}
-	return ":root{" + declare("light") + "}@media (prefers-color-scheme:dark){:root{" + declare("dark") + "}}"
+	return b.String()
+}
+
+// FrameCSS declares every token for a slide served into a frame that follows
+// the OS: the light values with the theme applied, and the dark ones when
+// the frame prefers dark. It sets no color-scheme: a slide that does not
+// support dark mode keeps the light scheme the reviewer gives its frame.
+func (file *File) FrameCSS() string {
+	return ":root{" + file.Declare("light") + "}@media (prefers-color-scheme:dark){:root{" + file.Declare("dark") + "}}"
 }

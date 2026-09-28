@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/server/codeview.go",
+      "start": 132,
+      "end": 133,
+      "digest": "sha256:5e9f3c0d763224b03126c3702e3c571beb6739e2cdedbd13625050891c862247"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/server/codeview.go",
+      "start": 501,
+      "end": 501,
+      "digest": "sha256:0f083fe5a24d54bdc2a9baf42341a612cd8b1db5c16026237293b9be11de93db"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/codeview.go",
+      "start": 499,
+      "end": 499,
+      "digest": "sha256:b959e5b943154cfe1d523d5f99fcc251f31876554d73832b9893d07466fb8da2"
+    }
+  ]
+}

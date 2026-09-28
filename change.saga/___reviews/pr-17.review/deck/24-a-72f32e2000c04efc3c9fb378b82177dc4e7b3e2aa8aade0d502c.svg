@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Proof and guidance</title>
+  <desc id="diagram-desc">A golden, validation, describe, edit, schema, and apply-slide tests pin the connectors; SPEC and the skill teach them.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-canvas:#fafaf8;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-canvas:#0d1117;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-marker-teach-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="18" markerHeight="18" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <path d="M0 0L10 5L0 10Z" fill="#fafaf8" stroke="#94a3b8" stroke-width="1.111" stroke-linejoin="round" style="fill:var(--diagram-canvas,#fafaf8);stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Proof and guidance</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="node" transform="translate(120 260)" role="group" aria-label="Tests">
+    <desc>connectors.svg pins every terminator; the sample.svg and notes.svg goldens stay byte-identical.</desc>
+    <rect width="420" height="120" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Tests</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">golden, validation, describe, edit</tspan></text>
+  </g>
+  <g id="docs" data-diagram-kind="node" transform="translate(740 260)" role="group" aria-label="Docs">
+    <rect width="420" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Docs</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">SPEC.md and the diagrams reference</tspan></text>
+  </g>
+  <g id="teach" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="backs" data-from="tests" data-to="docs">
+    <path d="M540 320 L740 320" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#diagram-marker-teach-head)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="600" y="300" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="600" y="300">backs</tspan></text>
+  </g>
+</svg>

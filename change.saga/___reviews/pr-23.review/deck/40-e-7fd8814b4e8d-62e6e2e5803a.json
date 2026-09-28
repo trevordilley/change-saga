@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/render.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:58068751cd514ab0e0015c08c7f92e2129fec73509fafcf825c5454f6fbf633c"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/render.go",
+      "start": 67,
+      "end": 68,
+      "digest": "sha256:b677ced1f0d03b48ca1f7a7bedd9c109986110ae38afafb37a6f2d2310454838"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/render.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:726ce39604dac3a33b0d753d938a0f412828e8a5d6e78eed73c95105397be50d"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/render.go",
+      "start": 84,
+      "end": 86,
+      "digest": "sha256:e34830da154170fd055af13a5d1f11e7d9a69a523dfa172378ce235a4be8b62b"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/render.go",
+      "start": 191,
+      "end": 199,
+      "digest": "sha256:a96bca14e9c89fccc6293822f56129491556431f6a5fdda68179d7c77b7bccd5"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/render.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:2e2549d73ad036f47ee0a231afe66897d4c4df7c55f66d9fa40f8286d0c4a10b"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/render.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:eea78d1b69a74f4c4fafa5d8a336a3a7a02ffeed833b0520281ff690005d03f6"
+    }
+  ]
+}

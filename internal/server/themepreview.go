@@ -89,15 +89,15 @@ func (a *app) themePreview(w http.ResponseWriter, _ *http.Request) {
 }
 
 // themePreviewDiagram serves the preview's diagram like any slide visual,
-// with the theme's tokens injected, so it shows what a generated slide
-// will look like.
+// with the theme's tokens injected for the scheme its pane names, so it
+// shows what a generated slide will look like.
 func (a *app) themePreviewDiagram(w http.ResponseWriter, r *http.Request) {
 	svg, err := previewDiagramSVG()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	body := injectFrameTheme(svg, "svg", a.sagaTheme().FrameCSS())
+	body := injectSlideStyle(svg, "image/svg+xml", slideVisualStyle(slideScheme(r), a.sagaTheme()))
 	w.Header().Set("Content-Security-Policy", authoredContentPolicy)
 	w.Header().Set("Content-Type", "image/svg+xml")
 	w.Header().Set("Cache-Control", "no-cache")
@@ -182,7 +182,7 @@ var themePreviewTemplate = template.Must(template.New("theme").Parse(`<!doctype 
 <div class="sample-card">A card on the subtle background, with the shadow and radius tokens.</div>
 </div>
 <h3>Diagram</h3>
-<img class="theme-diagram" src="/theme/diagram.svg" alt="A diagram in every default style and palette colour" style="color-scheme:{{.Scheme}}" width="1280" height="720">
+<img class="theme-diagram" src="/theme/diagram.svg?saga_scheme={{.Scheme}}" alt="A diagram in every default style and palette colour" width="1280" height="720">
 {{range .Groups}}<h3>{{.Name}}</h3><div class="theme-swatches">{{range .Tokens}}<div class="theme-swatch">{{if eq .Kind "color"}}<span style="background:var(--{{.Name}})"></span>{{else}}<span style="{{if eq .Kind "shadow"}}box-shadow:var(--{{.Name}}){{else if eq .Kind "length"}}border-radius:var(--{{.Name}}){{end}}"></span>{{end}}<span><code>--{{.Name}}</code><small>{{.Value}}</small></span></div>{{end}}</div>{{end}}
 </section>{{end}}
 </div>

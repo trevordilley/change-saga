@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
       "path": "internal/server/server.go",
-      "start": 1778,
-      "end": 1799,
-      "digest": "sha256:0a175168021d2e526e534f1e78d2f0e361033b6da88f8c378b45d57f11c5fac9",
+      "start": 1791,
+      "end": 1813,
+      "digest": "sha256:71b9d3d9ee88cc8e8963318436943d3fa65b3e2141d13963a5873f89beb95253",
       "note": "Selects interactive rendering for SVG and HTML and image rendering for the remaining image media types."
     }
   ]

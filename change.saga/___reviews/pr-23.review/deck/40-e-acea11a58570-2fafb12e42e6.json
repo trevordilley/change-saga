@@ -1,0 +1,229 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:95352db76c70a29979420e19e9bd2bf080875c9fb203d3f091a17141e58935d8"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:3f6fa7b2e3acc5efd00e969e87fb37fa7af7b26e8bc773ad725c1a768b203c1c"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 6,
+      "end": 7,
+      "digest": "sha256:698cd9e517211a2736d12cf886e70d72672848e43614fe29e4fae58574de82b1"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:768f9087bcb388754efe3a71ceb37ca16af562f398609b1f0fb298d87e3a773c"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:3767d76090556567551fa328d4e0b3c9f5e3f034d048db81463d41b20ebfb120"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:33775083cca5b598ffb7522d34c6be5419a89383abffa83cdd3df433046a6991"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:aece3fe1badf8804efddeee914cbc8d64d842987e9f19e39dce44d0c22ae9881"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:7078d8acf026b68be335971a8ebfb8c8f6c15e4f7ad72ac82e26d6dc981e0c74"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 27,
+      "end": 28,
+      "digest": "sha256:0ab7bd04c00b3344e6cc74da26c8a95d30076be92e497d9ea065261b9c9a630f"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 31,
+      "end": 32,
+      "digest": "sha256:fcdbfcf18395d3e147bf211ee0ede57306eec626d75cab9f1826282c1e1f5e36"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 35,
+      "end": 36,
+      "digest": "sha256:c356371241b65cb89d4bf1d09cacbe44f0b1aca1ec736ae97987815d19571d4c"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 39,
+      "end": 40,
+      "digest": "sha256:c5eb242543d5b3d017471cdd258b49037ccd0e5592b830432b22f252d20f33eb"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 43,
+      "end": 44,
+      "digest": "sha256:c155572e45fa233f2b24be31d94f76adb9c64ba42a67d039c18294ad922c3aaa"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 47,
+      "end": 50,
+      "digest": "sha256:3cdb4d99722d9b1c3594f494e03afd184e6480eae2682a597177a0664bb8b7f9"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:8594e751a3872632cc21aeef7da3b73eaba86ed6ebd317fb6bd2e5ec44bfd605"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:bd4c5409c83604cb962eb9d5738023ee2d57c179c254efda3c74737038006649"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:087892cdc9ab6dd68ff355f7a8020e00481c2ae523f48828b4d284ef65540a33"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:71c26cc6f623de9878e11cf88bd7cfb5c64bb24c98bcf6f110d3b799e9f7a6c8"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 6,
+      "end": 7,
+      "digest": "sha256:9bc304a526fd1349b63b14b72ddb1713972f09b5c5ebbe6b6a0e8a05ca1990e0"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:faf85decbdf6ea36b6bd57090555608b4483d7fe7a0a811ca62a5adfbb5c962e"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:d0669aa6a66583eced5980865e4287042d0d057a2736b0d9e3fd75ef93b1dfef"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:dd11ec488e91335ef386ad52217aae5e10a35068e1eb9535c0df18e6f2f36dcd"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:64a352e77798fc720665d399303efa1489baf228de510130103500e70b34e559"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:b76fde5ab4687e2aa9fddccfe1e8ee64476738d22399256d9db3dad9daa2909d"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 27,
+      "end": 28,
+      "digest": "sha256:f56ee44085591f5e2f42bc71dda9cab11aefcbae3b0293c0ac80431a393f740f"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 31,
+      "end": 32,
+      "digest": "sha256:2860b9238b67dd8f1d558073a88ddd0dc020fbff2ebb493301d99badba3e0b99"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 35,
+      "end": 36,
+      "digest": "sha256:751fd27d5f6d2823c1c0575853843453687da2d6b022c79a15da9e4c421603bb"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 39,
+      "end": 40,
+      "digest": "sha256:84c696dea92a927a0430dacf23614c7a216360bb6bc0fb2ae682e83bf6ca844c"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 43,
+      "end": 44,
+      "digest": "sha256:5ac35fc365d66ac19ac25e4a2944afbbfe5359b1a3fa9ff7994b5715c0c45239"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 47,
+      "end": 50,
+      "digest": "sha256:5434f6c3cafbe245f07434bc8adc944711c77a3a800634c433ba05aec078ef5f"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:ef03bec6bf3e47f27e8f44b76e5b5a58364c5e8edf20175b192ccf8b4b638ebe"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/connectors.svg",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:6d2d0e9679296dfa87e2130b4b5d2be0a3de3d6c7626a603c5a4e8fc13b5a8c3"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-14",
   "slide": "note-source",
-  "current": "sha256:4945ef15b8e923fde4d625e5400af9cab7084d81148f6ebf8e7a545cede7c57b",
+  "current": "sha256:91c9a4ec75f97f034e72eb59cff9d2022a9b5778d6ff4ab26f47872fd38769db",
   "revisions": [
     {
       "snapshot": "sha256:7b5c587024835ade3664e03f5c10a5ed3b599c0d3572f0d6f0e82cf63f87ae9c",
@@ -281,6 +281,147 @@
         "source": "24-a-456a49b078f73e3202296b5c9e8fab6bb037b19168bd53472cec.json",
         "source_digest": "sha256:456a49b078f73e3202296b5c9e8fab6bb037b19168bd53472cec035b2eba536c",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:91c9a4ec75f97f034e72eb59cff9d2022a9b5778d6ff4ab26f47872fd38769db",
+      "parent_snapshots": [
+        "sha256:4945ef15b8e923fde4d625e5400af9cab7084d81148f6ebf8e7a545cede7c57b"
+      ],
+      "request_id": "rerender-renderer-2-12",
+      "created_at": "2026-09-28T04:17:16.328451Z",
+      "asset": "24-a-bae10fc1159e994be6bc44e138517f7aecaa974b59fbda6c4b2b.svg",
+      "asset_digest": "sha256:bae10fc1159e994be6bc44e138517f7aecaa974b59fbda6c4b2b7746c4bf28ef",
+      "slide": {
+        "version": 4,
+        "id": "note-source",
+        "deck": "pr-14",
+        "title": "A note travels with its element",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-bae10fc1159e994be6bc44e138517f7aecaa974b59fbda6c4b2b.svg",
+        "takeaway": "A diagram element may carry a short Markdown note; the model validates it once, and the SVG, the CLI, and the reviewer each read it.",
+        "reading_order": [
+          "source",
+          "validate",
+          "raw-html",
+          "svg",
+          "cli",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "source",
+            "slide": "note-source",
+            "rank": 10,
+            "kind": "node",
+            "label": "An optional note on every element",
+            "description": "Element gains an optional note field, in the stored source, the JSON schema, and the published contract.",
+            "selector": {
+              "type": "element",
+              "element_id": "source"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "validate",
+            "slide": "note-source",
+            "rank": 20,
+            "kind": "node",
+            "label": "Only safe, short Markdown passes",
+            "description": "Parsed with the reviewer's goldmark extensions: only bold, italics, inline code, lists, and http, https, or mailto links (www. only as an autolink), in 1,000 characters. Blank, textless, and decorative notes are refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "validate"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "raw-html",
+            "slide": "note-source",
+            "rank": 30,
+            "kind": "callout",
+            "label": "An angle bracket is raw HTML",
+            "description": "Why a note that mentions a tag is refused.",
+            "selector": {
+              "type": "element",
+              "element_id": "validate"
+            },
+            "about": "validate",
+            "body": "You might expect \u003cwhy\u003e to show as text; Markdown parses it as raw HTML, so the note is refused with a hint to write \\\u003c or put it in code."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "svg",
+            "slide": "note-source",
+            "rank": 40,
+            "kind": "node",
+            "label": "The SVG carries it as desc",
+            "description": "The renderer adds the note's plain-text projection as the element's desc for screen readers and the standalone SVG. An element without a note renders byte-identically, so the renderer version is unchanged.",
+            "selector": {
+              "type": "element",
+              "element_id": "svg"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "cli",
+            "slide": "note-source",
+            "rank": 50,
+            "kind": "node",
+            "label": "Agents read it without hovering",
+            "description": "diagram describe prints each note under its element and in JSON; diagram get returns it; an update op sets it and null clears it.",
+            "selector": {
+              "type": "element",
+              "element_id": "cli"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "note-source",
+            "rank": 60,
+            "kind": "statement",
+            "label": "Model and CLI tests",
+            "description": "Validation refusals, the plain-text projection, a golden rendering with notes that strips back to the old bytes, schema bounds, and describe, get, and edit round trips on implementation and review slides.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-456a49b078f73e3202296b5c9e8fab6bb037b19168bd53472cec.json",
+        "source_digest": "sha256:456a49b078f73e3202296b5c9e8fab6bb037b19168bd53472cec035b2eba536c",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

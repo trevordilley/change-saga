@@ -84,7 +84,7 @@ func TestServedVisualsCarryTheThemeTokens(t *testing.T) {
 	}
 
 	defaults := visual().Body.String()
-	if !strings.Contains(defaults, `<rect id="node" width="5" height="5"/><style data-change-saga-theme="">:root{--bg:#ffffff;`) || !strings.HasSuffix(defaults, "}}</style></svg>") {
+	if !strings.Contains(defaults, `<rect id="node" width="5" height="5"/><style data-change-saga-scheme="">:root{--bg:#ffffff;`) || !strings.HasSuffix(defaults, "}}</style></svg>") {
 		t.Fatalf("a slide without a theme lacks the default tokens:\n%s", defaults)
 	}
 
@@ -98,6 +98,13 @@ func TestServedVisualsCarryTheThemeTokens(t *testing.T) {
 	}
 	if strings.Contains(body, ";color-scheme:") || strings.Contains(body, "data-theme") {
 		t.Error("the frame style sets a color-scheme or uses selectors that never match in a frame")
+	}
+	// A frame whose scheme the reviewer pinned gets that scheme's tokens,
+	// the theme applied.
+	forced := httptest.NewRecorder()
+	handler.ServeHTTP(forced, httptest.NewRequest(http.MethodGet, "/reviews/pr-7/visual/queue?saga_scheme=dark", nil))
+	if body := forced.Body.String(); !strings.Contains(body, ":root{color-scheme:dark;--bg:#000000;") || !strings.Contains(body, "--diagram-canvas:#0d1117;") {
+		t.Errorf("a pinned dark slide lacks the theme's dark tokens:\n%s", body)
 	}
 	assertAuthoredContentPolicy(t, recorder.Header())
 	// The injected SVG is still well-formed XML, or a browser shows an error
@@ -129,20 +136,6 @@ func TestEmbeddedSlideAssetCarriesTheThemeTokens(t *testing.T) {
 	}
 }
 
-func TestInjectFrameThemePlacesTheStyleLast(t *testing.T) {
-	for _, tc := range []struct{ kind, in, want string }{
-		{"svg", `<svg><style>:root{--bg:#fff}</style><rect/></SVG>`, `<svg><style>:root{--bg:#fff}</style><rect/><style data-change-saga-theme="">X</style></SVG>`},
-		{"html", `<html><head><style>a{}</style></head><body>b</body></html>`, `<html><head><style>a{}</style><style data-change-saga-theme="">X</style></head><body>b</body></html>`},
-		{"html", `<p>b</p></body>`, `<p>b</p><style data-change-saga-theme="">X</style></body>`},
-		{"html", `<p>b</p>`, `<p>b</p><style data-change-saga-theme="">X</style>`},
-		{"svg", `<svg><rect/>`, `<svg><rect/>`},
-	} {
-		if got := string(injectFrameTheme([]byte(tc.in), tc.kind, "X")); got != tc.want {
-			t.Errorf("inject %s %q = %q, want %q", tc.kind, tc.in, got, tc.want)
-		}
-	}
-}
-
 // The preview shows light and dark side by side, each pane declaring its
 // scheme's resolved tokens, with a generated diagram served like a slide.
 func TestThemePreviewShowsBothSchemes(t *testing.T) {
@@ -171,15 +164,15 @@ func TestThemePreviewShowsBothSchemes(t *testing.T) {
 	page := get("/theme").Body.String()
 	for _, want := range []string{
 		`data-scheme="light" style="--bg:#102030;`, `data-scheme="dark" style="--bg:#000000;`, "color-scheme:dark",
-		`<img class="theme-diagram" src="/theme/diagram.svg"`, `class="btn btn-primary"`, "--diagram-purple-sticky",
+		`<img class="theme-diagram" src="/theme/diagram.svg?saga_scheme=dark"`, `class="btn btn-primary"`, "--diagram-purple-sticky",
 		"dark: --muted #222222 on --bg #000000 is 1.", `<link rel="stylesheet" href="/theme.css">`,
 	} {
 		if !strings.Contains(page, want) {
 			t.Errorf("the preview lacks %q", want)
 		}
 	}
-	diagramResponse := get("/theme/diagram.svg")
-	if body := diagramResponse.Body.String(); !strings.Contains(body, `id="sticky-purple"`) || !strings.Contains(body, "--bg:#102030;") {
+	diagramResponse := get("/theme/diagram.svg?saga_scheme=light")
+	if body := diagramResponse.Body.String(); !strings.Contains(body, `id="sticky-purple"`) || !strings.Contains(body, ":root{color-scheme:light;--bg:#102030;") {
 		t.Errorf("the preview diagram lacks its palette or the theme")
 	}
 	assertAuthoredContentPolicy(t, diagramResponse.Header())

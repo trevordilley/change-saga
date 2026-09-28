@@ -23,7 +23,7 @@
   "$defs": {
     "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$"},
     "terminator": {"enum": ["none", "arrow", "open", "triangle", "diamond", "filled-diamond", "circle", "dot", "bar", "one", "only-one", "zero-or-one", "many", "one-or-many", "zero-or-many"], "description": "An edge end: arrow, open, triangle (UML generalization), diamond and filled-diamond (aggregation, composition), circle, dot, bar, or an ERD crow's-foot cardinality."},
-    "color": {"type": "string", "pattern": "^(#[a-fA-F0-9]{6}|none)$"},
+    "color": {"type": "string", "pattern": "^(#[a-fA-F0-9]{6}|none|@[a-z][a-z0-9-]{0,63})$", "description": "#rrggbb and none stay as authored; @name references a colour token of the theme contract (change-saga spec, theme), such as @diagram-primary-fill or @accent, and follows light and dark mode."},
     "point": {
       "type": "object", "additionalProperties": false, "required": ["x", "y"],
       "properties": {"x": {"type": "number"}, "y": {"type": "number"}}

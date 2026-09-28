@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-17",
   "slide": "connectors",
-  "current": "sha256:bc0f44a3e54d0c934e637e14bc0a6016400817966973664d0e484752fb9b668a",
+  "current": "sha256:92d5fbb42c1727ae5fdd7e9e30c26534cf7c0b012c13ee7d3a032a60775089b7",
   "revisions": [
     {
       "snapshot": "sha256:bc0f44a3e54d0c934e637e14bc0a6016400817966973664d0e484752fb9b668a",
@@ -158,6 +158,165 @@
         "source": "24-a-d273069b303d98382f74200fcf4e688be5a43a41a4825676ccab.json",
         "source_digest": "sha256:d273069b303d98382f74200fcf4e688be5a43a41a4825676ccabb90613379594",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:92d5fbb42c1727ae5fdd7e9e30c26534cf7c0b012c13ee7d3a032a60775089b7",
+      "parent_snapshots": [
+        "sha256:bc0f44a3e54d0c934e637e14bc0a6016400817966973664d0e484752fb9b668a"
+      ],
+      "request_id": "rerender-renderer-2-17",
+      "created_at": "2026-09-28T04:17:19.136639Z",
+      "asset": "24-a-22aa79390b0cebee340fb79bcf5133f8063f4281491198083053.svg",
+      "asset_digest": "sha256:22aa79390b0cebee340fb79bcf5133f8063f4281491198083053025c1068ca23",
+      "slide": {
+        "version": 4,
+        "id": "connectors",
+        "deck": "pr-17",
+        "title": "Edges end in terminators",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-22aa79390b0cebee340fb79bcf5133f8063f4281491198083053.svg",
+        "takeaway": "An edge now has a head and a tail from one vocabulary of arrows, UML ends, and ERD crow's feet, plus end labels, smooth curves, and dashed or dotted lines.",
+        "reading_order": [
+          "edge",
+          "terminator",
+          "grow",
+          "line",
+          "endlabel",
+          "renderer",
+          "describe"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "edge",
+            "slide": "connectors",
+            "rank": 10,
+            "kind": "node",
+            "label": "Connector fields on an edge",
+            "description": "An edge gains tail, end labels with boxes, curve, and line; head takes the full terminator vocabulary. The schema and validation name every bad value.",
+            "selector": {
+              "type": "element",
+              "element_id": "edge"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "terminator",
+            "slide": "connectors",
+            "rank": 20,
+            "kind": "node",
+            "label": "One terminator vocabulary",
+            "description": "Arrows, UML ends, and ERD crow's feet drawn in a 10x10 box; a tail faces outward via auto-start-reverse, and hollow parts fill with the canvas.",
+            "selector": {
+              "type": "element",
+              "element_id": "terminator"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "grow",
+            "slide": "connectors",
+            "rank": 30,
+            "kind": "callout",
+            "label": "Thick arrows grow",
+            "description": "Why a thick arrow's head changes size.",
+            "selector": {
+              "type": "element",
+              "element_id": "terminator"
+            },
+            "about": "terminator",
+            "body": "You might expect head size to stay fixed; without head_size, a terminator now grows with strokes thicker than 2. No published diagram has one, so none re-render."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "line",
+            "slide": "connectors",
+            "rank": 40,
+            "kind": "node",
+            "label": "Smooth, dashed, or dotted",
+            "description": "curve smooth draws a Catmull-Rom curve through the points; line overrides the style's dash with dashed or round-capped dots.",
+            "selector": {
+              "type": "element",
+              "element_id": "line"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "endlabel",
+            "slide": "connectors",
+            "rank": 50,
+            "kind": "node",
+            "label": "End labels",
+            "description": "head_label and tail_label draw short text such as 1 or N at an edge's ends, each in its own explicit box.",
+            "selector": {
+              "type": "element",
+              "element_id": "endlabel"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "renderer",
+            "slide": "connectors",
+            "rank": 60,
+            "kind": "node",
+            "label": "The renderer dispatches",
+            "description": "The edge renderer now asks connectors.go for its path, dash, markers, and end labels; everything without the new fields renders exactly as before.",
+            "selector": {
+              "type": "element",
+              "element_id": "renderer"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "describe",
+            "slide": "connectors",
+            "rank": 70,
+            "kind": "node",
+            "label": "describe prints cardinality",
+            "description": "describe adds tail=, head=, and end labels when they say more than a plain arrow, in text and JSON.",
+            "selector": {
+              "type": "element",
+              "element_id": "describe"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-d273069b303d98382f74200fcf4e688be5a43a41a4825676ccab.json",
+        "source_digest": "sha256:d273069b303d98382f74200fcf4e688be5a43a41a4825676ccabb90613379594",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-18",
   "slide": "shapes",
-  "current": "sha256:830fcc0ceaf1b1d37a5132ffecd9f370d2212a2df03159d10ed26eb6d5ce9884",
+  "current": "sha256:33d2bc1523151d7226408a1123ea9ee26b5d468b8d787a3dd7c96546693b5332",
   "revisions": [
     {
       "snapshot": "sha256:830fcc0ceaf1b1d37a5132ffecd9f370d2212a2df03159d10ed26eb6d5ce9884",
@@ -160,6 +160,167 @@
         "source": "24-a-005d9ae5f7cda3db1878f5e5219690cfa290b48448c8cdaada1a.json",
         "source_digest": "sha256:005d9ae5f7cda3db1878f5e5219690cfa290b48448c8cdaada1aee8f766449e3",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:33d2bc1523151d7226408a1123ea9ee26b5d468b8d787a3dd7c96546693b5332",
+      "parent_snapshots": [
+        "sha256:830fcc0ceaf1b1d37a5132ffecd9f370d2212a2df03159d10ed26eb6d5ce9884"
+      ],
+      "request_id": "rerender-renderer-2-19",
+      "created_at": "2026-09-28T04:17:20.219905Z",
+      "asset": "24-a-51cd068fa8e7856f025c9879e01690ab2e0e30d46928912192f5.svg",
+      "asset_digest": "sha256:51cd068fa8e7856f025c9879e01690ab2e0e30d46928912192f58848a69582e7",
+      "slide": {
+        "version": 4,
+        "id": "shapes",
+        "deck": "pr-18",
+        "title": "New shapes lay out inside their outline",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-51cd068fa8e7856f025c9879e01690ab2e0e30d46928912192f5.svg",
+        "takeaway": "shape() sends nine library shapes and entity tables to new code; the original shapes keep their layout byte for byte.",
+        "reading_order": [
+          "source",
+          "dispatch",
+          "original",
+          "library",
+          "layout",
+          "centered",
+          "unnamed-shapes"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "source",
+            "slide": "shapes",
+            "rank": 10,
+            "kind": "node",
+            "label": "Node source",
+            "description": "A node names one of ten new shapes; the schema, spec, and skill list them.",
+            "selector": {
+              "type": "element",
+              "element_id": "source"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "dispatch",
+            "slide": "shapes",
+            "rank": 20,
+            "kind": "node",
+            "label": "One dispatch in shape()",
+            "description": "render.go returns early to entity() or library() and leaves the original switch alone.",
+            "selector": {
+              "type": "element",
+              "element_id": "dispatch"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "original",
+            "slide": "shapes",
+            "rank": 30,
+            "kind": "node",
+            "label": "Original layout, unchanged",
+            "description": "Sources that use none of the new shapes render byte-identically, so no Renderer bump.",
+            "selector": {
+              "type": "element",
+              "element_id": "original"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "library",
+            "slide": "shapes",
+            "rank": 40,
+            "kind": "region",
+            "label": "Library shapes",
+            "description": "Nine outlines, each with a text area inside it: a triangle's lower half, a queue's body before its visible end, an actor's space under the figure.",
+            "selector": {
+              "type": "element",
+              "element_id": "library"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "layout",
+            "slide": "shapes",
+            "rank": 45,
+            "kind": "node",
+            "label": "Centered in the text area",
+            "description": "library() stacks icon, label, and detail in the middle of the text area and refuses overflow.",
+            "selector": {
+              "type": "element",
+              "element_id": "layout"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "centered",
+            "slide": "shapes",
+            "rank": 60,
+            "kind": "callout",
+            "label": "New shapes default to centered",
+            "description": "Why the library's default alignment differs from the original shapes'.",
+            "selector": {
+              "type": "element",
+              "element_id": "layout"
+            },
+            "about": "layout",
+            "body": "You would expect align to default to start, as on the original shapes. Library shapes default to middle: a start-aligned label in a circle or star looks misplaced. An explicit align still wins."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unnamed-shapes",
+            "slide": "shapes",
+            "rank": 70,
+            "kind": "callout",
+            "label": "describe hides geometric shapes",
+            "description": "Why some new shapes are missing from describe.",
+            "selector": {
+              "type": "element",
+              "element_id": "library"
+            },
+            "about": "library",
+            "body": "describe prints shape=rect and shape=ellipse but omits triangle, hexagon, parallelogram, circle, and star. They say nothing about what a node is, so the label must. actor, queue, document, cloud, and entity still print."
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-005d9ae5f7cda3db1878f5e5219690cfa290b48448c8cdaada1a.json",
+        "source_digest": "sha256:005d9ae5f7cda3db1878f5e5219690cfa290b48448c8cdaada1aee8f766449e3",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

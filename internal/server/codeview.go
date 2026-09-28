@@ -129,6 +129,8 @@ type SlideReferenceView struct {
 	Href      string
 	URL       string
 	MediaType string
+	// Paper marks a visual with fixed colours; see visualPaper.
+	Paper     bool
 	ItemCount int
 }
 
@@ -496,7 +498,7 @@ func makeRelatedSagaViewsForTargets(locations []narrativeLocation, ownedURIs map
 					Slide: &SlideReferenceView{
 						ID: location.slideID, Title: location.slideTitle, Target: location.slideTarget,
 						Anchor: hrefAnchor(location.slideHref), Href: location.slideHref,
-						URL: location.slideURL, MediaType: location.slideMediaType,
+						URL: location.slideURL, MediaType: location.slideMediaType, Paper: fragmentPaper(location.fragment),
 					},
 				}
 				slides[key] = view

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/theme/registry.go",
+      "digest": "sha256:55e180de2656154004bd32ec7f6dda7c5c2d22067ad90847b83d1879e07697e9"
+    }
+  ]
+}

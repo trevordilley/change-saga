@@ -19,6 +19,7 @@ const report = {
   saga: input.saga,
   selection: input.selection,
   viewports: input.viewports,
+  schemes: input.schemes,
   slides: [],
   contact_sheet: "contact-sheet.png",
   findings: [],
@@ -31,12 +32,18 @@ function viewportName(viewport) {
   return `${viewport.width}x${viewport.height}`;
 }
 
-function finding(slide, surface, viewport, value) {
+// artifactName keeps the light capture's historical name and marks the others.
+function artifactName(surface, dimensions, scheme) {
+  return scheme === "light" ? `${surface}-${dimensions}.png` : `${surface}-${dimensions}-${scheme}.png`;
+}
+
+function finding(slide, surface, viewport, scheme, value) {
   report.findings.push({
     code: value.code,
     severity: value.severity || "error",
     surface,
     viewport: viewportName(viewport),
+    scheme,
     deck: slide.deck,
     slide: slide.slide,
     ...(value.item ? { item: value.item } : {}),
@@ -153,33 +160,35 @@ try {
     const slideReport = { target: slide.target, ...(slide.feature ? { feature: slide.feature } : {}), deck: slide.deck, slide: slide.slide, title: slide.title, artifacts: [] };
     const slideDir = join(input.output_dir, "slides", slide.deck, slide.slide);
     await mkdir(slideDir, { recursive: true });
-    for (const viewport of input.viewports) {
+    // Every surface renders in each colour scheme: the OS preference decides
+    // both a standalone slide's scheme and the reviewer's.
+    for (const viewport of input.viewports) for (const scheme of input.schemes) {
       const dimensions = viewportName(viewport);
-      const rawPath = join(slideDir, `raw-${dimensions}.png`);
-      const rawPage = await browser.newPage({ viewport });
+      const rawName = artifactName("raw", dimensions, scheme);
+      const rawPage = await browser.newPage({ viewport, colorScheme: scheme });
       const rawResponse = await rawPage.goto(input.base_url + slide.raw_url, { waitUntil: "networkidle" });
       if (!rawResponse?.ok()) throw new Error(`raw asset ${slide.raw_url} returned ${rawResponse?.status() ?? "no response"}`);
       await settle(rawPage);
-      for (const value of await inspectRaw(rawPage, slide.items)) finding(slide, "raw", viewport, value);
-      await rawPage.screenshot({ path: rawPath });
+      for (const value of await inspectRaw(rawPage, slide.items)) finding(slide, "raw", viewport, scheme, value);
+      await rawPage.screenshot({ path: join(slideDir, rawName) });
       await rawPage.close();
-      slideReport.artifacts.push({ surface: "raw", viewport: dimensions, path: `slides/${slide.deck}/${slide.slide}/raw-${dimensions}.png` });
+      slideReport.artifacts.push({ surface: "raw", viewport: dimensions, scheme, path: `slides/${slide.deck}/${slide.slide}/${rawName}` });
 
-      const reviewerPath = join(slideDir, `reviewer-${dimensions}.png`);
+      const reviewerName = artifactName("reviewer", dimensions, scheme);
       // Showing a slide replays its diagram's reveal; reduced motion turns
       // the animation off, so the capture is the finished drawing.
-      const reviewerPage = await browser.newPage({ viewport, reducedMotion: "reduce" });
+      const reviewerPage = await browser.newPage({ viewport, colorScheme: scheme, reducedMotion: "reduce" });
       const reviewerResponse = await reviewerPage.goto(input.base_url + slide.reviewer_url, { waitUntil: "networkidle" });
       if (!reviewerResponse?.ok()) throw new Error(`reviewer ${slide.reviewer_url} returned ${reviewerResponse?.status() ?? "no response"}`);
       await settle(reviewerPage);
       if (!await selectReviewerSlide(reviewerPage, slide.target)) {
-        finding(slide, "reviewer", viewport, { code: "missing_reviewer_selector", message: `Reviewer navigation has no selector for ${slide.target}` });
+        finding(slide, "reviewer", viewport, scheme, { code: "missing_reviewer_selector", message: `Reviewer navigation has no selector for ${slide.target}` });
       }
       await settle(reviewerPage);
-      for (const value of await inspectReviewer(reviewerPage, slide.target)) finding(slide, "reviewer", viewport, value);
-      await reviewerPage.screenshot({ path: reviewerPath });
+      for (const value of await inspectReviewer(reviewerPage, slide.target)) finding(slide, "reviewer", viewport, scheme, value);
+      await reviewerPage.screenshot({ path: join(slideDir, reviewerName) });
       await reviewerPage.close();
-      slideReport.artifacts.push({ surface: "reviewer", viewport: dimensions, path: `slides/${slide.deck}/${slide.slide}/reviewer-${dimensions}.png` });
+      slideReport.artifacts.push({ surface: "reviewer", viewport: dimensions, scheme, path: `slides/${slide.deck}/${slide.slide}/${reviewerName}` });
     }
     report.slides.push(slideReport);
   }
@@ -188,7 +197,7 @@ try {
   for (const slide of report.slides) {
     for (const artifact of slide.artifacts) {
       const bytes = await readFile(join(input.output_dir, artifact.path));
-      cards.push(`<figure><img src="data:image/png;base64,${bytes.toString("base64")}" alt=""><figcaption>${escapeHTML(slide.deck)} / ${escapeHTML(slide.slide)} · ${artifact.surface} · ${artifact.viewport}</figcaption></figure>`);
+      cards.push(`<figure><img src="data:image/png;base64,${bytes.toString("base64")}" alt=""><figcaption>${escapeHTML(slide.deck)} / ${escapeHTML(slide.slide)} · ${artifact.surface} · ${artifact.viewport} · ${artifact.scheme}</figcaption></figure>`);
     }
   }
   const contact = await browser.newPage({ viewport: { width: 1280, height: 720 } });

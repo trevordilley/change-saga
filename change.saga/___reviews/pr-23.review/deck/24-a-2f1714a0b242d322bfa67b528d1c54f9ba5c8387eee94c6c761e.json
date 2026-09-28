@@ -1,0 +1,229 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Slides paint with tokens",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "render",
+      "kind": "group",
+      "shape": "section",
+      "label": "Renderer  change-saga-diagram/2",
+      "x": 40,
+      "y": 100,
+      "width": 580,
+      "height": 360,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "resolve",
+      "kind": "node",
+      "shape": "service",
+      "label": "Token references",
+      "detail": "@name paints light + var()",
+      "note": "Each colour is written twice: `fill=\"#ffffff\" style=\"fill:var(--diagram-normal-fill,#ffffff)\"`. An inline style, because `var()` is **unreliable in SVG presentation attributes**; the light attribute keeps rasterizers drawing the light slide. Authors may write `@accent` or any colour token; hex stays as authored.",
+      "x": 30,
+      "y": 60,
+      "width": 520,
+      "height": 100,
+      "parent": "render",
+      "style": "primary"
+    },
+    {
+      "id": "standalone",
+      "kind": "node",
+      "shape": "document",
+      "label": "Standalone SVG",
+      "detail": "dark values under prefers-color-scheme",
+      "note": "Declared by the same pass: the SVG's own style names only the tokens it uses, with `color-scheme: light dark`, so it themes itself on a code host.",
+      "x": 30,
+      "y": 220,
+      "width": 520,
+      "height": 100,
+      "parent": "render",
+      "style": "normal"
+    },
+    {
+      "id": "declares",
+      "kind": "edge",
+      "label": "declares",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "resolve",
+      "to": "standalone",
+      "points": [
+        {
+          "x": 330,
+          "y": 260
+        },
+        {
+          "x": 330,
+          "y": 320
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 342,
+        "y": 277,
+        "width": 110,
+        "height": 26
+      }
+    },
+    {
+      "id": "viewer",
+      "kind": "group",
+      "shape": "section",
+      "label": "Reviewer",
+      "x": 660,
+      "y": 100,
+      "width": 580,
+      "height": 360,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "frames",
+      "kind": "node",
+      "shape": "service",
+      "label": "Slide frames",
+      "detail": "URL names the pinned scheme",
+      "note": "A frame inherits the page's `color-scheme`. When the pinned theme differs from the OS, its URL carries `?saga_scheme=light` or `dark`; a head script keeps frames and thumbnails in sync on toggle.",
+      "x": 30,
+      "y": 60,
+      "width": 520,
+      "height": 100,
+      "parent": "viewer",
+      "style": "primary"
+    },
+    {
+      "id": "served",
+      "kind": "node",
+      "shape": "service",
+      "label": "Served visual",
+      "detail": "appends every token, last",
+      "note": "Every SVG or HTML slide gets a style declaring **every** token, for the named scheme or for both under `prefers-color-scheme`. Coming last, it wins over the drawing's own declarations.",
+      "x": 30,
+      "y": 220,
+      "width": 520,
+      "height": 100,
+      "parent": "viewer",
+      "style": "normal"
+    },
+    {
+      "id": "serves",
+      "kind": "edge",
+      "label": "SVG",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "standalone",
+      "to": "served",
+      "points": [
+        {
+          "x": 590,
+          "y": 370
+        },
+        {
+          "x": 690,
+          "y": 370
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 612,
+        "y": 338,
+        "width": 56,
+        "height": 26
+      },
+      "align": "middle"
+    },
+    {
+      "id": "shows",
+      "kind": "edge",
+      "label": "themed",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "served",
+      "to": "frames",
+      "points": [
+        {
+          "x": 950,
+          "y": 320
+        },
+        {
+          "x": 950,
+          "y": 260
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 962,
+        "y": 277,
+        "width": 100,
+        "height": 26
+      }
+    },
+    {
+      "id": "rerender",
+      "kind": "node",
+      "shape": "datastore",
+      "label": "Re-rendered once",
+      "detail": "26 slides; merged history stays",
+      "note": "Review decks pr-12 to pr-20 changed too: their pull requests landed, but they are **not marked merged** in this Saga, so `diagram check` counts them re-renderable. None has approvals. Merged reviews stay as approved.",
+      "x": 40,
+      "y": 490,
+      "width": 300,
+      "height": 120,
+      "style": "normal"
+    },
+    {
+      "id": "paper",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Paper card",
+      "detail": "fixed-colour slides in dark",
+      "note": "An SVG or HTML slide that neither switches on `prefers-color-scheme` nor reads a contract token, or a raster image, keeps a light frame on a `slide-paper` card.",
+      "x": 380,
+      "y": 490,
+      "width": 300,
+      "height": 110,
+      "style": "warning"
+    },
+    {
+      "id": "surprise",
+      "kind": "sticky",
+      "label": "Chromium ignores a frame's color-scheme",
+      "x": 720,
+      "y": 480,
+      "width": 260,
+      "height": 140,
+      "style": "normal",
+      "color": "pink",
+      "about": "frames"
+    },
+    {
+      "id": "tests",
+      "kind": "text",
+      "label": "Tests: goldens, token references, dark declarations, served schemes, a Playwright toggle; visual-qa in light and dark",
+      "x": 40,
+      "y": 650,
+      "width": 1200,
+      "height": 30,
+      "style": "caption"
+    }
+  ]
+}

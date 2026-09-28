@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">One token contract</title>
+  <desc id="diagram-desc">Every colour, font, and size is a named token with light and dark values; the app declares them from one registry and spec publishes it.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-blue-accent:#1d4ed8;--diagram-blue-tint:#e8f1ff;--diagram-canvas:#fafaf8;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-on-accent:#ffffff;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-shadow:#0f172a;--diagram-title-ink:#172033;--diagram-yellow-ink:#3f2d00;--diagram-yellow-sticky:#fff3a3;}@media (prefers-color-scheme:dark){:root{--diagram-blue-accent:#58a6ff;--diagram-blue-tint:#121d2f;--diagram-canvas:#0d1117;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-on-accent:#0d1117;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-shadow:#010409;--diagram-title-ink:#e6edf3;--diagram-yellow-ink:#fff5b1;--diagram-yellow-sticky:#4d4108;}}</style>
+    <marker id="diagram-head-declares" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-marker-publishes-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <path d="M0 0L10 5L0 10" fill="none" stroke="#94a3b8" stroke-width="1.667" stroke-linejoin="round" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <filter id="diagram-shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.2" style="flood-color:var(--diagram-shadow,#0f172a)"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">One token contract</tspan></text>
+  </g>
+  <g id="contract" data-diagram-kind="group" transform="translate(60 110)" role="group" aria-label="Token contract">
+    <rect width="540" height="300" rx="10" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H165.548A10 10 0 0 1 175.548 10V39.5Z" fill="#1d4ed8" style="fill:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="28">Token contract</tspan></text>
+    <g id="registry" data-diagram-kind="node" transform="translate(50 90)" role="group" aria-label="internal/theme">
+      <desc>Groups: surface, status, diff, syntax, shape, chrome, diagram, and diagram-palette. Colour tokens must have a dark value; a test enforces it.</desc>
+      <path d="M0 0H440V138C293.333 96.434 146.667 179.566 0 138Z" stroke-linejoin="round" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+      <text x="220" y="58.875" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="220" y="58.875">internal/theme</tspan></text>
+      <text x="220" y="85.375" font-size="15" fill="#153869" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="220" y="85.375">100 tokens, light and dark</tspan></text>
+    </g>
+  </g>
+  <g id="stylesheet" data-diagram-kind="node" transform="translate(780 120)" role="group" aria-label="App stylesheet">
+    <rect width="400" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">App stylesheet</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">declares light, then dark</tspan></text>
+  </g>
+  <g id="spec" data-diagram-kind="node" transform="translate(780 300)" role="group" aria-label="change-saga spec">
+    <rect width="400" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">change-saga spec</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">publishes the contract</tspan></text>
+  </g>
+  <g id="declares" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="declares" data-from="registry" data-to="stylesheet">
+    <path d="M600 200 L780 175" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-declares)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="640" y="168" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="640" y="168">declares</tspan></text>
+  </g>
+  <g id="publishes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="publishes" data-from="registry" data-to="spec">
+    <path d="M600 300 L780 355" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#diagram-marker-publishes-head)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="630" y="354" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="630" y="354">publishes</tspan></text>
+  </g>
+  <g id="next" data-diagram-kind="sticky" transform="translate(780 470)" role="group" aria-label="Next: slides read these tokens, then a theme file overrides them." data-about="registry">
+    <rect width="260" height="170" rx="3" fill="#fff3a3" filter="url(#diagram-shadow)" style="fill:var(--diagram-yellow-sticky,#fff3a3)"/>
+    <text x="16" y="38" font-size="22" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="16" y="38">Next: slides read</tspan><tspan x="16" y="65.5">these tokens, then a</tspan><tspan x="16" y="93">theme file overrides</tspan><tspan x="16" y="120.5">them.</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="text" transform="translate(60 470)" role="group" aria-label="Tests: unique, well-formed tokens; both schemes declared">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="15">Tests: unique, well-formed tokens; both schemes declared</tspan></text>
+  </g>
+</svg>
