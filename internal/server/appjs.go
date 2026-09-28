@@ -1066,18 +1066,26 @@ const appJavaScript = `(() => {
   // rows that do not match as the reader types, and the submit button steps
   // out of the way. Both paths compare the same thing, the text the row shows,
   // so a reader who turns JavaScript off sees exactly the rows they had.
+  //
+  // Some rows are set aside, such as reviews whose change has merged: with
+  // nothing typed they stay hidden unless the reader asks for them, and any
+  // typed filter searches them too. The current row is never set aside.
   function filterDirectory(directory) {
     const input = q('[data-directory-filter]', directory);
     const needle = (input?.value || '').trim().toLowerCase();
+    const showArchived = Boolean(q('[data-directory-archived]', directory)?.checked);
     const rows = qa('[data-directory-row]', directory);
     let shown = 0;
+    let setAside = 0;
     rows.forEach(row => {
-      const matches = !needle || (row.dataset.directoryText || '').toLowerCase().includes(needle);
+      const archived = row.hasAttribute('data-directory-archived-row') && !row.classList.contains('current');
+      const matches = needle ? (row.dataset.directoryText || '').toLowerCase().includes(needle) : !archived || showArchived;
       row.hidden = !matches;
       if (matches) shown += 1;
+      else if (!needle) setAside += 1;
     });
     const none = q('[data-directory-none]', directory);
-    if (none) none.hidden = shown > 0;
+    if (none) none.hidden = shown > 0 || !needle;
     // Detail a directory summarises, such as a review's per-slide decisions,
     // is marked with the row's own key and follows the table's filter. A page
     // has one directory, so this is scoped by key rather than by container.
@@ -1088,8 +1096,12 @@ const appJavaScript = `(() => {
     const caption = q('[data-directory-caption]', directory);
     if (caption) {
       const total = Number(directory.dataset.directoryTotal || rows.length);
-      const noun = total === 1 && !needle ? directory.dataset.directoryNoun : directory.dataset.directoryNouns;
-      caption.textContent = needle ? shown + ' of ' + total + ' ' + noun : total + ' ' + noun;
+      if (needle) {
+        caption.textContent = shown + ' of ' + total + ' ' + directory.dataset.directoryNouns;
+      } else {
+        const noun = shown === 1 ? directory.dataset.directoryNoun : directory.dataset.directoryNouns;
+        caption.textContent = shown + ' ' + noun + (setAside ? ' · ' + setAside + ' ' + directory.dataset.directoryArchivedNoun + ' hidden' : '');
+      }
     }
   }
 
@@ -2696,7 +2708,7 @@ const appJavaScript = `(() => {
   document.addEventListener('input', event => {
     if (event.target.matches?.('[data-file-filter]')) filterTree();
     if (event.target.matches?.('[data-manifest-filter]')) filterManifest();
-    const directory = event.target.matches?.('[data-directory-filter]') ? event.target.closest('[data-directory]') : null;
+    const directory = event.target.matches?.('[data-directory-filter],[data-directory-archived]') ? event.target.closest('[data-directory]') : null;
     if (directory) filterDirectory(directory);
   });
 

@@ -328,10 +328,14 @@ func storyHasDesign(graph *appGraph, story requirements.Story) bool {
 // of it has been decided, and how much of that has gone out of date. It
 // counts decisions; it never adds them up into a verdict, because whether a
 // review is done is the team's rule and not this tool's.
-func reviewsDirectory(reviews []reviewSummaryView, query string) *directoryView {
+//
+// A review whose change has merged is history: it says so, and it is set
+// aside until a reader searches for it or asks for the merged ones.
+func reviewsDirectory(reviews []reviewSummaryView, query string, showMerged bool) *directoryView {
 	view := &directoryView{
 		ID: "reviews", Title: "Reviews", Action: "/reviews",
 		Label: "Filter reviews", Noun: "review", Nouns: "reviews",
+		ArchivedNoun: "merged", ShowArchived: showMerged,
 		Columns: []directoryColumn{
 			{Title: "Review", Wide: true}, {Title: "Pull request"}, {Title: "Range"},
 			{Title: "Slides", Numeric: true}, {Title: "Decisions", Numeric: true},
@@ -363,12 +367,13 @@ func reviewsDirectory(reviews []reviewSummaryView, query string) *directoryView 
 				}
 			}
 		}
+		merged := report.State == reviewstate.StateMerged
 		state := "open"
-		if report.Merged != nil {
+		if merged {
 			state = "merged"
 		}
 		title := directoryCell{Text: report.Title, Href: review.Href, Note: report.ID, Target: report.Target}
-		view.addRow(directoryRow{Key: report.ID, Current: review.Matches, Cells: []directoryCell{
+		view.addRow(directoryRow{Key: report.ID, Current: review.Matches, Archived: merged, Cells: []directoryCell{
 			title, pull, rng,
 			countCell(len(report.Slides)), countCell(decisions), countCell(outOfDate),
 			textCell(state),

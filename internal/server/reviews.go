@@ -189,8 +189,9 @@ func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []
 		resolver = nil
 	}
 	repository := document.Manifest.Source.Repository
+	landings := reviewstate.NewLandings(a.sourceDir)
 	build := func(review *saga.Review) reviewstate.Report {
-		report := reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: repository, SkipCoverage: true})
+		report := reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: repository, SkipCoverage: true, Landings: landings})
 		if report.Range != nil && resolver != nil {
 			if covered, err := a.reviewCoverage(ctx, review, *report.Range, repository, resolver); err != nil {
 				report.Diagnostics = append(report.Diagnostics, "the review's coverage could not be read: "+err.Error())
@@ -238,6 +239,10 @@ func buildRecovering(review *saga.Review, build func(*saga.Review) reviewstate.R
 				ID: review.ID, Title: review.Title, Target: review.Target, Path: review.Path,
 				PullRequest: review.PullRequest, Base: review.Base, Head: review.Head, Merged: review.Merged,
 				Slides: []reviewstate.SlideReport{}, Diagnostics: []string{fmt.Sprintf("the review's report could not be built: %v", recovered)},
+			}
+			report.State, report.StateSource = reviewstate.StateOpen, reviewstate.StateUnknown
+			if review.Merged != nil {
+				report.State, report.StateSource = reviewstate.StateMerged, reviewstate.StateRecorded
 			}
 		}
 	}()
@@ -367,7 +372,12 @@ func (a *app) reviewIndex(w http.ResponseWriter, r *http.Request) {
 	for _, report := range a.reviewReports(r.Context(), document, document.Reviews) {
 		view.Reviews = append(view.Reviews, reviewSummaryView{Report: report, Href: reviewHref(report.ID), Matches: matchingReview(report, head)})
 	}
-	view.Directory = reviewsDirectory(view.Reviews, directoryQuery(r))
+	// Open reviews come first, in the order they always had; merged ones
+	// follow, set aside until a reader searches or asks for them.
+	sort.SliceStable(view.Reviews, func(i, j int) bool {
+		return view.Reviews[i].Report.State != reviewstate.StateMerged && view.Reviews[j].Report.State == reviewstate.StateMerged
+	})
+	view.Directory = reviewsDirectory(view.Reviews, directoryQuery(r), directoryShowArchived(r))
 	for index, row := range view.Directory.Rows {
 		view.Reviews[index].Hidden = row.Hidden
 	}
@@ -905,7 +915,7 @@ var reviewTemplates = template.Must(template.New("reviews").Funcs(templateFuncs(
 
 // reviewTemplateSource renders the review index and one review. Plain forms
 // post decisions and comments, so the page works without script.
-const reviewTemplateSource = `{{define "review-summary"}}<article class="review-summary{{if .Matches}} matching{{end}}"{{if .Hidden}} hidden{{end}} data-review-summary="{{.Report.ID}}" data-directory-linked="{{.Report.ID}}"><header><a href="{{.Href}}"><strong>{{.Report.Title}}</strong></a>{{with .Report.PullRequest}}{{if .Number}} <span class="review-pr">#{{.Number}}</span>{{end}}{{end}}{{if .Report.Merged}} <span class="review-badge merged">merged</span>{{else}} <span class="review-badge open">open</span>{{end}}</header>{{template "review-range" .Report}}{{with .Report.Coverage}}<p class="coverage-totals" data-review-coverage-summary data-uncovered="{{.Summary.Uncovered}}">{{.Summary.Covered}} of {{.Summary.Total}} changed lines explained by the deck{{if .Summary.Uncovered}} · <span class="gap">{{.Summary.Uncovered}} unexplained</span>{{end}}{{if .Summary.Stale}} · <span class="gap">{{.Summary.Stale}} stale</span>{{end}}</p>{{end}}<ol class="review-slide-states">{{range .Report.Slides}}<li data-review-slide-state="{{.ID}}"><span class="review-slide-title">{{.Title}}</span>{{range .Decisions}}<span class="review-decision-chip {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}">{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}</span>{{else}}<span class="review-decision-chip none">no decision</span>{{end}}{{if .OpenThreads}}<span class="review-threads">{{.OpenThreads}} open {{if eq .OpenThreads 1}}thread{{else}}threads{{end}}</span>{{end}}</li>{{end}}</ol></article>{{end}}
+const reviewTemplateSource = `{{define "review-summary"}}<article class="review-summary{{if .Matches}} matching{{end}}"{{if .Hidden}} hidden{{end}} data-review-summary="{{.Report.ID}}" data-directory-linked="{{.Report.ID}}"><header><a href="{{.Href}}"><strong>{{.Report.Title}}</strong></a>{{with .Report.PullRequest}}{{if .Number}} <span class="review-pr">#{{.Number}}</span>{{end}}{{end}}{{if eq .Report.State "merged"}} <span class="review-badge merged" data-review-state-badge="merged">Merged</span>{{else}} <span class="review-badge open">open</span>{{end}}</header>{{template "review-range" .Report}}{{with .Report.Coverage}}<p class="coverage-totals" data-review-coverage-summary data-uncovered="{{.Summary.Uncovered}}">{{.Summary.Covered}} of {{.Summary.Total}} changed lines explained by the deck{{if .Summary.Uncovered}} · <span class="gap">{{.Summary.Uncovered}} unexplained</span>{{end}}{{if .Summary.Stale}} · <span class="gap">{{.Summary.Stale}} stale</span>{{end}}</p>{{end}}<ol class="review-slide-states">{{range .Report.Slides}}<li data-review-slide-state="{{.ID}}"><span class="review-slide-title">{{.Title}}</span>{{range .Decisions}}<span class="review-decision-chip {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}">{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}</span>{{else}}<span class="review-decision-chip none">no decision</span>{{end}}{{if .OpenThreads}}<span class="review-threads">{{.OpenThreads}} open {{if eq .OpenThreads 1}}thread{{else}}threads{{end}}</span>{{end}}</li>{{end}}</ol></article>{{end}}
 {{define "review-range"}}<p class="review-range">{{with .Range}}{{if .Frozen}}Frozen at <code>{{short .BaseOID}}</code>..<code>{{short .HeadOID}}</code>{{else}}<code>{{short .BaseOID}}</code>..<code>{{short .HeadOID}}</code> · head follows <code>{{.Following}}</code>{{end}}{{end}}{{with .Merged}} · landed as <code>{{short .Landed}}</code>{{end}}{{range .Diagnostics}}<span class="review-diagnostic">{{.}}</span>{{end}}</p>{{end}}
 {{define "review-index"}}<div class="review-surface" data-review-index><header class="review-top"><h1>Reviews</h1><p>Each pull request has one review: a slide deck explaining what the change did and why. Approvals and comments happen only here, per slide. The Saga itself is documentation.</p></header>{{template "directory" .Directory}}{{if .Reviews}}<h2 class="review-detail-heading">Slide by slide</h2>{{end}}<main class="review-main">{{range .Reviews}}{{template "review-summary" .}}{{end}}</main></div>{{end}}
 {{define "review-diff"}}<figure class="review-diff" data-review-diff="{{.Location}}"><figcaption><code>{{.Path}}</code> <span class="review-location">{{.Location}}</span></figcaption>{{if .Note}}<p class="review-note">{{.Note}}</p>{{end}}{{if .Lines}}<table><tbody>{{range .Lines}}<tr class="review-line {{.Kind}}">{{if eq .Kind "hunk"}}<td colspan="3" class="review-hunk">{{.Text}}</td>{{else}}<td class="review-lineno">{{.Old}}</td><td class="review-lineno">{{.New}}</td><td class="review-code"><code>{{if eq .Kind "add"}}+{{else if eq .Kind "del"}}-{{else}} {{end}}{{.Text}}</code></td>{{end}}</tr>{{end}}</tbody></table>{{end}}</figure>{{end}}
@@ -934,7 +944,7 @@ const reviewStyles = `
 .review-surface{max-width:1560px;margin:0 auto;font:15px/1.5 var(--ui)}
 .review-top{padding:0 4px}.review-top h1{margin:8px 0 2px}.review-range code{font-size:12px}.review-diagnostic{display:block;color:#a15c00}
 .review-summary{border:1px solid var(--line,#ddd);border-radius:10px;padding:12px 16px;margin:12px 0}
-.review-summary.matching{border-color:#2f6fdc}.review-badge{font-size:12px;padding:1px 8px;border-radius:9px;background:#eee;color:#333}
+.review-summary.matching{border-color:#2f6fdc}.review-badge{font-size:12px;padding:1px 8px;border-radius:9px;background:#eee;color:#333}.review-badge.merged{background:var(--bg-inset);color:var(--muted);border:1px solid var(--line)}
 .review-slide-states{list-style:none;padding:0}.review-slide-states li{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:4px 0}
 .review-decision-chip{font-size:12px;padding:1px 8px;border-radius:9px;background:#eef}.review-decision-chip.approved{background:#dcf5e3;color:#14532d}
 .review-decision-chip.changes_requested{background:#fde2e1;color:#7f1d1d}.review-decision-chip.out-of-date{outline:2px dashed #b45309}
