@@ -210,6 +210,14 @@ func (a *app) mergedReviews(ctx context.Context, document *saga.Saga) map[string
 // source checkout. It never fails: a review whose head cannot be read is
 // reported with that diagnostic.
 func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []*saga.Review) []reviewstate.Report {
+	return a.reviewReportsCovering(ctx, document, reviews, nil)
+}
+
+// reviewReportsCovering is reviewReports reading coverage only for the
+// reports cover accepts, or for every report when cover is nil. Coverage is
+// most of a report's cost, and a list that sets merged reviews aside need
+// not read theirs: each review's own page still does.
+func (a *app) reviewReportsCovering(ctx context.Context, document *saga.Saga, reviews []*saga.Review, cover func(reviewstate.Report) bool) []reviewstate.Report {
 	resolver, err := coderesolve.New(ctx, a.sourceDir)
 	if err == nil {
 		defer resolver.Close()
@@ -220,7 +228,7 @@ func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []
 	landings := reviewstate.NewLandings(a.sourceDir)
 	build := func(review *saga.Review) reviewstate.Report {
 		report := reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: repository, SkipCoverage: true, Landings: landings})
-		if report.Range != nil && resolver != nil {
+		if report.Range != nil && resolver != nil && (cover == nil || cover(report)) {
 			if covered, err := a.reviewCoverage(ctx, review, *report.Range, repository, resolver); err != nil {
 				report.Diagnostics = append(report.Diagnostics, "the review's coverage could not be read: "+err.Error())
 			} else {
@@ -397,7 +405,10 @@ func (a *app) reviewIndex(w http.ResponseWriter, r *http.Request) {
 	}
 	head := a.comparedHead(r.Context())
 	view := reviewIndexView{Saga: document}
-	for _, report := range a.reviewReports(r.Context(), document, document.Reviews) {
+	open := func(report reviewstate.Report) bool {
+		return report.State != reviewstate.StateMerged || matchingReview(report, head)
+	}
+	for _, report := range a.reviewReportsCovering(r.Context(), document, document.Reviews, open) {
 		view.Reviews = append(view.Reviews, reviewSummaryView{Report: report, Href: reviewHref(report.ID), Matches: matchingReview(report, head)})
 	}
 	// Open reviews come first, in the order they always had; merged ones
