@@ -505,6 +505,18 @@ box is refused. Generated SVGs reference one measurement font the reviewer
 serves at `/_diagram/fonts/go-regular.ttf` and fall back to a system
 sans-serif elsewhere.
 
+An edge's `head` and `tail` take one terminator vocabulary: `arrow`, `open`,
+`triangle` (UML generalization), `diamond` and `filled-diamond` (aggregation
+and composition), `circle`, `dot`, `bar`, and the ERD crow's-foot
+cardinalities `one`, `only-one`, `zero-or-one`, `many`, `one-or-many`, and
+`zero-or-many`. A tail is drawn facing outward, so each reads the same at
+either end. `head_label` and `tail_label` place text such as a cardinality at
+an end, each in its own explicit box. `curve: smooth` draws a curve through an
+edge's points, and `line` (`solid`, `dashed`, or `dotted`) overrides its
+style's dash. Terminators grow with strokes thicker than 2 unless `head_size`
+sets their size. `describe` prints an edge's terminators and end labels when
+they say more than a plain arrow.
+
 Any semantic element may carry an optional `note`: at most 1,000 characters
 of Markdown limited to bold, italics, inline code, lists, and `http`, `https`,
 or `mailto` links. Raw HTML, headings, images, tables, code blocks, block
