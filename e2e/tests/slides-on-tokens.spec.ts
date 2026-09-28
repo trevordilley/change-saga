@@ -54,9 +54,15 @@ test("toggling dark mode repaints a generated slide's canvas and nodes, and keep
     await expect.poll(() => fill(node)).toBe("rgb(255, 255, 255)");
     await page.screenshot({ path: test.info().outputPath("slides-on-tokens-light.png") });
 
+    // Target an element first: a scheme change keeps the frame's fragment,
+    // so a landmark or reveal target survives the toggle.
+    await slide.locator(".landmark-menu summary").click();
+    await slide.locator(".landmark-list a", { hasText: "Caller" }).click();
+    await expect(frame).toHaveAttribute("src", /#caller$/);
+
     await page.locator("[data-theme-toggle]").click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-    await expect(frame).toHaveAttribute("src", /saga_scheme=dark/);
+    await expect(frame).toHaveAttribute("src", /saga_scheme=dark#caller$/);
     await expect.poll(() => fill(canvas)).toBe("rgb(13, 17, 23)");
     await expect.poll(() => fill(node)).toBe("rgb(22, 27, 34)");
     await expect(frame).toHaveCSS("color-scheme", "dark");

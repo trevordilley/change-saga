@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-23",
   "slide": "slides-on-tokens",
-  "current": "sha256:c22fbaed66e52cdef5d0af143842a7d02ff56cfebcfea3129e089a50d15d7db0",
+  "current": "sha256:b4e782290d928ecb17d6f862cb64f5f08c667da1b903da99ff9d144ce50b1a54",
   "revisions": [
     {
       "snapshot": "sha256:c22fbaed66e52cdef5d0af143842a7d02ff56cfebcfea3129e089a50d15d7db0",
@@ -157,6 +157,165 @@
       "diagram": {
         "source": "24-a-997501911d097a29adc2916488735656f1b3762c54e5bc4da5bd.json",
         "source_digest": "sha256:997501911d097a29adc2916488735656f1b3762c54e5bc4da5bdd9d2bf05cc59",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:b4e782290d928ecb17d6f862cb64f5f08c667da1b903da99ff9d144ce50b1a54",
+      "parent_snapshots": [
+        "sha256:c22fbaed66e52cdef5d0af143842a7d02ff56cfebcfea3129e089a50d15d7db0"
+      ],
+      "request_id": "slides-on-tokens-rerender-note",
+      "created_at": "2026-09-28T04:25:27.899934Z",
+      "asset": "24-a-7b1105fb12695ec704bacbcd06a40a06c6630bed97c9dcf52366.svg",
+      "asset_digest": "sha256:7b1105fb12695ec704bacbcd06a40a06c6630bed97c9dcf52366248297908e4b",
+      "slide": {
+        "version": 4,
+        "id": "slides-on-tokens",
+        "deck": "pr-23",
+        "title": "Slides paint with tokens",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-7b1105fb12695ec704bacbcd06a40a06c6630bed97c9dcf52366.svg",
+        "takeaway": "Generated slides read the diagram tokens, so they follow light and dark mode and the reviewer's toggle; fixed-colour slides sit on paper in dark mode.",
+        "reading_order": [
+          "resolve",
+          "served",
+          "frames",
+          "surprise",
+          "paper",
+          "rerender",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "resolve",
+            "slide": "slides-on-tokens",
+            "rank": 10,
+            "kind": "node",
+            "label": "Colours are token references",
+            "description": "Default styles, palette, canvas, markers, and tab and pin text name diagram tokens as @name, written as a light value plus an inline var(); the SVG declares them for both schemes. Authors may name any colour token.",
+            "selector": {
+              "type": "element",
+              "element_id": "resolve"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "served",
+            "slide": "slides-on-tokens",
+            "rank": 30,
+            "kind": "node",
+            "label": "Served visuals declare every token",
+            "description": "Every SVG or HTML slide the reviewer serves gets a style declaring every token for the scheme its URL names, or both under prefers-color-scheme, validated by a digest of the bytes.",
+            "selector": {
+              "type": "element",
+              "element_id": "served"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "frames",
+            "slide": "slides-on-tokens",
+            "rank": 40,
+            "kind": "node",
+            "label": "Frames follow the toggle",
+            "description": "Slide frames and thumbnails are marked data-slide-visual; theme.js keeps their URLs naming the pinned scheme when it differs from the OS, through toggles, OS changes, and swaps.",
+            "selector": {
+              "type": "element",
+              "element_id": "frames"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "surprise",
+            "slide": "slides-on-tokens",
+            "rank": 45,
+            "kind": "callout",
+            "label": "Frames need the scheme in the URL",
+            "description": "Why frames carry ?saga_scheme.",
+            "selector": {
+              "type": "element",
+              "element_id": "surprise"
+            },
+            "about": "frames",
+            "body": "You might expect a frame element's color-scheme to set its prefers-color-scheme; only Firefox does. Chromium and WebKit follow the OS, so the URL names the scheme and the served style forces it."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "paper",
+            "slide": "slides-on-tokens",
+            "rank": 50,
+            "kind": "node",
+            "label": "Fixed-colour slides sit on paper",
+            "description": "An SVG or HTML slide that neither switches on prefers-color-scheme nor reads a contract token, or an image, keeps a light frame on the slide-paper card in dark mode.",
+            "selector": {
+              "type": "element",
+              "element_id": "paper"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "rerender",
+            "slide": "slides-on-tokens",
+            "rank": 60,
+            "kind": "node",
+            "label": "A one-time re-render",
+            "description": "The renderer is change-saga-diagram/2; each re-renderable slide here was republished with an empty diagram edit, and SPEC explains the one-time re-render.",
+            "selector": {
+              "type": "element",
+              "element_id": "rerender"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "slides-on-tokens",
+            "rank": 80,
+            "kind": "statement",
+            "label": "Tests",
+            "description": "Goldens change only by added styles; tests cover token references, standalone dark declarations, served schemes, paper detection, and a Playwright toggle. visual-qa captures light and dark.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-2f1714a0b242d322bfa67b528d1c54f9ba5c8387eee94c6c761e.json",
+        "source_digest": "sha256:2f1714a0b242d322bfa67b528d1c54f9ba5c8387eee94c6c761e4186395b4dcf",
         "renderer": "change-saga-diagram/2"
       }
     }
