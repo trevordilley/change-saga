@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "internal/theme/values.go",
+      "digest": "sha256:cfbe8a4984910e3a5036d08411142e951976bd49df9a6210343c7ceb75dadce6"
+    },
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "internal/theme/values.go",
+      "start": 1,
+      "end": 371,
+      "digest": "sha256:cfbe8a4984910e3a5036d08411142e951976bd49df9a6210343c7ceb75dadce6"
+    }
+  ]
+}

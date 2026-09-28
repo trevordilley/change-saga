@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "e2e/tests/theme.spec.ts",
+      "digest": "sha256:7f45c4df82e81755c07a1208ef6fb553befe4468298ce9977f3015ad9b1bd8a2"
+    },
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "e2e/tests/theme.spec.ts",
+      "start": 1,
+      "end": 95,
+      "digest": "sha256:7f45c4df82e81755c07a1208ef6fb553befe4468298ce9977f3015ad9b1bd8a2"
+    }
+  ]
+}

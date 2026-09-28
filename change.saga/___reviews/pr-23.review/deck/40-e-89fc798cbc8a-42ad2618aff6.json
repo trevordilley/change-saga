@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:7c04114978a6cf119eb5de12f2be62d7b93cfc8d4594dcdc1a102790a07f3594"
+    }
+  ]
+}

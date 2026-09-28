@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "internal/theme/namedcolors.go",
+      "digest": "sha256:9f3d9e051419e6569e90cf67d2140dad6b9d7a80d846389ad109aa8397f851eb"
+    },
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "internal/theme/namedcolors.go",
+      "start": 1,
+      "end": 153,
+      "digest": "sha256:9f3d9e051419e6569e90cf67d2140dad6b9d7a80d846389ad109aa8397f851eb"
+    }
+  ]
+}
