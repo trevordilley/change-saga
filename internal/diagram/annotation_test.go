@@ -95,10 +95,10 @@ func TestBubblePointsAtItsAboutElement(t *testing.T) {
 	if err != nil || tip != (Point{-20, -50}) {
 		t.Fatalf("tip %+v %v", tip, err)
 	}
-	backoff := Element{ID: "q", Kind: "annotation", Shape: "bubble", About: "backoff", X: 400, Y: 200, Width: 100, Height: 60}
-	if tip, err := pointerTip(d, backoff); err != nil || tip != (Point{-35, 0}) {
-		// backoff's box spans (365, 230)-(565, 310) on the canvas; the bubble's
-		// centre (450, 230) lies above its top edge.
+	backoff := Element{ID: "q", Kind: "annotation", Shape: "bubble", About: "backoff", X: 400, Y: 150, Width: 100, Height: 60}
+	if tip, err := pointerTip(d, backoff); err != nil || tip != (Point{50, 80}) {
+		// backoff, nested in two sections, spans (365, 230)-(565, 310) on the
+		// canvas; the bubble's centre (450, 180) lies above its top edge.
 		t.Fatalf("nested tip %+v %v", tip, err)
 	}
 	for _, side := range []struct {
