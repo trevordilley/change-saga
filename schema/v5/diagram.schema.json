@@ -11,6 +11,7 @@
     "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 10000},
     "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 10000},
     "background": {"$ref": "#/$defs/color"},
+    "reveal": {"enum": ["fade"], "description": "Opt-in staggered entrance: the reviewer fades the drawing in step by step each time its slide is shown. Thumbnails, exports, landmark links, and readers who prefer reduced motion see the finished drawing."},
     "styles": {
       "type": "object",
       "description": "Named styles; a name matching a default (normal, primary, emphasis, secondary, warning, boundary, title, caption) replaces it completely.",
@@ -66,7 +67,8 @@
         "align": {"enum": ["start", "middle", "end"]},
         "wrap": {"type": "boolean"},
         "fragment": {"type": "string", "maxLength": 65536, "description": "Allowlisted SVG drawing markup for a graphic; currentColor follows its style's stroke."},
-        "decorative": {"type": "boolean", "description": "Hidden from describe and assistive technology; may not contain semantic children."}
+        "decorative": {"type": "boolean", "description": "Hidden from describe and assistive technology; may not contain semantic children."},
+        "step": {"type": "integer", "minimum": 1, "maximum": 1000, "description": "When the element appears in the document's reveal; requires reveal. Defaults to its reading order among semantic elements; a decorative element without a step appears with its group, or from the start. Equal steps appear together, gaps cost no time, and no element appears before its group."}
       }
     }
   }

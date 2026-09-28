@@ -100,6 +100,7 @@ type Element struct {
 	Wrap        bool    `json:"wrap,omitempty"`
 	Fragment    string  `json:"fragment,omitempty"`
 	Decorative  bool    `json:"decorative,omitempty"`
+	Step        int     `json:"step,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
@@ -109,6 +110,7 @@ type Document struct {
 	Width      float64          `json:"width"`
 	Height     float64          `json:"height"`
 	Background string           `json:"background,omitempty"`
+	Reveal     string           `json:"reveal,omitempty"`
 	Styles     map[string]Style `json:"styles,omitempty"`
 	Elements   []Element        `json:"elements"`
 }
@@ -210,6 +212,7 @@ func (d Document) Validate() error {
 	if d.Background != "" && !colorPattern.MatchString(d.Background) {
 		add("background must be #rrggbb or none")
 	}
+	validateReveal(d, add)
 	if len(d.Elements) > MaxElements {
 		add("a diagram may contain at most %d elements", MaxElements)
 	}
@@ -425,10 +428,12 @@ func Contract() map[string]any {
 		"frame_shapes":   sorted(frameShapes),
 		"alignments":     sorted(textAlignment),
 		"default_styles": styles,
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative"},
+		"reveal_modes":   RevealModes(),
+		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "step"},
 		"operations":     OperationNames,
 		"font":           FontPath,
 		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes, "note_runes": MaxNoteRunes},
+		"reveal":         "an optional document reveal (\"reveal\": \"fade\") fades the drawing in step by step when a reader opens its slide; an element's optional integer step (1-" + fmt.Sprint(MaxRevealStep) + ") orders it, defaulting to its reading order among semantic elements; equal steps appear together",
 		"note_format":    "an optional Markdown note on any semantic element, shown when a reader hovers, focuses, or taps it: " + NoteFormat + "; no raw HTML",
 		"rules": []string{
 			"every coordinate is explicit and local to the parent group; nothing is laid out, resized, or rerouted",
@@ -439,6 +444,7 @@ func Contract() map[string]any {
 			"decorative elements are hidden from describe and assistive technology and may not contain semantic ones",
 			"a note is optional depth on demand: describe prints it, the SVG carries it as plain text in the element's desc, and the reviewer shows it rendered on hover or focus",
 			"graphics accept allowlisted drawing markup; currentColor follows the style's stroke",
+			"a reveal plays only in the reviewer's slide view and never under reduced motion; thumbnails, exports, and landmark links show the finished drawing; no element appears before its group, and a decorative element without a step appears with its group or from the start",
 		},
 	}
 }
