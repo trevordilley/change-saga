@@ -231,7 +231,7 @@ func TestDecodeRejectsUnknownFields(t *testing.T) {
 }
 
 func TestIcons(t *testing.T) {
-	if names := Icons("data"); len(names) != 1 || names[0] != "lucide:database" {
+	if names := Icons("database"); len(names) == 0 || names[0] != "lucide:database" {
 		t.Fatalf("icon search: %v", names)
 	}
 	if _, err := Icon("lucide:database"); err != nil {

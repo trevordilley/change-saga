@@ -197,7 +197,7 @@ func readInputFile(path string) ([]byte, error) {
 func diagramIcons(args []string, out io.Writer) error {
 	name := "diagram icons"
 	flags := commandFlags(name, commandUsage[name], out)
-	query := flags.String("query", "", "substring the icon name must contain")
+	query := flags.String("query", "", "substring of the icon name or one of its search tags")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
 	if err := flags.Parse(args); err != nil {
 		return err
