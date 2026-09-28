@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Checked once, read as notes",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "write",
+      "kind": "group",
+      "shape": "section",
+      "label": "Write path",
+      "x": 60,
+      "y": 110,
+      "width": 520,
+      "height": 450,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "validate",
+      "kind": "node",
+      "shape": "service",
+      "label": "Validate",
+      "detail": "every problem, per element",
+      "note": "`validateAnnotations` runs for every element inside `Validate`, so a bad colour, an unknown `about`, a pointer tip inside its bubble, and a pin label over three characters are all reported in one batch.",
+      "x": 30,
+      "y": 70,
+      "width": 240,
+      "height": 100,
+      "parent": "write",
+      "style": "primary"
+    },
+    {
+      "id": "docs",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Schema, contract, SPEC, and skill",
+      "x": 30,
+      "y": 210,
+      "width": 460,
+      "height": 80,
+      "parent": "write",
+      "style": "normal"
+    },
+    {
+      "id": "tests",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Tests and a board golden",
+      "note": "`sample.svg` and `notes.svg` are unchanged, so a source without board elements renders byte-identically and the renderer version stays `change-saga-diagram/1`.",
+      "x": 30,
+      "y": 330,
+      "width": 460,
+      "height": 80,
+      "parent": "write",
+      "style": "normal"
+    },
+    {
+      "id": "read",
+      "kind": "group",
+      "shape": "section",
+      "label": "Read path",
+      "x": 680,
+      "y": 110,
+      "width": 540,
+      "height": 450,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "describe",
+      "kind": "node",
+      "shape": "service",
+      "label": "Describe",
+      "x": 30,
+      "y": 70,
+      "width": 220,
+      "height": 100,
+      "parent": "read",
+      "style": "primary"
+    },
+    {
+      "id": "edit",
+      "kind": "node",
+      "shape": "service",
+      "label": "Edit",
+      "x": 290,
+      "y": 70,
+      "width": 220,
+      "height": 100,
+      "parent": "read",
+      "style": "primary"
+    },
+    {
+      "id": "notes-sticky",
+      "kind": "sticky",
+      "label": "Sections list members; stickies and annotations read as notes about their targets.",
+      "x": 30,
+      "y": 210,
+      "width": 220,
+      "height": 210,
+      "parent": "read",
+      "style": "caption",
+      "color": "yellow",
+      "about": "describe"
+    },
+    {
+      "id": "cascade",
+      "kind": "annotation",
+      "shape": "bubble",
+      "label": "remove refuses without cascade, like an edge's ends",
+      "x": 290,
+      "y": 250,
+      "width": 220,
+      "height": 100,
+      "parent": "read",
+      "style": "caption",
+      "color": "pink",
+      "about": "edit"
+    },
+    {
+      "id": "stored",
+      "kind": "edge",
+      "label": "stored source",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "validate",
+      "to": "describe",
+      "points": [
+        {
+          "x": 330,
+          "y": 230
+        },
+        {
+          "x": 710,
+          "y": 230
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 460,
+        "y": 196,
+        "width": 130,
+        "height": 24
+      }
+    },
+    {
+      "id": "p1",
+      "kind": "annotation",
+      "shape": "pin",
+      "label": "1",
+      "x": 314,
+      "y": 164,
+      "width": 32,
+      "style": "normal",
+      "color": "blue",
+      "about": "validate"
+    },
+    {
+      "id": "p2",
+      "kind": "annotation",
+      "shape": "pin",
+      "label": "2",
+      "x": 914,
+      "y": 164,
+      "width": 32,
+      "style": "normal",
+      "color": "green",
+      "about": "describe"
+    },
+    {
+      "id": "p3",
+      "kind": "annotation",
+      "shape": "pin",
+      "label": "3",
+      "x": 1174,
+      "y": 164,
+      "width": 32,
+      "style": "normal",
+      "color": "green",
+      "about": "edit"
+    }
+  ]
+}
