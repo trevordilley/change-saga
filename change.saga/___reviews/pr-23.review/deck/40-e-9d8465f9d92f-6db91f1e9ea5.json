@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/styles.go",
+      "start": 3,
+      "end": 22,
+      "digest": "sha256:9cb72275b9a6a9599e1928ed9733a79f615d34efbe73dc63e2a9cbce0c113205"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/styles.go",
+      "start": 28,
+      "end": 45,
+      "digest": "sha256:bb429cbc8c2375e5c0743e68dfa2e1e259923c2430c0ba29ee0957a3483cd41b"
+    },
+    {
+      "commit": "8b795503eff43fd9a7122a1ff336e771fe2712ff",
+      "path": "internal/server/styles.go",
+      "start": 3,
+      "end": 12,
+      "digest": "sha256:841f39c09f02306cf9ec249ba6ff0dca0d771e3917a4a1c3f867b071f18004ba"
+    },
+    {
+      "commit": "8b795503eff43fd9a7122a1ff336e771fe2712ff",
+      "path": "internal/server/styles.go",
+      "start": 18,
+      "end": 19,
+      "digest": "sha256:d91af41e58e2ad711c285895286e06f40a514689f8360d0e99b5842f7146f03e"
+    }
+  ]
+}

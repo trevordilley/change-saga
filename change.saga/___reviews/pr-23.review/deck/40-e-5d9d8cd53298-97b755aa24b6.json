@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "8b795503eff43fd9a7122a1ff336e771fe2712ff",
+      "path": "internal/theme/theme_test.go",
+      "digest": "sha256:fd133aa4792c0cef0dfec102591bce8b06c08b5ba7a35721b6a9a88cc60d37ed"
+    },
+    {
+      "commit": "8b795503eff43fd9a7122a1ff336e771fe2712ff",
+      "path": "internal/theme/theme_test.go",
+      "start": 1,
+      "end": 55,
+      "digest": "sha256:fd133aa4792c0cef0dfec102591bce8b06c08b5ba7a35721b6a9a88cc60d37ed"
+    }
+  ]
+}
