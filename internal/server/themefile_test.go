@@ -1,6 +1,8 @@
 package server
 
 import (
+	"encoding/xml"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -82,7 +84,7 @@ func TestServedVisualsCarryTheThemeTokens(t *testing.T) {
 	}
 
 	defaults := visual().Body.String()
-	if !strings.Contains(defaults, `<rect id="node" width="5" height="5"/><style data-change-saga-theme>:root{--bg:#ffffff;`) || !strings.HasSuffix(defaults, "}}</style></svg>") {
+	if !strings.Contains(defaults, `<rect id="node" width="5" height="5"/><style data-change-saga-theme="">:root{--bg:#ffffff;`) || !strings.HasSuffix(defaults, "}}</style></svg>") {
 		t.Fatalf("a slide without a theme lacks the default tokens:\n%s", defaults)
 	}
 
@@ -98,6 +100,15 @@ func TestServedVisualsCarryTheThemeTokens(t *testing.T) {
 		t.Error("the frame style sets a color-scheme or uses selectors that never match in a frame")
 	}
 	assertAuthoredContentPolicy(t, recorder.Header())
+	// The injected SVG is still well-formed XML, or a browser shows an error
+	// page instead of the slide.
+	for decoder := xml.NewDecoder(strings.NewReader(body)); ; {
+		if _, err := decoder.Token(); err == io.EOF {
+			break
+		} else if err != nil {
+			t.Fatalf("the served slide is not well-formed XML: %v", err)
+		}
+	}
 	assets, _ := filepath.Glob(filepath.Join(fixture.root, "___reviews", "pr-7.review", "deck", "*.svg"))
 	for _, asset := range assets {
 		if data, _ := os.ReadFile(asset); strings.Contains(string(data), "data-change-saga-theme") {
@@ -120,10 +131,10 @@ func TestEmbeddedSlideAssetCarriesTheThemeTokens(t *testing.T) {
 
 func TestInjectFrameThemePlacesTheStyleLast(t *testing.T) {
 	for _, tc := range []struct{ kind, in, want string }{
-		{"svg", `<svg><style>:root{--bg:#fff}</style><rect/></SVG>`, `<svg><style>:root{--bg:#fff}</style><rect/><style data-change-saga-theme>X</style></SVG>`},
-		{"html", `<html><head><style>a{}</style></head><body>b</body></html>`, `<html><head><style>a{}</style><style data-change-saga-theme>X</style></head><body>b</body></html>`},
-		{"html", `<p>b</p></body>`, `<p>b</p><style data-change-saga-theme>X</style></body>`},
-		{"html", `<p>b</p>`, `<p>b</p><style data-change-saga-theme>X</style>`},
+		{"svg", `<svg><style>:root{--bg:#fff}</style><rect/></SVG>`, `<svg><style>:root{--bg:#fff}</style><rect/><style data-change-saga-theme="">X</style></SVG>`},
+		{"html", `<html><head><style>a{}</style></head><body>b</body></html>`, `<html><head><style>a{}</style><style data-change-saga-theme="">X</style></head><body>b</body></html>`},
+		{"html", `<p>b</p></body>`, `<p>b</p><style data-change-saga-theme="">X</style></body>`},
+		{"html", `<p>b</p>`, `<p>b</p><style data-change-saga-theme="">X</style>`},
 		{"svg", `<svg><rect/>`, `<svg><rect/>`},
 	} {
 		if got := string(injectFrameTheme([]byte(tc.in), tc.kind, "X")); got != tc.want {

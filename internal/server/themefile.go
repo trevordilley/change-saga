@@ -77,7 +77,7 @@ func visualDocumentKind(path string) string {
 // or an HTML document's </head> (else </body>, else its end). A malformed
 // SVG with no closing tag is served as it is.
 func injectFrameTheme(data []byte, kind, css string) []byte {
-	style := []byte("<style " + frameThemeMarker + ">" + css + "</style>")
+	style := []byte("<style " + frameThemeMarker + "=\"\">" + css + "</style>")
 	lower := bytes.ToLower(data)
 	at := -1
 	if kind == "svg" {
