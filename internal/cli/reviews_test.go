@@ -166,6 +166,62 @@ func TestReviewDecisionsGoOutOfDateSlideBySlide(t *testing.T) {
 	}
 }
 
+func TestReviewApproveTwiceRecordsOnce(t *testing.T) {
+	t.Parallel()
+	fixture := newReviewFixture(t)
+	records := func() int {
+		t.Helper()
+		entries, _ := os.ReadDir(filepath.Join(saga.ReviewDir(fixture.root, "pr-7"), saga.ReviewApprovalsDir))
+		return len(entries)
+	}
+	approve := []string{"approve", "--review", "pr-7", "--slide", "queue", "--reviewer-kind", "human", fixture.root}
+	if output := run(t, Review, approve...); !strings.Contains(output, "Approved slide queue") {
+		t.Fatalf("first approval:\n%s", output)
+	}
+	if output := run(t, Review, approve...); !strings.Contains(output, "already approved by this reviewer") || !strings.Contains(output, "nothing recorded") {
+		t.Fatalf("repeated approval:\n%s", output)
+	}
+	var result struct {
+		Created  []string `json:"created"`
+		EventIDs []string `json:"event_ids"`
+		Replayed bool     `json:"replayed"`
+	}
+	if err := json.Unmarshal([]byte(run(t, Review, append([]string{"approve", "--json"}, approve[1:]...)...)), &result); err != nil || len(result.Created) != 0 || len(result.EventIDs) != 1 || !result.Replayed {
+		t.Fatalf("repeated approval as JSON = %+v, %v", result, err)
+	}
+	if records() != 1 {
+		t.Fatalf("approving three times wrote %d records", records())
+	}
+
+	// Another person's committed approval is their seat, not this one.
+	git(t, fixture.repo, "add", ".")
+	git(t, fixture.repo, "-c", "user.name=Other", "-c", "user.email=other@example.test", "commit", "-m", "Their approval")
+	document, _, err := saga.Load(fixture.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if held, ok := reviewstate.SeatDecision(context.Background(), fixture.root, document.FindReview("pr-7").Approvals, "queue", saga.ReviewerIdentity{Kind: "human"}); ok {
+		t.Fatalf("another committer's approval is this seat's: %+v", held)
+	}
+	if output := run(t, Review, approve...); !strings.Contains(output, "Approved slide queue") || records() != 2 {
+		t.Fatalf("approval beside another person's:\n%s", output)
+	}
+
+	// Withdrawing records once; there is then nothing left to withdraw.
+	withdraw := []string{"withdraw", "--review", "pr-7", "--slide", "queue", "--reviewer-kind", "human", fixture.root}
+	if output := run(t, Review, withdraw...); !strings.Contains(output, "Withdrew the decision on slide queue") {
+		t.Fatalf("withdraw:\n%s", output)
+	}
+	if output := run(t, Review, withdraw...); !strings.Contains(output, "no decision to withdraw") || records() != 3 {
+		t.Fatalf("second withdraw:\n%s", output)
+	}
+	queue := slideReport(t, reviewReport(t, fixture), "queue")
+	if len(queue.Decisions) != 1 || !strings.Contains(queue.Decisions[0].Author, "Other") {
+		t.Fatalf("queue decisions after withdrawing = %#v", queue.Decisions)
+	}
+	assertValid(t, fixture.root)
+}
+
 func TestReviewCommentsThreadOnSlidesAndItemsOnly(t *testing.T) {
 	t.Parallel()
 	fixture := newReviewFixture(t)
