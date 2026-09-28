@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes_test.go",
+      "digest": "sha256:2c1e50d2b37bb25d67b1a6417307dc56c5a96ca4ae70d23dc1d0e4ccf51f87fb",
+      "note": "The gallery golden, overflow refusals, and describe of every shape."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes_test.go",
+      "start": 1,
+      "end": 99,
+      "digest": "sha256:2c1e50d2b37bb25d67b1a6417307dc56c5a96ca4ae70d23dc1d0e4ccf51f87fb",
+      "note": "The gallery golden, overflow refusals, and describe of every shape."
+    }
+  ]
+}

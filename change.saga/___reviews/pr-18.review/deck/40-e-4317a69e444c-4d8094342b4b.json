@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/model.go",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:ca72857670db19663ff409aaff09a8acaac59ed5a023a2c8debcc16acb572d09",
+      "note": "The contract publishes the entity metrics."
+    }
+  ]
+}

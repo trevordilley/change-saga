@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "start": 1,
+      "end": 16,
+      "digest": "sha256:e802abb38afab108d63b1522e2e480b9e7d3de4e0835998cee62aa04c8d9e424",
+      "note": "Registers the nine library shapes, and draws each outline with its text area; the circle rule lives here."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "start": 21,
+      "end": 40,
+      "digest": "sha256:8f0cae199efd1d8433f0fe98442fde159401a068ec5802b5428ed736d0f5c1aa",
+      "note": "Registers the nine library shapes, and draws each outline with its text area; the circle rule lives here."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "start": 49,
+      "end": 183,
+      "digest": "sha256:d38a3941d14033aab799fb68a0ddfcff3bf741d621db8f0f6736fc371e62ef96",
+      "note": "Registers the nine library shapes, and draws each outline with its text area; the circle rule lives here."
+    }
+  ]
+}

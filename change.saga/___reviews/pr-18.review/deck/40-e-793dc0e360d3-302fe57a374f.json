@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/entity.go",
+      "start": 1,
+      "end": 9,
+      "digest": "sha256:7a78f6049ea023b3b28eb521debcc791b1742d168a95a52223fad21dacd6a82c",
+      "note": "entity() draws the header and one key-marked row per field, each a \u003cg data-field\u003e."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/entity.go",
+      "start": 119,
+      "end": 207,
+      "digest": "sha256:eba4a91eb0304f484887562661fd1a45ab7f25cf501c9d8f7d7279b27cb58bff",
+      "note": "entity() draws the header and one key-marked row per field, each a \u003cg data-field\u003e."
+    }
+  ]
+}

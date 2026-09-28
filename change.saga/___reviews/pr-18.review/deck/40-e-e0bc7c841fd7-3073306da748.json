@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:dfea00d9ee19253cf2cab6226f76ac793d8896babda1900fbe7d0073d6e02664",
+      "note": "The shape enum gains the ten new shapes."
+    }
+  ]
+}

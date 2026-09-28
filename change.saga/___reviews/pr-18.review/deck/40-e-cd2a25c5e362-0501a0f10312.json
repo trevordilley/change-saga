@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "SPEC.md",
+      "start": 537,
+      "end": 540,
+      "digest": "sha256:89ff9aad702b121c7991b9f09ec721ba53a955575a1c577129b5f81bd2c37075",
+      "note": "The spec names the full icon set and tag search."
+    }
+  ]
+}

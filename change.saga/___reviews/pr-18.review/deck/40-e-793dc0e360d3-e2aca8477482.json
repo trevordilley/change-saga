@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 82,
+      "end": 100,
+      "digest": "sha256:fb780ada66753a0617791ee5bd24a30d786ccbc59afdf0cbf7448a53c2d67910",
+      "note": "The skill's ERD example with a field-level edge."
+    }
+  ]
+}

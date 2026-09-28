@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "CHANGELOG.md",
+      "start": 14,
+      "end": 16,
+      "digest": "sha256:0250bf73ba6a1abccedd4fef7e3d3c19b386a73a827def9a9e1871a7eae7414b",
+      "note": "Changelog: the full icon set and tag search."
+    }
+  ]
+}

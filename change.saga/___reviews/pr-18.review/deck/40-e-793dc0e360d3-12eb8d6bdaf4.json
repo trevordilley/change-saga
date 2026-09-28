@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/cli/diagram_shapes_test.go",
+      "digest": "sha256:81645ff8f193e5d02804bb9e55e5ba7da0e2866391d78106833507ab304ae12f",
+      "note": "apply-slide round trip of an entity, a field edge, and a queue, then a refused edit."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/cli/diagram_shapes_test.go",
+      "start": 1,
+      "end": 68,
+      "digest": "sha256:81645ff8f193e5d02804bb9e55e5ba7da0e2866391d78106833507ab304ae12f",
+      "note": "apply-slide round trip of an entity, a field edge, and a queue, then a refused edit."
+    }
+  ]
+}

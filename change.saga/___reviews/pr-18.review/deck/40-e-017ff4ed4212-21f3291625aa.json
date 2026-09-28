@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/render.go",
+      "start": 336,
+      "end": 338,
+      "digest": "sha256:ac2e94c5d0a2bd518e403027b2ca1d506a1a22d49d236ca66881d3905bc318f1",
+      "note": "text() wrapping moves into lines(), which library() uses to measure before centering."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/render.go",
+      "start": 367,
+      "end": 397,
+      "digest": "sha256:6367fef8f5128c1c5fb2eab7ef954a8732cb9c6e1573ac5e2ee850926981b785",
+      "note": "text() wrapping moves into lines(), which library() uses to measure before centering."
+    }
+  ]
+}

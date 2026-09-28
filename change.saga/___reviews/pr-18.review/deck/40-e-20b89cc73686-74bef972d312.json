@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets/lucide/icons.json",
+      "digest": "sha256:7e1d96dcb071768234245b5683e9a5ec0a7ed86a30d148636c7edb3b6bca6e45",
+      "note": "The generated bundle of all 1,856 icons."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets/lucide/icons.json",
+      "start": 1,
+      "end": 1863,
+      "digest": "sha256:7e1d96dcb071768234245b5683e9a5ec0a7ed86a30d148636c7edb3b6bca6e45",
+      "note": "The generated bundle of all 1,856 icons."
+    }
+  ]
+}

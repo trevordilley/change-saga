@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "digest": "sha256:ff791177e6a1dd82ae8212ebc4ac864d12b8a54796647e6a573bca9b27729008",
+      "note": "New file: the shape library's outlines and text areas."
+    }
+  ]
+}

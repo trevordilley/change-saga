@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 71,
+      "end": 72,
+      "digest": "sha256:e67e4c1a148921acbb66ddecdd902fd542c194f7da63b3fdd1e776ae9f00f5d7",
+      "note": "The kind list before."
+    }
+  ]
+}

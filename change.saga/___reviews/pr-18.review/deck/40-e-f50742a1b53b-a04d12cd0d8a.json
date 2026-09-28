@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/entity.go",
+      "start": 110,
+      "end": 118,
+      "digest": "sha256:fb57ff80617f654ede6a511a1da573084bcb9759138633e1500fdea65fb6dd0a",
+      "note": "hasField resolves an edge's from_field or to_field."
+    }
+  ]
+}

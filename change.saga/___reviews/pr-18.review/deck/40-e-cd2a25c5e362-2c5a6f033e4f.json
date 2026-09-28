@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 101,
+      "end": 102,
+      "digest": "sha256:fa1c1ae61424d82ce55be78040c8d5666a4d72d1c25f61d7acc2427f1519ae4a",
+      "note": "The skill points at tag search."
+    }
+  ]
+}

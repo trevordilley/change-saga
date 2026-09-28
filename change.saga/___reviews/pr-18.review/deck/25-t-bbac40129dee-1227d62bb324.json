@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "deck": "pr-18",
+  "slide": "entities",
+  "current": "sha256:06ab223ea33af7311277519cca2f8196f927c122cd4855cb72484733a66f14f0",
+  "revisions": [
+    {
+      "snapshot": "sha256:06ab223ea33af7311277519cca2f8196f927c122cd4855cb72484733a66f14f0",
+      "request_id": "pr-18-entities",
+      "created_at": "2026-09-28T01:29:18.767386Z",
+      "asset": "24-a-a89ef1dd4ff25750b5b5dfedb9c885617a36e4ef54110df4a810.svg",
+      "asset_digest": "sha256:a89ef1dd4ff25750b5b5dfedb9c885617a36e4ef54110df4a810dd73fcb0c580",
+      "slide": {
+        "version": 4,
+        "id": "entities",
+        "deck": "pr-18",
+        "title": "An entity's rows are what edges can name",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-a89ef1dd4ff25750b5b5dfedb9c885617a36e4ef54110df4a810.svg",
+        "takeaway": "An entity node lists fields as rows; an edge's from_field or to_field names a row, and describe reads both compactly.",
+        "reading_order": [
+          "element",
+          "field",
+          "contains",
+          "ends-on",
+          "aim-rows",
+          "describe",
+          "refused"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "element",
+            "slide": "entities",
+            "rank": 10,
+            "kind": "node",
+            "label": "Entity node",
+            "description": "shape entity draws a header naming it and one key-marked row per field.",
+            "selector": {
+              "type": "element",
+              "element_id": "element"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "field",
+            "slide": "entities",
+            "rank": 20,
+            "kind": "node",
+            "label": "Field",
+            "description": "A row's name, optional type, and pk, fk, or pk,fk key.",
+            "selector": {
+              "type": "element",
+              "element_id": "field"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "contains",
+            "slide": "entities",
+            "rank": 30,
+            "kind": "edge",
+            "label": "Rows are fields",
+            "description": "An entity's fields are its rows, in order.",
+            "selector": {
+              "type": "element",
+              "element_id": "contains"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "ends-on",
+            "slide": "entities",
+            "rank": 40,
+            "kind": "edge",
+            "label": "An edge names a row",
+            "description": "from_field and to_field name the field an edge ends on; that field must exist on the endpoint entity.",
+            "selector": {
+              "type": "element",
+              "element_id": "ends-on"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "aim-rows",
+            "slide": "entities",
+            "rank": 50,
+            "kind": "callout",
+            "label": "Naming a row does not route to it",
+            "description": "Why an edge's field is semantic, not geometric.",
+            "selector": {
+              "type": "element",
+              "element_id": "ends-on"
+            },
+            "about": "ends-on",
+            "body": "You would expect to_field to snap the edge to its row. Points stay explicit, as everywhere: rows have fixed metrics, published by spec, so an author aims at header + 28i + 14. The field is what describe reads."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "describe",
+            "slide": "entities",
+            "rank": 60,
+            "kind": "node",
+            "label": "describe reads fields",
+            "description": "Entities print one compact fields line; edges print node.field endpoints.",
+            "selector": {
+              "type": "element",
+              "element_id": "describe"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "refused",
+            "slide": "entities",
+            "rank": 70,
+            "kind": "node",
+            "label": "Validation",
+            "description": "Every entity and field-endpoint problem is reported in one batch, by name.",
+            "selector": {
+              "type": "element",
+              "element_id": "refused"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-be1855a95ea7d125cecec3df996091d501f9298e591d2a7cbc73.json",
+        "source_digest": "sha256:be1855a95ea7d125cecec3df996091d501f9298e591d2a7cbc7375b188366096",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

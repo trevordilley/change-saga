@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/model.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:f92270d67f2a325f73e762bfcdbd193974ae94011fe889d4049593b4508f80e7",
+      "note": "The hard-coded list of six shapes it replaces."
+    }
+  ]
+}

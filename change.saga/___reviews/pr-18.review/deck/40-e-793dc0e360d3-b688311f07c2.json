@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 77,
+      "end": 78,
+      "digest": "sha256:39a5435b2f232e4231a75649dc970fc5f64cb35095ee91fd595110ceaa3bd19c",
+      "note": "The element gains fields."
+    }
+  ]
+}

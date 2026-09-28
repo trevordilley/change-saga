@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/cli/cli.go",
+      "start": 434,
+      "end": 434,
+      "digest": "sha256:d450347cf474c2f6ed521d7ec5af432f6d8a56789cc51c638c0100e6bbdf0a2e",
+      "note": "icons help mentions tag search."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/cli/cli.go",
+      "start": 434,
+      "end": 434,
+      "digest": "sha256:3a4c9b339272501c5c2507adc595283d4fe64de1bc56aedee7a60bca57a81a4c",
+      "note": "icons help mentions tag search."
+    }
+  ]
+}

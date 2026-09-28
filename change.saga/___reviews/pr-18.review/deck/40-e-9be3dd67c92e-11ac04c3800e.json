@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/entity.go",
+      "start": 10,
+      "end": 19,
+      "digest": "sha256:103ea3e3b2d75fdfa112473d3abf0f8695572f12b318a2357a411888d1a1717e",
+      "note": "Field and its key values."
+    }
+  ]
+}
