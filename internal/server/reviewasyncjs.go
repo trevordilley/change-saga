@@ -45,6 +45,13 @@ const reviewAsyncJavaScript = `
       const fresh = document.createElement('template'); fresh.innerHTML = feedback.menu;
       const list = q('.review-decision-list',slide), next = fresh.content.querySelector('.review-decision-list');
       if (list && next) list.replaceChildren(...next.childNodes);
+      // The quick controls show the reviewer's own decision: Approved with an
+      // undo once they approve, Approve again once they withdraw.
+      const quick = q('.review-decision-quick',slide), nextQuick = fresh.content.querySelector('.review-decision-quick');
+      if (quick && nextQuick) {
+        if (quick.dataset.uncertain) { nextQuick.dataset.uncertain='true'; qa('button',nextQuick).forEach(b=>b.disabled=true); }
+        quick.replaceWith(nextQuick);
+      }
       const range = q('.review-range',slide), newRange = fresh.content.querySelector('.review-range');
       if (range && newRange) range.replaceChildren(...newRange.childNodes);
       const decisions=feedback.report.decisions || [];
@@ -99,10 +106,11 @@ const reviewAsyncJavaScript = `
           announce(message,target); return {saved:false,message};
         }
         const result = await response.json();
-        if (result.saved !== true || !result.event_id) throw new Error('Missing save receipt');
+        if (result.saved !== true || (!result.event_id && result.recorded !== false)) throw new Error('Missing save receipt');
         try { apply(result.feedback); }
         catch (_) { result.warning='Its display could not be refreshed; check saved feedback.'; }
         if (result.warning) announce('Saved. ' + result.warning,target,true);
+        else if (result.recorded === false) announce('Nothing new to record: that is already your decision.',target);
         else if (!slide.dataset.reviewStale) status.hidden=true;
         return result;
       } catch (_) {
@@ -113,27 +121,28 @@ const reviewAsyncJavaScript = `
     }
     document.addEventListener('submit', async event => {
       const form = event.target;
-      if (!(form instanceof HTMLFormElement) || !form.matches('.review-decision-quick,.review-decision-form,.review-comment-form')) return;
+      if (!(form instanceof HTMLFormElement) || !form.matches('.review-decision-quick,.review-decision-form,.review-decision-withdraw,.review-comment-form')) return;
       if (!new URL(form.action).pathname.startsWith('/reviews/')) return;
       event.preventDefault();
       if (form.dataset.saving || form.dataset.uncertain) return;
       const fields = new URLSearchParams(new FormData(form));
       if (event.submitter?.name) fields.set(event.submitter.name,event.submitter.value);
       const target = form.closest('.review-deck-slide')?.dataset.slideTarget || form.closest('[data-review-target]')?.dataset.reviewTarget || fields.get('target');
-      const focusAtSubmit=document.activeElement;
+      const focusAtSubmit=document.activeElement, details=form.closest('details');
       form.dataset.saving='true'; form.setAttribute('aria-busy','true');
-      const buttons=qa('button',form), fieldsToLock=qa('textarea',form);
+      const buttons=qa('button:not(:disabled)',form), fieldsToLock=qa('textarea',form);
       [...buttons,...fieldsToLock].forEach(b=>b.disabled=true);
       const result = await post(form.action,fields,target);
       delete form.dataset.saving; form.removeAttribute('aria-busy'); fieldsToLock.forEach(field=>field.disabled=false);
       if (result.saved) {
         form.reset();
-        const details=form.closest('details'); if(details && !result.warning) details.open=false;
+        if(details && !result.warning) details.open=false;
 
       } else if (result.ambiguous) form.dataset.uncertain='true';
       if (!form.dataset.uncertain && !slideFor(target)?.dataset.reviewStale) buttons.forEach(b=>b.disabled=false);
       if(result.saved && form.contains(focusAtSubmit) && slideFor(target)?.classList.contains('active') && (document.activeElement===focusAtSubmit || document.activeElement===document.body)) {
-        const details=form.closest('details'); (details && q('summary',details) || event.submitter)?.focus({preventScroll:true});
+        const replacement=!details && !form.isConnected && q('.review-decision-quick button:not(:disabled)',slideFor(target));
+        (replacement || details && q('summary',details) || event.submitter)?.focus({preventScroll:true});
       }
     }, {signal});
     return {post,apply,slideFor,announce};

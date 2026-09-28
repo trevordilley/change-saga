@@ -16,15 +16,17 @@ type Pair struct {
 
 // ContrastPairs are the text and background pairs a theme must keep
 // readable: the reviewer's ink and muted text on its background, the primary
-// button, each diagram style's text on its fill, and each palette colour's
-// ink on its sticky note and the text on its accent (a section's title tab,
-// a pin's number).
+// button, each review decision state's text on its chip, each diagram
+// style's text on its fill, and each palette colour's ink on its sticky note
+// and the text on its accent (a section's title tab, a pin's number).
 func ContrastPairs() []Pair {
 	pairs := []Pair{
 		{"ink", "bg"}, {"muted", "bg"}, {"ink", "bg-subtle"}, {"primary-ink", "primary-bg"},
 		{"diagram-normal-ink", "diagram-normal-fill"}, {"diagram-primary-ink", "diagram-primary-fill"},
 		{"diagram-warning-ink", "diagram-warning-fill"}, {"diagram-secondary-ink", "diagram-canvas"},
 		{"diagram-secondary-ink", "diagram-boundary-fill"}, {"diagram-title-ink", "diagram-canvas"},
+		{"review-approved-ink", "review-approved-bg"}, {"review-changes-ink", "review-changes-bg"},
+		{"review-none-ink", "review-none-bg"}, {"review-stale-ink", "review-stale-bg"}, {"review-stale-ink", "bg"},
 	}
 	for _, color := range PaletteColors {
 		pairs = append(pairs, Pair{"diagram-" + color + "-ink", "diagram-" + color + "-sticky"}, Pair{"diagram-on-accent", "diagram-" + color + "-accent"})
