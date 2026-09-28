@@ -101,6 +101,23 @@ diagram icons`.
   HTML, headings, images, tables, and code blocks are refused. Notes are
   optional detail: a surprise still belongs in a callout Item, which is
   prominent. Never manufacture detail to fill a note; omit it instead.
+- A diagram may unfold in reading order with `"reveal": "fade"`: the
+  reviewer fades its elements in, step by step, each time the slide is shown.
+  Use it when order carries meaning, such as a request's path or a
+  before-and-after, not as decoration. Elements enter in reading order
+  unless they set an integer `step`; equal steps appear together, and no
+  element appears before its group. Decorative chrome is present from the
+  start. Thumbnails, exports, landmark links, and readers who prefer reduced
+  motion see the finished drawing, so it must read completely without the
+  animation. Turn it on with `{"op": "canvas", "set": {"reveal": "fade"}}` and
+  let an edge enter with its target node:
+
+  ```json
+  {"id": "reply", "kind": "edge", "from": "api", "to": "client", "points": [{"x": 900, "y": 360}, {"x": 300, "y": 360}], "head": "arrow", "style": "secondary", "step": 3}
+  ```
+
+  `diagram describe` prints `Reveal: fade in N steps` and each element's
+  `step=N`; check that order reads as intended.
 
 Revise a published diagram with `change-saga diagram edit --slide TARGET
 --expected SNAPSHOT --request-id ID --from OPS.json <saga>`. Operations are
