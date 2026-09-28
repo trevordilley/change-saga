@@ -459,3 +459,17 @@ func TestTransactionReviewReadsTheURNBySegment(t *testing.T) {
 		t.Fatalf("an app slide of Saga review is treated as a review slide:\n%s", message)
 	}
 }
+
+// describe reads a review's range to mark references to its base, such as
+// the lines a change replaced, as old.
+func TestDiagramDescribeMarksOldSideReviewEvidence(t *testing.T) {
+	t.Parallel()
+	fixture, _ := publishedReviewSlide(t)
+	text, err := runDiagram(t, "", "describe", "--review", "pr-7", "--slide", "flow", fixture.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(text, "     code: queue.go:3 (old), 3\n") || !strings.Contains(text, "     code: store.go:3 (old), 3\n") {
+		t.Fatalf("describe lacks queue.go's old and new lines:\n%s", text)
+	}
+}

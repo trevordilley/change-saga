@@ -10,6 +10,14 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- `diagram describe` lists each Item's code references as `path:start-end`
+  with the reference note, marking lines at a review's base `(old)`, in text
+  and JSON (`code`, `code_references`, `code_more`). It lists up to eight per
+  Item and counts the rest, naming the `query slide` that lists them all, so
+  a reviewer or agent can open the code behind each sentence.
+
 ## [0.2.0] - 2026-09-28
 
 Change Saga's first release built around its entry point: ask your coding

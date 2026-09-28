@@ -628,7 +628,9 @@ that differs from its source, for example after a renderer change.
 `change-saga diagram edit` applies explicit operations to a diagram at an exact
 snapshot and republishes the slide through the same transaction, carrying its
 Items, evidence, and criterion links. `change-saga diagram describe` reads any
-slide compactly: its takeaway, Items in reading order, and, for a diagram
+slide compactly: its takeaway, Items in reading order with their first eight
+code references each (`path:start-end`, marked old when pinned to a review's
+base, with the reference note; the rest are counted), and, for a diagram
 source, its semantic elements, connections, notes, and reveal steps, with
 sections and their members, and stickies and annotations listed as notes about their
 targets. The description omits geometry,
