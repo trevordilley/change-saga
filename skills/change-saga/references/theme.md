@@ -41,8 +41,9 @@ approvals do not change. An invalid theme is not applied at all.
 3. `change-saga theme check change.saga` validates the file, naming each
    problem's line, then measures WCAG AA contrast (4.5:1) in light and dark
    mode for ink and muted text on the background, the primary button, each
-   diagram style's text on its fill, and each palette ink on its sticky and
-   text on its accent. It
+   review decision state's ink on its background (and the out-of-date ink on
+   the page), each diagram style's text on its fill, and each palette ink on
+   its sticky and text on its accent. It
    exits 1 when the theme is invalid and 3 naming each failing pair. Fix a
    failing pair rather than accepting it.
 4. `change-saga theme preview change.saga` opens the reviewer's `/theme`

@@ -10,6 +10,36 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- **Withdraw your decision from the review viewer.** Once you approve a
+  slide, its Approve control becomes **Approved ✓** with an undo beside it,
+  and your own row in the slide's decision panel offers **Withdraw
+  approval** or **Withdraw request for changes**. Each appends a withdrawal
+  record, as `change-saga review withdraw` does.
+- **`review-` design tokens** colour every review decision state:
+  `review-approved-`, `review-changes-`, `review-none-`, and
+  `review-stale-` `bg` and `ink`. `change-saga theme check` holds each pair to
+  WCAG AA, so a custom theme can restyle them and stay readable.
+
+### Fixed
+
+- **Approving twice records one approval.** A bodiless decision that
+  repeats your current one on that slide (same state, same head commit, same
+  slide content) records nothing, in the viewer and in `change-saga review
+  approve`/`request-changes`/`withdraw`, which say "nothing recorded" (and
+  report `replayed: true` with `--json`). Withdrawing with no decision
+  records nothing either. Existing records are never rewritten. The viewer
+  also showed no change after a click, so reviewers clicked again. It now
+  shows your decision as soon as the save returns.
+- **Decision pills are readable in dark mode.** The review's decision chips,
+  status badges, out-of-date markers, and Approve and Request changes
+  controls painted white text on a light background in dark mode. They now
+  read through the `review-` tokens in light, dark, and custom themes.
+- The decision panel's **Withdraw decision** button could not submit
+  without a note, because it shared the request-for-changes form's required
+  field. Your own row's Withdraw button replaces it.
+
 ## [0.2.0] - 2026-09-28
 
 Change Saga's first release built around its entry point: ask your coding
