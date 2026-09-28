@@ -1,5 +1,40 @@
 # Changelog
 
+## Unreleased — merged reviews are history
+
+- A review whose change has merged now reads as merged even when nobody ran
+  `repin --onto`. Git is checked whenever the review is read, and nothing is
+  written to the Saga. The review's own `review.json` must be in its base
+  (or origin's default branch). Then the commit on the base's first-parent
+  line that brought it in, and the head the review follows, must show the
+  change merged:
+  - the head joined the base through a merge;
+  - the landing merge names the review's pull request (`#N`) or, when it
+    names no other pull request, its whole branch; this keeps a reused
+    branch's earlier reviews merged;
+  - the landing commit is a squash ending `(#N)`, even after the branch
+    moved on; or
+  - the head is outside the base, but merging it would change nothing.
+  A merge recorded by `repin --onto` still wins. When Git can't tell,
+  `state_source` is `unknown` and the review is shown as open. That covers
+  a Saga in a companion repository, a base that doesn't resolve, and a pure
+  fast-forward. A fast-forward looks exactly like a review committed to the
+  base ahead of a branch with no commits yet.
+- The Reviews page gives a merged review a Merged badge and lists it after
+  the open reviews. It stays hidden until a filter matches it or the reader
+  ticks "Show N merged", and the page skips its diff coverage (its own page
+  still shows it). The sidebar lists only open reviews, then one "N merged"
+  row. The review being compared, and the review being read, stay listed.
+- `review list` says merged and hides merged reviews unless `--all` or
+  `--review` names one. Its JSON gains `state` (`open` or `merged`),
+  `state_source` (`recorded`, `detected`, or `unknown`), and `landed_in`,
+  and still lists every review. Its `repair` array now skips reviews
+  detected as merged, as it already skipped recorded ones. `status --json`
+  `reviews`, and so `reconcile`'s open review decks, list only open reviews,
+  so a detected-merged review drops out of both.
+- A review with no slides yet opens to its title and the `apply-slide`
+  command that publishes the first one, instead of failing with a 500.
+
 ## Unreleased — review the big change, not every branch
 
 - The skill, `help`, `init`, `review create -h`, and README say a review deck

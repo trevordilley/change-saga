@@ -165,9 +165,11 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		Report: value.report, Schema: StatusSchema, Opening: view, Status: living,
 		AuthoringLoop: nextaction.AuthoringLoop(root),
 	}
+	// A review whose change has landed is history, recorded or detected.
 	var open []*saga.Review
+	landings := reviewstate.NewLandings(value.checkout)
 	for _, review := range value.document.Reviews {
-		if review.Merged == nil {
+		if !landings.Detect(ctx, review).Merged() {
 			open = append(open, review)
 		}
 	}

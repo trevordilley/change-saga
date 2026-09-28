@@ -66,6 +66,8 @@ type app struct {
 	files sagaFilesCache
 	// reviewCoverages is each review's coverage; see reviewcache.go.
 	reviewCoverages reviewCoverageCache
+	// merged is which reviews the sidebar sets aside; see mergedReviews.
+	merged mergedReviewCache
 	// termPlacesCache is where the terms' code is at the head.
 	termPlacesCache termPlacesCache
 	// fresh shares the check of whether the Saga's files or the heads
@@ -1035,11 +1037,19 @@ func notAPage(next http.HandlerFunc) http.HandlerFunc {
 // shellVersion names the state the kept parts of the shell were read from:
 // the Saga's documentation files, and the source head the code they link
 // resolves against. Empty when the Saga cannot be fingerprinted.
-func (a *app) shellVersion(ctx context.Context, files *sagaFiles) string {
+//
+// The sidebar also sets merged reviews aside, which moves with refs the source
+// head does not name, so the reviews it sets aside are part of the state.
+func (a *app) shellVersion(ctx context.Context, files *sagaFiles, merged map[string]bool) string {
 	if files.fingerprint == "" {
 		return ""
 	}
-	digest := sha256.Sum256([]byte(files.fingerprint + "\x00" + a.sagaState(ctx, false).sourceHead))
+	ids := make([]string, 0, len(merged))
+	for id := range merged {
+		ids = append(ids, id)
+	}
+	sort.Strings(ids)
+	digest := sha256.Sum256([]byte(files.fingerprint + "\x00" + a.sagaState(ctx, false).sourceHead + "\x00" + strings.Join(ids, "\x00")))
 	return hex.EncodeToString(digest[:12])
 }
 
@@ -1239,8 +1249,17 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		}
 		appReport.Children = append(appReport.Children, child)
 	}
+	merged := a.mergedReviews(r.Context(), document, files.fingerprint)
+	// The review being read keeps its row, as the compared one does.
+	if id, found := strings.CutPrefix(r.URL.Path, reviewsIndexPath+"/"); found && merged[id] {
+		kept := make(map[string]bool, len(merged))
+		for other := range merged {
+			kept[other] = other != id
+		}
+		merged = kept
+	}
 	data := &pageData{
-		ShellVersion:  a.shellVersion(r.Context(), files),
+		ShellVersion:  a.shellVersion(r.Context(), files, merged),
 		Opening:       openingLabel(a.rng),
 		Comparing:     !a.rng.Observe(),
 		Saga:          document,
@@ -1351,7 +1370,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		pageFeature: data.PageFeature, reviewSide: data.ReviewSide,
+		pageFeature: data.PageFeature, reviewSide: data.ReviewSide, mergedReviews: merged,
 		technical: technicalRows,
 	})
 	// The sidebar is the same on every page, so it outlives the page it was

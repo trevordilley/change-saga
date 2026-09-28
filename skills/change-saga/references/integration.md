@@ -142,6 +142,11 @@ that explains it. Query review coverage and uncovered atoms rather than
 inferring completeness from the deck. After the change lands, use the public
 repin operation with the verified landed commit and branch so code evidence is
 re-pinned and merge reasoning is retained before the branch disappears.
+Without that step, a landed review still reads as merged: `review list` and
+the Reviews page find it through Git without writing anything (`state_source`
+`detected`) and hide it by default. Detection never suggests a late
+`repin --onto`: chosen after the fact, it can re-pin the whole Saga to an old
+commit.
 
 Opening a Saga only presents it. It does not authorize review actions. When a
 review is explicitly requested, inspect the diff independently before the

@@ -187,6 +187,13 @@ func resolveCommit(ctx context.Context, repo, revision string) (string, bool) {
 	return fields[0], true
 }
 
+// ObjectType reports object's type, or "missing", without reading its
+// content, through the session's cat-file process for repo. It reports
+// false when it cannot answer, and the caller then asks Git itself.
+func ObjectType(ctx context.Context, repo, object string) (string, bool) {
+	return objectInfo(ctx, repo, object)
+}
+
 // objectInfo reports object's type, or "missing", through the session's
 // cat-file process for repo.
 func objectInfo(ctx context.Context, repo, object string) (string, bool) {

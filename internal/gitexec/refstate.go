@@ -616,3 +616,15 @@ func includedConfigFiles(file string, data []byte) ([]string, bool) {
 	}
 	return included, true
 }
+
+// RefsDigest names the state of repo's refs and configuration. It changes
+// whenever an answer that depends on them could, so a caller can key what it
+// derived from refs on it. It reports false when the state cannot be read
+// in full.
+func RefsDigest(ctx context.Context, repo string) (string, bool) {
+	location, err := locate(ctx, repo)
+	if err != nil {
+		return "", false
+	}
+	return location.stateDigest(ctx, true)
+}

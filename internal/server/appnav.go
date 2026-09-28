@@ -82,6 +82,9 @@ type appNavSources struct {
 	// reviewSide says the page is on the Review side of the header, which
 	// lists the reviews where Documentation lists the features.
 	reviewSide bool
+	// mergedReviews names the reviews whose change has merged, which the
+	// sidebar sets aside as the Reviews page does.
+	mergedReviews map[string]bool
 }
 
 func makeAppNavTree(sources appNavSources) []*navNodeView {
@@ -130,7 +133,7 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	// header draws — Documentation lists the features, Review the reviews.
 	// Both are in the sidebar, which is loaded once and kept as the reader
 	// moves between pages; the other side's is hidden.
-	features, reviews := makeFeaturesNav(sources, deckRows), makeReviewsNav(document)
+	features, reviews := makeFeaturesNav(sources, deckRows), makeReviewsNav(document, sources.mergedReviews)
 	other := reviews
 	if sources.reviewSide {
 		other = features
@@ -237,16 +240,29 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 	return section
 }
 
-// makeReviewsNav is the Review side's second section: every review, one row
-// each, in the order they were created. It reads the reviews the Saga already
-// holds and opens none of them, so the sidebar costs no range resolution: a
-// review's slides, decisions, and coverage all belong to its own page.
-func makeReviewsNav(document *saga.Saga) *navNodeView {
+// makeReviewsNav is the Review side's second section: every open review, one
+// row each, in the order they were created. It reads the reviews the Saga
+// already holds and opens none of them, so the sidebar costs no range
+// resolution: a review's slides, decisions, and coverage all belong to its
+// own page. Reviews whose change has merged are set aside as on the Reviews
+// page, and one last row counts them and opens the Reviews page showing them.
+func makeReviewsNav(document *saga.Saga, merged map[string]bool) *navNodeView {
 	section := navSection("Reviews", reviewsIndexPath, "nav-reviews", "diff", nil)
+	setAside := 0
 	for _, review := range document.Reviews {
+		if merged[review.ID] {
+			setAside++
+			continue
+		}
 		section.Children = append(section.Children, &navNodeView{
 			Title: reviewNavTitle(review), Href: reviewHref(review.ID),
 			NodeID: "nav-review-" + domID(review.ID), Icon: "diff",
+		})
+	}
+	if setAside > 0 {
+		section.Children = append(section.Children, &navNodeView{
+			Title: strconv.Itoa(setAside) + " merged", Href: reviewsIndexPath + "?archived=show",
+			NodeID: "nav-reviews-merged", Icon: "diff",
 		})
 	}
 	if len(section.Children) == 0 {

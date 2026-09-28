@@ -375,7 +375,7 @@ func buildReviewRepairs(ctx context.Context, document *saga.Saga, checkout, root
 	defer resolver.Close()
 	for _, report := range reports {
 		review := document.FindReview(report.ID)
-		if review == nil || review.Merged != nil || report.Range == nil || report.Range.Frozen {
+		if review == nil || report.State == reviewstate.StateMerged || report.Range == nil || report.Range.Frozen {
 			continue
 		}
 		base, head := report.Range.BaseOID, report.Range.HeadOID
@@ -401,6 +401,7 @@ func reviewList(ctx context.Context, args []string, out io.Writer) error {
 	name := "review list"
 	flags := commandFlags(name, commandUsage[name], out)
 	reviewID := flags.String("review", "", "report one review")
+	all := flags.Bool("all", false, "also print reviews whose change has merged, which the text hides by default; --json always lists every review with its state")
 	uncovered := flags.Bool("uncovered", false, "list only reviews whose deck leaves changes of their range uncovered, or whose coverage cannot be read, and only those gaps")
 	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
@@ -438,10 +439,26 @@ func reviewList(ctx context.Context, args []string, out io.Writer) error {
 		}
 		reports = gaps
 	}
-	repairs := buildReviewRepairs(ctx, document, firstNonEmpty(*repo, document.Root), flags.Arg(0), *repo, reports)
+	// Merged reviews are history: the text sets them aside unless asked,
+	// while the JSON lists every review with its state.
+	hiddenMerged := 0
+	if !*jsonOutput && !*all && *reviewID == "" {
+		shown := []reviewstate.Report{}
+		for _, report := range reports {
+			if report.State == reviewstate.StateMerged {
+				hiddenMerged++
+				continue
+			}
+			shown = append(shown, report)
+		}
+		reports = shown
+	}
+	checkout := firstNonEmpty(*repo, document.Root)
+	repairs := buildReviewRepairs(ctx, document, checkout, flags.Arg(0), *repo, reports)
 	if *jsonOutput {
 		return writeJSON(out, reviewListOutput{Reviews: reports, Repair: repairs})
 	}
+	defer printHiddenMerged(out, hiddenMerged)
 	if *uncovered {
 		if len(reports) == 0 {
 			fmt.Fprintln(out, "No uncovered changes: every listed review's deck explains its whole range.")
@@ -456,11 +473,22 @@ func reviewList(ctx context.Context, args []string, out io.Writer) error {
 		return nil
 	}
 	if len(reports) == 0 {
-		fmt.Fprintln(out, "No reviews. Create one for a pull request with change-saga review create.")
+		if hiddenMerged == 0 {
+			fmt.Fprintln(out, "No reviews. Create one for a pull request with change-saga review create.")
+		} else {
+			fmt.Fprintln(out, "No open reviews.")
+		}
 		return nil
 	}
 	printReviewReports(out, reports, repairs)
 	return nil
+}
+
+// printHiddenMerged says how many merged reviews the text set aside.
+func printHiddenMerged(out io.Writer, count int) {
+	if count > 0 {
+		fmt.Fprintf(out, "%d merged %s hidden; --all shows them.\n", count, plural(count, "review", "reviews"))
+	}
 }
 
 func buildReviewReports(ctx context.Context, document *saga.Saga, checkout string, reviews []*saga.Review) ([]reviewstate.Report, error) {
@@ -474,8 +502,9 @@ func buildReviewReports(ctx context.Context, document *saga.Saga, checkout strin
 	} else {
 		defer resolver.Close()
 	}
+	landings := reviewstate.NewLandings(checkout)
 	for _, review := range reviews {
-		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: checkout, SagaRoot: document.Root, Resolver: resolver, Repository: document.Manifest.Source.Repository}))
+		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: checkout, SagaRoot: document.Root, Resolver: resolver, Repository: document.Manifest.Source.Repository, Landings: landings}))
 	}
 	return reports, nil
 }
@@ -503,6 +532,9 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []r
 			fmt.Fprintln(out)
 		case report.Range != nil:
 			fmt.Fprintf(out, "  %s..%s (head follows %s, base %s)\n", shortOID(report.Range.BaseOID), shortOID(report.Range.HeadOID), report.Range.Following, report.Base)
+		}
+		if report.StateSource == reviewstate.StateDetected && report.State == reviewstate.StateMerged {
+			fmt.Fprintf(out, "  merged: detected, its change is in %s (not recorded in the Saga)\n", report.LandedIn)
 		}
 		for _, diagnostic := range report.Diagnostics {
 			fmt.Fprintf(out, "  note: %s\n", diagnostic)

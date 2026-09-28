@@ -46,6 +46,11 @@ type directoryView struct {
 	// Command is what an author runs to make the first one.
 	Empty   string
 	Command string
+	// ArchivedNoun names the rows a directory sets aside, such as reviews
+	// whose change has merged. They are hidden until a reader searches for
+	// them or asks for them with ShowArchived.
+	ArchivedNoun string
+	ShowArchived bool
 }
 
 // directoryColumn is one heading. Numeric marks a column of counts, which are
@@ -67,8 +72,11 @@ type directoryRow struct {
 	Key     string
 	Current bool
 	Hidden  bool
-	Cells   []directoryCell
-	Text    string
+	// Archived marks a row set aside by default. A current row is never
+	// set aside: it is the record this reader was opened to.
+	Archived bool
+	Cells    []directoryCell
+	Text     string
 }
 
 // directoryCell is one value: a word, a link, or a stated gap. Note is the
@@ -127,23 +135,48 @@ func (view *directoryView) addRow(row directoryRow) {
 }
 
 // apply runs the server-side filter. It is the same comparison app.js makes:
-// a case-insensitive match on the text the row shows.
+// a case-insensitive match on the text the row shows. With no filter an
+// archived row stays hidden unless the reader asked for archived rows; any
+// filter searches them too, since a reader typing is looking for one record.
 func (view *directoryView) apply(query string) {
 	view.Query = strings.TrimSpace(query)
-	if view.Query == "" {
-		return
-	}
 	needle := strings.ToLower(view.Query)
 	for index := range view.Rows {
-		view.Rows[index].Hidden = !strings.Contains(strings.ToLower(view.Rows[index].Text), needle)
+		row := &view.Rows[index]
+		if needle != "" {
+			row.Hidden = !strings.Contains(strings.ToLower(row.Text), needle)
+			continue
+		}
+		row.Hidden = row.setAside(view.ShowArchived)
 	}
+}
+
+// setAside reports whether an unfiltered directory hides row.
+func (row directoryRow) setAside(showArchived bool) bool {
+	return row.Archived && !row.Current && !showArchived
+}
+
+// Archived is how many rows the directory sets aside by default.
+func (view directoryView) Archived() int {
+	count := 0
+	for _, row := range view.Rows {
+		if row.Archived && !row.Current {
+			count++
+		}
+	}
+	return count
+}
+
+// ArchivedHidden is how many archived rows are hidden with no filter.
+func (view directoryView) ArchivedHidden() int {
+	if view.Query != "" || view.ShowArchived {
+		return 0
+	}
+	return view.Archived()
 }
 
 // Matches is how many rows are in view under the current filter.
 func (view directoryView) Matches() int {
-	if view.Query == "" {
-		return len(view.Rows)
-	}
 	matches := 0
 	for _, row := range view.Rows {
 		if !row.Hidden {
@@ -154,20 +187,29 @@ func (view directoryView) Matches() int {
 }
 
 // Caption is the table's own name and its count: how many rows a reader is
-// looking at, and of how many. app.js rewrites it as a reader types.
+// looking at, and of how many, and how many archived rows are set aside.
+// app.js rewrites it as a reader types.
 func (view directoryView) Caption() string {
+	if view.Query != "" {
+		return strconv.Itoa(view.Matches()) + " of " + strconv.Itoa(view.Total) + " " + view.Nouns
+	}
+	shown := view.Total - view.ArchivedHidden()
 	noun := view.Nouns
-	if view.Total == 1 && view.Query == "" {
+	if shown == 1 {
 		noun = view.Noun
 	}
-	if view.Query == "" {
-		return strconv.Itoa(view.Total) + " " + noun
+	caption := strconv.Itoa(shown) + " " + noun
+	if hidden := view.ArchivedHidden(); hidden > 0 {
+		caption += " · " + strconv.Itoa(hidden) + " " + view.ArchivedNoun + " hidden"
 	}
-	return strconv.Itoa(view.Matches()) + " of " + strconv.Itoa(view.Total) + " " + noun
+	return caption
 }
 
-// Filtered reports whether a filter is hiding anything right now.
-func (view directoryView) Filtered() bool { return view.Query != "" }
+// Filtered reports whether a filter is applied right now.
+func (view directoryView) Filtered() bool { return view.Query != "" || view.ShowArchived }
+
+// directoryShowArchived reads whether a plain browser asked for archived rows.
+func directoryShowArchived(r *http.Request) bool { return r.URL.Query().Get("archived") == "show" }
 
 // directoryQuery reads the filter a plain browser submitted.
 func directoryQuery(r *http.Request) string { return r.URL.Query().Get("q") }
@@ -187,7 +229,7 @@ instead, so every column stays readable without hiding one. That region is a
 named, focusable landmark so a keyboard reader can scroll it too. */}}
 {{define "directory-page"}}<section class="app-page directory-page" data-directory-page="{{.ID}}"><nav class="requirements-breadcrumbs" aria-label="{{.Title}} breadcrumb"><strong>{{.Title}}</strong></nav><header class="page-heading"><h1>{{.Title}}</h1>{{if .Lede}}<p class="app-lede">{{.Lede}}</p>{{end}}</header>{{template "directory" .}}</section>{{end}}
 
-{{define "directory"}}<div class="directory" data-directory="{{.ID}}" data-directory-noun="{{.Noun}}" data-directory-nouns="{{.Nouns}}" data-directory-total="{{.Total}}">{{if .Total}}<form class="directory-filter" method="get" action="{{.Action}}" role="search"><label class="directory-search"><span class="directory-search-label">{{.Label}}</span><input type="search" name="q" value="{{.Query}}" aria-controls="{{.ID}}-table" autocomplete="off" spellcheck="false" data-directory-filter></label><button type="submit" class="directory-filter-go" data-directory-submit>Filter</button>{{if .Filtered}}<a class="directory-filter-clear" href="{{.Action}}">Clear</a>{{end}}</form><div class="directory-scroll" role="region" aria-label="{{.Title}}" tabindex="0" data-directory-scroll><table class="directory-table" id="{{.ID}}-table"><caption data-directory-caption>{{.Caption}}</caption><thead><tr>{{range .Columns}}<th scope="col"{{if .Numeric}} class="numeric"{{else if .Wide}} class="wide"{{end}}>{{.Title}}</th>{{end}}</tr></thead><tbody data-directory-rows>{{range .Rows}}<tr{{if .Current}} class="current"{{end}}{{if .Hidden}} hidden{{end}} data-directory-row="{{.Key}}" data-directory-text="{{.Text}}">{{range $index, $cell := .Cells}}{{if $index}}<td{{if $cell.Numeric}} class="numeric"{{end}}{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</td>{{else}}<th scope="row"{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</th>{{end}}{{end}}</tr>{{end}}</tbody></table></div><p class="directory-none" data-directory-none{{if .Matches}} hidden{{end}} role="status">Nothing matches this filter.</p>{{else}}<p class="app-empty directory-growth">{{.Empty}}{{if .Command}} Run <code>{{.Command}}</code> to add the first one.{{end}}</p>{{end}}</div>{{end}}
+{{define "directory"}}<div class="directory" data-directory="{{.ID}}" data-directory-noun="{{.Noun}}" data-directory-nouns="{{.Nouns}}" data-directory-total="{{.Total}}"{{if .ArchivedNoun}} data-directory-archived-noun="{{.ArchivedNoun}}"{{end}}>{{if .Total}}<form class="directory-filter" method="get" action="{{.Action}}" role="search"><label class="directory-search"><span class="directory-search-label">{{.Label}}</span><input type="search" name="q" value="{{.Query}}" aria-controls="{{.ID}}-table" autocomplete="off" spellcheck="false" data-directory-filter></label>{{if .Archived}}<label class="directory-archived"><input type="checkbox" name="archived" value="show"{{if .ShowArchived}} checked{{end}} data-directory-archived> Show {{.Archived}} {{.ArchivedNoun}}</label>{{end}}<button type="submit" class="directory-filter-go" data-directory-submit>Filter</button>{{if .Filtered}}<a class="directory-filter-clear" href="{{.Action}}">Clear</a>{{end}}</form><div class="directory-scroll" role="region" aria-label="{{.Title}}" tabindex="0" data-directory-scroll><table class="directory-table" id="{{.ID}}-table"><caption data-directory-caption>{{.Caption}}</caption><thead><tr>{{range .Columns}}<th scope="col"{{if .Numeric}} class="numeric"{{else if .Wide}} class="wide"{{end}}>{{.Title}}</th>{{end}}</tr></thead><tbody data-directory-rows>{{range .Rows}}<tr{{if .Current}} class="current"{{end}}{{if .Hidden}} hidden{{end}} data-directory-row="{{.Key}}"{{if .Archived}} data-directory-archived-row{{end}} data-directory-text="{{.Text}}">{{range $index, $cell := .Cells}}{{if $index}}<td{{if $cell.Numeric}} class="numeric"{{end}}{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</td>{{else}}<th scope="row"{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</th>{{end}}{{end}}</tr>{{end}}</tbody></table></div><p class="directory-none" data-directory-none{{if or .Matches (not .Query)}} hidden{{end}} role="status">Nothing matches this filter.</p>{{else}}<p class="app-empty directory-growth">{{.Empty}}{{if .Command}} Run <code>{{.Command}}</code> to add the first one.{{end}}</p>{{end}}</div>{{end}}
 
 {{define "directory-cell"}}{{if .Href}}<a href="{{.Href}}">{{.Text}}</a>{{else if .Gap}}<span class="directory-gap">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{if .Note}} <small class="directory-note">{{.Note}}</small>{{end}}{{end}}
 `
