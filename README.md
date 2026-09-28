@@ -240,6 +240,11 @@ throughout this README: requirement → design → quality → implementation �
 
 > Create a review for this PR, then update the Saga's living documentation for the change
 
+Saga work happens when you create or update a PR, not at the end of every
+coding session. Ask for it when you ask your agent to open or update the PR;
+the installed skill tells agents the same, and a deck may lag the branch in
+between.
+
 ## Status and check
 
 `change-saga status --against main` answers first with how completely the

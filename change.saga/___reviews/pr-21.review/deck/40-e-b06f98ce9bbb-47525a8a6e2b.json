@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "eefc1d782c4d14066a2fff5d55656de4a4d4b1e8",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 14,
+      "end": 22,
+      "digest": "sha256:27a49a040356b2fc57cef2073d0234777c3607b57feb15aae79894e9062915e2"
+    },
+    {
+      "commit": "eefc1d782c4d14066a2fff5d55656de4a4d4b1e8",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    }
+  ]
+}

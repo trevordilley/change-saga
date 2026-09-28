@@ -11,6 +11,18 @@ explain the change's architecture, so a person reviews the architecture
 instead of every line. Coverage makes the review trustworthy: every changed
 line is linked to the slide Item that explains it.
 
+## When to do Saga work
+
+Saga work belongs to the moment a pull request is created or updated, not to
+every session or commit. Creating or refreshing the review deck, covering
+lines, reconciling living documentation, and repinning all happen when the
+user says to create or update the PR ("okay, create a PR", "let's update the
+PR"), or when their process otherwise publishes changes for review. Then do
+it all together, so the deck explains the change as reviewers will see it.
+Otherwise, keep a coding session about the code: do not end it with Saga
+upkeep nobody asked for. A deck that lags the branch between PR updates is
+expected. When the user asks for Saga work directly, do it then.
+
 ## Create a review for this PR (the usual first task)
 
 When asked to "create a review for this PR" (or to sagafy a pull request or
@@ -67,8 +79,8 @@ before drawing slides; nothing else is needed.
 8. Commit the Saga with the change. Reviewers can collapse `change.saga` in
    the pull request's file tree and open the deck with `change-saga open
    change.saga`.
-9. After each later push, `change-saga review refresh-coverage --review ID
-   change.saga` re-pins what only moved. New lines are reported uncovered,
+9. Each time the PR is updated (not after every commit), `change-saga review
+   refresh-coverage --review ID change.saga` re-pins what only moved. New lines are reported uncovered,
    with the one Item covering their file as the proposed owner: read them,
    and only if that Item's explanation covers them accept with the printed
    `review refresh-coverage --review ID --accept-proposed --path P
@@ -212,7 +224,8 @@ history rather than rewriting what was previously known.
    actually requires.
    Only when the Saga already holds living documentation (its `status --json`
    reports `growth.living_documentation`), or the user asks, then after the
-   PR review deck run `change-saga reconcile --against <base> --json <saga>`.
+   PR review deck, as part of creating or updating the PR, run
+   `change-saga reconcile --against <base> --json <saga>`.
    It opens with "Your change made N references stale", each with its old and
    proposed range; read the diff and accept a proposal that still means the
    same with `change-saga repin --accept-proposed`, or revise the explanation.

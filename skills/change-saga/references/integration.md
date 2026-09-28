@@ -161,6 +161,10 @@ a local checkout path as durable repository identity.
 
 ## Closeout
 
+Close out Saga work when the pull request is created or updated, or when
+handing back Saga work the user asked for. An ordinary coding session does not
+end with it.
+
 Before handoff:
 
 1. page the relevant gap, mapping, conflict, relation, and history queries at
