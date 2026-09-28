@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/visualqa/runner.mjs",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:91b6796ce9ea12dc5beb13c4bd61b4dc697e85a743a2593db1db5856d28207cf"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/visualqa/runner.mjs",
+      "start": 169,
+      "end": 171,
+      "digest": "sha256:e70f8bb36d6f971dbc2e97b79a12fd0088d0afef1950f637d1209fd54b4acc33"
+    }
+  ]
+}
