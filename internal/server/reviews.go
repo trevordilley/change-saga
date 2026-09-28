@@ -25,6 +25,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -178,15 +179,46 @@ func matchingReview(report reviewstate.Report, headOID string) bool {
 	return report.Merged != nil && report.Merged.Landed == headOID
 }
 
+// mergedReviewCache keeps the reviews the sidebar sets aside for one state
+// of the Saga's files and the source repository's refs, so a page that does
+// not change either asks Git nothing about them.
+type mergedReviewCache struct {
+	mu     sync.Mutex
+	key    string
+	merged map[string]bool
+}
+
 // mergedReviews names the reviews whose change has merged, recorded or
 // detected, except the review of the compared head, which stays in view as
-// it does on the Reviews page. It resolves no ranges, so the sidebar can ask
-// on every page.
-func (a *app) mergedReviews(ctx context.Context, document *saga.Saga) map[string]bool {
-	merged := map[string]bool{}
+// it does on the Reviews page. It resolves no ranges, and it is kept while
+// the Saga's files (fingerprint) and the source refs are unchanged, so the
+// sidebar can ask on every page. The answer is shared; callers copy it
+// before changing it.
+func (a *app) mergedReviews(ctx context.Context, document *saga.Saga, fingerprint string) map[string]bool {
 	if len(document.Reviews) == 0 {
-		return merged
+		return map[string]bool{}
 	}
+	key := ""
+	if refs, ok := gitexec.RefsDigest(ctx, a.sourceDir); ok && fingerprint != "" {
+		key = fingerprint + "\x00" + refs
+	}
+	a.merged.mu.Lock()
+	if key != "" && a.merged.key == key {
+		defer a.merged.mu.Unlock()
+		return a.merged.merged
+	}
+	a.merged.mu.Unlock()
+	merged := a.detectMergedReviews(ctx, document)
+	if key != "" {
+		a.merged.mu.Lock()
+		a.merged.key, a.merged.merged = key, merged
+		a.merged.mu.Unlock()
+	}
+	return merged
+}
+
+func (a *app) detectMergedReviews(ctx context.Context, document *saga.Saga) map[string]bool {
+	merged := map[string]bool{}
 	landings := reviewstate.NewLandings(a.sourceDir)
 	head := a.comparedHead(ctx)
 	for _, review := range document.Reviews {

@@ -93,3 +93,36 @@ func TestReviewIndexKeepsTheComparedMergedReviewInView(t *testing.T) {
 		t.Fatalf("the compared review was set aside:\n%s", index)
 	}
 }
+
+// A merged review's own page keeps its row in the sidebar, like the compared
+// review, so the reader can see where they are.
+func TestSidebarKeepsTheViewedMergedReview(t *testing.T) {
+	t.Parallel()
+	fixture := newMergedReviewFixture(t)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	page := getPage(t, handler, "/reviews/pr-7").Body.String()
+	if !strings.Contains(page, `data-nav-row="nav-review-target-pr-7-`) {
+		t.Fatalf("the viewed merged review lost its sidebar row:\n%s", page)
+	}
+	if index := getPage(t, handler, "/reviews").Body.String(); strings.Contains(index, `data-nav-row="nav-review-target-pr-7-`) {
+		t.Fatal("the merged review kept its row after the reader left it")
+	}
+}
+
+// The sidebar's merged reviews are kept while the Saga and the refs are
+// unchanged, and follow the refs when a merge moves them.
+func TestSidebarFollowsAMergeOfAnOpenReview(t *testing.T) {
+	t.Parallel()
+	fixture := newMergedReviewFixture(t)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	for range 2 {
+		if index := getPage(t, handler, "/reviews").Body.String(); !strings.Contains(index, `data-nav-row="nav-review-target-pr-8-`) || !strings.Contains(index, `>1 merged</a>`) {
+			t.Fatalf("before pr-8 merged:\n%s", index)
+		}
+	}
+	serverGit(t, fixture.repo, "checkout", "main")
+	serverGit(t, fixture.repo, "merge", "--no-ff", "-m", "Merge pull request #8 from acme/feature/next", "feature/next")
+	if index := getPage(t, handler, "/reviews").Body.String(); strings.Contains(index, `data-nav-row="nav-review-target-pr-8-`) || !strings.Contains(index, `>2 merged</a>`) {
+		t.Fatalf("after pr-8 merged:\n%s", index)
+	}
+}

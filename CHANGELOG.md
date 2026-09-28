@@ -3,23 +3,33 @@
 ## Unreleased — merged reviews are history
 
 - A review whose change has merged now reads as merged even when nobody ran
-  `repin --onto`. The check happens in Git whenever the review is read, and
-  nothing is written to the Saga: the review's own `review.json` is in its
-  base (or origin's default branch), and the branch it follows adds nothing
-  the base lacks. That covers fast-forward, merge commit, squash, and rebase
-  merges, and branches deleted after merging. A merge recorded by
-  `repin --onto` still wins. When the Saga lives in a companion repository,
-  Git can't tell, and the review stays open.
+  `repin --onto`. Git is checked whenever the review is read, and nothing is
+  written to the Saga. The review's own `review.json` must be in its base
+  (or origin's default branch). Then the commit on the base's first-parent
+  line that brought it in, and the head the review follows, must show the
+  change merged:
+  - the head joined the base through a merge;
+  - the landing merge names the review's pull request (`#N`) or branch,
+    which keeps a reused branch's earlier reviews merged;
+  - the landing commit is a squash ending `(#N)`; or
+  - the head is outside the base, but merging it would change nothing.
+  A merge recorded by `repin --onto` still wins. When Git can't tell,
+  `state_source` is `unknown` and the review is shown as open. That covers
+  a Saga in a companion repository, a base that doesn't resolve, and a pure
+  fast-forward. A fast-forward looks exactly like a review committed to the
+  base ahead of a branch with no commits yet.
 - The Reviews page gives a merged review a Merged badge and lists it after
   the open reviews. It stays hidden until a filter matches it or the reader
-  ticks "Show N merged". The review of the change being compared always
-  stays in view.
+  ticks "Show N merged", and the page skips its diff coverage (its own page
+  still shows it). The sidebar lists only open reviews, then one "N merged"
+  row. The review being compared, and the review being read, stay listed.
 - `review list` says merged and hides merged reviews unless `--all` or
-  `--review` names one. For a merged review that isn't recorded yet, it
-  prints the `repin --onto` command that records it. Its JSON gains `state`
-  (`open` or `merged`), `state_source` (`recorded`, `detected`, or
-  `unknown`), and `landed_in`. `status` and `reconcile` count only open
-  reviews.
+  `--review` names one. Its JSON gains `state` (`open` or `merged`),
+  `state_source` (`recorded`, `detected`, or `unknown`), and `landed_in`,
+  and still lists every review. Its `repair` array now skips reviews
+  detected as merged, as it already skipped recorded ones. `status --json`
+  `reviews`, and so `reconcile`'s open review decks, list only open reviews,
+  so a detected-merged review drops out of both.
 
 ## Unreleased — review the big change, not every branch
 
