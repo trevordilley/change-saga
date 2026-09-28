@@ -20,12 +20,12 @@ import (
 func TestReviewCoverageIsReadOncePerRangeAndItems(t *testing.T) {
 	fixture := newServerReviewFixture(t)
 	application, handler := reviewApp(t, fixture, gitdiff.Range{})
-	getPage(t, handler, "/reviews")
+	getPage(t, handler, "/reviews/pr-7/summary")
 	first := application.reviewCoverages.reads
 	if first == 0 {
-		t.Fatal("the reviews index read no coverage")
+		t.Fatal("the review's details read no coverage")
 	}
-	getPage(t, handler, "/reviews")
+	getPage(t, handler, "/reviews?details=all")
 	getPage(t, handler, "/reviews/pr-7")
 	if application.reviewCoverages.reads != first {
 		t.Fatalf("an unchanged review's coverage was read again: %d reads, want %d", application.reviewCoverages.reads, first)

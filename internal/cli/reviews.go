@@ -502,10 +502,11 @@ func buildReviewReports(ctx context.Context, document *saga.Saga, checkout strin
 	} else {
 		defer resolver.Close()
 	}
-	landings := reviewstate.NewLandings(checkout)
+	landings := reviewLandings(ctx, checkout, reviews)
 	for _, review := range reviews {
-		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: checkout, SagaRoot: document.Root, Resolver: resolver, Repository: document.Manifest.Source.Repository, Landings: landings}))
+		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: checkout, SagaRoot: document.Root, Resolver: resolver, Repository: document.Manifest.Source.Repository, Landings: landings.Landings}))
 	}
+	landings.save()
 	return reports, nil
 }
 
@@ -658,3 +659,22 @@ func plural(count int, one, many string) string {
 	}
 	return many
 }
+
+// reviewLandingsView detects which reviews have landed the way the reviewer
+// does: through the repository's ledger of merges already found, with every
+// unsettled record's landing read in one walk.
+type reviewLandingsView struct {
+	*reviewstate.Landings
+	ledger *reviewstate.Ledger
+}
+
+func reviewLandings(ctx context.Context, checkout string, reviews []*saga.Review) reviewLandingsView {
+	ledger := reviewstate.OpenLedger(ctx, checkout)
+	landings := reviewstate.NewLandings(checkout).UseLedger(ledger)
+	landings.Prepare(ctx, reviews)
+	return reviewLandingsView{Landings: landings, ledger: ledger}
+}
+
+// save keeps what was learned; the ledger is a cache, so failing to write it
+// only makes the next run slower.
+func (view reviewLandingsView) save() { _ = view.ledger.Save() }

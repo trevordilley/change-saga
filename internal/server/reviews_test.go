@@ -195,8 +195,16 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 		t.Fatalf("the approval was not marked out of date:\n%s", body)
 	}
 	index := getPage(t, handler, "/reviews").Body.String()
-	if !strings.Contains(index, `data-review-summary="pr-7"`) || !strings.Contains(index, `data-currency="out_of_date"`) {
+	if !strings.Contains(index, `data-review-summary="pr-7"`) || !strings.Contains(index, `hx-get="/reviews/pr-7/summary"`) {
 		t.Fatalf("review index = %s", index)
+	}
+	// Each review's decisions are read after the index, once its row is in
+	// view, and replace its card's placeholder and its row's pending cells.
+	if details := getPage(t, handler, "/reviews/pr-7/summary").Body.String(); !strings.Contains(details, `data-currency="out_of_date"`) || !strings.Contains(details, `hx-swap-oob="innerHTML:#`+reviewDetailsID("pr-7")+`"`) {
+		t.Fatalf("review details = %s", details)
+	}
+	if all := getPage(t, handler, "/reviews?details=all").Body.String(); !strings.Contains(all, `data-currency="out_of_date"`) {
+		t.Fatalf("the index with every review's details = %s", all)
 	}
 	// Reviews is a section like any other: its header opens the table of
 	// every review, with what each one compares and how much of it has been
@@ -303,8 +311,8 @@ func TestReviewCoverageReportsTheChangesTheDeckDoesNotExplain(t *testing.T) {
 			t.Fatalf("review page is missing %q:\n%s", want, body)
 		}
 	}
-	if index := getPage(t, handler, "/reviews").Body.String(); !strings.Contains(index, `data-review-coverage-summary data-uncovered="1"`) {
-		t.Fatalf("review index omitted coverage:\n%s", index)
+	if details := getPage(t, handler, "/reviews/pr-7/summary").Body.String(); !strings.Contains(details, `data-review-coverage-summary data-uncovered="1"`) {
+		t.Fatalf("review details omitted coverage:\n%s", details)
 	}
 	writeServerFile(t, filepath.Join(fixture.repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"postgres\" }\n\nfunc Drain() {}\n")
 	serverGit(t, fixture.repo, "commit", "-am", "Drain the queue")

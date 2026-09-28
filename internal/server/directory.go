@@ -75,8 +75,13 @@ type directoryRow struct {
 	// Archived marks a row set aside by default. A current row is never
 	// set aside: it is the record this reader was opened to.
 	Archived bool
-	Cells    []directoryCell
-	Text     string
+	// Load is where the row's pending cells are read from once the row is
+	// in view, so a row set aside costs nothing until it is shown. Its
+	// trigger sits beside the row's first cell rather than around the row,
+	// so the row's links keep the page's own htmx target.
+	Load  string
+	Cells []directoryCell
+	Text  string
 }
 
 // directoryCell is one value: a word, a link, or a stated gap. Note is the
@@ -93,7 +98,15 @@ type directoryCell struct {
 	// Target is the record's URN, kept so the reviewer's own links can find
 	// a row the way they find any other node.
 	Target string
+	// ID names the cell's element, so a value read later can replace it.
+	ID string
+	// Pending marks a value still being read: it shows a spinner, and its
+	// row's Load replaces it.
+	Pending bool
 }
+
+// pendingCell is a value read after the page, named so it can be replaced.
+func pendingCell(id string) directoryCell { return directoryCell{ID: id, Pending: true} }
 
 func textCell(text string) directoryCell { return directoryCell{Text: text} }
 
@@ -229,7 +242,7 @@ instead, so every column stays readable without hiding one. That region is a
 named, focusable landmark so a keyboard reader can scroll it too. */}}
 {{define "directory-page"}}<section class="app-page directory-page" data-directory-page="{{.ID}}"><nav class="requirements-breadcrumbs" aria-label="{{.Title}} breadcrumb"><strong>{{.Title}}</strong></nav><header class="page-heading"><h1>{{.Title}}</h1>{{if .Lede}}<p class="app-lede">{{.Lede}}</p>{{end}}</header>{{template "directory" .}}</section>{{end}}
 
-{{define "directory"}}<div class="directory" data-directory="{{.ID}}" data-directory-noun="{{.Noun}}" data-directory-nouns="{{.Nouns}}" data-directory-total="{{.Total}}"{{if .ArchivedNoun}} data-directory-archived-noun="{{.ArchivedNoun}}"{{end}}>{{if .Total}}<form class="directory-filter" method="get" action="{{.Action}}" role="search"><label class="directory-search"><span class="directory-search-label">{{.Label}}</span><input type="search" name="q" value="{{.Query}}" aria-controls="{{.ID}}-table" autocomplete="off" spellcheck="false" data-directory-filter></label>{{if .Archived}}<label class="directory-archived"><input type="checkbox" name="archived" value="show"{{if .ShowArchived}} checked{{end}} data-directory-archived> Show {{.Archived}} {{.ArchivedNoun}}</label>{{end}}<button type="submit" class="directory-filter-go" data-directory-submit>Filter</button>{{if .Filtered}}<a class="directory-filter-clear" href="{{.Action}}">Clear</a>{{end}}</form><div class="directory-scroll" role="region" aria-label="{{.Title}}" tabindex="0" data-directory-scroll><table class="directory-table" id="{{.ID}}-table"><caption data-directory-caption>{{.Caption}}</caption><thead><tr>{{range .Columns}}<th scope="col"{{if .Numeric}} class="numeric"{{else if .Wide}} class="wide"{{end}}>{{.Title}}</th>{{end}}</tr></thead><tbody data-directory-rows>{{range .Rows}}<tr{{if .Current}} class="current"{{end}}{{if .Hidden}} hidden{{end}} data-directory-row="{{.Key}}"{{if .Archived}} data-directory-archived-row{{end}} data-directory-text="{{.Text}}">{{range $index, $cell := .Cells}}{{if $index}}<td{{if $cell.Numeric}} class="numeric"{{end}}{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</td>{{else}}<th scope="row"{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</th>{{end}}{{end}}</tr>{{end}}</tbody></table></div><p class="directory-none" data-directory-none{{if or .Matches (not .Query)}} hidden{{end}} role="status">Nothing matches this filter.</p>{{else}}<p class="app-empty directory-growth">{{.Empty}}{{if .Command}} Run <code>{{.Command}}</code> to add the first one.{{end}}</p>{{end}}</div>{{end}}
+{{define "directory"}}<div class="directory" data-directory="{{.ID}}" data-directory-noun="{{.Noun}}" data-directory-nouns="{{.Nouns}}" data-directory-total="{{.Total}}"{{if .ArchivedNoun}} data-directory-archived-noun="{{.ArchivedNoun}}"{{end}}>{{if .Total}}<form class="directory-filter" method="get" action="{{.Action}}" role="search"><label class="directory-search"><span class="directory-search-label">{{.Label}}</span><input type="search" name="q" value="{{.Query}}" aria-controls="{{.ID}}-table" autocomplete="off" spellcheck="false" data-directory-filter></label>{{if .Archived}}<label class="directory-archived"><input type="checkbox" name="archived" value="show"{{if .ShowArchived}} checked{{end}} data-directory-archived> Show {{.Archived}} {{.ArchivedNoun}}</label>{{end}}<button type="submit" class="directory-filter-go" data-directory-submit>Filter</button>{{if .Filtered}}<a class="directory-filter-clear" href="{{.Action}}">Clear</a>{{end}}</form><div class="directory-scroll" role="region" aria-label="{{.Title}}" tabindex="0" data-directory-scroll><table class="directory-table" id="{{.ID}}-table"><caption data-directory-caption>{{.Caption}}</caption><thead><tr>{{range .Columns}}<th scope="col"{{if .Numeric}} class="numeric"{{else if .Wide}} class="wide"{{end}}>{{.Title}}</th>{{end}}</tr></thead><tbody data-directory-rows>{{range .Rows}}{{$row := .}}<tr{{if .Current}} class="current"{{end}}{{if .Hidden}} hidden{{end}} data-directory-row="{{.Key}}"{{if .Archived}} data-directory-archived-row{{end}} data-directory-text="{{.Text}}">{{range $index, $cell := .Cells}}{{if $index}}<td{{with $cell.ID}} id="{{.}}"{{end}}{{if $cell.Numeric}} class="numeric"{{end}}{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</td>{{else}}<th scope="row"{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}{{with $row.Load}}<span class="directory-load" hx-get="{{.}}" hx-trigger="intersect once" hx-target="this" hx-swap="none" data-directory-load aria-hidden="true"></span>{{end}}</th>{{end}}{{end}}</tr>{{end}}</tbody></table></div><p class="directory-none" data-directory-none{{if or .Matches (not .Query)}} hidden{{end}} role="status">Nothing matches this filter.</p>{{else}}<p class="app-empty directory-growth">{{.Empty}}{{if .Command}} Run <code>{{.Command}}</code> to add the first one.{{end}}</p>{{end}}</div>{{end}}
 
-{{define "directory-cell"}}{{if .Href}}<a href="{{.Href}}">{{.Text}}</a>{{else if .Gap}}<span class="directory-gap">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{if .Note}} <small class="directory-note">{{.Note}}</small>{{end}}{{end}}
+{{define "directory-cell"}}{{if .Pending}}<span class="directory-pending" role="status" aria-label="Loading"><span class="surface-spinner" aria-hidden="true"></span></span>{{else if .Href}}<a href="{{.Href}}">{{.Text}}</a>{{else if .Gap}}<span class="directory-gap">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{if .Note}} <small class="directory-note">{{.Note}}</small>{{end}}{{end}}
 `

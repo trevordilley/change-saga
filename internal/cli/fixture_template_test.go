@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -47,7 +48,15 @@ func (template *fixtureTemplate) instantiate(t *testing.T, build func(t *testing
 var templateDirs sync.Map
 
 func TestMain(m *testing.M) {
+	// Commands keep caches under the user's cache directory; tests keep
+	// theirs in one of their own.
+	cache, err := os.MkdirTemp("", "change-saga-cli-cache-")
+	if err != nil {
+		panic(err)
+	}
+	os.Setenv(reviewstate.CacheDirEnv, cache)
 	code := m.Run()
+	_ = os.RemoveAll(cache)
 	templateDirs.Range(func(dir, _ any) bool {
 		_ = os.RemoveAll(dir.(string))
 		return true

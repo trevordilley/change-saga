@@ -179,11 +179,7 @@ type Options struct {
 // Build reports review. It never fails on a range that cannot be read: the
 // decisions are still reported, with unknown currency and a diagnostic.
 func Build(ctx context.Context, review *saga.Review, options Options) Report {
-	report := Report{
-		ID: review.ID, Title: review.Title, Target: review.Target, Path: review.Path,
-		PullRequest: review.PullRequest, Base: review.Base, Head: review.Head, Merged: review.Merged,
-		Slides: []SlideReport{}, Diagnostics: []string{},
-	}
+	report := newReport(review)
 	landings := options.Landings
 	if landings == nil {
 		landings = NewLandings(options.Checkout)
@@ -241,6 +237,29 @@ func Build(ctx context.Context, review *saga.Review, options Options) Report {
 			}
 		}
 		report.Slides = append(report.Slides, slideReport)
+	}
+	return report
+}
+
+// newReport is review's report before anything is read from Git.
+func newReport(review *saga.Review) Report {
+	return Report{
+		ID: review.ID, Title: review.Title, Target: review.Target, Path: review.Path,
+		PullRequest: review.PullRequest, Base: review.Base, Head: review.Head, Merged: review.Merged,
+		Slides: []SlideReport{}, Diagnostics: []string{},
+	}
+}
+
+// Outline is review's report without its range, decisions, or coverage:
+// what it is, its slides, and state, which a list shows at once while the
+// rest is read.
+func Outline(review *saga.Review, state State) Report {
+	report := newReport(review)
+	report.State, report.StateSource, report.LandedIn = state.State, state.Source, state.LandedIn
+	if review.Deck != nil {
+		for _, slide := range review.Deck.Slides {
+			report.Slides = append(report.Slides, SlideReport{ID: slide.ID, Title: slide.Title, Target: slide.Target, Decisions: []DecisionReport{}})
+		}
 	}
 	return report
 }

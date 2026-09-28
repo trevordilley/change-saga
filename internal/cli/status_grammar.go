@@ -167,12 +167,13 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 	}
 	// A review whose change has landed is history, recorded or detected.
 	var open []*saga.Review
-	landings := reviewstate.NewLandings(value.checkout)
+	landings := reviewLandings(ctx, value.checkout, value.document.Reviews)
 	for _, review := range value.document.Reviews {
 		if !landings.Detect(ctx, review).Merged() {
 			open = append(open, review)
 		}
 	}
+	landings.save()
 	if document.Reviews, err = buildReviewReports(ctx, value.document, value.checkout, open); err != nil {
 		return statusDocument{}, err
 	}

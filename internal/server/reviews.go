@@ -56,7 +56,14 @@ type reviewSummaryView struct {
 	// Matches is set when the review's head is the head this reviewer was
 	// opened to compare, so its slides sit beside the living layers.
 	Matches bool
+	// DetailsHref, when set, is where the review's range, decisions, and
+	// coverage are read after the page: the page shows at once what the
+	// review is and whether it has merged, and those follow.
+	DetailsHref string
 }
+
+// reviewDetailsID names the element a review's details replace.
+func reviewDetailsID(id string) string { return "review-details-" + domID(id) }
 
 type reviewPageView struct {
 	Saga          *saga.Saga
@@ -179,61 +186,93 @@ func matchingReview(report reviewstate.Report, headOID string) bool {
 	return report.Merged != nil && report.Merged.Landed == headOID
 }
 
-// mergedReviewCache keeps the reviews the sidebar sets aside for one state
-// of the Saga's files and the source repository's refs, so a page that does
-// not change either asks Git nothing about them.
-type mergedReviewCache struct {
+// reviewStateCache keeps every review's state for one state of the Saga's
+// files and the source repository's refs, so a page that changes neither
+// asks Git nothing about reviews. Behind it the ledger keeps merges across
+// runs, so even a changed state asks only about the reviews still open.
+type reviewStateCache struct {
 	mu     sync.Mutex
 	key    string
-	merged map[string]bool
+	states map[string]reviewStateView
+	// computing lets one computation run at a time: the warming at start and
+	// the first request that arrives during it share one answer.
+	computing sync.Mutex
 }
 
-// mergedReviews names the reviews whose change has merged, recorded or
-// detected, except the review of the compared head, which stays in view as
-// it does on the Reviews page. It resolves no ranges, and it is kept while
-// the Saga's files (fingerprint) and the source refs are unchanged, so the
-// sidebar can ask on every page. The answer is shared; callers copy it
-// before changing it.
-func (a *app) mergedReviews(ctx context.Context, document *saga.Saga, fingerprint string) map[string]bool {
+// reviewStateView is one review's state, and whether it is the review of
+// the compared head, which every list keeps in view.
+type reviewStateView struct {
+	reviewstate.State
+	Compared bool
+}
+
+// reviewStates is every review's state, by review ID. The answer is shared;
+// callers never change it.
+func (a *app) reviewStates(ctx context.Context, document *saga.Saga, fingerprint string) map[string]reviewStateView {
 	if len(document.Reviews) == 0 {
-		return map[string]bool{}
+		return map[string]reviewStateView{}
 	}
 	key := ""
 	if refs, ok := gitexec.RefsDigest(ctx, a.sourceDir); ok && fingerprint != "" {
 		key = fingerprint + "\x00" + refs
 	}
-	a.merged.mu.Lock()
-	if key != "" && a.merged.key == key {
-		defer a.merged.mu.Unlock()
-		return a.merged.merged
+	cached := func() (map[string]reviewStateView, bool) {
+		a.states.mu.Lock()
+		defer a.states.mu.Unlock()
+		return a.states.states, key != "" && a.states.key == key
 	}
-	a.merged.mu.Unlock()
-	merged := a.detectMergedReviews(ctx, document)
-	if key != "" {
-		a.merged.mu.Lock()
-		a.merged.key, a.merged.merged = key, merged
-		a.merged.mu.Unlock()
+	if states, ok := cached(); ok {
+		return states
 	}
-	return merged
+	a.states.computing.Lock()
+	defer a.states.computing.Unlock()
+	if states, ok := cached(); ok {
+		return states
+	}
+	states := a.computeReviewStates(ctx, document)
+	if key != "" && ctx.Err() == nil {
+		a.states.mu.Lock()
+		a.states.key, a.states.states = key, states
+		a.states.mu.Unlock()
+	}
+	return states
 }
 
-func (a *app) detectMergedReviews(ctx context.Context, document *saga.Saga) map[string]bool {
-	merged := map[string]bool{}
-	landings := reviewstate.NewLandings(a.sourceDir)
+func (a *app) computeReviewStates(ctx context.Context, document *saga.Saga) map[string]reviewStateView {
+	landings := reviewstate.NewLandings(a.sourceDir).UseLedger(a.ledger)
+	landings.Prepare(ctx, document.Reviews)
 	head := a.comparedHead(ctx)
+	states := make(map[string]reviewStateView, len(document.Reviews))
 	for _, review := range document.Reviews {
-		if !landings.Detect(ctx, review).Merged() {
-			continue
+		states[review.ID] = reviewStateView{State: landings.Detect(ctx, review), Compared: a.comparesReview(ctx, review, head)}
+	}
+	if err := a.ledger.Save(); err != nil {
+		log.Printf("change-saga: the review ledger could not be saved: %v", err)
+	}
+	return states
+}
+
+// comparesReview reports whether review is the review of head, the head this
+// reviewer was opened to compare, without resolving its range.
+func (a *app) comparesReview(ctx context.Context, review *saga.Review, head string) bool {
+	if head == "" {
+		return false
+	}
+	if review.Merged != nil {
+		return review.Merged.Head == head || review.Merged.Landed == head
+	}
+	followed, _, err := reviewstate.ResolveHead(ctx, a.sourceDir, review)
+	return err == nil && followed == head
+}
+
+// mergedReviews names the reviews the sidebar sets aside: those whose change
+// has merged, recorded or detected, except the compared review.
+func (a *app) mergedReviews(ctx context.Context, document *saga.Saga, fingerprint string) map[string]bool {
+	merged := map[string]bool{}
+	for id, state := range a.reviewStates(ctx, document, fingerprint) {
+		if state.Merged() && !state.Compared {
+			merged[id] = true
 		}
-		if head != "" {
-			if review.Merged != nil && (review.Merged.Head == head || review.Merged.Landed == head) {
-				continue
-			}
-			if followed, _, err := reviewstate.ResolveHead(ctx, a.sourceDir, review); err == nil && followed == head {
-				continue
-			}
-		}
-		merged[review.ID] = true
 	}
 	return merged
 }
@@ -257,7 +296,7 @@ func (a *app) reviewReportsCovering(ctx context.Context, document *saga.Saga, re
 		resolver = nil
 	}
 	repository := document.Manifest.Source.Repository
-	landings := reviewstate.NewLandings(a.sourceDir)
+	landings := reviewstate.NewLandings(a.sourceDir).UseLedger(a.ledger)
 	build := func(review *saga.Review) reviewstate.Report {
 		report := reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: repository, SkipCoverage: true, Landings: landings})
 		if report.Range != nil && resolver != nil && (cover == nil || cover(report)) {
@@ -431,17 +470,38 @@ const (
 )
 
 func (a *app) reviewIndex(w http.ResponseWriter, r *http.Request) {
-	document := a.loadReviewDocument(w)
+	ctx := r.Context()
+	// The index reads the in-memory outline, which holds every review and
+	// its slides; only every review's details need the whole Saga.
+	document := a.outlineDocument(ctx)
+	if r.URL.Query().Get("details") == "all" {
+		document = a.reviewDetailsDocument(ctx)
+	}
 	if document == nil {
+		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
 		return
 	}
-	head := a.comparedHead(r.Context())
+	states := a.reviewStates(ctx, document, a.sagaFiles(ctx).fingerprint)
 	view := reviewIndexView{Saga: document}
-	open := func(report reviewstate.Report) bool {
-		return report.State != reviewstate.StateMerged || matchingReview(report, head)
-	}
-	for _, report := range a.reviewReportsCovering(r.Context(), document, document.Reviews, open) {
-		view.Reviews = append(view.Reviews, reviewSummaryView{Report: report, Href: reviewHref(report.ID), Matches: matchingReview(report, head)})
+	// The page knows at once what each review is and whether it has merged,
+	// so it opens showing the right reviews. Each review's range, decisions,
+	// and coverage are read after, when its row is in view. A reader without
+	// JavaScript, and the warming, ask for every review's details at once.
+	if r.URL.Query().Get("details") == "all" {
+		open := func(report reviewstate.Report) bool {
+			return report.State != reviewstate.StateMerged || states[report.ID].Compared
+		}
+		for _, report := range a.reviewReportsCovering(ctx, document, document.Reviews, open) {
+			view.Reviews = append(view.Reviews, reviewSummaryView{Report: report, Href: reviewHref(report.ID), Matches: states[report.ID].Compared})
+		}
+	} else {
+		for _, review := range document.Reviews {
+			state := states[review.ID]
+			view.Reviews = append(view.Reviews, reviewSummaryView{
+				Report: reviewstate.Outline(review, state.State), Href: reviewHref(review.ID),
+				Matches: state.Compared, DetailsHref: reviewHref(review.ID) + "/summary",
+			})
+		}
 	}
 	// Open reviews come first, in the order they always had; merged ones
 	// follow, set aside until a reader searches or asks for them.
@@ -453,6 +513,74 @@ func (a *app) reviewIndex(w http.ResponseWriter, r *http.Request) {
 		view.Reviews[index].Hidden = row.Hidden
 	}
 	a.inShell(w, r, "review-index", view, reviewSurfaces{deckLabel: "Reviews", title: "Reviews"})
+}
+
+// reviewDetailsCache keeps the whole Saga the reviews' details read, while
+// every one of its files is unchanged: the index asks for each open review's
+// details as its row comes into view, and a full load each time would cost
+// more than the details themselves.
+type reviewDetailsCache struct {
+	mu       sync.Mutex
+	key      string
+	document *saga.Saga
+}
+
+// reviewDetailsDocument is the whole Saga, read once for each state of its
+// files. The details only read it.
+func (a *app) reviewDetailsDocument(ctx context.Context) *saga.Saga {
+	key, keyErr := a.sagaState(ctx, true).filesKey()
+	a.details.mu.Lock()
+	defer a.details.mu.Unlock()
+	if keyErr == nil && a.details.document != nil && a.details.key == key {
+		return a.details.document
+	}
+	document, validation, err := saga.Load(a.root)
+	if err != nil || !validation.Valid {
+		return nil
+	}
+	if keyErr == nil {
+		a.details.key, a.details.document = key, document
+	}
+	return document
+}
+
+// reviewSummaryUpdate is one review's details, read after the index: they
+// replace its card's placeholder and its row's pending cells.
+type reviewSummaryUpdate struct {
+	Report                      reviewstate.Report
+	DetailsID                   string
+	Range, Decisions, OutOfDate directoryCell
+}
+
+// reviewSummary reads one review's range, decisions, and coverage for the
+// index, which asks once the review's row is in view.
+func (a *app) reviewSummary(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	document := a.reviewDetailsDocument(ctx)
+	if document == nil {
+		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
+		return
+	}
+	review := document.FindReview(r.PathValue("id"))
+	if review == nil {
+		http.NotFound(w, r)
+		return
+	}
+	states := a.reviewStates(ctx, document, a.sagaFiles(ctx).fingerprint)
+	// A merged review's coverage is read on its own page, as on the index.
+	cover := func(report reviewstate.Report) bool {
+		return report.State != reviewstate.StateMerged || states[report.ID].Compared
+	}
+	report := a.reviewReportsCovering(ctx, document, []*saga.Review{review}, cover)[0]
+	update := reviewSummaryUpdate{Report: report, DetailsID: reviewDetailsID(report.ID)}
+	update.Range, update.Decisions, update.OutOfDate = reviewDetailCells(report)
+	var body bytes.Buffer
+	if err := reviewTemplates.ExecuteTemplate(&body, "review-summary-update", update); err != nil {
+		http.Error(w, "The review's details could not be rendered.", http.StatusInternalServerError)
+		return
+	}
+	writeIncrementalHeaders(w, "text/html; charset=utf-8")
+	_, _ = w.Write(body.Bytes())
 }
 
 func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
@@ -969,7 +1097,8 @@ func newMutationToken() (string, error) {
 }
 
 var reviewTemplates = template.Must(template.New("reviews").Funcs(templateFuncs()).Funcs(template.FuncMap{
-	"reviewState": func(state string) string { return strings.ReplaceAll(state, "_", " ") },
+	"reviewState":     func(state string) string { return strings.ReplaceAll(state, "_", " ") },
+	"reviewDetailsID": reviewDetailsID,
 	"reviewCommentForm": func(page reviewPageView, target, label string) reviewCommentFormView {
 		return reviewCommentFormView{ReviewID: page.Review.ID, Token: page.MutationToken, Target: target, Label: label, Frozen: page.Frozen}
 	},
@@ -986,9 +1115,11 @@ var reviewTemplates = template.Must(template.New("reviews").Funcs(templateFuncs(
 
 // reviewTemplateSource renders the review index and one review. Plain forms
 // post decisions and comments, so the page works without script.
-const reviewTemplateSource = `{{define "review-summary"}}<article class="review-summary{{if .Matches}} matching{{end}}"{{if .Hidden}} hidden{{end}} data-review-summary="{{.Report.ID}}" data-directory-linked="{{.Report.ID}}"><header><a href="{{.Href}}"><strong>{{.Report.Title}}</strong></a>{{with .Report.PullRequest}}{{if .Number}} <span class="review-pr">#{{.Number}}</span>{{end}}{{end}}{{if eq .Report.State "merged"}} <span class="review-badge merged" data-review-state-badge="merged">Merged</span>{{else}} <span class="review-badge open">open</span>{{end}}</header>{{template "review-range" .Report}}{{with .Report.Coverage}}<p class="coverage-totals" data-review-coverage-summary data-uncovered="{{.Summary.Uncovered}}">{{.Summary.Covered}} of {{.Summary.Total}} changed lines explained by the deck{{if .Summary.Uncovered}} · <span class="gap">{{.Summary.Uncovered}} unexplained</span>{{end}}{{if .Summary.Stale}} · <span class="gap">{{.Summary.Stale}} stale</span>{{end}}</p>{{end}}<ol class="review-slide-states">{{range .Report.Slides}}<li data-review-slide-state="{{.ID}}"><span class="review-slide-title">{{.Title}}</span>{{range .Decisions}}<span class="review-decision-chip {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}">{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}</span>{{else}}<span class="review-decision-chip none">no decision</span>{{end}}{{if .OpenThreads}}<span class="review-threads">{{.OpenThreads}} open {{if eq .OpenThreads 1}}thread{{else}}threads{{end}}</span>{{end}}</li>{{end}}</ol></article>{{end}}
+const reviewTemplateSource = `{{define "review-summary"}}<article class="review-summary{{if .Matches}} matching{{end}}"{{if .Hidden}} hidden{{end}} data-review-summary="{{.Report.ID}}" data-directory-linked="{{.Report.ID}}"><header><a href="{{.Href}}"><strong>{{.Report.Title}}</strong></a>{{with .Report.PullRequest}}{{if .Number}} <span class="review-pr">#{{.Number}}</span>{{end}}{{end}}{{if eq .Report.State "merged"}} <span class="review-badge merged" data-review-state-badge="merged">Merged</span>{{else}} <span class="review-badge open">open</span>{{end}}</header><div class="review-summary-details" id="{{reviewDetailsID .Report.ID}}">{{if .DetailsHref}}<p class="review-loading" role="status"><span class="surface-spinner" aria-hidden="true"></span>Loading decisions and coverage…</p>{{else}}{{template "review-summary-body" .Report}}{{end}}</div></article>{{end}}
+{{define "review-summary-body"}}{{template "review-range" .}}{{with .Coverage}}<p class="coverage-totals" data-review-coverage-summary data-uncovered="{{.Summary.Uncovered}}">{{.Summary.Covered}} of {{.Summary.Total}} changed lines explained by the deck{{if .Summary.Uncovered}} · <span class="gap">{{.Summary.Uncovered}} unexplained</span>{{end}}{{if .Summary.Stale}} · <span class="gap">{{.Summary.Stale}} stale</span>{{end}}</p>{{end}}<ol class="review-slide-states">{{range .Slides}}<li data-review-slide-state="{{.ID}}"><span class="review-slide-title">{{.Title}}</span>{{range .Decisions}}<span class="review-decision-chip {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}">{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}</span>{{else}}<span class="review-decision-chip none">no decision</span>{{end}}{{if .OpenThreads}}<span class="review-threads">{{.OpenThreads}} open {{if eq .OpenThreads 1}}thread{{else}}threads{{end}}</span>{{end}}</li>{{end}}</ol>{{end}}
+{{define "review-summary-update"}}<div hx-swap-oob="innerHTML:#{{.DetailsID}}">{{template "review-summary-body" .Report}}</div><div hx-swap-oob="innerHTML:#{{.Range.ID}}">{{template "directory-cell" .Range}}</div><div hx-swap-oob="innerHTML:#{{.Decisions.ID}}">{{template "directory-cell" .Decisions}}</div><div hx-swap-oob="innerHTML:#{{.OutOfDate.ID}}">{{template "directory-cell" .OutOfDate}}</div>{{end}}
 {{define "review-range"}}<p class="review-range">{{with .Range}}{{if .Frozen}}Frozen at <code>{{short .BaseOID}}</code>..<code>{{short .HeadOID}}</code>{{else}}<code>{{short .BaseOID}}</code>..<code>{{short .HeadOID}}</code> · head follows <code>{{.Following}}</code>{{end}}{{end}}{{with .Merged}} · landed as <code>{{short .Landed}}</code>{{end}}{{range .Diagnostics}}<span class="review-diagnostic">{{.}}</span>{{end}}</p>{{end}}
-{{define "review-index"}}<div class="review-surface" data-review-index><header class="review-top"><h1>Reviews</h1><p>Each pull request has one review: a slide deck explaining what the change did and why. Approvals and comments happen only here, per slide. The Saga itself is documentation.</p></header>{{template "directory" .Directory}}{{if .Reviews}}<h2 class="review-detail-heading">Slide by slide</h2>{{end}}<main class="review-main">{{range .Reviews}}{{template "review-summary" .}}{{end}}</main></div>{{end}}
+{{define "review-index"}}<div class="review-surface" data-review-index><header class="review-top"><h1>Reviews</h1><p>Each pull request has one review: a slide deck explaining what the change did and why. Approvals and comments happen only here, per slide. The Saga itself is documentation.</p></header>{{template "directory" .Directory}}<noscript><p class="review-noscript">Decisions and coverage load as each review comes into view. <a href="/reviews?details=all">Show every review's decisions and coverage</a>.</p></noscript>{{if .Reviews}}<h2 class="review-detail-heading">Slide by slide</h2>{{end}}<main class="review-main">{{range .Reviews}}{{template "review-summary" .}}{{end}}</main></div>{{end}}
 {{define "review-diff"}}<figure class="review-diff" data-review-diff="{{.Location}}"><figcaption><code>{{.Path}}</code> <span class="review-location">{{.Location}}</span></figcaption>{{if .Note}}<p class="review-note">{{.Note}}</p>{{end}}{{if .Lines}}<table><tbody>{{range .Lines}}<tr class="review-line {{.Kind}}">{{if eq .Kind "hunk"}}<td colspan="3" class="review-hunk">{{.Text}}</td>{{else}}<td class="review-lineno">{{.Old}}</td><td class="review-lineno">{{.New}}</td><td class="review-code"><code>{{if eq .Kind "add"}}+{{else if eq .Kind "del"}}-{{else}} {{end}}{{.Text}}</code></td>{{end}}</tr>{{end}}</tbody></table>{{end}}</figure>{{end}}
 {{define "review-threads"}}{{range .}}<article class="review-thread {{.State}}" id="thread-{{.ID}}" data-review-thread="{{.ID}}" data-review-target="{{.Target}}" data-thread-state="{{.State}}"><header class="review-thread-head"><strong>Discussion</strong><span>{{.State}}</span></header>{{range .Comments}}<div class="review-comment" id="comment-{{.ID}}"><div class="review-comment-meta">{{.Author}} · <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.CreatedAt.Format "2006-01-02 15:04 MST"}}</time>{{if .State}} · {{.State}}{{end}}</div><div class="review-comment-body">{{.Body}}</div></div>{{end}}{{if not .Frozen}}<details class="review-compose review-reply"><summary>Reply</summary><form hx-boost="false" class="review-comment-form" method="post" action="/reviews/{{.ReviewID}}/comment" data-review-reply-form="{{.ID}}"><input type="hidden" name="token" value="{{.Token}}"><input type="hidden" name="reply_to" value="{{.ID}}"><label><span>Reply to discussion</span><textarea name="body" required rows="3"></textarea></label><button type="submit">Reply</button></form></details>{{end}}</article>{{end}}{{end}}
 {{define "review-comment-form"}}{{if not .Frozen}}<details class="review-compose"><summary>Add comment</summary><form hx-boost="false" class="review-comment-form" method="post" action="/reviews/{{.ReviewID}}/comment" data-review-comment-form="{{.Target}}"><input type="hidden" name="token" value="{{.Token}}"><input type="hidden" name="target" value="{{.Target}}"><label><span>Comment on {{.Label}}</span><textarea name="body" required rows="3"></textarea></label><button type="submit">Comment</button></form></details>{{end}}{{end}}
@@ -1015,7 +1146,7 @@ const reviewStyles = `
 .review-surface{max-width:1560px;margin:0 auto;font:15px/1.5 var(--ui)}
 .review-top{padding:0 4px}.review-top h1{margin:8px 0 2px}.review-range code{font-size:12px}.review-diagnostic{display:block;color:#a15c00}
 .review-summary{border:1px solid var(--line,#ddd);border-radius:10px;padding:12px 16px;margin:12px 0}
-.review-summary.matching{border-color:#2f6fdc}.review-badge{font-size:12px;padding:1px 8px;border-radius:9px;background:#eee;color:#333}.review-badge.merged{background:var(--bg-inset);color:var(--muted);border:1px solid var(--line)}
+.review-summary.matching{border-color:#2f6fdc}.review-loading{display:flex;align-items:center;gap:8px;margin:8px 0 0;color:var(--muted);font-size:13px}.review-loading .surface-spinner,.directory-pending .surface-spinner{width:12px;height:12px}.directory-pending{display:inline-flex;vertical-align:middle}.review-badge{font-size:12px;padding:1px 8px;border-radius:9px;background:#eee;color:#333}.review-badge.merged{background:var(--bg-inset);color:var(--muted);border:1px solid var(--line)}
 .review-slide-states{list-style:none;padding:0}.review-slide-states li{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:4px 0}
 .review-decision-chip{font-size:12px;padding:1px 8px;border-radius:9px;background:#eef}.review-decision-chip.approved{background:#dcf5e3;color:#14532d}
 .review-decision-chip.changes_requested{background:#fde2e1;color:#7f1d1d}.review-decision-chip.out-of-date{outline:2px dashed #b45309}

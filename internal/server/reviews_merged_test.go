@@ -1,6 +1,8 @@
 package server
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -89,7 +91,10 @@ func TestReviewIndexKeepsTheComparedMergedReviewInView(t *testing.T) {
 	fixture := newMergedReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{Against: "main~1", Head: "feature/pg"})
 	index := getPage(t, handler, "/reviews").Body.String()
-	if !strings.Contains(index, `<tr class="current" data-directory-row="pr-7" data-directory-archived-row`) || !strings.Contains(index, `data-review-state-badge="merged"`) || strings.Contains(index, "merged hidden") || !strings.Contains(index, `data-nav-row="nav-review-target-pr-7-`) || strings.Contains(index, `nav-reviews-merged`) || !strings.Contains(index, `0 of 0 changed lines explained by the deck`) {
+	if details := getPage(t, handler, "/reviews/pr-7/summary").Body.String(); !strings.Contains(details, `0 of 0 changed lines explained by the deck`) {
+		t.Fatalf("the compared review's details omitted its coverage:\n%s", details)
+	}
+	if !strings.Contains(index, `<tr class="current" data-directory-row="pr-7" data-directory-archived-row`) || !strings.Contains(index, `data-review-state-badge="merged"`) || strings.Contains(index, "merged hidden") || !strings.Contains(index, `data-nav-row="nav-review-target-pr-7-`) || strings.Contains(index, `nav-reviews-merged`) {
 		t.Fatalf("the compared review was set aside:\n%s", index)
 	}
 }
@@ -138,5 +143,46 @@ func TestReviewWithNoSlidesRendersItsEmptyDeck(t *testing.T) {
 		if !strings.Contains(page, want) {
 			t.Fatalf("the empty review page is missing %q:\n%s", want, page)
 		}
+	}
+}
+
+// The index opens knowing each review's state, and reads each review's
+// range, decisions, and coverage after, once its row is in view: its row's
+// cells and its card wait with a spinner, and one request fills them all.
+func TestReviewIndexReadsDetailsAfterThePage(t *testing.T) {
+	t.Parallel()
+	fixture := newMergedReviewFixture(t)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	index := getPage(t, handler, "/reviews").Body.String()
+	for _, want := range []string{
+		`<span class="directory-load" hx-get="/reviews/pr-8/summary" hx-trigger="intersect once" hx-target="this" hx-swap="none" data-directory-load aria-hidden="true"></span>`,
+		`<tr hidden data-directory-row="pr-7" data-directory-archived-row data-directory-text=`,
+		`hx-get="/reviews/pr-7/summary"`,
+		`<td id="` + reviewCellIDs("pr-8").rng + `"><span class="directory-pending" role="status" aria-label="Loading">`,
+		`id="` + reviewDetailsID("pr-8") + `"><p class="review-loading" role="status">`,
+		`href="/reviews?details=all"`,
+	} {
+		if !strings.Contains(index, want) {
+			t.Fatalf("the index is missing %q:\n%s", want, index)
+		}
+	}
+	details := getPage(t, handler, "/reviews/pr-8/summary").Body.String()
+	ids := reviewCellIDs("pr-8")
+	for _, target := range []string{reviewDetailsID("pr-8"), ids.rng, ids.decisions, ids.outOfDate} {
+		if !strings.Contains(details, `hx-swap-oob="innerHTML:#`+target+`"`) {
+			t.Fatalf("the details do not fill %s:\n%s", target, details)
+		}
+	}
+	if !strings.Contains(details, "data-review-coverage-summary") {
+		t.Fatalf("an open review's details omitted its coverage:\n%s", details)
+	}
+	// A merged review's coverage is read on its own page.
+	if merged := getPage(t, handler, "/reviews/pr-7/summary").Body.String(); strings.Contains(merged, "data-review-coverage-summary") {
+		t.Fatalf("a merged review's details read its coverage:\n%s", merged)
+	}
+	missing := httptest.NewRecorder()
+	handler.ServeHTTP(missing, httptest.NewRequest(http.MethodGet, "/reviews/nothing/summary", nil))
+	if missing.Code != http.StatusNotFound {
+		t.Fatalf("details of an unknown review = %d", missing.Code)
 	}
 }

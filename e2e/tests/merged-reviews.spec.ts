@@ -49,6 +49,13 @@ test("merged reviews show Merged and stay hidden until searched for or shown", a
     await expect(mergedSummary).toBeHidden();
     await expect(caption).toHaveText("1 review · 1 merged hidden");
     await expect(directory.locator("[data-directory-none]")).toBeHidden();
+    // Which reviews merged is known with the page; each review's range,
+    // decisions, and coverage follow once its row is in view.
+    await expect(open.locator(".directory-pending")).toHaveCount(0);
+    await expect(open.locator("td").nth(1)).toHaveText(/[0-9a-f]{12}\.\.[0-9a-f]{12}/);
+    await expect(page.locator('[data-review-summary="pr-2"] .review-loading')).toHaveCount(0);
+    await expect(page.locator('[data-review-summary="pr-2"] [data-review-coverage-summary]')).toBeVisible();
+    await expect(merged.locator(".directory-pending")).toHaveCount(3);
     await expectNoSeriousAccessibilityViolations(page);
 
     // The sidebar sets it aside the same way, counting it in one row that
@@ -73,9 +80,11 @@ test("merged reviews show Merged and stay hidden until searched for or shown", a
     await expect(merged).toBeHidden();
     await expect(caption).toHaveText("1 review · 1 merged hidden");
 
-    // Asking for the merged reviews shows them after the open ones.
+    // Asking for the merged reviews shows them after the open ones, and
+    // reads their details once they are in view.
     await showMerged.check();
     await expect(merged).toBeVisible();
+    await expect(merged.locator(".directory-pending")).toHaveCount(0);
     await expect(mergedSummary).toBeVisible();
     await expect(caption).toHaveText("2 reviews");
     await expect(directory.locator("[data-directory-row]")).toHaveText([/Open theme review/, /Landed greeting review/]);
