@@ -440,7 +440,8 @@ func TestStatusReportsReviewCoverageAndNamesTheCoverCommand(t *testing.T) {
 
 // review list names every surprise a slide calls out, and counts them, so
 // an author sees at a glance whether the deck says what would surprise a
-// reviewer. The count is reported, never required.
+// reviewer. The count is reported, never required, and so is a surprise no
+// code backs.
 func TestReviewListNamesTheSurprisesCalledOut(t *testing.T) {
 	t.Parallel()
 	fixture := newReviewFixture(t)
@@ -452,13 +453,26 @@ func TestReviewListNamesTheSurprisesCalledOut(t *testing.T) {
 		"--label", "No queue service", "--about", "node", "--body", "Expected a queue service; jobs are rows in the same transaction.",
 		"--description", "Why jobs are table rows.", fixture.root)
 	after := run(t, Review, "list", "--review", "pr-7", fixture.root)
-	for _, want := range []string{"  surprises called out: 1\n", "    surprise No queue service: Expected a queue service; jobs are rows in the same transaction.\n"} {
+	for _, want := range []string{
+		"  surprises called out: 1 (1 with no code evidence; cover the code that decides each from its callout)\n",
+		"    surprise No queue service (no code evidence): Expected a queue service; jobs are rows in the same transaction.\n",
+	} {
 		if !strings.Contains(after, want) {
 			t.Fatalf("review list does not show %q:\n%s", want, after)
 		}
 	}
 	table := slideReport(t, reviewReport(t, fixture), "table")
-	if len(table.Callouts) != 1 || table.Callouts[0].ID != "no-queue" || table.Callouts[0].About != "node" {
+	if len(table.Callouts) != 1 || table.Callouts[0].ID != "no-queue" || table.Callouts[0].About != "node" || table.Callouts[0].References != 0 {
 		t.Fatalf("the JSON report's callouts = %#v", table.Callouts)
+	}
+
+	head := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "HEAD"))
+	run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "table", "no-queue"), "--ref", head+":store.go#L3", "--repo", fixture.repo, fixture.root)
+	covered := run(t, Review, "list", "--review", "pr-7", fixture.root)
+	if !strings.Contains(covered, "  surprises called out: 1\n") || !strings.Contains(covered, "    surprise No queue service: Expected") {
+		t.Fatalf("review list still reports the covered surprise as unbacked:\n%s", covered)
+	}
+	if table := slideReport(t, reviewReport(t, fixture), "table"); table.Callouts[0].References != 1 {
+		t.Fatalf("the covered callout's references = %#v", table.Callouts)
 	}
 }

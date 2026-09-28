@@ -1199,7 +1199,9 @@ covered and total counts, the uncovered lines with ready-to-use locations,
 stale references, and overlap. It is a report, not a verdict; `review list
 --uncovered` lists only reviews with gaps. Review decks never count toward the
 documentation's own coverage. `cover` on a review Item defaults to the review's
-range, so it needs no `--against`.
+range, so it needs no `--against`. `review list` also names each slide's
+callouts, marking any with no code references of its own; that too is only
+reported.
 
 **Approvals are per slide.** Each decision is an append-only record in
 `approvals/`, conforming to

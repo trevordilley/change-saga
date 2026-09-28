@@ -136,11 +136,14 @@ type SlideReport struct {
 
 // CalloutReport is one callout Item on a review slide. About names the
 // Item on the same slide that the callout explains, when it names one.
+// References counts the callout's own code references; a surprise with none
+// states behavior no code backs.
 type CalloutReport struct {
-	ID    string `json:"id"`
-	Label string `json:"label"`
-	Body  string `json:"body"`
-	About string `json:"about,omitempty"`
+	ID         string `json:"id"`
+	Label      string `json:"label"`
+	Body       string `json:"body"`
+	About      string `json:"about,omitempty"`
+	References int    `json:"references"`
 }
 
 // DecisionReport is one reviewer's latest decision on a slide.
@@ -213,7 +216,11 @@ func Build(ctx context.Context, review *saga.Review, options Options) Report {
 		slideReport := SlideReport{ID: slide.ID, Title: slide.Title, Target: slide.Target, Decisions: []DecisionReport{}}
 		for _, item := range slide.Items {
 			if item.Kind == "callout" {
-				slideReport.Callouts = append(slideReport.Callouts, CalloutReport{ID: item.ID, Label: item.Label, Body: item.Body, About: item.About})
+				callout := CalloutReport{ID: item.ID, Label: item.Label, Body: item.Body, About: item.About}
+				for _, file := range item.Code {
+					callout.References += len(file.References)
+				}
+				slideReport.Callouts = append(slideReport.Callouts, callout)
 			}
 		}
 		digest, digestErr := saga.SlideDigest(slide)
