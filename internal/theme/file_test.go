@@ -3,6 +3,7 @@ package theme
 import (
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 )
@@ -142,5 +143,29 @@ func TestContrastNamesFailingPairs(t *testing.T) {
 	}
 	if len(failing) != 2 || !strings.HasPrefix(failing[0], "light: --muted #bbbbbb on --bg #ffffff is 1.") || !strings.HasPrefix(failing[1], "dark: --diagram-pink-ink #5c1a37 on --diagram-pink-sticky #5c1a37 is 1.00:1") {
 		t.Fatalf("failing pairs = %q", failing)
+	}
+}
+
+// The starter lists every token, light and dark, and changes nothing until a
+// line is uncommented; uncommenting any line yields a valid override.
+func TestStarterListsEveryTokenCommentedOut(t *testing.T) {
+	starter := Starter()
+	file, problems := Parse([]byte(starter))
+	if len(problems) > 0 || len(file.Light)+len(file.Dark) != 0 {
+		t.Fatalf("the starter is not an empty valid theme: %v %+v", problems, file)
+	}
+	for _, token := range Tokens() {
+		if !strings.Contains(starter, "  /* --"+token.Name+": "+token.Light+";") {
+			t.Errorf("the starter lacks %s's light default", token.Name)
+		}
+		if token.Dark != "" && !strings.Contains(starter, "  /* --"+token.Name+": "+token.Dark+";") {
+			t.Errorf("the starter lacks %s's dark default", token.Name)
+		}
+	}
+	uncommented := strings.NewReplacer("  /* --", "  --", "; */", ";").Replace(starter)
+	uncommented = regexp.MustCompile(`;  [^\n]*\*/`).ReplaceAllString(uncommented, ";")
+	file, problems = Parse([]byte(uncommented))
+	if len(problems) > 0 || len(file.Light) != len(Tokens()) {
+		t.Fatalf("the starter's defaults do not validate once uncommented: %v", problems)
 	}
 }

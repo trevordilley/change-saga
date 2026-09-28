@@ -106,8 +106,8 @@ func (a *app) themePreviewDiagram(w http.ResponseWriter, r *http.Request) {
 }
 
 // previewDiagramSVG draws every default style and every palette colour: a
-// section of styled nodes, then a sticky, a bubble, a pin, and a highlight
-// in each colour.
+// section of styled nodes, a sticky, a bubble, a pin, and a highlight in
+// each colour, and two entities joined by an ERD connector.
 var previewDiagramSVG = sync.OnceValues(func() ([]byte, error) {
 	document := diagram.New()
 	add := func(element diagram.Element) { document.Elements = append(document.Elements, element) }
@@ -125,11 +125,16 @@ var previewDiagramSVG = sync.OnceValues(func() ([]byte, error) {
 	add(diagram.Element{ID: "flow", Kind: "edge", From: "style-normal", To: "style-primary", Points: []diagram.Point{{X: 224, Y: 194}, {X: 248, Y: 194}}, Style: "secondary"})
 	for i, color := range diagram.PaletteNames() {
 		x := 40 + float64(i)*205
-		add(diagram.Element{ID: "sticky-" + color, Kind: "sticky", Label: color + " sticky", Color: color, X: x, Y: 290, Width: 180, Height: 110, Style: "normal"})
-		add(diagram.Element{ID: "bubble-" + color, Kind: "annotation", Shape: "bubble", Label: color, Color: color, About: "sticky-" + color, X: x, Y: 450, Width: 150, Height: 64, Style: "normal"})
-		add(diagram.Element{ID: "pin-" + color, Kind: "annotation", Shape: "pin", Label: string(rune('1' + i)), Color: color, About: "bubble-" + color, X: x + 160, Y: 462, Width: 32, Style: "normal"})
-		add(diagram.Element{ID: "mark-" + color, Kind: "annotation", Shape: "highlight", Color: color, About: "sticky-" + color, X: x, Y: 560, Width: 180, Height: 40, Style: "normal"})
+		add(diagram.Element{ID: "sticky-" + color, Kind: "sticky", Label: color + " sticky", Color: color, X: x, Y: 280, Width: 180, Height: 90, Style: "normal"})
+		add(diagram.Element{ID: "bubble-" + color, Kind: "annotation", Shape: "bubble", Label: color, Color: color, About: "sticky-" + color, X: x, Y: 394, Width: 140, Height: 56, Style: "normal"})
+		add(diagram.Element{ID: "pin-" + color, Kind: "annotation", Shape: "pin", Label: string(rune('1' + i)), Color: color, About: "bubble-" + color, X: x + 150, Y: 406, Width: 30, Style: "normal"})
+		add(diagram.Element{ID: "mark-" + color, Kind: "annotation", Shape: "highlight", Color: color, About: "sticky-" + color, X: x, Y: 466, Width: 180, Height: 24, Style: "normal"})
 	}
+	fields := diagram.Fields{{Name: "id", Type: "uuid", Key: "pk"}, {Name: "name", Type: "text"}}
+	add(diagram.Element{ID: "customer", Kind: "node", Shape: "entity", Label: "customer", Fields: fields, X: 40, Y: 520, Width: 240, Height: 110, Style: "normal"})
+	add(diagram.Element{ID: "order", Kind: "node", Shape: "entity", Label: "order", Fields: diagram.Fields{{Name: "id", Type: "uuid", Key: "pk"}, {Name: "customer_id", Type: "uuid", Key: "fk"}}, X: 420, Y: 520, Width: 240, Height: 110, Style: "primary"})
+	add(diagram.Element{ID: "places", Kind: "edge", From: "customer", To: "order", Tail: "only-one", Head: "zero-or-many", Points: []diagram.Point{{X: 280, Y: 575}, {X: 420, Y: 575}}, Style: "normal"})
+	add(diagram.Element{ID: "entity-note", Kind: "sticky", Label: "An ERD edge: one customer places many orders", Color: "green", About: "places", X: 720, Y: 520, Width: 300, Height: 130, Style: "normal"})
 	return diagram.Render(document, diagram.Options{Title: "Theme preview", Description: "Every default diagram style and palette colour."})
 })
 

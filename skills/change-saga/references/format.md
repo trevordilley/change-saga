@@ -16,6 +16,7 @@ default; any `<name>.saga` directory is equally valid. A monorepo keeps one
 ```text
 change.saga/
   saga.json
+  theme.css           optional token overrides; see theme.md
   ___overview/
   ___personas/
   ___designsystem/
