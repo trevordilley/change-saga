@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "dae580b3d5258727a1c23f476c74b7ac7986cb57",
+      "commit": "1fc25aadbeec714e6c0cba9a0b71d8058683be8c",
       "path": "internal/reviewstate/reviewstate.go",
-      "start": 179,
-      "end": 241,
-      "digest": "sha256:34d9f88fc1a8a26b3425e2e86db5944ac5d5443e2a09ecd167904234fd47fd58",
+      "start": 182,
+      "end": 248,
+      "digest": "sha256:b91177b3606538bf3668f85e487acb2257293a236def180ee2c78cdda69643e7",
       "note": "Builds a readable per-slide report from the current range, decisions, and derived comment threads."
     }
   ]
