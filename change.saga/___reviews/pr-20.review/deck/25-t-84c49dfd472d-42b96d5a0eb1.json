@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-20",
   "slide": "board",
-  "current": "sha256:5b7b83c94d813e6b2e7c1cbf81876733dfdc8fd0f02d9bde6fa2db255aa9741a",
+  "current": "sha256:b2879bfbc3ca22d349767831b7f03fa061785e4a6ac0cccbb238b256bfcac0fb",
   "revisions": [
     {
       "snapshot": "sha256:7f50b11f7bad4e271ac0e770e0a110ab332e7c8b74ab6cee32f4f7d2705aa832",
@@ -281,6 +281,147 @@
         "source": "24-a-ed580873f1c075527bd9337e84ec557ab882a1e8809d9e585b68.json",
         "source_digest": "sha256:ed580873f1c075527bd9337e84ec557ab882a1e8809d9e585b68a98bf4a5dffe",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:b2879bfbc3ca22d349767831b7f03fa061785e4a6ac0cccbb238b256bfcac0fb",
+      "parent_snapshots": [
+        "sha256:5b7b83c94d813e6b2e7c1cbf81876733dfdc8fd0f02d9bde6fa2db255aa9741a"
+      ],
+      "request_id": "rerender-renderer-2-23",
+      "created_at": "2026-09-28T04:17:22.427513Z",
+      "asset": "24-a-5215cd81b1cec94d8dbda8d3580adf956c2898ff968a33c5e579.svg",
+      "asset_digest": "sha256:5215cd81b1cec94d8dbda8d3580adf956c2898ff968a33c5e57940da275ec7c6",
+      "slide": {
+        "version": 4,
+        "id": "board",
+        "deck": "pr-20",
+        "title": "Sections, stickies, and annotations",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-5215cd81b1cec94d8dbda8d3580adf956c2898ff968a33c5e579.svg",
+        "takeaway": "Diagrams gain tabbed, nestable sections, shadowed stickies, and bubbles, pins, highlights, and brackets, all coloured from one fixed palette.",
+        "reading_order": [
+          "section",
+          "sticky",
+          "bubble",
+          "pin",
+          "marks",
+          "follows"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "section",
+            "slide": "board",
+            "rank": 10,
+            "kind": "node",
+            "label": "Sections",
+            "description": "A group with shape section draws a palette-tinted frame and a title tab holding its label; sections nest.",
+            "selector": {
+              "type": "element",
+              "element_id": "lane"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "sticky",
+            "slide": "board",
+            "rank": 20,
+            "kind": "node",
+            "label": "Stickies and the palette",
+            "description": "A sticky is palette paper with wrapped text and a soft shadow; every board colour comes from a fixed six-colour palette.",
+            "selector": {
+              "type": "element",
+              "element_id": "sticky"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "bubble",
+            "slide": "board",
+            "rank": 30,
+            "kind": "node",
+            "label": "Bubbles",
+            "description": "A speech bubble whose pointer leaves the side facing its tip: an explicit target, or its about element's nearest box point.",
+            "selector": {
+              "type": "element",
+              "element_id": "bubble"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "pin",
+            "slide": "board",
+            "rank": 40,
+            "kind": "node",
+            "label": "Numbered pins",
+            "description": "A circle carrying a short number; its accessible name reads as Pin 1 on its about element.",
+            "selector": {
+              "type": "element",
+              "element_id": "one"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "marks",
+            "slide": "board",
+            "rank": 50,
+            "kind": "node",
+            "label": "Highlights and brackets",
+            "description": "A translucent highlight box and a curly bracket whose point faces its side; either may carry a label in a label_box.",
+            "selector": {
+              "type": "element",
+              "element_id": "brace"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "follows",
+            "slide": "board",
+            "rank": 60,
+            "kind": "callout",
+            "label": "A bubble's pointer follows its target",
+            "description": "Why moving one element can change a bubble's drawing.",
+            "selector": {
+              "type": "element",
+              "element_id": "bubble"
+            },
+            "about": "bubble",
+            "body": "Nothing else re-aims on its own: a bubble without a target recomputes its tip when its about element moves, and diagram edit reports that bubble as changed."
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-ed580873f1c075527bd9337e84ec557ab882a1e8809d9e585b68.json",
+        "source_digest": "sha256:ed580873f1c075527bd9337e84ec557ab882a1e8809d9e585b68a98bf4a5dffe",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-16",
   "slide": "reachable",
-  "current": "sha256:0b5e75cc5291968cfa233f9cd901bd7807bda69c5d89948d6340fb21732a395f",
+  "current": "sha256:effcd5ac7ac3d7f937d2bb684c47b4c7368bddd8650620bd4e7cab776de933a5",
   "revisions": [
     {
       "snapshot": "sha256:0b5e75cc5291968cfa233f9cd901bd7807bda69c5d89948d6340fb21732a395f",
@@ -140,6 +140,147 @@
         "source": "24-a-082a2a3f62d75e5e09cc913fca167e512818cd8bfefd71128805.json",
         "source_digest": "sha256:082a2a3f62d75e5e09cc913fca167e512818cd8bfefd711288052d41cf51a1ab",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:effcd5ac7ac3d7f937d2bb684c47b4c7368bddd8650620bd4e7cab776de933a5",
+      "parent_snapshots": [
+        "sha256:0b5e75cc5291968cfa233f9cd901bd7807bda69c5d89948d6340fb21732a395f"
+      ],
+      "request_id": "rerender-renderer-2-16",
+      "created_at": "2026-09-28T04:17:18.606946Z",
+      "asset": "24-a-605c112f1007e8e9e3a4e67ea64d7fa9848c9ff600442c1857e6.svg",
+      "asset_digest": "sha256:605c112f1007e8e9e3a4e67ea64d7fa9848c9ff600442c1857e6606fb2678c70",
+      "slide": {
+        "version": 4,
+        "id": "reachable",
+        "deck": "pr-16",
+        "title": "Every note and surprise stays reachable",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-605c112f1007e8e9e3a4e67ea64d7fa9848c9ff600442c1857e6.svg",
+        "takeaway": "Pinned notes survive crossing hotspots, inner notes rise above their group, badges dodge the Surprises panel and short elements, and Escape resets.",
+        "reading_order": [
+          "pinned",
+          "inner",
+          "badge",
+          "escape",
+          "tab-reopens",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "pinned",
+            "slide": "reachable",
+            "rank": 10,
+            "kind": "node",
+            "label": "A pinned note holds",
+            "description": "While a popover is pinned, crossing another hotspot on the way to its links no longer swaps in that hotspot's note.",
+            "selector": {
+              "type": "element",
+              "element_id": "pinned"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "inner",
+            "slide": "reachable",
+            "rank": 20,
+            "kind": "node",
+            "label": "Inner notes rise",
+            "description": "A note hotspot inside a group or region an Item selects is lifted above that Item's hotspot, so the pointer and touch reach it.",
+            "selector": {
+              "type": "element",
+              "element_id": "inner"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "badge",
+            "slide": "reachable",
+            "rank": 30,
+            "kind": "node",
+            "label": "Badges stay clear",
+            "description": "A callout badge moves up out from under the Surprises panel, and on an element under 64px tall drops below it, clear of the Item's controls.",
+            "selector": {
+              "type": "element",
+              "element_id": "badge"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "escape",
+            "slide": "reachable",
+            "rank": 40,
+            "kind": "node",
+            "label": "Escape resets on leave",
+            "description": "Leaving a note hotspot always clears its Escape dismissal, so tabbing away and back reopens its note.",
+            "selector": {
+              "type": "element",
+              "element_id": "escape"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tab-reopens",
+            "slide": "reachable",
+            "rank": 50,
+            "kind": "callout",
+            "label": "The next note now opens",
+            "description": "Why Tab past a note's last link shows another note.",
+            "selector": {
+              "type": "element",
+              "element_id": "escape"
+            },
+            "about": "escape",
+            "body": "You might expect the popover to close; Tab lands on the next note hotspot, whose note now opens because an earlier Escape no longer sticks."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "reachable",
+            "rank": 60,
+            "kind": "statement",
+            "label": "Browser coverage",
+            "description": "One test crosses a hotspot to a pinned note, hovers a note inside a selected group, clicks a corner badge under the panel, and checks a short element and Escape.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-082a2a3f62d75e5e09cc913fca167e512818cd8bfefd71128805.json",
+        "source_digest": "sha256:082a2a3f62d75e5e09cc913fca167e512818cd8bfefd711288052d41cf51a1ab",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Diffs load when an Item opens</title>
+  <desc id="diagram-desc">The review page carries panels but no diffs; an Item's code arrives from its own endpoint, a page at a time, when a reviewer opens it.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-open" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-fetch" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-compute" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Diffs load when an Item opens</tspan></text>
+  </g>
+  <g id="page" data-diagram-kind="node" transform="translate(60 150)" role="group" aria-label="Review page: panels, no diffs">
+    <rect width="340" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Review page: panels, no diffs</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="node" transform="translate(960 150)" role="group" aria-label="Regression tests">
+    <rect width="260" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Regression tests</tspan></text>
+  </g>
+  <g id="drawer" data-diagram-kind="node" transform="translate(60 420)" role="group" aria-label="Item drawer (viewer script)">
+    <rect width="340" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Item drawer (viewer script)</tspan></text>
+  </g>
+  <g id="endpoint" data-diagram-kind="node" transform="translate(500 420)" role="group" aria-label="GET /reviews/{id}/item-diffs">
+    <rect width="360" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">GET /reviews/{id}/item-diffs</tspan></text>
+  </g>
+  <g id="differ" data-diagram-kind="node" transform="translate(940 420)" role="group" aria-label="reviewDiffs, per reference">
+    <rect width="300" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">reviewDiffs, per reference</tspan></text>
+  </g>
+  <g id="open" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="open an Item" data-from="page" data-to="drawer">
+    <path d="M230 250 L230 420" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-open)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="245" y="338" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="245" y="338">open an Item</tspan></text>
+  </g>
+  <g id="fetch" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="fetch" data-from="drawer" data-to="endpoint">
+    <path d="M400 470 L500 470" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-fetch)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="415" y="450" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="415" y="450">fetch</tspan></text>
+  </g>
+  <g id="compute" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="one page" data-from="endpoint" data-to="differ">
+    <path d="M860 470 L940 470" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-compute)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="858" y="450" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="858" y="450">one page</tspan></text>
+  </g>
+</svg>

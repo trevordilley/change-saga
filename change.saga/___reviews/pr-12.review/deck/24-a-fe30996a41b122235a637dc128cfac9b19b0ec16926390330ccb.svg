@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">CI now keeps change.saga healthy</title>
+  <desc id="diagram-desc">Beside the review gate, a health job fails CI when anything change.saga already documents goes stale or breaks.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-asks-review" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-asks-health" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 32)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">CI now keeps change.saga healthy</tspan></text>
+  </g>
+  <g id="pull-request" data-diagram-kind="node" transform="translate(40 250)" role="group" aria-label="Pull request or push">
+    <rect width="260" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Pull request or push</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">the commit under test</tspan></text>
+  </g>
+  <g id="review-job" data-diagram-kind="node" transform="translate(380 140)" role="group" aria-label="review job">
+    <rect width="420" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">review job</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">check --covers review --against the base</tspan></text>
+  </g>
+  <g id="health-job" data-diagram-kind="node" transform="translate(380 360)" role="group" aria-label="health job">
+    <rect width="420" height="120" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">health job</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">check --covers health change.saga</tspan></text>
+  </g>
+  <g id="policy" data-diagram-kind="node" transform="translate(880 250)" role="group" aria-label="This repository's policy">
+    <rect width="350" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">This repository's policy</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">not a product default</tspan></text>
+  </g>
+  <g id="asks-review" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="pull-request to review-job" data-from="pull-request" data-to="review-job">
+    <path d="M300 280 L340 280 L340 200 L380 200" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-asks-review)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="asks-health" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="pull-request to health-job" data-from="pull-request" data-to="health-job">
+    <path d="M300 330 L340 330 L340 420 L380 420" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-asks-health)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+</svg>

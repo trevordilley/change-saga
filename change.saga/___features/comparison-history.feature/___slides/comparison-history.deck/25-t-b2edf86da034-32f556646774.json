@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "comparison-history",
   "slide": "saga-lineage",
-  "current": "sha256:9bd79bcbb3fa513389baf32744e48a825e80aac6a03e58b9e166ed3d02153913",
+  "current": "sha256:f8e1aef16a11c4560967b957f934aecb4cdec0476083766f6bfc418231e60fbe",
   "revisions": [
     {
       "snapshot": "sha256:85679bf41771b68ef2b887f1c3f07b5a188598fede11371f7d620ac08fb6886b",
@@ -3221,6 +3221,364 @@
         "source": "24-a-d8aeb4ad13593d97bc631d32da596a0bd48c1ca17c551cae7add.json",
         "source_digest": "sha256:d8aeb4ad13593d97bc631d32da596a0bd48c1ca17c551cae7add16ae59183f3a",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:f8e1aef16a11c4560967b957f934aecb4cdec0476083766f6bfc418231e60fbe",
+      "parent_snapshots": [
+        "sha256:9bd79bcbb3fa513389baf32744e48a825e80aac6a03e58b9e166ed3d02153913"
+      ],
+      "request_id": "rerender-renderer-2-6",
+      "created_at": "2026-09-28T04:17:13.034538Z",
+      "asset": "24-a-82cb1f455a7d09e1b35c12c01ccf0aa458ea5c15ccdffa350779.svg",
+      "asset_digest": "sha256:82cb1f455a7d09e1b35c12c01ccf0aa458ea5c15ccdffa350779b21b08a836f9",
+      "slide": {
+        "version": 4,
+        "id": "saga-lineage",
+        "deck": "comparison-history",
+        "title": "A renamed Saga keeps its history",
+        "rank": 70,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-82cb1f455a7d09e1b35c12c01ccf0aa458ea5c15ccdffa350779.svg",
+        "takeaway": "A Saga that moved keeps one lineage: readers of any past commit find it where it was, and a pure move revises nothing.",
+        "reading_order": [
+          "lineage-of",
+          "path-at-commit",
+          "eras-history",
+          "saved-view-renamed",
+          "move-reasons",
+          "init-change-saga"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "lineage-of",
+            "slide": "saga-lineage",
+            "rank": 0,
+            "kind": "node",
+            "label": "sagalineage.Of: a Saga's verified moves and birth",
+            "description": "Follows manifest renames back from HEAD, keeping a move only when the manifest id is unchanged and most files arrive byte for byte; Born is the commit that added the oldest manifest. Cached per repo, path and head.",
+            "selector": {
+              "type": "element",
+              "element_id": "lineage-of"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/sagalineage/lineage.go",
+                  "start": 48,
+                  "end": 118,
+                  "digest": "sha256:aa1bd54b0f7201586df2bea0b335a4a18731576409c291fe376756276d7a8c98",
+                  "note": "Lineage of one Saga: its moves and birth."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/changeview/moves_test.go",
+                  "start": 81,
+                  "end": 203,
+                  "digest": "sha256:0f6e6d66cf868f42e0ad1b0f0cc06c40a4a666d45950f0c85d7d09521c39e7b3",
+                  "note": "History through a move, and a replaced Saga or reused name is not followed."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "lineage-of-record-change-history-commit-context",
+              "criterion": "urn:change-saga:change-saga:story:record-change-history:criterion:commit-context",
+              "story_revision": "urn:change-saga:change-saga:story:record-change-history:revision:r1",
+              "rationale": "History follows the Saga's verified moves, so change events from before a rename are still listed with their commits."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "path-at-commit",
+            "slide": "saga-lineage",
+            "rank": 10,
+            "kind": "node",
+            "label": "PathAt: where the Saga was at a commit",
+            "description": "Returns the path the Saga had at a commit, before each move the commit does not descend from, and false when the commit does not descend from Born, so an older Saga that reused the name is never read.",
+            "selector": {
+              "type": "element",
+              "element_id": "path-at-commit"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/sagalineage/lineage.go",
+                  "start": 191,
+                  "end": 207,
+                  "digest": "sha256:c388061dfe6028b2680c96f73be08d93a9b0a857545aaaaf9a762b8f35e0d62c",
+                  "note": "PathAt and the readers of a past Saga that use it."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/changeview/moves.go",
+                  "start": 10,
+                  "end": 16,
+                  "digest": "sha256:eb464579cb5e787e4487236a879f994f99d9c3709d6c0c481c8e19bd3ece8775",
+                  "note": "PathAt and the readers of a past Saga that use it."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/changeview/sagaat.go",
+                  "start": 55,
+                  "end": 66,
+                  "digest": "sha256:1d762d569f61fc4b00a0aa019d19e84ea13146fc91b7e111042f3cfa6965246c",
+                  "note": "PathAt and the readers of a past Saga that use it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "path-at-commit-change-impact-layers-changed-records",
+              "criterion": "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records",
+              "story_revision": "urn:change-saga:change-saga:story:change-impact-layers:revision:r1",
+              "rationale": "A comparison reads the base Saga where it was at the base commit, so a revised record keeps its before representation across a rename."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "eras-history",
+            "slide": "saga-lineage",
+            "rank": 20,
+            "kind": "node",
+            "label": "Eras let history and cursors cross a rename",
+            "description": "Eras split history into one commit range per path. recordCommits reads each era at that era's paths, counting a move only for files it created or edited, and CursorHistory reads the cursor per era.",
+            "selector": {
+              "type": "element",
+              "element_id": "eras-history"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/sagalineage/lineage.go",
+                  "start": 209,
+                  "end": 235,
+                  "digest": "sha256:6a5a7ececd4577327300e9e0af0021c756ba39c505996f2bb30ec996cf469e24",
+                  "note": "Eras and their readers: record history and companion cursors."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/changeview/moves.go",
+                  "start": 18,
+                  "end": 70,
+                  "digest": "sha256:6cc0bea6bbb42decb07d63dc8adb7477ba3a7b3368b81078540929b6812abfe0",
+                  "note": "Eras and their readers: record history and companion cursors."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/changeview/cursor.go",
+                  "start": 24,
+                  "end": 53,
+                  "digest": "sha256:be5e4afe9fee892e49c0c7043894be344ec8ea274a25138bd4e8090f457695ca",
+                  "note": "Eras and their readers: record history and companion cursors."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "eras-history-record-change-history-commit-context",
+              "criterion": "urn:change-saga:change-saga:story:record-change-history:criterion:commit-context",
+              "story_revision": "urn:change-saga:change-saga:story:record-change-history:revision:r1",
+              "rationale": "Record history reads each era at its own paths, so a record's events before and after the rename are listed."
+            },
+            {
+              "id": "eras-history-source-or-companion-companion-cursor",
+              "criterion": "urn:change-saga:change-saga:story:source-or-companion:criterion:companion-cursor",
+              "story_revision": "urn:change-saga:change-saga:story:source-or-companion:revision:r1",
+              "rationale": "A companion Saga's cursor history is read per era, where the Saga was then."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "saved-view-renamed",
+            "slide": "saga-lineage",
+            "rank": 30,
+            "kind": "node",
+            "label": "Saved views read the Saga where it was then",
+            "description": "savedview.Load resolves the Saga's path at the view's commit through its lineage, fails with SagaMissing when the Saga did not exist yet, then checks the manifest id and repository.",
+            "selector": {
+              "type": "element",
+              "element_id": "saved-view-renamed"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/savedview/savedview.go",
+                  "start": 102,
+                  "end": 125,
+                  "digest": "sha256:1546b1337ba626c7627b2fd2bd9488aaddbfa8f00287f4a500e43aafea71b821",
+                  "note": "Loading a saved view of a renamed Saga."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/savedview/savedview_test.go",
+                  "start": 150,
+                  "end": 170,
+                  "digest": "sha256:758758a74b6fe8ea4ce65e67be719f89b70919d272e6f51168ac3f80e5adef22",
+                  "note": "A renamed Saga is read where it was at the view."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "saved-view-renamed-inventory-design-to-review-compare-plan",
+              "criterion": "urn:change-saga:change-saga:story:inventory-design-to-review:criterion:compare-plan",
+              "story_revision": "urn:change-saga:change-saga:story:inventory-design-to-review:revision:r2",
+              "rationale": "A saved view committed before a rename still loads, so the proposed design it pins stays inspectable beside the delivered one."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "move-reasons",
+            "slide": "saga-lineage",
+            "rank": 40,
+            "kind": "statement",
+            "label": "A pure move changes nothing a record says",
+            "description": "Reason attribution treats every path a Saga had as owned by the same record, and marks files a move commit carried unchanged, so a rename is not reported as a revision.",
+            "selector": {
+              "type": "element",
+              "element_id": "move-reasons"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/changeview/reasons.go",
+                  "start": 138,
+                  "end": 160,
+                  "digest": "sha256:9f7644971df60085db677af9ac0f8220dacd5fef05b8a25ce53be32e17c4483d",
+                  "note": "Records own their files at every path; moved files are unchanged."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "move-reasons-change-impact-layers-changed-records",
+              "criterion": "urn:change-saga:change-saga:story:change-impact-layers:criterion:changed-records",
+              "story_revision": "urn:change-saga:change-saga:story:change-impact-layers:revision:r1",
+              "rationale": "A comparison spanning a rename lists only records whose content changed, not every record the move carried."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "init-change-saga",
+            "slide": "saga-lineage",
+            "rank": 50,
+            "kind": "node",
+            "label": "init defaults to change.saga, named after origin",
+            "description": "With no path, init creates change.saga in --repo, names its id and title after the origin repository (or the checkout folder), and notes, never refuses, other .saga directories.",
+            "selector": {
+              "type": "element",
+              "element_id": "init-change-saga"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/repository_saga.go",
+                  "start": 15,
+                  "end": 47,
+                  "digest": "sha256:acc8fa445022d6e9743c4b82b4abd5c0dc04235fc2f022413ab4706649ec013e",
+                  "note": "The default Saga name and path, and init's identity from the repository."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/cli.go",
+                  "start": 517,
+                  "end": 562,
+                  "digest": "sha256:1b7fac6dea9b8ba7315b062297c4c24ef083803aab63482362b05c74c661ac16",
+                  "note": "The default Saga name and path, and init's identity from the repository."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/setup_initial_saga.go",
+                  "start": 105,
+                  "end": 135,
+                  "digest": "sha256:2a16f0e62f7593702bc9d94afaab75aacecf7462a4bf83cec74f49777cc68fd4",
+                  "note": "The default Saga name and path, and init's identity from the repository."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/init_default_test.go",
+                  "start": 40,
+                  "end": 70,
+                  "digest": "sha256:201de87b8c6a0441ef6ef077828366c3eeecc7acd9a9f0aa45aa53b835fb56df",
+                  "note": "init with no path."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "init-change-saga-source-or-companion-repository-identity",
+              "criterion": "urn:change-saga:change-saga:story:source-or-companion:criterion:repository-identity",
+              "story_revision": "urn:change-saga:change-saga:story:source-or-companion:revision:r1",
+              "rationale": "init records the canonical source repository and names change.saga after it."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-d8aeb4ad13593d97bc631d32da596a0bd48c1ca17c551cae7add.json",
+        "source_digest": "sha256:d8aeb4ad13593d97bc631d32da596a0bd48c1ca17c551cae7add16ae59183f3a",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

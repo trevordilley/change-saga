@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-12",
   "slide": "health-gate",
-  "current": "sha256:e99ea603077b1bc0033aa5d59c5b856beb89ea69f747e1470b506454abac98b7",
+  "current": "sha256:89b81d249d0a65a24fb89ded8b6050bed6869f84cf2d61e5444789c6fba69264",
   "revisions": [
     {
       "snapshot": "sha256:e99ea603077b1bc0033aa5d59c5b856beb89ea69f747e1470b506454abac98b7",
@@ -84,6 +84,91 @@
         "source": "24-a-a9f657362854b7abedeccc0dc2cf4ecab0491a60c50bf6e72e5b.json",
         "source_digest": "sha256:a9f657362854b7abedeccc0dc2cf4ecab0491a60c50bf6e72e5bb77ac5c62301",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:89b81d249d0a65a24fb89ded8b6050bed6869f84cf2d61e5444789c6fba69264",
+      "parent_snapshots": [
+        "sha256:e99ea603077b1bc0033aa5d59c5b856beb89ea69f747e1470b506454abac98b7"
+      ],
+      "request_id": "rerender-renderer-2-8",
+      "created_at": "2026-09-28T04:17:14.149076Z",
+      "asset": "24-a-fe30996a41b122235a637dc128cfac9b19b0ec16926390330ccb.svg",
+      "asset_digest": "sha256:fe30996a41b122235a637dc128cfac9b19b0ec16926390330ccb1ab457f7446f",
+      "slide": {
+        "version": 4,
+        "id": "health-gate",
+        "deck": "pr-12",
+        "title": "CI now keeps change.saga healthy",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-fe30996a41b122235a637dc128cfac9b19b0ec16926390330ccb.svg",
+        "takeaway": "Beside the review gate, a health job fails CI when anything change.saga already documents goes stale or breaks.",
+        "reading_order": [
+          "review-job",
+          "health-job",
+          "policy"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "review-job",
+            "slide": "health-gate",
+            "rank": 0,
+            "kind": "node",
+            "label": "The review job is unchanged",
+            "description": "It still asks, for pull requests only, that the pull request's review deck explain every changed line; its comment no longer says the health gate is waiting.",
+            "selector": {
+              "type": "element",
+              "element_id": "review-job"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "health-job",
+            "slide": "health-gate",
+            "rank": 10,
+            "kind": "node",
+            "label": "A health job gates the Saga",
+            "description": "Builds change-saga from the commit under test (a pull request's own head, with full history) and runs check --covers health change.saga, which exits 3 when anything the Saga documents went stale or broke.",
+            "selector": {
+              "type": "element",
+              "element_id": "health-job"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "policy",
+            "slide": "health-gate",
+            "rank": 20,
+            "kind": "statement",
+            "label": "A policy for this repository's showcase Saga",
+            "description": "change.saga ships as the example Saga, so this repository requires its health on every pull request and push; teams choose their own rules, and the product requires none.",
+            "selector": {
+              "type": "element",
+              "element_id": "policy"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-a9f657362854b7abedeccc0dc2cf4ecab0491a60c50bf6e72e5b.json",
+        "source_digest": "sha256:a9f657362854b7abedeccc0dc2cf4ecab0491a60c50bf6e72e5bb77ac5c62301",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

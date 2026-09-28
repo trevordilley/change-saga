@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Every Lucide icon, one generated bundle</title>
+  <desc id="diagram-desc">All 1,856 Lucide icons ship as one generated icons.json at the same pinned revision; search now matches what an icon depicts.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-fetch" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-write" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-copy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-embed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-search" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</metadata>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Every Lucide icon, one generated bundle</tspan></text>
+  </g>
+  <g id="upstream" data-diagram-kind="node" transform="translate(40 125)" role="group" aria-label="Lucide">
+    <desc>Pinned at the same commit, 66d8f9fc, as the ten icons it replaces, so those ten render byte-identically.</desc>
+    <path d="M39.72 174.458A34.056 39.253 0 0 1 12.48 105.385A38.136 43.96 0 0 1 61.512 42.595A54.48 62.79 0 0 1 159.576 30.03A40.848 47.093 0 0 1 219.48 86.538A40.848 47.093 0 0 1 197.688 174.458Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <svg x="108" y="69.875" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-normal-ink,#172033)">
+      <path d="M12 13v8l-4-4"/>
+      <path d="m12 21 4-4"/>
+      <path d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"/>
+    </svg>
+    <text x="120" y="123.875" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="120" y="123.875">Lucide</tspan></text>
+    <text x="120" y="150.375" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="120" y="150.375">1,856 icons</tspan></text>
+  </g>
+  <g id="generator" data-diagram-kind="node" transform="translate(330 155)" role="group" aria-label="lucidebundle">
+    <desc>Refuses an icon whose &lt;svg&gt; root differs from the shared one, so storing the root once loses nothing.</desc>
+    <path d="M34.8 0L205.2 0L240 60L205.2 120L34.8 120L0 60Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <svg x="108" y="17.875" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-normal-ink,#172033)">
+      <path d="M11 10.27 7 3.34"/>
+      <path d="m11 13.73-4 6.93"/>
+      <path d="M12 22v-2"/>
+      <path d="M12 2v2"/>
+      <path d="M14 12h8"/>
+      <path d="m17 20.66-1-1.73"/>
+      <path d="m17 3.34-1 1.73"/>
+      <path d="M2 12h2"/>
+      <path d="m20.66 17-1.73-1"/>
+      <path d="m20.66 7-1.73 1"/>
+      <path d="m3.34 17 1.73-1"/>
+      <path d="m3.34 7 1.73 1"/>
+      <circle cx="12" cy="12" r="2"/>
+      <circle cx="12" cy="12" r="8"/>
+    </svg>
+    <text x="120" y="71.875" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="120" y="71.875">lucidebundle</tspan></text>
+    <text x="120" y="98.375" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="120" y="98.375">go run</tspan></text>
+  </g>
+  <g id="bundle" data-diagram-kind="node" transform="translate(620 140)" role="group" aria-label="icons.json">
+    <desc>588 KB: drawing markup, search tags, and deprecated aliases. The binary grows by 594 KB, about 2.4%. One file keeps review coverage to one path instead of 1,856.</desc>
+    <path d="M0 0H260V138C173.333 96.434 86.667 179.566 0 138Z" stroke-linejoin="round" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <svg x="118" y="20.875" width="24" height="24" color="#153869" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-primary-ink,#153869)">
+      <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
+      <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
+      <path d="M10 12a1 1 0 0 0-1 1v1a1 1 0 0 1-1 1 1 1 0 0 1 1 1v1a1 1 0 0 0 1 1"/>
+      <path d="M14 18a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1 1 1 0 0 1-1-1v-1a1 1 0 0 0-1-1"/>
+    </svg>
+    <text x="130" y="74.875" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="130" y="74.875">icons.json</tspan></text>
+    <text x="130" y="101.375" font-size="15" fill="#153869" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="130" y="101.375">one line per icon</tspan></text>
+  </g>
+  <g id="loader" data-diagram-kind="node" transform="translate(930 150)" role="group" aria-label="assets.go">
+    <rect width="300" height="130" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <svg x="18" y="18" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-normal-ink,#172033)">
+      <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/>
+      <path d="M12 22V12"/>
+      <polyline points="3.29 7 12 12 20.71 7"/>
+      <path d="m7.5 4.27 9 5.15"/>
+    </svg>
+    <text x="52" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="52" y="40">assets.go</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">Icon, IconExists, Icons</tspan></text>
+  </g>
+  <g id="license" data-diagram-kind="node" transform="translate(620 420)" role="group" aria-label="LICENSE">
+    <desc>Unchanged text. A rendered SVG that uses any icon still carries it in diagram-notices metadata.</desc>
+    <path d="M0 0H260V128.8C173.333 90.005 86.667 167.595 0 128.8Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <svg x="118" y="16.675" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-normal-ink,#172033)">
+      <path d="M12 3v18"/>
+      <path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/>
+      <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/>
+      <path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/>
+      <path d="M7 21h10"/>
+    </svg>
+    <text x="130" y="70.675" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="130" y="70.675">LICENSE</tspan></text>
+    <text x="130" y="97.175" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="130" y="97.175">ISC + Feather MIT</tspan></text>
+  </g>
+  <g id="query" data-diagram-kind="node" transform="translate(910 420)" role="group" aria-label="diagram icons">
+    <path d="M65 0L340 0L275 130L0 130Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="170" y="51.5" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="170" y="51.5">diagram icons</tspan></text>
+    <text x="170" y="78" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="170" y="78">--query storage finds</tspan><tspan x="170" y="96.75">database and hard-drive</tspan></text>
+  </g>
+  <g id="fetch" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="upstream to generator" data-from="upstream" data-to="generator">
+    <path d="M278 215 L330 215" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-fetch)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="write" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="generator to bundle" data-from="generator" data-to="bundle">
+    <path d="M570 215 L620 215" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-write)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="copy" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="copies" data-from="generator" data-to="license">
+    <path d="M450 275 L450 490 L620 490" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-copy)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="470" y="474" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="470" y="474">copies</tspan></text>
+  </g>
+  <g id="embed" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="bundle to loader" data-from="bundle" data-to="loader">
+    <path d="M880 215 L930 215" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-embed)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="search" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="tags" data-from="loader" data-to="query">
+    <path d="M1080 280 L1080 420" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-search)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="1092" y="352" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="1092" y="352">tags</tspan></text>
+  </g>
+</svg>

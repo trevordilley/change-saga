@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Edges end in terminators</title>
+  <desc id="diagram-desc">An edge now has a head and a tail from one vocabulary of arrows, UML ends, and ERD crow's feet, plus end labels, smooth curves, and dashed or dotted lines.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-canvas:#fafaf8;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-canvas:#0d1117;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-marker-has-ends-tail" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto-start-reverse" overflow="visible">
+      <path d="M4 0L4 10M7 0L7 10" fill="none" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-marker-has-ends-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <circle cx="2" cy="5" r="1.8" fill="#fafaf8" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round" style="fill:var(--diagram-canvas,#fafaf8);stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+      <path d="M4.5 5L10 0M4.5 5L10 10M4.5 5L10 5" fill="none" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-marker-has-labels-tail" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto-start-reverse" overflow="visible">
+      <path d="M4 0L4 10M7 0L7 10" fill="none" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-marker-has-labels-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <circle cx="2" cy="5" r="1.8" fill="#fafaf8" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round" style="fill:var(--diagram-canvas,#fafaf8);stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+      <path d="M4.5 5L10 0M4.5 5L10 10M4.5 5L10 5" fill="none" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-marker-has-line-tail" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto-start-reverse" overflow="visible">
+      <path d="M4 0L4 10M7 0L7 10" fill="none" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-marker-has-line-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <path d="M4 0L4 10M7 0L7 10" fill="none" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-draws" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="20" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#2563eb" style="fill:var(--diagram-primary-stroke,#2563eb)"/>
+    </marker>
+    <marker id="diagram-marker-prints-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <path d="M0 0L10 5L0 10" fill="none" stroke="#94a3b8" stroke-width="1.667" stroke-linejoin="round" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Edges end in terminators</tspan></text>
+  </g>
+  <g id="edge" data-diagram-kind="node" transform="translate(80 160)" role="group" aria-label="Edge">
+    <rect width="260" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Edge</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">head, tail, labels, line</tspan></text>
+  </g>
+  <g id="terminator" data-diagram-kind="node" transform="translate(520 160)" role="group" aria-label="Terminator">
+    <rect width="300" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Terminator</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">15 ends, drawn as markers</tspan></text>
+  </g>
+  <g id="line" data-diagram-kind="node" transform="translate(80 390)" role="group" aria-label="Line">
+    <rect width="260" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Line</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">straight, smooth, dashed</tspan></text>
+  </g>
+  <g id="endlabel" data-diagram-kind="node" transform="translate(520 390)" role="group" aria-label="End label">
+    <rect width="300" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">End label</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">cardinality text in a box</tspan></text>
+  </g>
+  <g id="renderer" data-diagram-kind="node" transform="translate(960 160)" role="group" aria-label="Renderer">
+    <rect width="260" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Renderer</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">defs and marker refs</tspan></text>
+  </g>
+  <g id="describe" data-diagram-kind="node" transform="translate(960 390)" role="group" aria-label="describe">
+    <rect width="260" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">describe</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">prints cardinality</tspan></text>
+  </g>
+  <g id="has-ends" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="ends in" data-from="edge" data-to="terminator">
+    <desc>An edge has at most two ends, a tail and a head; the crow's foot marks the many side.</desc>
+    <path d="M340 210 L520 210" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-start="url(#diagram-marker-has-ends-tail)" marker-end="url(#diagram-marker-has-ends-head)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="365" y="234" font-size="18" fill="#526174" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="365" y="234">1</tspan></text>
+    <text x="488" y="234" font-size="18" fill="#526174" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="488" y="234">0..2</tspan></text>
+    <text x="385" y="190" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="385" y="190">ends in</tspan></text>
+  </g>
+  <g id="has-labels" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="edge to endlabel" data-from="edge" data-to="endlabel">
+    <path d="M300 260 C315 283.333 353.333 370 390 400 C426.667 430 498.333 433.333 520 440" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-start="url(#diagram-marker-has-labels-tail)" marker-end="url(#diagram-marker-has-labels-head)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="has-line" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="edge to line" data-from="edge" data-to="line">
+    <path d="M180 260 L180 390" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-start="url(#diagram-marker-has-line-tail)" marker-end="url(#diagram-marker-has-line-head)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="draws" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="draws" data-from="renderer" data-to="terminator">
+    <desc>Each end gets its own diagram-marker-&lt;edge&gt;-head or -tail definition. A legacy arrow head keeps diagram-head-&lt;edge&gt;, so older diagrams render byte-identically.</desc>
+    <path d="M960 210 L820 210" fill="none" stroke="#2563eb" stroke-width="4" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#diagram-head-draws)" style="stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="856" y="186" font-size="18" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="856" y="186">draws</tspan></text>
+  </g>
+  <g id="prints" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="prints" data-from="describe" data-to="endlabel">
+    <path d="M960 440 L820 440" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" stroke-dasharray="0.1 5" stroke-linecap="round" marker-end="url(#diagram-marker-prints-head)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="852" y="418" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="852" y="418">prints</tspan></text>
+  </g>
+</svg>

@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-19",
   "slide": "unfold",
-  "current": "sha256:6d8173202bd49964970b9e97cd0a0213ad4d3f2ef4edf1f34a6042cce5ff77df",
+  "current": "sha256:f3684f97209408f85eff9f15d6d73930b2af2a0470e7ee88d545448965b80f25",
   "revisions": [
     {
       "snapshot": "sha256:6d8173202bd49964970b9e97cd0a0213ad4d3f2ef4edf1f34a6042cce5ff77df",
@@ -160,6 +160,167 @@
         "source": "24-a-5b8d59b20dc3335893726d133e26fa1baee925807c66384f93f3.json",
         "source_digest": "sha256:5b8d59b20dc3335893726d133e26fa1baee925807c66384f93f39e9731c6b173",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:f3684f97209408f85eff9f15d6d73930b2af2a0470e7ee88d545448965b80f25",
+      "parent_snapshots": [
+        "sha256:6d8173202bd49964970b9e97cd0a0213ad4d3f2ef4edf1f34a6042cce5ff77df"
+      ],
+      "request_id": "rerender-renderer-2-22",
+      "created_at": "2026-09-28T04:17:21.870591Z",
+      "asset": "24-a-d0c7ccd32fc6436f7fea3f0544744ef7d8e0eeb17e729e06d695.svg",
+      "asset_digest": "sha256:d0c7ccd32fc6436f7fea3f0544744ef7d8e0eeb17e729e06d695d9d6b47a1d40",
+      "slide": {
+        "version": 4,
+        "id": "unfold",
+        "deck": "pr-19",
+        "title": "A diagram unfolds only when a reader opens its slide",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-d0c7ccd32fc6436f7fea3f0544744ef7d8e0eeb17e729e06d695.svg",
+        "takeaway": "One opt-in document field fades a diagram in by step; without the reveal fragment, every other surface sees the finished drawing.",
+        "reading_order": [
+          "source",
+          "plan",
+          "svg",
+          "viewer",
+          "anchors",
+          "finished",
+          "visual-qa"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "source",
+            "slide": "unfold",
+            "rank": 10,
+            "kind": "node",
+            "label": "Reveal source fields",
+            "description": "Document reveal and element step: named validation errors, the canvas operation, the schema, SPEC, and the skill's diagrams reference.",
+            "selector": {
+              "type": "element",
+              "element_id": "source"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "plan",
+            "slide": "unfold",
+            "rank": 20,
+            "kind": "node",
+            "label": "Reveal plan and describe",
+            "description": "planReveal resolves each element's ranked step; describe prints the reveal and step=N per element.",
+            "selector": {
+              "type": "element",
+              "element_id": "plan"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "svg",
+            "slide": "unfold",
+            "rank": 30,
+            "kind": "node",
+            "label": "Keyframes in the SVG",
+            "description": "The renderer adds a stylesheet, two anchors, and step attributes only when the reveal is set.",
+            "selector": {
+              "type": "element",
+              "element_id": "svg"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "viewer",
+            "slide": "unfold",
+            "rank": 40,
+            "kind": "node",
+            "label": "Replay on activation",
+            "description": "activateDeckSlide retargets the new slide's SVG frames through setFrameHash, which activateLandmark now shares.",
+            "selector": {
+              "type": "element",
+              "element_id": "viewer"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "anchors",
+            "slide": "unfold",
+            "rank": 50,
+            "kind": "callout",
+            "label": "Two anchors, not one",
+            "description": "Why the SVG carries a second reveal anchor.",
+            "selector": {
+              "type": "element",
+              "element_id": "viewer"
+            },
+            "about": "viewer",
+            "body": "Re-targeting the fragment a frame already shows does not restart a CSS animation, so one anchor could not replay. The viewer alternates #diagram-reveal and #diagram-reveal-replay, each with its own keyframes."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "finished",
+            "slide": "unfold",
+            "rank": 60,
+            "kind": "node",
+            "label": "Finished everywhere else",
+            "description": "Without a reveal fragment, or under reduced motion, the drawing is complete.",
+            "selector": {
+              "type": "element",
+              "element_id": "finished"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "visual-qa",
+            "slide": "unfold",
+            "rank": 70,
+            "kind": "callout",
+            "label": "Visual QA uses reduced motion",
+            "description": "Why the visual QA runner changed.",
+            "selector": {
+              "type": "element",
+              "element_id": "finished"
+            },
+            "about": "finished",
+            "body": "Showing a slide now replays its reveal, so visual QA's reviewer screenshot could land mid-fade. The runner opens that page with reduced motion and captures the finished drawing."
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-5b8d59b20dc3335893726d133e26fa1baee925807c66384f93f3.json",
+        "source_digest": "sha256:5b8d59b20dc3335893726d133e26fa1baee925807c66384f93f39e9731c6b173",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]
