@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/edit.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:818302abe53772e62c141c148ca9cbb4742488932e35619b5654b7f38d807a21",
+      "note": "The cascade condition this extends."
+    }
+  ]
+}

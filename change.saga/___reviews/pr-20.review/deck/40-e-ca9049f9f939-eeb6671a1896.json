@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/model.go",
+      "start": 437,
+      "end": 437,
+      "digest": "sha256:703b54e39f14e734c61e7e8b9e78490d5b754b95c28d210c95bd4438a1790977",
+      "note": "Contract publishes the fields, rules, shapes, sides, and palette."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/model.go",
+      "start": 451,
+      "end": 453,
+      "digest": "sha256:1c3a7f6222bd6295a5f536b252aa5033f33b7b624da28d1663842827fb0ae601",
+      "note": "Contract publishes the fields, rules, shapes, sides, and palette."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/model.go",
+      "start": 455,
+      "end": 458,
+      "digest": "sha256:761dab8c532e59c7330889d5f9bdfa56aa302e1bfd15bd8131f0793b6cd3154a",
+      "note": "Contract publishes the fields, rules, shapes, sides, and palette."
+    }
+  ]
+}

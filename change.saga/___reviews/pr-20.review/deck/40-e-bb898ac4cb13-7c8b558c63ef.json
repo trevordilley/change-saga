@@ -1,0 +1,125 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/describe.go",
+      "start": 11,
+      "end": 21,
+      "digest": "sha256:f26d4a037245ac3d0b8f5a883b332807e60e1dc736eea9649435c68251e5bf3f",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/describe.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:3f27c97bf722d19f349b0168312cf74ea1dd5877528096792e3391a6e516659f",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/describe.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:4734138ca779541e851a29439b9af855ae69d52bfa364b47542fc736f871af22",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/describe.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:87d726030ce76ab5241c42833424be1de84dd81f68c639c866ccd2c006ae5af7",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/describe.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:c0904dafe1387873dd9f88b1ce6ae73f756d5ddb9da5621f0d6b1e7f6df8d574",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/describe.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:09bfbdfd73fbe490c9a10ef66c6f86c076d5a869989368659b2413136d0f3780",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/describe.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:48c7972f16dbd0b82e7b763f2bfaefd9a1508400f4613e6b0f15ba1c3e750bab",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/describe.go",
+      "start": 11,
+      "end": 23,
+      "digest": "sha256:0254087e2bb0c5588363eb0f0335ea4b26e48a7dd6383f1fbb6c3ec0b6bc92f2",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/describe.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:39e2d191c4abee5023abd4383022776f3ee7005009b22bbf521f86780419d62e",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/describe.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:47aaed78f8465875026ef28151614f8bb1a65635e34b4f5c7639ed942e90cdd3",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/describe.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:498279f607845e12cea8d2eb34ec10a4fb50fe100c702d1545e644e6ad852898",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/describe.go",
+      "start": 71,
+      "end": 73,
+      "digest": "sha256:363d39c2dd533e8ed063e620cb29a22390a2b692f993407c6894e8e1571b4889",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/describe.go",
+      "start": 75,
+      "end": 82,
+      "digest": "sha256:fcdd3686afa5590fd08d17e767d5e9168f15382460fa193e694f6f52ea654ca9",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/describe.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:d507361903d08eeb8c1697708e678157b9dcc0a6b83023301e94d3704f0c138a",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/describe.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:ee73d9b2fbfbb248da0829900cab70a24cc54b61fae59fa6e01bec59056d8864",
+      "note": "Summary gains about and members; Sections and Notes headings."
+    }
+  ]
+}

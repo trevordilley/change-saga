@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/annotation.go",
+      "start": 199,
+      "end": 240,
+      "digest": "sha256:2beea9d7b8a79bbf7c03dd052f93e07deb59e73fb048b84da1fbf757b1263b61",
+      "note": "Pointer tip from target or the about element's box, and the bubble outline with its pointer."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/annotation.go",
+      "start": 274,
+      "end": 285,
+      "digest": "sha256:580c291bdb91d1f6ebf7e53d7764fa351802b3bfa98b58c5042a0f1527316245",
+      "note": "Pointer tip from target or the about element's box, and the bubble outline with its pointer."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/annotation.go",
+      "start": 348,
+      "end": 405,
+      "digest": "sha256:b28d1d9f404eb232527d5f121cca5f6b90b0b7cc248fab0d593a2dfa4ab7a3c7",
+      "note": "Pointer tip from target or the about element's box, and the bubble outline with its pointer."
+    }
+  ]
+}

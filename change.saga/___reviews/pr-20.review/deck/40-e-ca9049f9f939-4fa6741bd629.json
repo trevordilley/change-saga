@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:ff484dfaa56d4d38882049ae0c860309580ce9548b06aa340cb5b8337d4c61c9",
+      "note": "The skill teaches board elements with a tested example."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 72,
+      "end": 73,
+      "digest": "sha256:f518294b63aab8984509e3b71ab88e12f414778a8e651cd89f3587aef4f5b41d",
+      "note": "The skill teaches board elements with a tested example."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 94,
+      "end": 115,
+      "digest": "sha256:8cc0e668acd8b3454800c514db7d3bca5b752561433b2539ff2bfb01fc589023",
+      "note": "The skill teaches board elements with a tested example."
+    }
+  ]
+}

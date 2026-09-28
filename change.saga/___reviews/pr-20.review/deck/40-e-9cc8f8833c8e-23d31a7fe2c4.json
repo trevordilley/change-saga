@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "digest": "sha256:f59e6776c7abf24be77a88648e20c9094b3971bfde71625a03debfef1386a731",
+      "note": "The board golden rendering."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 1,
+      "end": 71,
+      "digest": "sha256:f59e6776c7abf24be77a88648e20c9094b3971bfde71625a03debfef1386a731",
+      "note": "The board golden rendering."
+    }
+  ]
+}
