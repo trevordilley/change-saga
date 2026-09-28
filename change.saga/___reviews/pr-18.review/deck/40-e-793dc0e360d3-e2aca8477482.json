@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
       "path": "skills/change-saga/references/diagrams.md",
       "start": 82,
-      "end": 100,
-      "digest": "sha256:fb780ada66753a0617791ee5bd24a30d786ccbc59afdf0cbf7448a53c2d67910",
+      "end": 102,
+      "digest": "sha256:edc8e9ce91ca1a5aa89bafd279d06d1b39cced285d22fd7c75e11888fb11817c",
       "note": "The skill's ERD example with a field-level edge."
     }
   ]

@@ -2,9 +2,9 @@
   "version": 2,
   "references": [
     {
-      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
       "path": "internal/diagram/entity_test.go",
-      "digest": "sha256:02d9716ff035760a762c039a527aea0b2e94e7cead03352f6e614172de6c833e",
+      "digest": "sha256:61e8e03294edaf97b123c2aca822ee876538e2502c1eef23bec9c4a15a5de936",
       "note": "Every entity problem in one batch, and the schema's field rules."
     },
     {

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ebc3689fcc9a91b2fc68b1b10707d9f40908c27d",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:28a9a4b488ce5135ecd7afffade6b0a317495174c3b8cfbbe3eed38931188521",
+      "note": "The last property before fields was appended."
+    }
+  ]
+}

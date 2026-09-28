@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/entity_test.go",
+      "start": 67,
+      "end": 84,
+      "digest": "sha256:88ddea8a239432f393e8f3a6f89990a669136f8462f53bc431ea3dcc9a8b4329",
+      "note": "A field edge keeps its field ends and draws crow's feet from #17; describe reads both."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ebc3689fcc9a91b2fc68b1b10707d9f40908c27d",
+      "path": "internal/diagram/model.go",
+      "start": 435,
+      "end": 435,
+      "digest": "sha256:54e9a40c897cf67dc791c6988f34f89ecde8488cc8c7f92afdcc6e6d06bd4069",
+      "note": "The field list before."
+    }
+  ]
+}

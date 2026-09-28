@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
       "path": "SPEC.md",
-      "start": 530,
-      "end": 536,
+      "start": 542,
+      "end": 548,
       "digest": "sha256:4ce211c20456483fe329e70d63258496fe3230f9da35de467d2e4559a3742e96",
       "note": "The spec describes entities, field ends, and describe's reading."
     }

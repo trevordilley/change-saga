@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
       "path": "internal/diagram/model.go",
-      "start": 450,
-      "end": 450,
+      "start": 458,
+      "end": 458,
       "digest": "sha256:613dd38d18ad5329739600e7a3eec74a95ed8c9b5487dda8176b1117fc14343b",
       "note": "Contract rule: describe omits geometric shapes."
     }

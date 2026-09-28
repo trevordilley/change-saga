@@ -2,10 +2,10 @@
   "version": 2,
   "references": [
     {
-      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
       "path": "schema/v5/diagram.schema.json",
-      "start": 79,
-      "end": 80,
+      "start": 87,
+      "end": 88,
       "digest": "sha256:298540c85bde40d6ac8d70c0f6e6a61274d603647cbd058053a062d689ca286a",
       "note": "The element gains from_field and to_field."
     }

@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/describe.go",
+      "start": 28,
+      "end": 30,
+      "digest": "sha256:4a1ccc5f13af26b629ec623e48a14f4098e710415e110b15706f80d93589ea31",
+      "note": "Summary carries fields and field ends beside the connector fields; text prints them and omits geometric shapes."
+    },
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/describe.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:0d749a20de2bccf0384c06900e99c6b9256cd238b552c1f6ec35589c031ca489",
+      "note": "Summary carries fields and field ends beside the connector fields; text prints them and omits geometric shapes."
+    },
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/describe.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:bf5e24763c9b2707697fb466675883bb46b3bb18f55cc987317f152ffe412690",
+      "note": "Summary carries fields and field ends beside the connector fields; text prints them and omits geometric shapes."
+    },
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/describe.go",
+      "start": 102,
+      "end": 104,
+      "digest": "sha256:f3dfff8dd193d76eff2cfca592cb0b1a906f7b68bfbc502af1d93502702dd0f4",
+      "note": "Summary carries fields and field ends beside the connector fields; text prints them and omits geometric shapes."
+    },
+    {
+      "commit": "ebc3689fcc9a91b2fc68b1b10707d9f40908c27d",
+      "path": "internal/diagram/describe.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:d4303cd6b4d4f55a61bacc8e8eeba08a86192965a8f91f97bcba0a66fa14b164",
+      "note": "Summary carries fields and field ends beside the connector fields; text prints them and omits geometric shapes."
+    },
+    {
+      "commit": "ebc3689fcc9a91b2fc68b1b10707d9f40908c27d",
+      "path": "internal/diagram/describe.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:0b6174276b2eba2cb9080e5fcf57b0401ed65d6f349a8180b0bef596c3953770",
+      "note": "Summary carries fields and field ends beside the connector fields; text prints them and omits geometric shapes."
+    }
+  ]
+}

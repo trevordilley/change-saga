@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/model.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:dfb2763247f2bf9fac65a7aecc002b8d9528fa991add699e05cae59267b45ad8",
+      "note": "Element gains fields, appended after the connector fields."
+    }
+  ]
+}

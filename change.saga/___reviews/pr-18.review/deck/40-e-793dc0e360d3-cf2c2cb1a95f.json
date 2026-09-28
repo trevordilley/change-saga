@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/model.go",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:d737b131d10e7758f2d0c391769bcdc993af6aa1b2297aa4717e8ff74b006c58",
+      "note": "The contract's field list gains fields, from_field, to_field after the connector fields."
+    }
+  ]
+}
