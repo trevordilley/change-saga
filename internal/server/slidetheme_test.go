@@ -25,7 +25,7 @@ func TestSlideVisualServesTheSchemeItsURLNames(t *testing.T) {
 		return recorder
 	}
 	plain := get("/reviews/pr-7/visual/queue")
-	if follow := plain.Body.String(); !strings.Contains(follow, "<style data-change-saga-scheme>:root{--bg:#ffffff;") || !strings.Contains(follow, "@media (prefers-color-scheme:dark){:root{--bg:#0d1117;") {
+	if follow := plain.Body.String(); !strings.Contains(follow, `<style data-change-saga-scheme="">:root{--bg:#ffffff;`) || !strings.Contains(follow, "@media (prefers-color-scheme:dark){:root{--bg:#0d1117;") {
 		t.Fatalf("a visual without a scheme does not declare the tokens for both schemes: %s", follow)
 	}
 	if plain.Header().Get("ETag") == "" {
@@ -36,7 +36,7 @@ func TestSlideVisualServesTheSchemeItsURLNames(t *testing.T) {
 	}
 	dark := get("/reviews/pr-7/visual/queue?saga_scheme=dark")
 	body := dark.Body.String()
-	style, rest, found := strings.Cut(body, "<style data-change-saga-scheme>:root{color-scheme:dark;")
+	style, rest, found := strings.Cut(body, `<style data-change-saga-scheme="">:root{color-scheme:dark;`)
 	if dark.Code != http.StatusOK || !found || !strings.HasPrefix(strings.TrimSpace(rest[strings.Index(rest, "</style>")+len("</style>"):]), "</svg>") {
 		t.Fatalf("dark visual: status=%d body=%s", dark.Code, body)
 	}
@@ -62,9 +62,9 @@ func TestSlideVisualServesTheSchemeItsURLNames(t *testing.T) {
 func TestInjectSlideStyleComesLast(t *testing.T) {
 	t.Parallel()
 	for _, test := range []struct{ contentType, in, want string }{
-		{"image/svg+xml", `<svg><g><svg></svg></g></svg>`, `<svg><g><svg></svg></g><style data-change-saga-scheme>X</style></svg>`},
-		{"text/html; charset=utf-8", `<html><HEAD><style>a{}</style></HEAD><body></body></html>`, `<html><HEAD><style>a{}</style><style data-change-saga-scheme>X</style></HEAD><body></body></html>`},
-		{"text/html", `<p>bare</p>`, `<p>bare</p><style data-change-saga-scheme>X</style>`},
+		{"image/svg+xml", `<svg><g><svg></svg></g></svg>`, `<svg><g><svg></svg></g><style data-change-saga-scheme="">X</style></svg>`},
+		{"text/html; charset=utf-8", `<html><HEAD><style>a{}</style></HEAD><body></body></html>`, `<html><HEAD><style>a{}</style><style data-change-saga-scheme="">X</style></HEAD><body></body></html>`},
+		{"text/html", `<p>bare</p>`, `<p>bare</p><style data-change-saga-scheme="">X</style>`},
 		{"image/png", `binary`, `binary`},
 	} {
 		if got := string(injectSlideStyle([]byte(test.in), test.contentType, "X")); got != test.want {

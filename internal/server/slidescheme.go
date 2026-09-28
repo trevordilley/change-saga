@@ -50,8 +50,9 @@ func slideVisualStyle(scheme string) string {
 
 // injectSlideStyle inserts style as the last thing an SVG or HTML document
 // styles: before its final </svg>, else before </head>, else at the end.
+// The element must also be well-formed XML, so its attribute has a value.
 func injectSlideStyle(data []byte, contentType, style string) []byte {
-	element := []byte(`<style data-change-saga-scheme>` + style + `</style>`)
+	element := []byte(`<style data-change-saga-scheme="">` + style + `</style>`)
 	lower := bytes.ToLower(data)
 	at := len(data)
 	switch {

@@ -16,7 +16,8 @@ const slideThemeStyles = `
 // otherwise follow; see slideScheme. It runs from the head, so frames the
 // parser inserts are pointed at the right scheme before they load, and it
 // follows the theme toggle, the OS preference, and swapped-in content.
-const slideSchemeBoot = `
+// It follows themeBoot in theme.js, so it opens with a semicolon.
+const slideSchemeBoot = `;
 (()=>{const r=document.documentElement,os=matchMedia('(prefers-color-scheme:dark)'),param='` + slideSchemeParam + `';
 const wanted=()=>{const t=r.dataset.theme;return t&&t!==(os.matches?'dark':'light')?t:''};
 const point=(value,scheme)=>{const url=new URL(value,location.href);if((url.searchParams.get(param)||'')===scheme)return value;
