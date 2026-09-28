@@ -137,6 +137,7 @@ const appJavaScript = `(() => {
       const anchor = q('.fragment', active)?.id;
       if (anchor) history.replaceState(history.state, '', location.pathname + location.search + '#' + encodeURIComponent(anchor));
     }
+    replayDiagramReveal(active);
     loadSlideFrames(active);
     const fragment = q('.fragment', active);
     const targetCodeButton = q(':scope > .fragment-head [data-target-code-href]', fragment);
@@ -360,6 +361,43 @@ const appJavaScript = `(() => {
     pumpFrames();
   }
 
+  // SVG slides created by the CLI have a .svg entrypoint. The aspect query is
+  // also present for viewBox-based SVGs, including renamed assets and review
+  // visuals.
+  function svgFrame(frame) {
+    const source = new URL(frameSource(frame), location.href);
+    return source.pathname.toLowerCase().endsWith('.svg') || source.searchParams.has('saga_aspect');
+  }
+
+  // setFrameHash points a slide frame at a fragment of its document. The
+  // frames are sandboxed on an opaque origin, so the fragment is the only
+  // thing this page can change in them.
+  function setFrameHash(frame, hash) {
+    const base = frame.dataset.landmarkBase || frameSource(frame).split('#')[0];
+    frame.dataset.landmarkBase = base;
+    const url = new URL(base, location.href);
+    url.hash = hash;
+    if (frame.dataset.frameSrc) { frame.dataset.frameSrc = url.toString(); loadFrame(frame); }
+    else if (frame.src !== url.toString()) frame.src = url.toString();
+  }
+
+  // A generated diagram with a reveal fades in while its frame targets a
+  // reveal anchor, and shows its finished drawing otherwise. Each time a
+  // different slide is shown its diagrams replay: targeting the anchor a
+  // frame already shows would not restart the animation, so the two anchors
+  // alternate. An element landmark activated afterwards retargets the frame,
+  // which shows the finished drawing with that element.
+  const revealAnchors = ['diagram-reveal', 'diagram-reveal-replay'];
+  let revealedSlide = null;
+  function replayDiagramReveal(slide) {
+    if (slide === revealedSlide) return;
+    revealedSlide = slide;
+    qa('[data-fragment-frame]', slide).filter(svgFrame).forEach(frame => {
+      const current = new URL(frameSource(frame), location.href).hash.slice(1);
+      setFrameHash(frame, revealAnchors[current === revealAnchors[0] ? 1 : 0]);
+    });
+  }
+
   // whenFrameLoaded runs once the frame's document has arrived, so a second
   // read of the same file comes from the browser's cache.
   function whenFrameLoaded(frame, run) {
@@ -382,10 +420,8 @@ const appJavaScript = `(() => {
     if (!frame || (targets.length === 0 && noteTargets.length === 0)) return;
     await new Promise(resolve => whenFrameLoaded(frame, resolve));
     if (!fragment.isConnected) return;
+    if (!svgFrame(frame)) return;
     const sourceURL = new URL(frameSource(frame), location.href);
-    // SVG fragments created by the CLI have a .svg entrypoint. The aspect
-    // query is also present for viewBox-based SVGs, including renamed assets.
-    if (!sourceURL.pathname.toLowerCase().endsWith('.svg') && !sourceURL.searchParams.has('saga_aspect')) return;
     sourceURL.hash = '';
     const response = await fetch(sourceURL, {credentials:'same-origin'});
     if (!response.ok) return;
@@ -807,12 +843,7 @@ const appJavaScript = `(() => {
     if (target.dataset.landmarkType === 'element') {
       const frame = q('[data-fragment-frame]', fragment);
       if (!frame || !target.dataset.elementId) return;
-      const base = frame.dataset.landmarkBase || frameSource(frame).split('#')[0];
-      frame.dataset.landmarkBase = base;
-      const url = new URL(base, location.href);
-      url.hash = target.dataset.elementId;
-      if (frame.dataset.frameSrc) { frame.dataset.frameSrc = url.toString(); loadFrame(frame); }
-      else if (frame.src !== url.toString()) frame.src = url.toString();
+      setFrameHash(frame, target.dataset.elementId);
     }
     document.getElementById(id)?.scrollIntoView({block:'center'});
   }
