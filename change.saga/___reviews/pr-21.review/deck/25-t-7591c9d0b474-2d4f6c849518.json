@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "deck": "pr-21",
+  "slide": "timing",
+  "current": "sha256:c268e907089075eea5b3d9ff81b8e85d90016024c1e8181b572cbfcfc11271b3",
+  "revisions": [
+    {
+      "snapshot": "sha256:c268e907089075eea5b3d9ff81b8e85d90016024c1e8181b572cbfcfc11271b3",
+      "request_id": "pr-21-timing",
+      "created_at": "2026-09-28T01:34:31.579702Z",
+      "asset": "24-a-37dad1918c7fb544e84321d00f78540afe8e9e025042ee294ac7.svg",
+      "asset_digest": "sha256:37dad1918c7fb544e84321d00f78540afe8e9e025042ee294ac7b12e0db11e5c",
+      "slide": {
+        "version": 4,
+        "id": "timing",
+        "deck": "pr-21",
+        "title": "Saga work waits for the PR",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-37dad1918c7fb544e84321d00f78540afe8e9e025042ee294ac7.svg",
+        "takeaway": "Coding sessions stay about the code; the review deck, coverage, reconcile, and repins all happen together when the PR is created or updated, or when the user asks directly.",
+        "reading_order": [
+          "pr-moment",
+          "saga-work",
+          "cli-guidance",
+          "deck-lags"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "pr-moment",
+            "slide": "timing",
+            "rank": 10,
+            "kind": "node",
+            "label": "Create or update the PR",
+            "description": "The skill's new \"When to do Saga work\" section, echoed in the README and changelog: Saga work belongs to the moment a pull request is created or updated.",
+            "selector": {
+              "type": "element",
+              "element_id": "pr"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "saga-work",
+            "slide": "timing",
+            "rank": 20,
+            "kind": "node",
+            "label": "Saga work, all together",
+            "description": "The fast path's refresh step, the common workflow's reconcile step, and the integration closeout now name the PR update as their moment, not every commit or session.",
+            "selector": {
+              "type": "element",
+              "element_id": "saga"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "cli-guidance",
+            "slide": "timing",
+            "rank": 30,
+            "kind": "node",
+            "label": "help and init say the same",
+            "description": "The help overview's review steps and init's next steps add one sentence each: do this when the PR is created or updated.",
+            "selector": {
+              "type": "element",
+              "element_id": "cli"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "deck-lags",
+            "slide": "timing",
+            "rank": 40,
+            "kind": "callout",
+            "label": "The deck may lag the branch",
+            "description": "Why a deck behind its branch is expected, not a defect.",
+            "selector": {
+              "type": "element",
+              "element_id": "pr"
+            },
+            "about": "pr-moment",
+            "body": "You might expect the Saga to track every commit. It now lags the branch between PR updates and catches up all at once, so a mid-branch deck is incomplete by design, which saves each session the upkeep."
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-685081069b3b4e28f7e98f2d1f1370456baec043f0c948c6dbfc.json",
+        "source_digest": "sha256:685081069b3b4e28f7e98f2d1f1370456baec043f0c948c6dbfca5e34b604bc9",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

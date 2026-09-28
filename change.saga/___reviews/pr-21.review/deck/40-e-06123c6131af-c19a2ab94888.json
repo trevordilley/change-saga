@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "eefc1d782c4d14066a2fff5d55656de4a4d4b1e8",
+      "path": "skills/change-saga/references/integration.md",
+      "start": 164,
+      "end": 167,
+      "digest": "sha256:92aff5e1aaa474979318f8f7c10fe469097ca3420b3eaf55895ee33b56b4cbd4"
+    }
+  ]
+}
