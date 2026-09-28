@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/visualqa/visualqa_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:b7f58422a756bfc798e56c88f9557f6182b6eff928f8af0b7f4281c870b662d6"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/visualqa/visualqa_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:ae43acb0ba2f7739635fb212638f3cd3ad844ea0983623e5131e919d0086f414"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/visualqa/visualqa_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:1530162ee71f0b63a989f246c5cfa7359153cf44552e10b43c0d89d8481db562"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/visualqa/visualqa_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:4109036d599d349666b37272d0f1ad429c7273b3d236c832ec007f527e4586b6"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/model.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:98e0040da7b66a9185e1dc7928dccc216a9787bad00bf5634eba633f3d1bd02f"
+    }
+  ]
+}

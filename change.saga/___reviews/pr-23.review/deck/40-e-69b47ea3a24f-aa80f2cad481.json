@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "CHANGELOG.md",
+      "start": 3,
+      "end": 15,
+      "digest": "sha256:6008fcec4ca53e0ca4dccd4af0c8c44905c1f0e52275ab72afdcadda857ce3d5"
+    }
+  ]
+}

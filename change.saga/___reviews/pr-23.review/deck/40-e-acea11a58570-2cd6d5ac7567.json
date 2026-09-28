@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "e2e/tests/slides-on-tokens.spec.ts",
+      "digest": "sha256:8a8075467d08ca4b0aaa317644d3dd52edaee13571d406eb6d242f5d830fcbd5"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "e2e/tests/slides-on-tokens.spec.ts",
+      "start": 1,
+      "end": 95,
+      "digest": "sha256:8a8075467d08ca4b0aaa317644d3dd52edaee13571d406eb6d242f5d830fcbd5"
+    }
+  ]
+}

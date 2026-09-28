@@ -1,0 +1,110 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/annotation.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:deec074e2e34a2c5e8d5a0332feceea6fb00b1738a961ef0ec1e08434174cda0"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/annotation.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:026ab539ac11e32d4ebbc7a49d98dd923d5110654f6854c5b0935c01fe985fce"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/annotation.go",
+      "start": 32,
+      "end": 38,
+      "digest": "sha256:c3959b3168c7a531e46586cc83d0a66f30b0e29bb3948979be07ace06d392ef4"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/annotation.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:0573f84f0b85b7b8bfade220ba997118bfd3b2355e1af4b7a6f6a6d07579925b"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/annotation.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:675cca018d5d0da85ccbb7919942bd36edb6b2c694ed45d223b841309a0c7393"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/annotation.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:4688ba87cb36c0e365ddda20aec3094227f1aa0d598bafb9ccea584353c531ae"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/annotation.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:dc9e4d47f3aa6599d4a12db2c467c5f3e663c73393641e158e426890a1bf2962"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/annotation.go",
+      "start": 23,
+      "end": 24,
+      "digest": "sha256:e0b5cb4dd604eba8923c0ad17c3baa7d973f8f3eda6bcbf216be9bb16bfd00a0"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/annotation.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:fe97874cc25c9bce058a36462d10f8227c56c9736f441e9a0cd274b3292a9ab7"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/annotation.go",
+      "start": 33,
+      "end": 39,
+      "digest": "sha256:2367c431d1269fd134f99c069fb14108ca40fc4dbaccfb8e239f354b6a464c25"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/annotation.go",
+      "start": 42,
+      "end": 44,
+      "digest": "sha256:16e1e4d0cb4c8652360793ea44f0c7e36a1cd549b061efef6da05e028c662301"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/annotation.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:3bfae64ee50dac2b4f5a9316bbfbb07d6d43a5b90cf73235a8f2d69c4ddfb36d"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/annotation.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:53f89b56c7d966e6f8a3d5444714b5322672f1ce43b84baa11adf74e3fc2fec8"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/annotation.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:fc00f77e3d747588a9d94e06cc25d1b426c63b751381fd053839cb8cbc4a0329"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/annotation.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:fe1e0e31de5c9bbbbec7e454ef033a62bd78e0f5bffc1bb01a2f8c5cb6424522"
+    }
+  ]
+}

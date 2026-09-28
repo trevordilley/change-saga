@@ -1,0 +1,54 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 29,
+      "end": 32,
+      "digest": "sha256:ff08c7eb187ef34cf69300758eda3cfc0b387ab1de52890e8566a21dfed5750c"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:72d59ce9dda1954665300ba950bf39d5e50cf8a0e9565c49e3b90eb45dfdf6a4"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:15b9acecdf45c226c2883ba3e0e071a9fcbc2bc8752ac057d3ae55b59b43560c"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:7f54c4b9ee2532ee69bfa2409439f736fc2bee42e1a7b016a514e49bac03a08a"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:7f54c4b9ee2532ee69bfa2409439f736fc2bee42e1a7b016a514e49bac03a08a"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:cbfc663211dfff858e0fede234083d6e5dfebbc6fd7a587a7f02389af9313636"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/visualqa/visualqa.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:8d880dc745321ed532c767b1fc55bbfb85105a05f71258cf8a047c6c5d2acc15"
+    }
+  ]
+}

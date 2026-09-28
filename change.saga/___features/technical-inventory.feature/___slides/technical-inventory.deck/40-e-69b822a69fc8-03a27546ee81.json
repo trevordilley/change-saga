@@ -10,11 +10,11 @@
       "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
     },
     {
-      "commit": "9d619fb21336136521ebfd2f2ae56484a3783033",
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
       "path": "internal/server/template.go",
       "start": 406,
       "end": 406,
-      "digest": "sha256:d7513b150cc6a450521e4b4f55176f513562acc9f88703c5617022b92d6fc61b",
+      "digest": "sha256:b992d61b2f161ba918a55ac4619eb37fefd592785632b12100404dfc0624059b",
       "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
     }
   ]
