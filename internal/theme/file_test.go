@@ -53,7 +53,7 @@ func TestParseAcceptsEveryKindAndReserializes(t *testing.T) {
 func TestParseRefusesWithTheLine(t *testing.T) {
 	for _, tc := range []struct {
 		name, src, want string
-		line          int
+		line            int
 	}{
 		{"url", ":root {\n  --bg: url(https://example.com/x.png);\n}", "url() is not allowed", 2},
 		{"import", "@import 'x.css';\n:root { --bg: #fff; }", "@-rules", 1},

@@ -42,7 +42,9 @@ type Problem struct {
 	Message string `json:"message"`
 }
 
-func (problem Problem) String() string { return fmt.Sprintf("line %d: %s", problem.Line, problem.Message) }
+func (problem Problem) String() string {
+	return fmt.Sprintf("line %d: %s", problem.Line, problem.Message)
+}
 
 // InvalidError names every problem of a refused theme file.
 type InvalidError struct {
