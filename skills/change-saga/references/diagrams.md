@@ -68,8 +68,38 @@ under `implementation_deck.diagram_source`; list icons with `change-saga
 diagram icons`.
 
 - Kinds: `node` (shape `service`, `datastore`, `decision`, `rect`, `ellipse`,
-  `boundary`), `edge` (`from`/`to` nodes plus explicit `points` or `path`),
-  `text`, `group`, and `graphic` (allowlisted SVG drawing markup).
+  `boundary`, `triangle`, `hexagon`, `parallelogram`, `document`, `cloud`,
+  `actor`, `queue`, `circle`, `star`, or `entity`), `edge` (`from`/`to` nodes
+  plus explicit `points` or `path`), `text`, `group`, and `graphic`
+  (allowlisted SVG drawing markup).
+- Pick a shape for what a node is: `actor` for a person or external role,
+  `queue` for a queue or stream, `document` for a file or report, `cloud` for
+  an external or hosted system, `datastore` for storage. The shapes from
+  `triangle` on center their icon, label, and detail inside the outline and
+  default to `middle` alignment; a `circle` needs equal width and height. The
+  description omits purely geometric shapes, so a label must say what the
+  node is.
+- Draw an ERD with `entity` nodes: the label names the table and `fields`
+  lists its rows. An edge's `from_field`/`to_field` names the row it ends on;
+  aim its points at that row's middle, `header + 28 * index + 14` below the
+  entity's top, where `header` is the style's `font_size * 1.25 + 16` (43.5
+  for `normal`):
+
+  ```json
+  {"id": "orders", "kind": "node", "shape": "entity", "label": "orders",
+   "x": 600, "y": 480, "width": 320, "height": 128, "style": "normal",
+   "fields": [{"name": "id", "type": "uuid", "key": "pk"},
+              {"name": "customer_id", "type": "uuid", "key": "fk"},
+              {"name": "total", "type": "numeric"}]},
+  {"id": "places", "kind": "edge", "from": "orders", "to": "customers",
+   "from_field": "customer_id", "to_field": "id", "style": "secondary",
+   "points": [{"x": 600, "y": 565.5}, {"x": 360, "y": 537.5}]}
+  ```
+
+  `diagram describe` reads it as `fields: id uuid pk, customer_id uuid fk,
+  total numeric` and `places: orders.customer_id -> customers.id`.
+- `icon` names any bundled Lucide icon; search by what it depicts with
+  `change-saga diagram icons --query storage`.
 - Every coordinate is explicit and local to the parent group. Nothing is laid
   out, resized, or rerouted for you: moving a node leaves its edges where they
   are, so update their `points` in the same batch.
