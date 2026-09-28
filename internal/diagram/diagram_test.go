@@ -73,7 +73,7 @@ func TestRenderIsDeterministicAndMatchesGolden(t *testing.T) {
 func TestValidateReportsEveryProblem(t *testing.T) {
 	d := New()
 	d.Elements = []Element{
-		{ID: "a", Kind: "node", Shape: "hexagon", Width: 10, Height: 10, Style: "normal"},
+		{ID: "a", Kind: "node", Shape: "octagon", Width: 10, Height: 10, Style: "normal"},
 		{ID: "b", Kind: "edge", From: "a", To: "missing", Points: []Point{{0, 0}, {1, 1}}, Label: "x", Style: "nope"},
 		{ID: "frame", Kind: "group", Style: "normal", Decorative: true},
 		{ID: "hidden", Kind: "text", Parent: "frame", Label: "Seen", Width: 100, Height: 30, Style: "normal"},

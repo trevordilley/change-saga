@@ -100,6 +100,9 @@ type Element struct {
 	Wrap        bool    `json:"wrap,omitempty"`
 	Fragment    string  `json:"fragment,omitempty"`
 	Decorative  bool    `json:"decorative,omitempty"`
+	Fields      Fields  `json:"fields,omitempty"`
+	FromField   string  `json:"from_field,omitempty"`
+	ToField     string  `json:"to_field,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
@@ -301,10 +304,13 @@ func (d Document) Validate() error {
 		if e.Kind != "graphic" && e.Fragment != "" {
 			fail("fragment is only valid on graphics")
 		}
+		for _, problem := range validateShape(d, e, byID) {
+			fail("%s", problem)
+		}
 		switch e.Kind {
 		case "node":
 			if !nodeShapes[e.Shape] {
-				fail("node shape must be service, datastore, decision, rect, ellipse, or boundary")
+				fail("node shape must be one of %s", strings.Join(shapeNames(), ", "))
 			}
 			if e.Width <= 0 || e.Height <= 0 {
 				fail("node needs a positive width and height")
@@ -425,10 +431,11 @@ func Contract() map[string]any {
 		"frame_shapes":   sorted(frameShapes),
 		"alignments":     sorted(textAlignment),
 		"default_styles": styles,
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative"},
+		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "fields", "from_field", "to_field"},
 		"operations":     OperationNames,
 		"font":           FontPath,
 		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes, "note_runes": MaxNoteRunes},
+		"entity":         entityContract(),
 		"note_format":    "an optional Markdown note on any semantic element, shown when a reader hovers, focuses, or taps it: " + NoteFormat + "; no raw HTML",
 		"rules": []string{
 			"every coordinate is explicit and local to the parent group; nothing is laid out, resized, or rerouted",
@@ -439,6 +446,8 @@ func Contract() map[string]any {
 			"decorative elements are hidden from describe and assistive technology and may not contain semantic ones",
 			"a note is optional depth on demand: describe prints it, the SVG carries it as plain text in the element's desc, and the reviewer shows it rendered on hover or focus",
 			"graphics accept allowlisted drawing markup; currentColor follows the style's stroke",
+			"triangle, hexagon, parallelogram, document, cloud, actor, queue, circle, and star center their icon, label, and detail in a text area inside the outline and default to align middle; a circle needs equal width and height",
+			"describe omits purely geometric shapes (triangle, hexagon, parallelogram, circle, star): a reader follows relationships, not outlines",
 		},
 	}
 }
