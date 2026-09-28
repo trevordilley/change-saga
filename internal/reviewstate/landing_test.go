@@ -146,3 +146,20 @@ func TestDetectCompanionSagaIsUnknown(t *testing.T) {
 		t.Fatalf("companion: %+v", got)
 	}
 }
+
+// A review committed to main ahead of its change, as one created on main or
+// a stacked review whose parent merged first, stays open while its branch
+// still has changes main lacks.
+func TestDetectRecordAheadOfItsChangeIsOpen(t *testing.T) {
+	dir, review := landingRepo(t)
+	git(t, dir, "checkout", "-q", "main")
+	git(t, dir, "checkout", "-q", "feature", "--", "change.saga")
+	git(t, dir, "commit", "-q", "-m", "the review, ahead of its change")
+	if got := detect(t, dir, review); got != (State{State: StateOpen, Source: StateDetected}) {
+		t.Fatalf("record ahead of change: %+v", got)
+	}
+	git(t, dir, "merge", "-q", "--no-ff", "-m", "merge feature", "feature")
+	if got := detect(t, dir, review); !got.Merged() {
+		t.Fatalf("after its change landed: %+v", got)
+	}
+}

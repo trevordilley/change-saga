@@ -41,11 +41,14 @@ func (state State) Merged() bool { return state.State == StateMerged }
 
 // Landings detects which reviews have landed in their base. A review is
 // committed with the change it explains, so a review has landed when its own
-// record, review.json, is in its base's tree. That holds however the change
-// merged — fast-forward, merge commit, squash, or rebase — and after its
-// branch is deleted, where asking whether the head is an ancestor of the base
-// would miss a squash and would mistake a branch with no commits yet for a
-// merged one. It only reads; the durable record is still repin --onto.
+// record, review.json, is in its base's tree and the branch it follows adds
+// nothing the base lacks: its head is in the base, or merging it would change
+// nothing, as after a squash or rebase. A branch deleted after it merged
+// leaves only the record, which is then enough. Asking only whether the head
+// is an ancestor of the base would miss a squash and would mistake a branch
+// with no commits yet for a merged one; asking for the record too keeps a
+// review committed to the base ahead of its change open. It only reads the
+// Saga; the durable record is still repin --onto.
 //
 // One Landings serves every review of one read and is safe to share between
 // the workers that build their reports.
@@ -80,7 +83,8 @@ func (landings *Landings) Detect(ctx context.Context, review *saga.Review) State
 		return State{State: StateOpen, Source: StateUnknown}
 	}
 	for _, ref := range refs {
-		if landings.hasFile(ctx, landings.resolve(ctx, ref), record) {
+		commit := landings.resolve(ctx, ref)
+		if landings.hasFile(ctx, commit, record) && landings.changeIn(ctx, review, commit) {
 			return State{State: StateMerged, Source: StateDetected, LandedIn: ref}
 		}
 	}
@@ -189,6 +193,35 @@ func (landings *Landings) hasFile(ctx context.Context, commit, path string) bool
 	}
 	kind, err := gitOutput(ctx, landings.checkout, "cat-file", "-t", name)
 	return err == nil && kind == "blob"
+}
+
+// changeIn reports whether the branch review follows adds nothing to base:
+// its head is base or an ancestor of it, or merging it into base yields
+// base's own tree. A review that follows HEAD, or whose branch no longer
+// resolves, has only its record to go on.
+func (landings *Landings) changeIn(ctx context.Context, review *saga.Review, base string) bool {
+	if review.Head == "" || review.Head == "HEAD" {
+		return true
+	}
+	head, _, err := ResolveHead(ctx, landings.checkout, review)
+	if err != nil {
+		return true
+	}
+	if head == base {
+		return true
+	}
+	if _, err := gitOutput(ctx, landings.checkout, "merge-base", "--is-ancestor", head, base); err == nil {
+		return true
+	}
+	// A squash or rebase leaves the head outside base. merge-tree (Git
+	// 2.38) merges without touching the checkout; a conflict, or a Git too
+	// old to ask, leaves the change reported open.
+	merged, err := gitOutput(ctx, landings.checkout, "merge-tree", "--write-tree", base, head)
+	if err != nil {
+		return false
+	}
+	tree, err := gitOutput(ctx, landings.checkout, "rev-parse", base+"^{tree}")
+	return err == nil && strings.SplitN(merged, "\n", 2)[0] == tree
 }
 
 // looksLikeCommit reports whether base is an abbreviated or full commit ID
