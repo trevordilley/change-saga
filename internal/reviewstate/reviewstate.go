@@ -103,7 +103,14 @@ type Report struct {
 	Head        string            `json:"head,omitempty"`
 	Range       *Range            `json:"range,omitempty"`
 	Merged      *saga.ReviewMerge `json:"merged,omitempty"`
-	Slides      []SlideReport     `json:"slides"`
+	// State is "open" or "merged", and StateSource how that is known:
+	// "recorded" by repin --onto, "detected" from Git at read time, or
+	// "unknown" when Git cannot tell. LandedIn names the ref a detected
+	// review was found in.
+	State       string        `json:"state"`
+	StateSource string        `json:"state_source"`
+	LandedIn    string        `json:"landed_in,omitempty"`
+	Slides      []SlideReport `json:"slides"`
 	// Coverage is how completely the deck accounts for the review's range;
 	// it is absent, with a diagnostic, when the range cannot be read.
 	Coverage *Coverage `json:"coverage,omitempty"`
@@ -164,6 +171,9 @@ type Options struct {
 	Resolver *coderesolve.Resolver
 	// Repository is the Saga's declared source repository.
 	Repository string
+	// Landings detects whether the review has landed; one is shared by every
+	// review of a read. Build makes its own when it is nil.
+	Landings *Landings
 }
 
 // Build reports review. It never fails on a range that cannot be read: the
@@ -174,6 +184,12 @@ func Build(ctx context.Context, review *saga.Review, options Options) Report {
 		PullRequest: review.PullRequest, Base: review.Base, Head: review.Head, Merged: review.Merged,
 		Slides: []SlideReport{}, Diagnostics: []string{},
 	}
+	landings := options.Landings
+	if landings == nil {
+		landings = NewLandings(options.Checkout)
+	}
+	state := landings.Detect(ctx, review)
+	report.State, report.StateSource, report.LandedIn = state.State, state.Source, state.LandedIn
 	var rng *Range
 	if value, err := ResolveRange(ctx, options.Checkout, review); err != nil {
 		report.Diagnostics = append(report.Diagnostics, err.Error())
