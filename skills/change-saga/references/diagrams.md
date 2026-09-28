@@ -78,6 +78,14 @@ diagram icons`.
 - A group with `shape` `rect` or `boundary` draws a frame and parents its
   contents; use one for containers, lanes, trust boundaries, and `alt`/`loop`
   fragments, so moving the frame moves what it contains.
+- Edges end in terminators: `head` and `tail` take `arrow`, `open`, `triangle`,
+  `diamond`, `filled-diamond`, `circle`, `dot`, `bar`, or an ERD cardinality
+  (`one`, `only-one`, `zero-or-one`, `many`, `one-or-many`, `zero-or-many`).
+  For an ERD, draw `orders -> customers` with `"tail": "zero-or-many", "head":
+  "only-one"` and put `N` and `1` in `tail_label`/`head_label` with their own
+  boxes. Use `curve: "smooth"` for a flowing line through its points, `line:
+  "dashed"` or `"dotted"` for optional or asynchronous flows, and a style with
+  a thick `stroke_width` for an emphatic arrow; its head grows with it.
 - Edge labels need a `label_box`; a node whose shape is too small for its
   label may place it in a `label_box` outside the shape. `align` is `start`,
   `middle`, or `end`.

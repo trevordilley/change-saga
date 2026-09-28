@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bcc664415b371c29881989bd7bf7c2aefc981e50",
+      "path": "SPEC.md",
+      "start": 508,
+      "end": 519,
+      "digest": "sha256:9cb2c4d6bc465895ae6d70d07a87a722a43767b0f07cad5b6c2210092ee087bd"
+    }
+  ]
+}
