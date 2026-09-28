@@ -238,8 +238,9 @@ func pointerTip(d Document, e Element) (Point, error) {
 
 func clamp(v, low, high float64) float64 { return math.Max(low, math.Min(high, v)) }
 
-// bubbleDependents lists the bubbles whose derived pointer follows an element
-// in changed, so an edit reports them as changed too.
+// bubbleDependents lists the bubbles whose derived pointer may re-aim because
+// their about element, or either one's enclosing group, is in changed, so an
+// edit reports them as changed too.
 func bubbleDependents(d Document, changed map[string]bool) []string {
 	moved := func(id string) bool {
 		for depth := 0; id != "" && depth <= len(d.Elements); depth++ {
@@ -253,7 +254,7 @@ func bubbleDependents(d Document, changed map[string]bool) []string {
 	}
 	ids := []string{}
 	for _, e := range d.Elements {
-		if e.Kind == "annotation" && e.Shape == "bubble" && e.Target == nil && e.About != "" && !changed[e.ID] && moved(e.About) {
+		if e.Kind == "annotation" && e.Shape == "bubble" && e.Target == nil && e.About != "" && !changed[e.ID] && (moved(e.About) || moved(e.Parent)) {
 			ids = append(ids, e.ID)
 		}
 	}

@@ -257,6 +257,14 @@ func TestBoardEdit(t *testing.T) {
 	if strings.Join(changed, ",") != "ingest" {
 		t.Fatalf("only bubbles without a target follow: %v", changed)
 	}
+	nested := board()
+	nested.Elements = append(nested.Elements, Element{ID: "aside", Kind: "annotation", Shape: "bubble", Label: "Queued", About: "store", Parent: "retry", X: 25, Y: 180, Width: 200, Height: 60, Style: "caption"})
+	if err := nested.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	if _, changed, _ = Edit(nested, []Operation{{Op: "move", ID: "ingest", DX: 5}}); strings.Join(changed, ",") != "aside,ingest" {
+		t.Fatalf("a bubble whose own section moves re-aims: %v", changed)
+	}
 	recolored, _, err := Edit(d, []Operation{{Op: "update", ID: "why", Set: json.RawMessage(`{"color":"green","about":null}`)}})
 	if why, _ := recolored.Element("why"); err != nil || why.Color != "green" || why.About != "" {
 		t.Fatalf("update color and clear about: %+v %v", why, err)
