@@ -1351,9 +1351,8 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		pageFeature: data.PageFeature, reviewSide: data.ReviewSide,
-		technical:     technicalRows,
-		mergedReviews: a.mergedReviews(r.Context(), document),
+		pageFeature: data.PageFeature, reviewSide: data.ReviewSide, mergedReviews: a.mergedReviews(r.Context(), document),
+		technical: technicalRows,
 	})
 	// The sidebar is the same on every page, so it outlives the page it was
 	// loaded with: an in-page anchor names the overview's path rather than
