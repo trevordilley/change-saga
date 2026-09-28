@@ -100,6 +100,15 @@ type Element struct {
 	Wrap        bool    `json:"wrap,omitempty"`
 	Fragment    string  `json:"fragment,omitempty"`
 	Decorative  bool    `json:"decorative,omitempty"`
+	// Connector fields: an edge's start marker, its end labels, and how its
+	// line is drawn. Head takes the same terminator vocabulary as Tail.
+	Tail         string `json:"tail,omitempty"`
+	TailLabel    string `json:"tail_label,omitempty"`
+	TailLabelBox *Box   `json:"tail_label_box,omitempty"`
+	HeadLabel    string `json:"head_label,omitempty"`
+	HeadLabelBox *Box   `json:"head_label_box,omitempty"`
+	Curve        string `json:"curve,omitempty"`
+	Line         string `json:"line,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
@@ -298,6 +307,7 @@ func (d Document) Validate() error {
 		if e.Kind != "edge" && (e.From != "" || e.To != "" || len(e.Points) > 0 || e.Path != "" || e.Head != "" || e.HeadSize != 0) {
 			fail("edge fields (from, to, points, path, head) are only valid on edges")
 		}
+		validateConnector(e, fail)
 		if e.Kind != "graphic" && e.Fragment != "" {
 			fail("fragment is only valid on graphics")
 		}
@@ -330,9 +340,6 @@ func (d Document) Validate() error {
 			}
 			if e.Path != "" && !validPathData(e.Path) {
 				fail("edge path must contain only SVG path commands and numbers")
-			}
-			if e.Head != "" && e.Head != "none" && e.Head != "arrow" {
-				fail("edge head must be arrow or none")
 			}
 			if e.HeadSize < 0 || e.HeadSize > 100 {
 				fail("head_size must be 0-100")
@@ -425,7 +432,8 @@ func Contract() map[string]any {
 		"frame_shapes":   sorted(frameShapes),
 		"alignments":     sorted(textAlignment),
 		"default_styles": styles,
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative"},
+		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line"},
+		"terminators":    TerminatorNames(),
 		"operations":     OperationNames,
 		"font":           FontPath,
 		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes, "note_runes": MaxNoteRunes},
