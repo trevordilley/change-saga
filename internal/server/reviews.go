@@ -718,7 +718,7 @@ func (a *app) reviewVisual(w http.ResponseWriter, r *http.Request) {
 	if contentType := mime.TypeByExtension(strings.ToLower(filepath.Ext(path))); contentType != "" {
 		w.Header().Set("Content-Type", contentType)
 	}
-	http.ServeContent(w, r, filepath.Base(path), info.ModTime(), file)
+	serveVisual(w, r, path, file, info, a.sagaTheme().FrameCSS())
 }
 
 // reviewMutation checks the session token and form of a review write. The

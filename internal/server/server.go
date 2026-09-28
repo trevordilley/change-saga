@@ -503,6 +503,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /app.js", application.javascript)
 	handle("GET "+diagram.FontPath, application.diagramFont)
 	handle("GET /theme.js", application.themeScript)
+	handle("GET /theme.css", application.themeStylesheet)
 	handle("GET /api/documentation", application.documentationPage)
 	handle("GET /api/technical-usages", application.technicalUsagesPage)
 	handle("GET /api/code", application.codePage)
@@ -2000,7 +2001,7 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 	// The browser may keep the file but must ask before each use; an
 	// unchanged file is answered by its modification time alone.
 	w.Header().Set("Cache-Control", "no-cache")
-	http.ServeContent(w, r, filepath.Base(realPath), info.ModTime(), file)
+	serveVisual(w, r, realPath, file, info, a.sagaTheme().FrameCSS())
 }
 
 // diagramFont serves the font generated diagram SVGs measure their text
