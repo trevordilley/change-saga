@@ -19,9 +19,15 @@ type Summary struct {
 	To          string `json:"to,omitempty"`
 	Parent      string `json:"parent,omitempty"`
 	Icon        string `json:"icon,omitempty"`
-	Fields      Fields `json:"fields,omitempty"`
-	FromField   string `json:"from_field,omitempty"`
-	ToField     string `json:"to_field,omitempty"`
+	// An edge's terminators and end labels, when they say more than a plain
+	// arrow: ERD cardinality, UML ends, or a start marker.
+	Tail      string `json:"tail,omitempty"`
+	Head      string `json:"head,omitempty"`
+	TailLabel string `json:"tail_label,omitempty"`
+	HeadLabel string `json:"head_label,omitempty"`
+	Fields    Fields `json:"fields,omitempty"`
+	FromField string `json:"from_field,omitempty"`
+	ToField   string `json:"to_field,omitempty"`
 }
 
 // Omitted names what every reading view leaves out.
@@ -46,7 +52,14 @@ func Describe(d Document, offset, limit int) Description {
 		if e.Decorative {
 			continue
 		}
-		all = append(all, Summary{ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField})
+		summary := Summary{ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField}
+		if e.Tail != "none" {
+			summary.Tail = e.Tail
+		}
+		if e.Head != "arrow" && e.Head != "none" {
+			summary.Head = e.Head
+		}
+		all = append(all, summary)
 	}
 	offset = max(0, min(offset, len(all)))
 	end := min(offset+max(limit, 0), len(all))
@@ -75,9 +88,14 @@ func (v Description) WriteText(b *strings.Builder) {
 			if e.Label != "" {
 				b.WriteString(" " + strconv.Quote(e.Label))
 			}
-			for _, attr := range [][2]string{{"shape", e.Shape}, {"in", e.Parent}, {"icon", e.Icon}} {
+			for _, attr := range [][2]string{{"shape", e.Shape}, {"in", e.Parent}, {"icon", e.Icon}, {"tail", e.Tail}, {"head", e.Head}} {
 				if attr[1] != "" {
 					fmt.Fprintf(b, " %s=%s", attr[0], attr[1])
+				}
+			}
+			for _, attr := range [][2]string{{"tail_label", e.TailLabel}, {"head_label", e.HeadLabel}} {
+				if attr[1] != "" {
+					fmt.Fprintf(b, " %s=%s", attr[0], strconv.Quote(attr[1]))
 				}
 			}
 			b.WriteString("\n")

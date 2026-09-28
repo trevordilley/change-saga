@@ -199,32 +199,21 @@ func (r *renderer) edge(e Element, style Style, g *node) error {
 	if e.ToField != "" {
 		g.set("data-to-field", e.ToField)
 	}
-	path := e.Path
-	if path == "" {
-		var b strings.Builder
-		for index, p := range e.Points {
-			if index == 0 {
-				b.WriteString("M")
-			} else {
-				b.WriteString(" L")
-			}
-			b.WriteString(num(p.X) + " " + num(p.Y))
+	line := g.add("path", "d", edgePath(e), "fill", "none", "stroke", style.Stroke, "stroke-width", num(style.StrokeWidth), "stroke-linejoin", "round")
+	if dash, lineCap := edgeDash(e, style); dash != "" {
+		line.set("stroke-dasharray", dash)
+		if lineCap != "" {
+			line.set("stroke-linecap", lineCap)
 		}
-		path = b.String()
 	}
-	line := g.add("path", "d", path, "fill", "none", "stroke", style.Stroke, "stroke-width", num(style.StrokeWidth), "stroke-linejoin", "round")
-	if style.Dash {
-		line.set("stroke-dasharray", "7 6")
+	if e.Tail != "" && e.Tail != "none" {
+		line.set("marker-start", r.connectorMarker(e, style, "tail", e.Tail))
 	}
-	if e.Head == "arrow" {
-		size := e.HeadSize
-		if size == 0 {
-			size = 10
-		}
-		id := "diagram-head-" + e.ID
-		marker := r.defs.add("marker", "id", id, "viewBox", "0 0 10 10", "refX", "9", "refY", "5", "markerWidth", num(size), "markerHeight", num(size), "markerUnits", "userSpaceOnUse", "orient", "auto")
-		marker.add("path", "d", "M0 0L10 5L0 10Z", "fill", style.Stroke)
-		line.set("marker-end", "url(#"+id+")")
+	if e.Head != "" && e.Head != "none" {
+		line.set("marker-end", r.connectorMarker(e, style, "head", e.Head))
+	}
+	if err := r.connectorLabels(e, style, g); err != nil {
+		return err
 	}
 	if e.Label != "" {
 		return r.text(g, e.Label, *e.LabelBox, style.FontSize, style.Ink, e.Wrap, e.Align)

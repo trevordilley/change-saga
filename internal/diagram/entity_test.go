@@ -64,3 +64,21 @@ func TestSchemaAcceptsShapesAndEntities(t *testing.T) {
 		}
 	}
 }
+
+func TestEntityEdgesTakeCrowsFeet(t *testing.T) {
+	d := gallery()
+	places := d.Index("places")
+	d.Elements[places].Head, d.Elements[places].Tail = "only-one", "zero-or-many"
+	svg, err := Render(d, Options{Title: "x"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(svg), `data-from-field="customer_id" data-to-field="id"`) || !strings.Contains(string(svg), "marker-start") {
+		t.Fatal("a field edge must keep its field ends and draw its terminators")
+	}
+	var b strings.Builder
+	Describe(d, 0, 30).WriteText(&b)
+	if want := `  places: orders.customer_id -> customers.id "places" tail=zero-or-many head=only-one` + "\n"; !strings.Contains(b.String(), want) {
+		t.Fatalf("missing %q in:\n%s", want, b.String())
+	}
+}

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bcc664415b371c29881989bd7bf7c2aefc981e50",
+      "path": "internal/diagram/connectors.go",
+      "start": 1,
+      "end": 76,
+      "digest": "sha256:8984ae4e9613ad8990f88275159c35fcd509ed7201fc9ebdafce7a9f6f067503"
+    },
+    {
+      "commit": "bcc664415b371c29881989bd7bf7c2aefc981e50",
+      "path": "internal/diagram/connectors.go",
+      "start": 149,
+      "end": 204,
+      "digest": "sha256:0552a2fff13d1a7e0bf3de310c3ffb6f8a753879e2429c960f24f384f1bf6f8b"
+    }
+  ]
+}
