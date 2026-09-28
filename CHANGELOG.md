@@ -9,6 +9,11 @@
   coverage, and reconciling for all of their work at once: deferred, not
   skipped. A small PR a reviewer reads line by line needs no deck unless the
   team asks for one.
+- The README's CI example now gates what matters for every pull request into
+  `main`: the documentation stays current (`check --covers health`). Pull
+  requests are reviewed on GitHub as usual; requiring a review deck is an
+  opt-in step on top. This repository's CI drops its review-deck gate the same
+  way.
 
 ## Unreleased — slides on design tokens
 
