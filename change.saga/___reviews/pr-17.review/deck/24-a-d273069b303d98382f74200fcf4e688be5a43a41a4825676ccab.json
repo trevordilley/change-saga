@@ -1,0 +1,238 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Edges end in terminators",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "edge",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Edge",
+      "detail": "head, tail, labels, line",
+      "x": 80,
+      "y": 160,
+      "width": 260,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "terminator",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Terminator",
+      "detail": "15 ends, drawn as markers",
+      "x": 520,
+      "y": 160,
+      "width": 300,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "line",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Line",
+      "detail": "straight, smooth, dashed",
+      "x": 80,
+      "y": 390,
+      "width": 260,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "endlabel",
+      "kind": "node",
+      "shape": "rect",
+      "label": "End label",
+      "detail": "cardinality text in a box",
+      "x": 520,
+      "y": 390,
+      "width": 300,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "renderer",
+      "kind": "node",
+      "shape": "service",
+      "label": "Renderer",
+      "detail": "defs and marker refs",
+      "x": 960,
+      "y": 160,
+      "width": 260,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "describe",
+      "kind": "node",
+      "shape": "service",
+      "label": "describe",
+      "detail": "prints cardinality",
+      "x": 960,
+      "y": 390,
+      "width": 260,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "has-ends",
+      "kind": "edge",
+      "label": "ends in",
+      "note": "An edge has at most two ends, a `tail` and a `head`; the crow's foot marks the many side.",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "edge",
+      "to": "terminator",
+      "points": [
+        {
+          "x": 340,
+          "y": 210
+        },
+        {
+          "x": 520,
+          "y": 210
+        }
+      ],
+      "head": "zero-or-many",
+      "label_box": {
+        "x": 385,
+        "y": 172,
+        "width": 90,
+        "height": 28
+      },
+      "tail": "only-one",
+      "tail_label": "1",
+      "tail_label_box": {
+        "x": 350,
+        "y": 216,
+        "width": 30,
+        "height": 28
+      },
+      "head_label": "0..2",
+      "head_label_box": {
+        "x": 460,
+        "y": 216,
+        "width": 56,
+        "height": 28
+      }
+    },
+    {
+      "id": "has-labels",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "edge",
+      "to": "endlabel",
+      "points": [
+        {
+          "x": 300,
+          "y": 260
+        },
+        {
+          "x": 390,
+          "y": 400
+        },
+        {
+          "x": 520,
+          "y": 440
+        }
+      ],
+      "head": "zero-or-many",
+      "tail": "only-one",
+      "curve": "smooth"
+    },
+    {
+      "id": "has-line",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "edge",
+      "to": "line",
+      "points": [
+        {
+          "x": 180,
+          "y": 260
+        },
+        {
+          "x": 180,
+          "y": 390
+        }
+      ],
+      "head": "only-one",
+      "tail": "only-one"
+    },
+    {
+      "id": "draws",
+      "kind": "edge",
+      "label": "draws",
+      "note": "Each end gets its own `diagram-marker-\u003cedge\u003e-head` or `-tail` definition. A legacy `arrow` head keeps `diagram-head-\u003cedge\u003e`, so older diagrams render **byte-identically**.",
+      "x": 0,
+      "y": 0,
+      "style": "emphasis",
+      "from": "renderer",
+      "to": "terminator",
+      "points": [
+        {
+          "x": 960,
+          "y": 210
+        },
+        {
+          "x": 820,
+          "y": 210
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 856,
+        "y": 168,
+        "width": 70,
+        "height": 28
+      },
+      "line": "dashed"
+    },
+    {
+      "id": "prints",
+      "kind": "edge",
+      "label": "prints",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "describe",
+      "to": "endlabel",
+      "points": [
+        {
+          "x": 960,
+          "y": 440
+        },
+        {
+          "x": 820,
+          "y": 440
+        }
+      ],
+      "head": "open",
+      "label_box": {
+        "x": 852,
+        "y": 400,
+        "width": 76,
+        "height": 28
+      },
+      "line": "dotted"
+    }
+  ]
+}
