@@ -1229,6 +1229,43 @@ format, decides which combination of decisions permits merging.
 A comment targets a review slide or Item, may reply to another comment, carries
 the reviewer and the head commit, and may resolve or reopen its thread.
 
+**Comments on code lines.** A root comment may be made on lines of the review's
+diff, as a pull request's inline comment is. Its `code_line` is a code
+reference in the terms of section 6, plus the side of the diff:
+
+```json
+"code_line": {"commit": "<full commit>", "path": "internal/orders/list.go",
+              "side": "new", "start": 42, "end": 44, "digest": "sha256:<64 hex>"}
+```
+
+`side` is `new` for the head's lines or `old` for the lines the change deleted
+or replaced. `commit` is the commit whose file holds the lines: the head the
+comment was made at for `new`, the merge-base for `old`. `start..end` is an
+inclusive 1-based range and `digest` is the reference digest of exactly those
+lines. Replies carry no `code_line`: they join the thread's lines, and resolve
+and reopen it as for any comment. A code-line comment cannot also carry slide
+markup (`anchor`). It targets the review Item whose code holds the lines, or,
+when no Item does, the review itself (`urn:change-saga:<saga>:review:<id>`),
+which only a code-line thread and its replies may target. `review comment
+--path --line` picks that Item when `--target` is omitted.
+
+A code-line thread is viewed at the review's current range, the way every
+code reference is resolved (section 6): at the head for `new`, at the
+merge-base for `old`. It is **current** while the lines are unchanged. When
+lines only moved, because lines were added or removed above them or the file
+was renamed, it shows where they are now and says where it was made. It is
+**outdated** once its lines change or are deleted: it stays at the line
+number it was made on, with the code it was made on read from its commit, and
+is never moved onto different code. It is **unknown** when its commit is not
+in the checkout. `review list` reports each review's open line threads with
+their currency (`line_threads`, `open_line_threads` per review and slide), and
+`query review-threads` returns every thread with its comments and placement.
+
+This extension needs no migration. Readers before it decode strictly, so they
+reject a comment that carries `code_line` and refuse the Saga rather than show
+the comment without its lines; upgrade readers before commenting on lines.
+Reviews without line comments read as before.
+
 Every decision and comment is its own file with a unique time-plus-random
 identifier, written with exclusive creation, so two reviewers acting on the same
 slide add disjoint files and do not create a Git conflict.
@@ -1323,7 +1360,8 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga review create|list|approve|request-changes|withdraw|comment`
   manages a pull request's review: its deck is authored with `add-slide`,
   `set-slide-content`, and `add-item` using `--review`, and decisions and
-  comments apply to review slides and Items only.
+  comments apply to review slides and Items only, comments also to lines of
+  the review's diff (`review comment --path --line`).
 - `change-saga open` divides the application in the header, into **Documentation**
   — what the application is — and **Review** — how it is changing. Review holds
   the pull-request reviews (`/reviews`) and the views that read a comparison:

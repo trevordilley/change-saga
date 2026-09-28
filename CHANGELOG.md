@@ -10,6 +10,31 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- **Comment on code lines in a review**, as on a pull request. Hover a line
+  in any diff inside a review (an Item's linked code or the Code Diff tab)
+  and press the "+" in its gutter to write a Markdown comment below it.
+  Threads show under their line with reply, resolve, and reopen. An Item and
+  its slide show how many open line threads they have. The gutter button can
+  be reached from the keyboard, and Shift-click extends the range.
+- `review comment --path PATH --line N [--end-line M] [--side new|old]` does
+  the same from the CLI. Without `--target`, the comment goes under the
+  first Item whose code holds the lines, or else on the review itself.
+  `review list` reports each review's open line threads and whether they
+  are outdated (JSON: `line_threads`, `open_line_threads`). The new `query
+  review-threads` operation gives a reviewer agent every thread of a review
+  with its comments and lines.
+- A line thread follows its lines while they are unchanged, and says so if
+  they moved. It becomes **outdated** once a later push changes them. An
+  outdated thread stays at the line it was made on and shows the code it
+  was made on. It is never moved onto different code.
+- **Format:** a review comment may carry `code_line` (`commit`, `path`,
+  `side`, `start`, `end`, `digest`), which is a code reference plus a diff
+  side. A code-line thread on lines that no Item explains targets the
+  review. Readers from 0.2.0 and earlier refuse a Saga that holds line
+  comments, so upgrade them before using line comments.
+
 ## [0.2.0] - 2026-09-28
 
 Change Saga's first release built around its entry point: ask your coding

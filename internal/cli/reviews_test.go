@@ -562,6 +562,24 @@ func TestReviewCommentsOnCodeLinesGoOutdatedWhenTheirLinesChange(t *testing.T) {
 		}
 	}
 
+	// A reviewer agent reads the threads, with their lines and placement,
+	// through query.
+	var queried bytes.Buffer
+	if err := Query(context.Background(), []string{"review-threads", "--saga", fixture.root, "--review", "pr-7", "--path", "store.go", "--state", "open"}, &queried); err != nil {
+		t.Fatalf("query: %v\n%s", err, queried.String())
+	}
+	var envelope struct {
+		OK   bool                `json:"ok"`
+		Data reviewThreadsResult `json:"data"`
+	}
+	if err := json.Unmarshal(queried.Bytes(), &envelope); err != nil || !envelope.OK {
+		t.Fatalf("query review-threads: %v\n%s", err, queried.String())
+	}
+	threads := envelope.Data.Threads
+	if len(threads) != 2 || threads[0].ID != store || threads[0].Placement == nil || threads[0].Placement.Start != 2 || !threads[0].Placement.Moved || len(threads[0].Comments) != 3 || threads[0].Comments[1].State != saga.CommentResolved || threads[1].ID != old || threads[1].CodeLine.Side != "old" {
+		t.Fatalf("store.go threads = %s", queried.String())
+	}
+
 	var refused bytes.Buffer
 	for _, args := range [][]string{
 		{"--path", "queue.go", "--line", "9"},

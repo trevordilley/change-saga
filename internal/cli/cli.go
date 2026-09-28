@@ -27,6 +27,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/semanticgraph"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
@@ -216,7 +217,7 @@ var commandUsage = map[string]string{
 	"review approve":              "change-saga review approve --review ID --slide ID --reviewer-kind human|ai [--body TEXT] [flags] <saga>",
 	"review request-changes":      "change-saga review request-changes --review ID --slide ID --reviewer-kind human|ai --body TEXT [flags] <saga>",
 	"review withdraw":             "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
-	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
+	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID | --path PATH --line N [--end-line M] [--side new|old] [--target SLIDE[/ITEM]]) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
 	"reconcile":                   "change-saga reconcile --against REV [--head REV] [--repo PATH] [--json [--summary]] [--all] <saga>",
 	"status":                      "change-saga status [--json] [--full] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
@@ -450,7 +451,7 @@ var commandDescription = map[string]string{
 	"review approve":              "Approve one review slide at the pull request's current head. Declare the reviewer seat:\n--reviewer-kind human for your own decision, or ai with --reviewer-name, --agent, and the exact\n--model. The decision goes out of date when the slide or the code it references changes.",
 	"review request-changes":      "Request changes on one review slide at the pull request's current head, saying what\nshould change.",
 	"review withdraw":             "Withdraw your current decision on one review slide.",
-	"review comment":              "Comment on a review slide or Item, or reply to a comment. --resolve or --reopen sets the\nthread's state. Documentation has no comments; discuss a change to it on the review slide\nor Item that references it.",
+	"review comment":              "Comment on a review slide or Item, on lines of the review's diff, or reply to a comment.\n--resolve or --reopen sets the thread's state. Documentation has no comments; discuss a\nchange to it on the review slide or Item that references it.\n\n--path with --line (and --end-line for a range) comments on those lines of the review's\ncurrent range: --side new (the default) for the head's lines, old for the merge-base's\nlines the change deleted or replaced. The comment records the exact code it was made on,\nso a later push that changes those lines shows the thread as outdated at its original\nline; lines that only moved carry the thread along with a note. Without --target it is\nfiled under the first Item whose code holds the lines, else the review itself.",
 	"set-fragment-content":        "Replace a fragment entrypoint through the supported authoring API. Use --source -\nto read content from standard input; the fragment media type and metadata are preserved.",
 	"add-chapter":                 "Add one independently reviewable narrative chapter to the Saga.",
 	"add-section":                 "Group related narrative content inside a chapter.",
@@ -1355,6 +1356,8 @@ func Spec(args []string, out io.Writer) error {
 				"urns":            "urn:change-saga:<saga>:review:<review>[:deck:<deck>|:slide:<slide>[:item:<item>]]",
 				"decision_states": []string{saga.ApprovalApproved, saga.ApprovalChangesRequested, saga.ApprovalNone},
 				"comment_states":  []string{saga.CommentOpen, saga.CommentResolved},
+				"code_lines":      "a root comment may carry code_line {commit, path, side new|old, start, end, digest}: a code reference to lines of the review's diff at the head (new) or merge-base (old); its thread is current while those lines are unchanged in the review's range, follows them with a note when they only moved, and is outdated at its original line once they change; without a slide or Item it targets the review",
+				"line_currency":   []string{reviewstate.Current, reviewstate.Outdated, reviewstate.Unknown},
 				"currency":        []string{"current", "out_of_date", "unknown"},
 				"item_records":    saga.ReviewRecordReferenceKinds,
 				"documentation":   "stories, designs, test cases, and decks carry no approvals and no comments",
@@ -2183,8 +2186,10 @@ slide, the reviewer persona, the pull request head commit it was given at, and
 the slide's content digest. The latest decision per Git author and persona is
 current. It is out of date when the slide's records changed since, or when the
 code its Items reference changed between that commit and the current head.
-Comments attach to review slides and Items; a reply names its parent and may
-resolve or reopen the thread. Decisions declare a human or AI reviewer persona
+Comments attach to review slides and Items, or to lines of the review's diff
+(review comment --path --line [--side old]); a reply names its parent and may
+resolve or reopen the thread. A code-line thread is outdated once its lines
+change in a later head, and query review-threads reads every thread. Decisions declare a human or AI reviewer persona
 in addition to their Git-derived author; AI personas name an independent
 review seat, their agent kind, and model. status and review list report every
 slide's decisions and currency, and each review's coverage, with no verdict: the team decides what it

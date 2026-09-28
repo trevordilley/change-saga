@@ -220,6 +220,7 @@ var queryOperations = []string{
 	"audit",
 	"layers",
 	"history",
+	"review-threads",
 	"inventory",
 	"inventory-uses",
 	"inventory-coverage",
@@ -264,6 +265,7 @@ var queryPurpose = map[string]string{
 	"readiness":            "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 	"audit":                "a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts",
 	"history":              "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
+	"review-threads":       "one review's discussion thread by thread: every comment on its slides, Items, and code lines, with each code-line thread's anchor and where it shows in the review's current range (current, moved, or outdated since its lines changed)",
 	"terms":                "the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation",
 	"term-references":      "direct explicit incoming and outgoing term references with provenance and declared coverage",
 	"layers":               "one comparison's Changed records (each with before and after), Affected records (with why), and Code (hunks grouped under the records that reference them, plus unreferenced lines)",
@@ -302,6 +304,7 @@ var queryUsage = map[string]string{
 	"readiness":            "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"audit":                "change-saga query audit --saga PATH --feature ID|URN [--repo PATH] [--head REV]",
 	"history":              "change-saga query history --saga PATH --node URN",
+	"review-threads":       "change-saga query review-threads --saga PATH --review ID [--path PATH] [--state open|resolved] [--lines] [--repo PATH]",
 	"terms":                "change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"term-references":      "change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]",
 	"layers":               "change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]",
@@ -338,6 +341,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 			return writeQuerySuccess(out, "", queryHelpFor(operation), nil)
 		}
 		return queryHistory(ctx, args[1:], out)
+	}
+	if operation == "review-threads" {
+		return queryReviewThreads(ctx, args[1:], out)
 	}
 	if operation == "inventory" {
 		return queryInventory(ctx, args[1:], out)
@@ -531,6 +537,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"readiness":            {"data.summary", "data.requirements"},
 		"audit":                {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":              {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
+		"review-threads":       {"data.review", "data.range", "data.diagnostics", "data.threads", "data.threads[].code_line", "data.threads[].placement", "data.threads[].comments"},
 		"inventory":            {"data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history", "data.records[].selected", "data.records[].newness", "data.records[].scope_paths", "data.records[].uses", "data.records[].selected_code_health", "data.unresolved", "data.filters", "data.comparison", "data.scope", "data.completeness"},
 		"inventory-coverage":   {"data.head_oid", "data.scope", "data.summary", "data.state", "data.entries", "data.completeness"},
 		"inventory-selections": {"data.head_oid", "data.selections", "data.selections[].resolution", "data.completeness"},
@@ -571,7 +578,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 	pagination := queryPaginationDescription{Kind: "none"}
 	if operation == "fragment" || operation == "slide" {
 		pagination = queryPaginationDescription{Kind: "byte-offset", NextOffsetPath: "data.content.next_offset"}
-	} else if operation != "overview" && operation != "audit" && operation != "layers" && operation != "history" {
+	} else if operation != "overview" && operation != "audit" && operation != "layers" && operation != "history" && operation != "review-threads" {
 		pagination = queryPaginationDescription{
 			Kind: "cursor", CountedPath: countedPaths[operation], TotalPath: "page.total", ReturnedPath: "page.returned",
 			HasMorePath: "page.has_more", NextCursorPath: "page.next_cursor",
