@@ -378,3 +378,42 @@ func TestV5SchemaListIsStable(t *testing.T) {
 		t.Fatalf("record schema set = %v, want %v", got, want)
 	}
 }
+
+func TestV5ReviewCommentSchemaAnchorsCodeLines(t *testing.T) {
+	compiler := jsonschema.NewCompiler()
+	schema, err := compiler.Compile(filepath.Join(v5SchemaDir, "review-comment.schema.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	const item = "urn:change-saga:app:review:pr-7:slide:table:item:table"
+	const review = "urn:change-saga:app:review:pr-7"
+	line := `{"commit":"0a103972ac26d8dfd8a4a1f3be0b1b9b5a2c4e61","path":"internal/orders/list.go","side":"new","start":42,"end":44,"digest":"sha256:` + strings.Repeat("5f", 32) + `"}`
+	record := func(fields string) string {
+		return `{"$schema":"https://changesaga.dev/schema/v5/review-comment.schema.json","version":5,"id":"c1","body":"Batch this?","reviewer":{"kind":"human"},"created_at":"2026-09-28T23:15:02Z",` + fields + `}`
+	}
+	cases := []struct {
+		name, instance string
+		valid          bool
+	}{
+		{"line comment on an Item", record(`"target":"` + item + `","code_line":` + line), true},
+		{"line comment on the review", record(`"target":"` + review + `","code_line":` + line), true},
+		{"reply on the review", record(`"target":"` + review + `","reply_to":"c0"`), true},
+		{"review-wide comment without lines", record(`"target":"` + review + `"`), false},
+		{"lines on a reply", record(`"target":"` + item + `","reply_to":"c0","code_line":` + line), false},
+		{"lines with slide markup", record(`"target":"` + item + `","annotation_action":"create","anchor":{"type":"note","coordinate_space":"normalized","note":{"text":"x","x":0.1,"y":0.1}},"code_line":` + line), false},
+		{"unknown side", record(`"target":"` + item + `","code_line":` + strings.Replace(line, `"new"`, `"left"`, 1)), false},
+		{"line zero", record(`"target":"` + item + `","code_line":` + strings.Replace(line, `"start":42`, `"start":0`, 1)), false},
+		{"extra anchor field", record(`"target":"` + item + `","code_line":` + strings.Replace(line, `"side"`, `"line":1,"side"`, 1)), false},
+	}
+	for _, test := range cases {
+		t.Run(test.name, func(t *testing.T) {
+			instance, err := jsonschema.UnmarshalJSON(strings.NewReader(test.instance))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := schema.Validate(instance); (err == nil) != test.valid {
+				t.Fatalf("valid = %v, want %v: %v", err == nil, test.valid, err)
+			}
+		})
+	}
+}

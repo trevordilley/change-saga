@@ -114,6 +114,10 @@ type Report struct {
 	// Coverage is how completely the deck accounts for the review's range;
 	// it is absent, with a diagnostic, when the range cannot be read.
 	Coverage *Coverage `json:"coverage,omitempty"`
+	// LineThreads is every thread on code lines of the review's diff, each
+	// placed in its current range, and OpenLineThreads how many are open.
+	LineThreads     []LineThread `json:"line_threads,omitempty"`
+	OpenLineThreads int          `json:"open_line_threads"`
 	// Diagnostics say why part of the report could not be read, such as a
 	// head that does not resolve in this checkout.
 	Diagnostics []string `json:"diagnostics"`
@@ -128,6 +132,8 @@ type SlideReport struct {
 	Decisions   []DecisionReport `json:"decisions"`
 	Comments    int              `json:"comments"`
 	OpenThreads int              `json:"open_threads"`
+	// OpenLineThreads is how many of the open threads are on code lines.
+	OpenLineThreads int `json:"open_line_threads"`
 	// Callouts are the slide's callout Items: the surprises its author
 	// called out, each saying what a reviewer would expect and what the
 	// change does instead.
@@ -206,6 +212,15 @@ func Build(ctx context.Context, review *saga.Review, options Options) Report {
 	if review.Deck == nil {
 		return report
 	}
+	report.LineThreads = LineThreads(ctx, review, rng, options.Resolver)
+	for _, thread := range report.LineThreads {
+		if thread.State == saga.CommentOpen {
+			report.OpenLineThreads++
+		}
+	}
+	if len(report.LineThreads) == 0 {
+		report.LineThreads = nil
+	}
 	authors := attributions(ctx, options.SagaRoot, review)
 	latest := LatestDecisions(review.Approvals, authors)
 	threads := Threads(review.Comments)
@@ -233,6 +248,9 @@ func Build(ctx context.Context, review *saga.Review, options Options) Report {
 				slideReport.Comments += 1 + len(thread.Replies)
 				if thread.State == saga.CommentOpen {
 					slideReport.OpenThreads++
+					if thread.Root.CodeLine != nil {
+						slideReport.OpenLineThreads++
+					}
 				}
 			}
 		}

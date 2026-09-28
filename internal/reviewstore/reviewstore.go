@@ -167,15 +167,19 @@ func Decide(root string, decision Decision) (saga.ReviewApproval, error) {
 type Remark struct {
 	Review string
 	// Target is a review slide or Item: its ID, "slide/item", or its URN.
-	// It is ignored for a reply, which joins the thread it replies to.
+	// It is ignored for a reply, which joins the thread it replies to. A
+	// code-line comment with no target is made on the review itself.
 	Target           string
 	ReplyTo          string
 	Body             string
 	State            string
 	Anchor           *saga.ReviewAnchor
 	AnnotationAction string
-	Reviewer         saga.ReviewerIdentity
-	Commit           string
+	// CodeLine anchors a new thread to lines of the review's diff. The caller
+	// authors it against the repository; see reviewstate.AuthorCodeLine.
+	CodeLine *saga.ReviewCodeLine
+	Reviewer saga.ReviewerIdentity
+	Commit   string
 	// CheckSnapshot has the same lock and read-only contract as Decision's
 	// check. Replies pass their resolved canonical target, not user input.
 	CheckSnapshot func(*saga.Review, string) error
@@ -221,6 +225,17 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 	if remark.State != "" && remark.State != saga.CommentOpen && remark.State != saga.CommentResolved {
 		return written, fmt.Errorf("a comment may set its thread open or resolved")
 	}
+	if remark.CodeLine != nil {
+		if remark.ReplyTo != "" {
+			return written, fmt.Errorf("a reply joins its thread's lines; only a new comment names code lines")
+		}
+		if remark.AnnotationAction != "" {
+			return written, fmt.Errorf("a code-line comment cannot carry slide annotation markup")
+		}
+		if err := saga.ValidateReviewCodeLine(*remark.CodeLine); err != nil {
+			return written, err
+		}
+	}
 	if err := saga.ValidateReviewerIdentity(&remark.Reviewer); err != nil {
 		return written, err
 	}
@@ -251,6 +266,8 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 			if (remark.AnnotationAction == "update" || remark.AnnotationAction == "delete") && (reply == nil || reply.AnnotationAction != "create" || reply.ReplyTo != "") {
 				return fmt.Errorf("an annotation update or delete must reply to its annotation create root")
 			}
+		} else if remark.CodeLine != nil && (remark.Target == "" || remark.Target == review.Target || remark.Target == review.ID) {
+			target = review.Target
 		} else {
 			var err error
 			if target, err = resolveTarget(review, remark.Target); err != nil {
@@ -266,7 +283,7 @@ func Comment(root string, remark Remark) (saga.ReviewComment, error) {
 		written = saga.ReviewComment{
 			Schema: saga.ReviewCommentSchemaURL, Version: saga.ReviewVersion, ID: store.EventID(now),
 			Target: target, ReplyTo: remark.ReplyTo, Body: strings.TrimSpace(remark.Body), State: remark.State,
-			Anchor: remark.Anchor, AnnotationAction: remark.AnnotationAction,
+			Anchor: remark.Anchor, AnnotationAction: remark.AnnotationAction, CodeLine: remark.CodeLine,
 			Reviewer: remark.Reviewer, Commit: remark.Commit, CreatedAt: now,
 		}
 		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(review.Directory, saga.ReviewCommentsDir))

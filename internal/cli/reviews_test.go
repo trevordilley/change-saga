@@ -462,3 +462,120 @@ func TestReviewListNamesTheSurprisesCalledOut(t *testing.T) {
 		t.Fatalf("the JSON report's callouts = %#v", table.Callouts)
 	}
 }
+
+func commentID(t *testing.T, output string) string {
+	t.Helper()
+	for _, line := range strings.Split(output, "\n") {
+		if value, ok := strings.CutPrefix(line, "Comment: "); ok {
+			return value
+		}
+	}
+	t.Fatalf("comment id was not printed:\n%s", output)
+	return ""
+}
+
+func lineThread(t *testing.T, report reviewstate.Report, id string) reviewstate.LineThread {
+	t.Helper()
+	for _, thread := range report.LineThreads {
+		if thread.ID == id {
+			return thread
+		}
+	}
+	t.Fatalf("report has no line thread %s: %#v", id, report.LineThreads)
+	return reviewstate.LineThread{}
+}
+
+func TestReviewCommentsOnCodeLinesGoOutdatedWhenTheirLinesChange(t *testing.T) {
+	t.Parallel()
+	fixture := newReviewFixture(t)
+	human := []string{"--reviewer-kind", "human", fixture.root}
+	// A line an Item explains is filed under that Item; one no Item explains
+	// is made on the review itself.
+	queue := commentID(t, run(t, Review, append([]string{"comment", "--review", "pr-7", "--path", "queue.go", "--line", "3", "--body", "Why **postgres** here?\n\nSecond paragraph."}, human...)...))
+	store := commentID(t, run(t, Review, append([]string{"comment", "--review", "pr-7", "--path", "store.go", "--line", "1", "--end-line", "2", "--body", "Package doc?"}, human...)...))
+	old := commentID(t, run(t, Review, append([]string{"comment", "--review", "pr-7", "--path", "store.go", "--line", "3", "--side", "old", "--body", "Was none on purpose?"}, human...)...))
+	assertValid(t, fixture.root)
+	document, _, err := saga.Load(fixture.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	head := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "feature/pg"))
+	base := strings.TrimSpace(git(t, fixture.repo, "merge-base", "main", "feature/pg"))
+	records := map[string]saga.ReviewComment{}
+	for _, comment := range document.FindReview("pr-7").Comments {
+		records[comment.ID] = comment
+	}
+	if got := records[queue]; got.Target != saga.ReviewItemTarget("app", "pr-7", "queue", "node") || got.CodeLine == nil || got.CodeLine.Commit != head || got.CodeLine.Side != "new" || got.CodeLine.Start != 3 || got.CodeLine.End != 3 || got.Commit != head {
+		t.Fatalf("queue.go comment = %#v %#v", got, got.CodeLine)
+	}
+	if got := records[store]; got.Target != saga.ReviewTarget("app", "pr-7") || got.CodeLine.Start != 1 || got.CodeLine.End != 2 {
+		t.Fatalf("store.go comment = %#v %#v", got, got.CodeLine)
+	}
+	// The old side is anchored at the merge-base, where the deleted line is.
+	// The table Item references only the head's line, so it does not hold it.
+	if got := records[old]; got.CodeLine.Commit != base || got.CodeLine.Side != "old" || got.Target != saga.ReviewTarget("app", "pr-7") {
+		t.Fatalf("old-side comment = %#v %#v", got, got.CodeLine)
+	}
+
+	report := reviewReport(t, fixture)
+	if report.OpenLineThreads != 3 || len(report.LineThreads) != 3 {
+		t.Fatalf("line threads = %d open, %#v", report.OpenLineThreads, report.LineThreads)
+	}
+	if got := lineThread(t, report, queue); got.Currency != reviewstate.Current || got.Moved || got.Summary != "Why **postgres** here?" || got.Location != head+":queue.go#L3" {
+		t.Fatalf("queue.go thread = %#v", got)
+	}
+	if got := slideReport(t, report, "queue"); got.OpenThreads != 1 || got.OpenLineThreads != 1 {
+		t.Fatalf("queue slide = %#v", got)
+	}
+
+	// Replies, resolve, and reopen work as on any thread.
+	run(t, Review, append([]string{"comment", "--review", "pr-7", "--reply-to", store, "--body", "Added.", "--resolve"}, human...)...)
+	if got := lineThread(t, reviewReport(t, fixture), store); got.State != saga.CommentResolved || got.Comments != 2 {
+		t.Fatalf("resolved line thread = %#v", got)
+	}
+	run(t, Review, append([]string{"comment", "--review", "pr-7", "--reply-to", store, "--body", "Not yet.", "--reopen"}, human...)...)
+
+	// A push that changes queue.go line 3 outdates its thread at its original
+	// line; one that only adds lines above store.go's moves its thread, and
+	// says so.
+	writeFile(t, filepath.Join(fixture.repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"postgres-v2\" }\n")
+	writeFile(t, filepath.Join(fixture.repo, "store.go"), "// Package store keeps jobs.\npackage store\n\nfunc Table() string { return \"jobs\" }\n")
+	git(t, fixture.repo, "commit", "-am", "Rename the queue table")
+	report = reviewReport(t, fixture)
+	if got := lineThread(t, report, queue); got.Currency != reviewstate.Outdated || got.Start != 3 || got.Path != "queue.go" || !strings.Contains(got.Reason, "changed") {
+		t.Fatalf("changed line kept a current thread: %#v", got)
+	}
+	if got := lineThread(t, report, store); got.Currency != reviewstate.Current || !got.Moved || got.Start != 2 || got.End != 3 || !strings.Contains(got.Reason, "moved from line 1 to 2") || got.State != saga.CommentOpen {
+		t.Fatalf("shifted lines = %#v", got)
+	}
+	if got := lineThread(t, report, old); got.Currency != reviewstate.Current {
+		t.Fatalf("the merge-base did not move, yet = %#v", got)
+	}
+
+	var text bytes.Buffer
+	if err := Review(context.Background(), []string{"list", fixture.root}, &text); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"open line threads: 3 of 3", "queue.go:3 (new) outdated", "on queue/node", "store.go:2-3 (new) current (the lines moved from line 1 to 2) on the review, 3 comments: Package doc? [" + store + "]", "(1 on code lines)"} {
+		if !strings.Contains(text.String(), want) {
+			t.Fatalf("review list does not say %q:\n%s", want, text.String())
+		}
+	}
+
+	var refused bytes.Buffer
+	for _, args := range [][]string{
+		{"--path", "queue.go", "--line", "9"},
+		{"--path", "queue.go", "--line", "3", "--side", "sideways"},
+		{"--path", "queue.go", "--line", "3", "--reply-to", queue},
+		{"--path", "queue.go"},
+		{"--path", "missing.go", "--line", "1"},
+		{"--path", "../queue.go", "--line", "1"},
+		{"--target", "queue", "--line", "3"},
+	} {
+		refused.Reset()
+		if err := Review(context.Background(), append(append([]string{"comment", "--review", "pr-7", "--body", "no"}, args...), human...), &refused); err == nil {
+			t.Fatalf("comment %v was accepted", args)
+		}
+	}
+	assertValid(t, fixture.root)
+}

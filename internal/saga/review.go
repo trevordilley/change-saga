@@ -26,7 +26,8 @@ import (
 //	                       and, after merge, the frozen base and head commits
 //	  deck/                the review deck: one flat deck bundle, role review
 //	  approvals/<id>.json  append-only per-slide decisions
-//	  comments/<id>.json   append-only comments on review slides and Items
+//	  comments/<id>.json   append-only comments on review slides and Items,
+//	                       and on code lines of the review's diff
 const (
 	ReviewSuffix       = ".review"
 	ReviewManifestName = "review.json"
@@ -51,6 +52,13 @@ const (
 const (
 	CommentOpen     = "open"
 	CommentResolved = "resolved"
+)
+
+// The sides of a diff a code-line comment is made on: the head's lines, or
+// the merge-base's lines a change deleted or replaced.
+const (
+	CodeLineNew = "new"
+	CodeLineOld = "old"
 )
 
 // ReviewManifest is review.json.
@@ -106,7 +114,8 @@ type ReviewApproval struct {
 }
 
 // ReviewComment is one comment on a review slide or Item, or a reply to
-// another comment. A comment may resolve or reopen its thread.
+// another comment. A comment may resolve or reopen its thread. A root comment
+// may also be made on lines of the review's diff; see ReviewCodeLine.
 type ReviewComment struct {
 	Path    string `json:"-"`
 	Schema  string `json:"$schema"`
@@ -119,12 +128,52 @@ type ReviewComment struct {
 	// Anchor and AnnotationAction make visual markup part of the same
 	// append-only discussion. The root creates the mark; later replies update
 	// or delete it without rewriting the original review record.
-	Anchor           *ReviewAnchor    `json:"anchor,omitempty"`
-	AnnotationAction string           `json:"annotation_action,omitempty"`
-	Reviewer         ReviewerIdentity `json:"reviewer"`
-	Commit           string           `json:"commit,omitempty"`
+	Anchor           *ReviewAnchor `json:"anchor,omitempty"`
+	AnnotationAction string        `json:"annotation_action,omitempty"`
+	// CodeLine anchors a root comment to lines of the review's diff. Its
+	// replies join the thread and carry none.
+	CodeLine *ReviewCodeLine  `json:"code_line,omitempty"`
+	Reviewer ReviewerIdentity `json:"reviewer"`
+	Commit   string           `json:"commit,omitempty"`
 	// CreatedAt orders comments; it is not an identity.
 	CreatedAt time.Time `json:"created_at"`
+}
+
+// ReviewCodeLine is the lines of a review's diff a comment was made on: a code
+// reference, in coderef's own terms, with the side of the diff it was made
+// on. Commit is the commit whose file holds the lines, the head for the new
+// side and the merge-base for the old one, and Digest is coderef's digest of
+// exactly lines Start..End there. A later head is compared with it the way
+// every code reference is: the thread is current while the lines are
+// unchanged, and outdated, at its original line, once they change. It is
+// never moved onto different code.
+type ReviewCodeLine struct {
+	Commit string `json:"commit"`
+	Path   string `json:"path"`
+	Side   string `json:"side"`
+	Start  int    `json:"start"`
+	End    int    `json:"end"`
+	Digest string `json:"digest"`
+}
+
+// Reference is the code reference the lines are.
+func (line ReviewCodeLine) Reference() coderef.Reference {
+	return coderef.Reference{Commit: line.Commit, Path: line.Path, Start: line.Start, End: line.End, Digest: line.Digest}
+}
+
+// ValidateReviewCodeLine checks a code-line anchor's shape. Whether its
+// commit exists and its digest matches is decided against the repository.
+func ValidateReviewCodeLine(line ReviewCodeLine) error {
+	if line.Side != CodeLineNew && line.Side != CodeLineOld {
+		return fmt.Errorf("code_line side must be new or old")
+	}
+	if line.Start < 1 || line.End < line.Start {
+		return fmt.Errorf("code_line lines must satisfy 1 <= start <= end")
+	}
+	if err := coderef.Validate(line.Reference()); err != nil {
+		return fmt.Errorf("code_line: %w", err)
+	}
+	return nil
 }
 
 type ReviewAnchor struct {
@@ -410,7 +459,7 @@ func loadReview(root, dir, id string, manifest Manifest, options loadOptions, va
 		return nil, err
 	}
 	for _, comment := range review.Comments {
-		if problem := validateReviewComment(comment, filepath.Base(comment.Path), targets, comments); problem != "" {
+		if problem := validateReviewComment(comment, filepath.Base(comment.Path), review.Target, targets, comments); problem != "" {
 			addIssue(validation, "error", relativePath(root, comment.Path), problem)
 		}
 	}
@@ -459,18 +508,26 @@ func validateReviewApproval(approval ReviewApproval, name string, slides map[str
 	return ""
 }
 
-func validateReviewComment(comment ReviewComment, name string, targets map[string]bool, comments map[string]ReviewComment) string {
+func validateReviewComment(comment ReviewComment, name, review string, targets map[string]bool, comments map[string]ReviewComment) string {
 	reviewer := comment.Reviewer
 	reply, replyExists := comments[comment.ReplyTo]
+	// A code-line comment on lines no Item explains is made on the review
+	// itself, and its replies join it there; every other comment is on a
+	// slide or Item.
+	targeted := targets[comment.Target] || (comment.Target == review && (comment.CodeLine != nil || (replyExists && reply.Target == review)))
 	switch {
 	case comment.Schema != ReviewCommentSchemaURL || comment.Version != ReviewVersion:
 		return fmt.Sprintf("comment requires $schema %s and version %d", ReviewCommentSchemaURL, ReviewVersion)
 	case !ValidID(comment.ID) || name != comment.ID+".json":
 		return "comment id must be a stable identifier matching its filename"
-	case !targets[comment.Target]:
-		return "comment target must be a slide or Item of this review"
+	case !targeted:
+		return "comment target must be a slide or Item of this review, or the review itself for a code-line comment"
 	case comment.ReplyTo != "" && (!replyExists || comment.ReplyTo == comment.ID):
 		return fmt.Sprintf("comment replies to unknown comment %q", comment.ReplyTo)
+	case comment.CodeLine != nil && comment.ReplyTo != "":
+		return "code_line anchors a root comment; a reply joins its thread's lines"
+	case comment.CodeLine != nil && comment.AnnotationAction != "":
+		return "a code-line comment cannot carry slide annotation markup"
 	case strings.TrimSpace(comment.Body) == "":
 		return "comment body is required"
 	case comment.State != "" && comment.State != CommentOpen && comment.State != CommentResolved:
@@ -499,6 +556,11 @@ func validateReviewComment(comment ReviewComment, name string, targets map[strin
 	}
 	if comment.Anchor != nil {
 		if err := ValidateReviewAnchor(*comment.Anchor); err != nil {
+			return err.Error()
+		}
+	}
+	if comment.CodeLine != nil {
+		if err := ValidateReviewCodeLine(*comment.CodeLine); err != nil {
 			return err.Error()
 		}
 	}

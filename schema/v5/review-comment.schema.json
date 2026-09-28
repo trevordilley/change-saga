@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://changesaga.dev/schema/v5/review-comment.schema.json",
-  "title": "Pull request review comment on a review slide or Item, or a reply",
+  "title": "Pull request review comment on a review slide or Item or on lines of the review's diff, or a reply",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -25,7 +25,8 @@
     },
     "target": {
       "type": "string",
-      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}(:item:[a-z][a-z0-9-]*)?$"
+      "description": "A review slide or Item. A code-line comment on lines no Item explains may target the review itself.",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}(:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}(:item:[a-z][a-z0-9-]*)?)?$"
     },
     "reply_to": {
       "$ref": "#/$defs/id"
@@ -45,6 +46,9 @@
     },
     "anchor": {
       "$ref": "#/$defs/anchor"
+    },
+    "code_line": {
+      "$ref": "#/$defs/code_line"
     },
     "reviewer": {
       "$ref": "#/$defs/reviewer"
@@ -73,6 +77,14 @@
     {
       "if": {"required": ["anchor"]},
       "then": {"required": ["annotation_action"]}
+    },
+    {
+      "if": {"required": ["code_line"]},
+      "then": {"not": {"anyOf": [{"required": ["reply_to"]}, {"required": ["annotation_action"]}]}}
+    },
+    {
+      "if": {"properties": {"target": {"pattern": ":review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"}}},
+      "then": {"anyOf": [{"required": ["code_line"]}, {"required": ["reply_to"]}]}
     }
   ],
   "$defs": {
@@ -109,6 +121,20 @@
           "type": "string",
           "minLength": 1
         }
+      }
+    },
+    "code_line": {
+      "description": "Lines of the review's diff: a code reference (commit, path, inclusive 1-based start..end, and the sha256 digest of exactly those lines' bytes) and the side of the diff. The commit is the head for the new side and the merge-base for the old side.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "path", "side", "start", "end", "digest"],
+      "properties": {
+        "commit": {"$ref": "#/$defs/commit"},
+        "path": {"type": "string", "minLength": 1},
+        "side": {"enum": ["new", "old"]},
+        "start": {"type": "integer", "minimum": 1},
+        "end": {"type": "integer", "minimum": 1},
+        "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
       }
     },
     "point": {
