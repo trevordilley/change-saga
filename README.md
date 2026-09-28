@@ -67,12 +67,16 @@ needed.
 
 Once a team creates reviews, it can make them part of its pull request gate.
 That is the team's policy, opted into in its own workflow; the tool never
-requires it. This GitHub Actions workflow fails a pull request whose review
-deck does not explain every changed line:
+requires it. This GitHub Actions workflow fails a pull request into `main`
+whose review deck does not explain every changed line. It gates only the pull
+requests people review; child branches merging into an integration branch are
+left alone, since the integration branch's pull request covers their work:
 
 ```yaml
 name: Change Saga
-on: pull_request
+on:
+  pull_request:
+    branches: [main]
 permissions:
   contents: read
 jobs:
@@ -244,6 +248,20 @@ Saga work happens when you create or update a PR, not at the end of every
 coding session. Ask for it when you ask your agent to open or update the PR;
 the installed skill tells agents the same, and a deck may lag the branch in
 between.
+
+Review the big change, not every branch. Change Saga exists to make large
+changes comprehensible, such as the result of many agents working in parallel.
+When one integration workspace or branch gathers the work of dozens of child
+workspaces, only the integration branch's pull request gets a review; the
+child branches merging into it get none. Many one- or two-slide reviews
+fragment the story a deck exists to tell, and a small PR a reviewer can read
+line by line doesn't need a deck.
+
+Deferring isn't skipping: the Saga still stays complete and current. When it's
+time for the real review, that PR gets the full deck with every changed line
+covered, and the living documentation is reconciled for everything the child
+workspaces changed. The hard work happens once, for the change people actually
+review.
 
 ## Status and check
 

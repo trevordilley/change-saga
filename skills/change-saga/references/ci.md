@@ -40,6 +40,11 @@ pinned release that includes `check --covers review` (v0.2.0-rc.6 or later).
 A pull request from a fork is matched too: its branch is absent from the base
 repository, so its review is found through its evidence in the change.
 
+Gate only the pull requests people review, usually those into the main branch
+(`on: pull_request: branches: [main]`). A child branch merging into an
+integration branch has no review of its own; the integration branch's pull
+request covers, and reconciles for, its work.
+
 ```yaml
       - uses: actions/checkout@v4
         with:

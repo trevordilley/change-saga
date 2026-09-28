@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased — review the big change, not every branch
+
+- The skill, `help`, `init`, `review create -h`, and README say a review deck
+  is for the change a person reviews as a whole. When an integration branch
+  gathers many workspaces' or agents' work, only its pull request gets a
+  review, not each child branch merging into it. That review does the deck,
+  coverage, and reconciling for all of their work at once: deferred, not
+  skipped. A small PR a reviewer reads line by line needs no deck unless the
+  team asks for one.
+
 ## Unreleased — slides on design tokens
 
 - Generated slides follow the reviewer's light and dark mode, including its

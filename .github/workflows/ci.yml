@@ -84,8 +84,11 @@ jobs:
     # This repository's own pull requests carry a review deck (change.saga
     # ___reviews); the gate asks that it explain every changed line. The
     # health job below separately keeps the living documentation current.
+    # Only pull requests into the default branch are reviewed: a child branch
+    # merging into an integration branch is covered by the integration
+    # branch's review.
     name: review deck explains the change
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.base_ref == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -109,8 +112,11 @@ jobs:
   health:
     # This repository's policy, not a product default: change.saga is the
     # showcase Saga, so nothing it already documents may be left stale or
-    # broken. Asked of the whole app at the commit under test.
+    # broken. Asked of the whole app at the commit under test. A pull request
+    # into an integration branch is skipped: reconciling waits for the
+    # integration branch's own pull request.
     name: change.saga stays healthy
+    if: github.event_name != 'pull_request' || github.base_ref == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
