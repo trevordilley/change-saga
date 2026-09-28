@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">Saga work waits for the PR</title>
+  <desc id="diagram-desc">Coding sessions stay about the code; the review deck, coverage, reconcile, and repins all happen together when the PR is created or updated, or when the user asks directly.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-trigger" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-then" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">Saga work waits for the PR</tspan></text>
+  </g>
+  <g id="coding" data-diagram-kind="node" transform="translate(60 250)" role="group" aria-label="Coding sessions">
+    <desc>Commit freely. A session does not end with deck, coverage, or reconcile upkeep nobody asked for.</desc>
+    <rect width="300" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Coding sessions</tspan></text>
+  </g>
+  <g id="pr" data-diagram-kind="node" transform="translate(490 250)" role="group" aria-label="Create or update the PR">
+    <desc>The trigger: the user says "okay, create a PR" or "let's update the PR", or their process publishes the change for review. A direct request for Saga work also counts.</desc>
+    <rect width="300" height="120" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Create or update the PR</tspan></text>
+  </g>
+  <g id="saga" data-diagram-kind="node" transform="translate(920 250)" role="group" aria-label="Saga work, all together">
+    <desc>Create or refresh the review deck, cover new lines, then reconcile and repin living documentation when the Saga has it.</desc>
+    <rect width="300" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Saga work, all together</tspan></text>
+  </g>
+  <g id="cli" data-diagram-kind="node" transform="translate(490 500)" role="group" aria-label="help and init say the same">
+    <rect width="300" height="110" rx="8" fill="none" stroke="#94a3b8" stroke-width="2"/>
+    <text x="18" y="36" font-size="18" fill="#526174" xml:space="preserve"><tspan x="18" y="36">help and init say the same</tspan></text>
+  </g>
+  <g id="trigger" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="coding to pr" data-from="coding" data-to="pr">
+    <path d="M360 310 L490 310" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-trigger)"/>
+  </g>
+  <g id="then" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="pr to saga" data-from="pr" data-to="saga">
+    <path d="M790 310 L920 310" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-then)"/>
+  </g>
+</svg>

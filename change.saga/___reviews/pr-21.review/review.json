@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "pr-21",
+  "title": "Say that Saga work happens when a PR is created or updated",
+  "pull_request": {
+    "number": 21,
+    "url": "https://github.com/trevordilley/change-saga/pull/21"
+  },
+  "base": "origin/main",
+  "head": "docs/saga-work-at-pr-time",
+  "created_at": "2026-09-28T01:33:38.026993Z"
+}

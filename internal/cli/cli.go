@@ -255,6 +255,8 @@ Create a review for this pull request (or branch):
      Reviewers decide and discuss per slide ("review approve", "review
      request-changes", "review comment"); the Saga itself carries no approvals.
 Coverage is not semantic proof: a person still judges whether each slide is right.
+Do this when the pull request is created or updated, not after every commit or
+coding session; a deck may lag its branch between PR updates.
 
 Do what the user asks, at the smallest scope that completely satisfies the
 request. A focused code review begins with its review deck; new product work
@@ -619,7 +621,8 @@ the id and base from the pull request or branch, and each command prints the nex
   change-saga review list %[1]s
   change-saga check --covers review --against BASE %[1]s
 Commit the Saga with the change; reviewers can collapse %[2]s in the pull
-request's file tree.
+request's file tree. Do this when the pull request is created or updated, not
+after every commit or coding session.
 
 A Saga of reviews alone is complete. If the team ever wants living
 documentation of the app (personas, stories, features, design), the same Saga

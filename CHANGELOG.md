@@ -13,6 +13,13 @@
 - Hand-authored slides with fixed colours sit on a light paper card in dark
   mode; `visual-qa` renders every surface in light and dark.
 
+## Unreleased — Saga work happens at PR time
+
+- The skill, `help`, `init`, and README say when to do Saga work: when a pull
+  request is created or updated, not at the end of every coding session or
+  commit. Creating or refreshing the review deck, covering lines, reconciling,
+  and repinning happen together then, or whenever the user asks directly.
+
 ## Unreleased — diagram shapes, ERD entities, and every Lucide icon
 
 - Diagram nodes gain `triangle`, `hexagon`, `parallelogram`, `document`,

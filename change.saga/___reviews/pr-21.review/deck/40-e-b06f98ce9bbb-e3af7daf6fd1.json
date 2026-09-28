@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "eefc1d782c4d14066a2fff5d55656de4a4d4b1e8",
+      "path": "README.md",
+      "start": 243,
+      "end": 247,
+      "digest": "sha256:f9232ca2cd2f153d50f8d46e5349dffa838025394d29a9a637d622b1e2f254d7"
+    }
+  ]
+}

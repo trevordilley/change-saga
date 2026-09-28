@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Saga work waits for the PR",
+      "x": 60,
+      "y": 28,
+      "width": 800,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "coding",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Coding sessions",
+      "note": "Commit freely. A session **does not end** with deck, coverage, or reconcile upkeep nobody asked for.",
+      "x": 60,
+      "y": 250,
+      "width": 300,
+      "height": 120,
+      "style": "normal"
+    },
+    {
+      "id": "pr",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Create or update the PR",
+      "note": "The trigger: the user says \"okay, create a PR\" or \"let's update the PR\", or their process publishes the change for review. A direct request for Saga work also counts.",
+      "x": 490,
+      "y": 250,
+      "width": 300,
+      "height": 120,
+      "style": "primary"
+    },
+    {
+      "id": "saga",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Saga work, all together",
+      "note": "Create or refresh the review deck, cover new lines, then reconcile and repin living documentation when the Saga has it.",
+      "x": 920,
+      "y": 250,
+      "width": 300,
+      "height": 120,
+      "style": "normal"
+    },
+    {
+      "id": "cli",
+      "kind": "node",
+      "shape": "rect",
+      "label": "help and init say the same",
+      "x": 490,
+      "y": 500,
+      "width": 300,
+      "height": 110,
+      "style": "secondary"
+    },
+    {
+      "id": "trigger",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "coding",
+      "to": "pr",
+      "points": [
+        {
+          "x": 360,
+          "y": 310
+        },
+        {
+          "x": 490,
+          "y": 310
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "then",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "pr",
+      "to": "saga",
+      "points": [
+        {
+          "x": 790,
+          "y": 310
+        },
+        {
+          "x": 920,
+          "y": 310
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}
