@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "start": 17,
+      "end": 20,
+      "digest": "sha256:71149cc40c1c8a3a79ca7e3c81694f2af8ba3fc84dc0de0221ca1dc35c423157",
+      "note": "geometricShapes and describedShape: the shapes describe leaves out."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "start": 41,
+      "end": 48,
+      "digest": "sha256:d543829bba0ee79f40769bb5f15851b4f3f2569be7420726309dabcf7cd5cff9",
+      "note": "geometricShapes and describedShape: the shapes describe leaves out."
+    }
+  ]
+}

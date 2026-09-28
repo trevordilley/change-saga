@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">Proof and guidance</title>
+  <desc id="diagram-desc">A golden, validation, describe, edit, schema, and apply-slide tests pin the connectors; SPEC and the skill teach them.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-marker-teach-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="18" markerHeight="18" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <path d="M0 0L10 5L0 10Z" fill="#fafaf8" stroke="#94a3b8" stroke-width="1.111" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">Proof and guidance</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="node" transform="translate(120 260)" role="group" aria-label="Tests">
+    <desc>connectors.svg pins every terminator; the sample.svg and notes.svg goldens stay byte-identical.</desc>
+    <rect width="420" height="120" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Tests</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">golden, validation, describe, edit</tspan></text>
+  </g>
+  <g id="docs" data-diagram-kind="node" transform="translate(740 260)" role="group" aria-label="Docs">
+    <rect width="420" height="120" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Docs</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">SPEC.md and the diagrams reference</tspan></text>
+  </g>
+  <g id="teach" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="backs" data-from="tests" data-to="docs">
+    <path d="M540 320 L740 320" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#diagram-marker-teach-head)"/>
+    <text x="600" y="300" font-size="18" fill="#526174" xml:space="preserve"><tspan x="600" y="300">backs</tspan></text>
+  </g>
+</svg>

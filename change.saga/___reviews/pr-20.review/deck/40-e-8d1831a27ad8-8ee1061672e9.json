@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
+      "path": "internal/diagram/annotation.go",
+      "digest": "sha256:6eef698eeaa7e0683a06631ebf6a3341590bb8d90f81fa270bf96076d08f9d49",
+      "note": "The new file holding the board layer; its header and palette open it."
+    }
+  ]
+}

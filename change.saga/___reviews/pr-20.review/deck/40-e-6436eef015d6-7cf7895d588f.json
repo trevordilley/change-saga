@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "0993c01299c903187d8e08636e42c1d5c44cdc6b",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 56,
+      "end": 57,
+      "digest": "sha256:8397a7d9adbdd43eb54664df86d1ad000cbc431161cb663fefe5e6bfd96c2f7e",
+      "note": "Schema kinds, shapes, color, about, target, side."
+    },
+    {
+      "commit": "0993c01299c903187d8e08636e42c1d5c44cdc6b",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:157c0213bbb4783ad5a03bc2be38d4ccbc60ffcb507be2af6921371935c58fe9",
+      "note": "Schema kinds, shapes, color, about, target, side."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 56,
+      "end": 57,
+      "digest": "sha256:d7ef97cbe5c1568140f9822c59bf93b88c38af75a73715d66c892cfcbc3d0db6",
+      "note": "Schema kinds, shapes, color, about, target, side."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 88,
+      "end": 92,
+      "digest": "sha256:8b4effeba966282afc69a474dfeefcbe0e49083361cf08cd64d5179bde835f69",
+      "note": "Schema kinds, shapes, color, about, target, side."
+    }
+  ]
+}

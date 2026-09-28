@@ -22,6 +22,7 @@
   },
   "$defs": {
     "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$"},
+    "terminator": {"enum": ["none", "arrow", "open", "triangle", "diamond", "filled-diamond", "circle", "dot", "bar", "one", "only-one", "zero-or-one", "many", "one-or-many", "zero-or-many"], "description": "An edge end: arrow, open, triangle (UML generalization), diamond and filled-diamond (aggregation, composition), circle, dot, bar, or an ERD crow's-foot cardinality."},
     "color": {"type": "string", "pattern": "^(#[a-fA-F0-9]{6}|none)$"},
     "point": {
       "type": "object", "additionalProperties": false, "required": ["x", "y"],
@@ -39,14 +40,22 @@
         "dash": {"type": "boolean"}
       }
     },
+    "field": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 64},
+        "type": {"type": "string", "maxLength": 64},
+        "key": {"enum": ["pk", "fk", "pk,fk"]}
+      }
+    },
     "element": {
       "type": "object",
       "additionalProperties": false,
       "required": ["id", "kind", "x", "y", "style"],
       "properties": {
         "id": {"allOf": [{"$ref": "#/$defs/id"}, {"not": {"pattern": "^diagram-"}}]},
-        "kind": {"enum": ["node", "edge", "text", "group", "graphic"]},
-        "shape": {"enum": ["service", "datastore", "decision", "rect", "ellipse", "boundary"], "description": "Node shape; a group with rect or boundary draws a frame around its children."},
+        "kind": {"enum": ["node", "edge", "text", "group", "graphic", "sticky", "annotation"], "description": "A sticky is a palette-coloured square of wrapped label text; an annotation is a bubble, pin, highlight, or bracket. Describe lists both as notes about their about element."},
+        "shape": {"enum": ["service", "datastore", "decision", "rect", "ellipse", "boundary", "triangle", "hexagon", "parallelogram", "document", "cloud", "actor", "queue", "circle", "star", "entity", "section", "bubble", "pin", "highlight", "bracket"], "description": "Node shape; a group with rect or boundary draws a frame around its children, and with section a tinted frame whose label sits in a title tab. The node shapes after boundary center their icon, label, and detail in a text area inside the outline and default to align middle; a circle needs equal width and height, and an entity draws an ERD table of its fields. An annotation is a bubble, pin, highlight, or bracket."},
         "label": {"type": "string", "maxLength": 2000},
         "detail": {"type": "string", "maxLength": 2000},
         "description": {"type": "string", "maxLength": 4000, "description": "Semantic explanation read by describe and assistive technology; not drawn."},
@@ -61,13 +70,27 @@
         "from": {"$ref": "#/$defs/id"}, "to": {"$ref": "#/$defs/id"},
         "points": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/point"}},
         "path": {"type": "string", "pattern": "^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\\-\\s]+$"},
-        "head": {"enum": ["arrow", "none"]},
+        "head": {"$ref": "#/$defs/terminator"},
         "head_size": {"type": "number", "minimum": 0, "maximum": 100},
         "label_box": {"$ref": "#/$defs/box", "description": "Element-local box for an edge label or a node label placed outside its shape."},
         "align": {"enum": ["start", "middle", "end"]},
         "wrap": {"type": "boolean"},
         "fragment": {"type": "string", "maxLength": 65536, "description": "Allowlisted SVG drawing markup for a graphic; currentColor follows its style's stroke."},
         "decorative": {"type": "boolean", "description": "Hidden from describe and assistive technology; may not contain semantic children."},
+        "tail": {"$ref": "#/$defs/terminator"},
+        "tail_label": {"type": "string", "maxLength": 2000, "description": "Text at the edge's start, such as an ERD cardinality; needs tail_label_box."},
+        "tail_label_box": {"$ref": "#/$defs/box"},
+        "head_label": {"type": "string", "maxLength": 2000, "description": "Text at the edge's end, such as an ERD cardinality; needs head_label_box."},
+        "head_label_box": {"$ref": "#/$defs/box"},
+        "curve": {"enum": ["straight", "smooth"], "description": "smooth draws the edge's points as a curve through every point."},
+        "line": {"enum": ["solid", "dashed", "dotted"], "description": "Overrides the style's dash for this edge."},
+        "fields": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/field"}, "description": "An entity node's rows, in order: each field's key marker, name, and type. Row i spans y = header + 28i inside the node, where header = the style's font_size * 1.25 + 16."},
+        "from_field": {"type": "string", "minLength": 1, "maxLength": 64, "description": "The field of the from entity this edge ends on; drawing still follows the edge's explicit points or path."},
+        "to_field": {"type": "string", "minLength": 1, "maxLength": 64, "description": "The field of the to entity this edge ends on."},
+        "color": {"enum": ["yellow", "pink", "blue", "green", "purple", "gray"], "description": "Renderer-owned palette colour of a sticky, section, or annotation; stickies and highlights default to yellow, the rest to gray."},
+        "about": {"$ref": "#/$defs/id", "description": "The semantic element a sticky or annotation is about; describe prints it, and a bubble without a target points at its box."},
+        "target": {"$ref": "#/$defs/point", "description": "Element-local point a bubble's pointer reaches; it must lie outside the bubble."},
+        "side": {"enum": ["left", "right", "top", "bottom"], "description": "The side of its box a bracket's point faces."},
         "step": {"type": "integer", "minimum": 1, "maximum": 1000, "description": "When the element appears in the document's reveal; requires reveal. Defaults to its reading order among semantic elements; a decorative element without a step appears with its group, or from the start. Equal steps appear together, gaps cost no time, and no element appears before its group."}
       }
     }

@@ -226,8 +226,8 @@ func TestDiagramEditRefusesHandAuthoredSlides(t *testing.T) {
 
 func TestDiagramIconsLists(t *testing.T) {
 	t.Parallel()
-	output, err := runDiagram(t, "", "icons", "--query", "data")
-	if err != nil || output != "lucide:database\n" {
+	output, err := runDiagram(t, "", "icons", "--query", "shelving")
+	if err != nil || output != "lucide:shelving-unit\n" {
 		t.Fatalf("icons = %q err=%v", output, err)
 	}
 }

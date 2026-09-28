@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "CHANGELOG.md",
+      "start": 9,
+      "end": 13,
+      "digest": "sha256:d8f43f1a7a33b90f1104436f62cbff5167e86667cd407c42ea53434331cca47f",
+      "note": "Changelog: entities and field ends."
+    }
+  ]
+}

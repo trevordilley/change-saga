@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets/lucide/triangle-alert.svg",
+      "digest": "sha256:4866f38b8560d410f21e3226413e0b77997b6dfbb6931fadfe0a0d5aef9ffeb4",
+      "note": "Replaced by its line in icons.json."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets/lucide/triangle-alert.svg",
+      "start": 1,
+      "end": 15,
+      "digest": "sha256:4866f38b8560d410f21e3226413e0b77997b6dfbb6931fadfe0a0d5aef9ffeb4",
+      "note": "Replaced by its line in icons.json."
+    }
+  ]
+}

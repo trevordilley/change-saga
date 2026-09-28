@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Proof and guidance",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "tests",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Tests",
+      "detail": "golden, validation, describe, edit",
+      "note": "`connectors.svg` pins every terminator; the `sample.svg` and `notes.svg` goldens stay byte-identical.",
+      "x": 120,
+      "y": 260,
+      "width": 420,
+      "height": 120,
+      "style": "primary"
+    },
+    {
+      "id": "docs",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Docs",
+      "detail": "SPEC.md and the diagrams reference",
+      "x": 740,
+      "y": 260,
+      "width": 420,
+      "height": 120,
+      "style": "normal"
+    },
+    {
+      "id": "teach",
+      "kind": "edge",
+      "label": "backs",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "tests",
+      "to": "docs",
+      "points": [
+        {
+          "x": 540,
+          "y": 320
+        },
+        {
+          "x": 740,
+          "y": 320
+        }
+      ],
+      "head": "triangle",
+      "label_box": {
+        "x": 600,
+        "y": 282,
+        "width": 80,
+        "height": 28
+      },
+      "line": "dashed"
+    }
+  ]
+}

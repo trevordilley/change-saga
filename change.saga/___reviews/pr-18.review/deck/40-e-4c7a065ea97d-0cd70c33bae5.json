@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/entity.go",
+      "start": 208,
+      "end": 242,
+      "digest": "sha256:271e08ea04c2c9e9407a258c157580ba6dba9058443bb391a1280445d4336156",
+      "note": "Fields.String and endpoint: describe's compact field list and node.field ends."
+    }
+  ]
+}

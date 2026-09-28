@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/cli/diagram.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:5b70de3828cbf64a017a218686ed4a71b210f4bf729e65c0ec51f4a46a85ed9b",
+      "note": "--query help mentions tags."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/cli/diagram.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:7d06d77d034c37286d2e9c928aba2d8b1f020639e9ce3805849992a0b322be8e",
+      "note": "--query help mentions tags."
+    }
+  ]
+}

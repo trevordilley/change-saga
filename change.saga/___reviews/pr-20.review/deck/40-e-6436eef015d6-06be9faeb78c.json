@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/schema_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:a5d94f8a41dc5e6219a8e6cf01f19fa7563e771587f9f5d31275c3919725e06a",
+      "note": "Schema enums checked against the union of runtime shape sets, sides, and palette."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/schema_test.go",
+      "start": 95,
+      "end": 107,
+      "digest": "sha256:d890170003abeadab672db0aec7e5706c4e5972933c1ae975df3ae44337731bb",
+      "note": "Schema enums checked against the union of runtime shape sets, sides, and palette."
+    }
+  ]
+}

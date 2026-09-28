@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ebc3689fcc9a91b2fc68b1b10707d9f40908c27d",
+      "path": "internal/diagram/render.go",
+      "start": 313,
+      "end": 336,
+      "digest": "sha256:351f11a853052fedb6c8e43be69cd95a102215d3c526b318ff3ffb44909f20bd",
+      "note": "The inline wrapping loop that became lines()."
+    }
+  ]
+}

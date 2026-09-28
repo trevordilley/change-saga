@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "internal/diagram/model.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:20dcbe2ff9053fac8547b3d80209f32160f57e1463c2763fd91f8bd9227f67bf",
+      "note": "New kinds, the section frame shape, the appended fields, and the validation hooks."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "internal/diagram/model.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:0eb42b0f05d943944f70c14a4d63c79952c9dfe49135d7880780a173cf24bd76",
+      "note": "New kinds, the section frame shape, the appended fields, and the validation hooks."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "internal/diagram/model.go",
+      "start": 115,
+      "end": 118,
+      "digest": "sha256:372047db2c1f3d87e0f4aeca18a3894df695b3814abff21b643ad3acc283baca",
+      "note": "New kinds, the section frame shape, the appended fields, and the validation hooks."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "internal/diagram/model.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:04b49c902fac512e2de092cf44e0c11740eafcb5a727832cb16b993e66ed2c8a",
+      "note": "New kinds, the section frame shape, the appended fields, and the validation hooks."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "internal/diagram/model.go",
+      "start": 310,
+      "end": 311,
+      "digest": "sha256:1f63222f9c3f332c743da0923426175806372380ecdd9787c072ef1885e8f940",
+      "note": "New kinds, the section frame shape, the appended fields, and the validation hooks."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "internal/diagram/model.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:8729d20c09ab7d507ae515e3e332965f307d886c428dcd0e74beac0538b36b81",
+      "note": "New kinds, the section frame shape, the appended fields, and the validation hooks."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "internal/diagram/model.go",
+      "start": 380,
+      "end": 381,
+      "digest": "sha256:bb4d4bb7733a6e209226624fa38624c9cc8ec9e800eb79c808b4efb986106d5c",
+      "note": "New kinds, the section frame shape, the appended fields, and the validation hooks."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "internal/diagram/model.go",
+      "start": 391,
+      "end": 393,
+      "digest": "sha256:f43c733de002158e8ec4ec8c5c53fe0acf8402139d235d117fbdf2f04ee63088",
+      "note": "New kinds, the section frame shape, the appended fields, and the validation hooks."
+    }
+  ]
+}

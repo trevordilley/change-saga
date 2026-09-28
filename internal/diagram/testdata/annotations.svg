@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">Retries stay idempotent</title>
+  <desc id="diagram-desc">A board of sections, stickies, and annotations.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-write" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <filter id="diagram-shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <g id="heading" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">Retries stay idempotent</tspan></text>
+  </g>
+  <g id="ingest" data-diagram-kind="group" transform="translate(60 100)" role="group" aria-label="Ingest">
+    <rect width="560" height="360" rx="10" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H79.211A10 10 0 0 1 89.211 10V39.5Z" fill="#1d4ed8"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve"><tspan x="12" y="28">Ingest</tspan></text>
+    <g id="queue" data-diagram-kind="node" transform="translate(30 70)" role="group" aria-label="Queue">
+      <rect width="200" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Queue</tspan></text>
+    </g>
+    <g id="retry" data-diagram-kind="group" transform="translate(280 60)" role="group" aria-label="Retry">
+      <rect width="250" height="270" rx="10" fill="#f1ebff" stroke="#6d28d9" stroke-width="2"/>
+      <path d="M0 39.5V10A10 10 0 0 1 10 0H68.779A10 10 0 0 1 78.779 10V39.5Z" fill="#6d28d9"/>
+      <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve"><tspan x="12" y="28">Retry</tspan></text>
+      <g id="focus" data-diagram-kind="annotation" transform="translate(15 60)" role="group" aria-label="highlight on backoff" data-about="backoff" data-annotation="highlight">
+        <rect width="220" height="100" rx="6" fill="#facc15" fill-opacity="0.35"/>
+      </g>
+      <g id="backoff" data-diagram-kind="node" transform="translate(25 70)" role="group" aria-label="Backoff">
+        <rect width="200" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+        <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Backoff</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g id="store" data-diagram-kind="node" transform="translate(820 130)" role="group" aria-label="Store">
+    <path d="M0 14C0 -4.667 240 -4.667 240 14V106C240 124.667 0 124.667 0 106Z" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <path d="M0 14C0 33 240 33 240 14" fill="none" stroke="#64748b" stroke-width="2"/>
+    <text x="18" y="62" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="62">Store</tspan></text>
+  </g>
+  <g id="write" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="backoff to store" data-from="backoff" data-to="store">
+    <path d="M565 270 L700 270 L700 200 L820 200" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-write)"/>
+  </g>
+  <g id="why" data-diagram-kind="sticky" transform="translate(840 420)" role="group" aria-label="Writes are keyed by batch, so a retry overwrites itself." data-about="store">
+    <desc>The key is the batch digest.</desc>
+    <rect width="200" height="200" rx="3" fill="#fff3a3" filter="url(#diagram-shadow)"/>
+    <text x="16" y="38" font-size="22" fill="#3f2d00" xml:space="preserve"><tspan x="16" y="38">Writes are</tspan><tspan x="16" y="65.5">keyed by batch,</tspan><tspan x="16" y="93">so a retry</tspan><tspan x="16" y="120.5">overwrites itself.</tspan></text>
+  </g>
+  <g id="hot" data-diagram-kind="annotation" transform="translate(1080 300)" role="group" aria-label="Hot path" data-about="store" data-annotation="bubble">
+    <path d="M10 0L10 0L-20 -50L34 0L170 0A10 10 0 0 1 180 10L180 80A10 10 0 0 1 170 90L10 90A10 10 0 0 1 0 80L0 10A10 10 0 0 1 10 0Z" fill="#f1f5f9" stroke="#475569" stroke-width="2" stroke-linejoin="round"/>
+    <text x="14" y="34" font-size="22" fill="#0f172a" xml:space="preserve"><tspan x="14" y="34">Hot path</tspan></text>
+  </g>
+  <g id="slow" data-diagram-kind="annotation" transform="translate(640 320)" role="group" aria-label="Waits up to 30s" data-about="write" data-annotation="bubble">
+    <path d="M10 0L48 0L60 -85L72 0L150 0A10 10 0 0 1 160 10L160 60A10 10 0 0 1 150 70L10 70A10 10 0 0 1 0 60L0 10A10 10 0 0 1 10 0Z" fill="#ffe8f0" stroke="#be185d" stroke-width="1" stroke-linejoin="round"/>
+    <text x="14" y="27" font-size="15" fill="#500724" xml:space="preserve"><tspan x="14" y="27">Waits up to 30s</tspan></text>
+  </g>
+  <g id="first" data-diagram-kind="annotation" transform="translate(272 152)" role="group" aria-label="Pin 1 on queue" data-about="queue" data-annotation="pin">
+    <circle cx="16" cy="16" r="16" fill="#1d4ed8" stroke="#ffffff" stroke-width="2"/>
+    <text x="16" y="21.6" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">1</text>
+  </g>
+  <g id="second" data-diagram-kind="annotation" transform="translate(547 212)" role="group" aria-label="Pin 2 on backoff" data-about="backoff" data-annotation="pin">
+    <circle cx="16" cy="16" r="16" fill="#6d28d9" stroke="#ffffff" stroke-width="2"/>
+    <text x="16" y="21.6" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold">2</text>
+  </g>
+  <g id="span" data-diagram-kind="annotation" transform="translate(1070 130)" role="group" aria-label="One record" data-about="store" data-annotation="bracket">
+    <path d="M0 0Q12 0 12 12L12 48Q12 60 24 60Q12 60 12 72L12 108Q12 120 0 120" fill="none" stroke="#15803d" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="32" y="61" font-size="15" fill="#052e16" xml:space="preserve"><tspan x="32" y="61">One record</tspan></text>
+  </g>
+</svg>

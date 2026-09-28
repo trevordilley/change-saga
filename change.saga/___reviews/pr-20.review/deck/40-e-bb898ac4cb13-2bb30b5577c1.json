@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
+      "path": "internal/diagram/annotation.go",
+      "start": 437,
+      "end": 468,
+      "digest": "sha256:f49400f942a2d7863d044921461e9b83986ef02b2f3fbb94396c157c2caab751",
+      "note": "Section members and the Sections and Notes headings describe uses."
+    }
+  ]
+}

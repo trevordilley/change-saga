@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "skills/change-saga/references/diagrams.md",
+      "start": 71,
+      "end": 74,
+      "digest": "sha256:64cf4e16b468da8ec7682bbc84a61b3be5f951e0c0d2e525c4a3cd2185958cbd",
+      "note": "The skill's kind list gains the new shapes."
+    }
+  ]
+}

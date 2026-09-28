@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">An entity's rows are what edges can name</title>
+  <desc id="diagram-desc">An entity node lists fields as rows; an edge's from_field or to_field names a row, and describe reads both compactly.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-marker-contains-tail" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto-start-reverse" overflow="visible">
+      <path d="M4 0L4 10M7 0L7 10" fill="none" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round"/>
+    </marker>
+    <marker id="diagram-marker-contains-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <circle cx="2" cy="5" r="1.8" fill="#ffffff" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round"/>
+      <path d="M4.5 5L10 0M4.5 5L10 10M4.5 5L10 5" fill="none" stroke="#94a3b8" stroke-width="0.833" stroke-linejoin="round"/>
+    </marker>
+    <marker id="diagram-marker-ends-on-tail" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="48" markerHeight="48" markerUnits="userSpaceOnUse" orient="auto-start-reverse" overflow="visible">
+      <circle cx="2" cy="5" r="1.8" fill="#ffffff" stroke="#2563eb" stroke-width="0.833" stroke-linejoin="round"/>
+      <path d="M4.5 5L10 0M4.5 5L10 10M4.5 5L10 5" fill="none" stroke="#2563eb" stroke-width="0.833" stroke-linejoin="round"/>
+    </marker>
+    <marker id="diagram-marker-ends-on-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="48" markerHeight="48" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
+      <path d="M4 0L4 10M7 0L7 10" fill="none" stroke="#2563eb" stroke-width="0.833" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+---
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</metadata>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">An entity's rows are what edges can name</tspan></text>
+  </g>
+  <g id="element" data-diagram-kind="node" transform="translate(80 150)" role="group" aria-label="Element">
+    <desc>fields, from_field, and to_field are appended at the end of Element and of the contract's field list, so sibling branches that append their own fields conflict trivially.</desc>
+    <rect width="340" height="184" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+    <path d="M0 43.5V8A8 8 0 0 1 8 0H332A8 8 0 0 1 340 8V43.5Z" fill="#2563eb" fill-opacity=".12"/>
+    <path d="M0 43.5H340" stroke="#2563eb" stroke-width="2"/>
+    <svg x="12" y="10.75" width="22" height="22" color="#153869" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v18"/>
+      <rect width="18" height="18" x="3" y="3" rx="2"/>
+      <path d="M3 9h18"/>
+      <path d="M3 15h18"/>
+    </svg>
+    <text x="185" y="30" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle"><tspan x="185" y="30">Element</tspan></text>
+    <g data-field="id" data-key="pk">
+      <text x="12" y="62.5" font-size="12" fill="#2563eb" xml:space="preserve">PK</text>
+      <text x="38.64" y="63.5" font-size="16" fill="#153869" xml:space="preserve" text-decoration="underline">id</text>
+      <text x="328" y="63.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">string</text>
+    </g>
+    <path d="M0 71.5H340" stroke="#2563eb" stroke-opacity=".35" stroke-width="1"/>
+    <g data-field="shape">
+      <text x="38.64" y="91.5" font-size="16" fill="#153869" xml:space="preserve">shape</text>
+      <text x="328" y="91.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">"entity"</text>
+    </g>
+    <path d="M0 99.5H340" stroke="#2563eb" stroke-opacity=".35" stroke-width="1"/>
+    <g data-field="fields">
+      <text x="38.64" y="119.5" font-size="16" fill="#153869" xml:space="preserve">fields</text>
+      <text x="328" y="119.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">Fields</text>
+    </g>
+    <path d="M0 127.5H340" stroke="#2563eb" stroke-opacity=".35" stroke-width="1"/>
+    <g data-field="from_field" data-key="fk">
+      <text x="12" y="146.5" font-size="12" fill="#2563eb" xml:space="preserve">FK</text>
+      <text x="38.64" y="147.5" font-size="16" fill="#153869" xml:space="preserve">from_field</text>
+      <text x="328" y="147.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">string</text>
+    </g>
+    <path d="M0 155.5H340" stroke="#2563eb" stroke-opacity=".35" stroke-width="1"/>
+    <g data-field="to_field" data-key="fk">
+      <text x="12" y="174.5" font-size="12" fill="#2563eb" xml:space="preserve">FK</text>
+      <text x="38.64" y="175.5" font-size="16" fill="#153869" xml:space="preserve">to_field</text>
+      <text x="328" y="175.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">string</text>
+    </g>
+  </g>
+  <g id="field" data-diagram-kind="node" transform="translate(640 150)" role="group" aria-label="Field">
+    <desc>pk,fk covers a join table's columns, which are both. A name is unique within its entity and at most 64 characters on one line.</desc>
+    <rect width="340" height="128" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <path d="M0 43.5V8A8 8 0 0 1 8 0H332A8 8 0 0 1 340 8V43.5Z" fill="#64748b" fill-opacity=".12"/>
+    <path d="M0 43.5H340" stroke="#64748b" stroke-width="2"/>
+    <text x="170" y="30" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="170" y="30">Field</tspan></text>
+    <g data-field="name" data-key="pk">
+      <text x="12" y="62.5" font-size="12" fill="#64748b" xml:space="preserve">PK</text>
+      <text x="38.64" y="63.5" font-size="16" fill="#172033" xml:space="preserve" text-decoration="underline">name</text>
+      <text x="328" y="63.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve">string</text>
+    </g>
+    <path d="M0 71.5H340" stroke="#64748b" stroke-opacity=".35" stroke-width="1"/>
+    <g data-field="type">
+      <text x="38.64" y="91.5" font-size="16" fill="#172033" xml:space="preserve">type</text>
+      <text x="328" y="91.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve">string</text>
+    </g>
+    <path d="M0 99.5H340" stroke="#64748b" stroke-opacity=".35" stroke-width="1"/>
+    <g data-field="key">
+      <text x="38.64" y="119.5" font-size="16" fill="#172033" xml:space="preserve">key</text>
+      <text x="328" y="119.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve">pk | fk | pk,fk</text>
+    </g>
+  </g>
+  <g id="contains" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="rows" data-from="element" data-to="field" data-from-field="fields">
+    <path d="M420 263.5 L530 263.5 L530 171.75 L640 171.75" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-start="url(#diagram-marker-contains-tail)" marker-end="url(#diagram-marker-contains-head)"/>
+    <text x="544" y="154" font-size="18" fill="#526174" xml:space="preserve"><tspan x="544" y="154">rows</tspan></text>
+  </g>
+  <g id="ends-on" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="names a row" data-from="element" data-to="field" data-from-field="to_field" data-to-field="name">
+    <desc>Many edges may name one row, so the ends read zero-or-many to only-one. The SVG edge carries data-from-field and data-to-field; each entity row is a &lt;g data-field&gt;, so a reader can match them.</desc>
+    <path d="M420 319.5 L580 319.5 L580 207.5 L640 207.5" fill="none" stroke="#2563eb" stroke-width="4" stroke-linejoin="round" marker-start="url(#diagram-marker-ends-on-tail)" marker-end="url(#diagram-marker-ends-on-head)"/>
+    <text x="476" y="344" font-size="18" fill="#153869" xml:space="preserve"><tspan x="476" y="344">names a row</tspan></text>
+  </g>
+  <g id="describe" data-diagram-kind="node" transform="translate(80 430)" role="group" aria-label="diagram describe">
+    <desc>Names or types with spaces, commas, or quotes are quoted, so the list stays unambiguous.</desc>
+    <path d="M0 0H560V156.4C373.333 109.292 186.667 203.508 0 156.4Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+    <svg x="16" y="10.525" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 12h-5"/>
+      <path d="M15 8h-5"/>
+      <path d="M19 17V5a2 2 0 0 0-2-2H4"/>
+      <path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/>
+    </svg>
+    <text x="16" y="64.525" font-size="22" fill="#172033" xml:space="preserve"><tspan x="16" y="64.525">diagram describe</tspan></text>
+    <text x="16" y="91.025" font-size="15" fill="#172033" xml:space="preserve"><tspan x="16" y="91.025">orders "orders" shape=entity</tspan><tspan x="16" y="109.775">  fields: id uuid pk, customer_id uuid fk</tspan><tspan x="16" y="128.525">places: orders.customer_id -&gt; customers.id</tspan></text>
+  </g>
+  <g id="refused" data-diagram-kind="node" transform="translate(700 430)" role="group" aria-label="Refused, all at once">
+    <rect width="500" height="170" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <svg x="18" y="18" width="24" height="24" color="#805015" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+      <path d="M12 9v4"/>
+      <path d="M12 17h.01"/>
+    </svg>
+    <text x="52" y="37" font-size="19" fill="#805015" xml:space="preserve"><tspan x="52" y="37">Refused, all at once</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve"><tspan x="18" y="73">A repeated or blank field, an unknown key, more rows than the</tspan><tspan x="18" y="91.75">height holds, or an edge naming a field its entity does not list.</tspan></text>
+  </g>
+</svg>

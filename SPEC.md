@@ -488,7 +488,8 @@ references them. A legacy flat slide becomes the first revision the first time
 A revision's visual is either an authored asset (SVG, HTML, or raster image)
 or a **diagram source**. A diagram source is a
 [`diagram.schema.json`](schema/v5/diagram.schema.json) document: an ordered list
-of explicitly positioned nodes, edges, text, groups, and allowlisted graphics.
+of explicitly positioned nodes, edges, text, groups, allowlisted graphics,
+stickies, and annotations.
 The CLI renders it deterministically to the revision's SVG asset and stores the
 canonical source beside it as a `24-a-*.json` sidecar. The revision pins both:
 
@@ -504,6 +505,18 @@ lays out, resizes, or reroutes anything; text that does not fit its explicit
 box is refused. Generated SVGs reference one measurement font the reviewer
 serves at `/_diagram/fonts/go-regular.ttf` and fall back to a system
 sans-serif elsewhere.
+
+An edge's `head` and `tail` take one terminator vocabulary: `arrow`, `open`,
+`triangle` (UML generalization), `diamond` and `filled-diamond` (aggregation
+and composition), `circle`, `dot`, `bar`, and the ERD crow's-foot
+cardinalities `one`, `only-one`, `zero-or-one`, `many`, `one-or-many`, and
+`zero-or-many`. A tail is drawn facing outward, so each reads the same at
+either end. `head_label` and `tail_label` place text such as a cardinality at
+an end, each in its own explicit box. `curve: smooth` draws a curve through an
+edge's points, and `line` (`solid`, `dashed`, or `dotted`) overrides its
+style's dash. Terminators grow with strokes thicker than 2 unless `head_size`
+sets their size. `describe` prints an edge's terminators and end labels when
+they say more than a plain arrow.
 
 Any semantic element may carry an optional `note`: at most 1,000 characters
 of Markdown limited to bold, italics, inline code, lists, and `http`, `https`,
@@ -521,6 +534,38 @@ popover of an element an Item selects also shows the Item's label and
 description, and an implementation Item's callout body, which a review slide
 lists in its Surprises panel instead; an Item's drawer repeats its note for a
 reader who cannot hover.
+
+Beyond the original `service`, `datastore`, `decision`, `rect`, `ellipse`,
+and `boundary`, a node may be a `triangle`, `hexagon`, `parallelogram`,
+`document`, `cloud`, `actor`, `queue`, `circle` (equal width and height), or
+`star`. These shapes center their icon, label, and detail in a text area
+inside the outline, default to `middle` alignment, and refuse text that does
+not fit it. An `entity` node draws an ERD table: a header naming it and one
+row per entry of its `fields` (`name`, optional `type`, and `key` `pk`, `fk`,
+or `pk,fk`). Rows have fixed metrics, published by `change-saga spec`, so an
+author can aim an edge at a row, and an edge's optional `from_field` or
+`to_field` names the field it ends on, which must exist on that endpoint. The
+description prints an entity's fields and an edge's field endpoints, such as
+`orders.customer_id -> customers.id`, and omits purely geometric shapes. Icons
+name any of the bundled Lucide set, listed and searched by tag with
+`change-saga diagram icons`; a generated SVG that uses one carries Lucide's
+license notice.
+
+A diagram may also carry a board layer. A **section** is a group with shape
+`section`: a tinted frame whose label sits in a title tab inside its top-left
+corner; sections nest like any group. A **sticky** is a square of wrapped label
+text with a soft, renderer-owned shadow. An **annotation** is a speech
+`bubble` whose pointer reaches an explicit element-local `target` or, without
+one, the nearest point of the box of the element it is `about`; a numbered
+`pin` (a circle of at most three characters); a translucent `highlight`; or a
+curly `bracket` whose point faces its `side`. Stickies, sections, and
+annotations take their colours from a fixed `color` palette (yellow, pink,
+blue, green, purple, gray) so their text always has contrast; their style
+supplies only the font size, stroke width, and dash. A sticky or annotation
+may name the semantic element it is `about`; removing that element requires
+`cascade`. The one `<defs>` entry they add, a sticky's shadow filter, has the
+renderer-owned id `diagram-shadow`, and a source that uses none of them
+renders exactly as before.
 
 A diagram may opt into a staggered entrance with `"reveal": "fade"`, and any
 element may carry an integer `step` from 1 to 1,000; a `step` without a
@@ -548,7 +593,9 @@ that differs from its source, for example after a renderer change.
 snapshot and republishes the slide through the same transaction, carrying its
 Items, evidence, and criterion links. `change-saga diagram describe` reads any
 slide compactly: its takeaway, Items in reading order, and, for a diagram
-source, its semantic elements, connections, notes, and reveal steps. The description omits geometry,
+source, its semantic elements, connections, notes, and reveal steps, with
+sections and their members, and stickies and annotations listed as notes about their
+targets. The description omits geometry,
 styling, decorative elements, and asset bytes, and cannot rebuild the drawing.
 
 A pull request review's deck uses the same transaction. A request that names
