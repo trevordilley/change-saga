@@ -1,0 +1,68 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "internal/diagram/describe.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:bbc37c60317110827ed08a0d05b41fa869dbafd7cbbe200f2bf06d8472fc19c2"
+    },
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "internal/diagram/describe.go",
+      "start": 48,
+      "end": 49,
+      "digest": "sha256:41b8fb5d0682958e6f840690e2644e771f8f20998491c3ba4d3b5cc85e6ab40d"
+    },
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "internal/diagram/describe.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:0ba0fb3c00b001e326300b6342b8fbe126774a05c8121ef86833a920258c99c9"
+    },
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "internal/diagram/describe.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:1ebd644727f66da847e9999937c5f2869f1141aca8a2f9f436f6dfc3da23f57c"
+    },
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "internal/diagram/describe.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:2e0c4f06efa92c4017c1ea73d7583c791018ff7c9ba38efd881e7e912dc4880c"
+    },
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "internal/diagram/describe.go",
+      "start": 80,
+      "end": 82,
+      "digest": "sha256:3e7bebf51a4b4a860f108524d62f550de9508f7d5bbc271393fbbc9d8e92c44b"
+    },
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "internal/diagram/describe.go",
+      "start": 120,
+      "end": 122,
+      "digest": "sha256:6a73378a9fc59807ef8c89fdb03f0181601b99e828158b9b5d61da201cf1f542"
+    },
+    {
+      "commit": "9357056b8a663d49047ed8344e0010abd2c9dc7f",
+      "path": "internal/diagram/describe.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:f8afb7efe8365222ab9e9e4e11a46019a62f7d7d771975c3b519cd1d56f786ec"
+    },
+    {
+      "commit": "9357056b8a663d49047ed8344e0010abd2c9dc7f",
+      "path": "internal/diagram/describe.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:5928bc10098d095c3223ebcad6c1cf0fb16a6d524fb67b38c3c81fa24703bb27"
+    }
+  ]
+}

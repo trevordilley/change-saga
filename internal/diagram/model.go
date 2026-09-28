@@ -40,9 +40,9 @@ var (
 	identifier    = regexp.MustCompile(`^[a-z][a-z0-9-]{0,63}$`)
 	colorPattern  = regexp.MustCompile(`^(#[a-fA-F0-9]{6}|none)$`)
 	reservedID    = "diagram-"
-	elementKinds  = map[string]bool{"node": true, "edge": true, "text": true, "group": true, "graphic": true}
+	elementKinds  = map[string]bool{"node": true, "edge": true, "text": true, "group": true, "graphic": true, "sticky": true, "annotation": true}
 	nodeShapes    = map[string]bool{"service": true, "datastore": true, "decision": true, "rect": true, "ellipse": true, "boundary": true}
-	frameShapes   = map[string]bool{"rect": true, "boundary": true}
+	frameShapes   = map[string]bool{"rect": true, "boundary": true, "section": true}
 	textAlignment = map[string]bool{"": true, "start": true, "middle": true, "end": true}
 )
 
@@ -100,6 +100,23 @@ type Element struct {
 	Wrap        bool    `json:"wrap,omitempty"`
 	Fragment    string  `json:"fragment,omitempty"`
 	Decorative  bool    `json:"decorative,omitempty"`
+	// Connector fields: an edge's start marker, its end labels, and how its
+	// line is drawn. Head takes the same terminator vocabulary as Tail.
+	Tail         string `json:"tail,omitempty"`
+	TailLabel    string `json:"tail_label,omitempty"`
+	TailLabelBox *Box   `json:"tail_label_box,omitempty"`
+	HeadLabel    string `json:"head_label,omitempty"`
+	HeadLabelBox *Box   `json:"head_label_box,omitempty"`
+	Curve        string `json:"curve,omitempty"`
+	Line         string `json:"line,omitempty"`
+	Fields       Fields `json:"fields,omitempty"`
+	FromField    string `json:"from_field,omitempty"`
+	ToField      string `json:"to_field,omitempty"`
+	Color        string `json:"color,omitempty"`
+	About        string `json:"about,omitempty"`
+	Target       *Point `json:"target,omitempty"`
+	Side         string `json:"side,omitempty"`
+	Step         int    `json:"step,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
@@ -109,6 +126,7 @@ type Document struct {
 	Width      float64          `json:"width"`
 	Height     float64          `json:"height"`
 	Background string           `json:"background,omitempty"`
+	Reveal     string           `json:"reveal,omitempty"`
 	Styles     map[string]Style `json:"styles,omitempty"`
 	Elements   []Element        `json:"elements"`
 }
@@ -210,6 +228,7 @@ func (d Document) Validate() error {
 	if d.Background != "" && !colorPattern.MatchString(d.Background) {
 		add("background must be #rrggbb or none")
 	}
+	validateReveal(d, add)
 	if len(d.Elements) > MaxElements {
 		add("a diagram may contain at most %d elements", MaxElements)
 	}
@@ -246,7 +265,7 @@ func (d Document) Validate() error {
 	for _, e := range d.Elements {
 		fail := func(format string, args ...any) { add("%s: "+format, append([]any{e.ID}, args...)...) }
 		if !elementKinds[e.Kind] {
-			fail("unsupported kind %q (use node, edge, text, group, or graphic)", e.Kind)
+			fail("unsupported kind %q (use node, edge, text, group, graphic, sticky, or annotation)", e.Kind)
 			continue
 		}
 		if _, ok := d.Style(e.Style); !ok {
@@ -291,20 +310,24 @@ func (d Document) Validate() error {
 			if !finite(box.X) || !finite(box.Y) || !finite(box.Width) || !finite(box.Height) || box.Width <= 0 || box.Height <= 0 {
 				fail("label_box needs finite coordinates and a positive size")
 			}
-			if e.Kind != "node" && e.Kind != "edge" {
-				fail("label_box applies only to nodes and edges")
+			if e.Kind != "node" && e.Kind != "edge" && !labelBoxAnnotation(e) {
+				fail("label_box applies only to nodes, edges, highlights, and brackets")
 			}
 		}
 		if e.Kind != "edge" && (e.From != "" || e.To != "" || len(e.Points) > 0 || e.Path != "" || e.Head != "" || e.HeadSize != 0) {
 			fail("edge fields (from, to, points, path, head) are only valid on edges")
 		}
+		validateConnector(e, fail)
 		if e.Kind != "graphic" && e.Fragment != "" {
 			fail("fragment is only valid on graphics")
+		}
+		for _, problem := range validateShape(d, e, byID) {
+			fail("%s", problem)
 		}
 		switch e.Kind {
 		case "node":
 			if !nodeShapes[e.Shape] {
-				fail("node shape must be service, datastore, decision, rect, ellipse, or boundary")
+				fail("node shape must be one of %s", strings.Join(shapeNames(), ", "))
 			}
 			if e.Width <= 0 || e.Height <= 0 {
 				fail("node needs a positive width and height")
@@ -331,9 +354,6 @@ func (d Document) Validate() error {
 			if e.Path != "" && !validPathData(e.Path) {
 				fail("edge path must contain only SVG path commands and numbers")
 			}
-			if e.Head != "" && e.Head != "none" && e.Head != "arrow" {
-				fail("edge head must be arrow or none")
-			}
 			if e.HeadSize < 0 || e.HeadSize > 100 {
 				fail("head_size must be 0-100")
 			}
@@ -352,7 +372,7 @@ func (d Document) Validate() error {
 			}
 		case "group":
 			if e.Shape != "" && !frameShapes[e.Shape] {
-				fail("a group frame shape must be rect or boundary")
+				fail("a group frame shape must be rect, boundary, or section")
 			}
 			if e.Shape != "" && (e.Width <= 0 || e.Height <= 0) {
 				fail("a framed group needs a positive width and height")
@@ -360,6 +380,8 @@ func (d Document) Validate() error {
 			if e.Shape == "" && e.Label != "" && e.Decorative {
 				fail("a decorative unframed group label is never shown or read; remove it")
 			}
+		case "sticky", "annotation":
+			// Validated with sections and the annotation fields below.
 		case "graphic":
 			if strings.TrimSpace(e.Fragment) == "" {
 				fail("graphic needs an SVG fragment")
@@ -368,6 +390,9 @@ func (d Document) Validate() error {
 			} else if _, err := parseFragment(e.Fragment); err != nil {
 				fail("%v", err)
 			}
+		}
+		for _, problem := range validateAnnotations(d, e, byID) {
+			fail("%s", problem)
 		}
 		seen := map[string]bool{e.ID: true}
 		for parent := e.Parent; parent != ""; {
@@ -425,10 +450,14 @@ func Contract() map[string]any {
 		"frame_shapes":   sorted(frameShapes),
 		"alignments":     sorted(textAlignment),
 		"default_styles": styles,
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative"},
+		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step"},
+		"reveal_modes":   RevealModes(),
+		"terminators":    TerminatorNames(),
 		"operations":     OperationNames,
 		"font":           FontPath,
 		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes, "note_runes": MaxNoteRunes},
+		"entity":         entityContract(),
+		"reveal":         "an optional document reveal (\"reveal\": \"fade\") fades the drawing in step by step when a reader opens its slide; an element's optional integer step (1-" + fmt.Sprint(MaxRevealStep) + ") orders it, defaulting to its reading order among semantic elements; equal steps appear together",
 		"note_format":    "an optional Markdown note on any semantic element, shown when a reader hovers, focuses, or taps it: " + NoteFormat + "; no raw HTML",
 		"rules": []string{
 			"every coordinate is explicit and local to the parent group; nothing is laid out, resized, or rerouted",
@@ -439,6 +468,16 @@ func Contract() map[string]any {
 			"decorative elements are hidden from describe and assistive technology and may not contain semantic ones",
 			"a note is optional depth on demand: describe prints it, the SVG carries it as plain text in the element's desc, and the reviewer shows it rendered on hover or focus",
 			"graphics accept allowlisted drawing markup; currentColor follows the style's stroke",
+			"triangle, hexagon, parallelogram, document, cloud, actor, queue, circle, and star center their icon, label, and detail in a text area inside the outline and default to align middle; a circle needs equal width and height",
+			"describe omits purely geometric shapes (triangle, hexagon, parallelogram, circle, star): a reader follows relationships, not outlines",
+			"a section is a group with shape section: a palette-tinted frame with its label in a title tab; sections nest like any group",
+			"a sticky is a palette-coloured square of wrapped label text with a renderer-owned shadow; about names the element it annotates",
+			"an annotation is a bubble (pointer to target, or to its about element's box), a numbered pin, a translucent highlight, or a bracket facing side; describe lists stickies and annotations as notes about their targets",
+			"a reveal plays only in the reviewer's slide view and never under reduced motion; thumbnails, exports, and landmark links show the finished drawing; no element appears before its group, and a decorative element without a step appears with its group or from the start",
 		},
+
+		"annotation_shapes": sorted(annotationShapes),
+		"bracket_sides":     sorted(bracketSides),
+		"palette":           PaletteNames(),
 	}
 }

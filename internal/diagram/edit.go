@@ -95,7 +95,7 @@ func Edit(d Document, operations []Operation) (Document, []string, error) {
 			for again := true; again; {
 				again = false
 				for _, e := range d.Elements {
-					if !remove[e.ID] && (remove[e.Parent] || remove[e.From] || remove[e.To]) {
+					if !remove[e.ID] && (remove[e.Parent] || remove[e.From] || remove[e.To] || remove[e.About]) {
 						if !op.Cascade {
 							return fail("%s depends on %s; remove it first or set cascade", e.ID, op.ID)
 						}
@@ -171,9 +171,10 @@ func Edit(d Document, operations []Operation) (Document, []string, error) {
 				Width      *float64 `json:"width"`
 				Height     *float64 `json:"height"`
 				Background *string  `json:"background"`
+				Reveal     *string  `json:"reveal"`
 			}
 			if err := decodeStrict(op.Set, &settings); err != nil {
-				return fail("set must contain only width, height, and background: %v", err)
+				return fail("set must contain only width, height, background, and reveal: %v", err)
 			}
 			if settings.Width != nil {
 				d.Width = *settings.Width
@@ -184,9 +185,20 @@ func Edit(d Document, operations []Operation) (Document, []string, error) {
 			if settings.Background != nil {
 				d.Background = *settings.Background
 			}
+			// A reveal changes when every element appears, so each may render
+			// differently.
+			if settings.Reveal != nil && *settings.Reveal != d.Reveal {
+				d.Reveal = *settings.Reveal
+				for _, e := range d.Elements {
+					changed[e.ID] = true
+				}
+			}
 		default:
 			return fail("unknown operation; use one of %v", OperationNames)
 		}
+	}
+	for _, id := range bubbleDependents(d, changed) {
+		changed[id] = true
 	}
 	ids := make([]string, 0, len(changed))
 	for id := range changed {

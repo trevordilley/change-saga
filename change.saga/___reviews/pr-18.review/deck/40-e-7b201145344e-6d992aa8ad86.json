@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/model.go",
+      "start": 457,
+      "end": 457,
+      "digest": "sha256:4460c3c7aff40a4f432b5fa5960ed731149a35c6a7ed82a8d103fe7c0ecc16e2",
+      "note": "Contract rule: library shapes center in a text area."
+    }
+  ]
+}

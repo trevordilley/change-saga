@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/diagram/reveal.go",
+      "start": 1,
+      "end": 30,
+      "digest": "sha256:eb851f1528d1bff19243d66112d88d8dca6a53d36f9b780b46b526f928651296"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/diagram/reveal.go",
+      "start": 132,
+      "end": 160,
+      "digest": "sha256:6b5ddec0265d6ea0b62d8715b385b170fc22a031a14fec5d42af1d03d806c79c"
+    }
+  ]
+}

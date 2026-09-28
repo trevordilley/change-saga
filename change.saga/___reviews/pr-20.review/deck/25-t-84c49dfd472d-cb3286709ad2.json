@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "deck": "pr-20",
+  "slide": "paths",
+  "current": "sha256:564298781695e4f6c5c10755529eeb1b9132f6a6babbe0e03a07a97b41471be6",
+  "revisions": [
+    {
+      "snapshot": "sha256:564298781695e4f6c5c10755529eeb1b9132f6a6babbe0e03a07a97b41471be6",
+      "request_id": "pr-20-paths",
+      "created_at": "2026-09-28T01:23:00.657296Z",
+      "asset": "24-a-e6d6d3912c952d81dda54d418fca43c3f39c28b0eb15e7ba3484.svg",
+      "asset_digest": "sha256:e6d6d3912c952d81dda54d418fca43c3f39c28b0eb15e7ba34841d2451d0cf5d",
+      "slide": {
+        "version": 4,
+        "id": "paths",
+        "deck": "pr-20",
+        "title": "Checked once, read as notes",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e6d6d3912c952d81dda54d418fca43c3f39c28b0eb15e7ba3484.svg",
+        "takeaway": "Validation names every board problem at once; describe lists section members and notes about targets; edit cascades removals through about.",
+        "reading_order": [
+          "validate",
+          "docs",
+          "tests",
+          "describe",
+          "edit"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "validate",
+            "slide": "paths",
+            "rank": 10,
+            "kind": "node",
+            "label": "Board validation",
+            "description": "New kinds, the section frame shape, and the color, about, target, and side fields are checked with named errors reported together.",
+            "selector": {
+              "type": "element",
+              "element_id": "validate"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "docs",
+            "slide": "paths",
+            "rank": 20,
+            "kind": "node",
+            "label": "Published vocabulary",
+            "description": "The schema, spec --json contract, SPEC, and the skill's diagrams reference describe the board layer, with a tested example.",
+            "selector": {
+              "type": "element",
+              "element_id": "docs"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "paths",
+            "rank": 30,
+            "kind": "node",
+            "label": "Tests",
+            "description": "A board golden, validation, describe, edit, schema, and an apply-slide round trip; existing goldens are untouched.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "describe",
+            "slide": "paths",
+            "rank": 40,
+            "kind": "node",
+            "label": "Describe",
+            "description": "Sections print under Sections with their members; stickies and annotations under Notes as notes about their targets.",
+            "selector": {
+              "type": "element",
+              "element_id": "describe"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "edit",
+            "slide": "paths",
+            "rank": 50,
+            "kind": "node",
+            "label": "Edit",
+            "description": "Removing an element a sticky or annotation is about is refused without cascade, which removes the note too.",
+            "selector": {
+              "type": "element",
+              "element_id": "edit"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-d93b99dd5fa2fec16c21845c4e43887339b4494076d7227c7a26.json",
+        "source_digest": "sha256:d93b99dd5fa2fec16c21845c4e43887339b4494076d7227c7a2680fc5adc8188",
+        "renderer": "change-saga-diagram/1"
+      }
+    }
+  ]
+}

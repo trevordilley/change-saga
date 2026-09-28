@@ -92,7 +92,19 @@ func TestSchemaEnumsMatchRuntime(t *testing.T) {
 		}
 	}
 	check("kind", elementKinds)
-	check("shape", nodeShapes)
+	shapes := map[string]bool{}
+	for _, set := range []map[string]bool{nodeShapes, frameShapes, annotationShapes} {
+		for shape := range set {
+			shapes[shape] = true
+		}
+	}
+	check("shape", shapes)
+	check("side", bracketSides)
+	colors := map[string]bool{}
+	for _, name := range PaletteNames() {
+		colors[name] = true
+	}
+	check("color", colors)
 	check("align", textAlignment)
 }
 

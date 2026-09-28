@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/model.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:0a1fd27eb028ffedc540c8c22aeca1827ceb0f004520ec4664506254aa60052a",
+      "note": "The kind, frame shape, and label_box rules these replace."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/model.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:303f02e0e575f51994e46bc92e2f24fbed20fcf8f809374901261d3dabbd47d6",
+      "note": "The kind, frame shape, and label_box rules these replace."
+    },
+    {
+      "commit": "0993c01299c903187d8e08636e42c1d5c44cdc6b",
+      "path": "internal/diagram/model.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:7dd27d8fc66beb1ed07288fef2f71b8a2e94a771a343f642c2522b262e93b8fa",
+      "note": "The kind, frame shape, and label_box rules these replace."
+    },
+    {
+      "commit": "0993c01299c903187d8e08636e42c1d5c44cdc6b",
+      "path": "internal/diagram/model.go",
+      "start": 306,
+      "end": 307,
+      "digest": "sha256:84888bb0e545a4e55ded1d5c64d194930da6003909530fc13ab00e959cc88488",
+      "note": "The kind, frame shape, and label_box rules these replace."
+    },
+    {
+      "commit": "0993c01299c903187d8e08636e42c1d5c44cdc6b",
+      "path": "internal/diagram/model.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:5493113041deaaafb0ea4ec7a3b4b973cd865f5bb46252dfa5c24f8f08148c89",
+      "note": "The kind, frame shape, and label_box rules these replace."
+    }
+  ]
+}

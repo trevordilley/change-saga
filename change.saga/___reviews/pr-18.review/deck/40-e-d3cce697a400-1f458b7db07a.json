@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/diagram_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:410b11d7412bbf080247c148d4c0fb8e6d0ff06327e4121812fe77b491ebd43e",
+      "note": "database search now also matches tags, so the test checks the first hit."
+    }
+  ]
+}

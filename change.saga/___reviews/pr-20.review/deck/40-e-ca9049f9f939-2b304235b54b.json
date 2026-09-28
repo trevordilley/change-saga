@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "SPEC.md",
+      "start": 491,
+      "end": 491,
+      "digest": "sha256:867a01a4012628ab192ff24acd66b21e6c846ac7c2906775b1af79026ef7c919",
+      "note": "SPEC describes the board layer and its describe projection."
+    },
+    {
+      "commit": "0993c01299c903187d8e08636e42c1d5c44cdc6b",
+      "path": "SPEC.md",
+      "start": 561,
+      "end": 561,
+      "digest": "sha256:fbbc8f4d252742806f094b128585a36089125503b9fc500cc4ed9f54f3a1c005",
+      "note": "SPEC describes the board layer and its describe projection."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "SPEC.md",
+      "start": 491,
+      "end": 492,
+      "digest": "sha256:7f3b26ffd8bd1719b73630290f770e39f83e718f5e5e259474005a50094eb809",
+      "note": "SPEC describes the board layer and its describe projection."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "SPEC.md",
+      "start": 554,
+      "end": 569,
+      "digest": "sha256:e230e8c97650b9c8c0317980625ca83b03ae3746e26e5a713441c921823ee0f9",
+      "note": "SPEC describes the board layer and its describe projection."
+    },
+    {
+      "commit": "d2ac194ed1118dc7623b1bda75dede6f44e083cd",
+      "path": "SPEC.md",
+      "start": 578,
+      "end": 580,
+      "digest": "sha256:e3c1fa2086f064093c7ec60cb35d93d5a7a3b8592d98c3aa9ae5ac12220af3dc",
+      "note": "SPEC describes the board layer and its describe projection."
+    }
+  ]
+}

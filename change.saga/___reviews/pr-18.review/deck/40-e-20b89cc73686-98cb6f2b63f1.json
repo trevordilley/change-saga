@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets/lucide/git-branch.svg",
+      "digest": "sha256:041f04acc8f92657b849540f0440e2e85d0df0b8da2365611e81b9bebfafc4eb",
+      "note": "Replaced by its line in icons.json."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets/lucide/git-branch.svg",
+      "start": 1,
+      "end": 15,
+      "digest": "sha256:041f04acc8f92657b849540f0440e2e85d0df0b8da2365611e81b9bebfafc4eb",
+      "note": "Replaced by its line in icons.json."
+    }
+  ]
+}

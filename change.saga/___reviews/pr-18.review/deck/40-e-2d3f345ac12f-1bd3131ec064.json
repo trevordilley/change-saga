@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/entity.go",
+      "start": 48,
+      "end": 109,
+      "digest": "sha256:7604aa04af3b8ef98e4b5704ff5a4bcf8ae09ea366729fa55714a2ce205cc92b",
+      "note": "validateEntity reports every entity and field-endpoint problem by name."
+    }
+  ]
+}

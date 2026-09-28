@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/icons_test.go",
+      "digest": "sha256:8bc07a71576bf3041a5d1214d6dbcb049faa02016b2bdfddd265c6d419862a5a",
+      "note": "Pins the bundle digest, parses every icon through the allowlist, and checks tag and alias search."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/icons_test.go",
+      "start": 1,
+      "end": 57,
+      "digest": "sha256:8bc07a71576bf3041a5d1214d6dbcb049faa02016b2bdfddd265c6d419862a5a",
+      "note": "Pins the bundle digest, parses every icon through the allowlist, and checks tag and alias search."
+    }
+  ]
+}

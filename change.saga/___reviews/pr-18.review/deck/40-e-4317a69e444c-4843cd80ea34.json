@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/entity.go",
+      "start": 20,
+      "end": 47,
+      "digest": "sha256:d09bb76eaf5f1007b85a0ae78c1adc28d9edb5052647f40e793e23d77e41850f",
+      "note": "Fixed row metrics and the spec contract that publishes them, so authors aim edges at rows."
+    }
+  ]
+}

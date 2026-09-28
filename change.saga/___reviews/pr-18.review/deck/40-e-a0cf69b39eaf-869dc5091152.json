@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/shapes.go",
+      "start": 211,
+      "end": 214,
+      "digest": "sha256:24e980eb2e2be4a90427b90384315bb6f50b62c372dad00db90bfdd15f295703",
+      "note": "The middle default that differs from the original shapes' start."
+    }
+  ]
+}

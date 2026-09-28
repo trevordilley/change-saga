@@ -166,7 +166,9 @@ try {
       slideReport.artifacts.push({ surface: "raw", viewport: dimensions, path: `slides/${slide.deck}/${slide.slide}/raw-${dimensions}.png` });
 
       const reviewerPath = join(slideDir, `reviewer-${dimensions}.png`);
-      const reviewerPage = await browser.newPage({ viewport });
+      // Showing a slide replays its diagram's reveal; reduced motion turns
+      // the animation off, so the capture is the finished drawing.
+      const reviewerPage = await browser.newPage({ viewport, reducedMotion: "reduce" });
       const reviewerResponse = await reviewerPage.goto(input.base_url + slide.reviewer_url, { waitUntil: "networkidle" });
       if (!reviewerResponse?.ok()) throw new Error(`reviewer ${slide.reviewer_url} returned ${reviewerResponse?.status() ?? "no response"}`);
       await settle(reviewerPage);

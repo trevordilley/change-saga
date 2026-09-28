@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "CHANGELOG.md",
+      "start": 3,
+      "end": 8,
+      "digest": "sha256:dec3d24ea84f09483f98f6ee6a44351c1fdf5a7374237ea17bce7c317fb6aa72",
+      "note": "Changelog: the new shapes."
+    }
+  ]
+}

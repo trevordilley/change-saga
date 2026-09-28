@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "reveal": "fade",
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "Opt-in reveal: source to viewer",
+      "x": 40,
+      "y": 28,
+      "width": 1000,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "source",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Source",
+      "detail": "\"reveal\": \"fade\" plus an optional per-element step",
+      "note": "Set with the `canvas` operation; a `step` without a reveal is refused by name, so describe never shows a dead field.",
+      "x": 40,
+      "y": 150,
+      "width": 270,
+      "height": 140,
+      "style": "normal",
+      "wrap": true,
+      "step": 1
+    },
+    {
+      "id": "to-plan",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "source",
+      "to": "plan",
+      "points": [
+        {
+          "x": 310,
+          "y": 220
+        },
+        {
+          "x": 350,
+          "y": 220
+        }
+      ],
+      "head": "arrow",
+      "step": 2
+    },
+    {
+      "id": "plan",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Reveal plan",
+      "detail": "Reading order by default; no element before its group",
+      "note": "Steps are **ranked**, so `10` and `900` play as two consecutive steps. A decorative element without a step enters with its group, or is there from the start.",
+      "x": 350,
+      "y": 150,
+      "width": 270,
+      "height": 140,
+      "style": "normal",
+      "wrap": true,
+      "step": 2
+    },
+    {
+      "id": "to-svg",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "plan",
+      "to": "svg",
+      "points": [
+        {
+          "x": 620,
+          "y": 220
+        },
+        {
+          "x": 660,
+          "y": 220
+        }
+      ],
+      "head": "arrow",
+      "step": 3
+    },
+    {
+      "id": "svg",
+      "kind": "node",
+      "shape": "rect",
+      "label": "SVG keyframes",
+      "detail": "CSS keyed to :target of anchors; none under reduced motion",
+      "note": "No script and no author CSS: the renderer writes one `\u003cstyle\u003e`, two empty anchor groups, and a `data-reveal-step` per animated element. A static diagram renders byte for byte as before.",
+      "x": 660,
+      "y": 150,
+      "width": 270,
+      "height": 140,
+      "style": "primary",
+      "wrap": true,
+      "step": 3
+    },
+    {
+      "id": "to-viewer",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "svg",
+      "to": "viewer",
+      "points": [
+        {
+          "x": 930,
+          "y": 220
+        },
+        {
+          "x": 970,
+          "y": 220
+        }
+      ],
+      "head": "arrow",
+      "step": 4
+    },
+    {
+      "id": "viewer",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Viewer",
+      "detail": "Each newly shown slide retargets its SVG frames",
+      "x": 970,
+      "y": 150,
+      "width": 270,
+      "height": 140,
+      "style": "normal",
+      "wrap": true,
+      "step": 4
+    },
+    {
+      "id": "to-finished",
+      "kind": "edge",
+      "label": "no fragment",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "svg",
+      "to": "finished",
+      "points": [
+        {
+          "x": 795,
+          "y": 290
+        },
+        {
+          "x": 795,
+          "y": 390
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 805,
+        "y": 326,
+        "width": 130,
+        "height": 26
+      },
+      "step": 5
+    },
+    {
+      "id": "finished",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Finished drawing",
+      "detail": "Thumbnails, exports, visual QA, and landmark links",
+      "note": "An element landmark sets the frame's fragment to its element after the viewer's replay, so a direct link always shows the whole drawing.",
+      "x": 660,
+      "y": 390,
+      "width": 270,
+      "height": 140,
+      "style": "normal",
+      "wrap": true,
+      "step": 5
+    },
+    {
+      "id": "caption",
+      "kind": "text",
+      "label": "Order: source, plan, SVG, viewer, then the finished state every other surface shows.",
+      "x": 40,
+      "y": 600,
+      "width": 1200,
+      "height": 30,
+      "style": "caption",
+      "decorative": true
+    }
+  ]
+}

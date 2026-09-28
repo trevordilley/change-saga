@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/cli/diagram_annotation_test.go",
+      "digest": "sha256:c0270e08538484f9ea78797e6e9afed3f8607e38ceaa6871f86a72c06b3ca1af",
+      "note": "apply-slide, describe, and edit round trip of a board diagram."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/cli/diagram_annotation_test.go",
+      "start": 1,
+      "end": 95,
+      "digest": "sha256:c0270e08538484f9ea78797e6e9afed3f8607e38ceaa6871f86a72c06b3ca1af",
+      "note": "apply-slide, describe, and edit round trip of a board diagram."
+    }
+  ]
+}

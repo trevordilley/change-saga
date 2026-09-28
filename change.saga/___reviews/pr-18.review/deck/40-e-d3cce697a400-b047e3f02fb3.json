@@ -1,0 +1,317 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:88b2b63df1b22d7cb9359d4a10a5e357a697e72f0d3f3dc2887843958558ca4b",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:d01aa323829d06b5023aa663d61d45371f4198cc7f8a770199fe5e4dc0c5ba39",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:b12b71694dbe2d0e1d99ea9559dee11225211340ad02b146b88d3e308a65781f",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:c74d4804556eb20f1389af277c2c29b6531c7dc2ffe67d6d8f4433c54fc2fab7",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 33,
+      "end": 34,
+      "digest": "sha256:1bcf4f0e04954310f73a8c7b3b3879e73919fffc4297b40034cd0112239aceff",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 38,
+      "end": 40,
+      "digest": "sha256:8ca29eba4f54507bcc65beac58863f4c2bcb88217b86984404a58ecd03c19305",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:10f3b8a6857367a08df0d5b0b21169fa7c889bed67d07862b0c0520ac94495e9",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 44,
+      "end": 45,
+      "digest": "sha256:939a5b9491402b398581377df820e183742751bd71d502aba207d906db5efd9c",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 47,
+      "end": 48,
+      "digest": "sha256:fc8d9470ef247a20d82c3f1f8333deb905a56992c9b3295e17fe52184e12579d",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:8741e5e4467d5452efc041e022c559b89c3a017e730988f78703bc505ab6379a",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 55,
+      "end": 56,
+      "digest": "sha256:6fb2d4911b177e6a734380eeb47991a8110c38bc9e2d5ed374fda4273966d9e5",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:1032aadcfd005f6d37f9774ca94bf9c3d761441f01b324eb3eb8e090a2217317",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:d0b107e8b82b1bcc8e35255ca7170905b4db221727fabf3ae1aff484fe251bc0",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:130efbfbc13470e72a679fcace58cad4e42af79f5111364ab8a9aad31d6ceddf",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 69,
+      "end": 70,
+      "digest": "sha256:16c506becc03c12c9a22743528619f51887b0d4cf2dd237f1dd0ea0aa6ae376a",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 73,
+      "end": 81,
+      "digest": "sha256:4809cc7a1d7f48fd9557a6a129124792ba78622958610686734ae8d82a97b6b6",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:8581ddc89308fd48de06bc990b799aaf0299255cd79252bdc90eb1fba4e38cba",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:130efbfbc13470e72a679fcace58cad4e42af79f5111364ab8a9aad31d6ceddf",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets.go",
+      "start": 91,
+      "end": 93,
+      "digest": "sha256:ac6de0d43f334aa1b282a3ba4d0104aac6d10cc4e71af25788c6d5266f60d4a9",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:f9401c533b8b91e38f9f799f1a6981434c137f48759c904678f46e916051ef11",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:38e79ae2545a3b76a2c646bca9fb28616bf8e6b54a715c5e14f45d372d206e0d",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 28,
+      "end": 30,
+      "digest": "sha256:5cbd541505acaa071c567b0057c99305a6f961c484bd8f382e5bb76ce298f1e0",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:a21ab9eb0991052e2ab7fec39a7066725ecd648ab06494479085cbf85cf7309c",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 35,
+      "end": 36,
+      "digest": "sha256:32dfc85a8591457798f954de8241e19f904e88fe1ee865607aa6ff351f8683aa",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 40,
+      "end": 44,
+      "digest": "sha256:89c447f31d0fbd931e70a654649bb88529ae0dacc2c836b4978d51c25edaa2e2",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:8825d15d270eba782e9d7e675bcd9b0b527070a02bd782f5b9be40a3ebc9130a",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 48,
+      "end": 49,
+      "digest": "sha256:583c63c91375195cdf769264af2c64e54486fad68934ab93b44c10ad3daf98e1",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 51,
+      "end": 52,
+      "digest": "sha256:76b352caaea9427aef4847142ad1bbd2f15f6369c2079c2a2ab9e9a5871d964b",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:f56b5edbc291dc60cfacb6e9cc752b66790688f60f39e18c312cea89d97eec2e",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 59,
+      "end": 60,
+      "digest": "sha256:85a854d8273f335d36ad06e2a5703f76e2b79ed747fee50a2654cca1f0c5ee16",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:4651d8d37a7fd0948b8ac94498f9382f4a2befa5e4c3f8cc0d217dec056e53af",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:09e1a242295cbbe7c7adce737b9f13ba290ba328c240653d903bc236413ddada",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:df29d2bce996b952d7ec8ff5f1d4a1b4b78d14509b809ab6c4eb569e44a744ea",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 73,
+      "end": 74,
+      "digest": "sha256:fc28983345c229ef39a48d1cf42f9f618c6eae070e8a8469077a106d2a272551",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:09f65b94a966015c06e73274b9dc57738f8923ea685641cd01039a31c0433605",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 80,
+      "end": 81,
+      "digest": "sha256:0d483fd99bdc5264f32181dc673a488489dc8ea53b705e8f4da2da8b73a73d21",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:df29d2bce996b952d7ec8ff5f1d4a1b4b78d14509b809ab6c4eb569e44a744ea",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:6eeea4934c4e51269379247a48793ae3acb46c5b2ef245da5b17b4b3b718e303",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/assets.go",
+      "start": 89,
+      "end": 95,
+      "digest": "sha256:c4c27f3a987c9271b1ea286de9d7c0cb391bc5996d2ad4235228ac092f869b68",
+      "note": "Loads the one bundle and searches names and tags; no per-icon digest."
+    }
+  ]
+}

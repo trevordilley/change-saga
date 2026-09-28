@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "SPEC.md",
+      "start": 570,
+      "end": 587,
+      "digest": "sha256:143e14f9112a7e383fa44842ceb13df0d30f04e2c700f3e76ec3db331a02d001"
+    },
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "SPEC.md",
+      "start": 596,
+      "end": 597,
+      "digest": "sha256:78c0a9eadea66c6c9a8326075d29cc9c9476144965bbac444046b6401fa20688"
+    },
+    {
+      "commit": "9357056b8a663d49047ed8344e0010abd2c9dc7f",
+      "path": "SPEC.md",
+      "start": 578,
+      "end": 579,
+      "digest": "sha256:f8d6cce58f953d02e1de8ce530316650cddfad08d0b96b6181585579fd3db6d3"
+    }
+  ]
+}

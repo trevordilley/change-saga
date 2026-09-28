@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/model.go",
+      "start": 113,
+      "end": 114,
+      "digest": "sha256:67efcfe62ce103e8e0ba7b397b47a42e09fec527674e60f822ba7b19fd184fb9",
+      "note": "Element gains from_field and to_field."
+    }
+  ]
+}

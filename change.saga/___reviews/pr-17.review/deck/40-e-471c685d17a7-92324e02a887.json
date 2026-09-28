@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "bcc664415b371c29881989bd7bf7c2aefc981e50",
+      "path": "internal/diagram/connectors.go",
+      "digest": "sha256:f0453caf6e718175ecb4f5516e5f1b83f784f1181953a63d419a380d7b894d55"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/edit.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:66fa0c15ad639483035600a7e58f4c8db42e7a54c3d8ce3a7bcc68d4eab9b6cf",
+      "note": "remove treats about like from and to: refused without cascade."
+    }
+  ]
+}

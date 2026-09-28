@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:3c385d80dfc31418ee0863f7a15f49714502e2816f443b69628cd59447e35bd3"
+    },
+    {
+      "commit": "f4953cbd5a6b84cd8967b6b4adf23ee24ef4c125",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 93,
+      "end": 94,
+      "digest": "sha256:566e57f613fdb46f8f290e5f6ee73c08f79943456cb939e1689c76eb070406d4"
+    },
+    {
+      "commit": "9357056b8a663d49047ed8344e0010abd2c9dc7f",
+      "path": "schema/v5/diagram.schema.json",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:dab67ec669f220cabb1cde1582d075d7c900b3c5ccf1b93387b368da528636e6"
+    }
+  ]
+}

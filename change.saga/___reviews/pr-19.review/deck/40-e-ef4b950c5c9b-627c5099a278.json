@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "e2e/tests/diagram-reveal.spec.ts",
+      "digest": "sha256:0f98d141e4b07b2c579faec53af13f4b2d99fa31140191c25e790fdde9acde53"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "e2e/tests/diagram-reveal.spec.ts",
+      "start": 1,
+      "end": 117,
+      "digest": "sha256:0f98d141e4b07b2c579faec53af13f4b2d99fa31140191c25e790fdde9acde53"
+    }
+  ]
+}

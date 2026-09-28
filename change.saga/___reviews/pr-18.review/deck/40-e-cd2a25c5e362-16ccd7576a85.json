@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/cli/diagram_slide_test.go",
+      "start": 229,
+      "end": 230,
+      "digest": "sha256:15fbc0fc9bd4da58bea6172126bd3a0f232e1f9775b1f517d7636602767ca4f9",
+      "note": "The icons command test uses a query only one icon matches."
+    },
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/cli/diagram_slide_test.go",
+      "start": 229,
+      "end": 230,
+      "digest": "sha256:b791a1241c41a565e41a9dd2e5d381e78cd9d1829661da11a80b751ff3336169",
+      "note": "The icons command test uses a query only one icon matches."
+    }
+  ]
+}

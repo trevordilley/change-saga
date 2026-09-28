@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/annotation.go",
+      "start": 65,
+      "end": 177,
+      "digest": "sha256:45d5327aaeb82f4205df072609c6ac52b436d33dafc456746646485ad0c872e1",
+      "note": "validateAnnotations: every board field and kind rule, reported per element."
+    }
+  ]
+}

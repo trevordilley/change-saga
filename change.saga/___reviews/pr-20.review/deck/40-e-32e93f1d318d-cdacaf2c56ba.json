@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/render.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:6d8b294e3ff9d4ec321547a9daf0c3762191786f823facbccf25e60d284c7251",
+      "note": "Dispatch a section group to its tabbed frame; the replaced frame condition."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/render.go",
+      "start": 136,
+      "end": 140,
+      "digest": "sha256:4ff8d4ddab63d1b594d92d930a5e10700a7ceb5e0aee4a223bbbb793c3f9d042",
+      "note": "Dispatch a section group to its tabbed frame; the replaced frame condition."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/render.go",
+      "start": 162,
+      "end": 163,
+      "digest": "sha256:30fe7ab3dfad15d20d24cb23f8f9ec621608569e2677c4a556eef96a69e044f0",
+      "note": "Dispatch a section group to its tabbed frame; the replaced frame condition."
+    },
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/render.go",
+      "start": 172,
+      "end": 173,
+      "digest": "sha256:6360f95ab784a09234384592da26f1cfbec5873228cb5a763d5a0e419bcb2ee1",
+      "note": "Dispatch a section group to its tabbed frame; the replaced frame condition."
+    }
+  ]
+}
