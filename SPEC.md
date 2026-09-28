@@ -649,6 +649,19 @@ evidence that has no active, current path to an accepted story. Thus a caller
 can traverse from a story to code, or from the current head commit or diff back
 to the story, without duplicating story text inside slide records.
 
+### Design tokens
+
+Every colour, font, and size the reviewer and its generated slides paint with
+is a named design token with a light value and, when it changes, a dark value.
+`change-saga spec` publishes the contract under `theme`: each token's name,
+group (surface, status, diff, syntax, shape, chrome, diagram, and
+diagram-palette), kind, and values. The reviewer declares the light values on
+`:root` and the dark values when dark mode is chosen or preferred, so every
+rule reads through the tokens and light and dark cannot drift apart. The
+`diagram-` tokens name the colours of the default diagram styles and of the
+sticky and annotation palette. Renaming or removing a token is a breaking
+change to the contract.
+
 ## Report content, evidence, and review
 
 The report carries the Saga's authored narrative, and the same component model

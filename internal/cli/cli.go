@@ -31,6 +31,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/semanticgraph"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
 	"github.com/twentyideas/changesaga/internal/store"
+	"github.com/twentyideas/changesaga/internal/theme"
 	"github.com/twentyideas/changesaga/skills"
 )
 
@@ -1351,6 +1352,7 @@ func Spec(args []string, out io.Writer) error {
 				"verdict":         "none; status and review list report each slide's decisions and currency and each review's coverage, and the team decides",
 				"slides":          "apply-slide --review publishes a complete review slide (a diagram source or a visual) with the implementation deck's transaction; its Items carry no evidence or criterion links, and cover --changed-lines covers them after publishing",
 			},
+			"theme": theme.Contract(),
 			"implementation_deck": map[string]any{
 				"storage": applayout.FeaturesDir + "/<feature>" + applayout.FeatureSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
 				"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},

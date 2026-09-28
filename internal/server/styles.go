@@ -1,48 +1,22 @@
 package server
 
-// darkTokens recolours the design tokens for dark mode. Only the palette
-// changes: every rule in pageStyles already reads through these variables, so
-// spacing, type and layout stay shared with light mode and cannot drift apart.
-// The values track GitHub's dark palette because the light tokens above track
-// its light one, which keeps text, diff and status colours at AA contrast.
-const darkTokens = `
---bg:#0d1117;--bg-subtle:#161b22;--bg-inset:#1c2128;--ink:#e6edf3;--muted:#9198a1;--faint:#8b949e;
---line:#30363d;--line-soft:#21262d;--accent:#4493f8;--accent-soft:#121d2f;--accent-line:#316dca;
---green:#3fb950;--red:#f85149;--amber:#d29922;--sel:#132132;
---add-bg:#12261e;--add-line:#3fb950;--del-bg:#25171c;--del-line:#f85149;--code-bg:#0d1117;--code-gutter:#161b22;
---warning-bg:#2d240c;--warning-line:#9e6a03;--danger-bg:#25171c;--danger-line:#f85149;
---frosted-bg:#0d1117ed;--toolbar-bg:#0d1117ee;--accent-hover-bg:#1c2d41;--accent-hover-ink:#79c0ff;
---landmark-bg:#1c2733;--footnote-hover-bg:#1c2d41;--citation-bg:#121d2f;--landmark-affordance-bg:#161b22f2;
---button-hover:#30363d;--primary-bg:#1f6feb;--primary-hover:#1158c7;--primary-ink:#fff;
---active-fragment-line:#316dca;
---add-gutter:#142c22;--del-gutter:#321c22;--copied-bg:#30363d;--copied-ink:#e6edf3;
---syntax-keyword:#ff7b72;--syntax-string:#a5d6ff;--syntax-number:#79c0ff;--syntax-comment:#8b949e;
---syntax-type:#ffa657;--syntax-property:#d2a8ff;--syntax-punctuation:#c9d1d9;
---shadow:0 6px 24px #01040966,0 1px 3px #010409aa;color-scheme:dark
-`
+import "github.com/twentyideas/changesaga/internal/theme"
+
+// The design tokens come from the theme package's contract: pageStyles
+// declares their light values on :root and their dark values for dark mode.
+// Only the palette changes between modes: every rule reads through these
+// variables, so spacing, type and layout cannot drift apart.
+var (
+	lightTokens = theme.Declarations("light") + "color-scheme:light"
+	darkTokens  = theme.Declarations("dark") + "color-scheme:dark"
+)
 
 // pageStyles is the whole renderer stylesheet. The design target is a quiet
 // developer tool: system UI type for chrome, monospace for code and code-shaped
 // metadata, hairline separators instead of cards, and controls that stay
 // invisible until the reviewer hovers or focuses the thing they belong to.
-const pageStyles = `
-:root{
---bg:#ffffff;--bg-subtle:#f6f8fa;--bg-inset:#eef1f4;--ink:#1f2328;--muted:#59636e;--faint:#59636e;
---line:#d1d9e0;--line-soft:#e7ebef;--accent:#0969da;--accent-soft:#ddf4ff;--accent-line:#54aeff;
---green:#116329;--red:#a40e26;--amber:#9a6700;--sel:#eaf3fe;
---add-bg:#e6ffec;--add-line:#2da44e;--del-bg:#ffebe9;--del-line:#cf222e;--code-bg:#ffffff;--code-gutter:#f6f8fa;
---warning-bg:#fff8e6;--warning-line:#e0c98a;--danger-bg:#fff5f4;--danger-line:#e5b3ae;
---frosted-bg:#ffffffed;--toolbar-bg:#ffffffee;--accent-hover-bg:#cfeaff;--accent-hover-ink:#0550ae;
---landmark-bg:#f5f9ff;--footnote-hover-bg:#dbeafe;--citation-bg:#e8f2ff;--landmark-affordance-bg:#fffffff2;
---button-hover:#e2e6ea;--primary-bg:#0969da;--primary-hover:#0860c4;--primary-ink:#fff;
---active-fragment-line:#c8e1ff;
---add-gutter:#d9f6e0;--del-gutter:#ffdcd8;--copied-bg:#1f2328;--copied-ink:#fff;
---syntax-keyword:#cf222e;--syntax-string:#0a3069;--syntax-number:#0550ae;--syntax-comment:#6e7781;
---syntax-type:#953800;--syntax-property:#8250df;--syntax-punctuation:#57606a;
---ui:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;
---mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
---top:44px;--shadow:0 6px 24px #1f232814,0 1px 3px #1f23281f;--radius:6px;color-scheme:light
-}
+var pageStyles = `
+:root{` + lightTokens + `}
 /* Dark mode. The OS preference decides unless the reviewer has pinned a theme,
    which is why the media rule excuses an explicit light choice. ------------ */
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){` + darkTokens + `}}
