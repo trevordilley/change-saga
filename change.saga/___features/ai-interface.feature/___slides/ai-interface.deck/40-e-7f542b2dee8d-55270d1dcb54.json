@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "4f0ed55c66f3cb35ca67730c3d05fb3a3643c9b6",
       "path": "internal/grammar/commands.go",
       "start": 605,
-      "end": 659,
-      "digest": "sha256:9ef788f53e33ccea467bb9f666cf6d820f45a9afb53e04b978e8aef3f4171e9e",
+      "end": 660,
+      "digest": "sha256:a8672c2af65182ffe208a882f6dbd8794444f921df2257dba1c93fbc78e5e676",
       "note": "Published command shapes including review operations"
     }
   ]
