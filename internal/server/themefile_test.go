@@ -131,3 +131,45 @@ func TestInjectFrameThemePlacesTheStyleLast(t *testing.T) {
 		}
 	}
 }
+
+// The preview shows light and dark side by side, each pane declaring its
+// scheme's resolved tokens, with a generated diagram served like a slide.
+func TestThemePreviewShowsBothSchemes(t *testing.T) {
+	t.Parallel()
+	root := filepath.Join(t.TempDir(), "visual.saga")
+	writeEmbeddedSlideFixture(t, root)
+	handler := newMux(&app{root: root})
+	get := func(path string) *httptest.ResponseRecorder {
+		recorder := httptest.NewRecorder()
+		securityHeaders(handler).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("GET %s = %d: %s", path, recorder.Code, recorder.Body.String())
+		}
+		return recorder
+	}
+	if page := get("/theme").Body.String(); !strings.Contains(page, "this Saga has no <code>theme.css</code>") {
+		t.Errorf("the preview does not say the defaults are shown")
+	}
+
+	writeServerFile(t, filepath.Join(root, theme.FileName), testTheme+":root[data-theme=dark] { --muted: #222; }\n")
+	if page := get("/theme").Body.String(); !strings.Contains(page, "theme.css:4: a second :root[data-theme=dark] block") {
+		t.Errorf("the preview does not name the theme's problem:\n%s", page)
+	}
+
+	writeServerFile(t, filepath.Join(root, theme.FileName), strings.Replace(testTheme, "--bg: #000;", "--bg: #000; --muted: #222;", 1))
+	page := get("/theme").Body.String()
+	for _, want := range []string{
+		`data-scheme="light" style="--bg:#102030;`, `data-scheme="dark" style="--bg:#000000;`, "color-scheme:dark",
+		`<img class="theme-diagram" src="/theme/diagram.svg"`, `class="btn btn-primary"`, "--diagram-purple-sticky",
+		"dark: --muted #222222 on --bg #000000 is 1.", `<link rel="stylesheet" href="/theme.css">`,
+	} {
+		if !strings.Contains(page, want) {
+			t.Errorf("the preview lacks %q", want)
+		}
+	}
+	diagramResponse := get("/theme/diagram.svg")
+	if body := diagramResponse.Body.String(); !strings.Contains(body, `id="sticky-purple"`) || !strings.Contains(body, "--bg:#102030;") {
+		t.Errorf("the preview diagram lacks its palette or the theme")
+	}
+	assertAuthoredContentPolicy(t, diagramResponse.Header())
+}

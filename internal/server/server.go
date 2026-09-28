@@ -504,6 +504,8 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET "+diagram.FontPath, application.diagramFont)
 	handle("GET /theme.js", application.themeScript)
 	handle("GET /theme.css", application.themeStylesheet)
+	handle("GET /theme", application.themePreview)
+	handle("GET /theme/diagram.svg", application.themePreviewDiagram)
 	handle("GET /api/documentation", application.documentationPage)
 	handle("GET /api/technical-usages", application.technicalUsagesPage)
 	handle("GET /api/code", application.codePage)
