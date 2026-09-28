@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — Saga work happens at PR time
+
+- The skill, `help`, `init`, and README say when to do Saga work: when a pull
+  request is created or updated, not at the end of every coding session or
+  commit. Creating or refreshing the review deck, covering lines, reconciling,
+  and repinning happen together then, or whenever the user asks directly.
+
 ## Unreleased — surprises called out in review decks
 
 - A review slide's `callout` Items are its surprises: what a reviewer would
