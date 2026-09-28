@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "A theme file, validated then applied",
+      "x": 60,
+      "y": 24,
+      "width": 1000,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "saga",
+      "kind": "group",
+      "shape": "section",
+      "label": "change.saga",
+      "x": 40,
+      "y": 100,
+      "width": 300,
+      "height": 250,
+      "style": "normal",
+      "color": "yellow"
+    },
+    {
+      "id": "file",
+      "kind": "node",
+      "shape": "document",
+      "label": "theme.css",
+      "detail": ":root and dark blocks only",
+      "note": "For example `:root { --accent: #7c3aed; }` and `:root[data-theme=\"dark\"] { --accent: #a78bfa; }`. A fixed name at the Saga root, so a Saga has one theme and `saga.json` is unchanged.",
+      "x": 30,
+      "y": 60,
+      "width": 240,
+      "height": 150,
+      "parent": "saga",
+      "style": "normal"
+    },
+    {
+      "id": "strict",
+      "kind": "group",
+      "shape": "section",
+      "label": "internal/theme",
+      "x": 400,
+      "y": 100,
+      "width": 420,
+      "height": 400,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "parser",
+      "kind": "node",
+      "shape": "service",
+      "label": "Parse",
+      "detail": "blocks, tokens, lines",
+      "note": "Refused anywhere outside a comment: `\\`, `@`, `url(`, `\u003c`, `!`, control characters. Only `:root` and `:root[data-theme=\"dark\"]`, each once; only `--\u003ccontract token\u003e`.",
+      "x": 30,
+      "y": 50,
+      "width": 360,
+      "height": 100,
+      "parent": "strict",
+      "style": "primary"
+    },
+    {
+      "id": "values",
+      "kind": "node",
+      "shape": "service",
+      "label": "Value grammars",
+      "detail": "colour, length, font, shadow",
+      "note": "Colours become hex; lengths are 0 or px/rem/em; fonts are quoted names or plain words; shadows are `[inset] x y [blur [spread]] colour`.",
+      "x": 30,
+      "y": 170,
+      "width": 360,
+      "height": 100,
+      "parent": "strict",
+      "style": "normal"
+    },
+    {
+      "id": "cascade",
+      "kind": "node",
+      "shape": "service",
+      "label": "Resolve and emit",
+      "detail": "re-serialized, per scheme",
+      "x": 30,
+      "y": 290,
+      "width": 360,
+      "height": 90,
+      "parent": "strict",
+      "style": "normal"
+    },
+    {
+      "id": "reviewer",
+      "kind": "group",
+      "shape": "section",
+      "label": "Reviewer",
+      "x": 880,
+      "y": 100,
+      "width": 360,
+      "height": 400,
+      "style": "normal",
+      "color": "green"
+    },
+    {
+      "id": "app",
+      "kind": "node",
+      "shape": "service",
+      "label": "/theme.css",
+      "detail": "linked after app.css",
+      "note": "Light on `:root`; dark in the OS media rule and on `:root[data-theme=dark]`, the same selectors the defaults use, so the toggle and the OS preference both reach it.",
+      "x": 30,
+      "y": 50,
+      "width": 300,
+      "height": 100,
+      "parent": "reviewer",
+      "style": "normal"
+    },
+    {
+      "id": "slides",
+      "kind": "node",
+      "shape": "service",
+      "label": "Served slides",
+      "detail": "every token, theme applied",
+      "x": 30,
+      "y": 190,
+      "width": 300,
+      "height": 100,
+      "parent": "reviewer",
+      "style": "normal"
+    },
+    {
+      "id": "validate",
+      "kind": "node",
+      "shape": "service",
+      "label": "change-saga validate",
+      "detail": "theme.css:LINE: problem",
+      "x": 400,
+      "y": 560,
+      "width": 420,
+      "height": 100,
+      "style": "warning"
+    },
+    {
+      "id": "reads",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "file",
+      "to": "parser",
+      "points": [
+        {
+          "x": 310,
+          "y": 235
+        },
+        {
+          "x": 430,
+          "y": 200
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "emits",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "cascade",
+      "to": "app",
+      "points": [
+        {
+          "x": 790,
+          "y": 435
+        },
+        {
+          "x": 850,
+          "y": 435
+        },
+        {
+          "x": 850,
+          "y": 200
+        },
+        {
+          "x": 910,
+          "y": 200
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "injects",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "cascade",
+      "to": "slides",
+      "points": [
+        {
+          "x": 850,
+          "y": 340
+        },
+        {
+          "x": 910,
+          "y": 340
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "reports",
+      "kind": "edge",
+      "label": "problems",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "parser",
+      "to": "validate",
+      "points": [
+        {
+          "x": 610,
+          "y": 500
+        },
+        {
+          "x": 610,
+          "y": 560
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 620,
+        "y": 516,
+        "width": 100,
+        "height": 26
+      }
+    },
+    {
+      "id": "bytes-note",
+      "kind": "sticky",
+      "label": "Committed slide bytes, digests, approvals, and the visual CSP do not change",
+      "x": 900,
+      "y": 530,
+      "width": 340,
+      "height": 150,
+      "style": "normal",
+      "color": "green",
+      "about": "slides"
+    },
+    {
+      "id": "tests-note",
+      "kind": "text",
+      "label": "Tests: acceptance, every refusal with its line, the cascade, injection, and well-formed XML",
+      "x": 40,
+      "y": 400,
+      "width": 320,
+      "height": 90,
+      "style": "caption",
+      "wrap": true
+    }
+  ]
+}

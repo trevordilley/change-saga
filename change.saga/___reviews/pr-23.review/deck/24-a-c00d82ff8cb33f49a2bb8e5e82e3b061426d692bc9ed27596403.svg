@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1" aria-describedby="diagram-desc">
+  <title id="diagram-title">A theme file, validated then applied</title>
+  <desc id="diagram-desc">theme.css at the Saga root may only override tokens; a strict parser re-serializes what it accepts, and the reviewer applies it after its defaults and inside every served slide.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <marker id="diagram-head-reads" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-emits" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-injects" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <marker id="diagram-head-reports" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+    </marker>
+    <filter id="diagram-shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 24)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">A theme file, validated then applied</tspan></text>
+  </g>
+  <g id="saga" data-diagram-kind="group" transform="translate(40 100)" role="group" aria-label="change.saga">
+    <rect width="300" height="250" rx="10" fill="#fff8d6" stroke="#a16207" stroke-width="2"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H145.918A10 10 0 0 1 155.918 10V39.5Z" fill="#a16207"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve"><tspan x="12" y="28">change.saga</tspan></text>
+    <g id="file" data-diagram-kind="node" transform="translate(30 60)" role="group" aria-label="theme.css">
+      <desc>For example :root { --accent: #7c3aed; } and :root[data-theme="dark"] { --accent: #a78bfa; }. A fixed name at the Saga root, so a Saga has one theme and saga.json is unchanged.</desc>
+      <path d="M0 0H240V138C160 96.434 80 179.566 0 138Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="120" y="58.875" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="120" y="58.875">theme.css</tspan></text>
+      <text x="120" y="85.375" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="120" y="85.375">:root and dark blocks only</tspan></text>
+    </g>
+  </g>
+  <g id="strict" data-diagram-kind="group" transform="translate(400 100)" role="group" aria-label="internal/theme">
+    <rect width="420" height="400" rx="10" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H160.803A10 10 0 0 1 170.803 10V39.5Z" fill="#1d4ed8"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve"><tspan x="12" y="28">internal/theme</tspan></text>
+    <g id="parser" data-diagram-kind="node" transform="translate(30 50)" role="group" aria-label="Parse">
+      <desc>Refused anywhere outside a comment: \, @, url(, &lt;, !, control characters. Only :root and :root[data-theme="dark"], each once; only --&lt;contract token&gt;.</desc>
+      <rect width="360" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve"><tspan x="18" y="40">Parse</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve"><tspan x="18" y="73">blocks, tokens, lines</tspan></text>
+    </g>
+    <g id="values" data-diagram-kind="node" transform="translate(30 170)" role="group" aria-label="Value grammars">
+      <desc>Colours become hex; lengths are 0 or px/rem/em; fonts are quoted names or plain words; shadows are [inset] x y [blur [spread]] colour.</desc>
+      <rect width="360" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Value grammars</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">colour, length, font, shadow</tspan></text>
+    </g>
+    <g id="cascade" data-diagram-kind="node" transform="translate(30 290)" role="group" aria-label="Resolve and emit">
+      <rect width="360" height="90" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Resolve and emit</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">overrides, frame tokens</tspan></text>
+    </g>
+  </g>
+  <g id="reviewer" data-diagram-kind="group" transform="translate(880 100)" role="group" aria-label="Reviewer">
+    <rect width="360" height="400" rx="10" fill="#e7f8eb" stroke="#15803d" stroke-width="2"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H109.924A10 10 0 0 1 119.924 10V39.5Z" fill="#15803d"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve"><tspan x="12" y="28">Reviewer</tspan></text>
+    <g id="app" data-diagram-kind="node" transform="translate(30 50)" role="group" aria-label="/theme.css">
+      <desc>Light on :root; dark in the OS media rule and on :root[data-theme=dark], the same selectors the defaults use, so the toggle and the OS preference both reach it.</desc>
+      <rect width="300" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">/theme.css</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">linked after app.css</tspan></text>
+    </g>
+    <g id="slides" data-diagram-kind="node" transform="translate(30 190)" role="group" aria-label="Served slides">
+      <rect width="300" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Served slides</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve"><tspan x="18" y="73">every token, theme applied</tspan></text>
+    </g>
+  </g>
+  <g id="validate" data-diagram-kind="node" transform="translate(400 560)" role="group" aria-label="change-saga validate">
+    <rect width="420" height="100" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve"><tspan x="18" y="37">change-saga validate</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve"><tspan x="18" y="73">theme.css:LINE: problem</tspan></text>
+  </g>
+  <g id="reads" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="file to parser" data-from="file" data-to="parser">
+    <path d="M310 235 L430 200" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-reads)"/>
+  </g>
+  <g id="emits" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="re-serialized" data-from="cascade" data-to="app">
+    <path d="M790 435 L850 435 L850 200 L910 200" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-emits)"/>
+    <text x="690" y="523" font-size="18" fill="#526174" xml:space="preserve"><tspan x="690" y="523">re-serialized</tspan></text>
+  </g>
+  <g id="injects" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="cascade to slides" data-from="cascade" data-to="slides">
+    <path d="M850 340 L910 340" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-injects)"/>
+  </g>
+  <g id="reports" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="problems" data-from="parser" data-to="validate">
+    <path d="M610 500 L610 560" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-reports)"/>
+    <text x="620" y="534" font-size="18" fill="#526174" xml:space="preserve"><tspan x="620" y="534">problems</tspan></text>
+  </g>
+  <g id="bytes-note" data-diagram-kind="sticky" transform="translate(900 530)" role="group" aria-label="Committed slide bytes, digests, approvals, and the visual CSP do not change" data-about="slides">
+    <rect width="340" height="150" rx="3" fill="#c6efcf" filter="url(#diagram-shadow)"/>
+    <text x="16" y="38" font-size="22" fill="#052e16" xml:space="preserve"><tspan x="16" y="38">Committed slide bytes,</tspan><tspan x="16" y="65.5">digests, approvals, and the</tspan><tspan x="16" y="93">visual CSP do not change</tspan></text>
+  </g>
+  <g id="tests-note" data-diagram-kind="text" transform="translate(40 400)" role="group" aria-label="Tests: acceptance, every refusal with its line, the cascade, injection, and well-formed XML">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve"><tspan x="0" y="15">Tests: acceptance, every refusal with its line,</tspan><tspan x="0" y="33.75">the cascade, injection, and well-formed XML</tspan></text>
+  </g>
+</svg>
