@@ -65,23 +65,29 @@ needed.
 
 ## Use it in CI
 
-Once a team creates reviews, it can make them part of its pull request gate.
-That is the team's policy, opted into in its own workflow; the tool never
-requires it. This GitHub Actions workflow fails a pull request whose review
-deck does not explain every changed line:
+A team can make the Saga part of its pull request gate. That is the team's
+policy, opted into in its own workflow; the tool never requires it. The gate
+worth having asks that the documentation stays current: nothing the Saga
+already documents is left stale or broken. Pull requests are still reviewed
+on GitHub as usual, and a big change carries a review deck when its author
+chooses to. This GitHub Actions workflow gates pull requests into `main`;
+child branches merging into an integration branch are left alone, since the
+integration branch's pull request reconciles their work:
 
 ```yaml
 name: Change Saga
-on: pull_request
+on:
+  pull_request:
+    branches: [main]
 permissions:
   contents: read
 jobs:
-  review:
+  saga:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          # Review ranges and merge-bases need the full history.
+          # Evidence pins and review ranges need the full history.
           fetch-depth: 0
           # Check the pull request's own head rather than GitHub's merge commit.
           ref: ${{ github.event.pull_request.head.sha }}
@@ -92,16 +98,16 @@ jobs:
         run: |
           curl -fsSL "https://raw.githubusercontent.com/twentyideas/changesaga/$CHANGE_SAGA_VERSION/scripts/install.sh" | sh -s -- --version "$CHANGE_SAGA_VERSION" --dir "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      - name: The review deck explains every changed line
-        run: change-saga check --covers review --against origin/${{ github.base_ref }} change.saga
-      # Once the Saga holds living documentation, a team may also keep it
-      # from going stale:
-      # - name: Existing documentation stays healthy
-      #   run: change-saga check --covers health change.saga
+      - name: The documentation stays current
+        run: change-saga check --covers health change.saga
+      # A team that wants a review deck on every pull request into main
+      # can also require it to explain every changed line:
+      # - name: The review deck explains every changed line
+      #   run: change-saga check --covers review --against origin/${{ github.base_ref }} change.saga
 ```
 
-Use a release that includes `check --covers review` (v0.2.0-rc.6 or later)
-for `CHANGE_SAGA_VERSION`.
+Use a release that includes `check` (v0.2.0-rc.6 or later) for
+`CHANGE_SAGA_VERSION`.
 
 `check` exits 0 when the named areas are covered, 3 when one has a gap (it
 prints only those gaps), and 1 when its report cannot be trusted, such as a
@@ -244,6 +250,20 @@ Saga work happens when you create or update a PR, not at the end of every
 coding session. Ask for it when you ask your agent to open or update the PR;
 the installed skill tells agents the same, and a deck may lag the branch in
 between.
+
+Review the big change, not every branch. Change Saga exists to make large
+changes comprehensible, such as the result of many agents working in parallel.
+When one integration workspace or branch gathers the work of dozens of child
+workspaces, only the integration branch's pull request gets a review; the
+child branches merging into it get none. Many one- or two-slide reviews
+fragment the story a deck exists to tell, and a small PR a reviewer can read
+line by line doesn't need a deck.
+
+Deferring isn't skipping: the Saga still stays complete and current. When it's
+time for the real review, that PR gets the full deck with every changed line
+covered, and the living documentation is reconciled for everything the child
+workspaces changed. The hard work happens once, for the change people actually
+review.
 
 ## Status and check
 

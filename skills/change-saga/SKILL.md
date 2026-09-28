@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"): a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, design, quality, implementation, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
+description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"), meant for the big change a person reviews as a whole, such as an integration branch gathering many agents'' work: a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, design, quality, implementation, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
 ---
 
 # Change Saga
@@ -10,6 +10,27 @@ or their coding agent, creates a review deck for the pull request: slides that
 explain the change's architecture, so a person reviews the architecture
 instead of every line. Coverage makes the review trustworthy: every changed
 line is linked to the slide Item that explains it.
+
+## Review the big change, not every branch
+
+A review deck is for the change a person reviews as a whole: usually a large
+one, the pull request that brings many commits, workspaces, or agents' work
+together. In an orchestrated workflow, where one integration workspace or
+branch gathers the work of many child workspaces or sub-agents, only the
+integration branch's pull request into the main branch gets a review. The
+child branches merging into the integration branch get none, and neither do
+their commits: the integration review explains their combined change as one
+architecture. Many one- or two-slide reviews fragment the story a deck exists
+to tell. A small pull request a reviewer can read line by line does not need a
+deck unless the team asks for one.
+
+Deferring is not skipping. The Saga is still kept complete and current: when
+the real review comes, its pull request gets the full deck with every changed
+line covered, and the living documentation is reconciled and repinned for
+everything the children changed. That hard work is done once, for the change
+people actually review, rather than piecemeal in every child. As a child
+workspace or sub-agent, create a review or do Saga upkeep only when the user
+or the parent asks.
 
 ## When to do Saga work
 
