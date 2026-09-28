@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/assets.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:08ec538843c5b61abfb1c9b28dc676c5c88e598d01df86ab7f94a635c88be5fb"
+    },
+    {
+      "commit": "0f44734cbc02a100b98beed90b68398741bd6981",
+      "path": "internal/server/assets.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:8ada89fe5ae3c126d2693e9dc825b4bdc8ef83c4792e2dbba6b353ef822b399e"
+    }
+  ]
+}

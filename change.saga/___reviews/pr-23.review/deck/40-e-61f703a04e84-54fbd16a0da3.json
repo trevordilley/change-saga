@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "0b46bbdbd47dcdd9376de71829a7ebb00dc716c3",
+      "path": "internal/cli/cli.go",
+      "start": 924,
+      "end": 924,
+      "digest": "sha256:7c8ac0eb46ec21d83d8a3f97d7d7b976c4bdedb6fa0b79025bf34d10d99758c8"
+    }
+  ]
+}

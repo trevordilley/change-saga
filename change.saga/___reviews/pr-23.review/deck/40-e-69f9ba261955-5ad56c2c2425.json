@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/server/slidetheme_assets.go",
+      "digest": "sha256:845bc8aef5a511f53781fb0406f0b65b203071de6c73203164a3edc04a42862b"
+    }
+  ]
+}

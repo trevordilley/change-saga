@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Every note and surprise stays reachable</title>
+  <desc id="diagram-desc">Pinned notes survive crossing hotspots, inner notes rise above their group, badges dodge the Surprises panel and short elements, and Escape resets.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-canvas:#fafaf8;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-title-ink:#172033;--diagram-warning-fill:#fff7e6;--diagram-warning-ink:#805015;--diagram-warning-stroke:#b7791f;}@media (prefers-color-scheme:dark){:root{--diagram-canvas:#0d1117;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-title-ink:#e6edf3;--diagram-warning-fill:#2d240c;--diagram-warning-ink:#f2cc60;--diagram-warning-stroke:#d29922;}}</style>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Every note and surprise stays reachable</tspan></text>
+  </g>
+  <g id="pinned" data-diagram-kind="node" transform="translate(60 130)" role="group" aria-label="A. Pinned note holds">
+    <desc>While a popover is pinned, hovering another hotspot is ignored, so the pointer can reach the pinned note's links.</desc>
+    <rect width="540" height="150" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">A. Pinned note holds</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">crossing a hotspot no longer swaps it</tspan></text>
+  </g>
+  <g id="inner" data-diagram-kind="node" transform="translate(680 130)" role="group" aria-label="B. Inner note rises">
+    <desc>A note hotspot inside an Item's hotspot gets z-index: 4; others stay beneath Items.</desc>
+    <rect width="540" height="150" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">B. Inner note rises</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">above the Item hotspot of its group</tspan></text>
+  </g>
+  <g id="badge" data-diagram-kind="node" transform="translate(60 350)" role="group" aria-label="C/D. Badge stays clear">
+    <desc>- Under the panel: moves up above it
+- Under 64px tall: drops below the element
+- Re-placed when the panel opens or closes</desc>
+    <rect width="540" height="150" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2" style="fill:var(--diagram-warning-fill,#fff7e6);stroke:var(--diagram-warning-stroke,#b7791f)"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve" style="fill:var(--diagram-warning-ink,#805015)"><tspan x="18" y="37">C/D. Badge stays clear</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve" style="fill:var(--diagram-warning-ink,#805015)"><tspan x="18" y="73">of the Surprises panel and Item controls</tspan></text>
+  </g>
+  <g id="escape" data-diagram-kind="node" transform="translate(680 350)" role="group" aria-label="D. Escape resets on leave">
+    <rect width="540" height="150" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">D. Escape resets on leave</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">returning to a note reopens it</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="text" transform="translate(680 560)" role="group" aria-label="Browser test: pinned, inner, corner, and short-element cases">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="15">Browser test: pinned, inner, corner, and short-element cases</tspan></text>
+  </g>
+</svg>

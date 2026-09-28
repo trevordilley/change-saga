@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "skills/change-saga/references/theme.md",
+      "digest": "sha256:67a66f5f3e5449851c060ba435a70103561c5da47032e7648be619b3504f7549"
+    },
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "skills/change-saga/references/theme.md",
+      "start": 1,
+      "end": 51,
+      "digest": "sha256:67a66f5f3e5449851c060ba435a70103561c5da47032e7648be619b3504f7549"
+    }
+  ]
+}

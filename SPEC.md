@@ -494,7 +494,7 @@ The CLI renders it deterministically to the revision's SVG asset and stores the
 canonical source beside it as a `24-a-*.json` sidecar. The revision pins both:
 
 ```json
-"diagram": {"source": "24-a-….json", "source_digest": "sha256:…", "renderer": "change-saga-diagram/1"}
+"diagram": {"source": "24-a-….json", "source_digest": "sha256:…", "renderer": "change-saga-diagram/2"}
 ```
 
 Everything downstream of the asset is unchanged: the SVG is what digests,
@@ -585,6 +585,42 @@ alternating the two so the animation replays; an element landmark then
 retargets the frame at its element and shows the finished drawing.
 `diagram describe` prints the reveal and each element's ranked step.
 
+A generated slide paints with the [design tokens](#design-tokens), so it
+follows the reviewer's light and dark mode and a theme. A style colour, and
+the document `background`, is `#rrggbb`, `none`, or a colour token written
+`@name`, such as `@diagram-primary-fill` or `@accent`, which must name a
+colour token of the contract; a hex colour stays exactly as authored. The
+default styles, the board palette, the default background (`#fafaf8`, which
+new documents store), markers, and the text and ring on a section tab or pin
+(`diagram-on-accent`) paint with `diagram-` tokens. The renderer writes each
+token colour twice, as the presentation attribute's light value and as an
+inline style that reads the token with that value as its fallback, such as
+`fill="#ffffff" style="fill:var(--diagram-normal-fill,#ffffff)"`: CSS custom
+properties are not reliable in SVG presentation attributes, and a consumer
+without them still draws the light slide. The SVG's own style declares the
+tokens it uses with their light values, and their dark values under
+`prefers-color-scheme: dark`, so a standalone SVG, on a code host for
+example, themes itself.
+
+Renderer `change-saga-diagram/2` is that change: every generated SVG gained
+token styles, while its light drawing is byte-for-byte the same attributes.
+It is a one-time re-render. `diagram check` reports each earlier slide as
+stale and `diagram edit` with an empty operation list (`[]`) republishes it;
+a merged review is read-only history and keeps the SVG it was approved with.
+
+In the reviewer, a slide frame or thumbnail inherits the page's
+`color-scheme`, and its URL names the reviewer's pinned theme when that
+differs from the OS preference (`?saga_scheme=light` or `dark`), because not
+every browser passes a frame element's `color-scheme` to the frame's
+`prefers-color-scheme`. Every SVG or HTML slide visual is served with a
+style appended that declares every token, for the named scheme or else for
+both under `prefers-color-scheme`, so the toggle wins and a hand-authored
+slide may paint with tokens too. A slide that does neither, a hand-authored
+SVG or HTML page that neither switches on `prefers-color-scheme` nor reads a
+contract token, or a raster image, keeps a light frame and sits on a paper
+card in dark mode (`slide-paper`, `slide-paper-inset`), so it reads as paper
+rather than glare. `visual-qa` renders every surface in both schemes.
+
 A reader validates a pin's digest and structure;
 `change-saga diagram check` re-renders sources and reports any published SVG
 that differs from its source, for example after a renderer change.
@@ -648,6 +684,38 @@ evidence pinned at that commit. Its `unlinked_code_evidence` collection exposes 
 evidence that has no active, current path to an accepted story. Thus a caller
 can traverse from a story to code, or from the current head commit or diff back
 to the story, without duplicating story text inside slide records.
+
+### Design tokens
+
+Every colour, font, and size the reviewer and its generated slides paint with
+is a named design token with a light value and, when it changes, a dark value.
+`change-saga spec` publishes the contract under `theme`: each token's name,
+group (surface, status, diff, syntax, shape, chrome, diagram, and
+diagram-palette), kind, and values. The reviewer declares the light values on
+`:root` and the dark values when dark mode is chosen or preferred, so every
+rule reads through the tokens and light and dark cannot drift apart. The
+`diagram-` tokens name the colours of the default diagram styles and of the
+sticky and annotation palette, which generated slides paint with; see
+[diagram sources](#complete-slide-transactions-and-diagram-sources) for how slides follow them. Renaming or removing a token is a breaking
+change to the contract.
+
+A Saga may hold one theme, `theme.css` at its root beside `saga.json`, of
+token overrides only: a `:root` block for light mode and a
+`:root[data-theme="dark"]` block for dark mode, each setting only contract
+tokens with values of the token's kind (hex, `rgb()`, `rgba()`, `hsl()`,
+`hsla()`, or named colours; px, rem, or em lengths; font family lists; and
+`[inset] x y [blur [spread]] colour` shadows). Other selectors, `url()`,
+@-rules, escapes, and `!important` are refused, so a theme cannot restyle or
+hide review controls or load anything. `change-saga validate` reports each
+problem with its line, and an invalid theme is not applied at all. The
+reviewer serves the validated values, re-serialized rather than copied, after
+its defaults for light mode and for dark mode by preference or toggle, and
+appends every token, with the theme applied, to each SVG and HTML slide it
+serves, so a slide painting with `var(--token)` follows the theme while its
+committed bytes, digests, and approvals stay the same. `change-saga theme`
+writes a starter (`init`), checks validity and WCAG AA contrast of the key
+text and background pairs in both modes (`check`), and opens a preview
+(`preview`).
 
 ## Report content, evidence, and review
 

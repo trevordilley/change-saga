@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/cli/skill_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:528b97eb0055e6f1a06c1395586dcd2f4cc807af876cbe5b9a9c8ba9a82fa69f"
+    },
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "internal/cli/skill_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:68442b514e6607d55a271e02ad929ecf8321117bda84dcacb18d718bec6626a7"
+    }
+  ]
+}

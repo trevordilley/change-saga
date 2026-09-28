@@ -1,0 +1,314 @@
+{
+  "version": 1,
+  "deck": "pr-23",
+  "slide": "contract",
+  "current": "sha256:a7378a66bf7841e6d66cfba4d7a19ea3fe2242952cb5fde61d5f676f50b9cf93",
+  "revisions": [
+    {
+      "snapshot": "sha256:c2c46027c6916f0da0f5671f993cecd53d0aa0b165f1de9a07af551003b0ee2a",
+      "request_id": "pr-23-contract",
+      "created_at": "2026-09-28T03:52:15.250948Z",
+      "asset": "24-a-a81322ccfa70ba9b651de0e9bf1da363dd7434f043d0ff56ed1c.svg",
+      "asset_digest": "sha256:a81322ccfa70ba9b651de0e9bf1da363dd7434f043d0ff56ed1cb7c0a2c165dc",
+      "slide": {
+        "version": 4,
+        "id": "contract",
+        "deck": "pr-23",
+        "title": "One token contract",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-a81322ccfa70ba9b651de0e9bf1da363dd7434f043d0ff56ed1c.svg",
+        "takeaway": "Every colour, font, and size is a named token with light and dark values; the app declares them from one registry and spec publishes it.",
+        "reading_order": [
+          "registry",
+          "stylesheet",
+          "spec",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "registry",
+            "slide": "contract",
+            "rank": 10,
+            "kind": "node",
+            "label": "The token registry",
+            "description": "The theme package lists every token with its group, kind, and light and dark values: the reviewer's existing tokens plus diagram and palette tokens.",
+            "selector": {
+              "type": "element",
+              "element_id": "registry"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stylesheet",
+            "slide": "contract",
+            "rank": 20,
+            "kind": "node",
+            "label": "The app declares from it",
+            "description": "The reviewer's stylesheet builds its :root and dark-mode token blocks from the registry instead of hand-written copies; every rule already reads tokens.",
+            "selector": {
+              "type": "element",
+              "element_id": "stylesheet"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "spec",
+            "slide": "contract",
+            "rank": 30,
+            "kind": "node",
+            "label": "spec and SPEC.md publish it",
+            "description": "change-saga spec adds a theme section listing every token, and SPEC.md defines the contract and that renaming a token is breaking.",
+            "selector": {
+              "type": "element",
+              "element_id": "spec"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "contract",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Contract tests",
+            "description": "Tokens are unique and well formed, colours are hex with a dark value, and each scheme declares what it should.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-22a8e9f193d59932f4c7c77414a90d4c2355c4d447977eb62214.json",
+        "source_digest": "sha256:22a8e9f193d59932f4c7c77414a90d4c2355c4d447977eb622141d24d569cf9d",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:5acd2958faddc6b4141f6c85767403c6a515664e6c8e417a753eaa30892e4019",
+      "parent_snapshots": [
+        "sha256:c2c46027c6916f0da0f5671f993cecd53d0aa0b165f1de9a07af551003b0ee2a"
+      ],
+      "request_id": "rerender-renderer-2-25",
+      "created_at": "2026-09-28T04:17:23.573327Z",
+      "asset": "24-a-470abc7b45b23e9840d668e4ad2f15434822de2cb8fbfef86047.svg",
+      "asset_digest": "sha256:470abc7b45b23e9840d668e4ad2f15434822de2cb8fbfef86047a0f7f99e3070",
+      "slide": {
+        "version": 4,
+        "id": "contract",
+        "deck": "pr-23",
+        "title": "One token contract",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-470abc7b45b23e9840d668e4ad2f15434822de2cb8fbfef86047.svg",
+        "takeaway": "Every colour, font, and size is a named token with light and dark values; the app declares them from one registry and spec publishes it.",
+        "reading_order": [
+          "registry",
+          "stylesheet",
+          "spec",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "registry",
+            "slide": "contract",
+            "rank": 10,
+            "kind": "node",
+            "label": "The token registry",
+            "description": "The theme package lists every token with its group, kind, and light and dark values: the reviewer's existing tokens plus diagram and palette tokens.",
+            "selector": {
+              "type": "element",
+              "element_id": "registry"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stylesheet",
+            "slide": "contract",
+            "rank": 20,
+            "kind": "node",
+            "label": "The app declares from it",
+            "description": "The reviewer's stylesheet builds its :root and dark-mode token blocks from the registry instead of hand-written copies; every rule already reads tokens.",
+            "selector": {
+              "type": "element",
+              "element_id": "stylesheet"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "spec",
+            "slide": "contract",
+            "rank": 30,
+            "kind": "node",
+            "label": "spec and SPEC.md publish it",
+            "description": "change-saga spec adds a theme section listing every token, and SPEC.md defines the contract and that renaming a token is breaking.",
+            "selector": {
+              "type": "element",
+              "element_id": "spec"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "contract",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Contract tests",
+            "description": "Tokens are unique and well formed, colours are hex with a dark value, and each scheme declares what it should.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-22a8e9f193d59932f4c7c77414a90d4c2355c4d447977eb62214.json",
+        "source_digest": "sha256:22a8e9f193d59932f4c7c77414a90d4c2355c4d447977eb622141d24d569cf9d",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:a7378a66bf7841e6d66cfba4d7a19ea3fe2242952cb5fde61d5f676f50b9cf93",
+      "parent_snapshots": [
+        "sha256:5acd2958faddc6b4141f6c85767403c6a515664e6c8e417a753eaa30892e4019"
+      ],
+      "request_id": "contract-token-count",
+      "created_at": "2026-09-28T04:24:15.021985Z",
+      "asset": "24-a-188e62dfbecfbed08f25a31aed1e2b0bd0d2ce3c9a4bfce0e06f.svg",
+      "asset_digest": "sha256:188e62dfbecfbed08f25a31aed1e2b0bd0d2ce3c9a4bfce0e06f20e065449446",
+      "slide": {
+        "version": 4,
+        "id": "contract",
+        "deck": "pr-23",
+        "title": "One token contract",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-188e62dfbecfbed08f25a31aed1e2b0bd0d2ce3c9a4bfce0e06f.svg",
+        "takeaway": "Every colour, font, and size is a named token with light and dark values; the app declares them from one registry and spec publishes it.",
+        "reading_order": [
+          "registry",
+          "stylesheet",
+          "spec",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "registry",
+            "slide": "contract",
+            "rank": 10,
+            "kind": "node",
+            "label": "The token registry",
+            "description": "The theme package lists every token with its group, kind, and light and dark values: the reviewer's existing tokens plus diagram and palette tokens.",
+            "selector": {
+              "type": "element",
+              "element_id": "registry"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stylesheet",
+            "slide": "contract",
+            "rank": 20,
+            "kind": "node",
+            "label": "The app declares from it",
+            "description": "The reviewer's stylesheet builds its :root and dark-mode token blocks from the registry instead of hand-written copies; every rule already reads tokens.",
+            "selector": {
+              "type": "element",
+              "element_id": "stylesheet"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "spec",
+            "slide": "contract",
+            "rank": 30,
+            "kind": "node",
+            "label": "spec and SPEC.md publish it",
+            "description": "change-saga spec adds a theme section listing every token, and SPEC.md defines the contract and that renaming a token is breaking.",
+            "selector": {
+              "type": "element",
+              "element_id": "spec"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "contract",
+            "rank": 40,
+            "kind": "statement",
+            "label": "Contract tests",
+            "description": "Tokens are unique and well formed, colours are hex with a dark value, and each scheme declares what it should.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-8c54120899a7d9b79e9c82b5363a196156c1b525704669296088.json",
+        "source_digest": "sha256:8c54120899a7d9b79e9c82b5363a196156c1b5257046692960887042abfd7a5b",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

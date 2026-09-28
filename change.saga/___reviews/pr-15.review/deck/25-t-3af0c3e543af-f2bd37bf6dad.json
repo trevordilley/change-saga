@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-15",
   "slide": "surprises-reach-the-reviewer",
-  "current": "sha256:37ce49c9635ec72fb8d014bdf01720b2b39b5e985214e24cb7d1f00ef9c5654a",
+  "current": "sha256:7508789f82dccb9c0e7aea55ce1065d686313e2091404e4275cbac1985cebf12",
   "revisions": [
     {
       "snapshot": "sha256:de23f501322c916b595686f04330ec8db0199e4d0c23f2a8b176669f84bc8fae",
@@ -281,6 +281,147 @@
         "source": "24-a-bade08ee7911c8dc9451951093e1374c2ec3f088bc04d70a3b76.json",
         "source_digest": "sha256:bade08ee7911c8dc9451951093e1374c2ec3f088bc04d70a3b76ef0da5721951",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:7508789f82dccb9c0e7aea55ce1065d686313e2091404e4275cbac1985cebf12",
+      "parent_snapshots": [
+        "sha256:37ce49c9635ec72fb8d014bdf01720b2b39b5e985214e24cb7d1f00ef9c5654a"
+      ],
+      "request_id": "rerender-renderer-2-15",
+      "created_at": "2026-09-28T04:17:17.99904Z",
+      "asset": "24-a-e2ed6925802f4df498b316b8bd1d6e7bb9ef404934a150565c76.svg",
+      "asset_digest": "sha256:e2ed6925802f4df498b316b8bd1d6e7bb9ef404934a150565c76196c9d79a9ea",
+      "slide": {
+        "version": 4,
+        "id": "surprises-reach-the-reviewer",
+        "deck": "pr-15",
+        "title": "Surprises reach the reviewer",
+        "rank": 10,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-e2ed6925802f4df498b316b8bd1d6e7bb9ef404934a150565c76.svg",
+        "takeaway": "A callout Item is a surprise: the report carries it, review list names it, and the viewer shows it in a panel on the slide and in its element's panel.",
+        "reading_order": [
+          "guidance",
+          "report",
+          "list",
+          "viewer",
+          "hidden-body",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "guidance",
+            "slide": "surprises-reach-the-reviewer",
+            "rank": 10,
+            "kind": "node",
+            "label": "Calling out surprises is a step",
+            "description": "The review fast path asks for expectation, actual behavior, why, and consequence as a callout on the responsible element, never manufactured.",
+            "selector": {
+              "type": "element",
+              "element_id": "guidance"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "report",
+            "slide": "surprises-reach-the-reviewer",
+            "rank": 20,
+            "kind": "node",
+            "label": "Callouts in the review report",
+            "description": "reviewstate lists each slide's callout Items with label, body, and the Item they are about, as callouts in JSON.",
+            "selector": {
+              "type": "element",
+              "element_id": "report"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "list",
+            "slide": "surprises-reach-the-reviewer",
+            "rank": 30,
+            "kind": "node",
+            "label": "review list names surprises",
+            "description": "Each slide prints its surprises, and each review counts them; the count is reported, never required.",
+            "selector": {
+              "type": "element",
+              "element_id": "list"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "viewer",
+            "slide": "surprises-reach-the-reviewer",
+            "rank": 40,
+            "kind": "node",
+            "label": "Surprises in the viewer",
+            "description": "A collapsible Surprises panel on each slide; a callout's panel is labelled Surprise with its body and a link to its element.",
+            "selector": {
+              "type": "element",
+              "element_id": "viewer"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "hidden-body",
+            "slide": "surprises-reach-the-reviewer",
+            "rank": 50,
+            "kind": "callout",
+            "label": "A callout's body was invisible",
+            "description": "Why the viewer change matters: callouts existed but their point was hidden.",
+            "selector": {
+              "type": "element",
+              "element_id": "viewer"
+            },
+            "about": "viewer",
+            "body": "You would expect a callout's text to reach the reviewer; before this change the viewer rendered only its label and description, so the expected-versus-actual body never showed."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "surprises-reach-the-reviewer",
+            "rank": 60,
+            "kind": "node",
+            "label": "Viewer and list tests",
+            "description": "The page shows the Surprises panel, panel body and about link; review list and JSON name callouts; a browser test sees the panel on the slide.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-bade08ee7911c8dc9451951093e1374c2ec3f088bc04d70a3b76.json",
+        "source_digest": "sha256:bade08ee7911c8dc9451951093e1374c2ec3f088bc04d70a3b76ef0da5721951",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

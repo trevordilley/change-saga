@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-17",
   "slide": "proof",
-  "current": "sha256:dc0024567a379962c4bb6b66fca8b03c68b74b1cfbdcb230082653bb3b53ddd2",
+  "current": "sha256:db194883b0686f4729ac2855a3db1bac092a89f56fe9a3b478d2054c36970420",
   "revisions": [
     {
       "snapshot": "sha256:dc0024567a379962c4bb6b66fca8b03c68b74b1cfbdcb230082653bb3b53ddd2",
@@ -66,6 +66,73 @@
         "source": "24-a-20f2c4bd3f974a4fea441f1c9a71e1eba9b3ecece4a73e1f18ef.json",
         "source_digest": "sha256:20f2c4bd3f974a4fea441f1c9a71e1eba9b3ecece4a73e1f18ef4b4cb8c2f6b1",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:db194883b0686f4729ac2855a3db1bac092a89f56fe9a3b478d2054c36970420",
+      "parent_snapshots": [
+        "sha256:dc0024567a379962c4bb6b66fca8b03c68b74b1cfbdcb230082653bb3b53ddd2"
+      ],
+      "request_id": "rerender-renderer-2-18",
+      "created_at": "2026-09-28T04:17:19.687533Z",
+      "asset": "24-a-72f32e2000c04efc3c9fb378b82177dc4e7b3e2aa8aade0d502c.svg",
+      "asset_digest": "sha256:72f32e2000c04efc3c9fb378b82177dc4e7b3e2aa8aade0d502cc64f05785664",
+      "slide": {
+        "version": 4,
+        "id": "proof",
+        "deck": "pr-17",
+        "title": "Proof and guidance",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-72f32e2000c04efc3c9fb378b82177dc4e7b3e2aa8aade0d502c.svg",
+        "takeaway": "A golden, validation, describe, edit, schema, and apply-slide tests pin the connectors; SPEC and the skill teach them.",
+        "reading_order": [
+          "tests",
+          "docs"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "proof",
+            "rank": 10,
+            "kind": "node",
+            "label": "Tests",
+            "description": "A connectors golden, validation, describe, edit and schema checks, and an apply-slide round trip on a review slide.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "docs",
+            "slide": "proof",
+            "rank": 20,
+            "kind": "node",
+            "label": "Docs",
+            "description": "SPEC.md and the skill's diagrams reference describe the terminators with an ERD example.",
+            "selector": {
+              "type": "element",
+              "element_id": "docs"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-20f2c4bd3f974a4fea441f1c9a71e1eba9b3ecece4a73e1f18ef.json",
+        "source_digest": "sha256:20f2c4bd3f974a4fea441f1c9a71e1eba9b3ecece4a73e1f18ef4b4cb8c2f6b1",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

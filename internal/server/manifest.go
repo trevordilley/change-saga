@@ -468,7 +468,7 @@ func indexManifestTargets(document *saga.Saga) map[string]manifestTargetLocation
 				slide = &SlideReferenceView{
 					ID: fragment.ID, Title: title, Target: fragment.Target,
 					Anchor: hrefAnchor(fragmentHref), Href: fragmentHref,
-					URL: fragmentAssetURL(fragment), MediaType: fragment.MediaType,
+					URL: fragmentAssetURL(fragment), MediaType: fragment.MediaType, Paper: fragmentPaper(fragment),
 				}
 				kind = "Slide"
 			}

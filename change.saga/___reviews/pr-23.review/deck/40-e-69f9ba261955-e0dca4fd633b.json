@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/assets.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:3bb0f98c85daf6b190b7c3b56883e5fbfdf8b5f8594e0a323379501c8dcc6786"
+    }
+  ]
+}

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "fc1fa3137297842e0651a327e8fe519a04c8b37b",
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
       "path": "internal/server/reviews.go",
-      "start": 391,
-      "end": 465,
-      "digest": "sha256:4c7a0a5074b9d4e0e65076d432186aca68c5237052fa79d45be0b3210705c9ed",
+      "start": 393,
+      "end": 468,
+      "digest": "sha256:ca76be35c391ef864a81fa1433b7891142649e532a97f1cccf9c7cbd8db15300",
       "note": "Composes each review slide, visual, Item, diff, decision, and thread into the browser surface."
     }
   ]

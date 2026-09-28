@@ -26,6 +26,10 @@ var runnerSource []byte
 
 var StandardViewports = []Viewport{{Width: 1280, Height: 720}, {Width: 1024, Height: 576}}
 
+// Schemes are the colour schemes every surface renders in: generated slides
+// and the reviewer follow light and dark mode, so both must read.
+var Schemes = []string{"light", "dark"}
+
 type Viewport struct {
 	Width  int `json:"width"`
 	Height int `json:"height"`
@@ -46,6 +50,7 @@ type Options struct {
 type Artifact struct {
 	Surface  string `json:"surface"`
 	Viewport string `json:"viewport"`
+	Scheme   string `json:"scheme"`
 	Path     string `json:"path"`
 }
 
@@ -54,6 +59,7 @@ type Finding struct {
 	Severity string `json:"severity"`
 	Surface  string `json:"surface"`
 	Viewport string `json:"viewport,omitempty"`
+	Scheme   string `json:"scheme,omitempty"`
 	Deck     string `json:"deck"`
 	Slide    string `json:"slide"`
 	Item     string `json:"item,omitempty"`
@@ -75,6 +81,7 @@ type Report struct {
 	Saga           string        `json:"saga"`
 	Selection      Selection     `json:"selection"`
 	Viewports      []Viewport    `json:"viewports"`
+	Schemes        []string      `json:"schemes"`
 	Slides         []SlideReport `json:"slides"`
 	ContactSheet   string        `json:"contact_sheet"`
 	Findings       []Finding     `json:"findings"`
@@ -102,6 +109,7 @@ type runnerInput struct {
 	Saga           string        `json:"saga"`
 	Selection      Selection     `json:"selection"`
 	Viewports      []Viewport    `json:"viewports"`
+	Schemes        []string      `json:"schemes"`
 	Slides         []runnerSlide `json:"slides"`
 	SemanticArrows string        `json:"semantic_arrows"`
 }
@@ -196,7 +204,7 @@ func Run(ctx context.Context, options Options) (Report, error) {
 	input := runnerInput{
 		BaseURL: baseURL, OutputDir: stage, PlaywrightDir: playwright,
 		Saga: document.Manifest.ID, Selection: selectionOf(options),
-		Viewports: StandardViewports, Slides: selected, SemanticArrows: "not_evaluated",
+		Viewports: StandardViewports, Schemes: Schemes, Slides: selected, SemanticArrows: "not_evaluated",
 	}
 	inputPath := filepath.Join(stage, "input.json")
 	encoded, err := json.Marshal(input)

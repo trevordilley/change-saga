@@ -176,9 +176,9 @@ func (r *renderer) connectorMarker(e Element, style Style, end, name string) str
 	// Marker content is scaled by size/10, so this keeps its lines as thick as
 	// the edge's.
 	width := num(style.StrokeWidth * 10 / size)
-	background := r.doc.Background
+	background := r.background()
 	if background == "" || background == "none" {
-		background = "#ffffff"
+		background = "@bg"
 	}
 	for _, part := range shape.parts {
 		fill := "none"

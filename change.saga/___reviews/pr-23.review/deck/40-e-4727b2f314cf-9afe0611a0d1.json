@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/server.go",
+      "start": 335,
+      "end": 337,
+      "digest": "sha256:5dbc56c6b2e9980bdee9b26d49144967f01a992341cebf423cb7198bc76fd8da"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/server.go",
+      "start": 1630,
+      "end": 1630,
+      "digest": "sha256:9ec2b335a8cff782bac072625aebf55bfd7a2215f2fd09275d6f331fd27ae088"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/server/server.go",
+      "start": 1799,
+      "end": 1799,
+      "digest": "sha256:5cf26e12520a9593d0843b94dd77f77ae2a03cd74d6edc45d61f3c32b22f89a7"
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:a6d5dd5a650a04b2979719deb796c6d34759a03f23e3dc244bb023f2b8803e78"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:3f6fa7b2e3acc5efd00e969e87fb37fa7af7b26e8bc773ad725c1a768b203c1c"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:a25a55c6279e6d12ef6f0f262b4708aa7e7ed148555d383faf2da12e516a1d40"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:a2b15a656c0a71ebac056939e1ce5428faaf87c1ffd586b50492250f720f48ec"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:7078d8acf026b68be335971a8ebfb8c8f6c15e4f7ad72ac82e26d6dc981e0c74"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:4b609b1e20d7215214ea0cc4e19be7054d6367b060bb814a72ec7262eb9ad32a"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 18,
+      "end": 20,
+      "digest": "sha256:ef619923eb8daba9fd1554a884cc2989850b0ac2319c2182af78ea1beb9b538f"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 22,
+      "end": 23,
+      "digest": "sha256:f8c43ea7d352f606c5693437004c3b4f57d58cd36d23af3b0d027a25f592f58b"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 26,
+      "end": 28,
+      "digest": "sha256:2d5f77c745955733111e1b55b3b49ca3a86dfd94c19a7988c11fa8cf8a6486fe"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:c3b776ca8c90b998a81f5695a60a1ce2c4cbc96d77783823b5c4cff7a1a4231b"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 33,
+      "end": 34,
+      "digest": "sha256:c401070570a515456c4451ae8c13150a6a08ab4a73edf825d20f366386bb35b6"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 39,
+      "end": 41,
+      "digest": "sha256:c4eb0e9159a2346f35cb1f5250f365fb6798f93ffcbcd34e1136a2d19659113a"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:4caa87940b7be474f6df0c7c1264a42c34f81f15df51e1271d27a73e7943b2d2"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 48,
+      "end": 49,
+      "digest": "sha256:782a1f3ce92b438b033406c490370a643ad364542328a45eb3784db7762c191a"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 52,
+      "end": 53,
+      "digest": "sha256:be016dd78786c459abc63a92e9682d5527a4c2db162b6c1a807136747b1e4976"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 56,
+      "end": 57,
+      "digest": "sha256:d35820f5dd09db4076217638b2deea29aef348ad7272b2739b427814dba1dbc8"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 60,
+      "end": 61,
+      "digest": "sha256:369c97f2b4985fe1eedad0446de13e1c54b09ea4c14c55020d9472428e1c6567"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 64,
+      "end": 65,
+      "digest": "sha256:1c6ec7b70a3f1e60c87cdc56d87ca191437975710aec9791700b589ff7e946ba"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 68,
+      "end": 69,
+      "digest": "sha256:db542c01d76f431e9624f7cf77f47c118d2c59531660c199f7f5b1e9224a39c4"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:c24e544a0635eabd947c8430f08f07476b488f68ae142ff7dc631ffc015cfc00"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:d13757037c878b0a973174bc383898371ae79924cd8fdbf4b75f9d38e26706bb"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:7e8c0170a1b8f593422e73c5e010f2dc67f5f3637ae3d25706eace0d20f2dab7"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:25b84fca685aaee7737143736cca6f9febd0da9d949b699d918e100706e55103"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:b76fde5ab4687e2aa9fddccfe1e8ee64476738d22399256d9db3dad9daa2909d"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:15ddfb98b2c460cd74c04d41aa7ef6af105789d9e49a7245ca15f68b526564be"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 18,
+      "end": 20,
+      "digest": "sha256:cfddd7ade63b0931dfabc4824b186c0e95eca8db18fcde65d7555d769835063f"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 22,
+      "end": 23,
+      "digest": "sha256:9c48c9beea284ee789cb8472e16388e141a569ed97bd956e7bcb2993c4037187"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 26,
+      "end": 28,
+      "digest": "sha256:25553c065919f0afd7be082f5b3aefd3e7aa2235d5e83e0199613239e29de8eb"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:a1ab2906e6e1c3b1dbdfb5bf4ca73de4daadba9d9208da2e324fc96a505856d7"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 33,
+      "end": 34,
+      "digest": "sha256:a49666d579ee4393b5c9814824ce030df3e3556278b9379f4ce8fcc6093f8a8b"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 39,
+      "end": 41,
+      "digest": "sha256:0434f800108fa3e67e477ad26ba58fe8340849f8cc8d727b4ebec4b6f97099ae"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:881cbbef6decb3959d4a9f2b1957d06df7c5b750ae048077d3770690563fed7b"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 48,
+      "end": 49,
+      "digest": "sha256:57fb2edbfe02547a14795c485371dfb4bf6b22aec62c67f583d72500756f71d1"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 52,
+      "end": 53,
+      "digest": "sha256:e485f19ccf060b257dc3d295299dbce7ac5a835e1b11ce0eeb25b331ca5d53c2"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 56,
+      "end": 57,
+      "digest": "sha256:ca84a9d99fec0308511f5e877b8cafe5d2ee6913cf0d48591ce498d1e299c057"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 60,
+      "end": 61,
+      "digest": "sha256:7bf8dbe2b9f8ea67da526a2c5fbda5e59ba2ea9c7cf5abc661b9be1722dced04"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 64,
+      "end": 65,
+      "digest": "sha256:4928fd02b836f88d11e9a82d620da7d6030b1834ef13eb05fa6ba86d86c78bac"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/annotations.svg",
+      "start": 68,
+      "end": 69,
+      "digest": "sha256:91c60e44f08880ba342691180b0f8dba0249146dc481581f021fbbe35b2e2357"
+    }
+  ]
+}

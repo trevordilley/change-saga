@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "docs/ergonomics-visual-qa.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:95b1bd972b7fb353583c7e5cc9622f6f6a70f6a2a923495f3b22f051f9534b7d"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "docs/ergonomics-visual-qa.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:7f1d7857ebb40a88e2fc671b9b552ac14a281225889c2e546b66b40c6970a354"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "docs/ergonomics-visual-qa.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:c90a2837a9161c863ca6cc8063632399bb6c6350757608eb96686a4c651c509a"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "docs/ergonomics-visual-qa.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:0cf5dea0e275d817983778a33d2317f7ee884573ff8414810354e7dc41bef580"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "docs/ergonomics-visual-qa.md",
+      "start": 55,
+      "end": 58,
+      "digest": "sha256:072b694702cd6ce2266de7c86a7b6b16fc643b6a11ce7ae2715f15bf7835b360"
+    }
+  ]
+}

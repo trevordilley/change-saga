@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "0f44734cbc02a100b98beed90b68398741bd6981",
+      "path": "internal/theme/registry.go",
+      "digest": "sha256:55e180de2656154004bd32ec7f6dda7c5c2d22067ad90847b83d1879e07697e9"
+    },
+    {
+      "commit": "0f44734cbc02a100b98beed90b68398741bd6981",
+      "path": "internal/theme/registry.go",
+      "start": 1,
+      "end": 109,
+      "digest": "sha256:55e180de2656154004bd32ec7f6dda7c5c2d22067ad90847b83d1879e07697e9"
+    }
+  ]
+}

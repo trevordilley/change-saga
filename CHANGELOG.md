@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased — slides on design tokens
+
+- Generated slides follow the reviewer's light and dark mode, including its
+  manual toggle, and a theme: default styles, the board palette, the default
+  canvas, markers, and text on tabs and pins read `diagram-` tokens, and a
+  standalone SVG declares their dark values under `prefers-color-scheme`.
+- A diagram style colour or background may name any colour token as `@name`,
+  such as `@diagram-primary-fill` or `@accent`; hex colours stay as authored.
+- The renderer is now `change-saga-diagram/2`: `diagram check` reports older
+  generated slides as stale, and `diagram edit` with `[]` re-renders one.
+- Hand-authored slides with fixed colours sit on a light paper card in dark
+  mode; `visual-qa` renders every surface in light and dark.
+
 ## Unreleased — Saga work happens at PR time
 
 - The skill, `help`, `init`, and README say when to do Saga work: when a pull

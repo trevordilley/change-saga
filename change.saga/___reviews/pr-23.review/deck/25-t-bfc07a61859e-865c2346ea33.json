@@ -1,0 +1,323 @@
+{
+  "version": 1,
+  "deck": "pr-23",
+  "slide": "theme-command",
+  "current": "sha256:3dae0170783381744e20851ebae361c36c450297372f2857ccbad487ee062d13",
+  "revisions": [
+    {
+      "snapshot": "sha256:fc0a12f5451a3a5da53a761e866653681659e734d9ccb6ab01e0eab58059ea5b",
+      "request_id": "theme-command-1",
+      "created_at": "2026-09-28T04:16:56.169838Z",
+      "asset": "24-a-be6e2ffa3e9b7ca7310c16fba5637c5f732124055c3336d65e4f.svg",
+      "asset_digest": "sha256:be6e2ffa3e9b7ca7310c16fba5637c5f732124055c3336d65e4f70a019c30f94",
+      "slide": {
+        "version": 4,
+        "id": "theme-command",
+        "deck": "pr-23",
+        "title": "change-saga theme: init, check, preview",
+        "rank": 40,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-be6e2ffa3e9b7ca7310c16fba5637c5f732124055c3336d65e4f.svg",
+        "takeaway": "init writes a commented starter, check validates and measures WCAG AA contrast in both modes with an exit code for CI, and preview opens light and dark side by side.",
+        "reading_order": [
+          "init",
+          "check",
+          "contrast",
+          "preview",
+          "surface",
+          "reuse",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "init",
+            "slide": "theme-command",
+            "rank": 10,
+            "kind": "node",
+            "label": "theme init writes a starter",
+            "description": "Every token with its light and dark defaults, grouped and commented out; it names the file it wrote and refuses to replace a theme without --force.",
+            "selector": {
+              "type": "element",
+              "element_id": "init"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "check",
+            "slide": "theme-command",
+            "rank": 20,
+            "kind": "node",
+            "label": "theme check validates, then measures",
+            "description": "Invalid exits 1 naming each line; valid measures contrast and exits 3 naming each failing pair; without a theme it checks the defaults.",
+            "selector": {
+              "type": "element",
+              "element_id": "check"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "contrast",
+            "slide": "theme-command",
+            "rank": 30,
+            "kind": "node",
+            "label": "The key pairs, in both modes",
+            "description": "WCAG relative luminance on the resolved values of each scheme; a translucent colour is composited over what it sits on.",
+            "selector": {
+              "type": "element",
+              "element_id": "contrast"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "preview",
+            "slide": "theme-command",
+            "rank": 40,
+            "kind": "node",
+            "label": "theme preview opens /theme",
+            "description": "A page of its own: swatches, chrome samples, and a generated diagram, each pane scoped to one scheme, with problems and contrast failures listed above.",
+            "selector": {
+              "type": "element",
+              "element_id": "page"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "surface",
+            "slide": "theme-command",
+            "rank": 50,
+            "kind": "node",
+            "label": "Help, grammar, and skill",
+            "description": "The theme family is dispatched like diagram, listed in help, declared in the grammar that spec publishes, and taught by a skill reference.",
+            "selector": {
+              "type": "element",
+              "element_id": "surface"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "reuse",
+            "slide": "theme-command",
+            "rank": 60,
+            "kind": "callout",
+            "label": "preview reuses any running reviewer",
+            "description": "It does not replace a comparison reviewer with an observing one.",
+            "selector": {
+              "type": "element",
+              "element_id": "preview"
+            },
+            "about": "preview",
+            "body": "You might expect preview to start its own server; it opens /theme on the Saga's running background reviewer whatever its opening, since the theme does not depend on it, and starts one only when none is running."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "theme-command",
+            "rank": 70,
+            "kind": "statement",
+            "label": "CLI and end-to-end tests",
+            "description": "init and --force, check's exit codes and named pairs, validate's lines, and Playwright recolouring the reviewer and a slide by OS preference and by toggle.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests-note"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-e057a0c295481971a25666bb9f185d032c240d90b4da32af18bd.json",
+        "source_digest": "sha256:e057a0c295481971a25666bb9f185d032c240d90b4da32af18bd9ddb00ce3712",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:3dae0170783381744e20851ebae361c36c450297372f2857ccbad487ee062d13",
+      "parent_snapshots": [
+        "sha256:fc0a12f5451a3a5da53a761e866653681659e734d9ccb6ab01e0eab58059ea5b"
+      ],
+      "request_id": "theme-command-43ace3bd-edit",
+      "created_at": "2026-09-28T04:36:32.590585Z",
+      "asset": "24-a-b002529d7605eec0a7ba5e3c99a8662b41fdf5fdfe5d3d47eecd.svg",
+      "asset_digest": "sha256:b002529d7605eec0a7ba5e3c99a8662b41fdf5fdfe5d3d47eecd4d84c5ce2a67",
+      "slide": {
+        "version": 4,
+        "id": "theme-command",
+        "deck": "pr-23",
+        "title": "change-saga theme: init, check, preview",
+        "rank": 40,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-b002529d7605eec0a7ba5e3c99a8662b41fdf5fdfe5d3d47eecd.svg",
+        "takeaway": "init writes a commented starter, check validates and measures WCAG AA contrast in both modes with an exit code for CI, and preview opens light and dark side by side.",
+        "reading_order": [
+          "init",
+          "check",
+          "contrast",
+          "preview",
+          "surface",
+          "reuse",
+          "tests"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "init",
+            "slide": "theme-command",
+            "rank": 10,
+            "kind": "node",
+            "label": "theme init writes a starter",
+            "description": "Every token with its light and dark defaults, grouped and commented out; it names the file it wrote and refuses to replace a theme without --force.",
+            "selector": {
+              "type": "element",
+              "element_id": "init"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "check",
+            "slide": "theme-command",
+            "rank": 20,
+            "kind": "node",
+            "label": "theme check validates, then measures",
+            "description": "Invalid exits 1 naming each line; valid measures contrast and exits 3 naming each failing pair; without a theme it checks the defaults.",
+            "selector": {
+              "type": "element",
+              "element_id": "check"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "contrast",
+            "slide": "theme-command",
+            "rank": 30,
+            "kind": "node",
+            "label": "The key pairs, in both modes",
+            "description": "WCAG relative luminance on the resolved values of each scheme; a translucent colour is composited over what it sits on.",
+            "selector": {
+              "type": "element",
+              "element_id": "contrast"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "preview",
+            "slide": "theme-command",
+            "rank": 40,
+            "kind": "node",
+            "label": "theme preview opens /theme",
+            "description": "A page of its own: swatches, chrome samples, and a generated diagram, each pane scoped to one scheme, with problems and contrast failures listed above.",
+            "selector": {
+              "type": "element",
+              "element_id": "page"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "surface",
+            "slide": "theme-command",
+            "rank": 50,
+            "kind": "node",
+            "label": "Help, grammar, and skill",
+            "description": "The theme family is dispatched like diagram, listed in help, declared in the grammar that spec publishes, and taught by a skill reference.",
+            "selector": {
+              "type": "element",
+              "element_id": "surface"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "reuse",
+            "slide": "theme-command",
+            "rank": 60,
+            "kind": "callout",
+            "label": "preview reuses any running reviewer",
+            "description": "It does not replace a comparison reviewer with an observing one.",
+            "selector": {
+              "type": "element",
+              "element_id": "preview"
+            },
+            "about": "preview",
+            "body": "You might expect preview to start its own server; it opens /theme on the Saga's running background reviewer whatever its opening, since the theme does not depend on it, and starts one only when none is running."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "tests",
+            "slide": "theme-command",
+            "rank": 70,
+            "kind": "statement",
+            "label": "CLI and end-to-end tests",
+            "description": "init and --force, check's exit codes and named pairs, validate's lines, and Playwright recolouring the reviewer and a slide by OS preference and by toggle.",
+            "selector": {
+              "type": "element",
+              "element_id": "tests-note"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-8ed6540858fe22d8c361227a8d309ac40bfe31baeb1ab38631ee.json",
+        "source_digest": "sha256:8ed6540858fe22d8c361227a8d309ac40bfe31baeb1ab38631eebe4ef0baedb6",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

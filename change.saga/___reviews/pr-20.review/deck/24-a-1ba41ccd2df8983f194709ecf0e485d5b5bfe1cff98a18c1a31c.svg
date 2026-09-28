@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Checked once, read as notes</title>
+  <desc id="diagram-desc">Validation names every board problem at once; describe lists section members and notes about targets; edit cascades removals through about.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-blue-accent:#1d4ed8;--diagram-blue-tint:#e8f1ff;--diagram-green-accent:#15803d;--diagram-green-tint:#e7f8eb;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-on-accent:#ffffff;--diagram-pink-accent:#be185d;--diagram-pink-ink:#500724;--diagram-pink-tint:#ffe8f0;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-shadow:#0f172a;--diagram-title-ink:#172033;--diagram-yellow-ink:#3f2d00;--diagram-yellow-sticky:#fff3a3;}@media (prefers-color-scheme:dark){:root{--diagram-blue-accent:#58a6ff;--diagram-blue-tint:#121d2f;--diagram-green-accent:#56d364;--diagram-green-tint:#12261e;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-on-accent:#0d1117;--diagram-pink-accent:#f778ba;--diagram-pink-ink:#ffd6e8;--diagram-pink-tint:#2f1420;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-shadow:#010409;--diagram-title-ink:#e6edf3;--diagram-yellow-ink:#fff5b1;--diagram-yellow-sticky:#4d4108;}}</style>
+    <filter id="diagram-shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.2" style="flood-color:var(--diagram-shadow,#0f172a)"/>
+    </filter>
+    <marker id="diagram-head-stored" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Checked once, read as notes</tspan></text>
+  </g>
+  <g id="write" data-diagram-kind="group" transform="translate(60 110)" role="group" aria-label="Write path">
+    <rect width="520" height="450" rx="10" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H119.04A10 10 0 0 1 129.04 10V39.5Z" fill="#1d4ed8" style="fill:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="28">Write path</tspan></text>
+    <g id="validate" data-diagram-kind="node" transform="translate(30 70)" role="group" aria-label="Validate">
+      <desc>validateAnnotations runs for every element inside Validate, so a bad colour, an unknown about, a pointer tip inside its bubble, and a pin label over three characters are all reported in one batch.</desc>
+      <rect width="240" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Validate</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">every problem, per element</tspan></text>
+    </g>
+    <g id="docs" data-diagram-kind="node" transform="translate(30 210)" role="group" aria-label="Schema, contract, SPEC, and skill">
+      <rect width="460" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Schema, contract, SPEC, and skill</tspan></text>
+    </g>
+    <g id="tests" data-diagram-kind="node" transform="translate(30 330)" role="group" aria-label="Tests and a board golden">
+      <desc>sample.svg and notes.svg are unchanged, so a source without board elements renders byte-identically and the renderer version stays change-saga-diagram/1.</desc>
+      <rect width="460" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Tests and a board golden</tspan></text>
+    </g>
+  </g>
+  <g id="read" data-diagram-kind="group" transform="translate(680 110)" role="group" aria-label="Read path">
+    <rect width="540" height="450" rx="10" fill="#e7f8eb" stroke="#15803d" stroke-width="2" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H119.69A10 10 0 0 1 129.69 10V39.5Z" fill="#15803d" style="fill:var(--diagram-green-accent,#15803d)"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="28">Read path</tspan></text>
+    <g id="describe" data-diagram-kind="node" transform="translate(30 70)" role="group" aria-label="Describe">
+      <rect width="220" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Describe</tspan></text>
+    </g>
+    <g id="edit" data-diagram-kind="node" transform="translate(290 70)" role="group" aria-label="Edit">
+      <rect width="220" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Edit</tspan></text>
+    </g>
+    <g id="notes-sticky" data-diagram-kind="sticky" transform="translate(30 210)" role="group" aria-label="Sections list members; stickies and annotations read as notes about their targets." data-about="describe">
+      <rect width="220" height="210" rx="3" fill="#fff3a3" filter="url(#diagram-shadow)" style="fill:var(--diagram-yellow-sticky,#fff3a3)"/>
+      <text x="16" y="31" font-size="15" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="16" y="31">Sections list members;</tspan><tspan x="16" y="49.75">stickies and annotations</tspan><tspan x="16" y="68.5">read as notes about their</tspan><tspan x="16" y="87.25">targets.</tspan></text>
+    </g>
+    <g id="cascade" data-diagram-kind="annotation" transform="translate(290 250)" role="group" aria-label="remove refuses without cascade, like an edge's ends" data-about="edit" data-annotation="bubble">
+      <path d="M10 0L98 0L110 -80L122 0L210 0A10 10 0 0 1 220 10L220 90A10 10 0 0 1 210 100L10 100A10 10 0 0 1 0 90L0 10A10 10 0 0 1 10 0Z" fill="#ffe8f0" stroke="#be185d" stroke-width="1" stroke-linejoin="round" style="fill:var(--diagram-pink-tint,#ffe8f0);stroke:var(--diagram-pink-accent,#be185d)"/>
+      <text x="14" y="27" font-size="15" fill="#500724" xml:space="preserve" style="fill:var(--diagram-pink-ink,#500724)"><tspan x="14" y="27">remove refuses without</tspan><tspan x="14" y="45.75">cascade, like an edge's</tspan><tspan x="14" y="64.5">ends</tspan></text>
+    </g>
+  </g>
+  <g id="stored" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="stored source" data-from="validate" data-to="describe">
+    <path d="M330 230 L710 230" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-stored)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="460" y="214" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="460" y="214">stored source</tspan></text>
+  </g>
+  <g id="p1" data-diagram-kind="annotation" transform="translate(314 164)" role="group" aria-label="Pin 1 on validate" data-about="validate" data-annotation="pin">
+    <circle cx="16" cy="16" r="16" fill="#1d4ed8" stroke="#ffffff" stroke-width="2" style="fill:var(--diagram-blue-accent,#1d4ed8);stroke:var(--diagram-on-accent,#ffffff)"/>
+    <text x="16" y="21.6" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold" style="fill:var(--diagram-on-accent,#ffffff)">1</text>
+  </g>
+  <g id="p2" data-diagram-kind="annotation" transform="translate(914 164)" role="group" aria-label="Pin 2 on describe" data-about="describe" data-annotation="pin">
+    <circle cx="16" cy="16" r="16" fill="#15803d" stroke="#ffffff" stroke-width="2" style="fill:var(--diagram-green-accent,#15803d);stroke:var(--diagram-on-accent,#ffffff)"/>
+    <text x="16" y="21.6" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold" style="fill:var(--diagram-on-accent,#ffffff)">2</text>
+  </g>
+  <g id="p3" data-diagram-kind="annotation" transform="translate(1174 164)" role="group" aria-label="Pin 3 on edit" data-about="edit" data-annotation="pin">
+    <circle cx="16" cy="16" r="16" fill="#15803d" stroke="#ffffff" stroke-width="2" style="fill:var(--diagram-green-accent,#15803d);stroke:var(--diagram-on-accent,#ffffff)"/>
+    <text x="16" y="21.6" font-size="16" fill="#ffffff" text-anchor="middle" font-weight="bold" style="fill:var(--diagram-on-accent,#ffffff)">3</text>
+  </g>
+</svg>

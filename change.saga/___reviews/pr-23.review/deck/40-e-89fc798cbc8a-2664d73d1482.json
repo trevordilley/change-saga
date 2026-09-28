@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "skills/change-saga/references/format.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:062cb707396212fc61130f6a5a08977101ffa17e622252cb97ea68ef14a04d41"
+    }
+  ]
+}

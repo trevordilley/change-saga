@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "cmd/change-saga/main.go",
+      "start": 151,
+      "end": 152,
+      "digest": "sha256:8b0ec9dc8c54c5f44e678fc164c8347a414f29b52f6dee0597132459a8b7cbfe"
+    }
+  ]
+}

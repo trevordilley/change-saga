@@ -34,7 +34,7 @@ func (asset *shellAsset) Path() string { return "/assets/" + asset.hash + "/" + 
 
 // appStyles is the whole reviewer stylesheet. It used to be inlined into
 // every page; as a file it is parsed once and cached for good.
-const appStyles = pageStyles + reviewStyles + technicalStyles + technicalERDStyles
+var appStyles = pageStyles + reviewStyles + technicalStyles + technicalERDStyles + slideThemeStyles
 
 var shellAssets = func() map[string]*shellAsset {
 	vendored := func(name string) []byte {
@@ -47,7 +47,7 @@ var shellAssets = func() map[string]*shellAsset {
 	assets := map[string]*shellAsset{}
 	for _, asset := range []*shellAsset{
 		{name: "app.css", contentType: "text/css; charset=utf-8", body: []byte(appStyles)},
-		{name: "theme.js", contentType: "text/javascript; charset=utf-8", body: []byte(themeBoot)},
+		{name: "theme.js", contentType: "text/javascript; charset=utf-8", body: []byte(themeBoot + slideSchemeBoot)},
 		{name: "htmx.min.js", contentType: "text/javascript; charset=utf-8", body: vendored("htmx.min.js")},
 		{name: "app.js", contentType: "text/javascript; charset=utf-8", body: []byte(appJavaScript)},
 	} {

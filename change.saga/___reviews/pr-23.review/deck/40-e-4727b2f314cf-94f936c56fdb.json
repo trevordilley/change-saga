@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/server/slidepaper.go",
+      "digest": "sha256:89e9b2631049d0ac2f12cccffc215615f77ded39a64d516d00aa34a7c875c9d6"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/server/slidepaper.go",
+      "start": 1,
+      "end": 76,
+      "digest": "sha256:89e9b2631049d0ac2f12cccffc215615f77ded39a64d516d00aa34a7c875c9d6"
+    }
+  ]
+}

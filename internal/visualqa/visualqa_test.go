@@ -161,7 +161,7 @@ func TestRealRenderProducesSurfacesContactSheetAndBrokenFindings(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if report.Passed || report.SemanticArrows != "not_evaluated" || len(report.Slides) != 1 || len(report.Slides[0].Artifacts) != 4 {
+	if report.Passed || report.SemanticArrows != "not_evaluated" || len(report.Slides) != 1 || len(report.Slides[0].Artifacts) != 8 || len(report.Schemes) != 2 {
 		t.Fatalf("report = %#v", report)
 	}
 	codes := map[string]bool{}
@@ -173,7 +173,7 @@ func TestRealRenderProducesSurfacesContactSheetAndBrokenFindings(t *testing.T) {
 			t.Errorf("broken fixture did not report %s: %#v", code, report.Findings)
 		}
 	}
-	for _, name := range []string{"visual-qa.json", "contact-sheet.png", "slides/workflow/render/raw-1280x720.png", "slides/workflow/render/raw-1024x576.png", "slides/workflow/render/reviewer-1280x720.png", "slides/workflow/render/reviewer-1024x576.png"} {
+	for _, name := range []string{"visual-qa.json", "contact-sheet.png", "slides/workflow/render/raw-1280x720.png", "slides/workflow/render/raw-1024x576.png", "slides/workflow/render/reviewer-1280x720.png", "slides/workflow/render/reviewer-1024x576.png", "slides/workflow/render/raw-1280x720-dark.png", "slides/workflow/render/reviewer-1024x576-dark.png"} {
 		value, readErr := os.ReadFile(filepath.Join(output, filepath.FromSlash(name)))
 		if readErr != nil || len(value) < 100 {
 			t.Errorf("generated %s: bytes=%d err=%v", name, len(value), readErr)

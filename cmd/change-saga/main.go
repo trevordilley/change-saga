@@ -148,6 +148,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Query(ctx, args[1:], stdout)
 	case "visual-qa":
 		err = cli.VisualQA(ctx, args[1:], stdout)
+	case "theme":
+		err = cli.Theme(ctx, args[1:], stdout)
 	case "serve", "open":
 		// The server outlives edits that cross-command Git caches cannot see.
 		gitexec.LongRunning()

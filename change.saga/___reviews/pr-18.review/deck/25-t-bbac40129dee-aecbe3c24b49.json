@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-18",
   "slide": "icons",
-  "current": "sha256:1470f332bf13fbf7e30e18119e401fda3ccfccfcce9d773f6e45515e1282f805",
+  "current": "sha256:aca4b3fc1b0b2553b7e8a8c5c311b642f8442144c0ffd37489cb4cecadfadd2d",
   "revisions": [
     {
       "snapshot": "sha256:1470f332bf13fbf7e30e18119e401fda3ccfccfcce9d773f6e45515e1282f805",
@@ -158,6 +158,165 @@
         "source": "24-a-5106c9905286f40b7d8b610c0fbb8ad4b535aefa838f3b07c99d.json",
         "source_digest": "sha256:5106c9905286f40b7d8b610c0fbb8ad4b535aefa838f3b07c99d605e10adb044",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:aca4b3fc1b0b2553b7e8a8c5c311b642f8442144c0ffd37489cb4cecadfadd2d",
+      "parent_snapshots": [
+        "sha256:1470f332bf13fbf7e30e18119e401fda3ccfccfcce9d773f6e45515e1282f805"
+      ],
+      "request_id": "rerender-renderer-2-21",
+      "created_at": "2026-09-28T04:17:21.317404Z",
+      "asset": "24-a-5b09e193f9c7d70fb7296d77520e5947724ea71165211b7c8ebd.svg",
+      "asset_digest": "sha256:5b09e193f9c7d70fb7296d77520e5947724ea71165211b7c8ebd1b494fc4b40f",
+      "slide": {
+        "version": 4,
+        "id": "icons",
+        "deck": "pr-18",
+        "title": "Every Lucide icon, one generated bundle",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-5b09e193f9c7d70fb7296d77520e5947724ea71165211b7c8ebd.svg",
+        "takeaway": "All 1,856 Lucide icons ship as one generated icons.json at the same pinned revision; search now matches what an icon depicts.",
+        "reading_order": [
+          "upstream",
+          "generator",
+          "bundle",
+          "whole-bundle-pin",
+          "license",
+          "loader",
+          "query"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "upstream",
+            "slide": "icons",
+            "rank": 10,
+            "kind": "node",
+            "label": "Lucide at the same pin",
+            "description": "The full upstream set at the revision the ten bundled icons came from.",
+            "selector": {
+              "type": "element",
+              "element_id": "upstream"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "generator",
+            "slide": "icons",
+            "rank": 20,
+            "kind": "node",
+            "label": "lucidebundle",
+            "description": "Regenerates the bundle and license from a Lucide checkout.",
+            "selector": {
+              "type": "element",
+              "element_id": "generator"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "bundle",
+            "slide": "icons",
+            "rank": 30,
+            "kind": "node",
+            "label": "icons.json",
+            "description": "One generated file replaces ten SVGs and the per-icon manifest.",
+            "selector": {
+              "type": "element",
+              "element_id": "bundle"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "whole-bundle-pin",
+            "slide": "icons",
+            "rank": 40,
+            "kind": "callout",
+            "label": "No per-icon digest at load",
+            "description": "Where icon integrity is checked now.",
+            "selector": {
+              "type": "element",
+              "element_id": "bundle"
+            },
+            "about": "bundle",
+            "body": "You would expect each icon still checked against its own sha256 when loaded. The manifest is gone: a test pins the whole bundle's digest and runs every icon through the drawing allowlist. Icon() rebuilds the SVG from the shared root."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "license",
+            "slide": "icons",
+            "rank": 50,
+            "kind": "node",
+            "label": "License notice",
+            "description": "The ISC and Feather MIT notice ships with the icons and in every SVG that uses one.",
+            "selector": {
+              "type": "element",
+              "element_id": "license"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "loader",
+            "slide": "icons",
+            "rank": 60,
+            "kind": "node",
+            "label": "Loader",
+            "description": "assets.go reads the bundle once and serves icons by lucide: name.",
+            "selector": {
+              "type": "element",
+              "element_id": "loader"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "query",
+            "slide": "icons",
+            "rank": 70,
+            "kind": "node",
+            "label": "Search by what it depicts",
+            "description": "diagram icons --query matches names, search tags, and deprecated aliases.",
+            "selector": {
+              "type": "element",
+              "element_id": "query"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-5106c9905286f40b7d8b610c0fbb8ad4b535aefa838f3b07c99d.json",
+        "source_digest": "sha256:5106c9905286f40b7d8b610c0fbb8ad4b535aefa838f3b07c99d605e10adb044",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

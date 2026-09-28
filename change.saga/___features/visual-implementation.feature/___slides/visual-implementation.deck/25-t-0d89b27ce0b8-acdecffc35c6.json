@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "visual-implementation",
   "slide": "htmx-shell",
-  "current": "sha256:5360a1df1543722c19f05d33933e9577c4a10ec2fb3513b7ab17fe26f7b15cc8",
+  "current": "sha256:9371e935ec8097429e7e0667097273279560e6a93776cf1f9cad8a40848c4503",
   "revisions": [
     {
       "snapshot": "sha256:28bf8bce8700d7145ca56bd95e7c3387b1b6aa6476631a0486e2a3d0efd2d526",
@@ -1471,6 +1471,1478 @@
         "source": "24-a-f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a1.json",
         "source_digest": "sha256:f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a181253d99391b",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:ac595527753886e1ecbb6e07435fe327f8bc5dcc5f52a4b73d1f48afafb17267",
+      "parent_snapshots": [
+        "sha256:5360a1df1543722c19f05d33933e9577c4a10ec2fb3513b7ab17fe26f7b15cc8"
+      ],
+      "request_id": "accept-proposed-c87d9f5dfd690565",
+      "created_at": "2026-09-28T03:52:55.133256Z",
+      "asset": "24-a-6a295b0a8a5e75299baf77002cf2f630399249aba5eb28a6ca18.svg",
+      "asset_digest": "sha256:6a295b0a8a5e75299baf77002cf2f630399249aba5eb28a6ca18d78c97110bf3",
+      "slide": {
+        "version": 4,
+        "id": "htmx-shell",
+        "deck": "visual-implementation",
+        "title": "The shell loads once; each page swaps into it",
+        "rank": 70,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-6a295b0a8a5e75299baf77002cf2f630399249aba5eb28a6ca18.svg",
+        "takeaway": "Links swap only #page; the sidebar and deck viewer stay for the session and are resent only when the Saga changed; assets are cached by content hash.",
+        "reading_order": [
+          "persistent-shell",
+          "partial-vs-full",
+          "shell-version",
+          "deck-viewer-once",
+          "slide-frame-queue",
+          "hashed-assets"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "persistent-shell",
+            "slide": "htmx-shell",
+            "rank": 0,
+            "kind": "region",
+            "label": "The shell loads once; #page is swapped",
+            "description": "The page body carries hx-boost with #page as target, so links swap only #page; the sidebar and deck viewer persist for the session and htmx keeps no history snapshots, so back and forward ask the server.",
+            "selector": {
+              "type": "element",
+              "element_id": "persistent-shell"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 26,
+                  "end": 26,
+                  "digest": "sha256:44ad0dd8eac0f39420b81c4ca5c1bc07c9a35562d83745d9534301b53193a984",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 29,
+                  "end": 29,
+                  "digest": "sha256:cf7f4498462643ba603597f8c312aa3cbbac0ce6b5d2be243c2c3726696db983",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/assets.go",
+                  "start": 111,
+                  "end": 116,
+                  "digest": "sha256:a7fe10ca7f3040aec16f58ec9e4f02b02fba78d842a4fa2d158b810affcd44e7",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "persistent-shell-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The sidebar and deck viewer stay in the shell while #page swaps, so moving between slides and pages never reloads the viewer."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "partial-vs-full",
+            "slide": "htmx-shell",
+            "rank": 10,
+            "kind": "edge",
+            "label": "page-partial for htmx page swaps",
+            "description": "renderPage answers an htmx request that targets #page, or restores history, with page-partial: the page's blocks plus out-of-band tabs; any other request gets the full page from the same blocks.",
+            "selector": {
+              "type": "element",
+              "element_id": "partial-vs-full"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1036,
+                  "end": 1061,
+                  "digest": "sha256:afd6176dbd37bb4fb2a70e22649cc6d5ddb3c93166b00d29642315aaea425884",
+                  "note": "renderPage and the page()/handle() registration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 38,
+                  "end": 42,
+                  "digest": "sha256:f9a09233a5eb9aa5d0505f153da95c0903f9a919b0123b64a791418358895bbd",
+                  "note": "renderPage and the page()/handle() registration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 455,
+                  "end": 468,
+                  "digest": "sha256:ac6ac6fc89b0cb72a9f4aab65516c09d1f1a2e383066fce623f19f466493fec4",
+                  "note": "renderPage and the page()/handle() registration."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/partial_test.go",
+                  "start": 75,
+                  "end": 123,
+                  "digest": "sha256:155902d0af80632095b1dfe69eca67164ba6ecaf77466ec40c762f3ef945c867",
+                  "note": "Only page swaps and restores get the partial; a stale shell is resent."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "partial-vs-full-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "A feature page reached by a link and loaded afresh render from the same blocks, so either way it opens the first slide of its deck."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "shell-version",
+            "slide": "htmx-shell",
+            "rank": 20,
+            "kind": "statement",
+            "label": "X-Saga-Shell resends a stale sidebar and decks",
+            "description": "ShellVersion hashes the documentation digest with the source HEAD. The script sends it on every htmx request; when it differs, the partial also swaps the sidebar and deck viewer out of band.",
+            "selector": {
+              "type": "element",
+              "element_id": "shell-version"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1025,
+                  "end": 1034,
+                  "digest": "sha256:25a0e46f236f0983206249a9b40d1532449a4cdf7ccecd24550b3273ff23e3dc",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 2909,
+                  "end": 2915,
+                  "digest": "sha256:ba9256b3eec1b56478c18cb3e0cfc64fe0467d492cc68b83cabe8b39d99459c1",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 48,
+                  "end": 48,
+                  "digest": "sha256:0ad7135433e2555657875a1ef41fd21da1acafa3747f731f2b89b419e9589ba9",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "shell-version-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "When the Saga changed, a page swap resends the sidebar and deck viewer, so navigation never steps through a stale deck."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "deck-viewer-once",
+            "slide": "htmx-shell",
+            "rank": 30,
+            "kind": "node",
+            "label": "The deck viewer loads once from /decks",
+            "description": "The shell's deck host loads /decks after first paint and is preserved across swaps. The viewer HTML is memoized per Saga state and served with an ETag, so an unchanged viewer answers 304.",
+            "selector": {
+              "type": "element",
+              "element_id": "deck-viewer-once"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 57,
+                  "end": 57,
+                  "digest": "sha256:beed29fbfd437fc1a6ac4c1d57635e705033cc46303bd5c29985269aee1da158",
+                  "note": "The deck host and the /decks handler."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1402,
+                  "end": 1466,
+                  "digest": "sha256:3988ad67017c4de0194c7959b036153245eaab4de1e369c6184af4e48865514a",
+                  "note": "The deck host and the /decks handler."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/partial_test.go",
+                  "start": 152,
+                  "end": 189,
+                  "digest": "sha256:c3182c4f49dd60ea506cb92064c7d708976e13988565db372f6f2bdc080b5c2f",
+                  "note": "Decks load once, answer 304, and the renderer is in the ETag."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "deck-viewer-once-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The viewer holding every deck is loaded once after first paint, and a feature page shows its first slide from it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "slide-frame-queue",
+            "slide": "htmx-shell",
+            "rank": 40,
+            "kind": "node",
+            "label": "Slide frames load two at a time",
+            "description": "Interactive slide frames name their source in data-frame-src and are queued, at most two loading at once with a 5 s timeout; opening a slide loads its frames first and moves its neighbours ahead.",
+            "selector": {
+              "type": "element",
+              "element_id": "slide-frame-queue"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 297,
+                  "end": 349,
+                  "digest": "sha256:f1097d4e14f7ecbe5c0d2792077130d30c90bb3e38bef8d914fe4b31783e78eb",
+                  "note": "The slide-frame queue and the page lifecycle that drives it."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 2685,
+                  "end": 2716,
+                  "digest": "sha256:c3292d38a60531eda012c09536d7b33398b1813a43c0011313c3e50bc75ebd5c",
+                  "note": "The slide-frame queue and the page lifecycle that drives it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "slide-frame-queue-visual-technical-explanation-media",
+              "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+              "story_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+              "rationale": "Sandboxed HTML slides are frames loaded in the background, the slide on screen first, beside SVG and raster slides."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "hashed-assets",
+            "slide": "htmx-shell",
+            "rank": 50,
+            "kind": "node",
+            "label": "Shell assets are immutable by content hash",
+            "description": "app.css, theme.js, htmx.min.js and app.js are served at /assets/\u003c16-hex SHA-256\u003e/name with a one-year immutable cache; an unknown hash is a 404, so a new build is a new URL.",
+            "selector": {
+              "type": "element",
+              "element_id": "hashed-assets"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b795503eff43fd9a7122a1ff336e771fe2712ff",
+                  "path": "internal/server/assets.go",
+                  "start": 22,
+                  "end": 109,
+                  "digest": "sha256:3a3624fe5afb16913f5d5833a7f47e4fd12cd5f9a9a06d5791f67a7fbe8d7528",
+                  "note": "The shell assets and their handler."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/assets_test.go",
+                  "start": 14,
+                  "end": 40,
+                  "digest": "sha256:d7d25f10dfdb77f6b772e6dc027ec20b76d33d8a557f178ed32c9f0d1f262ac7",
+                  "note": "Versioned immutable assets, 404 for an unknown hash, no inline styles."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "hashed-assets-visual-technical-explanation-media",
+              "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+              "story_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+              "rationale": "The script and styles that render every slide medium are fetched once per build and then served from the browser cache."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a1.json",
+        "source_digest": "sha256:f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a181253d99391b",
+        "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:dc749cfe2ea81b61f797acb7ed00e1bdf8a6e0db4d297acbc43a3554c774561e",
+      "parent_snapshots": [
+        "sha256:ac595527753886e1ecbb6e07435fe327f8bc5dcc5f52a4b73d1f48afafb17267"
+      ],
+      "request_id": "rerender-renderer-2-1",
+      "created_at": "2026-09-28T04:17:09.987085Z",
+      "asset": "24-a-3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e.svg",
+      "asset_digest": "sha256:3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e59e3e570f756",
+      "slide": {
+        "version": 4,
+        "id": "htmx-shell",
+        "deck": "visual-implementation",
+        "title": "The shell loads once; each page swaps into it",
+        "rank": 70,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e.svg",
+        "takeaway": "Links swap only #page; the sidebar and deck viewer stay for the session and are resent only when the Saga changed; assets are cached by content hash.",
+        "reading_order": [
+          "persistent-shell",
+          "partial-vs-full",
+          "shell-version",
+          "deck-viewer-once",
+          "slide-frame-queue",
+          "hashed-assets"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "persistent-shell",
+            "slide": "htmx-shell",
+            "rank": 0,
+            "kind": "region",
+            "label": "The shell loads once; #page is swapped",
+            "description": "The page body carries hx-boost with #page as target, so links swap only #page; the sidebar and deck viewer persist for the session and htmx keeps no history snapshots, so back and forward ask the server.",
+            "selector": {
+              "type": "element",
+              "element_id": "persistent-shell"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 26,
+                  "end": 26,
+                  "digest": "sha256:44ad0dd8eac0f39420b81c4ca5c1bc07c9a35562d83745d9534301b53193a984",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 29,
+                  "end": 29,
+                  "digest": "sha256:cf7f4498462643ba603597f8c312aa3cbbac0ce6b5d2be243c2c3726696db983",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/assets.go",
+                  "start": 111,
+                  "end": 116,
+                  "digest": "sha256:a7fe10ca7f3040aec16f58ec9e4f02b02fba78d842a4fa2d158b810affcd44e7",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "persistent-shell-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The sidebar and deck viewer stay in the shell while #page swaps, so moving between slides and pages never reloads the viewer."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "partial-vs-full",
+            "slide": "htmx-shell",
+            "rank": 10,
+            "kind": "edge",
+            "label": "page-partial for htmx page swaps",
+            "description": "renderPage answers an htmx request that targets #page, or restores history, with page-partial: the page's blocks plus out-of-band tabs; any other request gets the full page from the same blocks.",
+            "selector": {
+              "type": "element",
+              "element_id": "partial-vs-full"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1036,
+                  "end": 1061,
+                  "digest": "sha256:afd6176dbd37bb4fb2a70e22649cc6d5ddb3c93166b00d29642315aaea425884",
+                  "note": "renderPage and the page()/handle() registration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 38,
+                  "end": 42,
+                  "digest": "sha256:f9a09233a5eb9aa5d0505f153da95c0903f9a919b0123b64a791418358895bbd",
+                  "note": "renderPage and the page()/handle() registration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 455,
+                  "end": 468,
+                  "digest": "sha256:ac6ac6fc89b0cb72a9f4aab65516c09d1f1a2e383066fce623f19f466493fec4",
+                  "note": "renderPage and the page()/handle() registration."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/partial_test.go",
+                  "start": 75,
+                  "end": 123,
+                  "digest": "sha256:155902d0af80632095b1dfe69eca67164ba6ecaf77466ec40c762f3ef945c867",
+                  "note": "Only page swaps and restores get the partial; a stale shell is resent."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "partial-vs-full-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "A feature page reached by a link and loaded afresh render from the same blocks, so either way it opens the first slide of its deck."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "shell-version",
+            "slide": "htmx-shell",
+            "rank": 20,
+            "kind": "statement",
+            "label": "X-Saga-Shell resends a stale sidebar and decks",
+            "description": "ShellVersion hashes the documentation digest with the source HEAD. The script sends it on every htmx request; when it differs, the partial also swaps the sidebar and deck viewer out of band.",
+            "selector": {
+              "type": "element",
+              "element_id": "shell-version"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1025,
+                  "end": 1034,
+                  "digest": "sha256:25a0e46f236f0983206249a9b40d1532449a4cdf7ccecd24550b3273ff23e3dc",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 2909,
+                  "end": 2915,
+                  "digest": "sha256:ba9256b3eec1b56478c18cb3e0cfc64fe0467d492cc68b83cabe8b39d99459c1",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 48,
+                  "end": 48,
+                  "digest": "sha256:0ad7135433e2555657875a1ef41fd21da1acafa3747f731f2b89b419e9589ba9",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "shell-version-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "When the Saga changed, a page swap resends the sidebar and deck viewer, so navigation never steps through a stale deck."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "deck-viewer-once",
+            "slide": "htmx-shell",
+            "rank": 30,
+            "kind": "node",
+            "label": "The deck viewer loads once from /decks",
+            "description": "The shell's deck host loads /decks after first paint and is preserved across swaps. The viewer HTML is memoized per Saga state and served with an ETag, so an unchanged viewer answers 304.",
+            "selector": {
+              "type": "element",
+              "element_id": "deck-viewer-once"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 57,
+                  "end": 57,
+                  "digest": "sha256:beed29fbfd437fc1a6ac4c1d57635e705033cc46303bd5c29985269aee1da158",
+                  "note": "The deck host and the /decks handler."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1402,
+                  "end": 1466,
+                  "digest": "sha256:3988ad67017c4de0194c7959b036153245eaab4de1e369c6184af4e48865514a",
+                  "note": "The deck host and the /decks handler."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/partial_test.go",
+                  "start": 152,
+                  "end": 189,
+                  "digest": "sha256:c3182c4f49dd60ea506cb92064c7d708976e13988565db372f6f2bdc080b5c2f",
+                  "note": "Decks load once, answer 304, and the renderer is in the ETag."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "deck-viewer-once-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The viewer holding every deck is loaded once after first paint, and a feature page shows its first slide from it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "slide-frame-queue",
+            "slide": "htmx-shell",
+            "rank": 40,
+            "kind": "node",
+            "label": "Slide frames load two at a time",
+            "description": "Interactive slide frames name their source in data-frame-src and are queued, at most two loading at once with a 5 s timeout; opening a slide loads its frames first and moves its neighbours ahead.",
+            "selector": {
+              "type": "element",
+              "element_id": "slide-frame-queue"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 297,
+                  "end": 349,
+                  "digest": "sha256:f1097d4e14f7ecbe5c0d2792077130d30c90bb3e38bef8d914fe4b31783e78eb",
+                  "note": "The slide-frame queue and the page lifecycle that drives it."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 2685,
+                  "end": 2716,
+                  "digest": "sha256:c3292d38a60531eda012c09536d7b33398b1813a43c0011313c3e50bc75ebd5c",
+                  "note": "The slide-frame queue and the page lifecycle that drives it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "slide-frame-queue-visual-technical-explanation-media",
+              "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+              "story_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+              "rationale": "Sandboxed HTML slides are frames loaded in the background, the slide on screen first, beside SVG and raster slides."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "hashed-assets",
+            "slide": "htmx-shell",
+            "rank": 50,
+            "kind": "node",
+            "label": "Shell assets are immutable by content hash",
+            "description": "app.css, theme.js, htmx.min.js and app.js are served at /assets/\u003c16-hex SHA-256\u003e/name with a one-year immutable cache; an unknown hash is a 404, so a new build is a new URL.",
+            "selector": {
+              "type": "element",
+              "element_id": "hashed-assets"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "8b795503eff43fd9a7122a1ff336e771fe2712ff",
+                  "path": "internal/server/assets.go",
+                  "start": 22,
+                  "end": 109,
+                  "digest": "sha256:3a3624fe5afb16913f5d5833a7f47e4fd12cd5f9a9a06d5791f67a7fbe8d7528",
+                  "note": "The shell assets and their handler."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/assets_test.go",
+                  "start": 14,
+                  "end": 40,
+                  "digest": "sha256:d7d25f10dfdb77f6b772e6dc027ec20b76d33d8a557f178ed32c9f0d1f262ac7",
+                  "note": "Versioned immutable assets, 404 for an unknown hash, no inline styles."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "hashed-assets-visual-technical-explanation-media",
+              "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+              "story_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+              "rationale": "The script and styles that render every slide medium are fetched once per build and then served from the browser cache."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a1.json",
+        "source_digest": "sha256:f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a181253d99391b",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:446ea230f27120c9ddb0f4d370669f0493f83a1478e52506c4372780ff3d2f6b",
+      "parent_snapshots": [
+        "sha256:dc749cfe2ea81b61f797acb7ed00e1bdf8a6e0db4d297acbc43a3554c774561e"
+      ],
+      "request_id": "accept-proposed-10ea8e7bde16577b",
+      "created_at": "2026-09-28T04:23:37.482101Z",
+      "asset": "24-a-3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e.svg",
+      "asset_digest": "sha256:3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e59e3e570f756",
+      "slide": {
+        "version": 4,
+        "id": "htmx-shell",
+        "deck": "visual-implementation",
+        "title": "The shell loads once; each page swaps into it",
+        "rank": 70,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e.svg",
+        "takeaway": "Links swap only #page; the sidebar and deck viewer stay for the session and are resent only when the Saga changed; assets are cached by content hash.",
+        "reading_order": [
+          "persistent-shell",
+          "partial-vs-full",
+          "shell-version",
+          "deck-viewer-once",
+          "slide-frame-queue",
+          "hashed-assets"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "persistent-shell",
+            "slide": "htmx-shell",
+            "rank": 0,
+            "kind": "region",
+            "label": "The shell loads once; #page is swapped",
+            "description": "The page body carries hx-boost with #page as target, so links swap only #page; the sidebar and deck viewer persist for the session and htmx keeps no history snapshots, so back and forward ask the server.",
+            "selector": {
+              "type": "element",
+              "element_id": "persistent-shell"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 26,
+                  "end": 26,
+                  "digest": "sha256:44ad0dd8eac0f39420b81c4ca5c1bc07c9a35562d83745d9534301b53193a984",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 29,
+                  "end": 29,
+                  "digest": "sha256:cf7f4498462643ba603597f8c312aa3cbbac0ce6b5d2be243c2c3726696db983",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/assets.go",
+                  "start": 111,
+                  "end": 116,
+                  "digest": "sha256:a7fe10ca7f3040aec16f58ec9e4f02b02fba78d842a4fa2d158b810affcd44e7",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "persistent-shell-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The sidebar and deck viewer stay in the shell while #page swaps, so moving between slides and pages never reloads the viewer."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "partial-vs-full",
+            "slide": "htmx-shell",
+            "rank": 10,
+            "kind": "edge",
+            "label": "page-partial for htmx page swaps",
+            "description": "renderPage answers an htmx request that targets #page, or restores history, with page-partial: the page's blocks plus out-of-band tabs; any other request gets the full page from the same blocks.",
+            "selector": {
+              "type": "element",
+              "element_id": "partial-vs-full"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1036,
+                  "end": 1061,
+                  "digest": "sha256:afd6176dbd37bb4fb2a70e22649cc6d5ddb3c93166b00d29642315aaea425884",
+                  "note": "renderPage and the page()/handle() registration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 38,
+                  "end": 42,
+                  "digest": "sha256:f9a09233a5eb9aa5d0505f153da95c0903f9a919b0123b64a791418358895bbd",
+                  "note": "renderPage and the page()/handle() registration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 455,
+                  "end": 468,
+                  "digest": "sha256:ac6ac6fc89b0cb72a9f4aab65516c09d1f1a2e383066fce623f19f466493fec4",
+                  "note": "renderPage and the page()/handle() registration."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/partial_test.go",
+                  "start": 75,
+                  "end": 123,
+                  "digest": "sha256:155902d0af80632095b1dfe69eca67164ba6ecaf77466ec40c762f3ef945c867",
+                  "note": "Only page swaps and restores get the partial; a stale shell is resent."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "partial-vs-full-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "A feature page reached by a link and loaded afresh render from the same blocks, so either way it opens the first slide of its deck."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "shell-version",
+            "slide": "htmx-shell",
+            "rank": 20,
+            "kind": "statement",
+            "label": "X-Saga-Shell resends a stale sidebar and decks",
+            "description": "ShellVersion hashes the documentation digest with the source HEAD. The script sends it on every htmx request; when it differs, the partial also swaps the sidebar and deck viewer out of band.",
+            "selector": {
+              "type": "element",
+              "element_id": "shell-version"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1025,
+                  "end": 1034,
+                  "digest": "sha256:25a0e46f236f0983206249a9b40d1532449a4cdf7ccecd24550b3273ff23e3dc",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 2909,
+                  "end": 2915,
+                  "digest": "sha256:ba9256b3eec1b56478c18cb3e0cfc64fe0467d492cc68b83cabe8b39d99459c1",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 48,
+                  "end": 48,
+                  "digest": "sha256:0ad7135433e2555657875a1ef41fd21da1acafa3747f731f2b89b419e9589ba9",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "shell-version-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "When the Saga changed, a page swap resends the sidebar and deck viewer, so navigation never steps through a stale deck."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "deck-viewer-once",
+            "slide": "htmx-shell",
+            "rank": 30,
+            "kind": "node",
+            "label": "The deck viewer loads once from /decks",
+            "description": "The shell's deck host loads /decks after first paint and is preserved across swaps. The viewer HTML is memoized per Saga state and served with an ETag, so an unchanged viewer answers 304.",
+            "selector": {
+              "type": "element",
+              "element_id": "deck-viewer-once"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 57,
+                  "end": 57,
+                  "digest": "sha256:beed29fbfd437fc1a6ac4c1d57635e705033cc46303bd5c29985269aee1da158",
+                  "note": "The deck host and the /decks handler."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1402,
+                  "end": 1466,
+                  "digest": "sha256:3988ad67017c4de0194c7959b036153245eaab4de1e369c6184af4e48865514a",
+                  "note": "The deck host and the /decks handler."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/partial_test.go",
+                  "start": 152,
+                  "end": 189,
+                  "digest": "sha256:c3182c4f49dd60ea506cb92064c7d708976e13988565db372f6f2bdc080b5c2f",
+                  "note": "Decks load once, answer 304, and the renderer is in the ETag."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "deck-viewer-once-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The viewer holding every deck is loaded once after first paint, and a feature page shows its first slide from it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "slide-frame-queue",
+            "slide": "htmx-shell",
+            "rank": 40,
+            "kind": "node",
+            "label": "Slide frames load two at a time",
+            "description": "Interactive slide frames name their source in data-frame-src and are queued, at most two loading at once with a 5 s timeout; opening a slide loads its frames first and moves its neighbours ahead.",
+            "selector": {
+              "type": "element",
+              "element_id": "slide-frame-queue"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 297,
+                  "end": 349,
+                  "digest": "sha256:f1097d4e14f7ecbe5c0d2792077130d30c90bb3e38bef8d914fe4b31783e78eb",
+                  "note": "The slide-frame queue and the page lifecycle that drives it."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 2685,
+                  "end": 2716,
+                  "digest": "sha256:c3292d38a60531eda012c09536d7b33398b1813a43c0011313c3e50bc75ebd5c",
+                  "note": "The slide-frame queue and the page lifecycle that drives it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "slide-frame-queue-visual-technical-explanation-media",
+              "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+              "story_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+              "rationale": "Sandboxed HTML slides are frames loaded in the background, the slide on screen first, beside SVG and raster slides."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "hashed-assets",
+            "slide": "htmx-shell",
+            "rank": 50,
+            "kind": "node",
+            "label": "Shell assets are immutable by content hash",
+            "description": "app.css, theme.js, htmx.min.js and app.js are served at /assets/\u003c16-hex SHA-256\u003e/name with a one-year immutable cache; an unknown hash is a 404, so a new build is a new URL.",
+            "selector": {
+              "type": "element",
+              "element_id": "hashed-assets"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+                  "path": "internal/server/assets.go",
+                  "start": 22,
+                  "end": 109,
+                  "digest": "sha256:c83d5c598044ae8d5db7c4000e0d00fb933ce45075ec749e2866ac01979d4d23",
+                  "note": "The shell assets and their handler."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/assets_test.go",
+                  "start": 14,
+                  "end": 40,
+                  "digest": "sha256:d7d25f10dfdb77f6b772e6dc027ec20b76d33d8a557f178ed32c9f0d1f262ac7",
+                  "note": "Versioned immutable assets, 404 for an unknown hash, no inline styles."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "hashed-assets-visual-technical-explanation-media",
+              "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+              "story_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+              "rationale": "The script and styles that render every slide medium are fetched once per build and then served from the browser cache."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a1.json",
+        "source_digest": "sha256:f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a181253d99391b",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:9371e935ec8097429e7e0667097273279560e6a93776cf1f9cad8a40848c4503",
+      "parent_snapshots": [
+        "sha256:446ea230f27120c9ddb0f4d370669f0493f83a1478e52506c4372780ff3d2f6b"
+      ],
+      "request_id": "accept-proposed-d4b57df6f0e8ebb8",
+      "created_at": "2026-09-28T04:35:47.149112Z",
+      "asset": "24-a-3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e.svg",
+      "asset_digest": "sha256:3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e59e3e570f756",
+      "slide": {
+        "version": 4,
+        "id": "htmx-shell",
+        "deck": "visual-implementation",
+        "title": "The shell loads once; each page swaps into it",
+        "rank": 70,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-3cf9f1b1cea2409d5b0987b99bb94d0db96ca39258849ae12b9e.svg",
+        "takeaway": "Links swap only #page; the sidebar and deck viewer stay for the session and are resent only when the Saga changed; assets are cached by content hash.",
+        "reading_order": [
+          "persistent-shell",
+          "partial-vs-full",
+          "shell-version",
+          "deck-viewer-once",
+          "slide-frame-queue",
+          "hashed-assets"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "persistent-shell",
+            "slide": "htmx-shell",
+            "rank": 0,
+            "kind": "region",
+            "label": "The shell loads once; #page is swapped",
+            "description": "The page body carries hx-boost with #page as target, so links swap only #page; the sidebar and deck viewer persist for the session and htmx keeps no history snapshots, so back and forward ask the server.",
+            "selector": {
+              "type": "element",
+              "element_id": "persistent-shell"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+                  "path": "internal/server/template.go",
+                  "start": 26,
+                  "end": 26,
+                  "digest": "sha256:35f7899ed6e7c3267f7dc32fc7b2cf537e7d8facdf2af2c2fd2667f1bc1fca29",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 29,
+                  "end": 29,
+                  "digest": "sha256:cf7f4498462643ba603597f8c312aa3cbbac0ce6b5d2be243c2c3726696db983",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/assets.go",
+                  "start": 111,
+                  "end": 116,
+                  "digest": "sha256:a7fe10ca7f3040aec16f58ec9e4f02b02fba78d842a4fa2d158b810affcd44e7",
+                  "note": "The page shell, its boost target, and the htmx configuration."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "persistent-shell-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The sidebar and deck viewer stay in the shell while #page swaps, so moving between slides and pages never reloads the viewer."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "partial-vs-full",
+            "slide": "htmx-shell",
+            "rank": 10,
+            "kind": "edge",
+            "label": "page-partial for htmx page swaps",
+            "description": "renderPage answers an htmx request that targets #page, or restores history, with page-partial: the page's blocks plus out-of-band tabs; any other request gets the full page from the same blocks.",
+            "selector": {
+              "type": "element",
+              "element_id": "partial-vs-full"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1036,
+                  "end": 1061,
+                  "digest": "sha256:afd6176dbd37bb4fb2a70e22649cc6d5ddb3c93166b00d29642315aaea425884",
+                  "note": "renderPage and the page()/handle() registration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 38,
+                  "end": 42,
+                  "digest": "sha256:f9a09233a5eb9aa5d0505f153da95c0903f9a919b0123b64a791418358895bbd",
+                  "note": "renderPage and the page()/handle() registration."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 455,
+                  "end": 468,
+                  "digest": "sha256:ac6ac6fc89b0cb72a9f4aab65516c09d1f1a2e383066fce623f19f466493fec4",
+                  "note": "renderPage and the page()/handle() registration."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/partial_test.go",
+                  "start": 75,
+                  "end": 123,
+                  "digest": "sha256:155902d0af80632095b1dfe69eca67164ba6ecaf77466ec40c762f3ef945c867",
+                  "note": "Only page swaps and restores get the partial; a stale shell is resent."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "partial-vs-full-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "A feature page reached by a link and loaded afresh render from the same blocks, so either way it opens the first slide of its deck."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "shell-version",
+            "slide": "htmx-shell",
+            "rank": 20,
+            "kind": "statement",
+            "label": "X-Saga-Shell resends a stale sidebar and decks",
+            "description": "ShellVersion hashes the documentation digest with the source HEAD. The script sends it on every htmx request; when it differs, the partial also swaps the sidebar and deck viewer out of band.",
+            "selector": {
+              "type": "element",
+              "element_id": "shell-version"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1025,
+                  "end": 1034,
+                  "digest": "sha256:25a0e46f236f0983206249a9b40d1532449a4cdf7ccecd24550b3273ff23e3dc",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 2909,
+                  "end": 2915,
+                  "digest": "sha256:ba9256b3eec1b56478c18cb3e0cfc64fe0467d492cc68b83cabe8b39d99459c1",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 48,
+                  "end": 48,
+                  "digest": "sha256:0ad7135433e2555657875a1ef41fd21da1acafa3747f731f2b89b419e9589ba9",
+                  "note": "shellVersion, the header the script sends, and the out-of-band parts."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "shell-version-visual-deck-navigation-bounded-navigation",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:bounded-navigation",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "When the Saga changed, a page swap resends the sidebar and deck viewer, so navigation never steps through a stale deck."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "deck-viewer-once",
+            "slide": "htmx-shell",
+            "rank": 30,
+            "kind": "node",
+            "label": "The deck viewer loads once from /decks",
+            "description": "The shell's deck host loads /decks after first paint and is preserved across swaps. The viewer HTML is memoized per Saga state and served with an ETag, so an unchanged viewer answers 304.",
+            "selector": {
+              "type": "element",
+              "element_id": "deck-viewer-once"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/template.go",
+                  "start": 57,
+                  "end": 57,
+                  "digest": "sha256:beed29fbfd437fc1a6ac4c1d57635e705033cc46303bd5c29985269aee1da158",
+                  "note": "The deck host and the /decks handler."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/server.go",
+                  "start": 1402,
+                  "end": 1466,
+                  "digest": "sha256:3988ad67017c4de0194c7959b036153245eaab4de1e369c6184af4e48865514a",
+                  "note": "The deck host and the /decks handler."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/partial_test.go",
+                  "start": 152,
+                  "end": 189,
+                  "digest": "sha256:c3182c4f49dd60ea506cb92064c7d708976e13988565db372f6f2bdc080b5c2f",
+                  "note": "Decks load once, answer 304, and the renderer is in the ETag."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "deck-viewer-once-visual-deck-navigation-opens-first-slide",
+              "criterion": "urn:change-saga:change-saga:story:visual-deck-navigation:criterion:opens-first-slide",
+              "story_revision": "urn:change-saga:change-saga:story:visual-deck-navigation:revision:r1",
+              "rationale": "The viewer holding every deck is loaded once after first paint, and a feature page shows its first slide from it."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "slide-frame-queue",
+            "slide": "htmx-shell",
+            "rank": 40,
+            "kind": "node",
+            "label": "Slide frames load two at a time",
+            "description": "Interactive slide frames name their source in data-frame-src and are queued, at most two loading at once with a 5 s timeout; opening a slide loads its frames first and moves its neighbours ahead.",
+            "selector": {
+              "type": "element",
+              "element_id": "slide-frame-queue"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 297,
+                  "end": 349,
+                  "digest": "sha256:f1097d4e14f7ecbe5c0d2792077130d30c90bb3e38bef8d914fe4b31783e78eb",
+                  "note": "The slide-frame queue and the page lifecycle that drives it."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/appjs.go",
+                  "start": 2685,
+                  "end": 2716,
+                  "digest": "sha256:c3292d38a60531eda012c09536d7b33398b1813a43c0011313c3e50bc75ebd5c",
+                  "note": "The slide-frame queue and the page lifecycle that drives it."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "slide-frame-queue-visual-technical-explanation-media",
+              "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+              "story_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+              "rationale": "Sandboxed HTML slides are frames loaded in the background, the slide on screen first, beside SVG and raster slides."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "hashed-assets",
+            "slide": "htmx-shell",
+            "rank": 50,
+            "kind": "node",
+            "label": "Shell assets are immutable by content hash",
+            "description": "app.css, theme.js, htmx.min.js and app.js are served at /assets/\u003c16-hex SHA-256\u003e/name with a one-year immutable cache; an unknown hash is a 404, so a new build is a new URL.",
+            "selector": {
+              "type": "element",
+              "element_id": "hashed-assets"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+                  "path": "internal/server/assets.go",
+                  "start": 22,
+                  "end": 109,
+                  "digest": "sha256:c83d5c598044ae8d5db7c4000e0d00fb933ce45075ec749e2866ac01979d4d23",
+                  "note": "The shell assets and their handler."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/server/assets_test.go",
+                  "start": 14,
+                  "end": 40,
+                  "digest": "sha256:d7d25f10dfdb77f6b772e6dc027ec20b76d33d8a557f178ed32c9f0d1f262ac7",
+                  "note": "Versioned immutable assets, 404 for an unknown hash, no inline styles."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "hashed-assets-visual-technical-explanation-media",
+              "criterion": "urn:change-saga:change-saga:story:visual-technical-explanation:criterion:media",
+              "story_revision": "urn:change-saga:change-saga:story:visual-technical-explanation:revision:r1",
+              "rationale": "The script and styles that render every slide medium are fetched once per build and then served from the browser cache."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a1.json",
+        "source_digest": "sha256:f2b41e4b820d23e6ed671b9e264f04daa98ee7f558c1f9d077a181253d99391b",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

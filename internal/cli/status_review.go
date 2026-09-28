@@ -16,6 +16,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/nextaction"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/theme"
 )
 
 // Report shapes. A Saga that holds only reviews is reported review first:
@@ -44,7 +45,7 @@ type documentationState struct {
 // and the review-side records.
 var reviewOnlyEntries = map[string]bool{
 	saga.ManifestName: true, "README.md": true, saga.CursorName: true, saga.ReviewsDir: true, saga.MergesDir: true,
-	"___claims": true, "___verifications": true,
+	"___claims": true, "___verifications": true, theme.FileName: true,
 }
 
 // holdsLivingDocumentation reports whether the Saga holds any record beyond

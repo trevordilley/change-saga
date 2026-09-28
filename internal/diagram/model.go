@@ -24,7 +24,7 @@ const (
 	Version = 1
 	// Renderer identifies the deterministic SVG renderer. Rendering the same
 	// Document with the same Renderer produces the same bytes.
-	Renderer = "change-saga-diagram/1"
+	Renderer = "change-saga-diagram/2"
 
 	MaxElements       = 500
 	MaxFragmentBytes  = 64 << 10
@@ -132,17 +132,18 @@ type Document struct {
 }
 
 // DefaultStyles are available to every Document. A Document style with the
-// same name replaces the default completely.
+// same name replaces the default completely. Their colours are diagram tokens,
+// so they follow light and dark mode and a theme.
 func DefaultStyles() map[string]Style {
 	return map[string]Style{
-		"normal":    {Fill: "#ffffff", Stroke: "#64748b", Ink: "#172033", StrokeWidth: 2, FontSize: 22},
-		"primary":   {Fill: "#edf5ff", Stroke: "#2563eb", Ink: "#153869", StrokeWidth: 2, FontSize: 22},
-		"emphasis":  {Fill: "none", Stroke: "#2563eb", Ink: "#153869", StrokeWidth: 4, FontSize: 18},
-		"secondary": {Fill: "none", Stroke: "#94a3b8", Ink: "#526174", StrokeWidth: 2, FontSize: 18},
-		"warning":   {Fill: "#fff7e6", Stroke: "#b7791f", Ink: "#805015", StrokeWidth: 2, FontSize: 19},
-		"boundary":  {Fill: "#f0f3f6", Stroke: "#c3cdd8", Ink: "#526174", StrokeWidth: 1, FontSize: 18, Dash: true},
-		"title":     {Fill: "none", Stroke: "none", Ink: "#172033", StrokeWidth: 1, FontSize: 34},
-		"caption":   {Fill: "none", Stroke: "none", Ink: "#526174", StrokeWidth: 1, FontSize: 15},
+		"normal":    {Fill: "@diagram-normal-fill", Stroke: "@diagram-normal-stroke", Ink: "@diagram-normal-ink", StrokeWidth: 2, FontSize: 22},
+		"primary":   {Fill: "@diagram-primary-fill", Stroke: "@diagram-primary-stroke", Ink: "@diagram-primary-ink", StrokeWidth: 2, FontSize: 22},
+		"emphasis":  {Fill: "none", Stroke: "@diagram-primary-stroke", Ink: "@diagram-primary-ink", StrokeWidth: 4, FontSize: 18},
+		"secondary": {Fill: "none", Stroke: "@diagram-secondary-stroke", Ink: "@diagram-secondary-ink", StrokeWidth: 2, FontSize: 18},
+		"warning":   {Fill: "@diagram-warning-fill", Stroke: "@diagram-warning-stroke", Ink: "@diagram-warning-ink", StrokeWidth: 2, FontSize: 19},
+		"boundary":  {Fill: "@diagram-boundary-fill", Stroke: "@diagram-boundary-stroke", Ink: "@diagram-secondary-ink", StrokeWidth: 1, FontSize: 18, Dash: true},
+		"title":     {Fill: "none", Stroke: "none", Ink: "@diagram-title-ink", StrokeWidth: 1, FontSize: 34},
+		"caption":   {Fill: "none", Stroke: "none", Ink: "@diagram-secondary-ink", StrokeWidth: 1, FontSize: 15},
 	}
 }
 
@@ -225,8 +226,8 @@ func (d Document) Validate() error {
 	if !finite(d.Width) || !finite(d.Height) || d.Width <= 0 || d.Height <= 0 || d.Width > 10000 || d.Height > 10000 {
 		add("canvas width and height must be positive and at most 10000")
 	}
-	if d.Background != "" && !colorPattern.MatchString(d.Background) {
-		add("background must be #rrggbb or none")
+	if d.Background != "" && !validColor(d.Background) {
+		add("background must be #rrggbb, none, or a colour token such as @diagram-canvas")
 	}
 	validateReveal(d, add)
 	if len(d.Elements) > MaxElements {
@@ -239,9 +240,9 @@ func (d Document) Validate() error {
 	sort.Strings(styleNames)
 	for _, name := range styleNames {
 		style := d.Styles[name]
-		if !identifier.MatchString(name) || !colorPattern.MatchString(style.Fill) || !colorPattern.MatchString(style.Stroke) || !colorPattern.MatchString(style.Ink) ||
+		if !identifier.MatchString(name) || !validColor(style.Fill) || !validColor(style.Stroke) || !validColor(style.Ink) ||
 			!finite(style.FontSize) || style.FontSize < 8 || style.FontSize > 200 || !finite(style.StrokeWidth) || style.StrokeWidth < 0 || style.StrokeWidth > 50 {
-			add("style %s: needs a stable name, #rrggbb or none colors, font_size 8-200, and stroke_width 0-50", name)
+			add("style %s: needs a stable name, colors that are #rrggbb, none, or a colour token such as @diagram-primary-fill or @accent, font_size 8-200, and stroke_width 0-50", name)
 		}
 	}
 	fragmentBytes := 0
@@ -450,6 +451,8 @@ func Contract() map[string]any {
 		"frame_shapes":   sorted(frameShapes),
 		"alignments":     sorted(textAlignment),
 		"default_styles": styles,
+		"colors":         "a style colour, and the background, is #rrggbb, none, or a colour token from change-saga spec's theme written @name (such as @diagram-primary-fill or @accent); a token follows light and dark mode and a theme, a hex colour stays as authored; the default styles, palette, and the default background (#fafaf8) paint with diagram tokens",
+		"color_tokens":   colorTokenNames(),
 		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step"},
 		"reveal_modes":   RevealModes(),
 		"terminators":    TerminatorNames(),

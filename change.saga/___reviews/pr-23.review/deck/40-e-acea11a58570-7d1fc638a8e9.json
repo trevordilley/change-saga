@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "internal/server/slidetheme_test.go",
+      "digest": "sha256:a32a7523c44e6b9d5fe7bdc31a8f4c30cf4c82c0bac0a24327e6cc15ebf79b0b"
+    },
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "internal/server/slidetheme_test.go",
+      "start": 1,
+      "end": 111,
+      "digest": "sha256:a32a7523c44e6b9d5fe7bdc31a8f4c30cf4c82c0bac0a24327e6cc15ebf79b0b"
+    }
+  ]
+}

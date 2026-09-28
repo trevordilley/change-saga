@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "internal/theme/contrast.go",
+      "digest": "sha256:7f31082ba3369ae4c31fe1fedab0cdf6f7cb1afba0c6b03220528c2ef27917a9"
+    },
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "internal/theme/contrast.go",
+      "start": 1,
+      "end": 108,
+      "digest": "sha256:7f31082ba3369ae4c31fe1fedab0cdf6f7cb1afba0c6b03220528c2ef27917a9"
+    }
+  ]
+}

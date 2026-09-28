@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "internal/server/themefile_test.go",
+      "start": 1,
+      "end": 73,
+      "digest": "sha256:6e8a2cc39546091209fa357746015e4c91a4a52cc8538fd01a6c3eed347714a6"
+    }
+  ]
+}

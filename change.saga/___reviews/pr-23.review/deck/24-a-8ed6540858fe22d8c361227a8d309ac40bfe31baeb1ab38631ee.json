@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "background": "#fafaf8",
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "change-saga theme: init, check, preview",
+      "x": 60,
+      "y": 24,
+      "width": 1000,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "init",
+      "kind": "node",
+      "shape": "service",
+      "label": "theme init",
+      "detail": "refuses to overwrite without --force",
+      "x": 60,
+      "y": 110,
+      "width": 340,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "check",
+      "kind": "node",
+      "shape": "service",
+      "label": "theme check",
+      "detail": "validate, then contrast",
+      "x": 470,
+      "y": 110,
+      "width": 340,
+      "height": 100,
+      "style": "primary"
+    },
+    {
+      "id": "preview",
+      "kind": "node",
+      "shape": "service",
+      "label": "theme preview",
+      "detail": "opens /theme",
+      "x": 880,
+      "y": 110,
+      "width": 340,
+      "height": 100,
+      "style": "normal"
+    },
+    {
+      "id": "starter",
+      "kind": "node",
+      "shape": "document",
+      "label": "Starter theme.css",
+      "detail": "every token, commented out",
+      "note": "Grouped by token group, light defaults in `:root`, dark defaults in the dark block; it validates as an empty theme, and uncommenting any line validates too.",
+      "x": 60,
+      "y": 270,
+      "width": 340,
+      "height": 150,
+      "style": "normal"
+    },
+    {
+      "id": "exit",
+      "kind": "node",
+      "shape": "decision",
+      "label": "exit 0, 1, or 3",
+      "note": "**1**: the theme is invalid, each problem named with its line. **3**: valid, but pairs fall below AA, each named with both values and its ratio. `--json` gives every pair.",
+      "x": 500,
+      "y": 250,
+      "width": 280,
+      "height": 160,
+      "style": "warning"
+    },
+    {
+      "id": "contrast",
+      "kind": "sticky",
+      "label": "AA 4.5:1 in light and dark: ink and muted on the background, the primary button, diagram inks on their fills, palette inks on stickies and text on accents",
+      "x": 450,
+      "y": 440,
+      "width": 380,
+      "height": 210,
+      "style": "normal",
+      "color": "yellow",
+      "about": "exit"
+    },
+    {
+      "id": "page",
+      "kind": "node",
+      "shape": "service",
+      "label": "/theme page",
+      "detail": "light and dark panes",
+      "note": "Each pane declares its scheme's resolved tokens: swatches, the reviewer's chrome, and a generated diagram with every style, the palette, a section, stickies, and an ERD edge.",
+      "x": 880,
+      "y": 270,
+      "width": 340,
+      "height": 110,
+      "style": "normal"
+    },
+    {
+      "id": "surface",
+      "kind": "node",
+      "shape": "rect",
+      "label": "help, grammar, and skill",
+      "detail": "usage lines match byte for byte",
+      "x": 60,
+      "y": 490,
+      "width": 340,
+      "height": 100,
+      "style": "secondary"
+    },
+    {
+      "id": "tests-note",
+      "kind": "text",
+      "label": "Tests: init and --force, check's exit codes and named pairs, validate's lines, and Playwright recolouring the app and a slide in both modes",
+      "x": 880,
+      "y": 440,
+      "width": 340,
+      "height": 130,
+      "style": "caption",
+      "wrap": true
+    },
+    {
+      "id": "writes",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "init",
+      "to": "starter",
+      "points": [
+        {
+          "x": 230,
+          "y": 210
+        },
+        {
+          "x": 230,
+          "y": 270
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "decides",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "check",
+      "to": "exit",
+      "points": [
+        {
+          "x": 640,
+          "y": 210
+        },
+        {
+          "x": 640,
+          "y": 250
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "opens",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "preview",
+      "to": "page",
+      "points": [
+        {
+          "x": 1050,
+          "y": 210
+        },
+        {
+          "x": 1050,
+          "y": 270
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

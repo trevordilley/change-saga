@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Status leads with the review deck</title>
+  <desc id="diagram-desc">A comparison finds its open review by branch or evidence; status leads with how much of the change its deck explains, and check --covers review asks it for CI.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-compares" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-follows" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-measures" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-reports" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-asks" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="title" data-diagram-kind="text" transform="translate(60 32)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Status leads with the review deck</tspan></text>
+  </g>
+  <g id="comparison" data-diagram-kind="node" transform="translate(40 130)" role="group" aria-label="Comparison">
+    <rect width="260" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Comparison</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">the change, base to head</tspan></text>
+  </g>
+  <g id="review-create-defaults" data-diagram-kind="node" transform="translate(40 300)" role="group" aria-label="review create">
+    <rect width="260" height="140" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">review create</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">PR, base and id from gh or</tspan><tspan x="18" y="91.75">origin</tspan></text>
+  </g>
+  <g id="review-match" data-diagram-kind="node" transform="translate(380 130)" role="group" aria-label="matchReviews">
+    <rect width="380" height="110" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">matchReviews</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">the open review this change is</tspan></text>
+  </g>
+  <g id="review-area" data-diagram-kind="node" transform="translate(380 300)" role="group" aria-label="Review area">
+    <rect width="380" height="110" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Review area</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">the change's lines, by the review's Items</tspan></text>
+  </g>
+  <g id="review-headline" data-diagram-kind="node" transform="translate(840 110)" role="group" aria-label="Status headline">
+    <rect width="390" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Status headline</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">explains N of M changed lines</tspan></text>
+  </g>
+  <g id="check-covers-review" data-diagram-kind="node" transform="translate(840 260)" role="group" aria-label="check --covers review">
+    <rect width="390" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">check --covers review</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">exit 0 complete, 3 gap, 1 untrusted</tspan></text>
+  </g>
+  <g id="report-kind" data-diagram-kind="node" transform="translate(840 410)" role="group" aria-label="Review-first or full report">
+    <rect width="390" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Review-first or full report</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">full once the Saga documents the app</tspan></text>
+  </g>
+  <g id="compares" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="comparison to review-match" data-from="comparison" data-to="review-match">
+    <path d="M300 185 L380 185" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-compares)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="follows" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="review-create-defaults to review-match" data-from="review-create-defaults" data-to="review-match">
+    <path d="M300 370 L340 370 L340 215 L380 215" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-follows)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="measures" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="review-match to review-area" data-from="review-match" data-to="review-area">
+    <path d="M570 240 L570 300" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-measures)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="reports" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="review-area to review-headline" data-from="review-area" data-to="review-headline">
+    <path d="M760 330 L800 330 L800 165 L840 165" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-reports)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="asks" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="review-area to check-covers-review" data-from="review-area" data-to="check-covers-review">
+    <path d="M760 370 L820 370 L820 315 L840 315" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-asks)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="no-verdict" data-diagram-kind="text" transform="translate(60 600)" aria-hidden="true">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="15">Coverage is not approval: status exits 0 whenever its report can be trusted, and says what the deck explains.</tspan></text>
+  </g>
+</svg>

@@ -43,10 +43,18 @@ The default output is
   contact-sheet.png
   slides/<deck-id>/<slide-id>/
     raw-1280x720.png
+    raw-1280x720-dark.png
     raw-1024x576.png
+    raw-1024x576-dark.png
     reviewer-1280x720.png
+    reviewer-1280x720-dark.png
     reviewer-1024x576.png
+    reviewer-1024x576-dark.png
 ```
+
+Every surface renders in both colour schemes, since generated slides and the
+reviewer follow light and dark mode: the browser's preference is emulated as
+light, then dark. Each artifact and finding names its `scheme`.
 
 The hidden marker identifies a managed output directory. A repeat run replaces
 only an existing directory with that marker. The CLI refuses filesystem roots,

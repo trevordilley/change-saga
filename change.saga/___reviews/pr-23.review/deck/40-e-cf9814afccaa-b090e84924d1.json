@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "5a133b1a774a42fbd61305f977302adf7a38fb70",
+      "path": "internal/cli/theme.go",
+      "start": 73,
+      "end": 155,
+      "digest": "sha256:8d4d5ab071474526f8d2bdd5e632f3acca3769a6f2cdf47223716fdcf9cb4a6f"
+    }
+  ]
+}

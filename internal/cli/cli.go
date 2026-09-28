@@ -31,6 +31,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/semanticgraph"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
 	"github.com/twentyideas/changesaga/internal/store"
+	"github.com/twentyideas/changesaga/internal/theme"
 	"github.com/twentyideas/changesaga/skills"
 )
 
@@ -93,7 +94,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 var commandOrder = []string{
 	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "diagram", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
-	"serve", "open", "install-skill", "spec",
+	"theme", "serve", "open", "install-skill", "spec",
 }
 
 var commandUsage = map[string]string{
@@ -920,6 +921,7 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 	appendQualityIssues(flags.Arg(0), document, &validation)
 	appendAppIssues(flags.Arg(0), document, &validation)
 	appendInventoryIssues(flags.Arg(0), document, &validation)
+	appendThemeIssues(flags.Arg(0), &validation)
 	if *jsonOutput {
 		if err := writeJSON(out, validationOutput{Validation: validation, Fixes: fixes}); err != nil {
 			return err
@@ -1354,6 +1356,7 @@ func Spec(args []string, out io.Writer) error {
 				"verdict":         "none; status and review list report each slide's decisions and currency and each review's coverage, and the team decides",
 				"slides":          "apply-slide --review publishes a complete review slide (a diagram source or a visual) with the implementation deck's transaction; its Items carry no evidence or criterion links, and cover --changed-lines covers them after publishing",
 			},
+			"theme": theme.Contract(),
 			"implementation_deck": map[string]any{
 				"storage": applayout.FeaturesDir + "/<feature>" + applayout.FeatureSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
 				"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},

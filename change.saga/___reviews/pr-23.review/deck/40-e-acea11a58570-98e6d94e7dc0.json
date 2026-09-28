@@ -1,0 +1,425 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:95352db76c70a29979420e19e9bd2bf080875c9fb203d3f091a17141e58935d8"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:3f6fa7b2e3acc5efd00e969e87fb37fa7af7b26e8bc773ad725c1a768b203c1c"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:a25a55c6279e6d12ef6f0f262b4708aa7e7ed148555d383faf2da12e516a1d40"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:7078d8acf026b68be335971a8ebfb8c8f6c15e4f7ad72ac82e26d6dc981e0c74"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:401cb89170162160a4d29a2e063deffb1456993f9d6ef7e9b928cc7efe5669ed"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 59,
+      "end": 60,
+      "digest": "sha256:61534e688da32b0823208dee2cafb77f4d119fe04b825c586475032f538cf835"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 63,
+      "end": 64,
+      "digest": "sha256:28b9fa8a9cd1aef394bb9650eeaceb52d69437b2e28ca0206fee37b05ee2fd74"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 67,
+      "end": 68,
+      "digest": "sha256:0b4319ab763a412a40b3b84d0709b9da217a6f16fec5ef43d458db0c75c93015"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 71,
+      "end": 72,
+      "digest": "sha256:10843522dea1a1c20a5357d3d55a090cd691b4284053624acf4934ccb7a3155a"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 79,
+      "end": 80,
+      "digest": "sha256:1a901068f9b01db3d232a4da577905d9dbec9d58f68e7d8a3e7869f4579b0161"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 83,
+      "end": 84,
+      "digest": "sha256:de929778015e734fb5b50694e071475e783128d4fff1cf1490d01b267b9286e2"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:7711e2f45abdc43e7d8cde3ed2f9db7c71124629efb68ca4eb206c8036ea61f7"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 92,
+      "end": 94,
+      "digest": "sha256:0861fb678cf1833d17b15819219836211edc43ae52df948931572b9bdd3da03b"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 97,
+      "end": 100,
+      "digest": "sha256:1ffac196eca85201f0a2dde11a6070ddd32b1ba9ab610e3b94d5571f003c269c"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 103,
+      "end": 104,
+      "digest": "sha256:4a4e0dae51ada5c6e5752c9a181666d5b6afb4c8d6520a61d82e276671fb62da"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 107,
+      "end": 108,
+      "digest": "sha256:576e9841a00de703edbd80268b58d7a8a24e68602a051f16a91aaef111e89dce"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 111,
+      "end": 114,
+      "digest": "sha256:88dc78919b8f0142cb1aafa0775a94845b2e1299613bdb7fb5ef6e0bb9dfed08"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:ab18fac69b5d0026cf7d3cfb86a321a90fcb1a7fc5b9a16dd24f6193bab9277e"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 122,
+      "end": 124,
+      "digest": "sha256:ce402b67addbc2fe375ad347eccfb9fa966170b3e011c87bb860dc45bec7db72"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:9f93174c5ba46a570b469fee28a4ad294015fab514973917baf023625a8fd0a7"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 128,
+      "end": 129,
+      "digest": "sha256:604c27d99cb94953af37580ec909666a7454b8ccad6c0c03dc57012633a5e928"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 133,
+      "end": 136,
+      "digest": "sha256:4a6cba75ebb43c30df868e4ef89420ee800b71d4cb39c6c75188c33e4f56b490"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 138,
+      "end": 140,
+      "digest": "sha256:5685bdc172c5abe50ce6bc5265fb98991670212a3c0f74401f3aac06103f2487"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:f45244e6a9b1ca58008a04f4f5f98bc204dd20d0acb2e99dcaee68b1590416c4"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 144,
+      "end": 146,
+      "digest": "sha256:e6207a4eb6821149753d5ef3e1d46e042bda2ee1acd1f59e9dab20bc15479dbb"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:a13c3acb3c81d520d030da9265c9947ee4f4e826cc77ed833c129cb888df4620"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 150,
+      "end": 151,
+      "digest": "sha256:941b93e6491dc2901b0c1b2eae6a6ec9f5179619bf45fa7c9d4649d534303fd3"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:34fc0e457c2852f0953454695bf12fb2861db42772eaf299659ebb4ef6e795ce"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 155,
+      "end": 156,
+      "digest": "sha256:186f17849a81a27750687b3c4ab8440596a4782f57a13a6bfdc1179fa3857736"
+    },
+    {
+      "commit": "60fe9aed259f17acb897eda5525213e287af7390",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 160,
+      "end": 161,
+      "digest": "sha256:636078d3ec218d71ed20059058f374e43c8bf0bb2a4c05e8573a7a906a866efa"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:087892cdc9ab6dd68ff355f7a8020e00481c2ae523f48828b4d284ef65540a33"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:74c5c9a7a0c98791b89cfc8a43f88d9f5e83ee7cbb7a22fee0205b4f26d72f3f"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:7e8c0170a1b8f593422e73c5e010f2dc67f5f3637ae3d25706eace0d20f2dab7"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:b76fde5ab4687e2aa9fddccfe1e8ee64476738d22399256d9db3dad9daa2909d"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:2c630e4b3e3eacb465143a591f1808d96ee470a26ff5df1d9c3d07d78fe03cb6"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 59,
+      "end": 60,
+      "digest": "sha256:3bb8a30cb462fc941774ef3f7c72ae4da2e3ae322d2be79a5af7dd7ea89dc6b2"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 63,
+      "end": 64,
+      "digest": "sha256:c89ace9c83f3374d911bcd365b4f2a1daeddbfda5e25bd1be6b6c9a2dc0e9f90"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 67,
+      "end": 68,
+      "digest": "sha256:6fe720970df1523e323e5fe6e56278764765774eb87edc9b96290e544ac860c4"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 71,
+      "end": 72,
+      "digest": "sha256:136739f5c3ba1476f7179df5462067839b17f42afc9636f45a2b7f6abdbb3c1b"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 79,
+      "end": 80,
+      "digest": "sha256:95f9f97cd143ad4b642686c1cb648fde3123fbfb9d2580dfceedb86eeea050de"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 83,
+      "end": 84,
+      "digest": "sha256:27532c2ccfd7dc48e01053f151c0eae7173de38bb2b6bb7468c4611997cc9a40"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:f942ab0708a143dc099e3612c6de634ee0f0548fbf96cd622e73e73f53bd6cf3"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 92,
+      "end": 94,
+      "digest": "sha256:9419a1ee65286467b1a244433fcc42a54aaf4f09e325e0cabb9f67878862a081"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 97,
+      "end": 100,
+      "digest": "sha256:bae0c81bef3628a289ac4d10aed00d309b8cd03169a082efcc4245af09732faa"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 103,
+      "end": 104,
+      "digest": "sha256:a2aae286e8fba2eb3c361bd3501435593294f9f787686bc791c8e215a9a4a313"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 107,
+      "end": 108,
+      "digest": "sha256:8b0105ad609fd71f339d93af7fad5253977e99679ea23679cb48be0ee5636c40"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 111,
+      "end": 114,
+      "digest": "sha256:1cf415326c985a8fdfa1c38d3597d8f442b1572674e4b20181d25eccc6056180"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:26c3819a7a7b1fc344e4af00c0185c8b593e0500ea23d7a7ce395800897946a3"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 122,
+      "end": 124,
+      "digest": "sha256:d227d86f880571d6ca4f9d8922251d3d4f9271fdddb434a47f9bf9221e71a634"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:cf41c9e76d208f89bdb7ee212247e12901407ddc4a282fba2272b5dfeb4e9e7d"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 128,
+      "end": 129,
+      "digest": "sha256:e634a317be645d86fa0faf6137d1f23774388f1f2cce001c1f69b2139cd8644e"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 133,
+      "end": 136,
+      "digest": "sha256:c7efa128df32ed4facc56b47b366aa201b58d0c1b7317595a4650b3b35e81a7d"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 138,
+      "end": 140,
+      "digest": "sha256:d6b3d876149a2f5ad697085209b171cb0dd422b74e0b23bbe5db9df9055b1a96"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:5089e33ed53125013b431416d7147dc398e94a54ef0fcee2b36617d112abfaf9"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 144,
+      "end": 146,
+      "digest": "sha256:8564f786a1ae14cca7cc897722f2810eafbd21654c45e70f53622c5d1e3c931b"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:fa95449ca5669b7790005b035050f7308a4fec94d991a78b14c7de994dafa643"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 150,
+      "end": 151,
+      "digest": "sha256:1d3bb0c07f486592fafdecd9ffce51b24d8be495dd32ca1d2355da7fca1737a9"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:d3996f3be4d697c3a3db74e6054a224b4c4e4e11aed9b0ce2fd9d90928ca1a46"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 155,
+      "end": 156,
+      "digest": "sha256:98d1503fec6b9eb323fc4dbef67384a75386802c7068e9eae228114ccba71240"
+    },
+    {
+      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "path": "internal/diagram/testdata/shapes.svg",
+      "start": 160,
+      "end": 161,
+      "digest": "sha256:48597ee8c2f49a33b13b0cebfcdf645a87c831e41e9b261adf597bde605e6017"
+    }
+  ]
+}
