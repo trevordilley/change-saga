@@ -16,6 +16,10 @@
   `git log`, instead of one Git call per review.
 - `review list` and `status` use the same ledger, so they agree with the
   Reviews page.
+- A page that takes more than a moment to arrive shows a "Loading…"
+  spinner under the top bar until it is swapped in, and marks the page busy
+  for assistive technology. It waits 150ms before showing, so a quick page
+  never flashes one.
 - On this repository `/reviews` drops from about 1.1s to about 20ms, and a
   review's details take about 26ms.
 

@@ -3340,10 +3340,30 @@ const appJavaScript = `(() => {
       event.preventDefault();
       followWithinPage(destination, link);
     });
+    // A page that takes a moment to arrive says so. The spinner waits a
+    // beat before it shows, so a quick page never flashes one, and goes as
+    // soon as the page is swapped in or the request ends.
+    let pageLoadingTimer = 0;
+    const startPageLoading = () => {
+      clearTimeout(pageLoadingTimer);
+      pageLoadingTimer = setTimeout(() => {
+        const indicator = q('#page-loading');
+        if (indicator) indicator.hidden = false;
+        q('#page')?.setAttribute('aria-busy', 'true');
+      }, 150);
+    };
+    const stopPageLoading = () => {
+      clearTimeout(pageLoadingTimer);
+      const indicator = q('#page-loading');
+      if (indicator) indicator.hidden = true;
+      q('#page')?.removeAttribute('aria-busy');
+    };
+    document.addEventListener('htmx:afterRequest', event => { if (boostedPage(event.detail)) stopPageLoading(); });
     // From the moment another page is asked for, this one is no longer the
     // settled page.
     document.addEventListener('htmx:beforeRequest', event => {
       if (!boostedPage(event.detail)) return;
+      startPageLoading();
       delete document.body.dataset.shellReady;
       recordingScroll = true;
       scrollPositions.set(location.href, scrollY);
@@ -3375,8 +3395,9 @@ const appJavaScript = `(() => {
       delete document.body.dataset.shellReady;
       recordingScroll = false;
       arrival = 'history';
+      startPageLoading();
     });
-    document.addEventListener('htmx:historyCacheMissLoad', () => leavePage());
+    document.addEventListener('htmx:historyCacheMissLoad', () => { stopPageLoading(); leavePage(); });
     document.addEventListener('htmx:historyCacheMissLoadError', () => location.reload());
   } else {
     decksArrival?.resolve();

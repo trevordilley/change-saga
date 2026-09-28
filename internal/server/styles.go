@@ -698,6 +698,7 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .surface-placeholder.error{color:var(--red)}
 .surface-placeholder.error strong{color:var(--red)}
 .surface-placeholder .btn-primary{margin-top:6px}
+.page-loading{position:fixed;top:calc(var(--top) + 12px);left:50%;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--muted);font:13px var(--ui);box-shadow:0 4px 14px #1f23281f}.page-loading[hidden]{display:none}.page-loading .surface-spinner{width:14px;height:14px}
 .surface-spinner{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:surface-spin .8s linear infinite}
 @keyframes surface-spin{to{transform:rotate(360deg)}}
 [data-surface-next]{display:flex;margin:14px auto;padding:6px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--accent);font:600 12px var(--ui);text-decoration:none}

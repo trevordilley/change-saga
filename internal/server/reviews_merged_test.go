@@ -186,3 +186,16 @@ func TestReviewIndexReadsDetailsAfterThePage(t *testing.T) {
 		t.Fatalf("details of an unknown review = %d", missing.Code)
 	}
 }
+
+// Every page carries the spinner a slow navigation shows, hidden until the
+// script shows it; it sits outside #page, so it outlives the swap.
+func TestShellCarriesThePageLoadingIndicator(t *testing.T) {
+	t.Parallel()
+	fixture := newMergedReviewFixture(t)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	page := getPage(t, handler, "/reviews").Body.String()
+	indicator := `<div class="page-loading" id="page-loading" role="status" hidden>`
+	if !strings.Contains(page, indicator) || strings.Index(page, indicator) < strings.Index(page, `<div id="page"`) {
+		t.Fatalf("the shell has no page-loading indicator outside #page:\n%s", page)
+	}
+}

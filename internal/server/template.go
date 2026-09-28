@@ -29,6 +29,7 @@ var pageTemplate = storyLinksTemplate + `{{define "page"}}<!doctype html>
 <main class="content"><div id="page" hx-history-elt>{{template "page-content" .}}</div>{{template "deck-view" (oob . false)}}</main></div>
 {{template "page-surfaces" (oob . false)}}
 <p id="page-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+<div class="page-loading" id="page-loading" role="status" hidden><span class="surface-spinner" aria-hidden="true"></span><span>Loading…</span></div>
 <div class="drawer-backdrop" data-close-drawer></div><aside class="diff-drawer" id="review-drawer" aria-hidden="true" inert aria-label="Linked code"><div class="drawer-head">{{template "icon" "diff"}}<strong id="review-drawer-title">Linked code</strong><button type="button" class="icon-button" data-close-drawer aria-label="Close linked code" title="Close">{{template "icon" "close"}}</button></div><div class="drawer-body"></div></aside>
 </body></html>{{end}}
 
