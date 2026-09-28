@@ -165,9 +165,11 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		Report: value.report, Schema: StatusSchema, Opening: view, Status: living,
 		AuthoringLoop: nextaction.AuthoringLoop(root),
 	}
+	// A review whose change has landed is history, recorded or detected.
 	var open []*saga.Review
+	landings := reviewstate.NewLandings(value.checkout)
 	for _, review := range value.document.Reviews {
-		if review.Merged == nil {
+		if !landings.Detect(ctx, review).Merged() {
 			open = append(open, review)
 		}
 	}
@@ -342,7 +344,7 @@ func printReviewFirst(out io.Writer, status statusDocument, maxItems int) {
 func printReviewsAndActions(out io.Writer, status statusDocument, maxItems int) {
 	if len(status.Reviews) > 0 {
 		fmt.Fprintln(out, "\nReviews (decisions per slide and each deck's coverage of its range; the team decides what it requires):")
-		printReviewReports(out, status.Reviews, nil)
+		printReviewReports(out, status.Reviews, nil, nil)
 	}
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))
