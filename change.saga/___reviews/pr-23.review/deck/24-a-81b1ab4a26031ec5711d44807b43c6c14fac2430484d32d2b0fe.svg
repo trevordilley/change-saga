@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Slides paint with tokens</title>
+  <desc id="diagram-desc">Generated slides read the diagram tokens, so they follow light and dark mode and the reviewer's toggle; fixed-colour slides sit on paper in dark mode.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-blue-accent:#1d4ed8;--diagram-blue-tint:#e8f1ff;--diagram-canvas:#fafaf8;--diagram-green-accent:#15803d;--diagram-green-tint:#e7f8eb;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-on-accent:#ffffff;--diagram-pink-ink:#500724;--diagram-pink-sticky:#ffc9dc;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-shadow:#0f172a;--diagram-title-ink:#172033;--diagram-warning-fill:#fff7e6;--diagram-warning-ink:#805015;--diagram-warning-stroke:#b7791f;}@media (prefers-color-scheme:dark){:root{--diagram-blue-accent:#58a6ff;--diagram-blue-tint:#121d2f;--diagram-canvas:#0d1117;--diagram-green-accent:#56d364;--diagram-green-tint:#12261e;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-on-accent:#0d1117;--diagram-pink-ink:#ffd6e8;--diagram-pink-sticky:#5c1a37;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-shadow:#010409;--diagram-title-ink:#e6edf3;--diagram-warning-fill:#2d240c;--diagram-warning-ink:#f2cc60;--diagram-warning-stroke:#d29922;}}</style>
+    <marker id="diagram-head-declares" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-serves" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-shows" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <filter id="diagram-shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.2" style="flood-color:var(--diagram-shadow,#0f172a)"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 28)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Slides paint with tokens</tspan></text>
+  </g>
+  <g id="render" data-diagram-kind="group" transform="translate(40 100)" role="group" aria-label="Renderer  change-saga-diagram/2">
+    <rect width="580" height="360" rx="10" fill="#e8f1ff" stroke="#1d4ed8" stroke-width="2" style="fill:var(--diagram-blue-tint,#e8f1ff);stroke:var(--diagram-blue-accent,#1d4ed8)"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H375.774A10 10 0 0 1 385.774 10V39.5Z" fill="#1d4ed8" style="fill:var(--diagram-blue-accent,#1d4ed8)"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="28">Renderer  change-saga-diagram/2</tspan></text>
+    <g id="resolve" data-diagram-kind="node" transform="translate(30 60)" role="group" aria-label="Token references">
+      <desc>Each colour is written twice: fill="#ffffff" style="fill:var(--diagram-normal-fill,#ffffff)". An inline style, because var() is unreliable in SVG presentation attributes; the light attribute keeps rasterizers drawing the light slide. Authors may write @accent or any colour token; hex stays as authored.</desc>
+      <rect width="520" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Token references</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">@name paints light + var()</tspan></text>
+    </g>
+    <g id="standalone" data-diagram-kind="node" transform="translate(30 220)" role="group" aria-label="Standalone SVG">
+      <desc>Declared by the same pass: the SVG's own style names only the tokens it uses, with color-scheme: light dark, so it themes itself on a code host.</desc>
+      <path d="M0 0H520V92C346.667 64.29 173.333 119.71 0 92Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="260" y="37.875" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="260" y="37.875">Standalone SVG</tspan></text>
+      <text x="260" y="64.375" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="260" y="64.375">dark values under prefers-color-scheme</tspan></text>
+    </g>
+  </g>
+  <g id="declares" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="declares" data-from="resolve" data-to="standalone">
+    <path d="M330 260 L330 320" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-declares)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="342" y="295" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="342" y="295">declares</tspan></text>
+  </g>
+  <g id="viewer" data-diagram-kind="group" transform="translate(660 100)" role="group" aria-label="Reviewer">
+    <rect width="580" height="360" rx="10" fill="#e7f8eb" stroke="#15803d" stroke-width="2" style="fill:var(--diagram-green-tint,#e7f8eb);stroke:var(--diagram-green-accent,#15803d)"/>
+    <path d="M0 39.5V10A10 10 0 0 1 10 0H109.924A10 10 0 0 1 119.924 10V39.5Z" fill="#15803d" style="fill:var(--diagram-green-accent,#15803d)"/>
+    <text x="12" y="28" font-size="22" fill="#ffffff" xml:space="preserve" style="fill:var(--diagram-on-accent,#ffffff)"><tspan x="12" y="28">Reviewer</tspan></text>
+    <g id="frames" data-diagram-kind="node" transform="translate(30 60)" role="group" aria-label="Slide frames">
+      <desc>A frame inherits the page's color-scheme. When the pinned theme differs from the OS, its URL carries ?saga_scheme=light or dark; a head script keeps frames and thumbnails in sync on toggle.</desc>
+      <rect width="520" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+      <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">Slide frames</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">URL names the pinned scheme</tspan></text>
+    </g>
+    <g id="served" data-diagram-kind="node" transform="translate(30 220)" role="group" aria-label="Served visual">
+      <desc>Every SVG or HTML slide gets a style declaring every token, for the named scheme or for both under prefers-color-scheme. Coming last, it wins over the drawing's own declarations.</desc>
+      <rect width="520" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Served visual</tspan></text>
+      <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">appends every token, last</tspan></text>
+    </g>
+  </g>
+  <g id="serves" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="SVG" data-from="standalone" data-to="served">
+    <path d="M590 370 L690 370" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-serves)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="640" y="356" font-size="18" fill="#526174" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="640" y="356">SVG</tspan></text>
+  </g>
+  <g id="shows" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="themed" data-from="served" data-to="frames">
+    <path d="M950 320 L950 260" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-shows)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="962" y="295" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="962" y="295">themed</tspan></text>
+  </g>
+  <g id="rerender" data-diagram-kind="node" transform="translate(40 490)" role="group" aria-label="Re-rendered once">
+    <path d="M0 14C0 -4.667 300 -4.667 300 14V106C300 124.667 0 124.667 0 106Z" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <path d="M0 14C0 33 300 33 300 14" fill="none" stroke="#64748b" stroke-width="2" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="62" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="62">Re-rendered once</tspan></text>
+    <text x="18" y="95" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="95">26 slides; merged history stays</tspan></text>
+  </g>
+  <g id="paper" data-diagram-kind="node" transform="translate(380 490)" role="group" aria-label="Paper card">
+    <desc>An SVG or HTML slide that neither switches on prefers-color-scheme nor reads a contract token, or a raster image, keeps a light frame on a slide-paper card.</desc>
+    <rect width="300" height="110" rx="8" fill="#fff7e6" stroke="#b7791f" stroke-width="2" style="fill:var(--diagram-warning-fill,#fff7e6);stroke:var(--diagram-warning-stroke,#b7791f)"/>
+    <text x="18" y="37" font-size="19" fill="#805015" xml:space="preserve" style="fill:var(--diagram-warning-ink,#805015)"><tspan x="18" y="37">Paper card</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#805015" xml:space="preserve" style="fill:var(--diagram-warning-ink,#805015)"><tspan x="18" y="73">fixed-colour slides in dark</tspan></text>
+  </g>
+  <g id="surprise" data-diagram-kind="sticky" transform="translate(720 480)" role="group" aria-label="Chromium ignores a frame's color-scheme" data-about="frames">
+    <rect width="260" height="140" rx="3" fill="#ffc9dc" filter="url(#diagram-shadow)" style="fill:var(--diagram-pink-sticky,#ffc9dc)"/>
+    <text x="16" y="38" font-size="22" fill="#500724" xml:space="preserve" style="fill:var(--diagram-pink-ink,#500724)"><tspan x="16" y="38">Chromium ignores a</tspan><tspan x="16" y="65.5">frame's color-scheme</tspan></text>
+  </g>
+  <g id="tests" data-diagram-kind="text" transform="translate(40 650)" role="group" aria-label="Tests: goldens, token references, dark declarations, served schemes, a Playwright toggle; visual-qa in light and dark">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="15">Tests: goldens, token references, dark declarations, served schemes, a Playwright toggle; visual-qa in light and dark</tspan></text>
+  </g>
+</svg>
