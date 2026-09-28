@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "4f0ed55c66f3cb35ca67730c3d05fb3a3643c9b6",
+      "commit": "dae580b3d5258727a1c23f476c74b7ac7986cb57",
       "path": "internal/reviewstate/reviewstate.go",
       "start": 179,
-      "end": 245,
-      "digest": "sha256:1010fd9579588ba7dd9644585817c1324f315207e35632127a42d27f9305673a",
+      "end": 241,
+      "digest": "sha256:34d9f88fc1a8a26b3425e2e86db5944ac5d5443e2a09ecd167904234fd47fd58",
       "note": "Builds the visible review report from stored events, latest-seat selection, threads, and independent currency evaluation."
     }
   ]

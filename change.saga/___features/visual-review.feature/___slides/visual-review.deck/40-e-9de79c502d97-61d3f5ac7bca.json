@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "3a3b70462ce81ea392d473379c946a161aa53924",
+      "commit": "dae580b3d5258727a1c23f476c74b7ac7986cb57",
       "path": "internal/server/server.go",
-      "start": 486,
-      "end": 496,
-      "digest": "sha256:faae891daac1d0a930f34227c7f5dd7714a8bee863630011d6ee948b6cc8a7c9",
+      "start": 500,
+      "end": 511,
+      "digest": "sha256:37c505fdb77426d623975d4e3716e1c172624a9e5c8bca7f78481f9e168e7770",
       "note": "Review routes expose annotation reads and comment writes used for spatial review marks."
     }
   ]
