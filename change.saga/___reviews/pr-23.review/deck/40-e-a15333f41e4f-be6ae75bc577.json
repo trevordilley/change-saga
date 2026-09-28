@@ -2,16 +2,16 @@
   "version": 2,
   "references": [
     {
-      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
       "path": "internal/server/slidescheme.go",
-      "digest": "sha256:7670ab9f97f55ef973f75af61494318e406fbd358ccd7ee2b7338dc49ba55659"
+      "digest": "sha256:6f53d4365d019d0903ca39daa619606c3bec3e49e561dac7671806e7181b4a1f"
     },
     {
-      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
       "path": "internal/server/slidescheme.go",
       "start": 1,
       "end": 94,
-      "digest": "sha256:7670ab9f97f55ef973f75af61494318e406fbd358ccd7ee2b7338dc49ba55659"
+      "digest": "sha256:6f53d4365d019d0903ca39daa619606c3bec3e49e561dac7671806e7181b4a1f"
     }
   ]
 }

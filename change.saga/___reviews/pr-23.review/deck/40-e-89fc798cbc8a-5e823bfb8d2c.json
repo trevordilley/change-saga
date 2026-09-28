@@ -2,9 +2,9 @@
   "version": 2,
   "references": [
     {
-      "commit": "97f9ad335a9c3f52031fddd85a422103824db8c8",
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
       "path": "internal/cli/theme.go",
-      "digest": "sha256:12f4401ea662def98e8e8cec7624c2ba9233f837a0929d30964694f962995999"
+      "digest": "sha256:12356f9d1875e81650b8872d5ae93aca1f82542770fda229e4210182b09ac929"
     }
   ]
 }

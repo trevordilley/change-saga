@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">change-saga theme: init, check, preview</title>
+  <desc id="diagram-desc">init writes a commented starter, check validates and measures WCAG AA contrast in both modes with an exit code for CI, and preview opens light and dark side by side.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-canvas:#fafaf8;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-shadow:#0f172a;--diagram-title-ink:#172033;--diagram-warning-fill:#fff7e6;--diagram-warning-ink:#805015;--diagram-warning-stroke:#b7791f;--diagram-yellow-ink:#3f2d00;--diagram-yellow-sticky:#fff3a3;}@media (prefers-color-scheme:dark){:root{--diagram-canvas:#0d1117;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-shadow:#010409;--diagram-title-ink:#e6edf3;--diagram-warning-fill:#2d240c;--diagram-warning-ink:#f2cc60;--diagram-warning-stroke:#d29922;--diagram-yellow-ink:#fff5b1;--diagram-yellow-sticky:#4d4108;}}</style>
+    <filter id="diagram-shadow" x="-20%" y="-20%" width="140%" height="150%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#0f172a" flood-opacity="0.2" style="flood-color:var(--diagram-shadow,#0f172a)"/>
+    </filter>
+    <marker id="diagram-head-writes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-decides" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-opens" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
+  <g id="title" data-diagram-kind="text" transform="translate(60 24)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">change-saga theme: init, check, preview</tspan></text>
+  </g>
+  <g id="init" data-diagram-kind="node" transform="translate(60 110)" role="group" aria-label="theme init">
+    <rect width="340" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">theme init</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">refuses to overwrite without --force</tspan></text>
+  </g>
+  <g id="check" data-diagram-kind="node" transform="translate(470 110)" role="group" aria-label="theme check">
+    <rect width="340" height="100" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="40" font-size="22" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="40">theme check</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">validate, then contrast</tspan></text>
+  </g>
+  <g id="preview" data-diagram-kind="node" transform="translate(880 110)" role="group" aria-label="theme preview">
+    <rect width="340" height="100" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">theme preview</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">opens /theme</tspan></text>
+  </g>
+  <g id="starter" data-diagram-kind="node" transform="translate(60 270)" role="group" aria-label="Starter theme.css">
+    <desc>Grouped by token group, light defaults in :root, dark defaults in the dark block; it validates as an empty theme, and uncommenting any line validates too.</desc>
+    <path d="M0 0H340V138C226.667 96.434 113.333 179.566 0 138Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="170" y="58.875" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="170" y="58.875">Starter theme.css</tspan></text>
+    <text x="170" y="85.375" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="170" y="85.375">every token, commented out</tspan></text>
+  </g>
+  <g id="exit" data-diagram-kind="node" transform="translate(500 250)" role="group" aria-label="exit 0, 1, or 3">
+    <desc>1: the theme is invalid, each problem named with its line. 3: valid, but pairs fall below AA, each named with both values and its ratio. --json gives every pair.</desc>
+    <path d="M140 0L280 80L140 160L0 80Z" fill="#fff7e6" stroke="#b7791f" stroke-width="2" style="fill:var(--diagram-warning-fill,#fff7e6);stroke:var(--diagram-warning-stroke,#b7791f)"/>
+    <text x="70" y="75" font-size="19" fill="#805015" xml:space="preserve" style="fill:var(--diagram-warning-ink,#805015)"><tspan x="70" y="75">exit 0, 1, or 3</tspan></text>
+  </g>
+  <g id="contrast" data-diagram-kind="sticky" transform="translate(450 440)" role="group" aria-label="AA 4.5:1 in light and dark: ink and muted on the background, the primary button, diagram inks on their fills, palette inks on stickies and text on accents" data-about="exit">
+    <rect width="380" height="210" rx="3" fill="#fff3a3" filter="url(#diagram-shadow)" style="fill:var(--diagram-yellow-sticky,#fff3a3)"/>
+    <text x="16" y="38" font-size="22" fill="#3f2d00" xml:space="preserve" style="fill:var(--diagram-yellow-ink,#3f2d00)"><tspan x="16" y="38">AA 4.5:1 in light and dark: ink and</tspan><tspan x="16" y="65.5">muted on the background, the</tspan><tspan x="16" y="93">primary button, diagram inks on</tspan><tspan x="16" y="120.5">their fills, palette inks on stickies</tspan><tspan x="16" y="148">and text on accents</tspan></text>
+  </g>
+  <g id="page" data-diagram-kind="node" transform="translate(880 270)" role="group" aria-label="/theme page">
+    <desc>Each pane declares its scheme's resolved tokens: swatches, the reviewer's chrome, and a generated diagram with every style, the palette, a section, stickies, and an ERD edge.</desc>
+    <rect width="340" height="110" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">/theme page</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="73">light and dark panes</tspan></text>
+  </g>
+  <g id="surface" data-diagram-kind="node" transform="translate(60 490)" role="group" aria-label="help, grammar, and skill">
+    <rect width="340" height="100" rx="8" fill="none" stroke="#94a3b8" stroke-width="2" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="18" y="36" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="18" y="36">help, grammar, and skill</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="18" y="73">usage lines match byte for byte</tspan></text>
+  </g>
+  <g id="tests-note" data-diagram-kind="text" transform="translate(880 440)" role="group" aria-label="Tests: init and --force, check's exit codes and named pairs, validate's lines, and Playwright recolouring the app and a slide in both modes">
+    <text x="0" y="15" font-size="15" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="15">Tests: init and --force, check's exit codes and</tspan><tspan x="0" y="33.75">named pairs, validate's lines, and Playwright</tspan><tspan x="0" y="52.5">recolouring the app and a slide in both modes</tspan></text>
+  </g>
+  <g id="writes" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="init to starter" data-from="init" data-to="starter">
+    <path d="M230 210 L230 270" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-writes)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="decides" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="check to exit" data-from="check" data-to="exit">
+    <path d="M640 210 L640 250" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-decides)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="opens" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="preview to page" data-from="preview" data-to="page">
+    <path d="M1050 210 L1050 270" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-opens)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+</svg>

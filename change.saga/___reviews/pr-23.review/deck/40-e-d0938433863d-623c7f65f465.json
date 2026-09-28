@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "internal/server/template.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:35f7899ed6e7c3267f7dc32fc7b2cf537e7d8facdf2af2c2fd2667f1bc1fca29"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "pr-23",
   "slide": "theme-file",
-  "current": "sha256:797c1cc0fbfa2637fc0728ecf9f7e95edce3d58e864ca12cd0e02fd1897fa808",
+  "current": "sha256:d2da118afa0f1cfc5e74b5e4e8cd6fd19f492ea19de2fcd3beed6dcacb535327",
   "revisions": [
     {
       "snapshot": "sha256:5736b8fca07d516916026fce5e8412a525abf42c7964ca039fee9a6f697d8075",
@@ -321,6 +321,167 @@
         "source": "24-a-5e742606392103f1880e40f25e6121c6294ffad40a9ff2fbcad1.json",
         "source_digest": "sha256:5e742606392103f1880e40f25e6121c6294ffad40a9ff2fbcad19f55f91bd775",
         "renderer": "change-saga-diagram/1"
+      }
+    },
+    {
+      "snapshot": "sha256:d2da118afa0f1cfc5e74b5e4e8cd6fd19f492ea19de2fcd3beed6dcacb535327",
+      "parent_snapshots": [
+        "sha256:797c1cc0fbfa2637fc0728ecf9f7e95edce3d58e864ca12cd0e02fd1897fa808"
+      ],
+      "request_id": "theme-file-rerender-v2",
+      "created_at": "2026-09-28T04:36:41.123285Z",
+      "asset": "24-a-474980c91c274bb295f37dab25df539eda5f5cf389950d7e488e.svg",
+      "asset_digest": "sha256:474980c91c274bb295f37dab25df539eda5f5cf389950d7e488eef477efa9249",
+      "slide": {
+        "version": 4,
+        "id": "theme-file",
+        "deck": "pr-23",
+        "title": "A theme file, validated then applied",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-474980c91c274bb295f37dab25df539eda5f5cf389950d7e488e.svg",
+        "takeaway": "theme.css at the Saga root may only override tokens; a strict parser re-serializes what it accepts, and the reviewer applies it after its defaults and inside every served slide.",
+        "reading_order": [
+          "file",
+          "parser",
+          "values",
+          "app",
+          "slides",
+          "ignored",
+          "review-first"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "file",
+            "slide": "theme-file",
+            "rank": 10,
+            "kind": "node",
+            "label": "theme.css at the Saga root",
+            "description": "A Saga holds at most one theme, at a fixed name beside saga.json; Load reads it, and a Saga without one has none.",
+            "selector": {
+              "type": "element",
+              "element_id": "file"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "parser",
+            "slide": "theme-file",
+            "rank": 20,
+            "kind": "node",
+            "label": "A strict parser, reported by validate",
+            "description": "Comments are blanked, keeping lines; forbidden constructs are refused outright; only the two blocks and contract tokens pass. Each problem names its line, and validate reports it at theme.css:LINE.",
+            "selector": {
+              "type": "element",
+              "element_id": "parser"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "values",
+            "slide": "theme-file",
+            "rank": 30,
+            "kind": "node",
+            "label": "Values by token kind",
+            "description": "Each value must parse as its token's kind and is re-serialized from the parse: colours to hex, lengths, font lists, and shadows rebuilt from their parts.",
+            "selector": {
+              "type": "element",
+              "element_id": "values"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "app",
+            "slide": "theme-file",
+            "rank": 40,
+            "kind": "node",
+            "label": "The app links /theme.css",
+            "description": "The theme emits its overrides for light and both routes to dark; the reviewer serves them at /theme.css after app.css, so page markup and its caches do not change with the theme.",
+            "selector": {
+              "type": "element",
+              "element_id": "app"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "slides",
+            "slide": "theme-file",
+            "rank": 50,
+            "kind": "node",
+            "label": "Served slides carry the tokens",
+            "description": "Each SVG or HTML slide is served with one style at its end declaring every token, resolved per scheme with the theme applied, so var(--token) and generated slides follow it.",
+            "selector": {
+              "type": "element",
+              "element_id": "slides"
+            }
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "ignored",
+            "slide": "theme-file",
+            "rank": 60,
+            "kind": "callout",
+            "label": "An invalid theme is not applied at all",
+            "description": "The reviewer drops the whole theme when any line is invalid.",
+            "selector": {
+              "type": "element",
+              "element_id": "app"
+            },
+            "about": "app",
+            "body": "You might expect the valid lines of a broken theme to apply; instead the reviewer keeps its defaults until the file validates, so a half-applied theme never ships unnoticed. validate and theme check name what to fix."
+          },
+          "evidence": [],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "review-first",
+            "slide": "theme-file",
+            "rank": 70,
+            "kind": "callout",
+            "label": "A theme alone keeps a Saga review first",
+            "description": "theme.css joins the review-only top-level entries.",
+            "selector": {
+              "type": "element",
+              "element_id": "file"
+            },
+            "about": "file",
+            "body": "Any other top-level entry makes a Saga count as living documentation; theme.css is listed with saga.json and README.md so adding a theme does not switch a reviews-only Saga to the full report."
+          },
+          "evidence": [],
+          "criterion_links": []
+        }
+      ],
+      "diagram": {
+        "source": "24-a-5e742606392103f1880e40f25e6121c6294ffad40a9ff2fbcad1.json",
+        "source_digest": "sha256:5e742606392103f1880e40f25e6121c6294ffad40a9ff2fbcad19f55f91bd775",
+        "renderer": "change-saga-diagram/2"
       }
     }
   ]

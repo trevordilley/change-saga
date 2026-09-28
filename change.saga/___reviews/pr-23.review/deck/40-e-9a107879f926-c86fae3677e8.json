@@ -4,9 +4,9 @@
     {
       "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
       "path": "internal/server/server.go",
-      "start": 2039,
-      "end": 2039,
-      "digest": "sha256:f5b400ff6d4dea1b652c57f60cac5b236413906c756e29b3e2704cf29f1e2990"
+      "start": 509,
+      "end": 510,
+      "digest": "sha256:4b6df0de9b6a223a58bdebd2e85ee394c3bcfd34f8049cf1165001eecf25bcd5"
     }
   ]
 }

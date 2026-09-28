@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
+      "path": "internal/theme/css.go",
+      "digest": "sha256:36f94f1d630c51d08f9c7434bc1a71d106d852cddc3ac917f7faebf13cf716b2"
+    }
+  ]
+}

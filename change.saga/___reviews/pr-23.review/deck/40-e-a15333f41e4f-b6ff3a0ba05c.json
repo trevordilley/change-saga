@@ -9,11 +9,11 @@
       "digest": "sha256:97021403bad12779488172a2483d6d72ae755d436cd38e736377f9df877b3eb5"
     },
     {
-      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "commit": "9f5d3d98684f0e06392592572d134ce4756f4e59",
       "path": "internal/server/reviews.go",
       "start": 725,
       "end": 725,
-      "digest": "sha256:82128564b58d02dbe8a31fd0fd0f764ef35653717ce1fe91b5a0eee01bd10209"
+      "digest": "sha256:9981985123ef5c36c55f5f7da8297985ddc32e125fcdfa1003195c49add29ba2"
     }
   ]
 }
