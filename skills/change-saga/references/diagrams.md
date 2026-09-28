@@ -125,6 +125,10 @@ diagram icons`.
   wrap, or shorten the text.
 - Name styles; define custom ones under `styles`. Graphics use `currentColor`
   for their style's stroke instead of hard-coded colors.
+- Prefer colour tokens over hex in custom styles: `"fill": "@diagram-primary-fill"`
+  or `"stroke": "@accent"` follows light and dark mode and a theme, while a
+  hex colour stays fixed in both. `change-saga spec` lists the tokens under
+  `theme` (and `diagram.color_tokens`).
 - Mark lifelines and chrome `decorative`, and a title unless it carries a
   `note` (a decorative element is hidden from readers, so it cannot). Everything else is semantic,
   appears in the description, and needs a `description` when its label does
