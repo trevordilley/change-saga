@@ -2,17 +2,17 @@
   "version": 2,
   "references": [
     {
-      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
       "path": "internal/diagram/annotation_test.go",
-      "digest": "sha256:1949e4d5cf40205bc09c6132f9b83aea721ca3354336d6a2aab1c4275800c447",
+      "digest": "sha256:4e52048ecb7ab3d5856ba3f3735f6603601b0513e9003f77fc132328050ba95e",
       "note": "Board golden, validation, describe, edit, schema, and skill example tests."
     },
     {
-      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
       "path": "internal/diagram/annotation_test.go",
       "start": 1,
-      "end": 310,
-      "digest": "sha256:1949e4d5cf40205bc09c6132f9b83aea721ca3354336d6a2aab1c4275800c447",
+      "end": 318,
+      "digest": "sha256:4e52048ecb7ab3d5856ba3f3735f6603601b0513e9003f77fc132328050ba95e",
       "note": "Board golden, validation, describe, edit, schema, and skill example tests."
     }
   ]

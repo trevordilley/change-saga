@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
       "path": "internal/diagram/annotation.go",
       "start": 241,
-      "end": 262,
-      "digest": "sha256:fb1619d7156eecdea883d74ab0599f025323b7280902389f5228aee0d9140dc1",
+      "end": 263,
+      "digest": "sha256:e497f5b53dec4cb279dd881be1d9fc5b1302ddfde52fa6dff15d1f95bbddce23",
       "note": "bubbleDependents: a bubble without a target is reported changed when its about element or an ancestor moves."
     }
   ]
