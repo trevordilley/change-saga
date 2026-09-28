@@ -9,9 +9,11 @@
   line that brought it in, and the head the review follows, must show the
   change merged:
   - the head joined the base through a merge;
-  - the landing merge names the review's pull request (`#N`) or branch,
-    which keeps a reused branch's earlier reviews merged;
-  - the landing commit is a squash ending `(#N)`; or
+  - the landing merge names the review's pull request (`#N`) or, when it
+    names no other pull request, its whole branch; this keeps a reused
+    branch's earlier reviews merged;
+  - the landing commit is a squash ending `(#N)`, even after the branch
+    moved on; or
   - the head is outside the base, but merging it would change nothing.
   A merge recorded by `repin --onto` still wins. When Git can't tell,
   `state_source` is `unknown` and the review is shown as open. That covers
@@ -30,6 +32,8 @@
   detected as merged, as it already skipped recorded ones. `status --json`
   `reviews`, and so `reconcile`'s open review decks, list only open reviews,
   so a detected-merged review drops out of both.
+- A review with no slides yet opens to its title and the `apply-slide`
+  command that publishes the first one, instead of failing with a 500.
 
 ## Unreleased — review the big change, not every branch
 
