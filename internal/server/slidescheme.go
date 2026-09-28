@@ -2,6 +2,8 @@ package server
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
 	"io"
 	"net/http"
 	"os"
@@ -16,9 +18,11 @@ import (
 // standalone SVG takes from the OS. In a slide frame the reviewer's manual
 // toggle must win too, but a sandboxed frame's prefers-color-scheme follows
 // its element's color-scheme only in some browsers, so the frame's URL names
-// the scheme instead: ?saga_scheme=light or dark. A slide visual served with
-// one gets a style appended that declares every token for that scheme, which
-// outranks the drawing's own declarations and its media rule by coming last.
+// the scheme instead: ?saga_scheme=light or dark. Every SVG or HTML slide
+// visual is served with a style appended that declares every token, for the
+// named scheme or else for both schemes under prefers-color-scheme. Coming
+// last, it outranks the drawing's own declarations and media rule, and a
+// hand-authored slide may paint with any token.
 
 const slideSchemeParam = "saga_scheme"
 
@@ -33,16 +37,15 @@ func slideScheme(r *http.Request) string {
 }
 
 // slideVisualStyle is the style text appended to a slide visual served for
-// scheme, or "" when nothing is appended.
+// scheme, "" to follow the OS.
 func slideVisualStyle(scheme string) string {
-	if scheme == "" {
-		return ""
+	switch scheme {
+	case "light":
+		return ":root{color-scheme:light;" + theme.Declarations("light") + "}"
+	case "dark":
+		return ":root{color-scheme:dark;" + theme.Declarations("light") + theme.Declarations("dark") + "}"
 	}
-	declarations := theme.Declarations("light")
-	if scheme == "dark" {
-		declarations += theme.Declarations("dark")
-	}
-	return ":root{color-scheme:" + scheme + ";" + declarations + "}"
+	return ":root{" + theme.Declarations("light") + "}@media (prefers-color-scheme:dark){:root{" + theme.Declarations("dark") + "}}"
 }
 
 // injectSlideStyle inserts style as the last thing an SVG or HTML document
@@ -72,8 +75,7 @@ func injectSlideStyle(data []byte, contentType, style string) []byte {
 // serveSlideVisual answers a slide visual or fragment file request, appending
 // the requested scheme's style to an SVG or HTML document.
 func serveSlideVisual(w http.ResponseWriter, r *http.Request, name, contentType string, modified time.Time, file *os.File) {
-	style := slideVisualStyle(slideScheme(r))
-	if style == "" || !(strings.HasPrefix(contentType, "image/svg+xml") || strings.HasPrefix(contentType, "text/html")) {
+	if !strings.HasPrefix(contentType, "image/svg+xml") && !strings.HasPrefix(contentType, "text/html") {
 		http.ServeContent(w, r, name, modified, file)
 		return
 	}
@@ -82,7 +84,10 @@ func serveSlideVisual(w http.ResponseWriter, r *http.Request, name, contentType 
 		http.Error(w, "the slide could not be read", http.StatusInternalServerError)
 		return
 	}
+	data = injectSlideStyle(data, contentType, slideVisualStyle(slideScheme(r)))
 	// The appended style is not part of the file, so the file's modification
-	// time cannot validate the response.
-	http.ServeContent(w, r, name, time.Time{}, bytes.NewReader(injectSlideStyle(data, contentType, style)))
+	// time cannot validate the response; a digest of the bytes served can.
+	digest := sha256.Sum256(data)
+	w.Header().Set("ETag", `"`+hex.EncodeToString(digest[:16])+`"`)
+	http.ServeContent(w, r, name, time.Time{}, bytes.NewReader(data))
 }

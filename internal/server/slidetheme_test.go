@@ -25,8 +25,11 @@ func TestSlideVisualServesTheSchemeItsURLNames(t *testing.T) {
 		return recorder
 	}
 	plain := get("/reviews/pr-7/visual/queue")
-	if strings.Contains(plain.Body.String(), "data-change-saga-scheme") {
-		t.Fatal("a visual without a scheme was rewritten")
+	if follow := plain.Body.String(); !strings.Contains(follow, "<style data-change-saga-scheme>:root{--bg:#ffffff;") || !strings.Contains(follow, "@media (prefers-color-scheme:dark){:root{--bg:#0d1117;") {
+		t.Fatalf("a visual without a scheme does not declare the tokens for both schemes: %s", follow)
+	}
+	if plain.Header().Get("ETag") == "" {
+		t.Fatal("a rewritten visual has no validator")
 	}
 	if ignored := get("/reviews/pr-7/visual/queue?saga_scheme=sepia"); ignored.Body.String() != plain.Body.String() {
 		t.Fatal("an unknown scheme was honoured")
@@ -81,11 +84,14 @@ func TestVisualPaperMarksVisualsWithFixedColours(t *testing.T) {
 	write("themed.svg", `<svg><style>@media (prefers-color-scheme:dark){}</style></svg>`)
 	write("fixed.svg", `<svg><rect fill="#fff"/></svg>`)
 	write("fixed.html", `<p>hi</p>`)
+	write("token.html", `<p style="color:var( --ink, #000)">hi</p>`)
+	write("own.html", `<p style="color:var(--brand)">hi</p>`)
 	for _, test := range []struct {
 		mediaType, name string
 		paper           bool
 	}{
 		{"image/svg+xml", "themed.svg", false}, {"image/svg+xml", "fixed.svg", true}, {"text/html", "fixed.html", true},
+		{"text/html", "token.html", false}, {"text/html", "own.html", true},
 		{"image/png", "shot.png", true}, {"text/markdown", "notes.md", false},
 	} {
 		if got := visualPaper(test.mediaType, dir, test.name); got != test.paper {
