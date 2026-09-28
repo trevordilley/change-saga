@@ -21,8 +21,10 @@ func reviewListJSON(t *testing.T, root string) []reviewstate.Report {
 }
 
 // A review whose change merged without repin --onto is detected from Git:
-// review list says merged, sets it aside unless asked, and names the repin
-// that records it; status no longer counts it open. Nothing is written.
+// review list says merged and sets it aside unless asked, and status no
+// longer counts it open. Nothing is written, and nothing is suggested that
+// would write: a repin --onto chosen after the fact can re-pin the whole
+// Saga to an old commit.
 func TestReviewListDetectsAMergedReviewWithoutWritingIt(t *testing.T) {
 	t.Parallel()
 	fixture := newReviewFixture(t)
@@ -35,7 +37,6 @@ func TestReviewListDetectsAMergedReviewWithoutWritingIt(t *testing.T) {
 
 	git(t, fixture.repo, "checkout", "main")
 	git(t, fixture.repo, "merge", "--no-ff", "-m", "Merge pull request #7", "feature/pg")
-	landed := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "HEAD"))
 	git(t, fixture.repo, "branch", "-D", "feature/pg")
 
 	reports := reviewListJSON(t, fixture.root)
@@ -48,7 +49,7 @@ func TestReviewListDetectsAMergedReviewWithoutWritingIt(t *testing.T) {
 	}
 	for _, args := range [][]string{{"list", "--all", fixture.root}, {"list", "--review", "pr-7", fixture.root}} {
 		output := run(t, Review, args...)
-		if !strings.Contains(output, "merged: detected, its change is in main") || !strings.Contains(output, shellJoin([]string{"change-saga", "repin", "--onto", landed, "--review", "pr-7", fixture.root})) {
+		if !strings.Contains(output, "merged: detected, its change is in main") || strings.Contains(output, "repin") {
 			t.Fatalf("review %v:\n%s", args, output)
 		}
 	}

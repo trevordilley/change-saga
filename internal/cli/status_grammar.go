@@ -344,7 +344,7 @@ func printReviewFirst(out io.Writer, status statusDocument, maxItems int) {
 func printReviewsAndActions(out io.Writer, status statusDocument, maxItems int) {
 	if len(status.Reviews) > 0 {
 		fmt.Fprintln(out, "\nReviews (decisions per slide and each deck's coverage of its range; the team decides what it requires):")
-		printReviewReports(out, status.Reviews, nil, nil)
+		printReviewReports(out, status.Reviews, nil)
 	}
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))
