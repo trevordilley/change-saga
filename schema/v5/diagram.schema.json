@@ -39,6 +39,14 @@
         "dash": {"type": "boolean"}
       }
     },
+    "field": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 64},
+        "type": {"type": "string", "maxLength": 64},
+        "key": {"enum": ["pk", "fk", "pk,fk"]}
+      }
+    },
     "element": {
       "type": "object",
       "additionalProperties": false,
@@ -46,7 +54,7 @@
       "properties": {
         "id": {"allOf": [{"$ref": "#/$defs/id"}, {"not": {"pattern": "^diagram-"}}]},
         "kind": {"enum": ["node", "edge", "text", "group", "graphic"]},
-        "shape": {"enum": ["service", "datastore", "decision", "rect", "ellipse", "boundary"], "description": "Node shape; a group with rect or boundary draws a frame around its children."},
+        "shape": {"enum": ["service", "datastore", "decision", "rect", "ellipse", "boundary", "triangle", "hexagon", "parallelogram", "document", "cloud", "actor", "queue", "circle", "star", "entity"], "description": "Node shape; a group with rect or boundary draws a frame around its children. The shapes after boundary center their icon, label, and detail in a text area inside the outline and default to align middle; a circle needs equal width and height, and an entity draws an ERD table of its fields."},
         "label": {"type": "string", "maxLength": 2000},
         "detail": {"type": "string", "maxLength": 2000},
         "description": {"type": "string", "maxLength": 4000, "description": "Semantic explanation read by describe and assistive technology; not drawn."},
@@ -74,7 +82,10 @@
         "head_label": {"type": "string", "maxLength": 2000, "description": "Text at the edge's end, such as an ERD cardinality; needs head_label_box."},
         "head_label_box": {"$ref": "#/$defs/box"},
         "curve": {"enum": ["straight", "smooth"], "description": "smooth draws the edge's points as a curve through every point."},
-        "line": {"enum": ["solid", "dashed", "dotted"], "description": "Overrides the style's dash for this edge."}
+        "line": {"enum": ["solid", "dashed", "dotted"], "description": "Overrides the style's dash for this edge."},
+        "fields": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/field"}, "description": "An entity node's rows, in order: each field's key marker, name, and type. Row i spans y = header + 28i inside the node, where header = the style's font_size * 1.25 + 16."},
+        "from_field": {"type": "string", "minLength": 1, "maxLength": 64, "description": "The field of the from entity this edge ends on; drawing still follows the edge's explicit points or path."},
+        "to_field": {"type": "string", "minLength": 1, "maxLength": 64, "description": "The field of the to entity this edge ends on."}
       }
     }
   }

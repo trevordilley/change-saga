@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/entity.go",
+      "digest": "sha256:a9dd7a1ad2920604cf39737c6deead5312f06227a620a55c0b836730dfcaa762",
+      "note": "New file: entity tables."
+    }
+  ]
+}

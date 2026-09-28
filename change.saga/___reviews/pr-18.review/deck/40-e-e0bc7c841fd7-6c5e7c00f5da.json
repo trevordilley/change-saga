@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/model.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:3804e5dfcfdd3ae41f3d84651921d89e2f2c03ad345c6a9348ab3124a01c48c6",
+      "note": "The shape error lists every shape instead of the original six."
+    }
+  ]
+}

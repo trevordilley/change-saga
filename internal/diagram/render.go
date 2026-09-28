@@ -193,6 +193,12 @@ func paint(n *node, style Style) {
 func (r *renderer) edge(e Element, style Style, g *node) error {
 	g.set("data-from", e.From)
 	g.set("data-to", e.To)
+	if e.FromField != "" {
+		g.set("data-from-field", e.FromField)
+	}
+	if e.ToField != "" {
+		g.set("data-to-field", e.ToField)
+	}
 	line := g.add("path", "d", edgePath(e), "fill", "none", "stroke", style.Stroke, "stroke-width", num(style.StrokeWidth), "stroke-linejoin", "round")
 	if dash, lineCap := edgeDash(e, style); dash != "" {
 		line.set("stroke-dasharray", dash)
@@ -216,6 +222,12 @@ func (r *renderer) edge(e Element, style Style, g *node) error {
 }
 
 func (r *renderer) shape(e Element, style Style, g *node) error {
+	if e.Shape == "entity" {
+		return r.entity(e, style, g)
+	}
+	if libraryShapes[e.Shape] {
+		return r.library(e, style, g)
+	}
 	var body *node
 	switch e.Shape {
 	case "ellipse":
@@ -310,30 +322,9 @@ func (r *renderer) text(g *node, s string, box Box, size float64, ink string, wr
 	if box.Width <= 0 || box.Height <= 0 {
 		return fmt.Errorf("text %q has no room: its box is %sx%s", s, num(box.Width), num(box.Height))
 	}
-	lines := []string{}
-	for _, line := range strings.Split(s, "\n") {
-		if !wrap {
-			lines = append(lines, line)
-			continue
-		}
-		current := ""
-		for _, word := range strings.Fields(line) {
-			next := word
-			if current != "" {
-				next = current + " " + word
-			}
-			width, err := r.measure(next, size)
-			if err != nil {
-				return err
-			}
-			if width*widthSlack > box.Width && current != "" {
-				lines = append(lines, current)
-				current = word
-			} else {
-				current = next
-			}
-		}
-		lines = append(lines, current)
+	lines, err := r.lines(s, box.Width, size, wrap)
+	if err != nil {
+		return err
 	}
 	if need := float64(len(lines)) * size * lineHeight; need > box.Height+.01 {
 		return fmt.Errorf("text overflow: %q needs height %.1f, its box has %.1f", s, need, box.Height)
@@ -360,6 +351,37 @@ func (r *renderer) text(g *node, s string, box Box, size float64, ink string, wr
 		t.add("tspan", "x", num(x), "y", num(box.Y+size+float64(float64(index)*size*lineHeight))).text = line
 	}
 	return nil
+}
+
+// lines splits s at newlines and, with wrap, breaks each line at spaces to
+// fit width.
+func (r *renderer) lines(s string, width, size float64, wrap bool) ([]string, error) {
+	lines := []string{}
+	for _, line := range strings.Split(s, "\n") {
+		if !wrap {
+			lines = append(lines, line)
+			continue
+		}
+		current := ""
+		for _, word := range strings.Fields(line) {
+			next := word
+			if current != "" {
+				next = current + " " + word
+			}
+			measured, err := r.measure(next, size)
+			if err != nil {
+				return nil, err
+			}
+			if measured*widthSlack > width && current != "" {
+				lines = append(lines, current)
+				current = word
+			} else {
+				current = next
+			}
+		}
+		lines = append(lines, current)
+	}
+	return lines, nil
 }
 
 func (r *renderer) measure(text string, size float64) (float64, error) {

@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets/lucide/manifest.json",
+      "digest": "sha256:c854f7ca017078c2c34af5c34895476cb34d82f8e9b8aefa882b842bbde816c6",
+      "note": "The per-icon digest manifest the bundle replaces."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets/lucide/manifest.json",
+      "start": 1,
+      "end": 46,
+      "digest": "sha256:c854f7ca017078c2c34af5c34895476cb34d82f8e9b8aefa882b842bbde816c6",
+      "note": "The per-icon digest manifest the bundle replaces."
+    }
+  ]
+}

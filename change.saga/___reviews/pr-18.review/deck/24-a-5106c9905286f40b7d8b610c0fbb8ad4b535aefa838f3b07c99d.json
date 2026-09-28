@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "Every Lucide icon, one generated bundle",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "upstream",
+      "kind": "node",
+      "shape": "cloud",
+      "label": "Lucide",
+      "detail": "1,856 icons",
+      "note": "Pinned at the same commit, `66d8f9fc`, as the ten icons it replaces, so those ten render byte-identically.",
+      "x": 40,
+      "y": 125,
+      "width": 240,
+      "height": 175,
+      "style": "normal",
+      "icon": "lucide:cloud-download"
+    },
+    {
+      "id": "generator",
+      "kind": "node",
+      "shape": "hexagon",
+      "label": "lucidebundle",
+      "detail": "go run",
+      "note": "Refuses an icon whose `\u003csvg\u003e` root differs from the shared one, so storing the root once loses nothing.",
+      "x": 330,
+      "y": 155,
+      "width": 240,
+      "height": 120,
+      "style": "normal",
+      "icon": "lucide:cog"
+    },
+    {
+      "id": "bundle",
+      "kind": "node",
+      "shape": "document",
+      "label": "icons.json",
+      "detail": "one line per icon",
+      "note": "588 KB: drawing markup, search tags, and deprecated aliases. The binary grows by 594 KB, about 2.4%. One file keeps review coverage to one path instead of 1,856.",
+      "x": 620,
+      "y": 140,
+      "width": 260,
+      "height": 150,
+      "style": "primary",
+      "icon": "lucide:file-braces"
+    },
+    {
+      "id": "loader",
+      "kind": "node",
+      "shape": "service",
+      "label": "assets.go",
+      "detail": "Icon, IconExists, Icons",
+      "x": 930,
+      "y": 150,
+      "width": 300,
+      "height": 130,
+      "style": "normal",
+      "icon": "lucide:package"
+    },
+    {
+      "id": "license",
+      "kind": "node",
+      "shape": "document",
+      "label": "LICENSE",
+      "detail": "ISC + Feather MIT",
+      "note": "Unchanged text. A rendered SVG that uses any icon still carries it in `diagram-notices` metadata.",
+      "x": 620,
+      "y": 420,
+      "width": 260,
+      "height": 140,
+      "style": "normal",
+      "icon": "lucide:scale"
+    },
+    {
+      "id": "query",
+      "kind": "node",
+      "shape": "parallelogram",
+      "label": "diagram icons",
+      "detail": "--query storage finds database and hard-drive",
+      "x": 910,
+      "y": 420,
+      "width": 340,
+      "height": 130,
+      "style": "normal",
+      "wrap": true
+    },
+    {
+      "id": "fetch",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "upstream",
+      "to": "generator",
+      "points": [
+        {
+          "x": 278,
+          "y": 215
+        },
+        {
+          "x": 330,
+          "y": 215
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "write",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "generator",
+      "to": "bundle",
+      "points": [
+        {
+          "x": 570,
+          "y": 215
+        },
+        {
+          "x": 620,
+          "y": 215
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "copy",
+      "kind": "edge",
+      "label": "copies",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "generator",
+      "to": "license",
+      "points": [
+        {
+          "x": 450,
+          "y": 275
+        },
+        {
+          "x": 450,
+          "y": 490
+        },
+        {
+          "x": 620,
+          "y": 490
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 470,
+        "y": 456,
+        "width": 100,
+        "height": 30
+      }
+    },
+    {
+      "id": "embed",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "bundle",
+      "to": "loader",
+      "points": [
+        {
+          "x": 880,
+          "y": 215
+        },
+        {
+          "x": 930,
+          "y": 215
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "search",
+      "kind": "edge",
+      "label": "tags",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "loader",
+      "to": "query",
+      "points": [
+        {
+          "x": 1080,
+          "y": 280
+        },
+        {
+          "x": 1080,
+          "y": 420
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 1092,
+        "y": 334,
+        "width": 70,
+        "height": 30
+      }
+    }
+  ]
+}

@@ -25,6 +25,9 @@ type Summary struct {
 	Head      string `json:"head,omitempty"`
 	TailLabel string `json:"tail_label,omitempty"`
 	HeadLabel string `json:"head_label,omitempty"`
+	Fields    Fields `json:"fields,omitempty"`
+	FromField string `json:"from_field,omitempty"`
+	ToField   string `json:"to_field,omitempty"`
 }
 
 // Omitted names what every reading view leaves out.
@@ -49,7 +52,7 @@ func Describe(d Document, offset, limit int) Description {
 		if e.Decorative {
 			continue
 		}
-		summary := Summary{ID: e.ID, Kind: e.Kind, Shape: e.Shape, Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel}
+		summary := Summary{ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField}
 		if e.Tail != "none" {
 			summary.Tail = e.Tail
 		}
@@ -80,7 +83,7 @@ func (v Description) WriteText(b *strings.Builder) {
 			}
 			b.WriteString("  " + e.ID)
 			if e.Kind == "edge" {
-				b.WriteString(": " + e.From + " -> " + e.To)
+				b.WriteString(": " + endpoint(e.From, e.FromField) + " -> " + endpoint(e.To, e.ToField))
 			}
 			if e.Label != "" {
 				b.WriteString(" " + strconv.Quote(e.Label))
@@ -96,6 +99,9 @@ func (v Description) WriteText(b *strings.Builder) {
 				}
 			}
 			b.WriteString("\n")
+			if len(e.Fields) > 0 {
+				b.WriteString("    fields: " + e.Fields.String() + "\n")
+			}
 			for _, field := range [][2]string{{"detail", e.Detail}, {"description", e.Description}, {"note", e.Note}} {
 				if field[1] != "" {
 					fmt.Fprintf(b, "    %s: %s\n", field[0], Plain(field[1]))

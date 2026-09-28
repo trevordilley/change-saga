@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "internal/diagram/model.go",
+      "start": 317,
+      "end": 319,
+      "digest": "sha256:9243c01bdd16f1e62c6e379ee3474e889f22dcf4e8d6a57637e8e643365ab93b",
+      "note": "Validate runs the shape and entity checks in its one batch."
+    }
+  ]
+}

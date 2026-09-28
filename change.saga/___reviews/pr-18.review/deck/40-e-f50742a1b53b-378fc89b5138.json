@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "19168744882e5156e70c5d66fd6fa4169f2c8004",
+      "path": "internal/diagram/render.go",
+      "start": 196,
+      "end": 201,
+      "digest": "sha256:0018c006669c0eeec16f43d64787d6f08bd819a6ff41e6800f1ccb8a22bc1e82",
+      "note": "The SVG edge carries data-from-field and data-to-field."
+    }
+  ]
+}

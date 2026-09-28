@@ -534,6 +534,22 @@ description, and an implementation Item's callout body, which a review slide
 lists in its Surprises panel instead; an Item's drawer repeats its note for a
 reader who cannot hover.
 
+Beyond the original `service`, `datastore`, `decision`, `rect`, `ellipse`,
+and `boundary`, a node may be a `triangle`, `hexagon`, `parallelogram`,
+`document`, `cloud`, `actor`, `queue`, `circle` (equal width and height), or
+`star`. These shapes center their icon, label, and detail in a text area
+inside the outline, default to `middle` alignment, and refuse text that does
+not fit it. An `entity` node draws an ERD table: a header naming it and one
+row per entry of its `fields` (`name`, optional `type`, and `key` `pk`, `fk`,
+or `pk,fk`). Rows have fixed metrics, published by `change-saga spec`, so an
+author can aim an edge at a row, and an edge's optional `from_field` or
+`to_field` names the field it ends on, which must exist on that endpoint. The
+description prints an entity's fields and an edge's field endpoints, such as
+`orders.customer_id -> customers.id`, and omits purely geometric shapes. Icons
+name any of the bundled Lucide set, listed and searched by tag with
+`change-saga diagram icons`; a generated SVG that uses one carries Lucide's
+license notice.
+
 A reader validates a pin's digest and structure;
 `change-saga diagram check` re-renders sources and reports any published SVG
 that differs from its source, for example after a renderer change.

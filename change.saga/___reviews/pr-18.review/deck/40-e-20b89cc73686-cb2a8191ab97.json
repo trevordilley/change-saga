@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets/lucide/terminal.svg",
+      "digest": "sha256:4f9b6488b237757d5cb615ccd07502fa99774826839e2a99017784bdb2596f1a",
+      "note": "Replaced by its line in icons.json."
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/assets/lucide/terminal.svg",
+      "start": 1,
+      "end": 14,
+      "digest": "sha256:4f9b6488b237757d5cb615ccd07502fa99774826839e2a99017784bdb2596f1a",
+      "note": "Replaced by its line in icons.json."
+    }
+  ]
+}

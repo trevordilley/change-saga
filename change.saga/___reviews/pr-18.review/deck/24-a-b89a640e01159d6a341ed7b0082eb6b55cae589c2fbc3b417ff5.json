@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "An entity's rows are what edges can name",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "element",
+      "kind": "node",
+      "shape": "entity",
+      "label": "Element",
+      "note": "`fields`, `from_field`, and `to_field` are appended at the end of `Element` and of the contract's field list, so sibling branches that append their own fields conflict trivially.",
+      "x": 80,
+      "y": 150,
+      "width": 340,
+      "height": 184,
+      "style": "primary",
+      "icon": "lucide:table",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "key": "pk"
+        },
+        {
+          "name": "shape",
+          "type": "\"entity\""
+        },
+        {
+          "name": "fields",
+          "type": "Fields"
+        },
+        {
+          "name": "from_field",
+          "type": "string",
+          "key": "fk"
+        },
+        {
+          "name": "to_field",
+          "type": "string",
+          "key": "fk"
+        }
+      ]
+    },
+    {
+      "id": "field",
+      "kind": "node",
+      "shape": "entity",
+      "label": "Field",
+      "note": "`pk,fk` covers a join table's columns, which are both. A name is unique within its entity and at most 64 characters on one line.",
+      "x": 640,
+      "y": 150,
+      "width": 340,
+      "height": 128,
+      "style": "normal",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "key": "pk"
+        },
+        {
+          "name": "type",
+          "type": "string"
+        },
+        {
+          "name": "key",
+          "type": "pk | fk | pk,fk"
+        }
+      ]
+    },
+    {
+      "id": "contains",
+      "kind": "edge",
+      "label": "rows",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "element",
+      "to": "field",
+      "points": [
+        {
+          "x": 420,
+          "y": 263.5
+        },
+        {
+          "x": 530,
+          "y": 263.5
+        },
+        {
+          "x": 530,
+          "y": 171.75
+        },
+        {
+          "x": 640,
+          "y": 171.75
+        }
+      ],
+      "head": "zero-or-many",
+      "label_box": {
+        "x": 544,
+        "y": 136,
+        "width": 90,
+        "height": 30
+      },
+      "tail": "only-one",
+      "from_field": "fields"
+    },
+    {
+      "id": "ends-on",
+      "kind": "edge",
+      "label": "names a row",
+      "note": "Many edges may name one row, so the ends read zero-or-many to only-one. The SVG edge carries `data-from-field` and `data-to-field`; each entity row is a `\u003cg data-field\u003e`, so a reader can match them.",
+      "x": 0,
+      "y": 0,
+      "style": "emphasis",
+      "from": "element",
+      "to": "field",
+      "points": [
+        {
+          "x": 420,
+          "y": 319.5
+        },
+        {
+          "x": 580,
+          "y": 319.5
+        },
+        {
+          "x": 580,
+          "y": 207.5
+        },
+        {
+          "x": 640,
+          "y": 207.5
+        }
+      ],
+      "head": "only-one",
+      "label_box": {
+        "x": 432,
+        "y": 324,
+        "width": 150,
+        "height": 30
+      },
+      "tail": "zero-or-many",
+      "from_field": "to_field",
+      "to_field": "name"
+    },
+    {
+      "id": "describe",
+      "kind": "node",
+      "shape": "document",
+      "label": "diagram describe",
+      "detail": "orders \"orders\" shape=entity\n  fields: id uuid pk, customer_id uuid fk\nplaces: orders.customer_id -\u003e customers.id",
+      "note": "Names or types with spaces, commas, or quotes are quoted, so the list stays unambiguous.",
+      "x": 80,
+      "y": 430,
+      "width": 560,
+      "height": 170,
+      "style": "normal",
+      "icon": "lucide:scroll-text",
+      "align": "start"
+    },
+    {
+      "id": "refused",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Refused, all at once",
+      "detail": "A repeated or blank field, an unknown key, more rows than the height holds, or an edge naming a field its entity does not list.",
+      "x": 700,
+      "y": 430,
+      "width": 500,
+      "height": 170,
+      "style": "warning",
+      "icon": "lucide:triangle-alert",
+      "wrap": true
+    }
+  ]
+}

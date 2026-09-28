@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "76347aebd9676a8b95cef466b5fe66e5ad45d170",
+      "path": "SPEC.md",
+      "start": 537,
+      "end": 541,
+      "digest": "sha256:6b2b7106b5d98c3822cef13b735f00c4cdeae1cd66bb82e817afb000e81cf6cc",
+      "note": "The spec lists the new shapes and their text areas."
+    }
+  ]
+}

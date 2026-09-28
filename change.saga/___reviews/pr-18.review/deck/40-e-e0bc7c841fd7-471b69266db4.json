@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/diagram_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:bb0afdf8b1fa0492f82760c71c7f2f81f91001bad1acfdb2f7a57bf496e1d6db",
+      "note": "The case before."
+    }
+  ]
+}
