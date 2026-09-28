@@ -9,11 +9,11 @@
       "digest": "sha256:08ec538843c5b61abfb1c9b28dc676c5c88e598d01df86ab7f94a635c88be5fb"
     },
     {
-      "commit": "8b795503eff43fd9a7122a1ff336e771fe2712ff",
+      "commit": "0f44734cbc02a100b98beed90b68398741bd6981",
       "path": "internal/server/assets.go",
       "start": 37,
       "end": 37,
-      "digest": "sha256:46fa30cc877290b4ee589876613e9314f0576e11bdd72e83d487f10a572de9b8"
+      "digest": "sha256:8ada89fe5ae3c126d2693e9dc825b4bdc8ef83c4792e2dbba6b353ef822b399e"
     }
   ]
 }
