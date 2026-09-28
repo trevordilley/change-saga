@@ -30,6 +30,7 @@ type Summary struct {
 	ToField   string   `json:"to_field,omitempty"`
 	About     string   `json:"about,omitempty"`
 	Members   []string `json:"members,omitempty"`
+	Step      int      `json:"step,omitempty"`
 }
 
 // Omitted names what every reading view leaves out.
@@ -44,17 +45,20 @@ type Description struct {
 	NextOffset int       `json:"next_offset"`
 	HasMore    bool      `json:"has_more"`
 	Omitted    []string  `json:"omitted"`
+	Reveal     string    `json:"reveal,omitempty"`
+	Steps      int       `json:"steps,omitempty"`
 }
 
 // Describe projects the semantic (non-decorative) elements of d in document
 // order, one bounded page at a time.
 func Describe(d Document, offset, limit int) Description {
 	all := []Summary{}
+	reveal := planReveal(d)
 	for _, e := range d.Elements {
 		if e.Decorative {
 			continue
 		}
-		summary := Summary{ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField, About: e.About, Members: sectionMembers(d, e)}
+		summary := Summary{ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField, About: e.About, Members: sectionMembers(d, e), Step: reveal.step[e.ID]}
 		if e.Tail != "none" {
 			summary.Tail = e.Tail
 		}
@@ -65,7 +69,7 @@ func Describe(d Document, offset, limit int) Description {
 	}
 	offset = max(0, min(offset, len(all)))
 	end := min(offset+max(limit, 0), len(all))
-	return Description{Elements: all[offset:end], Offset: offset, Total: len(all), NextOffset: end, HasMore: end < len(all), Omitted: append([]string{}, Omitted...)}
+	return Description{Elements: all[offset:end], Offset: offset, Total: len(all), NextOffset: end, HasMore: end < len(all), Omitted: append([]string{}, Omitted...), Reveal: d.Reveal, Steps: reveal.steps}
 }
 
 var textSections = []struct{ kind, heading string }{{"section", "Sections"}, {"group", "Groups"}, {"node", "Nodes"}, {"edge", "Edges"}, {"text", "Text"}, {"graphic", "Graphics"}, {"note", "Notes"}}
@@ -73,6 +77,9 @@ var textSections = []struct{ kind, heading string }{{"section", "Sections"}, {"g
 // WriteText renders the elements as compact Graphviz-like reading text in
 // sections, preserving document order within each section.
 func (v Description) WriteText(b *strings.Builder) {
+	if v.Reveal != "" {
+		fmt.Fprintf(b, "\nReveal: %s in %d steps; step=N is when an element appears, equal steps together.\n", v.Reveal, v.Steps)
+	}
 	for _, section := range textSections {
 		heading := false
 		for _, e := range v.Elements {
@@ -109,6 +116,9 @@ func (v Description) WriteText(b *strings.Builder) {
 				if attr[1] != "" {
 					fmt.Fprintf(b, " %s=%s", attr[0], strconv.Quote(attr[1]))
 				}
+			}
+			if e.Step > 0 {
+				fmt.Fprintf(b, " step=%d", e.Step)
 			}
 			b.WriteString("\n")
 			if len(e.Fields) > 0 {

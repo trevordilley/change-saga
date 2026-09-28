@@ -567,6 +567,24 @@ may name the semantic element it is `about`; removing that element requires
 renderer-owned id `diagram-shadow`, and a source that uses none of them
 renders exactly as before.
 
+A diagram may opt into a staggered entrance with `"reveal": "fade"`, and any
+element may carry an integer `step` from 1 to 1,000; a `step` without a
+reveal, or any other reveal value, is refused. A semantic element without a
+step enters at its position in reading order among semantic elements; a
+decorative one without a step enters with its group, or is present from the
+start. No element appears before its group, elements with the same step
+appear together, and steps are ranked, so gaps between them cost no time. The
+renderer writes the animation as CSS keyframes inside the SVG, keyed to
+`:target` of the renderer-owned anchors `#diagram-reveal` and
+`#diagram-reveal-replay`, and disables it under `prefers-reduced-motion`; it
+adds no script. Opened without either fragment, as a thumbnail, an export,
+visual QA, or an element landmark link, the drawing shows its finished state,
+and a diagram without a reveal renders exactly as before. The reviewer
+targets a slide's frame at a reveal anchor each time the slide is shown,
+alternating the two so the animation replays; an element landmark then
+retargets the frame at its element and shows the finished drawing.
+`diagram describe` prints the reveal and each element's ranked step.
+
 A reader validates a pin's digest and structure;
 `change-saga diagram check` re-renders sources and reports any published SVG
 that differs from its source, for example after a renderer change.
@@ -575,8 +593,8 @@ that differs from its source, for example after a renderer change.
 snapshot and republishes the slide through the same transaction, carrying its
 Items, evidence, and criterion links. `change-saga diagram describe` reads any
 slide compactly: its takeaway, Items in reading order, and, for a diagram
-source, its semantic elements, connections, and notes, with sections and
-their members, and stickies and annotations listed as notes about their
+source, its semantic elements, connections, notes, and reveal steps, with
+sections and their members, and stickies and annotations listed as notes about their
 targets. The description omits geometry,
 styling, decorative elements, and asset bytes, and cannot rebuild the drawing.
 

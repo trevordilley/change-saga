@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/diagram/reveal.go",
+      "digest": "sha256:c66154b1f78785cd7dd3cd5c0fe42d95a8d33f621155dc65fbba6bb3389803a0"
+    }
+  ]
+}

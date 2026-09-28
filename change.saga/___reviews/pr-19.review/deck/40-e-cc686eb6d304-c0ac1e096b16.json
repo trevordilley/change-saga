@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/diagram/edit.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:f629b7e152f4b989ef86420380f3ca5f4cb026ce1aa1744cc02fc92457d4a5df"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/diagram/edit.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:5ae76aa230dddf79f456a1a07a7f4111cd8415b0343dc13e43ab82c8535fee95"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/diagram/edit.go",
+      "start": 188,
+      "end": 195,
+      "digest": "sha256:2deed7b6f23a9b696f440f21e0cac2484dea909a220d258868feaefed5589237"
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/diagram/edit.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:2aa97c68ef502c08e1e00c410f84eb3965aa3d38d45599018ea54e48c55104d8"
+    }
+  ]
+}

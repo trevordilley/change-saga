@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/server/appjs.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:8cf9219f7224ad45e86e3feba95689a9cd336a7e71b8b80fcf495a3e7011b47d"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/server/appjs.go",
+      "start": 364,
+      "end": 400,
+      "digest": "sha256:d140a530cd80166931129cc8eecfa24783f30ec595faf0ececd026448957a18c"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/server/appjs.go",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:cea43426859cd939e5fe479070f8a8baaddec9ff99ae4642291848a9f8e28064"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/server/appjs.go",
+      "start": 846,
+      "end": 846,
+      "digest": "sha256:d2a0b04596b79120576808793582f067c2a31db95feaf2374b48d2e497c41902"
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/server/appjs.go",
+      "start": 386,
+      "end": 388,
+      "digest": "sha256:0c4e3168f565a0c667b11eadaec5489f612387257d06df2640657b91b1f27500"
+    },
+    {
+      "commit": "294c1d6300d96052147687002301e2017730680e",
+      "path": "internal/server/appjs.go",
+      "start": 810,
+      "end": 815,
+      "digest": "sha256:27ed92821daa1f3609ec68ead0a845f6eb26c7edfd760d2c517ecd5399d6599c"
+    }
+  ]
+}

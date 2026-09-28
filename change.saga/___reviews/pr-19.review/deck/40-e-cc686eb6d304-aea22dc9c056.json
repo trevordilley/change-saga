@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/cli/diagram_reveal_test.go",
+      "digest": "sha256:a887634794eb9b4992f6e9d8e9a79541ab28cb870c24cbc20b5bb72af63c1520"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/cli/diagram_reveal_test.go",
+      "start": 1,
+      "end": 82,
+      "digest": "sha256:a887634794eb9b4992f6e9d8e9a79541ab28cb870c24cbc20b5bb72af63c1520"
+    }
+  ]
+}

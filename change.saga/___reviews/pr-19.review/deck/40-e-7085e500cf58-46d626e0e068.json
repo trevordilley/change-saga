@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/diagram/testdata/reveal.svg",
+      "digest": "sha256:eb027aa8611b9d981f41f339265fb04b2f31c5b573ff0e1f48e031f78488857f"
+    },
+    {
+      "commit": "23826b2f6b7cd53fbd761fcca373cd34728bd68e",
+      "path": "internal/diagram/testdata/reveal.svg",
+      "start": 1,
+      "end": 92,
+      "digest": "sha256:eb027aa8611b9d981f41f339265fb04b2f31c5b573ff0e1f48e031f78488857f"
+    }
+  ]
+}

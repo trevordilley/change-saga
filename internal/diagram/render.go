@@ -54,7 +54,7 @@ func Render(d Document, options Options) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("measurement font: %w", err)
 	}
-	r := renderer{doc: d, face: face}
+	r := renderer{doc: d, face: face, reveal: planReveal(d)}
 	svg := newNode("svg", "xmlns", "http://www.w3.org/2000/svg", "viewBox", fmt.Sprintf("0 0 %s %s", num(d.Width), num(d.Height)),
 		"role", "img", "aria-labelledby", "diagram-title", "data-renderer", Renderer)
 	svg.add("title", "id", "diagram-title").text = options.Title
@@ -65,6 +65,7 @@ func Render(d Document, options Options) ([]byte, error) {
 	defs := svg.add("defs")
 	defs.add("style").text = fmt.Sprintf(`@font-face{font-family:"%s";src:url("%s") format("truetype")}text{font-family:"%s",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}`, FontFamily, FontPath, FontFamily)
 	r.defs = defs
+	r.revealDefs(svg)
 	usesIcons := false
 	for _, e := range d.Elements {
 		usesIcons = usesIcons || e.Icon != ""
@@ -84,9 +85,10 @@ func Render(d Document, options Options) ([]byte, error) {
 }
 
 type renderer struct {
-	doc  Document
-	face *sfnt.Font
-	defs *node
+	doc    Document
+	face   *sfnt.Font
+	defs   *node
+	reveal revealPlan
 }
 
 func (r *renderer) draw(parent string, into *node) error {
@@ -117,6 +119,7 @@ func (r *renderer) draw(parent string, into *node) error {
 func (r *renderer) element(e Element, into *node) error {
 	style, _ := r.doc.Style(e.Style)
 	g := into.add("g", "id", e.ID, "data-diagram-kind", e.Kind, "transform", fmt.Sprintf("translate(%s %s)", num(e.X), num(e.Y)))
+	r.revealStep(e, g)
 	if e.Decorative {
 		g.set("aria-hidden", "true")
 	} else {
