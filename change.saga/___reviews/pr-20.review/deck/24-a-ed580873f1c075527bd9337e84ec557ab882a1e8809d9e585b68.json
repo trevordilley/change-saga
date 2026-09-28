@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "elements": [
+    {
+      "id": "title",
+      "kind": "text",
+      "label": "The board layer, drawn with itself",
+      "x": 60,
+      "y": 28,
+      "width": 900,
+      "height": 48,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "lane",
+      "kind": "group",
+      "shape": "section",
+      "label": "Section",
+      "note": "A group with `shape: section`: a tinted frame whose label sits in a **title tab** inside its top-left corner. A title wider than the section is refused.",
+      "x": 60,
+      "y": 110,
+      "width": 540,
+      "height": 330,
+      "style": "normal",
+      "color": "blue"
+    },
+    {
+      "id": "member",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Member",
+      "x": 30,
+      "y": 80,
+      "width": 190,
+      "height": 80,
+      "parent": "lane",
+      "style": "normal"
+    },
+    {
+      "id": "inner",
+      "kind": "group",
+      "shape": "section",
+      "label": "Nested section",
+      "note": "Sections nest like any group: moving the outer section moves everything inside it.",
+      "x": 260,
+      "y": 70,
+      "width": 255,
+      "height": 230,
+      "parent": "lane",
+      "style": "normal",
+      "color": "purple"
+    },
+    {
+      "id": "glow",
+      "kind": "annotation",
+      "shape": "highlight",
+      "x": 15,
+      "y": 62,
+      "width": 225,
+      "height": 100,
+      "z": -1,
+      "parent": "inner",
+      "style": "normal",
+      "about": "child"
+    },
+    {
+      "id": "child",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Highlighted",
+      "x": 27,
+      "y": 72,
+      "width": 200,
+      "height": 80,
+      "parent": "inner",
+      "style": "normal"
+    },
+    {
+      "id": "one",
+      "kind": "annotation",
+      "shape": "pin",
+      "label": "1",
+      "note": "A pin's `width` is its diameter; its label is at most three characters, drawn white on the palette accent.",
+      "x": 264,
+      "y": 174,
+      "width": 32,
+      "style": "normal",
+      "color": "blue",
+      "about": "member"
+    },
+    {
+      "id": "store",
+      "kind": "node",
+      "shape": "datastore",
+      "label": "About element",
+      "x": 920,
+      "y": 140,
+      "width": 230,
+      "height": 120,
+      "style": "normal"
+    },
+    {
+      "id": "two",
+      "kind": "annotation",
+      "shape": "pin",
+      "label": "2",
+      "x": 1134,
+      "y": 124,
+      "width": 32,
+      "style": "normal",
+      "color": "green",
+      "about": "store"
+    },
+    {
+      "id": "brace",
+      "kind": "annotation",
+      "shape": "bracket",
+      "label": "Bracket",
+      "x": 1170,
+      "y": 140,
+      "width": 22,
+      "height": 120,
+      "style": "caption",
+      "label_box": {
+        "x": 28,
+        "y": 46,
+        "width": 80,
+        "height": 26
+      },
+      "color": "green",
+      "about": "store",
+      "side": "right"
+    },
+    {
+      "id": "bubble",
+      "kind": "annotation",
+      "shape": "bubble",
+      "label": "A bubble without a target points at its about element",
+      "note": "Its pointer tip is the point of the about element's box nearest the bubble's centre, and must fall outside the bubble. An explicit element-local `target` overrides it.",
+      "x": 640,
+      "y": 120,
+      "width": 230,
+      "height": 110,
+      "style": "caption",
+      "about": "store"
+    },
+    {
+      "id": "sticky",
+      "kind": "sticky",
+      "label": "Style sets font size and stroke; colour comes from the palette.",
+      "note": "Palette: yellow, pink, blue, green, purple, gray. Stickies and highlights default to yellow, the rest to gray. The shadow is one renderer-owned `diagram-shadow` filter.",
+      "x": 660,
+      "y": 330,
+      "width": 220,
+      "height": 220,
+      "style": "normal",
+      "about": "lane"
+    },
+    {
+      "id": "legend",
+      "kind": "text",
+      "label": "Describe lists sections with their members, and every sticky and annotation as a note about its target.",
+      "x": 60,
+      "y": 600,
+      "width": 1100,
+      "height": 30,
+      "style": "caption"
+    }
+  ]
+}

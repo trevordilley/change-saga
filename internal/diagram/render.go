@@ -133,7 +133,11 @@ func (r *renderer) element(e Element, into *node) error {
 	}
 	switch e.Kind {
 	case "group":
-		if e.Shape != "" {
+		if e.Shape == "section" {
+			if err := r.section(e, style, g); err != nil {
+				return err
+			}
+		} else if e.Shape != "" {
 			frame := g.add("rect", "width", num(e.Width), "height", num(e.Height), "rx", "10")
 			paint(frame, style)
 			if e.Label != "" {
@@ -155,6 +159,8 @@ func (r *renderer) element(e Element, into *node) error {
 		return r.edge(e, style, g)
 	case "text":
 		return r.text(g, e.Label, Box{Width: e.Width, Height: e.Height}, style.FontSize, style.Ink, e.Wrap, e.Align)
+	case "sticky", "annotation":
+		return r.board(e, style, g)
 	}
 	return r.shape(e, style, g)
 }
@@ -163,6 +169,8 @@ func (r *renderer) element(e Element, into *node) error {
 // its id.
 func AccessibleName(e Element) string {
 	switch {
+	case isNote(e):
+		return annotationName(e)
 	case strings.TrimSpace(e.Label) != "":
 		return e.Label
 	case e.Kind == "edge":

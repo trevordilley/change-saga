@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ee743d39ae71e49ac0328854c7b67eaeb48284de",
+      "path": "internal/diagram/annotation.go",
+      "start": 1,
+      "end": 64,
+      "digest": "sha256:585c08c07279c1d72a1ed5611f39cc91865da9ddc4528891e5bfa351b7abaa79",
+      "note": "The palette and its defaults, the sticky's paper and wrapped text, and the one shared shadow filter."
+    },
+    {
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
+      "path": "internal/diagram/annotation.go",
+      "start": 264,
+      "end": 274,
+      "digest": "sha256:bd24e136786f19e87acefcc60613ec53acb1fbb66453771d25e6b6e80fc5e72b",
+      "note": "The palette and its defaults, the sticky's paper and wrapped text, and the one shared shadow filter."
+    },
+    {
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
+      "path": "internal/diagram/annotation.go",
+      "start": 336,
+      "end": 348,
+      "digest": "sha256:304c2e038c937b55f817b493ebffdcfc112b2985b9c92ca7aa9df8282524c0b2",
+      "note": "The palette and its defaults, the sticky's paper and wrapped text, and the one shared shadow filter."
+    }
+  ]
+}

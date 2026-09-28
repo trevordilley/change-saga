@@ -40,9 +40,9 @@ var (
 	identifier    = regexp.MustCompile(`^[a-z][a-z0-9-]{0,63}$`)
 	colorPattern  = regexp.MustCompile(`^(#[a-fA-F0-9]{6}|none)$`)
 	reservedID    = "diagram-"
-	elementKinds  = map[string]bool{"node": true, "edge": true, "text": true, "group": true, "graphic": true}
+	elementKinds  = map[string]bool{"node": true, "edge": true, "text": true, "group": true, "graphic": true, "sticky": true, "annotation": true}
 	nodeShapes    = map[string]bool{"service": true, "datastore": true, "decision": true, "rect": true, "ellipse": true, "boundary": true}
-	frameShapes   = map[string]bool{"rect": true, "boundary": true}
+	frameShapes   = map[string]bool{"rect": true, "boundary": true, "section": true}
 	textAlignment = map[string]bool{"": true, "start": true, "middle": true, "end": true}
 )
 
@@ -112,6 +112,10 @@ type Element struct {
 	Fields       Fields `json:"fields,omitempty"`
 	FromField    string `json:"from_field,omitempty"`
 	ToField      string `json:"to_field,omitempty"`
+	Color        string `json:"color,omitempty"`
+	About        string `json:"about,omitempty"`
+	Target       *Point `json:"target,omitempty"`
+	Side         string `json:"side,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
@@ -258,7 +262,7 @@ func (d Document) Validate() error {
 	for _, e := range d.Elements {
 		fail := func(format string, args ...any) { add("%s: "+format, append([]any{e.ID}, args...)...) }
 		if !elementKinds[e.Kind] {
-			fail("unsupported kind %q (use node, edge, text, group, or graphic)", e.Kind)
+			fail("unsupported kind %q (use node, edge, text, group, graphic, sticky, or annotation)", e.Kind)
 			continue
 		}
 		if _, ok := d.Style(e.Style); !ok {
@@ -303,8 +307,8 @@ func (d Document) Validate() error {
 			if !finite(box.X) || !finite(box.Y) || !finite(box.Width) || !finite(box.Height) || box.Width <= 0 || box.Height <= 0 {
 				fail("label_box needs finite coordinates and a positive size")
 			}
-			if e.Kind != "node" && e.Kind != "edge" {
-				fail("label_box applies only to nodes and edges")
+			if e.Kind != "node" && e.Kind != "edge" && !labelBoxAnnotation(e) {
+				fail("label_box applies only to nodes, edges, highlights, and brackets")
 			}
 		}
 		if e.Kind != "edge" && (e.From != "" || e.To != "" || len(e.Points) > 0 || e.Path != "" || e.Head != "" || e.HeadSize != 0) {
@@ -365,7 +369,7 @@ func (d Document) Validate() error {
 			}
 		case "group":
 			if e.Shape != "" && !frameShapes[e.Shape] {
-				fail("a group frame shape must be rect or boundary")
+				fail("a group frame shape must be rect, boundary, or section")
 			}
 			if e.Shape != "" && (e.Width <= 0 || e.Height <= 0) {
 				fail("a framed group needs a positive width and height")
@@ -373,6 +377,8 @@ func (d Document) Validate() error {
 			if e.Shape == "" && e.Label != "" && e.Decorative {
 				fail("a decorative unframed group label is never shown or read; remove it")
 			}
+		case "sticky", "annotation":
+			// Validated with sections and the annotation fields below.
 		case "graphic":
 			if strings.TrimSpace(e.Fragment) == "" {
 				fail("graphic needs an SVG fragment")
@@ -381,6 +387,9 @@ func (d Document) Validate() error {
 			} else if _, err := parseFragment(e.Fragment); err != nil {
 				fail("%v", err)
 			}
+		}
+		for _, problem := range validateAnnotations(d, e, byID) {
+			fail("%s", problem)
 		}
 		seen := map[string]bool{e.ID: true}
 		for parent := e.Parent; parent != ""; {
@@ -438,7 +447,7 @@ func Contract() map[string]any {
 		"frame_shapes":   sorted(frameShapes),
 		"alignments":     sorted(textAlignment),
 		"default_styles": styles,
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field"},
+		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side"},
 		"terminators":    TerminatorNames(),
 		"operations":     OperationNames,
 		"font":           FontPath,
@@ -456,6 +465,13 @@ func Contract() map[string]any {
 			"graphics accept allowlisted drawing markup; currentColor follows the style's stroke",
 			"triangle, hexagon, parallelogram, document, cloud, actor, queue, circle, and star center their icon, label, and detail in a text area inside the outline and default to align middle; a circle needs equal width and height",
 			"describe omits purely geometric shapes (triangle, hexagon, parallelogram, circle, star): a reader follows relationships, not outlines",
+			"a section is a group with shape section: a palette-tinted frame with its label in a title tab; sections nest like any group",
+			"a sticky is a palette-coloured square of wrapped label text with a renderer-owned shadow; about names the element it annotates",
+			"an annotation is a bubble (pointer to target, or to its about element's box), a numbered pin, a translucent highlight, or a bracket facing side; describe lists stickies and annotations as notes about their targets",
 		},
+
+		"annotation_shapes": sorted(annotationShapes),
+		"bracket_sides":     sorted(bracketSides),
+		"palette":           PaletteNames(),
 	}
 }

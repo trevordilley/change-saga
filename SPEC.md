@@ -488,7 +488,8 @@ references them. A legacy flat slide becomes the first revision the first time
 A revision's visual is either an authored asset (SVG, HTML, or raster image)
 or a **diagram source**. A diagram source is a
 [`diagram.schema.json`](schema/v5/diagram.schema.json) document: an ordered list
-of explicitly positioned nodes, edges, text, groups, and allowlisted graphics.
+of explicitly positioned nodes, edges, text, groups, allowlisted graphics,
+stickies, and annotations.
 The CLI renders it deterministically to the revision's SVG asset and stores the
 canonical source beside it as a `24-a-*.json` sidecar. The revision pins both:
 
@@ -550,6 +551,22 @@ name any of the bundled Lucide set, listed and searched by tag with
 `change-saga diagram icons`; a generated SVG that uses one carries Lucide's
 license notice.
 
+A diagram may also carry a board layer. A **section** is a group with shape
+`section`: a tinted frame whose label sits in a title tab inside its top-left
+corner; sections nest like any group. A **sticky** is a square of wrapped label
+text with a soft, renderer-owned shadow. An **annotation** is a speech
+`bubble` whose pointer reaches an explicit element-local `target` or, without
+one, the nearest point of the box of the element it is `about`; a numbered
+`pin` (a circle of at most three characters); a translucent `highlight`; or a
+curly `bracket` whose point faces its `side`. Stickies, sections, and
+annotations take their colours from a fixed `color` palette (yellow, pink,
+blue, green, purple, gray) so their text always has contrast; their style
+supplies only the font size, stroke width, and dash. A sticky or annotation
+may name the semantic element it is `about`; removing that element requires
+`cascade`. The one `<defs>` entry they add, a sticky's shadow filter, has the
+renderer-owned id `diagram-shadow`, and a source that uses none of them
+renders exactly as before.
+
 A reader validates a pin's digest and structure;
 `change-saga diagram check` re-renders sources and reports any published SVG
 that differs from its source, for example after a renderer change.
@@ -558,7 +575,9 @@ that differs from its source, for example after a renderer change.
 snapshot and republishes the slide through the same transaction, carrying its
 Items, evidence, and criterion links. `change-saga diagram describe` reads any
 slide compactly: its takeaway, Items in reading order, and, for a diagram
-source, its semantic elements, connections, and notes. The description omits geometry,
+source, its semantic elements, connections, and notes, with sections and
+their members, and stickies and annotations listed as notes about their
+targets. The description omits geometry,
 styling, decorative elements, and asset bytes, and cannot rebuild the drawing.
 
 A pull request review's deck uses the same transaction. A request that names

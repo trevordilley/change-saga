@@ -70,8 +70,8 @@ diagram icons`.
 - Kinds: `node` (shape `service`, `datastore`, `decision`, `rect`, `ellipse`,
   `boundary`, `triangle`, `hexagon`, `parallelogram`, `document`, `cloud`,
   `actor`, `queue`, `circle`, `star`, or `entity`), `edge` (`from`/`to` nodes
-  plus explicit `points` or `path`), `text`, `group`, and `graphic`
-  (allowlisted SVG drawing markup).
+  plus explicit `points` or `path`), `text`, `group`, `graphic`
+  (allowlisted SVG drawing markup), `sticky`, and `annotation` (below).
 - Pick a shape for what a node is: `actor` for a person or external role,
   `queue` for a queue or stream, `document` for a file or report, `cloud` for
   an external or hosted system, `datastore` for storage. The shapes from
@@ -130,6 +130,28 @@ diagram icons`.
   appears in the description, and needs a `description` when its label does
   not stand alone. A semantic element cannot sit in a decorative group.
 - Give every Item an `element` selector naming a semantic element ID.
+- Board elements annotate a drawing. A group with shape `section` is a tinted
+  frame with its label in a title tab; nest sections for sub-areas. A
+  `sticky` is a coloured square of wrapped text. An `annotation` is a
+  `bubble` (its pointer reaches `target`, an element-local point, or else the
+  box of the element it is `about`), a numbered `pin` (`width` is its
+  diameter), a translucent `highlight`, or a `bracket` whose point faces
+  `side`; a highlight or bracket label needs a `label_box`. Set `about` to the
+  element a sticky or annotation explains, so `diagram describe` lists it as a
+  note about that element. `color` picks from yellow, pink, blue, green,
+  purple, and gray. A sticky or bubble is visible commentary; a surprise still
+  belongs in a callout Item.
+
+  ```json
+  {"id": "ingest", "kind": "group", "shape": "section", "label": "Ingest", "color": "blue",
+   "x": 60, "y": 100, "width": 560, "height": 360, "style": "normal"},
+  {"id": "why", "kind": "sticky", "label": "Writes are keyed by batch, so a retry overwrites itself.",
+   "about": "store", "x": 840, "y": 420, "width": 200, "height": 200, "style": "normal"},
+  {"id": "hot", "kind": "annotation", "shape": "bubble", "label": "Hot path", "about": "store",
+   "x": 1080, "y": 300, "width": 180, "height": 90, "style": "normal"},
+  {"id": "first", "kind": "annotation", "shape": "pin", "label": "1", "about": "queue",
+   "x": 272, "y": 152, "width": 32, "style": "normal"}
+  ```
 - Any semantic element may carry an optional `note`: depth on demand that a
   reader sees, rendered, when they hover, focus, or tap the element, and that
   `diagram describe` prints. Use it for the why its label cannot hold: an

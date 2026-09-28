@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
+      "path": "internal/diagram/annotation.go",
+      "start": 301,
+      "end": 314,
+      "digest": "sha256:2341a5b1bb72e7d2e2fcb4ff34b4202429b47c5f39a3a1fd41ad66dba51ae5fc",
+      "note": "Highlight box, bracket brace path, and their label_box labels."
+    },
+    {
+      "commit": "600156ba5c751ca933236cf9a934c1aee8177615",
+      "path": "internal/diagram/annotation.go",
+      "start": 407,
+      "end": 436,
+      "digest": "sha256:c180b39ab9310b77d3ba544b656cad9c4c2e0a54d144cb20294edcf1a56cfcb8",
+      "note": "Highlight box, bracket brace path, and their label_box labels."
+    }
+  ]
+}
