@@ -284,3 +284,27 @@ func TestSchemaAcceptsBoard(t *testing.T) {
 		t.Fatal("schema accepted a colour outside the palette")
 	}
 }
+
+// The skill's board example is what an agent copies, so its elements must
+// validate and render beside the nodes they annotate.
+func TestSkillBoardExampleRenders(t *testing.T) {
+	data, err := os.ReadFile(filepath.Join("..", "..", "skills", "change-saga", "references", "diagrams.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	text := string(data)
+	start := strings.Index(text, "- Board elements annotate a drawing.")
+	start += strings.Index(text[start:], "```json\n") + len("```json\n")
+	var elements []Element
+	if err := json.Unmarshal([]byte("["+text[start:start+strings.Index(text[start:], "```")]+"]"), &elements); err != nil {
+		t.Fatalf("board example: %v", err)
+	}
+	d := New()
+	d.Elements = append([]Element{
+		{ID: "queue", Kind: "node", Shape: "rect", Label: "Queue", Parent: "ingest", X: 30, Y: 70, Width: 200, Height: 80, Style: "normal"},
+		{ID: "store", Kind: "node", Shape: "datastore", Label: "Store", X: 820, Y: 130, Width: 240, Height: 120, Style: "normal"},
+	}, elements...)
+	if _, err := Render(d, Options{Title: "Board"}); err != nil {
+		t.Fatalf("the skill's board example does not render: %v", err)
+	}
+}
