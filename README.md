@@ -13,10 +13,34 @@ slides that explain the change's architecture, so you review the design instead
 of every line. Coverage links every changed line to the slide that explains it,
 so you can trust that nothing was left out.
 
+## Install
+
+macOS and Linux:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.sh | sh
+```
+
+Windows PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.ps1 | iex
+```
+
+Or download an archive for your platform from the
+[latest release](https://github.com/twentyideas/changesaga/releases/latest).
+
+Then check the installation:
+
+```sh
+change-saga version
+change-saga help
+```
+
 ## Start with a review
 
-After [installing](#install) the CLI, give your coding agent two prompts from
-the repository with the change:
+Once it's installed, give your coding agent two prompts from the repository
+with the change:
 
 > Use the change-saga cli to install its skill for this coding agent
 
@@ -162,27 +186,6 @@ They answer questions from it, plan new work against it, and create better
 reviews with it, and each review strengthens it further.
 
 Change Saga is experimental, and its format may change before 1.0.
-
-## Install
-
-macOS and Linux:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.sh | sh
-```
-
-Windows PowerShell:
-
-```powershell
-irm https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.ps1 | iex
-```
-
-Then check the installation:
-
-```sh
-change-saga version
-change-saga help
-```
 
 ## See a Saga
 
