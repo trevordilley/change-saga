@@ -51,6 +51,7 @@ func Declarations(scheme string) string {
 // author can discover every overridable name from the installed CLI.
 func Contract() map[string]any {
 	return map[string]any{
+		"file":   FileName + " at the Saga root; change-saga theme init writes a starter and theme check validates it",
 		"format": "a CSS file with :root { --token: value; } for light and :root[data-theme=\"dark\"] { ... } for dark, setting only these tokens",
 		"tokens": Tokens(),
 	}

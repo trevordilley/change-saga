@@ -662,6 +662,24 @@ rule reads through the tokens and light and dark cannot drift apart. The
 sticky and annotation palette. Renaming or removing a token is a breaking
 change to the contract.
 
+A Saga may hold one theme, `theme.css` at its root beside `saga.json`, of
+token overrides only: a `:root` block for light mode and a
+`:root[data-theme="dark"]` block for dark mode, each setting only contract
+tokens with values of the token's kind (hex, `rgb()`, `rgba()`, `hsl()`,
+`hsla()`, or named colours; px, rem, or em lengths; font family lists; and
+`[inset] x y [blur [spread]] colour` shadows). Other selectors, `url()`,
+@-rules, escapes, and `!important` are refused, so a theme cannot restyle or
+hide review controls or load anything. `change-saga validate` reports each
+problem with its line, and an invalid theme is not applied at all. The
+reviewer serves the validated values, re-serialized rather than copied, after
+its defaults for light mode and for dark mode by preference or toggle, and
+appends every token, with the theme applied, to each SVG and HTML slide it
+serves, so a slide painting with `var(--token)` follows the theme while its
+committed bytes, digests, and approvals stay the same. `change-saga theme`
+writes a starter (`init`), checks validity and WCAG AA contrast of the key
+text and background pairs in both modes (`check`), and opens a preview
+(`preview`).
+
 ## Report content, evidence, and review
 
 The report carries the Saga's authored narrative, and the same component model
