@@ -140,8 +140,11 @@ const reviewAsyncJavaScript = `
 
       } else if (result.ambiguous) form.dataset.uncertain='true';
       if (!form.dataset.uncertain && !slideFor(target)?.dataset.reviewStale) buttons.forEach(b=>b.disabled=false);
-      if(result.saved && form.contains(focusAtSubmit) && slideFor(target)?.classList.contains('active') && (document.activeElement===focusAtSubmit || document.activeElement===document.body)) {
-        const replacement=!details && !form.isConnected && q('.review-decision-quick button:not(:disabled)',slideFor(target));
+      // A saved decision replaces its quick controls; focus follows to the new
+      // control unless the reviewer has moved on. A click on the busy control
+      // leaves focus on the slide around it.
+      const replacement=!details && !form.isConnected && q('.review-decision-quick button:not(:disabled)',slideFor(target));
+      if(result.saved && form.contains(focusAtSubmit) && slideFor(target)?.classList.contains('active') && (document.activeElement===focusAtSubmit || document.activeElement===document.body || replacement && document.activeElement?.contains(replacement))) {
         (replacement || details && q('summary',details) || event.submitter)?.focus({preventScroll:true});
       }
     }, {signal});

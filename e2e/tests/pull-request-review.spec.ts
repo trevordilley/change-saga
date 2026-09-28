@@ -1,7 +1,7 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { codeLocation, git, readJSON, reviewFiles, runCLI, startSagaServer, stopSagaServer, type SagaRepositories } from "../support/fixture-builder.js";
-import { expect, test } from "../support/test.js";
+import { expect, expectNoSeriousAccessibilityViolations, test } from "../support/test.js";
 
 // A pull request's review is a slide deck and the one place approval happens.
 // Each slide records every reviewer's decision at the head it was given, and a
@@ -606,4 +606,105 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
   } finally {
     await stopSagaServer(running);
   }
+});
+
+test("@critical approving twice records one approval, shows it at once, and can be withdrawn", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  const approvals = () => reviewFiles(sagaRepositories, /___reviews\/pr-1\.review\/approvals\/.+\.json$/).sort().map(path => readJSON<{ state: string }>(path).state);
+  try {
+    await page.goto(`${running.baseURL}/reviews/pr-1`);
+    await page.waitForLoadState("networkidle");
+    const slide = page.locator(".review-deck-slide.active");
+    const thumbnail = page.locator(".slide-thumbnail-status").first();
+    // Two quick clicks, as an impatient reviewer would: the second finds the
+    // control busy and then settled as Approved, so it records nothing.
+    await slide.getByRole("button", { name: "Approve Greeting takes a name", exact: true }).dblclick();
+    const approved = slide.locator("[data-review-approved]");
+    await expect(approved).toHaveText("Approved ✓");
+    await expect(approved).toBeDisabled();
+    await expect(thumbnail).toHaveAttribute("data-review-state", "approved");
+    // Focus moves to the undo that sits beside the decision.
+    const undo = slide.getByRole("button", { name: "Withdraw approval of Greeting takes a name" });
+    await expect(undo).toBeFocused();
+    await approved.click({ force: true });
+    await page.waitForLoadState("networkidle");
+    expect(approvals()).toEqual(["approved"]);
+    await page.reload();
+    await expect(slide.locator("[data-review-approved]")).toHaveText("Approved ✓");
+    await undo.click();
+    const approve = slide.getByRole("button", { name: "Approve Greeting takes a name", exact: true });
+    await expect(approve).toBeEnabled();
+    await expect(slide.locator("[data-review-approved]")).toHaveCount(0);
+    await expect(thumbnail).toHaveAttribute("data-review-state", "none");
+    expect(approvals()).toEqual(["approved", "none"]);
+
+    // A request for changes is withdrawn the same way, from the reviewer's own row.
+    await slide.locator(".review-slide-menu > summary").click();
+    await slide.locator("textarea[name=body]").first().fill("Say who is greeted.");
+    await slide.locator("[data-review-request-changes]").click();
+    await expect(slide.locator('.review-decision-list [data-decision-state="changes_requested"]')).toHaveCount(1);
+    await slide.locator(".review-slide-menu > summary").click();
+    await slide.getByRole("button", { name: "Withdraw request for changes", exact: true }).click();
+    await expect(slide.locator(".review-decision-list")).toHaveText("No decision yet");
+    await expect(approve).toBeEnabled();
+    expect(approvals()).toEqual(["approved", "none", "changes_requested", "none"]);
+  } finally { await stopSagaServer(running); }
+});
+
+test("decision pills stay readable in light and dark mode", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  cli(sagaRepositories, "review", "approve", "--review", "pr-1", "--slide", "greeting", "--reviewer-kind", "human", "--repo", sagaRepositories.sourceRepo, sagaRepositories.sagaRoot);
+  cli(sagaRepositories, "review", "request-changes", "--review", "pr-1", "--slide", "theme", "--reviewer-kind", "ai", "--reviewer-name", "Checker", "--agent", "claude-code", "--model", "claude-opus-5-5", "--body", "Name the colour token.", "--repo", sagaRepositories.sourceRepo, sagaRepositories.sagaRoot);
+  git(sagaRepositories.sagaRepo, "add", ".");
+  git(sagaRepositories.sagaRepo, "commit", "-m", "Decisions");
+  // Changing the theme slide's code puts its request for changes out of date.
+  writeFileSync(join(sagaRepositories.sourceRepo, "assets/ui/theme.css"), ":root { --brand: rebeccapurple; }\n");
+  git(sagaRepositories.sourceRepo, "commit", "-am", "Recolour after the decision");
+  const running = await startSagaServer(sagaRepositories);
+  // The WCAG ratio of each pill's text on its own background, read from the page.
+  const ratios = (selector: string) => page.locator(selector).evaluateAll(elements => elements.map(element => {
+    const channels = (value: string) => (value.match(/[\d.]+/g) ?? []).slice(0, 3).map(Number);
+    const luminance = (value: string) => {
+      const [r, g, b] = channels(value).map(v => v / 255).map(v => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const style = getComputedStyle(element);
+    const [light, dark] = [luminance(style.color), luminance(style.backgroundColor)].sort((a, b) => b - a);
+    return { text: element.textContent?.trim(), background: style.backgroundColor, ratio: (light + 0.05) / (dark + 0.05) };
+  }));
+  try {
+    for (const scheme of ["light", "dark"] as const) {
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.goto(`${running.baseURL}/reviews?details=all`);
+      const chips = page.locator(".review-slide-states .review-decision-chip");
+      await expect(chips).toHaveCount(2);
+      await expect(chips.filter({ hasText: "approved" })).toHaveCount(1);
+      await expect(chips.filter({ hasText: "changes requested · out of date" })).toHaveCount(1);
+      for (const pill of await ratios(".review-decision-chip,.review-badge")) {
+        expect(pill.background, `${scheme} ${pill.text} has its own background`).not.toBe("rgba(0, 0, 0, 0)");
+        expect(pill.ratio, `${scheme} ${pill.text}`).toBeGreaterThanOrEqual(4.5);
+      }
+      await expectNoSeriousAccessibilityViolations(page, ".review-slide-states");
+      await page.locator(".review-slide-states").first().screenshot({ path: test.info().outputPath(`decision-chips-${scheme}.png`) });
+
+      await page.goto(`${running.baseURL}/reviews/pr-1`);
+      const greeting = page.locator(".review-deck-slide.active");
+      await expect(greeting.locator("[data-review-approved]")).toHaveText("Approved ✓");
+      await page.locator('[data-slide-thumbnail][data-slide-target$=":slide:theme"]').click();
+      const theme = page.locator(".review-deck-slide.active");
+      await theme.locator(".review-slide-menu > summary").click();
+      await expect(theme.locator("[data-out-of-date]")).toBeVisible();
+      await page.locator('[data-slide-thumbnail][data-slide-target$=":slide:greeting"]').click();
+      await greeting.locator(".fragment-actions").screenshot({ path: test.info().outputPath(`decision-controls-${scheme}.png`) });
+      for (const pill of await ratios(".review-deck-slide [data-review-approved],.review-deck-slide [data-out-of-date],.slide-thumbnail-status[data-review-state=approved],.slide-thumbnail-status[data-review-state=changes_requested]")) {
+        expect(pill.ratio, `${scheme} ${pill.text}`).toBeGreaterThanOrEqual(4.5);
+      }
+      await page.locator('[data-slide-thumbnail][data-slide-target$=":slide:theme"]').click();
+      await theme.locator(".review-slide-menu").evaluate(menu => { (menu as HTMLDetailsElement).open = true; });
+      await expect(theme.locator(".review-slide-panel [data-out-of-date]")).toBeVisible();
+      await expectNoSeriousAccessibilityViolations(page, ".review-deck-slide.active .review-slide-panel");
+      await page.screenshot({ path: test.info().outputPath(`decision-pills-${scheme}.png`) });
+    }
+  } finally { await stopSagaServer(running); }
 });
