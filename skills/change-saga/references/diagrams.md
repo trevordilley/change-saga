@@ -93,11 +93,13 @@ diagram icons`.
               {"name": "total", "type": "numeric"}]},
   {"id": "places", "kind": "edge", "from": "orders", "to": "customers",
    "from_field": "customer_id", "to_field": "id", "style": "secondary",
+   "tail": "zero-or-many", "head": "only-one",
    "points": [{"x": 600, "y": 565.5}, {"x": 360, "y": 537.5}]}
   ```
 
   `diagram describe` reads it as `fields: id uuid pk, customer_id uuid fk,
-  total numeric` and `places: orders.customer_id -> customers.id`.
+  total numeric` and `places: orders.customer_id -> customers.id
+  tail=zero-or-many head=only-one`.
 - `icon` names any bundled Lucide icon; search by what it depicts with
   `change-saga diagram icons --query storage`.
 - Every coordinate is explicit and local to the parent group. Nothing is laid
