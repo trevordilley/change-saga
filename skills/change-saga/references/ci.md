@@ -40,14 +40,22 @@ pinned release that includes `check --covers review` (v0.2.0-rc.6 or later).
 A pull request from a fork is matched too: its branch is absent from the base
 repository, so its review is found through its evidence in the change.
 
+Gate only the pull requests people review, usually those into the main branch
+(`on: pull_request: branches: [main]`). A child branch merging into an
+integration branch has no review of its own; the integration branch's pull
+request covers, and reconciles for, its work. The README's example gates
+`check --covers health`, so the documentation stays current while pull
+requests are reviewed on GitHub as usual; requiring a review deck on every
+pull request is an opt-in on top.
+
 ```yaml
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - run: change-saga check --covers review --against origin/${{ github.base_ref }} change.saga
-      # Once the Saga holds living documentation:
-      # - run: change-saga check --covers health change.saga
+      - run: change-saga check --covers health change.saga
+      # To also require a review deck on every pull request into main:
+      # - run: change-saga check --covers review --against origin/${{ github.base_ref }} change.saga
 ```
 
 ```sh

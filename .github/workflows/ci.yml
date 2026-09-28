@@ -80,37 +80,16 @@ jobs:
         if: runner.os != 'Windows'
         run: ./scripts/build_release_test.sh
 
-  review:
-    # This repository's own pull requests carry a review deck (change.saga
-    # ___reviews); the gate asks that it explain every changed line. The
-    # health job below separately keeps the living documentation current.
-    name: review deck explains the change
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          # The pull request's own head, not GitHub's merge commit, with the
-          # full history review ranges and merge-bases need.
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-          persist-credentials: false
-      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with:
-          go-version-file: .go-version
-          cache: true
-      - name: build change-saga from this pull request
-        run: go build -o "$RUNNER_TEMP/change-saga" ./cmd/change-saga
-      - name: the review deck explains every changed line
-        env:
-          BASE_REF: ${{ github.base_ref }}
-        run: '"$RUNNER_TEMP/change-saga" check --covers review --against "origin/$BASE_REF" change.saga'
-
   health:
     # This repository's policy, not a product default: change.saga is the
     # showcase Saga, so nothing it already documents may be left stale or
-    # broken. Asked of the whole app at the commit under test.
+    # broken. Asked of the whole app at the commit under test. Pull requests
+    # are reviewed on GitHub as usual; CI asks only that the documentation
+    # stays current, and a big change may carry a review deck by choice. A
+    # pull request into an integration branch is skipped: reconciling waits
+    # for the integration branch's own pull request.
     name: change.saga stays healthy
+    if: github.event_name != 'pull_request' || github.base_ref == github.event.repository.default_branch
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
