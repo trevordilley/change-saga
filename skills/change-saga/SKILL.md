@@ -81,8 +81,10 @@ before drawing slides; nothing else is needed.
 5. Call out every surprise with a `"kind": "callout"` Item in that slide's
    request: `"about"` names the Item for the responsible element, and
    `"body"` (at most 240 characters) states what a reviewer would expect,
-   what the change does instead, why, and the consequence. Cover the code
-   that shows the actual behavior from the callout itself. Reviewers see
+   what the change does instead, why, and the consequence. Cover, from the
+   callout itself, the code that decides the behavior it states (where the
+   outcome is determined, such as a validation that rejects the input
+   first), not just nearby code. Reviewers see
    callouts in a Surprises panel on the slide. Never manufacture one: if
    nothing surprises, say so in the concluding slide's takeaway.
 6. Cover every changed line from the narrowest Item that explains it:
@@ -93,22 +95,32 @@ before drawing slides; nothing else is needed.
    --parent REVIEW_URN` lists the review's slides and Items.
 7. Confirm: `change-saga review list --uncovered change.saga` names what no
    Item explains yet, and `change-saga review list --review ID change.saga`
-   lists the surprises called out; `change-saga check --covers review --against BASE
+   lists the surprises called out, marking any with no code evidence; `change-saga check --covers review --against BASE
    change.saga` exits 0 once every changed line is explained. Run
    `change-saga diagram check --review ID change.saga` and `change-saga
    validate change.saga`.
-8. Commit the Saga with the change. Reviewers can collapse `change.saga` in
+8. Check every sentence; this is the one check the tool cannot do. Have a
+   fresh-context reader, ideally a sub-agent that did not write the deck,
+   read each slide's `diagram describe --review ID --slide SLIDE`: every
+   takeaway, Item description, callout body, edge description, and note.
+   For each sentence it opens the code the Item lists and the code the
+   claim depends on (what runs before or after, validation, error paths),
+   and flags any sentence that is false, overstated ("each artifact" when
+   one is connected), or unverifiable. Revise with `diagram edit` or
+   `apply-slide`. describe lists each Item's `path:start-end`, so this is
+   cheap.
+9. Commit the Saga with the change. Reviewers can collapse `change.saga` in
    the pull request's file tree and open the deck with `change-saga open
    change.saga`.
-9. Each time the PR is updated (not after every commit), `change-saga review
-   refresh-coverage --review ID change.saga` re-pins what only moved. New lines are reported uncovered,
-   with the one Item covering their file as the proposed owner: read them,
-   and only if that Item's explanation covers them accept with the printed
-   `review refresh-coverage --review ID --accept-proposed --path P
-   [--note TEXT]`. It lists stale references (an edit landed inside) with a
-   proposed range and diff: read each, then accept with the printed
-   `change-saga repin --accept-proposed --record FILE --reference N
-   change.saga`, or revise the explanation if it no longer holds.
+10. Each time the PR is updated (not after every commit), `change-saga review
+    refresh-coverage --review ID change.saga` re-pins what only moved. New lines are reported uncovered,
+    with the one Item covering their file as the proposed owner: read them,
+    and only if that Item's explanation covers them accept with the printed
+    `review refresh-coverage --review ID --accept-proposed --path P
+    [--note TEXT]`. It lists stale references (an edit landed inside) with a
+    proposed range and diff: read each, then accept with the printed
+    `change-saga repin --accept-proposed --record FILE --reference N
+    change.saga`, or revise the explanation if it no longer holds.
 
 Coverage is an omission check, not proof that a slide is right. Never widen a
 selector just to finish coverage.

@@ -295,7 +295,17 @@ one surprise:
 After publishing, cover each Item's code with `change-saga cover --target
 ITEM-URN --path PATH --changed-lines` (cover a surprise's actual behavior,
 such as the expiry setting, from its callout); that coverage stays attached across
-later revisions and diagram edits. A revision that drops a covered Item is
+later revisions and diagram edits. A callout's own evidence must include the
+code that decides the behavior it states, where the outcome is determined,
+not just code nearby: "a receiver given a release without X fails promotion"
+cites the release validation that rejects such a release first, if one does,
+even when another Item on the slide covers it. `review list --review ID`
+marks a surprise with no code evidence.
+
+Edge descriptions and notes make claims too, and carry no evidence of their
+own. State only what the connected elements' Items show; a claim beyond them
+("only a validated runtime reaches a receiver" when validation checks the
+whole package) belongs on an Item that covers the code, or should be cut. A revision that drops a covered Item is
 refused until its coverage is removed. Read review slides with `diagram
 describe` or `query slide`, and check them with `diagram check` and
 `visual-qa --review ID`.
@@ -331,7 +341,8 @@ failure or recovery behavior.
 
 For each material surprise, show expectation, actual behavior, rationale, and
 consequence together. Attach a callout Item to the responsible visual element
-and give the actual behavior and consequence exact evidence; an element
+and give the actual behavior and consequence exact evidence from the code that
+decides them; an element
 `note` is optional detail a reader has to seek out, never the place for a
 surprise. Ground the
 contrast in source material or a plausible reviewer mental model. Do not
@@ -436,6 +447,17 @@ command where possible. Use `unverified` when it was not checked. Claims and
 results are append-only.
 
 ## Handoff checks
+
+Check every sentence before handing off a deck; no command reads the prose,
+so `check`, `validate`, `diagram check`, and `visual-qa` all pass a deck
+whose sentences are wrong. Give a fresh-context reader, ideally a sub-agent
+that did not write the deck, each slide's `diagram describe`. It reads every
+takeaway, Item description, callout body, edge description, and note against
+the code that Item lists (`path:start-end` under each Item) and the code the
+claim depends on: what runs before or after it, validation, and error paths.
+It flags each sentence that is false, overstated ("each artifact" when one is
+connected), or unverifiable from the code, and the author revises it with
+`diagram edit` or `apply-slide`.
 
 Read the deck in order without relying on author knowledge. Confirm its visual
 forms and four audits, exact evidence, useful collapsed-file notes, current

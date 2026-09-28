@@ -17,6 +17,21 @@ tool, and what they have to do about it.
   and JSON (`code`, `code_references`, `code_more`). It lists up to eight per
   Item and counts the rest, naming the `query slide` that lists them all, so
   a reviewer or agent can open the code behind each sentence.
+- `review list` marks a surprise whose callout has no code evidence of its
+  own, and counts them; the JSON report gives each callout's `references`.
+  It is only reported, never required.
+- The skill's "Create a review" steps end with a sentence check before the
+  Saga is committed: a fresh-context reader checks every takeaway,
+  description, callout body, edge description, and note against the code it
+  covers and the code the claim depends on, and flags what is false,
+  overstated, or unverifiable. No command reads the prose, so this is the one
+  check the tool cannot do.
+
+### Changed
+
+- The skill asks a callout to cite the code that decides the behavior it
+  states, not just code nearby, and an edge description to claim only what
+  its connected elements show.
 
 ## [0.2.0] - 2026-09-28
 
