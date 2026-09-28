@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased — merged reviews are history
+
+- A review whose change has merged now reads as merged even when nobody ran
+  `repin --onto`. The check happens in Git whenever the review is read, and
+  nothing is written to the Saga: the review's own `review.json` is in its
+  base (or origin's default branch), and the branch it follows adds nothing
+  the base lacks. That covers fast-forward, merge commit, squash, and rebase
+  merges, and branches deleted after merging. A merge recorded by
+  `repin --onto` still wins. When the Saga lives in a companion repository,
+  Git can't tell, and the review stays open.
+- The Reviews page gives a merged review a Merged badge and lists it after
+  the open reviews. It stays hidden until a filter matches it or the reader
+  ticks "Show N merged". The review of the change being compared always
+  stays in view.
+- `review list` says merged and hides merged reviews unless `--all` or
+  `--review` names one. For a merged review that isn't recorded yet, it
+  prints the `repin --onto` command that records it. Its JSON gains `state`
+  (`open` or `merged`), `state_source` (`recorded`, `detected`, or
+  `unknown`), and `landed_in`. `status` and `reconcile` count only open
+  reviews.
+
 ## Unreleased — review the big change, not every branch
 
 - The skill, `help`, `init`, `review create -h`, and README say a review deck
