@@ -111,7 +111,11 @@ func validateAnnotations(d Document, e Element, byID map[string]Element) []strin
 	if !isNote(e) {
 		return problems
 	}
-	if e.Width <= 0 || e.Height <= 0 {
+	if e.Shape == "pin" {
+		if e.Width <= 0 {
+			add("a pin needs a positive width, its diameter")
+		}
+	} else if e.Width <= 0 || e.Height <= 0 {
 		add("%s needs a positive width and height", noteKind(e))
 	}
 	if e.Detail != "" {
