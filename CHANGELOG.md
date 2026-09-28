@@ -1,6 +1,27 @@
 # Changelog
 
-## Unreleased — the Reviews page opens at once
+All notable changes to Change Saga are recorded here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
+the policy in [docs/releasing.md](docs/releasing.md#versioning-policy).
+
+Each GitHub Release also carries auto-generated notes listing the merged pull
+requests. This file is the curated view: what changed for someone *using* the
+tool, and what they have to do about it.
+
+## [Unreleased]
+
+## [0.2.0] - 2026-09-28
+
+Change Saga's first release built around its entry point: ask your coding
+agent to **create a review for this PR**. It produces a slide deck that
+explains the change's architecture and calls out its surprises, with every
+changed line linked to the slide Item that explains it. The Saga can grow from
+there into living documentation of the application. **Format:** Sagas are
+format v5; v4 Sagas written by 0.1.x are not readable (see "Removed" below).
+
+### Highlights
+
+#### The Reviews page opens at once
 
 - The Reviews page opens knowing which reviews have merged, so the first
   view already shows only the open ones. Each review's range, decisions,
@@ -23,7 +44,7 @@
 - On this repository `/reviews` drops from about 1.1s to about 20ms, and a
   review's details take about 26ms.
 
-## Unreleased — merged reviews are history
+#### Merged reviews are history
 
 - A review whose change has merged now reads as merged even when nobody ran
   `repin --onto`. Git is checked whenever the review is read, and nothing is
@@ -58,7 +79,7 @@
 - A review with no slides yet opens to its title and the `apply-slide`
   command that publishes the first one, instead of failing with a 500.
 
-## Unreleased — review the big change, not every branch
+#### Review the big change, not every branch
 
 - The skill, `help`, `init`, `review create -h`, and README say a review deck
   is for the change a person reviews as a whole. When an integration branch
@@ -73,7 +94,7 @@
   opt-in step on top. This repository's CI drops its review-deck gate the same
   way.
 
-## Unreleased — slides on design tokens
+#### Slides on design tokens
 
 - Generated slides follow the reviewer's light and dark mode, including its
   manual toggle, and a theme: default styles, the board palette, the default
@@ -86,14 +107,36 @@
 - Hand-authored slides with fixed colours sit on a light paper card in dark
   mode; `visual-qa` renders every surface in light and dark.
 
-## Unreleased — Saga work happens at PR time
+#### Saga work happens at PR time
 
 - The skill, `help`, `init`, and README say when to do Saga work: when a pull
   request is created or updated, not at the end of every coding session or
   commit. Creating or refreshing the review deck, covering lines, reconciling,
   and repinning happen together then, or whenever the user asks directly.
 
-## Unreleased — diagram shapes, ERD entities, and every Lucide icon
+#### Hover notes, connectors, board elements, and reveal on diagrams
+
+- **Notes:** any diagram element may carry a `note`: Markdown limited to
+  bold, italics, inline code, lists, and http/https/mailto links, at most
+  1,000 characters. Readers see it in a popover on hover, keyboard focus, or
+  tap, in review and implementation decks; the SVG carries it as `<desc>`, and
+  `diagram describe` prints it so an agent reads it without hovering. A
+  review Item's popover also shows its label and description, and a callout
+  is a warning badge at its element's bottom-left.
+- **Connectors:** `head` and a new `tail` take arrow, open, triangle, diamond,
+  circle, dot, and bar terminators plus ERD crow's-foot cardinalities
+  (`one`, `only-one`, `zero-or-one`, `many`, `one-or-many`, `zero-or-many`);
+  `head_label`/`tail_label` add end labels; `curve: smooth` and
+  `line: dashed|dotted` restyle the line.
+- **Board elements:** sections (`shape: section` groups with a title tab),
+  stickies, and annotations (`bubble`, numbered `pin`, `highlight`, and
+  `bracket`), coloured from a fixed palette.
+- **Reveal:** `reveal: "fade"` fades a slide's elements in by reading order or
+  per-element `step`, replayed whenever the slide becomes active and off under
+  reduced motion.
+- All are opt-in: diagrams that use none of them render byte-identically.
+
+#### Diagram shapes, ERD entities, and every Lucide icon
 
 - Diagram nodes gain `triangle`, `hexagon`, `parallelogram`, `document`,
   `cloud`, `actor`, `queue`, `circle`, and `star`. Each centers its icon,
@@ -109,7 +152,7 @@
   icon depicts, so `--query storage` finds `lucide:database`.
 - Diagrams that use none of these render byte-identically.
 
-## Unreleased — surprises called out in review decks
+#### Surprises called out in review decks
 
 - A review slide's `callout` Items are its surprises: what a reviewer would
   expect, what the change does instead, why, and the consequence. The review
@@ -122,7 +165,7 @@
 - The skill's "create a review" fast path makes calling out surprises its own
   step, and the review slide example includes one.
 
-## Unreleased — large reviews open instantly
+#### Large reviews open instantly
 
 - A review page no longer renders its Items' diffs. An Item's code is fetched
   when a reviewer opens it (`GET /reviews/{id}/item-diffs?target=`), a page
@@ -134,7 +177,7 @@
 - A 53,743-line pull request's review page went from 288 MB (timing out) to
   228 KB; its largest Item opens in under half a second.
 
-## Unreleased — cheap, judged repair of stale evidence
+#### Cheap, judged repair of stale evidence
 
 - Stale references come with a proposed range: the pinned start and end mapped
   through the diff hunks, widened over lines inserted inside (flagged
@@ -168,7 +211,7 @@
 - `check --covers review` for a rewritten review now says to pin it with
   `review follow`, matching `status`, instead of "create one".
 
-## Unreleased — create a review for this PR first
+#### Create a review for this PR first
 
 - Creating a review for a pull request or branch is the headline entry point.
   `init`, top-level help, the README, and the skill lead with it: `review
@@ -224,7 +267,7 @@
   help, the README, and the skill now lead with `apply-slide --review` and a
   diagram source instead of hand-written SVG.
 
-## Unreleased — change.saga, one Saga per repository
+#### `change.saga`, one Saga per repository
 
 - `change-saga init` with no path creates `change.saga` in the `--repo`
   directory, the current directory by default. A Saga named `change.saga` takes its default id and title from the
@@ -249,7 +292,7 @@
   unrelated Saga that once had its name, or was replaced in the same commit, is
   never read as its past.
 
-## Unreleased — Technical inventory format 2 (proposed and implemented design)
+#### Technical inventory format 2 (proposed and implemented design)
 
 - **Format:** Add inventory format 2, adopted only by an explicit
   `change-saga inventory adopt-format --format 2`, which writes
@@ -275,7 +318,7 @@
   every implemented edge, and exact endpoint intent without cascading
   promotion. Any refusal writes nothing.
 
-## Unreleased — Component and System inventory
+#### Component and System inventory
 
 - **Format:** Add opt-in v5 Component/System identities, immutable definition
   revisions and lifecycle events, pinned Component interactions, exact scoped
@@ -283,17 +326,6 @@
   remain readable; older readers require an upgrade to read the extension.
 - Add public authoring, paged inventory queries, reference validation, and lazy
   in-slide canonical explanations with local code and preserved slide context.
-
-
-All notable changes to Change Saga are recorded here. The format follows
-[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
-the policy in [docs/releasing.md](docs/releasing.md#versioning-policy).
-
-Each GitHub Release also carries auto-generated notes listing the merged pull
-requests. This file is the curated view: what changed for someone *using* the
-tool, and what they have to do about it.
-
-## [Unreleased]
 
 ### Changed
 
@@ -909,7 +941,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/twentyideas/changesaga/compare/v0.0.9...HEAD
+[Unreleased]: https://github.com/twentyideas/changesaga/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/twentyideas/changesaga/compare/v0.1.1...v0.2.0
 [0.0.9]: https://github.com/twentyideas/changesaga/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/twentyideas/changesaga/compare/v0.0.7...v0.0.8
 [0.0.7]: https://github.com/twentyideas/changesaga/compare/v0.0.6...v0.0.7
