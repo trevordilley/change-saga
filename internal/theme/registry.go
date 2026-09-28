@@ -57,6 +57,8 @@ var tokens = []Token{
 	{Name: "top", Group: "shape", Kind: "length", Light: `44px`, Dark: ``},
 	{Name: "shadow", Group: "shape", Kind: "shadow", Light: `0 6px 24px #1f232814,0 1px 3px #1f23281f`, Dark: `0 6px 24px #01040966,0 1px 3px #010409aa`},
 	{Name: "radius", Group: "shape", Kind: "length", Light: `6px`, Dark: ``},
+	{Name: "slide-paper", Group: "chrome", Kind: "color", Light: "#ffffff", Dark: "#dde1e6", Doc: "Card behind a slide with fixed colours (a hand-authored SVG or HTML page, an image), so it reads as paper in dark mode."},
+	{Name: "slide-paper-inset", Group: "shape", Kind: "length", Light: "0px", Dark: "12px", Doc: "Margin of that card around the slide; thumbnails use a quarter of it."},
 	{Name: "diagram-canvas", Group: "diagram", Kind: "color", Light: "#fafaf8", Dark: "#0d1117", Doc: "Slide canvas behind a generated diagram."},
 	{Name: "diagram-normal-fill", Group: "diagram", Kind: "color", Light: "#ffffff", Dark: "#161b22", Doc: "Fill of the normal style."},
 	{Name: "diagram-normal-stroke", Group: "diagram", Kind: "color", Light: "#64748b", Dark: "#6e7681", Doc: "Stroke of the normal style."},

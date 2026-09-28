@@ -332,9 +332,11 @@ type fragmentView struct {
 	// script to load; see viewScope.backgroundFrames.
 	BackgroundFrame bool
 	Image           bool
-	AspectRatio     string
-	SectionTitle    string
-	LandmarkViews   []*landmarkView
+	// Paper marks a visual with fixed colours; see visualPaper.
+	Paper         bool
+	AspectRatio   string
+	SectionTitle  string
+	LandmarkViews []*landmarkView
 	// ElementNotes are the noted diagram elements no Item selects.
 	ElementNotes []elementNoteView
 	Stories      *storyLinksView
@@ -1627,7 +1629,7 @@ func makeDeckNavTree(root *saga.Section) []*navNodeView {
 				Slide: &SlideReferenceView{
 					ID: slide.ID, Title: slide.Title, Section: sectionStart, Target: slide.Target,
 					Anchor: domID(slide.Target), Href: "?view=slides#" + domID(slide.Target),
-					URL: fragmentAssetURL(slide), MediaType: slide.MediaType,
+					URL: fragmentAssetURL(slide), MediaType: slide.MediaType, Paper: fragmentPaper(slide),
 				},
 			})
 		}
@@ -1796,7 +1798,7 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 			view.Plain = string(data)
 		}
 	case "text/html", "image/svg+xml":
-		view.Interactive = true
+		view.Interactive, view.Paper = true, fragmentPaper(fragment)
 		if fragment.MediaType == "image/svg+xml" {
 			if data, err := os.ReadFile(filepath.Join(fragment.Directory, filepath.FromSlash(fragment.Entrypoint))); err == nil {
 				view.AspectRatio = svgAspectRatio(string(data))
@@ -1807,6 +1809,7 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 		}
 	default:
 		view.Image = strings.HasPrefix(fragment.MediaType, "image/")
+		view.Paper = view.Image
 	}
 	return view
 }
@@ -1994,13 +1997,14 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	if contentType := mime.TypeByExtension(strings.ToLower(filepath.Ext(realPath))); contentType != "" {
+	contentType := mime.TypeByExtension(strings.ToLower(filepath.Ext(realPath)))
+	if contentType != "" {
 		w.Header().Set("Content-Type", contentType)
 	}
 	// The browser may keep the file but must ask before each use; an
 	// unchanged file is answered by its modification time alone.
 	w.Header().Set("Cache-Control", "no-cache")
-	http.ServeContent(w, r, filepath.Base(realPath), info.ModTime(), file)
+	serveSlideVisual(w, r, filepath.Base(realPath), contentType, info.ModTime(), file)
 }
 
 // diagramFont serves the font generated diagram SVGs measure their text
@@ -2029,7 +2033,7 @@ func (a *app) javascript(w http.ResponseWriter, _ *http.Request) {
 func (a *app) themeScript(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/javascript; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store")
-	_, _ = io.WriteString(w, themeBoot)
+	_, _ = io.WriteString(w, themeBoot+slideSchemeBoot)
 }
 
 func findFragment(document *saga.Saga, id string) *saga.Fragment {
