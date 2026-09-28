@@ -10,6 +10,7 @@ import (
 	"sync"
 	"unicode"
 
+	"github.com/twentyideas/changesaga/internal/theme"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/sfnt"
 	"golang.org/x/image/math/fixed"
@@ -63,7 +64,8 @@ func Render(d Document, options Options) ([]byte, error) {
 		svg.add("desc", "id", "diagram-desc").text = options.Description
 	}
 	defs := svg.add("defs")
-	defs.add("style").text = fmt.Sprintf(`@font-face{font-family:"%s";src:url("%s") format("truetype")}text{font-family:"%s",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}`, FontFamily, FontPath, FontFamily)
+	style := defs.add("style")
+	style.text = fmt.Sprintf(`@font-face{font-family:"%s";src:url("%s") format("truetype")}text{font-family:"%s",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}`, FontFamily, FontPath, FontFamily)
 	r.defs = defs
 	r.revealDefs(svg)
 	usesIcons := false
@@ -74,11 +76,14 @@ func Render(d Document, options Options) ([]byte, error) {
 		svg.add("metadata", "id", "diagram-notices").text = "Lucide icons (" + LucideRevision + "):\n" + IconLicense()
 	}
 	if d.Background != "" && d.Background != "none" {
-		svg.add("rect", "width", num(d.Width), "height", num(d.Height), "fill", d.Background)
+		svg.add("rect", "width", num(d.Width), "height", num(d.Height), "fill", r.background())
 	}
 	if err := r.draw("", svg); err != nil {
 		return nil, err
 	}
+	used := map[string]theme.Token{}
+	resolveTokens(svg, used)
+	style.text += tokenStyle(used)
 	var out bytes.Buffer
 	svg.write(&out, 0)
 	return out.Bytes(), nil
@@ -181,6 +186,15 @@ func AccessibleName(e Element) string {
 	default:
 		return e.ID
 	}
+}
+
+// background is the colour the canvas and hollow markers paint with: the
+// default background follows the canvas token.
+func (r *renderer) background() string {
+	if r.doc.Background == defaultBackground {
+		return canvasBackground
+	}
+	return r.doc.Background
 }
 
 func firstColor(values ...string) string {

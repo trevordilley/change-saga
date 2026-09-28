@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2">
   <title id="diagram-title">Shapes</title>
   <defs>
-    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-canvas:#fafaf8;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;--diagram-warning-fill:#fff7e6;--diagram-warning-ink:#805015;--diagram-warning-stroke:#b7791f;}@media (prefers-color-scheme:dark){:root{--diagram-canvas:#0d1117;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;--diagram-warning-fill:#2d240c;--diagram-warning-ink:#f2cc60;--diagram-warning-stroke:#d29922;}}</style>
     <marker id="diagram-head-places" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M0 0L10 5L0 10Z" fill="#94a3b8"/>
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
     </marker>
   </defs>
   <metadata id="diagram-notices">Lucide icons (66d8f9fc394b8530377e5f6112f0b8908ba01280):
@@ -51,113 +51,113 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 </metadata>
-  <rect width="1280" height="720" fill="#fafaf8"/>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
   <g id="heading" data-diagram-kind="text" transform="translate(40 20)" aria-hidden="true">
-    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve"><tspan x="0" y="34">Shapes</tspan></text>
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Shapes</tspan></text>
   </g>
   <g id="triangle" data-diagram-kind="node" transform="translate(40 90)" role="group" aria-label="Warn">
-    <path d="M90 0L180 150L0 150Z" stroke-linejoin="round" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
-    <text x="90" y="115.625" font-size="19" fill="#805015" xml:space="preserve" text-anchor="middle"><tspan x="90" y="115.625">Warn</tspan></text>
+    <path d="M90 0L180 150L0 150Z" stroke-linejoin="round" fill="#fff7e6" stroke="#b7791f" stroke-width="2" style="fill:var(--diagram-warning-fill,#fff7e6);stroke:var(--diagram-warning-stroke,#b7791f)"/>
+    <text x="90" y="115.625" font-size="19" fill="#805015" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-warning-ink,#805015)"><tspan x="90" y="115.625">Warn</tspan></text>
   </g>
   <g id="hexagon" data-diagram-kind="node" transform="translate(260 110)" role="group" aria-label="Prepare">
-    <path d="M31.9 0L168.1 0L200 55L168.1 110L31.9 110L0 55Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <text x="100" y="63.25" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="100" y="63.25">Prepare</tspan></text>
+    <path d="M31.9 0L168.1 0L200 55L168.1 110L31.9 110L0 55Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="100" y="63.25" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="100" y="63.25">Prepare</tspan></text>
   </g>
   <g id="input" data-diagram-kind="node" transform="translate(500 110)" role="group" aria-label="Read input">
-    <path d="M44 0L220 0L176 110L0 110Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <text x="110" y="63.25" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="110" y="63.25">Read input</tspan></text>
+    <path d="M44 0L220 0L176 110L0 110Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="110" y="63.25" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="110" y="63.25">Read input</tspan></text>
   </g>
   <g id="report" data-diagram-kind="node" transform="translate(760 90)" role="group" aria-label="Report">
-    <path d="M0 0H200V138C133.333 96.434 66.667 179.566 0 138Z" stroke-linejoin="round" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
-    <svg x="88" y="20.875" width="24" height="24" color="#153869" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 0H200V138C133.333 96.434 66.667 179.566 0 138Z" stroke-linejoin="round" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <svg x="88" y="20.875" width="24" height="24" color="#153869" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-primary-ink,#153869)">
       <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/>
       <path d="M14 2v5a1 1 0 0 0 1 1h5"/>
       <path d="M10 9H8"/>
       <path d="M16 13H8"/>
       <path d="M16 17H8"/>
     </svg>
-    <text x="100" y="74.875" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle"><tspan x="100" y="74.875">Report</tspan></text>
-    <text x="100" y="101.375" font-size="15" fill="#153869" xml:space="preserve" text-anchor="middle"><tspan x="100" y="101.375">weekly</tspan></text>
+    <text x="100" y="74.875" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="100" y="74.875">Report</tspan></text>
+    <text x="100" y="101.375" font-size="15" fill="#153869" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="100" y="101.375">weekly</tspan></text>
   </g>
   <g id="cdn" data-diagram-kind="node" transform="translate(1000 90)" role="group" aria-label="CDN">
-    <path d="M39.72 149.535A34.056 33.645 0 0 1 12.48 90.33A38.136 37.68 0 0 1 61.512 36.51A54.48 53.82 0 0 1 159.576 25.74A40.848 40.365 0 0 1 219.48 74.175A40.848 40.365 0 0 1 197.688 149.535Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <svg x="108" y="66.25" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M39.72 149.535A34.056 33.645 0 0 1 12.48 90.33A38.136 37.68 0 0 1 61.512 36.51A54.48 53.82 0 0 1 159.576 25.74A40.848 40.365 0 0 1 219.48 74.175A40.848 40.365 0 0 1 197.688 149.535Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <svg x="108" y="66.25" width="24" height="24" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-normal-ink,#172033)">
       <circle cx="12" cy="12" r="10"/>
       <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
       <path d="M2 12h20"/>
     </svg>
-    <text x="120" y="120.25" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="120" y="120.25">CDN</tspan></text>
+    <text x="120" y="120.25" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="120" y="120.25">CDN</tspan></text>
   </g>
   <g id="customer" data-diagram-kind="node" transform="translate(60 280)" role="group" aria-label="Customer">
-    <circle cx="70" cy="15.3" r="14.28" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <path d="M70 29.58V63.24M45.52 42.84H94.48M70 63.24L49.6 99.96M70 63.24L90.4 99.96" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
-    <text x="70" y="130" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="70" y="130">Customer</tspan></text>
+    <circle cx="70" cy="15.3" r="14.28" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <path d="M70 29.58V63.24M45.52 42.84H94.48M70 63.24L49.6 99.96M70 63.24L90.4 99.96" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="70" y="130" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="70" y="130">Customer</tspan></text>
   </g>
   <g id="jobs" data-diagram-kind="node" transform="translate(240 310)" role="group" aria-label="Jobs">
-    <path d="M27.5 0H232.5A27.5 55 0 0 1 232.5 110H27.5A27.5 55 0 0 1 27.5 0Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <path d="M232.5 0A27.5 55 0 0 0 232.5 110" fill="none" stroke="#64748b" stroke-width="2"/>
-    <text x="116.25" y="50.875" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="116.25" y="50.875">Jobs</tspan></text>
-    <text x="116.25" y="77.375" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="116.25" y="77.375">at least once</tspan></text>
+    <path d="M27.5 0H232.5A27.5 55 0 0 1 232.5 110H27.5A27.5 55 0 0 1 27.5 0Z" stroke-linejoin="round" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <path d="M232.5 0A27.5 55 0 0 0 232.5 110" fill="none" stroke="#64748b" stroke-width="2" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="116.25" y="50.875" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="116.25" y="50.875">Jobs</tspan></text>
+    <text x="116.25" y="77.375" font-size="15" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="116.25" y="77.375">at least once</tspan></text>
   </g>
   <g id="start" data-diagram-kind="node" transform="translate(540 290)" role="group" aria-label="Start">
-    <circle cx="70" cy="70" r="70" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
-    <text x="70" y="78.25" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle"><tspan x="70" y="78.25">Start</tspan></text>
+    <circle cx="70" cy="70" r="70" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="70" y="78.25" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="70" y="78.25">Start</tspan></text>
   </g>
   <g id="favorite" data-diagram-kind="node" transform="translate(720 280)" role="group" aria-label="Top">
-    <path d="M85 0L111.266 53.327L170 61.878L127.5 103.388L137.533 162L85 134.327L32.467 162L42.5 103.388L0 61.878L58.734 53.327Z" stroke-linejoin="round" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
-    <text x="85" y="96.676" font-size="19" fill="#805015" xml:space="preserve" text-anchor="middle"><tspan x="85" y="96.676">Top</tspan></text>
+    <path d="M85 0L111.266 53.327L170 61.878L127.5 103.388L137.533 162L85 134.327L32.467 162L42.5 103.388L0 61.878L58.734 53.327Z" stroke-linejoin="round" fill="#fff7e6" stroke="#b7791f" stroke-width="2" style="fill:var(--diagram-warning-fill,#fff7e6);stroke:var(--diagram-warning-stroke,#b7791f)"/>
+    <text x="85" y="96.676" font-size="19" fill="#805015" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-warning-ink,#805015)"><tspan x="85" y="96.676">Top</tspan></text>
   </g>
   <g id="customers" data-diagram-kind="node" transform="translate(60 480)" role="group" aria-label="customers">
-    <rect width="300" height="128" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <path d="M0 43.5V8A8 8 0 0 1 8 0H292A8 8 0 0 1 300 8V43.5Z" fill="#64748b" fill-opacity=".12"/>
-    <path d="M0 43.5H300" stroke="#64748b" stroke-width="2"/>
-    <svg x="12" y="10.75" width="22" height="22" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect width="300" height="128" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <path d="M0 43.5V8A8 8 0 0 1 8 0H292A8 8 0 0 1 300 8V43.5Z" fill="#64748b" fill-opacity=".12" style="fill:var(--diagram-normal-stroke,#64748b)"/>
+    <path d="M0 43.5H300" stroke="#64748b" stroke-width="2" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <svg x="12" y="10.75" width="22" height="22" color="#172033" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--diagram-normal-ink,#172033)">
       <path d="M12 3v18"/>
       <rect width="18" height="18" x="3" y="3" rx="2"/>
       <path d="M3 9h18"/>
       <path d="M3 15h18"/>
     </svg>
-    <text x="165" y="30" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="165" y="30">customers</tspan></text>
+    <text x="165" y="30" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="165" y="30">customers</tspan></text>
     <g data-field="id" data-key="pk">
-      <text x="12" y="62.5" font-size="12" fill="#64748b" xml:space="preserve">PK</text>
-      <text x="38.64" y="63.5" font-size="16" fill="#172033" xml:space="preserve" text-decoration="underline">id</text>
-      <text x="288" y="63.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve">uuid</text>
+      <text x="12" y="62.5" font-size="12" fill="#64748b" xml:space="preserve" style="fill:var(--diagram-normal-stroke,#64748b)">PK</text>
+      <text x="38.64" y="63.5" font-size="16" fill="#172033" xml:space="preserve" text-decoration="underline" style="fill:var(--diagram-normal-ink,#172033)">id</text>
+      <text x="288" y="63.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)">uuid</text>
     </g>
-    <path d="M0 71.5H300" stroke="#64748b" stroke-opacity=".35" stroke-width="1"/>
+    <path d="M0 71.5H300" stroke="#64748b" stroke-opacity=".35" stroke-width="1" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
     <g data-field="email">
-      <text x="38.64" y="91.5" font-size="16" fill="#172033" xml:space="preserve">email</text>
-      <text x="288" y="91.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve">text</text>
+      <text x="38.64" y="91.5" font-size="16" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)">email</text>
+      <text x="288" y="91.5" font-size="16" fill="#172033" fill-opacity=".7" text-anchor="end" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)">text</text>
     </g>
   </g>
   <g id="orders" data-diagram-kind="node" transform="translate(600 480)" role="group" aria-label="orders">
-    <rect width="320" height="184" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2"/>
-    <path d="M0 43.5V8A8 8 0 0 1 8 0H312A8 8 0 0 1 320 8V43.5Z" fill="#2563eb" fill-opacity=".12"/>
-    <path d="M0 43.5H320" stroke="#2563eb" stroke-width="2"/>
-    <text x="160" y="30" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle"><tspan x="160" y="30">orders</tspan></text>
+    <rect width="320" height="184" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <path d="M0 43.5V8A8 8 0 0 1 8 0H312A8 8 0 0 1 320 8V43.5Z" fill="#2563eb" fill-opacity=".12" style="fill:var(--diagram-primary-stroke,#2563eb)"/>
+    <path d="M0 43.5H320" stroke="#2563eb" stroke-width="2" style="stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="160" y="30" font-size="22" fill="#153869" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="160" y="30">orders</tspan></text>
     <g data-field="id" data-key="pk">
-      <text x="12" y="62.5" font-size="12" fill="#2563eb" xml:space="preserve">PK</text>
-      <text x="38.64" y="63.5" font-size="16" fill="#153869" xml:space="preserve" text-decoration="underline">id</text>
-      <text x="308" y="63.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">uuid</text>
+      <text x="12" y="62.5" font-size="12" fill="#2563eb" xml:space="preserve" style="fill:var(--diagram-primary-stroke,#2563eb)">PK</text>
+      <text x="38.64" y="63.5" font-size="16" fill="#153869" xml:space="preserve" text-decoration="underline" style="fill:var(--diagram-primary-ink,#153869)">id</text>
+      <text x="308" y="63.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)">uuid</text>
     </g>
-    <path d="M0 71.5H320" stroke="#2563eb" stroke-opacity=".35" stroke-width="1"/>
+    <path d="M0 71.5H320" stroke="#2563eb" stroke-opacity=".35" stroke-width="1" style="stroke:var(--diagram-primary-stroke,#2563eb)"/>
     <g data-field="customer_id" data-key="fk">
-      <text x="12" y="90.5" font-size="12" fill="#2563eb" xml:space="preserve">FK</text>
-      <text x="38.64" y="91.5" font-size="16" fill="#153869" xml:space="preserve">customer_id</text>
-      <text x="308" y="91.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">uuid</text>
+      <text x="12" y="90.5" font-size="12" fill="#2563eb" xml:space="preserve" style="fill:var(--diagram-primary-stroke,#2563eb)">FK</text>
+      <text x="38.64" y="91.5" font-size="16" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)">customer_id</text>
+      <text x="308" y="91.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)">uuid</text>
     </g>
-    <path d="M0 99.5H320" stroke="#2563eb" stroke-opacity=".35" stroke-width="1"/>
+    <path d="M0 99.5H320" stroke="#2563eb" stroke-opacity=".35" stroke-width="1" style="stroke:var(--diagram-primary-stroke,#2563eb)"/>
     <g data-field="total">
-      <text x="38.64" y="119.5" font-size="16" fill="#153869" xml:space="preserve">total</text>
-      <text x="308" y="119.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">numeric(10,2)</text>
+      <text x="38.64" y="119.5" font-size="16" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)">total</text>
+      <text x="308" y="119.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)">numeric(10,2)</text>
     </g>
-    <path d="M0 127.5H320" stroke="#2563eb" stroke-opacity=".35" stroke-width="1"/>
+    <path d="M0 127.5H320" stroke="#2563eb" stroke-opacity=".35" stroke-width="1" style="stroke:var(--diagram-primary-stroke,#2563eb)"/>
     <g data-field="placed_at">
-      <text x="38.64" y="147.5" font-size="16" fill="#153869" xml:space="preserve">placed_at</text>
-      <text x="308" y="147.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve">timestamptz</text>
+      <text x="38.64" y="147.5" font-size="16" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)">placed_at</text>
+      <text x="308" y="147.5" font-size="16" fill="#153869" fill-opacity=".7" text-anchor="end" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)">timestamptz</text>
     </g>
   </g>
   <g id="places" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="places" data-from="orders" data-to="customers" data-from-field="customer_id" data-to-field="id">
-    <path d="M600 565.5 L480 565.5 L480 537.5 L360 537.5" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-places)"/>
-    <text x="490" y="588" font-size="18" fill="#526174" xml:space="preserve"><tspan x="490" y="588">places</tspan></text>
+    <path d="M600 565.5 L480 565.5 L480 537.5 L360 537.5" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-places)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="490" y="588" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="490" y="588">places</tspan></text>
   </g>
 </svg>

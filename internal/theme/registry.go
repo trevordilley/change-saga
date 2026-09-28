@@ -73,6 +73,7 @@ var tokens = []Token{
 	{Name: "diagram-boundary-stroke", Group: "diagram", Kind: "color", Light: "#c3cdd8", Dark: "#30363d", Doc: "Stroke of the boundary style."},
 	{Name: "diagram-title-ink", Group: "diagram", Kind: "color", Light: "#172033", Dark: "#e6edf3", Doc: "Text of the title style."},
 	{Name: "diagram-shadow", Group: "diagram", Kind: "color", Light: "#0f172a", Dark: "#010409", Doc: "Colour of sticky-note shadows."},
+	{Name: "diagram-on-accent", Group: "diagram", Kind: "color", Light: "#ffffff", Dark: "#0d1117", Doc: "Text on a palette accent (a section's title tab, a pin's number) and the ring around a pin."},
 	{Name: "diagram-yellow-sticky", Group: "diagram-palette", Kind: "color", Light: "#fff3a3", Dark: "#4d4108"},
 	{Name: "diagram-yellow-tint", Group: "diagram-palette", Kind: "color", Light: "#fff8d6", Dark: "#2b2508"},
 	{Name: "diagram-yellow-mark", Group: "diagram-palette", Kind: "color", Light: "#facc15", Dark: "#e3b341"},

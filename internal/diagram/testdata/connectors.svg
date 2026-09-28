@@ -1,59 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/1">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2">
   <title id="diagram-title">Connectors</title>
   <defs>
-    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}</style>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-canvas:#fafaf8;--diagram-normal-fill:#ffffff;--diagram-normal-ink:#172033;--diagram-normal-stroke:#64748b;}@media (prefers-color-scheme:dark){:root{--diagram-canvas:#0d1117;--diagram-normal-fill:#161b22;--diagram-normal-ink:#e6edf3;--diagram-normal-stroke:#6e7681;}}</style>
     <marker id="diagram-marker-placed-tail" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto-start-reverse" overflow="visible">
-      <circle cx="2" cy="5" r="1.8" fill="#fafaf8" stroke="#64748b" stroke-width="0.833" stroke-linejoin="round"/>
-      <path d="M4.5 5L10 0M4.5 5L10 10M4.5 5L10 5" fill="none" stroke="#64748b" stroke-width="0.833" stroke-linejoin="round"/>
+      <circle cx="2" cy="5" r="1.8" fill="#fafaf8" stroke="#64748b" stroke-width="0.833" stroke-linejoin="round" style="fill:var(--diagram-canvas,#fafaf8);stroke:var(--diagram-normal-stroke,#64748b)"/>
+      <path d="M4.5 5L10 0M4.5 5L10 10M4.5 5L10 5" fill="none" stroke="#64748b" stroke-width="0.833" stroke-linejoin="round" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
     </marker>
     <marker id="diagram-marker-placed-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="24" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
-      <path d="M4 0L4 10M7 0L7 10" fill="none" stroke="#64748b" stroke-width="0.833" stroke-linejoin="round"/>
+      <path d="M4 0L4 10M7 0L7 10" fill="none" stroke="#64748b" stroke-width="0.833" stroke-linejoin="round" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
     </marker>
     <marker id="diagram-marker-extends-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="18" markerHeight="18" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
-      <path d="M0 0L10 5L0 10Z" fill="#fafaf8" stroke="#64748b" stroke-width="1.111" stroke-linejoin="round"/>
+      <path d="M0 0L10 5L0 10Z" fill="#fafaf8" stroke="#64748b" stroke-width="1.111" stroke-linejoin="round" style="fill:var(--diagram-canvas,#fafaf8);stroke:var(--diagram-normal-stroke,#64748b)"/>
     </marker>
     <marker id="diagram-marker-owns-tail" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="20" markerHeight="20" markerUnits="userSpaceOnUse" orient="auto-start-reverse" overflow="visible">
-      <path d="M0 5L5 1L10 5L5 9Z" fill="#64748b" stroke="#64748b" stroke-width="1" stroke-linejoin="round"/>
+      <path d="M0 5L5 1L10 5L5 9Z" fill="#64748b" stroke="#64748b" stroke-width="1" stroke-linejoin="round" style="fill:var(--diagram-normal-stroke,#64748b);stroke:var(--diagram-normal-stroke,#64748b)"/>
     </marker>
     <marker id="diagram-marker-owns-head" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto" overflow="visible">
-      <path d="M0 0L10 5L0 10" fill="none" stroke="#64748b" stroke-width="1.667" stroke-linejoin="round"/>
+      <path d="M0 0L10 5L0 10" fill="none" stroke="#64748b" stroke-width="1.667" stroke-linejoin="round" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
     </marker>
     <marker id="diagram-head-flows" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="30" markerHeight="30" markerUnits="userSpaceOnUse" orient="auto">
       <path d="M0 0L10 5L0 10Z" fill="#2563eb"/>
     </marker>
   </defs>
-  <rect width="1280" height="720" fill="#fafaf8"/>
+  <rect width="1280" height="720" fill="#fafaf8" style="fill:var(--diagram-canvas,#fafaf8)"/>
   <g id="customers" data-diagram-kind="node" transform="translate(60 80)" role="group" aria-label="customers">
-    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">customers</tspan></text>
+    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">customers</tspan></text>
   </g>
   <g id="orders" data-diagram-kind="node" transform="translate(560 80)" role="group" aria-label="orders">
-    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">orders</tspan></text>
+    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">orders</tspan></text>
   </g>
   <g id="base" data-diagram-kind="node" transform="translate(60 360)" role="group" aria-label="Shape">
-    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Shape</tspan></text>
+    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Shape</tspan></text>
   </g>
   <g id="square" data-diagram-kind="node" transform="translate(560 360)" role="group" aria-label="Square">
-    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Square</tspan></text>
+    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Square</tspan></text>
   </g>
   <g id="cache" data-diagram-kind="node" transform="translate(960 360)" role="group" aria-label="Cache">
-    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2"/>
-    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve"><tspan x="18" y="40">Cache</tspan></text>
+    <rect width="220" height="80" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="2" style="fill:var(--diagram-normal-fill,#ffffff);stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="18" y="40" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="18" y="40">Cache</tspan></text>
   </g>
   <g id="placed" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="placed by" data-from="orders" data-to="customers">
-    <path d="M560 120 L280 120" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" marker-start="url(#diagram-marker-placed-tail)" marker-end="url(#diagram-marker-placed-head)"/>
-    <text x="520" y="146" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="520" y="146">N</tspan></text>
-    <text x="310" y="146" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle"><tspan x="310" y="146">1</tspan></text>
-    <text x="360" y="106" font-size="22" fill="#172033" xml:space="preserve"><tspan x="360" y="106">placed by</tspan></text>
+    <path d="M560 120 L280 120" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" marker-start="url(#diagram-marker-placed-tail)" marker-end="url(#diagram-marker-placed-head)" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
+    <text x="520" y="146" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="520" y="146">N</tspan></text>
+    <text x="310" y="146" font-size="22" fill="#172033" xml:space="preserve" text-anchor="middle" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="310" y="146">1</tspan></text>
+    <text x="360" y="106" font-size="22" fill="#172033" xml:space="preserve" style="fill:var(--diagram-normal-ink,#172033)"><tspan x="360" y="106">placed by</tspan></text>
   </g>
   <g id="extends" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="square to base" data-from="square" data-to="base">
-    <path d="M560 400 L280 400" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#diagram-marker-extends-head)"/>
+    <path d="M560 400 L280 400" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" stroke-dasharray="8 6" marker-end="url(#diagram-marker-extends-head)" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
   </g>
   <g id="owns" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="square to cache" data-from="square" data-to="cache">
-    <path d="M780 400 L960 400" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" stroke-dasharray="0.1 5" stroke-linecap="round" marker-start="url(#diagram-marker-owns-tail)" marker-end="url(#diagram-marker-owns-head)"/>
+    <path d="M780 400 L960 400" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" stroke-dasharray="0.1 5" stroke-linecap="round" marker-start="url(#diagram-marker-owns-tail)" marker-end="url(#diagram-marker-owns-head)" style="stroke:var(--diagram-normal-stroke,#64748b)"/>
   </g>
   <g id="flows" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="customers to cache" data-from="customers" data-to="cache">
     <path d="M170 160 C208.333 180 278.333 265 400 280 C521.667 295 788.333 236.667 900 250 C1011.667 263.333 1041.667 341.667 1070 360" fill="none" stroke="#2563eb" stroke-width="6" stroke-linejoin="round" marker-end="url(#diagram-head-flows)"/>

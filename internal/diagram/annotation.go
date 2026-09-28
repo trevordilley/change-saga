@@ -20,23 +20,27 @@ var (
 	bracketSides     = map[string]bool{"left": true, "right": true, "top": true, "bottom": true}
 )
 
-// Swatch is one palette colour's renderer-owned tones.
+// Swatch is one palette colour's renderer-owned tones, each a reference to
+// its diagram-<colour>-<tone> token.
 type Swatch struct {
 	Sticky string // a sticky's paper
 	Tint   string // a section's or bubble's fill
 	Mark   string // a highlight, drawn translucent
-	Accent string // frames, tabs, pins, and brackets; white text reads on it
+	Accent string // frames, tabs, pins, and brackets; onAccent text reads on it
 	Ink    string // text on paper, tint, or mark
 }
 
-var palette = map[string]Swatch{
-	"yellow": {Sticky: "#fff3a3", Tint: "#fff8d6", Mark: "#facc15", Accent: "#a16207", Ink: "#3f2d00"},
-	"pink":   {Sticky: "#ffc9dc", Tint: "#ffe8f0", Mark: "#f472b6", Accent: "#be185d", Ink: "#500724"},
-	"blue":   {Sticky: "#c7defe", Tint: "#e8f1ff", Mark: "#60a5fa", Accent: "#1d4ed8", Ink: "#172554"},
-	"green":  {Sticky: "#c6efcf", Tint: "#e7f8eb", Mark: "#4ade80", Accent: "#15803d", Ink: "#052e16"},
-	"purple": {Sticky: "#dccdfd", Tint: "#f1ebff", Mark: "#a78bfa", Accent: "#6d28d9", Ink: "#2e1065"},
-	"gray":   {Sticky: "#e2e8f0", Tint: "#f1f5f9", Mark: "#94a3b8", Accent: "#475569", Ink: "#0f172a"},
+var palette = map[string]Swatch{}
+
+func init() {
+	for _, name := range paletteOrder {
+		tone := func(role string) string { return "@diagram-" + name + "-" + role }
+		palette[name] = Swatch{Sticky: tone("sticky"), Tint: tone("tint"), Mark: tone("mark"), Accent: tone("accent"), Ink: tone("ink")}
+	}
 }
+
+// onAccent is the text on a section tab or pin, and the ring around a pin.
+const onAccent = "@diagram-on-accent"
 
 var paletteOrder = []string{"yellow", "pink", "blue", "green", "purple", "gray"}
 
@@ -286,7 +290,7 @@ func (r *renderer) board(e Element, style Style, g *node) error {
 		return r.text(g, e.Label, Box{X: 14, Y: 12, Width: e.Width - 28, Height: e.Height - 24}, style.FontSize, colors.Ink, true, e.Align)
 	case "pin":
 		radius := e.Width / 2
-		g.add("circle", "cx", num(radius), "cy", num(radius), "r", num(radius), "fill", colors.Accent, "stroke", "#ffffff", "stroke-width", "2")
+		g.add("circle", "cx", num(radius), "cy", num(radius), "r", num(radius), "fill", colors.Accent, "stroke", onAccent, "stroke-width", "2")
 		label := strings.TrimSpace(e.Label)
 		size := math.Round(e.Width*.5*10) / 10
 		width, err := r.measure(label, size)
@@ -296,7 +300,7 @@ func (r *renderer) board(e Element, style Style, g *node) error {
 		if width*widthSlack > e.Width*.8 {
 			return fmt.Errorf("text overflow: pin label %q needs width %.1f, a %s-wide pin has %.1f", label, width*widthSlack, num(e.Width), e.Width*.8)
 		}
-		g.add("text", "x", num(radius), "y", num(radius+size*.35), "font-size", num(size), "fill", "#ffffff", "text-anchor", "middle", "font-weight", "bold").text = label
+		g.add("text", "x", num(radius), "y", num(radius+size*.35), "font-size", num(size), "fill", onAccent, "text-anchor", "middle", "font-weight", "bold").text = label
 		return nil
 	case "highlight":
 		g.add("rect", "width", num(e.Width), "height", num(e.Height), "rx", "6", "fill", colors.Mark, "fill-opacity", "0.35")
@@ -330,7 +334,7 @@ func (r *renderer) section(e Element, style Style, g *node) error {
 		return fmt.Errorf("text overflow: section title tab needs height %.1f, the section has %.1f", tabHeight, e.Height)
 	}
 	g.add("path", "d", fmt.Sprintf("M0 %sV10A10 10 0 0 1 10 0H%sA10 10 0 0 1 %s 10V%sZ", num(tabHeight), num(tabWidth-10), num(tabWidth), num(tabHeight)), "fill", colors.Accent)
-	return r.text(g, e.Label, Box{X: 12, Y: 6, Width: tabWidth - 24, Height: size * lineHeight}, size, "#ffffff", false, "")
+	return r.text(g, e.Label, Box{X: 12, Y: 6, Width: tabWidth - 24, Height: size * lineHeight}, size, onAccent, false, "")
 }
 
 // ensureShadow adds the renderer-owned soft shadow a sticky casts, once.
@@ -343,7 +347,7 @@ func (r *renderer) ensureShadow() {
 		}
 	}
 	filter := r.defs.add("filter", "id", shadowID, "x", "-20%", "y", "-20%", "width", "140%", "height", "150%", "color-interpolation-filters", "sRGB")
-	filter.add("feDropShadow", "dx", "0", "dy", "4", "stdDeviation", "5", "flood-color", "#0f172a", "flood-opacity", "0.2")
+	filter.add("feDropShadow", "dx", "0", "dy", "4", "stdDeviation", "5", "flood-color", "@diagram-shadow", "flood-opacity", "0.2")
 }
 
 // bubblePath outlines a rounded bubble whose pointer leaves the side facing
