@@ -75,6 +75,15 @@ type Landings struct {
 	mu       sync.Mutex
 	refs     map[string]string
 	fallback []string
+	// ledger, when set, remembers merges across runs; see Ledger.
+	ledger *Ledger
+}
+
+// UseLedger makes landings consult ledger before asking Git and record in it
+// every merge it finds. The caller saves it.
+func (landings *Landings) UseLedger(ledger *Ledger) *Landings {
+	landings.ledger = ledger
+	return landings
 }
 
 // NewLandings detects landings in checkout, the code repository.
@@ -105,8 +114,13 @@ func (landings *Landings) Detect(ctx context.Context, review *saga.Review) State
 		if !landings.hasFile(ctx, commit, record) {
 			continue
 		}
+		// A merge found at an earlier commit of this base still holds.
+		if entry, ok := landings.ledger.lookup(record); ok && landings.isAncestor(ctx, entry.Base, commit) {
+			return State{State: StateMerged, Source: StateDetected, LandedIn: ref}
+		}
 		switch landings.verdict(ctx, review, commit, record) {
 		case StateMerged:
+			landings.ledger.remember(record, commit, ref)
 			return State{State: StateMerged, Source: StateDetected, LandedIn: ref}
 		case StateUnknown:
 			result = unknown
@@ -154,6 +168,64 @@ func (landings *Landings) verdict(ctx context.Context, review *saga.Review, base
 		}
 	}
 	return StateOpen
+}
+
+// Prepare reads, in one walk of each base's first-parent line, the commit
+// that brought in every record the ledger has not already settled, so a list
+// of a thousand reviews asks Git once rather than once per review. Detect
+// works without it; it is only faster after it.
+func (landings *Landings) Prepare(ctx context.Context, reviews []*saga.Review) {
+	byBase := map[string][]string{}
+	for _, review := range reviews {
+		if review.Merged != nil {
+			continue
+		}
+		record, ok := landings.recordPath(ctx, review)
+		if !ok {
+			continue
+		}
+		for _, ref := range landings.baseRefs(ctx, review.Base) {
+			commit := landings.resolve(ctx, ref)
+			if entry, ok := landings.ledger.lookup(record); ok && landings.isAncestor(ctx, entry.Base, commit) {
+				continue
+			}
+			byBase[commit] = append(byBase[commit], record)
+		}
+	}
+	for base, records := range byBase {
+		if base == "" || len(records) < 2 {
+			continue
+		}
+		landings.prepareLandings(ctx, base, records)
+	}
+}
+
+// prepareLandings remembers the landing commit of each of records on base.
+func (landings *Landings) prepareLandings(ctx context.Context, base string, records []string) {
+	args := append([]string{"log", "--first-parent", "--diff-filter=A", "--name-only", "--format=%x1e%H%x1f%P%x1f%s", base, "--"}, records...)
+	output, err := gitOutput(ctx, landings.top, args...)
+	if err != nil || ctx.Err() != nil {
+		return
+	}
+	wanted := map[string]bool{}
+	for _, record := range records {
+		wanted[record] = true
+	}
+	for _, entry := range strings.Split(output, "\x1e") {
+		header, names, _ := strings.Cut(strings.TrimSpace(entry), "\n")
+		fields := strings.SplitN(header, "\x1f", 3)
+		if len(fields) != 3 {
+			continue
+		}
+		found := landing{commit: fields[0], parents: strings.Fields(fields[1]), subject: fields[2]}
+		// Newest first: the first commit to add a record is its landing.
+		for _, name := range strings.Fields(names) {
+			if wanted[name] {
+				delete(wanted, name)
+				settle(landings.checkout, "landing", base+":"+name, found)
+			}
+		}
+	}
 }
 
 // landing is the commit on a base's first-parent line that added a record.
@@ -281,15 +353,29 @@ func (landings *Landings) recordPath(ctx context.Context, review *saga.Review) (
 	if landings.top == "" || review.Directory == "" {
 		return "", false
 	}
-	directory := review.Directory
-	if resolved, err := filepath.EvalSymlinks(directory); err == nil {
-		directory = resolved
-	}
-	rel, err := filepath.Rel(landings.top, filepath.Join(directory, saga.ReviewManifestName))
+	rel, err := filepath.Rel(landings.top, filepath.Join(resolveExisting(review.Directory), saga.ReviewManifestName))
 	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
 		return "", false
 	}
 	return filepath.ToSlash(rel), true
+}
+
+// resolveExisting resolves the symlinks of path's nearest existing ancestor,
+// so a directory not checked out here still compares with the resolved top
+// level.
+func resolveExisting(path string) string {
+	suffix := ""
+	for current := filepath.Clean(path); ; {
+		if resolved, err := filepath.EvalSymlinks(current); err == nil {
+			return filepath.Join(resolved, suffix)
+		}
+		parent := filepath.Dir(current)
+		if parent == current {
+			return path
+		}
+		suffix = filepath.Join(filepath.Base(current), suffix)
+		current = parent
+	}
 }
 
 // baseRefs are the refs a review lands in: its base, as named and as
@@ -382,6 +468,17 @@ var settled struct {
 
 // settledLimit bounds settled; it starts over rather than evicting.
 const settledLimit = 20000
+
+// settle records an answer found some other way than by asking for it.
+func settle(checkout, kind, key string, answer any) {
+	key = checkout + "\x00" + kind + "\x00" + key
+	settled.Lock()
+	if settled.answers == nil || len(settled.answers) >= settledLimit {
+		settled.answers = map[string]any{}
+	}
+	settled.answers[key] = answer
+	settled.Unlock()
+}
 
 func remember(ctx context.Context, checkout, kind, key string, ask func() any) any {
 	key = checkout + "\x00" + kind + "\x00" + key

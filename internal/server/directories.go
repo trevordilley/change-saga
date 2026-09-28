@@ -354,18 +354,13 @@ func reviewsDirectory(reviews []reviewSummaryView, query string, showMerged bool
 			}
 			pull = directoryCell{Text: label, Href: report.PullRequest.URL}
 		}
-		rng := gapCell("range unavailable")
-		if report.Range != nil {
-			rng = textCell(shortCommit(report.Range.BaseOID) + ".." + shortCommit(report.Range.HeadOID))
-		}
-		decisions, outOfDate := 0, 0
-		for _, slide := range report.Slides {
-			for _, decision := range slide.Decisions {
-				decisions++
-				if decision.Currency == reviewstate.OutOfDate {
-					outOfDate++
-				}
-			}
+		// A review whose details load after the page shows them pending, and
+		// its row reads them once it is in view.
+		ids := reviewCellIDs(report.ID)
+		rng, decisions, outOfDate := pendingCell(ids.rng), pendingCell(ids.decisions), pendingCell(ids.outOfDate)
+		decisions.Numeric, outOfDate.Numeric = true, true
+		if review.DetailsHref == "" {
+			rng, decisions, outOfDate = reviewDetailCells(report)
 		}
 		merged := report.State == reviewstate.StateMerged
 		state := "open"
@@ -373,14 +368,44 @@ func reviewsDirectory(reviews []reviewSummaryView, query string, showMerged bool
 			state = "merged"
 		}
 		title := directoryCell{Text: report.Title, Href: review.Href, Note: report.ID, Target: report.Target}
-		view.addRow(directoryRow{Key: report.ID, Current: review.Matches, Archived: merged, Cells: []directoryCell{
+		view.addRow(directoryRow{Key: report.ID, Current: review.Matches, Archived: merged, Load: review.DetailsHref, Cells: []directoryCell{
 			title, pull, rng,
-			countCell(len(report.Slides)), countCell(decisions), countCell(outOfDate),
+			countCell(len(report.Slides)), decisions, outOfDate,
 			textCell(state),
 		}})
 	}
 	view.apply(query)
 	return view
+}
+
+// reviewCellIDsView names the cells of a review's row that its details fill.
+type reviewCellIDsView struct{ rng, decisions, outOfDate string }
+
+func reviewCellIDs(id string) reviewCellIDsView {
+	prefix := "review-cell-" + domID(id)
+	return reviewCellIDsView{rng: prefix + "-range", decisions: prefix + "-decisions", outOfDate: prefix + "-out-of-date"}
+}
+
+// reviewDetailCells are the cells of a review's row read from its report:
+// its range, how many decisions it holds, and how many are out of date.
+func reviewDetailCells(report reviewstate.Report) (rng, decisions, outOfDate directoryCell) {
+	ids := reviewCellIDs(report.ID)
+	rng = gapCell("range unavailable")
+	if report.Range != nil {
+		rng = textCell(shortCommit(report.Range.BaseOID) + ".." + shortCommit(report.Range.HeadOID))
+	}
+	decided, stale := 0, 0
+	for _, slide := range report.Slides {
+		for _, decision := range slide.Decisions {
+			decided++
+			if decision.Currency == reviewstate.OutOfDate {
+				stale++
+			}
+		}
+	}
+	decisions, outOfDate = countCell(decided), countCell(stale)
+	rng.ID, decisions.ID, outOfDate.ID = ids.rng, ids.decisions, ids.outOfDate
+	return rng, decisions, outOfDate
 }
 
 // ----- The overview's own directory -----

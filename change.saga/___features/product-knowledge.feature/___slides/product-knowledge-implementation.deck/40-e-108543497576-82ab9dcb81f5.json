@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "4f0ed55c66f3cb35ca67730c3d05fb3a3643c9b6",
+      "commit": "dae580b3d5258727a1c23f476c74b7ac7986cb57",
       "path": "internal/server/directory.go",
-      "start": 232,
-      "end": 232,
-      "digest": "sha256:5b4dff364dc43154e3d25a9949c1fb54bb5abc0dfd642abf2f4a245538cc23fd",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:3fa144d75327f48dceea2fef46fdd3989e68bab455443938806db703ed5988fc",
       "note": "The region carries role=region, an aria-label of the directory's title and tabindex 0, and the table inside keeps its caption and scope=col and scope=row headers."
     }
   ]

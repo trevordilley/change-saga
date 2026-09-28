@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased — the Reviews page opens at once
+
+- The Reviews page opens knowing which reviews have merged, so the first
+  view already shows only the open ones. Each review's range, decisions,
+  and coverage then load as its row comes into view, with a spinner while
+  they do. A merged review set aside costs nothing until it is shown.
+  Without JavaScript, `/reviews?details=all` renders everything at once.
+- Reviews found merged are remembered across runs in a ledger under the
+  user's cache directory (`CHANGE_SAGA_CACHE_DIR` moves it), never inside a
+  Saga. A merge never comes undone, so as the base moves forward one
+  ancestry check carries every known merge along, and only open reviews are
+  asked about again. Deleting the ledger only makes the next read slower.
+  The first read finds every unsettled review's landing commit in one
+  `git log`, instead of one Git call per review.
+- `review list` and `status` use the same ledger, so they agree with the
+  Reviews page.
+- A page that takes more than a moment to arrive shows a "Loading…"
+  spinner under the top bar until it is swapped in, and marks the page busy
+  for assistive technology. It waits 150ms before showing, so a quick page
+  never flashes one.
+- On this repository `/reviews` drops from about 1.1s to about 20ms, and a
+  review's details take about 26ms.
+
 ## Unreleased — merged reviews are history
 
 - A review whose change has merged now reads as merged even when nobody ran

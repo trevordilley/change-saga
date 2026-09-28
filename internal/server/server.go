@@ -32,6 +32,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/semanticgraph"
 	"github.com/twentyideas/changesaga/internal/snapshotcache"
@@ -66,8 +67,13 @@ type app struct {
 	files sagaFilesCache
 	// reviewCoverages is each review's coverage; see reviewcache.go.
 	reviewCoverages reviewCoverageCache
-	// merged is which reviews the sidebar sets aside; see mergedReviews.
-	merged mergedReviewCache
+	// states is every review's state; see reviewStates.
+	states reviewStateCache
+	// details is the whole Saga the reviews' details read; see
+	// reviewDetailsDocument.
+	details reviewDetailsCache
+	// ledger keeps merged reviews across runs; nil keeps nothing.
+	ledger *reviewstate.Ledger
 	// termPlacesCache is where the terms' code is at the head.
 	termPlacesCache termPlacesCache
 	// fresh shares the check of whether the Saga's files or the heads
@@ -405,7 +411,7 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 	if err != nil {
 		return err
 	}
-	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, shutdownToken: options.ShutdownToken, mutationToken: mutationToken, generations: generations}
+	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, shutdownToken: options.ShutdownToken, mutationToken: mutationToken, generations: generations, ledger: reviewstate.OpenLedger(context.Background(), sourceDir)}
 	application.shutdown = func() {
 		select {
 		case stopCh <- struct{}{}:
@@ -493,6 +499,7 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /", application.page)
 	page("GET /reviews", application.reviewIndex)
 	page("GET /reviews/{id}", application.reviewPage)
+	handle("GET /reviews/{id}/summary", application.reviewSummary)
 	handle("GET /reviews/{id}/item-diffs", application.reviewItemDiffs)
 	handle("GET /reviews/{id}/code", application.reviewCodeSurface)
 	handle("GET /reviews/{id}/file-diff", application.reviewFileDiffSurface)

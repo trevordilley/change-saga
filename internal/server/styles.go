@@ -199,6 +199,7 @@ it. The view tabs beside them belong to whichever side is open. */
 .directory-filter-go{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-subtle);color:var(--ink);font:13px var(--ui);cursor:pointer}
 .directory-filter-go:hover{background:var(--bg-inset)}
 .directory-filter-clear{color:var(--muted);font-size:12px;text-decoration:none}
+.directory-load{display:inline-block;width:1px;height:1px;vertical-align:top}
 .directory-archived{display:inline-flex;align-items:center;gap:4px;flex:none;color:var(--muted);font-size:12px;white-space:nowrap;cursor:pointer}
 .directory-filter-clear:hover{color:var(--accent)}
 .directory-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;background:linear-gradient(to right,var(--bg) 40%,transparent) left/28px 100% no-repeat local,linear-gradient(to left,var(--bg) 40%,transparent) right/28px 100% no-repeat local,radial-gradient(farthest-side at 0 50%,color-mix(in srgb,var(--ink) 16%,transparent),transparent) left/10px 100% no-repeat scroll,radial-gradient(farthest-side at 100% 50%,color-mix(in srgb,var(--ink) 16%,transparent),transparent) right/10px 100% no-repeat scroll}
@@ -697,6 +698,7 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .surface-placeholder.error{color:var(--red)}
 .surface-placeholder.error strong{color:var(--red)}
 .surface-placeholder .btn-primary{margin-top:6px}
+.page-loading{position:fixed;top:calc(var(--top) + 12px);left:50%;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:8px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--muted);font:13px var(--ui);box-shadow:0 4px 14px #1f23281f}.page-loading[hidden]{display:none}.page-loading .surface-spinner{width:14px;height:14px}
 .surface-spinner{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:surface-spin .8s linear infinite}
 @keyframes surface-spin{to{transform:rotate(360deg)}}
 [data-surface-next]{display:flex;margin:14px auto;padding:6px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--accent);font:600 12px var(--ui);text-decoration:none}
