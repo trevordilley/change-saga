@@ -143,7 +143,7 @@ func (landings *Landings) verdict(ctx context.Context, review *saga.Review, base
 		}
 		return StateUnknown
 	}
-	if landings.addsNothing(ctx, head, base) {
+	if landings.addsNothing(ctx, head, base) || squashOf(landing.subject, review) {
 		return StateMerged
 	}
 	if merge && names {
@@ -179,19 +179,38 @@ func (landings *Landings) landingCommit(ctx context.Context, base, record string
 
 // namesReview reports whether a merge's subject names review: its pull
 // request's number, as "#12" in "Merge pull request #12 from ...", or the
-// branch it follows.
+// branch it follows. A subject naming another pull request is that pull
+// request's merge, even from the same branch, so the branch then counts for
+// nothing.
 func namesReview(subject string, review *saga.Review) bool {
-	if review.PullRequest != nil && review.PullRequest.Number > 0 {
-		if regexp.MustCompile(`#` + strconv.Itoa(review.PullRequest.Number) + `\b`).MatchString(subject) {
-			return true
+	number := 0
+	if review.PullRequest != nil {
+		number = review.PullRequest.Number
+	}
+	if numbers := pullRequestNumbers.FindAllStringSubmatch(subject, -1); len(numbers) > 0 {
+		for _, match := range numbers {
+			if match[1] == strconv.Itoa(number) {
+				return true
+			}
+		}
+		if number > 0 {
+			return false
 		}
 	}
 	branch := strings.TrimPrefix(review.Head, "origin/")
 	if branch == "" || branch == "HEAD" || gitexec.NamesObjects(branch) {
 		return false
 	}
-	return regexp.MustCompile(`(^|[\s'"/])` + regexp.QuoteMeta(branch) + `($|[\s'":])`).MatchString(subject)
+	quoted := regexp.QuoteMeta(branch)
+	// Git's and GitHub's merge subjects, and this repository's own
+	// "Merge BRANCH: why": the branch, never a longer one ending in it.
+	return regexp.MustCompile(`^Merge pull request #\d+ from [^/\s]+/` + quoted + `(\s|$)` +
+		`|^Merge (remote-tracking )?branch '(origin/)?` + quoted + `'` +
+		`|^Merge ` + quoted + `(:|\s|$)`).MatchString(subject)
 }
+
+// pullRequestNumbers finds the "#N" a merge subject names.
+var pullRequestNumbers = regexp.MustCompile(`#(\d+)\b`)
 
 // squashOf reports whether subject is a squash of review's pull request,
 // which GitHub ends with "(#N)".

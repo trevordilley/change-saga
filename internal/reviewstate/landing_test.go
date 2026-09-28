@@ -251,3 +251,52 @@ func TestDetectStackedReviewWhoseParentMergedFirst(t *testing.T) {
 	git(t, dir, "merge", "-q", "--no-ff", "-m", "Merge pull request #1 from acme/feature", "feature")
 	expectState(t, "stacked child", detect(t, dir, child), open)
 }
+
+// A merge from a branch that names another pull request is that one's merge:
+// review #9 on the same branch stays open while it adds work.
+func TestDetectMergeOfAnotherPullRequestFromTheSameBranch(t *testing.T) {
+	dir, _ := landingRepo(t)
+	next := addReview(t, dir, "pr-9", 9, "feature")
+	commitAll(t, dir, "Review for the next pull request, early")
+	git(t, dir, "checkout", "-q", "main")
+	git(t, dir, "merge", "-q", "--no-ff", "-m", "Merge pull request #8 from acme/feature", "feature")
+	git(t, dir, "checkout", "-q", "feature")
+	write(t, dir, "more.txt", "more\n")
+	commitAll(t, dir, "the work of pull request #9")
+	expectState(t, "review #9", detect(t, dir, next), open)
+}
+
+// A squash leaves "(#N)" on main; when the branch is reused afterwards, its
+// earlier review stays merged.
+func TestDetectSquashOfAReusedBranch(t *testing.T) {
+	dir, review := landingRepo(t)
+	git(t, dir, "checkout", "-q", "main")
+	git(t, dir, "merge", "-q", "--squash", "feature")
+	git(t, dir, "commit", "-q", "-m", "Move the queue (#1)")
+	git(t, dir, "checkout", "-q", "feature")
+	write(t, dir, "more.txt", "more\n")
+	commitAll(t, dir, "the next pull request on the same branch")
+	expectState(t, "squashed then reused", detect(t, dir, review), merged("main"))
+}
+
+// A merge names a branch only as the whole branch: y/feature is not feature.
+func TestNamesReviewMatchesOnlyTheWholeBranch(t *testing.T) {
+	review := &saga.Review{ReviewManifest: saga.ReviewManifest{Head: "feature/x"}}
+	for subject, want := range map[string]bool{
+		"Merge pull request #3 from acme/feature/x":       true,
+		"Merge pull request #3 from acme/y/feature/x":     false,
+		"Merge branch 'feature/x'":                        true,
+		"Merge remote-tracking branch 'origin/feature/x'": true,
+		"Merge branch 'y/feature/x'":                      false,
+		"Merge feature/x: why it matters":                 true,
+		"Merge feature/xy: why it matters":                false,
+	} {
+		if got := namesReview(subject, review); got != want {
+			t.Errorf("namesReview(%q) = %v, want %v", subject, got, want)
+		}
+	}
+	numbered := &saga.Review{ReviewManifest: saga.ReviewManifest{Head: "feature/x", PullRequest: &saga.PullRequest{Number: 9}}}
+	if namesReview("Merge pull request #8 from acme/feature/x", numbered) || !namesReview("Merge pull request #9 from acme/feature/x", numbered) {
+		t.Error("a merge naming another pull request matched on the branch")
+	}
+}
