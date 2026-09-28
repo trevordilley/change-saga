@@ -95,7 +95,7 @@ func Edit(d Document, operations []Operation) (Document, []string, error) {
 			for again := true; again; {
 				again = false
 				for _, e := range d.Elements {
-					if !remove[e.ID] && (remove[e.Parent] || remove[e.From] || remove[e.To]) {
+					if !remove[e.ID] && (remove[e.Parent] || remove[e.From] || remove[e.To] || remove[e.About]) {
 						if !op.Cascade {
 							return fail("%s depends on %s; remove it first or set cascade", e.ID, op.ID)
 						}
@@ -187,6 +187,9 @@ func Edit(d Document, operations []Operation) (Document, []string, error) {
 		default:
 			return fail("unknown operation; use one of %v", OperationNames)
 		}
+	}
+	for _, id := range bubbleDependents(d, changed) {
+		changed[id] = true
 	}
 	ids := make([]string, 0, len(changed))
 	for id := range changed {
