@@ -18,5 +18,21 @@ const slideViewedStyles = `
 .slide-viewed-identity p{font-size:11px;color:var(--muted);margin:8px 0 0}
 .slide-viewed-badge{font:10px var(--ui);color:var(--muted);margin-left:auto;white-space:nowrap}
 body.presentation-mode .slide-viewed-controls{display:none}
-@media(max-width:780px){.slide-viewed-controls{gap:6px}.slide-viewed-controls small{flex-basis:100%}}
+@media(max-width:780px){
+/* Reserve two chrome rows above the visual instead of wrapping the Viewed
+   count over the slide's marked-places and evidence controls. */
+.deck-viewer-stage{box-sizing:content-box;padding-top:76px}
+.deck-viewer-header{flex-wrap:wrap;justify-content:flex-start;gap:4px 10px}
+.deck-viewer-header [data-slide-viewed-host]{flex-basis:100%}
+.slide-viewed-controls{gap:6px;flex-wrap:nowrap;font-size:11px;min-width:0;max-width:100%}
+.slide-viewed-identity{min-width:0;max-width:100px}
+.slide-viewed-identity summary,.slide-viewed-controls small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slide-viewed-controls small{min-width:0}
+.slide-viewed-controls [data-viewed-count]{flex:none}
+.deck-viewer-slide,.deck-viewer-controls{top:76px}
+.deck-overview{top:76px;padding-top:16px}
+.slide-front{padding-top:24px}
+body.presentation-mode .deck-viewer-stage{padding-top:0}
+body.presentation-mode .deck-viewer-slide,body.presentation-mode .deck-viewer-controls{top:0}
+}
 `

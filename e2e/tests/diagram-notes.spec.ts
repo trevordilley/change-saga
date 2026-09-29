@@ -124,7 +124,12 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await expect(popover).toBeHidden();
 
     // A note's links follow its hotspot in the Tab order, and Tab leaves them.
-    for (let step = 0; step < 30 && !(await edge.evaluate(node => node === document.activeElement)); step++) await page.keyboard.press("Tab");
+    // This note precedes the heading in DOM order, so reaching it again makes
+    // one circuit through the visible reviewer, face and Viewed controls.
+    for (let step = 0; step < 60 && !(await edge.evaluate(node => node === document.activeElement)); step++) {
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => Boolean(document.activeElement?.closest('[data-deck-overview][hidden]'))), 'hidden Overview content must not receive focus').toBe(false);
+    }
     await expect(edge).toBeFocused();
     await expect(popover).toHaveAttribute("role", "note");
     await page.keyboard.press("Tab");
