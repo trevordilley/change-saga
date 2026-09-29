@@ -8,7 +8,9 @@ const deckOverviewJavaScript = `
     if (!viewer || !deckViewerActive()) return;
     const overview = viewer.dataset.deckFace === 'overview' ? q('[data-deck-overview]:not([hidden])', viewer) : null;
     const active = q('[data-deck-slide].active', viewer);
-    const overviewLink = overview ? qa('.doc-tree a.doc-link').find(link => decodeURIComponent(link.hash.slice(1)) === overview.id) : null;
+    // Match the Overview row's stable identity: an empty deck's Technical
+    // header also links to this URL, but it is not the selected document.
+    const overviewLink = overview ? q('.doc-tree [data-nav-row="' + CSS.escape(overview.id) + '"] > a.doc-link') : null;
     let selected = overviewLink;
     qa('[data-slide-thumbnail]').forEach(thumbnail => {
       const current = !overview && thumbnail.dataset.slideTarget === active?.dataset.slideTarget;
