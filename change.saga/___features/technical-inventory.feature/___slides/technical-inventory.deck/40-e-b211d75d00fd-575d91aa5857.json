@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
       "path": "docs/renderer-ui.md",
-      "start": 86,
-      "end": 94,
-      "digest": "sha256:7b82f6f399b75ed748853ff3d85b31d4d3746a7a3065317cf4e407f380b535e2",
+      "start": 87,
+      "end": 95,
+      "digest": "sha256:6cb2d29508399cd4a397d2b549b6abfb204df1c116a488219f58a803271e6a76",
       "note": "The extension preserves existing Saga reading, keeps terms and Item.Record distinct, and documents upgrade/deferred-integration boundaries."
     }
   ]

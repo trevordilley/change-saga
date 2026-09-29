@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81cfa39ddfb630b91eec06598c23e2e7a38acadc",
+      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
       "path": "internal/server/reviews.go",
-      "start": 884,
-      "end": 884,
-      "digest": "sha256:15f9a8e989f83e80828a43f82e22b45573b207f0d63ff1d74166079296dd5507",
+      "start": 1117,
+      "end": 1117,
+      "digest": "sha256:5bd2ea1d9afb4e3fec0c550fb18428dc5de6baef5671bce57d5d4750dd577a7d",
       "note": "The existing Item affordances expose a canonical documentation link in implementation and review contexts."
     }
   ]
