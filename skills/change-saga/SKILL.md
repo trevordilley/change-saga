@@ -216,8 +216,8 @@ observable pass/fail criteria. A proposed story may remain criterion-free
 while intent is uncertain; an accepted story needs at least one criterion. Add
 only the narrowest obligation confirmed by the user.
 
-For a request to review an existing code change, begin with its review deck
-(the fast path above) and offer missing product context only as optional
+For an existing code change that the user asks to review, begin with its review
+deck (the fast path above) and offer missing product context only as optional
 follow-up. A request to describe implemented features instead follows the
 Product story workflow above. For new
 work whose whole lifecycle is requested, begin with personas and stories,

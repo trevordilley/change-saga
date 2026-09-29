@@ -15,7 +15,8 @@ tool, and what they have to do about it.
   lines, measured in bundled Go Mono. Source is never executed; overflow is
   rejected without wrapping or shrinking. Existing diagram output is unchanged
   when no code element is present. Upgrade source readers before authoring this
-  new kind; published SVGs remain readable by existing viewers.
+  new kind: older CLI/source validators may reject it even on load. Standalone
+  SVG readers can still display the published visual.
 - Reviewer navigation calls feature decks **Technical** and the nested design
   section **Architecture**, preserving links and storage. Slides retain full
   opacity after pointer leave. Manual local **Viewed** markers show reading

@@ -530,7 +530,6 @@ to show the existing visual. Strict older Go readers (`DisallowUnknownFields`)
 and older schemas (`additionalProperties: false`) reject the new fields; upgrade
 those readers before authoring them. Do not silently strip authored content.
 
-<a id="complete-slide-transactions-and-diagram-sources"></a>
 ### Complete-slide transactions and diagram sources
 
 `apply-slide` publishes one complete slide of an implementation or review deck
@@ -575,9 +574,10 @@ source that exceeds its explicit box is refused. Source is limited to 16,000
 characters and 100 lines. An Item of kind `example` can select the element and
 retain exact evidence on that stable Item. `diagram edit`, `diagram describe`,
 and the published vocabulary expose the code fields. Existing sources without
-code elements retain their rendered output. Older source readers need an
-upgrade to author this element kind; readers of the published SVG still display
-its visual without understanding the source kind.
+code elements retain their rendered output. Standalone SVG readers can display
+the published visual without understanding the source kind. Older CLI/source
+validators may reject a deck containing this kind even on load; upgrade those
+readers before authoring or loading it.
 
 An edge's `head` and `tail` take one terminator vocabulary: `arrow`, `open`,
 `triangle` (UML generalization), `diamond` and `filled-diamond` (aggregation
@@ -758,7 +758,6 @@ evidence that has no active, current path to an accepted story. Thus a caller
 can traverse from a story to code, or from the current head commit or diff back
 to the story, without duplicating story text inside slide records.
 
-<a id="design-tokens"></a>
 ### Design tokens
 
 Every colour, font, and size the reviewer and its generated slides paint with
