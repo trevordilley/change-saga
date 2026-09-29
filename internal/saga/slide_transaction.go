@@ -307,6 +307,7 @@ func ValidateSlideTransactionCandidate(root string, deck *Deck, record SlideTran
 
 func validateTransactionalSlide(root, recordRoot, path, sagaID string, deck *Deck, targets deckTargets, revision SlideTransactionRevision, validation *Validation) {
 	value := revision.Slide
+	validateFront(value.Front, path, validation)
 	if value.Version != DeckRecordVersion || !stableID.MatchString(value.ID) || strings.TrimSpace(value.Title) == "" {
 		addIssue(validation, "error", path, "transaction slide requires version 4, a stable id, and a title")
 	}

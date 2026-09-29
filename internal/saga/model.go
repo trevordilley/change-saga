@@ -48,16 +48,32 @@ type Manifest struct {
 	Source  Source `json:"source"`
 }
 
+// DeckOverview is an authored Markdown report whose references only navigate
+// existing slides and Items. It never owns code evidence.
+type DeckOverview struct {
+	Body        string               `json:"body"`
+	Annotations []OverviewAnnotation `json:"annotations,omitempty"`
+}
+
+type OverviewAnnotation struct {
+	ID    string `json:"id"`
+	Label string `json:"label"`
+	Slide string `json:"slide"`
+	Item  string `json:"item,omitempty"`
+}
+
 type DeckManifest struct {
-	Version   int    `json:"version"`
-	ID        string `json:"id"`
-	Title     string `json:"title"`
-	Role      string `json:"role"`
-	Rank      int    `json:"rank"`
-	Objective string `json:"objective"`
+	Overview  *DeckOverview `json:"overview,omitempty"`
+	Version   int           `json:"version"`
+	ID        string        `json:"id"`
+	Title     string        `json:"title"`
+	Role      string        `json:"role"`
+	Rank      int           `json:"rank"`
+	Objective string        `json:"objective"`
 }
 
 type SlideManifest struct {
+	Front              []string `json:"front,omitempty"`
 	Version            int      `json:"version"`
 	ID                 string   `json:"id"`
 	DeckID             string   `json:"deck"`
