@@ -10,6 +10,19 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+- **Format:** Diagram sources support literal `code` elements for API and library
+  usage examples, with a language label, optional line numbers and highlighted
+  lines, measured in bundled Go Mono. Source is never executed; overflow is
+  rejected without wrapping or shrinking. Existing diagram output is unchanged
+  when no code element is present. Upgrade source readers before authoring this
+  new kind; published SVGs remain readable by existing viewers.
+- Reviewer navigation calls feature decks **Technical** and the nested design
+  section **Architecture**, preserving links and storage. Slides retain full
+  opacity after pointer leave. Manual local **Viewed** markers show reading
+  progress separately from decisions and persist per browser reader and address.
+- Feature-description guidance now creates or updates actual Product stories;
+  technical decks reference those records instead of substituting story lists.
+
 - **Format:** Decks can carry an authored Markdown `overview` with citations to
   existing slides/Items and reusable slide visuals; slides can carry `front`
   summary bullets. Stable identities, storage, and Item evidence are preserved.

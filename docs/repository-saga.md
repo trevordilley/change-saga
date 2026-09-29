@@ -361,7 +361,8 @@ record, not a headline.
 
 ### Kept from the current design
 
-One format and no backwards compatibility. Staleness derived only from pins.
+One current format, with explicit legacy-reader behavior documented in the
+[deck guide](deck-overview.md). Staleness derived only from pins.
 Readiness never reduced to a score. Ordered `next_actions`, each a command or
 one focused question. The feature sidebar: Product, Design, Quality,
 Technical, with Technical as the deck. The stored implementation role and stable links retain their existing spelling.

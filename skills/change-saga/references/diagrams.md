@@ -92,7 +92,18 @@ diagram icons`.
   `boundary`, `triangle`, `hexagon`, `parallelogram`, `document`, `cloud`,
   `actor`, `queue`, `circle`, `star`, or `entity`), `edge` (`from`/`to` nodes
   plus explicit `points` or `path`), `text`, `group`, `graphic`
-  (allowlisted SVG drawing markup), `sticky`, and `annotation` (below).
+  (allowlisted SVG drawing markup), `sticky`, `annotation` (below), and `code`
+  (literal API or library usage examples).
+- Use a `code` element when the reviewer needs to see how an API or library is
+  invoked. Supply literal `code`, an optional `language` display label,
+  `line_numbers`, and `highlight_lines` (unique 1-based line numbers). Keep the
+  example focused and place it in explicit `x`, `y`, `width`, and `height` bounds.
+  The default `code` style is 18px Go Mono. Indentation and blank lines are
+  preserved, tabs use four-column stops, and overflow is refused; source never
+  wraps, shrinks, or executes. The bounds are 16,000 characters and 100 lines.
+  Select the element with an `example` Item and attach real exact evidence to
+  that Item; a displayed snippet is not itself code coverage.
+
 - Pick a shape for what a node is: `actor` for a person or external role,
   `queue` for a queue or stream, `document` for a file or report, `cloud` for
   an external or hosted system, `datastore` for storage. The shapes from

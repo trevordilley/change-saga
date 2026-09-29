@@ -68,6 +68,9 @@ For a pull-request deck, use `--review REVIEW_ID` in place of `--deck`.
 The explicit Overview check fails when the authored report is missing or any
 slide remains uncited. Ordinary validation keeps legacy missing-overview cases
 as warnings. Continue running the relevant exact code-coverage check as well.
+`change-saga query overview --saga change.saga` exposes deck reports with
+resolved slide/Item targets, generated status, covered and uncovered slides,
+and validation diagnostics; it does not duplicate evidence.
 
 For example, if the deck contains a `request-path` slide with a `router` Item:
 
@@ -85,6 +88,9 @@ second asset or evidence record. References to unsupported or missing visuals
 are diagnosed. Add citations for every other slide in the deck too. In a
 complete slide authoring request, add `"front": ["One useful takeaway", "A second
 brief point"]` inside `slide`; the existing diagram or asset remains the Back.
+`add-slide` also accepts repeated `--front` bullets. Use a diagram `code` element
+for an API or library usage example, with an `example` Item retaining exact
+evidence; see [code examples](code-examples.md).
 
 ## Viewed is personal reading progress
 

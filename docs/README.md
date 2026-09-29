@@ -10,6 +10,7 @@ review deck → reconcile living documentation → check again workflow.
 
 | | |
 | --- | --- |
+| [code-examples.md](code-examples.md) | Author API and library usage examples as measured code elements inside visual slides. |
 | [deck-overview.md](deck-overview.md) | Current deck Overview, Front/Back, evidence citations, Viewed state, and compatibility guide. |
 | [SPEC.md](../SPEC.md) | The one Saga format: layout, requirements, design, quality, the implementation deck, diff URIs, claims, and the review overlay. Normative. |
 | [`schema/`](../schema) | JSON Schemas for every persisted record. The manifest and the records the format introduced are under `schema/v5`; component records name the schema version they use. |

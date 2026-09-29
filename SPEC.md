@@ -546,7 +546,7 @@ A revision's visual is either an authored asset (SVG, HTML, or raster image)
 or a **diagram source**. A diagram source is a
 [`diagram.schema.json`](schema/v5/diagram.schema.json) document: an ordered list
 of explicitly positioned nodes, edges, text, groups, allowlisted graphics,
-stickies, and annotations.
+stickies, annotations, and literal code examples.
 The CLI renders it deterministically to the revision's SVG asset and stores the
 canonical source beside it as a `24-a-*.json` sidecar. The revision pins both:
 
@@ -559,9 +559,25 @@ approvals, selectors, the reviewer, and visual QA read. Each diagram element is
 rendered with its element ID as its SVG `id`, so an Item selects it with an
 `element` selector, which must name a non-decorative element. Rendering never
 lays out, resizes, or reroutes anything; text that does not fit its explicit
-box is refused. Generated SVGs reference one measurement font the reviewer
+box is refused. Generated SVGs reference the measurement font the reviewer
 serves at `/_diagram/fonts/go-regular.ttf` and fall back to a system
-sans-serif elsewhere.
+sans-serif elsewhere. Code examples use bundled Go Mono at
+`/_diagram/fonts/go-mono.ttf`, with a monospace fallback elsewhere.
+
+A **code** element displays an API invocation or library usage example as
+literal source, never executed. It has `kind: "code"`, a required `code` string,
+an optional `language` display label, optional `line_numbers`, and optional
+`highlight_lines` (unique 1-based line numbers within the source). The ordinary
+label, description, note, position, dimensions, and style fields still apply.
+The default `code` style uses an 18px monospace font. Indentation and blank lines
+are preserved; tabs advance to 4-column stops. Text never wraps or shrinks, and
+source that exceeds its explicit box is refused. Source is limited to 16,000
+characters and 100 lines. An Item of kind `example` can select the element and
+retain exact evidence on that stable Item. `diagram edit`, `diagram describe`,
+and the published vocabulary expose the code fields. Existing sources without
+code elements retain their rendered output. Older source readers need an
+upgrade to author this element kind; readers of the published SVG still display
+its visual without understanding the source kind.
 
 An edge's `head` and `tail` take one terminator vocabulary: `arrow`, `open`,
 `triangle` (UML generalization), `diamond` and `filled-diamond` (aggregation
