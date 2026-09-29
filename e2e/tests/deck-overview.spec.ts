@@ -30,6 +30,7 @@ test("@critical feature Overview links select and expand their own navigation ac
     await expect(page).toHaveURL(destination);
     await expect(viewer.locator('[data-deck-overview]:visible')).toContainText("Explain request design.");
     await expect(overviewLink).toBeVisible();
+    await expect(overviewLink).toBeInViewport();
     await expect(overviewLink).toHaveAttribute("aria-current", "page");
     await expect(feature.locator(':scope > .doc-row > [data-doc-twisty]')).toHaveAttribute("aria-expanded", "true");
     await expect(feature.getByRole("button", { name: "Toggle Technical", exact: true })).toHaveAttribute("aria-expanded", "true");

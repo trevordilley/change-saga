@@ -28,6 +28,7 @@ const deckOverviewJavaScript = `
     for (let children = selected.closest('.doc-children'); children; children = children.parentElement.closest('.doc-children')) {
       if (children.id) setDocNodeExpandedByID(children.id, true);
     }
+    if (overviewLink) overviewLink.scrollIntoView({block:'nearest'});
   }
 
   function setDeckFace(face, viewer = currentDeckViewer(), target = null) {
