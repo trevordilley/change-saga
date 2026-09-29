@@ -1,7 +1,8 @@
 # Renderer UI conventions
 
 Status: contract, 2026-08-20
-Scope: `internal/server/{template.go,styles.go,appjs.go,icons.go}`
+Scope: the renderer in `internal/server/`, including its template, navigation,
+styles, and browser behavior.
 
 `docs/ux-reframe.md` and `docs/review-experience-audit.md` record why the
 reviewer was restructured. This file records the conventions the renderer holds
@@ -91,6 +92,68 @@ keeps the slide hash/position. Display stale, retired, conflicted, or missing
 pins honestly. Neither navigation nor a newer definition repins the Item or
 changes a decision. Inventory and interaction code are fetched on demand, never
 embedded as a graph in every review shell.
+
+## Deck overview, Front, and Back
+
+A deck has three explicit reading surfaces: Overview, Front, and Back. Back is
+always the default and preserves the existing visual asset or entrypoint,
+Items, and linked evidence. Front shows the slide's authored summary bullets;
+older slides fall back to their takeaway, then Item labels. Changing faces
+never changes a slide or Item identity, records a decision, or marks it Viewed.
+Previous/Next still follows authored slide order. Overview is not a slide and
+never participates in slide position, Viewed totals, or code coverage.
+
+An authored Overview is a Markdown report with the existing table and visual
+support. Its inline `[label](annotation:ID)` citations resolve to named slides and
+optional Items in that same deck. An accessible reference list exposes the same destinations.
+Opening a citation uses the existing slide/Item route and evidence drawer;
+it does not copy or invent stories, code, or diffs. An older deck with no
+authored overview gets an explicitly labeled generated directory. Missing
+authored overview and uncovered slides are compatibility warnings; broken or
+cross-deck references are errors. Optional fields remain compatible with older
+tolerant readers; readers that reject unknown manifest fields require an
+upgrade before they can read decks with Front or Overview content.
+
+Feature navigation calls the explanatory deck **Technical**. The older
+**Design > Technical** chapter group is **Design > Architecture**, while the
+application-wide **Technical design** inventory keeps its existing name.
+These are chrome changes only: routes, anchors, navigation keys, stored roles,
+and authored titles retain their stable identities.
+
+Comparison state must never dim authored content. Quiet controls can reveal on
+hover or keyboard focus, but an unchanged slide, diagram, or report remains
+fully legible. Comparison indicators carry state without lowering the opacity
+of the content they describe. The SVG diagram reveal animation and its iframe
+hash are separate from comparison styling; animation completion must leave
+the drawing at full opacity and reduced-motion readers see the full drawing.
+Authored entrance reveal remains allowed; leaving the slide with the pointer
+never fades its content.
+
+## Explicit Viewed state
+
+Viewed is a manual reading aid, separate from approvals, comments, and code
+coverage. The checkbox works immediately for the labeled **Local reader**, a
+stable browser-generated profile. The reviewer can optionally switch to a
+named local profile or back to Local reader. Visiting, hovering, focusing,
+flipping, opening evidence, navigating, or approving never marks a slide.
+Only checking or unchecking Viewed writes a mark. The visible per-deck count
+and thumbnail label reflect that selected profile and stay independent from
+review decisions; the content itself does not fade.
+
+Marks use localStorage keys containing the Saga ID, local profile/name, stable
+deck target, and stable slide target. Titles, positions, routes, and current
+approval state are not keys. Reload and navigation preserve marks; switching
+profiles isolates them. Local names are case-sensitive labels, not authenticated
+accounts. Persistence belongs to this browser profile and origin, including the
+server port; changing browser, host, or port does not carry marks over. The
+local-only help states this limitation. With storage blocked, the control works
+in memory and visibly says its marks last only on the current page.
+
+The review shell currently uses its existing server-side human/Git author for
+review events and has no browser-selectable account identity. A local Viewed
+profile therefore does not change the author of any approval or comment. Viewed
+marks are not Saga review events, are not committed to Git, and are not shared
+with other reviewers. They provide no completion verdict.
 
 ## The page is a shell
 

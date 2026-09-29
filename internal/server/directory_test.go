@@ -34,15 +34,15 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 	if len(onboarding.Children) == 0 || onboarding.Href != onboarding.Children[0].Href {
 		t.Fatalf("Onboarding opens %q, want its first slide %#v", onboarding.Href, onboarding.Children)
 	}
-	implementation := findNav(t, nodes, "Features", "Billing", "Implementation")
+	implementation := findNav(t, nodes, "Features", "Billing", "Technical")
 	if len(implementation.Children) == 0 || implementation.Href != implementation.Children[0].Href {
-		t.Fatalf("Implementation opens %q, want its first slide", implementation.Href)
+		t.Fatalf("Technical opens %q, want its first slide", implementation.Href)
 	}
-	// A feature with no deck has no Implementation section.
+	// A feature with no deck has no Technical section.
 	empty := appNavFixture(t)
 	empty.pageFeature = "catalog"
 	if findNavByID(makeAppNavTree(empty), featureNavID("catalog")+"-implementation") != nil {
-		t.Fatal("an empty Implementation must be hidden")
+		t.Fatal("an empty Technical must be hidden")
 	}
 }
 
