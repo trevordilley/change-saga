@@ -569,7 +569,7 @@ change-saga check --covers review --against main change.saga
 change-saga open --against main change.saga
 ```
 
-Once the Saga documents the application, a feature's implementation deck
+Once the Saga documents the application, a feature's Technical deck
 explains the current code in the same way (`add-deck`, `add-slide --deck`,
 `add-item --slide`, `cover --against main`); the first command that needs a
 feature creates one named after the branch.

@@ -84,7 +84,7 @@ Both navigation surfaces are built from manifests rather than incidental
 rendered state, so every destination remains addressable before its content is
 active.
 
-Implementation and review Items may also pin reusable Component or System
+Technical-deck and review Items may also pin reusable Component or System
 definitions. Their book control and linked node open the saved definition in
 the same drawer, with directed Component interactions and exact code. Nested
 definitions have a back control; Escape restores the original Item control and
