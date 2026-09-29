@@ -114,3 +114,18 @@ func TestFrontFallbackAndSnapshot(t *testing.T) {
 		t.Fatal("blank front accepted")
 	}
 }
+
+func TestOverviewReferencesRequireVisibleCitations(t *testing.T) {
+	for _, body := range []string{"[](annotation:a)", "[   ](annotation:a)", "[&nbsp;](annotation:a)", "![alt [nested](annotation:a)](slide:one)", "[<i></i>](annotation:a)", "`[code](annotation:a)`", "```md\n[code](annotation:a)\n```"} {
+		citations, _ := OverviewReferences(body)
+		if len(citations) != 0 {
+			t.Errorf("invisible %q produced %v", body, citations)
+		}
+	}
+	for _, body := range []string{"[visible](annotation:a)", "[**visible**](annotation:a)", "[![alt](slide:one)](annotation:a)", "[\x60code label\x60](annotation:a)"} {
+		citations, _ := OverviewReferences(body)
+		if !reflect.DeepEqual(citations, []string{"a"}) {
+			t.Errorf("visible %q produced %v", body, citations)
+		}
+	}
+}

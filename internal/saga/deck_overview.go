@@ -2,6 +2,7 @@ package saga
 
 import (
 	"fmt"
+	"html"
 	"strings"
 
 	"github.com/yuin/goldmark"
@@ -149,13 +150,17 @@ func (deck *Deck) EffectiveOverview() (*DeckOverview, bool) {
 // inside a link is still a visual; its enclosing link may be a citation.
 func OverviewReferences(body string) (citationIDs, slideVisuals []string) {
 	markdown := goldmark.New(goldmark.WithExtensions(extension.GFM))
-	document := markdown.Parser().Parse(text.NewReader([]byte(body)))
+	source := []byte(body)
+	document := markdown.Parser().Parse(text.NewReader(source))
 	_ = ast.Walk(document, func(node ast.Node, entering bool) (ast.WalkStatus, error) {
 		if !entering {
 			return ast.WalkContinue, nil
 		}
 		switch node := node.(type) {
 		case *ast.Link:
+			if !overviewLinkVisible(node, source) {
+				return ast.WalkSkipChildren, nil
+			}
 			if id, ok := strings.CutPrefix(string(node.Destination), "annotation:"); ok {
 				citationIDs = append(citationIDs, id)
 			}
@@ -163,6 +168,8 @@ func OverviewReferences(body string) (citationIDs, slideVisuals []string) {
 			if target, ok := strings.CutPrefix(string(node.Destination), "slide:"); ok {
 				slideVisuals = append(slideVisuals, target)
 			}
+			// Links in image alt text are not clickable citations.
+			return ast.WalkSkipChildren, nil
 		}
 		return ast.WalkContinue, nil
 	})
@@ -227,4 +234,24 @@ func (deck *Deck) OverviewReport() DeckOverviewReport {
 	}
 	report.Complete = !generated && report.Validation.Valid && len(report.UncoveredSlides) == 0
 	return report
+}
+
+func overviewLinkVisible(link *ast.Link, source []byte) bool {
+	visible := false
+	_ = ast.Walk(link, func(node ast.Node, entering bool) (ast.WalkStatus, error) {
+		if !entering {
+			return ast.WalkContinue, nil
+		}
+		switch node := node.(type) {
+		case *ast.Image:
+			visible = true
+			return ast.WalkSkipChildren, nil
+		case *ast.Text:
+			visible = visible || strings.TrimSpace(html.UnescapeString(string(node.Segment.Value(source)))) != ""
+		case *ast.String:
+			visible = visible || strings.TrimSpace(html.UnescapeString(string(node.Value))) != ""
+		}
+		return ast.WalkContinue, nil
+	})
+	return visible
 }

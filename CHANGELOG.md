@@ -10,6 +10,16 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+- **Format:** Decks can carry an authored Markdown `overview` with citations to
+  existing slides/Items and reusable slide visuals; slides can carry `front`
+  summary bullets. Stable identities, storage, and Item evidence are preserved.
+  Missing overviews use an explicit generated directory and produce compatibility
+  warnings. Broken/cross-deck references are errors; overview coverage never
+  adds code coverage. `deck overview --file` authors reports and `--check` checks
+  every-slide citation coverage. Front round-trips through transactions and query.
+  No migration is needed for old decks. Tolerant older viewers ignore new fields;
+  strict older readers/schemas must be upgraded before those fields are authored.
+
 ## [0.2.0] - 2026-09-28
 
 Change Saga's first release built around its entry point: ask your coding

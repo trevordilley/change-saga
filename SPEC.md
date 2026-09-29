@@ -474,6 +474,63 @@ Exact diff evidence on a slide is owned only by Items, so every changed line a
 reviewer sees in the deck is attached to the specific visual element that
 explains it.
 
+### Deck overview and slide Front/Back
+
+Deck records may include `overview: {body, annotations?}`. `body` is nonblank
+Markdown and retains ordinary Markdown tables and visual rendering. Each
+annotation has a unique stable `id`, nonblank accessible `label`, required
+`slide`, and optional `item`. Cite it with `[label](annotation:ID)` in the body.
+Render annotations in an accessible reference list as well as inline links.
+A slide reference is an exact same-deck slide ID or full stable slide URN;
+an Item reference is an exact local Item ID or that slide's full Item URN.
+References never resolve across decks or to independent evidence: following one
+opens the existing slide or Item and its stories, code, or diff. IDs, routes,
+storage filenames, Item ownership, and existing evidence stay unchanged.
+
+The body can reuse an existing image slide asset with `![alt](slide:SLIDE_ID)`
+or `![alt](slide:FULL_SLIDE_URN)`. The named slide must belong to this deck and
+use an image media type (SVG, PNG, JPEG, or WebP). The viewer serves the existing
+asset through its stable slide route. This adds no asset files and creates no
+evidence ownership. A visual alone does not count as an annotation citation.
+
+Every slide should be reached by at least one valid annotation actually cited
+in the Markdown body; one cited Item covers its owning slide for this purpose.
+Parsed Markdown links count, including those in tables; citation-like text in
+code spans, fenced blocks, and raw HTML does not. Annotations that are only
+listed in the reference list do not earn overview coverage. Unknown citation
+IDs, duplicate/invalid annotation IDs, blank labels or body, broken slide/Item
+references, invalid slide visuals, and cross-deck references are errors.
+Missing authored overview, uncited annotation definitions, and uncovered slides
+are warnings for compatibility. Overview coverage never contributes code
+coverage or transfers ownership transitively through story/documentation links.
+
+When `overview` is absent the viewer uses an explicitly labeled **Generated
+slide directory**, deterministically listing existing slides. It is generated
+at read time, never persisted or counted as authored overview coverage.
+`deck overview (--deck TARGET | --review ID) --file JSON [--dry-run] [--json]
+<saga>` replaces the authored overview after validation under the Saga lock.
+`deck overview (--deck TARGET | --review ID) --check [--json] <saga>` checks
+only the named deck's authored overview: exit 0 for complete, 3 for missing
+coverage, and 1 for invalid content. Normal `validate` keeps missing coverage
+as warnings. `query overview` includes effective reports, generated status,
+resolved reference targets, covered/uncovered slides, and validation diagnostics.
+
+Slide records may include `front: ["summary bullet", ...]`; each bullet must be
+nonblank. Front displays authored bullets, falling back to the existing takeaway,
+then Item labels if neither is available. The existing visual `entrypoint` is
+Back. It reuses the same Items and evidence; Front is not another evidence owner.
+`add-slide --front TEXT` is repeatable; complete `apply-slide` requests accept
+`slide.front`. Front round-trips through current requests, diagram edits, evidence
+repair, query output, and complete-slide snapshot hashes. Optional fields omitted
+from legacy content do not change its previous snapshot serialization.
+
+These fields are additive to the v4 deck records used within v5 Sagas. No data
+migration is required. Tolerant older viewers ignore optional fields and continue
+to show the existing visual. Strict older Go readers (`DisallowUnknownFields`)
+and older schemas (`additionalProperties: false`) reject the new fields; upgrade
+those readers before authoring them. Do not silently strip authored content.
+
+<a id="complete-slide-transactions-and-diagram-sources"></a>
 ### Complete-slide transactions and diagram sources
 
 `apply-slide` publishes one complete slide of an implementation or review deck
@@ -685,6 +742,7 @@ evidence that has no active, current path to an accepted story. Thus a caller
 can traverse from a story to code, or from the current head commit or diff back
 to the story, without duplicating story text inside slide records.
 
+<a id="design-tokens"></a>
 ### Design tokens
 
 Every colour, font, and size the reviewer and its generated slides paint with

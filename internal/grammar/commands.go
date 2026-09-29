@@ -401,6 +401,13 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "deck overview", Status: StatusImplemented, Mutates: true, Writes: []string{"deck"},
+		Usage:       "change-saga deck overview (--deck TARGET | --review ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
+		Summary:     "author an overview with same-deck slide/Item citations, or check authored every-slide coverage (exit 3 for gaps); overview references never add code coverage",
+		Flags:       []Flag{optional("deck", "TARGET", "existing deck ID, path, or URN"), optional("review", "ID", "review whose deck to use"), optional("file", "JSON", "overview body and annotations JSON"), optional("check", "", "check overview coverage without writing"), optional("dry-run", "", "validate without writing"), jsonFlag},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "add-deck", Status: StatusImplemented, Mutates: true, Writes: []string{"deck"},
 		Usage:   "change-saga add-deck (--feature ID | --role onboarding) [flags] <saga> <name>",
 		Summary: "create a feature's implementation deck, or with --role onboarding the app's onboarding deck whose Items reference records",

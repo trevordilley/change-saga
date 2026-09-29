@@ -173,6 +173,7 @@ type Overview struct {
 }
 
 type ChapterSummary struct {
+	Overview *saga.DeckOverviewReport `json:"overview,omitempty"`
 	Node
 	ChildCount    int  `json:"child_count"`
 	FragmentCount int  `json:"fragment_count"`
@@ -212,6 +213,7 @@ type AssetSummary struct {
 }
 
 type FragmentContent struct {
+	Front             []string           `json:"front,omitempty"`
 	Target            string             `json:"target"`
 	ID                string             `json:"id"`
 	Title             string             `json:"title"`

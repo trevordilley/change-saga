@@ -72,6 +72,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Design(ctx, args[1:], stdout)
 	case "quality":
 		err = cli.Quality(ctx, args[1:], stdout)
+	case "deck":
+		err = cli.Deck(ctx, args[1:], stdout)
 	case "add-deck":
 		err = cli.AddDeck(ctx, args[1:], stdout)
 	case "add-slide":

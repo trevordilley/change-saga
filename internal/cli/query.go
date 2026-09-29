@@ -505,11 +505,11 @@ func queryHelpFor(operation string) queryHelp {
 
 func querySchemaFor(operation string) querySchemaDescription {
 	paths := map[string][]string{
-		"overview":             {"data.saga", "data.source", "data.root", "data.overview_fragments", "data.chapters", "data.decks", "data.coverage"},
+		"overview":             {"data.saga", "data.source", "data.root", "data.overview_fragments", "data.chapters", "data.decks", "data.decks[].overview", "data.decks[].overview.references", "data.decks[].overview.covered_slides", "data.decks[].overview.uncovered_slides", "data.coverage"},
 		"children":             {"data.children"},
 		"fragment":             {"data.target", "data.content.data", "data.content.next_offset", "data.assets", "data.landmarks"},
 		"fragment-diffs":       {"data.selectors", "data.atoms", "data.stale"},
-		"slide":                {"data.target", "data.intent", "data.layout", "data.section", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.items[].documentation", "data.reading_order", "data.authoring_snapshot", "data.authoring_heads", "data.authoring_conflict"},
+		"slide":                {"data.target", "data.intent", "data.layout", "data.section", "data.takeaway", "data.front", "data.content.data", "data.assets", "data.items", "data.items[].documentation", "data.reading_order", "data.authoring_snapshot", "data.authoring_heads", "data.authoring_conflict"},
 		"slide-diffs":          {"data.selectors", "data.atoms", "data.stale"},
 		"diff-owners":          {"data.atoms", "data.atoms[].terms"},
 		"gaps":                 {"data.gaps"},
