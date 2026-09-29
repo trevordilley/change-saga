@@ -1,4 +1,57 @@
 {
+  "overview": {
+    "body": "# Visual review collaboration\n\nA reviewer needs to understand a change, inspect the code behind a visual, and leave feedback without losing their place. This deck explains the mechanisms that keep those activities connected: a browser surface, read projections, and a single append-only write boundary.\n\n## Start with the whole system\n\nThe [ownership view](annotation:ownership) separates displaying a review from changing its history. The browser shows authored slides and precise Item controls. Read projections derive the current discussion. The [locked writer](annotation:writer) reloads valid state, resolves the target, and appends an attributed event to Git-backed storage.\n\n![Review ownership: browser, HTTP adapter, read projection, locked writer, and Git-backed records](slide:review-ownership)\n\n## Five questions to guide your review\n\n| Question | What to look for | Follow the evidence |\n| --- | --- | --- |\n| Who owns the data? | Reading projects state; writing passes through the guarded store. | [Ownership and boundaries](annotation:ownership) |\n| What happens when I submit? | The shown snapshot is checked before append; feedback updates after confirmation. | [Comment round trip](annotation:round-trip) |\n| How does discussion change over time? | Replies join the root; the last explicit state determines open or resolved. | [Thread lifecycle](annotation:thread-state) |\n| What if saving fails? | Refusal and uncertain confirmation lead to different recovery actions. | [Save outcomes](annotation:save-outcomes) |\n| Where do drawn marks belong? | Review markup is discussion with geometry; prototype annotations link requirements. | [Spatial review markup](annotation:markup) |\n\n## A save has a confirmation boundary\n\nThe [submission path](annotation:round-trip) sends the process token and the immutable snapshot of the slide the reviewer saw. Before publication, the [snapshot gate](annotation:snapshot) checks the fresh review and source range under the writer lock. This prevents a comment from silently applying to content that changed after it was shown.\n\n![Comment sequence: open the review, serve the visual, submit, revalidate, append, and project confirmed feedback](slide:comment-round-trip)\n\nA receipt identifies the saved event and its canonical target. The browser can refresh discussion without navigating away from the slide. The [outcome handling](annotation:save-outcomes) distinguishes three cases:\n\n| Outcome | What is known | What the reviewer can do |\n| --- | --- | --- |\n| Confirmed save | A receipt identifies the appended event. | Continue reviewing; inspect saved feedback if its display could not refresh. |\n| Refused submission | The request was rejected before publication. | Keep and edit the retained draft, then address the refusal. |\n| Confirmation lost | The event may already have been saved. | Check saved feedback and reload before another submission; do not blindly retry. |\n\n## History explains the current picture\n\nA discussion is an ordered sequence of events. [Replies find their original thread](annotation:reply-root), and the [last explicit state](annotation:thread-state) determines whether it is open or resolved. Earlier records remain available. That distinction matters when reading a resolved thread: its current state does not erase the reasoning that led there.\n\n![Thread lifecycle: root comment, replies, explicit state changes, validation, and append-only history](slide:thread-lifecycle)\n\n[Spatial review annotations](annotation:markup) use normalized slide geometry. Moving or deleting a mark appends an event to its creation thread, and reload projects the resulting mark. These reviewer-created comments are separate from the authored citations in this Overview. The citations here resolve through existing slides and Items to their saved code evidence; they do not create feedback or new evidence records.\n\n## Read, inspect, then decide\n\nUse **Front** for each slide's short summary and **Back** for its detailed visual. Hover or focus a citation to inspect its destination, then open the linked Item and code. Mark **Viewed** only when you want to record your own reading progress; it is reversible, local to your browser profile and origin, and independent of approval or discussion.\n\nThis report cites all five slides. That is an orientation check, not a claim that all application code is covered or that the implementation is correct. Exact code coverage remains with the existing Items. A useful human review asks whether the [write boundary](annotation:writer), [snapshot check](annotation:snapshot), and [uncertain-save recovery](annotation:save-outcomes) match the behavior you expect.\n",
+    "annotations": [
+      {
+        "id": "ownership",
+        "label": "Review ownership and browser surface",
+        "slide": "review-ownership",
+        "item": "browser-surface"
+      },
+      {
+        "id": "writer",
+        "label": "Locked append-only writer",
+        "slide": "review-ownership",
+        "item": "locked-writer"
+      },
+      {
+        "id": "round-trip",
+        "label": "Comment submission and its shown snapshot",
+        "slide": "comment-round-trip",
+        "item": "submit-comment"
+      },
+      {
+        "id": "snapshot",
+        "label": "Revalidate the shown content under the writer lock",
+        "slide": "comment-round-trip",
+        "item": "gate-current-head"
+      },
+      {
+        "id": "reply-root",
+        "label": "Replies resolve to their thread root",
+        "slide": "thread-lifecycle",
+        "item": "reply-threading"
+      },
+      {
+        "id": "thread-state",
+        "label": "Last explicit thread state wins",
+        "slide": "thread-lifecycle",
+        "item": "last-state-wins"
+      },
+      {
+        "id": "save-outcomes",
+        "label": "Confirmed, refused, and uncertain save outcomes",
+        "slide": "mutation-guardrails",
+        "item": "success-outcome"
+      },
+      {
+        "id": "markup",
+        "label": "Spatial review annotations and append-only updates",
+        "slide": "contextual-review",
+        "item": "annotation-gap"
+      }
+    ]
+  },
   "version": 4,
   "id": "visual-review",
   "title": "Visual review collaboration architecture",
