@@ -377,6 +377,10 @@ func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadO
 			}
 		}
 	}
+	for _, deck := range decks {
+		result := ValidateDeckOverview(deck)
+		validation.Issues = append(validation.Issues, result.Issues...)
+	}
 	return decks, nil
 }
 
@@ -407,6 +411,7 @@ func validateDeckManifest(value DeckManifest, path, target string, validation *V
 }
 
 func validateSlideManifest(value SlideManifest, path, deckID, deckTarget, target, dir string, outline bool, validation *Validation) {
+	validateFront(value.Front, path, validation)
 	if value.Version != DeckRecordVersion || !stableID.MatchString(value.ID) || strings.TrimSpace(value.Title) == "" {
 		addIssue(validation, "error", path, "slide requires version 4, a stable id, and a title")
 	}
