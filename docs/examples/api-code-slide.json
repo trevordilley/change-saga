@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "operation": "create",
+  "request_id": "api-example-create",
+  "review": "api-usage",
+  "expected_snapshot": "absent",
+  "slide": {
+    "id": "create-order",
+    "title": "Create an order",
+    "rank": 10,
+    "intent": "explain",
+    "layout": "diagram",
+    "takeaway": "Pass the customer and line items to orders.create.",
+    "reading_order": [
+      "invoke"
+    ]
+  },
+  "diagram": {
+    "version": 1,
+    "width": 1280,
+    "height": 720,
+    "elements": [
+      {
+        "id": "invoke",
+        "kind": "code",
+        "label": "Create an order",
+        "language": "TypeScript",
+        "code": "const order = await client.orders.create({\n  customer: \"cus_123\",\n  items: [{ sku: \"book\", quantity: 1 }],\n});\n\nconsole.log(order.id);",
+        "x": 80,
+        "y": 140,
+        "width": 1120,
+        "height": 400,
+        "style": "code",
+        "line_numbers": true,
+        "highlight_lines": [
+          2,
+          3
+        ]
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "invoke",
+      "rank": 10,
+      "kind": "example",
+      "label": "Call orders.create",
+      "description": "Illustrative usage of an order client. Replace it with the library API being documented.",
+      "selector": {
+        "type": "element",
+        "element_id": "invoke"
+      }
+    }
+  ]
+}
