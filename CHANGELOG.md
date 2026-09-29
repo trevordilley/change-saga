@@ -21,6 +21,8 @@ tool, and what they have to do about it.
   section **Architecture**, preserving links and storage. Slides retain full
   opacity after pointer leave. Manual local **Viewed** markers show reading
   progress separately from decisions and persist per browser reader and address.
+- Technical Overview links expand their owning feature and select its Overview
+  in the sidebar, including on reload and browser history navigation.
 - Feature-description guidance now creates or updates actual Product stories;
   technical decks reference those records instead of substituting story lists.
 

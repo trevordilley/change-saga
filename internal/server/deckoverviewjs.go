@@ -3,6 +3,33 @@ package server
 // Runs within appJavaScript's scope so citations use the existing evidence
 // drawer and slide activation, including their focus and lazy-load behavior.
 const deckOverviewJavaScript = `
+  function syncDeckNavigation() {
+    const viewer = currentDeckViewer();
+    if (!viewer || !deckViewerActive()) return;
+    const overview = viewer.dataset.deckFace === 'overview' ? q('[data-deck-overview]:not([hidden])', viewer) : null;
+    const active = q('[data-deck-slide].active', viewer);
+    const overviewLink = overview ? qa('.doc-tree a.doc-link').find(link => decodeURIComponent(link.hash.slice(1)) === overview.id) : null;
+    let selected = overviewLink;
+    qa('[data-slide-thumbnail]').forEach(thumbnail => {
+      const current = !overview && thumbnail.dataset.slideTarget === active?.dataset.slideTarget;
+      thumbnail.setAttribute('aria-current', String(current));
+      thumbnail.closest('[data-slide-thumbnail-card]')?.classList.toggle('active', current);
+      if (current) selected = thumbnail;
+    });
+    if (!selected) return;
+    qa('.doc-tree .doc-row').forEach(row => {
+      const current = row.contains(selected) || (row.parentElement.classList.contains('doc-deck') && row.parentElement.contains(selected));
+      row.classList.toggle('current', current);
+      const link = q(':scope > a.doc-link', row);
+      if (link && link === overviewLink) link.setAttribute('aria-current', 'page');
+      else link?.removeAttribute('aria-current');
+    });
+    // Expand the full feature / Technical / deck path, not just the slide list.
+    for (let children = selected.closest('.doc-children'); children; children = children.parentElement.closest('.doc-children')) {
+      if (children.id) setDocNodeExpandedByID(children.id, true);
+    }
+  }
+
   function setDeckFace(face, viewer = currentDeckViewer(), target = null) {
     if (!viewer || !['overview','front','back'].includes(face)) return;
     const active = q('[data-deck-slide].active', viewer);
@@ -26,6 +53,7 @@ const deckOverviewJavaScript = `
       button.disabled = button.dataset.deckFaceButton !== 'overview' && !qa('[data-deck-slide]', viewer).some(slide => slide.dataset.deckTarget === target);
     });
     document.dispatchEvent(new CustomEvent('deck-face-changed', {detail:{viewer, slide:active, face}}));
+    syncDeckNavigation();
     if (face === 'back') positionLandmarkHotspots();
   }
 

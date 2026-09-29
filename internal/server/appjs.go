@@ -120,17 +120,7 @@ const appJavaScript = `(() => {
     if (position) position.textContent = (deckIndex + 1) + ' / ' + deckSlides.length;
     if (deckTitle) deckTitle.textContent = active.dataset.deckTitle || '';
     if (slideTitle) slideTitle.textContent = active.dataset.slideTitle || '';
-    let activeThumbnail = null;
-    qa('[data-slide-thumbnail]').forEach(thumbnail => {
-      const selected = thumbnail.dataset.slideTarget === active.dataset.slideTarget;
-      thumbnail.setAttribute('aria-current', String(selected));
-      thumbnail.closest('[data-slide-thumbnail-card]')?.classList.toggle('active', selected);
-      if (selected) activeThumbnail = thumbnail;
-      if (selected && updateHash) thumbnail.scrollIntoView({block:'nearest'});
-    });
-    qa('.doc-deck>.doc-row').forEach(row => row.classList.toggle('current', Boolean(activeThumbnail && row.parentElement.contains(activeThumbnail))));
-    const deckChildren = activeThumbnail?.closest('.doc-children');
-    if (deckChildren?.id) setDocNodeExpandedByID(deckChildren.id, true);
+    if (updateHash) q('[data-slide-thumbnail][aria-current="true"]')?.scrollIntoView({block:'nearest'});
     const previous = q('[data-slide-previous]', shell);
     const next = q('[data-slide-next]', shell);
     if (previous) previous.disabled = deckIndex === 0;
@@ -1525,6 +1515,7 @@ const appJavaScript = `(() => {
 
   let reviewDeckHash = location.hash;
   function setView(name, updateURL = true) {
+    const wasDeckActive = deckViewerActive();
     if (!q('[data-view="'+name+'"]')) name = 'saga';
     const reviewDeck = q('[data-shell][data-review-deck-shell]');
     const returningToReviewDeck = reviewDeck && name === 'saga' && !q('[data-view="saga"].active');
@@ -1560,6 +1551,8 @@ const appJavaScript = `(() => {
       history.pushState({htmx: true, view: name}, '', url);
     }
     if (name === 'code' || name === 'manifest' || name === 'change') void hydrateReviewSurface(name);
+    if (deckViewerActive()) syncDeckNavigation();
+    else if (wasDeckActive && q('#nav-state')) applyNavState(q('#nav-state'));
   }
 
   function filterManifest() {
@@ -2610,8 +2603,6 @@ const appJavaScript = `(() => {
     if (deckToggle) { toggleDocNode(deckToggle); return; }
     const docToggle = event.target.closest('[data-doc-toggle]');
     if (docToggle) { toggleDocNode(docToggle); return; }
-    const reportNav = event.target.closest('[data-report-nav]');
-    if (reportNav && q('[data-view="slides"].active')) setView('saga');
     const chapterToggle = event.target.closest('[data-chapter-toggle]');
     if (chapterToggle) { toggleChapter(chapterToggle); return; }
     const viewTab = event.target.closest('[data-view-tab]');
@@ -3245,6 +3236,9 @@ const appJavaScript = `(() => {
       children.hidden = !open;
       qa('[aria-controls]', row).forEach(control => control.setAttribute('aria-expanded', String(open)));
     });
+    // The server cannot see the hash. A deck deep link refines its page state,
+    // including when an out-of-band sidebar update arrives after the viewer.
+    syncDeckNavigation();
   }
 
   // A reader who follows a link lands at the top of the new page, or at its

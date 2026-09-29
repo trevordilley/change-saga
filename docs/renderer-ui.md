@@ -119,6 +119,10 @@ Feature navigation calls the explanatory deck **Technical**. The older
 application-wide **Technical design** inventory keeps its existing name.
 These are chrome changes only: routes, anchors, navigation keys, stored roles,
 and authored titles retain their stable identities.
+Opening a Technical Overview expands its owning feature, Technical section,
+and deck, and selects that Overview instead of the application Overview.
+The URL's slide or Overview anchor refines the server's page-level selection;
+reloads, sidebar links, face changes, and browser history keep them in sync.
 
 Comparison state must never dim authored content. Quiet controls can reveal on
 hover or keyboard focus, but an unchanged slide, diagram, or report remains

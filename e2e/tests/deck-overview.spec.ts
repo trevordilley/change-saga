@@ -1,6 +1,6 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { expect, test } from "../support/test.js";
+import { expect, test, waitForSettledSaga } from "../support/test.js";
 import { codeLocation, runCLI, startSagaServer, stopSagaServer, type SagaRepositories } from "../support/fixture-builder.js";
 
 function cli(repo: SagaRepositories, ...args: string[]): void {
@@ -9,6 +9,76 @@ function cli(repo: SagaRepositories, ...args: string[]): void {
 }
 
 const visual = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><rect width="1280" height="720" fill="white"/><g id="handler"><rect x="100" y="180" width="500" height="280" fill="#ddf"/><text x="140" y="260">Request handler</text></g></svg>`;
+
+test("@critical feature Overview links select and expand their own navigation across reload and history", async ({ page, saga }) => {
+  cli(saga, "add-deck", "--feature", "wave-one", "--objective", "Explain request design.", saga.sagaRoot, "request-design");
+  cli(saga, "add-slide", "--deck", "request-design", "--intent", "explain", "--layout", "diagram", "--title", "Request navigation", saga.sagaRoot, "request-navigation");
+  cli(saga, "add-deck", "--feature", "tide-charts", "--objective", "Plan tide design.", saga.sagaRoot, "tide-design");
+  await page.goto(saga.baseURL);
+  await waitForSettledSaga(page);
+  const contents = page.getByRole("navigation", { name: "Contents" });
+  const feature = contents.locator('.doc-node:has(> .doc-row > a[href="/features/wave-one"])');
+  const otherFeature = contents.locator('.doc-node:has(> .doc-row > a[href="/features/tide-charts"])');
+  const overviewLink = feature.getByRole("link", { name: "Overview", exact: true, includeHidden: true });
+  const otherOverviewLink = otherFeature.getByRole("link", { name: "Overview", exact: true, includeHidden: true });
+  const rootOverview = contents.locator('[data-nav-row="nav-overview"] > a');
+  const destination = new URL((await overviewLink.getAttribute("href"))!, saga.baseURL).href;
+  const otherDestination = new URL((await otherOverviewLink.getAttribute("href"))!, saga.baseURL).href;
+  const viewer = page.locator("#view-slides [data-deck-viewer]");
+  const thumbnail = contents.getByRole("button", { name: "Show slide: Request navigation", includeHidden: true });
+  const expectFeatureOverview = async () => {
+    await expect(page).toHaveURL(destination);
+    await expect(viewer.locator('[data-deck-overview]:visible')).toContainText("Explain request design.");
+    await expect(overviewLink).toBeVisible();
+    await expect(overviewLink).toHaveAttribute("aria-current", "page");
+    await expect(feature.locator(':scope > .doc-row > [data-doc-twisty]')).toHaveAttribute("aria-expanded", "true");
+    await expect(feature.getByRole("button", { name: "Toggle Technical", exact: true })).toHaveAttribute("aria-expanded", "true");
+    await expect(contents.locator('a[aria-current="page"]')).toHaveCount(1);
+    await expect(rootOverview).not.toHaveAttribute("aria-current", "page");
+    await expect(thumbnail).toHaveAttribute("aria-current", "false");
+  };
+
+  // A fresh root URL has no feature in its server-side path; the hash must
+  // select and reveal the feature's Overview once the lazy viewer arrives.
+  await page.goto(destination);
+  await waitForSettledSaga(page);
+  await expectFeatureOverview();
+  await page.reload();
+  await waitForSettledSaga(page);
+  await expectFeatureOverview();
+
+  // Faces and thumbnails agree on selection, without leaving root selected.
+  await viewer.getByRole("button", { name: "Front", exact: true }).click();
+  await expect(thumbnail).toHaveAttribute("aria-current", "true");
+  await expect(overviewLink).not.toHaveAttribute("aria-current", "page");
+  await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+  await expectFeatureOverview();
+
+  // Same-page sidebar links must keep ?view=slides; returning to the root
+  // restores its selection. History must restore the feature and face too.
+  await rootOverview.click();
+  await expect(rootOverview).toHaveAttribute("aria-current", "page");
+  await feature.locator(':scope > .doc-row > [data-doc-twisty]').click();
+  await overviewLink.click();
+  await expectFeatureOverview();
+  await page.goBack();
+  await expect(rootOverview).toHaveAttribute("aria-current", "page");
+  await page.goForward();
+  await expectFeatureOverview();
+
+  // Another feature's empty deck has its own Overview, even though the viewer
+  // still retains the previous feature's active slide internally.
+  await otherFeature.locator(':scope > .doc-row > [data-doc-twisty]').click();
+  await otherOverviewLink.click();
+  await expect(page).toHaveURL(otherDestination);
+  await expect(otherOverviewLink).toBeVisible();
+  await expect(otherOverviewLink).toHaveAttribute("aria-current", "page");
+  await expect(overviewLink).not.toHaveAttribute("aria-current", "page");
+  await expect(viewer.locator('[data-deck-overview]:visible')).toContainText("Plan tide design.");
+  await expect(viewer.getByRole("button", { name: "Back", exact: true })).toBeDisabled();
+  await page.goBack();
+  await expectFeatureOverview();
+});
 
 test("CLI-authored overview renders report, table, visual and opens exact item evidence in one click", async ({ page, sagaRepositories: repo }) => {
   const asset = join(repo.root, "overview.svg");
