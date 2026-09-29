@@ -50,6 +50,7 @@ type SlideTransactionRequest struct {
 }
 
 type SlideTransactionSlide struct {
+	Front              []string `json:"front,omitempty"`
 	ID                 string   `json:"id"`
 	Title              string   `json:"title"`
 	Rank               int      `json:"rank"`
@@ -471,7 +472,7 @@ func buildSlideTransactionRevision(request SlideTransactionRequest, assetName, a
 	manifest := saga.SlideManifest{
 		Version: saga.DeckRecordVersion, ID: request.Slide.ID, Title: request.Slide.Title, Rank: request.Slide.Rank,
 		Section: strings.TrimSpace(request.Slide.Section), Intent: request.Slide.Intent, Layout: request.Slide.Layout,
-		MediaType: request.Slide.MediaType, Entrypoint: assetName, Takeaway: strings.TrimSpace(request.Slide.Takeaway),
+		MediaType: request.Slide.MediaType, Entrypoint: assetName, Front: append([]string(nil), request.Slide.Front...), Takeaway: strings.TrimSpace(request.Slide.Takeaway),
 		ReadingOrder: append([]string{}, request.Slide.ReadingOrder...), ExceptionRationale: strings.TrimSpace(request.Slide.ExceptionRationale),
 	}
 	revision := saga.SlideTransactionRevision{RequestID: request.RequestID, Asset: assetName, AssetDigest: assetDigest, Slide: manifest, Items: []saga.TransactionItem{}}

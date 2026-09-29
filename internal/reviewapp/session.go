@@ -441,10 +441,37 @@ func (s *session) Overview(ctx context.Context, _ OverviewQuery) (Overview, erro
 		node := s.finishNode(child.Target, true)
 		summary := ChapterSummary{Node: node, ChildCount: len(child.Children), FragmentCount: len(child.Fragments), OwnsCurrent: node.Diffs.Current > 0, OwnsStale: node.Diffs.Stale > 0}
 		if child.Kind == "deck" {
+			for _, deck := range append(append([]*saga.Deck{}, s.document.Decks...), s.document.Onboarding...) {
+				if deck.Target == child.Target {
+					report := deck.OverviewReport()
+					summary.Overview = &report
+					break
+				}
+			}
 			result.Decks = append(result.Decks, summary)
 		} else {
 			result.Chapters = append(result.Chapters, summary)
 		}
+	}
+	// Review and onboarding decks are independent destinations, even when they
+	// are outside the implementation hierarchy shown above.
+	seen := map[string]bool{}
+	for _, deck := range result.Decks {
+		seen[deck.Target] = true
+	}
+	extra := append([]*saga.Deck{}, s.document.Onboarding...)
+	for _, review := range s.document.Reviews {
+		if review.Deck != nil {
+			extra = append(extra, review.Deck)
+		}
+	}
+	for _, deck := range extra {
+		if seen[deck.Target] {
+			continue
+		}
+		node := s.finishNode(deck.Target, true)
+		report := deck.OverviewReport()
+		result.Decks = append(result.Decks, ChapterSummary{Node: node, FragmentCount: len(deck.Slides), OwnsCurrent: node.Diffs.Current > 0, OwnsStale: node.Diffs.Stale > 0, Overview: &report})
 	}
 	return result, nil
 }
@@ -558,6 +585,7 @@ func (s *session) ReadFragment(ctx context.Context, query FragmentQuery) (Fragme
 		result.Layout = entry.fragment.SlideMeta.Layout
 		result.Section = entry.fragment.SlideMeta.Section
 		result.Takeaway = entry.fragment.SlideMeta.Takeaway
+		result.Front = append([]string(nil), entry.fragment.SlideMeta.Front...)
 		result.ReadingOrder = append([]string(nil), entry.fragment.SlideMeta.ReadingOrder...)
 		result.AuthoringSnapshot = entry.fragment.AuthoringSnapshot
 		result.AuthoringHeads = append([]string(nil), entry.fragment.AuthoringHeads...)

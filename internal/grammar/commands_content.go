@@ -125,6 +125,7 @@ var contentCommands = []Command{
 			optional("review", "ID", "add the slide to this pull request review's deck instead of --deck"),
 			optional("section", "SECTION", "optional section label shown as a subtle divider inside the deck"),
 			optional("source", "PATH", "SVG, image, or self-contained HTML source"),
+			repeatable("front", "TEXT", "authored summary bullet; repeat for multiple bullets", false),
 			optional("takeaway", "TAKEAWAY", "single reviewer takeaway (maximum 180 characters)"),
 			optional("title", "TEXT", "slide title"),
 		},
