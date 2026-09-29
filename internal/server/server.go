@@ -513,6 +513,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /decks", application.decksPage)
 	handle("GET /app.js", application.javascript)
 	handle("GET "+diagram.FontPath, application.diagramFont)
+	handle("GET "+diagram.MonoFontPath, application.diagramMonoFont)
 	handle("GET /theme.js", application.themeScript)
 	handle("GET /theme.css", application.themeStylesheet)
 	handle("GET /theme", application.themePreview)

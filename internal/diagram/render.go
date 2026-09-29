@@ -72,6 +72,12 @@ func Render(d Document, options Options) ([]byte, error) {
 	for _, e := range d.Elements {
 		usesIcons = usesIcons || e.Icon != ""
 	}
+	for _, e := range d.Elements {
+		if e.Kind == "code" {
+			style.text += fmt.Sprintf(`@font-face{font-family:"%s";src:url("%s") format("truetype")}text.diagram-code{font-family:"%s",ui-monospace,Menlo,Consolas,monospace}`, MonoFontFamily, MonoFontPath, MonoFontFamily)
+			break
+		}
+	}
 	if usesIcons {
 		svg.add("metadata", "id", "diagram-notices").text = "Lucide icons (" + LucideRevision + "):\n" + IconLicense()
 	}
@@ -167,6 +173,8 @@ func (r *renderer) element(e Element, into *node) error {
 		return r.edge(e, style, g)
 	case "text":
 		return r.text(g, e.Label, Box{Width: e.Width, Height: e.Height}, style.FontSize, style.Ink, e.Wrap, e.Align)
+	case "code":
+		return r.codeExample(e, style, g)
 	case "sticky", "annotation":
 		return r.board(e, style, g)
 	}

@@ -14,7 +14,7 @@
     "reveal": {"enum": ["fade"], "description": "Opt-in staggered entrance: the reviewer fades the drawing in step by step each time its slide is shown. Thumbnails, exports, landmark links, and readers who prefer reduced motion see the finished drawing."},
     "styles": {
       "type": "object",
-      "description": "Named styles; a name matching a default (normal, primary, emphasis, secondary, warning, boundary, title, caption) replaces it completely.",
+      "description": "Named styles; a name matching a default (normal, primary, emphasis, secondary, warning, boundary, title, caption, code) replaces it completely.",
       "patternProperties": {"^[a-z][a-z0-9-]{0,63}$": {"$ref": "#/$defs/style"}},
       "additionalProperties": false
     },
@@ -54,7 +54,7 @@
       "required": ["id", "kind", "x", "y", "style"],
       "properties": {
         "id": {"allOf": [{"$ref": "#/$defs/id"}, {"not": {"pattern": "^diagram-"}}]},
-        "kind": {"enum": ["node", "edge", "text", "group", "graphic", "sticky", "annotation"], "description": "A sticky is a palette-coloured square of wrapped label text; an annotation is a bubble, pin, highlight, or bracket. Describe lists both as notes about their about element."},
+        "kind": {"enum": ["node", "edge", "text", "group", "graphic", "sticky", "annotation", "code"], "description": "A sticky is a palette-coloured square of wrapped label text; an annotation is a bubble, pin, highlight, or bracket. Describe lists both as notes about their about element."},
         "shape": {"enum": ["service", "datastore", "decision", "rect", "ellipse", "boundary", "triangle", "hexagon", "parallelogram", "document", "cloud", "actor", "queue", "circle", "star", "entity", "section", "bubble", "pin", "highlight", "bracket"], "description": "Node shape; a group with rect or boundary draws a frame around its children, and with section a tinted frame whose label sits in a title tab. The node shapes after boundary center their icon, label, and detail in a text area inside the outline and default to align middle; a circle needs equal width and height, and an entity draws an ERD table of its fields. An annotation is a bubble, pin, highlight, or bracket."},
         "label": {"type": "string", "maxLength": 2000},
         "detail": {"type": "string", "maxLength": 2000},
@@ -91,8 +91,17 @@
         "about": {"$ref": "#/$defs/id", "description": "The semantic element a sticky or annotation is about; describe prints it, and a bubble without a target points at its box."},
         "target": {"$ref": "#/$defs/point", "description": "Element-local point a bubble's pointer reaches; it must lie outside the bubble."},
         "side": {"enum": ["left", "right", "top", "bottom"], "description": "The side of its box a bracket's point faces."},
+        "code": {"type": "string", "minLength": 1, "maxLength": 16000, "pattern": "\\S", "description": "Literal multiline source for a code element. Never executed; indentation and blank lines are preserved."},
+        "language": {"type": "string", "maxLength": 64, "pattern": "^[^\\r\\n\\t]*$", "description": "Optional display label, such as go, Python, TypeScript, or HTTP."},
+        "line_numbers": {"type": "boolean"},
+        "highlight_lines": {"type": "array", "maxItems": 100, "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 100}},
         "step": {"type": "integer", "minimum": 1, "maximum": 1000, "description": "When the element appears in the document's reveal; requires reveal. Defaults to its reading order among semantic elements; a decorative element without a step appears with its group, or from the start. Equal steps appear together, gaps cost no time, and no element appears before its group."}
-      }
+      },
+      "allOf": [
+        {"if": {"properties": {"kind": {"const": "code"}}, "required": ["kind"]},
+         "then": {"required": ["code", "width", "height"], "properties": {"width": {"exclusiveMinimum": 0}, "height": {"exclusiveMinimum": 0}, "wrap": {"const": false}, "align": {"const": "start"}}, "not": {"anyOf": [{"required": ["shape"]}, {"required": ["detail"]}, {"required": ["label_box"]}]}},
+         "else": {"not": {"anyOf": [{"required": ["code"]}, {"required": ["language"]}, {"required": ["line_numbers"]}, {"required": ["highlight_lines"]}]}}}
+      ]
     }
   }
 }

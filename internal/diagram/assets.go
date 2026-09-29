@@ -8,6 +8,7 @@ import (
 	"strings"
 	"sync"
 
+	"golang.org/x/image/font/gofont/gomono"
 	"golang.org/x/image/font/gofont/goregular"
 )
 
@@ -24,6 +25,9 @@ const FontPath = "/_diagram/fonts/go-regular.ttf"
 
 // FontFamily is the CSS family name generated SVGs declare.
 const FontFamily = "Change Saga Diagram"
+
+const MonoFontPath = "/_diagram/fonts/go-mono.ttf"
+const MonoFontFamily = "Change Saga Code"
 
 // iconBundle is the complete Lucide set: every upstream icon shares one <svg>
 // root, stored once, and keeps its drawing markup and search tags.
@@ -109,4 +113,10 @@ func IconLicense() string {
 func Font() ([]byte, string) {
 	license, _ := bundled.ReadFile("assets/GO-FONT-LICENSE")
 	return goregular.TTF, string(license)
+}
+
+// MonoFont is the bundled measurement and display font for code examples.
+func MonoFont() ([]byte, string) {
+	license, _ := bundled.ReadFile("assets/GO-FONT-LICENSE")
+	return gomono.TTF, string(license)
 }
