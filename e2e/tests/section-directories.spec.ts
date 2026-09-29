@@ -90,7 +90,7 @@ test("a deck's header opens it at the first slide", async ({ page, saga }) => {
   const contents = page.getByRole("navigation", { name: "Contents" });
   // The header is a link to the deck's first slide, and the slides stay
   // beneath it so any one of them is still one click away.
-  const implementation = contents.getByRole("link", { name: "Implementation", exact: true });
+  const implementation = contents.getByRole("link", { name: "Technical", exact: true });
   await expect(implementation).toHaveAttribute("href", /\?view=slides#./);
   await expect(contents.locator("[data-slide-thumbnail]")).toHaveCount(2);
 

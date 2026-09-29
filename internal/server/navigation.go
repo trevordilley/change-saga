@@ -10,9 +10,9 @@ import (
 // The reviewer sidebar projects one stable information architecture:
 //
 //	Product          Prototypes, then Requirements
-//	Design           UX, UI, Technical (ERD, System, Data Flows)
+//	Design           UX, UI, Architecture (ERD, System, Data Flows)
 //	Quality          Test Cases
-//	Implementation   the slide deck that explains the change
+//	Technical        the slide deck that explains the change
 //
 // The order is fixed among the sections that have content. It is an information
 // architecture, not a phase gate: it never reorders as authoring progresses,
@@ -26,7 +26,7 @@ import (
 //
 // The four headers are destinations as well as disclosures. Product, Design,
 // and Quality open the feature's page at the section that lists what they hold,
-// and Implementation opens its deck at the first slide.
+// and Technical opens its deck at the first slide.
 
 // productNavSources is everything the architecture can be filled from. Every
 // field is optional: empty fields do not produce navigation rows.
@@ -107,7 +107,7 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	}
 	technicalChildren = append(technicalChildren, sources.technical...)
 	if len(technicalChildren) > 0 {
-		designChildren = append(designChildren, navPlace("Technical", prefix+"-technical", "implementation", technicalChildren))
+		designChildren = append(designChildren, navPlace("Architecture", prefix+"-technical", "implementation", technicalChildren))
 	}
 
 	var navigation []*navNodeView
@@ -122,7 +122,7 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 			navPlace("Test Cases", prefix+"-test-cases", "quality", sources.testCases),
 		}))
 	}
-	// Implementation is the one place that opens on arrival, and it opens all
+	// Technical is the one place that opens on arrival, and it opens all
 	// the way to the slides. The deck that explains the change is what a
 	// reviewer came for, so the sidebar shows what is actually there instead of
 	// a row to click first. Everything else stays shut: four short rows read as
@@ -133,8 +133,8 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		}
 		return navigation
 	}
-	implementation := navPlace("Implementation", prefix+"-implementation", "implementation", sources.implementation)
-	// Implementation is the deck. With the one deck a Saga normally has, its
+	implementation := navPlace("Technical", prefix+"-implementation", "implementation", sources.implementation)
+	// Technical is the deck. With the one deck a Saga normally has, its
 	// slides sit directly beneath the section instead of under a deck row that
 	// only restates the section and costs a click. Several decks keep their
 	// rows, since the reader then needs to know which deck a slide belongs to.
@@ -148,7 +148,7 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	// The header opens the deck at its first slide. A deck knows where it
 	// starts; a header that only expanded made the reader pick a slide before
 	// they had read one.
-	if href := firstSlideHref(implementation.Children); href != "" {
+	if href := deckEntryHref(implementation.Children); href != "" {
 		implementation.Href = href
 	}
 
@@ -216,7 +216,7 @@ func designSection(section *saga.Section) bool {
 	return saga.IsDesignPath(section.Path)
 }
 
-// makeDesignChapterNav projects the ___design chapters into Technical. Which
+// makeDesignChapterNav projects the ___design chapters into Architecture. Which
 // of ERD, System, or Data Flows a chapter satisfies is not recorded, so the
 // chapter keeps its authored title and claims none of them.
 func makeDesignChapterNav(root *saga.Section) []*navNodeView {
@@ -234,16 +234,16 @@ func makeDesignChapterNav(root *saga.Section) []*navNodeView {
 }
 
 // splitDeckNavByRole folds the decks that used to occupy their own top-level
-// sidebar path into Design > UX and Implementation.
+// sidebar path into Design > UX and Technical.
 //
-// Implementation is where a deck belongs unless it says otherwise. The slide
+// Technical is where a deck belongs unless it says otherwise. The slide
 // deck that explains the change is the core artifact of a Change Saga, and an
 // embedded report deck must carry role "change": internal/saga validation
 // rejects any other role, because the report itself is the overview. So a deck
 // arriving here without a design role is not one whose role went unrecorded —
 // it is the implementation deck, named by the only role it is allowed to have.
 //
-// "ux" is the one role that moves a deck out of Implementation, for the UX
+// "ux" is the one role that moves a deck out of Technical, for the UX
 // flows the authoring grammar will add as `add-deck --role ux`. It is accepted
 // ahead of that grammar so the seam is already correct when the role lands.
 func splitDeckNavByRole(nodes []*navNodeView, decks []*saga.Deck) (ux, implementation []*navNodeView) {

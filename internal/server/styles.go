@@ -846,4 +846,4 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .documentation-explanation .term-code-lines th { white-space:nowrap; overflow-wrap:normal; min-width:3ch; }
 .documentation-explanation button { cursor:pointer; max-width:100%; overflow-wrap:anywhere; }
 .documentation-members { display:flex; gap:12px; flex-wrap:wrap; padding-left:20px; }
-`
+` + slideViewedStyles

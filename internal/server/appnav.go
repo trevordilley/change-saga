@@ -53,7 +53,7 @@ import (
 // only says which rows are current and which are open. A shut feature's places
 // are there to disclose, like any other section's.
 //
-// Within the open feature, Implementation is the deck and opens all the way to
+// Within the open feature, Technical is the deck and opens all the way to
 // its slides. Other authored places stay shut until something inside is active;
 // empty places are omitted.
 //
@@ -102,7 +102,7 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		}
 	}
 	// The onboarding deck is one deck; its slides sit directly beneath the
-	// place, as Implementation's do.
+	// place, as Technical's do.
 	if len(onboarding) == 1 && len(onboarding[0].Children) > 0 {
 		onboarding = onboarding[0].Children
 	}
@@ -185,8 +185,29 @@ func navSection(title, href, id, icon string, children []*navNodeView) *navNodeV
 // into a list of slides asked the reader a question they had no way to answer.
 func navDeck(title, id, icon string, slides []*navNodeView) *navNodeView {
 	node := navPlace(title, id, icon, slides)
-	node.Href = firstSlideHref(slides)
+	node.Href = deckEntryHref(slides)
 	return node
+}
+
+// deckEntryHref keeps a populated deck's first slide as its default, while
+// an empty deck can still open the explicitly generated overview directory.
+func deckEntryHref(nodes []*navNodeView) string {
+	if href := firstSlideHref(nodes); href != "" {
+		return href
+	}
+	var overviewHref func([]*navNodeView) string
+	overviewHref = func(rows []*navNodeView) string {
+		for _, row := range rows {
+			if strings.HasPrefix(row.NodeID, "overview-") && row.Href != "" {
+				return row.Href
+			}
+			if href := overviewHref(row.Children); href != "" {
+				return href
+			}
+		}
+		return ""
+	}
+	return overviewHref(nodes)
 }
 
 // firstSlideHref is where a deck opens: its first slide, wherever that slide

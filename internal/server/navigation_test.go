@@ -98,9 +98,9 @@ func TestRequirementsWithoutStoriesIsHidden(t *testing.T) {
 }
 
 // Decks used to occupy their own top-level sidebar path. They now fold into
-// the architecture by role: Implementation is where a deck belongs unless it
+// the architecture by role: Technical is where a deck belongs unless it
 // says otherwise, and "ux" is the one role that moves it out.
-func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
+func TestDeckNavigationFoldsIntoDesignAndTechnicalByRole(t *testing.T) {
 	t.Parallel()
 	root := &saga.Section{ID: "root", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "deck", ID: "flows", Title: "Checkout flows", Target: saga.DeckTarget("test", "flows")},
@@ -112,7 +112,7 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 		{DeckManifest: saga.DeckManifest{ID: "build", Role: "implementation"}, Target: saga.DeckTarget("test", "build")},
 		// "change" is the only role an embedded report deck is allowed to
 		// carry, and it is the slide deck that explains the change: the core
-		// artifact a Change Saga exists to review. It belongs in Implementation
+		// artifact a Change Saga exists to review. It belongs in Technical
 		// on its own terms, not as a deck whose role went unrecorded.
 		{DeckManifest: saga.DeckManifest{ID: "intro", Role: "change"}, Target: saga.DeckTarget("test", "intro")},
 	}
@@ -133,8 +133,8 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 		t.Fatal("a ux deck must fill Design > UX")
 	}
 	for _, node := range nodes {
-		if node.Title == "Implementation" && node.Gap {
-			t.Fatal("implementation decks must fill Implementation")
+		if node.Title == "Technical" && node.Gap {
+			t.Fatal("implementation decks must fill Technical")
 		}
 	}
 
@@ -148,8 +148,8 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 	if ux := findNav(t, app, "Features", "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0] != uxRow {
 		t.Fatalf("a feature's ux deck must fill its Design > UX: %v", navTitles(ux.Children, 0))
 	}
-	if got := topTitles(findNav(t, app, "Features", "Billing", "Implementation").Children); got != "charge|refund" {
-		t.Fatalf("a ux deck must leave the feature's Implementation to the change deck: %s", got)
+	if got := topTitles(findNav(t, app, "Features", "Billing", "Technical").Children); got != "charge|refund" {
+		t.Fatalf("a ux deck must leave the feature's Technical to the change deck: %s", got)
 	}
 	// Catalog only spends rows on its four places when the reader is in it.
 	sources.pageFeature = "catalog"
@@ -161,7 +161,7 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 // ___design is the only recorded signal that a chapter is technical design.
 // Which technical category it satisfies is not recorded, so the chapter keeps
 // its authored title without inventing empty categories around it.
-func TestDesignChaptersJoinTechnicalWithoutClaimingAFixedRole(t *testing.T) {
+func TestDesignChaptersJoinArchitectureWithoutClaimingAFixedRole(t *testing.T) {
 	t.Parallel()
 	root := &saga.Section{ID: "root", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "chapter", ID: "delivery", Title: "Delivery", Path: "delivery.chapter", Target: saga.ChapterTarget("test", "delivery")},
@@ -176,7 +176,11 @@ func TestDesignChaptersJoinTechnicalWithoutClaimingAFixedRole(t *testing.T) {
 		t.Fatalf("technical chapters = %#v", technical)
 	}
 	nodes := makeProductNavTree(productNavSources{technical: technical})
-	children := findNav(t, nodes, "Design", "Technical").Children
+	architecture := findNav(t, nodes, "Design", "Architecture")
+	if architecture.NodeID != "nav-technical" {
+		t.Fatalf("Architecture rename changed stable navigation identity: %q", architecture.NodeID)
+	}
+	children := architecture.Children
 	if got := navTitles(children, 0); strings.Join(got, "|") != "Technical architecture" {
 		t.Fatalf("technical order = %v", got)
 	}
@@ -214,11 +218,11 @@ func TestProductNavigationSitsInsideEveryFeatureBelowItsReportOutline(t *testing
 	if got, want := topTitles(nodes), "Overview|Features"; got != want {
 		t.Fatalf("sidebar = %s, want %s", got, want)
 	}
-	if got, want := topTitles(findNav(t, nodes, "Features", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Implementation"; got != want {
+	if got, want := topTitles(findNav(t, nodes, "Features", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Technical"; got != want {
 		t.Fatalf("billing feature = %s, want %s", got, want)
 	}
 	billing.Report = nil
-	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Features", "Billing").Children), "Product|Implementation"; got != want {
+	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Features", "Billing").Children), "Product|Technical"; got != want {
 		t.Fatalf("feature without report content = %s, want %s", got, want)
 	}
 }
@@ -238,12 +242,12 @@ func TestEmptySectionsDoNotRender(t *testing.T) {
 	}
 }
 
-// Implementation opens on arrival and the rest stays shut. A sidebar that
+// Technical opens on arrival and the rest stays shut. A sidebar that
 // opened every filled place would bury the deck a reviewer came to read under
 // rows they did not ask for.
-func TestOnlyImplementationOpensOnArrival(t *testing.T) {
+func TestOnlyTechnicalOpensOnArrival(t *testing.T) {
 	t.Parallel()
-	deck := &navNodeView{Title: "Implementation review", NodeID: "nav-deck", Deck: true,
+	deck := &navNodeView{Title: "Technical review", NodeID: "nav-deck", Deck: true,
 		Children: []*navNodeView{{Title: "Architecture and storage", NodeID: "nav-slide"}}}
 	nodes := makeProductNavTree(productNavSources{
 		requirements:   &navNodeView{Title: "Requirements", Children: []*navNodeView{{Title: "Story 01 · Refund window"}}},
@@ -252,11 +256,11 @@ func TestOnlyImplementationOpensOnArrival(t *testing.T) {
 		implementation: []*navNodeView{deck},
 	})
 
-	implementation := findNav(t, nodes, "Implementation")
+	implementation := findNav(t, nodes, "Technical")
 	if !implementation.Expanded {
-		t.Fatal("Implementation must open on arrival")
+		t.Fatal("Technical must open on arrival")
 	}
-	// Implementation is the deck: its slides sit directly beneath the section,
+	// Technical is the deck: its slides sit directly beneath the section,
 	// with no deck row restating it in between.
 	if len(implementation.Children) != 1 || implementation.Children[0].Title != "Architecture and storage" {
 		t.Fatalf("implementation must list the deck's slides directly: %v", navTitles(implementation.Children, 0))
@@ -270,13 +274,13 @@ func TestOnlyImplementationOpensOnArrival(t *testing.T) {
 
 // With several implementation decks the rows stay, so a reader can tell which
 // deck a slide belongs to; each still opens to its slides.
-func TestSeveralImplementationDecksKeepTheirRows(t *testing.T) {
+func TestSeveralTechnicalDecksKeepTheirRows(t *testing.T) {
 	t.Parallel()
 	first := &navNodeView{Title: "Storage", NodeID: "nav-a", Deck: true, Children: []*navNodeView{{Title: "Schema"}}}
 	second := &navNodeView{Title: "Checkout", NodeID: "nav-b", Deck: true, Children: []*navNodeView{{Title: "Retry"}}}
 	nodes := makeProductNavTree(productNavSources{implementation: []*navNodeView{first, second}})
 
-	implementation := findNav(t, nodes, "Implementation")
+	implementation := findNav(t, nodes, "Technical")
 	if len(implementation.Children) != 2 || !implementation.Children[0].Deck || !implementation.Children[1].Deck {
 		t.Fatalf("several decks must keep their rows: %v", navTitles(implementation.Children, 0))
 	}
@@ -304,5 +308,23 @@ func TestActivePageOpensThePlacesThatContainIt(t *testing.T) {
 	}
 	if findNavByID(nodes, "nav-design") != nil || findNavByID(nodes, "nav-quality") != nil {
 		t.Fatal("empty places must not render")
+	}
+}
+
+func TestTechnicalKeepsOverviewDestinationForEmptyDeck(t *testing.T) {
+	t.Parallel()
+	overview := &navNodeView{Title: "Overview", NodeID: "overview-deck-empty", Href: "/features/billing?view=slides#overview-deck-empty"}
+	deck := &navNodeView{Title: "Empty deck", Deck: true, NodeID: "nav-empty", Children: []*navNodeView{overview}}
+	nodes := makeProductNavTree(productNavSources{feature: "billing", implementation: []*navNodeView{deck}})
+	technical := findNav(t, nodes, "Technical")
+	if technical.NodeID != "nav-implementation" || technical.Href != overview.Href || len(technical.Children) != 1 || technical.Children[0] != overview {
+		t.Fatalf("empty deck lost its stable navigation identity or overview: %#v", technical)
+	}
+	slide := &navNodeView{Href: "/features/billing?view=slides#slide-one", Slide: &SlideReferenceView{}}
+	if got := deckEntryHref([]*navNodeView{overview, slide}); got != slide.Href {
+		t.Fatalf("populated deck must still open first slide, got %q", got)
+	}
+	if got := navDeck("Onboarding", "nav-onboarding", "deck", []*navNodeView{overview}).Href; got != overview.Href {
+		t.Fatalf("empty onboarding deck lost overview: %q", got)
 	}
 }

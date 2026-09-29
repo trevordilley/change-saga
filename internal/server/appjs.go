@@ -3430,4 +3430,4 @@ const appJavaScript = `(() => {
   const firstPage = pageRoot();
   if (firstPage) arrived(firstPage, 'first');
   void loadLayers();
-})();`
+})();` + slideViewedJavaScript
