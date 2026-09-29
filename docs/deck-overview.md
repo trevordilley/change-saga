@@ -94,10 +94,10 @@ and approval decisions never mark a slide Viewed. The visible count reports
 reading progress separately from decisions and coverage.
 
 Viewed markers are stored in browser local storage, scoped to the Saga, deck,
-slide, and local reviewer name. They survive reload and navigation for that
+slide, and selected local reader identity. They survive reload and navigation for that
 browser profile and origin, including the server port. They do not sync between
 browsers, ports, or machines, and clearing site data removes them. The local
-reviewer name is a reading profile, not authentication or the Git identity used
+reader identity or optional name is a reading profile, not authentication or the Git identity used
 for attributed review records. Use a consistent server address and port when
 resuming. This deliberately avoids adding shared review events for personal
 reading progress.
