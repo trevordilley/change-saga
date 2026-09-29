@@ -65,6 +65,6 @@ The existing APIs work with code elements:
 Keep product stories in the feature's Product records. Use code examples to
 explain how callers use the API and link to those stories where relevant.
 
-Readers without support for the new `code` kind can still display the stored
-SVG. They cannot re-author its structured source; upgrade those CLI versions
-before editing the example.
+The generated SVG remains a standard image, but older CLI versions may reject
+the new element kind or fields when loading its structured source. Upgrade
+readers and authoring tools before using code elements.
