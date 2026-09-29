@@ -12,7 +12,20 @@ Every deck has a Deck -> Slide -> Item spine. A feature's single living
 implementation deck explains the domain's current implementation. Update its
 affected slides rather than creating one deck per change. A pull-request review
 deck explains a transition and its reasoning. An onboarding deck teaches the
-app without owning code. Requirements, prototypes, and design are not slides.
+app without owning code. Requirements, prototypes, and design are not slides. Requests to describe
+implemented features belong in actual Product story records (see
+[stories.md](stories.md)); deck Items may reference those stories.
+
+Every deck has an Overview: an authored report combining explanation, tables,
+and visualizations. Every slide has a short bullet-summary Front and a visual
+Back. Keep precise evidence on stable Back Items. Overview citations name a
+slide and optionally an Item, so code, diffs, and stories are reached through
+that slide. Reference every slide from the authored Overview. That coverage
+check is separate from exact code coverage: a citation never covers an
+otherwise unexplained code line. Legacy decks remain readable with a generated
+directory and summary fallback, but that directory is not authored coverage.
+Use the installed CLI help and spec for the overview and Front authoring
+commands and field limits.
 
 Chapters, sections, and fragments carry longer design notes, overviews, and
 walkthroughs. Use Markdown to orient and connect visual artifacts, not as the

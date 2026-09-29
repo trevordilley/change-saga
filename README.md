@@ -163,8 +163,19 @@ A grown Saga holds:
   which never reorder as work progresses: **Product** (prototypes, and user
   stories with acceptance criteria), **Design** (UX flows, UI references, and
   technical design), **Quality** (test cases and their evidence), and
-  **Implementation** (a slide deck whose visual elements reference the exact
+  **Technical** (a slide deck whose visual elements reference the exact
   code they explain).
+
+To describe implemented features, create or update their actual **Product**
+stories and observable acceptance criteria. Technical decks reference those
+stories and explain how the code fulfills them.
+
+Each deck has an **Overview**, a rich report with written explanation, tables,
+and visuals. Its authored citations lead through a slide or Item to the linked
+story, code, or diff. Every slide has a summary **Front** and visual **Back**;
+existing visual assets and their evidence links remain on the Back. Overview
+coverage checks that every slide is referenced, independently of the deck's
+exact code coverage. See [the deck guide](docs/deck-overview.md).
 
 A monorepo of several apps keeps one `change.saga` at its root and documents
 each app through its own features. One Saga per repository is a
@@ -411,11 +422,11 @@ Documentation holds:
 - **Overview** is the application's pitch and description, plus its personas,
   terms and vocabulary, design system, onboarding deck, and feature flags.
 - **Features** lists every feature, each opening its own page. Inside a feature
-  the sidebar is always Product, Design, Quality, and Implementation, in that
-  order. Implementation is the deck itself, open to its slide thumbnails; the
+  the sidebar is always Product, Design, Quality, and Technical, in that
+  order. Technical is the deck itself, open to its slide thumbnails; the
   other sections stay collapsed until you need them, and empty places say what
   is missing.
-- **Present** shows the implementation deck full screen, one slide at a time.
+- **Present** shows the technical deck full screen, one slide at a time.
   Linked code opens without losing the active slide.
 
 Review holds the reviews and everything that reads a comparison. Its sidebar is

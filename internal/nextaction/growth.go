@@ -39,7 +39,7 @@ func areaRank(area string) int {
 
 // The practice each kind of growth teaches, and why it pays off.
 const (
-	practiceStories   = "Capture the story: a story says who a change serves and what done means. Written while the change is fresh, it lets the next change here say what it refines instead of rediscovering it, and links the code to the reason it exists."
+	practiceStories   = "Capture the story in the feature's Product records: create or revise the actual story with who it serves and observable acceptance criteria. A story list in a technical deck does not replace that record; deck Items reference it. Written while the change is fresh, it lets the next change here say what it refines instead of rediscovering it, and links the code to the reason it exists."
 	practicePersonas  = "Name the persona: a persona is a person who gets value from the app, the \"As a ...\" of a user story, never a tool or agent that operates it. Stories that name one show which people each change affects, and a persona no story serves shows what the app is missing."
 	practiceDesign    = "Record the design: design explains how a story is met before the code does. It is what a reviewer compares the code against, and what the next person to change this reads first."
 	practiceQuality   = "Verify the criterion: a test case turns an acceptance criterion into something checkable, so a later change that breaks it is caught rather than discovered."
@@ -268,7 +268,7 @@ func (b *builder) storyOptions(gap *storyGap, id, story string, exists bool) []O
 	capture := append([]grammar.Invocation{b.invoke("story add", grammar.V("id", id), grammar.V("revision", "r1"), grammar.V("event", "proposed"),
 		grammar.V("title", title), grammar.V("statement", ""))}, relate(story)...)
 	return []Option{
-		option("capture it", "a proposed story, and an addresses relation from each place that documents the code it explains", capture...),
+		option("capture it", "a proposed Product story record, and an addresses relation from each place that documents the code it explains", capture...),
 		option("an existing story covers it", "an addresses relation to that story", relate("")...),
 		later,
 	}

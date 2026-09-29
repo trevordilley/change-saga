@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"), meant for the big change a person reviews as a whole, such as an integration branch gathering many agents'' work: a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, design, quality, implementation, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
+description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"), meant for the big change a person reviews as a whole, such as an integration branch gathering many agents'' work: a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, design, quality, technical decks, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
 ---
 
 # Change Saga
@@ -117,6 +117,17 @@ A Saga of reviews alone is complete; do not pitch more. If the user asks to
 document the application itself (personas, stories, features, design, living
 documentation), `change-saga setup-initial-saga` guides growing this Saga.
 
+## Describe implemented features
+
+When asked to describe or document implemented features, query the existing
+Product features and stories, inspect the implementation, and create or update
+actual feature story records through the public story authoring commands. Put
+user outcomes and observable acceptance criteria in Product. Preserve the
+distinction between confirmed intent and code-derived proposals; do not mark
+inferred requirements accepted. Reuse existing personas and story identities.
+A prose feature list or a slide titled “Stories” is not a substitute for these
+records. Technical decks may reference the real stories through their Items.
+
 ## Mandatory contract
 
 A Change Saga is Git-native: the recommended idiom is one Saga per
@@ -177,7 +188,7 @@ reference. When a task crosses rows, combine only those rows.
 | Create a review for a PR or branch (the usual first task) | The fast path above, then [diagrams and evidence](references/diagrams.md) |
 | Inspect or navigate an existing Saga; load compact feature context; resolve current heads, conflicts, evidence, or history | [Reading through the query API](references/query.md) |
 | Audit whether one feature has a current, exact implementation handoff | [Reading through the query API](references/query.md) |
-| Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
+| Describe implemented features; interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |
 | Author Component/System definitions, their interactions, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
@@ -205,8 +216,10 @@ observable pass/fail criteria. A proposed story may remain criterion-free
 while intent is uncertain; an accepted story needs at least one criterion. Add
 only the narrowest obligation confirmed by the user.
 
-For an existing code change, begin with its review deck (the fast path above)
-and offer missing product context only as optional follow-up. For new
+For a request to review an existing code change, begin with its review deck
+(the fast path above) and offer missing product context only as optional
+follow-up. A request to describe implemented features instead follows the
+Product story workflow above. For new
 work whose whole lifecycle is requested, begin with personas and stories,
 develop relevant design and quality, and connect exact implementation evidence
 as it is built. Never manufacture product intent to make coverage complete.
