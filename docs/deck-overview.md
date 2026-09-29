@@ -19,7 +19,13 @@ stories and explain the mechanisms that fulfill them.
 
 Every deck has an **Overview**, a report combining written explanation, tables,
 and visuals. It provides the connected account of the deck and cites every
-slide. Each slide has two faces:
+slide. For a Technical deck, this is the detailed **technical overview**: the
+implementation strategy and technical design that the slides distill into
+pictures. Explain component responsibilities, data models, execution paths,
+invariants, failure handling, and design tradeoffs at the depth needed to work
+on the implementation. The report should stand on its own as a technical
+document; a reading guide or slide directory alone is insufficient.
+Each slide has two faces:
 
 - **Front** is a short bullet summary, like a flash card.
 - **Back** is the detailed diagram or visualization. It retains the existing

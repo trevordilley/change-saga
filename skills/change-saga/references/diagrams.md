@@ -17,7 +17,12 @@ implemented features belong in actual Product story records (see
 [stories.md](stories.md)); deck Items may reference those stories.
 
 Every deck has an Overview: an authored report combining explanation, tables,
-and visualizations. Every slide has a short bullet-summary Front and a visual
+and visualizations. A Technical deck's overview is the detailed implementation
+strategy and technical design document that its slides make digestible in
+pictures. Explain responsibilities, data models, execution paths, invariants,
+failure handling, and tradeoffs with enough depth to work on the implementation.
+A slide tour or reading guide does not replace this technical account.
+Every slide has a short bullet-summary Front and a visual
 Back. Keep precise evidence on stable Back Items. Overview citations name a
 slide and optionally an Item, so code, diffs, and stories are reached through
 that slide. Reference every slide from the authored Overview. That coverage
