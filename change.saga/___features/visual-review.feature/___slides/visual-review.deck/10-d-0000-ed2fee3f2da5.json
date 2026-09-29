@@ -57,5 +57,5 @@
   "title": "Visual review collaboration architecture",
   "role": "change",
   "rank": 0,
-  "objective": "Separate implemented contextual discussion from the missing spatial annotation layer."
+  "objective": "Explain how slide-based discussion, spatial markup, and guarded append-only saves keep review feedback connected to its context."
 }
