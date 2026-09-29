@@ -298,7 +298,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"relation": Relation, "plan": Plan, "design": Design, "quality": Quality, "add-deck": AddDeck,
 	"add-slide": AddSlide, "apply-slide": ApplySlide, "diagram": Diagram, "theme": Theme, "set-slide-content": SetSlideContent, "add-item": AddItem, "add-section": AddSection,
 	"add-chapter": AddChapter, "add-fragment": AddFragment, "set-fragment-content": SetFragmentContent,
-	"add-landmark": AddLandmark, "revise-deck": ReviseDeck, "remove-deck": RemoveDeck, "revise-slide": ReviseSlide, "remove-slide": RemoveSlide, "revise-item": ReviseItem, "remove-item": RemoveItem, "revise-chapter": ReviseChapter, "remove-chapter": RemoveChapter, "revise-section": ReviseSection, "remove-section": RemoveSection, "revise-fragment": ReviseFragment, "remove-fragment": RemoveFragment, "cover": Cover, "remove-coverage": RemoveCoverage,
+	"add-landmark": AddLandmark, "deck": Deck, "revise-deck": ReviseDeck, "remove-deck": RemoveDeck, "revise-slide": ReviseSlide, "remove-slide": RemoveSlide, "revise-item": ReviseItem, "remove-item": RemoveItem, "revise-chapter": ReviseChapter, "remove-chapter": RemoveChapter, "revise-section": ReviseSection, "remove-section": RemoveSection, "revise-fragment": ReviseFragment, "remove-fragment": RemoveFragment, "cover": Cover, "remove-coverage": RemoveCoverage,
 	"replace-coverage": ReplaceCoverage, "references": References, "repin": Repin, "sync": Sync,
 	"add-claim": AddClaim, "verify-claim": VerifyClaim, "validate": Validate, "status": Status, "reconcile": Reconcile, "check": Check, "query": Query,
 	"visual-qa":     VisualQA,
