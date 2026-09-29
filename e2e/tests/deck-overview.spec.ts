@@ -19,8 +19,8 @@ test("@critical feature Overview links select and expand their own navigation ac
   const contents = page.getByRole("navigation", { name: "Contents" });
   const feature = contents.locator('.doc-node:has(> .doc-row > a[href="/features/wave-one"])');
   const otherFeature = contents.locator('.doc-node:has(> .doc-row > a[href="/features/tide-charts"])');
-  const overviewLink = feature.getByRole("link", { name: "Overview", exact: true, includeHidden: true });
-  const otherOverviewLink = otherFeature.getByRole("link", { name: "Overview", exact: true, includeHidden: true });
+  const overviewLink = feature.locator('a.doc-link[href*="#overview-"]');
+  const otherOverviewLink = otherFeature.locator('a.doc-link[href*="#overview-"]');
   const rootOverview = contents.locator('[data-nav-row="nav-overview"] > a');
   const destination = new URL((await overviewLink.getAttribute("href"))!, saga.baseURL).href;
   const otherDestination = new URL((await otherOverviewLink.getAttribute("href"))!, saga.baseURL).href;
