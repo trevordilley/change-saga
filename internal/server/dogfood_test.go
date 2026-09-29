@@ -145,7 +145,7 @@ func TestSlideViewerNamesSlidesByTheirDeckRole(t *testing.T) {
 	if strings.Contains(pageStyles, "Review slide") {
 		t.Fatal("the slide viewer still labels documentation slides as review slides")
 	}
-	for _, label := range []string{"'Implementation slide'", "[data-deck-role=onboarding] .fragment-head::before{content:'Onboarding slide'}"} {
+	for _, label := range []string{"'Technical slide'", "[data-deck-role=onboarding] .fragment-head::before{content:'Onboarding slide'}"} {
 		if !strings.Contains(pageStyles, label) {
 			t.Fatalf("styles lack %s", label)
 		}

@@ -92,7 +92,7 @@ const appJavaScript = `(() => {
     return Boolean(surface && (!view || view.classList.contains('active')));
   }
 
-  function activateDeckSlide(index, updateHash = false) {
+  function activateDeckSlide(index, updateHash = false, face = null) {
     const slides = deckViewerSlides();
     if (!slides.length) return;
     hideNote();
@@ -110,6 +110,8 @@ const appJavaScript = `(() => {
     });
     const active = slides[bounded];
     const shell = active.closest('[data-deck-viewer]');
+    setDeckFace(face || (shell.dataset.deckFace === 'front' ? 'front' : 'back'), shell);
+    document.dispatchEvent(new CustomEvent('deck-slide-activated', {detail:{viewer:shell, slide:active}}));
     const position = q('[data-slide-position]', shell);
     const deckTitle = q('[data-slide-deck-title]', shell);
     const slideTitle = q('[data-current-slide-title]', shell);
@@ -146,6 +148,7 @@ const appJavaScript = `(() => {
   }
 
   function stepDeckSlide(delta) {
+    if (currentDeckViewer()?.dataset.deckFace === 'overview') return;
     const slides = deckViewerSlides();
     const active = slides.find(slide => !slide.hidden);
     if (!active) return;
@@ -157,13 +160,14 @@ const appJavaScript = `(() => {
   }
 
   function syncDeckSlideForHash() {
+    if (openDeckOverviewFromHash()) return;
     const slides = deckViewerSlides();
-    if (!slides.length) return;
+    if (!slides.length) { setDeckFace('overview'); return; }
     const id = decodeURIComponent(location.hash.replace(/^#/, ''));
     const requested = id ? document.getElementById(id)?.closest?.('[data-deck-slide]') : null;
     const view = slides[0].closest('[data-view]');
     if (view && !view.classList.contains('active') && !requested) return;
-    activateDeckSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)));
+    activateDeckSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)), false, requested ? 'back' : null);
   }
 
   function syncSlidePresentation() {
@@ -819,12 +823,18 @@ const appJavaScript = `(() => {
   }
 
   async function activateLandmark() {
+    if (openDeckOverviewFromHash()) return;
     qa('[data-landmark-visual].active').forEach(element => element.classList.remove('active'));
     qa('.content-landmark-active').forEach(element => element.classList.remove('content-landmark-active'));
     const id = decodeURIComponent(location.hash.replace(/^#/, ''));
     // The anchor may name something inside a chapter or an explanation that has
     // not been fetched yet, so it is resolved before it is scrolled to.
     const destination = await revealAnchor(id);
+    const destinationSlide = destination?.closest('[data-deck-slide]');
+    if (destinationSlide) {
+      const index = deckViewerSlides().indexOf(destinationSlide);
+      if (index >= 0) activateDeckSlide(index, false, 'back');
+    }
     const destinationView = destination?.closest('[data-view]')?.dataset.view;
     if (destinationView === 'saga' || destinationView === 'slides') setView(destinationView, false);
     const target = id ? q('[data-landmark-anchor="' + CSS.escape(id) + '"]') : null;
@@ -2109,14 +2119,14 @@ const appJavaScript = `(() => {
     return {templateID:readyButton.dataset.openDiffs, opener};
   }
 
-  async function hydrateTargetCode(button) {
+  async function hydrateTargetCode(button, returnOpener = null) {
     const href = button?.dataset.targetCodeHref;
     if (!href || button.dataset.targetCodeLoading === 'true') return;
     button.dataset.targetCodeLoading = 'true';
     button.setAttribute('aria-busy', 'true');
     try {
       const installed = installTargetCodeResponse(href, await requestTargetCode(href, {interactive:true}), button);
-      if (installed) openDrawer(installed.templateID, installed.opener);
+      if (installed) openDrawer(installed.templateID, returnOpener || installed.opener);
     } catch (_) {
       delete button.dataset.targetCodeLoading;
       button.removeAttribute('aria-busy');
@@ -2508,6 +2518,7 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('click', event => {
+    if (event.target.closest?.('[data-deck-overview] a')) return;
     const slideThumbnail = event.target.closest?.('[data-slide-thumbnail]');
     if (slideThumbnail) {
       const slides = deckViewerSlides();
@@ -3427,6 +3438,7 @@ const appJavaScript = `(() => {
     setView(requestedView(), false);
   });
 
+` + deckOverviewJavaScript + `
   const firstPage = pageRoot();
   if (firstPage) arrived(firstPage, 'first');
   void loadLayers();
