@@ -82,7 +82,7 @@ for file in "${files[@]}"; do
 		target="${target%>}"
 
 		case "$target" in
-		http://* | https://* | mailto:* | saga-diff://* | urn:* | data:*)
+		http://* | https://* | mailto:* | saga-diff://* | urn:* | data:* | annotation:* | slide:*)
 			external=$((external + 1))
 			continue
 			;;
@@ -109,7 +109,9 @@ for file in "${files[@]}"; do
 		if [ -n "$anchor" ] && [ -f "$resolved" ]; then
 			case "$resolved" in
 			*.md)
-				if ! anchors_of "$resolved" | grep -qxF "$anchor"; then
+				# Drain the producer: grep -q can cause SIGPIPE under pipefail
+				# when the matching heading precedes many more anchors.
+				if ! anchors_of "$resolved" | grep -xF -- "$anchor" >/dev/null; then
 					report "$file" "missing anchor: $target"
 				fi
 				;;
