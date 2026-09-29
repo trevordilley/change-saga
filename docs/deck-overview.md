@@ -46,17 +46,50 @@ citation reveals the resolved slide/Item and its available evidence; its links
 open the corresponding code, diff, or story. Following an Item link opens the
 Back so the linked visual region remains meaningful.
 
-Overview coverage asks whether each slide has a valid authored reference.
+Overview coverage asks whether each slide has a valid citation in the authored report body.
+Unused annotation definitions do not earn coverage.
 Exact code coverage still asks whether the deck's Items explain the relevant
 lines. Overview coverage is transitive only when those underlying code links
 exist and pass their own checks. Adding a citation cannot cover an unexplained
 line. Broken slides, cross-deck links, and missing Items are diagnosed and do
 not earn overview coverage.
 
+## Author and check
+
+Publish a report from an Overview JSON file:
+
+```sh
+change-saga deck overview --deck request-flow --file overview.json --dry-run change.saga
+change-saga deck overview --deck request-flow --file overview.json change.saga
+change-saga deck overview --deck request-flow --check change.saga
+```
+
+For a pull-request deck, use `--review REVIEW_ID` in place of `--deck`.
+The explicit Overview check fails when the authored report is missing or any
+slide remains uncited. Ordinary validation keeps legacy missing-overview cases
+as warnings. Continue running the relevant exact code-coverage check as well.
+
+For example, if the deck contains a `request-path` slide with a `router` Item:
+
+```json
+{
+  "body": "# Request flow\n\nThe [router](annotation:routing) establishes ownership.\n\n| Stage | Responsibility |\n| --- | --- |\n| Router | Select the handler |\n\n![Request diagram](slide:request-path)",
+  "annotations": [
+    {"id": "routing", "label": "Routing and its evidence", "slide": "request-path", "item": "router"}
+  ]
+}
+```
+
+The `slide:` image syntax reuses a same-deck slide visual rather than adding a
+second asset or evidence record. References to unsupported or missing visuals
+are diagnosed. Add citations for every other slide in the deck too. In a
+complete slide authoring request, add `"front": ["One useful takeaway", "A second
+brief point"]` inside `slide`; the existing diagram or asset remains the Back.
+
 ## Viewed is personal reading progress
 
-The **Viewed** checkbox is an explicit, reversible reading marker. Select a
-local reviewer name before marking slides. Navigation, hover, focus, comments,
+The **Viewed** checkbox is an explicit, reversible reading marker. A default local reader profile makes it a one-click action; optional profile
+switching keeps different local readers separate. Navigation, hover, focus, comments,
 and approval decisions never mark a slide Viewed. The visible count reports
 reading progress separately from decisions and coverage.
 

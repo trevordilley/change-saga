@@ -139,6 +139,11 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 			unwanted: []string{"references/query.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
+			name: "describe implemented features", fixture: "Describe the features we have implemented in Saga Product records.",
+			rowHint: "Describe implemented features", want: []string{"references/query.md", "references/stories.md"},
+			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
 			name: "accepted story with provenance", fixture: "Add an accepted customer story with one confirmed criterion and its source citation.",
 			rowHint: "author or revise personas", want: []string{"references/query.md", "references/stories.md"},
 			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},

@@ -25,7 +25,15 @@ check is separate from exact code coverage: a citation never covers an
 otherwise unexplained code line. Legacy decks remain readable with a generated
 directory and summary fallback, but that directory is not authored coverage.
 Use the installed CLI help and spec for the overview and Front authoring
-commands and field limits.
+commands and field limits. Publish a deck report with `change-saga deck overview
+--deck DECK --file overview.json change.saga`, or `--review ID` for a review;
+use `deck overview --deck DECK --check change.saga` to require authored coverage.
+The JSON body uses `[label](annotation:ID)` citations and
+`![diagram](slide:SLIDE_ID)` to reuse a same-deck visual. Each annotation is
+`{"id":"ID","label":"label","slide":"SLIDE_ID","item":"ITEM_ID"}`; `item`
+is optional. Only citations actually present in rendered report content earn
+overview coverage, never unused definitions or example text in a code block.
+Supply `slide.front` as a list of summary bullets in complete-slide requests.
 
 Chapters, sections, and fragments carry longer design notes, overviews, and
 walkthroughs. Use Markdown to orient and connect visual artifacts, not as the
