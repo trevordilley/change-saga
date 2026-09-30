@@ -1,0 +1,59 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "integration-review-features",
+  "term": "urn:change-saga:change-saga:term:review-decision",
+  "parents": [
+    "urn:change-saga:change-saga:term:review-decision:revision:r1"
+  ],
+  "name": "Review decision",
+  "definition": "One reviewer's append-only decision on one review slide: approved, changes requested, or none to withdraw. It records the review head and slide digest; only the latest event for that reviewer seat is presented, with currency recomputed when the slide or its referenced code changes. It is not an app-wide verdict and does not apply to documentation slides. A bodiless repeat at the same state, head and slide digest records nothing, as does withdrawing when the seat holds no decision.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "aliases": [
+    "slide decision"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:review-decision",
+    "urn:change-saga:change-saga:story:review-decision-freshness",
+    "urn:change-saga:change-saga:story:withdraw-review-decision"
+  ],
+  "code": [
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/saga/review.go",
+      "start": 44,
+      "end": 49,
+      "digest": "sha256:14d608c23a7df004f6aca0f070b30a6318abff3e34934394adc4e8495c3c23b1"
+    },
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/saga/review.go",
+      "start": 97,
+      "end": 114,
+      "digest": "sha256:e8b4ad489f6912a874571316d1f8c082fbb475262976992c74fda53243798ed2"
+    },
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 292,
+      "end": 319,
+      "digest": "sha256:1d9fac68b84b7a02173c97c9119b7e1c5c0c04668006b4a40450e8ca9b7ba824"
+    },
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 372,
+      "end": 414,
+      "digest": "sha256:90be92f142b073d71f25533ad3b6469d77658a74b55b654947ac399f5f589abb"
+    },
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 170,
+      "end": 178,
+      "digest": "sha256:cea646bcfdc20f85b28e794436f8f84a271541277636f7915a533820a91553c5"
+    }
+  ],
+  "created_at": "2026-09-30T15:38:24.510557Z"
+}

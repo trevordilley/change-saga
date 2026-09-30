@@ -10,11 +10,11 @@
       "note": "Lock and reload a valid Saga, resolve the canonical target, refuse frozen or changed snapshots, then exclusively publish one append-only event."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 260,
-      "end": 279,
-      "digest": "sha256:5e632a88a028e883db7dd7bd6592450585d7e26d1e84ed4f41f7281df8d63a9c",
+      "start": 310,
+      "end": 329,
+      "digest": "sha256:6594b04fd7ca073f35dcd5dbcbada726a8ebc4b3599f22a2cecbfb589ce2a528",
       "note": "Lock and reload a valid Saga, resolve the canonical target, refuse frozen or changed snapshots, then exclusively publish one append-only event."
     }
   ]

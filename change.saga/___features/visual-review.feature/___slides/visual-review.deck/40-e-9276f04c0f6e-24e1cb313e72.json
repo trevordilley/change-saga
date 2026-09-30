@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 234,
-      "end": 279,
-      "digest": "sha256:c2f212d414c6f3de7512251cf21d53c33825db43291dbdef46234e398f7e774c",
+      "start": 282,
+      "end": 329,
+      "digest": "sha256:648e9b6faa515563877c53eae55ee871fc58235788c67609fbdd460398b92314",
       "note": "Under the Saga writer lock, reload, validate the annotation or comment, resolve a reply to its canonical target, check the shown snapshot, and create one attributed event."
     }
   ]

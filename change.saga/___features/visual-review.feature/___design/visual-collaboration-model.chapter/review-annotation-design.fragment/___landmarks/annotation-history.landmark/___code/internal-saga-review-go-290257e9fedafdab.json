@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/saga/review.go",
-      "start": 110,
-      "end": 158,
-      "digest": "sha256:6a4c8a389dc23b90a8b0d835228cbaa267c6be88ff5407c235188c5cbb4e8088",
+      "start": 119,
+      "end": 207,
+      "digest": "sha256:2dac1623c1d310013b60028b2b9ef8b700f0abfb4a943cc1b51511c527ec6826",
       "note": "Spatial feedback and replies persist without modifying the source visual."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 238,
-      "end": 280,
-      "digest": "sha256:b36a1300ee752b818f4b4386db23ab0dabf40593d4d87a530b2d2fe5475250dd",
+      "start": 286,
+      "end": 330,
+      "digest": "sha256:8d38db9d0e4fbdec0514ee01ed0725f498506a4ced8653176aa52320b6bf5cc1",
       "note": "Spatial feedback and replies persist without modifying the source visual."
     }
   ]

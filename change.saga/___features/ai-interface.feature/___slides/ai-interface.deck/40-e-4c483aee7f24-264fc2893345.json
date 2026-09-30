@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/cli/query.go",
-      "start": 320,
-      "end": 380,
-      "digest": "sha256:694066ac244d64f4edf5e29cab260d46db42bffa1bccd9df6c8b52d206d15529",
+      "start": 323,
+      "end": 386,
+      "digest": "sha256:70e5ce4a0f170f57948e6e9cd59b809b7c460f84b3603744fbb9eddf28fa122a",
       "note": "Validates the operation and parsed flags at the CLI boundary before any application session is opened."
     }
   ]

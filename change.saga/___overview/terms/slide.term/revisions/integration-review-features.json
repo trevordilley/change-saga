@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "integration-review-features",
+  "term": "urn:change-saga:change-saga:term:slide",
+  "parents": [
+    "urn:change-saga:change-saga:term:slide:revision:r2"
+  ],
+  "name": "Slide",
+  "definition": "One ordered visual argument inside a deck, with an intent, layout and takeaway. Its Front is a flash-card bullet summary; its Back is the existing detailed SVG, raster-image or sandboxed HTML asset. Both faces share stable semantic Items and exact evidence. Slide comments and decisions apply only within pull-request reviews; Viewed is separate local reading progress.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "aliases": [
+    "visual slide"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:visual-technical-explanation",
+    "urn:change-saga:change-saga:story:visual-deck-navigation"
+  ],
+  "code": [
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/saga/model.go",
+      "start": 75,
+      "end": 90,
+      "digest": "sha256:942246439f730a5feea6e9ebc7cc1c83b07d525c321c243fbb6bb0b1d58ba20f"
+    },
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/saga/review.go",
+      "start": 19,
+      "end": 30,
+      "digest": "sha256:3d1a158507af292d421874757bcfa3c9f5f4f7aaa12703e7fe0655f0c99d4771"
+    }
+  ],
+  "created_at": "2026-09-30T15:38:25.376718Z"
+}

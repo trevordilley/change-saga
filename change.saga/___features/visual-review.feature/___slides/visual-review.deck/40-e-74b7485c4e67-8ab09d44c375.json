@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/saga/review.go",
       "start": 19,
-      "end": 40,
-      "digest": "sha256:ee0b839108e6ff28240c6be4b5a0b524d6f50f372b0c00e1e6855885ec96eedd",
+      "end": 41,
+      "digest": "sha256:f8f7bf562e8a8a1fc35faa46fb331dc085c711a0f1c58bc1e721314705454443",
       "note": "Defines the Git-native review bundle and append-only comment record stored beneath it."
     }
   ]

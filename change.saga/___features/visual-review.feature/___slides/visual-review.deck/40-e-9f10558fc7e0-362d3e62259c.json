@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/saga/review.go",
-      "start": 399,
-      "end": 423,
-      "digest": "sha256:31832284d9f5cdebc2264ddf7b7a6acf483dd3a8c8de9690734972fc3efd1085",
+      "start": 448,
+      "end": 472,
+      "digest": "sha256:381ed67134b889273ffdb7dd683b2a31ade1d2919415e99ce4007049788a8862",
       "note": "Loads every comment event independently, validates the full set, and orders it deterministically by time and id."
     }
   ]

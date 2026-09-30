@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/server/reviewasync.go",
-      "start": 88,
-      "end": 106,
-      "digest": "sha256:2f618e4673d109afd3bde7c8adadf35152e617e2d9a7dfd1d8c39290c280861f",
+      "start": 90,
+      "end": 116,
+      "digest": "sha256:f2e3f4f2b8d7c5efb568cbb16f3fd4d3df48fe69f0a811969b9caac37b9103cb",
       "note": "A saved receipt survives feedback projection failure. Refusals retain editable drafts. Lost receipts block writes and offer read-only feedback checks; inspect and reload before another submission."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/server/reviewasyncjs.go",
-      "start": 87,
-      "end": 112,
-      "digest": "sha256:8f07252a0b608b0a2a95237395357596ad1f6ac37d888e8004cdba45e647bb80",
+      "start": 94,
+      "end": 120,
+      "digest": "sha256:6427f5f90222430df5d2fe9d0d3656065dabdd9621536c330b367b5cd96c0712",
       "note": "A saved receipt survives feedback projection failure. Refusals retain editable drafts. Lost receipts block writes and offer read-only feedback checks; inspect and reload before another submission."
     }
   ]
