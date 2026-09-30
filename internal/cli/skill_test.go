@@ -519,3 +519,31 @@ func TestSkillLeadsWithCreatingAReview(t *testing.T) {
 		t.Fatal("the common workflow still reconciles living documentation after every review")
 	}
 }
+
+// No command reads a deck's prose, so the fast path has a fresh-context
+// reader check every sentence against the code before the Saga is
+// committed, and callouts cite the code that decides what they state.
+func TestSkillChecksEverySentenceBeforeHandoff(t *testing.T) {
+	t.Parallel()
+	files := map[string]string{}
+	for _, file := range skills.ChangeSaga() {
+		files[file.Path] = strings.Join(strings.Fields(normalizeSkillNewlines(file.Content)), " ")
+	}
+	entry := files["SKILL.md"]
+	section := entry[strings.Index(entry, "## Create a review for this PR"):strings.Index(entry, "## Mandatory contract")]
+	check := strings.Index(section, "Check every sentence")
+	if check < 0 || check < strings.Index(section, "diagram check --review") || check > strings.Index(section, "Commit the Saga") {
+		t.Fatal("the fast path does not check every sentence between confirming coverage and committing")
+	}
+	for _, want := range []string{"one check the tool cannot do", "sub-agent that did not write the deck", "diagram describe --review ID --slide SLIDE", "edge description", "the code the claim depends on", "overstated", "unverifiable", "`diagram edit` or `apply-slide`", "the code that decides the behavior it states"} {
+		if !strings.Contains(section, want) {
+			t.Errorf("the fast path omits %q", want)
+		}
+	}
+	diagrams := files["references/diagrams.md"]
+	for _, want := range []string{"Check every sentence before handing off a deck", "the code that decides the behavior it states", "Edge descriptions and notes make claims too", "marks a surprise with no code evidence"} {
+		if !strings.Contains(diagrams, want) {
+			t.Errorf("references/diagrams.md omits %q", want)
+		}
+	}
+}

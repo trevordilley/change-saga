@@ -542,11 +542,20 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []r
 		}
 		printReviewCoverage(out, report.Coverage, repairFor(repairs, report.ID))
 		if len(report.Slides) > 0 {
-			callouts := 0
+			callouts, unbacked := 0, 0
 			for _, slide := range report.Slides {
 				callouts += len(slide.Callouts)
+				for _, callout := range slide.Callouts {
+					if callout.References == 0 {
+						unbacked++
+					}
+				}
 			}
-			fmt.Fprintf(out, "  surprises called out: %d\n", callouts)
+			fmt.Fprintf(out, "  surprises called out: %d", callouts)
+			if unbacked > 0 {
+				fmt.Fprintf(out, " (%d with no code evidence; cover the code that decides each from its callout)", unbacked)
+			}
+			fmt.Fprintln(out)
 		}
 		if len(report.Slides) == 0 {
 			fmt.Fprintln(out, "  no slides yet")
@@ -554,7 +563,11 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []r
 		for _, slide := range report.Slides {
 			fmt.Fprintf(out, "  slide %s: %s\n", slide.ID, slide.Title)
 			for _, callout := range slide.Callouts {
-				fmt.Fprintf(out, "    surprise %s: %s\n", callout.Label, callout.Body)
+				marker := ""
+				if callout.References == 0 {
+					marker = " (no code evidence)"
+				}
+				fmt.Fprintf(out, "    surprise %s%s: %s\n", callout.Label, marker, callout.Body)
 			}
 			if len(slide.Decisions) == 0 {
 				fmt.Fprintln(out, "    no decision")

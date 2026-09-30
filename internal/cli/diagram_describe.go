@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -8,12 +9,32 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/diagram"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// SlideDescriptionItem is one semantic Item in reading order. Evidence and
-// criterion links are counted, not inlined; query slide returns them in full.
+// describeCodeLimit caps the code references listed under one Item, so an
+// Item covering a thousand lines still reads compactly.
+const describeCodeLimit = 8
+
+// SlideDescriptionReference is where one of an Item's code references points,
+// so a reader can open the evidence behind the Item's prose. The code itself
+// is omitted.
+type SlideDescriptionReference struct {
+	Path  string `json:"path"`
+	Start int    `json:"start,omitempty"`
+	End   int    `json:"end,omitempty"`
+	// Side is "old" when the reference names lines at a review's base, such
+	// as deleted code; it is absent for the head.
+	Side string `json:"side,omitempty"`
+	Note string `json:"note,omitempty"`
+}
+
+// SlideDescriptionItem is one semantic Item in reading order. Its first code
+// references are listed and the rest counted; criterion links are counted.
+// query slide returns both in full.
 type SlideDescriptionItem struct {
 	ID             string `json:"id"`
 	Kind           string `json:"kind"`
@@ -25,6 +46,11 @@ type SlideDescriptionItem struct {
 	Body           string `json:"body,omitempty"`
 	CodeFiles      int    `json:"code_files"`
 	CriterionLinks int    `json:"criterion_links"`
+	// Code lists the Item's first code references; CodeReferences counts all
+	// of them and CodeMore those not listed.
+	Code           []SlideDescriptionReference `json:"code"`
+	CodeReferences int                         `json:"code_references"`
+	CodeMore       int                         `json:"code_more,omitempty"`
 }
 
 // SlideDescription is the compact reading projection of one slide. Both the
@@ -40,11 +66,15 @@ type SlideDescription struct {
 	MediaType  string                 `json:"media_type"`
 	AssetBytes int64                  `json:"asset_bytes"`
 	Items      []SlideDescriptionItem `json:"items"`
-	Diagram    *diagram.Description   `json:"diagram"`
-	Omitted    []string               `json:"omitted"`
+	// CodeQuery lists every Item's code references when some are not listed.
+	CodeQuery string               `json:"code_query,omitempty"`
+	Diagram   *diagram.Description `json:"diagram"`
+	Omitted   []string             `json:"omitted"`
 }
 
-func describeSlide(slide *saga.Slide, offset, limit int) (SlideDescription, error) {
+// describeSlide reads slide. base is the review's base commit, which marks
+// old-side references, or empty; sagaPath names the Saga in CodeQuery.
+func describeSlide(slide *saga.Slide, base, sagaPath string, offset, limit int) (SlideDescription, error) {
 	value := SlideDescription{
 		Target: slide.Target, Title: slide.Title, Snapshot: slide.AuthoringSnapshot, Takeaway: slide.Takeaway, Intent: slide.Intent,
 		Layout: slide.Layout, Source: "asset", MediaType: slide.MediaType, Items: []SlideDescriptionItem{},
@@ -70,7 +100,17 @@ func describeSlide(slide *saga.Slide, offset, limit int) (SlideDescription, erro
 		}
 	}
 	for _, item := range ordered {
-		entry := SlideDescriptionItem{ID: item.ID, Kind: item.Kind, Label: item.Label, Description: item.Description, About: item.About, Body: item.Body, CodeFiles: len(item.Code), CriterionLinks: len(item.CriterionLinks)}
+		entry := SlideDescriptionItem{ID: item.ID, Kind: item.Kind, Label: item.Label, Description: item.Description, About: item.About, Body: item.Body, CodeFiles: len(item.Code), CriterionLinks: len(item.CriterionLinks), Code: []SlideDescriptionReference{}}
+		for _, file := range item.Code {
+			for _, reference := range file.References {
+				if entry.CodeReferences++; len(entry.Code) < describeCodeLimit {
+					entry.Code = append(entry.Code, describeReference(reference, base))
+				}
+			}
+		}
+		if entry.CodeMore = entry.CodeReferences - len(entry.Code); entry.CodeMore > 0 && value.CodeQuery == "" {
+			value.CodeQuery = fmt.Sprintf("change-saga query slide --saga %s --target %s", sagaPath, slide.Target)
+		}
 		switch item.Selector.Type {
 		case "element":
 			entry.Element = item.Selector.ElementID
@@ -94,6 +134,54 @@ func describeSlide(slide *saga.Slide, offset, limit int) (SlideDescription, erro
 	value.Source, value.Diagram = "diagram", &description
 	value.Omitted = append(value.Omitted, diagram.Omitted...)
 	return value, nil
+}
+
+func describeReference(reference coderef.Reference, base string) SlideDescriptionReference {
+	value := SlideDescriptionReference{Path: reference.Path, Start: reference.Start, End: reference.End, Note: reference.Note}
+	if base != "" && reference.Commit == base {
+		value.Side = "old"
+	}
+	return value
+}
+
+// location is path:start-end, path:line, or the bare path of a whole file,
+// marked (old) at a review's base.
+func (r SlideDescriptionReference) location(withPath bool) string {
+	value := ""
+	if withPath {
+		value = r.Path
+	}
+	switch {
+	case r.Start == 0 && r.End == 0:
+	case r.Start == r.End:
+		value += fmt.Sprintf(":%d", r.Start)
+	default:
+		value += fmt.Sprintf(":%d-%d", r.Start, r.End)
+	}
+	if r.Side != "" {
+		value += " (" + r.Side + ")"
+	}
+	return value
+}
+
+// writeCode prints references one line per run of the same file and note, so
+// a note shared by several ranges is printed once.
+func writeCode(b *strings.Builder, item SlideDescriptionItem, query string) {
+	for index := 0; index < len(item.Code); {
+		first := item.Code[index]
+		parts := []string{first.location(true)}
+		for index++; index < len(item.Code) && item.Code[index].Path == first.Path && item.Code[index].Note == first.Note; index++ {
+			parts = append(parts, strings.TrimPrefix(item.Code[index].location(false), ":"))
+		}
+		fmt.Fprintf(b, "     code: %s", strings.Join(parts, ", "))
+		if first.Note != "" {
+			fmt.Fprintf(b, " — %s", diagram.Plain(first.Note))
+		}
+		b.WriteString("\n")
+	}
+	if item.CodeMore > 0 {
+		fmt.Fprintf(b, "     code: and %d more; `%s` lists them\n", item.CodeMore, query)
+	}
 }
 
 func (v SlideDescription) writeText(out io.Writer) error {
@@ -128,6 +216,7 @@ func (v SlideDescription) writeText(out io.Writer) error {
 				fmt.Fprintf(&b, "     %s: %s\n", field[0], diagram.Plain(field[1]))
 			}
 		}
+		writeCode(&b, item, v.CodeQuery)
 	}
 	if v.Diagram != nil {
 		v.Diagram.WriteText(&b)
@@ -136,7 +225,7 @@ func (v SlideDescription) writeText(out io.Writer) error {
 	return err
 }
 
-func diagramDescribe(args []string, out io.Writer) error {
+func diagramDescribe(ctx context.Context, args []string, out io.Writer) error {
 	name := "diagram describe"
 	flags := commandFlags(name, commandUsage[name], out)
 	target := flags.String("slide", "", "slide to describe")
@@ -160,11 +249,19 @@ func diagramDescribe(args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	_, slide, _, err := findAuthoredSlide(document, *review, *target)
+	_, slide, owner, err := findAuthoredSlide(document, *review, *target)
 	if err != nil {
 		return err
 	}
-	value, err := describeSlide(slide, *offset, *limit)
+	// A review's old-side references are pinned to its base. When the
+	// range cannot be read here, references are listed without a side.
+	base := ""
+	if found := document.FindReview(owner); owner != "" && found != nil {
+		if rng, err := reviewstate.ResolveRange(ctx, document.Root, found); err == nil && rng.BaseOID != rng.HeadOID {
+			base = rng.BaseOID
+		}
+	}
+	value, err := describeSlide(slide, base, flags.Arg(0), *offset, *limit)
 	if err != nil {
 		return err
 	}

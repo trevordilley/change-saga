@@ -25,7 +25,7 @@ func Diagram(ctx context.Context, args []string, out io.Writer) error {
 	}
 	switch args[0] {
 	case "describe":
-		return diagramDescribe(args[1:], out)
+		return diagramDescribe(ctx, args[1:], out)
 	case "get":
 		return diagramGet(args[1:], out)
 	case "edit":

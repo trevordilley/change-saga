@@ -701,7 +701,9 @@ that differs from its source, for example after a renderer change.
 `change-saga diagram edit` applies explicit operations to a diagram at an exact
 snapshot and republishes the slide through the same transaction, carrying its
 Items, evidence, and criterion links. `change-saga diagram describe` reads any
-slide compactly: its takeaway, Items in reading order, and, for a diagram
+slide compactly: its takeaway, Items in reading order with their first eight
+code references each (`path:start-end`, marked old when pinned to a review's
+base, with the reference note; the rest are counted), and, for a diagram
 source, its semantic elements, connections, notes, and reveal steps, with
 sections and their members, and stickies and annotations listed as notes about their
 targets. The description omits geometry,
@@ -1270,7 +1272,9 @@ covered and total counts, the uncovered lines with ready-to-use locations,
 stale references, and overlap. It is a report, not a verdict; `review list
 --uncovered` lists only reviews with gaps. Review decks never count toward the
 documentation's own coverage. `cover` on a review Item defaults to the review's
-range, so it needs no `--against`.
+range, so it needs no `--against`. `review list` also names each slide's
+callouts, marking any with no code references of its own; that too is only
+reported.
 
 **Approvals are per slide.** Each decision is an append-only record in
 `approvals/`, conforming to
