@@ -654,11 +654,14 @@ var commands = []Command{
 	},
 	{
 		Name: "review comment", Status: StatusImplemented, Mutates: true, Writes: []string{"review-comment"},
-		Usage:   "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
-		Summary: "comment on a review slide or Item, or reply to a comment; documentation has no comments",
+		Usage:   "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID | --path PATH --line N [--end-line M] [--side new|old] [--target SLIDE[/ITEM]]) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
+		Summary: "comment on a review slide or Item, on lines of the review's diff, or reply to a comment; documentation has no comments",
 		Flags: append([]Flag{
-			required("review", "ID", "review id"), optional("target", "SLIDE[/ITEM]", "review slide or Item: id, <slide>/<item>, or URN"),
-			optional("reply-to", "ID", "comment this replies to"), required("body", "TEXT", "Markdown comment"),
+			required("review", "ID", "review id"), optional("target", "SLIDE[/ITEM]", "review slide or Item: id, <slide>/<item>, or URN; with --path, defaults to the Item whose code holds the lines, else the review"),
+			optional("reply-to", "ID", "comment this replies to"),
+			optional("path", "PATH", "comment on lines of this repository path in the review's diff"), optional("line", "N", "with --path, the first line"),
+			optional("end-line", "M", "with --path, the last line of a range"), optional("side", "new|old", "with --path, the head's lines (new) or the merge-base's deleted lines (old)"),
+			required("body", "TEXT", "Markdown comment"),
 			optional("resolve", "", "resolve the thread"), optional("reopen", "", "reopen the thread"),
 		}, reviewDecisionFlags...),
 		Positionals: sagaOnly,

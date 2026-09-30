@@ -151,6 +151,11 @@ func TestLoadRejectsMalformedReviewRecords(t *testing.T) {
 		mutate(&value)
 		return value
 	}
+	codeLine := func(mutate func(*saga.ReviewCodeLine)) *saga.ReviewCodeLine {
+		value := saga.ReviewCodeLine{Commit: commit, Path: "queue.go", Side: saga.CodeLineNew, Start: 3, End: 4, Digest: "sha256:" + strings.Repeat("cd", 32)}
+		mutate(&value)
+		return &value
+	}
 	cases := []struct {
 		name  string
 		write func(t *testing.T, dir string)
@@ -183,6 +188,47 @@ func TestLoadRejectsMalformedReviewRecords(t *testing.T) {
 				c.Anchor = &saga.ReviewAnchor{Type: "region", Coordinate: "normalized", Shapes: []saga.ReviewShape{{Type: "rect", X: .2, Y: .2, Width: .2, Height: .2}}}
 			}))
 		}, "annotation create root"},
+		{"code line on a reply", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(*saga.ReviewComment) {}))
+			writeJSON(t, filepath.Join(dir, "comments", "c2.json"), comment(func(c *saga.ReviewComment) {
+				c.ID, c.ReplyTo, c.CodeLine = "c2", "c1", codeLine(func(*saga.ReviewCodeLine) {})
+			}))
+		}, "anchors a root comment"},
+		{"code line on an unknown side", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) {
+				c.CodeLine = codeLine(func(l *saga.ReviewCodeLine) { l.Side = "left" })
+			}))
+		}, "side must be new or old"},
+		{"code line without lines", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) {
+				c.CodeLine = codeLine(func(l *saga.ReviewCodeLine) { l.Start, l.End = 0, 0 })
+			}))
+		}, "1 <= start <= end"},
+		{"code line at a branch name", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) {
+				c.CodeLine = codeLine(func(l *saga.ReviewCodeLine) { l.Commit = "main" })
+			}))
+		}, "full lowercase Git object name"},
+		{"code line outside the repository", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) {
+				c.CodeLine = codeLine(func(l *saga.ReviewCodeLine) { l.Path = "../secrets.go" })
+			}))
+		}, "repository-relative"},
+		{"code line without a digest", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) {
+				c.CodeLine = codeLine(func(l *saga.ReviewCodeLine) { l.Digest = "" })
+			}))
+		}, "digest"},
+		{"code line with slide markup", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) {
+				c.CodeLine = codeLine(func(*saga.ReviewCodeLine) {})
+				c.AnnotationAction = "create"
+				c.Anchor = &saga.ReviewAnchor{Type: "region", Coordinate: "normalized", Shapes: []saga.ReviewShape{{Type: "rect", X: .2, Y: .2, Width: .2, Height: .2}}}
+			}))
+		}, "annotation markup"},
+		{"review-wide comment without code lines", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) { c.Target = saga.ReviewTarget("app", "pr-7") }))
+		}, "or the review itself for a code-line comment"},
 		{"review holds an unknown entry", func(t *testing.T, dir string) {
 			writeJSON(t, filepath.Join(dir, "notes.json"), map[string]string{})
 		}, "unknown entry in a review"},
@@ -270,5 +316,48 @@ func TestRepeatedDecisionRecordsNothing(t *testing.T) {
 	records := approvals()
 	if len(records) != 7 || records[0].ID != first.Approval.ID || records[0].State != saga.ApprovalApproved {
 		t.Fatalf("records = %+v", records)
+	}
+}
+
+func TestCodeLineCommentsAreRootThreadsOnTheReviewOrItsItems(t *testing.T) {
+	root := reviewSaga(t)
+	human := saga.ReviewerIdentity{Kind: "human"}
+	line := saga.ReviewCodeLine{Commit: commit, Path: "internal/queue.go", Side: saga.CodeLineOld, Start: 12, End: 12, Digest: "sha256:" + strings.Repeat("ef", 32)}
+	onReview, err := Comment(root, Remark{Review: "pr-7", Body: "Deleted on purpose?", Reviewer: human, CodeLine: &line, Commit: commit})
+	if err != nil {
+		t.Fatal(err)
+	}
+	onItem, err := Comment(root, Remark{Review: "pr-7", Target: "why/node", Body: "Batch this.", Reviewer: human, CodeLine: &line})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if onReview.Target != saga.ReviewTarget("app", "pr-7") || onItem.Target != saga.ReviewItemTarget("app", "pr-7", "why", "node") {
+		t.Fatalf("targets = %s, %s", onReview.Target, onItem.Target)
+	}
+	reply, err := Comment(root, Remark{Review: "pr-7", ReplyTo: onReview.ID, Body: "Yes.", State: saga.CommentResolved, Reviewer: human})
+	if err != nil || reply.Target != onReview.Target || reply.CodeLine != nil {
+		t.Fatalf("reply = %#v, %v", reply, err)
+	}
+	if _, err := Comment(root, Remark{Review: "pr-7", ReplyTo: onReview.ID, Body: "Moved?", Reviewer: human, CodeLine: &line}); err == nil || !strings.Contains(err.Error(), "joins its thread") {
+		t.Fatalf("a reply with its own lines = %v", err)
+	}
+	if _, err := Comment(root, Remark{Review: "pr-7", Body: "No lines.", Reviewer: human}); err == nil {
+		t.Fatal("a comment with neither a target nor lines was accepted")
+	}
+	bad := line
+	bad.Side = "both"
+	if _, err := Comment(root, Remark{Review: "pr-7", Body: "Both?", Reviewer: human, CodeLine: &bad}); err == nil || !strings.Contains(err.Error(), "side") {
+		t.Fatalf("an unknown side = %v", err)
+	}
+	if issues := loadIssues(t, root); issues != "" {
+		t.Fatalf("code-line comments are invalid:\n%s", issues)
+	}
+	document, _, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	comments := document.FindReview("pr-7").Comments
+	if len(comments) != 3 || comments[0].CodeLine == nil || *comments[0].CodeLine != line {
+		t.Fatalf("comments = %#v", comments)
 	}
 }

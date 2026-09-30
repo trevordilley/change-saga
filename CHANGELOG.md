@@ -53,12 +53,6 @@ tool, and what they have to do about it.
   overstated, or unverifiable. No command reads the prose, so this is the one
   check the tool cannot do.
 
-### Changed
-
-- The skill asks a callout to cite the code that decides the behavior it
-  states, not just code nearby, and an edge description to claim only what
-  its connected elements show.
-### Added
 
 - **Withdraw your decision from the review viewer.** Once you approve a
   slide, its Approve control becomes **Approved ✓** with an undo beside it,
@@ -69,6 +63,30 @@ tool, and what they have to do about it.
   `review-approved-`, `review-changes-`, `review-none-`, and
   `review-stale-` `bg` and `ink`. `change-saga theme check` holds each pair to
   WCAG AA, so a custom theme can restyle them and stay readable.
+
+
+- `review comment --path PATH --line N [--end-line M] [--side new|old]` does
+  comments on code lines from the CLI. Without `--target`, the comment goes under the
+  first Item whose code holds the lines, or else on the review itself.
+  `review list` reports each review's open line threads and whether they
+  are outdated (JSON: `line_threads`, `open_line_threads`). The new `query
+  review-threads` operation gives a reviewer agent every thread of a review
+  with its comments and lines.
+- A line thread follows its lines while they are unchanged, and says so if
+  they moved. It becomes **outdated** once a later push changes them. An
+  outdated thread stays at the line it was made on and shows the code it
+  was made on. It is never moved onto different code.
+- **Format:** a review comment may carry `code_line` (`commit`, `path`,
+  `side`, `start`, `end`, `digest`), which is a code reference plus a diff
+  side. A code-line thread on lines that no Item explains targets the
+  review. Readers from 0.2.0 and earlier refuse a Saga that holds line
+  comments, so upgrade them before using line comments.
+
+### Changed
+
+- The skill asks a callout to cite the code that decides the behavior it
+  states, not just code nearby, and an edge description to claim only what
+  its connected elements show.
 
 ### Fixed
 

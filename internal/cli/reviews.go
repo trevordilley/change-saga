@@ -316,8 +316,12 @@ func reviewComment(ctx context.Context, args []string, out io.Writer) error {
 	name := "review comment"
 	flags := commandFlags(name, commandUsage[name], out)
 	reviewID := flags.String("review", "", "review id")
-	target := flags.String("target", "", "review slide or Item: its id, <slide>/<item>, or URN")
+	target := flags.String("target", "", "review slide or Item: its id, <slide>/<item>, or URN; with --path, defaults to the Item whose code holds the lines, else the review")
 	replyTo := flags.String("reply-to", "", "comment id this replies to")
+	path := flags.String("path", "", "comment on lines of this repository path in the review's diff")
+	line := flags.Int("line", 0, "with --path, the first line commented on")
+	endLine := flags.Int("end-line", 0, "with --path, the last line of a range; defaults to --line")
+	side := flags.String("side", saga.CodeLineNew, "with --path, new for the head's lines or old for the merge-base's (deleted) lines")
 	body := flags.String("body", "", "Markdown comment")
 	resolve := flags.Bool("resolve", false, "resolve the thread")
 	reopen := flags.Bool("reopen", false, "reopen the thread")
@@ -330,8 +334,20 @@ func reviewComment(ctx context.Context, args []string, out io.Writer) error {
 	if err := requireLivingArgs(flags, *reviewID, *body); err != nil {
 		return err
 	}
-	if (*target == "") == (*replyTo == "") {
-		return fmt.Errorf("provide exactly one of --target or --reply-to")
+	onLines := *path != ""
+	switch {
+	case onLines && *replyTo != "":
+		return fmt.Errorf("a reply joins its thread's lines; --path starts a new thread and cannot be combined with --reply-to")
+	case onLines && *line < 1:
+		return fmt.Errorf("--path needs --line, the first line commented on")
+	case !onLines && (*line != 0 || *endLine != 0):
+		return fmt.Errorf("--line and --end-line name lines of --path")
+	case *endLine != 0 && *endLine < *line:
+		return fmt.Errorf("--end-line must not be before --line")
+	case *side != saga.CodeLineNew && *side != saga.CodeLineOld:
+		return fmt.Errorf("--side must be new or old")
+	case !onLines && (*target == "") == (*replyTo == ""):
+		return fmt.Errorf("provide exactly one of --target, --reply-to, or --path with --line")
 	}
 	if *resolve && *reopen {
 		return fmt.Errorf("--resolve and --reopen cannot be combined")
@@ -347,13 +363,23 @@ func reviewComment(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	root := flags.Arg(0)
-	// A comment records the head it was made at when the head resolves; a
-	// comment is still allowed on a review whose head is not checked out.
-	head, review, err := reviewHead(ctx, root, *repo, *reviewID)
-	if review == nil && err != nil {
-		return err
+	remark := reviewstore.Remark{Review: *reviewID, Target: *target, ReplyTo: *replyTo, Body: *body, State: state, Reviewer: identity}
+	if onLines {
+		// Lines are anchored at the review's current range, which must be
+		// readable: the anchor records the exact code the comment was made on.
+		if remark, err = codeLineRemark(ctx, root, *repo, remark, filepath.ToSlash(*path), *side, *line, *endLine); err != nil {
+			return err
+		}
+	} else {
+		// A comment records the head it was made at when the head resolves; a
+		// comment is still allowed on a review whose head is not checked out.
+		head, review, err := reviewHead(ctx, root, *repo, *reviewID)
+		if review == nil && err != nil {
+			return err
+		}
+		remark.Commit = head
 	}
-	comment, err := reviewstore.Comment(root, reviewstore.Remark{Review: *reviewID, Target: *target, ReplyTo: *replyTo, Body: *body, State: state, Reviewer: identity, Commit: head})
+	comment, err := reviewstore.Comment(root, remark)
 	if err != nil {
 		return err
 	}
@@ -361,8 +387,44 @@ func reviewComment(ctx context.Context, args []string, out io.Writer) error {
 	if *jsonOutput {
 		return writeLivingMutation(out, name, comment.ID, relative, []string{comment.ID}, []string{comment.ID}, false, true)
 	}
+	if comment.CodeLine != nil {
+		fmt.Fprintf(out, "Commented on %s (%s side) under %s\nComment: %s\nRecord: %s\n", comment.CodeLine.Reference().Location(), comment.CodeLine.Side, comment.Target, comment.ID, relative)
+		return nil
+	}
 	fmt.Fprintf(out, "Commented on %s\nComment: %s\nRecord: %s\n", comment.Target, comment.ID, relative)
 	return nil
+}
+
+// codeLineRemark anchors remark to lines of the review's current range and,
+// when it names no target, files it under the Item whose code holds them.
+func codeLineRemark(ctx context.Context, root, repo string, remark reviewstore.Remark, path, side string, start, end int) (reviewstore.Remark, error) {
+	document, _, err := saga.Load(root)
+	if err != nil {
+		return remark, err
+	}
+	review := document.FindReview(remark.Review)
+	if review == nil {
+		return remark, fmt.Errorf("review %q does not exist%s", remark.Review, knownReviews(document))
+	}
+	checkout := firstNonEmpty(repo, document.Root)
+	rng, err := reviewstate.ResolveRange(ctx, checkout, review)
+	if err != nil {
+		return remark, fmt.Errorf("the review's range must be readable to comment on its lines: %w", err)
+	}
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return remark, err
+	}
+	defer resolver.Close()
+	line, err := reviewstate.AuthorCodeLine(ctx, resolver, rng, path, side, start, end)
+	if err != nil {
+		return remark, err
+	}
+	if remark.Target == "" {
+		remark.Target = reviewstate.LineTarget(ctx, resolver, review, line)
+	}
+	remark.CodeLine, remark.Commit = &line, rng.HeadOID
+	return remark, nil
 }
 
 // reviewListOutput is review list --json.
@@ -576,6 +638,7 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []r
 			}
 			fmt.Fprintln(out)
 		}
+		printLineThreads(out, report)
 		if len(report.Slides) == 0 {
 			fmt.Fprintln(out, "  no slides yet")
 		}
@@ -599,10 +662,46 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []r
 				fmt.Fprintln(out)
 			}
 			if slide.Comments > 0 {
-				fmt.Fprintf(out, "    %d comments, %d open threads\n", slide.Comments, slide.OpenThreads)
+				fmt.Fprintf(out, "    %d comments, %d open threads", slide.Comments, slide.OpenThreads)
+				if slide.OpenLineThreads > 0 {
+					fmt.Fprintf(out, " (%d on code lines)", slide.OpenLineThreads)
+				}
+				fmt.Fprintln(out)
 			}
 		}
 	}
+}
+
+// printLineThreads lists a review's open threads on code lines, each where it
+// shows in the current diff and whether its lines changed since.
+func printLineThreads(out io.Writer, report reviewstate.Report) {
+	if len(report.LineThreads) == 0 {
+		return
+	}
+	fmt.Fprintf(out, "  open line threads: %d of %d\n", report.OpenLineThreads, len(report.LineThreads))
+	for _, thread := range report.LineThreads {
+		if thread.State != saga.CommentOpen {
+			continue
+		}
+		lines := strconv.Itoa(thread.Start)
+		if thread.End != thread.Start {
+			lines += "-" + strconv.Itoa(thread.End)
+		}
+		fmt.Fprintf(out, "    %s:%s (%s) %s", thread.Path, lines, thread.CodeLine.Side, thread.Currency)
+		if thread.Currency != reviewstate.Current || thread.Moved {
+			fmt.Fprintf(out, " (%s)", thread.Reason)
+		}
+		fmt.Fprintf(out, " on %s, %s: %s [%s]\n", reviewTargetLabel(report.Target, thread.Target), plural(thread.Comments, "1 comment", strconv.Itoa(thread.Comments)+" comments"), thread.Summary, thread.ID)
+	}
+}
+
+// reviewTargetLabel names a comment's target the way --target accepts it.
+func reviewTargetLabel(review, target string) string {
+	if target == review {
+		return "the review"
+	}
+	label := strings.TrimPrefix(target, review+":slide:")
+	return strings.Replace(label, ":item:", "/", 1)
 }
 
 // printReviewCoverage states how completely the deck accounts for the

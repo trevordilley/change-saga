@@ -178,6 +178,8 @@ covered lines are not proof of a correct explanation.
   `change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]`
 - `history`: when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison.
   `change-saga query history --saga PATH --node URN`
+- `review-threads`: one review's discussion thread by thread: every comment on its slides, Items, and code lines, with each code-line thread's anchor and where it shows in the review's current range (current, moved, or outdated since its lines changed).
+  `change-saga query review-threads --saga PATH --review ID [--path PATH] [--state open|resolved] [--lines] [--repo PATH]`
 - `inventory`: Component/System/data-entity/ERD definitions, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page.
   `change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]`
 - `inventory-uses`: declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness.

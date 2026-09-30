@@ -195,9 +195,10 @@ var resources = []Resource{
 		Notes: "records the head commit and the slide digest it was given at; out of date when the slide or the code it references changed since",
 	},
 	{
-		Kind: "review-comment", URN: "urn:change-saga:<saga>:review:<review>:slide:<slide>[:item:<item>]", Storage: "___reviews/<review>.review/comments/<comment>.json",
+		Kind: "review-comment", URN: "urn:change-saga:<saga>:review:<review>[:slide:<slide>[:item:<item>]]", Storage: "___reviews/<review>.review/comments/<comment>.json",
 		Schema: schemaBase + "v5/review-comment.schema.json", Versions: []int{5}, History: "append-only; a reply names its parent and may resolve or reopen the thread",
 		Lifecycle: []string{"open", "resolved"}, Writers: []string{"review comment"},
+		Notes: "a root comment may anchor to lines of the review's diff (code_line); only a code-line thread may target the review itself",
 	},
 	{
 		Kind: "test-case", URN: "urn:change-saga:<saga>:test-case:<test-case>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/test-case.json",
