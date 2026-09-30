@@ -765,8 +765,10 @@ to the story, without duplicating story text inside slide records.
 Every colour, font, and size the reviewer and its generated slides paint with
 is a named design token with a light value and, when it changes, a dark value.
 `change-saga spec` publishes the contract under `theme`: each token's name,
-group (surface, status, diff, syntax, shape, chrome, diagram, and
-diagram-palette), kind, and values. The reviewer declares the light values on
+group (surface, status, review, diff, syntax, shape, chrome, diagram, and
+diagram-palette), kind, and values. The `review-` tokens colour each review
+decision state (approved, changes requested, none or withdrawn, and out of
+date) as an ink on its own background. The reviewer declares the light values on
 `:root` and the dark values when dark mode is chosen or preferred, so every
 rule reads through the tokens and light and dark cannot drift apart. The
 `diagram-` tokens name the colours of the default diagram styles and of the
@@ -1287,7 +1289,11 @@ time. The reviewer is `human` or `ai`; an AI reviewer also names a distinct
 reviewer seat, the agent, and the exact model, so `Claude 1` and `Claude 2`
 remain independent even on the same model. Git supplies the authoritative author
 identity. The latest decision for each Git author and reviewer seat on a slide
-is that reviewer's current decision.
+is that reviewer's current decision. A decision that would not change it
+records nothing: the same state at the same head commit over the same slide
+digest with no body, or a withdrawal when the seat holds no decision. A
+repeated click, retried request, or second command leaves the existing record
+current, and no record is ever rewritten.
 
 **A decision is out of date** when the slide's digest differs from the one it
 recorded, or when the code referenced by any of the slide's Items changed

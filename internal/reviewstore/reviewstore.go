@@ -4,6 +4,7 @@
 package reviewstore
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io/fs"
@@ -14,6 +15,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -115,20 +117,38 @@ type Decision struct {
 }
 
 // Decide appends a per-slide decision, recording the slide's content digest
-// so a later edit to the slide puts the decision out of date.
+// so a later edit to the slide puts the decision out of date. A decision that
+// would not change the seat's standing records nothing; see Record.
 func Decide(root string, decision Decision) (saga.ReviewApproval, error) {
-	var written saga.ReviewApproval
+	outcome, err := Record(root, decision)
+	return outcome.Approval, err
+}
+
+// Outcome is what Record did. Approval is the record written, or when
+// nothing was written the seat's current decision the request repeated.
+type Outcome struct {
+	Approval saga.ReviewApproval
+	Recorded bool
+}
+
+// Record appends a per-slide decision unless it repeats the seat's current
+// one: the same state at the same head commit over the same slide content,
+// with no note, or a withdrawal when the seat holds no decision. Decisions
+// are append-only, so a repeated click, a retried request, or a second
+// command leaves the existing record as the seat's decision.
+func Record(root string, decision Decision) (Outcome, error) {
+	var outcome Outcome
 	if !saga.ValidReviewApprovalState(decision.State) {
-		return written, fmt.Errorf("a decision is approved, changes_requested, or none")
+		return outcome, fmt.Errorf("a decision is approved, changes_requested, or none")
 	}
 	if err := saga.ValidateReviewerIdentity(&decision.Reviewer); err != nil {
-		return written, err
+		return outcome, err
 	}
 	if !coderef.ValidCommit(decision.Commit) {
-		return written, fmt.Errorf("a decision records the full head commit it was given at")
+		return outcome, fmt.Errorf("a decision records the full head commit it was given at")
 	}
 	if utf8.RuneCountInString(decision.Body) > MaxBodyRunes {
-		return written, fmt.Errorf("the note exceeds %d characters", MaxBodyRunes)
+		return outcome, fmt.Errorf("the note exceeds %d characters", MaxBodyRunes)
 	}
 	err := mutate(root, func(document *saga.Saga) error {
 		review, slide, err := findSlide(document, decision.Review, decision.Slide)
@@ -147,20 +167,33 @@ func Decide(root string, decision Decision) (saga.ReviewApproval, error) {
 		if err != nil {
 			return err
 		}
+		body := strings.TrimSpace(decision.Body)
+		if body == "" {
+			current, held := reviewstate.SeatDecision(context.Background(), document.Root, review.Approvals, slide.ID, decision.Reviewer)
+			withdrawn := !held || current.State == saga.ApprovalNone
+			if decision.State == saga.ApprovalNone && withdrawn || held && current.State == decision.State && current.Commit == decision.Commit && current.SlideDigest == digest {
+				outcome.Approval = current
+				return nil
+			}
+		}
 		now := time.Now().UTC()
-		written = saga.ReviewApproval{
+		written := saga.ReviewApproval{
 			Schema: saga.ReviewApprovalSchemaURL, Version: saga.ReviewVersion, ID: store.EventID(now),
 			Slide: slide.ID, State: decision.State, Reviewer: decision.Reviewer, Commit: decision.Commit,
-			SlideDigest: digest, Body: strings.TrimSpace(decision.Body), CreatedAt: now,
+			SlideDigest: digest, Body: body, CreatedAt: now,
 		}
 		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(review.Directory, saga.ReviewApprovalsDir))
 		if err != nil {
 			return err
 		}
 		written.Path = filepath.Join(dir, written.ID+".json")
-		return store.WriteJSON(written.Path, written, true)
+		if err := store.WriteJSON(written.Path, written, true); err != nil {
+			return err
+		}
+		outcome = Outcome{Approval: written, Recorded: true}
+		return nil
 	})
-	return written, err
+	return outcome, err
 }
 
 // Remark is one comment to append.

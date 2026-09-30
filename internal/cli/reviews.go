@@ -280,13 +280,32 @@ func reviewDecide(ctx context.Context, name, state string, args []string, out io
 	if err != nil {
 		return err
 	}
-	approval, err := reviewstore.Decide(root, reviewstore.Decision{Review: *reviewID, Slide: *slide, State: state, Reviewer: identity, Commit: head, Body: *body})
+	outcome, err := reviewstore.Record(root, reviewstore.Decision{Review: *reviewID, Slide: *slide, State: state, Reviewer: identity, Commit: head, Body: *body})
 	if err != nil {
 		return err
 	}
-	relative := relativeToSaga(root, approval.Path)
+	approval := outcome.Approval
+	relative := ""
+	if approval.Path != "" {
+		relative = relativeToSaga(root, approval.Path)
+	}
 	if *jsonOutput {
-		return writeLivingMutation(out, name, approval.ID, relative, []string{approval.ID}, []string{approval.ID}, false, true)
+		created, events := []string{}, []string{}
+		if approval.ID != "" {
+			events = []string{approval.ID}
+		}
+		if outcome.Recorded {
+			created = events
+		}
+		return writeLivingMutation(out, name, approval.ID, relative, created, events, !outcome.Recorded, true)
+	}
+	if !outcome.Recorded {
+		if approval.ID == "" || approval.State == saga.ApprovalNone {
+			fmt.Fprintf(out, "Slide %s of review %s has no decision to withdraw; nothing recorded\n", *slide, *reviewID)
+			return nil
+		}
+		fmt.Fprintf(out, "Slide %s of review %s is already %s by this reviewer at %s; nothing recorded\nRecord: %s\n", approval.Slide, *reviewID, strings.ReplaceAll(approval.State, "_", " "), shortOID(head), relative)
+		return nil
 	}
 	verb := map[string]string{saga.ApprovalApproved: "Approved", saga.ApprovalChangesRequested: "Requested changes on", saga.ApprovalNone: "Withdrew the decision on"}[state]
 	fmt.Fprintf(out, "%s slide %s of review %s at %s\nRecord: %s\n", verb, approval.Slide, *reviewID, shortOID(head), relative)

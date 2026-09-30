@@ -278,7 +278,7 @@ func Outline(review *saga.Review, state State) Report {
 func LatestDecisions(approvals []saga.ReviewApproval, authors map[string]string) map[string][]saga.ReviewApproval {
 	latest := map[string]map[string]saga.ReviewApproval{}
 	for _, approval := range approvals {
-		key := strings.ToLower(strings.Join([]string{authors[approval.ID], approval.Reviewer.Kind, approval.Reviewer.Name, approval.Reviewer.Agent, approval.Reviewer.Model}, "\x00"))
+		key := seatKey(authors[approval.ID], approval.Reviewer)
 		if latest[approval.Slide] == nil {
 			latest[approval.Slide] = map[string]saga.ReviewApproval{}
 		}
@@ -438,13 +438,18 @@ func codeChanged(ctx context.Context, resolver *coderesolve.Resolver, reference 
 // attributions names who recorded each decision: the committer of its
 // record, or the local Git user while it is uncommitted.
 func attributions(ctx context.Context, sagaRoot string, review *saga.Review) map[string]string {
+	return Attributions(ctx, sagaRoot, review.Approvals)
+}
+
+// Attributions names who recorded each of approvals, keyed by its ID.
+func Attributions(ctx context.Context, sagaRoot string, approvals []saga.ReviewApproval) map[string]string {
 	result := map[string]string{}
-	if len(review.Approvals) == 0 || sagaRoot == "" {
+	if len(approvals) == 0 || sagaRoot == "" {
 		return result
 	}
 	resolver := gitattribution.New(ctx, sagaRoot)
-	paths := make([]string, len(review.Approvals))
-	for index, approval := range review.Approvals {
+	paths := make([]string, len(approvals))
+	for index, approval := range approvals {
 		paths[index] = approval.Path
 	}
 	local := ""
@@ -455,15 +460,55 @@ func attributions(ctx context.Context, sagaRoot string, review *saga.Review) map
 			author = strings.TrimSpace(value.Name + " <" + value.Email + ">")
 		case gitattribution.Uncommitted:
 			if local == "" {
-				name, _ := gitexec.ConfigOutput(ctx, sagaRoot, "config", "user.name")
-				email, _ := gitexec.ConfigOutput(ctx, sagaRoot, "config", "user.email")
-				local = strings.TrimSpace(strings.TrimSpace(string(name)) + " <" + strings.TrimSpace(string(email)) + ">")
+				local = LocalAuthor(ctx, sagaRoot)
 			}
 			author = local
 		}
-		result[review.Approvals[index].ID] = author
+		result[approvals[index].ID] = author
 	}
 	return result
+}
+
+// LocalAuthor is the Git user a decision recorded here now is attributed to
+// until it is committed.
+func LocalAuthor(ctx context.Context, sagaRoot string) string {
+	name, _ := gitexec.ConfigOutput(ctx, sagaRoot, "config", "user.name")
+	email, _ := gitexec.ConfigOutput(ctx, sagaRoot, "config", "user.email")
+	return strings.TrimSpace(strings.TrimSpace(string(name)) + " <" + strings.TrimSpace(string(email)) + ">")
+}
+
+// SeatDecision is the latest decision on slide by reviewer recording as the
+// local Git user: the seat a decision recorded now would join. It includes a
+// withdrawal; ok is false when the seat never decided the slide. A record
+// whose history cannot be read is taken as this seat's, as the report groups
+// such records together.
+func SeatDecision(ctx context.Context, sagaRoot string, approvals []saga.ReviewApproval, slide string, reviewer saga.ReviewerIdentity) (saga.ReviewApproval, bool) {
+	var candidates []saga.ReviewApproval
+	for _, approval := range approvals {
+		if approval.Slide == slide && seatKey("", approval.Reviewer) == seatKey("", reviewer) {
+			candidates = append(candidates, approval)
+		}
+	}
+	if len(candidates) == 0 {
+		return saga.ReviewApproval{}, false
+	}
+	authors := Attributions(ctx, sagaRoot, candidates)
+	local := LocalAuthor(ctx, sagaRoot)
+	var latest saga.ReviewApproval
+	found := false
+	for _, approval := range candidates {
+		if author := authors[approval.ID]; strings.EqualFold(author, local) || author == gitattribution.Unavailable {
+			latest, found = approval, true
+		}
+	}
+	return latest, found
+}
+
+// seatKey names a reviewer seat: who recorded a decision together with the
+// declared reviewer, so one person's direct decisions and those they record
+// through distinct AI reviewers stay separate.
+func seatKey(author string, reviewer saga.ReviewerIdentity) string {
+	return strings.ToLower(strings.Join([]string{author, reviewer.Kind, reviewer.Name, reviewer.Agent, reviewer.Model}, "\x00"))
 }
 
 func commitExists(ctx context.Context, dir, commit string) bool {
