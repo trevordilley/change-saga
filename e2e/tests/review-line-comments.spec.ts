@@ -32,6 +32,12 @@ test("a reviewer comments on a diff line in an Item's drawer, replies, resolves,
   const running = await startSagaServer(sagaRepositories);
   try {
     await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
+    // Load Code Diff before commenting in the drawer: returning to its cached
+    // rows must show feedback saved through the other surface.
+    await page.getByRole("tab", { name: "Code Diff", exact: true }).click();
+    await page.getByRole("tree", { name: "Changed files" }).locator('[data-tree-path="src/app.go"]').click();
+    await expect(page.locator('#view-code article.file-diff[data-file-path="src/app.go"] [data-review-line-threads]')).toHaveCount(1);
+    await page.getByRole("tab", { name: "Deck", exact: true }).click();
     const slide = page.locator("[data-deck-slide].active");
     const openItem = async () => {
       await slide.locator(".landmark-hotspot").getByRole("button", { name: /Open linked code .* for The change/ }).click();
@@ -85,6 +91,10 @@ test("a reviewer comments on a diff line in an Item's drawer, replies, resolves,
     expect(root?.code_line).toMatchObject({ commit: sagaRepositories.identity.head, path: "src/app.go", side: "new", start: 4, end: 4 });
     expect(records.filter(record => record.reply_to)).toHaveLength(2);
 
+    await page.keyboard.press("Escape");
+    await page.getByRole("tab", { name: "Code Diff", exact: true }).click();
+    await expect(page.locator('#view-code article.file-diff[data-file-path="src/app.go"] [data-review-line-thread]')).toHaveAttribute("data-thread-state", "resolved");
+    await page.getByRole("tab", { name: "Deck", exact: true }).click();
     await page.waitForLoadState("networkidle");
     await page.reload();
     drawer = await openItem();

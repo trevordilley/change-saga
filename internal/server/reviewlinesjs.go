@@ -298,6 +298,24 @@ const reviewLinesJavaScript = `
         else form.replaceWith(fresh);
         if (form.matches('[data-review-line-composer-form]') && lastComposer === form) lastComposer = null;
         entry?.threads.set(id, fresh);
+        // A review can have the same file open in its drawer and cached Code
+        // Diff. Keep both projections current without discarding reply drafts.
+        for (const [otherContainer, other] of entries) {
+          if (other === entry || !otherContainer.isConnected || !other.section || other.head !== entry?.head || other.base !== entry?.base) continue;
+          const matches = otherContainer.matches('.review-item-panel') ? otherContainer.dataset.reviewTarget === fresh.dataset.reviewTarget : otherContainer.dataset.filePath === fresh.dataset.linePath;
+          if (!matches) continue;
+          const previousThread = other.threads.get(id);
+          if (previousThread?.querySelector('form[data-saving],form[data-uncertain]')) continue;
+          const copy = fresh.cloneNode(true);
+          const draft = previousThread?.querySelector('textarea');
+          if (draft) {
+            const nextDraft = copy.querySelector('textarea');
+            if (nextDraft) nextDraft.value = draft.value;
+          }
+          if (previousThread?.isConnected) previousThread.replaceWith(copy);
+          other.threads.set(id, copy);
+          place(otherContainer, other);
+        }
         unlock = false;
         fresh.focus({preventScroll:true});
       } catch (_) {
