@@ -268,3 +268,21 @@ together; add new prose extensions to the `prose` branch.
 
 No frontend framework, no bundler, no CDN. All CSS, JavaScript, and assets are
 served from the binary so that reviewing a committed saga works offline.
+
+## Comments on review code
+
+Within a review, hover or keyboard-focus a diff line's gutter and use **+**
+to comment. This works in an Item's linked-code drawer and in **Code Diff**.
+Shift-click another line on the same side to select a range. Deleted lines
+retain their old-side identity. Escape closes a new composer and returns focus
+to its gutter; Ctrl/Cmd+Enter submits it.
+
+Threads appear below their line and support replies, Resolve, and Reopen.
+They persist in the review's append-only records. Changed code is marked
+outdated and includes its original snippet; comments outside the visible lines
+remain listed below the diff. Merged reviews remain read-only.
+
+The composer carries the exact base and head used to render its diff. If the
+branch changes before controls load or before submission, the browser asks for
+a reload and retains any draft. An uncertain save retains the draft and blocks
+that composer's resubmission so a lost receipt cannot cause a duplicate click.

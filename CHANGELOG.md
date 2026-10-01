@@ -10,6 +10,13 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- Browser line comments in review Item drawers and the Code Diff tab, with
+  replies, resolve/reopen, deleted-side comments, and Shift-click line ranges.
+  Comments bind to the displayed diff; stale submissions retain the draft, and
+  an uncertain save blocks resubmission of that composer.
+
 ## [0.3.0] - 2026-09-30
 
 - **Format:** Diagram sources support literal `code` elements for API and library

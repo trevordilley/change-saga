@@ -1329,6 +1329,13 @@ const appJavaScript = `(() => {
         const page = q('[data-file-diff-page]', wrapper) || wrapper;
         const items = q('[data-page-items="lines"]', page) || page;
         const rows = qa('.diff-row', items);
+        // The discussion composer must use the range that produced these rows,
+        // including cached pages, never a later thread request's current head.
+        if (page.dataset.reviewDiffHead) {
+          if (!first && (destination.dataset.reviewDiffHead !== page.dataset.reviewDiffHead || destination.dataset.reviewDiffBase !== page.dataset.reviewDiffBase)) throw new Error('review range changed between diff pages');
+          destination.dataset.reviewDiffHead = page.dataset.reviewDiffHead;
+          destination.dataset.reviewDiffBase = page.dataset.reviewDiffBase;
+        }
         if (first) destination.replaceChildren(...rows); else destination.append(...rows);
         first = false;
         loaded += rows.length;

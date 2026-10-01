@@ -27,7 +27,7 @@ function authorReview(repositories: SagaRepositories): void {
   git(repositories.sagaRepo, "commit", "-m", "Review deck for pull request 1");
 }
 
-test("a reviewer comments on a diff line in an Item's drawer, replies, resolves, and finds it after a reload", async ({ page, sagaRepositories, browserEvents }) => {
+test("a reviewer comments on a diff line in an Item's drawer, replies, resolves, and finds it after a reload", async ({ page, sagaRepositories, browserEvents, browserName }) => {
   authorReview(sagaRepositories);
   const running = await startSagaServer(sagaRepositories);
   try {
@@ -85,6 +85,7 @@ test("a reviewer comments on a diff line in an Item's drawer, replies, resolves,
     expect(root?.code_line).toMatchObject({ commit: sagaRepositories.identity.head, path: "src/app.go", side: "new", start: 4, end: 4 });
     expect(records.filter(record => record.reply_to)).toHaveLength(2);
 
+    await page.waitForLoadState("networkidle");
     await page.reload();
     drawer = await openItem();
     const again = drawer.locator("tr.review-line-thread-row [data-review-line-thread]");
@@ -97,12 +98,111 @@ test("a reviewer comments on a diff line in an Item's drawer, replies, resolves,
 
     // The Code Diff tab shows the same thread under the same line.
     await page.getByRole("tab", { name: "Code Diff", exact: true }).click();
-    await page.locator('#view-code [data-tree-path="src/app.go"]').click();
+    await page.getByRole('tree', { name: 'Changed files' }).locator('[data-tree-path="src/app.go"]').click();
     const file = page.locator('#view-code article.file-diff[data-file-path="src/app.go"]');
     await expect(file.locator("[data-file-diff-status]")).toHaveText("All changed hunks");
     await expect(file.locator(".diff-thread-row [data-review-line-thread]")).toHaveCount(1);
     await expect(file.locator(".diff-row.new").filter({ hasText: 'return "hello, " + name' }).getByRole("button", { name: "Comment on line 4 of src/app.go" })).toHaveCount(1);
-    expect(browserEvents.filter(event => !event.includes("favicon"))).toEqual([]);
+    const codeThread = file.locator(".diff-thread-row [data-review-line-thread]");
+    await codeThread.getByRole("button", { name: "Reopen" }).click();
+    await expect(codeThread).toHaveAttribute("data-thread-state", "open");
+    await file.locator(".diff-row.old").first().getByRole("button", { name: /Comment on line/ }).click();
+    const deletedComposer = file.locator("[data-review-line-composer-form]");
+    await deletedComposer.getByRole("textbox").fill("Keep the old greeting?");
+    await deletedComposer.getByRole("button", { name: "Comment", exact: true }).click();
+    await expect(file.locator("[data-review-line-thread]")).toHaveCount(2);
+    const newRows = file.locator(".diff-row.new");
+    await newRows.first().getByRole("button", { name: /Comment on line/ }).click();
+    await newRows.last().getByRole("button", { name: /Comment on line/ }).click({ modifiers: ["Shift"] });
+    const rangeComposer = file.locator("[data-review-line-composer-form]");
+    await expect(rangeComposer.getByRole("textbox")).toHaveAccessibleName(/Comment on lines/);
+    await rangeComposer.getByRole("textbox").fill("The signature and return agree.");
+    await rangeComposer.getByRole("button", { name: "Comment", exact: true }).click();
+    await expect(file.locator("[data-review-line-thread]")).toHaveCount(3);
+    const anchors = reviewFiles(sagaRepositories, /comments\/.*\.json$/).map(path => readJSON<{ code_line?: { side: string; start: number; end: number } }>(path).code_line).filter(Boolean);
+    expect(anchors.some(anchor => anchor?.side === "old")).toBe(true);
+    expect(anchors.some(anchor => anchor && anchor.end > anchor.start)).toBe(true);
+    // Switching slide surfaces cancels superseded visual loads.
+    expect(browserEvents.filter(event => !event.includes("favicon") && !/requestfailed: GET .*\/visual\/.*(net::ERR_ABORTED|NS_ERROR_FAILURE)$/.test(event) && !(browserName === "firefox" && event.includes("Ignoring ‘x-frame-options’ because of ‘frame-ancestors’")))).toEqual([]);
+  } finally {
+    await stopSagaServer(running);
+  }
+});
+
+function advanceSource(repositories: SagaRepositories): void {
+  writeFileSync(join(repositories.sourceRepo, "src/app.go"), 'package app\n\nfunc Greet(name string) string {\n\treturn "welcome, " + name\n}\n');
+  git(repositories.sourceRepo, "commit", "-am", "Advance review while a reviewer reads");
+}
+
+for (const surface of ["drawer", "code"] as const) {
+  test(`the ${surface} refuses comments when the branch moves between the diff and its controls`, async ({ page, sagaRepositories }) => {
+    authorReview(sagaRepositories);
+    const running = await startSagaServer(sagaRepositories);
+    try {
+      await page.route(url => url.pathname.endsWith("/line-threads") && (surface === "drawer" ? url.searchParams.has("target") : url.searchParams.get("path") === "src/app.go"), async route => {
+        advanceSource(sagaRepositories);
+        await route.continue();
+      }, { times: 1 });
+      await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
+      if (surface === "drawer") {
+        await page.locator("[data-deck-slide].active .landmark-hotspot").getByRole("button", { name: /Open linked code .* for The change/ }).click();
+      } else {
+        await page.getByRole("tab", { name: "Code Diff", exact: true }).click();
+        await page.getByRole("tree", { name: "Changed files" }).locator('[data-tree-path="src/app.go"]').click();
+      }
+      const container = page.locator(surface === "drawer" ? "#review-drawer" : '#view-code article.file-diff[data-file-path="src/app.go"]');
+      await expect(container.locator("[data-review-lines-error]")).toContainText("diff changed since it was shown");
+      await expect(container.locator("[data-review-line-add]")).toHaveCount(0);
+      expect(reviewFiles(sagaRepositories, /comments\/.*\.json$/)).toHaveLength(0);
+    } finally {
+      await stopSagaServer(running);
+    }
+  });
+}
+
+test("a stale diff refuses submission and retains the reviewer's draft", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
+    await page.getByRole("tab", { name: "Code Diff", exact: true }).click();
+    await page.getByRole("tree", { name: "Changed files" }).locator('[data-tree-path="src/app.go"]').click();
+    const file = page.locator('#view-code article.file-diff[data-file-path="src/app.go"]');
+    await file.locator(".diff-row.new").first().getByRole("button", { name: /Comment on line/ }).click();
+    const form = file.locator("[data-review-line-composer-form]");
+    await form.getByRole("textbox").fill("Please keep this draft.");
+    advanceSource(sagaRepositories);
+    await form.getByRole("button", { name: "Comment", exact: true }).click();
+    await expect(form.getByRole("status")).toContainText("diff changed since it was shown");
+    await expect(form.getByRole("textbox")).toHaveValue("Please keep this draft.");
+    await expect(form.getByRole("textbox")).toBeEnabled();
+    expect(reviewFiles(sagaRepositories, /comments\/.*\.json$/)).toHaveLength(0);
+  } finally {
+    await stopSagaServer(running);
+  }
+});
+
+test("a lost save receipt keeps the draft and prevents a duplicate comment", async ({ page, sagaRepositories }) => {
+  authorReview(sagaRepositories);
+  const running = await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(new URL("/reviews/pr-1", running.baseURL).toString());
+    await page.getByRole("tab", { name: "Code Diff", exact: true }).click();
+    await page.getByRole("tree", { name: "Changed files" }).locator('[data-tree-path="src/app.go"]').click();
+    const file = page.locator('#view-code article.file-diff[data-file-path="src/app.go"]');
+    await file.locator(".diff-row.new").first().getByRole("button", { name: /Comment on line/ }).click();
+    const form = file.locator("[data-review-line-composer-form]");
+    await form.getByRole("textbox").fill("Save only once.");
+    await page.route("**/reviews/pr-1/comment", async route => {
+      const response = await route.fetch();
+      expect(response.ok()).toBe(true);
+      await route.fulfill({ status: 502, body: "Confirmation lost" });
+    }, { times: 1 });
+    await form.getByRole("button", { name: "Comment", exact: true }).click();
+    await expect(form.getByRole("status")).toContainText("may have been saved");
+    await expect(form.getByRole("textbox")).toHaveValue("Save only once.");
+    await expect(form.getByRole("button", { name: "Comment", exact: true })).toBeDisabled();
+    expect(reviewFiles(sagaRepositories, /comments\/.*\.json$/)).toHaveLength(1);
   } finally {
     await stopSagaServer(running);
   }

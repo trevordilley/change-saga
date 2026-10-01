@@ -53,10 +53,12 @@ const reviewLinesJavaScript = `
     function load(container) {
       let entry = entries.get(container);
       if (entry) return entry.ready;
-      const query = container.matches('.review-item-panel') ? 'target=' + encodeURIComponent(container.dataset.reviewTarget) : 'path=' + encodeURIComponent(container.dataset.filePath);
-      entry = {threads:new Map(), section:null, composer:null};
+      const range = rowsOf(container)[0]?.closest('[data-review-diff-head]')?.dataset;
+      if (!range?.reviewDiffHead || !range.reviewDiffBase) return Promise.resolve(null);
+      const query = (container.matches('.review-item-panel') ? 'target=' + encodeURIComponent(container.dataset.reviewTarget) : 'path=' + encodeURIComponent(container.dataset.filePath)) + '&head=' + encodeURIComponent(range.reviewDiffHead) + '&base=' + encodeURIComponent(range.reviewDiffBase);
+      entry = {threads:new Map(), section:null, composer:null, head:range.reviewDiffHead, base:range.reviewDiffBase};
       entry.ready = fetch('/reviews/' + encodeURIComponent(reviewID) + '/line-threads?' + query, {headers:{Accept:'text/html'}, credentials:'same-origin', signal})
-        .then(response => { if (!response.ok) throw new Error('line comments unavailable'); return response.text(); })
+        .then(async response => { if (!response.ok) throw new Error((await response.text()).trim() || 'Line comments could not be loaded. Reload to try again.'); return response.text(); })
         .then(html => {
           if (!container.isConnected) return null;
           const template = document.createElement('template');
@@ -69,7 +71,13 @@ const reviewLinesJavaScript = `
           container.append(section);
           return entry;
         })
-        .catch(() => { entries.delete(container); return null; });
+        .catch(error => {
+          if (signal.aborted || !container.isConnected) return null;
+          let status = q('[data-review-lines-error]', container);
+          if (!status) { status = document.createElement('p'); status.dataset.reviewLinesError = ''; status.className = 'review-note'; status.setAttribute('role', 'status'); container.append(status); }
+          status.textContent = error.message;
+          return null;
+        });
       entries.set(container, entry);
       return entry.ready;
     }
@@ -101,7 +109,8 @@ const reviewLinesJavaScript = `
       const writable = Boolean(entry.composer);
       for (const row of rowsOf(container)) {
         const line = rowLine(row);
-        if (!line || !writable || row.querySelector(':scope [data-review-line-add]')) continue;
+        const range = row.closest('[data-review-diff-head]')?.dataset;
+        if (!line || !writable || range?.reviewDiffHead !== entry.head || range?.reviewDiffBase !== entry.base || row.querySelector(':scope [data-review-line-add]')) continue;
         const cells = row.matches('tr') ? row.querySelectorAll(':scope > td.review-lineno') : row.querySelectorAll(':scope > .line-no');
         const cell = cells[1] || cells[0];
         if (!cell) continue;
@@ -195,6 +204,9 @@ const reviewLinesJavaScript = `
       const existing = qa('form[data-review-line-composer-form]', container).find(form => form.elements.path.value === line.path && form.elements.side.value === line.side && Number(form.elements.line.value) === line.line);
       if (existing) { lastComposer = existing; q('textarea', existing)?.focus(); return; }
       const form = entry.composer.content.firstElementChild.cloneNode(true);
+      const range = row.closest('[data-review-diff-head]').dataset;
+      form.elements.head.value = range.reviewDiffHead;
+      form.elements.base.value = range.reviewDiffBase;
       form.elements.path.value = line.path;
       form.elements.side.value = line.side;
       form.elements.line.value = String(line.line);
@@ -247,7 +259,7 @@ const reviewLinesJavaScript = `
       const form = event.target;
       if (!(form instanceof HTMLFormElement) || !form.matches('form.review-line-comment-form')) return;
       event.preventDefault();
-      if (form.dataset.saving) return;
+      if (form.dataset.saving || form.dataset.uncertain) return;
       const fields = new URLSearchParams(new FormData(form));
       if (event.submitter?.name) fields.set(event.submitter.name, event.submitter.value);
       const status = q('.review-line-form-status', form);
@@ -269,6 +281,7 @@ const reviewLinesJavaScript = `
       try {
         const response = await fetch(form.action, {method:'POST', body:fields, redirect:'error', credentials:'same-origin', headers:{Accept:'application/json', 'Content-Type':'application/x-www-form-urlencoded'}});
         if (!response.ok) {
+          if (response.status >= 500) throw new Error('save outcome unknown');
           say((await response.text()).trim() || 'The comment was refused. Your draft is retained.', true);
           return;
         }
@@ -288,6 +301,8 @@ const reviewLinesJavaScript = `
         unlock = false;
         fresh.focus({preventScroll:true});
       } catch (_) {
+        form.dataset.uncertain = 'true';
+        unlock = false;
         say('The comment may have been saved, but its confirmation was lost. Reload before submitting again. Your draft is retained.', true);
       } finally {
         delete form.dataset.saving;

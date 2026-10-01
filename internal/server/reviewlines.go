@@ -94,6 +94,10 @@ func (a *app) reviewLineThreads(w http.ResponseWriter, r *http.Request) {
 	if rng != nil {
 		view.Head, view.Base = rng.HeadOID, rng.BaseOID
 	}
+	if view.Head == "" || r.URL.Query().Get("head") != view.Head || r.URL.Query().Get("base") != view.Base {
+		http.Error(w, errReviewLinesChanged.Error(), http.StatusConflict)
+		return
+	}
 	for _, thread := range reviewstate.Threads(review.Comments) {
 		line := thread.Root.CodeLine
 		if line == nil || (target != "" && thread.Root.Target != target) {

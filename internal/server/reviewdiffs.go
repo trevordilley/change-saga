@@ -62,7 +62,7 @@ func (diffs *reviewDiffs) patch(ctx context.Context, path string) (string, error
 }
 
 func (diffs *reviewDiffs) referenceDiff(ctx context.Context, reference coderef.Reference) *reviewDiffView {
-	view := &reviewDiffView{Path: reference.Path, Location: reference.Location().String()}
+	view := &reviewDiffView{Path: reference.Path, Location: reference.Location().String(), Base: diffs.rng.BaseOID, Head: diffs.rng.HeadOID}
 	start, end := reference.Start, reference.End
 	path := reference.Path
 	// Only lines resolved at the head are numbered on the new side, the side

@@ -36,10 +36,11 @@ type pageWindow struct {
 }
 
 type fileDiffPageView struct {
-	File       *FileDiffView
-	NextCursor string
-	HasMore    bool
-	Returned   int
+	ReviewBase, ReviewHead string
+	File                   *FileDiffView
+	NextCursor             string
+	HasMore                bool
+	Returned               int
 }
 
 func makeFileDiffPage(current *reviewSnapshot, filePath, owner, linkedTarget string, manifest bool, window pageWindow) *FileDiffView {

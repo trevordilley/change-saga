@@ -141,7 +141,7 @@ func (a *app) reviewFileDiffSurface(w http.ResponseWriter, r *http.Request) {
 	selected.Lines = selected.Lines[window.start:window.end]
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)
-	page := fileDiffPageView{File: selected, NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start}
+	page := fileDiffPageView{ReviewBase: rng.BaseOID, ReviewHead: rng.HeadOID, File: selected, NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start}
 	renderHTML(w, a.template, "file-diff-page", page, "The file diff could not be rendered.")
 }
 
