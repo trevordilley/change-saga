@@ -15,7 +15,7 @@ leaving open reply drafts in place. Source snapshots are not refreshed by a
 feedback response: a response describing changed content marks the shown slide
 stale until the reviewer reloads and inspects it.
 
-Each scripted write carries the shown slide's snapshot. The snapshot combines
+Each scripted slide or annotation write carries the shown slide's snapshot. The snapshot combines
 resolved base/head/following/frozen identity, slide target, the existing slide
 content digest (visual, Item records and exact evidence) and the served source
 checkout/Saga paths. The store invokes a read-only precondition under its writer
@@ -24,7 +24,7 @@ A changed snapshot, head or frozen review refuses the append. A later Git push
 cannot change the explicit head recorded by an already-accepted decision.
 There is no persisted format change or second approval target for Items.
 
-Forms keep drafts on refusal and disable duplicate submissions while pending.
+Slide and annotation forms keep drafts on refusal and disable duplicate submissions while pending.
 Network failures, 5xx responses and missing receipts leave the outcome unknown:
 the browser retains the draft and blocks further writes for that page. **Check
 saved feedback** performs a read-only refresh; it never retries the POST. The
@@ -38,6 +38,14 @@ creation root. Delete events carrying an anchor and non-finite or negative
 stroke widths are refused before writing, so failed validation cannot poison
 the next Saga load. Browser saves keep the existing human seat; CLI AI seats
 and the report's exact currency semantics remain intact.
+
+Code-line comments use the base/head attached to the rendered diff instead of a
+slide snapshot. Lazy diff pages retain those identifiers when their rows are
+inserted. Thread reads refuse a range that no longer matches; comment writes
+check it again under the writer lock. Their JSON receipt contains the saved
+thread and open-thread counts. A refusal retains the draft; a lost receipt or
+server error disables that composer until reload. These threads are rendered
+beside code and excluded from the separate slide/Item discussion list.
 
 ## Diagnostic measurement and validation
 

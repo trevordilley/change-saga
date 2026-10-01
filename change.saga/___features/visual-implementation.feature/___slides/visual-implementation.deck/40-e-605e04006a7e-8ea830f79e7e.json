@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "3a3b70462ce81ea392d473379c946a161aa53924",
+      "commit": "3a1cd8034e7550412472df1eb72e429140d6f716",
       "path": "internal/server/reviewdiffs.go",
       "start": 64,
       "end": 79,
-      "digest": "sha256:4b9632e647ff75969271cd51ae244dd3e15bb00d605a6bfc4f325e24f1c15ddd",
+      "digest": "sha256:ede0976b19aaa0745a0a0989191ac08e8725b9c88e361779c3f89bd98debb1c8",
       "note": "Each reference still resolves independently, including the original stale-location diagnostic."
     }
   ]
