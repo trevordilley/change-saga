@@ -9,11 +9,20 @@ integration/recovery, CI, query navigation, and occasional format lookup. It
 no longer requires every authoring task to preload the combined general,
 query, format, and deck-authoring manuals.
 
-The CLI packaging contract is unchanged: files under `skills/change-saga/`
-are the authoritative sources embedded by `skills/embed.go`, and
-`change-saga install-skill` emits those bytes with `SKILL.md` first. The
-generated query-operation block in `references/query.md` remains owned by the
-CLI query registry and its existing regeneration test.
+The companion `change-saga-context` skill is separately discoverable for
+everyday questions, planning, implementation, and debugging. It reads focused
+Saga context early and as new questions arise, then returns to the user's
+task. Missing or stale documentation does not trigger automatic upkeep.
+Authoring happens on explicit request or near completion, normally at PR
+preparation/update or a handoff whose workflow includes documentation.
+
+Files under `skills/change-saga/` and `skills/change-saga-context/` are the
+authoritative sources embedded by `skills/embed.go`.
+`change-saga install-skill` emits both skills with `SKILL.md` first within each
+skill. The context skill is self-contained; ordinary reads do not load the
+authoring workflow. The generated query-operation block in the authoring
+skill's `references/query.md` remains owned by the CLI query registry and its
+existing regeneration test.
 
 ## Mandatory contract and routing
 
@@ -93,6 +102,7 @@ Validation commands:
 ```sh
 go test ./internal/cli -run 'Test(InstallSkill|Skill|InstalledSkill)' -count=1
 python /path/to/skill-creator/scripts/quick_validate.py skills/change-saga
+python /path/to/skill-creator/scripts/quick_validate.py skills/change-saga-context
 ```
 
 The broader repository test suite should also be run before merge. No Saga

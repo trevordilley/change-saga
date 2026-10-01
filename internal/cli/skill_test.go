@@ -25,6 +25,7 @@ var shippedSkills = []struct {
 	files []skills.File
 }{
 	{name: "change-saga", files: skills.ChangeSaga()},
+	{name: "change-saga-context", files: skills.ChangeSagaContext()},
 }
 
 func TestInstallSkillPrintsTheSkillFilesVerbatim(t *testing.T) {

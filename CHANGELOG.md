@@ -10,6 +10,8 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-30
+
 - **Format:** Diagram sources support literal `code` elements for API and library
   usage examples, with a language label, optional line numbers and highlighted
   lines, measured in bundled Go Mono. Source is never executed; overflow is
@@ -37,6 +39,14 @@ tool, and what they have to do about it.
   strict older readers/schemas must be upgraded before those fields are authored.
 
 ### Added
+
+- `install-skill` now ships `change-saga-context` alongside the authoring
+  skill. Agents consult existing Saga intent, architecture, and code links
+  during everyday work; documentation updates stay near completion or follow
+  an explicit request. Re-run skill installation to receive both skills.
+- Slide authoring guidance distinguishes simple flash-card Fronts from in-depth
+  Backs, using explicit grouping, consistent domain colors, labeled flows, and
+  explanatory text to teach the system.
 
 - `diagram describe` lists each Item's code references as `path:start-end`
   with the reference note, marking lines at a review's base `(old)`, in text
@@ -66,7 +76,8 @@ tool, and what they have to do about it.
 
 
 - `review comment --path PATH --line N [--end-line M] [--side new|old]` does
-  comments on code lines from the CLI. Without `--target`, the comment goes under the
+  comments on code lines from the CLI. Browser inline line-comment controls
+  are not included in this release. Without `--target`, the comment goes under the
   first Item whose code holds the lines, or else on the review itself.
   `review list` reports each review's open line threads and whether they
   are outdated (JSON: `line_threads`, `open_line_threads`). The new `query
@@ -1037,7 +1048,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/twentyideas/changesaga/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/trevordilley/change-saga/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/twentyideas/changesaga/compare/v0.1.1...v0.2.0
 [0.0.9]: https://github.com/twentyideas/changesaga/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/twentyideas/changesaga/compare/v0.0.7...v0.0.8

@@ -18,9 +18,10 @@ implemented features belong in actual Product story records (see
 
 Every deck has an Overview: an authored report combining explanation, tables,
 and visualizations. A Technical deck's overview is the detailed implementation
-strategy and technical design document that its slides make digestible in
-pictures. Explain responsibilities, data models, execution paths, invariants,
-failure handling, and tradeoffs with enough depth to work on the implementation.
+strategy and technical design document that its slides make digestible through
+diagrams and explanation. Explain responsibilities, data models, execution
+paths, invariants, failure handling, and tradeoffs with enough depth to work on
+the implementation.
 A slide tour or reading guide does not replace this technical account.
 Every slide has a short bullet-summary Front and a visual
 Back. Keep precise evidence on stable Back Items. Overview citations name a
@@ -45,6 +46,40 @@ walkthroughs. Use Markdown to orient and connect visual artifacts, not as the
 default container. A substantial chapter should lead with a diagram,
 interactive walkthrough, or concrete before/after example and state its
 boundary, invariants, decisions, risks, compatibility concerns, and proof.
+
+## Make the depth readable
+
+These principles apply to the in-depth Back of every deck: implementation,
+review, and onboarding. Keep the Front simple and high-level, like a flash
+card: a few short bullets with the main idea and takeaway.
+
+- Make group membership explicit. Use the slide API's groups, regions, and
+  sections to separate responsibilities, system boundaries, or segments of a
+  flow. In diagram source, use `group` elements with `section`, `boundary`, or
+  `rect` shapes and nest related elements inside them. Combine labeled frames,
+  spacing, and consistent color so readers can see what belongs together and
+  what belongs in a different group. Color should reinforce labeled structure.
+- Keep visual meaning consistent across the deck. Give recurring domains the
+  same colors and styles on each slide; use a compact labeled key when helpful.
+  Distinguish systems with named boundaries, suitable shapes and icons, and
+  clear heading hierarchy. Readers should recognize the areas and their roles
+  at a glance. Use the audience's product terms consistently in labels.
+- Make flows explicit. Label arrows with what moves or happens, and show where
+  they cross system boundaries. Separate materially different paths, such as
+  success and failure or alternate branches of a decision. Show an intentional
+  absence when it matters to the explanation, such as "no further action",
+  so readers can distinguish a completed path from an omitted one.
+- Put useful text on the slide. Sentences, short paragraphs, and descriptions
+  beside the elements they explain help readers understand responsibilities,
+  behavior, reasons, and consequences. Text arranged within a slide's visual
+  structure is easier to absorb than a large undifferentiated document block.
+  Keep the explanation needed to understand the slide visible; use hover notes
+  for supplemental depth.
+- Aim for clarity and understanding of the system. Give readers enough detail
+  to explain how the parts interact, what happens along the important paths,
+  and why the design works this way. Organize detail with headings, sections,
+  and readable text; split a crowded slide into connected slides when needed.
+  Preserve the explanation when simplifying the layout.
 
 ## Storyboard before drawing
 
@@ -393,10 +428,13 @@ and verification instead.
    comparison.
 2. **Relationship:** every relationship essential to the takeaway is encoded
    as an edge, boundary, lane, nesting, cardinality, axis, or transition.
-3. **Surprise:** a reviewer can name the system model, highest-consequence
-   deviation, its reason, and its tradeoff.
-4. **Contact sheet:** repeated visual grammar represents the same underlying
-   relationship; unrelated slides have not collapsed into identical cards.
+3. **Understanding:** the visible diagram and text let a reader explain the
+   system's groups, responsibilities, and interactions. When there is a
+   surprise, they can name the highest-consequence deviation, its reason,
+   and its tradeoff.
+4. **Contact sheet:** recurring domains retain their colors, labels, and styles;
+   repeated visual grammar represents the same underlying relationship.
+   Unrelated slides have not collapsed into identical cards.
 
 Run these before chasing coverage. Coverage cannot rescue a generic visual.
 

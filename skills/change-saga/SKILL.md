@@ -32,17 +32,30 @@ people actually review, rather than piecemeal in every child. As a child
 workspace or sub-agent, create a review or do Saga upkeep only when the user
 or the parent asks.
 
-## When to do Saga work
+## Read throughout; author near completion
 
-Saga work belongs to the moment a pull request is created or updated, not to
-every session or commit. Creating or refreshing the review deck, covering
-lines, reconciling living documentation, and repinning all happen when the
+Use the companion `change-saga-context` skill to consult existing Saga knowledge
+early and throughout planning, implementation, debugging, and explanation.
+Read relevant intent, design, and code links whenever they can inform the task;
+the timing rules below govern writes, not reads.
+
+Saga authoring normally belongs near the end of the work, when implementation
+and relevant verification are complete: preparing or updating a pull request,
+or a final handoff whose agreed workflow includes documentation. It does not
+belong to every session, commit, or conversational answer. Creating or refreshing
+the review deck, covering lines, reconciling living documentation, and repinning
+all happen when the
 user says to create or update the PR ("okay, create a PR", "let's update the
 PR"), or when their process otherwise publishes changes for review. Then do
 it all together, so the deck explains the change as reviewers will see it.
 Otherwise, keep a coding session about the code: do not end it with Saga
 upkeep nobody asked for. A deck that lags the branch between PR updates is
 expected. When the user asks for Saga work directly, do it then.
+
+If a user asks to document features while iterating on a PR deck, follow the
+feature authoring workflow at that scope in the same Saga. Keep the PR deck
+focused on the change and connect it to the feature records where relevant;
+do not require a repository-wide setup interview for one feature.
 
 ## Create a review for this PR (the usual first task)
 

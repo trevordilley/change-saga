@@ -61,3 +61,4 @@ written before this repository's Saga was renamed call it by its former name,
 | [../SECURITY.md](../SECURITY.md) | Threat model and private reporting. |
 | [../SUPPORT.md](../SUPPORT.md) | Where to ask, and answers to the questions that come up most. |
 | [../skills/change-saga/SKILL.md](../skills/change-saga/SKILL.md) | The reference authoring skill behind `change-saga install-skill`. |
+| [../skills/change-saga-context/SKILL.md](../skills/change-saga-context/SKILL.md) | Read existing Saga context during everyday repository work; shipped alongside the authoring skill. |

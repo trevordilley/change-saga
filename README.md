@@ -42,11 +42,17 @@ change-saga help
 Once it's installed, give your coding agent two prompts from the repository
 with the change:
 
-> Use the change-saga cli to install its skill for this coding agent
+> Use the change-saga cli to install its skills for this coding agent
 
 > Create a review for this PR
 
 (For a branch without a pull request yet, ask for a review of the branch.)
+
+The installation includes two skills. `change-saga-context` helps the agent
+consult existing stories, architecture, and code links during everyday planning,
+debugging, and implementation, even when you do not mention Saga.
+`change-saga` handles authoring when you request it or near completion, normally
+while preparing or updating the PR. Reading context does not trigger upkeep.
 
 What you get:
 

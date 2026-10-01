@@ -499,7 +499,7 @@ untouched.`,
 	"verify-claim":     "Append an independent verification result without rewriting the claim or prior results.",
 	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL. Without --against it observes the app at --head: every\nnode current and stale references as health warnings; a node's history links to the reviews\nthat changed it. With --against it compares what --head changes since their merge-base, the\nway a pull request does, and shows the Changed, Affected, and Code layers read-only beside the\npull request's review, where approvals happen. Documentation has no approval or comment\ncontrols in either mode.",
 	"serve":            "Serve the saga on loopback for review. Detached instances are managed with\nchange-saga serve status [SAGA] and change-saga serve stop [SAGA].",
-	"install-skill":    "Print the agent-agnostic prompt that installs the change-saga authoring skill.\nPipe it to a coding agent; it neither writes to this repository nor creates a saga.",
+	"install-skill":    "Print the agent-agnostic prompt that installs the change-saga authoring skill\nand change-saga-context reading skill. Pipe it to a coding agent; it neither\nwrites to this repository nor creates a saga.",
 	"validate":         "Check the format and authoring completeness, including a warning for every Markdown\nfootnote without an evidence-bearing exact-text landmark. --fix adds missing stable\nheading anchors and changes nothing else.",
 }
 
@@ -2061,7 +2061,7 @@ const defaultHTMLFragment = `<!doctype html>
 // installSkillPreamble tells the agent how to install the skill files that
 // follow it. The files are the skills package's embedded copies, so the
 // installed skills and the repository's reference skills are the same bytes.
-const installSkillPreamble = `Install or update a project-local agent skill named "change-saga" using this coding agent's native skill mechanism. Do not create a Change Saga as part of installation. Each file header begins with the skill directory and then the path relative to it. Write every file exactly as given: SKILL.md is the skill's entrypoint, agents/openai.yaml carries its interface metadata, and SKILL.md links to its files under references/.
+const installSkillPreamble = `Install or update two project-local agent skills named "change-saga" and "change-saga-context" using this coding agent's native skill mechanism. Keep them separately discoverable: change-saga-context reads existing documentation during everyday work; change-saga authors documentation when requested or near the end of the work. Do not create a Change Saga as part of installation. Each file header begins with the skill directory and then the path relative to it. Write every file exactly as given: SKILL.md is each skill's entrypoint, agents/openai.yaml carries its interface metadata, and supporting references are included where used.
 `
 
 // installSkillFileHeader introduces one skill file in the install-skill prompt.
@@ -2072,6 +2072,10 @@ func installSkillPrompt() string {
 	prompt.WriteString(installSkillPreamble)
 	for _, file := range skills.ChangeSaga() {
 		fmt.Fprintf(&prompt, installSkillFileHeader, "change-saga/"+file.Path)
+		prompt.WriteString(file.Content)
+	}
+	for _, file := range skills.ChangeSagaContext() {
+		fmt.Fprintf(&prompt, installSkillFileHeader, "change-saga-context/"+file.Path)
 		prompt.WriteString(file.Content)
 	}
 	return prompt.String()

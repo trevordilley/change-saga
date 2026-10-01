@@ -20,16 +20,37 @@ stories and explain the mechanisms that fulfill them.
 Every deck has an **Overview**, a report combining written explanation, tables,
 and visuals. It provides the connected account of the deck and cites every
 slide. For a Technical deck, this is the detailed **technical overview**: the
-implementation strategy and technical design that the slides distill into
-pictures. Explain component responsibilities, data models, execution paths,
-invariants, failure handling, and design tradeoffs at the depth needed to work
+implementation strategy and technical design that the slides explain through
+diagrams and text. Explain component responsibilities, data models, execution
+paths, invariants, failure handling, and design tradeoffs at the depth needed to work
 on the implementation. The report should stand on its own as a technical
 document; a reading guide or slide directory alone is insufficient.
 Each slide has two faces:
 
-- **Front** is a short bullet summary, like a flash card.
-- **Back** is the detailed diagram or visualization. It retains the existing
-  visual asset, stable Items, exact code evidence, and linked stories.
+- **Front** is a simple, high-level flash card: a few short bullets with the
+  main idea and takeaway.
+- **Back** is the in-depth diagram or visualization with explanatory text.
+  It retains the existing visual asset, stable Items, exact code evidence,
+  and linked stories.
+
+On the Back, make it clear which elements belong together and which belong in
+different groups. Use the slide API's groups, regions, sections, and color to
+show boundaries and meaningful segments of a flow. Pair color with labels,
+frames, and spacing so the grouping is easy to read.
+
+Keep recurring domains recognizable across the deck with consistent colors,
+styles, and product terminology. Use labeled arrows to explain what moves
+between systems, and distinguish success, failure, and alternate decision
+paths. Make intentional absence explicit when relevant, such as
+"no further action". A compact color key and suitable icons can help readers
+recognize each area's role at a glance.
+
+Text descriptions belong on these in-depth slides. Sentences and short
+paragraphs placed beside the relevant visual elements make an explanation
+easier to absorb than a large block of document text. Aim for clarity with
+enough depth that readers leave understanding the system: its responsibilities,
+interactions, important paths, and design reasoning. Organize that detail or
+split it across connected slides while keeping the Front brief.
 
 Front and Back are two views of the same stable slide, not new approval or
 coverage targets. Existing slides without authored Front bullets derive a
