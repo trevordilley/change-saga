@@ -2755,7 +2755,7 @@ const appJavaScript = `(() => {
     if (event.key === 'Escape') closeDrawer();
   });
 
-` + reviewAsyncJavaScript + `
+` + reviewAsyncJavaScript + reviewLinesJavaScript + `
   async function prepareReviewAnnotations() {
     const deck = q('#page [data-review-deck]');
     if (!deck) return;
@@ -3155,6 +3155,7 @@ const appJavaScript = `(() => {
     applyDiffLayout(diffLayout);
     syncSlidePresentation();
     reviewAsync = makeReviewAsync(pageScope.signal);
+    reviewLines = makeReviewLines(pageScope.signal);
     const view = requestedView();
     setView(view, false);
     setManifestMode('code');
@@ -3180,6 +3181,7 @@ const appJavaScript = `(() => {
     relatedOwnersRequest?.controller.abort();
     activeFragment = null;
     reviewAsync = null;
+    reviewLines = null;
     q('[data-shell]')?.classList.remove('tree-hidden');
     delete document.body.dataset.shellReady;
   }

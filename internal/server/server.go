@@ -507,6 +507,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
 	handle("GET /reviews/{id}/annotations", application.reviewAnnotations)
 	handle("GET /reviews/{id}/feedback", application.reviewFeedbackSurface)
+	handle("GET /reviews/{id}/line-threads", application.reviewLineThreads)
 	handle("POST /reviews/{id}/decision", application.reviewDecision)
 	handle("POST /reviews/{id}/comment", application.reviewComment)
 	handle("GET /assets/{hash}/{name}", application.shellAssetFile)
