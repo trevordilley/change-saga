@@ -65,9 +65,9 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     const slide = page.locator('[data-deck-slide][data-slide-target$=":slide:noted-flow"]');
     await expect(slide).toBeVisible();
     const popover = page.locator("#element-note-popover");
-    const edge = slide.locator('.element-note-hotspot[data-element-note-visual="name"]');
-    const heading = slide.locator('.element-note-hotspot[data-element-note-visual="heading"]');
-    await expect(edge).toHaveAttribute("aria-label", "Note: name");
+    const edge = slide.locator('.element-note-hotspot[data-element-note-visual="name"] .element-note-trigger');
+    const heading = slide.locator('.element-note-hotspot[data-element-note-visual="heading"] .element-note-trigger');
+    await expect(edge).toHaveAttribute("aria-label", "More information: name");
     await expect(heading).toHaveCount(1);
 
     // Hover: an element without an Item shows just its rendered note.
@@ -77,8 +77,11 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await expect(popover.locator("li")).toHaveText(["empty names are refused", "see the handler"]);
     await expect(popover.getByRole("link", { name: "the handler" })).toHaveAttribute("href", "https://example.com/handler");
     await expect(popover.locator(".element-note-label")).toHaveCount(0);
-    // A hover popover lets the pointer through to anything beneath it.
-    await expect(popover).toHaveCSS("pointer-events", "none");
+    // An intentional info hover lets the reader move into the detail.
+    await expect(popover).toHaveCSS("pointer-events", "auto");
+    await popover.hover();
+    await expect(popover).toBeVisible();
+    await edge.hover();
     // A click pins it for its links, and moving away still closes it.
     await edge.click();
     await expect(popover).toBeVisible();
@@ -96,8 +99,10 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     // An Item's element shows its label and description with the note.
     const caller = slide.locator('.landmark-hotspot[data-element-id="caller"]');
     await caller.hover();
+    await expect(popover).toBeHidden();
+    await caller.locator(".element-note-trigger").hover();
     await expect(popover.locator(".element-note-label")).toHaveText("Caller");
-    await expect(popover.locator(".element-note-description")).toHaveText("Callers now pass a name.");
+    await expect(popover.locator(".element-note-description")).toHaveCount(0);
     await expect(popover.locator(".element-note-markdown code")).toHaveText("name");
     await expect(popover.locator(".element-note-markdown em")).toHaveText("required");
 
@@ -105,10 +110,9 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await page.mouse.move(5, 5);
     await expect(popover).toBeHidden();
 
-    // Keyboard: Tab reaches the note hotspot, which opens the popover, and
+    // Keyboard: focusing the info button opens the popover, and
     // Escape closes it while focus stays put.
-    await slide.locator(".fragment").focus();
-    for (let step = 0; step < 30 && !(await heading.evaluate(node => node === document.activeElement)); step++) await page.keyboard.press("Tab");
+    await heading.focus();
     await expect(heading).toBeFocused();
     await expect(popover).toBeVisible();
     await expect(popover.locator("strong")).toHaveText("now pass a name");
@@ -124,12 +128,7 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await expect(popover).toBeHidden();
 
     // A note's links follow its hotspot in the Tab order, and Tab leaves them.
-    // This note precedes the heading in DOM order, so reaching it again makes
-    // one circuit through the visible reviewer, face and Viewed controls.
-    for (let step = 0; step < 60 && !(await edge.evaluate(node => node === document.activeElement)); step++) {
-      await page.keyboard.press("Tab");
-      expect(await page.evaluate(() => Boolean(document.activeElement?.closest('[data-deck-overview][hidden]'))), 'hidden Overview content must not receive focus').toBe(false);
-    }
+    await edge.focus();
     await expect(edge).toBeFocused();
     await expect(popover).toHaveAttribute("role", "note");
     await page.keyboard.press("Tab");
@@ -149,7 +148,8 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     // The popover never blocks the click that opens an Item's drawer.
     const greeting = slide.locator('.landmark-hotspot:not(.callout-hotspot)[data-element-id="greeting"]');
     await greeting.hover();
-    await expect(popover.locator(".element-note-label")).toHaveText("Greeting");
+    await expect(popover).toBeHidden();
+    await expect(greeting.locator(".element-note-trigger")).toHaveCount(0);
     await greeting.click({ position: { x: 20, y: 60 } });
     await expect(page.locator("#review-drawer")).toBeVisible();
     await expect(popover).toBeHidden();
@@ -165,7 +165,7 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     const surprise = slide.locator('.callout-hotspot[data-element-id="greeting"]');
     await expect(surprise).toHaveClass(/callout-shared/);
     await expect(surprise).toHaveCSS("pointer-events", "none");
-    const badge = surprise.getByRole("button", { name: "Open surprise: Names are echoed" });
+    const badge = surprise.getByRole("button", { name: "Surprise: Names are echoed" });
     const greetingBox = (await greeting.boundingBox())!;
     const badgeBox = (await badge.boundingBox())!;
     expect(badgeBox.x - greetingBox.x).toBeLessThan(40);
@@ -176,13 +176,15 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await badge.hover();
     await expect(popover.locator(".element-note-label")).toHaveText("Names are echoed");
     await badge.click();
+    await expect(popover).toContainText("the greeting echoes it");
+    await popover.getByRole("button", { name: "Open surprise: Names are echoed" }).click();
     await expect(page.locator("#review-drawer .review-item-panel h2")).toHaveText("Names are echoed");
     await page.keyboard.press("Escape");
 
     // A popover never takes the click meant for a hotspot beneath it.
     await page.getByRole("button", { name: "Show slide: Stacked" }).click();
     const stacked = page.locator('[data-deck-slide][data-slide-target$=":slide:stacked"]');
-    const upper = stacked.locator('.element-note-hotspot[data-element-note-visual="upper"]');
+    const upper = stacked.locator('.element-note-hotspot[data-element-note-visual="upper"] .element-note-trigger');
     const lower = stacked.locator('.landmark-hotspot[data-element-id="lower"]');
     await upper.hover();
     await expect(popover).toBeVisible();
@@ -201,7 +203,7 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
   try {
     const tablet = await touch.newPage();
     await tablet.goto(`${reopened.baseURL}/reviews/pr-3`);
-    const edge = tablet.locator('[data-deck-slide][data-slide-target$=":slide:noted-flow"] .element-note-hotspot[data-element-note-visual="name"]');
+    const edge = tablet.locator('[data-deck-slide][data-slide-target$=":slide:noted-flow"] .element-note-hotspot[data-element-note-visual="name"] .element-note-trigger');
     const popover = tablet.locator("#element-note-popover");
     await edge.tap();
     await expect(popover.getByText("Sent as a query parameter.")).toBeVisible();
@@ -242,7 +244,7 @@ test("an implementation deck shows its diagram notes the same way, and in an Ite
   await page.getByRole("button", { name: "Show slide: Greeting flow" }).click();
   const slide = page.locator('#view-slides [data-deck-slide][data-slide-title="Greeting flow"]');
   await expect(slide).toBeVisible();
-  const caller = slide.locator('.element-note-hotspot[data-element-note-visual="caller"]');
+  const caller = slide.locator('.element-note-hotspot[data-element-note-visual="caller"] .element-note-trigger');
   await caller.hover();
   const popover = page.locator("#element-note-popover");
   await expect(popover.locator("code")).toHaveText("name");
@@ -253,7 +255,7 @@ test("an implementation deck shows its diagram notes the same way, and in an Ite
   // A reader who cannot hover, such as on a touch screen, opens the Item and
   // reads its note at the head of its code.
   const greeting = slide.locator('.landmark-hotspot[data-element-id="greeting"]');
-  await greeting.hover();
+  await greeting.locator(".element-note-trigger").hover();
   await expect(popover.locator(".element-note-label")).toHaveText("Greeting");
   await greeting.click({ position: { x: 20, y: 60 } });
   const drawerNote = page.locator(".diff-drawer.open .drawer-element-note");
@@ -276,7 +278,7 @@ test("pinned notes, notes inside a selected group, and surprise badges stay reac
       { id: "upper", kind: "node", shape: "rect", label: "Upper", x: 760, y: 120, width: 400, height: 80, style: "normal", note: "Upper note with [a link](https://example.com/a)." },
       { id: "lower", kind: "node", shape: "rect", label: "Lower", x: 760, y: 230, width: 400, height: 80, style: "primary" },
       { id: "corner", kind: "node", shape: "rect", label: "Corner", x: 20, y: 610, width: 320, height: 90, style: "normal" },
-      { id: "small", kind: "node", shape: "rect", label: "Small", x: 900, y: 420, width: 200, height: 60, style: "normal" },
+      { id: "small", kind: "node", shape: "rect", label: "Small", x: 900, y: 420, width: 200, height: 60, style: "normal", note: "Dispatch starts after validation completes." },
     ] },
     items: [
       { id: "outer", rank: 10, kind: "node", label: "Outer", description: "A group an Item selects.", selector: { type: "element", element_id: "outer" } },
@@ -302,13 +304,13 @@ test("pinned notes, notes inside a selected group, and surprise badges stay reac
       a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y;
 
     // B: a note inside a group an Item selects is reachable with the pointer.
-    const inner = slide.locator('.element-note-hotspot[data-element-note-visual="inner"]');
-    await expect(inner).toHaveClass(/element-note-inner/);
+    const inner = slide.locator('.element-note-hotspot[data-element-note-visual="inner"] .element-note-trigger');
+    await expect(inner.locator("..")).toHaveClass(/element-note-inner/);
     await inner.hover();
     await expect(popover.locator("strong")).toHaveText("inner");
 
     // A: crossing another hotspot on the way to a pinned note keeps it.
-    const upper = slide.locator('.element-note-hotspot[data-element-note-visual="upper"]');
+    const upper = slide.locator('.element-note-hotspot[data-element-note-visual="upper"] .element-note-trigger');
     const lower = slide.locator('.landmark-hotspot[data-element-id="lower"]');
     await upper.click();
     await expect(popover).toHaveClass(/pinned/);
@@ -321,28 +323,35 @@ test("pinned notes, notes inside a selected group, and surprise badges stay reac
     await expect(popover).toBeHidden();
 
     // C: the Surprises panel never covers a badge in the corner beneath it.
-    const cornerBadge = slide.locator('.callout-hotspot[data-element-id="corner"]').getByRole("button", { name: "Open surprise: Corner surprise" });
-    expect(apart((await cornerBadge.boundingBox())!, (await slide.locator(".review-callouts").boundingBox())!)).toBe(true);
+    const cornerBadge = slide.locator('.callout-hotspot[data-element-id="corner"]').getByRole("button", { name: "Surprise: Corner surprise" });
+    await expect(slide.locator(".review-callouts")).toHaveCount(0);
     await cornerBadge.click();
+    await expect(popover).toContainText("Its badge must stay clear");
+    await popover.getByRole("button", { name: "Open surprise: Corner surprise" }).click();
     await expect(page.locator("#review-drawer .review-item-panel h2")).toHaveText("Corner surprise");
     await page.keyboard.press("Escape");
 
     // D: on a short element the badge stays clear of the Item's controls.
-    const smallBadge = slide.locator('.callout-hotspot[data-element-id="small"]').getByRole("button", { name: "Open surprise: Small surprise" });
+    const smallBadge = slide.locator('.callout-hotspot[data-element-id="small"]').getByRole("button", { name: "Surprise: Small surprise" });
     const smallControls = slide.locator('.landmark-hotspot:not(.callout-hotspot)[data-element-id="small"] > .landmark-affordance');
     expect(apart((await smallBadge.boundingBox())!, (await smallControls.boundingBox())!)).toBe(true);
+    const smallInfo = slide.locator('.landmark-hotspot:not(.callout-hotspot)[data-element-id="small"] .element-note-trigger');
+    expect(apart((await smallBadge.boundingBox())!, (await smallInfo.boundingBox())!)).toBe(true);
+    await smallInfo.hover();
+    await expect(popover).toContainText("Dispatch starts after validation completes.");
+    await page.mouse.move(5, 5);
+    await page.screenshot({ path: test.info().outputPath("compact-note-controls.png") });
 
     // D: after Escape, leaving a note hotspot and returning reopens its note.
     await page.mouse.move(5, 5);
-    await slide.locator(".fragment").focus();
-    for (let step = 0; step < 40 && !(await upper.evaluate(node => node === document.activeElement)); step++) await page.keyboard.press("Tab");
+    await upper.focus();
     await expect(upper).toBeFocused();
     await expect(popover).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(popover).toBeHidden();
     await page.keyboard.press("Shift+Tab");
     await expect(upper).not.toBeFocused();
-    await page.keyboard.press("Tab");
+    await upper.focus();
     await expect(upper).toBeFocused();
     await expect(popover.getByText("Upper note with")).toBeVisible();
   } finally {

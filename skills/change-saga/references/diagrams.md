@@ -73,7 +73,7 @@ card: a few short bullets with the main idea and takeaway.
   beside the elements they explain help readers understand responsibilities,
   behavior, reasons, and consequences. Text arranged within a slide's visual
   structure is easier to absorb than a large undifferentiated document block.
-  Keep the explanation needed to understand the slide visible; use hover notes
+  Keep the explanation needed to understand the slide visible; use notes behind info buttons
   for supplemental depth.
 - Aim for clarity and understanding of the system. Give readers enough detail
   to explain how the parts interact, what happens along the important paths,
@@ -228,17 +228,19 @@ diagram icons`.
   {"id": "first", "kind": "annotation", "shape": "pin", "label": "1", "about": "queue",
    "x": 272, "y": 152, "width": 32, "style": "normal"}
   ```
-- Any semantic element may carry an optional `note`: depth on demand that a
-  reader sees, rendered, when they hover, focus, or tap the element, and that
-  `diagram describe` prints. Use it for the why its label cannot hold: an
-  edge's protocol or failure behavior, a node's responsibility, the context of
-  a title. An Item's element already shows the Item's label, description, and
-  callout body on hover, so a note adds to them rather than repeating them.
+- Any semantic element may carry an optional `note`: useful detail beyond the
+  visible label and description. Readers hover, focus, or tap its small info
+  control at the element's bottom-left; moving across the element itself opens
+  nothing. `diagram describe` also prints the note. Explain responsibility,
+  protocol, constraints, failure behavior, rationale, or an example the visible
+  text does not already explain. Do not repeat or paraphrase the cell's text,
+  and do not add a note to every element just for consistency. Omit it when
+  there is no additional grounded information. Keep the explanation needed to
+  understand the system visible on the detailed slide.
   Keep notes to a few sentences (at most 1,000 characters) of Markdown limited
   to bold, italics, inline code, lists, and http, https, or mailto links; raw
-  HTML, headings, images, tables, and code blocks are refused. Notes are
-  optional detail: a surprise still belongs in a callout Item, which is
-  prominent. Never manufacture detail to fill a note; omit it instead.
+  HTML, headings, images, tables, and code blocks are refused. Surprises remain
+  callout Items with their own compact warning controls and exact evidence.
 - A diagram may unfold in reading order with `"reveal": "fade"`: the
   reviewer fades its elements in, step by step, each time the slide is shown.
   Use it when order carries meaning, such as a request's path or a
@@ -319,7 +321,7 @@ pass `apply-slide --review ID`). A review Item carries no `evidence` or
 change. Call out each surprise (see "Reviewer surprises" below) with a
 `"kind": "callout"` Item whose `about` names the responsible element's Item
 and whose `body` gives expectation, actual behavior, reason, and consequence;
-reviewers see callouts in a Surprises panel on the slide, and
+reviewers open callout details from compact warning controls on the element, and
 `review list` names them. A minimal review slide with a diagram source and
 one surprise:
 
@@ -415,8 +417,8 @@ For each material surprise, show expectation, actual behavior, rationale, and
 consequence together. Attach a callout Item to the responsible visual element
 and give the actual behavior and consequence exact evidence from the code that
 decides them; an element
-`note` is optional detail a reader has to seek out, never the place for a
-surprise. Ground the
+`note` supplies optional depth; a surprise uses a callout Item so its warning
+control remains visibly distinct. Ground the
 contrast in source material or a plausible reviewer mental model. Do not
 manufacture novelty; when none exists, teach system shape, risk boundaries,
 and verification instead.

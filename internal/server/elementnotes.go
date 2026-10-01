@@ -65,9 +65,8 @@ type elementNoteView struct {
 
 func (v elementNoteView) Popover() notePopoverView { return notePopoverView{Note: v.Note} }
 
-// notePopoverView is what a reader sees on hovering, focusing, or tapping a
-// slide element: its Item's label, description, and callout body, when an
-// Item selects it, and the element's own note.
+// notePopoverView contains explicit detail, opened from an element's info
+// control. Ordinary labels and descriptions do not create redundant popovers.
 type notePopoverView struct {
 	Label       string
 	Description string
@@ -75,15 +74,17 @@ type notePopoverView struct {
 	Note        template.HTML
 }
 
-// A review slide already lists every callout's body in its Surprises panel,
-// so a review Item's popover leaves the body out.
 func (v *reviewItemView) Popover() notePopoverView {
-	return notePopoverView{Label: v.Item.Label, Description: v.Item.Description, Note: v.Note}
+	popover := notePopoverView{Label: v.Item.Label, Note: v.Note}
+	if v.Item.Kind == "callout" {
+		popover.Body = v.Item.Body
+	}
+	return popover
 }
 
 func (v *landmarkView) Popover() notePopoverView {
-	popover := notePopoverView{Label: v.Label, Description: v.Description, Note: v.Note}
-	if v.ItemMeta != nil {
+	popover := notePopoverView{Label: v.Label, Note: v.Note}
+	if v.ItemMeta != nil && v.ItemMeta.Kind == "callout" {
 		popover.Body = v.ItemMeta.Body
 	}
 	return popover
@@ -94,6 +95,6 @@ func (v *landmarkView) Popover() notePopoverView {
 // target; the page script clones it into one popover on the page itself, over
 // the sandboxed slide frame rather than inside it.
 const elementNoteTemplates = `{{define "element-note-popover"}}<div class="element-note">{{if .Label}}<p class="element-note-label">{{.Label}}</p>{{end}}{{if .Description}}<p class="element-note-description">{{.Description}}</p>{{end}}{{if .Body}}<p class="element-note-body">{{.Body}}</p>{{end}}{{if .Note}}<div class="element-note-markdown">{{.Note}}</div>{{end}}</div>{{end}}
-{{define "element-note-template"}}<template data-landmark-note-template>{{template "element-note-popover" .}}</template>{{end}}
+{{define "element-note-template"}}{{if or .Note .Body}}<template data-landmark-note-template>{{template "element-note-popover" .}}</template>{{end}}{{end}}
 {{define "element-note-targets"}}{{range .}}<span class="element-note-target" data-element-note-target data-element-id="{{.ElementID}}" data-element-name="{{.Name}}" hidden>{{template "element-note-template" .Popover}}</span>{{end}}{{end}}
 `

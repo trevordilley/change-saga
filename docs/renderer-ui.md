@@ -286,3 +286,17 @@ The composer carries the exact base and head used to render its diff. If the
 branch changes before controls load or before submission, the browser asks for
 a reload and retains any draft. An uncertain save retains the draft and blocks
 that composer's resubmission so a lost receipt cannot cause a duplicate click.
+
+## Element detail and surprises
+
+Moving the pointer across a slide element must not open a popover. Explicit
+notes use a small info button at the element's bottom-left, reachable by hover,
+keyboard focus, and touch. Notes add grounded detail beyond the visible text;
+ordinary Item labels and descriptions alone create no info control. Keep the
+system explanation visible on detailed slides, with optional depth in notes.
+
+Surprises use compact warning buttons in the same corner. They reveal the
+callout's explanation and access to its linked code on demand. Multiple controls
+on one element sit alongside each other. Do not cover the diagram with an
+expanded Surprises panel. Escape dismisses the popover; linked code retains
+its existing drawer behavior.

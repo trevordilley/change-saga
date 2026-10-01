@@ -591,14 +591,14 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
     // The Greeting Item and the callout about it both mark the greeting.
     await expect(slide.locator('.landmark-hotspot[data-element-id="greeting"]')).toHaveCount(2);
     await expect(slide.locator('.landmark-hotspot[data-element-id="caller"]')).toHaveCount(1);
-    // The slide's surprises are shown on the slide, not below its frame.
-    const surprises = slide.locator(".review-callouts");
-    await expect(surprises).toBeVisible();
-    await expect(surprises.locator("summary")).toHaveText("Surprises (1)");
-    await expect(surprises).toContainText("the greeting now prints it as given");
-    const slideBox = await slide.boundingBox();
-    const surprisesBox = await surprises.boundingBox();
-    expect(slideBox && surprisesBox && surprisesBox.y + surprisesBox.height <= slideBox.y + slideBox.height + 1).toBeTruthy();
+    // Surprise detail is revealed through its compact control, keeping the
+    // diagram clear until the reviewer requests it.
+    await expect(slide.locator(".review-callouts")).toHaveCount(0);
+    const surprise = slide.locator(".surprise-note-trigger");
+    await expect(surprise).toHaveCount(1);
+    await surprise.hover();
+    await expect(page.locator("#element-note-popover")).toContainText("the greeting now prints it as given");
+    await page.mouse.move(5, 5);
     await page.screenshot({ path: test.info().outputPath("review-diagram-slide.png") });
     await slide.locator(".landmark-menu > summary").click();
     await slide.locator(".landmark-list").getByRole("button", { name: /Open linked code with \d+ additions? and \d+ deletions? for Greeting/ }).click();

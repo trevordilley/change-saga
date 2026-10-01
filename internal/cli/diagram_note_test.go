@@ -101,7 +101,7 @@ func TestDiagramNotesRoundTripThroughImplementationSlides(t *testing.T) {
 	fragment := getPage(t, serverURL+"/api/fragment?target="+url.QueryEscape(slide.Target))
 	for _, want := range []string{
 		`data-element-note-target data-element-id="store" data-element-name="Store" hidden><template data-landmark-note-template><div class="element-note"><div class="element-note-markdown"><p>Keeps every job for <em>30 days</em>.</p>`,
-		`<p class="element-note-label">Worker</p><p class="element-note-description">The worker performs the operation.</p><div class="element-note-markdown"><p>Runs <strong>one job</strong> at a time.</p>`,
+		`<p class="element-note-label">Worker</p><div class="element-note-markdown"><p>Runs <strong>one job</strong> at a time.</p>`,
 	} {
 		if !strings.Contains(fragment, want) {
 			t.Errorf("deck fragment lacks %s:\n%s", want, fragment)
@@ -141,17 +141,18 @@ func TestApplySlidePublishesNotedReviewSlide(t *testing.T) {
 	page := getPage(t, serverURL+"/reviews/pr-7")
 	for _, want := range []string{
 		// The Item's hotspot popover and its drawer panel both carry the note.
-		`<p class="element-note-label">Enqueue</p><p class="element-note-description">Enqueue now names Postgres.</p><div class="element-note-markdown"><p>Enqueue now opens a <strong>transaction</strong>.</p>`,
+		`<p class="element-note-label">Enqueue</p><div class="element-note-markdown"><p>Enqueue now opens a <strong>transaction</strong>.</p>`,
 		`</header><div class="element-note-markdown review-item-note"><p>Enqueue now opens a <strong>transaction</strong>.</p>`,
 		// The edge has no Item, so it gets a note target of its own.
 		`data-element-note-target data-element-id="insert" data-element-name="insert" hidden>`,
 		`<p>One <code>INSERT</code> per job; see <a href="https://example.com/design">the design</a>.</p>`,
-		// An Item without a note still shows its label and description.
-		`<p class="element-note-label">Jobs table</p><p class="element-note-description">The table jobs are stored in.</p></div></template>`,
 	} {
 		if !strings.Contains(page, want) {
 			t.Errorf("review page lacks %s", want)
 		}
+	}
+	if strings.Contains(page, `<p class="element-note-label">Jobs table</p>`) {
+		t.Error("an Item without an explicit note must not get a redundant popover")
 	}
 }
 

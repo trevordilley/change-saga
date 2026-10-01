@@ -10,6 +10,12 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Changed
+
+- Slide notes open from compact info controls instead of whole-element hover.
+  Ordinary labels and descriptions no longer generate repetitive popovers;
+  surprise details use adjacent warning controls without an overlapping panel.
+
 ### Added
 
 - Browser line comments in review Item drawers and the Code Diff tab, with

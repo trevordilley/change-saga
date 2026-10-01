@@ -98,7 +98,8 @@ before drawing slides; nothing else is needed.
    callout itself, the code that decides the behavior it states (where the
    outcome is determined, such as a validation that rejects the input
    first), not just nearby code. Reviewers see
-   callouts in a Surprises panel on the slide. Never manufacture one: if
+   callouts through compact warning controls at the responsible element’s
+   bottom-left, with details on hover, focus, or tap. Never manufacture one: if
    nothing surprises, say so in the concluding slide's takeaway.
 6. Cover every changed line from the narrowest Item that explains it:
    `change-saga cover --target ITEM_URN --path PATH --changed-lines

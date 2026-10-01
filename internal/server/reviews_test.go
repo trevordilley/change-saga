@@ -438,9 +438,8 @@ func TestReviewSlideShowsTheSurprisesItsAuthorCalledOut(t *testing.T) {
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	page := getPage(t, handler, "/reviews/pr-7").Body.String()
 	for _, want := range []string{
-		`<details class="review-callouts" open aria-label="Surprises on this slide"><summary>Surprises (1)</summary>`,
-		`data-review-callout="why-postgres"`,
-		`No queue service</a> You would expect a queue service; the queue is a Postgres table so a job commits with its data.`,
+		`<p class="element-note-label">No queue service</p>`,
+		`<p class="element-note-body">` + body,
 		`<p class="eyebrow">Surprise</p><h2>No queue service</h2><p class="review-callout-body">` + body,
 		`<p class="review-callout-about">About <a href="#`,
 		`>Enqueue</a>`,

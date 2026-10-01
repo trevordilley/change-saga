@@ -600,13 +600,15 @@ renders no text and a note on a decorative element. The SVG carries the note as 
 element without a note renders exactly as before. The reviewer renders the
 note with its sanitizing Markdown renderer and shows it in a popover on the
 app page, beside the element and never inside the sandboxed slide frame, when
-a reader hovers, focuses, or taps the element. A popover opened by hover lets
-the pointer through to whatever lies beneath it; a tap, a click, or keyboard
-focus pins it, and its links then follow the element in the Tab order. The
-popover of an element an Item selects also shows the Item's label and
-description, and an implementation Item's callout body, which a review slide
-lists in its Surprises panel instead; an Item's drawer repeats its note for a
-reader who cannot hover.
+a reader hovers, focuses, or taps its info control at the element's bottom-left.
+Moving over the element itself opens nothing. The popover stays open while the
+pointer moves into its text and links. A tap, a click, or keyboard focus pins it,
+and its links follow the control in the Tab order. Ordinary Item labels and
+descriptions do not generate notes. An explicitly noted Item
+may name its label as context; the note adds detail beyond the visible text.
+Callout Items expose their bodies through compact warning controls alongside
+info controls, with no automatically expanded panel over the diagram. An Item's
+drawer also carries its note.
 
 Beyond the original `service`, `datastore`, `decision`, `rect`, `ellipse`,
 and `boundary`, a node may be a `triangle`, `hexagon`, `parallelogram`,

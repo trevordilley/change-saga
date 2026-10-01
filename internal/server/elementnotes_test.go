@@ -56,3 +56,31 @@ func TestElementNotesRenderSanitizedAndEscaped(t *testing.T) {
 		t.Fatal("a hand-authored slide has no notes")
 	}
 }
+
+func TestItemNotesRequireExplicitDetail(t *testing.T) {
+	item := &saga.Item{ItemManifest: saga.ItemManifest{Kind: "node", Label: "Cache", Description: "Cache"}}
+	view := &reviewItemView{Item: item}
+	var out bytes.Buffer
+	if err := reviewTemplates.ExecuteTemplate(&out, "element-note-template", view.Popover()); err != nil {
+		t.Fatal(err)
+	}
+	if out.Len() != 0 {
+		t.Fatalf("ordinary Item created a repetitive note: %s", out.String())
+	}
+	view.Note = markdownWithAnchors("Entries expire after **five minutes**.", "note")
+	if err := reviewTemplates.ExecuteTemplate(&out, "element-note-template", view.Popover()); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(out.String(), "five minutes") || strings.Contains(out.String(), "element-note-description") {
+		t.Fatalf("expected explicit detail only: %s", out.String())
+	}
+	out.Reset()
+	view.Note = ""
+	item.Kind, item.Body = "callout", "An expired entry is served while refresh runs."
+	if err := reviewTemplates.ExecuteTemplate(&out, "element-note-template", view.Popover()); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(out.String(), item.Body) {
+		t.Fatalf("surprise lost its explanation: %s", out.String())
+	}
+}
