@@ -4,8 +4,8 @@
   "slide": "cursor-state",
   "rank": 60,
   "kind": "transition",
-  "label": "Complete pagination",
-  "description": "When the page reaches the filtered total, has_more is false and no continuation token is returned.",
+  "label": "Stop at the last page",
+  "description": "The last page sets has_more to false and omits a continuation token. A caller can check that accumulated returned counts match total before treating the traversal as complete.",
   "selector": {
     "type": "element",
     "element_id": "complete"

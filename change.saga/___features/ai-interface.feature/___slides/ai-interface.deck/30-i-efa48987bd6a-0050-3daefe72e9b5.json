@@ -4,8 +4,8 @@
   "slide": "query-failure-boundaries",
   "rank": 50,
   "kind": "risk",
-  "label": "Map known errors",
-  "description": "Known query, reviewapp, and livingapp errors retain stable codes, retryability, details, and exit mappings.",
+  "label": "Handle an expected failure",
+  "description": "Recognized application errors preserve code, retryable and structured details. The CLI maps the code to an exit status; callers can respond without depending on message wording.",
   "selector": {
     "type": "element",
     "element_id": "stable-domain-error"

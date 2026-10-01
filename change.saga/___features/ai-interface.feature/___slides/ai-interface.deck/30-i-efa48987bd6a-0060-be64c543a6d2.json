@@ -4,8 +4,8 @@
   "slide": "query-failure-boundaries",
   "rank": 60,
   "kind": "risk",
-  "label": "Suppress unexpected detail",
-  "description": "Unknown internal failures collapse to an internal error without exposing the underlying message or path.",
+  "label": "Contain an unexpected failure",
+  "description": "Unrecognized errors become internal with a generic message and exit status 1. The original message and filesystem paths are not copied into the response.",
   "selector": {
     "type": "element",
     "element_id": "unexpected-error"

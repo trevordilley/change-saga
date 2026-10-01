@@ -4,8 +4,8 @@
   "slide": "query-failure-boundaries",
   "rank": 10,
   "kind": "transition",
-  "label": "Parse boundary",
-  "description": "Operation names, flags, required identifiers, offsets, and limits are validated at the transport boundary.",
+  "label": "Check the request",
+  "description": "The transport validates operation names, required targets, numeric options and supported flags. These checks keep malformed requests from reaching session loading.",
   "selector": {
     "type": "element",
     "element_id": "request-gate"

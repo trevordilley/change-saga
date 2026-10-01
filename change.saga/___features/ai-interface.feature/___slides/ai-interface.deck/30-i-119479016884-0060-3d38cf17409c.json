@@ -4,8 +4,8 @@
   "slide": "query-runtime",
   "rank": 60,
   "kind": "transition",
-  "label": "Return and exit",
-  "description": "The process writes exactly one machine-readable value to stdout and returns the mapped exit status without duplicate stderr prose.",
+  "label": "Finish the command",
+  "description": "Ordinary failures are already encoded as JSON. The executable returns their mapped exit status without printing a second error message to stderr.",
   "selector": {
     "type": "element",
     "element_id": "exit"

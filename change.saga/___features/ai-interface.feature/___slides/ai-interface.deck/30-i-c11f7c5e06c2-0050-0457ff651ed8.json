@@ -4,8 +4,8 @@
   "slide": "cursor-state",
   "rank": 50,
   "kind": "risk",
-  "label": "Reject stale snapshot",
-  "description": "A structurally valid token for a different snapshot fails as retryable stale_snapshot instead of mixing pages.",
+  "label": "Restart after a change",
+  "description": "A valid token from another snapshot returns retryable stale_snapshot. Restart without that cursor so a completed traversal does not combine records from different versions.",
   "selector": {
     "type": "element",
     "element_id": "stale-snapshot"

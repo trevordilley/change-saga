@@ -4,8 +4,8 @@
   "slide": "query-runtime",
   "rank": 30,
   "kind": "transition",
-  "label": "Open snapshot",
-  "description": "The CLI parses and validates the request, then opens the review projection or the living projection on a shared snapshot.",
+  "label": "Load valid Saga state",
+  "description": "For this children query, the CLI validates inputs before opening reviewapp. Product operations also open livingapp using the review session snapshot.",
   "selector": {
     "type": "element",
     "element_id": "open-snapshot"

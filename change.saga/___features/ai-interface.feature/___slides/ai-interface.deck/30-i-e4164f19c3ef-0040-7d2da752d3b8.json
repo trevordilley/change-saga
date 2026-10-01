@@ -4,8 +4,8 @@
   "slide": "structured-query",
   "rank": 40,
   "kind": "node",
-  "label": "Product graph projection",
-  "description": "Livingapp owns requirements, relations, work-plan, traceability, readiness, and its snapshot-bound pagination.",
+  "label": "Product knowledge",
+  "description": "Product queries open livingapp with the snapshot supplied by reviewapp. Requirements, work plans, traceability and readiness can therefore be read against the same Saga and source identity.",
   "selector": {
     "type": "element",
     "element_id": "living-session"

@@ -4,8 +4,8 @@
   "slide": "query-runtime",
   "rank": 40,
   "kind": "transition",
-  "label": "Project bounded data",
-  "description": "The selected application session executes the domain query and returns a bounded result page.",
+  "label": "Read one result page",
+  "description": "The adapter passes typed inputs such as parent, cursor and limit to the application. The application returns the selected records and continuation metadata.",
   "selector": {
     "type": "element",
     "element_id": "project"

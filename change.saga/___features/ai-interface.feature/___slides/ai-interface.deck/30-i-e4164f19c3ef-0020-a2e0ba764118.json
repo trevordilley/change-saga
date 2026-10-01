@@ -4,8 +4,8 @@
   "slide": "structured-query",
   "rank": 20,
   "kind": "node",
-  "label": "CLI query adapter",
-  "description": "Parses and validates one request, opens a snapshot, routes it, normalizes failures, and emits one versioned JSON envelope.",
+  "label": "Validate and route",
+  "description": "The CLI checks arguments before opening application state. It emits a versioned success or error envelope, allowing the caller to branch on stable fields instead of parsing prose.",
   "selector": {
     "type": "element",
     "element_id": "query"

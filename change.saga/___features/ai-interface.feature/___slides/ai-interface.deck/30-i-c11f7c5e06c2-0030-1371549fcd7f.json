@@ -4,8 +4,8 @@
   "slide": "cursor-state",
   "rank": 30,
   "kind": "transition",
-  "label": "Continue same query",
-  "description": "A continuation resumes only the same operation and normalized filters on the same snapshot; a changed snapshot fails instead of mixing pages.",
+  "label": "Continue the same query",
+  "description": "The next command must preserve the operation and normalized filters. The token is checked against the current snapshot before its offset is used.",
   "selector": {
     "type": "element",
     "element_id": "continue-page"

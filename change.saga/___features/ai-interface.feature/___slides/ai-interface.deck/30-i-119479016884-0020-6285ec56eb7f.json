@@ -4,8 +4,8 @@
   "slide": "query-runtime",
   "rank": 20,
   "kind": "transition",
-  "label": "Dispatch query",
-  "description": "The executable routes the query command to the structured Query entrypoint under an interruptible context.",
+  "label": "Route the command",
+  "description": "The executable sends query to the structured CLI handler. It does not start the browser server to answer this request.",
   "selector": {
     "type": "element",
     "element_id": "dispatch"

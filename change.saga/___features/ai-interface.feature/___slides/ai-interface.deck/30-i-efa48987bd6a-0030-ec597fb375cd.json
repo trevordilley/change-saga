@@ -4,8 +4,8 @@
   "slide": "query-failure-boundaries",
   "rank": 30,
   "kind": "risk",
-  "label": "Contain loading failures",
-  "description": "Missing or invalid Saga state and unavailable source history fail while opening the validated snapshot with stable categories.",
+  "label": "Load Saga and code",
+  "description": "Opening validates the Saga and resolves the source repository and Git range. Missing data, invalid Saga structure and unavailable source history produce distinct errors.",
   "selector": {
     "type": "element",
     "element_id": "open-boundary"

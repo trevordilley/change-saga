@@ -4,8 +4,8 @@
   "slide": "query-failure-boundaries",
   "rank": 40,
   "kind": "transition",
-  "label": "Return domain result",
-  "description": "A successful domain projection returns data and the session snapshot in an ok envelope with exit 0.",
+  "label": "Return the result",
+  "description": "Successful queries return an ok envelope and the session snapshot. Paginated results also describe the returned count and any continuation cursor.",
   "selector": {
     "type": "element",
     "element_id": "domain-result"

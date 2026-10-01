@@ -4,8 +4,8 @@
   "slide": "query-failure-boundaries",
   "rank": 20,
   "kind": "risk",
-  "label": "Reject before open",
-  "description": "Invalid requests return invalid_argument and exit 2 before any application session is opened.",
+  "label": "Fix invalid arguments",
+  "description": "The CLI returns invalid_argument with exit status 2 for rejected inputs. Session-opening tests verify that these requests do not open application state.",
   "selector": {
     "type": "element",
     "element_id": "invalid-request"

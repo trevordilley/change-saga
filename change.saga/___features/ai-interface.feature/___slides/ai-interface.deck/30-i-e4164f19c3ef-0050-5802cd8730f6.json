@@ -4,8 +4,8 @@
   "slide": "structured-query",
   "rank": 50,
   "kind": "risk",
-  "label": "Deferred transports",
-  "description": "The HTTP query adapter and stdio MCP adapter are not implemented runtime paths; only the CLI query transport exists.",
+  "label": "CLI transport only",
+  "description": "The structured query contract is exposed by the CLI. The proposed HTTP-query and stdio MCP adapters are not available query transports; the browser server does not substitute for them.",
   "selector": {
     "type": "element",
     "element_id": "missing-adapters"

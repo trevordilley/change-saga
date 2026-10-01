@@ -4,8 +4,8 @@
   "slide": "cursor-state",
   "rank": 40,
   "kind": "risk",
-  "label": "Reject invalid cursor",
-  "description": "Malformed, checksum-mismatched, cross-operation, cross-filter, or out-of-range tokens fail as invalid_argument; the checksum is not a keyed authenticity check.",
+  "label": "Correct an invalid cursor",
+  "description": "Malformed tokens, checksum failures, changed operations or filters, and invalid offsets return invalid_argument. Reusing the same invalid token will not repair the request.",
   "selector": {
     "type": "element",
     "element_id": "invalid-cursor"

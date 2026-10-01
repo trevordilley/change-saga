@@ -4,8 +4,8 @@
   "slide": "cursor-state",
   "rank": 10,
   "kind": "transition",
-  "label": "Start at zero",
-  "description": "A request without a cursor starts at offset zero using the default or validated page limit.",
+  "label": "Start without a cursor",
+  "description": "The first page begins at offset zero. An omitted limit uses the default; a limit outside the accepted range is rejected before a page is returned.",
   "selector": {
     "type": "element",
     "element_id": "first-page"

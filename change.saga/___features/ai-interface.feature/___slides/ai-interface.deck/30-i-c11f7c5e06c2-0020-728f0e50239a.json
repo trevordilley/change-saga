@@ -4,8 +4,8 @@
   "slide": "cursor-state",
   "rank": 20,
   "kind": "transition",
-  "label": "Issue continuation",
-  "description": "When more rows remain, the session encodes a token containing operation, filters, snapshot, next offset, and an unkeyed checksum; this is not a signature or authorization credential.",
+  "label": "Save the next cursor",
+  "description": "The token records operation, normalized filters, snapshot and next offset. Its unkeyed checksum detects corruption; it does not authenticate the caller or grant access.",
   "selector": {
     "type": "element",
     "element_id": "issue-cursor"
