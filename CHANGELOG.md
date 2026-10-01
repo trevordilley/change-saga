@@ -10,16 +10,74 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-30
+
+- **Format:** Diagram sources support literal `code` elements for API and library
+  usage examples, with a language label, optional line numbers and highlighted
+  lines, measured in bundled Go Mono. Source is never executed; overflow is
+  rejected without wrapping or shrinking. Existing diagram output is unchanged
+  when no code element is present. Upgrade source readers before authoring this
+  new kind: older CLI/source validators may reject it even on load. Standalone
+  SVG readers can still display the published visual.
+- Reviewer navigation calls feature decks **Technical** and the nested design
+  section **Architecture**, preserving links and storage. Slides retain full
+  opacity after pointer leave. Manual local **Viewed** markers show reading
+  progress separately from decisions and persist per browser reader and address.
+- Technical Overview links expand their owning feature and select its Overview
+  in the sidebar, including on reload and browser history navigation.
+- Feature-description guidance now creates or updates actual Product stories;
+  technical decks reference those records instead of substituting story lists.
+
+- **Format:** Decks can carry an authored Markdown `overview` with citations to
+  existing slides/Items and reusable slide visuals; slides can carry `front`
+  summary bullets. Stable identities, storage, and Item evidence are preserved.
+  Missing overviews use an explicit generated directory and produce compatibility
+  warnings. Broken/cross-deck references are errors; overview coverage never
+  adds code coverage. `deck overview --file` authors reports and `--check` checks
+  every-slide citation coverage. Front round-trips through transactions and query.
+  No migration is needed for old decks. Tolerant older viewers ignore new fields;
+  strict older readers/schemas must be upgraded before those fields are authored.
+
 ### Added
 
-- **Comment on code lines in a review**, as on a pull request. Hover a line
-  in any diff inside a review (an Item's linked code or the Code Diff tab)
-  and press the "+" in its gutter to write a Markdown comment below it.
-  Threads show under their line with reply, resolve, and reopen. An Item and
-  its slide show how many open line threads they have. The gutter button can
-  be reached from the keyboard, and Shift-click extends the range.
+- `install-skill` now ships `change-saga-context` alongside the authoring
+  skill. Agents consult existing Saga intent, architecture, and code links
+  during everyday work; documentation updates stay near completion or follow
+  an explicit request. Re-run skill installation to receive both skills.
+- Slide authoring guidance distinguishes simple flash-card Fronts from in-depth
+  Backs, using explicit grouping, consistent domain colors, labeled flows, and
+  explanatory text to teach the system.
+
+- `diagram describe` lists each Item's code references as `path:start-end`
+  with the reference note, marking lines at a review's base `(old)`, in text
+  and JSON (`code`, `code_references`, `code_more`). It lists up to eight per
+  Item and counts the rest, naming the `query slide` that lists them all, so
+  a reviewer or agent can open the code behind each sentence.
+- `review list` marks a surprise whose callout has no code evidence of its
+  own, and counts them; the JSON report gives each callout's `references`.
+  It is only reported, never required.
+- The skill's "Create a review" steps end with a sentence check before the
+  Saga is committed: a fresh-context reader checks every takeaway,
+  description, callout body, edge description, and note against the code it
+  covers and the code the claim depends on, and flags what is false,
+  overstated, or unverifiable. No command reads the prose, so this is the one
+  check the tool cannot do.
+
+
+- **Withdraw your decision from the review viewer.** Once you approve a
+  slide, its Approve control becomes **Approved ✓** with an undo beside it,
+  and your own row in the slide's decision panel offers **Withdraw
+  approval** or **Withdraw request for changes**. Each appends a withdrawal
+  record, as `change-saga review withdraw` does.
+- **`review-` design tokens** colour every review decision state:
+  `review-approved-`, `review-changes-`, `review-none-`, and
+  `review-stale-` `bg` and `ink`. `change-saga theme check` holds each pair to
+  WCAG AA, so a custom theme can restyle them and stay readable.
+
+
 - `review comment --path PATH --line N [--end-line M] [--side new|old]` does
-  the same from the CLI. Without `--target`, the comment goes under the
+  comments on code lines from the CLI. Browser inline line-comment controls
+  are not included in this release. Without `--target`, the comment goes under the
   first Item whose code holds the lines, or else on the review itself.
   `review list` reports each review's open line threads and whether they
   are outdated (JSON: `line_threads`, `open_line_threads`). The new `query
@@ -34,6 +92,30 @@ tool, and what they have to do about it.
   side. A code-line thread on lines that no Item explains targets the
   review. Readers from 0.2.0 and earlier refuse a Saga that holds line
   comments, so upgrade them before using line comments.
+
+### Changed
+
+- The skill asks a callout to cite the code that decides the behavior it
+  states, not just code nearby, and an edge description to claim only what
+  its connected elements show.
+
+### Fixed
+
+- **Approving twice records one approval.** A bodiless decision that
+  repeats your current one on that slide (same state, same head commit, same
+  slide content) records nothing, in the viewer and in `change-saga review
+  approve`/`request-changes`/`withdraw`, which say "nothing recorded" (and
+  report `replayed: true` with `--json`). Withdrawing with no decision
+  records nothing either. Existing records are never rewritten. The viewer
+  also showed no change after a click, so reviewers clicked again. It now
+  shows your decision as soon as the save returns.
+- **Decision pills are readable in dark mode.** The review's decision chips,
+  status badges, out-of-date markers, and Approve and Request changes
+  controls painted white text on a light background in dark mode. They now
+  read through the `review-` tokens in light, dark, and custom themes.
+- The decision panel's **Withdraw decision** button could not submit
+  without a note, because it shared the request-for-changes form's required
+  field. Your own row's Withdraw button replaces it.
 
 ## [0.2.0] - 2026-09-28
 
@@ -966,7 +1048,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/twentyideas/changesaga/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/trevordilley/change-saga/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/twentyideas/changesaga/compare/v0.1.1...v0.2.0
 [0.0.9]: https://github.com/twentyideas/changesaga/compare/v0.0.8...v0.0.9
 [0.0.8]: https://github.com/twentyideas/changesaga/compare/v0.0.7...v0.0.8

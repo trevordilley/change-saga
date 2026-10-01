@@ -47,6 +47,7 @@ func (a *app) reviewFeedbackFor(r *http.Request, id, target string) (*reviewFeed
 		resolver = nil
 	}
 	report := reviewstate.Build(r.Context(), review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: document.Manifest.Source.Repository, SkipCoverage: true})
+	local := reviewstate.LocalAuthor(r.Context(), document.Root)
 	view := reviewPageView{Saga: document, Review: review, Report: report, Frozen: review.Merged != nil, MutationToken: a.mutationToken}
 	sv := &reviewSlideView{Slide: slide}
 	for _, state := range report.Slides {
@@ -54,6 +55,7 @@ func (a *app) reviewFeedbackFor(r *http.Request, id, target string) (*reviewFeed
 			sv.Report = state
 		}
 	}
+	sv.Mine = ownDecision(sv.Report, local)
 	threads := reviewstate.Threads(review.Comments)
 	sv.Threads = threadViewsFor(threads, slide.Target, id, a.mutationToken, view.Frozen)
 	var menu bytes.Buffer
@@ -86,17 +88,25 @@ func (a *app) reviewFeedbackSurface(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *app) reviewSaved(w http.ResponseWriter, r *http.Request, id, event, target string) bool {
+	return a.reviewSavedOutcome(w, r, id, event, target, true)
+}
+
+// reviewSavedOutcome answers an async save. Recorded is false when the save
+// repeated what the Saga already holds, so nothing was appended; event is
+// then the existing record, if any.
+func (a *app) reviewSavedOutcome(w http.ResponseWriter, r *http.Request, id, event, target string, recorded bool) bool {
 	if !asyncReviewRequest(r) {
 		return false
 	}
 	feedback, err := a.reviewFeedbackFor(r, id, target)
 	response := struct {
 		Saved    bool            `json:"saved"`
+		Recorded bool            `json:"recorded"`
 		EventID  string          `json:"event_id"`
 		Target   string          `json:"target"`
 		Feedback *reviewFeedback `json:"feedback,omitempty"`
 		Warning  string          `json:"warning,omitempty"`
-	}{Saved: true, EventID: event, Target: target, Feedback: feedback}
+	}{Saved: true, Recorded: recorded, EventID: event, Target: target, Feedback: feedback}
 	if err != nil {
 		response.Warning = err.Error()
 	}

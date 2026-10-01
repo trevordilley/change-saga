@@ -5,7 +5,7 @@
   "rank": 30,
   "kind": "transition",
   "label": "Append event",
-  "description": "A new event file is created with the state, reviewer identity, head commit, slide digest, body, and timestamp.",
+  "description": "New decisions append state, reviewer, head, digest, body and time. A bodiless repeat at the same state, head and digest, or a withdrawal with nothing held, records nothing.",
   "selector": {
     "type": "element",
     "element_id": "append-event"

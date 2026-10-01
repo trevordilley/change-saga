@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/saga/review.go",
-      "start": 462,
-      "end": 508,
-      "digest": "sha256:12aca42f56f4068d3bdc52aebf724aaa631c80904936cb9becc517d9e9dc5c48",
+      "start": 511,
+      "end": 570,
+      "digest": "sha256:beaf39d7752c137d82655833f79d4546920ee8201a5801a167a206f46480ef28",
       "note": "Rejects malformed comment records, unknown review targets or replies, and invalid state, commit, or reviewer identity."
     }
   ]

@@ -166,6 +166,62 @@ func TestReviewDecisionsGoOutOfDateSlideBySlide(t *testing.T) {
 	}
 }
 
+func TestReviewApproveTwiceRecordsOnce(t *testing.T) {
+	t.Parallel()
+	fixture := newReviewFixture(t)
+	records := func() int {
+		t.Helper()
+		entries, _ := os.ReadDir(filepath.Join(saga.ReviewDir(fixture.root, "pr-7"), saga.ReviewApprovalsDir))
+		return len(entries)
+	}
+	approve := []string{"approve", "--review", "pr-7", "--slide", "queue", "--reviewer-kind", "human", fixture.root}
+	if output := run(t, Review, approve...); !strings.Contains(output, "Approved slide queue") {
+		t.Fatalf("first approval:\n%s", output)
+	}
+	if output := run(t, Review, approve...); !strings.Contains(output, "already approved by this reviewer") || !strings.Contains(output, "nothing recorded") {
+		t.Fatalf("repeated approval:\n%s", output)
+	}
+	var result struct {
+		Created  []string `json:"created"`
+		EventIDs []string `json:"event_ids"`
+		Replayed bool     `json:"replayed"`
+	}
+	if err := json.Unmarshal([]byte(run(t, Review, append([]string{"approve", "--json"}, approve[1:]...)...)), &result); err != nil || len(result.Created) != 0 || len(result.EventIDs) != 1 || !result.Replayed {
+		t.Fatalf("repeated approval as JSON = %+v, %v", result, err)
+	}
+	if records() != 1 {
+		t.Fatalf("approving three times wrote %d records", records())
+	}
+
+	// Another person's committed approval is their seat, not this one.
+	git(t, fixture.repo, "add", ".")
+	git(t, fixture.repo, "-c", "user.name=Other", "-c", "user.email=other@example.test", "commit", "-m", "Their approval")
+	document, _, err := saga.Load(fixture.root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if held, ok := reviewstate.SeatDecision(context.Background(), fixture.root, document.FindReview("pr-7").Approvals, "queue", saga.ReviewerIdentity{Kind: "human"}); ok {
+		t.Fatalf("another committer's approval is this seat's: %+v", held)
+	}
+	if output := run(t, Review, approve...); !strings.Contains(output, "Approved slide queue") || records() != 2 {
+		t.Fatalf("approval beside another person's:\n%s", output)
+	}
+
+	// Withdrawing records once; there is then nothing left to withdraw.
+	withdraw := []string{"withdraw", "--review", "pr-7", "--slide", "queue", "--reviewer-kind", "human", fixture.root}
+	if output := run(t, Review, withdraw...); !strings.Contains(output, "Withdrew the decision on slide queue") {
+		t.Fatalf("withdraw:\n%s", output)
+	}
+	if output := run(t, Review, withdraw...); !strings.Contains(output, "no decision to withdraw") || records() != 3 {
+		t.Fatalf("second withdraw:\n%s", output)
+	}
+	queue := slideReport(t, reviewReport(t, fixture), "queue")
+	if len(queue.Decisions) != 1 || !strings.Contains(queue.Decisions[0].Author, "Other") {
+		t.Fatalf("queue decisions after withdrawing = %#v", queue.Decisions)
+	}
+	assertValid(t, fixture.root)
+}
+
 func TestReviewCommentsThreadOnSlidesAndItemsOnly(t *testing.T) {
 	t.Parallel()
 	fixture := newReviewFixture(t)
@@ -440,7 +496,8 @@ func TestStatusReportsReviewCoverageAndNamesTheCoverCommand(t *testing.T) {
 
 // review list names every surprise a slide calls out, and counts them, so
 // an author sees at a glance whether the deck says what would surprise a
-// reviewer. The count is reported, never required.
+// reviewer. The count is reported, never required, and so is a surprise no
+// code backs.
 func TestReviewListNamesTheSurprisesCalledOut(t *testing.T) {
 	t.Parallel()
 	fixture := newReviewFixture(t)
@@ -452,14 +509,27 @@ func TestReviewListNamesTheSurprisesCalledOut(t *testing.T) {
 		"--label", "No queue service", "--about", "node", "--body", "Expected a queue service; jobs are rows in the same transaction.",
 		"--description", "Why jobs are table rows.", fixture.root)
 	after := run(t, Review, "list", "--review", "pr-7", fixture.root)
-	for _, want := range []string{"  surprises called out: 1\n", "    surprise No queue service: Expected a queue service; jobs are rows in the same transaction.\n"} {
+	for _, want := range []string{
+		"  surprises called out: 1 (1 with no code evidence; cover the code that decides each from its callout)\n",
+		"    surprise No queue service (no code evidence): Expected a queue service; jobs are rows in the same transaction.\n",
+	} {
 		if !strings.Contains(after, want) {
 			t.Fatalf("review list does not show %q:\n%s", want, after)
 		}
 	}
 	table := slideReport(t, reviewReport(t, fixture), "table")
-	if len(table.Callouts) != 1 || table.Callouts[0].ID != "no-queue" || table.Callouts[0].About != "node" {
+	if len(table.Callouts) != 1 || table.Callouts[0].ID != "no-queue" || table.Callouts[0].About != "node" || table.Callouts[0].References != 0 {
 		t.Fatalf("the JSON report's callouts = %#v", table.Callouts)
+	}
+
+	head := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "HEAD"))
+	run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", "table", "no-queue"), "--ref", head+":store.go#L3", "--repo", fixture.repo, fixture.root)
+	covered := run(t, Review, "list", "--review", "pr-7", fixture.root)
+	if !strings.Contains(covered, "  surprises called out: 1\n") || !strings.Contains(covered, "    surprise No queue service: Expected") {
+		t.Fatalf("review list still reports the covered surprise as unbacked:\n%s", covered)
+	}
+	if table := slideReport(t, reviewReport(t, fixture), "table"); table.Callouts[0].References != 1 {
+		t.Fatalf("the covered callout's references = %#v", table.Callouts)
 	}
 }
 

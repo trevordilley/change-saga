@@ -156,6 +156,8 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	layout := flags.String("layout", "", "canvas arrangement, not diagram meaning: hero, diagram, before-after, sequence, evidence, risk, or custom")
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative review order; defaults after the last slide")
+	var front stringList
+	flags.Var(&front, "front", "authored front summary bullet; repeat for multiple bullets")
 	takeaway := flags.String("takeaway", "", "single reviewer takeaway (maximum 180 characters)")
 	rationale := flags.String("exception-rationale", "", "required reason for a custom layout")
 	source := flags.String("source", "", "SVG, image, or self-contained HTML source")
@@ -180,6 +182,11 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	}
 	if *takeaway == "" {
 		*takeaway = *title
+	}
+	for _, bullet := range front {
+		if strings.TrimSpace(bullet) == "" {
+			return fmt.Errorf("--front bullets must not be blank")
+		}
 	}
 	validIntent := map[string]bool{"orient": true, "explain": true, "compare": true, "trace": true, "prove": true, "risk": true, "conclude": true}
 	validLayout := map[string]bool{"hero": true, "diagram": true, "before-after": true, "sequence": true, "evidence": true, "risk": true, "custom": true}
@@ -280,7 +287,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 		if err != nil {
 			return err
 		}
-		manifest := saga.SlideManifest{Version: saga.DeckRecordVersion, ID: *id, DeckID: deck.ID, Title: *title, Rank: chosenRank, Section: strings.TrimSpace(*section), Intent: *intent, Layout: *layout, MediaType: *mediaType, Entrypoint: assetName, Takeaway: *takeaway, ReadingOrder: []string{}, ExceptionRationale: *rationale}
+		manifest := saga.SlideManifest{Version: saga.DeckRecordVersion, ID: *id, DeckID: deck.ID, Title: *title, Rank: chosenRank, Section: strings.TrimSpace(*section), Intent: *intent, Layout: *layout, MediaType: *mediaType, Entrypoint: assetName, Front: front, Takeaway: *takeaway, ReadingOrder: []string{}, ExceptionRationale: *rationale}
 		assetPath := filepath.Join(deck.Directory, assetName)
 		manifestPath := filepath.Join(deck.Directory, filename)
 		if err := store.WriteFile(assetPath, data, 0o644, true); err != nil {

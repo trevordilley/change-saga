@@ -25,6 +25,7 @@ var shippedSkills = []struct {
 	files []skills.File
 }{
 	{name: "change-saga", files: skills.ChangeSaga()},
+	{name: "change-saga-context", files: skills.ChangeSagaContext()},
 }
 
 func TestInstallSkillPrintsTheSkillFilesVerbatim(t *testing.T) {
@@ -137,6 +138,11 @@ func TestInstalledSkillRoutesFocusedTasks(t *testing.T) {
 			name: "mechanical visual QA", fixture: "Render the checkout slides and inspect the visual QA contact sheet.",
 			rowHint: "Render slides", want: []string{"references/diagrams.md"},
 			unwanted: []string{"references/query.md", "references/stories.md", "references/terms.md", "references/integration.md", "references/ci.md"},
+		},
+		{
+			name: "describe implemented features", fixture: "Describe the features we have implemented in Saga Product records.",
+			rowHint: "Describe implemented features", want: []string{"references/query.md", "references/stories.md"},
+			unwanted: []string{"references/diagrams.md", "references/terms.md", "references/integration.md", "references/ci.md"},
 		},
 		{
 			name: "accepted story with provenance", fixture: "Add an accepted customer story with one confirmed criterion and its source citation.",
@@ -293,7 +299,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"relation": Relation, "plan": Plan, "design": Design, "quality": Quality, "add-deck": AddDeck,
 	"add-slide": AddSlide, "apply-slide": ApplySlide, "diagram": Diagram, "theme": Theme, "set-slide-content": SetSlideContent, "add-item": AddItem, "add-section": AddSection,
 	"add-chapter": AddChapter, "add-fragment": AddFragment, "set-fragment-content": SetFragmentContent,
-	"add-landmark": AddLandmark, "revise-deck": ReviseDeck, "remove-deck": RemoveDeck, "revise-slide": ReviseSlide, "remove-slide": RemoveSlide, "revise-item": ReviseItem, "remove-item": RemoveItem, "revise-chapter": ReviseChapter, "remove-chapter": RemoveChapter, "revise-section": ReviseSection, "remove-section": RemoveSection, "revise-fragment": ReviseFragment, "remove-fragment": RemoveFragment, "cover": Cover, "remove-coverage": RemoveCoverage,
+	"add-landmark": AddLandmark, "deck": Deck, "revise-deck": ReviseDeck, "remove-deck": RemoveDeck, "revise-slide": ReviseSlide, "remove-slide": RemoveSlide, "revise-item": ReviseItem, "remove-item": RemoveItem, "revise-chapter": ReviseChapter, "remove-chapter": RemoveChapter, "revise-section": ReviseSection, "remove-section": RemoveSection, "revise-fragment": ReviseFragment, "remove-fragment": RemoveFragment, "cover": Cover, "remove-coverage": RemoveCoverage,
 	"replace-coverage": ReplaceCoverage, "references": References, "repin": Repin, "sync": Sync,
 	"add-claim": AddClaim, "verify-claim": VerifyClaim, "validate": Validate, "status": Status, "reconcile": Reconcile, "check": Check, "query": Query,
 	"visual-qa":     VisualQA,
@@ -512,5 +518,33 @@ func TestSkillLeadsWithCreatingAReview(t *testing.T) {
 	workflow := entry[strings.Index(entry, "## Common workflow"):]
 	if !strings.Contains(workflow, "Only when the Saga already holds living documentation") {
 		t.Fatal("the common workflow still reconciles living documentation after every review")
+	}
+}
+
+// No command reads a deck's prose, so the fast path has a fresh-context
+// reader check every sentence against the code before the Saga is
+// committed, and callouts cite the code that decides what they state.
+func TestSkillChecksEverySentenceBeforeHandoff(t *testing.T) {
+	t.Parallel()
+	files := map[string]string{}
+	for _, file := range skills.ChangeSaga() {
+		files[file.Path] = strings.Join(strings.Fields(normalizeSkillNewlines(file.Content)), " ")
+	}
+	entry := files["SKILL.md"]
+	section := entry[strings.Index(entry, "## Create a review for this PR"):strings.Index(entry, "## Mandatory contract")]
+	check := strings.Index(section, "Check every sentence")
+	if check < 0 || check < strings.Index(section, "diagram check --review") || check > strings.Index(section, "Commit the Saga") {
+		t.Fatal("the fast path does not check every sentence between confirming coverage and committing")
+	}
+	for _, want := range []string{"one check the tool cannot do", "sub-agent that did not write the deck", "diagram describe --review ID --slide SLIDE", "edge description", "the code the claim depends on", "overstated", "unverifiable", "`diagram edit` or `apply-slide`", "the code that decides the behavior it states"} {
+		if !strings.Contains(section, want) {
+			t.Errorf("the fast path omits %q", want)
+		}
+	}
+	diagrams := files["references/diagrams.md"]
+	for _, want := range []string{"Check every sentence before handing off a deck", "the code that decides the behavior it states", "Edge descriptions and notes make claims too", "marks a surprise with no code evidence"} {
+		if !strings.Contains(diagrams, want) {
+			t.Errorf("references/diagrams.md omits %q", want)
+		}
 	}
 }

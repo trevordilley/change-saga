@@ -10,6 +10,7 @@ import (
 )
 
 //go:embed change-saga/SKILL.md change-saga/agents/*.yaml change-saga/references/*.md
+//go:embed change-saga-context/SKILL.md change-saga-context/agents/*.yaml
 var bundled embed.FS
 
 // File is one file of a skill, named by its path relative to the skill's
@@ -52,3 +53,6 @@ func skillFiles(name string) []File {
 
 // ChangeSaga returns the general-purpose authoring skill.
 func ChangeSaga() []File { return skillFiles("change-saga") }
+
+// ChangeSagaContext returns the read-only context skill for everyday work.
+func ChangeSagaContext() []File { return skillFiles("change-saga-context") }

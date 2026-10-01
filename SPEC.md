@@ -474,6 +474,62 @@ Exact diff evidence on a slide is owned only by Items, so every changed line a
 reviewer sees in the deck is attached to the specific visual element that
 explains it.
 
+### Deck overview and slide Front/Back
+
+Deck records may include `overview: {body, annotations?}`. `body` is nonblank
+Markdown and retains ordinary Markdown tables and visual rendering. Each
+annotation has a unique stable `id`, nonblank accessible `label`, required
+`slide`, and optional `item`. Cite it with `[label](annotation:ID)` in the body.
+Render annotations in an accessible reference list as well as inline links.
+A slide reference is an exact same-deck slide ID or full stable slide URN;
+an Item reference is an exact local Item ID or that slide's full Item URN.
+References never resolve across decks or to independent evidence: following one
+opens the existing slide or Item and its stories, code, or diff. IDs, routes,
+storage filenames, Item ownership, and existing evidence stay unchanged.
+
+The body can reuse an existing image slide asset with `![alt](slide:SLIDE_ID)`
+or `![alt](slide:FULL_SLIDE_URN)`. The named slide must belong to this deck and
+use an image media type (SVG, PNG, JPEG, or WebP). The viewer serves the existing
+asset through its stable slide route. This adds no asset files and creates no
+evidence ownership. A visual alone does not count as an annotation citation.
+
+Every slide should be reached by at least one valid annotation actually cited
+in the Markdown body; one cited Item covers its owning slide for this purpose.
+Parsed Markdown links count, including those in tables; citation-like text in
+code spans, fenced blocks, and raw HTML does not. Annotations that are only
+listed in the reference list do not earn overview coverage. Unknown citation
+IDs, duplicate/invalid annotation IDs, blank labels or body, broken slide/Item
+references, invalid slide visuals, and cross-deck references are errors.
+Missing authored overview, uncited annotation definitions, and uncovered slides
+are warnings for compatibility. Overview coverage never contributes code
+coverage or transfers ownership transitively through story/documentation links.
+
+When `overview` is absent the viewer uses an explicitly labeled **Generated
+slide directory**, deterministically listing existing slides. It is generated
+at read time, never persisted or counted as authored overview coverage.
+`deck overview (--deck TARGET | --review ID) --file JSON [--dry-run] [--json]
+<saga>` replaces the authored overview after validation under the Saga lock.
+`deck overview (--deck TARGET | --review ID) --check [--json] <saga>` checks
+only the named deck's authored overview: exit 0 for complete, 3 for missing
+coverage, and 1 for invalid content. Normal `validate` keeps missing coverage
+as warnings. `query overview` includes effective reports, generated status,
+resolved reference targets, covered/uncovered slides, and validation diagnostics.
+
+Slide records may include `front: ["summary bullet", ...]`; each bullet must be
+nonblank. Front displays authored bullets, falling back to the existing takeaway,
+then Item labels if neither is available. The existing visual `entrypoint` is
+Back. It reuses the same Items and evidence; Front is not another evidence owner.
+`add-slide --front TEXT` is repeatable; complete `apply-slide` requests accept
+`slide.front`. Front round-trips through current requests, diagram edits, evidence
+repair, query output, and complete-slide snapshot hashes. Optional fields omitted
+from legacy content do not change its previous snapshot serialization.
+
+These fields are additive to the v4 deck records used within v5 Sagas. No data
+migration is required. Tolerant older viewers ignore optional fields and continue
+to show the existing visual. Strict older Go readers (`DisallowUnknownFields`)
+and older schemas (`additionalProperties: false`) reject the new fields; upgrade
+those readers before authoring them. Do not silently strip authored content.
+
 ### Complete-slide transactions and diagram sources
 
 `apply-slide` publishes one complete slide of an implementation or review deck
@@ -489,7 +545,7 @@ A revision's visual is either an authored asset (SVG, HTML, or raster image)
 or a **diagram source**. A diagram source is a
 [`diagram.schema.json`](schema/v5/diagram.schema.json) document: an ordered list
 of explicitly positioned nodes, edges, text, groups, allowlisted graphics,
-stickies, and annotations.
+stickies, annotations, and literal code examples.
 The CLI renders it deterministically to the revision's SVG asset and stores the
 canonical source beside it as a `24-a-*.json` sidecar. The revision pins both:
 
@@ -502,9 +558,26 @@ approvals, selectors, the reviewer, and visual QA read. Each diagram element is
 rendered with its element ID as its SVG `id`, so an Item selects it with an
 `element` selector, which must name a non-decorative element. Rendering never
 lays out, resizes, or reroutes anything; text that does not fit its explicit
-box is refused. Generated SVGs reference one measurement font the reviewer
+box is refused. Generated SVGs reference the measurement font the reviewer
 serves at `/_diagram/fonts/go-regular.ttf` and fall back to a system
-sans-serif elsewhere.
+sans-serif elsewhere. Code examples use bundled Go Mono at
+`/_diagram/fonts/go-mono.ttf`, with a monospace fallback elsewhere.
+
+A **code** element displays an API invocation or library usage example as
+literal source, never executed. It has `kind: "code"`, a required `code` string,
+an optional `language` display label, optional `line_numbers`, and optional
+`highlight_lines` (unique 1-based line numbers within the source). The ordinary
+label, description, note, position, dimensions, and style fields still apply.
+The default `code` style uses an 18px monospace font. Indentation and blank lines
+are preserved; tabs advance to 4-column stops. Text never wraps or shrinks, and
+source that exceeds its explicit box is refused. Source is limited to 16,000
+characters and 100 lines. An Item of kind `example` can select the element and
+retain exact evidence on that stable Item. `diagram edit`, `diagram describe`,
+and the published vocabulary expose the code fields. Existing sources without
+code elements retain their rendered output. Standalone SVG readers can display
+the published visual without understanding the source kind. Older CLI/source
+validators may reject a deck containing this kind even on load; upgrade those
+readers before authoring or loading it.
 
 An edge's `head` and `tail` take one terminator vocabulary: `arrow`, `open`,
 `triangle` (UML generalization), `diamond` and `filled-diamond` (aggregation
@@ -628,7 +701,9 @@ that differs from its source, for example after a renderer change.
 `change-saga diagram edit` applies explicit operations to a diagram at an exact
 snapshot and republishes the slide through the same transaction, carrying its
 Items, evidence, and criterion links. `change-saga diagram describe` reads any
-slide compactly: its takeaway, Items in reading order, and, for a diagram
+slide compactly: its takeaway, Items in reading order with their first eight
+code references each (`path:start-end`, marked old when pinned to a review's
+base, with the reference note; the rest are counted), and, for a diagram
 source, its semantic elements, connections, notes, and reveal steps, with
 sections and their members, and stickies and annotations listed as notes about their
 targets. The description omits geometry,
@@ -690,8 +765,10 @@ to the story, without duplicating story text inside slide records.
 Every colour, font, and size the reviewer and its generated slides paint with
 is a named design token with a light value and, when it changes, a dark value.
 `change-saga spec` publishes the contract under `theme`: each token's name,
-group (surface, status, diff, syntax, shape, chrome, diagram, and
-diagram-palette), kind, and values. The reviewer declares the light values on
+group (surface, status, review, diff, syntax, shape, chrome, diagram, and
+diagram-palette), kind, and values. The `review-` tokens colour each review
+decision state (approved, changes requested, none or withdrawn, and out of
+date) as an ink on its own background. The reviewer declares the light values on
 `:root` and the dark values when dark mode is chosen or preferred, so every
 rule reads through the tokens and light and dark cannot drift apart. The
 `diagram-` tokens name the colours of the default diagram styles and of the
@@ -1197,7 +1274,9 @@ covered and total counts, the uncovered lines with ready-to-use locations,
 stale references, and overlap. It is a report, not a verdict; `review list
 --uncovered` lists only reviews with gaps. Review decks never count toward the
 documentation's own coverage. `cover` on a review Item defaults to the review's
-range, so it needs no `--against`.
+range, so it needs no `--against`. `review list` also names each slide's
+callouts, marking any with no code references of its own; that too is only
+reported.
 
 **Approvals are per slide.** Each decision is an append-only record in
 `approvals/`, conforming to
@@ -1210,7 +1289,11 @@ time. The reviewer is `human` or `ai`; an AI reviewer also names a distinct
 reviewer seat, the agent, and the exact model, so `Claude 1` and `Claude 2`
 remain independent even on the same model. Git supplies the authoritative author
 identity. The latest decision for each Git author and reviewer seat on a slide
-is that reviewer's current decision.
+is that reviewer's current decision. A decision that would not change it
+records nothing: the same state at the same head commit over the same slide
+digest with no body, or a withdrawal when the seat holds no decision. A
+repeated click, retried request, or second command leaves the existing record
+current, and no record is ever rewritten.
 
 **A decision is out of date** when the slide's digest differs from the one it
 recorded, or when the code referenced by any of the slide's Items changed

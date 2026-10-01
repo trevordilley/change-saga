@@ -254,6 +254,71 @@ func TestLoadRejectsMalformedReviewRecords(t *testing.T) {
 	}
 }
 
+func TestRepeatedDecisionRecordsNothing(t *testing.T) {
+	root := reviewSaga(t)
+	human := saga.ReviewerIdentity{Kind: "human"}
+	approvals := func() []saga.ReviewApproval {
+		t.Helper()
+		document, _, err := saga.Load(root)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return document.FindReview("pr-7").Approvals
+	}
+	decide := func(state, at, body string, reviewer saga.ReviewerIdentity) Outcome {
+		t.Helper()
+		outcome, err := Record(root, Decision{Review: "pr-7", Slide: "why", State: state, Reviewer: reviewer, Commit: at, Body: body})
+		if err != nil {
+			t.Fatal(err)
+		}
+		return outcome
+	}
+	if outcome := decide(saga.ApprovalNone, commit, "", human); outcome.Recorded {
+		t.Fatal("a withdrawal with nothing to withdraw was recorded")
+	}
+	first := decide(saga.ApprovalApproved, commit, "", human)
+	for range 2 {
+		again := decide(saga.ApprovalApproved, commit, "", human)
+		if again.Recorded || again.Approval.ID != first.Approval.ID {
+			t.Fatalf("a repeated approval = %+v, want the first %s", again, first.Approval.ID)
+		}
+	}
+	if len(approvals()) != 1 {
+		t.Fatalf("repeated approvals wrote %d records", len(approvals()))
+	}
+	// Another seat, a note, or a new head is a new decision.
+	ai := saga.ReviewerIdentity{Kind: "ai", Name: "Reviewer", Agent: "claude-code", Model: "claude-opus-5-5"}
+	if !decide(saga.ApprovalApproved, commit, "", ai).Recorded {
+		t.Fatal("an AI seat's approval was taken as the human's")
+	}
+	if !decide(saga.ApprovalApproved, commit, "Checked the retry path.", human).Recorded {
+		t.Fatal("an approval with a note was dropped")
+	}
+	next := strings.Repeat("b", 40)
+	if !decide(saga.ApprovalApproved, next, "", human).Recorded {
+		t.Fatal("an approval at a new head was dropped")
+	}
+	// Withdrawing records once; withdrawing again records nothing, and the
+	// earlier records are untouched.
+	withdrawn := decide(saga.ApprovalNone, next, "", human)
+	if !withdrawn.Recorded || withdrawn.Approval.State != saga.ApprovalNone {
+		t.Fatalf("withdraw = %+v", withdrawn)
+	}
+	if decide(saga.ApprovalNone, next, "", human).Recorded {
+		t.Fatal("a second withdrawal was recorded")
+	}
+	// Changes requested always carry a note, so each is recorded, and it is
+	// withdrawn the same way an approval is.
+	decide(saga.ApprovalChangesRequested, next, "Split the queue.", human)
+	if !decide(saga.ApprovalNone, next, "", human).Recorded {
+		t.Fatal("a request for changes could not be withdrawn")
+	}
+	records := approvals()
+	if len(records) != 7 || records[0].ID != first.Approval.ID || records[0].State != saga.ApprovalApproved {
+		t.Fatalf("records = %+v", records)
+	}
+}
+
 func TestCodeLineCommentsAreRootThreadsOnTheReviewOrItsItems(t *testing.T) {
 	root := reviewSaga(t)
 	human := saga.ReviewerIdentity{Kind: "human"}

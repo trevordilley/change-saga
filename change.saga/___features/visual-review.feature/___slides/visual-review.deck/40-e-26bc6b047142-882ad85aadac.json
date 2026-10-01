@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/server/reviewasyncjs.go",
-      "start": 87,
-      "end": 107,
-      "digest": "sha256:a59ce87c1866d6aaef8343004f01439f1b1ca4c8570284dfde0deb853c696864",
+      "start": 94,
+      "end": 115,
+      "digest": "sha256:421d4ea7090d9b80773c2c7a00a318df3b2251a05caba9aabed357a131753bb7",
       "note": "JavaScript posts a comment, reply, or annotation with the process token and immutable shown-slide snapshot; ordinary HTML forms retain a redirect fallback."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/server/reviewasyncjs.go",
-      "start": 114,
-      "end": 138,
-      "digest": "sha256:c0297849ecb6c949202cdcacf063f2980985d320d08aeeb0f3e213d606769765",
+      "start": 122,
+      "end": 150,
+      "digest": "sha256:a07c3b3a100370bfdb56fd5350e84312209139882421bb3457a790842bccb810",
       "note": "JavaScript posts a comment, reply, or annotation with the process token and immutable shown-slide snapshot; ordinary HTML forms retain a redirect fallback."
     }
   ]

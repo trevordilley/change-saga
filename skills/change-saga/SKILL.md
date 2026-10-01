@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"), meant for the big change a person reviews as a whole, such as an integration branch gathering many agents'' work: a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, design, quality, implementation, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
+description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"), meant for the big change a person reviews as a whole, such as an integration branch gathering many agents'' work: a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, design, quality, technical decks, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
 ---
 
 # Change Saga
@@ -32,17 +32,30 @@ people actually review, rather than piecemeal in every child. As a child
 workspace or sub-agent, create a review or do Saga upkeep only when the user
 or the parent asks.
 
-## When to do Saga work
+## Read throughout; author near completion
 
-Saga work belongs to the moment a pull request is created or updated, not to
-every session or commit. Creating or refreshing the review deck, covering
-lines, reconciling living documentation, and repinning all happen when the
+Use the companion `change-saga-context` skill to consult existing Saga knowledge
+early and throughout planning, implementation, debugging, and explanation.
+Read relevant intent, design, and code links whenever they can inform the task;
+the timing rules below govern writes, not reads.
+
+Saga authoring normally belongs near the end of the work, when implementation
+and relevant verification are complete: preparing or updating a pull request,
+or a final handoff whose agreed workflow includes documentation. It does not
+belong to every session, commit, or conversational answer. Creating or refreshing
+the review deck, covering lines, reconciling living documentation, and repinning
+all happen when the
 user says to create or update the PR ("okay, create a PR", "let's update the
 PR"), or when their process otherwise publishes changes for review. Then do
 it all together, so the deck explains the change as reviewers will see it.
 Otherwise, keep a coding session about the code: do not end it with Saga
 upkeep nobody asked for. A deck that lags the branch between PR updates is
 expected. When the user asks for Saga work directly, do it then.
+
+If a user asks to document features while iterating on a PR deck, follow the
+feature authoring workflow at that scope in the same Saga. Keep the PR deck
+focused on the change and connect it to the feature records where relevant;
+do not require a repository-wide setup interview for one feature.
 
 ## Create a review for this PR (the usual first task)
 
@@ -81,8 +94,10 @@ before drawing slides; nothing else is needed.
 5. Call out every surprise with a `"kind": "callout"` Item in that slide's
    request: `"about"` names the Item for the responsible element, and
    `"body"` (at most 240 characters) states what a reviewer would expect,
-   what the change does instead, why, and the consequence. Cover the code
-   that shows the actual behavior from the callout itself. Reviewers see
+   what the change does instead, why, and the consequence. Cover, from the
+   callout itself, the code that decides the behavior it states (where the
+   outcome is determined, such as a validation that rejects the input
+   first), not just nearby code. Reviewers see
    callouts in a Surprises panel on the slide. Never manufacture one: if
    nothing surprises, say so in the concluding slide's takeaway.
 6. Cover every changed line from the narrowest Item that explains it:
@@ -93,22 +108,32 @@ before drawing slides; nothing else is needed.
    --parent REVIEW_URN` lists the review's slides and Items.
 7. Confirm: `change-saga review list --uncovered change.saga` names what no
    Item explains yet, and `change-saga review list --review ID change.saga`
-   lists the surprises called out; `change-saga check --covers review --against BASE
+   lists the surprises called out, marking any with no code evidence; `change-saga check --covers review --against BASE
    change.saga` exits 0 once every changed line is explained. Run
    `change-saga diagram check --review ID change.saga` and `change-saga
    validate change.saga`.
-8. Commit the Saga with the change. Reviewers can collapse `change.saga` in
+8. Check every sentence; this is the one check the tool cannot do. Have a
+   fresh-context reader, ideally a sub-agent that did not write the deck,
+   read each slide's `diagram describe --review ID --slide SLIDE`: every
+   takeaway, Item description, callout body, edge description, and note.
+   For each sentence it opens the code the Item lists and the code the
+   claim depends on (what runs before or after, validation, error paths),
+   and flags any sentence that is false, overstated ("each artifact" when
+   one is connected), or unverifiable. Revise with `diagram edit` or
+   `apply-slide`. describe lists each Item's `path:start-end`, so this is
+   cheap.
+9. Commit the Saga with the change. Reviewers can collapse `change.saga` in
    the pull request's file tree and open the deck with `change-saga open
    change.saga`.
-9. Each time the PR is updated (not after every commit), `change-saga review
-   refresh-coverage --review ID change.saga` re-pins what only moved. New lines are reported uncovered,
-   with the one Item covering their file as the proposed owner: read them,
-   and only if that Item's explanation covers them accept with the printed
-   `review refresh-coverage --review ID --accept-proposed --path P
-   [--note TEXT]`. It lists stale references (an edit landed inside) with a
-   proposed range and diff: read each, then accept with the printed
-   `change-saga repin --accept-proposed --record FILE --reference N
-   change.saga`, or revise the explanation if it no longer holds.
+10. Each time the PR is updated (not after every commit), `change-saga review
+    refresh-coverage --review ID change.saga` re-pins what only moved. New lines are reported uncovered,
+    with the one Item covering their file as the proposed owner: read them,
+    and only if that Item's explanation covers them accept with the printed
+    `review refresh-coverage --review ID --accept-proposed --path P
+    [--note TEXT]`. It lists stale references (an edit landed inside) with a
+    proposed range and diff: read each, then accept with the printed
+    `change-saga repin --accept-proposed --record FILE --reference N
+    change.saga`, or revise the explanation if it no longer holds.
 
 Coverage is an omission check, not proof that a slide is right. Never widen a
 selector just to finish coverage.
@@ -116,6 +141,17 @@ selector just to finish coverage.
 A Saga of reviews alone is complete; do not pitch more. If the user asks to
 document the application itself (personas, stories, features, design, living
 documentation), `change-saga setup-initial-saga` guides growing this Saga.
+
+## Describe implemented features
+
+When asked to describe or document implemented features, query the existing
+Product features and stories, inspect the implementation, and create or update
+actual feature story records through the public story authoring commands. Put
+user outcomes and observable acceptance criteria in Product. Preserve the
+distinction between confirmed intent and code-derived proposals; do not mark
+inferred requirements accepted. Reuse existing personas and story identities.
+A prose feature list or a slide titled “Stories” is not a substitute for these
+records. Technical decks may reference the real stories through their Items.
 
 ## Mandatory contract
 
@@ -177,7 +213,7 @@ reference. When a task crosses rows, combine only those rows.
 | Create a review for a PR or branch (the usual first task) | The fast path above, then [diagrams and evidence](references/diagrams.md) |
 | Inspect or navigate an existing Saga; load compact feature context; resolve current heads, conflicts, evidence, or history | [Reading through the query API](references/query.md) |
 | Audit whether one feature has a current, exact implementation handoff | [Reading through the query API](references/query.md) |
-| Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
+| Describe implemented features; Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |
 | Author Component/System definitions, their interactions, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
@@ -205,8 +241,10 @@ observable pass/fail criteria. A proposed story may remain criterion-free
 while intent is uncertain; an accepted story needs at least one criterion. Add
 only the narrowest obligation confirmed by the user.
 
-For an existing code change, begin with its review deck (the fast path above)
-and offer missing product context only as optional follow-up. For new
+For an existing code change that the user asks to review, begin with its review
+deck (the fast path above) and offer missing product context only as optional
+follow-up. A request to describe implemented features instead follows the
+Product story workflow above. For new
 work whose whole lifecycle is requested, begin with personas and stories,
 develop relevant design and quality, and connect exact implementation evidence
 as it is built. Never manufacture product intent to make coverage complete.

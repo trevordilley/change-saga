@@ -56,7 +56,7 @@ a{color:var(--accent)}
 .deck-viewer-slide[hidden]{display:none}.deck-viewer-slide.active{display:block}
 .deck-viewer-slide .fragment{margin:0;border:0;border-radius:0;height:100%;min-height:100%;background:transparent}
 .deck-viewer-slide .fragment-head{position:absolute;z-index:7;right:12px;top:42px;border:0;background:var(--frosted-bg);border-radius:8px}
-.deck-viewer-slide .fragment-head::before{content:'Implementation slide';align-self:center;padding-left:8px;color:var(--muted);font:600 10px/1 var(--ui);letter-spacing:.025em;text-transform:uppercase}
+.deck-viewer-slide .fragment-head::before{content:'Technical slide';align-self:center;padding-left:8px;color:var(--muted);font:600 10px/1 var(--ui);letter-spacing:.025em;text-transform:uppercase}
 .deck-viewer-slide[data-deck-role=onboarding] .fragment-head::before{content:'Onboarding slide'}
 .deck-viewer-slide[data-deck-role=ux] .fragment-head::before{content:'UX flow slide'}
 .deck-viewer-slide .fragment-stage{height:100%;min-height:100%;display:grid;place-items:center;padding:0}
@@ -422,7 +422,7 @@ the record's own content for the top of the page. */
 .requirement-criterion>p{margin:9px 0 0;font:500 14px/1.55 var(--ui)}
 .opening-badge{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--bg-subtle);white-space:nowrap;margin-right:8px}
 .opening-badge.compare{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
-.layer-quiet{opacity:.55;transition:opacity .15s}.layer-quiet:hover,.layer-quiet:focus-within{opacity:1}
+.layer-quiet{opacity:1;transition:opacity .15s}.layer-quiet:hover,.layer-quiet:focus-within{opacity:1}
 .fragment.layer-changed,.section.layer-changed{box-shadow:inset 3px 0 0 var(--accent)}.fragment.layer-affected,.section.layer-affected{box-shadow:inset 3px 0 0 var(--amber)}
 a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .history-button{color:var(--muted)}
@@ -846,4 +846,4 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .documentation-explanation .term-code-lines th { white-space:nowrap; overflow-wrap:normal; min-width:3ch; }
 .documentation-explanation button { cursor:pointer; max-width:100%; overflow-wrap:anywhere; }
 .documentation-members { display:flex; gap:12px; flex-wrap:wrap; padding-left:20px; }
-`
+` + deckOverviewStyles + slideViewedStyles

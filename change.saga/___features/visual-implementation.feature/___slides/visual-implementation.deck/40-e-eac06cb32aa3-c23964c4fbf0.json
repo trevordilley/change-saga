@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "4c8ffcc539a83ec2cb80acf268d1675ce7b8ca75",
+      "commit": "02640e64fc7ddfc713bd95197cc3a21862dd4cce",
       "path": "internal/server/appjs.go",
       "start": 70,
-      "end": 197,
-      "digest": "sha256:2de1f4835923543f00194cc82c1835e02fff6072b61f6cc15a8d841142c4d0d3",
+      "end": 191,
+      "digest": "sha256:f8cee31652950facdfad93f609366fa35235c2f6357627796a02eea3dfdcf4b6",
       "note": "The reviewer bounds stepping to the active deck, updates selection and URL state, and preserves the active slide through presentation."
     }
   ]

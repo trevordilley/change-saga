@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/server/reviews.go",
-      "start": 633,
-      "end": 658,
-      "digest": "sha256:30e173309c2776f6e8e5f182f39610869861d4414e85c88b424ce9064a88acb4",
+      "start": 980,
+      "end": 1005,
+      "digest": "sha256:b2b8e87bb0d381622ed4648218e234c3f41c882cb2971c4fe62a9f54b048d93d",
       "note": "After an attributed slide event is appended, JSON confirms the event and projects current feedback without document or iframe navigation. Ordinary forms still redirect; uncertain outcomes retain the draft and block blind retry."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/server/reviewasync.go",
-      "start": 88,
-      "end": 106,
-      "digest": "sha256:2f618e4673d109afd3bde7c8adadf35152e617e2d9a7dfd1d8c39290c280861f",
+      "start": 90,
+      "end": 116,
+      "digest": "sha256:f2e3f4f2b8d7c5efb568cbb16f3fd4d3df48fe69f0a811969b9caac37b9103cb",
       "note": "After an attributed slide event is appended, JSON confirms the event and projects current feedback without document or iframe navigation. Ordinary forms still redirect; uncertain outcomes retain the draft and block blind retry."
     }
   ]

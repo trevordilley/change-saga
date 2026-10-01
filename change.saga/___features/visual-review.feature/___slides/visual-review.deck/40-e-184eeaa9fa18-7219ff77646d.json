@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/saga/review.go",
       "start": 24,
-      "end": 40,
-      "digest": "sha256:3d087978bab81e679c862aa60995e655bcfd3c957ec815b19b3811f4f5553628",
+      "end": 41,
+      "digest": "sha256:58a8ed59d56d10884359c75f84c7ac54b0c4c9a813151f455a89ed86afd128c6",
       "note": "The review storage contract defines decks, decisions, and comments but no spatial annotation record."
     }
   ]

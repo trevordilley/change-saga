@@ -6,7 +6,7 @@ those Components interact and how data flows through them. These are reusable
 technical definitions, independent of vocabulary terms and feature ownership.
 There is no required C4 hierarchy or separate architecture workflow.
 
-Implementation decks remain the explanatory experience. Their contextual
+Technical decks remain the explanatory experience. Their contextual
 nodes can link the same canonical definition, keeping their own labels and
 exact evidence. A System reference never covers all of that System's code.
 Review decks still explain transitions and only whole slides receive decisions.
@@ -122,7 +122,7 @@ Use a free port; in DevSwarm, wrap builds in `hivecontrol exec oneshot` and the
 server in `hivecontrol exec service`. The generator creates its own source Git
 repository and authors the Saga exclusively through the CLI. It defines
 FlagClient, FlagEvaluator, and FlagStore once, pins them in FeatureFlag, and
-links that System from separate checkout and search implementation decks.
+links that System from separate checkout and search Technical decks.
 The checkout and search Items own only their respective feature branch line.
 Open `/features/checkout` or `/features/search`, activate the FeatureFlag node,
 open a Component or interaction's exact code, and return to the original slide.

@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -276,5 +277,64 @@ func TestDiagramDescribeReadsDiagramAndHandAuthoredSlides(t *testing.T) {
 	legacy, err := runDiagram(t, "", "describe", "--slide", "flow", legacyRoot)
 	if err != nil || !strings.Contains(legacy, "Source: hand-authored image/svg+xml") || !strings.Contains(legacy, "worker [node] \"Worker\" element=node-a") || strings.Contains(legacy, "Nodes:") {
 		t.Fatalf("hand-authored describe = %s err=%v", legacy, err)
+	}
+}
+
+// describe lists each Item's code references under it, capped so a large
+// Item stays compact, and marks references pinned to a review's base as old.
+func TestDiagramDescribeListsItemEvidence(t *testing.T) {
+	t.Parallel()
+	base, head := strings.Repeat("a", 40), strings.Repeat("b", 40)
+	removed := saga.CodeFile{References: []coderef.Reference{
+		{Commit: base, Path: "gate.go", Start: 4, End: 9, Note: "The old gate is removed."},
+		{Commit: base, Path: "gate.go", Start: 12, End: 12, Note: "The old gate is removed."},
+	}}
+	added := saga.CodeFile{}
+	for line := 1; line <= 9; line++ {
+		added.References = append(added.References, coderef.Reference{Commit: head, Path: "check.go", Start: line * 10, End: line*10 + 2, Note: "Validation rejects the release."})
+	}
+	slide := &saga.Slide{Target: "urn:change-saga:app:review:pr-1:slide:gate", Directory: t.TempDir()}
+	slide.Title, slide.MediaType = "Gate", "image/svg+xml"
+	gate := &saga.Item{Code: []saga.CodeFile{removed, added}}
+	gate.ID, gate.Kind, gate.Label = "gate", "node", "Gate"
+	whole := &saga.Item{Code: []saga.CodeFile{{References: []coderef.Reference{{Commit: head, Path: "README.md"}}}}}
+	whole.ID, whole.Kind, whole.Label = "docs", "node", "Docs"
+	bare := &saga.Item{}
+	bare.ID, bare.Kind, bare.Label = "claim", "callout", "Claim"
+	slide.Items = []*saga.Item{gate, whole, bare}
+
+	value, err := describeSlide(slide, base, "change.saga", 0, 60)
+	if err != nil {
+		t.Fatal(err)
+	}
+	listed := value.Items[0]
+	if listed.CodeFiles != 2 || listed.CodeReferences != 11 || len(listed.Code) != describeCodeLimit || listed.CodeMore != 3 ||
+		listed.Code[0] != (SlideDescriptionReference{Path: "gate.go", Start: 4, End: 9, Side: "old", Note: "The old gate is removed."}) || listed.Code[2].Side != "" {
+		t.Fatalf("gate Item = %+v", listed)
+	}
+	if value.Items[2].Code == nil || len(value.Items[2].Code) != 0 || value.CodeQuery != "change-saga query slide --saga change.saga --target "+slide.Target {
+		t.Fatalf("description = %+v", value)
+	}
+	data, err := json.Marshal(value)
+	if err != nil || !strings.Contains(string(data), `"code":[{"path":"gate.go","start":4,"end":9,"side":"old","note":"The old gate is removed."}`) ||
+		!strings.Contains(string(data), `"code_references":11,"code_more":3`) || !strings.Contains(string(data), `"code":[],"code_references":0}`) {
+		t.Fatalf("json = %s err=%v", data, err)
+	}
+
+	var text bytes.Buffer
+	if err := value.writeText(&text); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{
+		"  1. gate [node] \"Gate\" code_files=2 criterion_links=0\n" +
+			"     code: gate.go:4-9 (old), 12 (old) — The old gate is removed.\n" +
+			"     code: check.go:10-12, 20-22, 30-32, 40-42, 50-52, 60-62 — Validation rejects the release.\n" +
+			"     code: and 3 more; `change-saga query slide --saga change.saga --target " + slide.Target + "` lists them\n",
+		"  2. docs [node] \"Docs\" code_files=1 criterion_links=0\n     code: README.md\n",
+		"  3. claim [callout] \"Claim\" code_files=0 criterion_links=0\n",
+	} {
+		if !strings.Contains(text.String(), want) {
+			t.Errorf("describe lacks %q:\n%s", want, text.String())
+		}
 	}
 }

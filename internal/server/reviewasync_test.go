@@ -293,3 +293,91 @@ func TestReviewFeedbackAfterConcurrentSlideEditKeepsReceiptAndCurrency(t *testin
 		t.Fatalf("concurrent projection: %+v", receipt)
 	}
 }
+
+func TestReviewDecisionIsIdempotentAndWithdrawable(t *testing.T) {
+	t.Parallel()
+	f := newServerReviewFixture(t)
+	a, handler := reviewApp(t, f, gitdiff.Range{})
+	document, _, _ := saga.Load(f.root)
+	review := document.FindReview("pr-7")
+	slide := review.Slide("queue")
+	rng, _ := reviewstate.ResolveRange(context.Background(), f.repo, review)
+	values := url.Values{"token": {"review-token"}, "snapshot": {a.reviewSnapshot(slide, &rng)}, "slide": {"queue"}}
+	type receipt struct {
+		Saved    bool           `json:"saved"`
+		Recorded bool           `json:"recorded"`
+		Event    string         `json:"event_id"`
+		Feedback reviewFeedback `json:"feedback"`
+	}
+	decide := func(state, body string) receipt {
+		t.Helper()
+		values.Set("state", state)
+		values.Set("body", body)
+		response := postAsyncReview(t, handler, "/reviews/pr-7/decision", values)
+		var got receipt
+		if response.Code != 200 || json.Unmarshal(response.Body.Bytes(), &got) != nil || !got.Saved {
+			t.Fatalf("decision %s: %d %s", state, response.Code, response.Body)
+		}
+		return got
+	}
+	approvals := func() int {
+		t.Helper()
+		entries, _ := os.ReadDir(filepath.Join(saga.ReviewDir(f.root, "pr-7"), saga.ReviewApprovalsDir))
+		return len(entries)
+	}
+
+	// Approving three times, as a reviewer given no feedback would, records once.
+	first := decide("approved", "")
+	if !first.Recorded || first.Event == "" {
+		t.Fatalf("first approval: %+v", first)
+	}
+	for range 2 {
+		if again := decide("approved", ""); again.Recorded || again.Event != first.Event {
+			t.Fatalf("repeated approval: %+v", again)
+		}
+	}
+	if approvals() != 1 {
+		t.Fatalf("three approvals wrote %d records", approvals())
+	}
+	// The slide shows the decision at once: Approved, with an undo, and the
+	// reviewer's own row offers to withdraw it.
+	for _, want := range []string{`data-review-mine="approved"`, `data-review-approved`, `Approved <span aria-hidden="true">✓</span>`, `data-review-unapprove aria-label="Withdraw approval of Queue moves to Postgres"`, `>Withdraw approval</button>`} {
+		if !strings.Contains(first.Feedback.Menu, want) {
+			t.Fatalf("approved controls lack %s:\n%s", want, first.Feedback.Menu)
+		}
+	}
+	if page := getPage(t, handler, "/reviews/pr-7").Body.String(); !strings.Contains(page, `data-review-mine="approved"`) || !strings.Contains(page, `data-review-unapprove`) {
+		t.Fatal("the page does not show the reviewer's own approval")
+	}
+	// A plain form post repeats nothing either.
+	values.Set("state", "approved")
+	values.Set("body", "")
+	if fallback := postReview(t, handler, "/reviews/pr-7/decision", values); fallback.Code != http.StatusSeeOther || approvals() != 1 {
+		t.Fatalf("form approval: %d, %d records", fallback.Code, approvals())
+	}
+
+	// Withdrawing appends one record and restores Approve.
+	withdrawn := decide("none", "")
+	if !withdrawn.Recorded || len(withdrawn.Feedback.Report.Decisions) != 0 || !strings.Contains(withdrawn.Feedback.Menu, `data-review-mine="none"`) || !strings.Contains(withdrawn.Feedback.Menu, `value="approved" data-review-approve aria-label="Approve Queue moves to Postgres"`) || strings.Contains(withdrawn.Feedback.Menu, "data-review-unapprove") {
+		t.Fatalf("withdrawal: %+v", withdrawn)
+	}
+	if again := decide("none", ""); again.Recorded || approvals() != 2 {
+		t.Fatalf("a second withdrawal: %+v, %d records", again, approvals())
+	}
+
+	// A request for changes is withdrawn the same way.
+	requested := decide("changes_requested", "Split the queue.")
+	if !requested.Recorded || !strings.Contains(requested.Feedback.Menu, `aria-label="Withdraw request for changes on Queue moves to Postgres"`) || !strings.Contains(requested.Feedback.Menu, `>Withdraw request for changes</button>`) {
+		t.Fatalf("request for changes: %+v", requested)
+	}
+	if cleared := decide("none", ""); !cleared.Recorded || len(cleared.Feedback.Report.Decisions) != 0 {
+		t.Fatalf("withdrawing the request: %+v", cleared)
+	}
+
+	// Nothing earlier was rewritten: the first approval is still on disk.
+	doc, validation, _ := saga.Load(f.root)
+	records := doc.FindReview("pr-7").Approvals
+	if !validation.Valid || len(records) != 4 || records[0].ID != first.Event || records[0].State != saga.ApprovalApproved {
+		t.Fatalf("append-only records changed: %+v", records)
+	}
+}

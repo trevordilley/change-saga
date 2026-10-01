@@ -25,7 +25,7 @@ func Diagram(ctx context.Context, args []string, out io.Writer) error {
 	}
 	switch args[0] {
 	case "describe":
-		return diagramDescribe(args[1:], out)
+		return diagramDescribe(ctx, args[1:], out)
 	case "get":
 		return diagramGet(args[1:], out)
 	case "edit":
@@ -107,7 +107,7 @@ func requestFromRevision(state diagramSlideState, requestID, expected string, so
 		Version: saga.SlideTransactionVersion, Operation: "update", RequestID: requestID, Deck: state.deck.ID, Review: state.review, ExpectedSnapshot: expected,
 		Slide: SlideTransactionSlide{
 			ID: value.ID, Title: value.Title, Rank: value.Rank, Section: value.Section, Intent: value.Intent, Layout: value.Layout,
-			MediaType: value.MediaType, Takeaway: value.Takeaway, ReadingOrder: append([]string{}, value.ReadingOrder...), ExceptionRationale: value.ExceptionRationale,
+			MediaType: value.MediaType, Front: append([]string(nil), value.Front...), Takeaway: value.Takeaway, ReadingOrder: append([]string{}, value.ReadingOrder...), ExceptionRationale: value.ExceptionRationale,
 		},
 		Diagram: &source,
 		Items:   []SlideTransactionItemRequest{},

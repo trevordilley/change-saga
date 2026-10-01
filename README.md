@@ -13,16 +13,46 @@ slides that explain the change's architecture, so you review the design instead
 of every line. Coverage links every changed line to the slide that explains it,
 so you can trust that nothing was left out.
 
+## Install
+
+macOS and Linux:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.sh | sh
+```
+
+Windows PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.ps1 | iex
+```
+
+Or download an archive for your platform from the
+[latest release](https://github.com/twentyideas/changesaga/releases/latest).
+
+Then check the installation:
+
+```sh
+change-saga version
+change-saga help
+```
+
 ## Start with a review
 
-After [installing](#install) the CLI, give your coding agent two prompts from
-the repository with the change:
+Once it's installed, give your coding agent two prompts from the repository
+with the change:
 
-> Use the change-saga cli to install its skill for this coding agent
+> Use the change-saga cli to install its skills for this coding agent
 
 > Create a review for this PR
 
 (For a branch without a pull request yet, ask for a review of the branch.)
+
+The installation includes two skills. `change-saga-context` helps the agent
+consult existing stories, architecture, and code links during everyday planning,
+debugging, and implementation, even when you do not mention Saga.
+`change-saga` handles authoring when you request it or near completion, normally
+while preparing or updating the PR. Reading context does not trigger upkeep.
 
 What you get:
 
@@ -139,8 +169,19 @@ A grown Saga holds:
   which never reorder as work progresses: **Product** (prototypes, and user
   stories with acceptance criteria), **Design** (UX flows, UI references, and
   technical design), **Quality** (test cases and their evidence), and
-  **Implementation** (a slide deck whose visual elements reference the exact
+  **Technical** (a slide deck whose visual elements reference the exact
   code they explain).
+
+To describe implemented features, create or update their actual **Product**
+stories and observable acceptance criteria. Technical decks reference those
+stories and explain how the code fulfills them.
+
+Each deck has an **Overview**, a rich report with written explanation, tables,
+and visuals. Its authored citations lead through a slide or Item to the linked
+story, code, or diff. Every slide has a summary **Front** and visual **Back**;
+existing visual assets and their evidence links remain on the Back. Overview
+coverage checks that every slide is referenced, independently of the deck's
+exact code coverage. See [the deck guide](docs/deck-overview.md).
 
 A monorepo of several apps keeps one `change.saga` at its root and documents
 each app through its own features. One Saga per repository is a
@@ -162,27 +203,6 @@ They answer questions from it, plan new work against it, and create better
 reviews with it, and each review strengthens it further.
 
 Change Saga is experimental, and its format may change before 1.0.
-
-## Install
-
-macOS and Linux:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.sh | sh
-```
-
-Windows PowerShell:
-
-```powershell
-irm https://raw.githubusercontent.com/twentyideas/changesaga/main/scripts/install.ps1 | iex
-```
-
-Then check the installation:
-
-```sh
-change-saga version
-change-saga help
-```
 
 ## See a Saga
 
@@ -408,11 +428,11 @@ Documentation holds:
 - **Overview** is the application's pitch and description, plus its personas,
   terms and vocabulary, design system, onboarding deck, and feature flags.
 - **Features** lists every feature, each opening its own page. Inside a feature
-  the sidebar is always Product, Design, Quality, and Implementation, in that
-  order. Implementation is the deck itself, open to its slide thumbnails; the
+  the sidebar is always Product, Design, Quality, and Technical, in that
+  order. Technical is the deck itself, open to its slide thumbnails; the
   other sections stay collapsed until you need them, and empty places say what
   is missing.
-- **Present** shows the implementation deck full screen, one slide at a time.
+- **Present** shows the technical deck full screen, one slide at a time.
   Linked code opens without losing the active slide.
 
 Review holds the reviews and everything that reads a comparison. Its sidebar is
@@ -555,7 +575,7 @@ change-saga check --covers review --against main change.saga
 change-saga open --against main change.saga
 ```
 
-Once the Saga documents the application, a feature's implementation deck
+Once the Saga documents the application, a feature's Technical deck
 explains the current code in the same way (`add-deck`, `add-slide --deck`,
 `add-item --slide`, `cover --against main`); the first command that needs a
 feature creates one named after the branch.

@@ -92,7 +92,7 @@ const appJavaScript = `(() => {
     return Boolean(surface && (!view || view.classList.contains('active')));
   }
 
-  function activateDeckSlide(index, updateHash = false) {
+  function activateDeckSlide(index, updateHash = false, face = null) {
     const slides = deckViewerSlides();
     if (!slides.length) return;
     hideNote();
@@ -110,6 +110,8 @@ const appJavaScript = `(() => {
     });
     const active = slides[bounded];
     const shell = active.closest('[data-deck-viewer]');
+    setDeckFace(face || (shell.dataset.deckFace === 'front' ? 'front' : 'back'), shell);
+    document.dispatchEvent(new CustomEvent('deck-slide-activated', {detail:{viewer:shell, slide:active}}));
     const position = q('[data-slide-position]', shell);
     const deckTitle = q('[data-slide-deck-title]', shell);
     const slideTitle = q('[data-current-slide-title]', shell);
@@ -118,17 +120,7 @@ const appJavaScript = `(() => {
     if (position) position.textContent = (deckIndex + 1) + ' / ' + deckSlides.length;
     if (deckTitle) deckTitle.textContent = active.dataset.deckTitle || '';
     if (slideTitle) slideTitle.textContent = active.dataset.slideTitle || '';
-    let activeThumbnail = null;
-    qa('[data-slide-thumbnail]').forEach(thumbnail => {
-      const selected = thumbnail.dataset.slideTarget === active.dataset.slideTarget;
-      thumbnail.setAttribute('aria-current', String(selected));
-      thumbnail.closest('[data-slide-thumbnail-card]')?.classList.toggle('active', selected);
-      if (selected) activeThumbnail = thumbnail;
-      if (selected && updateHash) thumbnail.scrollIntoView({block:'nearest'});
-    });
-    qa('.doc-deck>.doc-row').forEach(row => row.classList.toggle('current', Boolean(activeThumbnail && row.parentElement.contains(activeThumbnail))));
-    const deckChildren = activeThumbnail?.closest('.doc-children');
-    if (deckChildren?.id) setDocNodeExpandedByID(deckChildren.id, true);
+    if (updateHash) q('[data-slide-thumbnail][aria-current="true"]')?.scrollIntoView({block:'nearest'});
     const previous = q('[data-slide-previous]', shell);
     const next = q('[data-slide-next]', shell);
     if (previous) previous.disabled = deckIndex === 0;
@@ -146,6 +138,7 @@ const appJavaScript = `(() => {
   }
 
   function stepDeckSlide(delta) {
+    if (currentDeckViewer()?.dataset.deckFace === 'overview') return;
     const slides = deckViewerSlides();
     const active = slides.find(slide => !slide.hidden);
     if (!active) return;
@@ -157,13 +150,14 @@ const appJavaScript = `(() => {
   }
 
   function syncDeckSlideForHash() {
+    if (openDeckOverviewFromHash()) return;
     const slides = deckViewerSlides();
-    if (!slides.length) return;
+    if (!slides.length) { setDeckFace('overview'); return; }
     const id = decodeURIComponent(location.hash.replace(/^#/, ''));
     const requested = id ? document.getElementById(id)?.closest?.('[data-deck-slide]') : null;
     const view = slides[0].closest('[data-view]');
     if (view && !view.classList.contains('active') && !requested) return;
-    activateDeckSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)));
+    activateDeckSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)), false, requested ? 'back' : null);
   }
 
   function syncSlidePresentation() {
@@ -819,12 +813,18 @@ const appJavaScript = `(() => {
   }
 
   async function activateLandmark() {
+    if (openDeckOverviewFromHash()) return;
     qa('[data-landmark-visual].active').forEach(element => element.classList.remove('active'));
     qa('.content-landmark-active').forEach(element => element.classList.remove('content-landmark-active'));
     const id = decodeURIComponent(location.hash.replace(/^#/, ''));
     // The anchor may name something inside a chapter or an explanation that has
     // not been fetched yet, so it is resolved before it is scrolled to.
     const destination = await revealAnchor(id);
+    const destinationSlide = destination?.closest('[data-deck-slide]');
+    if (destinationSlide) {
+      const index = deckViewerSlides().indexOf(destinationSlide);
+      if (index >= 0) activateDeckSlide(index, false, 'back');
+    }
     const destinationView = destination?.closest('[data-view]')?.dataset.view;
     if (destinationView === 'saga' || destinationView === 'slides') setView(destinationView, false);
     const target = id ? q('[data-landmark-anchor="' + CSS.escape(id) + '"]') : null;
@@ -1515,6 +1515,7 @@ const appJavaScript = `(() => {
 
   let reviewDeckHash = location.hash;
   function setView(name, updateURL = true) {
+    const wasDeckActive = deckViewerActive();
     if (!q('[data-view="'+name+'"]')) name = 'saga';
     const reviewDeck = q('[data-shell][data-review-deck-shell]');
     const returningToReviewDeck = reviewDeck && name === 'saga' && !q('[data-view="saga"].active');
@@ -1550,6 +1551,8 @@ const appJavaScript = `(() => {
       history.pushState({htmx: true, view: name}, '', url);
     }
     if (name === 'code' || name === 'manifest' || name === 'change') void hydrateReviewSurface(name);
+    if (deckViewerActive()) syncDeckNavigation();
+    else if (wasDeckActive && q('#nav-state')) applyNavState(q('#nav-state'));
   }
 
   function filterManifest() {
@@ -2109,14 +2112,14 @@ const appJavaScript = `(() => {
     return {templateID:readyButton.dataset.openDiffs, opener};
   }
 
-  async function hydrateTargetCode(button) {
+  async function hydrateTargetCode(button, returnOpener = null) {
     const href = button?.dataset.targetCodeHref;
     if (!href || button.dataset.targetCodeLoading === 'true') return;
     button.dataset.targetCodeLoading = 'true';
     button.setAttribute('aria-busy', 'true');
     try {
       const installed = installTargetCodeResponse(href, await requestTargetCode(href, {interactive:true}), button);
-      if (installed) openDrawer(installed.templateID, installed.opener);
+      if (installed) openDrawer(installed.templateID, returnOpener || installed.opener);
     } catch (_) {
       delete button.dataset.targetCodeLoading;
       button.removeAttribute('aria-busy');
@@ -2508,6 +2511,7 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('click', event => {
+    if (event.target.closest?.('[data-deck-overview] a')) return;
     const slideThumbnail = event.target.closest?.('[data-slide-thumbnail]');
     if (slideThumbnail) {
       const slides = deckViewerSlides();
@@ -2599,8 +2603,6 @@ const appJavaScript = `(() => {
     if (deckToggle) { toggleDocNode(deckToggle); return; }
     const docToggle = event.target.closest('[data-doc-toggle]');
     if (docToggle) { toggleDocNode(docToggle); return; }
-    const reportNav = event.target.closest('[data-report-nav]');
-    if (reportNav && q('[data-view="slides"].active')) setView('saga');
     const chapterToggle = event.target.closest('[data-chapter-toggle]');
     if (chapterToggle) { toggleChapter(chapterToggle); return; }
     const viewTab = event.target.closest('[data-view-tab]');
@@ -3236,6 +3238,9 @@ const appJavaScript = `(() => {
       children.hidden = !open;
       qa('[aria-controls]', row).forEach(control => control.setAttribute('aria-expanded', String(open)));
     });
+    // The server cannot see the hash. A deck deep link refines its page state,
+    // including when an out-of-band sidebar update arrives after the viewer.
+    syncDeckNavigation();
   }
 
   // A reader who follows a link lands at the top of the new page, or at its
@@ -3429,7 +3434,8 @@ const appJavaScript = `(() => {
     setView(requestedView(), false);
   });
 
+` + deckOverviewJavaScript + `
   const firstPage = pageRoot();
   if (firstPage) arrived(firstPage, 'first');
   void loadLayers();
-})();`
+})();` + slideViewedJavaScript

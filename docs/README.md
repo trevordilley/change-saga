@@ -10,7 +10,9 @@ review deck → reconcile living documentation → check again workflow.
 
 | | |
 | --- | --- |
-| [SPEC.md](../SPEC.md) | The one Saga format: layout, requirements, design, quality, the implementation deck, diff URIs, claims, and the review overlay. Normative. |
+| [code-examples.md](code-examples.md) | Author API and library usage examples as measured code elements inside visual slides. |
+| [deck-overview.md](deck-overview.md) | Current deck Overview, Front/Back, evidence citations, Viewed state, and compatibility guide. |
+| [SPEC.md](../SPEC.md) | The one Saga format: layout, requirements, design, quality, the Technical deck, diff URIs, claims, and the review overlay. Normative. |
 | [`schema/`](../schema) | JSON Schemas for every persisted record. The manifest and the records the format introduced are under `schema/v5`; component records name the schema version they use. |
 | `change-saga spec` | The same contract as the CLI reports it, with `--json` for agents. If it disagrees with SPEC.md, the CLI wins — please open an issue. |
 
@@ -59,3 +61,4 @@ written before this repository's Saga was renamed call it by its former name,
 | [../SECURITY.md](../SECURITY.md) | Threat model and private reporting. |
 | [../SUPPORT.md](../SUPPORT.md) | Where to ask, and answers to the questions that come up most. |
 | [../skills/change-saga/SKILL.md](../skills/change-saga/SKILL.md) | The reference authoring skill behind `change-saga install-skill`. |
+| [../skills/change-saga-context/SKILL.md](../skills/change-saga-context/SKILL.md) | Read existing Saga context during everyday repository work; shipped alongside the authoring skill. |

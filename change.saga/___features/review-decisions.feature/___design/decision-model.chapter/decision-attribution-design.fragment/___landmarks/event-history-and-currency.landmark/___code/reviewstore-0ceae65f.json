@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 117,
-      "end": 163,
-      "digest": "sha256:2e74d9b4a578653a0a438f9c3042024c0d281167d965558353aa3e92d3b6f974",
+      "start": 119,
+      "end": 196,
+      "digest": "sha256:c14f65df4e2d90b9cad4c6882c6dbb1f666528ad5f5f3d3302dc9e99981632ca",
       "note": "Append-only storage, composite-seat latest projection, and independent currency calculation."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/reviewstate/reviewstate.go",
-      "start": 214,
-      "end": 241,
-      "digest": "sha256:78c62c1b786ca5137bf506e146ca767fbbeaf16630d535ff8da0905658ea4f91",
+      "start": 292,
+      "end": 319,
+      "digest": "sha256:1d9fac68b84b7a02173c97c9119b7e1c5c0c04668006b4a40450e8ca9b7ba824",
       "note": "Append-only storage, composite-seat latest projection, and independent currency calculation."
     },
     {

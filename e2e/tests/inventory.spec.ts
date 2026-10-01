@@ -58,6 +58,11 @@ test("shared System opens saved Components and code without losing a slide @crit
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   const narrow = await context.newPage();
   await narrow.goto(page.url()); await waitForSettledSaga(narrow);
+  const narrowViewer = narrow.locator('[data-deck-viewer]:visible');
+  const headerBox = (await narrowViewer.locator('.deck-viewer-header').boundingBox())!;
+  const slideBox = (await narrowViewer.locator('[data-deck-slide]:visible').boundingBox())!;
+  expect(headerBox.y + headerBox.height, 'reading controls have their own space above the visual').toBeLessThanOrEqual(slideBox.y);
+  await narrow.screenshot({ path: test.info().outputPath('narrow-reading-controls.png') });
   await narrow.locator('[data-deck-slide]:visible .landmark-menu summary').tap();
   await narrow.locator('[data-deck-slide]:visible .landmark-menu [data-documentation-target]').tap();
   await expect(narrow.locator('[data-documentation-view]')).toHaveAttribute('data-documentation-view', target);

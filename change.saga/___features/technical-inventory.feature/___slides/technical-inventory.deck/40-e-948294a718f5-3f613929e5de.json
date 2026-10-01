@@ -34,11 +34,11 @@
       "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
       "path": "internal/cli/query.go",
       "start": 512,
       "end": 512,
-      "digest": "sha256:3d61dcfd8f659e1b3e60f94b02e9c4e22c512465fc39fb340ca3552951de5a12",
+      "digest": "sha256:6135c3a9efd501ee441cf74e7f6598928064cefdc553ad3f73d9ec872a384345",
       "note": "The dedicated query returns bounded current definitions, member health and selected history without eager review-shell loading."
     },
     {

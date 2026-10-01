@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/saga/review.go",
-      "start": 110,
-      "end": 128,
-      "digest": "sha256:2a775a84844418c22dac285736acb4f7b3d925f661c26d209729cc54db2b8d65",
+      "start": 119,
+      "end": 140,
+      "digest": "sha256:02d85adc68480cf030907486b012de97a5c462e8f68c46e8d34aab77c775309e",
       "note": "Contextual comment model, append-only persistence, and browser mutation"
     }
   ]

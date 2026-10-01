@@ -319,6 +319,7 @@ type sectionView struct {
 	// DeckRole is a deck's role, which names its slides: an implementation
 	// deck's slides are not review slides; only a review's are.
 	DeckRole      string
+	Overview      *deckOverviewView
 	DOMID         string
 	ChangeCount   int
 	Attached      *attachedCodeView
@@ -331,6 +332,7 @@ type fragmentView struct {
 	// Deferred marks a descriptor: the fragment is named, linked, and
 	// reviewable, and its content arrives from /api/fragment.
 	Deferred    bool
+	Front       overviewSlideView
 	DOMID       string
 	URL         string
 	Markdown    template.HTML
@@ -514,6 +516,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /decks", application.decksPage)
 	handle("GET /app.js", application.javascript)
 	handle("GET "+diagram.FontPath, application.diagramFont)
+	handle("GET "+diagram.MonoFontPath, application.diagramMonoFont)
 	handle("GET /theme.js", application.themeScript)
 	handle("GET /theme.css", application.themeStylesheet)
 	handle("GET /theme", application.themePreview)
@@ -1538,12 +1541,16 @@ func markActiveNav(nodes []*navNodeView, path string) {
 // labelDeckRoles records each projected deck's role on its view, so the slide
 // viewer can say what kind of slide it shows.
 func labelDeckRoles(root *sectionView, document *saga.Saga) {
-	roles := map[string]string{}
+	roles := map[string]*saga.Deck{}
 	for _, deck := range append(append([]*saga.Deck{}, document.Decks...), document.Onboarding...) {
-		roles[deck.Target] = deck.Role
+		roles[deck.Target] = deck
 	}
 	for _, deck := range root.ChildViews {
-		deck.DeckRole = roles[deck.Target]
+		if model := roles[deck.Target]; model != nil {
+			deck.DeckRole = model.Role
+			deck.Overview = makeDeckOverview(model)
+			decorateOverviewStories(deck.Overview, deck.FragmentViews)
+		}
 	}
 }
 
@@ -1638,6 +1645,7 @@ func makeDeckNavTree(root *saga.Section) []*navNodeView {
 		node := &navNodeView{
 			Title: deck.Title, NodeID: "nav-" + domID(deck.Target), Icon: "deck", Deck: true,
 		}
+		node.Children = append(node.Children, &navNodeView{Title: "Overview", Href: "?view=slides#overview-" + domID(deck.Target), NodeID: "overview-" + domID(deck.Target), Icon: "list"})
 		previousSection := ""
 		for _, slide := range deck.Fragments {
 			if slide.Title == "" {
@@ -1787,6 +1795,11 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 		title = fragment.ID
 	}
 	view := &fragmentView{Fragment: fragment, DOMID: domID(fragment.Target), BackgroundFrame: scope.backgroundFrames}
+	labels := []string{}
+	for _, item := range fragment.Landmarks {
+		labels = append(labels, item.Label)
+	}
+	view.Front = overviewSlideView{Title: title, Bullets: slideFront(fragment.SlideMeta, labels)}
 	view.URL = fragmentAssetURL(fragment)
 	if scope.deferContent {
 		// A descriptor names the explanation and carries its review controls.

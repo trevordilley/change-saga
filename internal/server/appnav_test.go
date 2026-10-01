@@ -301,13 +301,13 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 		t.Fatalf("a feature the reader is not in must be one shut row: %#v", catalogRow)
 	}
 	assertFeatureSubtree(t, findNav(t, nodes, "Features").Children, "Billing", "billing")
-	// Billing's one deck is its Implementation: the slides sit directly beneath.
-	billing := findNav(t, nodes, "Features", "Billing", "Implementation")
+	// Billing's one deck is its Technical: the slides sit directly beneath.
+	billing := findNav(t, nodes, "Features", "Billing", "Technical")
 	if got := topTitles(billing.Children); got != "charge|refund" {
-		t.Fatalf("billing Implementation must list its deck's slides directly: %v", navTitles(billing.Children, 0))
+		t.Fatalf("billing Technical must list its deck's slides directly: %v", navTitles(billing.Children, 0))
 	}
 	// Reading the other feature moves its authored places onto it and leaves
-	// Billing as a single row. Catalog has no deck, so it has no Implementation
+	// Billing as a single row. Catalog has no deck, so it has no Technical
 	// section.
 	other := appNavFixture(t)
 	other.pageFeature = "catalog"
@@ -321,7 +321,7 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 		t.Fatalf("opening another feature changed the sidebar's rows:\n%s\nwant\n%s", got, want)
 	}
 	if findNavByID(chosen, featureNavID("catalog")+"-implementation") != nil {
-		t.Fatal("an empty feature Implementation must be hidden")
+		t.Fatal("an empty feature Technical must be hidden")
 	}
 	// The old unprefixed places are gone: every one belongs to a feature.
 	ids := navIDs(nodes)
@@ -342,7 +342,7 @@ func assertFeatureSubtree(t *testing.T, nodes []*navNodeView, title, id string) 
 	}
 	want := title + " overview|" + title + " notes|Product"
 	if id == "billing" {
-		want += "|Implementation"
+		want += "|Technical"
 	}
 	if got := topTitles(feature.Children); got != want {
 		t.Fatalf("feature %s = %s, want %s", title, got, want)
@@ -361,7 +361,7 @@ func assertFeatureSubtree(t *testing.T, nodes []*navNodeView, title, id string) 
 		t.Fatalf("feature %s: Product must stay collapsed on arrival", title)
 	}
 	if id == "billing" && !places[1].Expanded {
-		t.Fatalf("feature %s: Implementation must open on arrival", title)
+		t.Fatalf("feature %s: Technical must open on arrival", title)
 	}
 }
 
@@ -462,7 +462,7 @@ func TestFeatureFlagRowsShowTheirState(t *testing.T) {
 }
 
 // The onboarding deck is the app's, not a feature's: its slides sit directly
-// beneath Onboarding and never under any feature's Implementation.
+// beneath Onboarding and never under any feature's Technical.
 func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyFeature(t *testing.T) {
 	t.Parallel()
 	nodes := makeAppNavTree(appNavFixture(t))
@@ -678,7 +678,7 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 		t.Fatal("reading one feature opened another")
 	}
 	if strings.Contains(billing, `id="`+featureNavID("billing")+`-implementation" hidden`) {
-		t.Fatal("the feature's Implementation must open on arrival")
+		t.Fatal("the feature's Technical must open on arrival")
 	}
 	if strings.Contains(billing, `id="`+featureNavID("billing")+`-product"`) {
 		t.Fatal("an empty Product section must be hidden")
@@ -701,7 +701,7 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 		}
 	}
 	// The onboarding slide renders under Onboarding, before the features. The
-	// billing slide renders inside Billing's Implementation on every page, and
+	// billing slide renders inside Billing's Technical on every page, and
 	// is shown only where Billing is open.
 	sidebarSlide := func(body, slide string) int {
 		marker := `class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="` + saga.SlideTarget("shop", slide) + `"`
@@ -720,7 +720,7 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	}
 	if charge := sidebarSlide(billing, "charge"); charge < strings.Index(billing, `id="`+featureNavID("billing")+`-implementation"`) ||
 		charge < strings.Index(billing, `id="nav-features"`) {
-		t.Fatal("the billing slide is not under Billing's Implementation")
+		t.Fatal("the billing slide is not under Billing's Technical")
 	}
 }
 

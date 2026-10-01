@@ -48,7 +48,7 @@ test("@critical lists every feature and opens only the one being read", async ({
     "Architecture"
   ]);
   // The closed features show nothing of their places: one row each.
-  await expect(contents.getByRole("button", { name: /Toggle (Product|Design|Quality|Implementation)/ })).toHaveCount(0);
+  await expect(contents.getByRole("button", { name: /Toggle (Product|Design|Quality|Technical)/ })).toHaveCount(0);
   // Every ordinary row gets a real icon; slide rows use thumbnails instead.
   const ordinaryRows = contents.locator(".doc-row > .doc-link");
   await expect(ordinaryRows.locator(":scope > svg.i")).toHaveCount(await ordinaryRows.count());

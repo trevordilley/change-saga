@@ -132,6 +132,14 @@ baseline commit.
 
 ## Investigate at the maturity the repository supports
 
+When the task is to describe implemented features, create or update actual
+feature stories in Saga Product records through the public CLI. Inspect existing
+stories before adding new ones. Keep user outcomes and observable acceptance
+criteria there; a feature or story list embedded in a technical deck does not
+fulfill this task. Deck Items reference the real stories and explain their
+technical mechanisms. Code-derived stories remain proposals unless the user
+has confirmed their intent.
+
 Where implementation exists, validate the supplied stories first and trace
 each claimed feature end to end through entry points, authorization, domain
 logic, state, persistence, integrations, background work, output, and failure

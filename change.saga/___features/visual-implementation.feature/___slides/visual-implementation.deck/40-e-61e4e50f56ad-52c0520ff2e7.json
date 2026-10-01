@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
       "path": "internal/cli/slides.go",
-      "start": 177,
-      "end": 219,
-      "digest": "sha256:fa9e71da3be5992a77bdca58dcdcf01b29a59dd5da378e0c1e901b558f8d8707",
+      "start": 179,
+      "end": 226,
+      "digest": "sha256:4a815fefd1d53457769a417e8151e43957d783393791cf884dadc69227ab3241",
       "note": "Parses and validates slide intent, layout, media, density, entrypoint, and source before any slide record is authored."
     }
   ]

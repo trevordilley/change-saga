@@ -2,12 +2,12 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
       "path": "internal/server/navigation.go",
       "start": 125,
       "end": 153,
-      "digest": "sha256:a3a56e898f70d37a089fc0dcc19cb60c64a0e340ececd4619cc848bc30029271",
-      "note": "Opening Implementation resolves directly to the first slide of the feature deck."
+      "digest": "sha256:794f6b460a46c1db022e6eef8b7ea12900a3635dd9e3d39f1919b044e7d2a056",
+      "note": "Opening Technical resolves directly to the first slide of the feature deck."
     }
   ]
 }

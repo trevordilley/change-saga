@@ -12,13 +12,74 @@ Every deck has a Deck -> Slide -> Item spine. A feature's single living
 implementation deck explains the domain's current implementation. Update its
 affected slides rather than creating one deck per change. A pull-request review
 deck explains a transition and its reasoning. An onboarding deck teaches the
-app without owning code. Requirements, prototypes, and design are not slides.
+app without owning code. Requirements, prototypes, and design are not slides. Requests to describe
+implemented features belong in actual Product story records (see
+[stories.md](stories.md)); deck Items may reference those stories.
+
+Every deck has an Overview: an authored report combining explanation, tables,
+and visualizations. A Technical deck's overview is the detailed implementation
+strategy and technical design document that its slides make digestible through
+diagrams and explanation. Explain responsibilities, data models, execution
+paths, invariants, failure handling, and tradeoffs with enough depth to work on
+the implementation.
+A slide tour or reading guide does not replace this technical account.
+Every slide has a short bullet-summary Front and a visual
+Back. Keep precise evidence on stable Back Items. Overview citations name a
+slide and optionally an Item, so code, diffs, and stories are reached through
+that slide. Reference every slide from the authored Overview. That coverage
+check is separate from exact code coverage: a citation never covers an
+otherwise unexplained code line. Legacy decks remain readable with a generated
+directory and summary fallback, but that directory is not authored coverage.
+Use the installed CLI help and spec for the overview and Front authoring
+commands and field limits. Publish a deck report with `change-saga deck overview
+--deck DECK --file overview.json change.saga`, or `--review ID` for a review;
+use `deck overview --deck DECK --check change.saga` to require authored coverage.
+The JSON body uses `[label](annotation:ID)` citations and
+`![diagram](slide:SLIDE_ID)` to reuse a same-deck visual. Each annotation is
+`{"id":"ID","label":"label","slide":"SLIDE_ID","item":"ITEM_ID"}`; `item`
+is optional. Only citations actually present in rendered report content earn
+overview coverage, never unused definitions or example text in a code block.
+Supply `slide.front` as a list of summary bullets in complete-slide requests.
 
 Chapters, sections, and fragments carry longer design notes, overviews, and
 walkthroughs. Use Markdown to orient and connect visual artifacts, not as the
 default container. A substantial chapter should lead with a diagram,
 interactive walkthrough, or concrete before/after example and state its
 boundary, invariants, decisions, risks, compatibility concerns, and proof.
+
+## Make the depth readable
+
+These principles apply to the in-depth Back of every deck: implementation,
+review, and onboarding. Keep the Front simple and high-level, like a flash
+card: a few short bullets with the main idea and takeaway.
+
+- Make group membership explicit. Use the slide API's groups, regions, and
+  sections to separate responsibilities, system boundaries, or segments of a
+  flow. In diagram source, use `group` elements with `section`, `boundary`, or
+  `rect` shapes and nest related elements inside them. Combine labeled frames,
+  spacing, and consistent color so readers can see what belongs together and
+  what belongs in a different group. Color should reinforce labeled structure.
+- Keep visual meaning consistent across the deck. Give recurring domains the
+  same colors and styles on each slide; use a compact labeled key when helpful.
+  Distinguish systems with named boundaries, suitable shapes and icons, and
+  clear heading hierarchy. Readers should recognize the areas and their roles
+  at a glance. Use the audience's product terms consistently in labels.
+- Make flows explicit. Label arrows with what moves or happens, and show where
+  they cross system boundaries. Separate materially different paths, such as
+  success and failure or alternate branches of a decision. Show an intentional
+  absence when it matters to the explanation, such as "no further action",
+  so readers can distinguish a completed path from an omitted one.
+- Put useful text on the slide. Sentences, short paragraphs, and descriptions
+  beside the elements they explain help readers understand responsibilities,
+  behavior, reasons, and consequences. Text arranged within a slide's visual
+  structure is easier to absorb than a large undifferentiated document block.
+  Keep the explanation needed to understand the slide visible; use hover notes
+  for supplemental depth.
+- Aim for clarity and understanding of the system. Give readers enough detail
+  to explain how the parts interact, what happens along the important paths,
+  and why the design works this way. Organize detail with headings, sections,
+  and readable text; split a crowded slide into connected slides when needed.
+  Preserve the explanation when simplifying the layout.
 
 ## Storyboard before drawing
 
@@ -71,7 +132,18 @@ diagram icons`.
   `boundary`, `triangle`, `hexagon`, `parallelogram`, `document`, `cloud`,
   `actor`, `queue`, `circle`, `star`, or `entity`), `edge` (`from`/`to` nodes
   plus explicit `points` or `path`), `text`, `group`, `graphic`
-  (allowlisted SVG drawing markup), `sticky`, and `annotation` (below).
+  (allowlisted SVG drawing markup), `sticky`, `annotation` (below), and `code`
+  (literal API or library usage examples).
+- Use a `code` element when the reviewer needs to see how an API or library is
+  invoked. Supply literal `code`, an optional `language` display label,
+  `line_numbers`, and `highlight_lines` (unique 1-based line numbers). Keep the
+  example focused and place it in explicit `x`, `y`, `width`, and `height` bounds.
+  The default `code` style is 18px Go Mono. Indentation and blank lines are
+  preserved, tabs use four-column stops, and overflow is refused; source never
+  wraps, shrinks, or executes. The bounds are 16,000 characters and 100 lines.
+  Select the element with an `example` Item and attach real exact evidence to
+  that Item; a displayed snippet is not itself code coverage.
+
 - Pick a shape for what a node is: `actor` for a person or external role,
   `queue` for a queue or stream, `document` for a file or report, `cloud` for
   an external or hosted system, `datastore` for storage. The shapes from
@@ -295,7 +367,17 @@ one surprise:
 After publishing, cover each Item's code with `change-saga cover --target
 ITEM-URN --path PATH --changed-lines` (cover a surprise's actual behavior,
 such as the expiry setting, from its callout); that coverage stays attached across
-later revisions and diagram edits. A revision that drops a covered Item is
+later revisions and diagram edits. A callout's own evidence must include the
+code that decides the behavior it states, where the outcome is determined,
+not just code nearby: "a receiver given a release without X fails promotion"
+cites the release validation that rejects such a release first, if one does,
+even when another Item on the slide covers it. `review list --review ID`
+marks a surprise with no code evidence.
+
+Edge descriptions and notes make claims too, and carry no evidence of their
+own. State only what the connected elements' Items show; a claim beyond them
+("only a validated runtime reaches a receiver" when validation checks the
+whole package) belongs on an Item that covers the code, or should be cut. A revision that drops a covered Item is
 refused until its coverage is removed. Read review slides with `diagram
 describe` or `query slide`, and check them with `diagram check` and
 `visual-qa --review ID`.
@@ -331,7 +413,8 @@ failure or recovery behavior.
 
 For each material surprise, show expectation, actual behavior, rationale, and
 consequence together. Attach a callout Item to the responsible visual element
-and give the actual behavior and consequence exact evidence; an element
+and give the actual behavior and consequence exact evidence from the code that
+decides them; an element
 `note` is optional detail a reader has to seek out, never the place for a
 surprise. Ground the
 contrast in source material or a plausible reviewer mental model. Do not
@@ -345,10 +428,13 @@ and verification instead.
    comparison.
 2. **Relationship:** every relationship essential to the takeaway is encoded
    as an edge, boundary, lane, nesting, cardinality, axis, or transition.
-3. **Surprise:** a reviewer can name the system model, highest-consequence
-   deviation, its reason, and its tradeoff.
-4. **Contact sheet:** repeated visual grammar represents the same underlying
-   relationship; unrelated slides have not collapsed into identical cards.
+3. **Understanding:** the visible diagram and text let a reader explain the
+   system's groups, responsibilities, and interactions. When there is a
+   surprise, they can name the highest-consequence deviation, its reason,
+   and its tradeoff.
+4. **Contact sheet:** recurring domains retain their colors, labels, and styles;
+   repeated visual grammar represents the same underlying relationship.
+   Unrelated slides have not collapsed into identical cards.
 
 Run these before chasing coverage. Coverage cannot rescue a generic visual.
 
@@ -436,6 +522,17 @@ command where possible. Use `unverified` when it was not checked. Claims and
 results are append-only.
 
 ## Handoff checks
+
+Check every sentence before handing off a deck; no command reads the prose,
+so `check`, `validate`, `diagram check`, and `visual-qa` all pass a deck
+whose sentences are wrong. Give a fresh-context reader, ideally a sub-agent
+that did not write the deck, each slide's `diagram describe`. It reads every
+takeaway, Item description, callout body, edge description, and note against
+the code that Item lists (`path:start-end` under each Item) and the code the
+claim depends on: what runs before or after it, validation, and error paths.
+It flags each sentence that is false, overstated ("each artifact" when one is
+connected), or unverifiable from the code, and the author revises it with
+`diagram edit` or `apply-slide`.
 
 Read the deck in order without relying on author knowledge. Confirm its visual
 forms and four audits, exact evidence, useful collapsed-file notes, current

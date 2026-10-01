@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 170,
+      "end": 178,
+      "digest": "sha256:cea646bcfdc20f85b28e794436f8f84a271541277636f7915a533820a91553c5",
+      "note": "Bodiless repeats and withdrawals with no held decision return the current outcome without appending an event."
+    }
+  ]
+}

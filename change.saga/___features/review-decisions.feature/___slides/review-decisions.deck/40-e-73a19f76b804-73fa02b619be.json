@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/reviewstore/reviewstore.go",
-      "start": 133,
-      "end": 157,
-      "digest": "sha256:e69ea7a9ed1a415a2d52befd32bb17e9f8578ee310d491a43822081a99d43051",
+      "start": 153,
+      "end": 186,
+      "digest": "sha256:9204cd3b107c2b87ae8668429b27049d6162295265a4f3ec6ed7fbb875dc1c72",
       "note": "Under the writer lock, resolve the canonical slide, recheck the current range and shown slide/source snapshot, then capture the slide digest. Approval belongs to the slide and does not approve Item evidence."
     },
     {

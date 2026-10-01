@@ -1,0 +1,38 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "integration-review-features",
+  "term": "urn:change-saga:change-saga:term:review",
+  "parents": [
+    "urn:change-saga:change-saga:term:review:revision:r1"
+  ],
+  "name": "Review",
+  "definition": "A pull request's change-specific slide deck, bound to its base and followed head until merge. Its Items explain changed code. Decisions belong to review slides; comments belong to review slides, Items, or code lines, with unowned code-line threads targeting the review itself. Feature implementation decks remain ordinary documentation.",
+  "definition_maturity": "unknown",
+  "implementation_evidence": "unknown",
+  "aliases": [
+    "pull-request review",
+    "PR review"
+  ],
+  "stories": [
+    "urn:change-saga:change-saga:story:contextual-comments",
+    "urn:change-saga:change-saga:story:review-decision"
+  ],
+  "code": [
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/saga/review.go",
+      "start": 19,
+      "end": 30,
+      "digest": "sha256:3d1a158507af292d421874757bcfa3c9f5f4f7aaa12703e7fe0655f0c99d4771"
+    },
+    {
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+      "path": "internal/saga/review.go",
+      "start": 64,
+      "end": 82,
+      "digest": "sha256:860fed51c6f14a79bc659a9a050beb6d83024fa8bed51abcd25f420897ee5de5"
+    }
+  ],
+  "created_at": "2026-09-30T15:38:23.788245Z"
+}

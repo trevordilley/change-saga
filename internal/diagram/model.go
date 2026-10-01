@@ -40,7 +40,7 @@ var (
 	identifier    = regexp.MustCompile(`^[a-z][a-z0-9-]{0,63}$`)
 	colorPattern  = regexp.MustCompile(`^(#[a-fA-F0-9]{6}|none)$`)
 	reservedID    = "diagram-"
-	elementKinds  = map[string]bool{"node": true, "edge": true, "text": true, "group": true, "graphic": true, "sticky": true, "annotation": true}
+	elementKinds  = map[string]bool{"node": true, "edge": true, "text": true, "group": true, "graphic": true, "sticky": true, "annotation": true, "code": true}
 	nodeShapes    = map[string]bool{"service": true, "datastore": true, "decision": true, "rect": true, "ellipse": true, "boundary": true}
 	frameShapes   = map[string]bool{"rect": true, "boundary": true, "section": true}
 	textAlignment = map[string]bool{"": true, "start": true, "middle": true, "end": true}
@@ -102,21 +102,25 @@ type Element struct {
 	Decorative  bool    `json:"decorative,omitempty"`
 	// Connector fields: an edge's start marker, its end labels, and how its
 	// line is drawn. Head takes the same terminator vocabulary as Tail.
-	Tail         string `json:"tail,omitempty"`
-	TailLabel    string `json:"tail_label,omitempty"`
-	TailLabelBox *Box   `json:"tail_label_box,omitempty"`
-	HeadLabel    string `json:"head_label,omitempty"`
-	HeadLabelBox *Box   `json:"head_label_box,omitempty"`
-	Curve        string `json:"curve,omitempty"`
-	Line         string `json:"line,omitempty"`
-	Fields       Fields `json:"fields,omitempty"`
-	FromField    string `json:"from_field,omitempty"`
-	ToField      string `json:"to_field,omitempty"`
-	Color        string `json:"color,omitempty"`
-	About        string `json:"about,omitempty"`
-	Target       *Point `json:"target,omitempty"`
-	Side         string `json:"side,omitempty"`
-	Step         int    `json:"step,omitempty"`
+	Tail           string `json:"tail,omitempty"`
+	TailLabel      string `json:"tail_label,omitempty"`
+	TailLabelBox   *Box   `json:"tail_label_box,omitempty"`
+	HeadLabel      string `json:"head_label,omitempty"`
+	HeadLabelBox   *Box   `json:"head_label_box,omitempty"`
+	Curve          string `json:"curve,omitempty"`
+	Line           string `json:"line,omitempty"`
+	Fields         Fields `json:"fields,omitempty"`
+	FromField      string `json:"from_field,omitempty"`
+	ToField        string `json:"to_field,omitempty"`
+	Color          string `json:"color,omitempty"`
+	About          string `json:"about,omitempty"`
+	Target         *Point `json:"target,omitempty"`
+	Side           string `json:"side,omitempty"`
+	Step           int    `json:"step,omitempty"`
+	Code           string `json:"code,omitempty"`
+	Language       string `json:"language,omitempty"`
+	LineNumbers    bool   `json:"line_numbers,omitempty"`
+	HighlightLines []int  `json:"highlight_lines,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
@@ -144,6 +148,7 @@ func DefaultStyles() map[string]Style {
 		"boundary":  {Fill: "@diagram-boundary-fill", Stroke: "@diagram-boundary-stroke", Ink: "@diagram-secondary-ink", StrokeWidth: 1, FontSize: 18, Dash: true},
 		"title":     {Fill: "none", Stroke: "none", Ink: "@diagram-title-ink", StrokeWidth: 1, FontSize: 34},
 		"caption":   {Fill: "none", Stroke: "none", Ink: "@diagram-secondary-ink", StrokeWidth: 1, FontSize: 15},
+		"code":      {Fill: "@diagram-normal-fill", Stroke: "@diagram-normal-stroke", Ink: "@diagram-normal-ink", StrokeWidth: 1, FontSize: 18},
 	}
 }
 
@@ -266,7 +271,7 @@ func (d Document) Validate() error {
 	for _, e := range d.Elements {
 		fail := func(format string, args ...any) { add("%s: "+format, append([]any{e.ID}, args...)...) }
 		if !elementKinds[e.Kind] {
-			fail("unsupported kind %q (use node, edge, text, group, graphic, sticky, or annotation)", e.Kind)
+			fail("unsupported kind %q (use node, edge, text, group, graphic, sticky, annotation, or code)", e.Kind)
 			continue
 		}
 		if _, ok := d.Style(e.Style); !ok {
@@ -319,6 +324,7 @@ func (d Document) Validate() error {
 			fail("edge fields (from, to, points, path, head) are only valid on edges")
 		}
 		validateConnector(e, fail)
+		validateCode(e, fail)
 		if e.Kind != "graphic" && e.Fragment != "" {
 			fail("fragment is only valid on graphics")
 		}
@@ -453,13 +459,14 @@ func Contract() map[string]any {
 		"default_styles": styles,
 		"colors":         "a style colour, and the background, is #rrggbb, none, or a colour token from change-saga spec's theme written @name (such as @diagram-primary-fill or @accent); a token follows light and dark mode and a theme, a hex colour stays as authored; the default styles, palette, and the default background (#fafaf8) paint with diagram tokens",
 		"color_tokens":   colorTokenNames(),
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step"},
+		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines"},
 		"reveal_modes":   RevealModes(),
 		"terminators":    TerminatorNames(),
 		"operations":     OperationNames,
 		"font":           FontPath,
 		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes, "note_runes": MaxNoteRunes},
 		"entity":         entityContract(),
+		"code":           codeContract(),
 		"reveal":         "an optional document reveal (\"reveal\": \"fade\") fades the drawing in step by step when a reader opens its slide; an element's optional integer step (1-" + fmt.Sprint(MaxRevealStep) + ") orders it, defaulting to its reading order among semantic elements; equal steps appear together",
 		"note_format":    "an optional Markdown note on any semantic element, shown when a reader hovers, focuses, or taps it: " + NoteFormat + "; no raw HTML",
 		"rules": []string{

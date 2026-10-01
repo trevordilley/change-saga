@@ -784,7 +784,7 @@ func currentSlideRequest(document *saga.Saga, slide *saga.Slide) (SlideTransacti
 		Version: saga.SlideTransactionVersion, Operation: "update", Deck: deck.ID, ExpectedSnapshot: revision.Snapshot,
 		Slide: SlideTransactionSlide{
 			ID: value.ID, Title: value.Title, Rank: value.Rank, Section: value.Section, Intent: value.Intent, Layout: value.Layout,
-			MediaType: value.MediaType, Takeaway: value.Takeaway, ReadingOrder: append([]string{}, value.ReadingOrder...), ExceptionRationale: value.ExceptionRationale,
+			MediaType: value.MediaType, Front: append([]string(nil), value.Front...), Takeaway: value.Takeaway, ReadingOrder: append([]string{}, value.ReadingOrder...), ExceptionRationale: value.ExceptionRationale,
 		},
 		Items: []SlideTransactionItemRequest{},
 	}

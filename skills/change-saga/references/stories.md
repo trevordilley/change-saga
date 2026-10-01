@@ -4,6 +4,16 @@ Read this reference for personas, stories, criteria, requirement citations,
 relations, or lifecycle changes. Read [query.md](query.md) first for an
 existing Saga. Discover exact mutation syntax from the installed CLI.
 
+## Document implemented features as Product stories
+
+A request to describe implemented features authorizes creating or updating the
+actual feature story records at the requested scope. Query the existing
+features, personas, and stories first; reuse their stable identities and revise
+existing wording when appropriate. Inspect code to substantiate behavior,
+record observable criteria, and keep inferred intent proposed. Technical decks
+explain mechanisms and reference these records through their Items. Do not
+replace Product records with a feature catalog or story list in a deck.
+
 ## Ground the interview before drafting
 
 This applies to candidate stories in conversation, not only persisted records.

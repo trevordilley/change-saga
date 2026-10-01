@@ -48,6 +48,7 @@
         "intent": {"enum": ["orient", "explain", "compare", "trace", "prove", "risk", "conclude"]},
         "layout": {"enum": ["hero", "diagram", "before-after", "sequence", "evidence", "risk", "custom"]},
         "media_type": {"enum": ["image/svg+xml", "image/png", "image/jpeg", "image/webp", "text/html"]},
+        "front": {"type": "array", "items": {"type": "string", "minLength": 1, "pattern": "\\S"}},
         "takeaway": {"type": "string", "minLength": 1, "maxLength": 180},
         "reading_order": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/lowerId"}},
         "exception_rationale": {"type": "string"}

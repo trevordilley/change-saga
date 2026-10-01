@@ -2,19 +2,19 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/server/reviewasync.go",
-      "start": 88,
-      "end": 106,
-      "digest": "sha256:2f618e4673d109afd3bde7c8adadf35152e617e2d9a7dfd1d8c39290c280861f",
+      "start": 90,
+      "end": 116,
+      "digest": "sha256:f2e3f4f2b8d7c5efb568cbb16f3fd4d3df48fe69f0a811969b9caac37b9103cb",
       "note": "A JSON receipt confirms the event ID and canonical target. Authoritative decisions, thumbnails, and threads update in place without rebuilding code or coverage HTML or navigating the slide iframe. Annotation projection uses a separate read."
     },
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
       "path": "internal/server/reviewasyncjs.go",
       "start": 41,
-      "end": 85,
-      "digest": "sha256:6471b323162ce94715750accba67ab9eef2a494040e9f97bc179ce596ba2313b",
+      "end": 92,
+      "digest": "sha256:03fedd54f3f19228f1685168ca46ceb1074388e650bf19f2d6cd740090de3520",
       "note": "A JSON receipt confirms the event ID and canonical target. Authoritative decisions, thumbnails, and threads update in place without rebuilding code or coverage HTML or navigating the slide iframe. Annotation projection uses a separate read."
     }
   ]

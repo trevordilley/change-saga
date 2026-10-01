@@ -280,13 +280,32 @@ func reviewDecide(ctx context.Context, name, state string, args []string, out io
 	if err != nil {
 		return err
 	}
-	approval, err := reviewstore.Decide(root, reviewstore.Decision{Review: *reviewID, Slide: *slide, State: state, Reviewer: identity, Commit: head, Body: *body})
+	outcome, err := reviewstore.Record(root, reviewstore.Decision{Review: *reviewID, Slide: *slide, State: state, Reviewer: identity, Commit: head, Body: *body})
 	if err != nil {
 		return err
 	}
-	relative := relativeToSaga(root, approval.Path)
+	approval := outcome.Approval
+	relative := ""
+	if approval.Path != "" {
+		relative = relativeToSaga(root, approval.Path)
+	}
 	if *jsonOutput {
-		return writeLivingMutation(out, name, approval.ID, relative, []string{approval.ID}, []string{approval.ID}, false, true)
+		created, events := []string{}, []string{}
+		if approval.ID != "" {
+			events = []string{approval.ID}
+		}
+		if outcome.Recorded {
+			created = events
+		}
+		return writeLivingMutation(out, name, approval.ID, relative, created, events, !outcome.Recorded, true)
+	}
+	if !outcome.Recorded {
+		if approval.ID == "" || approval.State == saga.ApprovalNone {
+			fmt.Fprintf(out, "Slide %s of review %s has no decision to withdraw; nothing recorded\n", *slide, *reviewID)
+			return nil
+		}
+		fmt.Fprintf(out, "Slide %s of review %s is already %s by this reviewer at %s; nothing recorded\nRecord: %s\n", approval.Slide, *reviewID, strings.ReplaceAll(approval.State, "_", " "), shortOID(head), relative)
+		return nil
 	}
 	verb := map[string]string{saga.ApprovalApproved: "Approved", saga.ApprovalChangesRequested: "Requested changes on", saga.ApprovalNone: "Withdrew the decision on"}[state]
 	fmt.Fprintf(out, "%s slide %s of review %s at %s\nRecord: %s\n", verb, approval.Slide, *reviewID, shortOID(head), relative)
@@ -604,11 +623,20 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []r
 		}
 		printReviewCoverage(out, report.Coverage, repairFor(repairs, report.ID))
 		if len(report.Slides) > 0 {
-			callouts := 0
+			callouts, unbacked := 0, 0
 			for _, slide := range report.Slides {
 				callouts += len(slide.Callouts)
+				for _, callout := range slide.Callouts {
+					if callout.References == 0 {
+						unbacked++
+					}
+				}
 			}
-			fmt.Fprintf(out, "  surprises called out: %d\n", callouts)
+			fmt.Fprintf(out, "  surprises called out: %d", callouts)
+			if unbacked > 0 {
+				fmt.Fprintf(out, " (%d with no code evidence; cover the code that decides each from its callout)", unbacked)
+			}
+			fmt.Fprintln(out)
 		}
 		printLineThreads(out, report)
 		if len(report.Slides) == 0 {
@@ -617,7 +645,11 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report, repairs []r
 		for _, slide := range report.Slides {
 			fmt.Fprintf(out, "  slide %s: %s\n", slide.ID, slide.Title)
 			for _, callout := range slide.Callouts {
-				fmt.Fprintf(out, "    surprise %s: %s\n", callout.Label, callout.Body)
+				marker := ""
+				if callout.References == 0 {
+					marker = " (no code evidence)"
+				}
+				fmt.Fprintf(out, "    surprise %s%s: %s\n", callout.Label, marker, callout.Body)
 			}
 			if len(slide.Decisions) == 0 {
 				fmt.Fprintln(out, "    no decision")

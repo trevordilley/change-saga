@@ -93,7 +93,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "apply-slide", "diagram", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"theme", "serve", "open", "install-skill", "spec",
 }
@@ -173,6 +173,8 @@ var commandUsage = map[string]string{
 	"quality evidence add":        "change-saga quality evidence add --test URN --role ROLE (--code LOCATION... | --verification URN... | --citation URN...) [--test-revision URN] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
 	"quality run":                 "change-saga quality run record [flags] <saga>",
 	"quality run record":          "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
+	"deck":                        "change-saga deck overview [flags] <saga>",
+	"deck overview":               "change-saga deck overview (--deck TARGET | --review ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
 	"add-deck":                    "change-saga add-deck (--feature ID | --role onboarding) [flags] <saga> <name>",
 	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"apply-slide":                 "change-saga apply-slide (--from FILE|- [--review ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID]) <saga>",
@@ -280,7 +282,10 @@ Growing the Saga, if and when the team wants it (never required):
   documents each app through its own features. Every link is pinned, so when a
   story or the code changes, whatever relied on the old version goes visibly
   stale. "setup-initial-saga" guides a first pass; or take one step at a time:
-  - Implementation: for an implementation change, "add-deck", "add-slide", and
+  - Product intent: requests to describe implemented features should create or
+    update actual Product feature story records with story add/revise. Preserve
+    grounded intent; technical decks reference those stories and explain mechanisms.
+  - Technical: for an implementation change, "add-deck", "add-slide", and
     "add-item" explain it in a feature's implementation deck, and "cover"
     references every changed line from the Item that explains it. The first
     command that needs a feature creates one named after the branch (or pass
@@ -432,12 +437,14 @@ var commandDescription = map[string]string{
 	"plan assign":                 "Bind a work item to a concrete workspace and branch so progress can be shown in the\nlive Saga. Assignment is coordination state, not evidence of implementation.",
 	"plan progress":               "Append explicit workspace progress against the item. Progress helps coordination but\nnever proves correctness, acceptance-criterion coverage, or delivery.",
 	"plan record-merge":           "Append merge evidence for a declared merge unit. A merged state contributes delivery\nevidence only when its immutable commit and diff links resolve.",
-	"add-deck":                    "Add an implementation deck. The implementation decks are the Saga's Implementation\nsection; split the delivered change into decks only where a concern warrants its own review.",
+	"deck":                        "Author a deck overview report with references to its existing slides and Items.",
+	"deck overview":               "Replace a deck overview from a JSON object with body (Markdown) and annotations\n([{id,label,slide,item?}]). Cite annotations with [label](annotation:ID); every slide\nshould be referenced. Missing slide coverage warns; broken or cross-deck references\nfail before writing. References navigate existing evidence and never add code coverage.\n--check checks authored every-slide citation coverage (exit 3 for gaps, 1 for errors).\nUse ![alt](slide:SLIDE_ID) to reuse an existing same-deck image asset.",
+	"add-deck":                    "Add an implementation deck. The implementation decks appear in the Saga's Technical\nsection; split the delivered change into decks only where a concern warrants its own review.",
 	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"apply-slide":                 "Publish one complete implementation or review slide from structured JSON: its visual asset or a\n\"diagram\" source the CLI renders to SVG, semantic Items and selectors, exact code evidence,\nand pinned Item-level criterion links. With --review (or \"review\" in the request) the slide\ngoes to that pull request review's deck; its Items carry no evidence and are covered after\npublishing with cover --changed-lines. --dry-run returns the same semantic diff without\npublishing; updates require the current snapshot. --print-current SLIDE prints the slide's\ncomplete current request (expected_snapshot and a fresh request_id filled in) to edit and\napply, so changing one field never means rebuilding the slide. SLIDE is an ID, target, or\nrecord path; an ID slides of several decks share must be given as its target, and a review\nslide's ID needs --review. An update identical to the current revision publishes nothing and\nreports the slide unchanged.",
 	"diagram":                     "Edit and check diagram-sourced slides of implementation and review decks. A diagram is an\nordered list of explicitly positioned nodes, edges, text, groups, and graphics; the CLI\nrenders it to the slide's SVG. Read any slide compactly with `change-saga diagram describe`;\nname a review slide by its URN or with --review.",
 	"diagram edit":                "Apply a JSON array of operations (add, update, move, remove, style, align, distribute,\ncanvas) to a slide's diagram at an exact snapshot and republish it through apply-slide,\nkeeping its Items, evidence, and criterion links. Nothing moves unless named: moving a\nnode leaves its edges where they are. [] re-renders the unchanged source.",
-	"diagram describe":            "Read one slide compactly: its takeaway, Items in reading order with evidence and\ncriterion-link counts, and, for a diagram-sourced slide, its groups, nodes, edges, and\ncontainment in document order. Geometry, styling, decorative elements, and asset bytes are\nomitted, so the view cannot rebuild the drawing. Text by default; --format json for tools.",
+	"diagram describe":            "Read one slide compactly: its takeaway, Items in reading order with their first code\nreferences (path:start-end, old side marked, and note; the rest counted) and criterion-link\ncounts, and, for a diagram-sourced slide, its groups, nodes, edges, and\ncontainment in document order. Geometry, styling, decorative elements, and asset bytes are\nomitted, so the view cannot rebuild the drawing. Text by default; --format json for tools.",
 	"diagram get":                 "Return one diagram element's complete stored properties, resolved style, and selector,\nwith the snapshot to pass to diagram edit --expected.",
 	"diagram icons":               "List the bundled Lucide icons a diagram element may name in \"icon\"; --query matches names and search tags.",
 	"diagram check":               "Re-render each diagram-sourced slide with this binary and report any whose published\nSVG differs from its source. Exits 3 when one is stale; repair with an empty diagram edit.\nA merged review's slides are history: checked only when named (--review or --slide), and\nthen reported without affecting the exit code.",
@@ -492,7 +499,7 @@ untouched.`,
 	"verify-claim":     "Append an independent verification result without rewriting the claim or prior results.",
 	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL. Without --against it observes the app at --head: every\nnode current and stale references as health warnings; a node's history links to the reviews\nthat changed it. With --against it compares what --head changes since their merge-base, the\nway a pull request does, and shows the Changed, Affected, and Code layers read-only beside the\npull request's review, where approvals happen. Documentation has no approval or comment\ncontrols in either mode.",
 	"serve":            "Serve the saga on loopback for review. Detached instances are managed with\nchange-saga serve status [SAGA] and change-saga serve stop [SAGA].",
-	"install-skill":    "Print the agent-agnostic prompt that installs the change-saga authoring skill.\nPipe it to a coding agent; it neither writes to this repository nor creates a saga.",
+	"install-skill":    "Print the agent-agnostic prompt that installs the change-saga authoring skill\nand change-saga-context reading skill. Pipe it to a coding agent; it neither\nwrites to this repository nor creates a saga.",
 	"validate":         "Check the format and authoring completeness, including a warning for every Markdown\nfootnote without an evidence-bearing exact-text landmark. --fix adds missing stable\nheading anchors and changes nothing else.",
 }
 
@@ -1366,6 +1373,15 @@ func Spec(args []string, out io.Writer) error {
 				"slides":          "apply-slide --review publishes a complete review slide (a diagram source or a visual) with the implementation deck's transaction; its Items carry no evidence or criterion links, and cover --changed-lines covers them after publishing",
 			},
 			"theme": theme.Contract(),
+			"deck_overview": map[string]any{
+				"authoring":     "deck overview (--deck TARGET | --review ID) (--file JSON [--dry-run] | --check) [--json] <saga>",
+				"fields":        "overview: {body: Markdown, annotations?: [{id, label, slide, item?}]}; slide front?: [summary bullets]",
+				"visual":        "![alt](slide:SLIDE_ID) or ![alt](slide:FULL_SLIDE_URN); reuse same-deck SVG/PNG/JPEG/WebP asset",
+				"citation":      "[label](annotation:ID); slide is a same-deck ID or full URN, item is an optional local ID or same-slide full URN",
+				"coverage":      "every slide should have an actually cited annotation; missing overview and uncovered slides warn; invalid references error; no code coverage credit",
+				"fallback":      "explicitly generated slide directory; front falls back to takeaway then Item labels; entrypoint remains Back",
+				"compatibility": "optional fields need no migration; tolerant older readers ignore them, strict older readers reject them",
+			},
 			"implementation_deck": map[string]any{
 				"storage": applayout.FeaturesDir + "/<feature>" + applayout.FeatureSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
 				"categories":     map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
@@ -1378,6 +1394,7 @@ func Spec(args []string, out io.Writer) error {
 					"logic-flow": "predicates, branches, joins, loops, and outcomes", "before-after": "matched axes and the meaningful delta",
 					"failure-path": "trigger, propagation, containment, cleanup, recovery, and outcome", "evidence": "claims or risks connected to tests, measurements, or observations",
 				},
+				"product_intent": "describe implemented features with real Product feature story add/revise records; technical decks reference those stories and explain mechanisms, not substitute story catalogs",
 				"editorial_goal": "establish the system model, then maximize reviewer information gain by surfacing consequential surprises",
 				"surprise_contract": map[string]any{
 					"sequence":             []string{"reasonable expectation", "actual behavior", "rationale", "consequence"},
@@ -2044,7 +2061,7 @@ const defaultHTMLFragment = `<!doctype html>
 // installSkillPreamble tells the agent how to install the skill files that
 // follow it. The files are the skills package's embedded copies, so the
 // installed skills and the repository's reference skills are the same bytes.
-const installSkillPreamble = `Install or update a project-local agent skill named "change-saga" using this coding agent's native skill mechanism. Do not create a Change Saga as part of installation. Each file header begins with the skill directory and then the path relative to it. Write every file exactly as given: SKILL.md is the skill's entrypoint, agents/openai.yaml carries its interface metadata, and SKILL.md links to its files under references/.
+const installSkillPreamble = `Install or update two project-local agent skills named "change-saga" and "change-saga-context" using this coding agent's native skill mechanism. Keep them separately discoverable: change-saga-context reads existing documentation during everyday work; change-saga authors documentation when requested or near the end of the work. Do not create a Change Saga as part of installation. Each file header begins with the skill directory and then the path relative to it. Write every file exactly as given: SKILL.md is each skill's entrypoint, agents/openai.yaml carries its interface metadata, and supporting references are included where used.
 `
 
 // installSkillFileHeader introduces one skill file in the install-skill prompt.
@@ -2055,6 +2072,10 @@ func installSkillPrompt() string {
 	prompt.WriteString(installSkillPreamble)
 	for _, file := range skills.ChangeSaga() {
 		fmt.Fprintf(&prompt, installSkillFileHeader, "change-saga/"+file.Path)
+		prompt.WriteString(file.Content)
+	}
+	for _, file := range skills.ChangeSagaContext() {
+		fmt.Fprintf(&prompt, installSkillFileHeader, "change-saga-context/"+file.Path)
 		prompt.WriteString(file.Content)
 	}
 	return prompt.String()
@@ -2081,6 +2102,25 @@ records. Basenames are at most 64 characters and the default portability
 budget is 240 characters for an absolute path. Each slide owns one
 self-contained SVG, image, or HTML file sharing its manifest stem. Deck
 evidence may target only Items.
+
+Slides may add front: authored summary bullets; fallback is takeaway then Item
+labels. The existing entrypoint is Back, with the same Items and evidence.
+Decks may add overview: {body, annotations?: [{id, label, slide, item?}]}.
+The body is Markdown with [label](annotation:ID) citations. Annotations name a
+same-deck slide ID or full URN and optionally a local Item ID or same-slide URN.
+Expose references in an accessible list as well as inline. Missing authored
+overviews use an explicitly generated slide directory. Missing overview and
+uncovered slides warn; invalid/broken/cross-deck references error. Overview
+references never add code coverage. Author with deck overview --deck TARGET
+--file JSON <saga> (or --review ID); --check exits 3 for uncovered slides and
+1 for invalid references. Only visible Markdown citations earn coverage;
+code examples and unused definitions do not. Reuse an image slide with
+![alt](slide:SLIDE_ID). Inspect warnings with validate --json.
+Tolerant old readers ignore optional fields; strict old readers reject them.
+
+To describe implemented features, create or update real Product feature stories
+with story add/revise, preserving grounded intent. Technical decks reference
+those stories and explain mechanisms; they do not replace story records.
 
 For authoring, ` + "`intent`" + ` names the reviewer job and ` + "`layout`" + ` names the canvas
 arrangement; neither names the diagram's meaning. Storyboard the specific

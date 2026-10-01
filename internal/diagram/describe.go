@@ -21,16 +21,20 @@ type Summary struct {
 	Icon        string `json:"icon,omitempty"`
 	// An edge's terminators and end labels, when they say more than a plain
 	// arrow: ERD cardinality, UML ends, or a start marker.
-	Tail      string   `json:"tail,omitempty"`
-	Head      string   `json:"head,omitempty"`
-	TailLabel string   `json:"tail_label,omitempty"`
-	HeadLabel string   `json:"head_label,omitempty"`
-	Fields    Fields   `json:"fields,omitempty"`
-	FromField string   `json:"from_field,omitempty"`
-	ToField   string   `json:"to_field,omitempty"`
-	About     string   `json:"about,omitempty"`
-	Members   []string `json:"members,omitempty"`
-	Step      int      `json:"step,omitempty"`
+	Tail           string   `json:"tail,omitempty"`
+	Head           string   `json:"head,omitempty"`
+	TailLabel      string   `json:"tail_label,omitempty"`
+	HeadLabel      string   `json:"head_label,omitempty"`
+	Fields         Fields   `json:"fields,omitempty"`
+	FromField      string   `json:"from_field,omitempty"`
+	ToField        string   `json:"to_field,omitempty"`
+	About          string   `json:"about,omitempty"`
+	Members        []string `json:"members,omitempty"`
+	Step           int      `json:"step,omitempty"`
+	Code           string   `json:"code,omitempty"`
+	Language       string   `json:"language,omitempty"`
+	LineNumbers    bool     `json:"line_numbers,omitempty"`
+	HighlightLines []int    `json:"highlight_lines,omitempty"`
 }
 
 // Omitted names what every reading view leaves out.
@@ -58,7 +62,7 @@ func Describe(d Document, offset, limit int) Description {
 		if e.Decorative {
 			continue
 		}
-		summary := Summary{ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField, About: e.About, Members: sectionMembers(d, e), Step: reveal.step[e.ID]}
+		summary := Summary{ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField, About: e.About, Members: sectionMembers(d, e), Step: reveal.step[e.ID], Code: e.Code, Language: e.Language, LineNumbers: e.LineNumbers, HighlightLines: append([]int(nil), e.HighlightLines...)}
 		if e.Tail != "none" {
 			summary.Tail = e.Tail
 		}
@@ -72,7 +76,7 @@ func Describe(d Document, offset, limit int) Description {
 	return Description{Elements: all[offset:end], Offset: offset, Total: len(all), NextOffset: end, HasMore: end < len(all), Omitted: append([]string{}, Omitted...), Reveal: d.Reveal, Steps: reveal.steps}
 }
 
-var textSections = []struct{ kind, heading string }{{"section", "Sections"}, {"group", "Groups"}, {"node", "Nodes"}, {"edge", "Edges"}, {"text", "Text"}, {"graphic", "Graphics"}, {"note", "Notes"}}
+var textSections = []struct{ kind, heading string }{{"section", "Sections"}, {"group", "Groups"}, {"node", "Nodes"}, {"edge", "Edges"}, {"text", "Text"}, {"code", "Code examples"}, {"graphic", "Graphics"}, {"note", "Notes"}}
 
 // WriteText renders the elements as compact Graphviz-like reading text in
 // sections, preserving document order within each section.
@@ -121,6 +125,15 @@ func (v Description) WriteText(b *strings.Builder) {
 				fmt.Fprintf(b, " step=%d", e.Step)
 			}
 			b.WriteString("\n")
+			if e.Code != "" {
+				fmt.Fprintf(b, "    language: %s\n    code: %s\n", Plain(e.Language), strconv.Quote(e.Code))
+				if e.LineNumbers {
+					b.WriteString("    line_numbers: true\n")
+				}
+				if len(e.HighlightLines) > 0 {
+					fmt.Fprintf(b, "    highlight_lines: %v\n", e.HighlightLines)
+				}
+			}
 			if len(e.Fields) > 0 {
 				b.WriteString("    fields: " + e.Fields.String() + "\n")
 			}
