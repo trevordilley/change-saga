@@ -83,12 +83,16 @@ test("a Saga opens several implementation decks without paginating its documenta
   await expect(unlinkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
   await page.locator(".brand").hover();
   await expect(linkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
-  await linkedItem.click({ position: { x: 8, y: 8 } });
+  const surpriseControl = linkedItem.locator(".surprise-note-trigger");
+  const surpriseDetail = page.locator("#element-note-popover");
+  await surpriseControl.click();
+  await expect(surpriseDetail).toContainText("The implementation follows a non-obvious path.");
+  await surpriseDetail.locator(".diff-button").click();
   const linkedCodeDrawer = page.getByRole("complementary", { name: "Linked code" });
   await expect(linkedCodeDrawer).toHaveAttribute("aria-hidden", "false");
   await expect(linkedCodeDrawer.getByText("src/app.go", { exact: true })).toBeVisible();
   await linkedCodeDrawer.getByRole("button", { name: "Close linked code" }).click();
-  await linkedItem.locator(".diff-button").blur();
+  await surpriseControl.blur();
 
   await expect(linkedItem).toHaveAttribute("data-landmark-has-stories", "false");
   await expect(unlinkedItem).toHaveAttribute("data-landmark-has-stories", "true");
@@ -136,10 +140,10 @@ test("a Saga opens several implementation decks without paginating its documenta
   expect(reload?.status()).toBe(200);
   await waitForSettledSaga(page);
   await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Request enters"]')).toBeVisible();
-  await linkedItem.hover();
-  await expect(linkedItem.locator(".stories-button")).toBeVisible();
-  await expect(linkedItem.locator(".diff-button")).toBeVisible();
-  await linkedItem.locator(".stories-button").click();
+  await surpriseControl.click();
+  await expect(surpriseDetail.locator(".stories-button")).toBeVisible();
+  await expect(surpriseDetail.locator(".diff-button")).toBeVisible();
+  await surpriseDetail.locator(".stories-button").click();
   await expect(storiesDrawer).toHaveAttribute("aria-hidden", "false");
   await expect(storiesDrawer.locator("[data-story-link]")).toHaveCount(1);
   await expect(storiesDrawer.getByText("The source implements this intent.", { exact: true })).toBeVisible();
@@ -149,7 +153,8 @@ test("a Saga opens several implementation decks without paginating its documenta
   await page.screenshot({ path: test.info().outputPath("element-story-links-dark.png") });
   await page.getByRole("button", { name: "Toggle dark mode" }).click();
   await storiesDrawer.getByRole("button", { name: "Close linked stories" }).click();
-  await linkedItem.locator(".diff-button").click();
+  await surpriseControl.click();
+  await surpriseDetail.locator(".diff-button").click();
   await expect(linkedCodeDrawer).toHaveAttribute("aria-hidden", "false");
   await linkedCodeDrawer.getByRole("button", { name: "Close linked code" }).click();
 

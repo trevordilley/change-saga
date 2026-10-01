@@ -28,8 +28,9 @@ Never edit committed saga content to hide a word from the chrome.
   the explanations panel is prose; the chapter eyebrow above it is metadata.
 - Hairline separators instead of cards. No decorative rounding, shadows, or
   oversized headings on ordinary content.
-- Controls stay invisible until the reviewer hovers or focuses the thing they
-  belong to. Content is central and stays central. Slide Items remain reachable
+- Most controls stay invisible until the reviewer hovers or focuses the thing
+  they belong to. Info and surprise buttons remain visible as compact entry
+  points to optional detail. Content is central and stays central. Slide Items remain reachable
   without hover through the marked-places menu, stable permalink, and keyboard
   focus; their on-slide affordances use the same quiet treatment in
   implementation and pull-request decks.
