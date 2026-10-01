@@ -234,7 +234,7 @@ func TestReviewDiffsMatchUncachedGitSemantics(t *testing.T) {
 // Preserve the pre-reuse implementation as a semantic oracle. It deliberately
 // resolves the checkout and reads the patch again for every reference.
 func uncachedReferenceDiff(ctx context.Context, sourceDir string, resolver *coderesolve.Resolver, reference coderef.Reference, rng reviewstate.Range) *reviewDiffView {
-	view := &reviewDiffView{Path: reference.Path, Location: reference.Location().String()}
+	view := &reviewDiffView{Base: rng.BaseOID, Head: rng.HeadOID, Path: reference.Path, Location: reference.Location().String()}
 	start, end := reference.Start, reference.End
 	path := reference.Path
 	atHead := false
