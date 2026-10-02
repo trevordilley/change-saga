@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">How AI reads the Saga</title>
+  <desc id="diagram-desc">Use one CLI entry point to read code, review and product knowledge. Each command returns structured JSON.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-flow-0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="heading" data-diagram-kind="text" transform="translate(50 60)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">How AI reads the Saga</tspan></text>
+  </g>
+  <g id="subheading" data-diagram-kind="text" transform="translate(50 110)" aria-hidden="true">
+    <text x="0" y="18" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="18">One command opens a fresh read. Blue handles the request; green and purple own different data.</tspan></text>
+  </g>
+  <g id="caller" data-diagram-kind="node" transform="translate(60 250)" role="group" aria-label="AI assistant">
+    <desc>Use query help and query schema to discover supported inputs and pagination. Read through these operations so the client does not depend on the Saga storage layout.</desc>
+    <rect width="240" height="190" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="41" font-size="23" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="41">AI assistant</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">Choose a query and read its</tspan><tspan x="18" y="91.75">JSON response.</tspan></text>
+  </g>
+  <g id="query" data-diagram-kind="node" transform="translate(380 205)" role="group" aria-label="Command-line entry">
+    <desc>The CLI checks arguments before opening application state. It emits a versioned success or error envelope, allowing the caller to branch on stable fields instead of parsing prose.</desc>
+    <rect width="320" height="250" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="41" font-size="23" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="41">Command-line entry</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">Check arguments, load Saga state, and</tspan><tspan x="18" y="91.75">route the request.</tspan></text>
+  </g>
+  <g id="session" data-diagram-kind="node" transform="translate(820 140)" role="group" aria-label="Code and review">
+    <desc>reviewapp validates the Saga, resolves the requested Git range, and supplies slide, coverage and code-ownership reads. A source-history failure is reported rather than replaced with an unrelated comparison.</desc>
+    <rect width="360" height="170" rx="8" fill="#e5f4ec" stroke="#3c8967" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#153b2b" xml:space="preserve"><tspan x="18" y="41">Code and review</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153b2b" xml:space="preserve"><tspan x="18" y="73">Read slides, code changes, evidence and</tspan><tspan x="18" y="91.75">coverage gaps.</tspan></text>
+  </g>
+  <g id="living-session" data-diagram-kind="node" transform="translate(820 370)" role="group" aria-label="Product knowledge">
+    <desc>Product queries open livingapp with the snapshot supplied by reviewapp. Requirements, work plans, traceability and readiness can therefore be read against the same Saga and source identity.</desc>
+    <rect width="360" height="170" rx="8" fill="#efebfc" stroke="#8870be" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#392653" xml:space="preserve"><tspan x="18" y="41">Product knowledge</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#392653" xml:space="preserve"><tspan x="18" y="73">Read stories and work plans; trace intent to</tspan><tspan x="18" y="91.75">delivery.</tspan></text>
+  </g>
+  <g id="missing-adapters" data-diagram-kind="node" transform="translate(60 580)" role="group" aria-label="CLI transport only">
+    <desc>The structured query contract is exposed by the CLI. The proposed HTTP-query and stdio MCP adapters are not available query transports; the browser server does not substitute for them.</desc>
+    <rect width="1120" height="105" rx="8" fill="#fff1d9" stroke="#b88a38" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#624113" xml:space="preserve"><tspan x="18" y="40">CLI transport only</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#624113" xml:space="preserve"><tspan x="18" y="73">HTTP-query and stdio MCP adapters are not available.</tspan></text>
+  </g>
+  <g id="flow-0" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="caller to query" data-from="caller" data-to="query">
+    <path d="M300 340 L380 340" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-0)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="flow-1" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="query to session" data-from="query" data-to="session">
+    <path d="M700 285 L760 285 L760 225 L820 225" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-1)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="flow-2" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="query to living-session" data-from="query" data-to="living-session">
+    <path d="M700 375 L760 375 L760 455 L820 455" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-2)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+</svg>

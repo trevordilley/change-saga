@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">From query command to JSON response</title>
+  <desc id="diagram-desc">A query validates its arguments, reads the selected Saga data, returns one JSON response, and exits.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-flow-0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="heading" data-diagram-kind="text" transform="translate(50 60)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">From query command to JSON response</tspan></text>
+  </g>
+  <g id="subheading" data-diagram-kind="text" transform="translate(50 110)" aria-hidden="true">
+    <text x="0" y="18" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="18">Example: reading children of a target. Each continuation starts a new command.</tspan></text>
+  </g>
+  <g id="invoke" data-diagram-kind="node" transform="translate(60 170)" role="group" aria-label="1. Start a query">
+    <desc>Each invocation creates an interruptible command context. The example asks for children of one target; a later page is a new command carrying the returned cursor.</desc>
+    <rect width="300" height="170" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="41" font-size="23" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="41">1. Start a query</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">Run query children with the parent</tspan><tspan x="18" y="91.75">target and page limit.</tspan></text>
+  </g>
+  <g id="dispatch" data-diagram-kind="node" transform="translate(490 170)" role="group" aria-label="2. Route the command">
+    <desc>The executable sends query to the structured CLI handler. It does not start the browser server to answer this request.</desc>
+    <rect width="300" height="170" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="41" font-size="23" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="41">2. Route the command</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">Send the request to the structured</tspan><tspan x="18" y="91.75">query handler.</tspan></text>
+  </g>
+  <g id="open-snapshot" data-diagram-kind="node" transform="translate(920 170)" role="group" aria-label="3. Load Saga state">
+    <desc>For this children query, the CLI validates inputs before opening reviewapp. Product operations also open livingapp using the review session snapshot.</desc>
+    <rect width="300" height="170" rx="8" fill="#efebfc" stroke="#8870be" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#392653" xml:space="preserve"><tspan x="18" y="41">3. Load Saga state</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#392653" xml:space="preserve"><tspan x="18" y="73">Validate inputs, then open the data</tspan><tspan x="18" y="91.75">needed by this query.</tspan></text>
+  </g>
+  <g id="project" data-diagram-kind="node" transform="translate(920 450)" role="group" aria-label="4. Read one page">
+    <desc>The adapter passes typed inputs such as parent, cursor and limit to the application. The application returns the selected records and continuation metadata.</desc>
+    <rect width="300" height="170" rx="8" fill="#e5f4ec" stroke="#3c8967" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#153b2b" xml:space="preserve"><tspan x="18" y="41">4. Read one page</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153b2b" xml:space="preserve"><tspan x="18" y="73">The query owner selects records and</tspan><tspan x="18" y="91.75">continuation metadata.</tspan></text>
+  </g>
+  <g id="envelope" data-diagram-kind="node" transform="translate(490 450)" role="group" aria-label="5. Encode JSON">
+    <desc>The success envelope includes schema, ok, snapshot, data and page. The snapshot identifies the state read; pagination tells the caller whether another request is needed.</desc>
+    <rect width="300" height="170" rx="8" fill="#e5f4ec" stroke="#3c8967" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#153b2b" xml:space="preserve"><tspan x="18" y="41">5. Encode JSON</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153b2b" xml:space="preserve"><tspan x="18" y="73">Return schema, ok, snapshot, data</tspan><tspan x="18" y="91.75">and page fields.</tspan></text>
+  </g>
+  <g id="exit" data-diagram-kind="node" transform="translate(60 450)" role="group" aria-label="6. Finish the command">
+    <desc>Ordinary failures are already encoded as JSON. The executable returns their mapped exit status without printing a second error message to stderr.</desc>
+    <rect width="300" height="170" rx="8" fill="#e5f4ec" stroke="#3c8967" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#153b2b" xml:space="preserve"><tspan x="18" y="41">6. Finish the command</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153b2b" xml:space="preserve"><tspan x="18" y="73">Write one response and return the</tspan><tspan x="18" y="91.75">matching exit status.</tspan></text>
+  </g>
+  <g id="flow-0" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="invoke to dispatch" data-from="invoke" data-to="dispatch">
+    <path d="M360 255 L490 255" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-0)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="flow-1" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="dispatch to open-snapshot" data-from="dispatch" data-to="open-snapshot">
+    <path d="M790 255 L920 255" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-1)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="flow-2" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="open-snapshot to project" data-from="open-snapshot" data-to="project">
+    <path d="M1070 340 L1070 450" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-2)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="flow-3" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="project to envelope" data-from="project" data-to="envelope">
+    <path d="M920 535 L790 535" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-3)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+  <g id="flow-4" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="envelope to exit" data-from="envelope" data-to="exit">
+    <path d="M490 535 L360 535" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-4)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+  </g>
+</svg>

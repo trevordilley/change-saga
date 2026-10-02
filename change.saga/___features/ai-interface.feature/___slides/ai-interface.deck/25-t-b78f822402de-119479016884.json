@@ -1,0 +1,915 @@
+{
+  "version": 1,
+  "deck": "ai-interface",
+  "slide": "query-runtime",
+  "current": "sha256:4651f15b63d5b0773d5f8ba9cff1b66e2aaad60d317d97f4144a6cad7225f964",
+  "revisions": [
+    {
+      "snapshot": "sha256:3dba976496eb95679611b8ea23f5aee3591b802247080f4e26a19c71a3cf992d",
+      "request_id": "legacy-119479016884",
+      "created_at": "2026-10-01T23:47:58.43771167Z",
+      "asset": "20-s-b78f822402de-0020-119479016884.svg",
+      "asset_digest": "sha256:f53a88581ce4ec45d0ab0c6fd3ed12288aa39a102ad24c81cda94a391722c5b1",
+      "slide": {
+        "version": 4,
+        "id": "query-runtime",
+        "deck": "ai-interface",
+        "title": "From query command to JSON response",
+        "rank": 20,
+        "intent": "trace",
+        "layout": "sequence",
+        "media_type": "image/svg+xml",
+        "entrypoint": "20-s-b78f822402de-0020-119479016884.svg",
+        "takeaway": "A query validates its arguments, reads the selected Saga data, returns one JSON response, and exits.",
+        "reading_order": [
+          "invoke",
+          "dispatch",
+          "open-snapshot",
+          "project",
+          "envelope",
+          "exit"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "invoke",
+            "slide": "query-runtime",
+            "rank": 10,
+            "kind": "transition",
+            "label": "Start a query",
+            "description": "Each invocation creates an interruptible command context. The example asks for children of one target; a later page is a new command carrying the returned cursor.",
+            "selector": {
+              "type": "element",
+              "element_id": "invoke"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 18,
+                  "end": 29,
+                  "digest": "sha256:b3786c657b615fdbdf2eab198ebde66445b4be1c13e503577acccd689fd8ba7b",
+                  "note": "Creates a fresh process invocation and interruptible context for each command-line request."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "dispatch",
+            "slide": "query-runtime",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Route the command",
+            "description": "The executable sends query to the structured CLI handler. It does not start the browser server to answer this request.",
+            "selector": {
+              "type": "element",
+              "element_id": "dispatch"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 147,
+                  "end": 148,
+                  "digest": "sha256:bd1bf491173b86e849dec9307e0260d5b51d470724b070047b0d5f92bd024cfb",
+                  "note": "Dispatches the query command directly to the structured CLI entrypoint, separate from the serving path."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 22,
+                  "end": 32,
+                  "digest": "sha256:ab5a370581615c24cdbea65cb9bfbbc521c2821441e19d99c5f461a7d12793fe",
+                  "note": "Dispatches the query command directly to the structured CLI entrypoint, separate from the serving path."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "open-snapshot",
+            "slide": "query-runtime",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Load valid Saga state",
+            "description": "For this children query, the CLI validates inputs before opening reviewapp. Product operations also open livingapp using the review session snapshot.",
+            "selector": {
+              "type": "element",
+              "element_id": "open-snapshot"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 35,
+                  "end": 56,
+                  "digest": "sha256:724374d09eed5688240fbf304f344f0a52653581fcc45f8159a04b55a359b86d",
+                  "note": "Chooses reviewapp alone or reviewapp plus livingapp and shares the authoritative snapshot across both."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 367,
+                  "end": 385,
+                  "digest": "sha256:dc96bce5302ed739dcd3b08531eb85e89c954802a270873766498493933aa797",
+                  "note": "Validates parsed query options and opens the application session only after the transport request is accepted."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "project",
+            "slide": "query-runtime",
+            "rank": 40,
+            "kind": "transition",
+            "label": "Read one result page",
+            "description": "The adapter passes typed inputs such as parent, cursor and limit to the application. The application returns the selected records and continuation metadata.",
+            "selector": {
+              "type": "element",
+              "element_id": "project"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 65,
+                  "end": 110,
+                  "digest": "sha256:c0a4169b1ad94d681c2faba417a945f0b78d8a472888c81f6754f9353068c5b0",
+                  "note": "Adapts typed CLI requests into bounded reviewapp and livingapp domain projections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 126,
+                  "end": 134,
+                  "digest": "sha256:a4f7701dea87a5b3bee296f3fa4b743deaab188a78d9c7ccd41735c56b16bbd5",
+                  "note": "Adapts typed CLI requests into bounded reviewapp and livingapp domain projections."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "envelope",
+            "slide": "query-runtime",
+            "rank": 50,
+            "kind": "statement",
+            "label": "Return a structured response",
+            "description": "The success envelope includes schema, ok, snapshot, data and page. The snapshot identifies the state read; pagination tells the caller whether another request is needed.",
+            "selector": {
+              "type": "element",
+              "element_id": "envelope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 910,
+                  "end": 942,
+                  "digest": "sha256:dbcedc8cd1cc31d7c88bfd8925184268a6ad11eb035a9194d198f9984e7c34fb",
+                  "note": "Encodes success and failure as the single versioned JSON envelope written by every ordinary query outcome."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "exit",
+            "slide": "query-runtime",
+            "rank": 60,
+            "kind": "transition",
+            "label": "Finish the command",
+            "description": "Ordinary failures are already encoded as JSON. The executable returns their mapped exit status without printing a second error message to stderr.",
+            "selector": {
+              "type": "element",
+              "element_id": "exit"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main_test.go",
+                  "start": 15,
+                  "end": 46,
+                  "digest": "sha256:05f08a26f1214f49af674880d501b659646e40301d37f519c8c6f83f0c446f41",
+                  "note": "Proves query success and failure keep stderr empty and stdout to exactly one JSON value."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 165,
+                  "end": 181,
+                  "digest": "sha256:ef12ef853b5357b2b779797299a022eec8af62ba9eeb2f788852e3486bde50e4",
+                  "note": "Returns the already-rendered structured status without printing a second error for StatusError outcomes."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:717ccbe23aba51dc63781cd06eb0ac2b4cc399dc1d65f5de51765ffb5e8d7515",
+      "parent_snapshots": [
+        "sha256:3dba976496eb95679611b8ea23f5aee3591b802247080f4e26a19c71a3cf992d"
+      ],
+      "request_id": "ai-detail-icons-query-runtime",
+      "created_at": "2026-10-01T23:58:36.048041Z",
+      "asset": "24-a-8d9bf832968cf09d6bfe9c82c63e437696756ed83816d40677ec.svg",
+      "asset_digest": "sha256:8d9bf832968cf09d6bfe9c82c63e437696756ed83816d40677ec6220f6e348ed",
+      "slide": {
+        "front": [
+          "A query validates its arguments, reads the selected Saga data, returns one JSON response, and exits."
+        ],
+        "version": 4,
+        "id": "query-runtime",
+        "deck": "ai-interface",
+        "title": "From query command to JSON response",
+        "rank": 10,
+        "intent": "trace",
+        "layout": "sequence",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-8d9bf832968cf09d6bfe9c82c63e437696756ed83816d40677ec.svg",
+        "takeaway": "A query validates its arguments, reads the selected Saga data, returns one JSON response, and exits.",
+        "reading_order": [
+          "invoke",
+          "dispatch",
+          "open-snapshot",
+          "project",
+          "envelope",
+          "exit"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "invoke",
+            "slide": "query-runtime",
+            "rank": 10,
+            "kind": "transition",
+            "label": "1. Start a query",
+            "description": "Each invocation creates an interruptible command context. The example asks for children of one target; a later page is a new command carrying the returned cursor.",
+            "selector": {
+              "type": "element",
+              "element_id": "invoke"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 18,
+                  "end": 29,
+                  "digest": "sha256:b3786c657b615fdbdf2eab198ebde66445b4be1c13e503577acccd689fd8ba7b",
+                  "note": "Creates a fresh process invocation and interruptible context for each command-line request."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-invoke",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 1. Start a query."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "dispatch",
+            "slide": "query-runtime",
+            "rank": 20,
+            "kind": "transition",
+            "label": "2. Route the command",
+            "description": "The executable sends query to the structured CLI handler. It does not start the browser server to answer this request.",
+            "selector": {
+              "type": "element",
+              "element_id": "dispatch"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 147,
+                  "end": 148,
+                  "digest": "sha256:bd1bf491173b86e849dec9307e0260d5b51d470724b070047b0d5f92bd024cfb",
+                  "note": "Dispatches the query command directly to the structured CLI entrypoint, separate from the serving path."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 22,
+                  "end": 32,
+                  "digest": "sha256:ab5a370581615c24cdbea65cb9bfbbc521c2821441e19d99c5f461a7d12793fe",
+                  "note": "Dispatches the query command directly to the structured CLI entrypoint, separate from the serving path."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-dispatch",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 2. Route the command."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "open-snapshot",
+            "slide": "query-runtime",
+            "rank": 30,
+            "kind": "transition",
+            "label": "3. Load Saga state",
+            "description": "For this children query, the CLI validates inputs before opening reviewapp. Product operations also open livingapp using the review session snapshot.",
+            "selector": {
+              "type": "element",
+              "element_id": "open-snapshot"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 35,
+                  "end": 56,
+                  "digest": "sha256:724374d09eed5688240fbf304f344f0a52653581fcc45f8159a04b55a359b86d",
+                  "note": "Chooses reviewapp alone or reviewapp plus livingapp and shares the authoritative snapshot across both."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 367,
+                  "end": 385,
+                  "digest": "sha256:dc96bce5302ed739dcd3b08531eb85e89c954802a270873766498493933aa797",
+                  "note": "Validates parsed query options and opens the application session only after the transport request is accepted."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-open-snapshot",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 3. Load Saga state."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "project",
+            "slide": "query-runtime",
+            "rank": 40,
+            "kind": "transition",
+            "label": "4. Read one page",
+            "description": "The adapter passes typed inputs such as parent, cursor and limit to the application. The application returns the selected records and continuation metadata.",
+            "selector": {
+              "type": "element",
+              "element_id": "project"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 65,
+                  "end": 110,
+                  "digest": "sha256:c0a4169b1ad94d681c2faba417a945f0b78d8a472888c81f6754f9353068c5b0",
+                  "note": "Adapts typed CLI requests into bounded reviewapp and livingapp domain projections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 126,
+                  "end": 134,
+                  "digest": "sha256:a4f7701dea87a5b3bee296f3fa4b743deaab188a78d9c7ccd41735c56b16bbd5",
+                  "note": "Adapts typed CLI requests into bounded reviewapp and livingapp domain projections."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-project",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 4. Read one page."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "envelope",
+            "slide": "query-runtime",
+            "rank": 50,
+            "kind": "statement",
+            "label": "5. Encode JSON",
+            "description": "The success envelope includes schema, ok, snapshot, data and page. The snapshot identifies the state read; pagination tells the caller whether another request is needed.",
+            "selector": {
+              "type": "element",
+              "element_id": "envelope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 910,
+                  "end": 942,
+                  "digest": "sha256:dbcedc8cd1cc31d7c88bfd8925184268a6ad11eb035a9194d198f9984e7c34fb",
+                  "note": "Encodes success and failure as the single versioned JSON envelope written by every ordinary query outcome."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-envelope",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 5. Encode JSON."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "exit",
+            "slide": "query-runtime",
+            "rank": 60,
+            "kind": "transition",
+            "label": "6. Finish the command",
+            "description": "Ordinary failures are already encoded as JSON. The executable returns their mapped exit status without printing a second error message to stderr.",
+            "selector": {
+              "type": "element",
+              "element_id": "exit"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main_test.go",
+                  "start": 15,
+                  "end": 46,
+                  "digest": "sha256:05f08a26f1214f49af674880d501b659646e40301d37f519c8c6f83f0c446f41",
+                  "note": "Proves query success and failure keep stderr empty and stdout to exactly one JSON value."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 165,
+                  "end": 181,
+                  "digest": "sha256:ef12ef853b5357b2b779797299a022eec8af62ba9eeb2f788852e3486bde50e4",
+                  "note": "Returns the already-rendered structured status without printing a second error for StatusError outcomes."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-exit",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 6. Finish the command."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-b85273b22054d48526506d8dad4d5b14ebae686d04ef3443c4f7.json",
+        "source_digest": "sha256:b85273b22054d48526506d8dad4d5b14ebae686d04ef3443c4f746949817ff5b",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:4651f15b63d5b0773d5f8ba9cff1b66e2aaad60d317d97f4144a6cad7225f964",
+      "parent_snapshots": [
+        "sha256:717ccbe23aba51dc63781cd06eb0ac2b4cc399dc1d65f5de51765ffb5e8d7515"
+      ],
+      "request_id": "ai-note-header-query-runtime",
+      "created_at": "2026-10-02T00:00:02.480761Z",
+      "asset": "24-a-855853c97469b2deeaa52f8cd071f836d31f725b8d2763df20d4.svg",
+      "asset_digest": "sha256:855853c97469b2deeaa52f8cd071f836d31f725b8d2763df20d47ab96068d0ac",
+      "slide": {
+        "front": [
+          "A query validates its arguments, reads the selected Saga data, returns one JSON response, and exits."
+        ],
+        "version": 4,
+        "id": "query-runtime",
+        "deck": "ai-interface",
+        "title": "From query command to JSON response",
+        "rank": 10,
+        "intent": "trace",
+        "layout": "sequence",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-855853c97469b2deeaa52f8cd071f836d31f725b8d2763df20d4.svg",
+        "takeaway": "A query validates its arguments, reads the selected Saga data, returns one JSON response, and exits.",
+        "reading_order": [
+          "invoke",
+          "dispatch",
+          "open-snapshot",
+          "project",
+          "envelope",
+          "exit"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "invoke",
+            "slide": "query-runtime",
+            "rank": 10,
+            "kind": "transition",
+            "label": "1. Start a query",
+            "description": "Each invocation creates an interruptible command context. The example asks for children of one target; a later page is a new command carrying the returned cursor.",
+            "selector": {
+              "type": "element",
+              "element_id": "invoke"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 18,
+                  "end": 29,
+                  "digest": "sha256:b3786c657b615fdbdf2eab198ebde66445b4be1c13e503577acccd689fd8ba7b",
+                  "note": "Creates a fresh process invocation and interruptible context for each command-line request."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-invoke",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 1. Start a query."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "dispatch",
+            "slide": "query-runtime",
+            "rank": 20,
+            "kind": "transition",
+            "label": "2. Route the command",
+            "description": "The executable sends query to the structured CLI handler. It does not start the browser server to answer this request.",
+            "selector": {
+              "type": "element",
+              "element_id": "dispatch"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 147,
+                  "end": 148,
+                  "digest": "sha256:bd1bf491173b86e849dec9307e0260d5b51d470724b070047b0d5f92bd024cfb",
+                  "note": "Dispatches the query command directly to the structured CLI entrypoint, separate from the serving path."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 22,
+                  "end": 32,
+                  "digest": "sha256:ab5a370581615c24cdbea65cb9bfbbc521c2821441e19d99c5f461a7d12793fe",
+                  "note": "Dispatches the query command directly to the structured CLI entrypoint, separate from the serving path."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-dispatch",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 2. Route the command."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "open-snapshot",
+            "slide": "query-runtime",
+            "rank": 30,
+            "kind": "transition",
+            "label": "3. Load Saga state",
+            "description": "For this children query, the CLI validates inputs before opening reviewapp. Product operations also open livingapp using the review session snapshot.",
+            "selector": {
+              "type": "element",
+              "element_id": "open-snapshot"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 35,
+                  "end": 56,
+                  "digest": "sha256:724374d09eed5688240fbf304f344f0a52653581fcc45f8159a04b55a359b86d",
+                  "note": "Chooses reviewapp alone or reviewapp plus livingapp and shares the authoritative snapshot across both."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 367,
+                  "end": 385,
+                  "digest": "sha256:dc96bce5302ed739dcd3b08531eb85e89c954802a270873766498493933aa797",
+                  "note": "Validates parsed query options and opens the application session only after the transport request is accepted."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-open-snapshot",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 3. Load Saga state."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "project",
+            "slide": "query-runtime",
+            "rank": 40,
+            "kind": "transition",
+            "label": "4. Read one page",
+            "description": "The adapter passes typed inputs such as parent, cursor and limit to the application. The application returns the selected records and continuation metadata.",
+            "selector": {
+              "type": "element",
+              "element_id": "project"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 65,
+                  "end": 110,
+                  "digest": "sha256:c0a4169b1ad94d681c2faba417a945f0b78d8a472888c81f6754f9353068c5b0",
+                  "note": "Adapts typed CLI requests into bounded reviewapp and livingapp domain projections."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 126,
+                  "end": 134,
+                  "digest": "sha256:a4f7701dea87a5b3bee296f3fa4b743deaab188a78d9c7ccd41735c56b16bbd5",
+                  "note": "Adapts typed CLI requests into bounded reviewapp and livingapp domain projections."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-project",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 4. Read one page."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "envelope",
+            "slide": "query-runtime",
+            "rank": 50,
+            "kind": "statement",
+            "label": "5. Encode JSON",
+            "description": "The success envelope includes schema, ok, snapshot, data and page. The snapshot identifies the state read; pagination tells the caller whether another request is needed.",
+            "selector": {
+              "type": "element",
+              "element_id": "envelope"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 910,
+                  "end": 942,
+                  "digest": "sha256:dbcedc8cd1cc31d7c88bfd8925184268a6ad11eb035a9194d198f9984e7c34fb",
+                  "note": "Encodes success and failure as the single versioned JSON envelope written by every ordinary query outcome."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-envelope",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 5. Encode JSON."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "exit",
+            "slide": "query-runtime",
+            "rank": 60,
+            "kind": "transition",
+            "label": "6. Finish the command",
+            "description": "Ordinary failures are already encoded as JSON. The executable returns their mapped exit status without printing a second error message to stderr.",
+            "selector": {
+              "type": "element",
+              "element_id": "exit"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main_test.go",
+                  "start": 15,
+                  "end": 46,
+                  "digest": "sha256:05f08a26f1214f49af674880d501b659646e40301d37f519c8c6f83f0c446f41",
+                  "note": "Proves query success and failure keep stderr empty and stdout to exactly one JSON value."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "cmd/change-saga/main.go",
+                  "start": 165,
+                  "end": 181,
+                  "digest": "sha256:ef12ef853b5357b2b779797299a022eec8af62ba9eeb2f788852e3486bde50e4",
+                  "note": "Returns the already-rendered structured status without printing a second error for StatusError outcomes."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-runtime-exit",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at 6. Finish the command."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-0ddb365d91d501a4d63b7f8e68482612508568bef3b584174f76.json",
+        "source_digest": "sha256:0ddb365d91d501a4d63b7f8e68482612508568bef3b584174f7668a3e0960d92",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

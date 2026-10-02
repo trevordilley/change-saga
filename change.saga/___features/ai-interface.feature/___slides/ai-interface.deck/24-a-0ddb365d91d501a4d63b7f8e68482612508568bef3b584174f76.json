@@ -1,0 +1,258 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "styles": {
+    "amber": {
+      "fill": "#fff1d9",
+      "stroke": "#b88a38",
+      "ink": "#624113",
+      "stroke_width": 2,
+      "font_size": 22
+    },
+    "blue": {
+      "fill": "@diagram-primary-fill",
+      "stroke": "@diagram-primary-stroke",
+      "ink": "@diagram-primary-ink",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "green": {
+      "fill": "#e5f4ec",
+      "stroke": "#3c8967",
+      "ink": "#153b2b",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "hint": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "@diagram-secondary-ink",
+      "stroke_width": 1,
+      "font_size": 18
+    },
+    "purple": {
+      "fill": "#efebfc",
+      "stroke": "#8870be",
+      "ink": "#392653",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "red": {
+      "fill": "#fcebef",
+      "stroke": "#bf5871",
+      "ink": "#65263b",
+      "stroke_width": 2,
+      "font_size": 22
+    }
+  },
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "From query command to JSON response",
+      "x": 50,
+      "y": 60,
+      "width": 1180,
+      "height": 50,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "subheading",
+      "kind": "text",
+      "label": "Example: reading children of a target. Each continuation starts a new command.",
+      "x": 50,
+      "y": 110,
+      "width": 1180,
+      "height": 42,
+      "style": "hint",
+      "wrap": true,
+      "decorative": true
+    },
+    {
+      "id": "invoke",
+      "kind": "node",
+      "shape": "rect",
+      "label": "1. Start a query",
+      "detail": "Run query children with the parent target and page limit.",
+      "note": "Each invocation creates an interruptible command context. The example asks for children of one target; a later page is a new command carrying the returned cursor.",
+      "x": 60,
+      "y": 170,
+      "width": 300,
+      "height": 170,
+      "style": "blue",
+      "wrap": true
+    },
+    {
+      "id": "dispatch",
+      "kind": "node",
+      "shape": "rect",
+      "label": "2. Route the command",
+      "detail": "Send the request to the structured query handler.",
+      "note": "The executable sends query to the structured CLI handler. It does not start the browser server to answer this request.",
+      "x": 490,
+      "y": 170,
+      "width": 300,
+      "height": 170,
+      "style": "blue",
+      "wrap": true
+    },
+    {
+      "id": "open-snapshot",
+      "kind": "node",
+      "shape": "rect",
+      "label": "3. Load Saga state",
+      "detail": "Validate inputs, then open the data needed by this query.",
+      "note": "For this children query, the CLI validates inputs before opening reviewapp. Product operations also open livingapp using the review session snapshot.",
+      "x": 920,
+      "y": 170,
+      "width": 300,
+      "height": 170,
+      "style": "purple",
+      "wrap": true
+    },
+    {
+      "id": "project",
+      "kind": "node",
+      "shape": "rect",
+      "label": "4. Read one page",
+      "detail": "The query owner selects records and continuation metadata.",
+      "note": "The adapter passes typed inputs such as parent, cursor and limit to the application. The application returns the selected records and continuation metadata.",
+      "x": 920,
+      "y": 450,
+      "width": 300,
+      "height": 170,
+      "style": "green",
+      "wrap": true
+    },
+    {
+      "id": "envelope",
+      "kind": "node",
+      "shape": "rect",
+      "label": "5. Encode JSON",
+      "detail": "Return schema, ok, snapshot, data and page fields.",
+      "note": "The success envelope includes schema, ok, snapshot, data and page. The snapshot identifies the state read; pagination tells the caller whether another request is needed.",
+      "x": 490,
+      "y": 450,
+      "width": 300,
+      "height": 170,
+      "style": "green",
+      "wrap": true
+    },
+    {
+      "id": "exit",
+      "kind": "node",
+      "shape": "rect",
+      "label": "6. Finish the command",
+      "detail": "Write one response and return the matching exit status.",
+      "note": "Ordinary failures are already encoded as JSON. The executable returns their mapped exit status without printing a second error message to stderr.",
+      "x": 60,
+      "y": 450,
+      "width": 300,
+      "height": 170,
+      "style": "green",
+      "wrap": true
+    },
+    {
+      "id": "flow-0",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "invoke",
+      "to": "dispatch",
+      "points": [
+        {
+          "x": 360,
+          "y": 255
+        },
+        {
+          "x": 490,
+          "y": 255
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "flow-1",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "dispatch",
+      "to": "open-snapshot",
+      "points": [
+        {
+          "x": 790,
+          "y": 255
+        },
+        {
+          "x": 920,
+          "y": 255
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "flow-2",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "open-snapshot",
+      "to": "project",
+      "points": [
+        {
+          "x": 1070,
+          "y": 340
+        },
+        {
+          "x": 1070,
+          "y": 450
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "flow-3",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "project",
+      "to": "envelope",
+      "points": [
+        {
+          "x": 920,
+          "y": 535
+        },
+        {
+          "x": 790,
+          "y": 535
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "flow-4",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "envelope",
+      "to": "exit",
+      "points": [
+        {
+          "x": 490,
+          "y": 535
+        },
+        {
+          "x": 360,
+          "y": 535
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

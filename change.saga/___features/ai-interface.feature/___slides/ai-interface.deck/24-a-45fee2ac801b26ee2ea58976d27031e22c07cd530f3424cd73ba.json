@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "styles": {
+    "amber": {
+      "fill": "#fff1d9",
+      "stroke": "#b88a38",
+      "ink": "#624113",
+      "stroke_width": 2,
+      "font_size": 22
+    },
+    "blue": {
+      "fill": "@diagram-primary-fill",
+      "stroke": "@diagram-primary-stroke",
+      "ink": "@diagram-primary-ink",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "green": {
+      "fill": "#e5f4ec",
+      "stroke": "#3c8967",
+      "ink": "#153b2b",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "hint": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "@diagram-secondary-ink",
+      "stroke_width": 1,
+      "font_size": 18
+    },
+    "purple": {
+      "fill": "#efebfc",
+      "stroke": "#8870be",
+      "ink": "#392653",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "red": {
+      "fill": "#fcebef",
+      "stroke": "#bf5871",
+      "ink": "#65263b",
+      "stroke_width": 2,
+      "font_size": 22
+    }
+  },
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "How AI reads the Saga",
+      "x": 50,
+      "y": 60,
+      "width": 1180,
+      "height": 50,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "subheading",
+      "kind": "text",
+      "label": "One command opens a fresh read. Blue handles the request; green and purple own different data.",
+      "x": 50,
+      "y": 110,
+      "width": 1180,
+      "height": 42,
+      "style": "hint",
+      "wrap": true,
+      "decorative": true
+    },
+    {
+      "id": "caller",
+      "kind": "node",
+      "shape": "rect",
+      "label": "AI assistant",
+      "detail": "Choose a query and read its JSON response.",
+      "note": "Use query help and query schema to discover supported inputs and pagination. Read through these operations so the client does not depend on the Saga storage layout.",
+      "x": 60,
+      "y": 250,
+      "width": 240,
+      "height": 190,
+      "style": "blue",
+      "wrap": true
+    },
+    {
+      "id": "query",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Command-line entry",
+      "detail": "Check arguments, load Saga state, and route the request.",
+      "note": "The CLI checks arguments before opening application state. It emits a versioned success or error envelope, allowing the caller to branch on stable fields instead of parsing prose.",
+      "x": 380,
+      "y": 205,
+      "width": 320,
+      "height": 250,
+      "style": "blue",
+      "wrap": true
+    },
+    {
+      "id": "session",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Code and review",
+      "detail": "Read slides, code changes, evidence and coverage gaps.",
+      "note": "reviewapp validates the Saga, resolves the requested Git range, and supplies slide, coverage and code-ownership reads. A source-history failure is reported rather than replaced with an unrelated comparison.",
+      "x": 820,
+      "y": 140,
+      "width": 360,
+      "height": 170,
+      "style": "green",
+      "wrap": true
+    },
+    {
+      "id": "living-session",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Product knowledge",
+      "detail": "Read stories and work plans; trace intent to delivery.",
+      "note": "Product queries open livingapp with the snapshot supplied by reviewapp. Requirements, work plans, traceability and readiness can therefore be read against the same Saga and source identity.",
+      "x": 820,
+      "y": 370,
+      "width": 360,
+      "height": 170,
+      "style": "purple",
+      "wrap": true
+    },
+    {
+      "id": "missing-adapters",
+      "kind": "node",
+      "shape": "rect",
+      "label": "CLI transport only",
+      "detail": "HTTP-query and stdio MCP adapters are not available.",
+      "note": "The structured query contract is exposed by the CLI. The proposed HTTP-query and stdio MCP adapters are not available query transports; the browser server does not substitute for them.",
+      "x": 60,
+      "y": 580,
+      "width": 1120,
+      "height": 105,
+      "style": "amber",
+      "wrap": true
+    },
+    {
+      "id": "flow-0",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "caller",
+      "to": "query",
+      "points": [
+        {
+          "x": 300,
+          "y": 340
+        },
+        {
+          "x": 380,
+          "y": 340
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "flow-1",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "query",
+      "to": "session",
+      "points": [
+        {
+          "x": 700,
+          "y": 285
+        },
+        {
+          "x": 760,
+          "y": 285
+        },
+        {
+          "x": 760,
+          "y": 225
+        },
+        {
+          "x": 820,
+          "y": 225
+        }
+      ],
+      "head": "arrow"
+    },
+    {
+      "id": "flow-2",
+      "kind": "edge",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "query",
+      "to": "living-session",
+      "points": [
+        {
+          "x": 700,
+          "y": 375
+        },
+        {
+          "x": 760,
+          "y": 375
+        },
+        {
+          "x": 760,
+          "y": 455
+        },
+        {
+          "x": 820,
+          "y": 455
+        }
+      ],
+      "head": "arrow"
+    }
+  ]
+}

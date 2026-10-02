@@ -1,0 +1,885 @@
+{
+  "version": 1,
+  "deck": "ai-interface",
+  "slide": "cursor-state",
+  "current": "sha256:809e0a7f974dedb83053f2113d9af49c3282caff9197698ba64259d360a7f741",
+  "revisions": [
+    {
+      "snapshot": "sha256:ceacef46015f2377e9866e1ca7b99e40e72e8ec03f2f679800bc22356f721eae",
+      "request_id": "legacy-c11f7c5e06c2",
+      "created_at": "2026-10-01T23:48:02.221740385Z",
+      "asset": "20-s-b78f822402de-0030-c11f7c5e06c2.svg",
+      "asset_digest": "sha256:948db23cfb701712e977b2c1b95ed00c00aead32c62a42d19e46996a9c024c45",
+      "slide": {
+        "version": 4,
+        "id": "cursor-state",
+        "deck": "ai-interface",
+        "title": "Read every page from the same Saga version",
+        "rank": 30,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "20-s-b78f822402de-0030-c11f7c5e06c2.svg",
+        "takeaway": "Keep the query unchanged while following cursors. If the Saga changes, restart from the first page.",
+        "reading_order": [
+          "first-page",
+          "issue-cursor",
+          "continue-page",
+          "invalid-cursor",
+          "stale-snapshot",
+          "complete"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "first-page",
+            "slide": "cursor-state",
+            "rank": 10,
+            "kind": "transition",
+            "label": "Start without a cursor",
+            "description": "The first page begins at offset zero. An omitted limit uses the default; a limit outside the accepted range is rejected before a page is returned.",
+            "selector": {
+              "type": "element",
+              "element_id": "first-page"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 279,
+                  "end": 287,
+                  "digest": "sha256:8239cd7842b921a684de055aeef318d2cba8b06bb73b6857e71ee5b477ccd37c",
+                  "note": "Starts uncursored pagination at zero after applying the default or validating the supplied page limit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "issue-cursor",
+            "slide": "cursor-state",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Save the next cursor",
+            "description": "The token records operation, normalized filters, snapshot and next offset. Its unkeyed checksum detects corruption; it does not authenticate the caller or grant access.",
+            "selector": {
+              "type": "element",
+              "element_id": "issue-cursor"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 307,
+                  "end": 327,
+                  "digest": "sha256:86dad841b85d774adeff4f8392cda63cf1334b83dc76fb3043f95dc046f87cb7",
+                  "note": "Issues an opaque checksummed continuation containing the operation, normalized filters, snapshot, and next offset when rows remain."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "continue-page",
+            "slide": "cursor-state",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Continue the same query",
+            "description": "The next command must preserve the operation and normalized filters. The token is checked against the current snapshot before its offset is used.",
+            "selector": {
+              "type": "element",
+              "element_id": "continue-page"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 287,
+                  "end": 306,
+                  "digest": "sha256:416f082476bc814c264a26b606e7e914fddd5a65df7ed79660c3074c7aff8718",
+                  "note": "Accepts a continuation only after its canonical encoding, checksum, operation, filters, snapshot, and offset all match."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "invalid-cursor",
+            "slide": "cursor-state",
+            "rank": 40,
+            "kind": "risk",
+            "label": "Correct an invalid cursor",
+            "description": "Malformed tokens, checksum failures, changed operations or filters, and invalid offsets return invalid_argument. Reusing the same invalid token will not repair the request.",
+            "selector": {
+              "type": "element",
+              "element_id": "invalid-cursor"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 288,
+                  "end": 298,
+                  "digest": "sha256:1c4b8dabc68cf75443314706815feed432ef945a47cdbee8679563516c69d0c4",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 302,
+                  "end": 304,
+                  "digest": "sha256:90f917da8a8bba7b681de504e1e75d8b22e6082209c7b4f5c759608c69c73000",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 329,
+                  "end": 335,
+                  "digest": "sha256:4c6e5928b779b680ca32c48b2bf40d73c8b0b4713245df10fbd258916f670802",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_integration_test.go",
+                  "start": 152,
+                  "end": 183,
+                  "digest": "sha256:0af71ef67e08c7af7d808dfa869ad79907afec69407ada427ee7340b64118e72",
+                  "note": "Exercises valid continuation, tampering, and cross-operation reuse against the real query CLI."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stale-snapshot",
+            "slide": "cursor-state",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Restart after a change",
+            "description": "A valid token from another snapshot returns retryable stale_snapshot. Restart without that cursor so a completed traversal does not combine records from different versions.",
+            "selector": {
+              "type": "element",
+              "element_id": "stale-snapshot"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_integration_test.go",
+                  "start": 184,
+                  "end": 188,
+                  "digest": "sha256:3bda9aa8c781634b6c8b2fc8fb90545c2ed7af476d520abedba6953978e87bc1",
+                  "note": "Proves that advancing the Saga snapshot turns an otherwise valid cursor into retryable stale_snapshot."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 299,
+                  "end": 301,
+                  "digest": "sha256:edce36b35c44837390a121b42d2c603a88621dec8991117b37c9335e2752719f",
+                  "note": "Returns retryable stale_snapshot when a valid cursor belongs to a different application snapshot."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "complete",
+            "slide": "cursor-state",
+            "rank": 60,
+            "kind": "transition",
+            "label": "Stop at the last page",
+            "description": "The last page sets has_more to false and omits a continuation token. A caller can check that accumulated returned counts match total before treating the traversal as complete.",
+            "selector": {
+              "type": "element",
+              "element_id": "complete"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 307,
+                  "end": 319,
+                  "digest": "sha256:b702bf2bb0a5eed65ba56d67c213f244f93f6feb474a183074cac4e14602e25a",
+                  "note": "Marks the terminal page with has_more false and omits next_cursor when the filtered total has been reached."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:eedfbc8b2ac743bb67f510e38078f1ae4ac9fffc1bd6a358c2fa9dfd9fd22052",
+      "parent_snapshots": [
+        "sha256:ceacef46015f2377e9866e1ca7b99e40e72e8ec03f2f679800bc22356f721eae"
+      ],
+      "request_id": "ai-detail-icons-cursor-state",
+      "created_at": "2026-10-01T23:58:37.601954Z",
+      "asset": "24-a-dd97dbcf75185534b4b228ccfdb74f97880d62469a2a74653ae7.svg",
+      "asset_digest": "sha256:dd97dbcf75185534b4b228ccfdb74f97880d62469a2a74653ae72246ff1d6522",
+      "slide": {
+        "front": [
+          "Keep the query unchanged while following cursors. If the Saga changes, restart from the first page."
+        ],
+        "version": 4,
+        "id": "cursor-state",
+        "deck": "ai-interface",
+        "title": "Read every page from the same Saga version",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-dd97dbcf75185534b4b228ccfdb74f97880d62469a2a74653ae7.svg",
+        "takeaway": "Keep the query unchanged while following cursors. If the Saga changes, restart from the first page.",
+        "reading_order": [
+          "first-page",
+          "issue-cursor",
+          "continue-page",
+          "invalid-cursor",
+          "stale-snapshot",
+          "complete"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "first-page",
+            "slide": "cursor-state",
+            "rank": 10,
+            "kind": "transition",
+            "label": "Start the read",
+            "description": "The first page begins at offset zero. An omitted limit uses the default; a limit outside the accepted range is rejected before a page is returned.",
+            "selector": {
+              "type": "element",
+              "element_id": "first-page"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 279,
+                  "end": 287,
+                  "digest": "sha256:8239cd7842b921a684de055aeef318d2cba8b06bb73b6857e71ee5b477ccd37c",
+                  "note": "Starts uncursored pagination at zero after applying the default or validating the supplied page limit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-first-page",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the bounded-limit behavior at Start the read."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "issue-cursor",
+            "slide": "cursor-state",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Save the next cursor",
+            "description": "The token records operation, normalized filters, snapshot and next offset. Its unkeyed checksum detects corruption; it does not authenticate the caller or grant access.",
+            "selector": {
+              "type": "element",
+              "element_id": "issue-cursor"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 307,
+                  "end": 327,
+                  "digest": "sha256:86dad841b85d774adeff4f8392cda63cf1334b83dc76fb3043f95dc046f87cb7",
+                  "note": "Issues an opaque checksummed continuation containing the operation, normalized filters, snapshot, and next offset when rows remain."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-issue-cursor",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:page-metadata",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the page-metadata behavior at Save the next cursor."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "continue-page",
+            "slide": "cursor-state",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Read the next page",
+            "description": "The next command must preserve the operation and normalized filters. The token is checked against the current snapshot before its offset is used.",
+            "selector": {
+              "type": "element",
+              "element_id": "continue-page"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 287,
+                  "end": 306,
+                  "digest": "sha256:416f082476bc814c264a26b606e7e914fddd5a65df7ed79660c3074c7aff8718",
+                  "note": "Accepts a continuation only after its canonical encoding, checksum, operation, filters, snapshot, and offset all match."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-continue-page",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the cursor-context behavior at Read the next page."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "invalid-cursor",
+            "slide": "cursor-state",
+            "rank": 40,
+            "kind": "risk",
+            "label": "Invalid cursor",
+            "description": "Malformed tokens, checksum failures, changed operations or filters, and invalid offsets return invalid_argument. Reusing the same invalid token will not repair the request.",
+            "selector": {
+              "type": "element",
+              "element_id": "invalid-cursor"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 288,
+                  "end": 298,
+                  "digest": "sha256:1c4b8dabc68cf75443314706815feed432ef945a47cdbee8679563516c69d0c4",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 302,
+                  "end": 304,
+                  "digest": "sha256:90f917da8a8bba7b681de504e1e75d8b22e6082209c7b4f5c759608c69c73000",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 329,
+                  "end": 335,
+                  "digest": "sha256:4c6e5928b779b680ca32c48b2bf40d73c8b0b4713245df10fbd258916f670802",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_integration_test.go",
+                  "start": 152,
+                  "end": 183,
+                  "digest": "sha256:0af71ef67e08c7af7d808dfa869ad79907afec69407ada427ee7340b64118e72",
+                  "note": "Exercises valid continuation, tampering, and cross-operation reuse against the real query CLI."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-invalid-cursor",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the cursor-context behavior at Invalid cursor."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stale-snapshot",
+            "slide": "cursor-state",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Saga changed",
+            "description": "A valid token from another snapshot returns retryable stale_snapshot. Restart without that cursor so a completed traversal does not combine records from different versions.",
+            "selector": {
+              "type": "element",
+              "element_id": "stale-snapshot"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_integration_test.go",
+                  "start": 184,
+                  "end": 188,
+                  "digest": "sha256:3bda9aa8c781634b6c8b2fc8fb90545c2ed7af476d520abedba6953978e87bc1",
+                  "note": "Proves that advancing the Saga snapshot turns an otherwise valid cursor into retryable stale_snapshot."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 299,
+                  "end": 301,
+                  "digest": "sha256:edce36b35c44837390a121b42d2c603a88621dec8991117b37c9335e2752719f",
+                  "note": "Returns retryable stale_snapshot when a valid cursor belongs to a different application snapshot."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-stale-snapshot",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:snapshot-retry",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the snapshot-retry behavior at Saga changed."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "complete",
+            "slide": "cursor-state",
+            "rank": 60,
+            "kind": "transition",
+            "label": "Read complete",
+            "description": "The last page sets has_more to false and omits a continuation token. A caller can check that accumulated returned counts match total before treating the traversal as complete.",
+            "selector": {
+              "type": "element",
+              "element_id": "complete"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 307,
+                  "end": 319,
+                  "digest": "sha256:b702bf2bb0a5eed65ba56d67c213f244f93f6feb474a183074cac4e14602e25a",
+                  "note": "Marks the terminal page with has_more false and omits next_cursor when the filtered total has been reached."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-complete",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:complete-traversal",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the complete-traversal behavior at Read complete."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-88d1b2f0b1503ea77694f7fad39a7f782eadbf008b1905e71f52.json",
+        "source_digest": "sha256:88d1b2f0b1503ea77694f7fad39a7f782eadbf008b1905e71f52199232a6f092",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:809e0a7f974dedb83053f2113d9af49c3282caff9197698ba64259d360a7f741",
+      "parent_snapshots": [
+        "sha256:eedfbc8b2ac743bb67f510e38078f1ae4ac9fffc1bd6a358c2fa9dfd9fd22052"
+      ],
+      "request_id": "ai-note-header-cursor-state",
+      "created_at": "2026-10-02T00:00:03.726813Z",
+      "asset": "24-a-97c1f79038d0ec8124aa57c54ce043c82bada3f5cb8e04873ed0.svg",
+      "asset_digest": "sha256:97c1f79038d0ec8124aa57c54ce043c82bada3f5cb8e04873ed02649b589f164",
+      "slide": {
+        "front": [
+          "Keep the query unchanged while following cursors. If the Saga changes, restart from the first page."
+        ],
+        "version": 4,
+        "id": "cursor-state",
+        "deck": "ai-interface",
+        "title": "Read every page from the same Saga version",
+        "rank": 20,
+        "intent": "explain",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-97c1f79038d0ec8124aa57c54ce043c82bada3f5cb8e04873ed0.svg",
+        "takeaway": "Keep the query unchanged while following cursors. If the Saga changes, restart from the first page.",
+        "reading_order": [
+          "first-page",
+          "issue-cursor",
+          "continue-page",
+          "invalid-cursor",
+          "stale-snapshot",
+          "complete"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "first-page",
+            "slide": "cursor-state",
+            "rank": 10,
+            "kind": "transition",
+            "label": "Start the read",
+            "description": "The first page begins at offset zero. An omitted limit uses the default; a limit outside the accepted range is rejected before a page is returned.",
+            "selector": {
+              "type": "element",
+              "element_id": "first-page"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 279,
+                  "end": 287,
+                  "digest": "sha256:8239cd7842b921a684de055aeef318d2cba8b06bb73b6857e71ee5b477ccd37c",
+                  "note": "Starts uncursored pagination at zero after applying the default or validating the supplied page limit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-first-page",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:bounded-limit",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the bounded-limit behavior at Start the read."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "issue-cursor",
+            "slide": "cursor-state",
+            "rank": 20,
+            "kind": "transition",
+            "label": "Save the next cursor",
+            "description": "The token records operation, normalized filters, snapshot and next offset. Its unkeyed checksum detects corruption; it does not authenticate the caller or grant access.",
+            "selector": {
+              "type": "element",
+              "element_id": "issue-cursor"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 307,
+                  "end": 327,
+                  "digest": "sha256:86dad841b85d774adeff4f8392cda63cf1334b83dc76fb3043f95dc046f87cb7",
+                  "note": "Issues an opaque checksummed continuation containing the operation, normalized filters, snapshot, and next offset when rows remain."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-issue-cursor",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:page-metadata",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the page-metadata behavior at Save the next cursor."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "continue-page",
+            "slide": "cursor-state",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Read the next page",
+            "description": "The next command must preserve the operation and normalized filters. The token is checked against the current snapshot before its offset is used.",
+            "selector": {
+              "type": "element",
+              "element_id": "continue-page"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 287,
+                  "end": 306,
+                  "digest": "sha256:416f082476bc814c264a26b606e7e914fddd5a65df7ed79660c3074c7aff8718",
+                  "note": "Accepts a continuation only after its canonical encoding, checksum, operation, filters, snapshot, and offset all match."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-continue-page",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the cursor-context behavior at Read the next page."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "invalid-cursor",
+            "slide": "cursor-state",
+            "rank": 40,
+            "kind": "risk",
+            "label": "Invalid cursor",
+            "description": "Malformed tokens, checksum failures, changed operations or filters, and invalid offsets return invalid_argument. Reusing the same invalid token will not repair the request.",
+            "selector": {
+              "type": "element",
+              "element_id": "invalid-cursor"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 288,
+                  "end": 298,
+                  "digest": "sha256:1c4b8dabc68cf75443314706815feed432ef945a47cdbee8679563516c69d0c4",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 302,
+                  "end": 304,
+                  "digest": "sha256:90f917da8a8bba7b681de504e1e75d8b22e6082209c7b4f5c759608c69c73000",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 329,
+                  "end": 335,
+                  "digest": "sha256:4c6e5928b779b680ca32c48b2bf40d73c8b0b4713245df10fbd258916f670802",
+                  "note": "Rejects malformed, tampered, cross-query, cross-filter, and out-of-range continuations as invalid_argument."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_integration_test.go",
+                  "start": 152,
+                  "end": 183,
+                  "digest": "sha256:0af71ef67e08c7af7d808dfa869ad79907afec69407ada427ee7340b64118e72",
+                  "note": "Exercises valid continuation, tampering, and cross-operation reuse against the real query CLI."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-invalid-cursor",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:cursor-context",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the cursor-context behavior at Invalid cursor."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stale-snapshot",
+            "slide": "cursor-state",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Saga changed",
+            "description": "A valid token from another snapshot returns retryable stale_snapshot. Restart without that cursor so a completed traversal does not combine records from different versions.",
+            "selector": {
+              "type": "element",
+              "element_id": "stale-snapshot"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_integration_test.go",
+                  "start": 184,
+                  "end": 188,
+                  "digest": "sha256:3bda9aa8c781634b6c8b2fc8fb90545c2ed7af476d520abedba6953978e87bc1",
+                  "note": "Proves that advancing the Saga snapshot turns an otherwise valid cursor into retryable stale_snapshot."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 299,
+                  "end": 301,
+                  "digest": "sha256:edce36b35c44837390a121b42d2c603a88621dec8991117b37c9335e2752719f",
+                  "note": "Returns retryable stale_snapshot when a valid cursor belongs to a different application snapshot."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-stale-snapshot",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:snapshot-retry",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the snapshot-retry behavior at Saga changed."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "complete",
+            "slide": "cursor-state",
+            "rank": 60,
+            "kind": "transition",
+            "label": "Read complete",
+            "description": "The last page sets has_more to false and omits a continuation token. A caller can check that accumulated returned counts match total before treating the traversal as complete.",
+            "selector": {
+              "type": "element",
+              "element_id": "complete"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 307,
+                  "end": 319,
+                  "digest": "sha256:b702bf2bb0a5eed65ba56d67c213f244f93f6feb474a183074cac4e14602e25a",
+                  "note": "Marks the terminal page with has_more false and omits next_cursor when the filtered total has been reached."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-cursor-state-complete",
+              "criterion": "urn:change-saga:change-saga:story:bounded-query-pagination:criterion:complete-traversal",
+              "story_revision": "urn:change-saga:change-saga:story:bounded-query-pagination:revision:r1",
+              "rationale": "Explains the complete-traversal behavior at Read complete."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-089a1c61979ac3fbe60c19cfe17a06cead817566907be69d1ad7.json",
+        "source_digest": "sha256:089a1c61979ac3fbe60c19cfe17a06cead817566907be69d1ad7a3c348448c87",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

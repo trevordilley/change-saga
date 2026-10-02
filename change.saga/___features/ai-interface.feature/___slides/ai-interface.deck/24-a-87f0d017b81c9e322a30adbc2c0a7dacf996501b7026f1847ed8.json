@@ -1,0 +1,310 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "styles": {
+    "amber": {
+      "fill": "#fff1d9",
+      "stroke": "#b88a38",
+      "ink": "#624113",
+      "stroke_width": 2,
+      "font_size": 22
+    },
+    "blue": {
+      "fill": "@diagram-primary-fill",
+      "stroke": "@diagram-primary-stroke",
+      "ink": "@diagram-primary-ink",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "green": {
+      "fill": "#e5f4ec",
+      "stroke": "#3c8967",
+      "ink": "#153b2b",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "hint": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "@diagram-secondary-ink",
+      "stroke_width": 1,
+      "font_size": 18
+    },
+    "purple": {
+      "fill": "#efebfc",
+      "stroke": "#8870be",
+      "ink": "#392653",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "red": {
+      "fill": "#fcebef",
+      "stroke": "#bf5871",
+      "ink": "#65263b",
+      "stroke_width": 2,
+      "font_size": 22
+    }
+  },
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "Recover from a failed query",
+      "x": 50,
+      "y": 60,
+      "width": 1180,
+      "height": 50,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "subheading",
+      "kind": "text",
+      "label": "Use structured error fields to choose a recovery step. Hover the info icons for the boundary details.",
+      "x": 50,
+      "y": 110,
+      "width": 1180,
+      "height": 42,
+      "style": "hint",
+      "wrap": true,
+      "decorative": true
+    },
+    {
+      "id": "request-gate",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Check the request",
+      "detail": "Validate the query name, flags, targets and limits.",
+      "note": "The transport validates operation names, required targets, numeric options and supported flags. These checks keep malformed requests from reaching session loading.",
+      "x": 50,
+      "y": 170,
+      "width": 310,
+      "height": 170,
+      "style": "blue",
+      "wrap": true
+    },
+    {
+      "id": "open-boundary",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Load Saga and code",
+      "detail": "Check Saga structure and resolve the Git comparison.",
+      "note": "Opening validates the Saga and resolves the source repository and Git range. Missing data, invalid Saga structure and unavailable source history produce distinct errors.",
+      "x": 485,
+      "y": 170,
+      "width": 310,
+      "height": 170,
+      "style": "purple",
+      "wrap": true
+    },
+    {
+      "id": "domain-result",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Run the query",
+      "detail": "Return data with ok: true and the snapshot used.",
+      "note": "Successful queries return an ok envelope and the session snapshot. Paginated results also describe the returned count and any continuation cursor.",
+      "x": 920,
+      "y": 170,
+      "width": 310,
+      "height": 170,
+      "style": "green",
+      "wrap": true
+    },
+    {
+      "id": "invalid-request",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Fix the arguments",
+      "detail": "invalid_argument means this request was rejected before opening state.",
+      "note": "The CLI returns invalid_argument with exit status 2 for rejected inputs. Session-opening tests verify that these requests do not open application state.",
+      "x": 50,
+      "y": 500,
+      "width": 310,
+      "height": 165,
+      "style": "red",
+      "wrap": true
+    },
+    {
+      "id": "unexpected-error",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Unexpected failure",
+      "detail": "Return internal with exit 1. Keep internal details private.",
+      "note": "Unrecognized errors become internal with a generic message and exit status 1. The original message and filesystem paths are not copied into the response.",
+      "x": 485,
+      "y": 500,
+      "width": 310,
+      "height": 165,
+      "style": "amber",
+      "wrap": true
+    },
+    {
+      "id": "stable-domain-error",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Expected failure",
+      "detail": "Use the error code, retryable flag and details to recover.",
+      "note": "Recognized application errors preserve code, retryable and structured details. The CLI maps the code to an exit status; callers can respond without depending on message wording.",
+      "x": 920,
+      "y": 500,
+      "width": 310,
+      "height": 165,
+      "style": "red",
+      "wrap": true
+    },
+    {
+      "id": "flow-0",
+      "kind": "edge",
+      "label": "Valid",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "request-gate",
+      "to": "open-boundary",
+      "points": [
+        {
+          "x": 360,
+          "y": 255
+        },
+        {
+          "x": 485,
+          "y": 255
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 377,
+        "y": 220,
+        "width": 80,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-1",
+      "kind": "edge",
+      "label": "Loaded",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "open-boundary",
+      "to": "domain-result",
+      "points": [
+        {
+          "x": 795,
+          "y": 255
+        },
+        {
+          "x": 920,
+          "y": 255
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 810,
+        "y": 220,
+        "width": 100,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-2",
+      "kind": "edge",
+      "label": "Invalid",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "request-gate",
+      "to": "invalid-request",
+      "points": [
+        {
+          "x": 205,
+          "y": 340
+        },
+        {
+          "x": 205,
+          "y": 500
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 220,
+        "y": 408,
+        "width": 110,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-3",
+      "kind": "edge",
+      "label": "Unknown error",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "open-boundary",
+      "to": "unexpected-error",
+      "points": [
+        {
+          "x": 640,
+          "y": 340
+        },
+        {
+          "x": 640,
+          "y": 500
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 652,
+        "y": 410,
+        "width": 200,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-4",
+      "kind": "edge",
+      "label": "Known error",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "domain-result",
+      "to": "stable-domain-error",
+      "points": [
+        {
+          "x": 1075,
+          "y": 340
+        },
+        {
+          "x": 1075,
+          "y": 500
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 1085,
+        "y": 402,
+        "width": 135,
+        "height": 55
+      },
+      "wrap": true
+    },
+    {
+      "id": "load-errors",
+      "kind": "text",
+      "label": "Load failures: invalid_saga, not_found or source_unavailable.",
+      "x": 365,
+      "y": 355,
+      "width": 460,
+      "height": 45,
+      "style": "hint",
+      "wrap": true,
+      "decorative": true
+    }
+  ]
+}

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Recover from a failed query</title>
+  <desc id="diagram-desc">Use the error code and retryable flag to decide what to fix or retry. Internal failure details stay private.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-flow-0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="heading" data-diagram-kind="text" transform="translate(50 25)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Recover from a failed query</tspan></text>
+  </g>
+  <g id="subheading" data-diagram-kind="text" transform="translate(50 85)" aria-hidden="true">
+    <text x="0" y="18" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="18">Use structured error fields to choose a recovery step. Hover the info icons for the boundary details.</tspan></text>
+  </g>
+  <g id="request-gate" data-diagram-kind="node" transform="translate(50 170)" role="group" aria-label="Check the request">
+    <desc>The transport validates operation names, required targets, numeric options and supported flags. These checks keep malformed requests from reaching session loading.</desc>
+    <rect width="310" height="170" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="41" font-size="23" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="41">Check the request</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">Validate the query name, flags, targets</tspan><tspan x="18" y="91.75">and limits.</tspan></text>
+  </g>
+  <g id="open-boundary" data-diagram-kind="node" transform="translate(485 170)" role="group" aria-label="Load Saga and code">
+    <desc>Opening validates the Saga and resolves the source repository and Git range. Missing data, invalid Saga structure and unavailable source history produce distinct errors.</desc>
+    <rect width="310" height="170" rx="8" fill="#efebfc" stroke="#8870be" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#392653" xml:space="preserve"><tspan x="18" y="41">Load Saga and code</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#392653" xml:space="preserve"><tspan x="18" y="73">Check Saga structure and resolve the</tspan><tspan x="18" y="91.75">Git comparison.</tspan></text>
+  </g>
+  <g id="domain-result" data-diagram-kind="node" transform="translate(920 170)" role="group" aria-label="Run the query">
+    <desc>Successful queries return an ok envelope and the session snapshot. Paginated results also describe the returned count and any continuation cursor.</desc>
+    <rect width="310" height="170" rx="8" fill="#e5f4ec" stroke="#3c8967" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#153b2b" xml:space="preserve"><tspan x="18" y="41">Run the query</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153b2b" xml:space="preserve"><tspan x="18" y="73">Return data with ok: true and the</tspan><tspan x="18" y="91.75">snapshot used.</tspan></text>
+  </g>
+  <g id="invalid-request" data-diagram-kind="node" transform="translate(50 500)" role="group" aria-label="Fix the arguments">
+    <desc>The CLI returns invalid_argument with exit status 2 for rejected inputs. Session-opening tests verify that these requests do not open application state.</desc>
+    <rect width="310" height="165" rx="8" fill="#fcebef" stroke="#bf5871" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#65263b" xml:space="preserve"><tspan x="18" y="40">Fix the arguments</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#65263b" xml:space="preserve"><tspan x="18" y="73">invalid_argument means this request</tspan><tspan x="18" y="91.75">was rejected before opening state.</tspan></text>
+  </g>
+  <g id="unexpected-error" data-diagram-kind="node" transform="translate(485 500)" role="group" aria-label="Unexpected failure">
+    <desc>Unrecognized errors become internal with a generic message and exit status 1. The original message and filesystem paths are not copied into the response.</desc>
+    <rect width="310" height="165" rx="8" fill="#fff1d9" stroke="#b88a38" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#624113" xml:space="preserve"><tspan x="18" y="40">Unexpected failure</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#624113" xml:space="preserve"><tspan x="18" y="73">Return internal with exit 1. Keep</tspan><tspan x="18" y="91.75">internal details private.</tspan></text>
+  </g>
+  <g id="stable-domain-error" data-diagram-kind="node" transform="translate(920 500)" role="group" aria-label="Expected failure">
+    <desc>Recognized application errors preserve code, retryable and structured details. The CLI maps the code to an exit status; callers can respond without depending on message wording.</desc>
+    <rect width="310" height="165" rx="8" fill="#fcebef" stroke="#bf5871" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#65263b" xml:space="preserve"><tspan x="18" y="40">Expected failure</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#65263b" xml:space="preserve"><tspan x="18" y="73">Use the error code, retryable flag and</tspan><tspan x="18" y="91.75">details to recover.</tspan></text>
+  </g>
+  <g id="flow-0" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="Valid" data-from="request-gate" data-to="open-boundary">
+    <path d="M360 255 L485 255" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-0)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="377" y="238" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="377" y="238">Valid</tspan></text>
+  </g>
+  <g id="flow-1" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="Loaded" data-from="open-boundary" data-to="domain-result">
+    <path d="M795 255 L920 255" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-1)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="810" y="238" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="810" y="238">Loaded</tspan></text>
+  </g>
+  <g id="flow-2" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="Invalid" data-from="request-gate" data-to="invalid-request">
+    <path d="M205 340 L205 500" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-2)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="220" y="426" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="220" y="426">Invalid</tspan></text>
+  </g>
+  <g id="flow-3" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="Unknown error" data-from="open-boundary" data-to="unexpected-error">
+    <path d="M640 340 L640 500" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-3)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="652" y="428" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="652" y="428">Unknown error</tspan></text>
+  </g>
+  <g id="flow-4" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="Known error" data-from="domain-result" data-to="stable-domain-error">
+    <path d="M1075 340 L1075 500" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-4)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="1085" y="420" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="1085" y="420">Known error</tspan></text>
+  </g>
+  <g id="load-errors" data-diagram-kind="text" transform="translate(365 355)" aria-hidden="true">
+    <text x="0" y="18" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="18">Load failures: invalid_saga, not_found or</tspan><tspan x="0" y="40.5">source_unavailable.</tspan></text>
+  </g>
+</svg>

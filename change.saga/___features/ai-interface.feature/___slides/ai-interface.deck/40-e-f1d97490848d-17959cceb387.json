@@ -6,7 +6,8 @@
       "path": "internal/reviewapp/session.go",
       "start": 85,
       "end": 192,
-      "digest": "sha256:e59a780e2c6c86ebea1339fda1889b43668dc246573a71159a74492e9bef469c"
+      "digest": "sha256:e59a780e2c6c86ebea1339fda1889b43668dc246573a71159a74492e9bef469c",
+      "note": "Validates the Saga, resolves its source comparison and builds the code and review session."
     }
   ]
 }

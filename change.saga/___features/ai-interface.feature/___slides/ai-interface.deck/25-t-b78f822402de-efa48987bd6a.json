@@ -1,0 +1,822 @@
+{
+  "version": 1,
+  "deck": "ai-interface",
+  "slide": "query-failure-boundaries",
+  "current": "sha256:52d7cbb97672424fe190b8d82b0e55c55897bb40bd37d8f41d3a289ee30e55bf",
+  "revisions": [
+    {
+      "snapshot": "sha256:856b24d71140fb071bba82fe1819db6ad1cf2ce4a5b4a0a9bdab97cdeb344089",
+      "request_id": "legacy-efa48987bd6a",
+      "created_at": "2026-10-01T23:50:36.729851328Z",
+      "asset": "20-s-b78f822402de-0040-efa48987bd6a.svg",
+      "asset_digest": "sha256:d49248d679e7bd99e5bf188b0610bc02e41c5c2d9d77cac19e3d939f7aac8f0c",
+      "slide": {
+        "version": 4,
+        "id": "query-failure-boundaries",
+        "deck": "ai-interface",
+        "title": "Recover from a failed query",
+        "rank": 40,
+        "intent": "risk",
+        "layout": "risk",
+        "media_type": "image/svg+xml",
+        "entrypoint": "20-s-b78f822402de-0040-efa48987bd6a.svg",
+        "takeaway": "Use the error code and retryable flag to decide what to fix or retry. Internal failure details stay private.",
+        "reading_order": [
+          "request-gate",
+          "invalid-request",
+          "open-boundary",
+          "domain-result",
+          "stable-domain-error",
+          "unexpected-error"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "request-gate",
+            "slide": "query-failure-boundaries",
+            "rank": 10,
+            "kind": "transition",
+            "label": "Check the request",
+            "description": "The transport validates operation names, required targets, numeric options and supported flags. These checks keep malformed requests from reaching session loading.",
+            "selector": {
+              "type": "element",
+              "element_id": "request-gate"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+                  "path": "internal/cli/query.go",
+                  "start": 323,
+                  "end": 386,
+                  "digest": "sha256:70e5ce4a0f170f57948e6e9cd59b809b7c460f84b3603744fbb9eddf28fa122a",
+                  "note": "Validates the operation and parsed flags at the CLI boundary before any application session is opened."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "invalid-request",
+            "slide": "query-failure-boundaries",
+            "rank": 20,
+            "kind": "risk",
+            "label": "Fix invalid arguments",
+            "description": "The CLI returns invalid_argument with exit status 2 for rejected inputs. Session-opening tests verify that these requests do not open application state.",
+            "selector": {
+              "type": "element",
+              "element_id": "invalid-request"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_test.go",
+                  "start": 235,
+                  "end": 288,
+                  "digest": "sha256:f70ed2e36920881d838f4ca77479621bc2869b5ace20d0739d501808ff984f0f",
+                  "note": "Proves adversarial and malformed requests fail as invalid_argument without invoking the session opener."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "open-boundary",
+            "slide": "query-failure-boundaries",
+            "rank": 30,
+            "kind": "risk",
+            "label": "Load Saga and code",
+            "description": "Opening validates the Saga and resolves the source repository and Git range. Missing data, invalid Saga structure and unavailable source history produce distinct errors.",
+            "selector": {
+              "type": "element",
+              "element_id": "open-boundary"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 85,
+                  "end": 137,
+                  "digest": "sha256:623731280e1850b12ff6b6e0cfacba164d565c43b0b6c3bbdc1face412c280b0",
+                  "note": "Contains missing, unsafe, invalid Saga and unavailable source failures while loading the validated review/source snapshot."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "domain-result",
+            "slide": "query-failure-boundaries",
+            "rank": 40,
+            "kind": "transition",
+            "label": "Return the result",
+            "description": "Successful queries return an ok envelope and the session snapshot. Paginated results also describe the returned count and any continuation cursor.",
+            "selector": {
+              "type": "element",
+              "element_id": "domain-result"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 910,
+                  "end": 920,
+                  "digest": "sha256:159f30cbe65fa0f649215cedc82e51f00befb2a46ba677e0e3e3adb4b58694cb",
+                  "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 442,
+                  "end": 446,
+                  "digest": "sha256:96a5c819d4e805481e6e33380da817f6f926c13ec8359f265e973037c19ceedb",
+                  "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stable-domain-error",
+            "slide": "query-failure-boundaries",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Handle an expected failure",
+            "description": "Recognized application errors preserve code, retryable and structured details. The CLI maps the code to an exit status; callers can respond without depending on message wording.",
+            "selector": {
+              "type": "element",
+              "element_id": "stable-domain-error"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 923,
+                  "end": 965,
+                  "digest": "sha256:b8291229abc97abb54a0446fe78bc7f4a381fbae85b93249e5311c1a671a4d0d",
+                  "note": "Preserves known transport, reviewapp, and livingapp error categories and maps each stable code to a stable process exit."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 969,
+                  "end": 986,
+                  "digest": "sha256:92ecd89d6ab641a5bfec1ca66c8cb7047a544d8d180231d0f106d8b44ea6b109",
+                  "note": "Preserves known transport, reviewapp, and livingapp error categories and maps each stable code to a stable process exit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unexpected-error",
+            "slide": "query-failure-boundaries",
+            "rank": 60,
+            "kind": "risk",
+            "label": "Contain an unexpected failure",
+            "description": "Unrecognized errors become internal with a generic message and exit status 1. The original message and filesystem paths are not copied into the response.",
+            "selector": {
+              "type": "element",
+              "element_id": "unexpected-error"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 945,
+                  "end": 966,
+                  "digest": "sha256:065b12e399e2a798953a2a27f25f53bb94c25432db6eb8186cf00b64c72b428c",
+                  "note": "Collapses unknown application failures to a generic internal error instead of exposing the underlying message."
+                }
+              ]
+            }
+          ],
+          "criterion_links": []
+        }
+      ]
+    },
+    {
+      "snapshot": "sha256:625b594263eb8507ee3663ae70ad56749bf4e69edc8643caacd618bf98868c9c",
+      "parent_snapshots": [
+        "sha256:856b24d71140fb071bba82fe1819db6ad1cf2ce4a5b4a0a9bdab97cdeb344089"
+      ],
+      "request_id": "ai-detail-icons-query-failure-boundaries",
+      "created_at": "2026-10-01T23:58:39.371671Z",
+      "asset": "24-a-bb262385d0e53d5f5235e1bdc19f0163e920f654e4e46ccc91bf.svg",
+      "asset_digest": "sha256:bb262385d0e53d5f5235e1bdc19f0163e920f654e4e46ccc91bfab2dc5d0e05e",
+      "slide": {
+        "front": [
+          "Use the error code and retryable flag to decide what to fix or retry. Internal failure details stay private."
+        ],
+        "version": 4,
+        "id": "query-failure-boundaries",
+        "deck": "ai-interface",
+        "title": "Recover from a failed query",
+        "rank": 30,
+        "intent": "risk",
+        "layout": "risk",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-bb262385d0e53d5f5235e1bdc19f0163e920f654e4e46ccc91bf.svg",
+        "takeaway": "Use the error code and retryable flag to decide what to fix or retry. Internal failure details stay private.",
+        "reading_order": [
+          "request-gate",
+          "invalid-request",
+          "open-boundary",
+          "domain-result",
+          "stable-domain-error",
+          "unexpected-error"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "request-gate",
+            "slide": "query-failure-boundaries",
+            "rank": 10,
+            "kind": "transition",
+            "label": "Check the request",
+            "description": "The transport validates operation names, required targets, numeric options and supported flags. These checks keep malformed requests from reaching session loading.",
+            "selector": {
+              "type": "element",
+              "element_id": "request-gate"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+                  "path": "internal/cli/query.go",
+                  "start": 323,
+                  "end": 386,
+                  "digest": "sha256:70e5ce4a0f170f57948e6e9cd59b809b7c460f84b3603744fbb9eddf28fa122a",
+                  "note": "Validates the operation and parsed flags at the CLI boundary before any application session is opened."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-request-gate",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Check the request."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "open-boundary",
+            "slide": "query-failure-boundaries",
+            "rank": 20,
+            "kind": "risk",
+            "label": "Load Saga and code",
+            "description": "Opening validates the Saga and resolves the source repository and Git range. Missing data, invalid Saga structure and unavailable source history produce distinct errors.",
+            "selector": {
+              "type": "element",
+              "element_id": "open-boundary"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 85,
+                  "end": 137,
+                  "digest": "sha256:623731280e1850b12ff6b6e0cfacba164d565c43b0b6c3bbdc1face412c280b0",
+                  "note": "Contains missing, unsafe, invalid Saga and unavailable source failures while loading the validated review/source snapshot."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-open-boundary",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Load Saga and code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "domain-result",
+            "slide": "query-failure-boundaries",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Run the query",
+            "description": "Successful queries return an ok envelope and the session snapshot. Paginated results also describe the returned count and any continuation cursor.",
+            "selector": {
+              "type": "element",
+              "element_id": "domain-result"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 910,
+                  "end": 920,
+                  "digest": "sha256:159f30cbe65fa0f649215cedc82e51f00befb2a46ba677e0e3e3adb4b58694cb",
+                  "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 442,
+                  "end": 446,
+                  "digest": "sha256:96a5c819d4e805481e6e33380da817f6f926c13ec8359f265e973037c19ceedb",
+                  "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-domain-result",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Run the query."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "invalid-request",
+            "slide": "query-failure-boundaries",
+            "rank": 40,
+            "kind": "risk",
+            "label": "Fix the arguments",
+            "description": "The CLI returns invalid_argument with exit status 2 for rejected inputs. Session-opening tests verify that these requests do not open application state.",
+            "selector": {
+              "type": "element",
+              "element_id": "invalid-request"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_test.go",
+                  "start": 235,
+                  "end": 288,
+                  "digest": "sha256:f70ed2e36920881d838f4ca77479621bc2869b5ace20d0739d501808ff984f0f",
+                  "note": "Proves adversarial and malformed requests fail as invalid_argument without invoking the session opener."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-invalid-request",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Fix the arguments."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unexpected-error",
+            "slide": "query-failure-boundaries",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Unexpected failure",
+            "description": "Unrecognized errors become internal with a generic message and exit status 1. The original message and filesystem paths are not copied into the response.",
+            "selector": {
+              "type": "element",
+              "element_id": "unexpected-error"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 945,
+                  "end": 966,
+                  "digest": "sha256:065b12e399e2a798953a2a27f25f53bb94c25432db6eb8186cf00b64c72b428c",
+                  "note": "Collapses unknown application failures to a generic internal error instead of exposing the underlying message."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-unexpected-error",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Unexpected failure."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stable-domain-error",
+            "slide": "query-failure-boundaries",
+            "rank": 60,
+            "kind": "risk",
+            "label": "Expected failure",
+            "description": "Recognized application errors preserve code, retryable and structured details. The CLI maps the code to an exit status; callers can respond without depending on message wording.",
+            "selector": {
+              "type": "element",
+              "element_id": "stable-domain-error"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 923,
+                  "end": 965,
+                  "digest": "sha256:b8291229abc97abb54a0446fe78bc7f4a381fbae85b93249e5311c1a671a4d0d",
+                  "note": "Preserves known transport, reviewapp, and livingapp error categories and maps each stable code to a stable process exit."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 969,
+                  "end": 986,
+                  "digest": "sha256:92ecd89d6ab641a5bfec1ca66c8cb7047a544d8d180231d0f106d8b44ea6b109",
+                  "note": "Preserves known transport, reviewapp, and livingapp error categories and maps each stable code to a stable process exit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-stable-domain-error",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Expected failure."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-9b9f4f2a1fc590786bd4e8236234eff2e87e4a7df52ad3e30864.json",
+        "source_digest": "sha256:9b9f4f2a1fc590786bd4e8236234eff2e87e4a7df52ad3e30864f47265f693fe",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:52d7cbb97672424fe190b8d82b0e55c55897bb40bd37d8f41d3a289ee30e55bf",
+      "parent_snapshots": [
+        "sha256:625b594263eb8507ee3663ae70ad56749bf4e69edc8643caacd618bf98868c9c"
+      ],
+      "request_id": "ai-note-header-query-failure-boundaries",
+      "created_at": "2026-10-02T00:00:05.061041Z",
+      "asset": "24-a-b748e1cf7bf3b9379cbdd37cadcb196c3c4214870fd13b04d18f.svg",
+      "asset_digest": "sha256:b748e1cf7bf3b9379cbdd37cadcb196c3c4214870fd13b04d18f6c79f8667d66",
+      "slide": {
+        "front": [
+          "Use the error code and retryable flag to decide what to fix or retry. Internal failure details stay private."
+        ],
+        "version": 4,
+        "id": "query-failure-boundaries",
+        "deck": "ai-interface",
+        "title": "Recover from a failed query",
+        "rank": 30,
+        "intent": "risk",
+        "layout": "risk",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-b748e1cf7bf3b9379cbdd37cadcb196c3c4214870fd13b04d18f.svg",
+        "takeaway": "Use the error code and retryable flag to decide what to fix or retry. Internal failure details stay private.",
+        "reading_order": [
+          "request-gate",
+          "invalid-request",
+          "open-boundary",
+          "domain-result",
+          "stable-domain-error",
+          "unexpected-error"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "request-gate",
+            "slide": "query-failure-boundaries",
+            "rank": 10,
+            "kind": "transition",
+            "label": "Check the request",
+            "description": "The transport validates operation names, required targets, numeric options and supported flags. These checks keep malformed requests from reaching session loading.",
+            "selector": {
+              "type": "element",
+              "element_id": "request-gate"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+                  "path": "internal/cli/query.go",
+                  "start": 323,
+                  "end": 386,
+                  "digest": "sha256:70e5ce4a0f170f57948e6e9cd59b809b7c460f84b3603744fbb9eddf28fa122a",
+                  "note": "Validates the operation and parsed flags at the CLI boundary before any application session is opened."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-request-gate",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Check the request."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "open-boundary",
+            "slide": "query-failure-boundaries",
+            "rank": 20,
+            "kind": "risk",
+            "label": "Load Saga and code",
+            "description": "Opening validates the Saga and resolves the source repository and Git range. Missing data, invalid Saga structure and unavailable source history produce distinct errors.",
+            "selector": {
+              "type": "element",
+              "element_id": "open-boundary"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 85,
+                  "end": 137,
+                  "digest": "sha256:623731280e1850b12ff6b6e0cfacba164d565c43b0b6c3bbdc1face412c280b0",
+                  "note": "Contains missing, unsafe, invalid Saga and unavailable source failures while loading the validated review/source snapshot."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-open-boundary",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Load Saga and code."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "domain-result",
+            "slide": "query-failure-boundaries",
+            "rank": 30,
+            "kind": "transition",
+            "label": "Run the query",
+            "description": "Successful queries return an ok envelope and the session snapshot. Paginated results also describe the returned count and any continuation cursor.",
+            "selector": {
+              "type": "element",
+              "element_id": "domain-result"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 910,
+                  "end": 920,
+                  "digest": "sha256:159f30cbe65fa0f649215cedc82e51f00befb2a46ba677e0e3e3adb4b58694cb",
+                  "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 442,
+                  "end": 446,
+                  "digest": "sha256:96a5c819d4e805481e6e33380da817f6f926c13ec8359f265e973037c19ceedb",
+                  "note": "Returns a successful projection with the session snapshot in the standard ok envelope."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-domain-result",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Run the query."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "invalid-request",
+            "slide": "query-failure-boundaries",
+            "rank": 40,
+            "kind": "risk",
+            "label": "Fix the arguments",
+            "description": "The CLI returns invalid_argument with exit status 2 for rejected inputs. Session-opening tests verify that these requests do not open application state.",
+            "selector": {
+              "type": "element",
+              "element_id": "invalid-request"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_test.go",
+                  "start": 235,
+                  "end": 288,
+                  "digest": "sha256:f70ed2e36920881d838f4ca77479621bc2869b5ace20d0739d501808ff984f0f",
+                  "note": "Proves adversarial and malformed requests fail as invalid_argument without invoking the session opener."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-invalid-request",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Fix the arguments."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "unexpected-error",
+            "slide": "query-failure-boundaries",
+            "rank": 50,
+            "kind": "risk",
+            "label": "Unexpected failure",
+            "description": "Unrecognized errors become internal with a generic message and exit status 1. The original message and filesystem paths are not copied into the response.",
+            "selector": {
+              "type": "element",
+              "element_id": "unexpected-error"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 945,
+                  "end": 966,
+                  "digest": "sha256:065b12e399e2a798953a2a27f25f53bb94c25432db6eb8186cf00b64c72b428c",
+                  "note": "Collapses unknown application failures to a generic internal error instead of exposing the underlying message."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-unexpected-error",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Unexpected failure."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "stable-domain-error",
+            "slide": "query-failure-boundaries",
+            "rank": 60,
+            "kind": "risk",
+            "label": "Expected failure",
+            "description": "Recognized application errors preserve code, retryable and structured details. The CLI maps the code to an exit status; callers can respond without depending on message wording.",
+            "selector": {
+              "type": "element",
+              "element_id": "stable-domain-error"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 923,
+                  "end": 965,
+                  "digest": "sha256:b8291229abc97abb54a0446fe78bc7f4a381fbae85b93249e5311c1a671a4d0d",
+                  "note": "Preserves known transport, reviewapp, and livingapp error categories and maps each stable code to a stable process exit."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 969,
+                  "end": 986,
+                  "digest": "sha256:92ecd89d6ab641a5bfec1ca66c8cb7047a544d8d180231d0f106d8b44ea6b109",
+                  "note": "Preserves known transport, reviewapp, and livingapp error categories and maps each stable code to a stable process exit."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-query-failure-boundaries-stable-domain-error",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Expected failure."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-87f0d017b81c9e322a30adbc2c0a7dacf996501b7026f1847ed8.json",
+        "source_digest": "sha256:87f0d017b81c9e322a30adbc2c0a7dacf996501b7026f1847ed893d4f3daf2e7",
+        "renderer": "change-saga-diagram/2"
+      }
+    }
+  ]
+}

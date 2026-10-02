@@ -1,0 +1,342 @@
+{
+  "version": 1,
+  "width": 1280,
+  "height": 720,
+  "styles": {
+    "amber": {
+      "fill": "#fff1d9",
+      "stroke": "#b88a38",
+      "ink": "#624113",
+      "stroke_width": 2,
+      "font_size": 22
+    },
+    "blue": {
+      "fill": "@diagram-primary-fill",
+      "stroke": "@diagram-primary-stroke",
+      "ink": "@diagram-primary-ink",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "green": {
+      "fill": "#e5f4ec",
+      "stroke": "#3c8967",
+      "ink": "#153b2b",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "hint": {
+      "fill": "none",
+      "stroke": "none",
+      "ink": "@diagram-secondary-ink",
+      "stroke_width": 1,
+      "font_size": 18
+    },
+    "purple": {
+      "fill": "#efebfc",
+      "stroke": "#8870be",
+      "ink": "#392653",
+      "stroke_width": 2,
+      "font_size": 23
+    },
+    "red": {
+      "fill": "#fcebef",
+      "stroke": "#bf5871",
+      "ink": "#65263b",
+      "stroke_width": 2,
+      "font_size": 22
+    }
+  },
+  "elements": [
+    {
+      "id": "heading",
+      "kind": "text",
+      "label": "Read every page from the same Saga version",
+      "x": 50,
+      "y": 60,
+      "width": 1180,
+      "height": 50,
+      "style": "title",
+      "decorative": true
+    },
+    {
+      "id": "subheading",
+      "kind": "text",
+      "label": "Never combine pages from different Saga versions. Keep the query unchanged as you continue.",
+      "x": 50,
+      "y": 110,
+      "width": 1180,
+      "height": 42,
+      "style": "hint",
+      "wrap": true,
+      "decorative": true
+    },
+    {
+      "id": "first-page",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Start the read",
+      "detail": "Send no cursor to begin at the first matching record.",
+      "note": "The first page begins at offset zero. An omitted limit uses the default; a limit outside the accepted range is rejected before a page is returned.",
+      "x": 50,
+      "y": 205,
+      "width": 270,
+      "height": 160,
+      "style": "blue",
+      "wrap": true
+    },
+    {
+      "id": "issue-cursor",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Save the next cursor",
+      "detail": "The token remembers the query, version and next offset.",
+      "note": "The token records operation, normalized filters, snapshot and next offset. Its unkeyed checksum detects corruption; it does not authenticate the caller or grant access.",
+      "x": 465,
+      "y": 205,
+      "width": 325,
+      "height": 160,
+      "style": "purple",
+      "wrap": true
+    },
+    {
+      "id": "continue-page",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Read the next page",
+      "detail": "Pass the cursor back with the same query and filters.",
+      "note": "The next command must preserve the operation and normalized filters. The token is checked against the current snapshot before its offset is used.",
+      "x": 945,
+      "y": 205,
+      "width": 285,
+      "height": 160,
+      "style": "green",
+      "wrap": true
+    },
+    {
+      "id": "invalid-cursor",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Invalid cursor",
+      "detail": "Fix the query or token. The error is invalid_argument.",
+      "note": "Malformed tokens, checksum failures, changed operations or filters, and invalid offsets return invalid_argument. Reusing the same invalid token will not repair the request.",
+      "x": 50,
+      "y": 505,
+      "width": 310,
+      "height": 160,
+      "style": "red",
+      "wrap": true
+    },
+    {
+      "id": "stale-snapshot",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Saga changed",
+      "detail": "Restart at the first page after stale_snapshot.",
+      "note": "A valid token from another snapshot returns retryable stale_snapshot. Restart without that cursor so a completed traversal does not combine records from different versions.",
+      "x": 465,
+      "y": 505,
+      "width": 325,
+      "height": 160,
+      "style": "amber",
+      "wrap": true
+    },
+    {
+      "id": "complete",
+      "kind": "node",
+      "shape": "rect",
+      "label": "Read complete",
+      "detail": "Stop when has_more is false; no cursor remains.",
+      "note": "The last page sets has_more to false and omits a continuation token. A caller can check that accumulated returned counts match total before treating the traversal as complete.",
+      "x": 945,
+      "y": 505,
+      "width": 285,
+      "height": 160,
+      "style": "green",
+      "wrap": true
+    },
+    {
+      "id": "flow-0",
+      "kind": "edge",
+      "label": "More rows",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "first-page",
+      "to": "issue-cursor",
+      "points": [
+        {
+          "x": 320,
+          "y": 280
+        },
+        {
+          "x": 465,
+          "y": 280
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 330,
+        "y": 245,
+        "width": 125,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-1",
+      "kind": "edge",
+      "label": "Valid token",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "issue-cursor",
+      "to": "continue-page",
+      "points": [
+        {
+          "x": 790,
+          "y": 280
+        },
+        {
+          "x": 945,
+          "y": 280
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 800,
+        "y": 245,
+        "width": 135,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-2",
+      "kind": "edge",
+      "label": "More rows: repeat",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "continue-page",
+      "to": "issue-cursor",
+      "points": [
+        {
+          "x": 1087,
+          "y": 205
+        },
+        {
+          "x": 1087,
+          "y": 145
+        },
+        {
+          "x": 628,
+          "y": 145
+        },
+        {
+          "x": 628,
+          "y": 205
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 780,
+        "y": 157,
+        "width": 230,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-3",
+      "kind": "edge",
+      "label": "Invalid token",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "issue-cursor",
+      "to": "invalid-cursor",
+      "points": [
+        {
+          "x": 500,
+          "y": 365
+        },
+        {
+          "x": 500,
+          "y": 430
+        },
+        {
+          "x": 205,
+          "y": 430
+        },
+        {
+          "x": 205,
+          "y": 505
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 220,
+        "y": 437,
+        "width": 220,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-4",
+      "kind": "edge",
+      "label": "New version",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "issue-cursor",
+      "to": "stale-snapshot",
+      "points": [
+        {
+          "x": 628,
+          "y": 365
+        },
+        {
+          "x": 628,
+          "y": 505
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 638,
+        "y": 428,
+        "width": 160,
+        "height": 30
+      },
+      "wrap": true
+    },
+    {
+      "id": "flow-5",
+      "kind": "edge",
+      "label": "No more rows",
+      "x": 0,
+      "y": 0,
+      "style": "secondary",
+      "from": "continue-page",
+      "to": "complete",
+      "points": [
+        {
+          "x": 1087,
+          "y": 365
+        },
+        {
+          "x": 1087,
+          "y": 505
+        }
+      ],
+      "head": "arrow",
+      "label_box": {
+        "x": 1097,
+        "y": 421,
+        "width": 130,
+        "height": 55
+      },
+      "wrap": true
+    }
+  ]
+}
