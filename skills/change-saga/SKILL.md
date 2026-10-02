@@ -86,7 +86,7 @@ before drawing slides; nothing else is needed.
    [diagrams and evidence](references/diagrams.md); revise a slide with
    `diagram edit`. Give an element a short Markdown `note` when a reader
    would want the why its label cannot hold (an edge's protocol or failure
-   behavior, a node's responsibility); readers see it on hover. Surprises
+   behavior, a node's responsibility); readers open it from an info control revealed by element hover or focus. Surprises
    still go in callout Items, and a note is never padding: omit it when there
    is nothing to add. Hand-write SVG only for what a diagram source cannot
    express, through `add-slide --review`, `set-slide-content --review`, and

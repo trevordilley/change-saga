@@ -29,8 +29,8 @@ Never edit committed saga content to hide a word from the chrome.
 - Hairline separators instead of cards. No decorative rounding, shadows, or
   oversized headings on ordinary content.
 - Most controls stay invisible until the reviewer hovers or focuses the thing
-  they belong to. Info and surprise buttons remain visible as compact entry
-  points to optional detail. Content is central and stays central. Slide Items remain reachable
+  they belong to. Info buttons fade in on element hover or keyboard focus; surprise buttons
+  stay visible. Touch readers see both controls without hover. Content is central and stays central. Slide Items remain reachable
   without hover through the marked-places menu, stable permalink, and keyboard
   focus; their on-slide affordances use the same quiet treatment in
   implementation and pull-request decks.
@@ -291,12 +291,13 @@ that composer's resubmission so a lost receipt cannot cause a duplicate click.
 ## Element detail and surprises
 
 Moving the pointer across a slide element must not open a popover. Explicit
-notes use a small info button at the element's bottom-left, reachable by hover,
-keyboard focus, and touch. Notes add grounded detail beyond the visible text;
+notes use a small info button at the element's bottom-left. It fades in when
+the element is hovered or keyboard-focused and stays visible while its detail
+is open. Touch readers see it without hover; reduced motion disables the fade. Notes add grounded detail beyond the visible text;
 ordinary Item labels and descriptions alone create no info control. Keep the
 system explanation visible on detailed slides, with optional depth in notes.
 
-Surprises use compact warning buttons in the same corner. They reveal the
+Surprises use always-visible compact warning buttons in the same corner. They reveal the
 callout's explanation and access to its linked code on demand. Multiple controls
 on one element sit alongside each other. Do not cover the diagram with an
 expanded Surprises panel. Escape dismisses the popover; linked code retains

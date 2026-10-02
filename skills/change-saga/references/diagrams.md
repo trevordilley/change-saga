@@ -230,8 +230,9 @@ diagram icons`.
   ```
 - Any semantic element may carry an optional `note`: useful detail beyond the
   visible label and description. Readers hover, focus, or tap its small info
-  control at the element's bottom-left; moving across the element itself opens
-  nothing. `diagram describe` also prints the note. Explain responsibility,
+  control at the element's bottom-left. The control fades in on node hover or
+  keyboard focus; touch readers see it directly. Node hover reveals the icon
+  without opening detail. `diagram describe` also prints the note. Explain responsibility,
   protocol, constraints, failure behavior, rationale, or an example the visible
   text does not already explain. Do not repeat or paraphrase the cell's text,
   and do not add a note to every element just for consistency. Omit it when
@@ -240,7 +241,7 @@ diagram icons`.
   Keep notes to a few sentences (at most 1,000 characters) of Markdown limited
   to bold, italics, inline code, lists, and http, https, or mailto links; raw
   HTML, headings, images, tables, and code blocks are refused. Surprises remain
-  callout Items with their own compact warning controls and exact evidence.
+  callout Items with their own always-visible warning controls and exact evidence.
 - A diagram may unfold in reading order with `"reveal": "fade"`: the
   reviewer fades its elements in, step by step, each time the slide is shown.
   Use it when order carries meaning, such as a request's path or a

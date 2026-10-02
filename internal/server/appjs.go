@@ -2653,7 +2653,11 @@ const appJavaScript = `(() => {
     if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item}},true); return;}
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
-    const landmarkVisual = event.target.closest?.('[data-landmark-visual]');
+    // An unbound note needs pointer events to reveal its info control. Its
+    // body still opens the enclosing Item, just as clicking through it did.
+    const noteVisual = event.target.closest?.('.element-note-hotspot');
+    const landmarkVisual = event.target.closest?.('[data-landmark-visual]') || (noteVisual && document.elementsFromPoint(event.clientX, event.clientY).find(element => element.matches('[data-landmark-visual]:not(.callout-hotspot)')));
+    if (noteVisual && landmarkVisual) noteDrawerHotspot = landmarkVisual;
     if (landmarkVisual && activateLandmarkCode(landmarkVisual)) { event.preventDefault(); return; }
     if (event.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
     const fragment = event.target.closest('.fragment');

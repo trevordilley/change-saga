@@ -551,14 +551,17 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .landmark-hotspot>.landmark-affordance{position:absolute;right:3px;top:3px}
 .landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active,.fragment.preview-linked-items .landmark-hotspot[data-landmark-has-diffs="true"]{border-color:#d39418;background:transparent}
 .landmark-hotspot:hover>.landmark-affordance,.landmark-hotspot:focus-within>.landmark-affordance,.landmark-hotspot.active>.landmark-affordance,.fragment.preview-linked-items .landmark-hotspot[data-landmark-has-diffs="true"]>.landmark-affordance{opacity:1}
-.element-note-hotspot{z-index:2;pointer-events:none}
+.element-note-hotspot{z-index:2;pointer-events:auto}
 .element-note-hotspot.element-note-inner{z-index:4}
 .landmark-hotspot.callout-hotspot{pointer-events:none;border-color:transparent;background:transparent}
 .landmark-hotspot.callout-hotspot>.landmark-affordance{display:none}
-.element-note-trigger{position:absolute;left:3px;bottom:3px;z-index:5;display:grid;place-items:center;width:24px;height:24px;padding:3px;border:1px solid var(--line);border-radius:50%;background:var(--bg);color:var(--muted);pointer-events:auto;cursor:help}
+.element-note-trigger{position:absolute;left:3px;bottom:3px;z-index:5;display:grid;place-items:center;width:24px;height:24px;padding:3px;border:1px solid var(--line);border-radius:50%;background:var(--bg);color:var(--muted);pointer-events:auto;cursor:help;opacity:0;transition:opacity .15s ease}
+.landmark-hotspot:hover>.element-note-trigger,.landmark-hotspot:focus-within>.element-note-trigger,.element-note-trigger[aria-expanded="true"]{opacity:1}
+@media(hover:none){.element-note-trigger{opacity:1}}
+@media(prefers-reduced-motion:reduce){.element-note-trigger{transition:none}}
 .element-note-trigger:hover,.element-note-trigger:focus-visible{color:var(--ink);border-color:var(--accent)}
 .element-note-trigger:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.element-note-trigger.surprise-note-trigger{color:var(--amber);border-color:var(--warning-line);background:var(--warning-bg)}
+.element-note-trigger.surprise-note-trigger{opacity:1;color:var(--amber);border-color:var(--warning-line);background:var(--warning-bg)}
 .element-note-actions{display:flex;position:static;opacity:1;margin-top:8px}
 .element-note-actions>.permalink{display:none}
 .callout-mark{display:inline-flex;align-items:center;padding:0 2px;color:var(--amber)}

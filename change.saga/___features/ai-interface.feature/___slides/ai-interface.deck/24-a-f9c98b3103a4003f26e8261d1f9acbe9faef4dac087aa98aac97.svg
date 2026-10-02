@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="diagram-title" data-renderer="change-saga-diagram/2" aria-describedby="diagram-desc">
+  <title id="diagram-title">Read every page from the same Saga version</title>
+  <desc id="diagram-desc">Keep the query unchanged while following cursors. If the Saga changes, restart from the first page.</desc>
+  <defs>
+    <style>@font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-weight:400}:root{color-scheme:light dark;--diagram-primary-fill:#edf5ff;--diagram-primary-ink:#153869;--diagram-primary-stroke:#2563eb;--diagram-secondary-ink:#526174;--diagram-secondary-stroke:#94a3b8;--diagram-title-ink:#172033;}@media (prefers-color-scheme:dark){:root{--diagram-primary-fill:#0c2d6b;--diagram-primary-ink:#cae8ff;--diagram-primary-stroke:#4493f8;--diagram-secondary-ink:#9198a1;--diagram-secondary-stroke:#6e7681;--diagram-title-ink:#e6edf3;}}</style>
+    <marker id="diagram-head-flow-0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+    <marker id="diagram-head-flow-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0L10 5L0 10Z" fill="#94a3b8" style="fill:var(--diagram-secondary-stroke,#94a3b8)"/>
+    </marker>
+  </defs>
+  <g id="heading" data-diagram-kind="text" transform="translate(50 60)" aria-hidden="true">
+    <text x="0" y="34" font-size="34" fill="#172033" xml:space="preserve" style="fill:var(--diagram-title-ink,#172033)"><tspan x="0" y="34">Read every page from the same Saga version</tspan></text>
+  </g>
+  <g id="subheading" data-diagram-kind="text" transform="translate(50 110)" aria-hidden="true">
+    <text x="0" y="18" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="0" y="18">Never combine pages from different Saga versions. Keep the query unchanged as you continue.</tspan></text>
+  </g>
+  <g id="first-page" data-diagram-kind="node" transform="translate(50 205)" role="group" aria-label="Start the read">
+    <desc>The first page begins at offset zero. An omitted limit uses the default; a limit outside the accepted range is rejected before a page is returned.</desc>
+    <rect width="270" height="160" rx="8" fill="#edf5ff" stroke="#2563eb" stroke-width="2" style="fill:var(--diagram-primary-fill,#edf5ff);stroke:var(--diagram-primary-stroke,#2563eb)"/>
+    <text x="18" y="41" font-size="23" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="41">Start the read</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153869" xml:space="preserve" style="fill:var(--diagram-primary-ink,#153869)"><tspan x="18" y="73">Send no cursor to begin at the</tspan><tspan x="18" y="91.75">first matching record.</tspan></text>
+  </g>
+  <g id="issue-cursor" data-diagram-kind="node" transform="translate(465 205)" role="group" aria-label="Save the next cursor">
+    <desc>The token stores the operation, normalized filters, snapshot and next offset as base64url-encoded JSON. Pass it back unchanged; a token from another query is rejected.</desc>
+    <rect width="325" height="160" rx="8" fill="#efebfc" stroke="#8870be" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#392653" xml:space="preserve"><tspan x="18" y="41">Save the next cursor</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#392653" xml:space="preserve"><tspan x="18" y="73">The token remembers the query, version</tspan><tspan x="18" y="91.75">and next offset.</tspan></text>
+  </g>
+  <g id="continue-page" data-diagram-kind="node" transform="translate(945 205)" role="group" aria-label="Read the next page">
+    <desc>The next command must preserve the operation and normalized filters. The token is checked against the current snapshot before its offset is used.</desc>
+    <rect width="285" height="160" rx="8" fill="#e5f4ec" stroke="#3c8967" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#153b2b" xml:space="preserve"><tspan x="18" y="41">Read the next page</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153b2b" xml:space="preserve"><tspan x="18" y="73">Pass the cursor back with the same</tspan><tspan x="18" y="91.75">query and filters.</tspan></text>
+  </g>
+  <g id="invalid-cursor" data-diagram-kind="node" transform="translate(50 505)" role="group" aria-label="Invalid cursor">
+    <desc>Malformed tokens, checksum failures, changed operations or filters, and invalid offsets return invalid_argument. Reusing the same invalid token will not repair the request.</desc>
+    <rect width="310" height="160" rx="8" fill="#fcebef" stroke="#bf5871" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#65263b" xml:space="preserve"><tspan x="18" y="40">Invalid cursor</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#65263b" xml:space="preserve"><tspan x="18" y="73">Fix the query or token. The error is</tspan><tspan x="18" y="91.75">invalid_argument.</tspan></text>
+  </g>
+  <g id="stale-snapshot" data-diagram-kind="node" transform="translate(465 505)" role="group" aria-label="Saga changed">
+    <desc>A valid token from another snapshot returns retryable stale_snapshot. Restart without that cursor so a completed traversal does not combine records from different versions.</desc>
+    <rect width="325" height="160" rx="8" fill="#fff1d9" stroke="#b88a38" stroke-width="2"/>
+    <text x="18" y="40" font-size="22" fill="#624113" xml:space="preserve"><tspan x="18" y="40">Saga changed</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#624113" xml:space="preserve"><tspan x="18" y="73">Restart at the first page after</tspan><tspan x="18" y="91.75">stale_snapshot.</tspan></text>
+  </g>
+  <g id="complete" data-diagram-kind="node" transform="translate(945 505)" role="group" aria-label="Read complete">
+    <desc>The last page sets has_more to false and omits a continuation token. A caller can check that accumulated returned counts match total before treating the traversal as complete.</desc>
+    <rect width="285" height="160" rx="8" fill="#e5f4ec" stroke="#3c8967" stroke-width="2"/>
+    <text x="18" y="41" font-size="23" fill="#153b2b" xml:space="preserve"><tspan x="18" y="41">Read complete</tspan></text>
+    <text x="18" y="73" font-size="15" fill="#153b2b" xml:space="preserve"><tspan x="18" y="73">Stop when has_more is false; no</tspan><tspan x="18" y="91.75">cursor remains.</tspan></text>
+  </g>
+  <g id="flow-0" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="More rows" data-from="first-page" data-to="issue-cursor">
+    <path d="M320 280 L465 280" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-0)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="330" y="263" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="330" y="263">More rows</tspan></text>
+  </g>
+  <g id="flow-1" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="Valid token" data-from="issue-cursor" data-to="continue-page">
+    <path d="M790 280 L945 280" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-1)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="800" y="263" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="800" y="263">Valid token</tspan></text>
+  </g>
+  <g id="flow-2" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="More rows: repeat" data-from="continue-page" data-to="issue-cursor">
+    <path d="M1087 205 L1087 145 L628 145 L628 205" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-2)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="780" y="175" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="780" y="175">More rows: repeat</tspan></text>
+  </g>
+  <g id="flow-3" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="Invalid token" data-from="issue-cursor" data-to="invalid-cursor">
+    <path d="M500 365 L500 430 L205 430 L205 505" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-3)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="220" y="455" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="220" y="455">Invalid token</tspan></text>
+  </g>
+  <g id="flow-4" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="New version" data-from="issue-cursor" data-to="stale-snapshot">
+    <path d="M628 365 L628 505" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-4)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="638" y="446" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="638" y="446">New version</tspan></text>
+  </g>
+  <g id="flow-5" data-diagram-kind="edge" transform="translate(0 0)" role="group" aria-label="No more rows" data-from="continue-page" data-to="complete">
+    <path d="M1087 365 L1087 505" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linejoin="round" marker-end="url(#diagram-head-flow-5)" style="stroke:var(--diagram-secondary-stroke,#94a3b8)"/>
+    <text x="1097" y="439" font-size="18" fill="#526174" xml:space="preserve" style="fill:var(--diagram-secondary-ink,#526174)"><tspan x="1097" y="439">No more rows</tspan></text>
+  </g>
+</svg>

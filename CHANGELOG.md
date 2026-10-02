@@ -12,6 +12,9 @@ tool, and what they have to do about it.
 
 ### Changed
 
+- Info controls fade in on element hover or keyboard focus, while surprise
+  controls stay visible. Touch readers retain direct access to both.
+
 - Slide notes open from compact info controls instead of whole-element hover.
   Ordinary labels and descriptions no longer generate repetitive popovers;
   surprise details use adjacent warning controls without an overlapping panel.

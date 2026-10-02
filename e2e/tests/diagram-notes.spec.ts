@@ -70,7 +70,11 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await expect(edge).toHaveAttribute("aria-label", "More information: name");
     await expect(heading).toHaveCount(1);
 
-    // Hover: an element without an Item shows just its rendered note.
+    // The node reveals its control; only the control opens the detail.
+    await expect(edge).toHaveCSS("opacity", "0");
+    await edge.locator("..").hover();
+    await expect(edge).toHaveCSS("opacity", "1");
+    await expect(popover).toBeHidden();
     await edge.hover();
     await expect(popover).toBeVisible();
     await expect(popover.getByText("Sent as a query parameter.")).toBeVisible();
@@ -98,7 +102,9 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
 
     // An Item's element shows its label and description with the note.
     const caller = slide.locator('.landmark-hotspot[data-element-id="caller"]');
+    await expect(caller.locator(".element-note-trigger")).toHaveCSS("opacity", "0");
     await caller.hover();
+    await expect(caller.locator(".element-note-trigger")).toHaveCSS("opacity", "1");
     await expect(popover).toBeHidden();
     await caller.locator(".element-note-trigger").hover();
     await expect(popover.locator(".element-note-label")).toHaveText("Caller");
@@ -114,6 +120,7 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     // Escape closes it while focus stays put.
     await heading.focus();
     await expect(heading).toBeFocused();
+    await expect(heading).toHaveCSS("opacity", "1");
     await expect(popover).toBeVisible();
     await expect(popover.locator("strong")).toHaveText("now pass a name");
     await expect(heading).toHaveAttribute("aria-expanded", "true");
@@ -167,6 +174,7 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await expect(surprise).toHaveCSS("pointer-events", "none");
     const badge = surprise.getByRole("button", { name: "Surprise: Names are echoed" });
     const greetingBox = (await greeting.boundingBox())!;
+    await expect(badge).toHaveCSS("opacity", "1");
     const badgeBox = (await badge.boundingBox())!;
     expect(badgeBox.x - greetingBox.x).toBeLessThan(40);
     expect(greetingBox.y + greetingBox.height - (badgeBox.y + badgeBox.height)).toBeLessThan(40);
@@ -205,6 +213,7 @@ test("shows a diagram element's rendered note on hover, focus, and tap, and dism
     await tablet.goto(`${reopened.baseURL}/reviews/pr-3`);
     const edge = tablet.locator('[data-deck-slide][data-slide-target$=":slide:noted-flow"] .element-note-hotspot[data-element-note-visual="name"] .element-note-trigger');
     const popover = tablet.locator("#element-note-popover");
+    await expect(edge).toHaveCSS("opacity", "1");
     await edge.tap();
     await expect(popover.getByText("Sent as a query parameter.")).toBeVisible();
     await edge.tap();
@@ -306,8 +315,16 @@ test("pinned notes, notes inside a selected group, and surprise badges stay reac
     // B: a note inside a group an Item selects is reachable with the pointer.
     const inner = slide.locator('.element-note-hotspot[data-element-note-visual="inner"] .element-note-trigger');
     await expect(inner.locator("..")).toHaveClass(/element-note-inner/);
+    await expect(inner).toHaveCSS("opacity", "0");
+    await inner.locator("..").hover();
+    await expect(inner).toHaveCSS("opacity", "1");
+    await expect(popover).toBeHidden();
     await inner.hover();
     await expect(popover.locator("strong")).toHaveText("inner");
+    // Revealing the child note must preserve the parent Item's body click.
+    await inner.locator("..").click({ position: { x: 80, y: 30 } });
+    await expect(page.locator("#review-drawer .review-item-panel h2")).toHaveText("Outer");
+    await page.keyboard.press("Escape");
 
     // A: crossing another hotspot on the way to a pinned note keeps it.
     const upper = slide.locator('.element-note-hotspot[data-element-note-visual="upper"] .element-note-trigger');
@@ -337,6 +354,13 @@ test("pinned notes, notes inside a selected group, and surprise badges stay reac
     expect(apart((await smallBadge.boundingBox())!, (await smallControls.boundingBox())!)).toBe(true);
     const smallInfo = slide.locator('.landmark-hotspot:not(.callout-hotspot)[data-element-id="small"] .element-note-trigger');
     expect(apart((await smallBadge.boundingBox())!, (await smallInfo.boundingBox())!)).toBe(true);
+    await page.mouse.move(5, 5);
+    await expect(smallInfo).toHaveCSS("opacity", "0");
+    await expect(smallBadge).toHaveCSS("opacity", "1");
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expect(smallInfo).toHaveCSS("transition-duration", "0s");
+    await smallInfo.locator("..").hover();
+    await expect(smallInfo).toHaveCSS("opacity", "1");
     await smallInfo.hover();
     await expect(popover).toContainText("Dispatch starts after validation completes.");
     await page.mouse.move(5, 5);

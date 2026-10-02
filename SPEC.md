@@ -601,12 +601,14 @@ element without a note renders exactly as before. The reviewer renders the
 note with its sanitizing Markdown renderer and shows it in a popover on the
 app page, beside the element and never inside the sandboxed slide frame, when
 a reader hovers, focuses, or taps its info control at the element's bottom-left.
-Moving over the element itself opens nothing. The popover stays open while the
+The info control fades in on element hover or keyboard focus; touch readers
+see it without hover. Reduced motion disables the fade. Moving over the element
+itself reveals the control without opening detail. The popover stays open while the
 pointer moves into its text and links. A tap, a click, or keyboard focus pins it,
 and its links follow the control in the Tab order. Ordinary Item labels and
 descriptions do not generate notes. An explicitly noted Item
 may name its label as context; the note adds detail beyond the visible text.
-Callout Items expose their bodies through compact warning controls alongside
+Callout Items expose their bodies through always-visible warning controls alongside
 info controls, with no automatically expanded panel over the diagram. An Item's
 drawer also carries its note.
 

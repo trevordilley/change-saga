@@ -2,7 +2,7 @@
   "version": 1,
   "deck": "ai-interface",
   "slide": "structured-query",
-  "current": "sha256:888782ebebe7a72399ff41a5968c70047c2fd1cc889bede2a8deaa270206448b",
+  "current": "sha256:d5aa4c241b36722625db28f0415153e93ff2806e762c4469478395cdc44992a6",
   "revisions": [
     {
       "snapshot": "sha256:afc70fc001b350bcdc639f810b1bd3fbac823f1b2021f1d1944d9a056d33b894",
@@ -939,6 +939,388 @@
       "diagram": {
         "source": "24-a-45fee2ac801b26ee2ea58976d27031e22c07cd530f3424cd73ba.json",
         "source_digest": "sha256:45fee2ac801b26ee2ea58976d27031e22c07cd530f3424cd73ba518b3014e5fc",
+        "renderer": "change-saga-diagram/2"
+      }
+    },
+    {
+      "snapshot": "sha256:d5aa4c241b36722625db28f0415153e93ff2806e762c4469478395cdc44992a6",
+      "parent_snapshots": [
+        "sha256:888782ebebe7a72399ff41a5968c70047c2fd1cc889bede2a8deaa270206448b"
+      ],
+      "request_id": "add-product-needs-git",
+      "created_at": "2026-10-02T00:08:02.171344Z",
+      "asset": "24-a-df9d4cae8763634f64549d314bcaeb28110ffc3d2c862f7a9b18.svg",
+      "asset_digest": "sha256:df9d4cae8763634f64549d314bcaeb28110ffc3d2c862f7a9b18d5bb5a692c20",
+      "slide": {
+        "front": [
+          "Use one CLI entry point to read code, review and product knowledge. Each command returns structured JSON."
+        ],
+        "version": 4,
+        "id": "structured-query",
+        "deck": "ai-interface",
+        "title": "How AI reads the Saga",
+        "rank": 0,
+        "intent": "orient",
+        "layout": "diagram",
+        "media_type": "image/svg+xml",
+        "entrypoint": "24-a-df9d4cae8763634f64549d314bcaeb28110ffc3d2c862f7a9b18.svg",
+        "takeaway": "Use one CLI entry point to read code, review and product knowledge. Each command returns structured JSON.",
+        "reading_order": [
+          "caller",
+          "query",
+          "session",
+          "living-session",
+          "missing-adapters",
+          "product-needs-git"
+        ]
+      },
+      "items": [
+        {
+          "item": {
+            "version": 4,
+            "id": "caller",
+            "slide": "structured-query",
+            "rank": 10,
+            "kind": "node",
+            "label": "AI assistant",
+            "description": "Use query help and query schema to discover supported inputs and pagination. Read through these operations so the client does not depend on the Saga storage layout.",
+            "selector": {
+              "type": "element",
+              "element_id": "caller"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+                  "path": "internal/grammar/commands.go",
+                  "start": 612,
+                  "end": 670,
+                  "digest": "sha256:14316c6a37420c88b334c5520c70c15ef0efefc22443e24ba6d4d4d01fa29d73",
+                  "note": "Published command shapes including review operations"
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/grammar/commands.go",
+                  "start": 20,
+                  "end": 35,
+                  "digest": "sha256:dda89d9d567834db0c1a8d223c5e5f3b63e9998876779345afc161495c005795",
+                  "note": "Published command shapes including review operations"
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-structured-query-caller",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the discovery behavior at AI assistant."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "query",
+            "slide": "structured-query",
+            "rank": 20,
+            "kind": "node",
+            "label": "Command-line entry",
+            "description": "The CLI checks arguments before opening application state. It emits a versioned success or error envelope, allowing the caller to branch on stable fields instead of parsing prose.",
+            "selector": {
+              "type": "element",
+              "element_id": "query"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 915,
+                  "end": 941,
+                  "digest": "sha256:3617c81c9879ba7a191435dfdae21a3db7a5adc5683421ecc83fe4bbbc162ac2",
+                  "note": "Versioned query envelope and operation discovery"
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+                  "path": "internal/cli/query.go",
+                  "start": 512,
+                  "end": 576,
+                  "digest": "sha256:8bf5be1a224d51c2da2d26d554fa5bc092cd3a2e7d04ec7e2c9904614468338d",
+                  "note": "Versioned query envelope and operation discovery"
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query.go",
+                  "start": 24,
+                  "end": 25,
+                  "digest": "sha256:0b6ccd9d4e7ad7df6cf3babe484891d5fff40b278510c21877b621cc62b482ed",
+                  "note": "Versioned query envelope and operation discovery"
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "f127d4ff62a735bd0bbcdd2231f8b3f714a59427",
+                  "path": "internal/cli/query.go",
+                  "start": 233,
+                  "end": 310,
+                  "digest": "sha256:7a6fc5df4ba2abce854e6d98dc92eaebd7423cdc335c85ded3bfc0950dbbd392",
+                  "note": "Versioned query envelope and operation discovery"
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-structured-query-query",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Command-line entry."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "session",
+            "slide": "structured-query",
+            "rank": 30,
+            "kind": "node",
+            "label": "Code and review",
+            "description": "reviewapp validates the Saga, resolves the requested Git range, and supplies slide, coverage and code-ownership reads. A source-history failure is reported rather than replaced with an unrelated comparison.",
+            "selector": {
+              "type": "element",
+              "element_id": "session"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 85,
+                  "end": 192,
+                  "digest": "sha256:e59a780e2c6c86ebea1339fda1889b43668dc246573a71159a74492e9bef469c",
+                  "note": "Validates the Saga, resolves its source comparison and builds the code and review session."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-structured-query-session",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Code and review."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "living-session",
+            "slide": "structured-query",
+            "rank": 40,
+            "kind": "node",
+            "label": "Product knowledge",
+            "description": "livingapp composes requirements, relations, work plans, traceability and readiness into bounded query results. A next_cursor continues the same operation and filters.",
+            "selector": {
+              "type": "element",
+              "element_id": "living-session"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/livingapp/session.go",
+                  "start": 156,
+                  "end": 215,
+                  "digest": "sha256:569f123574dd958729f96a7c6df46c4736af7f783af155765ad91460264b00a1",
+                  "note": "Defines the product-graph operations owned by livingapp and pages them through its transport-neutral session."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 171,
+                  "end": 178,
+                  "digest": "sha256:e0edbd66eed059a7290b3d969d1131650d637c9b1270a7382bc5ad73eb349734",
+                  "note": "Routes living operations through a second domain session while reusing reviewapp's public snapshot so both projections stay comparable."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 35,
+                  "end": 52,
+                  "digest": "sha256:109f6e80e1d5f402994c36ce8f8023e9c9843d2bb7e64bb6599c94a4fc9584b5",
+                  "note": "Routes living operations through a second domain session while reusing reviewapp's public snapshot so both projections stay comparable."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 126,
+                  "end": 135,
+                  "digest": "sha256:3adfcc13e8a18f93360f95e23d976b6fc3ae6f0fa7395d087e499136b0b61b28",
+                  "note": "Routes living operations through a second domain session while reusing reviewapp's public snapshot so both projections stay comparable."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-structured-query-living-session",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the envelope behavior at Product knowledge."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "missing-adapters",
+            "slide": "structured-query",
+            "rank": 50,
+            "kind": "risk",
+            "label": "CLI transport only",
+            "description": "The structured query contract is exposed by the CLI. The proposed HTTP-query and stdio MCP adapters are not available query transports; the browser server does not substitute for them.",
+            "selector": {
+              "type": "element",
+              "element_id": "missing-adapters"
+            }
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "docs/ai-facing-interface.md",
+                  "start": 7,
+                  "end": 11,
+                  "digest": "sha256:e4a0653a3b0db543b421dbba7937457ee125ea8863d2f27da506d2f94543d7be",
+                  "note": "States that only the structured CLI read adapter exists today while HTTP query and MCP adapters remain deferred."
+                },
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "docs/ai-facing-interface.md",
+                  "start": 74,
+                  "end": 85,
+                  "digest": "sha256:129651e6fe81adaefdd064a7eb32277bb515f505914bffb4e1f5a39380629e69",
+                  "note": "States that only the structured CLI read adapter exists today while HTTP query and MCP adapters remain deferred."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "ai-info-structured-query-missing-adapters",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:discovery",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains the discovery behavior at CLI transport only."
+            }
+          ]
+        },
+        {
+          "item": {
+            "version": 4,
+            "id": "product-needs-git",
+            "slide": "structured-query",
+            "rank": 60,
+            "kind": "callout",
+            "label": "Product reads also depend on Git",
+            "description": "Product queries look independent of Git. They still open reviewapp first to share its Saga/source snapshot; if that open fails, the product query fails before livingapp is created.",
+            "selector": {
+              "type": "element",
+              "element_id": "living-session"
+            },
+            "about": "living-session",
+            "body": "Product queries look independent of Git. They still open reviewapp first to share its Saga/source snapshot; if that open fails, the product query fails before livingapp is created."
+          },
+          "evidence": [
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/cli/query_reviewapp.go",
+                  "start": 35,
+                  "end": 52,
+                  "digest": "sha256:109f6e80e1d5f402994c36ce8f8023e9c9843d2bb7e64bb6599c94a4fc9584b5",
+                  "note": "Routes living operations through a second domain session while reusing reviewapp's public snapshot so both projections stay comparable."
+                }
+              ]
+            },
+            {
+              "version": 2,
+              "references": [
+                {
+                  "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+                  "path": "internal/reviewapp/session.go",
+                  "start": 85,
+                  "end": 192,
+                  "digest": "sha256:e59a780e2c6c86ebea1339fda1889b43668dc246573a71159a74492e9bef469c",
+                  "note": "Validates the Saga, resolves its source comparison and builds the code and review session."
+                }
+              ]
+            }
+          ],
+          "criterion_links": [
+            {
+              "id": "surprise-product-needs-git",
+              "criterion": "urn:change-saga:change-saga:story:structured-ai-contract:criterion:envelope",
+              "story_revision": "urn:change-saga:change-saga:story:structured-ai-contract:revision:r1",
+              "rationale": "Explains a constraint of the documented query contract: Product reads also depend on Git."
+            }
+          ]
+        }
+      ],
+      "diagram": {
+        "source": "24-a-047c6a0bb790c3cd76e98c3fb86b260c614920bd6cc7e3daa0d3.json",
+        "source_digest": "sha256:047c6a0bb790c3cd76e98c3fb86b260c614920bd6cc7e3daa0d3f4ba70e3d014",
         "renderer": "change-saga-diagram/2"
       }
     }
