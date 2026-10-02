@@ -10,6 +10,8 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-02
+
 ### Changed
 
 - Info controls fade in on element hover or keyboard focus, while surprise
@@ -1064,7 +1066,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/trevordilley/change-saga/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/trevordilley/change-saga/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/twentyideas/changesaga/compare/v0.1.1...v0.2.0
 [0.0.9]: https://github.com/twentyideas/changesaga/compare/v0.0.8...v0.0.9
