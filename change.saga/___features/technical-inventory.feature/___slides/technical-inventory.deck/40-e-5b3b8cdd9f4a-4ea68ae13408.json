@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+      "commit": "dd2b19adb0f8ad2329add63b83564f45b6075a48",
       "path": "e2e/tests/inventory.spec.ts",
       "start": 1,
       "end": 75,
-      "digest": "sha256:b5d41741025ba6f3ebcdbcbdde120649e793c1a620eb570d1c891ad9db1c0f7c",
+      "digest": "sha256:2ecf57f6b0f7050d66ca413cf0b08b77db5bd7ce52f2c74a57e243487cdbe42e",
       "note": "Server and browser regressions verify saved definitions, review rendering, desktop/narrow navigation and retained slide context."
     }
   ]

@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "cc583f19d82e565907772dbc3e2c190ef251aefa",
+      "commit": "dd2b19adb0f8ad2329add63b83564f45b6075a48",
       "path": "internal/server/template.go",
-      "start": 406,
-      "end": 406,
-      "digest": "sha256:b992d61b2f161ba918a55ac4619eb37fefd592785632b12100404dfc0624059b",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:ed16e633f8e7fef5a109016246e71ceadef59a99e11c889c9b622744103d9b6b",
       "note": "Chooses the raster branch and renders its slide image without an interactive document context."
     }
   ]

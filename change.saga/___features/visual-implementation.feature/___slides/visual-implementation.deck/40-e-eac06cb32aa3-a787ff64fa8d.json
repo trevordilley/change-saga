@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+      "commit": "dd2b19adb0f8ad2329add63b83564f45b6075a48",
       "path": "internal/server/template.go",
       "start": 398,
       "end": 398,
-      "digest": "sha256:a7a2cff81892f2bcc3f9d8ad47469457e6d09fa7bc5f0880ab364378a7acc7e3",
+      "digest": "sha256:74e1dc99703da6f9f0af0133f878b2431b8372a37aafaf52b8825f481bcd3a04",
       "note": "The reviewer emits deck-scoped slide identities, position feedback, previous/next controls, and presentation exit."
     }
   ]
