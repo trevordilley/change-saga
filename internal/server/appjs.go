@@ -2526,6 +2526,13 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('click', event => {
+    const landmarkToggle = event.target.closest?.('[data-landmark-menu-toggle]');
+    if (landmarkToggle) {
+      const list = q('.landmark-list', landmarkToggle.parentElement);
+      list.hidden = !list.hidden;
+      landmarkToggle.setAttribute('aria-expanded', String(!list.hidden));
+      return;
+    }
     if (event.target.closest?.('[data-deck-overview] a')) return;
     const slideThumbnail = event.target.closest?.('[data-slide-thumbnail]');
     if (slideThumbnail) {

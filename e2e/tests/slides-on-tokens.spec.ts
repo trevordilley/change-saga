@@ -56,7 +56,7 @@ test("toggling dark mode repaints a generated slide's canvas and nodes, and keep
 
     // Target an element first: a scheme change keeps the frame's fragment,
     // so a landmark or reveal target survives the toggle.
-    await slide.locator(".landmark-menu summary").click();
+    await slide.locator(".landmark-menu [data-landmark-menu-toggle]").click();
     await slide.locator(".landmark-list a", { hasText: "Caller" }).click();
     await expect(frame).toHaveAttribute("src", /#caller$/);
 

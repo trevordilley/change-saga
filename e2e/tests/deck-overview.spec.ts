@@ -1,3 +1,4 @@
+import type { Locator, Page } from "@playwright/test";
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
@@ -6,6 +7,28 @@ import { codeLocation, runCLI, startSagaServer, stopSagaServer, type SagaReposit
 function cli(repo: SagaRepositories, ...args: string[]): void {
   const result = runCLI(repo, args);
   expect(result.status, `${args.join(" ")}\n${result.stdout}\n${result.stderr}`).toBe(0);
+}
+
+async function expectSeparateDeckControls(page: Page, viewer: Locator): Promise<void> {
+  const originalViewport = page.viewportSize()!;
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 1024, height: 576 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    for (const face of ["Overview", "Front", "Back"]) {
+      const button = viewer.getByRole("button", { name: face, exact: true });
+      await button.click();
+      await expect(button).toHaveAttribute("aria-pressed", "true");
+      const controls = (await viewer.locator(".deck-viewer-header").boundingBox())!;
+      const canvas = (await viewer.locator(".deck-viewer-stage").boundingBox())!;
+      expect(canvas.width / canvas.height, "slide keeps its authored aspect ratio").toBeCloseTo(16 / 9, 2);
+      expect(canvas.y + canvas.height, "controls do not cover any slide content").toBeLessThanOrEqual(controls.y + 1);
+      expect(controls.y + controls.height, "controls remain inside the viewport").toBeLessThanOrEqual(viewport.height + 1);
+      const faceControls = (await viewer.getByRole("navigation", { name: "Deck view" }).boundingBox())!;
+      expect(faceControls.x).toBeGreaterThanOrEqual(0);
+      expect(faceControls.x + faceControls.width).toBeLessThanOrEqual(viewport.width + 1);
+    }
+    await page.screenshot({ path: test.info().outputPath(`deck-footer-${viewport.width}.png`) });
+  }
+  await page.setViewportSize(originalViewport);
 }
 
 const visual = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><rect width="1280" height="720" fill="white"/><g id="handler"><rect x="100" y="180" width="500" height="280" fill="#ddf"/><text x="140" y="260">Request handler</text></g></svg>`;
@@ -101,6 +124,7 @@ test("CLI-authored overview renders report, table, visual and opens exact item e
     const viewer = page.locator("#page [data-deck-viewer]");
     const back = viewer.locator('[data-slide-title="Request flow"] .fragment');
     await expect(back).toBeVisible();
+    await expectSeparateDeckControls(page, viewer);
     await viewer.getByRole("button", { name: "Front", exact: true }).click();
     await expect(viewer.locator('[data-slide-title="Request flow"] [data-slide-front]')).toContainText("Input is checked before dispatch.");
     await expect(back).toBeHidden();
@@ -160,6 +184,7 @@ test("legacy implementation deck keeps Back and offers generated directory and t
   const viewer = page.locator("#view-slides [data-deck-viewer]");
   const slide = viewer.locator('[data-deck-slide][data-slide-title="Legacy request"]');
   await expect(slide.locator(".fragment")).toBeVisible();
+  await expectSeparateDeckControls(page, viewer);
   await slide.hover();
   await page.locator(".brand").hover();
   await expect.poll(() => slide.locator(".fragment").evaluate(node => {

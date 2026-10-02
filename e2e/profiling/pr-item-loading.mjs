@@ -20,7 +20,7 @@ try {
    const target=await button.evaluate(node=>node.closest('.review-deck-slide').dataset.slideTarget);
    await page.locator('[data-slide-thumbnail]').evaluateAll((nodes,target)=>nodes.find(n=>n.dataset.slideTarget===target).click(),target);
    const slide=page.locator('.review-deck-slide.active');
-   const menu=slide.locator('.landmark-menu');if(!(await menu.evaluate(node=>node.open)))await menu.locator(':scope > summary').click();
+   const menu=slide.locator('.landmark-menu');if(await menu.locator('[data-landmark-menu-toggle]').getAttribute('aria-expanded')!=='true')await menu.locator('[data-landmark-menu-toggle]').click();
    const from=requests.length,start=performance.now();await button.click();
    await page.locator('#review-drawer .review-line').first().waitFor({state:'visible'});
    const firstRowMs=performance.now()-start;

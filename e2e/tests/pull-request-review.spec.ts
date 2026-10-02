@@ -109,7 +109,7 @@ test("@critical approves slide by slide and marks a decision out of date when it
     const greeting = page.locator('[data-deck-slide][data-slide-target$=":slide:greeting"]');
     const theme = page.locator('[data-deck-slide][data-slide-target$=":slide:theme"]');
     await expect(greeting).toBeVisible();
-    await greeting.locator(".landmark-menu > summary").click();
+    await greeting.locator(".landmark-menu > [data-landmark-menu-toggle]").click();
     const codeReference = greeting.locator(".landmark-list").getByRole("button", { name: /Open linked code with \d+ additions? and \d+ deletions? for The change/ });
     await expect(codeReference).toBeVisible();
     await codeReference.click();
@@ -130,7 +130,7 @@ test("@critical approves slide by slide and marks a decision out of date when it
     await theme.locator("textarea[name=body]").first().fill("Name the colour token.");
     await theme.locator("[data-review-request-changes]").click();
     await expect(theme.locator('[data-decision-state="changes_requested"]')).toHaveAttribute("data-currency", "current");
-    await theme.locator(".landmark-menu > summary").click();
+    await theme.locator(".landmark-menu > [data-landmark-menu-toggle]").click();
     await theme.locator(".landmark-list").getByRole("button", { name: /Open linked code with \d+ additions? and \d+ deletions? for The change/ }).click();
     const commentForm = page.locator('#review-drawer [data-review-comment-form$=":item:change"]');
     await commentForm.locator("xpath=preceding-sibling::summary").click();
@@ -447,7 +447,7 @@ test("async saves retain drafts on refusal and preserve the document, visual, dr
     await slide.locator('[data-review-approve]').click();
     await expect(slide.locator('[data-decision-state="approved"]')).toHaveAttribute('data-currency','current');
     await expect(page.locator('.slide-thumbnail-status').first()).toHaveAttribute('data-review-state','approved');
-    await slide.locator('.landmark-menu > summary').click();
+    await slide.locator('.landmark-menu > [data-landmark-menu-toggle]').click();
     await slide.locator('.landmark-list [data-open-diffs]').first().click();
     const drawer=page.locator('#review-drawer');
     const form=drawer.locator('[data-review-comment-form]');
@@ -600,7 +600,7 @@ test("renders a diagram-sourced review slide published with apply-slide", async 
     await expect(page.locator("#element-note-popover")).toContainText("the greeting now prints it as given");
     await page.mouse.move(5, 5);
     await page.screenshot({ path: test.info().outputPath("review-diagram-slide.png") });
-    await slide.locator(".landmark-menu > summary").click();
+    await slide.locator(".landmark-menu > [data-landmark-menu-toggle]").click();
     await slide.locator(".landmark-list").getByRole("button", { name: /Open linked code with \d+ additions? and \d+ deletions? for Greeting/ }).click();
     await expect(page.locator("#review-drawer .review-line.add").filter({ hasText: `"hello, " + name` }).first()).toBeVisible();
   } finally {

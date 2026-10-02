@@ -32,7 +32,7 @@ test("shared System opens saved Components and code without losing a slide @crit
   for (const id of ["checkout-flag", "search-flag"]) {
     await page.getByRole("button", { name: "Show slide: " + id, exact: true }).click();
     const slide = page.locator('[data-deck-slide]:visible');
-    await slide.locator('.landmark-menu summary').click();
+    await slide.locator('.landmark-menu [data-landmark-menu-toggle]').click();
     const open = slide.locator('.landmark-menu [data-documentation-target]');
     await open.focus(); await page.keyboard.press("Enter");
     const hash = new URL(page.url()).hash;
@@ -61,9 +61,9 @@ test("shared System opens saved Components and code without losing a slide @crit
   const narrowViewer = narrow.locator('[data-deck-viewer]:visible');
   const headerBox = (await narrowViewer.locator('.deck-viewer-header').boundingBox())!;
   const slideBox = (await narrowViewer.locator('[data-deck-slide]:visible').boundingBox())!;
-  expect(headerBox.y + headerBox.height, 'reading controls have their own space above the visual').toBeLessThanOrEqual(slideBox.y);
+  expect(slideBox.y + slideBox.height, 'reading controls have their own space below the visual').toBeLessThanOrEqual(headerBox.y);
   await narrow.screenshot({ path: test.info().outputPath('narrow-reading-controls.png') });
-  await narrow.locator('[data-deck-slide]:visible .landmark-menu summary').tap();
+  await narrow.locator('[data-deck-slide]:visible .landmark-menu [data-landmark-menu-toggle]').tap();
   await narrow.locator('[data-deck-slide]:visible .landmark-menu [data-documentation-target]').tap();
   await expect(narrow.locator('[data-documentation-view]')).toHaveAttribute('data-documentation-view', target);
   await narrow.getByRole('button', { name: 'FlagClient', exact: true }).tap();

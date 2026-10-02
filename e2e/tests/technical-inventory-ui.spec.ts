@@ -75,7 +75,7 @@ test("Technical design lists shared definitions and traces a slide Item to its p
   const slide = page.locator("[data-deck-slide]:visible");
   await expect(slide).toHaveAttribute("data-slide-title", "checkout-flag");
   const slideURL = page.url();
-  await slide.locator(".landmark-menu summary").click();
+  await slide.locator(".landmark-menu [data-landmark-menu-toggle]").click();
   const open = slide.locator(".landmark-menu [data-documentation-target]");
   await open.click();
   await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", systemTarget + ":revision:r1");
@@ -271,7 +271,7 @@ test("an authored ERD and an Item's exact selection open the same pinned definit
   await page.getByRole("button", { name: "Show slide: greeting-store", exact: true }).click();
   const slide = page.locator("[data-deck-slide]:visible");
   const slideURL = page.url();
-  await slide.locator(".landmark-menu summary").click();
+  await slide.locator(".landmark-menu [data-landmark-menu-toggle]").click();
   const control = slide.locator(".landmark-menu [data-documentation-target]");
   await expect(control).toHaveAttribute("data-documentation-selections", "1");
   await control.click();

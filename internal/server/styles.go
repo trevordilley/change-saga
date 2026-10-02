@@ -49,9 +49,10 @@ a{color:var(--accent)}
 .slide-thumbnail-card:hover .slide-thumbnail-preview{border-color:var(--faint)}
 .slide-thumbnail-card.active{color:var(--ink);font-weight:600}
 .slide-thumbnail-card.active .slide-thumbnail-preview{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
-.deck-viewer{display:grid;place-items:center;width:100%;height:100%;overflow:hidden;background:#111}
+.deck-viewer{display:grid;grid-template-rows:minmax(0,1fr) auto;width:100%;height:100%;min-height:0;overflow:hidden;background:#111}
+.deck-viewer-canvas{display:grid;place-items:center;container-type:size;width:100%;height:100%;min-width:0;min-height:0}
 .sidebar-slide-surface{width:100%;height:100%;min-height:0;background:#111}
-.deck-viewer-stage{position:relative;width:min(100%,calc(177.7778vh - 78.2222px));aspect-ratio:16/9;overflow:hidden;background:var(--bg);box-shadow:var(--shadow)}
+.deck-viewer-stage{position:relative;width:min(100%,177.7778cqh);aspect-ratio:16/9;overflow:hidden;background:var(--bg);box-shadow:var(--shadow)}
 .deck-viewer-slide{position:absolute;z-index:1;inset:0;overflow:hidden;background:var(--bg)}
 .deck-viewer-slide[hidden]{display:none}.deck-viewer-slide.active{display:block}
 .deck-viewer-slide .fragment{margin:0;border:0;border-radius:0;height:100%;min-height:100%;background:transparent}
@@ -62,7 +63,7 @@ a{color:var(--accent)}
 .deck-viewer-slide .fragment-stage{height:100%;min-height:100%;display:grid;place-items:center;padding:0}
 .deck-viewer-slide .fragment-frame{width:100%;height:100%;min-height:0;border:0;border-radius:0}
 .deck-viewer-slide .fragment-image{display:block;width:100%;height:100%;max-height:none;object-fit:contain}
-.deck-viewer-header{position:absolute;z-index:6;left:12px;right:12px;top:10px;display:flex;align-items:center;justify-content:flex-end;gap:16px;pointer-events:none;color:var(--muted);text-shadow:0 1px 2px var(--bg)}
+.deck-viewer-header{position:relative;z-index:9;display:flex;align-items:center;flex-wrap:wrap;gap:8px 16px;width:100%;min-width:0;padding:8px 12px;border-top:1px solid var(--line);background:var(--bg);color:var(--muted)}
 .deck-viewer-header>div{display:flex;align-items:baseline;gap:9px;min-width:0}
 .deck-viewer-header strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
 .deck-viewer-header [data-slide-deck-title]{flex:none;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
@@ -75,12 +76,14 @@ a{color:var(--accent)}
 body.presentation-mode{overflow:hidden;background:#000}
 body.presentation-mode>.topbar,body.presentation-mode .manifest-view,body.presentation-mode .change-view{display:none}
 body.presentation-mode .diff-drawer,body.presentation-mode .drawer-backdrop{display:none}
-body.presentation-mode .deck-viewer-stage{width:min(100vw,177.7778vh);height:auto;max-height:100vh;box-shadow:none}
+body.presentation-mode .deck-viewer{grid-template-rows:minmax(0,1fr)}
+body.presentation-mode .deck-viewer-header{display:none}
+body.presentation-mode .deck-viewer-stage{box-shadow:none}
 body.presentation-mode .deck-viewer-header,body.presentation-mode .deck-viewer-slide .fragment-head{opacity:0;pointer-events:none}
 body.presentation-mode .deck-viewer-slide .landmark-hotspot{display:none}
 body.presentation-mode .deck-viewer-stage:hover .slide-step,body.presentation-mode .slide-step:focus-visible{opacity:.6}
 body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.presentation-mode .slide-exit-presentation:focus-visible{opacity:1}
-@media(max-width:780px){.deck-viewer-header{left:8px;right:8px}.deck-viewer-header strong{display:none}.slide-step{width:30px;height:46px}.slide-step[data-slide-previous]{left:6px}.slide-step[data-slide-next]{right:6px}}
+@media(max-width:780px){.deck-viewer-header{padding:8px;gap:6px 10px}.deck-viewer-header strong{display:none}.slide-step{width:30px;height:46px}.slide-step[data-slide-previous]{left:6px}.slide-step[data-slide-next]{right:6px}}
 
 /* Top bar ---------------------------------------------------------------- */
 .topbar{position:sticky;top:0;z-index:30;height:var(--top);display:flex;align-items:center;gap:14px;padding:0 12px;background:var(--bg);border-bottom:1px solid var(--line)}
@@ -525,9 +528,8 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 /* Landmarks -------------------------------------------------------------- */
 .landmark-target{position:absolute;top:0;left:0;width:1px;height:1px;scroll-margin-top:calc(var(--top) + 12px)}
 .landmark-menu{position:relative}
-.landmark-menu>summary{display:grid;place-items:center;width:24px;height:24px;list-style:none;border-radius:var(--radius);color:var(--muted);cursor:pointer}
-.landmark-menu>summary:hover{background:var(--bg-inset);color:var(--ink)}
-.landmark-menu>summary::-webkit-details-marker{display:none}
+.landmark-menu>[data-landmark-menu-toggle]{padding:0;border:0;background:transparent;display:grid;place-items:center;width:24px;height:24px;list-style:none;border-radius:var(--radius);color:var(--muted);cursor:pointer}
+.landmark-menu>[data-landmark-menu-toggle]:hover{background:var(--bg-inset);color:var(--ink)}
 .landmark-list{position:absolute;z-index:20;right:0;top:calc(100% + 4px);width:min(280px,75vw);padding:4px;background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
 .landmark-list>div{display:flex;align-items:center;gap:2px;border-radius:4px}
 .landmark-list>div:hover{background:var(--bg-subtle)}
@@ -816,6 +818,8 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .side-tab{padding:0 8px;font-size:12px}
 .side-tabs{padding-right:6px}
 .shell,.shell.code-mode{display:block}
+.shell.slide-mode{display:grid;grid-template-columns:min(210px,42vw) minmax(0,1fr)}
+.shell.slide-mode>.sidebar{max-height:none}
 .sidebar{position:static;height:auto;max-height:42vh;padding:8px}
 .shell.code-mode .sidebar{position:fixed;z-index:25;top:var(--top);bottom:0;left:0;width:min(300px,86vw);max-height:none;height:auto;box-shadow:12px 0 30px #1f232826;transform:none;transition:transform .18s}
 .shell.code-mode.tree-hidden .sidebar{transform:translateX(-105%);padding:8px}

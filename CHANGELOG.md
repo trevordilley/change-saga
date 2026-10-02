@@ -10,6 +10,14 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-10-02
+
+### Fixed
+
+- Overview, Front, Back, and reading controls sit below the slide instead of
+  overlapping its title or diagram, including on narrow screens.
+- Marked-place menu actions respond reliably to taps in Firefox.
+
 ## [0.3.1] - 2026-10-02
 
 ### Changed
@@ -1066,7 +1074,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/trevordilley/change-saga/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/trevordilley/change-saga/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/trevordilley/change-saga/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/twentyideas/changesaga/compare/v0.1.1...v0.2.0

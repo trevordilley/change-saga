@@ -200,7 +200,7 @@ const deckOverviewJavaScript = `
 `
 
 const deckOverviewStyles = `
-.review-empty{height:100%;overflow:auto;background:var(--bg);color:var(--ink);padding:20px;box-sizing:border-box}.review-empty-viewer{height:60vh;margin-top:20px;background:var(--bg)}.review-empty-viewer .deck-viewer-stage{height:100%;width:100%;aspect-ratio:auto}.review-overview-link{display:block;padding:6px 12px}.deck-face-controls{display:flex;gap:2px;pointer-events:auto;background:var(--bg);border:1px solid var(--line);text-shadow:none;margin-right:auto}
+.review-empty{height:100%;overflow:auto;background:var(--bg);color:var(--ink);padding:20px;box-sizing:border-box}.review-empty-viewer{height:60vh;margin-top:20px;background:var(--bg)}.review-empty-viewer .deck-viewer-stage{height:100%;width:100%;aspect-ratio:auto}.review-overview-link{display:block;padding:6px 12px}.deck-face-controls{display:flex;gap:2px;pointer-events:auto;background:var(--bg);border:1px solid var(--line);text-shadow:none;margin-right:auto;order:-1;flex:none}
 .deck-face-controls button{font:inherit;padding:5px 9px;border:0;background:transparent;color:var(--muted);cursor:pointer}
 .deck-face-controls button[aria-pressed=true]{color:var(--ink);background:var(--bg-inset);box-shadow:inset 0 -2px var(--accent)}
 .deck-face-controls button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}

@@ -57,6 +57,11 @@ current deck, slide title, and position stay visible so reviewers can orient and
 resume. Fullscreen presentation hides application and review chrome without
 changing the active slide.
 
+Overview, Front, Back, slide position, and Viewed controls occupy a separate
+bar below the slide canvas. The bar can wrap on narrow screens without
+covering authored titles or diagrams; the visual retains its 16:9 aspect ratio.
+Presentation mode hides the bar and gives its space back to the slide.
+
 A pull-request review uses this same native presentation as its whole default
 surface: thumbnail rail plus one maximally fitted 16:9 slide. It is not a
 document page containing a slide, and it does not require a presentation-mode
