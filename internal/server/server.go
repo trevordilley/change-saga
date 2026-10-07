@@ -1006,6 +1006,7 @@ func templateFuncs() template.FuncMap {
 		"asset":                assetPath,
 		"oob":                  oobPart,
 		"navState":             navState,
+		"sidebarOutline":       sidebarOutline,
 		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
 			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
 		},

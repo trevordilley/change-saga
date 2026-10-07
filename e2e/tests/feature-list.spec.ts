@@ -19,16 +19,10 @@ const openFeatures = (page: Page) => page.locator("#nav-features > .doc-node:has
 test("@critical lists every feature and opens only the one being read", async ({ page, saga }) => {
   const contents = page.getByRole("navigation", { name: "Contents" });
 
-  // Documentation holds two sections, in order, and both open a page.
-  // Reviews are the header's other side, never repeated here.
+  // Project destinations are peers; prose stays on Overview's page.
   const places = contents.locator(":scope > .doc-node:not([hidden]) > .doc-row > .doc-link");
-  await expect(places).toHaveText(["Overview", "Features"]);
-  await expect(places.nth(1)).toHaveAttribute("href", "/features");
-  // What describes the whole app hangs off the overview, beneath its prose.
-  const overview = contents.locator(":scope > .doc-node").first();
-  await expect(overview.locator(":scope > .doc-children > .doc-node > .doc-row > .doc-link")).toHaveText([
-    "Name", "Elevator pitch", "Description", "Terms and vocabulary", "Personas", "Feature flags"
-  ]);
+  await expect(places).toHaveText(["Overview", "Terms and vocabulary", "Personas", "Feature flags", "Features"]);
+  await expect(places.last()).toHaveAttribute("href", "/features");
   // Terms stay shut until they are opened, and the header is still the way in.
   await expect(contents.getByRole("button", { name: "Toggle Terms and vocabulary" })).toHaveAttribute("aria-expanded", "false");
   await expect(contents.getByRole("link", { name: "Terms and vocabulary", exact: true })).toHaveAttribute("href", "/terms");
@@ -48,8 +42,8 @@ test("@critical lists every feature and opens only the one being read", async ({
     "Architecture"
   ]);
   // The closed features show nothing of their places: one row each.
-  await expect(contents.getByRole("button", { name: /Toggle (Product|Design|Quality|Technical)/ })).toHaveCount(0);
-  // Every ordinary row gets a real icon; slide rows use thumbnails instead.
+  await expect(contents.getByRole("button", { name: /Toggle (Stories|Design|Quality|Technical)/ })).toHaveCount(0);
+  // Decorative icons remain in the shared markup, but the outline suppresses them.
   const ordinaryRows = contents.locator(".doc-row > .doc-link");
   await expect(ordinaryRows.locator(":scope > svg.i")).toHaveCount(await ordinaryRows.count());
   await expectNoSeriousAccessibilityViolations(page);

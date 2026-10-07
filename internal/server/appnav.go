@@ -10,29 +10,15 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// The reviewer's app-level list has two sections, and every one of them is
-// a page. The first is the same on both sides of the header; the second is
-// what that side is about:
-//
-//	Overview        name, elevator pitch, description, and the parts that
-//	                describe the whole app: terms and vocabulary, personas,
-//	                the design system, onboarding, and feature flags
-//	Features        (Documentation) the directory of every feature, over
-//	                every feature as a row
-//	Reviews         (Review) every pull request's review, one row each
-//
-// The overview is on both sides because it is what the application is, and a
-// reader reviewing a change needs the same vocabulary and personas as one
-// learning the app. What differs is the second section, which is the whole
-// distinction the header draws: what the app does, or what is being changed
-// about it. Personas, the design system, onboarding, and feature flags all
-// describe the whole app rather than any one part of it, so they belong to
-// the overview and not beside the features they cut across.
+// The Documentation sidebar lists the app overview and its project-wide
+// references, then features. The Reviews sidebar lists only reviews. The side
+// tabs let a reader switch between learning the app and reviewing changes.
 //
 // No header in this list is a row that only expands. A section header opens
 // the section: Overview opens its prose and its directory, Terms and
 // vocabulary opens the table of terms, Onboarding opens the deck at its first
-// slide, and Features and Reviews open their tables. The disclosure beside a
+// slide, and Features opens its table. Reviews opens its table from the side
+// tab, with each review listed directly below it. The disclosure beside a
 // header is how a reader reaches one row inside the section without leaving
 // where they are; it is not the only way in.
 //
@@ -126,22 +112,19 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		overview.Children = append(overview.Children, navSection("Feature flags", "/flags", "nav-featureflags", "flag", flags))
 	}
 
-	// Each side lists what it is about, and the overview is on both because
-	// it is what the application is: a reader reviewing a change needs the
-	// same pitch, vocabulary, and personas a reader learning the app does.
-	// Only the second section differs, which is the whole distinction the
-	// header draws — Documentation lists the features, Review the reviews.
-	// Both are in the sidebar, which is loaded once and kept as the reader
-	// moves between pages; the other side's is hidden.
+	// Both sides remain in the persistent shell; navigation state hides the
+	// other side's rows when the reader switches tabs.
 	features, reviews := makeFeaturesNav(sources, deckRows), makeReviewsNav(document, sources.mergedReviews)
 	other := reviews
 	if sources.reviewSide {
 		other = features
-		// The overview is here for reference, not to be read down: a reader
-		// on the Review side came for the reviews, so those are what is open.
-		// No page on this side is the overview or anything inside it, so it
-		// is neither the current page nor holding one, and stays shut.
+		overview.Hidden, overview.dormant = true, true
 		overview.Expanded, overview.Active = false, false
+		clearActiveNav(overview.Children)
+		// Project references are flattened into sibling rows by sidebarOutline.
+		for _, child := range overview.Children {
+			child.Hidden = true
+		}
 	}
 	other.Hidden, other.dormant = true, true
 	clearActiveNav(other.Children)
@@ -261,9 +244,9 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 	return section
 }
 
-// makeReviewsNav is the Review side's second section: every open review, one
-// row each, in the order they were created. It reads the reviews the Saga
-// already holds and opens none of them, so the sidebar costs no range
+// makeReviewsNav groups every open review, one row each, in creation order.
+// sidebarOutline removes this internal group so the rows sit below the tabs.
+// It reads the reviews the Saga already holds and opens none of them, so the sidebar costs no range
 // resolution: a review's slides, decisions, and coverage all belong to its
 // own page. Reviews whose change has merged are set aside as on the Reviews
 // page, and one last row counts them and opens the Reviews page showing them.
@@ -491,4 +474,37 @@ func pageFeature(route appRoute, page *requirementsPageView, tests quality.Docum
 		}
 	}
 	return ""
+}
+
+// sidebarOutline flattens project destinations and reviews for the grouped outline.
+// The underlying navigation model still owns routing and expansion state. The
+// overview's prose is read on its page instead of repeated as three shortcuts.
+func sidebarOutline(nodes []*navNodeView) []*navNodeView {
+	var outline []*navNodeView
+	for _, node := range nodes {
+		if node.NodeID == "nav-reviews" {
+			// The Reviews tab already names and opens the directory.
+			for _, child := range node.Children {
+				row := *child
+				row.Hidden = row.Hidden || node.Hidden
+				outline = append(outline, &row)
+			}
+			continue
+		}
+		if node.NodeID != "nav-overview" {
+			outline = append(outline, node)
+			continue
+		}
+		overview := *node
+		overview.Children = nil
+		outline = append(outline, &overview)
+		for _, child := range node.Children {
+			switch child.NodeID {
+			case "nav-overview-name", "nav-overview-pitch", "nav-overview-description":
+				continue
+			}
+			outline = append(outline, child)
+		}
+	}
+	return outline
 }

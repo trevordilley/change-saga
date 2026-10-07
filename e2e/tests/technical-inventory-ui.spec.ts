@@ -149,7 +149,7 @@ test("the sidebar nests Technical design's areas and marks where the reader is",
   // The definition is the current row, inside its open area, inside
   // Technical design; the other area stays shut. With no data model yet the
   // ERD area is not listed.
-  await expect(sidebar.locator('a[aria-current="page"]')).toHaveAttribute("href", "/technical/component/FlagStore");
+  await expect(sidebar.locator('.doc-tree a[aria-current="page"]')).toHaveAttribute("href", "/technical/component/FlagStore");
   await expect(sidebar.getByRole("button", { name: "Toggle Technical design", exact: true })).toHaveAttribute("aria-expanded", "true");
   await expect(sidebar.getByRole("button", { name: "Toggle Components", exact: true })).toHaveAttribute("aria-expanded", "true");
   await expect(sidebar.getByRole("button", { name: "Toggle Systems", exact: true })).toHaveAttribute("aria-expanded", "false");
@@ -168,12 +168,12 @@ test("the sidebar nests Technical design's areas and marks where the reader is",
   await expect(row).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/technical\/system\/FeatureFlag$/);
-  await expect(sidebar.locator('a[aria-current="page"]')).toHaveAttribute("href", "/technical/system/FeatureFlag");
+  await expect(sidebar.locator('.doc-tree a[aria-current="page"]')).toHaveAttribute("href", "/technical/system/FeatureFlag");
 
   // The area row opens the area's page and becomes the current row.
   await sidebar.getByRole("link", { name: "Components", exact: true }).click();
   await expect(page).toHaveURL(/\/technical\/components$/);
-  await expect(sidebar.locator('a[aria-current="page"]')).toHaveAttribute("href", "/technical/components");
+  await expect(sidebar.locator('.doc-tree a[aria-current="page"]')).toHaveAttribute("href", "/technical/components");
   await expect(page.locator('[data-technical-kind="component"] [data-directory-row]')).toHaveCount(2);
 });
 
@@ -349,6 +349,7 @@ test("a large ERD drawing zooms and pans by toolbar, keyboard, mouse and touch",
   expect(zoomed.page).toBeLessThanOrEqual(zoomed.inner);
 
   // Mouse: dragging pans the region and does not open what it started on.
+  await viewport.scrollIntoViewIfNeeded();
   await viewport.evaluate(element => { element.scrollLeft = 0; element.scrollTop = 0; });
   const box = (await viewport.boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);

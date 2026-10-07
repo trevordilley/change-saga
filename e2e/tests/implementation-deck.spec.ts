@@ -53,11 +53,16 @@ test("a Saga opens several implementation decks without paginating its documenta
   await expect(failureDeck).toHaveAttribute("aria-expanded", "true");
   const requestDeckNode = requestDeck.locator("xpath=ancestor::div[contains(@class,'doc-deck')]");
   await expect(requestDeckNode.locator("[data-slide-thumbnail]")).toHaveCount(2);
-  await expect(requestDeckNode.locator(".slide-thumbnail-preview img")).toHaveCount(2);
+  await expect(requestDeckNode.locator(".slide-thumbnail-preview img")).toHaveCount(0);
   await expect(requestDeckNode.locator("[data-slide-section]")).toHaveText(["Ingress", "Egress"]);
   await expect(requestDeckNode.locator(":scope > .doc-children")).toHaveCSS("margin-left", "0px");
   await expect(requestDeckNode.locator(":scope > .doc-children")).toHaveCSS("padding-left", "0px");
   const requestSlide = requestDeckNode.getByRole("button", { name: "Show slide: Request enters" });
+  // Numbered navigation stays compact even when a title wraps.
+  const rowBox = await requestSlide.boundingBox();
+  expect(rowBox!.height).toBeLessThan(64);
+  await requestSlide.focus();
+  await expect(requestSlide).toBeFocused();
   await requestSlide.hover();
   await expect(requestSlide).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
   await requestSlide.click();
@@ -169,7 +174,7 @@ test("a Saga opens several implementation decks without paginating its documenta
   await expect(slidePanel.locator("[data-slide-next]")).toBeDisabled();
 
   const failureDeckNode = failureDeck.locator("xpath=ancestor::div[contains(@class,'doc-deck')]");
-  await expect(failureDeckNode.locator(".slide-thumbnail-preview img")).toHaveCount(1);
+  await expect(failureDeckNode.locator(".slide-thumbnail-preview img")).toHaveCount(0);
   await failureDeckNode.getByRole("button", { name: "Show slide: Failure path" }).click();
   await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Failure path"]')).toBeVisible();
   await expect(slidePanel.locator("[data-slide-position]")).toHaveText("1 / 1");

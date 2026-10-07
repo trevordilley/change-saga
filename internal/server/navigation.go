@@ -9,22 +9,22 @@ import (
 
 // The reviewer sidebar projects one stable information architecture:
 //
-//	Product          Prototypes, then Requirements
-//	Design           UX, UI, Architecture (ERD, System, Data Flows)
+//	Stories          Prototypes, then stories
+//	Design           UX, UI
 //	Quality          Test Cases
-//	Technical        the slide deck that explains the change
+//	Technical        Overview, Architecture, then explanatory slides
 //
 // The order is fixed among the sections that have content. It is an information
 // architecture, not a phase gate: it never reorders as authoring progresses,
 // so it never implies waterfall.
-// Within Product, Prototypes precedes Requirements because prototype-first is
+// Within Stories, Prototypes precedes stories because prototype-first is
 // the common discovery path, not because prototypes come due first.
 //
 // A place nothing has been authored into is omitted. The sidebar describes the
 // Saga that exists; authoring and coverage surfaces are where missing work is
 // made explicit.
 //
-// The four headers are destinations as well as disclosures. Product, Design,
+// The four headers are destinations as well as disclosures. Stories, Design,
 // and Quality open the feature's page at the section that lists what they hold,
 // and Technical opens its deck at the first slide.
 
@@ -39,8 +39,8 @@ type productNavSources struct {
 	// the headers as disclosures, which is what they were before a feature had
 	// a page of its own.
 	feature string
-	// requirements is makeRequirementsNav's tree. Requirements is its own
-	// overview and never gains a redundant "Overview" child.
+	// requirements is makeRequirementsNav's tree. Its stories appear directly
+	// under Stories; the Requirements directory remains a separate destination.
 	requirements *navNodeView
 	prototypes   []*navNodeView
 	// prototypeNote replaces the default empty note when the prototype
@@ -70,7 +70,7 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	}
 	requirements := sources.requirements
 
-	// Product, Design, and Quality open the feature's page at the section that
+	// Stories, Design, and Quality open the feature's page at the section that
 	// lists what they hold: its stories, its design, and its test cases. The
 	// feature's page is already the directory of all three, so a second table
 	// per place would say the same thing twice and go out of step the first
@@ -91,7 +91,7 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		productChildren = append(productChildren, prototypes)
 	}
 	if requirements != nil && len(requirements.Children) > 0 {
-		productChildren = append(productChildren, requirements)
+		productChildren = append(productChildren, requirements.Children...)
 	}
 
 	var designChildren []*navNodeView
@@ -106,13 +106,10 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		technicalChildren = append(technicalChildren, navPlace("Data Flows", prefix+"-technical-data-flows", "design", sources.dataFlows))
 	}
 	technicalChildren = append(technicalChildren, sources.technical...)
-	if len(technicalChildren) > 0 {
-		designChildren = append(designChildren, navPlace("Architecture", prefix+"-technical", "implementation", technicalChildren))
-	}
 
 	var navigation []*navNodeView
 	if len(productChildren) > 0 {
-		navigation = append(navigation, place("Product", prefix+"-product", "product", "#feature-product", productChildren))
+		navigation = append(navigation, place("Stories", prefix+"-product", "product", "#feature-product", productChildren))
 	}
 	if len(designChildren) > 0 {
 		navigation = append(navigation, place("Design", prefix+"-design", "design", "#feature-design", designChildren))
@@ -127,7 +124,7 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	// reviewer came for, so the sidebar shows what is actually there instead of
 	// a row to click first. Everything else stays shut: four short rows read as
 	// one architecture, where four open ones read as a wall.
-	if len(sources.implementation) == 0 {
+	if len(sources.implementation) == 0 && len(technicalChildren) == 0 {
 		for _, node := range navigation {
 			revealActive(node)
 		}
@@ -150,6 +147,20 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	// they had read one.
 	if href := deckEntryHref(implementation.Children); href != "" {
 		implementation.Href = href
+	}
+
+	// Architecture follows the deck Overview, before its slides. Without a
+	// shared Overview (no deck or several decks), it leads the Technical list.
+	if len(technicalChildren) > 0 {
+		architecture := navPlace("Architecture", prefix+"-technical", "implementation", technicalChildren)
+		position := 0
+		if len(implementation.Children) > 0 && strings.HasPrefix(implementation.Children[0].NodeID, "overview-") {
+			position = 1
+		}
+		children := make([]*navNodeView, 0, len(implementation.Children)+1)
+		children = append(children, implementation.Children[:position]...)
+		children = append(children, architecture)
+		implementation.Children = append(children, implementation.Children[position:]...)
 	}
 
 	navigation = append(navigation, implementation)

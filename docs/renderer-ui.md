@@ -51,7 +51,22 @@ to a neutral document outline rather than guessing.
 
 ## Navigation
 
-V4 is a native presentation. A thumbnail rail groups authored slides by deck;
+Documentation and Reviews are route links styled as tabs within the sidebar.
+Both sides keep the Saga title above the tabs; a review title appears below
+them. The top bar holds the views for the selected side. The switcher remains
+reachable from review decks, Code Diff, Coverage, and Documented code.
+The Reviews sidebar lists reviews directly below the tabs, without a second
+Reviews heading or disclosure; project references and features belong
+to Documentation. Project-wide destinations form a flat group; Overview's prose stays on its
+page. Features use stronger type, their Stories/Design/Quality/Technical
+sections use small quiet labels, and slides use compact numbered rows.
+Stories sit directly under the Stories heading, with acceptance criteria beneath each story.
+Overview rows use the same selected-state treatment as slide rows.
+Expansion, active links, and stable deep links retain their existing behavior.
+Sidebar colors, fonts, selection, and borders use the shared theme tokens,
+including custom Saga theme files; never introduce a separate sidebar palette.
+
+V4 is a native presentation. A compact numbered outline groups authored slides by deck;
 Previous/Next and unmodified arrow or Page keys move through the sequence. The
 current deck, slide title, and position stay visible so reviewers can orient and
 resume. Fullscreen presentation hides application and review chrome without
@@ -63,7 +78,7 @@ covering authored titles or diagrams; the visual retains its 16:9 aspect ratio.
 Presentation mode hides the bar and gives its space back to the slide.
 
 A pull-request review uses this same native presentation as its whole default
-surface: thumbnail rail plus one maximally fitted 16:9 slide. It is not a
+surface: numbered outline plus one maximally fitted 16:9 slide. It is not a
 document page containing a slide, and it does not require a presentation-mode
 action before the slide fills the available pane. Optional Present removes the
 chrome; it does not switch the reviewer into the deck.
@@ -120,8 +135,8 @@ cross-deck references are errors. Optional fields remain compatible with older
 tolerant readers; readers that reject unknown manifest fields require an
 upgrade before they can read decks with Front or Overview content.
 
-Feature navigation calls the explanatory deck **Technical**. The older
-**Design > Technical** chapter group is **Design > Architecture**, while the
+Feature navigation calls the explanatory deck **Technical**. Its **Architecture** chapter group sits directly below **Overview**, before
+the slides (or first when there is no shared deck Overview), while the
 application-wide **Technical design** inventory keeps its existing name.
 These are chrome changes only: routes, anchors, navigation keys, stored roles,
 and authored titles retain their stable identities.
@@ -147,7 +162,7 @@ stable browser-generated profile. The reviewer can optionally switch to a
 named local profile or back to Local reader. Visiting, hovering, focusing,
 flipping, opening evidence, navigating, or approving never marks a slide.
 Only checking or unchecking Viewed writes a mark. The visible per-deck count
-and thumbnail label reflect that selected profile and stay independent from
+and outline label reflect that selected profile and stay independent from
 review decisions; the content itself does not fade.
 
 Marks use localStorage keys containing the Saga ID, local profile/name, stable
@@ -167,7 +182,7 @@ with other reviewers. They provide no completion verdict.
 
 ## The page is a shell
 
-For v4, `GET /` renders the deck and slide manifests, thumbnail navigator, and
+For v4, `GET /` renders the deck and slide manifests, slide outline, and
 one active visual review surface. Deep links select the owning slide and Item;
 the visual asset is served through its stable slide target. V2/v3 keep the
 bounded legacy shell: chapter bodies arrive from `/api/section`, fragments from

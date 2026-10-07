@@ -1546,12 +1546,13 @@ const appJavaScript = `(() => {
     const sagaSide = q('.saga-side');
     const codeSide = q('.code-side');
     const codeMeta = q('.top-meta');
-    if (sagaSide) sagaSide.hidden = name !== 'saga' && name !== 'slides';
+    if (sagaSide) sagaSide.hidden = name === 'code';
     if (codeSide) codeSide.hidden = name !== 'code';
     if (codeMeta) codeMeta.hidden = name !== 'code';
     const shell = q('[data-shell]');
     if (shell) {
       shell.classList.toggle('code-mode', name === 'code');
+      shell.classList.toggle('surface-mode', name === 'manifest' || name === 'change');
       shell.classList.toggle('slide-mode', name === 'slides' || (name === 'saga' && shell.hasAttribute('data-review-deck-shell')));
     }
     const slideView = slideViewName();
@@ -3249,6 +3250,8 @@ const appJavaScript = `(() => {
   function applyNavState(state) {
     const listed = name => new Set((state.dataset[name] || '').split(' ').filter(Boolean));
     const current = listed('navCurrent'), expanded = listed('navExpanded'), hidden = listed('navHidden');
+    const projectLabel = q('[data-project-label]');
+    if (projectLabel) projectLabel.hidden = hidden.has('nav-overview');
     qa('.doc-tree [data-nav-row]').forEach(row => {
       const id = row.dataset.navRow;
       const active = current.has(id);

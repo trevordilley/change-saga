@@ -66,8 +66,8 @@ test("toggling dark mode repaints a generated slide's canvas and nodes, and keep
     await expect.poll(() => fill(canvas)).toBe("rgb(13, 17, 23)");
     await expect.poll(() => fill(node)).toBe("rgb(22, 27, 34)");
     await expect(frame).toHaveCSS("color-scheme", "dark");
-    // Thumbnails follow too.
-    await expect(page.locator('.review-deck-rail [data-slide-visual]').first()).toHaveAttribute("src", /saga_scheme=dark/);
+    // The compact outline has no duplicate visual frames to repaint.
+    await expect(page.locator('.review-deck-rail [data-slide-visual]')).toHaveCount(0);
     await page.screenshot({ path: test.info().outputPath("slides-on-tokens-dark.png") });
 
     // The hand-authored slide keeps its light frame on the paper card.

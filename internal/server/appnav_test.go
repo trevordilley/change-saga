@@ -151,11 +151,7 @@ func topTitles(nodes []*navNodeView) string {
 	return strings.Join(titles, "|")
 }
 
-// Each side of the header lists what it is about. The overview is on both,
-// because it is what the application is and a reader reviewing a change needs
-// the same vocabulary and personas as one learning the app; only the second
-// section differs. Reviews appear on the Review side alone, so the
-// Documentation sidebar never offers the same destination twice.
+// Each sidebar shows only the destinations for its selected side.
 func TestEachSideListsWhatItIsAbout(t *testing.T) {
 	t.Parallel()
 	sources := appNavFixture(t)
@@ -171,7 +167,7 @@ func TestEachSideListsWhatItIsAbout(t *testing.T) {
 
 	sources.reviewSide = true
 	nodes := shownNav(makeAppNavTree(sources))
-	if got, want := topTitles(nodes), "Overview|Reviews"; got != want {
+	if got, want := topTitles(nodes), "Reviews"; got != want {
 		t.Fatalf("review sidebar = %s, want %s", got, want)
 	}
 	reviews := findNav(t, nodes, "Reviews")
@@ -187,13 +183,11 @@ func TestEachSideListsWhatItIsAbout(t *testing.T) {
 	if got, want := reviews.Children[0].Href, reviewHref("postgres"); got != want {
 		t.Fatalf("review row opens %q, want %q", got, want)
 	}
-	// The reviews are what the reader came for, so they are open, and the
-	// overview is shut: it is here for reference, not to be read down.
 	if !reviews.Expanded {
 		t.Fatal("Reviews is collapsed on the Review side, want it open")
 	}
-	if findNav(t, nodes, "Overview").Expanded {
-		t.Fatal("Overview is open on the Review side, want it collapsed")
+	if got := topTitles(shownNav(sidebarOutline(makeAppNavTree(sources)))); got != "Move the order queue to Postgres #1|untitled" {
+		t.Fatalf("flattened project references leaked into Reviews: %s", got)
 	}
 }
 
@@ -261,8 +255,8 @@ func TestTheReviewSideHidesReviewsWhenThereAreNone(t *testing.T) {
 	t.Parallel()
 	sources := appNavFixture(t)
 	sources.reviewSide = true
-	if got := topTitles(shownNav(makeAppNavTree(sources))); got != "Overview" {
-		t.Fatalf("empty review sidebar = %s, want Overview", got)
+	if got := topTitles(shownNav(makeAppNavTree(sources))); got != "" {
+		t.Fatalf("empty review sidebar = %s, want no documentation rows", got)
 	}
 }
 
@@ -340,7 +334,7 @@ func assertFeatureSubtree(t *testing.T, nodes []*navNodeView, title, id string) 
 	if feature.NodeID != prefix || !feature.Group || !feature.Expanded || feature.Href != featureHref(id) {
 		t.Fatalf("feature group %q = %#v", title, feature)
 	}
-	want := title + " overview|" + title + " notes|Product"
+	want := title + " overview|" + title + " notes|Stories"
 	if id == "billing" {
 		want += "|Technical"
 	}
@@ -358,7 +352,7 @@ func assertFeatureSubtree(t *testing.T, nodes []*navNodeView, title, id string) 
 		}
 	}
 	if places[0].Expanded {
-		t.Fatalf("feature %s: Product must stay collapsed on arrival", title)
+		t.Fatalf("feature %s: Stories must stay collapsed on arrival", title)
 	}
 	if id == "billing" && !places[1].Expanded {
 		t.Fatalf("feature %s: Technical must open on arrival", title)
@@ -488,15 +482,15 @@ func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyFeature(t *testing.T) {
 
 // Each story is listed, by its title, only under the feature whose directory
 // holds it.
-func TestFeatureStoriesAppearOnlyUnderThatFeaturesRequirements(t *testing.T) {
+func TestFeatureStoriesAppearDirectlyUnderThatFeaturesProduct(t *testing.T) {
 	t.Parallel()
 	nodes := makeAppNavTree(appNavFixture(t))
-	billing := findNav(t, nodes, "Features", "Billing", "Product", "Requirements")
+	billing := findNav(t, nodes, "Features", "Billing", "Stories")
 	catalogSources := appNavFixture(t)
 	catalogSources.pageFeature = "catalog"
-	catalog := findNav(t, makeAppNavTree(catalogSources), "Features", "Catalog", "Product", "Requirements")
-	if billing.NodeID != featureNavID("billing")+"-requirements" || catalog.NodeID != featureNavID("catalog")+"-requirements" {
-		t.Fatalf("requirements node IDs = %q, %q", billing.NodeID, catalog.NodeID)
+	catalog := findNav(t, makeAppNavTree(catalogSources), "Features", "Catalog", "Stories")
+	if billing.NodeID != featureNavID("billing")+"-product" || catalog.NodeID != featureNavID("catalog")+"-product" {
+		t.Fatalf("product node IDs = %q, %q", billing.NodeID, catalog.NodeID)
 	}
 	if got := topTitles(billing.Children); got != "pay" {
 		t.Fatalf("billing requirements = %s", got)
@@ -505,14 +499,14 @@ func TestFeatureStoriesAppearOnlyUnderThatFeaturesRequirements(t *testing.T) {
 		t.Fatalf("catalog requirements = %s", got)
 	}
 	if billing.Gap || catalog.Gap {
-		t.Fatal("a feature with a story must not show its Requirements as a gap")
+		t.Fatal("a feature with a story must not show its Stories section as a gap")
 	}
-	// A feature with no stories omits Product and Requirements.
+	// A feature with no stories omits Stories and Requirements.
 	sources := appNavFixture(t)
 	sources.document.Features = append(sources.document.Features, appNavFeature("search", "Search"))
 	sources.pageFeature = "search"
 	if findNavByID(makeAppNavTree(sources), featureNavID("search")+"-product") != nil {
-		t.Fatal("a feature with no stories must hide Product")
+		t.Fatal("a feature with no stories must hide Stories")
 	}
 }
 
@@ -651,7 +645,10 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	html := render("/")
 	// The app's own places, then every feature as a row. On a page that belongs
 	// to no feature, none of them is opened over its places.
-	for _, id := range []string{"nav-overview", "nav-onboarding", "nav-features"} {
+	if !strings.Contains(html, `data-nav-row="nav-overview"`) {
+		t.Fatal("the grouped project links lost Overview")
+	}
+	for _, id := range []string{"nav-onboarding", "nav-features"} {
 		if !strings.Contains(html, `id="`+id+`"`) {
 			t.Fatalf("the sidebar is missing %q", id)
 		}
@@ -681,7 +678,7 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 		t.Fatal("the feature's Technical must open on arrival")
 	}
 	if strings.Contains(billing, `id="`+featureNavID("billing")+`-product"`) {
-		t.Fatal("an empty Product section must be hidden")
+		t.Fatal("an empty Stories section must be hidden")
 	}
 	// Opening the other feature's page moves the whole subtree onto it.
 	catalog := render(featureHref("catalog"))

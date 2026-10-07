@@ -24,7 +24,7 @@ func TestV3DesignChapterAndFragmentEnterExistingRenderTree(t *testing.T) {
 		t.Fatalf("LoadNarrative = valid %v, err %v, issues %#v", validation.Valid, err, validation.Issues)
 	}
 	// A ___design chapter is technical design, not narrative: it leaves the
-	// chapter list and reappears under Design > Architecture.
+	// chapter list and reappears under Technical > Architecture.
 	nav := makeNavTree(document.Section)
 	if len(nav) != 1 || nav[0].Title != "Overview" {
 		t.Fatalf("narrative navigation still carries the design chapter: %#v", nav)
@@ -35,12 +35,12 @@ func TestV3DesignChapterAndFragmentEnterExistingRenderTree(t *testing.T) {
 	}
 	// In the app-level list the design chapter joins its feature's Architecture.
 	app := makeAppNavTree(appNavSources{document: document, page: &requirementsPageView{}, pageFeature: serverFeature})
-	featureTechnical := findNav(t, app, "Features", "Core", "Design", "Architecture").Children
+	featureTechnical := findNav(t, app, "Features", "Core", "Technical", "Architecture").Children
 	if got := topTitles(featureTechnical); got != "Technical architecture" {
 		t.Fatalf("feature technical design = %v", got)
 	}
-	if got := topTitles(findNav(t, app, "Features", "Core").Children); got != "Overview|Design" {
-		t.Fatalf("the design chapter left the feature's Design: %s", got)
+	if got := topTitles(findNav(t, app, "Features", "Core").Children); got != "Overview|Technical" {
+		t.Fatalf("the design chapter left the feature's Technical section: %s", got)
 	}
 	view := makeSectionView(document.Section, viewScope{})
 	if len(view.ChildViews) != 1 || len(view.ChildViews[0].FragmentViews) != 1 {

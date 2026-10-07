@@ -23,7 +23,7 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 		{[]string{"Overview"}, sagaHref(sources.document.Section.Target)},
 		{[]string{"Overview", "Personas"}, "/personas"},
 		{[]string{"Features"}, "/features"},
-		{[]string{"Features", "Billing", "Product"}, featureHref("billing") + "#feature-product"},
+		{[]string{"Features", "Billing", "Stories"}, featureHref("billing") + "#feature-product"},
 	} {
 		if got := findNav(t, nodes, want.path...).Href; got != want.href {
 			t.Fatalf("%v opens %q, want %q", want.path, got, want.href)

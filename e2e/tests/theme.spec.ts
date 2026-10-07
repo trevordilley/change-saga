@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { git, reviewFiles, runCLI, startSagaServer, stopSagaServer, type SagaRepositories } from "../support/fixture-builder.js";
-import { expect, test } from "../support/test.js";
+import { expect, test, waitForSettledSaga } from "../support/test.js";
 
 // A Saga's theme.css recolours the reviewer and the slides it serves, in
 // light and dark mode, while the committed slide bytes stay as they were.
@@ -21,10 +21,23 @@ const tokenSlide = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 72
 const theme = `/* A brand theme. */
 :root {
   --bg: #fdf6e3;
+  --bg-subtle: #eee8d5;
+  --ink: #073642;
+  --muted: #586e75;
+  --accent: #005f87;
+  --sel: #d9e8dc;
+  --line: #93a1a1;
+  --ui: Georgia,serif;
   --diagram-canvas: #fdf6e3;
 }
 :root[data-theme="dark"] {
   --bg: #002b36;
+  --bg-subtle: #073642;
+  --ink: #eee8d5;
+  --muted: #93a1a1;
+  --accent: #7fc4d2;
+  --sel: #164654;
+  --line: #586e75;
   --diagram-canvas: #001f27;
 }
 `;
@@ -60,10 +73,36 @@ test("a theme file recolours the reviewer and a slide in light and dark mode", a
     await expect.poll(frameCanvas).toBe("rgb(253, 246, 227)");
     expect(await background()).toBe("rgb(253, 246, 227)");
 
+    // The grouped outline uses the same tokens, including a custom UI font.
+    const rail = page.locator(".review-deck-rail");
+    const selectedSlide = rail.locator(".slide-thumbnail-card.active");
+    await expect(rail).toHaveCSS("background-color", "rgb(238, 232, 213)");
+    await expect(selectedSlide).toHaveCSS("background-color", "rgb(217, 232, 220)");
+    await expect(selectedSlide).toHaveCSS("color", "rgb(0, 95, 135)");
+    await expect(rail.locator(".side-tab.current")).toHaveCSS("border-bottom-color", "rgb(0, 95, 135)");
+    await expect(rail.locator(".slide-thumbnail-title")).toHaveCSS("font-family", "Georgia, serif");
+    await expect(page.locator(".topbar .side-tabs")).toHaveCount(0);
+
+    const overviewLink = rail.getByRole("link", { name: "Overview", exact: true });
+    const titleBox = await rail.locator(".sidebar-title").boundingBox();
+    const tabsBox = await rail.locator(".side-tabs").boundingBox();
+    expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(tabsBox!.y);
+    await overviewLink.click();
+    await expect(overviewLink).toHaveAttribute("aria-current", "page");
+    await expect(overviewLink).toHaveCSS("background-color", "rgb(217, 232, 220)");
+    await expect(overviewLink).toHaveCSS("text-decoration-line", "none");
+    await expect(rail.locator(".slide-thumbnail-card.active")).toHaveCount(0);
+    await page.locator("[data-deck-viewer]").getByRole("button", { name: "Back", exact: true }).click();
+    await expect(overviewLink).not.toHaveAttribute("aria-current", "page");
+    await expect(selectedSlide).toBeVisible();
+
     // Dark by the OS preference, then pinned light and dark by the toggle.
     await page.emulateMedia({ colorScheme: "dark" });
     await expect.poll(background).toBe("rgb(0, 43, 54)");
     await expect.poll(frameCanvas).toBe("rgb(0, 31, 39)");
+    await expect(rail).toHaveCSS("background-color", "rgb(7, 54, 66)");
+    await expect(selectedSlide).toHaveCSS("background-color", "rgb(22, 70, 84)");
+    await expect(selectedSlide).toHaveCSS("color", "rgb(127, 196, 210)");
     await page.locator("[data-theme-toggle]").click();
     await expect.poll(background).toBe("rgb(253, 246, 227)");
     await expect.poll(frameCanvas).toBe("rgb(253, 246, 227)");
@@ -78,6 +117,20 @@ test("a theme file recolours the reviewer and a slide in light and dark mode", a
     visualURL.searchParams.delete("saga_scheme");
     const canvas = () => page.evaluate(() => getComputedStyle(document.getElementById("canvas")!).fill);
     await page.emulateMedia({ colorScheme: "light" });
+    await page.getByRole("link", { name: "Documentation", exact: true }).click();
+    await waitForSettledSaga(page);
+    const sidebar = page.locator("aside.sidebar");
+    await expect(sidebar).toHaveCSS("background-color", "rgb(7, 54, 66)");
+    await expect(sidebar.getByRole("link", { name: "Documentation", exact: true })).toHaveAttribute("aria-current", "page");
+    await page.locator("[data-theme-toggle]").click();
+    await expect(sidebar).toHaveCSS("background-color", "rgb(238, 232, 213)");
+    await expect(sidebar.locator(".sidebar-title")).toHaveCSS("font-family", "Georgia, serif");
+    await page.getByRole("tab", { name: "Documented code", exact: true }).click();
+    await expect(sidebar.getByRole("link", { name: "Reviews", exact: true })).toBeVisible();
+    // Secondary surfaces stay beside the sidebar, including the mode switcher.
+    const surface = await page.locator(".manifest-view").boundingBox();
+    const sidebarBox = await sidebar.boundingBox();
+    expect(surface!.x).toBeGreaterThanOrEqual(sidebarBox!.x + sidebarBox!.width);
     await page.goto(visualURL.href);
     expect(await canvas()).toBe("rgb(253, 246, 227)");
     expect(await page.evaluate(() => getComputedStyle(document.getElementById("card")!).fill)).toBe("rgb(237, 245, 255)");

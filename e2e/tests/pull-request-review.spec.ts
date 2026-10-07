@@ -193,7 +193,7 @@ test("a review reached by a link works as one opened directly", async ({ page, s
     };
     await openReview();
     // Leave and come back: the page is prepared afresh, and only once.
-    await page.getByRole("link", { name: "Review", exact: true }).click();
+    await page.getByRole("link", { name: "Reviews", exact: true }).click();
     await page.locator("body[data-shell-ready]").waitFor();
     await expect(page).toHaveURL(`${running.baseURL}/reviews`);
     await openReview();

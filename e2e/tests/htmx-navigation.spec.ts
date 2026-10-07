@@ -1,5 +1,5 @@
 import { type Page } from "@playwright/test";
-import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
+import { git, runCLI, type SagaFixture } from "../support/fixture-builder.js";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
 
 /**
@@ -65,6 +65,8 @@ test("@critical following links swaps the page and keeps everything already load
     }
   });
   const contents = page.getByRole("navigation", { name: "Contents" });
+  await expect(page.locator(".topbar [data-side]")).toHaveCount(0);
+  await expect(page.locator('.sidebar [data-side="documentation"]')).toHaveAttribute("aria-current", "page");
 
   // Another feature: its page, its row current and open, the first shut.
   await follow(page, contents.getByRole("link", { name: "Tide Charts", exact: true }));
@@ -94,17 +96,54 @@ test("@critical following links swaps the page and keeps everything already load
   await expect(page).toHaveURL(`${saga.baseURL}/technical`);
 
   // The other side of the header: its tab, its section, and its tabs.
-  await follow(page, page.getByRole("link", { name: "Review", exact: true }));
+  await follow(page, page.getByRole("link", { name: "Reviews", exact: true }));
   await expect(page).toHaveURL(`${saga.baseURL}/reviews`);
   await expect(pageHeading(page)).toHaveText("Reviews");
-  await expect(page.getByRole("link", { name: "Review", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("link", { name: "Reviews", exact: true })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("tablist", { name: "Review" })).toBeVisible();
   await expect(contents.getByRole("link", { name: "Features", exact: true })).toBeHidden();
+  for (const name of ["Overview", "Personas", "Terms and vocabulary", "Technical design"]) {
+    await expect(contents.getByRole("link", { name, exact: true })).toBeHidden();
+  }
+  await expect(page.locator("[data-project-label]")).toBeHidden();
+
+  await follow(page, page.getByRole("link", { name: "Documentation", exact: true }));
+  await expect(contents.getByRole("link", { name: "Personas", exact: true })).toBeVisible();
+  await expect(contents.getByRole("link", { name: "Features", exact: true })).toBeVisible();
+  await expect(page.locator("[data-project-label]")).toBeVisible();
 
   // Nothing was loaded again: no new document, no script or stylesheet, and
   // the deck viewer is the one element it was.
   expect(await shellKept(page)).toEqual({ document: true, decks: true });
   expect(shellRequests).toEqual([]);
+});
+
+test("Reviews keeps documentation out of its sidebar across reload and history", async ({ page, saga }) => {
+  run(saga, "review", "create", "--id", "navigation", "--base", "main", "--head", "feature/wave-one", "--title", "Navigation review", saga.sagaRoot);
+  git(saga.sagaRepo, "add", ".");
+  git(saga.sagaRepo, "commit", "-m", "Add navigation review fixture");
+  const contents = page.getByRole("navigation", { name: "Contents" });
+  const review = contents.getByRole("link", { name: "Navigation review", exact: true });
+  const assertReviewsOnly = async (): Promise<void> => {
+    await expect(review).toBeVisible();
+    await expect(contents.getByRole("button", { name: "Toggle Reviews", exact: true })).toHaveCount(0);
+    await expect(contents.locator(':scope > .doc-node > .doc-row > a[href="/reviews/navigation"]')).toBeVisible();
+    await expect(contents.getByRole("link", { name: "Overview", exact: true })).toBeHidden();
+    await expect(contents.getByRole("link", { name: "Personas", exact: true })).toBeHidden();
+    await expect(contents.getByRole("link", { name: "Features", exact: true })).toBeHidden();
+    await expect(page.locator("[data-project-label]")).toBeHidden();
+  };
+  await follow(page, page.getByRole("link", { name: "Reviews", exact: true }));
+  await assertReviewsOnly();
+  await page.reload();
+  await waitForSettledSaga(page);
+  await assertReviewsOnly();
+  await follow(page, page.getByRole("link", { name: "Documentation", exact: true }));
+  await expect(contents.getByRole("link", { name: "Personas", exact: true })).toBeVisible();
+  await expect(review).toBeHidden();
+  await page.goBack();
+  await waitForSettledSaga(page);
+  await assertReviewsOnly();
 });
 
 test("back and forward restore each page and its sidebar", async ({ page, saga }) => {

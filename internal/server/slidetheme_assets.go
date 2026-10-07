@@ -8,7 +8,7 @@ package server
 const slideThemeStyles = `
 /* Slides on tokens ------------------------------------------------ */
 [data-slide-paper]{color-scheme:light;background:var(--slide-paper);padding:var(--slide-paper-inset);border-radius:var(--radius)}
-.slide-thumbnail-preview [data-slide-paper],.related-slide-preview [data-slide-paper],.manifest-slide-preview [data-slide-paper],.manifest-target-slide-preview [data-slide-paper]{padding:calc(var(--slide-paper-inset)/4);border-radius:3px}
+.related-slide-preview [data-slide-paper],.manifest-slide-preview [data-slide-paper],.manifest-target-slide-preview [data-slide-paper]{padding:calc(var(--slide-paper-inset)/4);border-radius:3px}
 `
 
 // slideSchemeBoot keeps every themed slide visual's URL naming the scheme the

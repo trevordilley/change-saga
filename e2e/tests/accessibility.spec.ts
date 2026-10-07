@@ -28,7 +28,7 @@ test("@critical exposes each side's views as a real tablist with selection and k
   await expect(page.getByRole("tablist", { name: "Documentation" }).getByRole("tab")).toHaveText([/Saga/, /Documented code/]);
 
   await openReviewSide(page);
-  await expect(page.getByRole("link", { name: "Review", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("link", { name: "Reviews", exact: true })).toHaveAttribute("aria-current", "page");
   const tablist = page.getByRole("tablist", { name: "Review" });
   const tabs = tablist.getByRole("tab");
   await expect(tabs).toHaveCount(4);

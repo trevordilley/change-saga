@@ -58,10 +58,9 @@ func TestProductNavigationDoesNotReorderAsWorkProgresses(t *testing.T) {
 	}
 }
 
-// Prototypes precedes Requirements because prototype-first is the common
-// discovery path, and Requirements is its own overview: it never gains a
-// redundant "Overview" child.
-func TestProductPutsPrototypesBeforeRequirementsAndKeepsRequirementsItsOwnOverview(t *testing.T) {
+// Prototypes precede the stories, which sit directly under Stories while
+// keeping their canonical destinations and nested acceptance criteria.
+func TestProductListsStoriesDirectlyAfterPrototypes(t *testing.T) {
 	t.Parallel()
 	requirements := makeRequirementsNav(&requirementsPageView{Stories: []*requirementStoryView{{
 		ID: "checkout", Label: "Story 01", Title: "Complete checkout", Href: "/requirements/checkout",
@@ -71,21 +70,13 @@ func TestProductPutsPrototypesBeforeRequirementsAndKeepsRequirementsItsOwnOvervi
 		requirements: requirements,
 		prototypes:   []*navNodeView{{Title: "Checkout walkthrough"}},
 	})
-	product := findNav(t, nodes, "Product")
-	if len(product.Children) != 2 || product.Children[0].Title != "Prototypes" || product.Children[1].Title != "Requirements" {
+	product := findNav(t, nodes, "Stories")
+	if len(product.Children) != 2 || product.Children[0].Title != "Prototypes" || product.Children[1] != requirements.Children[0] {
 		t.Fatalf("product order = %v", navTitles(product.Children, 0))
 	}
-	stories := product.Children[1]
-	if stories.Href != "/requirements" || stories.Gap {
-		t.Fatalf("Requirements must stay its own overview destination: %#v", stories)
-	}
-	for _, child := range stories.Children {
-		if strings.EqualFold(child.Title, "Overview") {
-			t.Fatalf("Requirements gained a redundant Overview child: %v", navTitles(stories.Children, 0))
-		}
-	}
-	if len(stories.Children) != 1 || len(stories.Children[0].Children) != 1 {
-		t.Fatalf("story and criterion hierarchy = %v", navTitles(stories.Children, 0))
+	story := product.Children[1]
+	if story.Href != "/requirements/checkout" || len(story.Children) != 1 || story.Children[0].Href != "/requirements/checkout/criteria/cart" {
+		t.Fatalf("story and criterion destinations changed: %#v", story)
 	}
 }
 
@@ -176,9 +167,16 @@ func TestDesignChaptersJoinArchitectureWithoutClaimingAFixedRole(t *testing.T) {
 		t.Fatalf("technical chapters = %#v", technical)
 	}
 	nodes := makeProductNavTree(productNavSources{technical: technical})
-	architecture := findNav(t, nodes, "Design", "Architecture")
+	architecture := findNav(t, nodes, "Technical", "Architecture")
 	if architecture.NodeID != "nav-technical" {
 		t.Fatalf("Architecture rename changed stable navigation identity: %q", architecture.NodeID)
+	}
+	if got := topTitles(nodes); got != "Technical" {
+		t.Fatalf("architecture without a deck must still live under Technical: %s", got)
+	}
+	technical[0].Active = true
+	if !findNav(t, makeProductNavTree(productNavSources{technical: technical}), "Technical", "Architecture").Expanded {
+		t.Fatal("Architecture must reveal its active chapter")
 	}
 	children := architecture.Children
 	if got := navTitles(children, 0); strings.Join(got, "|") != "Technical architecture" {
@@ -218,11 +216,11 @@ func TestProductNavigationSitsInsideEveryFeatureBelowItsReportOutline(t *testing
 	if got, want := topTitles(nodes), "Overview|Features"; got != want {
 		t.Fatalf("sidebar = %s, want %s", got, want)
 	}
-	if got, want := topTitles(findNav(t, nodes, "Features", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Technical"; got != want {
+	if got, want := topTitles(findNav(t, nodes, "Features", "Billing").Children), "Billing overview|Delivery|Evidence|Stories|Technical"; got != want {
 		t.Fatalf("billing feature = %s, want %s", got, want)
 	}
 	billing.Report = nil
-	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Features", "Billing").Children), "Product|Technical"; got != want {
+	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Features", "Billing").Children), "Stories|Technical"; got != want {
 		t.Fatalf("feature without report content = %s, want %s", got, want)
 	}
 }
@@ -248,10 +246,14 @@ func TestEmptySectionsDoNotRender(t *testing.T) {
 func TestOnlyTechnicalOpensOnArrival(t *testing.T) {
 	t.Parallel()
 	deck := &navNodeView{Title: "Technical review", NodeID: "nav-deck", Deck: true,
-		Children: []*navNodeView{{Title: "Architecture and storage", NodeID: "nav-slide"}}}
+		Children: []*navNodeView{
+			{Title: "Overview", NodeID: "overview-deck", Href: "/features/core?view=slides#overview-deck"},
+			{Title: "Architecture and storage", NodeID: "nav-slide", Href: "/features/core?view=slides#slide-one", Slide: &SlideReferenceView{}},
+		}}
 	nodes := makeProductNavTree(productNavSources{
 		requirements:   &navNodeView{Title: "Requirements", Children: []*navNodeView{{Title: "Story 01 · Refund window"}}},
 		prototypes:     []*navNodeView{{Title: "Checkout flow"}},
+		uxDecks:        []*navNodeView{{Title: "Checkout UX"}},
 		technical:      []*navNodeView{{Title: "Storage model"}},
 		implementation: []*navNodeView{deck},
 	})
@@ -262,10 +264,16 @@ func TestOnlyTechnicalOpensOnArrival(t *testing.T) {
 	}
 	// Technical is the deck: its slides sit directly beneath the section,
 	// with no deck row restating it in between.
-	if len(implementation.Children) != 1 || implementation.Children[0].Title != "Architecture and storage" {
+	if got := topTitles(implementation.Children); got != "Overview|Architecture|Architecture and storage" {
 		t.Fatalf("implementation must list the deck's slides directly: %v", navTitles(implementation.Children, 0))
 	}
-	for _, title := range []string{"Product", "Design"} {
+	if implementation.Href != deck.Children[1].Href {
+		t.Fatal("Technical must keep opening the first slide")
+	}
+	if findNav(t, nodes, "Technical", "Architecture").Expanded {
+		t.Fatal("Architecture must stay collapsed until opened or active")
+	}
+	for _, title := range []string{"Stories", "Design"} {
 		if findNav(t, nodes, title).Expanded {
 			t.Fatalf("%s must stay collapsed on arrival", title)
 		}
@@ -300,11 +308,11 @@ func TestActivePageOpensThePlacesThatContainIt(t *testing.T) {
 		}},
 	})
 
-	if product := findNav(t, nodes, "Product"); !product.Expanded {
-		t.Fatal("Product must open around the active story")
+	if product := findNav(t, nodes, "Stories"); !product.Expanded {
+		t.Fatal("Stories must open around the active story")
 	}
-	if requirements := findNav(t, nodes, "Product", "Requirements"); !requirements.Expanded {
-		t.Fatal("Requirements must open around the active story")
+	if current := findNav(t, nodes, "Stories", story.Title); current != story {
+		t.Fatal("the active story must sit directly under Stories")
 	}
 	if findNavByID(nodes, "nav-design") != nil || findNavByID(nodes, "nav-quality") != nil {
 		t.Fatal("empty places must not render")

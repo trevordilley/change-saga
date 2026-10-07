@@ -69,7 +69,7 @@ func TestTheOverviewExpandsToItsPartsAndEveryTerm(t *testing.T) {
 	t.Parallel()
 	root, repo := termSaga(t)
 	html := termPage(t, root, repo, "/")
-	for _, want := range []string{`id="nav-overview"`, `title="Name"`, `href="/terms"`, `href="/terms/testtaker"`, "Assessments"} {
+	for _, want := range []string{`data-nav-row="nav-overview"`, `title="Overview"`, `href="/terms"`, `href="/terms/testtaker"`, "Assessments"} {
 		if !strings.Contains(html, want) {
 			t.Fatalf("the overview is missing %s", want)
 		}

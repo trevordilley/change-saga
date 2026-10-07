@@ -11,6 +11,11 @@ const deckOverviewJavaScript = `
     // Match the Overview row's stable identity: an empty deck's Technical
     // header also links to this URL, but it is not the selected document.
     const overviewLink = overview ? q('.doc-tree [data-nav-row="' + CSS.escape(overview.id) + '"] > a.doc-link') : null;
+    qa('.review-overview-link').forEach(link => {
+      const current = overview && link.hash === '#' + overview.id;
+      if (current) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
     let selected = overviewLink;
     qa('[data-slide-thumbnail]').forEach(thumbnail => {
       const current = !overview && thumbnail.dataset.slideTarget === active?.dataset.slideTarget;
@@ -200,7 +205,7 @@ const deckOverviewJavaScript = `
 `
 
 const deckOverviewStyles = `
-.review-empty{height:100%;overflow:auto;background:var(--bg);color:var(--ink);padding:20px;box-sizing:border-box}.review-empty-viewer{height:60vh;margin-top:20px;background:var(--bg)}.review-empty-viewer .deck-viewer-stage{height:100%;width:100%;aspect-ratio:auto}.review-overview-link{display:block;padding:6px 12px}.deck-face-controls{display:flex;gap:2px;pointer-events:auto;background:var(--bg);border:1px solid var(--line);text-shadow:none;margin-right:auto;order:-1;flex:none}
+.review-empty{height:100%;overflow:auto;background:var(--bg);color:var(--ink);padding:20px;box-sizing:border-box}.review-empty-viewer{height:60vh;margin-top:20px;background:var(--bg)}.review-empty-viewer .deck-viewer-stage{height:100%;width:100%;aspect-ratio:auto}.review-overview-link{display:block;padding:7px 8px 7px 32px;border-radius:var(--radius);color:var(--muted);font:12px/1.45 var(--ui);text-decoration:none}.review-overview-link:hover{background:var(--bg-inset);color:var(--ink)}.review-overview-link[aria-current=page]{background:var(--sel);color:var(--accent);font-weight:600;box-shadow:inset 2px 0 var(--accent)}.deck-face-controls{display:flex;gap:2px;pointer-events:auto;background:var(--bg);border:1px solid var(--line);text-shadow:none;margin-right:auto;order:-1;flex:none}
 .deck-face-controls button{font:inherit;padding:5px 9px;border:0;background:transparent;color:var(--muted);cursor:pointer}
 .deck-face-controls button[aria-pressed=true]{color:var(--ink);background:var(--bg-inset);box-shadow:inset 0 -2px var(--accent)}
 .deck-face-controls button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}

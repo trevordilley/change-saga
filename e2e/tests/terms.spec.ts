@@ -1,11 +1,10 @@
 import { runCLI } from "../support/fixture-builder.js";
 import { expectNoSeriousAccessibilityViolations, expect, test } from "../support/test.js";
 
-test("the overview expands to its parts, and a term links its code and stories both ways", async ({ page, saga }) => {
+test("project destinations stay visible, and a term links its code and stories both ways", async ({ page, saga }) => {
   const contents = page.getByRole("navigation", { name: "Contents" });
-  for (const part of ["Name", "Elevator pitch", "Description", "Terms and vocabulary"]) {
-    await expect(contents.getByRole("link", { name: part, exact: true })).toBeVisible();
-  }
+  await expect(contents.locator('[data-nav-row="nav-overview"]').getByRole("link", { name: "Overview", exact: true })).toBeVisible();
+  await expect(contents.getByRole("link", { name: "Terms and vocabulary", exact: true })).toBeVisible();
 
   // A story names the term, so the term and the story reach each other.
   const story = runCLI(saga, [

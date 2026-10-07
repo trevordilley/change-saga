@@ -86,7 +86,7 @@ export async function waitForSettledSaga(page: Page): Promise<void> {
  * test that opens one crosses over first.
  */
 export async function openReviewSide(page: Page): Promise<void> {
-  await page.getByRole("link", { name: "Review", exact: true }).click();
+  await page.getByRole("link", { name: "Reviews", exact: true }).click();
   await waitForSettledSaga(page);
 }
 

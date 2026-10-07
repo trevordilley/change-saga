@@ -14,7 +14,7 @@ test("a slow page shows a loading spinner until it arrives", async ({ page, saga
     await held;
     await route.continue();
   });
-  await page.getByRole("link", { name: "Review", exact: true }).click();
+  await page.getByRole("link", { name: "Reviews", exact: true }).click();
   await expect(indicator).toBeVisible();
   await expect(indicator).toHaveText("Loading…");
   await expect(page.locator("#page")).toHaveAttribute("aria-busy", "true");

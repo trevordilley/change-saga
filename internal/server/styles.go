@@ -16,7 +16,7 @@ var (
 // metadata, hairline separators instead of cards, and controls that stay
 // invisible until the reviewer hovers or focuses the thing they belong to.
 var pageStyles = `
-:root{` + lightTokens + `}
+:root{` + lightTokens + `;--sidebar-width:300px}
 /* Dark mode. The OS preference decides unless the reviewer has pinned a theme,
    which is why the media rule excuses an explicit light choice. ------------ */
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){` + darkTokens + `}}
@@ -34,21 +34,19 @@ a{color:var(--accent)}
 
 /* Deck viewer ---------------------------------------------------- */
 .slide-present{margin-left:auto;border:1px solid var(--line);border-radius:6px;height:30px;align-self:center;padding-inline:12px}
-.slide-thumbnail-list{display:grid;grid-template-columns:minmax(0,1fr);min-width:0;gap:10px}
-.slide-section-divider{display:flex;align-items:center;gap:7px;min-width:0;margin:3px 0 -2px 22px;color:var(--faint);font:600 9px/1.2 var(--ui);letter-spacing:.045em;text-transform:uppercase}
+.slide-thumbnail-list{display:grid;grid-template-columns:minmax(0,1fr);min-width:0;gap:2px}
+.slide-section-divider{display:flex;align-items:center;gap:7px;min-width:0;margin:10px 8px 4px;color:var(--muted);font:600 11px/1.3 var(--ui);letter-spacing:.045em;text-transform:uppercase}
 .slide-section-divider::after{content:'';height:1px;min-width:12px;flex:1;background:var(--line)}
-.slide-thumbnail-card{position:relative;min-width:0;counter-increment:slide-thumbnail;padding-left:22px;color:var(--muted)}
-.slide-thumbnail-card::before{content:counter(slide-thumbnail);position:absolute;left:0;top:4px;width:17px;text-align:right;color:var(--faint);font:10px/1 var(--mono)}
-.slide-thumbnail-preview{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:2px solid var(--line);border-radius:5px;background:var(--bg);box-shadow:0 1px 2px #1f23281f;transition:border-color .12s,box-shadow .12s}
-.slide-thumbnail-preview iframe,.slide-thumbnail-preview img{display:block;width:100%;height:100%;border:0;object-fit:contain;pointer-events:none}
-.slide-thumbnail-caption{display:flex;align-items:center;gap:5px;margin-top:4px}
-.slide-thumbnail-title{display:block;min-width:0;flex:1;color:inherit;font:11.5px/1.3 var(--ui);overflow-wrap:anywhere}
+.slide-thumbnail-card{position:relative;min-width:0;counter-increment:slide-thumbnail;padding:7px 8px 7px 32px;color:var(--ink);border-radius:var(--radius)}
+.slide-thumbnail-card::before{content:counter(slide-thumbnail);position:absolute;left:8px;top:10px;width:17px;text-align:right;color:var(--muted);font:11px/1 var(--mono)}
+.slide-thumbnail-caption{display:flex;align-items:baseline;gap:6px;min-width:0}
+.slide-thumbnail-title{display:block;min-width:0;flex:1;color:inherit;font:12px/1.45 var(--ui);overflow-wrap:anywhere}
 .slide-thumbnail-hit{position:absolute;z-index:2;inset:0;width:100%;padding:0;border:0;border-radius:5px;background:transparent}
 .slide-thumbnail-hit:hover,.slide-thumbnail-hit:active{background:transparent}
 .slide-thumbnail-hit:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.slide-thumbnail-card:hover .slide-thumbnail-preview{border-color:var(--faint)}
-.slide-thumbnail-card.active{color:var(--ink);font-weight:600}
-.slide-thumbnail-card.active .slide-thumbnail-preview{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.slide-thumbnail-card:hover{background:var(--bg-inset)}
+.slide-thumbnail-card.active{color:var(--accent);background:var(--sel);box-shadow:inset 2px 0 var(--accent)}
+.slide-thumbnail-card.active .slide-thumbnail-title{font-weight:600}
 .deck-viewer{display:grid;grid-template-rows:minmax(0,1fr) auto;width:100%;height:100%;min-height:0;overflow:hidden;background:#111}
 .deck-viewer-canvas{display:grid;place-items:center;container-type:size;width:100%;height:100%;min-width:0;min-height:0}
 .sidebar-slide-surface{width:100%;height:100%;min-height:0;background:#111}
@@ -93,13 +91,14 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .view-tab{display:flex;align-items:center;gap:6px;border:0;border-bottom:2px solid transparent;border-radius:0;padding:0 10px;background:transparent;color:var(--muted);font-size:12.5px}
 .view-tab:hover{color:var(--ink);background:var(--bg-subtle)}
 .view-tab.active{color:var(--ink);border-color:var(--accent);font-weight:600}
-/* The two sides. The header's first control is the distinction itself:
+/* The two sides live with the navigation they switch:
 Documentation is what the app is and does, Review what is being changed about
-it. The view tabs beside them belong to whichever side is open. */
-.side-tabs{display:flex;align-self:stretch;gap:2px;padding-right:12px;margin-right:2px;border-right:1px solid var(--line)}
-.side-tab{display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:2px solid transparent;color:var(--muted);font:600 13px var(--ui);text-decoration:none}
+it. The top-bar view tabs belong to whichever side is open. */
+.side-tabs{display:flex;align-items:stretch;flex-wrap:wrap;gap:4px 16px;padding:0;margin:0 16px 12px;border-bottom:1px solid var(--line)}
+.side-tab{display:flex;align-items:center;gap:6px;padding:10px 0;border-bottom:2px solid transparent;color:var(--muted);font:500 12px var(--ui);text-decoration:none}
 .side-tab:hover{color:var(--ink);background:var(--bg-subtle)}
-.side-tab.current{color:var(--ink);border-color:var(--accent)}
+.side-tab.current{color:var(--ink);border-color:var(--accent);font-weight:650}
+.side-tab .i{display:none}
 .review-coverage-surface{padding:18px 20px 40px}
 .review-coverage-surface .review-coverage{margin-top:8px}
 .top-meta{margin-left:auto;color:var(--faint);font:11px var(--mono)}
@@ -107,14 +106,20 @@ it. The view tabs beside them belong to whichever side is open. */
 .theme-toggle{margin-left:8px}
 
 /* Shell ------------------------------------------------------------------ */
-.shell{display:grid;grid-template-columns:264px minmax(0,1fr);min-height:calc(100vh - var(--top))}
+.shell{display:grid;grid-template-columns:var(--sidebar-width) minmax(0,1fr);min-height:calc(100vh - var(--top))}
 .shell.code-mode{grid-template-columns:280px minmax(0,1fr)}
+.shell.surface-mode>.content{display:none}
 .shell.tree-hidden{grid-template-columns:0 minmax(0,1fr)}
-.sidebar{position:sticky;top:var(--top);height:calc(100vh - var(--top));overflow:auto;padding:10px 8px 40px;background:var(--bg-subtle);border-right:1px solid var(--line)}
+.sidebar{position:sticky;top:var(--top);height:calc(100vh - var(--top));display:flex;flex-direction:column;overflow:hidden;padding:0;background:var(--bg-subtle);border-right:1px solid var(--line)}
 .tree-hidden .sidebar{overflow:hidden;padding-inline:0;border:0}
-.sidebar-title{display:flex;align-items:center;gap:7px;padding:6px 8px;margin-bottom:4px;color:var(--ink);text-decoration:none;font-weight:600;font-size:13px;border-radius:var(--radius)}
+.sidebar-title{display:flex;align-items:center;gap:7px;padding:8px 4px 16px;margin-bottom:0;color:var(--ink);text-decoration:none;font-weight:650;font-size:15px;border-radius:var(--radius)}
 .sidebar-title:hover{background:var(--bg-inset)}
-.sidebar-title .i{color:var(--muted)}
+.sidebar-title .i{display:none}
+.sidebar>.sidebar-title,.review-sidebar-header>.sidebar-title{flex:none;margin:0;padding:20px 20px 12px}
+.sidebar>#sidebar-tabs{flex:none}
+.sidebar>#sidebar-tabs .side-tabs,.review-sidebar-header>.side-tabs{margin-inline:20px}
+.saga-side,.code-side{min-height:0;overflow:auto;padding:0 12px 32px;flex:1}
+.sidebar-group-label{margin:14px 8px 6px;color:var(--muted);font:650 11px var(--ui);letter-spacing:.07em;text-transform:uppercase}
 .side-label{margin:14px 6px 4px;color:var(--faint);font:600 11px var(--ui);letter-spacing:.02em}
 
 /* Documentation navigation tree ------------------------------------------ */
@@ -138,11 +143,10 @@ it. The view tabs beside them belong to whichever side is open. */
 .doc-deck-link[aria-expanded=true]{font-weight:600}
 .doc-link[aria-current=page]{color:var(--accent);font-weight:600}
 .doc-deck>.doc-children{margin:0 0 8px;padding:7px 0 2px;border-left:0;counter-reset:slide-thumbnail}
-.doc-slide-thumbnail{margin:0 0 10px;min-width:0}
-.doc-slide-thumbnail .slide-thumbnail-card{padding-left:22px}
-.doc-slide-thumbnail .slide-thumbnail-preview{border-width:1px;background:var(--bg)}
-.doc-slide-thumbnail .slide-thumbnail-card.active .slide-thumbnail-preview{border-width:2px}
-.doc-children{margin-left:10px;border-left:1px solid var(--line);padding-left:4px}
+.doc-slide-thumbnail{margin:0;min-width:0;counter-increment:slide-thumbnail}
+.doc-slide-thumbnail .slide-thumbnail-card{counter-increment:none}
+.doc-children{margin-left:12px;border-left:0;padding-left:6px}
+.doc-children:has(>.doc-slide-thumbnail){counter-reset:slide-thumbnail}
 .doc-children[hidden]{display:none}
 .doc-children .doc-link{font-size:12.5px;color:var(--muted)}
 .doc-children .doc-row:hover .doc-link{color:var(--ink)}
@@ -169,6 +173,19 @@ it. The view tabs beside them belong to whichever side is open. */
 .doc-tree .doc-link{white-space:normal;overflow-wrap:anywhere;line-height:1.35}
 .doc-tree a.doc-link:has(>.i){display:flex;align-items:flex-start;gap:6px}
 .doc-tree a.doc-link>.i{flex:none;width:13px;height:13px;margin-top:2px}
+
+/* Grouped outline: labels establish hierarchy without repeating an icon on every row. */
+.doc-tree .doc-link>.i,.doc-tree .doc-link>.icon-placeholder{display:none}
+.doc-tree .doc-link{padding-block:6px;line-height:1.4}
+.doc-tree>.doc-node>.doc-children{margin-left:0;padding-left:0}
+.doc-tree>.doc-node:has(>[data-nav-row="nav-features"]){margin-top:18px}
+[data-nav-row="nav-features"]>.doc-link{font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+#nav-features>.doc-node>.doc-row>.doc-link{color:var(--ink);font-size:13px;font-weight:550}
+#nav-features>.doc-node:has(>.doc-children:not([hidden])){margin-block:6px 12px;padding-block:5px;border-block:1px solid var(--line-soft)}
+#nav-features>.doc-node:has(>.doc-children:not([hidden]))>.doc-row>.doc-link{font-weight:650}
+#nav-features>.doc-node>.doc-children>.doc-group>.doc-row>.doc-link{font:600 11px/1.4 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:10px}
+.doc-tree .doc-row.current>.doc-link,.doc-tree .doc-link[aria-current=page]{color:var(--accent);font-weight:600}
+.doc-row.current{box-shadow:inset 2px 0 var(--accent)}
 
 /* The features index -------------------------------------------------------- */
 .app-lede{margin:6px 0 0;color:var(--muted);font-size:13px;max-width:60ch}
@@ -429,7 +446,7 @@ the record's own content for the top of the page. */
 .fragment.layer-changed,.section.layer-changed{box-shadow:inset 3px 0 0 var(--accent)}.fragment.layer-affected,.section.layer-affected{box-shadow:inset 3px 0 0 var(--amber)}
 a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .history-button{color:var(--muted)}
-.change-view{position:fixed;z-index:20;inset:var(--top) 0 0;background:var(--bg);overflow:auto}.change-wrap{max-width:1100px;margin:0 auto;padding:24px 28px 64px;font:14px/1.5 var(--ui);color:var(--ink)}
+.change-view{position:fixed;z-index:20;inset:var(--top) 0 0 var(--sidebar-width);background:var(--bg);overflow:auto}.change-wrap{max-width:1100px;margin:0 auto;padding:24px 28px 64px;font:14px/1.5 var(--ui);color:var(--ink)}
 .change-heading h1{margin:4px 0 6px;font-size:22px}.change-heading p{margin:0;color:var(--muted)}.change-note{color:var(--amber)!important;margin-top:6px!important}
 .change-layer{margin-top:28px}.change-layer h2{font-size:17px;margin:0 0 4px;display:flex;gap:8px;align-items:baseline}.change-layer h2 span{color:var(--muted);font-weight:500}.change-layer-hint{color:var(--muted);margin:0 0 12px}
 .change-record,.change-code-group{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin:0 0 10px;background:var(--bg)}
@@ -713,7 +730,7 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 [data-surface-next][aria-busy=true]{cursor:progress;opacity:.65}
 
 /* Coverage view ---------------------------------------------------------- */
-.manifest-view{position:fixed;z-index:20;inset:var(--top) 0 0;background:var(--bg);overflow:auto}
+.manifest-view{position:fixed;z-index:20;inset:var(--top) 0 0 var(--sidebar-width);background:var(--bg);overflow:auto}
 .manifest-wrap{width:min(1180px,100%);margin:auto;padding:0 clamp(12px,2.5vw,28px) 64px}
 .manifest-tools{position:sticky;top:0;z-index:4;display:flex;gap:8px;align-items:center;padding:8px 0;background:var(--toolbar-bg);backdrop-filter:blur(6px);border-bottom:1px solid var(--line-soft)}
 .manifest-modes{display:flex;gap:2px;padding:2px;border-radius:var(--radius);background:var(--bg-inset)}
@@ -815,12 +832,17 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .topbar>*{flex:none}
 .brand span{display:none}
 .view-tab{padding:0 8px}
-.side-tab{padding:0 8px;font-size:12px}
-.side-tabs{padding-right:6px}
+.side-tab{padding:8px 0;font-size:12px}
+.side-tabs{gap:2px 12px;margin-inline:4px}
 .shell,.shell.code-mode{display:block}
+.shell.surface-mode{min-height:0}
+.manifest-view,.change-view{position:static}
 .shell.slide-mode{display:grid;grid-template-columns:min(210px,42vw) minmax(0,1fr)}
 .shell.slide-mode>.sidebar{max-height:none}
-.sidebar{position:static;height:auto;max-height:42vh;padding:8px}
+.sidebar{position:static;height:auto;max-height:42vh;padding:0}
+.sidebar>.sidebar-title,.review-sidebar-header>.sidebar-title{padding:12px 16px 8px}
+.sidebar>#sidebar-tabs .side-tabs,.review-sidebar-header>.side-tabs{margin-inline:16px}
+.saga-side,.code-side{padding:0 8px 16px}
 .shell.code-mode .sidebar{position:fixed;z-index:25;top:var(--top);bottom:0;left:0;width:min(300px,86vw);max-height:none;height:auto;box-shadow:12px 0 30px #1f232826;transform:none;transition:transform .18s}
 .shell.code-mode.tree-hidden .sidebar{transform:translateX(-105%);padding:8px}
 .content{padding:16px 12px 90px}

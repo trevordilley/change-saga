@@ -70,7 +70,7 @@ test("a large saga's first load stays within its payload budgets", async ({ page
   // Documentation offers its own views; the comparison ones are one click
   // away on the Review side and are not part of this page at all.
   await expect(page.getByRole("tab", { name: "Documented code" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Review", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Reviews", exact: true })).toBeVisible();
 
   expect(
     measured.domInteractive,

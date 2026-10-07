@@ -33,7 +33,7 @@ test("@critical navigates the saga, linked code, code tree, and coverage in both
   // to the Review side rather than showing a diff inside the documentation.
   await drawer.getByRole("link", { name: "Open in Code Diff" }).click();
 
-  await expect(page.getByRole("link", { name: "Review", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("link", { name: "Reviews", exact: true })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("tab", { name: "Code Diff" })).toHaveAttribute("aria-selected", "true");
   await expect(page.locator('[data-file-path="src/app.go"].file-diff')).toBeVisible();
   const changedFiles = page.getByRole("tree", { name: "Changed files" });

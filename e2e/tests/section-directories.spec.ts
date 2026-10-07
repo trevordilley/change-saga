@@ -68,7 +68,7 @@ test("@critical every section header opens its page rather than only expanding",
   await expectNoSeriousAccessibilityViolations(page);
 
   // Reviews: the header's other side, with nothing to list yet.
-  await page.getByRole("link", { name: "Review", exact: true }).click();
+  await page.getByRole("link", { name: "Reviews", exact: true }).click();
   await expect(page).toHaveURL(`${saga.baseURL}/reviews`);
   await waitForSettledSaga(page);
   await expect(page.locator('[data-directory="reviews"]')).toContainText("No reviews yet.");
