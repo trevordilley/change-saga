@@ -39,7 +39,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          # The current ubuntu-latest image repeatedly shuts down during the
+          # race suite. Pin this test runner while retaining the full suite.
+          - os: ubuntu-22.04
             # The race detector needs a C toolchain, which is present on the
             # Linux and macOS images but not reliably on the Windows image.
             race: "-race"
@@ -69,7 +71,7 @@ jobs:
         # Always execute the suite without recording a test-result cache log.
         # The server fixtures perform enough filesystem reads to create hundreds
         # of MB of cache-input logs; build and module caching still stay enabled.
-        run: go test -count=1 -timeout 20m ${{ matrix.race }} ./...
+        run: go test -v -count=1 -timeout 20m ${{ matrix.race }} ./...
         env:
           # Test fixtures commit constantly, and after each commit Git starts
           # its automatic maintenance as another process. Throwaway fixture
