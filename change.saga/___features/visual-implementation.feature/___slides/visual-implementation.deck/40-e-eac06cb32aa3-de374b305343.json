@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+      "commit": "f246ec2cd1278ac04b451beec94d46434a139191",
       "path": "internal/server/navigation.go",
-      "start": 125,
-      "end": 153,
-      "digest": "sha256:794f6b460a46c1db022e6eef8b7ea12900a3635dd9e3d39f1919b044e7d2a056",
+      "start": 122,
+      "end": 150,
+      "digest": "sha256:e4c2b65981bb297aaf57986428da592fcb7696c528b2c6643d1e1539c3efee3c",
       "note": "Opening Technical resolves directly to the first slide of the feature deck."
     }
   ]

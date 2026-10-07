@@ -2,11 +2,11 @@
   "version": 2,
   "references": [
     {
-      "commit": "81849f13166215d3e2c3da6423404135606dfa39",
+      "commit": "f246ec2cd1278ac04b451beec94d46434a139191",
       "path": "skills/change-saga/references/diagrams.md",
-      "start": 337,
-      "end": 361,
-      "digest": "sha256:290693cc7e49018f8c126517723421b2f7fea0a2e7112dca31859cd2a25dd9d2",
+      "start": 553,
+      "end": 599,
+      "digest": "sha256:427182737a07257e9b45836ff672dc2976ae9dc12d9b93cfbd0601de39133541",
       "note": "The skill documents Component/System authoring, pins and the drawer; reconciliation now reports inventory, while generic references/repin, feature audits and comparison layers still exclude it."
     }
   ]

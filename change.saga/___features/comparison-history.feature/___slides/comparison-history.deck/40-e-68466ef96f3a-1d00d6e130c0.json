@@ -10,11 +10,11 @@
       "note": "Opens a deterministic query session and projects its source identity and coverage summary through the bounded overview contract."
     },
     {
-      "commit": "b0ed9d46886e97832b54821de47a62fcbcc500ca",
+      "commit": "f246ec2cd1278ac04b451beec94d46434a139191",
       "path": "internal/reviewapp/session.go",
       "start": 420,
-      "end": 476,
-      "digest": "sha256:db200d16b9c66600173232b2787d3c84f4e80aac74d84b7130286f9c1f2c4ebe",
+      "end": 488,
+      "digest": "sha256:49025e970aa41c8de8001a2161ecd4c3ea426ba14eba148ba3b69f2abb6957ea",
       "note": "Opens a deterministic query session and projects its source identity and coverage summary through the bounded overview contract."
     }
   ]
