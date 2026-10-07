@@ -95,9 +95,12 @@ For a pull-request deck, use `--review REVIEW_ID` in place of `--deck`.
 The explicit Overview check fails when the authored report is missing or any
 slide remains uncited. Ordinary validation keeps legacy missing-overview cases
 as warnings. Continue running the relevant exact code-coverage check as well.
-`change-saga query overview --saga change.saga` exposes deck reports with
-resolved slide/Item targets, generated status, covered and uncovered slides,
-and validation diagnostics; it does not duplicate evidence.
+`change-saga query overview --saga change.saga --deck DECK_URN` exposes the
+selected deck's report with resolved slide/Item targets, generated status,
+covered and uncovered slides,
+and validation diagnostics; it does not duplicate evidence. Without `--deck`, the
+query returns a compact directory and omits all deck reports. Select a returned
+deck URN to read its report; other decks stay compact.
 
 For example, if the deck contains a `request-path` slide with a `router` Item:
 

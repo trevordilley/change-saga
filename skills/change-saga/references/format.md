@@ -37,6 +37,8 @@ change.saga/
 The layout is descriptive, not an authoring API. Use queries to discover
 resources and public commands to change them.
 
+For technical definitions, use the [inventory authoring guidance](diagrams.md#reusable-components-and-systems).
+
 ## Stable targets
 
 Query responses and mutation results return the URNs to reuse. Common forms

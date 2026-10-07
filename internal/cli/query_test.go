@@ -145,6 +145,7 @@ func TestQueryDispatchesEveryOperationAndPreservesArguments(t *testing.T) {
 		want      any
 	}{
 		{"overview", nil, overviewQuery{}},
+		{"overview", []string{"--deck", "urn:change-saga:example:deck:architecture"}, overviewQuery{Deck: "urn:change-saga:example:deck:architecture"}},
 		{"children", []string{"--parent", "urn:parent", "--cursor", "c1", "--limit", "17"}, childrenQuery{Parent: "urn:parent", Cursor: "c1", Limit: 17}},
 		{"fragment", []string{"--target", "urn:fragment", "--offset", "23", "--limit", "4096"}, fragmentQuery{Target: "urn:fragment", Offset: int64(23), Limit: 4096}},
 		{"fragment-diffs", []string{"--target", "urn:fragment", "--cursor", "c2", "--limit", "18"}, fragmentDiffQuery{Target: "urn:fragment", Cursor: "c2", Limit: 18}},

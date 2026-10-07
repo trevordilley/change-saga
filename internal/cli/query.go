@@ -39,7 +39,9 @@ type queryOpenOptions struct {
 	Operation   string
 }
 
-type overviewQuery struct{}
+type overviewQuery struct {
+	Deck string
+}
 
 type childrenQuery struct {
 	Parent string
@@ -239,7 +241,7 @@ var queryPurpose = map[string]string{
 	"inventory-selections": "saved implementation Item selections with their declared path, containing evidence, pin health, and separately resolved selected-byte and containing-evidence health; whether each contributes inherited deck coverage",
 	"inventory-uses":       "declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness",
 	"schema":               "the response paths and pagination contract for a query operation; no saga is required",
-	"overview":             "saga identity, source comparison, coverage summary, and the top of the hierarchy",
+	"overview":             "compact saga directory, source comparison and coverage summary; --deck URN includes only that deck's full overview report",
 	"children":             "one level of children under a target; a fragment's children are its landmarks",
 	"fragment":             "bounded fragment content by byte range, without reading files directly",
 	"fragment-diffs":       "the changed atoms a saga, chapter, section, fragment, or landmark references, and its stale references",
@@ -266,7 +268,7 @@ var queryPurpose = map[string]string{
 	"audit":                "a complete feature handoff audit: broad intent, exact Item evidence, criterion explanations, stale pins/selectors, cross-feature links, exceptions, and unresolved conflicts",
 	"history":              "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
 	"review-threads":       "one review's discussion thread by thread: every comment on its slides, Items, and code lines, with each code-line thread's anchor and where it shows in the review's current range (current, moved, or outdated since its lines changed)",
-	"terms":                "the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation",
+	"terms":                "the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; missing assessments are unknown, and evidence availability never proves implementation",
 	"term-references":      "direct explicit incoming and outgoing term references with provenance and declared coverage",
 	"layers":               "one comparison's Changed records (each with before and after), Affected records (with why), and Code (hunks grouped under the records that reference them, plus unreferenced lines)",
 }
@@ -278,7 +280,7 @@ var queryUsage = map[string]string{
 	"inventory-uses":       "change-saga query inventory-uses --saga PATH --target URN [--revision URN] [--depth N] [--role implementation_item|review_item|system_member|data_holder|relationship_destination|erd_directory|erd_overlay] [--cursor TOKEN] [--limit N] [--repo PATH]",
 	"":                     "change-saga query <operation> --saga PATH [--repo PATH] [--against REV [--head REV]] [operation flags]",
 	"schema":               "change-saga query schema <operation>",
-	"overview":             "change-saga query overview --saga PATH [--repo PATH] [--against REV [--head REV]]",
+	"overview":             "change-saga query overview --saga PATH [--deck URN] [--repo PATH] [--against REV [--head REV]]",
 	"children":             "change-saga query children --saga PATH --parent TARGET [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"fragment":             "change-saga query fragment --saga PATH --target FRAGMENT [--offset N] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"fragment-diffs":       "change-saga query fragment-diffs --saga PATH --target TARGET [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
@@ -621,6 +623,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	var conflictLimit optionalInt
 	var minimumScore optionalInt
 	switch operation {
+	case "overview":
+		flags.StringVar(&target, "deck", "", "expand the overview report of one deck, identified by its stable URN")
 	case "children":
 		flags.StringVar(&parent, "parent", "", "parent target URN")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
@@ -854,7 +858,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	options := queryOpenOptions{SagaRoot: *sagaRoot, SourceDir: *sourceDir, Range: opening.rng()}
 	switch operation {
 	case "overview":
-		return overviewQuery{}, options, false, nil
+		return overviewQuery{Deck: target}, options, false, nil
 	case "children":
 		return childrenQuery{Parent: parent, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "fragment", "slide":

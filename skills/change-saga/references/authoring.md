@@ -1,6 +1,6 @@
-# Authoring compatibility router
+# Authoring references
 
-This path remains only for older links. Do not preload every reference.
+Read only the reference needed for the task.
 
 - For diagrams, decks, narrative, Items, exact evidence, claims, or visual QA,
   read [diagrams.md](diagrams.md).

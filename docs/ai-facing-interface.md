@@ -205,7 +205,7 @@ that page and must not be compared with those counts.
 The operations are:
 
 ```text
-change-saga query overview       --saga PATH [--repo PATH]
+change-saga query overview       --saga PATH [--deck URN] [--repo PATH]
 change-saga query children       --saga PATH --parent TARGET [--cursor TOKEN] [--limit N]
 change-saga query fragment       --saga PATH --target FRAGMENT [--offset N] [--limit N]
 change-saga query fragment-diffs --saga PATH --target TARGET [--cursor TOKEN] [--limit N]

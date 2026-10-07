@@ -169,6 +169,15 @@ revisions and whose directed interactions each explain their own exact code.
 Systems also carry a name, explanation, and direct scoped evidence. There is
 no prescribed C4 hierarchy, and terms remain a distinct vocabulary concept.
 
+Substantial technical documentation should connect explanatory decks to reusable
+definitions where shared responsibilities or boundaries warrant them. Reuse a
+Component across relevant slides and features, model its directed interactions
+in Systems, and describe meaningful data relationships with data entities and
+ERDs where useful. Slide Items pin Component, System or data-entity definitions
+while retaining their own context and exact evidence. A matching name in prose
+or a diagram is not a declared dependency. Inspect declared uses before claiming connected impact
+coverage; record counts alone do not establish completeness.
+
 Records live under `___inventory/components/<id>.component/` and
 `___inventory/systems/<id>.system/`, with an immutable identity, complete
 append-only revisions, and active/retired lifecycle events. URNs are
@@ -180,6 +189,8 @@ winner. Component and System schemas are `v5/component*.schema.json` and
 1–64 exact line-range code references with notes, and each System has 2–32
 unique Component pins and 1–64 directed interactions with unique IDs and
 member endpoints. Each interaction requires 1–64 exact code references.
+These evidence minimums describe legacy inventory format 1; current format 2
+distinguishes proposed designs from implemented definitions as described below.
 
 An implementation or review Item may carry `documentation: {target, revision}`
 conforming to `v5/documentation-link.schema.json`; onboarding Items may not.
@@ -206,6 +217,17 @@ reject its new root/fields; upgrade readers before adoption. See
 compatibility details, UI behavior, and deferred integration surfaces.
 
 ### Technical inventory format 2
+
+Format 2 is the current authoring format for technical inventory, including
+Components, Systems, data entities and ERDs. Format 1 is retained for legacy
+compatibility. These are storage generations within Saga version 5, not two
+documentation styles or an ERD versus non-ERD choice. Choose diagrams according
+to what they explain; using format 2 does not require an ERD.
+
+When asked to author technical inventory, agents initialize it with the public
+command below and use the current schema, without a format-choice interview.
+Reading documentation or authoring ordinary slide decks needs no inventory
+initialization.
 
 Inventory format 2 is adopted only by `change-saga inventory adopt-format
 --format 2`, which writes `___inventory/format.json`
@@ -512,8 +534,14 @@ at read time, never persisted or counted as authored overview coverage.
 `deck overview (--deck TARGET | --review ID) --check [--json] <saga>` checks
 only the named deck's authored overview: exit 0 for complete, 3 for missing
 coverage, and 1 for invalid content. Normal `validate` keeps missing coverage
-as warnings. `query overview` includes effective reports, generated status,
-resolved reference targets, covered/uncovered slides, and validation diagnostics.
+as warnings. `query overview` returns a compact directory with deck identities
+and counts, omitting report bodies and annotations. `query overview --deck URN`
+adds only the selected deck's effective report, generated status, resolved
+reference targets, covered/uncovered slides, and validation diagnostics under
+that deck's `overview` field. Other deck summaries and the snapshot are unchanged.
+The selector must be an exact deck URN, including for onboarding and review decks;
+an unknown deck returns `not_found`. Consumers that previously read reports
+from the default response must now select the relevant deck explicitly.
 
 Slide records may include `front: ["summary bullet", ...]`; each bullet must be
 nonblank. Front displays authored bullets, falling back to the existing takeaway,
@@ -1234,6 +1262,44 @@ Claims and results never accept an author name. Readers derive attribution from
 the Git commit that first introduced each file.
 
 ## 8. Reviews
+
+### Automated test selection
+
+`change-saga review test-plan --review ID [--repo PATH] [--json] <saga>`
+is a read-only selection over the named review's resolved merge-base/head (or
+frozen range), using the supplied Saga's current documentation snapshot. It
+never executes commands, records runs, or changes review decisions.
+
+The planner matches changed code on both sides against living documentation,
+the selected review's Item evidence, eligible inventory selections and test
+evidence. Declared story/criterion links identify affected stories. A criterion
+reaches its parent story; all automated or hybrid cases verifying any criterion
+of that story are selected, including tests whose own code did not change.
+Cases whose own evidence intersects the change are also candidates. Shared
+cases are returned once, with every affected story and criterion. Retired and
+deprecated cases are excluded. No dependency is inferred from naming or file
+proximity, and no minimal-suite optimization assumes tests are interchangeable.
+Whole-file dependencies include changed lines. File events (including renames)
+intersect dependencies anywhere inside the affected file; narrow line ranges
+still leave unrelated changed lines unmapped.
+
+The `change-saga.test-plan/v1` JSON report includes `snapshot`, `review`,
+`range`, `strategy`, `stories` (with evidence-owner paths), `tests`, deduplicated
+`commands`, `gaps`, and `complete`. Each selected test includes its revision,
+automation mode, selection reasons, linked stories/criteria, test-implementation
+code resolved at the review head, and the newest recorded command for that exact
+test revision with its run provenance. Commands are returned as recorded, never
+inferred from file extensions or executed. A previous result does not exempt a
+test from rerunning. A single command may run a broader suite than its case.
+
+Unmapped changes, missing tests for stories or criteria, manual steps, missing
+test code or commands, stale links/evidence, and unresolved heads are explicit
+gaps. Stale links retain candidates conservatively but cannot establish current
+coverage. Exit 0 means no reported mapping gaps; exit 3 returns a usable partial
+plan with gaps; exit 1 means selection failed. `complete` describes only the
+recorded graph, not semantic correctness or coverage of undeclared dependencies.
+
+### Review records
 
 The Saga is documentation: stories, designs, test cases, feature decks, and report
 content carry no approvals and no comments. Review happens in **reviews**. A

@@ -618,6 +618,13 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "review test-plan", Status: StatusImplemented,
+		Usage:       "change-saga review test-plan --review ID [--repo PATH] [--json] <saga>",
+		Summary:     "select automated tests through changed code and affected stories in this review's range; return test code, recorded commands, reasons and gaps without executing tests; exit 3 when the recorded plan has gaps",
+		Flags:       []Flag{required("review", "ID", "review to select tests for"), optional("repo", "PATH", "code checkout when separate"), jsonFlag},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "review refresh-coverage", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence", "slide-transaction"},
 		Usage:   "change-saga review refresh-coverage --review ID [--accept-proposed [--path P] [--note TEXT]] [--repo PATH] [--dry-run] [--json] <saga>",
 		Summary: "refresh a review deck's coverage over its current range: re-pin moved references and whole-file references whose file event persists, report newly changed lines uncovered with their proposed owner (given to it only with --accept-proposed), and report stale references with proposals for judgment",

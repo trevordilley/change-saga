@@ -78,6 +78,13 @@ func TestDeckOverviewAuthorCheckAndQuery(t *testing.T) {
 	if err := Query(ctx, []string{"overview", "--saga", root, "--repo", repo}, &out); err != nil {
 		t.Fatal(err)
 	}
+	if strings.Contains(out.String(), "annotation:a") || strings.Contains(out.String(), `"covered_slides"`) || !strings.Contains(out.String(), deck.Target) {
+		t.Fatalf("directory must retain deck identity without report content: %s", out.String())
+	}
+	out.Reset()
+	if err := Query(ctx, []string{"overview", "--deck", deck.Target, "--saga", root, "--repo", repo}, &out); err != nil {
+		t.Fatal(err)
+	}
 	if !strings.Contains(out.String(), `"covered_slides"`) || !strings.Contains(out.String(), `"annotation:a"`) && !strings.Contains(out.String(), "annotation:a") {
 		t.Fatal(out.String())
 	}

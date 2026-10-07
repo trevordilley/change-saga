@@ -62,8 +62,8 @@ func (s *reviewAppQuerySession) Snapshot() string {
 	return s.session.Snapshot()
 }
 
-func (s *reviewAppQuerySession) Overview(ctx context.Context, _ overviewQuery) (any, error) {
-	return s.session.Overview(ctx, reviewapp.OverviewQuery{})
+func (s *reviewAppQuerySession) Overview(ctx context.Context, query overviewQuery) (any, error) {
+	return s.session.Overview(ctx, reviewapp.OverviewQuery{Deck: query.Deck})
 }
 
 func (s *reviewAppQuerySession) Children(ctx context.Context, query childrenQuery) (queryPage, error) {

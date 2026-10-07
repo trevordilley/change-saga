@@ -42,7 +42,10 @@ type Session interface {
 	Verifications(context.Context, VerificationQuery) (VerificationPage, error)
 }
 
-type OverviewQuery struct{}
+type OverviewQuery struct {
+	// Deck expands only this deck's report; the default is a compact directory.
+	Deck string
+}
 
 type ChildrenQuery struct {
 	Parent string `json:"parent"`

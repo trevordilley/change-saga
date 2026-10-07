@@ -147,6 +147,15 @@ paths. Connect confirmed stories through design and implementation Items to
 exact code references. Survey roles, permissions, routes, copy, ownership, and
 policies that corroborate personas without requiring a one-to-one code enum.
 
+For substantial technical documentation, read the skill's reusable inventory
+guidance. Reuse Components for shared responsibilities, Systems for their
+interactions, and data entities and ERDs where relationships need explanation.
+Use the current inventory schema. Pin the relevant slide Items
+to Component, System or data-entity definitions, preserving contextual
+explanations and exact evidence; matching names in prose create no dependency
+links. Inspect declared uses before handoff. Do not create a record for every
+function or table, or require an ERD for a system it would not help explain.
+
 Read existing READMEs, architecture notes, ADRs, API descriptions, diagrams,
 issues, and operational notes as leads and rationale. Treat current code and
 observable behavior as implementation truth, while keeping user-confirmed

@@ -211,10 +211,11 @@ var commandUsage = map[string]string{
 	"sync":                        "change-saga sync --repo PATH [--commit REV] [--json] <saga>",
 	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --ref LOCATION [--ref LOCATION...] <saga>",
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
-	"review":                      "change-saga review <create|list|approve|request-changes|withdraw|comment> [flags] <saga>",
+	"review":                      "change-saga review <create|list|test-plan|approve|request-changes|withdraw|comment> [flags] <saga>",
 	"review create":               "change-saga review create [--id ID] [--base REV] [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
 	"review follow":               "change-saga review follow --review ID --head REF [--json] <saga>",
 	"review list":                 "change-saga review list [--review ID] [--uncovered] [--all] [--repo PATH] [--json] <saga>",
+	"review test-plan":            "change-saga review test-plan --review ID [--repo PATH] [--json] <saga>",
 	"review refresh-coverage":     "change-saga review refresh-coverage --review ID [--accept-proposed [--path P] [--note TEXT]] [--repo PATH] [--dry-run] [--json] <saga>",
 	"review approve":              "change-saga review approve --review ID --slide ID --reviewer-kind human|ai [--body TEXT] [flags] <saga>",
 	"review request-changes":      "change-saga review request-changes --review ID --slide ID --reviewer-kind human|ai --body TEXT [flags] <saga>",
@@ -364,6 +365,7 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
+	"review test-plan":            "Follow the named review's changed code to affected stories and select their automated tests. Returns test code, recorded commands, selection reasons, and mapping gaps without executing tests. Exit 3 means the plan is partial; --json includes a deduplicated commands list.",
 	"component":                   "Define an identifiable unit of logic with exact pinned code. Use add or revise --from with a complete technical-definition JSON document; immutable revisions preserve history.",
 	"system":                      "Define a reusable interaction diagram with pinned Components, directed data flow, and exact scoped code. Implementation Items link a specific revision without inheriting coverage.",
 	"data-entity":                 "Define a logical payload or persisted record: curated fields and keys, holding Components, and owned association/production relationships. Requires inventory format 2; every revision states proposed or implemented intent.",

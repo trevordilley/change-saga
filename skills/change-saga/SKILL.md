@@ -139,6 +139,13 @@ before drawing slides; nothing else is needed.
 Coverage is an omission check, not proof that a slide is right. Never widen a
 selector just to finish coverage.
 
+To select automated tests for a review, use `change-saga review test-plan
+--review ID --json change.saga` (with `--repo PATH` for a separate source
+checkout). It follows changed code to affected stories and selects all their
+linked automated tests, deduplicated across stories. Inspect `gaps` before
+using `commands`; exit 3 means the plan has missing or uncertain mappings.
+Commands are recorded invocations, not guessed or executed by the planner.
+
 A Saga of reviews alone is complete; do not pitch more. If the user asks to
 document the application itself (personas, stories, features, design, living
 documentation), `change-saga setup-initial-saga` guides growing this Saga.
@@ -216,7 +223,7 @@ reference. When a task crosses rows, combine only those rows.
 | Audit whether one feature has a current, exact implementation handoff | [Reading through the query API](references/query.md) |
 | Describe implemented features; Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |
-| Author Component/System definitions, their interactions, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
+| Author Components, Systems, data entities, ERDs, their relationships, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Render slides and run mechanical visual QA | [Diagrams and evidence](references/diagrams.md) |
 | Theme the reviewer and its slides: brand colours, fonts, dark mode | [Theming](references/theme.md) |

@@ -28,8 +28,7 @@ Back. Keep precise evidence on stable Back Items. Overview citations name a
 slide and optionally an Item, so code, diffs, and stories are reached through
 that slide. Reference every slide from the authored Overview. That coverage
 check is separate from exact code coverage: a citation never covers an
-otherwise unexplained code line. Legacy decks remain readable with a generated
-directory and summary fallback, but that directory is not authored coverage.
+otherwise unexplained code line. A generated directory is not authored coverage.
 Use the installed CLI help and spec for the overview and Front authoring
 commands and field limits. Publish a deck report with `change-saga deck overview
 --deck DECK --file overview.json change.saga`, or `--review ID` for a review;
@@ -512,8 +511,7 @@ deriving storage paths.
 An Item may relate to a story or criterion with a pinned, self-scoped relation.
 Prefer a criterion when the visual explains one obligation; use the story only
 when it genuinely applies to every criterion. A slide's summary is derived
-from Item relations. Legacy deck or slide links remain readable but do not
-apply automatically to every Item.
+from Item relations; deck or slide links do not apply automatically to every Item.
 
 ## Claims and verification
 
@@ -525,6 +523,14 @@ command where possible. Use `unverified` when it was not checked. Claims and
 results are append-only.
 
 ## Handoff checks
+
+When the user needs tests for a review, run `review test-plan --review ID
+--json <saga>`. Every test case should verify a story's acceptance criteria;
+automated cases also need exact `test_implementation` evidence naming their
+test code. Those declared links let a change reach a story and then its tests,
+even when the test file itself did not change. Missing links, unresolved code
+and manual-only obligations remain gaps. Record a run command with actual run
+results; never invent a historical run to fill a missing command.
 
 Check every sentence before handing off a deck; no command reads the prose,
 so `check`, `validate`, `diagram check`, and `visual-qa` all pass a deck
@@ -555,6 +561,28 @@ contract through `spec --json` and command help. Author definitions with
 `add|revise --from`; lifecycle changes use `set-state`. Preserve every parent
 head and all code provenance.
 
+When documenting a substantial system, build reusable definitions alongside
+the explanatory decks. Start with `query inventory` and reuse existing
+identities. Promote a responsibility into a Component when multiple slides or
+features depend on the same behavior or a stable boundary needs its own
+explanation. Use a System for the directed interactions among those Components.
+Use data entities for meaningful persisted/domain records and their evidenced
+relationships; add an ERD when seeing those relationships together helps a
+reader. A function, endpoint or table does not automatically need a record.
+
+For example, several feature slides may use the same job runner or external
+service gateway. Define that responsibility once, then pin the relevant slide
+Items to it while keeping each slide's contextual explanation and exact code.
+Naming it in prose or drawing a matching box creates no declared link. Preserve
+the simple Front summary; use Back, notes and linked definitions for depth.
+
+Before handing off the requested documentation, inspect the selected inventory
+records and `query inventory-uses --target URN`: do the Items and Systems that
+rely on a shared definition actually reference it? Check `query slide` for
+Item pins, exact evidence and criterion links. Report meaningful missing links
+within the requested scope; do not fill an inventory quota, invent relationships,
+or claim whole-codebase impact coverage from an unconnected set of decks.
+
 An implementation Item may link a canonical definition with `--documentation`
 and `--documentation-revision`, or the optional `documentation` field of an
 `apply-slide` Item. Keep contextual labels and exact Item evidence: a System
@@ -570,11 +598,14 @@ definitions without implementation-deck use. Inventory is not part of generic
 `references`/`repin`, feature audits or comparison layers; do not infer those
 integrations.
 
-Proposed/implemented intent, data entities, ERDs and exact Item selections are
-inventory format 2. Use them only when `___inventory/format.json` exists; never
-run `inventory adopt-format` without the user's explicit decision. Under format
-2 every new revision states `intent`. Record a design as `proposed` (with
-`baseline` naming the implemented revision it changes, or `none`) before code
+Before inventory authoring, run the idempotent initialization command
+`change-saga inventory adopt-format --format 2 <saga>`. Use the current schema
+without a format-choice interview. Reads and ordinary slide authoring need no
+inventory initialization.
+
+Every new Component, System or data-entity revision states `intent`. Record a
+design as `proposed` (with `baseline` naming the implemented revision it changes,
+or `none`) before code
 exists; record delivery with a new `implemented` revision and `--delivery` at
 the commit whose code you verified, keeping the proposal in history. Give each
 reference a stable evidence `id`. Leave a relationship or interaction

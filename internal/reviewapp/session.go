@@ -417,9 +417,14 @@ func (s *session) finishNode(target string, recursive bool) Node {
 	return node
 }
 
-func (s *session) Overview(ctx context.Context, _ OverviewQuery) (Overview, error) {
+func (s *session) Overview(ctx context.Context, query OverviewQuery) (Overview, error) {
 	if err := ctx.Err(); err != nil {
 		return Overview{}, err
+	}
+	if query.Deck != "" {
+		if err := s.validateTargetArgument(query.Deck); err != nil {
+			return Overview{}, err
+		}
 	}
 	root := s.document.Section
 	result := Overview{
@@ -441,13 +446,6 @@ func (s *session) Overview(ctx context.Context, _ OverviewQuery) (Overview, erro
 		node := s.finishNode(child.Target, true)
 		summary := ChapterSummary{Node: node, ChildCount: len(child.Children), FragmentCount: len(child.Fragments), OwnsCurrent: node.Diffs.Current > 0, OwnsStale: node.Diffs.Stale > 0}
 		if child.Kind == "deck" {
-			for _, deck := range append(append([]*saga.Deck{}, s.document.Decks...), s.document.Onboarding...) {
-				if deck.Target == child.Target {
-					report := deck.OverviewReport()
-					summary.Overview = &report
-					break
-				}
-			}
 			result.Decks = append(result.Decks, summary)
 		} else {
 			result.Chapters = append(result.Chapters, summary)
@@ -470,8 +468,22 @@ func (s *session) Overview(ctx context.Context, _ OverviewQuery) (Overview, erro
 			continue
 		}
 		node := s.finishNode(deck.Target, true)
-		report := deck.OverviewReport()
-		result.Decks = append(result.Decks, ChapterSummary{Node: node, FragmentCount: len(deck.Slides), OwnsCurrent: node.Diffs.Current > 0, OwnsStale: node.Diffs.Stale > 0, Overview: &report})
+		result.Decks = append(result.Decks, ChapterSummary{Node: node, FragmentCount: len(deck.Slides), OwnsCurrent: node.Diffs.Current > 0, OwnsStale: node.Diffs.Stale > 0})
+	}
+	if query.Deck != "" {
+		for _, deck := range append(append([]*saga.Deck{}, s.document.Decks...), extra...) {
+			if deck.Target != query.Deck {
+				continue
+			}
+			for i := range result.Decks {
+				if result.Decks[i].Target == query.Deck {
+					report := deck.OverviewReport()
+					result.Decks[i].Overview = &report
+					return result, nil
+				}
+			}
+		}
+		return Overview{}, notFound("deck", query.Deck)
 	}
 	return result, nil
 }

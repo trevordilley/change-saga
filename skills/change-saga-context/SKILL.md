@@ -48,18 +48,26 @@ grepping, or globbing metadata files.
 | Question | Starting read |
 | --- | --- |
 | Where is the relevant feature or deck? | `change-saga query overview --saga PATH`, then `change-saga query children --saga PATH --parent URN` |
+| What is the narrative for this deck? | `change-saga query overview --saga PATH --deck URN` expands only its overview report |
 | What do we already know about this feature? | `change-saga query context --saga PATH --feature ID` |
 | What is the exact intent behind one story? | `change-saga query context --saga PATH --feature ID --expand STORY_ID` |
 | What behavior is required, and for whom? | `query requirements` and `query personas` for the relevant identities |
 | What does this term or component mean? | `query terms` or `query inventory` |
 | How does this part work? | `change-saga diagram describe --slide TARGET PATH`, or `query fragment` for design prose |
 | What intent and evidence relate to this code? | `query traceability --ref LOCATION`; discover its supported location format from help |
+| Which automated tests should run for a review? | `change-saga review test-plan --review ID --json PATH` returns tests, recorded commands, affected stories and gaps |
 | Why did the documented intent change? | `query requirement-history`, `query citations`, or `query history` for the selected record |
 
 Supply `--saga PATH` to queries. Use returned IDs and URNs instead of guessing
 them. Start directly with a known feature or record; an overview is only needed
 when its location is unknown. Expand exact prose and code references only for
 records relevant to the question.
+
+The default overview is a directory; it omits deck report bodies and their
+annotations. Select one deck explicitly when its narrative is useful. A
+Component named in prose is not necessarily a declared dependency: follow
+Item documentation pins and `query inventory-uses` for the recorded links,
+and preserve that query's completeness limits.
 
 Check the JSON envelope's `ok`, `data`, `snapshot`, and `page`. Follow
 `page.next_cursor` while `page.has_more` for the selected query; byte- or

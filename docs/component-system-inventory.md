@@ -1,5 +1,11 @@
 # Component and System documentation
 
+This document records the original inventory format 1 implementation. Its
+authoring example and deferred features are historical; for current authoring,
+use [technical inventory format 2](../SPEC.md#technical-inventory-format-2).
+Format 2 is the default for new technical inventory work, including Components
+and Systems, whether or not the documentation includes an ERD.
+
 Components are meaningful, identifiable units of logic or transformation: a
 Redux store, an application service, a flag evaluator. Systems explain how
 those Components interact and how data flows through them. These are reusable

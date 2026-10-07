@@ -10,9 +10,34 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
-## [0.3.2] - 2026-10-02
+## [0.4.0] - 2026-10-07
+
+### Added
+
+- `review test-plan --review ID` selects automated tests through changed code
+  and affected user stories. It returns deduplicated cases, test-code locations,
+  recorded commands, selection reasons, and explicit mapping/coverage gaps;
+  `--json` supports automation. It never executes tests.
+
+### Changed
+
+- Sidebar navigation uses a grouped outline, compact numbered slides, and
+  Documentation/Reviews tabs. Stories appear directly in feature navigation;
+  Architecture sits under Technical. Theme tokens and stable links are preserved.
+- `query overview` now returns a compact directory. Pass `--deck URN` to
+  include one deck's full overview report; clients that read reports from the
+  default response should select the relevant deck explicitly.
+- Technical authoring and setup guidance connects shared responsibilities and
+  data relationships to reusable inventory definitions, pins relevant slide
+  Items, and checks declared uses before handoff.
+- Agent guidance focuses on the current schema and required commands, removing
+  legacy-format explanations and compatibility decision steps.
 
 ### Fixed
+
+- Technical documentation guidance uses the current inventory schema for new
+  authoring, removing the unnecessary format-choice prompt. ERDs are selected for explanatory value independently
+  of the storage format.
 
 - Overview, Front, Back, and reading controls sit below the slide instead of
   overlapping its title or diagram, including on narrow screens.
@@ -1074,8 +1099,8 @@ bottom. Group entries under Added / Changed / Deprecated / Removed / Fixed /
 Security, and mark anything that changes the on-disk format as **Format**.
 -->
 
-[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.3.2...HEAD
-[0.3.2]: https://github.com/trevordilley/change-saga/compare/v0.3.1...v0.3.2
+[Unreleased]: https://github.com/trevordilley/change-saga/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/trevordilley/change-saga/compare/v0.3.1...v0.4.0
 [0.3.1]: https://github.com/trevordilley/change-saga/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/trevordilley/change-saga/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/twentyideas/changesaga/compare/v0.1.1...v0.2.0

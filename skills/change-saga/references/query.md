@@ -26,7 +26,11 @@ Saga that changed underneath a multi-step read.
 
 ## Navigating
 
-Start at `query overview` and walk one level at a time with `query children`.
+Start at `query overview` for the compact directory of names, targets and
+counts, then walk one level at a time with `query children`. Full deck reports
+are omitted by default. Use `query overview --deck URN` to include the report
+for one relevant deck, including its annotations and overview coverage; other
+decks remain compact. The same snapshot rules apply to this focused read.
 Read a slide with `change-saga diagram describe --slide TARGET <saga>`: compact
 text with its takeaway, Items in reading order with the `path:start-end` of
 their first code references and each reference's note, and a diagram's
@@ -87,8 +91,7 @@ false; `--conflict-limit` controls that page size and otherwise inherits
 `--limit` or the default. Do not treat a complete primary reference traversal
 as complete while unresolved conflict pages remain.
 
-`query terms` without `--limit` or `--cursor` preserves the legacy complete
-term collection. Supply `--limit` to opt into bounded enumeration and follow
+Supply `--limit` to `query terms` for bounded enumeration and follow
 the returned cursor. Persona enumeration and both reference operations are
 always bounded. A cursor is operation-, filter-, and snapshot-specific; restart
 the traversal after `stale_snapshot` and never reuse a cursor with another
@@ -104,7 +107,7 @@ approving dependencies.
 
 `query inventory` reports each Component/System with the exact revisions it
 answers about (`selected`), their explicit intent, declared use counts and
-code health. Intent is `unspecified` for legacy revisions; never infer it.
+code health. Treat `unspecified` intent as unknown; never infer it.
 `--intent` filters explicit intent. `--new` requires `--against`: newness is
 identity introduction relative to that base, independent of intent, and an
 unreadable base fails with `baseline_unknown` rather than making everything
@@ -124,8 +127,8 @@ covered lines are not proof of a correct explanation.
 <!-- query-operations:begin -->
 - `schema`: the response paths and pagination contract for a query operation; no saga is required.
   `change-saga query schema <operation>`
-- `overview`: saga identity, source comparison, coverage summary, and the top of the hierarchy.
-  `change-saga query overview --saga PATH [--repo PATH] [--against REV [--head REV]]`
+- `overview`: compact saga directory, source comparison and coverage summary; --deck URN includes only that deck's full overview report.
+  `change-saga query overview --saga PATH [--deck URN] [--repo PATH] [--against REV [--head REV]]`
 - `children`: one level of children under a target; a fragment's children are its landmarks.
   `change-saga query children --saga PATH --parent TARGET [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `fragment`: bounded fragment content by byte range, without reading files directly.
@@ -188,7 +191,7 @@ covered lines are not proof of a correct explanation.
   `change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]`
 - `inventory-selections`: saved implementation Item selections with their declared path, containing evidence, pin health, and separately resolved selected-byte and containing-evidence health; whether each contributes inherited deck coverage.
   `change-saga query inventory-selections --saga PATH [--feature ID|URN] [--item URN] [--state eligible|ineligible|unresolved] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]`
-- `terms`: the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; omitted legacy assessments are unknown, and evidence availability never proves implementation.
+- `terms`: the project's vocabulary: each term's independent definition maturity and implementation-evidence availability, definition, aliases, links, and exact code health at the head; missing assessments are unknown, and evidence availability never proves implementation.
   `change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `term-references`: direct explicit incoming and outgoing term references with provenance and declared coverage.
   `change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`

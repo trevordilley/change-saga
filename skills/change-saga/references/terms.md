@@ -43,8 +43,8 @@ complete. `absent` is an observed gap; `unknown` means not verified or not
 assessed. Current and stale code-link health also remain separate from the
 availability value.
 
-The terms query always projects both semantic axes. Legacy revisions that omit
-them project as `unknown`. When revision heads conflict, preserve
+The terms query always projects both semantic axes; missing values are
+`unknown`. When revision heads conflict, preserve
 `revision_heads`, omit `current_revision`, and treat both axes as `unknown`
 rather than fabricating a merged state or choosing a winner.
 
@@ -52,9 +52,8 @@ Use `query term-references --term ID|URN` for direct incoming and outgoing
 typed uses with exact owners and selectors. Its completeness metadata excludes
 free-form prose, embedded SVG text, history, and transitive expansion; never
 describe those classes as searched. Follow its independent unresolved-owner
-pages with `--conflict-cursor`, even when no primary references resolve. Plain
-`query terms` preserves the legacy
-complete collection. Add `--limit` to opt into bounded enumeration and follow
+pages with `--conflict-cursor`, even when no primary references resolve.
+Use `query terms --limit N` for bounded enumeration and follow
 every cursor at one snapshot.
 
 A generated stale-term revision action carries the current values of both
