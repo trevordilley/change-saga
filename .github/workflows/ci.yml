@@ -66,7 +66,10 @@ jobs:
         # The race-enabled server package is intentionally broad and can take
         # longer than Go's default 10-minute per-package timeout on shared CI
         # runners. Keep the full suite and race detector; give them headroom.
-        run: go test -timeout 20m ${{ matrix.race }} ./...
+        # Always execute the suite without recording a test-result cache log.
+        # The server fixtures perform enough filesystem reads to create hundreds
+        # of MB of cache-input logs; build and module caching still stay enabled.
+        run: go test -count=1 -timeout 20m ${{ matrix.race }} ./...
         env:
           # Test fixtures commit constantly, and after each commit Git starts
           # its automatic maintenance as another process. Throwaway fixture
