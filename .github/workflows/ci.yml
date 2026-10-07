@@ -71,8 +71,23 @@ jobs:
         # of MB of cache-input logs; build and module caching still stay enabled.
         # Bound concurrent packages and parallel test cases on hosted runners.
         # JSON streams per-test progress even if a runner is interrupted.
-        run: go test -json -p 1 -parallel 2 -count=1 -timeout 20m ${{ matrix.race }} ./...
+        shell: bash
+        run: |
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            (
+              while sleep 30; do
+                free -m
+                ps -C go,server.test -o pid,rss,vsz,etime,comm
+              done
+            ) &
+            resource_monitor=$!
+            trap 'kill "$resource_monitor" 2>/dev/null || true' EXIT
+          fi
+          go test -json -p 1 -parallel 2 -count=1 -timeout 20m ${{ matrix.race }} ./...
         env:
+          # Leave room for race-detector shadow memory and Git children on
+          # Linux runners; that memory is outside Go's managed heap budget.
+          GOMEMLIMIT: ${{ runner.os == 'Linux' && '512MiB' || 'off' }}
           # Test fixtures commit constantly, and after each commit Git starts
           # its automatic maintenance as another process. Throwaway fixture
           # repositories never need it.
