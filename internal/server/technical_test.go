@@ -64,7 +64,7 @@ func TestTechnicalDesignPageListsDefinitionsWithoutInferringIntent(t *testing.T)
 	for _, want := range []string{
 		`data-technical-page="landing"`, `data-technical-area="systems"`, `href="/technical/systems">Systems</a><span class="overview-part-count">1 System</span>`,
 		`href="/technical/components">Components</a><span class="overview-part-count">2 Components</span>`,
-		`href="/technical/erd">ERD</a>`, "No data model yet.",
+		`href="/technical/erd">Data model</a>`, "No data model yet.",
 	} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("technical landing lost %s: %s", want, body)

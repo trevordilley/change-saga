@@ -236,7 +236,7 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
-	"inventory":            "Component/System/data-entity/ERD definitions, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
+	"inventory":            "Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
 	"inventory-coverage":   "which tracked code at one source revision the current technical definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage",
 	"inventory-selections": "saved implementation Item selections with their declared path, containing evidence, pin health, and separately resolved selected-byte and containing-evidence health; whether each contributes inherited deck coverage",
 	"inventory-uses":       "declared reverse uses of one technical identity: implementation and review deck Items and technical owners, with bounded transitive paths and explicit completeness",
@@ -540,7 +540,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"audit":                {"data.feature", "data.status", "data.complete", "data.ready", "data.exit_code", "data.summary", "data.findings", "data.exceptions", "data.intentional_risks", "data.unresolved_conflicts"},
 		"history":              {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
 		"review-threads":       {"data.review", "data.range", "data.diagnostics", "data.threads", "data.threads[].code_line", "data.threads[].placement", "data.threads[].comments"},
-		"inventory":            {"data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history", "data.records[].selected", "data.records[].newness", "data.records[].scope_paths", "data.records[].uses", "data.records[].selected_code_health", "data.unresolved", "data.filters", "data.comparison", "data.scope", "data.completeness"},
+		"inventory":            {"data.data_model_overview", "data.head_oid", "data.records", "data.records[].code_health", "data.records[].links", "data.records[].history", "data.records[].selected", "data.records[].newness", "data.records[].scope_paths", "data.records[].uses", "data.records[].selected_code_health", "data.unresolved", "data.filters", "data.comparison", "data.scope", "data.completeness"},
 		"inventory-coverage":   {"data.head_oid", "data.scope", "data.summary", "data.state", "data.entries", "data.completeness"},
 		"inventory-selections": {"data.head_oid", "data.selections", "data.selections[].resolution", "data.completeness"},
 		"inventory-uses":       {"data.subject", "data.uses", "data.uses[].path", "data.completeness"},

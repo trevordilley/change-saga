@@ -26,6 +26,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -1249,6 +1250,9 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 			designRoot.Fragments = append(designRoot.Fragments, fragment)
 			continue
 		}
+		if fragment.Path == applayout.OverviewDir+"/"+applayout.OverviewDataModel {
+			continue
+		}
 		appReport.Fragments = append(appReport.Fragments, fragment)
 	}
 	for _, child := range reportRoot.Children {
@@ -1366,12 +1370,16 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	inventory, inventoryErr := files.inventory(document.Manifest.ID)
 	var technicalRows []*navNodeView
 	if inventoryErr == nil {
-		technicalRows = technicalNav(inventory)
+		technicalRows = technicalNav(inventory, document.OverviewPart(applayout.OverviewDataModel) != nil)
 	}
 	if route.kind == "overview" {
 		data.OverviewParts = overviewDirectory(document, requirementsDocument, onboarding)
 		if inventoryErr == nil {
-			data.OverviewParts = append(data.OverviewParts, technicalOverviewPart(inventory))
+			part := technicalOverviewPart(inventory)
+			if document.OverviewPart(applayout.OverviewDataModel) != nil {
+				part.Gap, part.Note = false, "Shared data-model overview, ERD documents, Systems and Components."
+			}
+			data.OverviewParts = append(data.OverviewParts, part)
 		} else {
 			data.OverviewParts = append(data.OverviewParts, overviewPartView{Title: "Technical design", Href: technicalPath, Count: "unreadable", Note: "The technical inventory could not be read: " + inventoryErr.Error(), Gap: true})
 		}
@@ -1390,7 +1398,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// whichever page is showing.
 	rootNavLinks(data.Nav)
 	if route.kind != "overview" && !data.TermsMode {
-		markActiveNav(data.Nav, technicalNavPath(route, r.URL.Path))
+		markActiveNav(data.Nav, r.URL.Path)
 	}
 	data.PageTitle = pageTitle(data)
 	return data, nil

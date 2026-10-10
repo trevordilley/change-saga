@@ -1,7 +1,7 @@
 # Technical inventory: Technical Design UI
 
-Status: implemented in the reviewer (`internal/server`) on
-`feature/inventory-technical-design-ui-claude`. This note records delivered
+Status: implemented in the reviewer (`internal/server`), including the shared
+[overview and multiple ERD documents](erd-documents.md). This note records delivered
 renderer behavior and its boundaries. The product design remains
 [technical-inventory-design.md](technical-inventory-design.md); the canonical
 records and their public authoring belong to the records slice, and the
@@ -13,10 +13,10 @@ reverse-use, selection and coverage projections to `internal/inventoryview`.
   sidebar list it. The page is a short landing page naming three areas with
   what each holds; it renders no directory. See
   [Technical design as a tree of pages](#technical-design-as-a-tree-of-pages).
-- **Three area pages.** `/technical/erd` draws the application ERD (the one
-  named `application`, else the first) with a link to its revision history and
-  uses, lists other ERDs and overlays, and holds the directory of every data
-  entity. `/technical/systems` and `/technical/components` are those
+- **Three area pages.** `/technical/erd` shows the shared Markdown overview,
+  equal ERD document links, overlays and the directory of every data entity.
+  A single active, unambiguous ERD also renders inline; multiple documents
+  never choose a primary by ID or order. `/technical/systems` and `/technical/components` are those
   directories. Each area page builds only its own content, and its filter
   submits to its own page. Directories count; they never score.
 - **One canonical page per definition** (`/technical/{kind}/{id}`). With no
@@ -72,7 +72,9 @@ The sidebar and the pages share one tree:
 
 ```text
 Technical design          /technical              landing page, three areas
-  ERD                     /technical/erd          application ERD, other views, all data entities
+  Data model              /technical/erd          shared overview, ERD documents, all data entities
+    each ERD document     /technical/erd/{id}
+    each overlay          /technical/erd-overlay/{id}
     each data entity      /technical/data-entity/{id}
   Systems                 /technical/systems      directory of Systems
     each System           /technical/system/{id}
@@ -80,13 +82,13 @@ Technical design          /technical              landing page, three areas
     each Component        /technical/component/{id}
 ```
 
-- **Sidebar.** Technical design under the overview discloses ERD, Systems and
+- **Sidebar.** Technical design under the overview discloses Data model, Systems and
   Components through the existing `navSection` rows: each area row opens its
   page, and its twisty discloses one row per definition. The current page's
   row is marked `aria-current="page"` and every ancestor is expanded;
-  unrelated areas stay shut. ERDs and overlays have no row of their own, so on
-  their pages the ERD row is the current one. An empty area is omitted, like
-  every empty section.
+  unrelated areas stay shut. ERDs and overlays have their own rows before
+  the entities, and their own row is current while a document is open. A Data
+  model overview alone keeps the area visible; otherwise empty areas are omitted.
 - **Addresses.** Definition pages keep `/technical/{kind}/{id}` and
   `?revision=` pins, because slides, drawers and reviews link to them; nothing
   redirects. Their breadcrumb now passes through their area. The landing
@@ -131,8 +133,8 @@ digest is refused the same way.
   holders as data, and an author may draw containers in the ERD asset.
 - The ERD page's directory is a table rather than an expandable tree. It is
   filterable, keyboard reachable, and linked row-for-element to the drawing.
-  The expandable tree is the sidebar, where the ERD row discloses every data
-  entity.
+  The expandable tree is the sidebar, where Data model discloses documents
+  before every data entity.
 - `class` and `style` attributes are refused in ERD drawings, so authors must
   use presentation attributes. This is stricter than the loader.
 
@@ -146,7 +148,7 @@ conflict, made by copying a revision file. The browser checks are
 navigation, keyboard and Escape focus, permalink reload, 404s, an ERD and Item
 selection authored through the public CLI, and reviewer coverage attribution.
 `technical_nav_test.go` checks which sidebar rows are open and current on
-every Technical design page, the ERD page's other views, breadcrumbs through
+every Technical design page, its peer ERD documents, breadcrumbs through
 each area, old fragments and unknown areas. The browser spec walks the landing
 page into an area, opens areas by keyboard and by touch at 390px, and follows
 old addresses; `directory-width.spec.ts` reads the Components directory on its
@@ -162,7 +164,7 @@ later request answered 500. Cancellations are no longer cached.
 - Every directory, the Technical design ones included, scrolls its table
   inside its own `.directory-scroll` region at phone width, so the page keeps
   the device's width.
-- The sidebar lists every data entity beneath the ERD row. With many more
+- The sidebar lists every data entity after the ERD documents beneath Data model. With many more
   entities that list grows long; the ERD page's filter is the faster path.
 - ERD zoom has no pinch gesture of its own: touch pans the drawing's region
   natively and zooms with the toolbar buttons, while a pinch zooms the whole

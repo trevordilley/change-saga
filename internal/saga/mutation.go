@@ -230,6 +230,9 @@ func scanMutationFragment(root, dir, sagaID string, index *MutationIndex, ids ma
 		return nil
 	}
 	path := relativePath(root, manifestPath)
+	if relativePath(root, dir) == applayout.OverviewDir+"/"+applayout.OverviewDataModel && value.MediaType != "text/markdown" {
+		addIssue(validation, "error", path, "the data-model overview must be Markdown")
+	}
 	entrypointProblem := EntrypointError(value.Entrypoint)
 	if value.Version != CurrentVersion || !ValidID(value.ID) || !ValidMediaType(value.MediaType) || entrypointProblem != "" {
 		addIssue(validation, "error", path, "fragment requires version 2, a stable id, supported media type, and safe entrypoint")

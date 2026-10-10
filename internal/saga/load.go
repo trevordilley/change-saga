@@ -41,20 +41,20 @@ const (
 	// capability roots.
 	featureHierarchy
 	// overviewHierarchy is the app's ___overview. It is formal rather than
-	// free report content: an elevator pitch fragment, a description fragment,
+	// free report content: pitch, description and data-model fragments,
 	// and the terms directory the requirements loader owns. The project name
 	// is saga.json's title. Every part is optional.
 	overviewHierarchy
 )
 
 // overviewPartError is the one message for anything else in ___overview.
-const overviewPartError = "the overview holds only " + applayout.OverviewPitch + ", " + applayout.OverviewDescription + ", and " + applayout.OverviewTerms + "/"
+const overviewPartError = "the overview holds only " + applayout.OverviewPitch + ", " + applayout.OverviewDescription + ", " + applayout.OverviewDataModel + ", and " + applayout.OverviewTerms + "/"
 
 // overviewEntry reports whether a directory named name belongs in ___overview,
 // and whether it is a fragment the report loader reads.
 func overviewEntry(name string) (allowed, fragment bool) {
 	switch name {
-	case applayout.OverviewPitch, applayout.OverviewDescription:
+	case applayout.OverviewPitch, applayout.OverviewDescription, applayout.OverviewDataModel:
 		return true, true
 	case applayout.OverviewTerms:
 		return true, false
@@ -308,6 +308,9 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 			fragment, err := loadFragment(root, path, manifest.ID, options, validation)
 			if err != nil {
 				return nil, err
+			}
+			if hierarchy == overviewHierarchy && name == applayout.OverviewDataModel && fragment.MediaType != "text/markdown" {
+				addIssue(validation, "error", displayPath(rel, name), "the data-model overview must be Markdown")
 			}
 			section.Fragments = append(section.Fragments, fragment)
 			continue

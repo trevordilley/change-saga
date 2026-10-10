@@ -74,3 +74,83 @@ func TestAnythingElseInTheOverviewIsInvalid(t *testing.T) {
 		t.Fatalf("validation = %#v", validation)
 	}
 }
+
+func TestDataModelOverviewAuthoringAndGitHistory(t *testing.T) {
+	t.Parallel()
+	ctx := context.Background()
+	root := newAuthoredSaga(t)
+	git(t, filepath.Dir(root), "init", "-b", "main")
+	git(t, root, "config", "user.name", "Test")
+	git(t, root, "config", "user.email", "test@example.test")
+	var output bytes.Buffer
+	for i, body := range []string{"Local SQLite and cloud Postgres.", "Local SQLite synchronizes to cloud Postgres."} {
+		output.Reset()
+		if err := overviewCommand(ctx, []string{"set-data-model", "--source", "-", "--json", root}, &output, strings.NewReader(body)); err != nil {
+			t.Fatal(err)
+		}
+		var result fragmentContentOutput
+		if err := json.Unmarshal(output.Bytes(), &result); err != nil {
+			t.Fatal(err)
+		}
+		if result.Target != saga.FragmentTarget("atomic", "atomic-data-model") || result.MediaType != "text/markdown" {
+			t.Fatalf("result: %+v", result)
+		}
+		document, validation, err := saga.Load(root)
+		if err != nil || !validation.Valid {
+			t.Fatalf("load: %v %+v", err, validation)
+		}
+		fragment := document.OverviewPart(applayout.OverviewDataModel)
+		if fragment == nil {
+			t.Fatal("missing overview")
+		}
+		data, err := os.ReadFile(filepath.Join(fragment.Directory, fragment.Entrypoint))
+		if err != nil || string(data) != body+"\n" {
+			t.Fatalf("readback: %q %v", data, err)
+		}
+		// Updating prose preserves the stable package identity.
+		if i == 0 {
+			git(t, root, "add", ".")
+			git(t, root, "commit", "-m", "data model overview")
+		}
+	}
+	old := git(t, root, "show", "HEAD:atomic.saga/___overview/data-model.fragment/content.md")
+	if !strings.Contains(old, "Local SQLite and cloud Postgres.") {
+		t.Fatalf("historical overview: %s", old)
+	}
+	output.Reset()
+	if err := Query(ctx, []string{"history", "--saga", root, "--node", saga.FragmentTarget("atomic", "atomic-data-model")}, &output); err != nil {
+		t.Fatalf("history: %v %s", err, &output)
+	}
+	if !strings.Contains(output.String(), "data model overview") {
+		t.Fatalf("history did not discover overview commit: %s", &output)
+	}
+}
+
+func TestDataModelOverviewRequiresMarkdownAndSafePackage(t *testing.T) {
+	t.Parallel()
+	root := newAuthoredSaga(t)
+	dir := filepath.Join(root, applayout.OverviewDir, applayout.OverviewDataModel)
+	writeFile(t, filepath.Join(dir, "fragment.json"), `{"version":2,"id":"model","media_type":"text/html","entrypoint":"content.html"}`)
+	writeFile(t, filepath.Join(dir, "content.html"), "<p>Model</p>")
+	_, validation, err := saga.Load(root)
+	if err != nil || validation.Valid {
+		t.Fatalf("accepted HTML overview: %v %+v", err, validation)
+	}
+	if err := Overview(context.Background(), []string{"set-data-model", "--text", "replacement", root}, &bytes.Buffer{}); err == nil {
+		t.Fatal("overwrote non-Markdown package")
+	}
+	if err := os.RemoveAll(dir); err != nil {
+		t.Fatal(err)
+	}
+	external := t.TempDir()
+	if err := os.Symlink(external, dir); err != nil {
+		t.Fatal(err)
+	}
+	if err := Overview(context.Background(), []string{"set-data-model", "--text", "replacement", root}, &bytes.Buffer{}); err == nil {
+		t.Fatal("followed overview package symlink")
+	}
+	entries, err := os.ReadDir(external)
+	if err != nil || len(entries) != 0 {
+		t.Fatal("wrote outside the Saga")
+	}
+}

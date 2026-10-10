@@ -66,13 +66,19 @@ var resources = []Resource{
 		Kind: "overview-pitch", URN: "urn:change-saga:<saga>:fragment:<saga>-pitch", Storage: "___overview/pitch.fragment/{fragment.json,content.md}",
 		Schema: schemaBase + "v2/fragment.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
 		Writers: []string{"overview set-pitch"},
-		Notes:   "the overview's elevator pitch; the overview is the project name (saga.json title), elevator pitch, description, and terms and vocabulary, each optional and shown as a gap when absent",
+		Notes:   "the overview's elevator pitch; the overview is the project name (saga.json title), elevator pitch, description, shared data-model overview, and terms and vocabulary, each optional and shown as a gap when absent",
 	},
 	{
 		Kind: "overview-description", URN: "urn:change-saga:<saga>:fragment:<saga>-description", Storage: "___overview/description.fragment/{fragment.json,content.md}",
 		Schema: schemaBase + "v2/fragment.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
 		Writers: []string{"overview set-description"},
 		Notes:   "the overview's description: a short essay on what the application does",
+	},
+	{
+		Kind: "overview-data-model", URN: "urn:change-saga:<saga>:fragment:<saga>-data-model", Storage: "___overview/data-model.fragment/{fragment.json,content.md}",
+		Schema: schemaBase + "v5/data-model-overview.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
+		Writers: []string{"overview set-data-model"},
+		Notes:   "shared Markdown context for independent ERD documents; optional, never changes ERD or entity revision pins",
 	},
 	{
 		Kind: "term", URN: "urn:change-saga:<saga>:term:<term>", Storage: "___overview/terms/<term>.term/term.json",

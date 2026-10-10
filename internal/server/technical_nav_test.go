@@ -56,8 +56,8 @@ func TestTechnicalDesignSidebarNestsItsAreas(t *testing.T) {
 		{"/technical/system/pdf-pipeline?revision=r1", "/technical/system/pdf-pipeline", []string{"nav-technical", "nav-technical-systems"}, []string{"nav-technical-erd"}},
 		{"/technical/component/record-store", "/technical/component/record-store", []string{"nav-technical", "nav-technical-components"}, []string{"nav-technical-systems"}},
 		// ERDs and overlays have no row of their own; the ERD area is current.
-		{"/technical/erd/reporting", "/technical/erd", []string{"nav-technical-erd"}, nil},
-		{"/technical/erd-overlay/pdf-jobs", "/technical/erd", []string{"nav-technical-erd"}, nil},
+		{"/technical/erd/reporting", "/technical/erd/reporting", []string{"nav-technical-erd"}, nil},
+		{"/technical/erd-overlay/pdf-jobs", "/technical/erd-overlay/pdf-jobs", []string{"nav-technical-erd"}, nil},
 	} {
 		status, body := technicalGet(t, mux, tc.path)
 		if status != 200 {
@@ -89,22 +89,21 @@ func TestTechnicalDesignSidebarNestsItsAreas(t *testing.T) {
 	if erd < 0 || !(erd < systems && systems < components) {
 		t.Fatalf("areas out of order: %d %d %d", erd, systems, components)
 	}
-	// Data entities beneath the ERD; its ERDs and overlays are reached from
-	// the page, not listed as entities.
+	// Independent documents and overlays remain reachable beside entities.
 	entities := sidebar[strings.Index(sidebar, `id="nav-technical-erd"`):]
 	entities = entities[:strings.Index(entities, `aria-controls="nav-technical-systems"`)]
-	for _, want := range []string{`href="/technical/data-entity/pdf-report"`, `href="/technical/data-entity/pdf-job"`} {
+	for _, want := range []string{`href="/technical/erd/application"`, `href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`, `href="/technical/data-entity/pdf-report"`, `href="/technical/data-entity/pdf-job"`} {
 		if !strings.Contains(entities, want) {
 			t.Fatalf("ERD rows lost %s: %s", want, entities)
 		}
 	}
-	for _, unwanted := range []string{`href="/technical/erd/`, `href="/technical/erd-overlay/`, `href="/technical/component/`} {
+	for _, unwanted := range []string{`href="/technical/component/`} {
 		if strings.Contains(entities, unwanted) {
 			t.Fatalf("ERD rows list %s", unwanted)
 		}
 	}
-	// The ERD page reaches its other views and overlays.
-	for _, want := range []string{`data-technical-erd-views`, `href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`, `href="/technical/erd/application">Revision`} {
+	// The Data model page reaches every document and overlay.
+	for _, want := range []string{`data-technical-erd-views`, `href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`, `href="/technical/erd/application"`} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("ERD page lost %s", want)
 		}
@@ -120,9 +119,9 @@ func TestTechnicalDesignKeepsItsOldAddresses(t *testing.T) {
 	for path, crumb := range map[string]string{
 		"/technical/component/record-store?revision=r1": `<a href="/technical/components">Components</a>`,
 		"/technical/system/pdf-pipeline":                `<a href="/technical/systems">Systems</a>`,
-		"/technical/data-entity/pdf-job?revision=r1":    `<a href="/technical/erd">ERD</a>`,
-		"/technical/erd/application":                    `<a href="/technical/erd">ERD</a>`,
-		"/technical/erd-overlay/pdf-jobs":               `<a href="/technical/erd">ERD</a>`,
+		"/technical/data-entity/pdf-job?revision=r1":    `<a href="/technical/erd">Data model</a>`,
+		"/technical/erd/application":                    `<a href="/technical/erd">Data model</a>`,
+		"/technical/erd-overlay/pdf-jobs":               `<a href="/technical/erd">Data model</a>`,
 	} {
 		status, body := technicalGet(t, mux, path)
 		if status != 200 || !strings.Contains(body, `<a href="/technical">Technical design</a><span>/</span>`+crumb) {

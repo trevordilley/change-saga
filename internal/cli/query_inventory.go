@@ -187,7 +187,8 @@ func queryInventory(ctx context.Context, args []string, out io.Writer) error {
 		return fail("stale_snapshot", fmt.Errorf("inventory changed while reading; restart the query"))
 	}
 	return writeQuerySuccess(out, snapshot, inventoryReadData{
-		Head: changes.HeadOID, Records: entries, Unresolved: unresolved[unresolvedStart:unresolvedEnd],
+		DataModelOverview: dataModelOverview(document),
+		Head:              changes.HeadOID, Records: entries, Unresolved: unresolved[unresolvedStart:unresolvedEnd],
 		Filters:      inventoryFilters{Kind: *kind, Target: *target, Intent: *intent, New: *onlyNew, Feature: featureID},
 		Comparison:   read.comparison.view(),
 		Scope:        read.scopeView(),

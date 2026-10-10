@@ -150,7 +150,7 @@ func IsDesignSystemPath(path string) bool {
 }
 
 // OverviewPart returns the overview's elevator pitch (applayout.OverviewPitch)
-// or description (applayout.OverviewDescription) fragment, or nil when that
+// description or data-model overview fragment, or nil when that
 // part is not written yet. An absent part is a visible gap, never an error.
 func (document *Saga) OverviewPart(name string) *Fragment {
 	if document == nil || document.Overview == nil {

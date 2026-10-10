@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/data-model-overview.schema.json",
+  "title": "Shared data-model overview fragment",
+  "description": "Optional ___overview/data-model.fragment/fragment.json in a v5 Saga. Uses the existing version-2 fragment package, with Markdown content and Git history; it does not change or select any ERD revision.",
+  "allOf": [
+    { "$ref": "../v2/fragment.schema.json" },
+    { "properties": { "media_type": { "const": "text/markdown" } } }
+  ]
+}

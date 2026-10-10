@@ -14,7 +14,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
-// overviewPart is one of the overview's two written parts. The project name
+// overviewPart is one of the overview's written parts. The project name
 // is saga.json's title and terms are living records, so neither is written
 // here.
 type overviewPart struct {
@@ -26,6 +26,7 @@ type overviewPart struct {
 
 var overviewParts = map[string]overviewPart{
 	"set-pitch":       {command: "overview set-pitch", pkg: applayout.OverviewPitch, title: "Elevator pitch", order: 10},
+	"set-data-model":  {command: "overview set-data-model", pkg: applayout.OverviewDataModel, title: "Data model overview", order: 30},
 	"set-description": {command: "overview set-description", pkg: applayout.OverviewDescription, title: "Description", order: 20},
 }
 
@@ -38,7 +39,7 @@ func Overview(ctx context.Context, args []string, out io.Writer) error {
 
 func overviewCommand(ctx context.Context, args []string, out io.Writer, stdin io.Reader) error {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("overview", []string{"set-pitch", "set-description"}, out)
+		return livingFamilyHelp("overview", []string{"set-pitch", "set-description", "set-data-model"}, out)
 	}
 	part, ok := overviewParts[args[0]]
 	if !ok {
@@ -51,7 +52,7 @@ func overviewCommand(ctx context.Context, args []string, out io.Writer, stdin io
 	return err
 }
 
-// setOverviewPart writes the elevator pitch or description as Markdown,
+// setOverviewPart writes a formal overview part as Markdown,
 // creating its fragment the first time.
 func setOverviewPart(_ context.Context, part overviewPart, args []string, out io.Writer, stdin io.Reader) error {
 	flags := commandFlags(part.command, commandUsage[part.command], out)
@@ -107,6 +108,9 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 			result.Path = applayout.OverviewDir + "/" + part.pkg + "/" + manifest.Entrypoint
 			result.MediaType = manifest.MediaType
 			return nil
+		}
+		if part.pkg == applayout.OverviewDataModel && fragment.MediaType != "text/markdown" {
+			return fmt.Errorf("the data-model overview must be Markdown")
 		}
 		entrypoint := filepath.Join(fragment.Directory, filepath.FromSlash(fragment.Entrypoint))
 		if info, err := os.Lstat(entrypoint); err == nil && info.Mode()&os.ModeSymlink != 0 {

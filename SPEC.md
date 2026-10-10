@@ -131,7 +131,12 @@ implementation axis is covered.
 The **overview** is formal. Its parts are the project **name** (the manifest's
 `title`), the **elevator pitch** (`___overview/pitch.fragment`), the
 **description**, a short essay (`___overview/description.fragment`), and **terms
-and vocabulary** (`___overview/terms/<id>.term/`). Nothing else may live in
+and vocabulary** (`___overview/terms/<id>.term/`), and the optional shared
+**data-model overview** (`___overview/data-model.fragment/`). The data-model
+overview is Markdown, rendered on the Data model page rather than duplicated
+in the application overview; its version-2 fragment manifest follows
+`schema/v5/data-model-overview.schema.json`, and Git holds its content history.
+Nothing else may live in
 `___overview`. Every part is optional; a missing part is reported as a gap and
 never blocks.
 
@@ -292,6 +297,39 @@ baseline entity's pin or add an entity, `removals {target, explanation}`, and
 an optional visual whose bindings resolve against the composed directory. An
 overlay never modifies the ERD, and a removal does not retire an entity. The
 model (directory, bindings, meaning, cardinality) is readable without the SVG.
+
+**Multiple ERD documents and shared overview.** An app may have any number of
+independently named ERD records: for example `sqlite`, `postgres`, and
+`cross-store`. Each owns its name, explanation, revision graph, SVG, directory,
+and bindings. The ID `application` has no special priority. Documents can share
+exact entity revision pins; a cross-store document can show production flows
+between entities held by different store Components without inventing
+cross-database foreign keys. An ERD remains one diagram document, not a mutable
+collection of diagrams.
+
+`overview set-data-model (--text TEXT | --source FILE|-)` authors the optional
+shared Markdown overview. It describes how the separate documents relate.
+Ordinary Markdown links are navigation, not validated inventory pins or evidence;
+use canonical document routes (`/technical/erd/<id>`) and an explicit
+`?revision=<id>` when linking to an immutable ERD revision. Actual entity and
+relationship pins remain in ERD records. `query inventory` exposes the app-wide
+`data_model_overview` fragment target, path and media type (or `null` when absent),
+independently of inventory filters and pagination; `query fragment --target URN`
+and `query history --node URN` read its content and Git history.
+
+The viewer's `/technical/erd` page shows shared prose and equal ERD document
+links, followed by overlays and data entities. Documents precede entities in
+sidebar navigation. One unambiguous active ERD may additionally render inline;
+multiple ERDs never select a primary by ID or ordering. Every document keeps
+its existing `/technical/erd/<id>` route, revision history and exact pins.
+
+Compatibility: existing v5 Sagas and inventory formats 1 and 2 remain readable,
+including old ERD revisions and SVG assets. Adopting this optional overview slot
+changes the allowed v5 layout but adds no record fields or global/inventory
+version bump. Older readers report the new slot as an unknown overview entry;
+they do not silently discard it. Upgrade readers before adopting the slot.
+There is no migration or automatic rewrite. See [ERD documents](docs/erd-documents.md)
+for authoring and discovery.
 
 **Items.** Implementation and review Items may pin data entities too.
 `documentation_view` is the full commit of a saved Saga view that admitted a

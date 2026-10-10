@@ -150,6 +150,16 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
+		Name: "overview set-data-model", Status: StatusImplemented, Mutates: true, Writes: []string{"overview-data-model"},
+		Usage:   "change-saga overview set-data-model (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
+		Summary: "write the shared data-model overview as Markdown; each ERD remains an independent document",
+		Flags: []Flag{
+			optional("text", "TEXT", "the Markdown content; or use --source"), optional("source", "FILE|-", "a Markdown file, or - for standard input"),
+			jsonFlag, {Name: "quiet", Description: "suppress successful output"},
+		},
+		Positionals: sagaOnly,
+	},
+	{
 		Name: "term add", Status: StatusImplemented, Mutates: true, Writes: []string{"term", "term-revision", "term-event"},
 		Usage:   "change-saga term add --id ID --name TEXT --definition TEXT [--definition-maturity STATE] [--implementation-evidence STATE] [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
 		Summary: "define a term with independent definition maturity and implementation-evidence availability; intent-only terms need no code reference",

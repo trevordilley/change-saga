@@ -10,6 +10,21 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Added
+
+- **Format:** Optional shared Markdown data-model overview at
+  `___overview/data-model.fragment`, authored with `overview set-data-model`.
+  `query inventory` discovers its fragment target; existing fragment and history
+  queries read it. Existing ERDs, their immutable revisions and SVGs are unchanged.
+  New readers accept existing Sagas; older readers reject the newly adopted slot.
+  No automatic migration or global/inventory format bump is required.
+
+### Changed
+
+- Data model navigation gives independently named ERD documents equal standing
+  and lists them before data entities. Multiple documents no longer choose an
+  `application` or first ERD as primary; a single active document stays inline.
+
 ## [0.4.0] - 2026-10-07
 
 ### Added

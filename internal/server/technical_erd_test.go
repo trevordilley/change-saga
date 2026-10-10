@@ -74,10 +74,22 @@ func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 	if status != 200 {
 		t.Fatalf("ERD page: %d %s", status, body)
 	}
+	for _, want := range []string{`data-technical-erd-documents`, `href="/technical/erd/application"`, `href="/technical/erd/reporting"`, "2 data entities"} {
+		if !strings.Contains(body, want) {
+			t.Fatalf("document directory lost %q", want)
+		}
+	}
+	if strings.Contains(body, `data-technical-single-erd`) || strings.Contains(body, `data-erd-viewport`) || strings.Contains(body, "Other ERD views") {
+		t.Fatal("multiple documents selected an implicit primary")
+	}
+	status, body = technicalGet(t, mux, "/technical/erd/application")
+	if status != 200 {
+		t.Fatal(status)
+	}
 	report := pins["report"]
 	application := (&erdView{Target: "urn:change-saga:test:erd:application"}).elementPrefix()
 	for _, want := range []string{
-		// The application ERD is the primary view, drawn as authored with
+		// The selected document is drawn as authored with
 		// its ids namespaced to the view.
 		`<g id="` + application + `report">`, `data-erd-element="` + application + `report" data-erd-target="` + report.Target + `" data-erd-pin="` + report.Revision + `"`,
 		"1 of 1 directory entity is drawn.",
@@ -87,10 +99,10 @@ func TestTechnicalDataModelRendersAuthoredERDAndDirectory(t *testing.T) {
 		"PDF job</a> → <em>rendered from</em> → <a",
 		// Holding resources are distinct from the data.
 		"Record store (persists report rows)",
-		`href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`, "2 data entities",
+		`href="/technical/erd/reporting"`, `href="/technical/erd-overlay/pdf-jobs"`,
 		// The drawing takes the page's full width inside its own zoomable
 		// scroll region; the toolbar stays hidden until app.js drives it.
-		`technical-area-page technical-erd-page"`, `<div class="erd-zoom" role="toolbar" aria-label="Application data model zoom" data-erd-zoom hidden>`,
+		`technical-entity-page technical-erd-page"`, `<div class="erd-zoom" role="toolbar" aria-label="Application data model zoom" data-erd-zoom hidden>`,
 		`<div class="erd-viewport" data-erd-viewport tabindex="0" role="region"`,
 	} {
 		if !strings.Contains(body, want) {
@@ -285,5 +297,122 @@ func TestTechnicalUsagesIncludeDeclaredOwners(t *testing.T) {
 	status, body = technicalGet(t, mux, "/technical/data-entity/pdf-report")
 	if status != 200 || !strings.Contains(body, `data-usage-role="erd_directory"`) || !strings.Contains(body, `data-usage-role="relationship_destination"`) {
 		t.Fatalf("entity owner uses: %d", status)
+	}
+}
+
+func TestMultipleERDDocumentsAndSharedOverview(t *testing.T) {
+	t.Parallel()
+	root, repo := termSaga(t)
+	pins, err := testfixture.WriteMultiERDFixture(context.Background(), root, repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	overviewDir := filepath.Join(root, "___overview", "data-model.fragment")
+	// Safe Markdown preserves ordinary links but never executes authored HTML.
+	prose := testfixture.MultiERDOverview + "\n<script>alert('bad')</script>\n\n[unsafe](javascript:alert(1))\n"
+	writeServerFile(t, filepath.Join(overviewDir, "content.md"), prose)
+	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
+	status, body := technicalGet(t, mux, "/technical/erd")
+	for _, want := range []string{"Local SQLite stores offline edits", `href="/technical/erd/sqlite"`, `href="/technical/erd/postgres"`, `href="/technical/erd/cross-store"`, `data-history-href="/api/history?target=urn%3Achange-saga%3Atest%3Afragment%3Atest-data-model"`} {
+		if status != 200 || !strings.Contains(body, want) {
+			t.Fatalf("overview lost %q (%d)", want, status)
+		}
+	}
+	for _, bad := range []string{`<script>alert('bad')</script>`, `href="javascript:`, "Other ERD views", `data-erd-viewport`} {
+		if strings.Contains(body, bad) {
+			t.Fatalf("unexpected %s", bad)
+		}
+	}
+	for _, id := range []string{"sqlite", "postgres", "cross-store"} {
+		status, body = technicalGet(t, mux, "/technical/erd/"+id+"?revision=r1")
+		if status != 200 || !strings.Contains(body, `data-erd-revision="r1"`) || !strings.Contains(body, `data-erd-view="`+pins[id].Target+`"`) {
+			t.Fatalf("document %s (%d)", id, status)
+		}
+	}
+	status, body = technicalGet(t, mux, "/")
+	if status != 200 || strings.Contains(body, `data-target="urn:change-saga:test:fragment:test-data-model"`) || strings.Contains(body, "Local SQLite stores offline edits") {
+		t.Fatal("data-model prose leaked into app overview")
+	}
+	document, _, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	locations := indexManifestTargets(document)
+	if got := locations["urn:change-saga:test:fragment:test-data-model"].Href; got != "/technical/erd#"+domID("urn:change-saga:test:fragment:test-data-model") {
+		t.Fatal(got)
+	}
+	inventory, err := requirements.LoadInventory(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	nav := technicalNav(inventory, true)
+	if len(nav) == 0 || len(nav[0].Children) < 3 {
+		t.Fatal("missing documents")
+	}
+	for i := 0; i < 3; i++ {
+		if !strings.HasPrefix(nav[0].Children[i].Href, "/technical/erd/") {
+			t.Fatal("entity buried ERD documents")
+		}
+	}
+}
+
+func TestDataModelOverviewAloneHasNavigationAndNoInventedDiagram(t *testing.T) {
+	t.Parallel()
+	root, repo := termSaga(t)
+	dir := filepath.Join(root, "___overview", "data-model.fragment")
+	writeServerFile(t, filepath.Join(dir, "fragment.json"), `{"version":2,"id":"model","title":"Data model overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(dir, "content.md"), "Data model context before the diagrams.\n")
+	mux := newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)})
+	status, body := technicalGet(t, mux, "/technical")
+	if status != 200 || strings.Contains(body, "No data model yet") || !strings.Contains(body, `href="/technical/erd"`) {
+		t.Fatalf("overview-only landing: %d", status)
+	}
+	status, body = technicalGet(t, mux, "/technical/erd")
+	if status != 200 || !strings.Contains(body, "Data model context before the diagrams") || !strings.Contains(body, "No ERD is authored yet") || strings.Contains(body, `data-erd-viewport`) {
+		t.Fatalf("overview-only model: %d", status)
+	}
+}
+
+func TestOnlyActiveUnambiguousSingleERDIsInlined(t *testing.T) {
+	t.Parallel()
+	root, repo := termSaga(t)
+	if _, err := testfixture.WriteInventoryFixture(context.Background(), root, repo); err != nil {
+		t.Fatal(err)
+	}
+	inventory, err := requirements.LoadInventory(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	document, _, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	usages := indexTechnicalUsages(document, inventory)
+	record := inventory.Find("urn:change-saga:test:erd:application")
+	app := &app{root: root}
+	active := record.CurrentLifecycle
+	for _, state := range []string{"active", "retired", "conflicted"} {
+		event := *active
+		event.State = state
+		record.CurrentLifecycle = &event
+		if state == "conflicted" {
+			record.CurrentLifecycle = nil
+		}
+		view := app.technicalDataModel(inventory, usages, nil, "")
+		if (view.Single != nil) != (state == "active") {
+			t.Fatalf("inline state %s", state)
+		}
+		if len(view.Documents) != 1 {
+			t.Fatal("single ERD disappeared from document list")
+		}
+		if state != "active" && !strings.Contains(view.Documents[0].Note, state) {
+			t.Fatalf("missing status: %+v", view.Documents[0])
+		}
+	}
+	record.CurrentLifecycle = active
+	record.CurrentRevision = nil
+	view := app.technicalDataModel(inventory, usages, nil, "")
+	if view.Single != nil || !strings.Contains(view.Documents[0].Note, "competing revisions") {
+		t.Fatal("selected a conflicted revision")
 	}
 }

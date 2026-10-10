@@ -37,6 +37,10 @@ change-saga version
 change-saga help
 ```
 
+Shared data models can have separate ERD documents for local SQLite, cloud
+Postgres, and cross-store data flow, plus a Markdown overview. See
+[authoring multiple ERD documents](docs/erd-documents.md).
+
 ## Start with a review
 
 Once it's installed, give your coding agent two prompts from the repository

@@ -6,9 +6,10 @@
 //	change.saga/
 //	  saga.json
 //	  ___overview/        the project's name (saga.json title), elevator pitch,
-//	                      description, and terms and vocabulary
+//	                      description, data-model overview, and terms and vocabulary
 //	    pitch.fragment/
 //	    description.fragment/
+//	    data-model.fragment/
 //	    terms/<id>.term/
 //	  ___personas/        persona records
 //	  ___designsystem/    report content: Figma links and references
@@ -52,10 +53,11 @@ const (
 	FeaturesDir     = "___features"
 
 	// The overview's formal parts. The project name is saga.json's title; the
-	// elevator pitch and description are fixed report fragments; terms are
+	// elevator pitch, description and data-model overview are fixed report fragments; terms are
 	// living records. Every part is optional.
 	OverviewPitch       = "pitch.fragment"
 	OverviewDescription = "description.fragment"
+	OverviewDataModel   = "data-model.fragment"
 	OverviewTerms       = "terms"
 	TermsDir            = OverviewDir + "/" + OverviewTerms
 

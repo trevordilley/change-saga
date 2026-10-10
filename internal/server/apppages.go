@@ -101,6 +101,15 @@ func onFeaturePageHref(features map[string]string, target, href string) string {
 	return href
 }
 
+// fragmentPageHref preserves the canonical page for shared data-model prose.
+func fragmentPageHref(fragment *saga.Fragment) string {
+	href := sagaHref(fragment.Target)
+	if fragment.Path == applayout.OverviewDir+"/"+applayout.OverviewDataModel {
+		return technicalPath + "/erd" + href
+	}
+	return href
+}
+
 // featureChapter reports the feature holding a chapter of the app-wide tree.
 func (graph *appGraph) featureChapter(section *saga.Section) (string, bool) {
 	feature, ok := graph.targetFeature[section.Target]

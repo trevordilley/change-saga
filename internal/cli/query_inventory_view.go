@@ -78,14 +78,28 @@ type inventoryCompleteness struct {
 	Excludes       []string          `json:"excludes"`
 }
 
+type inventoryOverview struct {
+	Target    string `json:"target"`
+	Path      string `json:"path"`
+	MediaType string `json:"media_type"`
+}
+
+func dataModelOverview(document *saga.Saga) *inventoryOverview {
+	if fragment := document.OverviewPart(applayout.OverviewDataModel); fragment != nil {
+		return &inventoryOverview{Target: fragment.Target, Path: fragment.Path, MediaType: fragment.MediaType}
+	}
+	return nil
+}
+
 type inventoryReadData struct {
-	Head         string                   `json:"head_oid"`
-	Records      []inventoryEntry         `json:"records"`
-	Unresolved   []inventoryUnresolved    `json:"unresolved"`
-	Filters      inventoryFilters         `json:"filters"`
-	Comparison   *inventoryComparisonView `json:"comparison,omitempty"`
-	Scope        *inventoryScopeView      `json:"scope,omitempty"`
-	Completeness inventoryCompleteness    `json:"completeness"`
+	DataModelOverview *inventoryOverview       `json:"data_model_overview"`
+	Head              string                   `json:"head_oid"`
+	Records           []inventoryEntry         `json:"records"`
+	Unresolved        []inventoryUnresolved    `json:"unresolved"`
+	Filters           inventoryFilters         `json:"filters"`
+	Comparison        *inventoryComparisonView `json:"comparison,omitempty"`
+	Scope             *inventoryScopeView      `json:"scope,omitempty"`
+	Completeness      inventoryCompleteness    `json:"completeness"`
 }
 
 type inventoryComparison struct {

@@ -241,11 +241,11 @@ test("an authored ERD and an Item's exact selection open the same pinned definit
   // The ERD: the sidebar lists its data entities, and the ERD page draws it.
   await page.goto(saga.baseURL + "/technical");
   await waitForSettledSaga(page);
-  await page.locator('[data-technical-area="erd"]').getByRole("link", { name: "ERD" }).click();
+  await page.locator('[data-technical-area="erd"]').getByRole("link", { name: "Data model" }).click();
   await expect(page).toHaveURL(/\/technical\/erd$/);
   const entities = page.locator(".sidebar #nav-technical-erd");
   await expect(entities).toBeVisible();
-  await expect(entities.getByRole("link")).toHaveText(["PDF job", "PDF report"]);
+  await expect(entities.getByRole("link")).toHaveText(["Application data", "PDF job", "PDF report"]);
   // A drawn element and its directory row open the same pin.
   const model = page.locator("[data-technical-data-model]");
   await expect(model.locator("figcaption")).toContainText("1 of 2 directory entities are drawn; 1 is in the directory but not drawn.");
@@ -400,4 +400,54 @@ test("a large ERD drawing zooms and pans by toolbar, keyboard, mouse and touch",
   expect(await region.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
   expect(await narrow.evaluate(() => [window.innerWidth, document.documentElement.scrollWidth])).toEqual([390, 390]);
   await context.close();
+});
+
+test("Data model has shared prose and independent SQLite, Postgres and cross-store documents @critical", async ({ page, saga }) => {
+  const run = (...args: string[]) => {
+    const result = runCLI(saga, args, saga.sagaRepo);
+    expect(result.status, result.stdout + result.stderr).toBe(0);
+  };
+  const json = (name: string, data: unknown) => {
+    const path = join(saga.root, name + ".json");
+    writeFileSync(path, JSON.stringify(data));
+    return path;
+  };
+  const pin = (id: string) => ({ target: prefix + "data-entity:" + id, revision: prefix + "data-entity:" + id + ":revision:r1" });
+  run("inventory", "adopt-format", "--format", "2", saga.sagaRoot);
+  for (const [id, name] of [["local-edit", "Local edit"], ["cloud-record", "Cloud record"]]) {
+    run("data-entity", "add", "--id", id, "--from", json(id, { name, explanation: "A proposed record in the example architecture.", intent: "proposed", baseline: "none" }), "--repo", saga.sourceRepo, saga.sagaRoot);
+  }
+  const docs = [
+    { id: "sqlite", name: "Local SQLite", entities: ["local-edit"] },
+    { id: "postgres", name: "Cloud Postgres", entities: ["cloud-record"] },
+    { id: "cross-store", name: "Cross-store data flow", entities: ["local-edit", "cloud-record"] }
+  ];
+  for (const doc of docs) {
+    const svg = join(saga.root, doc.id + ".svg");
+    writeFileSync(svg, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 140">${doc.entities.map((id, i) => `<g id="${id}"><rect x="${20 + i * 320}" y="20" width="250" height="90" fill="none" stroke="black"/><text x="${30 + i * 320}" y="70">${id}</text></g>`).join("")}</svg>`);
+    run("erd", "add", "--id", doc.id, "--from", json(doc.id, { name: doc.name, explanation: "An independent diagram document.", directory: doc.entities.map(pin), bindings: doc.entities.map(id => ({ id, element: id, entity: pin(id) })) }), "--visual", svg, "--repo", saga.sourceRepo, saga.sagaRoot);
+  }
+  run("overview", "set-data-model", "--text", "Offline SQLite edits synchronize to cloud Postgres.\n\n[Open SQLite](/technical/erd/sqlite)\n\n<script>window.overviewExecuted = true</script>\n\n[unsafe](javascript:alert(1))", saga.sagaRoot);
+  await page.goto(saga.baseURL + "/technical/erd");
+  await waitForSettledSaga(page);
+  const overview = page.locator("[data-technical-data-model-overview]");
+  await expect(overview).toContainText("Offline SQLite edits synchronize to cloud Postgres.");
+  await expect(overview.locator("script")).toHaveCount(0);
+  await expect(overview.locator('a[href^="javascript:"]')).toHaveCount(0);
+  const documents = page.locator("[data-technical-erd-documents]");
+  await expect(documents.getByRole("link")).toHaveText(["Cross-store data flow", "Cloud Postgres", "Local SQLite"]);
+  await expect(page.locator("[data-erd-viewport]")).toHaveCount(0);
+  await expect(page.locator(".sidebar #nav-technical-erd a")).toHaveText(["Cross-store data flow", "Cloud Postgres", "Local SQLite", "Cloud record", "Local edit"]);
+  await overview.getByRole("link", { name: "Open SQLite" }).click();
+  await expect(page).toHaveURL(/\/technical\/erd\/sqlite$/);
+  await expect(page.locator("[data-erd-view]")).toHaveAttribute("data-erd-revision", "r1");
+  await expect(page.locator('[data-erd-directory-row$=":local-edit"]')).toBeVisible();
+  await page.locator('.sidebar a[href="/technical/erd/cross-store"]').click();
+  await expect(page).toHaveURL(/\/technical\/erd\/cross-store$/);
+  await expect(page.locator("[data-erd-directory-row]")).toHaveCount(2);
+  await page.goto(saga.baseURL + "/technical/erd/sqlite?revision=r1");
+  await expect(page.locator("[data-erd-view]")).toHaveAttribute("data-erd-revision", "r1");
+  await page.goto(saga.baseURL + "/");
+  await waitForSettledSaga(page);
+  await expect(page.locator(".page-root")).not.toContainText("Offline SQLite edits synchronize to cloud Postgres.");
 });

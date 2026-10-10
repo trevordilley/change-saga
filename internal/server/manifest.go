@@ -461,7 +461,7 @@ func indexManifestTargets(document *saga.Saga) map[string]manifestTargetLocation
 			if title == "" {
 				title = fragment.ID
 			}
-			fragmentHref := sagaHref(fragment.Target)
+			fragmentHref := fragmentPageHref(fragment)
 			var slide *SlideReferenceView
 			kind := "Fragment"
 			if fragment.SlideMeta != nil {

@@ -368,11 +368,13 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 // ----- The ERD page's data model -----
 
 type technicalDataModelView struct {
-	// Primary is the application's ERD, when one is authored: the one named
-	// "application", else the first.
-	Primary  *erdView
-	Views    []traceLink
-	Entities *directoryView
+	// Single is an inline convenience only when exactly one ERD exists.
+	// Multiple documents have equal standing, regardless of their IDs.
+	Single    *erdView
+	Overview  *fragmentView
+	Documents []traceLink
+	Overlays  []traceLink
+	Entities  *directoryView
 }
 
 func (a *app) technicalDataModel(inventory requirements.Inventory, usages technicalUsageIndex, newness *technicalNewness, query string) *technicalDataModelView {
@@ -382,7 +384,8 @@ func (a *app) technicalDataModel(inventory requirements.Inventory, usages techni
 		Columns: []directoryColumn{{Title: "Data entity"}, {Title: "Purpose", Wide: true}, {Title: "Intent"}, {Title: "Held by"}, {Title: "Relationships", Numeric: true}, {Title: "Used by Items", Numeric: true}},
 		Empty:   "No data entities yet.",
 	}}
-	var primary *requirements.TechnicalRecord
+	var single *requirements.TechnicalRecord
+	erds := 0
 	for index := range inventory.Records {
 		record := &inventory.Records[index]
 		switch record.Kind {
@@ -399,11 +402,17 @@ func (a *app) technicalDataModel(inventory requirements.Inventory, usages techni
 			} else {
 				link.Note = "competing revisions"
 			}
-			view.Views = append(view.Views, link)
-			if record.Kind == requirements.KindERD && record.CurrentRevision != nil && (primary == nil || record.Identity.ID == "application") {
-				if primary == nil || primary.Identity.ID != "application" {
-					primary = record
-				}
+			if record.CurrentLifecycle == nil {
+				link.Note = strings.TrimSpace(link.Note + " · lifecycle conflicted")
+			} else if record.CurrentLifecycle.State == "retired" {
+				link.Note = strings.TrimSpace(link.Note + " · retired")
+			}
+			if record.Kind == requirements.KindERD {
+				view.Documents = append(view.Documents, link)
+				erds++
+				single = record
+			} else {
+				view.Overlays = append(view.Overlays, link)
 			}
 		case requirements.KindDataEntity:
 			name, purpose, intent, holders, relationships := record.Identity.ID, "", gapCell("unknown — competing revisions"), []string{}, 0
@@ -431,8 +440,8 @@ func (a *app) technicalDataModel(inventory requirements.Inventory, usages techni
 	if newness != nil {
 		view.Entities.Columns = append(view.Entities.Columns, directoryColumn{Title: "Since " + newness.Against})
 	}
-	if primary != nil {
-		view.Primary = a.makeERDView(inventory, primary, primary.CurrentRevision)
+	if erds == 1 && single.CurrentRevision != nil && single.CurrentLifecycle != nil && single.CurrentLifecycle.State == "active" {
+		view.Single = a.makeERDView(inventory, single, single.CurrentRevision)
 	}
 	view.Entities.apply(query)
 	return view

@@ -430,7 +430,7 @@ func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 			}
 			location.fragment = fragment
 			location.target, location.itemID, location.title, location.diffs, location.hasDiffs = fragment.Target, fragment.ID, fragment.Title, fragment.Code, fragment.HasCode
-			location.fragmentHref = onFeaturePageHref(features, fragment.Target, sagaHref(fragment.Target))
+			location.fragmentHref = onFeaturePageHref(features, fragment.Target, fragmentPageHref(fragment))
 			if fragment.SlideMeta != nil {
 				location.slideID, location.slideTitle, location.slideTarget = fragment.ID, fragment.Title, fragment.Target
 				location.slideHref = location.fragmentHref
