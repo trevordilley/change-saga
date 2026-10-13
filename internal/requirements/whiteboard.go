@@ -102,7 +102,7 @@ func whiteboardHistory(root, sagaID, boardID string) (map[string]WhiteboardRevis
 		}
 	}
 	dir = filepath.Join(dir, "revisions")
-	entries, err = boundedReadDir(dir, MaxRevisionsPerStory)
+	entries, err = whiteboardRevisionFiles(dir)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -112,9 +112,6 @@ func whiteboardHistory(root, sagaID, boardID string) (map[string]WhiteboardRevis
 	revisions := map[string]WhiteboardRevision{}
 	parents := map[string][]string{}
 	for _, entry := range entries {
-		if !entry.Type().IsRegular() || filepath.Ext(entry.Name()) != ".json" {
-			return nil, nil, fmt.Errorf("whiteboard revision %s must be a regular JSON file", entry.Name())
-		}
 		var v WhiteboardRevision
 		if err := readInventoryJSON(filepath.Join(dir, entry.Name()), &v); err != nil {
 			return nil, nil, fmt.Errorf("whiteboard %s: %w", entry.Name(), err)
@@ -136,6 +133,29 @@ func whiteboardHistory(root, sagaID, boardID string) (map[string]WhiteboardRevis
 		return nil, nil, fmt.Errorf("whiteboard revisions require an acyclic graph with one root")
 	}
 	return revisions, heads, nil
+}
+
+func whiteboardRevisionFiles(dir string) ([]fs.DirEntry, error) {
+	// WriteFile publishes through a regular same-directory temporary file and
+	// an atomic link. Bound temporary debris separately from saved revisions.
+	entries, err := boundedReadDir(dir, 2*MaxRevisionsPerStory)
+	if err != nil {
+		return nil, err
+	}
+	files := entries[:0]
+	for _, entry := range entries {
+		if entry.Type().IsRegular() && strings.HasPrefix(entry.Name(), ".change-saga-write-") {
+			continue
+		}
+		if !entry.Type().IsRegular() || filepath.Ext(entry.Name()) != ".json" {
+			return nil, fmt.Errorf("whiteboard revision %s must be a regular JSON file", entry.Name())
+		}
+		files = append(files, entry)
+		if len(files) > MaxRevisionsPerStory {
+			return nil, fmt.Errorf("whiteboard revision count exceeds maximum of %d", MaxRevisionsPerStory)
+		}
+	}
+	return files, nil
 }
 
 func validateWhiteboardRevision(v WhiteboardRevision, id string) error {

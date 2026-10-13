@@ -3,6 +3,7 @@ package requirements
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -330,5 +331,117 @@ func TestWhiteboardReadersIgnoreIncompletePublicationStage(t *testing.T) {
 	}
 	if err := ValidateWhiteboards(root, "test"); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestWhiteboardReadersIgnoreIncompleteRevisionWrite(t *testing.T) {
+	root, pin, _ := whiteboardFixture(t)
+	original, err := PublishWhiteboard(context.Background(), root, "test", "board", "r1", "", "Original", boardDocument(pin))
+	if err != nil {
+		t.Fatal(err)
+	}
+	next := *original
+	next.ID, next.Parents, next.Name = "r2", []string{"r1"}, "Updated"
+	revisions := filepath.Join(root, WhiteboardDir, "board", "revisions")
+	// Pause the same temporary-file/hard-link protocol used by store.WriteFile
+	// after writing only a JSON prefix. A reader must never parse this file.
+	temp, err := os.CreateTemp(revisions, ".change-saga-write-*")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer temp.Close()
+	defer os.Remove(temp.Name())
+	data, err := json.Marshal(next)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := temp.Write(data[:len(data)/2]); err != nil {
+		t.Fatal(err)
+	}
+	if err := ValidateWhiteboards(root, "test"); err != nil {
+		t.Fatalf("partial write broke validation: %v", err)
+	}
+	if board, err := LoadResolvedWhiteboard(root, "test", "board", ""); err != nil || board == nil || board.Revision.ID != "r1" {
+		t.Fatalf("partial write changed visible head: %+v, %v", board, err)
+	}
+	if _, err := LoadWhiteboard(root, "test", "board", "r2"); err == nil {
+		t.Fatal("uncommitted revision became visible")
+	}
+	if _, err := temp.Write(data[len(data)/2:]); err != nil {
+		t.Fatal(err)
+	}
+	if err := temp.Sync(); err != nil {
+		t.Fatal(err)
+	}
+	if err := temp.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Link(temp.Name(), filepath.Join(revisions, "r2.json")); err != nil {
+		t.Fatal(err)
+	}
+	// The temp can briefly coexist with its complete published hard link.
+	if err := ValidateWhiteboards(root, "test"); err != nil {
+		t.Fatal(err)
+	}
+	if board, err := LoadResolvedWhiteboard(root, "test", "board", ""); err != nil || board == nil || board.Revision.ID != "r2" {
+		t.Fatalf("committed revision unreadable: %+v, %v", board, err)
+	}
+}
+
+func TestWhiteboardRevisionDiscoveryRejectsTemporaryImpostors(t *testing.T) {
+	for _, kind := range []string{"directory", "symlink", "unrelated-file", "only-temporary"} {
+		t.Run(kind, func(t *testing.T) {
+			root, pin, _ := whiteboardFixture(t)
+			if _, err := PublishWhiteboard(context.Background(), root, "test", "board", "r1", "", "Board", boardDocument(pin)); err != nil {
+				t.Fatal(err)
+			}
+			revisions := filepath.Join(root, WhiteboardDir, "board", "revisions")
+			temp := filepath.Join(revisions, ".change-saga-write-impostor")
+			var err error
+			switch kind {
+			case "directory":
+				err = os.Mkdir(temp, 0755)
+			case "symlink":
+				err = os.Symlink(filepath.Join(revisions, "r1.json"), temp)
+			case "unrelated-file":
+				err = os.WriteFile(filepath.Join(revisions, ".unexpected"), nil, 0600)
+			case "only-temporary":
+				if err := os.Remove(filepath.Join(revisions, "r1.json")); err != nil {
+					t.Fatal(err)
+				}
+				err = os.WriteFile(temp, nil, 0600)
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := ValidateWhiteboard(root, "test", "board"); err == nil {
+				t.Fatal("accepted malformed revision storage")
+			}
+		})
+	}
+}
+
+func TestWhiteboardRevisionDiscoveryLimitAllowsPendingWrite(t *testing.T) {
+	dir := t.TempDir()
+	for i := range MaxRevisionsPerStory {
+		if err := os.WriteFile(filepath.Join(dir, fmt.Sprintf("r%05d.json", i)), nil, 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	temp, err := os.CreateTemp(dir, ".change-saga-write-*")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := temp.Close(); err != nil {
+		t.Fatal(err)
+	}
+	if files, err := whiteboardRevisionFiles(dir); err != nil || len(files) != MaxRevisionsPerStory {
+		t.Fatalf("pending write consumed a revision slot: %d, %v", len(files), err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "overflow.json"), nil, 0600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := whiteboardRevisionFiles(dir); err == nil {
+		t.Fatal("revision count limit was lost")
 	}
 }
