@@ -358,7 +358,10 @@ func (a *app) referenceCodeView(ctx context.Context, references []coderef.Refere
 			}
 		} else {
 			view.Stale = true
-			view.Note = "This reference is stale or could not be resolved after the " + subject + " was written (" + at.Reason + "). It is shown as it was pinned; revise the " + subject + " to the code as it is now."
+			view.Note = "This reference could not be resolved (" + at.Reason + "). The saved location has not been substituted."
+			if view.Integrity == "verified" && !at.Provisional {
+				view.Note = "This code changed after the " + subject + " was written (" + at.Reason + "). It is shown as it was pinned; revise the " + subject + " to the code as it is now."
+			}
 		}
 		view.Path = location.Path
 		content, found, err := resolver.Blob(ctx, location.Commit, location.Path)
