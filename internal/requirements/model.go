@@ -55,6 +55,8 @@ type Revision struct {
 	Parents   []string `json:"parents"`
 	Title     string   `json:"title"`
 	Statement string   `json:"statement"`
+	// Overview is optional authored Markdown, part of this complete snapshot.
+	Overview string `json:"overview,omitempty"`
 	// Priority is optional free text the reviewer shows beside the story. The
 	// tool reads no meaning into it.
 	Priority string `json:"priority,omitempty"`
@@ -237,6 +239,7 @@ type AddStoryInput struct {
 	EventID            string
 	Title              string
 	Statement          string
+	Overview           string
 	Priority           string
 	Personas           []string
 	Citations          []string
@@ -251,6 +254,7 @@ type ReviseStoryInput struct {
 	Parents            []string
 	Title              string
 	Statement          string
+	Overview           string
 	Priority           string
 	Personas           []string
 	Citations          []string

@@ -22,6 +22,7 @@ type overviewPart struct {
 	pkg     string
 	title   string
 	order   int
+	feature bool
 }
 
 var overviewParts = map[string]overviewPart{
@@ -56,6 +57,10 @@ func overviewCommand(ctx context.Context, args []string, out io.Writer, stdin io
 // creating its fragment the first time.
 func setOverviewPart(_ context.Context, part overviewPart, args []string, out io.Writer, stdin io.Reader) error {
 	flags := commandFlags(part.command, commandUsage[part.command], out)
+	var feature *string
+	if part.feature {
+		feature = flags.String("feature", "", "feature ID or canonical URN")
+	}
 	text := flags.String("text", "", "the Markdown content")
 	source := flags.String("source", "", "a Markdown file, or - for standard input")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
@@ -90,12 +95,30 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 	result := fragmentContentOutput{OK: true, Bytes: len(data)}
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
 		fragment := document.OverviewPart(part.pkg)
+		rel := applayout.OverviewDir + "/" + part.pkg
+		id := document.Manifest.ID + "-" + strings.TrimSuffix(part.pkg, ".fragment")
+		if part.feature {
+			featureID, ok := applayout.FeatureFromURN(document.Manifest.ID, *feature)
+			if !ok || document.FindFeature(featureID) == nil {
+				return fmt.Errorf("--feature must name an existing feature")
+			}
+			rel = applayout.FeatureRel(featureID) + "/" + part.pkg
+			id = applayout.FeatureQualifiedID(featureID, "overview")
+			fragment = document.FindFeature(featureID).Overview()
+		}
+
 		if fragment == nil {
+			if part.feature {
+				target := saga.FragmentTarget(document.Manifest.ID, id)
+				if existing := saga.MutationIndexFromDocument(document).Targets[target]; existing != "" {
+					return fmt.Errorf("overview fragment identity %s is already used at %s", target, existing)
+				}
+			}
 			manifest := saga.FragmentManifest{
-				Version: saga.CurrentVersion, ID: document.Manifest.ID + "-" + strings.TrimSuffix(part.pkg, ".fragment"),
+				Version: saga.CurrentVersion, ID: id,
 				Title: part.title, MediaType: "text/markdown", Entrypoint: "content.md", Order: part.order,
 			}
-			dir := filepath.Join(document.Root, applayout.OverviewDir, part.pkg)
+			dir := filepath.Join(document.Root, filepath.FromSlash(rel))
 			if err := store.CommitDir(document.Root, dir, func(stage string) error {
 				if err := os.Chmod(stage, 0o755); err != nil {
 					return err
@@ -105,12 +128,12 @@ func setOverviewPart(_ context.Context, part overviewPart, args []string, out io
 				return err
 			}
 			result.Target = saga.FragmentTarget(document.Manifest.ID, manifest.ID)
-			result.Path = applayout.OverviewDir + "/" + part.pkg + "/" + manifest.Entrypoint
+			result.Path = rel + "/" + manifest.Entrypoint
 			result.MediaType = manifest.MediaType
 			return nil
 		}
-		if part.pkg == applayout.OverviewDataModel && fragment.MediaType != "text/markdown" {
-			return fmt.Errorf("the data-model overview must be Markdown")
+		if (part.feature || part.pkg == applayout.OverviewDataModel) && fragment.MediaType != "text/markdown" {
+			return fmt.Errorf("the overview must be Markdown")
 		}
 		entrypoint := filepath.Join(fragment.Directory, filepath.FromSlash(fragment.Entrypoint))
 		if info, err := os.Lstat(entrypoint); err == nil && info.Mode()&os.ModeSymlink != 0 {

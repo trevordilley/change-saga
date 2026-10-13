@@ -198,3 +198,10 @@ covered lines are not proof of a correct explanation.
 - `term-references`: direct explicit incoming and outgoing term references with provenance and declared coverage.
   `change-saga query term-references --saga PATH --term ID|URN [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV [--head REV]]`
 <!-- query-operations:end -->
+
+Feature `query context` includes an optional `feature.overview` descriptor
+(target, path, media_type). Read it with `query fragment --target URN`; use
+`query history --node URN` for Git history. Story `current_revision.overview`
+in `query requirements`, expanded context, and `revision.overview` in
+`query requirement-history` is optional authored Markdown, not a generated
+summary. Missing prose remains missing; never derive personas from old titles.

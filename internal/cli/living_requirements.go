@@ -110,8 +110,10 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	id := flags.String("id", "", "stable story id")
 	revision := flags.String("revision", "", "stable initial revision id")
 	event := flags.String("event", "", "stable initial proposed-event id")
-	title := flags.String("title", "", "story title")
-	statement := flags.String("statement", "", "complete user-story statement")
+	title := flags.String("title", "", "short authored value shown in navigation")
+	statement := flags.String("statement", "", "full authored need: As a <persona> I can <value>")
+	overview := flags.String("overview", "", "authored detailed Markdown overview; inherited on single-parent revise when omitted, empty clears it")
+	overviewSource := flags.String("overview-source", "", "Markdown file, or - for stdin; exclusive with --overview")
 	priority := flags.String("priority", "", "optional free-text priority the reviewer shows, such as must, should, or could; the tool reads no meaning into it")
 	requestID := flags.String("request-id", "", "idempotency key")
 	from := flags.String("from", "", "read a structured mutation request from a JSON file, or - for stdin")
@@ -126,6 +128,9 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	}
 	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", usage)
+	}
+	if err := readStoryOverview(flags, *overviewSource, *from, stdin); err != nil {
+		return err
 	}
 	parsedCriteria, err := parseCriteria(criteria)
 	if err != nil {
@@ -144,7 +149,8 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	overrideVisited(flags, map[string]func(){
 		"id": func() { request.ID = *id }, "revision": func() { request.Revision = *revision },
 		"event": func() { request.Event = *event }, "title": func() { request.Title = *title },
-		"statement": func() { request.Statement = *statement }, "priority": func() { request.Priority = *priority },
+		"statement": func() { request.Statement = *statement },
+		"overview":  func() { request.Overview = *overview }, "priority": func() { request.Priority = *priority },
 		"request-id": func() { request.RequestID = *requestID },
 		"citation":   func() { request.Citations = append([]string{}, citations...) },
 		"criterion":  func() { request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...) },
@@ -152,7 +158,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 		"feature":    func() { request.Feature = *feature },
 	})
 	if *from == "" {
-		request = storyAddRequest{Feature: *feature, ID: *id, Revision: *revision, Event: *event, Title: *title, Statement: *statement, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
+		request = storyAddRequest{Feature: *feature, ID: *id, Revision: *revision, Event: *event, Title: *title, Statement: *statement, Overview: *overview, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
 		request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...)
 	}
 	if request.ID == "" || request.Revision == "" || request.Event == "" || request.Title == "" || request.Statement == "" {
@@ -168,7 +174,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 		return err
 	}
 	result, err := requirements.AddStory(root, sagaID, requirements.AddStoryInput{
-		Feature: target.ID, ID: request.ID, RevisionID: request.Revision, EventID: request.Event, Title: request.Title, Statement: request.Statement,
+		Feature: target.ID, ID: request.ID, RevisionID: request.Revision, EventID: request.Event, Title: request.Title, Statement: request.Statement, Overview: request.Overview,
 		Priority: request.Priority, Personas: request.Personas, Citations: request.Citations, AcceptanceCriteria: request.AcceptanceCriteria,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 	})
@@ -186,6 +192,8 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	revision := flags.String("revision", "", "stable revision id")
 	title := flags.String("title", "", "complete revised title; inherited from a single parent when omitted")
 	statement := flags.String("statement", "", "complete revised user-story statement; inherited from a single parent when omitted")
+	overview := flags.String("overview", "", "authored detailed Markdown overview; inherited on single-parent revise when omitted, empty clears it")
+	overviewSource := flags.String("overview-source", "", "Markdown file, or - for stdin; exclusive with --overview")
 	priority := flags.String("priority", "", "optional free-text priority; inherited from a single parent when omitted, so pass an empty value for none")
 	requestID := flags.String("request-id", "", "idempotency key")
 	from := flags.String("from", "", "read a structured complete revision from a JSON file, or - for stdin")
@@ -202,6 +210,9 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	}
 	if flags.NArg() != 1 || (*from != "" && *edit) {
 		return fmt.Errorf("usage: %s", usage)
+	}
+	if err := readStoryOverview(flags, *overviewSource, *from, stdin); err != nil {
+		return err
 	}
 	parsedCriteria, err := parseCriteria(criteria)
 	if err != nil {
@@ -225,11 +236,12 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		if value.Schema != requirements.RevisionSchemaURL || value.Version != requirements.Version {
 			return fmt.Errorf("structured story revision must use the v3 story-revision schema")
 		}
-		request = storyReviseRequest{Story: value.Story, Revision: value.ID, Parents: value.Parents, Title: value.Title, Statement: value.Statement, Priority: value.Priority, Personas: value.Personas, Citations: value.Citations, AcceptanceCriteria: value.AcceptanceCriteria, CreatedAt: value.CreatedAt, RequestID: value.RequestID}
+		request = storyReviseRequest{Story: value.Story, Revision: value.ID, Parents: value.Parents, Title: value.Title, Statement: value.Statement, Overview: value.Overview, Priority: value.Priority, Personas: value.Personas, Citations: value.Citations, AcceptanceCriteria: value.AcceptanceCriteria, CreatedAt: value.CreatedAt, RequestID: value.RequestID}
 	}
 	overrideVisited(flags, map[string]func(){
 		"story": func() { request.Story = *story }, "revision": func() { request.Revision = *revision },
 		"title": func() { request.Title = *title }, "statement": func() { request.Statement = *statement },
+		"overview": func() { request.Overview = *overview },
 		"priority": func() { request.Priority = *priority }, "request-id": func() { request.RequestID = *requestID },
 		"parent":    func() { request.Parents = append([]string{}, parents...) },
 		"citation":  func() { request.Citations = append([]string{}, citations...) },
@@ -237,9 +249,14 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		"persona":   func() { request.Personas = append([]string{}, personas...) },
 	})
 	if *from == "" {
-		request = storyReviseRequest{Story: *story, Revision: *revision, Parents: parents, Title: *title, Statement: *statement, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
+		request = storyReviseRequest{Story: *story, Revision: *revision, Parents: parents, Title: *title, Statement: *statement, Overview: *overview, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
 		request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...)
 	}
+	flags.Visit(func(value *flag.Flag) {
+		if value.Name == "overview" {
+			request.OverviewGiven = true
+		}
+	})
 	if *edit {
 		if request.Story == "" || request.Revision == "" {
 			return fmt.Errorf("usage: %s", usage)
@@ -267,7 +284,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		return err
 	}
 	result, err := requirements.ReviseStory(root, sagaID, requirements.ReviseStoryInput{
-		Story: request.Story, ID: request.Revision, Parents: request.Parents, Title: request.Title, Statement: request.Statement,
+		Story: request.Story, ID: request.Revision, Parents: request.Parents, Title: request.Title, Statement: request.Statement, Overview: request.Overview,
 		Priority: request.Priority, Personas: request.Personas, Citations: request.Citations, AcceptanceCriteria: request.AcceptanceCriteria,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 	})

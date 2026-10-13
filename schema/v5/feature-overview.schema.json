@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/feature-overview.schema.json",
+  "title": "Feature overview fragment",
+  "description": "Optional ___features/<id>.feature/overview.fragment/fragment.json. Existing version-2 Markdown report fragment with stable identity and Git history; never mutates immutable feature.json. Read content through query fragment and history through query history.",
+  "allOf": [
+    { "$ref": "../v2/fragment.schema.json" },
+    { "properties": { "media_type": { "const": "text/markdown" } } }
+  ]
+}

@@ -197,3 +197,35 @@ through its public append-only operation rather than deleting its record.
 
 Do not modify product code merely because story authoring exposed a possible
 implementation change unless the user asked for implementation too.
+
+## Authored overview and readable story names
+
+Use a short value for `--title` (for example, `Choose a safe departure time`)
+and the complete confirmed need for `--statement` (`As a harbor planner I can
+choose a safe departure time`). Navigation shows Title; the page shows both
+Title and the full Statement. Preserve old authored titles and statements;
+never strip a prefix, infer a persona, or rewrite history to force this format.
+
+Use `feature set-overview --feature ID --source overview.md <saga>` for a
+substantial description, purpose, rationale, and boundaries. This writes the
+optional `overview.fragment/content.md` inside the feature's existing report;
+`feature.json` remains immutable. The fragment has normal stable links and Git
+history. `--text MARKDOWN` and `--source -` also work.
+
+Use `story add|revise --overview-source overview.md` (or `--overview MARKDOWN`)
+for detailed Markdown in a story revision. `--overview-source -` reads stdin;
+it cannot share stdin with `--from -`. Omission on single-parent flag revisions
+inherits the overview, including criterion conveniences. Explicit `--overview
+""` clears it. Structured `--from` revisions are complete snapshots: omitted
+`overview` means absent. Multi-parent reconciliation needs deliberate authored
+content, never an inferred winner. Editor revisions preserve prose unless the
+author changes it. Prior snapshots remain immutable. Overview changes require
+whole-story relation reassessment; unchanged criterion statements retain their
+existing carry-forward semantics. Author only confirmed intent, not filler.
+
+Read `query requirements` or `query requirement-history` for story overview
+snapshots. `query context --feature ID` exposes `feature.overview` when present;
+read its prose with `query fragment --target URN` and its Git history with
+`query history --node URN`. The page renders safe Markdown, keeps full criterion
+statements visible as bullets, and expands supporting traceability through
+keyboard-accessible disclosures. Existing Sagas remain readable without migration.

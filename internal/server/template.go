@@ -169,12 +169,14 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 {{define "feature-page"}}<section class="app-page feature-page" data-feature-page data-feature-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Feature breadcrumb"><span>Features</span><span>/</span><strong>{{.Title}}</strong></nav>
 <header class="requirement-story-hero"><div><p class="app-page-kind">Feature</p><h1>{{.Title}}</h1></div></header>
 {{if .Description}}<section class="requirement-need"><p>{{.Description}}</p></section>{{end}}
-{{with .Summary}}<dl class="feature-summary" data-feature-summary><div><dt>Stories</dt><dd>{{.Stories}}{{if .Stories}} <small>{{.Accepted}} accepted</small>{{end}}</dd></div><div><dt>Design</dt><dd>{{.StoriesWithDesign}} of {{.Stories}} <small>stories have design</small></dd></div><div><dt>Quality</dt><dd>{{.CriteriaWithTests}} of {{.Criteria}} <small>criteria have a test · {{.TestCases}} test {{if eq .TestCases 1}}case{{else}}cases{{end}}</small></dd></div><div><dt>Technical</dt><dd>{{.Slides}} <small>{{if eq .Slides 1}}slide{{else}}slides{{end}} · {{.ItemsWithCode}} of {{.Items}} Items reference code</small></dd></div></dl>{{end}}
+{{with .Overview}}<section class="authored-overview" data-feature-overview><h2>Overview</h2>{{template "fragment" .}}</section>{{end}}
+
 {{if .Report}}<section class="app-page-section feature-report">{{if .Report.FragmentViews}}{{template "overview" .Report}}{{end}}{{template "chapter-list" .Report}}</section>{{end}}
 {{if .Stories}}<section class="app-page-section" id="feature-product" data-feature-stories><h2>Stories</h2><ul class="trace-links feature-stories">{{range .Stories}}<li data-trace-target="{{.Target}}"><a href="{{.Href}}">{{.Title}}</a> <small class="trace-kind">{{.Lifecycle}}</small><small class="trace-note">{{if .Design}}design{{else}}no design yet{{end}} · {{.Tested}} of {{.Criteria}} criteria tested</small>{{if .Personas}}<p class="trace-rationale">Serves {{range $index, $persona := .Personas}}{{if $index}}, {{end}}<a href="{{$persona.Href}}">{{$persona.Title}}</a>{{end}}</p>{{end}}</li>{{end}}</ul></section>{{end}}
-{{with .Design}}<section class="app-page-section" id="feature-design" data-feature-design><h2>Design</h2>{{if .FragmentViews}}{{template "overview" .}}{{end}}{{template "chapter-list" .}}</section>{{end}}
-{{if .Tests}}<section class="app-page-section" id="feature-quality" data-feature-quality><h2>Quality</h2>{{template "trace-links" .Tests}}</section>{{end}}
-{{if .Decks}}<section class="app-page-section" id="feature-implementation" data-feature-implementation><h2>Technical</h2>{{range .Decks}}<h3>{{.Title}}</h3>{{template "trace-links" .Slides}}{{end}}</section>{{end}}
+<details class="reading-details"><summary>Delivery and coverage</summary>{{with .Summary}}<dl class="feature-summary" data-feature-summary><div><dt>Stories</dt><dd>{{.Stories}}{{if .Stories}} <small>{{.Accepted}} accepted</small>{{end}}</dd></div><div><dt>Design</dt><dd>{{.StoriesWithDesign}} of {{.Stories}} <small>stories have design</small></dd></div><div><dt>Quality</dt><dd>{{.CriteriaWithTests}} of {{.Criteria}} <small>criteria have a test · {{.TestCases}} test {{if eq .TestCases 1}}case{{else}}cases{{end}}</small></dd></div><div><dt>Technical</dt><dd>{{.Slides}} <small>{{if eq .Slides 1}}slide{{else}}slides{{end}} · {{.ItemsWithCode}} of {{.Items}} Items reference code</small></dd></div></dl>{{end}}</details>
+{{with .Design}}<details class="app-page-section reading-details" id="feature-design" data-feature-design><summary>Design</summary>{{if .FragmentViews}}{{template "overview" .}}{{end}}{{template "chapter-list" .}}</details>{{end}}
+{{if .Tests}}<details class="app-page-section reading-details" id="feature-quality" data-feature-quality><summary>Quality</summary>{{template "trace-links" .Tests}}</details>{{end}}
+{{if .Decks}}<details class="app-page-section reading-details" id="feature-implementation" data-feature-implementation><summary>Technical</summary>{{range .Decks}}<h3>{{.Title}}</h3>{{template "trace-links" .Slides}}{{end}}</details>{{end}}
 {{template "related-reviews" (relatedReviews "feature" .RelatedReviews)}}</section>{{end}}
 
 {{define "test-case-page"}}<section class="app-page test-case-page" data-test-case-page data-test-case-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Test case breadcrumb">{{with .Feature}}{{if .Href}}<a href="{{.Href}}">{{.Title}}</a><span>/</span>{{end}}{{end}}<span>Test cases</span><span>/</span><strong>{{.Title}}</strong></nav>
@@ -295,14 +297,25 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <p class="app-page-kind">Story · {{.Lifecycle}}</p>
 <h1>{{.Title}}</h1>
 </div>
-</header>{{with .Historical}}{{template "historical-requirement" .}}{{end}}{{template "story-context" .}}{{if or .RevisionConflict .LifecycleConflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This story has {{if .RevisionConflict}}multiple revision heads{{end}}{{if and .RevisionConflict .LifecycleConflict}} and {{end}}{{if .LifecycleConflict}}multiple lifecycle heads{{end}}. No state is being guessed.</span>
+</header>{{with .Historical}}{{template "historical-requirement" .}}{{end}}{{if or .RevisionConflict .LifecycleConflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This story has {{if .RevisionConflict}}multiple revision heads{{end}}{{if and .RevisionConflict .LifecycleConflict}} and {{end}}{{if .LifecycleConflict}}multiple lifecycle heads{{end}}. No state is being guessed.</span>
 </div>{{end}}
 <section class="requirement-need">
 <p>{{.Statement}}</p>
 </section>
+{{if .Overview}}<section class="authored-overview" data-story-overview><h2>Overview</h2><div class="fragment-markdown">{{.Overview}}</div></section>{{end}}
+<section class="requirement-criteria">
+<header>
+<h2>Acceptance criteria</h2>
+</header>
+<ul class="requirement-criteria-list">{{range .Criteria}}<li><details class="requirement-criterion{{if .Selected}} selected{{end}}" id="{{.DOMID}}" data-requirement-target="{{.Target}}"{{if .Selected}} open{{end}}>
+<summary><span class="criterion-statement">{{.Statement}}</span></summary>
+<div class="criterion-details"><a class="criterion-label" href="{{.Href}}">{{.Label}} · Open criterion</a>{{template "trace-groups" .Trace}}</div>
+</details></li>{{end}}</ul>
+</section>
 <details class="requirement-story-details">
 <summary>{{template "twisty"}}<span>Details</span></summary>
 <div class="requirement-story-details-content">
+{{template "story-context" .}}
 <div class="requirement-characterization">
 <dl>
 <div>
@@ -354,22 +367,11 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 </div>
 </div>
 </details>
-<section class="requirement-trace" data-story-trace><h2>Linked to the whole story</h2>{{template "trace-groups" .Trace}}</section>
+<details class="requirement-trace reading-details" data-story-trace><summary>Linked to the whole story</summary>{{template "trace-groups" .Trace}}</details>
 {{if .Terms}}<section class="requirement-terms" data-requirement-terms>
 <h2>Terms</h2>
 <ul class="term-links">{{range .Terms}}<li><a href="{{.Href}}" data-term-target="{{.Target}}">{{.Title}}</a></li>{{end}}</ul>
 </section>{{end}}
-<section class="requirement-criteria">
-<header>
-<h2>Acceptance criteria</h2>
-</header>
-<div class="requirement-criteria-list">{{range .Criteria}}<article class="requirement-criterion{{if .Selected}} selected{{end}}" id="{{.DOMID}}" data-requirement-target="{{.Target}}">
-<header>
-<a class="criterion-label" href="{{.Href}}">{{.Label}}</a>
-</header>
-<p>{{.Statement}}</p>{{template "criterion-trace" .Trace}}
-</article>{{end}}</div>
-</section>
 {{template "related-reviews" (relatedReviews "story" .RelatedReviews)}}</article>{{end}}{{end}}</section>{{end}}
 {{define "doc-tree"}}{{range .}}{{if .Slide}}<div class="doc-node doc-slide-thumbnail">{{if .Slide.Section}}<div class="slide-section-divider" data-slide-section>{{.Slide.Section}}</div>{{end}}<div class="slide-thumbnail-card" data-slide-thumbnail-card><span class="slide-thumbnail-caption"><span class="slide-thumbnail-title">{{.Slide.Title}}</span></span><button type="button" class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="{{.Slide.Target}}" aria-current="false" aria-label="Show slide: {{.Slide.Title}}"></button></div></div>{{else}}<div class="doc-node{{if .Deck}} doc-deck{{end}}{{if .Requirement}} doc-requirement{{end}}{{if .Group}} doc-group{{end}}{{if .Gap}} doc-gap{{end}}"{{if .Hidden}} hidden{{end}}><div class="doc-row {{if .Active}}current{{end}}" data-nav-row="{{.NodeID}}">{{if .Children}}<button type="button" class="doc-twisty" data-doc-twisty aria-expanded="{{.Expanded}}" aria-controls="{{.NodeID}}" aria-label="Toggle {{.Title}}">{{template "twisty"}}</button>{{else}}<span class="doc-twisty placeholder" aria-hidden="true">{{template "twisty"}}</span>{{end}}{{if .Deck}}<button type="button" class="doc-link doc-deck-link" data-deck-toggle aria-expanded="{{.Expanded}}" aria-controls="{{.NodeID}}" title="{{.Title}}">{{template "icon" .Icon}}<span>{{.Title}}</span></button>{{else if .Href}}<a class="doc-link" href="{{.Href}}" title="{{.Title}}" data-report-nav{{if .Active}} aria-current="page"{{end}}>{{if .Icon}}{{template "icon" .Icon}}{{else if .IconPlaceholder}}<span class="i icon-placeholder" aria-hidden="true"></span>{{end}}{{.Title}}</a>{{else if .Children}}<button type="button" class="doc-link doc-group-link" data-doc-toggle aria-expanded="{{.Expanded}}" aria-controls="{{.NodeID}}" title="{{.Title}}">{{if .Icon}}{{template "icon" .Icon}}{{else if .IconPlaceholder}}<span class="i icon-placeholder" aria-hidden="true"></span>{{end}}<span>{{.Title}}</span></button>{{else}}<span class="doc-link doc-static" title="{{.Title}}">{{if .Icon}}{{template "icon" .Icon}}{{else if .IconPlaceholder}}<span class="i icon-placeholder" aria-hidden="true"></span>{{end}}<span>{{.Title}}</span></span>{{end}}{{if .Note}}<span class="doc-note">{{.Note}}</span>{{end}}</div>{{if .Children}}<div class="doc-children" id="{{.NodeID}}"{{if not .Expanded}} hidden{{end}}>{{template "doc-tree" .Children}}</div>{{end}}</div>{{end}}{{end}}{{end}}
 

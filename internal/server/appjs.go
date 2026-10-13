@@ -828,6 +828,10 @@ const appJavaScript = `(() => {
     // The anchor may name something inside a chapter or an explanation that has
     // not been fetched yet, so it is resolved before it is scrolled to.
     const destination = await revealAnchor(id);
+    // Direct links can name a disclosure itself or any retained anchor inside it.
+    for (let node = destination; node; node = node.parentElement) {
+      if (node.tagName === 'DETAILS') node.open = true;
+    }
     const destinationSlide = destination?.closest('[data-deck-slide]');
     if (destinationSlide) {
       const index = deckViewerSlides().indexOf(destinationSlide);

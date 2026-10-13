@@ -29,10 +29,18 @@ type FeatureContextPage struct {
 }
 
 type FeatureContextFeature struct {
-	URN         string `json:"urn"`
-	ID          string `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description,omitempty"`
+	URN         string                  `json:"urn"`
+	ID          string                  `json:"id"`
+	Title       string                  `json:"title"`
+	Description string                  `json:"description,omitempty"`
+	Overview    *FeatureContextOverview `json:"overview,omitempty"`
+}
+
+// FeatureContextOverview points to the ordinary fragment query and Git history.
+type FeatureContextOverview struct {
+	Target    string `json:"target"`
+	Path      string `json:"path"`
+	MediaType string `json:"media_type"`
 }
 
 type FeatureContextCompleteness struct {
@@ -178,6 +186,11 @@ func (s *session) featureContextResult(query Query) (Result, error) {
 	pageEndpoints := endpointSet(pageStories)
 	relations := s.contextRelations(pageEndpoints)
 	featureSummary := FeatureContextFeature{URN: applayout.FeatureURN(s.requirements.SagaID, feature.ID), ID: feature.ID, Title: feature.Title}
+	if s.saga != nil {
+		if overview := s.saga.FindFeature(feature.ID).Overview(); overview != nil {
+			featureSummary.Overview = &FeatureContextOverview{Target: overview.Target, Path: overview.Path, MediaType: overview.MediaType}
+		}
+	}
 	if projection == "expanded" {
 		featureSummary.Description = feature.Description
 	}

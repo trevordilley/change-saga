@@ -63,6 +63,12 @@ var resources = []Resource{
 		Notes:   "holds the domain's report content, requirements, design, quality, work plan, and implementation deck; no resource URN names its feature, so IDs are unique across the app",
 	},
 	{
+		Kind: "feature-overview", URN: "urn:change-saga:<saga>:fragment:<id>", Storage: "___features/<feature>.feature/overview.fragment/{fragment.json,content.md}",
+		Schema: schemaBase + "v5/feature-overview.schema.json", Versions: []int{5}, History: "current authored Markdown content; Git holds history",
+		Writers: []string{"feature set-overview", "set-fragment-content"},
+		Notes:   "optional normal report fragment for description, purpose and rationale; newly generated IDs are feature-qualified; existing fragment IDs and immutable feature.json never change",
+	},
+	{
 		Kind: "overview-pitch", URN: "urn:change-saga:<saga>:fragment:<saga>-pitch", Storage: "___overview/pitch.fragment/{fragment.json,content.md}",
 		Schema: schemaBase + "v2/fragment.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
 		Writers: []string{"overview set-pitch"},

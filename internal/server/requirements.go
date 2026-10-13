@@ -3,6 +3,7 @@ package server
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"net/http"
 	"net/url"
 	"sort"
@@ -44,6 +45,7 @@ type requirementStoryView struct {
 	Href               string
 	Title              string
 	Statement          string
+	Overview           template.HTML
 	Priority           string
 	CreatedAt          time.Time
 	Lifecycle          string
@@ -225,6 +227,9 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 	if story.CurrentRevision != nil {
 		view.Title = story.CurrentRevision.Title
 		view.Statement = story.CurrentRevision.Statement
+		if story.CurrentRevision.Overview != "" {
+			view.Overview = markdownWithAnchors(story.CurrentRevision.Overview, view.DOMID+"--overview")
+		}
 		view.Priority = story.CurrentRevision.Priority
 		view.Revision = story.CurrentRevision.ID
 		view.RevisionAt = story.CurrentRevision.CreatedAt

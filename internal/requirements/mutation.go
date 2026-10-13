@@ -25,7 +25,7 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 	}
 	revision := Revision{
 		Schema: RevisionSchemaURL, Version: Version, ID: input.RevisionID, Story: storyID, Parents: []string{},
-		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Priority: strings.TrimSpace(input.Priority),
+		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Overview: input.Overview, Priority: strings.TrimSpace(input.Priority),
 		Personas: copyStrings(input.Personas), Citations: copyStrings(input.Citations), AcceptanceCriteria: copyCriteria(input.AcceptanceCriteria), CreatedAt: createdAt, RequestID: input.RequestID,
 	}
 	event := LifecycleEvent{
@@ -111,7 +111,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 	}
 	revision := Revision{
 		Schema: RevisionSchemaURL, Version: Version, ID: input.ID, Story: input.Story, Parents: copyStrings(input.Parents),
-		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Priority: strings.TrimSpace(input.Priority),
+		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Overview: input.Overview, Priority: strings.TrimSpace(input.Priority),
 		Personas: copyStrings(input.Personas), Citations: copyStrings(input.Citations), AcceptanceCriteria: copyCriteria(input.AcceptanceCriteria), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
 	}
 	if err := validateRevision(revision, sagaID, storyRef.ID); err != nil {
@@ -284,7 +284,7 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		}
 		revision := Revision{
 			Schema: RevisionSchemaURL, Version: Version, ID: input.revisionID, Story: input.story,
-			Parents: []string{input.parent}, Title: parent.Title, Statement: parent.Statement,
+			Parents: []string{input.parent}, Title: parent.Title, Statement: parent.Statement, Overview: parent.Overview,
 			Priority: parent.Priority, Personas: copyStrings(parent.Personas), Citations: copyStrings(parent.Citations),
 			AcceptanceCriteria: copyCriteria(parent.AcceptanceCriteria), CreatedAt: mutationTime(input.createdAt),
 			RequestID: input.requestID,

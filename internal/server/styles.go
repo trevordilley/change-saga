@@ -444,6 +444,40 @@ the record's own content for the top of the page. */
 .requirement-criterion>header{display:flex;align-items:center;gap:12px}
 .criterion-label{display:flex;align-items:center;gap:6px;color:var(--accent);font:750 10.5px var(--ui);letter-spacing:.06em;text-decoration:none;text-transform:uppercase}
 .requirement-criterion>p{margin:9px 0 0;font:500 14px/1.55 var(--ui)}
+.feature-page,.requirement-story-page{max-width:960px}
+.feature-page .requirement-need,.authored-overview{margin:0}
+.feature-page{gap:28px}
+.feature-page .requirements-breadcrumbs{margin-bottom:0}
+.feature-page>.reading-details{margin:0}
+.authored-overview h2{margin:0 0 20px;font:650 22px/1.3 var(--ui)}
+.authored-overview .fragment-markdown{max-width:74ch;font:400 16px/1.8 var(--ui);overflow-wrap:anywhere}
+.authored-overview .fragment-markdown p{margin:0 0 1.2em}
+.authored-overview .fragment-markdown li{margin:.45em 0}
+.authored-overview .fragment{margin:0;padding:0;border:0;background:transparent;box-shadow:none}
+.authored-overview .fragment-head{float:right;margin:0 0 8px 16px;min-height:0}
+.authored-overview .fragment-markdown h3{font:650 21px/1.4 var(--ui);color:var(--ink);margin:1.4em 0 .6em}
+.authored-overview .fragment-markdown h4{font:650 18px/1.4 var(--ui);color:var(--ink);margin:1.4em 0 .6em}
+.authored-overview .fragment-markdown h5,.authored-overview .fragment-markdown h6{font:650 16px/1.5 var(--ui);color:var(--ink);margin:1.4em 0 .6em}
+.authored-overview .fragment-markdown>:first-child{margin-top:0}
+.authored-overview .fragment-markdown>:last-child{margin-bottom:0}
+.requirement-story-page{gap:28px}
+.requirement-need p{white-space:pre-wrap;overflow-wrap:anywhere}
+.feature-page .requirement-need>p:last-child{font-weight:400;font-size:18px;line-height:1.7}
+.reading-details{margin:20px 0;border-top:1px solid var(--line-soft);padding-top:16px}
+.reading-details>summary{cursor:pointer;color:var(--muted);font:600 15px/1.6 var(--ui)}
+.reading-details[open]>summary{margin-bottom:18px;color:var(--ink)}
+.requirement-criteria-list{display:block;max-width:78ch;list-style:disc;padding-left:24px;margin:18px 0 0}
+.requirement-criteria-list>li{padding:0 0 0 4px;margin:0 0 12px;color:var(--muted)}
+.requirement-criterion{padding:0;border:0;border-bottom:1px solid var(--line-soft);border-radius:0;background:transparent;color:var(--ink)}
+.requirement-criterion:hover{transform:none;box-shadow:none;border-color:var(--line)}
+.requirement-criterion>summary{padding:12px 4px;cursor:pointer;font:500 16px/1.65 var(--ui);overflow-wrap:anywhere;white-space:pre-wrap}
+.requirement-criterion>summary::marker{color:var(--faint);font-size:11px}
+.criterion-details{padding:10px 16px 20px;margin-bottom:8px;border-radius:6px;background:var(--bg-subtle)}
+.criterion-details .criterion-label{margin:4px 0 18px}
+.requirement-criterion:target{outline:2px solid var(--accent);outline-offset:4px}
+.reading-details>summary:focus-visible,.requirement-criterion>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.feature-page .feature-stories>li{padding:16px 0}
+@media(max-width:640px){.requirement-characterization dl,.requirement-history-lists{grid-template-columns:1fr}.authored-overview .fragment-markdown{font-size:15px}.requirements-breadcrumbs{flex-wrap:wrap}}
 .opening-badge{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--bg-subtle);white-space:nowrap;margin-right:8px}
 .opening-badge.compare{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
 .layer-quiet{opacity:1;transition:opacity .15s}.layer-quiet:hover,.layer-quiet:focus-within{opacity:1}

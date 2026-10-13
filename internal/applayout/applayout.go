@@ -131,6 +131,9 @@ func qualifiedIDPart(value string, maximum int) string {
 	return strings.Trim(value[:maximum-9], "-") + "-" + fmt.Sprintf("%x", sum[:4])
 }
 
+// FeatureOverview is the optional authored Markdown report fragment.
+const FeatureOverview = "overview.fragment"
+
 // FeatureManifest is the immutable identity of one durable product domain.
 type FeatureManifest struct {
 	Schema      string    `json:"$schema"`

@@ -2,7 +2,10 @@ package cli
 
 import (
 	"context"
+	"flag"
 	"fmt"
+	"io"
+	"os"
 	"strings"
 	"time"
 
@@ -17,6 +20,7 @@ type storyAddRequest struct {
 	Event              string                   `json:"event"`
 	Title              string                   `json:"title"`
 	Statement          string                   `json:"statement"`
+	Overview           string                   `json:"overview,omitempty"`
 	Priority           string                   `json:"priority"`
 	Personas           []string                 `json:"personas"`
 	Citations          []string                 `json:"citations,omitempty"`
@@ -31,6 +35,8 @@ type storyReviseRequest struct {
 	Parents            []string
 	Title              string
 	Statement          string
+	Overview           string
+	OverviewGiven      bool
 	Priority           string
 	Personas           []string
 	Citations          []string
@@ -92,6 +98,9 @@ func inheritStoryRevision(root, sagaID string, request storyReviseRequest, given
 	if !given["statement"] {
 		request.Statement = parent.Statement
 	}
+	if !given["overview"] {
+		request.Overview = parent.Overview
+	}
 	if !given["priority"] {
 		request.Priority = parent.Priority
 	}
@@ -130,6 +139,9 @@ func editStoryRevision(ctx context.Context, root, sagaID string, request storyRe
 	if strings.TrimSpace(request.Statement) != "" {
 		candidate.Statement = request.Statement
 	}
+	if request.OverviewGiven {
+		candidate.Overview = request.Overview
+	}
 	if strings.TrimSpace(request.Priority) != "" {
 		candidate.Priority = request.Priority
 	}
@@ -153,7 +165,37 @@ func editStoryRevision(ctx context.Context, root, sagaID string, request storyRe
 	}
 	return storyReviseRequest{
 		Story: edited.Story, Revision: edited.ID, Parents: edited.Parents, Title: edited.Title,
-		Statement: edited.Statement, Priority: edited.Priority, Personas: edited.Personas, Citations: edited.Citations,
+		Statement: edited.Statement, Overview: edited.Overview, Priority: edited.Priority, Personas: edited.Personas, Citations: edited.Citations,
 		AcceptanceCriteria: edited.AcceptanceCriteria, CreatedAt: edited.CreatedAt, RequestID: edited.RequestID,
 	}, nil
+}
+
+// Read multiline prose without interpreting it. Mark overview visited so the
+// existing flag overrides, inheritance, and editor paths share one contract.
+func readStoryOverview(flags *flag.FlagSet, source, from string, stdin io.Reader) error {
+	given := map[string]bool{}
+	flags.Visit(func(f *flag.Flag) { given[f.Name] = true })
+	if !given["overview-source"] {
+		return nil
+	}
+	if given["overview"] {
+		return fmt.Errorf("--overview and --overview-source cannot be combined")
+	}
+	if source == "" {
+		return fmt.Errorf("--overview-source requires a file or -")
+	}
+	if source == "-" && from == "-" {
+		return fmt.Errorf("--from and --overview-source cannot both read stdin")
+	}
+	var data []byte
+	var err error
+	if source == "-" {
+		data, err = io.ReadAll(stdin)
+	} else {
+		data, err = os.ReadFile(source)
+	}
+	if err != nil {
+		return fmt.Errorf("read story overview: %w", err)
+	}
+	return flags.Set("overview", string(data))
 }

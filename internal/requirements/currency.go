@@ -357,12 +357,12 @@ func compareAcross(byRevision map[string]string, pinned, current, unchanged, cha
 }
 
 // obligationOf renders what one story revision requires: its title, its
-// statement, and its acceptance criteria in order. Priority, personas, and
+// statement, authored overview, and its acceptance criteria in order. Priority, personas, and
 // citations say how urgent the story is, who it serves, and where it came
 // from; none of them changes what a design must address, a slide must explain,
 // or a test must verify, so none of them ages a relation.
 func obligationOf(revision Revision) string {
-	parts := []string{strconv.Quote(revision.Title), strconv.Quote(revision.Statement)}
+	parts := []string{strconv.Quote(revision.Title), strconv.Quote(revision.Statement), strconv.Quote(revision.Overview)}
 	for _, criterion := range revision.AcceptanceCriteria {
 		parts = append(parts, strconv.Quote(criterion.ID), strconv.Quote(criterion.Statement))
 	}

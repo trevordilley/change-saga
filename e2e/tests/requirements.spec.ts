@@ -59,7 +59,7 @@ test("requirements remain canonical while stories and criteria get dedicated rev
   await expect(page).toHaveURL(/\/requirements\/canonical-review$/);
   await expect(page.getByRole("heading", { name: "Review canonical requirements", level: 1 })).toBeVisible();
   await expect(page.getByText(statement)).toBeVisible();
-  await expect(page.locator("[data-story-context]")).toBeVisible();
+  await expect(page.locator("[data-story-context]")).toBeHidden();
   const storyDetails = page.locator("details.requirement-story-details");
   await expect(storyDetails).not.toHaveAttribute("open", "");
   await expect(storyDetails.getByText("Lifecycle", { exact: true })).not.toBeVisible();
@@ -68,6 +68,7 @@ test("requirements remain canonical while stories and criteria get dedicated rev
   await expect(criterion).toBeVisible();
   await storyDetails.getByText("Details", { exact: true }).click();
   await expect(storyDetails.getByText("Lifecycle", { exact: true })).toBeVisible();
+  await expect(page.locator("[data-story-context]")).toBeVisible();
 });
 
 test("an active requirement opens its implementation Item and exact linked source", async ({ page, saga }) => {
@@ -92,7 +93,10 @@ test("an active requirement opens its implementation Item and exact linked sourc
 
   await page.goto(`${saga.baseURL}/requirements/trace-code`);
   await waitForSettledSaga(page);
-  await page.locator(`[data-requirement-target="${criterion}"]`).getByRole("link", { name: "AC 01" }).click();
+  const criterionDisclosure = page.locator(`details[data-requirement-target="${criterion}"]`);
+  await expect(criterionDisclosure.locator("summary")).toHaveText("The implementation Item opens the exact linked source.");
+  await criterionDisclosure.locator("summary").click();
+  await criterionDisclosure.getByRole("link", { name: "AC 01 · Open criterion", exact: true }).click();
   await expect(page).toHaveURL(/\/requirements\/trace-code\/criteria\/opens-source$/);
   const criterionPage = page.locator("[data-criterion-page]");
   const implementationLink = criterionPage.locator(`[data-trace-target="${item}"]`).getByRole("link", { name: "Request implementation" });

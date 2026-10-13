@@ -134,12 +134,14 @@ func Feature(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("feature", []string{"add"}, out)
+		return livingFamilyHelp("feature", []string{"add", "set-overview"}, out)
 	}
 	var err error
 	switch args[0] {
 	case "add":
 		err = featureAdd(ctx, args[1:], out)
+	case "set-overview":
+		err = setOverviewPart(ctx, overviewPart{command: "feature set-overview", pkg: applayout.FeatureOverview, title: "Overview", order: -100, feature: true}, args[1:], out, os.Stdin)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["feature"])
 	}

@@ -236,3 +236,17 @@ func (document *Saga) FindFeature(id string) *Feature {
 	}
 	return nil
 }
+
+// Overview returns the optional authored overview in the ordinary feature report.
+// Its identity, content, links and Git history are those of a normal fragment.
+func (feature *Feature) Overview() *Fragment {
+	if feature == nil || feature.Report == nil {
+		return nil
+	}
+	for _, fragment := range feature.Report.Fragments {
+		if fragment.Path == feature.Path+"/"+applayout.FeatureOverview {
+			return fragment
+		}
+	}
+	return nil
+}

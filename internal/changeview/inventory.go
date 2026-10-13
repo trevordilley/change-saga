@@ -269,6 +269,9 @@ func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
 			node.Title = revision.Title
 			var text strings.Builder
 			text.WriteString(revision.Title + "\n\n" + revision.Statement + "\n")
+			if revision.Overview != "" {
+				text.WriteString("\n" + revision.Overview + "\n")
+			}
 			for _, criterion := range revision.AcceptanceCriteria {
 				text.WriteString("\n- " + criterion.ID + ": " + criterion.Statement)
 				criterionURN, _ := livingid.Criterion(b.sagaID, story.Identity.ID, criterion.ID)

@@ -315,6 +315,26 @@ an optional visual whose bindings resolve against the composed directory. An
 overlay never modifies the ERD, and a removal does not retire an entity. The
 model (directory, bindings, meaning, cardinality) is readable without the SVG.
 
+**Feature and story overview prose.** `feature set-overview --feature ID|URN
+(--text MARKDOWN | --source FILE|-)` writes an optional ordinary Markdown fragment
+at `___features/<id>.feature/overview.fragment/`. Its manifest follows
+`schema/v5/feature-overview.schema.json` (the existing v2 fragment contract).
+The immutable Feature identity is unchanged; fragment identity and Git history
+retain normal query and deep-link semantics. `query context` exposes an optional
+`feature.overview {target,path,media_type}` descriptor.
+
+Story revisions have optional authored Markdown `overview`. Title is the short
+value in navigation, and Statement the full authored need, normally “As a
+<persona> I can <value>”; existing wording is never transformed. `story add|revise`
+accepts `--overview MARKDOWN` or `--overview-source FILE|-`. Single-parent flag
+revisions inherit omitted prose; explicit empty clears. Structured revisions
+remain complete snapshots and multi-parent reconciliation never guesses prose.
+Criterion conveniences preserve overview. It participates in whole-story
+obligation currency and changed-record context, without changing independent
+criterion-statement carry-forward or lifecycle acceptance semantics. Queries
+expose current and historical snapshots. Both additions are optional: existing
+Sagas remain readable without migration. See [authoring and reading](docs/feature-story-reading.md).
+
 **Multiple ERD documents and shared overview.** An app may have any number of
 independently named ERD records: for example `sqlite`, `postgres`, and
 `cross-store`. Each owns its name, explanation, revision graph, SVG, directory,

@@ -396,10 +396,11 @@ type featurePageView struct {
 	Summary     featureSummaryView
 	Stories     []featureStoryView
 	// Report is the feature's own report content; Design its technical design.
-	Report *sectionView
-	Design *sectionView
-	Tests  []traceLink
-	Decks  []featureDeckView
+	Overview *fragmentView
+	Report   *sectionView
+	Design   *sectionView
+	Tests    []traceLink
+	Decks    []featureDeckView
 	// RelatedReviews are the reviews that touched this feature's code. They
 	// are derived, never authored, and read as a footnote.
 	RelatedReviews []relatedReviewView
@@ -452,6 +453,16 @@ func (graph *appGraph) featurePage(id string) (*featurePageView, error) {
 	scope := viewScope{}.shell()
 	if feature.Report != nil && (len(feature.Report.Fragments) > 0 || len(feature.Report.Children) > 0) {
 		view.Report = makeSectionView(feature.Report, scope)
+		if overview := feature.Overview(); overview != nil {
+			view.Overview = makeFragmentView(overview, scope)
+			remaining := view.Report.FragmentViews[:0]
+			for _, fragment := range view.Report.FragmentViews {
+				if fragment.Target != overview.Target {
+					remaining = append(remaining, fragment)
+				}
+			}
+			view.Report.FragmentViews = remaining
+		}
 	}
 	if feature.Design != nil && len(feature.Design.Children)+len(feature.Design.Fragments) > 0 {
 		view.Design = makeSectionView(feature.Design, scope)
