@@ -120,7 +120,7 @@ var diagramPaintStyle = regexp.MustCompile(`^(?:(?:fill|stroke|flood-color|color
 
 var diagramMetadata = func() map[string]bool {
 	result := map[string]bool{}
-	for _, name := range strings.Fields("data-about data-annotation data-code-highlight data-code-line data-language data-connection-detail data-connection-overview data-detail-scale data-documentation-revision data-documentation-target data-frame-detail data-frame-height data-frame-overview data-frame-path data-frame-width data-from data-from-frame data-instance-path data-opaque data-source-element data-source-relationship data-to data-to-frame data-visibility data-whiteboard data-field data-key data-diagram-kind data-from-field data-renderer data-to-field data-reveal-step data-binding aria-labelledby aria-describedby filter color color-interpolation-filters stdDeviation flood-color flood-opacity text-decoration overflow") {
+	for _, name := range strings.Fields("data-about data-annotation data-code-highlight data-code-line data-language data-connection-detail data-connection-overview data-diagram-summary data-diagram-detail data-detail-scale data-documentation-revision data-documentation-target data-frame-detail data-frame-height data-frame-overview data-frame-path data-frame-width data-from data-from-frame data-instance-path data-opaque data-source-element data-source-relationship data-to data-to-frame data-visibility data-whiteboard data-field data-key data-diagram-kind data-from-field data-renderer data-to-field data-reveal-step data-binding aria-labelledby aria-describedby filter color color-interpolation-filters stdDeviation flood-color flood-opacity text-decoration overflow") {
 		result[name] = true
 	}
 	return result
@@ -297,7 +297,7 @@ body:has(#view-saga.active .whiteboard-canvas)>.topbar{display:none}
 .whiteboard-toolbar button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
 .whiteboard-viewport>svg{display:block;width:100%;height:100%;max-width:none}
 .whiteboard-viewport [data-diagram-summary] rect{fill:var(--bg);stroke:var(--accent);stroke-width:1.5}
-.whiteboard-viewport [data-diagram-summary] text{fill:var(--ink);font-weight:600}
+.whiteboard-viewport [data-diagram-summary] text:not([font-weight]){fill:var(--ink);font-weight:600}
 .whiteboard-viewport [data-frame-detail]>svg{overflow:visible}
 .whiteboard-viewport:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .whiteboard-viewport.whiteboard-dragging{cursor:grabbing;user-select:none}

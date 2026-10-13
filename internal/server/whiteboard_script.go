@@ -24,6 +24,12 @@ const whiteboardJavaScript = `
       for (const field of qa('[data-field]', svg)) {
         field.style.display = 'none'; field.setAttribute('aria-hidden','true');
       }
+      for (const node of qa('[data-diagram-detail="entity"]', svg)) {
+        node.style.display = 'none'; node.setAttribute('aria-hidden','true');
+      }
+      for (const node of qa('[data-diagram-summary="entity"]', svg)) {
+        node.style.display = ''; node.setAttribute('aria-hidden','false');
+      }
       const select = q('[data-whiteboard-focus]', board);
       const level = q('[data-whiteboard-level]', board);
       const inspection = q('[data-whiteboard-inspection]', board);
@@ -372,7 +378,7 @@ const whiteboardJavaScript = `
         if (node.hasAttribute('data-frame-path') || sections.has(node.dataset.instancePath)) {
           event.preventDefault(); event.stopPropagation(); focus(node.dataset.instancePath); return;
         }
-        const note = q(':scope > desc', node)?.textContent;
+        const note = q(':scope > desc', node)?.textContent || q(':scope > title', node)?.textContent;
         if (note) { inspection.textContent = (node.getAttribute('aria-label') || '') + ' · ' + note; inspection.hidden = false; }
         const connection = node.closest('[data-from][data-to]');
         if (connection) {
@@ -400,7 +406,7 @@ const whiteboardJavaScript = `
         if (!control) continue;
         if (control !== node) node.setAttribute('role','group');
         control.setAttribute('tabindex','0'); control.setAttribute('role','button');
-        const title = q(':scope > title', node)?.textContent || node.getAttribute('aria-label') || node.dataset.instancePath;
+        const title = node.getAttribute('aria-label') || q(':scope > title', node)?.textContent || node.dataset.instancePath;
         control.setAttribute('aria-label', (node.hasAttribute('data-frame-path') || sections.has(node.dataset.instancePath) ? 'Focus ' : node.hasAttribute('data-documentation-target') ? 'Inspect ' : 'Inspect ') + title);
         control.addEventListener('keydown', event => {
           if (event.target !== control || control.closest('[aria-hidden="true"]') || (event.key !== 'Enter' && event.key !== ' ')) return;

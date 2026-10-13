@@ -152,6 +152,20 @@ func (r *renderer) entity(e Element, style Style, g *node) error {
 	if err := r.text(g, e.Label, Box{X: left, Y: 8, Width: width, Height: style.FontSize * lineHeight}, style.FontSize, style.Ink, false, align); err != nil {
 		return err
 	}
+	// The header and bounds stay shared. An explicitly authored summary can
+	// replace the field body in a viewer; standalone SVG still shows all rows.
+	fields := g
+	if e.Summary != "" {
+		fields = g.add("g", "data-diagram-detail", "entity")
+		summary := g.add("g", "data-diagram-summary", "entity", "style", "display:none")
+		padding := math.Max(entityPadding, style.FontSize*.35)
+		if err := r.text(summary, e.Summary, Box{X: padding, Y: header + padding, Width: w - 2*padding, Height: e.Height - header - 2*padding}, style.FontSize*.8, style.Ink, true, "start"); err != nil {
+			return fmt.Errorf("entity summary: %w", err)
+		}
+		for _, text := range summary.children {
+			text.set("font-weight", "normal")
+		}
+	}
 	markerWidth := 0.0
 	for _, field := range e.Fields {
 		if field.Key == "" {
@@ -166,9 +180,9 @@ func (r *renderer) entity(e Element, style Style, g *node) error {
 	for index, field := range e.Fields {
 		top := header + float64(index)*entityRowHeight
 		if index > 0 {
-			g.add("path", "d", fmt.Sprintf("M0 %sH%s", num(top), num(w)), "stroke", line, "stroke-opacity", ".35", "stroke-width", "1")
+			fields.add("path", "d", fmt.Sprintf("M0 %sH%s", num(top), num(w)), "stroke", line, "stroke-opacity", ".35", "stroke-width", "1")
 		}
-		row := g.add("g", "data-field", field.Name)
+		row := fields.add("g", "data-field", field.Name)
 		if field.Key != "" {
 			row.set("data-key", field.Key)
 			marker := row.add("text", "x", num(entityPadding), "y", num(top+(entityRowHeight+entityKeySize)/2-1), "font-size", num(entityKeySize), "fill", line, "xml:space", "preserve")

@@ -82,3 +82,65 @@ func TestEntityEdgesTakeCrowsFeet(t *testing.T) {
 		t.Fatalf("missing %q in:\n%s", want, b.String())
 	}
 }
+
+func TestAuthoredEntitySummaryPreservesExactFieldArtwork(t *testing.T) {
+	doc := New()
+	doc.Elements = []Element{{ID: "record", Kind: "node", Shape: "entity", Label: "Saved record", Width: 500, Height: 220, Style: "normal", Fields: Fields{{Name: "id", Type: "uuid", Key: "pk"}, {Name: "body", Type: "text"}}}}
+	attr := func(n *node, name string) string {
+		for _, a := range n.attrs {
+			if a[0] == name {
+				return a[1]
+			}
+		}
+		return ""
+	}
+	var find func(*node, string, string) *node
+	find = func(n *node, name, value string) *node {
+		if attr(n, name) == value {
+			return n
+		}
+		for _, c := range n.children {
+			if found := find(c, name, value); found != nil {
+				return found
+			}
+		}
+		return nil
+	}
+	original, err := renderTree(doc, Options{}, nil, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	entity := find(original, "id", "record")
+	var expected bytes.Buffer
+	for _, child := range entity.children {
+		if attr(child, "data-field") != "" || attr(child, "stroke-opacity") == ".35" {
+			child.write(&expected, 0)
+		}
+	}
+	doc.Elements[0].Summary = "Preserves the accepted edit for shared access."
+	rendered, err := renderTree(doc, Options{}, nil, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	detail, summary := find(rendered, "data-diagram-detail", "entity"), find(rendered, "data-diagram-summary", "entity")
+	if detail == nil || summary == nil {
+		t.Fatal("authored summary and exact field body missing")
+	}
+	var actual bytes.Buffer
+	for _, child := range detail.children {
+		child.write(&actual, 0)
+	}
+	if actual.String() != expected.String() {
+		t.Fatal("summary altered fixed field metrics, keys or divider artwork")
+	}
+	if attr(summary, "style") != "display:none" || attr(detail, "style") != "" {
+		t.Fatal("standalone default must retain full fields")
+	}
+	if len(summary.children) != 1 || attr(summary.children[0], "font-size") != "17.6" || attr(summary.children[0], "font-weight") != "normal" {
+		t.Fatal("summary must use shared wrapped text at authored style scale")
+	}
+	doc.Elements[0].Summary = strings.Repeat("exceeds available space ", 30)
+	if _, err := Render(doc, Options{}); err == nil || !strings.Contains(err.Error(), "entity summary: text overflow") {
+		t.Fatalf("summary overflow was hidden: %v", err)
+	}
+}

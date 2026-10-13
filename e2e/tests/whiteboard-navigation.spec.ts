@@ -135,9 +135,9 @@ function nativeModel(saga: SagaFixture) {
   run("data-entity", "add", "--id", "record", "--from", file("record", {name:"Saved record", explanation:"A shared record.", intent:"implemented", fields:[{id:"id",name:"id",type:"uuid"}], code:[code("saved",3,"Entity evidence at its saved commit.")], relationships:[{id:"sync",meaning:"production",destination:pin("edit"),label:"synchronized from",flow:"destination_to_owner",explanation:"A saved edit produces a shared record.",intent:"implemented",code:[code("sync-code",4,"Relationship evidence at its saved commit.")]}]}), "--delivery", "HEAD", "--repo", saga.sourceRepo, saga.sagaRoot);
   run("diagram", "publish", "--whiteboard", "erd", "--name", "One cohesive model", "--revision", "r1", "--from", file("native-board", {version:1,width:3200,height:1500,reveal:"fade",elements:[
     {id:"delivery",kind:"group",shape:"section",label:"Delivery",x:50,y:150,width:1000,height:850,style:"normal",color:"blue"},
-    {id:"edit",parent:"delivery",kind:"node",shape:"entity",label:"Local edit",x:80,y:150,width:500,height:240,style:"normal",source:pin("edit"),fields:[{name:"id",type:"uuid"}]},
+    {id:"edit",parent:"delivery",kind:"node",shape:"entity",label:"Local edit",summary:"Captures local work before delivery.",x:80,y:150,width:500,height:240,style:"normal",source:pin("edit"),fields:[{name:"id",type:"uuid"}]},
     {id:"shared",kind:"group",shape:"section",label:"Shared records",x:2100,y:150,width:1000,height:850,style:"normal",color:"green"},
-    {id:"record",parent:"shared",kind:"node",shape:"entity",label:"Saved record",x:80,y:150,width:500,height:240,style:"normal",source:pin("record"),fields:[{name:"id",type:"uuid"}]},
+    {id:"record",parent:"shared",kind:"node",shape:"entity",label:"Saved record",summary:"Preserves the accepted edit for shared access.",description:"The exact shared record definition retains source provenance.",x:80,y:150,width:500,height:240,style:"normal",source:pin("record"),fields:[{name:"id",type:"uuid"},{name:"body",type:"text"}]},
     {id:"sync",kind:"connection",from:"delivery/edit",to:"shared/record",label:"synchronized from",head:"arrow",style:"primary",source:{...pin("record"),relationship:"sync"},label_box:{x:1100,y:330,width:900,height:100}},
     {id:"overview-note",kind:"text",visibility:"overview",label:"One model across local and shared data",x:50,y:1100,width:1600,height:100,style:"normal"},
     {id:"detail-note",parent:"shared",kind:"text",visibility:"detail",label:"Exact definitions retain their source evidence",x:80,y:500,width:700,height:180,style:"normal"}
@@ -186,16 +186,29 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   await expect(evidence).toBeHidden();
   await expect(evidence).not.toHaveAttribute("data-documentation-target");
   const record = board.locator('[data-instance-path="shared/record"]');
+  await expect(record).toHaveAccessibleName("Inspect Saved record");
+  await expect(record.locator('[data-diagram-summary="entity"]')).toBeVisible();
+  await expect(record.locator('[data-diagram-summary="entity"]')).toContainText("Preserves the accepted edit for shared access.");
+  await expect(record.locator('[data-diagram-detail="entity"]')).toBeHidden();
+  await expect(record.locator('[data-diagram-detail="entity"] > path')).toBeHidden();
   await record.focus(); await page.keyboard.press("Enter");
   await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", /data-entity:record:revision:r1$/);
+  await expect(board.locator("[data-whiteboard-inspection]")).toContainText("The exact shared record definition retains source provenance.");
   await expect(page.locator('.drawer-body [data-file-path="src/app.go"]')).toContainText("Entity evidence at its saved commit.");
   await expect(page.locator('.drawer-body [data-evidence-integrity="verified"]')).toBeVisible();
   await page.keyboard.press("Escape");
   await board.locator("[data-whiteboard-fields]").click();
-  await expect(record.locator("[data-field]")).toBeVisible();
+  await expect(record.locator("[data-field]").first()).toBeVisible();
+  await expect(record.locator('[data-diagram-detail="entity"] > path')).toBeVisible();
+  await expect(record.locator('[data-diagram-detail="entity"]')).toBeVisible();
+  await expect(record.locator('[data-diagram-summary="entity"]')).toBeHidden();
   await board.locator("[data-whiteboard-fields]").click();
-  await expect(record.locator("[data-field]")).toBeHidden();
+  await expect(record.locator("[data-field]").first()).toBeHidden();
+  await expect(record.locator('[data-diagram-detail="entity"] > path')).toBeHidden();
+  await expect(record.locator('[data-diagram-summary="entity"]')).toBeVisible();
+  await expect(record.locator('[data-diagram-detail="entity"]')).toBeHidden();
   await select.selectOption("");
+  await expect(record.locator('[data-diagram-summary="entity"]')).toBeVisible();
   await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
   const relationship = board.locator('[data-instance-path="sync"]');
   await expect(relationship).toHaveAttribute("data-whiteboard-from", "delivery/edit");
