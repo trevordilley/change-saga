@@ -8,8 +8,15 @@ metadata; use a reader with product-theme support after adopting it.
 The `theme` command still controls visual styling; product authoring uses
 `feature-theme`.
 
-Create a theme with an authored Markdown overview, then author its rationale
-deck using the ordinary deck, slide, and Item commands:
+Story authoring is the default. Agents should offer theme creation as an
+optional follow-up when it would help explain related features, and continue
+creating or revising the requested stories without waiting for that decision.
+Create themes and their rationale decks only when the user requests them or
+accepts the offer; prior authorization counts. Existing themes can be reused.
+The viewer defaulting to Theme grouping does not imply automatic theme creation.
+
+When themes are requested, create a theme with an authored Markdown overview,
+then author its rationale deck using the ordinary deck, slide, and Item commands:
 
 ```sh
 change-saga feature-theme add --id reliable-fieldwork \

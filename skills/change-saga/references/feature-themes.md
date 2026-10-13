@@ -4,6 +4,13 @@ Product Themes are optional categories of Features, distinct from visual
 styling (`theme`). Membership is many-to-many and lives on the theme; never
 relocate or duplicate Features or stories to group them.
 
+Default to creating or revising the requested stories. Offer theme creation as
+an optional follow-up when related features would benefit from a shared
+explanation; do not automatically create themes or rationale decks as part of
+story authoring. Proceed with themes when the user requests them or accepts
+the offer, including direction already given in the conversation. A pending
+or declined offer must not block stories. Reuse existing themes where relevant.
+
 Discover `query feature-themes --saga PATH` (paginated summaries) and select
 `--theme ID|URN` to read Markdown overview and membership. Use `query schema
 feature-themes` and `spec --json` for the current contract.
@@ -20,6 +27,8 @@ existing persona, feature, or story using `record` and may cite validated code.
 They need no code minimum and cannot establish implementation criterion coverage.
 
 The viewer's Product themes pages show the authored overview and rationale deck.
-Features can group by Theme, Persona, or All; persona membership derives from
-current story personas including proposed stories. Keep ungrouped features
-visible and preserve their canonical links.
+With four or more features, the menu beside Features offers None, Theme (when
+themes exist), and Persona. Theme is the default grouping when available; this
+display preference never authorizes creating themes. Smaller sets stay flat.
+Persona membership derives from current story personas including proposed
+stories. Keep ungrouped features visible and preserve their canonical links.

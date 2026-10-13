@@ -14,6 +14,15 @@ record observable criteria, and keep inferred intent proposed. Technical decks
 explain mechanisms and reference these records through their Items. Do not
 replace Product records with a feature catalog or story list in a deck.
 
+## Themes are an optional follow-up
+
+Create or revise the requested stories by default, using their feature context.
+Offer to create [Product Themes](feature-themes.md) when grouping related
+features would help explain their shared purpose. Continue story authoring
+without waiting for a theme decision. Create themes and their rationale decks
+only when the user asks for them or accepts the offer; an earlier request
+already provides that direction. Existing themes do not require creating more.
+
 ## Ground the interview before drafting
 
 This applies to candidate stories in conversation, not only persisted records.

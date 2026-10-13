@@ -161,6 +161,11 @@ inferred requirements accepted. Reuse existing personas and story identities.
 A prose feature list or a slide titled “Stories” is not a substitute for these
 records. Technical decks may reference the real stories through their Items.
 
+Create or revise stories by default. Offer to organize related features into
+Product Themes as an optional follow-up; create themes and their rationale
+decks only when the user requests them or accepts the offer. Do not delay
+story authoring for a theme decision or ask again if themes are already authorized.
+
 ## Mandatory contract
 
 A Change Saga is Git-native: the recommended idiom is one Saga per
