@@ -25,6 +25,9 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 			DiagramSource                         json.RawMessage `json:"diagram_source"`
 			History, Commands, Compatibility      map[string]string
 		} `json:"whiteboards"`
+		Deck struct {
+			DiagramSource json.RawMessage `json:"diagram_source"`
+		} `json:"implementation_deck"`
 	}
 	if err := json.Unmarshal(output.Bytes(), &spec); err != nil {
 		t.Fatal(err)
@@ -33,13 +36,43 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 	if len(board.Kinds) != 1 || board.Kinds[0] != "erd" || board.Root != requirements.WhiteboardDir || board.Storage != requirements.WhiteboardDir+"/erd/revisions/<id>.json" || board.Schema != requirements.WhiteboardSchemaURL || board.RevisionVersion != 1 {
 		t.Fatalf("whiteboard storage or supported kinds drifted: %+v", board)
 	}
-	var grammar bytes.Buffer
-	if err := json.Compact(&grammar, board.DiagramSource); err != nil {
+	var boardGrammar map[string]json.RawMessage
+	if err := json.Unmarshal(board.DiagramSource, &boardGrammar); err != nil {
 		t.Fatal(err)
 	}
-	shared, err := json.Marshal(diagram.Contract())
-	if err != nil || !bytes.Equal(grammar.Bytes(), shared) {
-		t.Fatalf("whiteboards must expose the existing shared diagram grammar: %v", err)
+	var boardInput, boardStorage string
+	if err := json.Unmarshal(boardGrammar["request_field"], &boardInput); err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(boardGrammar["storage"], &boardStorage); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(boardInput, "complete diagram.Document") || !strings.Contains(boardInput, "diagram publish --whiteboard erd --from") || !strings.Contains(boardStorage, "document inside an immutable ___whiteboards/erd/revisions/<id>.json revision") {
+		t.Fatal("whiteboard grammar must describe board input/storage instead of slide assets")
+	}
+	shared := diagram.Contract()
+	slideGrammar, err := json.Marshal(shared)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var deckGrammar bytes.Buffer
+	if err := json.Compact(&deckGrammar, spec.Deck.DiagramSource); err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(deckGrammar.Bytes(), slideGrammar) {
+		t.Fatal("whiteboard metadata overrides changed the slide contract")
+	}
+	for _, key := range []string{"request_field", "storage"} {
+		delete(boardGrammar, key)
+		delete(shared, key)
+	}
+	actual, err := json.Marshal(boardGrammar)
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected, err := json.Marshal(shared)
+	if err != nil || !bytes.Equal(actual, expected) {
+		t.Fatalf("whiteboards must retain the shared grammar apart from input/storage: %v", err)
 	}
 	if len(board.Commands) != 4 || board.Commands["publish"] != commandUsage["diagram publish"] {
 		t.Fatalf("whiteboard commands drifted: %#v", board.Commands)

@@ -1334,6 +1334,9 @@ func Spec(args []string, out io.Writer) error {
 		return fmt.Errorf("usage: %s", commandUsage["spec"])
 	}
 	if *jsonOutput {
+		whiteboardDiagram := diagram.Contract()
+		whiteboardDiagram["request_field"] = "complete diagram.Document supplied via diagram publish --whiteboard erd --from FILE|-"
+		whiteboardDiagram["storage"] = "document inside an immutable " + requirements.WhiteboardDir + "/erd/revisions/<id>.json revision"
 		return writeJSON(out, map[string]any{
 			"version": saga.SagaVersion, "manifest": saga.ManifestName, "component_version": saga.ComponentVersion, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
 			"hierarchy":            []string{"overview", "chapter", "section", "fragment"},
@@ -1364,7 +1367,7 @@ func Spec(args []string, out io.Writer) error {
 				"storage":          requirements.WhiteboardDir + "/erd/revisions/<id>.json",
 				"schema":           requirements.WhiteboardSchemaURL,
 				"revision_version": 1,
-				"diagram_source":   diagram.Contract(),
+				"diagram_source":   whiteboardDiagram,
 				"history": map[string]string{
 					"revisions": "immutable complete diagram snapshots; identical retries are idempotent",
 					"parent":    "first publication has no parent; updates require the observed unique current board revision ID as --parent",
@@ -2247,9 +2250,9 @@ retries are idempotent. Sources pin exact ERD/data-entity target and revision
 URNs, optionally an element or owned relationship; they never follow newer
 revisions. Read with diagram get|describe|check --whiteboard erd [--revision ID]
 [--focus PATH] <saga>. Default reads require the unique current head and reject
-conflicting heads; --revision selects exact history without fallback. Focus
-names a frame or element instance path; get also accepts --id. Describe supports
---format text|json; check supports --json. Focus is read-only; publish appends a
+conflicting heads; --revision selects exact history without fallback.
+Focus names a frame or element instance path; get also accepts --id. Describe
+supports --format text|json; check supports --json. Focus is read-only; publish appends a
 complete board snapshot. Infrastructure/system whiteboards and whiteboard edit
 transactions are not supported. Older readers reject an adopted ___whiteboards
 subtree; its absence remains valid and requires no migration.
