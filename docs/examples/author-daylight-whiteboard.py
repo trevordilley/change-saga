@@ -5,12 +5,9 @@ Python standard library only. Never publishes or modifies the input saga.
 Exact revision IDs below are intentional: this example must not follow heads.
 """
 import argparse
-import base64
 import hashlib
-import html
 import json
 from pathlib import Path
-import textwrap
 import xml.etree.ElementTree as ET
 
 # Exact source pins. Placement is a narrative, not an auto-layout or index grid.
@@ -46,6 +43,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('saga', type=Path, help='read-only DayLight saga copy')
     parser.add_argument('output', type=Path, help='new output directory outside the saga')
+    parser.add_argument('--rendered-svg', type=Path,
+                        help='shared composition-renderer SVG for optional diagnostic previews')
     args = parser.parse_args()
     root, output = args.saga.resolve(), args.output.resolve()
     if output == root or root in output.parents:
@@ -81,16 +80,16 @@ def main():
         r = records[key]
         return {'target': r['record'], 'revision': r['record'] + ':revision:' + r['id']}
 
-    def style(fill='none', stroke='none', ink='#243746', font=64, width=3):
+    def style(fill='none', stroke='none', ink='@diagram-normal-ink', font=64, width=3):
         return dict(fill=fill, stroke=stroke, ink=ink, font_size=font, stroke_width=width)
 
-    board = dict(version=1, width=WIDTH, height=HEIGHT, viewport=INITIAL_CAMERA, background='#f7f8f6', styles={
-        'frame': style('#ffffff', '#cad3d7', font=72),
-        'hero': style(font=100), 'section': style(font=82, ink='#355b64'),
-        'body': style(), 'caption': style(font=60, ink='#526776'),
-        'flow': style(stroke='#a46f28', ink='#80521b', font=60, width=7),
-        'mapping': dict(**style(stroke='#587d87', font=60, width=5), dash=True),
-        'anchor': style(),
+    board = dict(version=1, width=WIDTH, height=HEIGHT, viewport=INITIAL_CAMERA, background='@diagram-canvas', styles={
+        'frame': style('@diagram-normal-fill', '@diagram-normal-stroke', font=72),
+        'hero': style(font=100), 'section': style(font=82, ink='@diagram-title-ink'),
+        'body': style(), 'caption': style(font=60, ink='@diagram-normal-ink'),
+        'flow': style(stroke='@diagram-yellow-accent', ink='@diagram-yellow-ink', font=60, width=7),
+        'mapping': dict(**style(stroke='@diagram-blue-accent', font=60, width=5), dash=True),
+        'anchor': style(), 'area': style(font=60, width=3),
     }, elements=[])
 
     def add(element):
@@ -103,6 +102,22 @@ def main():
         if parent:
             e['parent'] = parent
         return add(e)
+
+    # Root-level backgrounds preserve every existing frame/element instance path.
+    # Different extents follow narrative neighborhoods, not equal diagram tiles.
+    sections = [
+        ('delivery-area', 'Delivery', 'yellow', 3910, 60, 6030, 2720,
+         'local-capture-delivery'),
+        ('search-area', 'Search', 'blue', 40, 2780, 5390, 4640,
+         'local-project-boundary'),
+        ('authority-area', 'Authority', 'purple', 5580, 3080, 4360, 4570,
+         'cloud-project-authority'),
+    ]
+    for key, label, color, x, y, width, height, source in sections:
+        add(dict(id=key, kind='group', shape='section', label=label, color=color,
+                 x=x, y=y, width=width, height=height, style='area', source=ref(source),
+                 description=f'{label} reading neighborhood: related diagrams and narrative. '
+                             'Color is a reading aid, not an additional system or authority boundary.'))
 
     text('title', 'DayLight / how work becomes shared evidence',
          160, 140, 3280, 150, 'local-cloud-overview', 'hero')
@@ -242,6 +257,21 @@ def main():
         for other in texts[i+1:]:
             assert not overlaps(bounds(e), bounds(other)), f'text overlap: {e["id"]}, {other["id"]}'
 
+    # Section tabs reserve 100 units above their contents; side gutters are at
+    # least 100 units and bottom gutters at least 50 units. Include complete
+    # diagram caption bands in the check.
+    section_boxes = [(key, (x, y, w, h)) for key, _, _, x, y, w, h, _ in sections]
+    for i, (key, box) in enumerate(section_boxes):
+        x, y, w, h = box
+        assert 0 <= x and 0 <= y and x+w <= WIDTH and y+h <= HEIGHT, key
+        for other, other_box in section_boxes[i+1:]:
+            assert not overlaps(box, other_box), f'section overlap: {key}, {other}'
+        for item, child in boxes + [(e['id'], bounds(e)) for e in texts]:
+            if overlaps(box, child):
+                u, v, c, d = child
+                assert x+100 <= u and u+c <= x+w-100, f'section side gutter: {key}, {item}'
+                assert y+100 <= v and v+d <= y+h-50, f'section title/bottom gutter: {key}, {item}'
+
     camera = dict(initial=INITIAL_CAMERA, canvas=dict(width=WIDTH, height=HEIGHT),
                   note='Mirrors the authored document viewport. Fit-all is an optional atlas.',
                   tours=[dict(name='Delivery', anchor='delivery-heading', x=3900, y=0, width=6100, height=2900),
@@ -255,58 +285,32 @@ def main():
                  evidence='Pinned committed-code documentation, not a live database inspection.',
                  structured_sources=sum('diagram' in r for r in records.values()),
                  svg_only_sources=sum('diagram' not in r for r in records.values()),
-                 source_pins='source-pins.json')
+                 source_pins='source-pins.json',
+                 sections=[dict(id=key, label=label, color=color)
+                           for key, label, color, *_ in sections])
     for name, data in [('daylight-board.json', board), ('source-pins.json', manifest),
                        ('camera-proposal.json', camera), ('source-audit.json', audit)]:
         (output/name).write_text(json.dumps(data, indent=2)+'\n')
 
-    # Diagnostic proof embeds the unmodified source SVG bytes. It deliberately
-    # starts at the recommended camera, with Fit available as an optional atlas.
-    # The application viewer remains authoritative for wrapping and interaction.
-    parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WIDTH} {HEIGHT}" style="background:#f7f8f6;font-family:Arial,sans-serif">']
-    for e in board['elements']:
-        if e['kind'] == 'connection':
-            a, b = (by_id[e[k]] for k in ('from', 'to'))
-            def endpoint(element, toward):
-                x, y, w, h = bounds(element)
-                cx, cy = x+w/2, y+h/2
-                dx, dy = toward[0]-cx, toward[1]-cy
-                t = min(w/(2*abs(dx)) if dx else float('inf'), h/(2*abs(dy)) if dy else float('inf'))
-                return cx+t*dx, cy+t*dy
-            def center(element):
-                x, y, w, h = bounds(element)
-                return x+w/2, y+h/2
-            bends = [(p['x'], p['y']) for p in e['bends']]
-            points = [endpoint(a, bends[0] if bends else center(b)), *bends,
-                      endpoint(b, bends[-1] if bends else center(a))]
-            coords = ' '.join(f'{x},{y}' for x, y in points)
-            style = board['styles'][e['style']]
-            dash = ' stroke-dasharray="18 14"' if style.get('dash') else ''
-            parts.append(f'<polyline points="{coords}" fill="none" stroke="{style["stroke"]}" stroke-width="5"{dash}/>')
-        if e['kind'] == 'frame':
-            key = next(k for k, r in records.items() if r['record'] == e['source']['target'])
-            svg = images[key][0]
-            x, y, w, h = bounds(e)
-            parts.append(f'<image x="{x}" y="{y}" width="{w}" height="{h}" href="data:image/svg+xml;base64,{base64.b64encode(svg).decode()}"/>')
-            parts.append(f'<text x="{x}" y="{y-45}" font-size="72" fill="#243746">{html.escape(e["label"])}</text>')
-        if e['kind'] not in ('text', 'connection'):
-            continue
-        font = board['styles'][e['style']]['font_size']
-        if e['kind'] == 'text':
-            x, y, w, _ = bounds(e)
-        else:
-            x, y, w = (e['label_box'][k] for k in ('x', 'y', 'width'))
-        for i, line in enumerate(textwrap.wrap(e['label'], max(1, int(w/(font*.50))))):
-            parts.append(f'<text x="{x}" y="{y+font+i*font*1.25}" font-size="{font}" fill="#243746">{html.escape(line)}</text>')
-    parts.append('</svg>')
-    (output/'layout-preview.svg').write_text('\n'.join(parts))
-    initial_svg = '\n'.join(parts).replace(f'viewBox="0 0 {WIDTH} {HEIGHT}"', 'viewBox="0 0 3600 2400"', 1)
-    (output/'initial-preview.svg').write_text(initial_svg)
-    (output/'layout-preview.html').write_text('<!doctype html><meta charset="utf-8"><title>DayLight narrative layout proof</title><style>body{margin:0;background:#f7f8f6;font:16px Arial}nav{position:absolute;right:16px;top:16px}button{padding:8px}img{width:100vw;height:100vh;object-fit:contain}</style><nav><button onclick="document.querySelector(\'img\').src=\'initial-preview.svg\'">Start</button> <button onclick="document.querySelector(\'img\').src=\'layout-preview.svg\'">Fit atlas</button></nav><img src="initial-preview.svg" alt="DayLight system ERD with delivery, search and authority narrative">')
+    # A preview must use the same renderer as publication, including section
+    # palette tokens, title tabs, wrapping and composition. Do not approximate it.
+    preview = None
+    if args.rendered_svg:
+        rendered = args.rendered_svg.read_text()
+        svg_root = ET.fromstring(rendered)
+        expected_viewbox = f'0 0 {WIDTH} {HEIGHT}'
+        if svg_root.attrib.get('viewBox') != expected_viewbox:
+            raise ValueError('rendered SVG must have the authored full-canvas viewBox')
+        (output/'layout-preview.svg').write_text(rendered)
+        initial_svg = rendered.replace(f'viewBox="{expected_viewbox}"',
+                                       'viewBox="0 0 3600 2400"', 1)
+        (output/'initial-preview.svg').write_text(initial_svg)
+        preview = output/'layout-preview.html'
+        preview.write_text('<!doctype html><meta charset="utf-8"><title>DayLight section layout proof</title><style>body{margin:0;background:#f7f8f6;font:16px Arial}nav{position:absolute;right:16px;top:16px}button{padding:8px}img{width:100vw;height:100vh;object-fit:contain}</style><nav><button onclick="document.querySelector(\'img\').src=\'initial-preview.svg\'">Start</button> <button onclick="document.querySelector(\'img\').src=\'layout-preview.svg\'">Fit atlas</button></nav><img src="initial-preview.svg" alt="DayLight system ERD with labeled Delivery, Search and Authority sections">')
     print(json.dumps({'board': str(output/'daylight-board.json'), 'frames': len(frames),
                       'pins': str(output/'source-pins.json'), 'audit': str(output/'source-audit.json'),
                       'camera': str(output/'camera-proposal.json'),
-                      'preview': str(output/'layout-preview.html')}, indent=2))
+                      'preview': str(preview) if preview else None}, indent=2))
 
 
 if __name__ == '__main__':

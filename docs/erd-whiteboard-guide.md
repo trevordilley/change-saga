@@ -109,9 +109,36 @@ font size plus padding. Account for that band when spacing adjacent frames,
 callouts and connector routes.
 
 Use a handful of larger core areas, smaller satellites and composite overviews
-where they help explain the model. Group related views through proximity and
-whitespace; avoid giving every ERD the same slot in a tiled index. Author a
-reading direction with large section labels and short source-backed callouts.
+where they help explain the model. Give different meaningful neighborhoods
+colored, labeled background sections around their related diagrams and narrative.
+Reuse ordinary `group` elements with `shape: "section"` and a palette `color`
+(`yellow`, `pink`, `blue`, `green`, `purple`, or `gray`). The shared renderer
+supplies a subtle theme tint, border and contrasting title tab; the style controls
+font size and stroke width. Keep narrative ink theme-aware too, for example
+`@diagram-normal-ink`, so it remains readable on dark section tints.
+
+```json
+{
+  "id": "delivery-area", "kind": "group", "shape": "section",
+  "label": "Delivery", "color": "yellow", "style": "area",
+  "x": 3910, "y": 60, "width": 6030, "height": 2720
+}
+```
+
+Define `area` in `styles` with a suitable `font_size` and `stroke_width`.
+Emit backgrounds before their contents. Reserve room for the title tab, complete
+frame caption bands, callouts and connector labels, with generous gutters.
+Use different extents to follow the explanation; preserve useful overviews,
+satellites and whitespace instead of assigning every ERD a rigid tile. Labels
+carry the meaning even without color. Color describes the reading organization;
+it does not assert another source record, SQL boundary, deployment or authority
+rule. Sections reuse the existing grammar and palette, not a new taxonomy.
+
+Use `parent` and relative coordinates when a section should contain and move its
+children; sections can nest. For an established board whose focus paths must
+stay stable, a root-level section can serve as a labeled background without
+reparenting existing elements. Those elements keep their current instance paths.
+Author a reading direction with large headings and short source-backed callouts.
 At the opening camera, the narrative and principal diagram structure should
 be readable. Individual fields belong at focused detail scale. A fit-all atlas
 may reduce even narrative text below reading size.
@@ -215,8 +242,8 @@ python3 docs/examples/author-daylight-whiteboard.py \
 ```
 
 The outputs are `daylight-board.json`, `source-pins.json`, `source-audit.json`,
-`camera-proposal.json`, and a diagnostic `layout-preview.html` with initial and
-full-canvas SVG assets. The manifest records all 20 exact pins, explanations,
+`camera-proposal.json`. Optional diagnostic previews use a supplied shared-renderer
+SVG, as described below. The manifest records all 20 exact pins, explanations,
 intrinsic dimensions, revision-file digests and verified SVG digests. Missing
 pins or visual digest mismatches stop generation; future revisions are never
 adopted implicitly. Source revision and visual files are checked again before
@@ -242,10 +269,15 @@ All 20 source ERDs remain embedded, at their intrinsic aspect ratios, across
 21 frame appearances. `system-return` repeats the exact `local-cloud-overview`
 pin near the far perimeter. It has a distinct instance path and focus target;
 repetition does not create another entity or a different source revision.
-Every frame reserves a separate 160-unit title band. The script checks frame,
-caption and narrative-text bounds and overlaps, as well as unique element IDs.
-The diagnostic preview starts at the opening camera and offers a Fit atlas
-button; source diagrams are never replaced by cards.
+Every frame reserves a separate 160-unit title band. Three labeled backgrounds—
+Delivery in yellow, Search in blue, and Authority in purple—surround the main
+reading neighborhoods. Their different extents preserve the original narrative,
+frame positions, source pins and focus paths; the initial system overview stays
+open. Backgrounds have 100-unit side and title clearances and at least 50 units
+below their contents, including full frame caption bands. The script checks
+those gutters, section bounds and overlaps, frame/caption and narrative-text
+bounds and overlaps, and unique element IDs. The source audit lists the three
+section IDs and colors alongside the pin verification.
 
 The audit explicitly distinguishes committed-code documentation from live
 database observation. All current pins are SVG-only ERDs: their directories
@@ -258,7 +290,17 @@ transcript access, and membership and exact-source consent are separate checks.
 The cross-store ERD identifies its payload-to-delivery line as the physical FK;
 other displayed mappings keep their documented meaning.
 
-Run the shared renderer to check exact text wrapping and source resolution,
-then use the application viewer for real connector routing, camera, Details,
-inspection and focus checks. The diagnostic HTML is only a layout proof.
-Publishing is a separate delivery step after that review.
+Run the shared composition renderer to check exact text wrapping and source
+resolution. The script deliberately does not implement a second renderer. Once
+you have its full-canvas SVG for this exact document, regenerate with
+`--rendered-svg /path/to/renderer-check.svg` to produce `layout-preview.html`,
+`initial-preview.svg`, and `layout-preview.svg`. The preview starts at the
+opening camera and offers a Fit atlas button. Inspect the full layout and each
+colored neighborhood in both light and dark themes, checking tab clearance and
+text contrast; source diagrams remain visible.
+
+Then use the application viewer for real connector routing, camera, Details,
+inspection and focus checks. A standalone shared-renderer SVG is only a layout
+proof, not a viewer-interaction check. Publishing is a separate delivery step
+after that review. Preserve the observed parent revision when publishing the
+approved update.
