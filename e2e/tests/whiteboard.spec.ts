@@ -33,8 +33,8 @@ function authorWhiteboard(saga: SagaFixture, nested = false) {
       ] }
     }), "--repo", saga.sourceRepo, saga.sagaRoot);
   }
-  const svg = file("legacy.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200"><rect x="20" y="20" width="660" height="160" fill="#f0f5ff" stroke="#537099"/><text x="45" y="110" font-size="32">Existing SVG stays independently readable</text></svg>');
-  run("erd", "add", "--id", "legacy", "--from", file("legacy.json", { name: "Cross-store source", explanation: "An existing drawing without structured entities.", directory: [pin("data-entity", "local-edit"), pin("data-entity", "cloud-record")] }), "--visual", svg, "--repo", saga.sourceRepo, saga.sagaRoot);
+  const svg = file("legacy.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200"><rect id="legacy-record" x="20" y="20" width="660" height="160" fill="#f0f5ff" stroke="#537099"/><text x="45" y="110" font-size="32">Existing SVG stays independently readable</text></svg>');
+  run("erd", "add", "--id", "legacy", "--from", file("legacy.json", { name: "Cross-store source", explanation: "An existing drawing without structured entities.", directory: [pin("data-entity", "local-edit"), pin("data-entity", "cloud-record")], bindings: [{ id: "saved-binding", element: "legacy-record", entity: pin("data-entity", "local-edit") }] }), "--visual", svg, "--repo", saga.sourceRepo, saga.sagaRoot);
   const board = { version: 1, width: 1800, height: 1120, styles: {
     normal: { fill: "@diagram-normal-fill", stroke: "@diagram-normal-stroke", ink: "@diagram-normal-ink", stroke_width: 2, font_size: 34 },
     title: { fill: "none", stroke: "none", ink: "@diagram-title-ink", stroke_width: 1, font_size: 46 },
@@ -120,6 +120,10 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(local).toHaveAttribute("data-whiteboard-detail", "false");
   await board.getByLabel("Focus diagram").selectOption("legacy");
   await expect(board.locator('[data-frame-detail="legacy"]')).toBeVisible();
+  const opaqueBinding = board.locator('[data-instance-path="legacy/legacy-record"]');
+  await expect(opaqueBinding).toHaveAttribute("data-documentation-target", /data-entity:local-edit$/);
+  await expect(opaqueBinding).not.toHaveAttribute("tabindex");
+  await expect(opaqueBinding).not.toHaveAttribute("role", "button");
   await board.getByText("Diagrams on this board", { exact: true }).click();
   await expect(board.locator('[data-whiteboard-frame="legacy"]')).toContainText("internal entities are not individually selectable");
   await board.locator('[data-whiteboard-focus-frame="local"]').click();

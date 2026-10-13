@@ -242,6 +242,12 @@ const whiteboardJavaScript = `
         if (!node.hasAttribute('data-documentation-target')) { event.preventDefault(); event.stopPropagation(); }
       }, true);
       for (const node of qa('[data-instance-path]', svg)) {
+        // Opaque SVG bindings can preserve provenance without a target region.
+        // Such metadata must not become an invisible keyboard control.
+        if (node.hasAttribute('data-binding')) {
+          const bounds = node.getBBox();
+          if (!(bounds.width > 0 && bounds.height > 0)) continue;
+        }
         if (!node.hasAttribute('data-frame-path') && !node.hasAttribute('data-documentation-target') && !node.hasAttribute('data-from') && !node.hasAttribute('data-about')) continue;
         node.dataset.whiteboardSelectable = 'true';
         const control = node.hasAttribute('data-frame-path') ? qa('[data-frame-overview]', node).find(child => child.dataset.frameOverview === node.dataset.framePath) : node;
