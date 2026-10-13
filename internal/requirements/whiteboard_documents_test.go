@@ -445,3 +445,68 @@ func TestWhiteboardRevisionDiscoveryLimitAllowsPendingWrite(t *testing.T) {
 		t.Fatal("revision count limit was lost")
 	}
 }
+
+func TestWhiteboardRevisionIDsFollowOneSelectedHistory(t *testing.T) {
+	root, pin, _ := whiteboardFixture(t)
+	parent := ""
+	for _, id := range []string{"r1", "r10", "r2"} {
+		if _, err := PublishWhiteboard(context.Background(), root, "test", "planning", id, parent, "Planning", boardDocument(pin)); err != nil {
+			t.Fatal(err)
+		}
+		parent = id
+	}
+	if _, err := PublishWhiteboard(context.Background(), root, "test", "other", "r99", "", "Other", boardDocument(pin)); err != nil {
+		t.Fatal(err)
+	}
+	for _, test := range []struct {
+		board string
+		want  []string
+	}{{"planning", []string{"r2", "r10", "r1"}}, {"other", []string{"r99"}}, {"missing", nil}} {
+		ids, err := ListWhiteboardRevisionIDs(root, "test", test.board)
+		if err != nil || !reflect.DeepEqual(ids, test.want) {
+			t.Fatalf("%s revision IDs = %v, %v; want %v", test.board, ids, err, test.want)
+		}
+	}
+	if _, err := ListWhiteboardRevisionIDs(root, "test", "../planning"); err == nil {
+		t.Fatal("accepted invalid board ID")
+	}
+	// Listing validates saved documents and parent links without resolving the
+	// inventory pins or rendering compositions, just like an unresolved read.
+	if err := os.Remove(filepath.Join(root, TechnicalPath(KindERD, "jobs"), "revisions", "r1.json")); err != nil {
+		t.Fatal(err)
+	}
+	if ids, err := ListWhiteboardRevisionIDs(root, "test", "planning"); err != nil || len(ids) != 3 {
+		t.Fatalf("history listing tried to resolve source pins: %v, %v", ids, err)
+	}
+}
+
+func TestWhiteboardRevisionIDsRejectInvalidOrConflictingHistory(t *testing.T) {
+	for _, problem := range []string{"missing-parent", "second-root", "conflicting-heads", "malformed-revision"} {
+		t.Run(problem, func(t *testing.T) {
+			root, pin, _ := whiteboardFixture(t)
+			first, err := PublishWhiteboard(context.Background(), root, "test", "planning", "r1", "", "Planning", boardDocument(pin))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := PublishWhiteboard(context.Background(), root, "test", "planning", "r2", "r1", "Planning", boardDocument(pin)); err != nil {
+				t.Fatal(err)
+			}
+			bad := *first
+			bad.ID, bad.Parents = "bad", []string{"r1"}
+			switch problem {
+			case "missing-parent":
+				bad.Parents = []string{"missing"}
+			case "second-root":
+				bad.Parents = []string{}
+			case "malformed-revision":
+				bad.Version = 99
+			}
+			if err := store.WriteJSON(filepath.Join(root, WhiteboardDir, "planning", "revisions", "bad.json"), bad, true); err != nil {
+				t.Fatal(err)
+			}
+			if ids, err := ListWhiteboardRevisionIDs(root, "test", "planning"); err == nil || ids != nil {
+				t.Fatalf("accepted %s: %v, %v", problem, ids, err)
+			}
+		})
+	}
+}

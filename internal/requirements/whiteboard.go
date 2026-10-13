@@ -180,6 +180,28 @@ func validateWhiteboardRevision(v WhiteboardRevision, id string) error {
 	return v.Document.Validate()
 }
 
+// ListWhiteboardRevisionIDs validates a document's stored revision history once
+// and lists its IDs from the unique current head to the root. An absent board
+// returns nil,nil. Like LoadWhiteboard, it does not resolve or render source pins.
+func ListWhiteboardRevisionIDs(root, sagaID, boardID string) ([]string, error) {
+	revisions, heads, err := whiteboardHistory(root, sagaID, boardID)
+	if err != nil || len(revisions) == 0 {
+		return nil, err
+	}
+	if len(heads) != 1 {
+		return nil, fmt.Errorf("whiteboard has conflicting revision heads: %v", heads)
+	}
+	ids := make([]string, 0, len(revisions))
+	for id := heads[0]; ; {
+		ids = append(ids, id)
+		parents := revisions[id].Parents
+		if len(parents) == 0 {
+			return ids, nil
+		}
+		id = parents[0]
+	}
+}
+
 // LoadWhiteboard selects an exact revision or the unique head. Missing optional
 // board storage returns nil,nil. An explicit revision never falls back to head.
 func LoadWhiteboard(root, sagaID, boardID, revision string) (*WhiteboardRevision, error) {
