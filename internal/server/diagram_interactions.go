@@ -96,19 +96,35 @@ const diagramInteractionsJavaScript = `
   function diagramAffordanceOwner(node) {
     return diagramAffordanceOwners.get(node?.closest?.('[data-diagram-affordance]')) || node;
   }
+  function diagramAffordanceNext(owner) {
+    const board = owner?.closest?.('[data-whiteboard-view]');
+    if (!board) return null;
+    return qa(tabbableSelector,board).find(node => tabbable(node) && !owner.contains(node)
+      && Boolean(owner.compareDocumentPosition(node)&Node.DOCUMENT_POSITION_FOLLOWING)) || q('[data-whiteboard-viewport]',board);
+  }
   function prepareDiagramAffordance(root, {signal, position}) {
     const bar = document.createElement('div');
     bar.className = 'diagram-affordance'; bar.dataset.diagramAffordance = '';
     bar.setAttribute('role','group'); bar.hidden = true;
     document.body.append(bar);
     const cache = new Map(), inflight = new Map();
-    let owner = null, hideTimer = 0, pending = 0, touch = false;
+    let owner = null, hideTimer = 0, pending = 0, touch = false, quietFocus = false;
+    const viewport = root.closest('[data-whiteboard-viewport]');
     const inside = target => target instanceof Node && (owner?.contains(target) || bar.contains(target) || notePopover?.contains(target));
-    function clear() {
+    function clear(focusTarget = null) {
       clearTimeout(hideTimer); pending++;
-      if (noteOwner && bar.contains(noteOwner)) hideNote();
+      const ownsNote = noteOwner && bar.contains(noteOwner);
+      const losesFocus = bar.contains(document.activeElement) || (ownsNote && notePopover?.contains(document.activeElement));
+      if (ownsNote) hideNote();
       bar.hidden = true; bar.replaceChildren(); owner = null;
       diagramAffordanceOwners.delete(bar);
+      const destination = focusTarget || (losesFocus ? viewport : null);
+      if (destination?.isConnected && !signal.aborted) {
+        // Returning to the SVG owner fires focusin synchronously. Dismissal
+        // must not recreate the strip through that focus event.
+        quietFocus = true;
+        try { destination.focus({preventScroll:true}); } finally { quietFocus = false; }
+      }
     }
     function leave(event) {
       if (inside(event.relatedTarget)) return;
@@ -139,6 +155,7 @@ const diagramInteractionsJavaScript = `
       diagramNoteTemplates.set(button,template); bar.append(button);
     }
     async function show(node) {
+      if (quietFocus) return;
       clearTimeout(hideTimer);
       if (owner === node && !bar.hidden) return;
       if (noteOwner && bar.contains(noteOwner) && notePopover?.classList.contains('pinned')) return;
@@ -173,14 +190,14 @@ const diagramInteractionsJavaScript = `
     bar.addEventListener('focusout',leave);
     const keydown = event => {
       if (event.defaultPrevented || !owner || bar.hidden) return;
-      if (event.key === 'Escape' && !noteOwner) { const previous=owner; clear(); previous.focus({preventScroll:true}); event.preventDefault(); return; }
+      if (event.key === 'Escape' && !noteOwner) { clear(owner); event.preventDefault(); return; }
       if (event.key !== 'Tab') return;
       const buttons = qa('button,a[href]',bar);
       if (event.target === owner && !event.shiftKey && buttons.length) { event.preventDefault(); buttons[0].focus(); }
       else if (event.target === buttons[0] && event.shiftKey) { event.preventDefault(); owner.focus({preventScroll:true}); }
       else if (event.target === buttons[buttons.length-1] && !event.shiftKey) {
-        event.preventDefault(); const next = qa('[tabindex="0"]',root).find(node => Boolean(owner.compareDocumentPosition(node)&Node.DOCUMENT_POSITION_FOLLOWING));
-        clear(); (next || root.closest('[data-whiteboard-viewport]')).focus({preventScroll:true});
+        event.preventDefault(); const next = diagramAffordanceNext(owner);
+        clear(); next?.focus({preventScroll:true});
       }
     };
     root.addEventListener('keydown',keydown); bar.addEventListener('keydown',keydown);

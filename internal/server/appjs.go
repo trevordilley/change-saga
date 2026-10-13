@@ -679,6 +679,8 @@ const appJavaScript = `(() => {
     return inside[inside.length - 1] || noteOwner;
   }
   function tabbableAfterOwner() {
+    const diagramOwner = diagramAffordanceOwner(noteOwner);
+    if (diagramOwner !== noteOwner) return diagramAffordanceNext(diagramOwner);
     return qa(tabbableSelector).filter(element => tabbable(element) && !noteOwner.contains(element) && !notePopover.contains(element)
       && (noteOwner.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING)).shift() || null;
   }

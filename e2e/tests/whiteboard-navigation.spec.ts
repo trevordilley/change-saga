@@ -388,3 +388,41 @@ test("touch readers reach the shared native action strip before opening a panel"
     await expect(page.locator('.drawer-body')).toContainText('Read shared records');
   } finally { await context.close(); }
 });
+
+test("native annotation dismissal, note exit and camera changes preserve keyboard focus", async ({page,saga}) => {
+  nativeModel(saga,true);
+  await page.goto(saga.baseURL+'/technical/erd?focus=shared'); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'),bar=page.locator('[data-diagram-affordance]');
+  const viewport=board.locator('[data-whiteboard-viewport]');
+  const record=board.locator('[data-instance-path="shared/record"]');
+  const copy=board.locator('[data-instance-path="shared/record-copy"]');
+  const settle=async()=>{await expect(board).toHaveAttribute('data-whiteboard-interacting','false');};
+  const actions=async()=>{
+    await settle(); await viewport.focus(); await record.focus();
+    await expect(bar.locator('[data-documentation-target]')).toBeVisible();
+    await page.keyboard.press('Tab'); await expect(bar.locator('[data-documentation-target]')).toBeFocused();
+  };
+  await actions();
+  await page.keyboard.press('Escape');
+  await expect(record).toBeFocused(); await expect(bar).toBeHidden();
+  // Include queued focus work: dismissal must not synchronously recreate the strip.
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await expect(bar).toBeHidden();
+  await actions();
+  await bar.locator('.element-note-trigger').focus();
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#element-note-popover').getByRole('link',{name:'Saved definition'})).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(copy).toBeFocused(); await expect(page.locator('#element-note-popover')).toBeHidden();
+  await expect(bar.locator('.element-note-trigger')).toBeVisible();
+  await bar.locator('.element-note-trigger').focus();
+  await page.keyboard.press('Escape'); // note
+  await page.keyboard.press('Escape'); // action strip
+  await expect(copy).toBeFocused(); await expect(bar).toBeHidden();
+  await actions();
+  await viewport.dispatchEvent('wheel',{deltaX:10,bubbles:true,cancelable:true});
+  await expect(bar).toBeHidden(); await expect(viewport).toBeFocused();
+  await actions();
+  await page.setViewportSize({width:1260,height:760});
+  await expect(bar).toBeHidden(); await expect(viewport).toBeFocused();
+});
