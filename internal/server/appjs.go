@@ -388,7 +388,8 @@ const appJavaScript = `(() => {
     // their finished drawing for reduced motion and cancel stale replays.
     if (slide.matches('[data-whiteboard-view]')) {
       const focused = slide.dataset.whiteboardFocused;
-      const scope = focused ? qa('[data-frame-detail]', slide).find(node => node.dataset.frameDetail === focused) : q('[data-whiteboard-viewport] > svg', slide);
+      const scope = focused ? (qa('[data-frame-detail]', slide).find(node => node.dataset.frameDetail === focused)
+        || qa('[data-instance-path]', slide).find(node => node.dataset.instancePath === focused)) : q('[data-whiteboard-viewport] > svg', slide);
       for (const node of qa('[data-reveal-step]', slide)) node.getAnimations().forEach(animation => animation.cancel());
       if (!scope || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       const nodes = qa('[data-reveal-step]', scope);
