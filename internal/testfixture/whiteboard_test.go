@@ -38,7 +38,7 @@ func TestERDWhiteboardFixturePreservesSourceAndLocalExplanation(t *testing.T) {
 	if err := requirements.ValidateWhiteboards(root, "fixture"); err != nil {
 		t.Fatal(err)
 	}
-	board, err := requirements.LoadResolvedWhiteboard(root, "fixture", "erd", "r1")
+	board, err := requirements.LoadResolvedWhiteboard(root, "fixture", "data-model", "r1")
 	if err != nil {
 		t.Fatal(err)
 	}
