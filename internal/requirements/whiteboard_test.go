@@ -236,3 +236,20 @@ func TestVisualEmbeddedSVGIsOfflineAndRecursivelySafe(t *testing.T) {
 		}
 	}
 }
+
+func TestStructuredERDRejectsStoredSourceVisualDrift(t *testing.T) {
+	root, pin, _ := whiteboardFixture(t)
+	inventory, err := LoadInventory(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	revision := *inventory.Pinned(pin)
+	revision.Diagram.Elements[0].Label = "Task"
+	path := filepath.Join(root, TechnicalPath(KindERD, "jobs"), "revisions", "r1.json")
+	if err := store.WriteJSON(path, revision, false); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := LoadInventory(root, "test"); err == nil || !strings.Contains(err.Error(), "does not match its visual") {
+		t.Fatalf("source/visual disagreement accepted: %v", err)
+	}
+}

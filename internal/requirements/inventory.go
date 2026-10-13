@@ -394,15 +394,12 @@ func LoadInventory(root, sagaID string) (Inventory, error) {
 			if revision.Diagram == nil {
 				continue
 			}
-			if err := checkWhiteboardERD(&d, revision); err != nil {
-				return d, err
-			}
-			doc, err := boundERDDiagram(revision)
+			rendered, err := renderERDDiagram(root, &d, revision)
 			if err != nil {
-				return d, err
-			}
-			if _, err := resolveInventoryComposition(root, &d, doc, revision.Directory); err != nil {
 				return d, fmt.Errorf("ERD %s revision %s: %w", record.Target, revision.ID, err)
+			}
+			if err := ValidateVisual(rendered, revision.Visual.Digest, revision.Bindings); err != nil {
+				return d, fmt.Errorf("ERD %s revision %s structured diagram does not match its visual: %w", record.Target, revision.ID, err)
 			}
 		}
 	}

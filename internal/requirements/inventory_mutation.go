@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
-	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/store"
 	"github.com/twentyideas/changesaga/internal/technicalpolicy"
 )
@@ -103,28 +102,9 @@ func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w Technica
 		if err != nil {
 			return MutationResult{}, err
 		}
-		candidate := TechnicalRevision{TechnicalDefinition: w.Definition}
-		if err := checkWhiteboardERD(&inventory, candidate); err != nil {
-			return MutationResult{}, err
-		}
-		doc, err := boundERDDiagram(candidate)
+		svg, err := renderERDDiagram(root, &inventory, TechnicalRevision{TechnicalDefinition: w.Definition})
 		if err != nil {
 			return MutationResult{}, err
-		}
-		composition, err := resolveInventoryComposition(root, &inventory, doc, w.Definition.Directory)
-		if err != nil {
-			return MutationResult{}, err
-		}
-		svg, err := composition.Render(diagram.Options{Title: w.Definition.Name, Description: w.Definition.Explanation})
-		if err != nil {
-			return MutationResult{}, err
-		}
-
-		// Inventory visuals are portable offline assets. Remove only the two
-		// renderer-generated font loaders, retaining their CSS font-family fallback.
-		for _, font := range [][2]string{{diagram.FontFamily, diagram.FontPath}, {diagram.MonoFontFamily, diagram.MonoFontPath}} {
-			rule := fmt.Sprintf(`@font-face{font-family:"%s";src:url("%s") format("truetype")}`, font[0], font[1])
-			svg = bytes.ReplaceAll(svg, []byte(rule), nil)
 		}
 		if len(w.Visual) > 0 && !bytes.Equal(w.Visual, svg) {
 			return MutationResult{}, fmt.Errorf("visual bytes differ from the structured ERD diagram")

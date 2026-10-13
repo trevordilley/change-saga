@@ -1,6 +1,7 @@
 package requirements
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -175,4 +176,31 @@ func resolveDiagramSource(inventory *Inventory, source diagram.SourceReference) 
 		}
 	}
 	return record, revision, nil
+}
+
+// renderERDDiagram is shared by publication and reading so the immutable SVG
+// and the structured source cannot silently describe different diagrams.
+func renderERDDiagram(root string, inventory *Inventory, revision TechnicalRevision) ([]byte, error) {
+	if err := checkWhiteboardERD(inventory, revision); err != nil {
+		return nil, err
+	}
+	doc, err := boundERDDiagram(revision)
+	if err != nil {
+		return nil, err
+	}
+	composition, err := resolveInventoryComposition(root, inventory, doc, revision.Directory)
+	if err != nil {
+		return nil, err
+	}
+	svg, err := composition.Render(diagram.Options{Title: revision.Name, Description: revision.Explanation})
+	if err != nil {
+		return nil, err
+	}
+	// Portable inventory assets retain font-family fallbacks but cannot load
+	// assets from the viewer. Strip only the renderer's exact bundled-font rules.
+	for _, font := range [][2]string{{diagram.FontFamily, diagram.FontPath}, {diagram.MonoFontFamily, diagram.MonoFontPath}} {
+		rule := fmt.Sprintf(`@font-face{font-family:"%s";src:url("%s") format("truetype")}`, font[0], font[1])
+		svg = bytes.ReplaceAll(svg, []byte(rule), nil)
+	}
+	return svg, nil
 }
