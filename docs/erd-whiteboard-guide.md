@@ -80,6 +80,12 @@ scale. Displayed connectors can meet the enclosing frames while descriptions
 retain their semantic endpoint paths. Optional authored bends provide simple
 route control; the viewer does not run a layout engine.
 
+Overview text needs its own authored styles. In the three-ERD fixture, a
+34-unit overview font remains readable at fit while children use their normal
+22-unit detail font. An annotation's explicit `target` point is local to that
+annotation, not the board. `visibility: "detail"` inside a frame follows that
+frame's detail state even when another frame is collapsed.
+
 Focus a frame to read its child diagram, then an entity or relationship to
 inspect its meaning and source pin. Repeated appearances use paths such as
 `cloud/identity/organization` and `cross-store/organization`; neither path
@@ -99,6 +105,11 @@ grammar into the ERD's SVG visual so that the ERD remains independently readable
 This structured source enables nested composition, entity/field descriptions
 and internal targeting without reverse-engineering SVG geometry.
 
+The loader verifies that a structured ERD's stored SVG matches its source.
+Future renderer changes must preserve this rendering contract or explicitly
+evolve the structured-source format; there is no per-revision renderer dispatch
+in this prototype. Existing SVG-only ERDs do not have this dependency.
+
 ## Verification
 
 The representative fixture in `internal/testfixture/whiteboard.go` combines
@@ -110,3 +121,6 @@ Review both a fit-to-board view and a focused detail view in a real browser.
 At fit, a reader should be able to explain the main areas and their connections.
 At detail, fields and local explanations should be readable, with a path back
 to the whole and to the original source revision.
+
+See the [implementation validation record](whiteboard-validation.md) for the
+representative and real-data browser checks.
