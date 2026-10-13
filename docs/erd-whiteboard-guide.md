@@ -1,16 +1,19 @@
 # Authoring an ERD whiteboard
 
-An ERD whiteboard composes existing ERD revisions using the diagram grammar.
-The AI authors the positions, sizes, narrative, annotations and connections;
-the Data model viewer provides read-only pan, zoom, fit and focus. The board fills
-the viewport beside the sidebar. Its floating title has an expandable description
-using the shared data-model overview. Sidebar and board ERD links focus their
-embedded appearances in the same canvas. “Diagrams on this board” is a focus
-picker with pin metadata. Repeated appearances have distinct focus URLs. Fit
-and Focus leave room for the title and navigation controls. Source ERDs remain
-independently revisioned internally, and explicit historical routes remain
-compatible. Groups are ordinary drawing groups; this feature does not change
-entity holders or add inventory kinds.
+The ERD whiteboard is the system's **one data-model document**. Author its
+entities, relationships, nested sections and explanations directly using the
+existing diagram grammar. Importing exact ERD revisions is optional and useful
+for migrating existing artwork; separate ERD documents are not a prerequisite.
+
+The AI authors the positions, sizes, narrative, annotations and connections.
+The reader pans, zooms, focuses sections and inspects evidence within that same
+document. The board fills the viewport beside the sidebar; its floating title
+has an expandable description. Its outline names places within the model rather
+than listing every source ERD as a separate document. Fit and Focus leave room
+for the title and navigation controls. The full document can extend well beyond
+one screen. Source revisions and historical routes remain available internally
+for provenance and compatibility. Groups are ordinary drawing groups; this
+feature does not change entity holders or add inventory kinds.
 
 Scroll with a mouse wheel or trackpad, or drag, to pan. Shift + scroll pans
 sideways on a vertical mouse wheel. Ctrl/Cmd + scroll (including trackpad pinch)
@@ -18,8 +21,10 @@ zooms around the pointer; the toolbar and keyboard controls remain available.
 
 ## Revision policy
 
-Every frame names an exact source `target` and `revision`. Publishing a board
-creates an immutable JSON revision under `___whiteboards/erd/revisions/`.
+Publishing the complete document creates an immutable JSON revision under
+`___whiteboards/erd/revisions/`. Depicted entities and relationships use exact
+source pins. Every optional imported frame also names an exact `target` and
+`revision`.
 An update names the current board revision as its parent. A board never follows
 the latest revision of a child implicitly: adopting a revised ERD means changing
 the frame's pin and publishing a new board revision. Older boards and ERDs stay
@@ -29,9 +34,10 @@ while retaining distinct instance paths.
 ## Publish and inspect
 
 Author a `diagram.Document` JSON file using the existing styles, groups,
-entities, text, notes, annotations and connectors. Add `frame` elements to
-embed ERDs, and `connection` elements to connect appearances through their
-instance paths. Publish it with:
+entities, text, notes, annotations and connectors. Use ordinary sections to
+organize it and `connection` elements to connect appearances through their
+instance paths. Optional `frame` elements import existing ERD content. Publish
+the one document with:
 
 ```sh
 change-saga diagram publish --whiteboard erd --revision r1 \
@@ -46,7 +52,46 @@ change-saga diagram check --whiteboard erd change.saga
 For a subsequent revision, add `--parent r1` and choose a new revision ID.
 The `--revision` option on reading commands selects historical board content.
 
-A frame uses ordinary geometry plus its source pin:
+## Native sections and relationships
+
+A document can contain its own sections and entities without any `frame` or
+ERD source record. This abbreviated example assumes the named entity revisions
+and the `materializes` relationship already exist; substitute real source pins:
+
+```json
+{
+  "version": 1, "width": 3000, "height": 1600,
+  "elements": [
+    { "id": "capture", "kind": "group", "shape": "section", "label": "Capture",
+      "color": "yellow", "style": "boundary", "x": 80, "y": 200, "width": 1000, "height": 1000 },
+    { "id": "search", "kind": "group", "shape": "section", "label": "Search",
+      "color": "blue", "style": "boundary", "x": 1700, "y": 200, "width": 1000, "height": 1000 },
+    { "id": "job", "parent": "capture", "kind": "node", "shape": "entity",
+      "label": "Job", "style": "normal", "x": 100, "y": 160, "width": 600, "height": 300,
+      "fields": [{ "name": "id", "type": "uuid", "key": "pk" }],
+      "source": { "target": "urn:change-saga:app:data-entity:job",
+        "revision": "urn:change-saga:app:data-entity:job:revision:r1" } },
+    { "id": "document", "parent": "search", "kind": "node", "shape": "entity",
+      "label": "Search document", "style": "normal", "x": 100, "y": 160, "width": 600, "height": 300,
+      "source": { "target": "urn:change-saga:app:data-entity:document",
+        "revision": "urn:change-saga:app:data-entity:document:revision:r1" } },
+    { "id": "materializes", "kind": "connection", "style": "normal",
+      "from": "capture/job", "to": "search/document", "label": "materializes",
+      "label_box": { "x": 1160, "y": 380, "width": 440, "height": 100 },
+      "source": { "target": "urn:change-saga:app:data-entity:job",
+        "revision": "urn:change-saga:app:data-entity:job:revision:r1", "relationship": "materializes" } }
+  ]
+}
+```
+
+The connection crosses section boundaries but belongs to the same document.
+Nested groups use local coordinates; inspection reports complete instance paths.
+Add substantial overview narrative, local notes and evidence as the real model
+requires. The canvas and opening camera can grow independently of the content.
+
+## Optional imported content
+
+A frame uses ordinary geometry plus its exact source pin:
 
 ```json
 {
@@ -81,15 +126,14 @@ without claiming a recorded relationship.
 
 Use the same `diagram.Document` grammar and renderer used for slide diagrams:
 styles, text, groups, annotations, notes, entities and source references remain
-shared capabilities. Frames compose actual pinned ERDs within that grammar.
-The board is a spatial explanation, not a separately maintained set of summary
-cards or a screenshot of a slide deck.
+shared capabilities. Directly authored sections and optional imported content
+share one spatial explanation and one revision history.
 
 Start with a large headline, a short explanation of the system, and three or
-four primary areas connected by meaningful labels. Place the high-level system
-ERD beside this narrative, then put chosen detail ERDs farther along the reading
-path. Use ordinary groups as narrative anchors where useful. Give surrounding
-areas room; a large canvas does not need to fit on screen at normal zoom.
+four primary areas connected by meaningful relationships. Place the high-level
+model beside this narrative and arrange detail along its reading path. Use
+ordinary groups as narrative anchors where useful. Give surrounding areas room;
+a large canvas does not need to fit on screen at normal zoom.
 
 An optional root `viewport` defines the opening camera in board coordinates:
 
@@ -104,8 +148,9 @@ at 1140 × 760 screen pixels, the rectangle above gives a scale of about 0.317:
 Allow for title/navigation overlays and check smaller viewports in the viewer.
 Fit is an explicit atlas view for orientation, not the readability target.
 
-Begin with a few core ERDs and compose their actual drawings into a spatial
-explanation. Keep the source SVG's intrinsic aspect ratio: for source dimensions
+Begin with the core data flow and its entities, then grow the document with
+related sections. When reusing existing artwork, keep its intrinsic aspect ratio:
+for source dimensions
 `sw × sh` and an authored frame width `w`, use frame height `w * sh / sw`.
 The full frame belongs to the child drawing. Reserve a separate caption band
 **above** it for the title and summary: roughly three lines of the frame style's
@@ -160,7 +205,7 @@ explanations. Overview text needs its own authored styles. Font size depends on 
 local to that annotation, not the board. `visibility: "detail"` inside a frame
 follows that frame's detail state independently of other frames.
 
-Focus a frame to read its child diagram, then an entity or relationship to
+Focus a section or imported region, then select an entity or relationship to
 inspect its meaning and source pin. Detailed fields are available on demand
 through diagram controls and source inspection. The Details control restores
 authored group content. Entity summaries retain the positions and source
@@ -190,12 +235,16 @@ original contents. Relationship geometry and source identities stay unchanged.
 This summarizes entities without claiming to identify fields in arbitrary SVGs.
 
 Select an entity or relationship to open the same documentation and code drawer
-used by slide references. **Evidence** opens the focused ERD's exact directory
-and its owned relationships. Counts distinguish linked references, verified
+used by slide references, including entities and relationships authored directly
+in a native section. A section is a drawing group and does not invent an ERD
+directory or evidence record. For an imported region, **Evidence** opens its
+exact source ERD directory and owned relationships. Counts distinguish linked references, verified
 saved bytes, current resolution, stale or unavailable references, and members
 without references. None of these counts establishes complete model coverage.
 Code inspection preserves the saved commit, path and lines even when current
 code has moved. Opening a current definition never changes the board's pins.
+The document does not claim aggregate code coverage merely because all its
+drawn elements have source pins; inspect the saved references themselves.
 
 ## Camera and rendering cost
 
@@ -238,6 +287,11 @@ in this prototype. Existing SVG-only ERDs do not have this dependency.
 
 ## Verification
 
+`internal/requirements/whiteboard_native_test.go` publishes and describes a
+document with nested sections and a recorded relationship crossing them,
+without creating any child ERD record. Native viewer checks additionally cover
+field detail, evidence inspection, section navigation and history.
+
 The representative fixture in `internal/testfixture/whiteboard.go` combines
 two structured ERDs with entity fields and local callouts, one existing SVG
 ERD, an ordinary group, a recorded production connection and an overview
@@ -275,35 +329,17 @@ pins or visual digest mismatches stop generation; future revisions are never
 adopted implicitly. Source revision and visual files are checked again before
 writing the outputs. Generation does not publish or modify the source saga.
 
-The 10000 × 10000 canvas opens at `{x: 0, y: 0, width: 3600, height: 2400}`.
-The 100-unit headline, 82-unit area headings and 64-unit body text explain the
-system beside the actual cross-store ERD. Three ordinary group anchors—
-`delivery-guide`, `search-guide`, and `authority-guide`—describe what happens
-and connect to the system model with labeled explanatory lines. The diagram is
-a composite view of the same models, not an additional processing stage.
+The primary composition uses native, source-pinned entities and explicit
+relationships in Delivery, Search and Authority sections. Its opening camera
+and typography establish a readable starting point rather than fitting the
+whole model on one screen. Cross-section connections carry their recorded
+relationship references or explicitly state their explanatory meaning.
 
-Delivery ERDs sit to the right: durable observation, destination debt, exact
-source admission and hosted corpus. Local scope, index progress and retrieval
-sit below, with episode projections and the whole local model farther out.
-Project authority, identity and consent anchor the next area; destinations,
-OAuth and invitations continue it. Provisioning, messaging and the whole cloud
-directory occupy the perimeter. Optional tour rectangles and anchor IDs are
-listed in `camera-proposal.json`; these are authoring suggestions, not an extra
-tour schema or automatic camera sequence.
-
-All 20 source ERDs remain embedded, at their intrinsic aspect ratios, across
-21 frame appearances. `system-return` repeats the exact `local-cloud-overview`
-pin near the far perimeter. It has a distinct instance path and focus target;
-repetition does not create another entity or a different source revision.
-Every frame reserves a separate 160-unit title band. Three labeled backgrounds—
-Delivery in yellow, Search in blue, and Authority in purple—surround the main
-reading neighborhoods. Their different extents preserve the original narrative,
-frame positions, source pins and focus paths; the initial system overview stays
-open. Backgrounds have 100-unit side and title clearances and at least 50 units
-below their contents, including full frame caption bands. The script checks
-those gutters, section bounds and overlaps, frame/caption and narrative-text
-bounds and overlaps, and unique element IDs. The source audit lists the three
-section IDs and colors alongside the pin verification.
+The existing source drawings remain in a deep-detail appendix within the same
+canvas, preserving the original explanations and model coverage. They are
+migration/provenance material rather than the document's primary outline.
+Exact frame pins and instance paths keep those appearances inspectable. The
+script validates layout and source consistency before writing its outputs.
 
 The audit explicitly distinguishes committed-code documentation from live
 database observation. All current pins are SVG-only ERDs: their directories
