@@ -240,6 +240,9 @@ func onPage(path string, nodes []*navNodeView) []*navNodeView {
 func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *navNodeView {
 	document := sources.document
 	section := navSection("Features", featuresIndexHref, "nav-features", "product", nil)
+	if len(document.Features) >= featureGroupingMinimum {
+		section.FeatureGrouping = &featureGroupingView{Mode: sources.featureGrouping, HasThemes: len(document.FeatureThemes) > 0}
+	}
 	if len(document.Features) == 0 {
 		return section
 	}

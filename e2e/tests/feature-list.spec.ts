@@ -77,6 +77,7 @@ test("the open feature follows the page, and no reading preference is stored", a
     await waitForSettledSaga(page);
     await expect(featureRows(page).locator(":scope > .doc-row > .doc-link")).toHaveText(["Wave One", "Tide Charts", "Harbor Lights"]);
     await expect(openFeatures(page)).toHaveCount(0);
+    await expect(page.locator("[data-feature-group-control]")).toHaveCount(0);
   }
   expect(await context.cookies()).toEqual([]);
 });

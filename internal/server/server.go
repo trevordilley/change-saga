@@ -284,10 +284,11 @@ func makeCoverageTotals(manifest *CoverageManifestView) *coverageTotalsView {
 // navNodeView is the sidebar documentation tree. It exposes titles, links and a
 // quiet review state only: never counts, never the storage hierarchy.
 type navNodeView struct {
-	Title  string
-	Href   string
-	NodeID string
-	Icon   string
+	FeatureGrouping *featureGroupingView
+	Title           string
+	Href            string
+	NodeID          string
+	Icon            string
 	// IconPlaceholder remains as a defensive rendering fallback for callers
 	// outside the app navigation builder. App navigation assigns real icons.
 	IconPlaceholder bool

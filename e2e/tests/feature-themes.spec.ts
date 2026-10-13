@@ -6,6 +6,7 @@ test("product themes preserve shared feature links, grouping preference and rati
     const result = runCLI(repo, args);
     expect(result.status, `${result.stdout}\n${result.stderr}`).toBe(0);
   };
+  cli("feature", "add", "--id", "settings", "--title", "Settings", repo.sagaRoot);
   cli("feature-theme", "add", "--id", "t1", "--title", "Reliable work", "--text", "# Why reliable work\n\n**Continuity** matters.", "--feature", "wave-one", "--feature", "tide-charts", repo.sagaRoot);
   cli("feature-theme", "add", "--id", "t2", "--title", "Trusted data", "--text", "Explain confidence.", "--feature", "tide-charts", repo.sagaRoot);
   cli("add-deck", "--feature-theme", "t1", "--id", "why", "--objective", "Explain continuity.", repo.sagaRoot, "why");
@@ -16,6 +17,13 @@ test("product themes preserve shared feature links, grouping preference and rati
     await page.goto(`${server.baseURL}/features`);
     await waitForSettledSaga(page);
     const sidebar = page.locator("#nav-features");
+    const options = page.locator('[data-nav-row="nav-features"] [data-feature-group-control]');
+    await expect(options).toBeVisible();
+    await expect(page.locator('[data-project-label] + [data-feature-group-control]')).toHaveCount(0);
+    await options.locator('summary').press('Enter');
+    await expect(options.getByRole('link', { name: 'Theme', exact: true })).toHaveAttribute('aria-current', 'true');
+    await options.getByRole('link', { name: 'Theme', exact: true }).press('Escape');
+    await expect(options).not.toHaveAttribute('open', '');
     await expect(sidebar.getByRole("link", { name: "Tide Charts", exact: true })).toHaveCount(2);
     await expect(sidebar.getByRole("link", { name: "Harbor Lights", exact: true })).toBeVisible();
     await expect(sidebar.getByText("Ungrouped", { exact: true })).toBeVisible();
@@ -26,11 +34,13 @@ test("product themes preserve shared feature links, grouping preference and rati
     await sidebar.getByRole("link", { name: "Tide Charts", exact: true }).first().click();
     await expect(page).toHaveURL(`${server.baseURL}/features/tide-charts`);
     await expect(sidebar.getByRole("link", { name: "Tide Charts", exact: true })).toHaveCount(2);
-    await page.getByRole("navigation", { name: "Group features" }).first().getByRole("link", { name: "Persona", exact: true }).click();
+    await options.locator("summary").click();
+    await options.getByRole("link", { name: "Persona", exact: true }).click();
     await page.goto(`${server.baseURL}/requirements/read-the-tide`);
     await waitForSettledSaga(page);
-    await expect(page.getByRole("navigation", { name: "Group features" }).first().getByRole("link", { name: "Persona", exact: true })).toHaveAttribute("aria-current", "true");
-    await page.getByRole("navigation", { name: "Group features" }).first().getByRole("link", { name: "All", exact: true }).click();
+    await options.locator("summary").click();
+    await expect(options.getByRole("link", { name: "Persona", exact: true })).toHaveAttribute("aria-current", "true");
+    await options.getByRole("link", { name: "None", exact: true }).click();
     await expect(sidebar.getByRole("link", { name: "Tide Charts", exact: true })).toHaveCount(1);
     await page.locator("#sidebar-tabs").getByRole("link", { name: "Reviews", exact: true }).click();
     await expect(page.locator("[data-feature-group-control]")).toBeHidden();

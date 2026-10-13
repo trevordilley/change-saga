@@ -16,7 +16,17 @@ var (
 // metadata, quiet reading surfaces and hairline separators, and controls that stay
 // invisible until the reviewer hovers or focuses the thing they belong to.
 var pageStyles = `
-.feature-grouping{display:flex;gap:.55rem;flex-wrap:wrap;padding:.65rem 1rem;font-size:.8rem}.feature-grouping span{flex-basis:100%;font-weight:600}.feature-grouping a[aria-current]{font-weight:700;text-decoration:underline}
+.feature-menu{position:relative;flex:none;margin-left:auto}
+.feature-menu>summary{display:grid;place-items:center;width:30px;height:30px;list-style:none;border-radius:6px;color:var(--muted);font:700 20px/1 var(--ui);cursor:pointer}
+.feature-menu>summary::-webkit-details-marker{display:none}
+.feature-menu>summary:hover,.feature-menu[open]>summary{background:var(--bg-inset);color:var(--ink)}
+.feature-menu>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.feature-grouping{position:absolute;right:0;top:calc(100% + 4px);z-index:20;display:grid;gap:3px;width:184px;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--bg);box-shadow:0 8px 24px #0002;font:13px/1.4 var(--ui)}
+.feature-grouping>span{padding:6px 8px;color:var(--muted);font-size:11px;font-weight:600}
+.feature-grouping>a{display:flex;align-items:center;gap:8px;padding:8px;border-radius:5px;color:var(--ink);text-decoration:none}
+.feature-grouping>a>span{width:12px;color:var(--accent)}
+.feature-grouping>a:hover,.feature-grouping>a:focus-visible{background:var(--bg-inset)}
+
 
 
 :root{` + lightTokens + `;--sidebar-width:300px}

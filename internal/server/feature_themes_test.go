@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -97,7 +98,7 @@ func TestFeaturePersonaGroupingUsesCurrentProposedStories(t *testing.T) {
 }
 
 func TestFeatureGroupingDefaultsAndPreference(t *testing.T) {
-	doc := &saga.Saga{}
+	doc := &saga.Saga{Features: make([]*saga.Feature, featureGroupingMinimum)}
 	request := httptest.NewRequest(http.MethodGet, "/features", nil)
 	if featureGrouping(request, doc) != "all" {
 		t.Fatal("legacy default changed")
@@ -117,6 +118,44 @@ func TestFeatureGroupingDefaultsAndPreference(t *testing.T) {
 	request.URL.RawQuery = "group=invalid"
 	if featureGrouping(request, doc) != "persona" {
 		t.Fatal("invalid group changes preference")
+	}
+}
+
+func TestSmallFeatureSetsStayFlatWithoutGroupingMenu(t *testing.T) {
+	for _, count := range []int{0, 1, 3, 4} {
+		sources := appNavFixture(t)
+		sources.document.Features = nil
+		for i := 0; i < count; i++ {
+			sources.document.Features = append(sources.document.Features, appNavFeature(fmt.Sprint(i), "Feature"))
+		}
+		sources.document.FeatureThemes = []*saga.FeatureTheme{{}}
+		request := httptest.NewRequest(http.MethodGet, "/features?group=theme", nil)
+		request.AddCookie(&http.Cookie{Name: "saga-feature-group", Value: "persona"})
+		sources.featureGrouping = featureGrouping(request, sources.document)
+		section := makeFeaturesNav(sources, nil)
+		if count < featureGroupingMinimum {
+			if sources.featureGrouping != "all" || section.FeatureGrouping != nil {
+				t.Fatalf("%d features should stay flat without controls", count)
+			}
+		} else if sources.featureGrouping != "theme" || section.FeatureGrouping == nil {
+			t.Fatal("four features should enable theme grouping and controls")
+		}
+	}
+}
+
+func TestFeatureMenuOnlyOffersExistingThemes(t *testing.T) {
+	tmpl, err := newPageTemplate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, hasThemes := range []bool{false, true} {
+		var html bytes.Buffer
+		if err := tmpl.ExecuteTemplate(&html, "feature-grouping", featureGroupingView{Mode: "all", HasThemes: hasThemes}); err != nil {
+			t.Fatal(err)
+		}
+		if strings.Contains(html.String(), "group=theme") != hasThemes {
+			t.Fatal(html.String())
+		}
 	}
 }
 

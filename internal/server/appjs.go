@@ -3,6 +3,16 @@ package server
 const appJavaScript = `(() => {
   const q = (selector, root = document) => root.querySelector(selector);
   const qa = (selector, root = document) => [...root.querySelectorAll(selector)];
+  document.addEventListener('click', event => {
+    qa('[data-feature-group-control][open]').forEach(menu => {
+      if (!menu.contains(event.target)) menu.open = false;
+    });
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const menu = event.target.closest?.('[data-feature-group-control][open]');
+    if (menu) { menu.open = false; q('summary', menu)?.focus(); }
+  });
   let activeFragment = null;
   let diffLayout = 'inline';
   let drawerOpener = null;
@@ -3256,8 +3266,6 @@ const appJavaScript = `(() => {
     const current = listed('navCurrent'), expanded = listed('navExpanded'), hidden = listed('navHidden');
     const projectLabel = q('[data-project-label]');
     if (projectLabel) projectLabel.hidden = hidden.has('nav-overview');
-    const featureGrouping = q('[data-feature-group-control]');
-    if (featureGrouping) featureGrouping.hidden = hidden.has('nav-overview');
     qa('.doc-tree [data-nav-row]').forEach(row => {
       const id = row.dataset.navRow;
       const active = current.has(id);

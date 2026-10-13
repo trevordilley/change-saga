@@ -15,11 +15,26 @@ func featureThemeHref(id string) string { return "/feature-themes/" + url.PathEs
 func validFeatureGrouping(value string) bool {
 	return value == "all" || value == "theme" || value == "persona"
 }
+
+// Small feature sets are easier to scan as a flat list.
+const featureGroupingMinimum = 4
+
+type featureGroupingView struct {
+	Mode      string
+	HasThemes bool
+}
+
 func featureGrouping(r *http.Request, document *saga.Saga) string {
-	if value := r.URL.Query().Get("group"); validFeatureGrouping(value) {
+	if len(document.Features) < featureGroupingMinimum {
+		return "all"
+	}
+	available := func(value string) bool {
+		return validFeatureGrouping(value) && (value != "theme" || len(document.FeatureThemes) > 0)
+	}
+	if value := r.URL.Query().Get("group"); available(value) {
 		return value
 	}
-	if cookie, err := r.Cookie("saga-feature-group"); err == nil && validFeatureGrouping(cookie.Value) {
+	if cookie, err := r.Cookie("saga-feature-group"); err == nil && available(cookie.Value) {
 		return cookie.Value
 	}
 	if len(document.FeatureThemes) > 0 {
