@@ -13,41 +13,33 @@ from pathlib import Path
 import textwrap
 import xml.etree.ElementTree as ET
 
-# Explicit composition, not an auto-layout or an index grid. Positions are in
-# design units, scaled uniformly to stay inside the grammar's 10000-unit limit.
-# id, revision, title, summary, x, y, width
+# Exact source pins. Placement is a narrative, not an auto-layout or index grid.
+# id, revision, title, x, y, width (all in board units, no fit-all scaling).
 AREAS = [
-    ('local-project-boundary', 'r5-viewer-safe', 'Local Projects', 'Selections become search scope', 220, 1130, 1250),
-    ('local-capture-delivery', 'r5-viewer-safe', 'Capture & delivery', 'Observation and destination debt', 1950, 1150, 1800),
-    ('local-cloud-overview', 'r2', 'Across the stores', 'Grant, generation, admitted delivery', 4250, 1060, 2000),
-    ('cloud-source-lineage', 'r5', 'Source admission', 'Exact generation and accepted rules', 6800, 1290, 1600),
-    ('cloud-corpus', 'r4', 'Cloud corpus', 'Immutable bytes; derived search', 9050, 1430, 1650),
-    ('local-index-progress', 'r5-viewer-safe', 'Index progress', 'File cursors track append progress', 240, 2560, 1150),
-    ('local-search-retrieval', 'r5-viewer-safe', 'Local search', 'Sources, documents and scope', 1850, 2950, 1800),
-    ('local-episode-catalog', 'r5-viewer-safe', 'Episode catalog', 'Rebuilt from validated manifests', 260, 3820, 1200),
-    ('local-episode-correlation', 'r5-viewer-safe', 'Episode links', 'Projections across databases', 1900, 4690, 1650),
-    ('local-whole-model', 'r5-viewer-safe', 'Whole local model', '27 tables; nine physical FKs', 300, 5840, 1550),
-    ('cloud-project-authority', 'r5', 'Project authority', 'Ownership and immutable policies', 4350, 3410, 1550),
-    ('cloud-identity', 'r4', 'Identity & tenancy', 'Principals and Organization evidence', 6350, 3410, 1550),
-    ('cloud-contribution', 'r4', 'Sharing rules', 'Current consent; legacy evidence', 8340, 3270, 1150),
-    ('cloud-shared-destinations', 'r4', 'Projects & Teams', 'Shared destinations and people groups', 9950, 3560, 1150),
-    ('cloud-enterprise', 'r4', 'Enterprise', 'Identity mappings; surviving audit', 4210, 5750, 1100),
-    ('cloud-scim', 'r4', 'SCIM directory', 'Provisioning resources and tokens', 5530, 6270, 1050),
-    ('cloud-oauth', 'r4', 'MCP grants', 'Client, principal, selected scope', 6920, 5650, 1050),
-    ('cloud-invitations', 'r4', 'Invitations', 'Eligibility and redemption receipts', 8420, 5000, 1080),
-    ('cloud-messaging', 'r5', 'Durable messages', 'Team-scoped person-to-person records', 9950, 5430, 1300),
-    ('cloud-overview', 'r3', 'Whole cloud model', '49 tables by ownership domain', 9770, 6740, 1400),
+    ('local-cloud-overview', 'r2', 'The system across its stores', 160, 920, 1550),
+    ('local-capture-delivery', 'r5-viewer-safe', 'Capture & delivery', 4050, 1050, 1500),
+    ('cloud-source-lineage', 'r5', 'Source admission', 6050, 1050, 1500),
+    ('cloud-corpus', 'r4', 'Cloud corpus', 8050, 1050, 1500),
+    ('local-project-boundary', 'r5-viewer-safe', 'Project scope', 160, 3800, 1250),
+    ('local-index-progress', 'r5-viewer-safe', 'Index progress', 1710, 3800, 1250),
+    ('local-search-retrieval', 'r5-viewer-safe', 'Local search', 3260, 3800, 1400),
+    ('local-episode-catalog', 'r5-viewer-safe', 'Episode catalog', 160, 5500, 1400),
+    ('local-episode-correlation', 'r5-viewer-safe', 'Episode links', 1860, 5500, 1450),
+    ('local-whole-model', 'r5-viewer-safe', 'Whole local model', 3610, 5700, 1650),
+    ('cloud-project-authority', 'r5', 'Project authority', 5700, 4300, 1200),
+    ('cloud-identity', 'r4', 'Identity & tenancy', 7300, 4300, 1100),
+    ('cloud-contribution', 'r4', 'Sharing rules', 8800, 4300, 1000),
+    ('cloud-shared-destinations', 'r4', 'Projects & Teams', 5700, 6300, 1200),
+    ('cloud-oauth', 'r4', 'MCP grants', 7300, 6300, 1100),
+    ('cloud-invitations', 'r4', 'Invitations', 8800, 6000, 1000),
+    ('cloud-enterprise', 'r4', 'Enterprise', 160, 8400, 1250),
+    ('cloud-scim', 'r4', 'SCIM directory', 1710, 8400, 1250),
+    ('cloud-messaging', 'r5', 'Durable messages', 3260, 8400, 1400),
+    ('cloud-overview', 'r3', 'Whole cloud model', 4960, 8300, 1500),
 ]
-SCALE = .8
-WIDTH, HEIGHT = 11700, 8250
-CAPTION_CLEARANCE = 240  # One 125-unit title line plus generous padding.
-CORE_SUMMARIES = {
-    'local-capture-delivery': 'Destination debt',
-    'local-cloud-overview': 'Grant + generation',
-    'cloud-source-lineage': 'Accepted rules',
-    'cloud-corpus': 'Derived search',
-}
-CORE_CLEARANCE = 360  # Two 125-unit lines plus padding.
+WIDTH, HEIGHT = 10000, 10000
+CAPTION_CLEARANCE = 160
+INITIAL_CAMERA = dict(x=0, y=0, width=3600, height=2400)
 
 
 def main():
@@ -59,14 +51,17 @@ def main():
     if output == root or root in output.parents:
         parser.error('output must be outside the source saga')
     output.mkdir(parents=True, exist_ok=True)
-    records, images, manifest = {}, {}, []
+    records, images, manifest, source_reads = {}, {}, [], {}
     for key, revision, *_ in AREAS:
         directory = root / '___inventory' / 'erds' / (key + '.erd')
-        matches = [json.loads(p.read_text()) for p in sorted((directory / 'revisions').glob('*.json'))]
-        matches = [r for r in matches if r['id'] == revision]
+        matches = [(p, json.loads(p.read_text())) for p in sorted((directory / 'revisions').glob('*.json'))]
+        matches = [(p, r) for p, r in matches if r['id'] == revision]
         if len(matches) != 1:
             raise ValueError(f'{key}: expected exact revision {revision}')
-        record = records[key] = matches[0]
+        revision_path, record = matches[0]
+        records[key] = record
+        revision_digest = 'sha256:' + hashlib.sha256(revision_path.read_bytes()).hexdigest()
+        source_reads[revision_path] = revision_digest
         asset = (directory / record['visual']['path']).resolve()
         if root not in asset.parents:
             raise ValueError(f'{key}: asset escapes source saga')
@@ -74,150 +69,244 @@ def main():
         digest = 'sha256:' + hashlib.sha256(svg).hexdigest()
         if digest != record['visual']['digest']:
             raise ValueError(f'{key}: source SVG digest mismatch')
+        source_reads[asset] = digest
         viewbox = [float(n) for n in ET.fromstring(svg).attrib['viewBox'].split()]
         images[key] = (svg, viewbox[2], viewbox[3])
         manifest.append({'id': key, 'target': record['record'],
                          'revision': record['record'] + ':revision:' + revision,
-                         'visual_digest': digest, 'intrinsic_width': viewbox[2],
+                         'visual_digest': digest, 'revision_digest': revision_digest, 'intrinsic_width': viewbox[2],
                          'intrinsic_height': viewbox[3], 'explanation': record['explanation']})
 
     def ref(key):
         r = records[key]
         return {'target': r['record'], 'revision': r['record'] + ':revision:' + r['id']}
 
-    def style(fill='none', stroke='none', ink='#243746', font=125, width=3):
-        return dict(fill=fill, stroke=stroke, ink=ink, font_size=font*SCALE, stroke_width=width*SCALE)
+    def style(fill='none', stroke='none', ink='#243746', font=64, width=3):
+        return dict(fill=fill, stroke=stroke, ink=ink, font_size=font, stroke_width=width)
 
-    board = dict(version=1, width=WIDTH*SCALE, height=HEIGHT*SCALE, background='#f7f8f6', styles={
-        'frame': style('#ffffff', '#cad3d7'),
-        'hero': style(font=180), 'section': style(font=180, ink='#355b64'),
-        'callout': style(font=140), 'caption': style(font=66, ink='#526776'),
-        'flow': style(stroke='#a46f28', ink='#80521b', font=60, width=9),
-        'mapping': dict(**style(stroke='#587d87', font=60, width=7), dash=True),
+    board = dict(version=1, width=WIDTH, height=HEIGHT, viewport=INITIAL_CAMERA, background='#f7f8f6', styles={
+        'frame': style('#ffffff', '#cad3d7', font=72),
+        'hero': style(font=100), 'section': style(font=82, ink='#355b64'),
+        'body': style(), 'caption': style(font=60, ink='#526776'),
+        'flow': style(stroke='#a46f28', ink='#80521b', font=60, width=7),
+        'mapping': dict(**style(stroke='#587d87', font=60, width=5), dash=True),
+        'anchor': style(),
     }, elements=[])
 
     def add(element):
-        for key in ('x', 'y', 'width', 'height'):
-            if key in element:
-                element[key] = round(element[key]*SCALE, 6)
-        for key in ('target', 'label_box'):
-            if key in element:
-                element[key] = {k: round(v*SCALE, 6) for k, v in element[key].items()}
-        if 'bends' in element:
-            element['bends'] = [{k: round(v*SCALE, 6) for k, v in point.items()} for point in element['bends']]
         board['elements'].append(element)
+        return element
 
-    def text(key, label, x, y, w, h, source, style='callout'):
-        add(dict(id=key, kind='text', label=label, x=x, y=y, width=w, height=h,
-                 style=style, wrap=True, source=ref(source)))
+    def text(key, label, x, y, w, h, source, style='body', parent=None):
+        e = dict(id=key, kind='text', label=label, x=x, y=y, width=w, height=h,
+                 style=style, wrap=True, source=ref(source))
+        if parent:
+            e['parent'] = parent
+        return add(e)
 
-    text('title', 'DayLight / from local work to shared evidence', 220, 100, 11200, 230, 'local-cloud-overview', 'hero')
-    text('intro', 'One source grant and generation cross the store boundary. Search, consent and authority retain their own models.',
-         230, 330, 10400, 190, 'local-cloud-overview')
-    text('delivery-heading', '01   Delivery', 1950, 550, 2200, 225, 'local-cloud-overview', 'section')
-    text('local-heading', '02   Search', 230, 2080, 1400, 225, 'local-cloud-overview', 'section')
-    text('authority-heading', '03   Authority & consent', 4350, 2920, 3700, 225, 'cloud-project-authority', 'section')
-    text('local-callout', 'Cursors ≠ delivery receipts', 1900, 2460, 2150, 230, 'local-index-progress')
-    text('episode-callout', 'Files and manifests retain authority.',
-         250, 4910, 1400, 610, 'local-whole-model')
-    text('scope-callout', 'Membership + consent govern access.',
-         8340, 2790, 3000, 230, 'local-cloud-overview')
-    text('directory-callout', 'Provisioning maintains directory state. It does not grant transcript access.',
-         4250, 7210, 3750, 420, 'cloud-scim')
-    text('source-note', 'Pinned committed-code documentation / focus any diagram in place to inspect its original source.',
-         230, 7840, 8950, 180, 'local-cloud-overview', 'caption')
+    text('title', 'DayLight / how work becomes shared evidence',
+         160, 140, 3280, 150, 'local-cloud-overview', 'hero')
+    text('intro', 'Local work and hosted search keep different records. Follow one source grant and generation across the stores, then explore delivery, search and authority.',
+         160, 340, 3280, 260, 'local-cloud-overview')
+    text('read-model', 'Start with the system data model', 160, 650, 1650, 110,
+         'local-cloud-overview', 'section')
+
+    # Ordinary groups are narrative anchors, not replacement cards for ERDs.
+    # The actual cross-store drawing is immediately beside these three areas.
+    narratives = [
+        ('delivery', '01  Deliver the same work', 660,
+         'Observation progress, destination debt and history ceilings stay separate. The server admits a delivery for an exact source generation.',
+         'local-capture-delivery'),
+        ('search', '02  Build search projections', 1190,
+         'Local selections become search scope. In the cloud, immutable source bytes supply derived search. A file cursor is not a delivery receipt.',
+         'local-cloud-overview'),
+        ('authority', '03  Decide who may read', 1720,
+         'Ownership and policies guard admission. Shared Project membership and exact-source consent separately govern access to hosted search.',
+         'local-cloud-overview'),
+    ]
+    for key, title, y, body, source in narratives:
+        add(dict(id=key+'-guide', kind='group', x=1980, y=y, width=1460,
+                 height=460, style='anchor', source=ref(source), description=body))
+        text(key+'-title', title, 60, 0, 1400, 115, source, 'section', key+'-guide')
+        text(key+'-guide-story', body, 60, 135, 1400, 325, source, parent=key+'-guide')
+    text('evidence-note', 'Committed-code documentation · select a diagram to inspect its pinned evidence',
+         160, 2260, 3280, 100, 'local-cloud-overview', 'caption')
+
+    text('delivery-heading', '01 / Delivery: progress is not acknowledgement',
+         4050, 180, 5700, 140, 'local-capture-delivery', 'hero')
+    text('delivery-story', 'The local model separates what was observed from what each destination is still owed. Admission preserves the exact source generation and accepted rules; immutable bytes then supply hosted search projections.',
+         4050, 380, 5300, 280, 'local-cloud-overview')
+    text('delivery-meaning', 'Amber connections follow delivery context. They do not add SQL foreign keys.',
+         4050, 730, 5300, 100, 'local-cloud-overview', 'caption')
+    text('delivery-caution', 'Only the payload-to-delivery line in the cross-store ERD is a physical FK. Grant tuples and generation mappings retain their own meaning.',
+         4050, 2490, 5500, 240, 'local-cloud-overview')
+
+    text('search-heading', '02 / Search: projections keep their own scope',
+         160, 2880, 5050, 140, 'local-project-boundary', 'hero')
+    text('search-story', 'Durable selections project into search membership across database files. File cursors record append progress; search documents carry retrieval state. Neither is a cloud delivery acknowledgement.',
+         160, 3100, 4900, 260, 'local-index-progress')
+    text('episodes-story', 'Episode catalogs rebuild from validated manifests. Episode targets and prompt bindings cross database boundaries; original files and manifests retain authority.',
+         160, 4930, 4900, 260, 'local-episode-catalog')
+    text('local-directory-note', '27 local SQL tables; the whole view draws only the nine declared physical FKs.',
+         3610, 7030, 1700, 240, 'local-whole-model', 'caption')
+
+    text('authority-heading', '03 / Authority: admission and access',
+         5700, 3200, 4100, 140, 'cloud-project-authority', 'hero')
+    text('authority-story', 'Storage Project ownership and immutable policies guard admission. Identity supplies principal and Organization evidence; current consent remains separate from migration evidence and legacy visibility.',
+         5700, 3420, 4100, 340, 'cloud-project-authority')
+    text('access-story', 'Shared destinations and people groups are distinct. OAuth binds a client and principal to one selected scope; tokens do not replace authority checks.',
+         5700, 5740, 2800, 290, 'cloud-oauth')
+
+    text('support-heading', 'Further context / directory, people and durable records',
+         160, 7710, 6600, 140, 'cloud-enterprise', 'hero')
+    text('provisioning-story', 'Provisioning maintains directory state, not transcript access.',
+         160, 7930, 2800, 200, 'cloud-scim')
+    text('message-story', 'Team-scoped messages are separate from captured prompt evidence.',
+         3260, 7930, 1400, 200, 'cloud-messaging')
+    text('cloud-directory-note', '49 cloud tables by ownership domain. Colors aid navigation; they do not claim deployed SQL role separation.',
+         6700, 9630, 3000, 280, 'cloud-overview', 'caption')
+    text('return-story', 'Return to the system model', 7800, 7660, 1900, 140,
+         'local-cloud-overview', 'section')
 
     frames = {}
-    for key, _, label, summary, x, y, width in AREAS:
+    def frame(instance, key, label, x, y, width):
         _, sw, sh = images[key]
         height = width*sh/sw
-        frames[key] = dict(x=x, y=y, width=width, height=height)
-        add(dict(id=key, kind='frame', label=label, summary=CORE_SUMMARIES.get(key, ''),
+        frames[instance] = dict(x=x, y=y, width=width, height=height)
+        add(dict(id=instance, kind='frame', label=label,
                  description=records[key]['explanation'], x=x, y=y, width=width,
                  height=height, style='frame', detail_scale=.6, source=ref(key)))
 
-    # These connect explanatory appearances, not newly asserted SQL FKs.
-    def connect(key, start, end, source, description, style='mapping', bends=None):
-        element = dict(id=key, kind='connection', x=0, y=0, **{'from': start, 'to': end},
-                       style=style, head='arrow', description=description, source=ref(source))
-        if bends:
-            element['bends'] = [dict(x=x, y=y) for x, y in bends]
-        add(element)
+    for key, _, label, x, y, width in AREAS:
+        frame(key, key, label, x, y, width)
+    # Same pin, a distinct appearance: navigation never creates another source.
+    frame('system-return', 'local-cloud-overview', 'The same cross-store model', 7800, 8030, 1750)
 
-    connect('selection-search-scope', 'local-project-boundary', 'local-search-retrieval', 'local-project-boundary',
-            'Durable source selections project into search membership across files. This explanatory mapping is not a physical SQL foreign key.',
-            bends=[(1650, 2080), (1650, 3380)])
-    connect('capture-in-context', 'local-capture-delivery', 'local-cloud-overview', 'local-cloud-overview',
-            'Read the capture grant and generation in the cross-store composite. The composite is another view of the same model, not another processing stage.')
-    connect('admission-in-context', 'local-cloud-overview', 'cloud-source-lineage', 'local-cloud-overview',
-            'The cross-store overview follows the same source grant and generation to a delivery admitted by the server. This line relates two views of that admission.', 'flow')
-    connect('hosted-search-context', 'cloud-source-lineage', 'cloud-corpus', 'local-cloud-overview',
-            'The cross-store overview connects admitted delivery with object storage and hosted search projections. This is an explanatory data-flow connection, not a SQL foreign key.', 'flow')
+    def connect(key, start, end, source, label, description, box, style='mapping', bends=()):
+        add(dict(id=key, kind='connection', x=0, y=0, **{'from': start, 'to': end},
+                 label=label, label_box=dict(zip(('x', 'y', 'width', 'height'), box)),
+                 style=style, head='arrow', wrap=True, description=description,
+                 source=ref(source), bends=[dict(x=x, y=y) for x, y in bends]))
 
-    connect('policies-before-admission', 'cloud-project-authority', 'cloud-source-lineage', 'cloud-project-authority',
-            'Direct ownership and immutable policies guard the storage Project before capture admission. This contextual connection does not assert an additional SQL relationship.',
-            bends=[(6150, 3280), (6500, 2770)])
+    # Short labeled guides establish the reading path. These describe views,
+    # not a newly asserted processing stage or a recorded database relationship.
+    connect('read-delivery', 'local-cloud-overview', 'delivery-guide', 'local-cloud-overview',
+            'delivery', 'Read the grant, generation and admitted delivery in the cross-store model; continue right for focused ERDs.',
+            (1725, 1010, 310, 100), bends=[(1890, 1120), (1890, 900)])
+    connect('read-search', 'local-cloud-overview', 'search-guide', 'local-cloud-overview',
+            'search', 'Compare independent local search with hosted projections; continue below for the local models.',
+            (1725, 1450, 310, 100), bends=[(1890, 1560), (1890, 1450)])
+    connect('read-authority', 'local-cloud-overview', 'authority-guide', 'local-cloud-overview',
+            'access', 'Shared Project membership and exact-source consent separately govern hosted access; inspect authority models farther right and below.',
+            (1725, 1930, 310, 100), bends=[(1890, 2040), (1890, 1940)])
+    connect('admitted-generation', 'local-capture-delivery', 'cloud-source-lineage', 'local-cloud-overview',
+            'exact source / generation', 'Explanatory delivery context: the same source grant and generation reaches server admission. This is not a physical SQL FK.',
+            (5560, 1400, 480, 240), 'flow')
+    connect('hosted-projections', 'cloud-source-lineage', 'cloud-corpus', 'local-cloud-overview',
+            'admitted delivery', 'The cross-store model relates admitted delivery to object storage and hosted search projections. This is not an additional SQL FK.',
+            (7560, 1400, 480, 240), 'flow')
+    connect('search-membership', 'local-project-boundary', 'local-search-retrieval', 'local-project-boundary',
+            'selections project into membership', 'Durable selections project into search membership across files, with no cross-file SQL FK.',
+            (1100, 3490, 2300, 110), bends=[(790, 3460), (3960, 3460)])
 
-    # Caption bands are real authored whitespace, never subtracted from frames.
-    boxes = [(key, (f['x'], f['y']-clearance, f['width'], f['height']+clearance))
-             for key, f in frames.items()
-             for clearance in [CORE_CLEARANCE if key in CORE_SUMMARIES else CAPTION_CLEARANCE]]
-    for i, (key, (x, y, w, h)) in enumerate(boxes):
+    by_id = {e['id']: e for e in board['elements']}
+    assert len(by_id) == len(board['elements']), 'duplicate element IDs'
+    def bounds(e):
+        x, y = e['x'], e['y']
+        parent = e.get('parent')
+        while parent:
+            p = by_id[parent]
+            x, y = x+p['x'], y+p['y']
+            parent = p.get('parent')
+        return x, y, e.get('width', 0), e.get('height', 0)
+
+    def overlaps(a, b):
+        x, y, w, h = a
+        u, v, c, d = b
+        return not (x+w <= u or u+c <= x or y+h <= v or v+d <= y)
+
+    # Reserve the complete child rectangle and a separate title band.
+    boxes = [(key, (f['x'], f['y']-CAPTION_CLEARANCE, f['width'], f['height']+CAPTION_CLEARANCE))
+             for key, f in frames.items()]
+    texts = [e for e in board['elements'] if e['kind'] == 'text']
+    for i, (key, box) in enumerate(boxes):
+        x, y, w, h = box
         assert 0 <= x and 0 <= y and x+w <= WIDTH and y+h <= HEIGHT, key
-        for other, (a, b, c, d) in boxes[i+1:]:
-            assert x+w <= a or a+c <= x or y+h <= b or b+d <= y, f'frame/caption overlap: {key}, {other}'
-        for e in board['elements']:
-            if e['kind'] != 'text':
-                continue
-            a, b, c, d = (e[k]/SCALE for k in ('x', 'y', 'width', 'height'))
-            assert x+w <= a or a+c <= x or y+h <= b or b+d <= y, f'callout overlap: {key}, {e["id"]}'
+        for other, other_box in boxes[i+1:]:
+            assert not overlaps(box, other_box), f'frame/caption overlap: {key}, {other}'
+        for e in texts:
+            assert not overlaps(box, bounds(e)), f'callout overlap: {key}, {e["id"]}'
+    for i, e in enumerate(texts):
+        x, y, w, h = bounds(e)
+        assert 0 <= x and 0 <= y and x+w <= WIDTH and y+h <= HEIGHT, e['id']
+        for other in texts[i+1:]:
+            assert not overlaps(bounds(e), bounds(other)), f'text overlap: {e["id"]}, {other["id"]}'
 
-    (output/'daylight-board.json').write_text(json.dumps(board, indent=2)+'\n')
-    (output/'source-pins.json').write_text(json.dumps(manifest, indent=2)+'\n')
-    # Diagnostic layout proof: original SVG bytes embedded at exact frame ratios.
-    # This is intentionally not a substitute for the real viewer/browser checks.
+    camera = dict(initial=INITIAL_CAMERA, canvas=dict(width=WIDTH, height=HEIGHT),
+                  note='Mirrors the authored document viewport. Fit-all is an optional atlas.',
+                  tours=[dict(name='Delivery', anchor='delivery-heading', x=3900, y=0, width=6100, height=2900),
+                         dict(name='Local search', anchor='search-heading', x=0, y=2800, width=5400, height=4600),
+                         dict(name='Authority and access', anchor='authority-heading', x=5500, y=3000, width=4500, height=4500)])
+    for path, digest in source_reads.items():
+        assert 'sha256:' + hashlib.sha256(path.read_bytes()).hexdigest() == digest, f'source changed: {path}'
+    audit = dict(verified_source_files=len(source_reads), unique_pins=len(manifest), frame_instances=len(frames),
+                 repeated_instances={'local-cloud-overview': ['local-cloud-overview', 'system-return']},
+                 all_visual_digests_verified=True, source_modified=False, published=False,
+                 evidence='Pinned committed-code documentation, not a live database inspection.',
+                 structured_sources=sum('diagram' in r for r in records.values()),
+                 svg_only_sources=sum('diagram' not in r for r in records.values()),
+                 source_pins='source-pins.json')
+    for name, data in [('daylight-board.json', board), ('source-pins.json', manifest),
+                       ('camera-proposal.json', camera), ('source-audit.json', audit)]:
+        (output/name).write_text(json.dumps(data, indent=2)+'\n')
+
+    # Diagnostic proof embeds the unmodified source SVG bytes. It deliberately
+    # starts at the recommended camera, with Fit available as an optional atlas.
+    # The application viewer remains authoritative for wrapping and interaction.
     parts = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WIDTH} {HEIGHT}" style="background:#f7f8f6;font-family:Arial,sans-serif">']
     for e in board['elements']:
-        if e['kind'] == 'text':
-            font = board['styles'][e['style']]['font_size']/SCALE
-            x, y, w = (e[k]/SCALE for k in ('x', 'y', 'width'))
-            for i, line in enumerate(textwrap.wrap(e['label'], max(1, int(w/(font*.53))))):
-                parts.append(f'<text x="{x}" y="{y+font+i*font*1.2}" font-size="{font}" fill="#243746">{html.escape(line)}</text>')
-    # Draw whole-frame connector routes for this diagnostic proof. Production
-    # rendering still owns exact endpoint and marker behavior.
-    def endpoint(frame, toward):
-        cx, cy = frame['x']+frame['width']/2, frame['y']+frame['height']/2
-        dx, dy = toward[0]-cx, toward[1]-cy
-        t = min(frame['width']/(2*abs(dx)) if dx else float('inf'),
-                frame['height']/(2*abs(dy)) if dy else float('inf'))
-        return (cx+t*dx, cy+t*dy)
-
-    for e in board['elements']:
-        if e['kind'] != 'connection':
+        if e['kind'] == 'connection':
+            a, b = (by_id[e[k]] for k in ('from', 'to'))
+            def endpoint(element, toward):
+                x, y, w, h = bounds(element)
+                cx, cy = x+w/2, y+h/2
+                dx, dy = toward[0]-cx, toward[1]-cy
+                t = min(w/(2*abs(dx)) if dx else float('inf'), h/(2*abs(dy)) if dy else float('inf'))
+                return cx+t*dx, cy+t*dy
+            def center(element):
+                x, y, w, h = bounds(element)
+                return x+w/2, y+h/2
+            bends = [(p['x'], p['y']) for p in e['bends']]
+            points = [endpoint(a, bends[0] if bends else center(b)), *bends,
+                      endpoint(b, bends[-1] if bends else center(a))]
+            coords = ' '.join(f'{x},{y}' for x, y in points)
+            style = board['styles'][e['style']]
+            dash = ' stroke-dasharray="18 14"' if style.get('dash') else ''
+            parts.append(f'<polyline points="{coords}" fill="none" stroke="{style["stroke"]}" stroke-width="5"{dash}/>')
+        if e['kind'] == 'frame':
+            key = next(k for k, r in records.items() if r['record'] == e['source']['target'])
+            svg = images[key][0]
+            x, y, w, h = bounds(e)
+            parts.append(f'<image x="{x}" y="{y}" width="{w}" height="{h}" href="data:image/svg+xml;base64,{base64.b64encode(svg).decode()}"/>')
+            parts.append(f'<text x="{x}" y="{y-45}" font-size="72" fill="#243746">{html.escape(e["label"])}</text>')
+        if e['kind'] not in ('text', 'connection'):
             continue
-        a, b = frames[e['from']], frames[e['to']]
-        bends = [(p['x']/SCALE, p['y']/SCALE) for p in e.get('bends', [])]
-        ac, bc = (a['x']+a['width']/2, a['y']+a['height']/2), (b['x']+b['width']/2, b['y']+b['height']/2)
-        points = [endpoint(a, bends[0] if bends else bc), *bends, endpoint(b, bends[-1] if bends else ac)]
-        coords = ' '.join(f'{x},{y}' for x, y in points)
-        color = board['styles'][e['style']]['stroke']
-        dash = ' stroke-dasharray="22 18"' if e['style'] == 'mapping' else ''
-        parts.append(f'<polyline points="{coords}" fill="none" stroke="{color}" stroke-width="8"{dash}/>')
-    for key, _, label, summary, x, y, width in AREAS:
-        svg, _, _ = images[key]
-        h = frames[key]['height']
-        parts.append(f'<image x="{x}" y="{y}" width="{width}" height="{h}" href="data:image/svg+xml;base64,{base64.b64encode(svg).decode()}"/>')
-        summary = CORE_SUMMARIES.get(key, '')
-        title_y = y-220 if summary else y-64
-        parts.append(f'<text x="{x}" y="{title_y}" font-size="125" font-weight="bold" fill="#243746">{html.escape(label)}</text>')
-        if summary:
-            parts.append(f'<text x="{x}" y="{y-64}" font-size="125" fill="#526776">{html.escape(summary)}</text>')
+        font = board['styles'][e['style']]['font_size']
+        if e['kind'] == 'text':
+            x, y, w, _ = bounds(e)
+        else:
+            x, y, w = (e['label_box'][k] for k in ('x', 'y', 'width'))
+        for i, line in enumerate(textwrap.wrap(e['label'], max(1, int(w/(font*.50))))):
+            parts.append(f'<text x="{x}" y="{y+font+i*font*1.25}" font-size="{font}" fill="#243746">{html.escape(line)}</text>')
     parts.append('</svg>')
     (output/'layout-preview.svg').write_text('\n'.join(parts))
-    (output/'layout-preview.html').write_text('<!doctype html><meta charset="utf-8"><title>DayLight composition layout proof</title><style>body{margin:0;background:#f7f8f6}img{width:100vw;height:100vh;object-fit:contain}</style><img src="layout-preview.svg" alt="DayLight composition with all twenty source ERDs">')
+    initial_svg = '\n'.join(parts).replace(f'viewBox="0 0 {WIDTH} {HEIGHT}"', 'viewBox="0 0 3600 2400"', 1)
+    (output/'initial-preview.svg').write_text(initial_svg)
+    (output/'layout-preview.html').write_text('<!doctype html><meta charset="utf-8"><title>DayLight narrative layout proof</title><style>body{margin:0;background:#f7f8f6;font:16px Arial}nav{position:absolute;right:16px;top:16px}button{padding:8px}img{width:100vw;height:100vh;object-fit:contain}</style><nav><button onclick="document.querySelector(\'img\').src=\'initial-preview.svg\'">Start</button> <button onclick="document.querySelector(\'img\').src=\'layout-preview.svg\'">Fit atlas</button></nav><img src="initial-preview.svg" alt="DayLight system ERD with delivery, search and authority narrative">')
     print(json.dumps({'board': str(output/'daylight-board.json'), 'frames': len(frames),
-                      'pins': str(output/'source-pins.json'), 'preview': str(output/'layout-preview.html'),
-                      'caption_clearance': CAPTION_CLEARANCE*SCALE, 'core_caption_clearance': CORE_CLEARANCE*SCALE}, indent=2))
+                      'pins': str(output/'source-pins.json'), 'audit': str(output/'source-audit.json'),
+                      'camera': str(output/'camera-proposal.json'),
+                      'preview': str(output/'layout-preview.html')}, indent=2))
 
 
 if __name__ == '__main__':

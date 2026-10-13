@@ -1,7 +1,7 @@
 # Authoring an ERD whiteboard
 
 An ERD whiteboard composes existing ERD revisions using the diagram grammar.
-The AI authors the positions, sizes, summaries, annotations and connections;
+The AI authors the positions, sizes, narrative, annotations and connections;
 the Data model viewer provides read-only pan, zoom, fit and focus. The board fills
 the viewport beside the sidebar. Its floating title has an expandable description
 using the shared data-model overview. Sidebar and board ERD links focus their
@@ -75,6 +75,31 @@ without claiming a recorded relationship.
 
 ## Compose an explanation at each scale
 
+Use the same `diagram.Document` grammar and renderer used for slide diagrams:
+styles, text, groups, annotations, notes, entities and source references remain
+shared capabilities. Frames compose actual pinned ERDs within that grammar.
+The board is a spatial explanation, not a separately maintained set of summary
+cards or a screenshot of a slide deck.
+
+Start with a large headline, a short explanation of the system, and three or
+four primary areas connected by meaningful labels. Place the high-level system
+ERD beside this narrative, then put chosen detail ERDs farther along the reading
+path. Use ordinary groups as narrative anchors where useful. Give surrounding
+areas room; a large canvas does not need to fit on screen at normal zoom.
+
+An optional root `viewport` defines the opening camera in board coordinates:
+
+```json
+"viewport": { "x": 0, "y": 0, "width": 3600, "height": 2400 }
+```
+
+This rectangle is separate from the full canvas dimensions. Size opening text
+for this rectangle and the actual viewer area, not for fit-all. For example,
+at 1140 × 760 screen pixels, the rectangle above gives a scale of about 0.317:
+64-unit body text reads at about 20 pixels and a 100-unit headline at 32 pixels.
+Allow for title/navigation overlays and check smaller viewports in the viewer.
+Fit is an explicit atlas view for orientation, not the readability target.
+
 Begin with a few core ERDs and compose their actual drawings into a spatial
 explanation. Keep the source SVG's intrinsic aspect ratio: for source dimensions
 `sw × sh` and an authored frame width `w`, use frame height `w * sh / sw`.
@@ -87,8 +112,9 @@ Use a handful of larger core areas, smaller satellites and composite overviews
 where they help explain the model. Group related views through proximity and
 whitespace; avoid giving every ERD the same slot in a tiled index. Author a
 reading direction with large section labels and short source-backed callouts.
-At fit, diagrams should remain recognizable and major annotations readable;
-every individual field need not be readable until focused.
+At the opening camera, the narrative and principal diagram structure should
+be readable. Individual fields belong at focused detail scale. A fit-all atlas
+may reduce even narrative text below reading size.
 
 Actual child ERDs remain visible at overview scale. The viewer adds frame titles
 and summaries above their drawings instead of replacing them with summary
@@ -98,14 +124,17 @@ frames while descriptions retain their semantic endpoint paths. Optional
 explicit bends control routes; the viewer does not run a layout engine.
 
 Use existing annotations and notes inside structured children for local
-explanations. Overview text needs its own authored styles. In the three-ERD
-fixture, a 34-unit overview font remains readable at fit while children use
-their normal 22-unit detail font. An annotation's explicit `target` point is
+explanations. Overview text needs its own authored styles. Font size depends on the authored camera: a small three-ERD fixture can use
+34-unit overview text while a spacious board needs larger type. An annotation's explicit `target` point is
 local to that annotation, not the board. `visibility: "detail"` inside a frame
 follows that frame's detail state independently of other frames.
 
 Focus a frame to read its child diagram, then an entity or relationship to
-inspect its meaning and source pin. Repeated appearances use paths such as
+inspect its meaning and source pin. Detailed fields are available on demand
+through structured diagram controls and source inspection. A Fields control
+can simplify structured field rows without replacing the ERD; an opaque SVG
+retains its authored rows. Never claim arbitrary SVG text has become structured
+fields, or that hiding rows changes the underlying source evidence. Repeated appearances use paths such as
 `cloud/identity/organization` and `cross-store/organization`; neither path
 changes the identity of the underlying entity.
 
@@ -135,10 +164,13 @@ two structured ERDs with entity fields and local callouts, one existing SVG
 ERD, an ordinary group, a recorded production connection and an overview
 annotation. It deliberately repeats the same entity sources across views.
 
-Review both a fit-to-board view and a focused detail view in a real browser.
-At fit, a reader should be able to explain the main areas and their connections.
-At detail, fields and local explanations should be readable, with a path back
-to the whole and to the original source revision.
+Review the opening camera, an optional fit-to-board atlas, and a focused detail
+view in a real browser. From the opening view, a reader should be able to explain
+what happens and choose the next area. At detail, fields and local explanations
+should be readable, with a path back to the system and original source revision.
+Verify all embedded appearances remain reachable, including repeated pins with
+distinct instance paths. Check the opening after navigation controls are present;
+a standalone diagnostic SVG does not verify viewer interaction.
 
 See the [implementation validation record](whiteboard-validation.md) for the
 representative and real-data browser checks.
@@ -156,26 +188,51 @@ python3 docs/examples/author-daylight-whiteboard.py \
   /path/to/copied/daylight.saga /tmp/daylight-composition
 ```
 
-The outputs are `daylight-board.json`, `source-pins.json`, and a diagnostic
-`layout-preview.html` with its SVG asset. The manifest records every exact pin,
-source explanation, intrinsic dimensions and verified SVG digest. Missing pins
-or digest mismatches stop generation; future revisions are never adopted
-implicitly. The script checks frame and caption-band bounds and overlaps before
-writing the board. The preview shows the source SVGs at the authored sizes; use
-the application viewer to verify real connector behavior, inspection and focus.
+The outputs are `daylight-board.json`, `source-pins.json`, `source-audit.json`,
+`camera-proposal.json`, and a diagnostic `layout-preview.html` with initial and
+full-canvas SVG assets. The manifest records all 20 exact pins, explanations,
+intrinsic dimensions, revision-file digests and verified SVG digests. Missing
+pins or visual digest mismatches stop generation; future revisions are never
+adopted implicitly. Source revision and visual files are checked again before
+writing the outputs. Generation does not publish or modify the source saga.
 
-The composition's reading path is capture, the cross-store composite, source
-admission and cloud corpus. The composite is another view of those models, not
-an extra processing stage. Local search and episode views form a separate left
-cluster; project authority and identity anchor the lower cloud cluster, with
-consent, invitations, provisioning and messaging around them. Whole-model
-directories sit at the perimeter as reference views. Sizes reflect narrative
-emphasis and source proportions rather than a uniform grid.
+The 10000 × 10000 canvas opens at `{x: 0, y: 0, width: 3600, height: 2400}`.
+The 100-unit headline, 82-unit area headings and 64-unit body text explain the
+system beside the actual cross-store ERD. Three ordinary group anchors—
+`delivery-guide`, `search-guide`, and `authority-guide`—describe what happens
+and connect to the system model with labeled explanatory lines. The diagram is
+a composite view of the same models, not an additional processing stage.
 
-Callouts paraphrase pinned explanations. Connections describe explanatory
-mappings and delivery context with their own pins; they do not invent SQL
-foreign keys. The 100-unit frame font remains about 12 pixels at a 1140-pixel fit. Four
-central diagrams keep a short summary and a 288-unit caption band; satellites
-use title-only captions with 192 units of clearance. Section headings use
-144-unit type, and primary callouts use 112-unit type. Full source explanations
-remain available in inspection metadata. Publishing remains an explicit subsequent action after browser review.
+Delivery ERDs sit to the right: durable observation, destination debt, exact
+source admission and hosted corpus. Local scope, index progress and retrieval
+sit below, with episode projections and the whole local model farther out.
+Project authority, identity and consent anchor the next area; destinations,
+OAuth and invitations continue it. Provisioning, messaging and the whole cloud
+directory occupy the perimeter. Optional tour rectangles and anchor IDs are
+listed in `camera-proposal.json`; these are authoring suggestions, not an extra
+tour schema or automatic camera sequence.
+
+All 20 source ERDs remain embedded, at their intrinsic aspect ratios, across
+21 frame appearances. `system-return` repeats the exact `local-cloud-overview`
+pin near the far perimeter. It has a distinct instance path and focus target;
+repetition does not create another entity or a different source revision.
+Every frame reserves a separate 160-unit title band. The script checks frame,
+caption and narrative-text bounds and overlaps, as well as unique element IDs.
+The diagnostic preview starts at the opening camera and offers a Fit atlas
+button; source diagrams are never replaced by cards.
+
+The audit explicitly distinguishes committed-code documentation from live
+database observation. All current pins are SVG-only ERDs: their directories
+and bindings retain evidence, but embedding does not infer structured field
+geometry. Their complete fields remain available through source inspection.
+Narrative paraphrases come from the pinned explanations; explanatory connectors
+carry source pins and descriptions and do not assert new SQL foreign keys.
+In particular, file cursors are not delivery receipts, provisioning is not
+transcript access, and membership and exact-source consent are separate checks.
+The cross-store ERD identifies its payload-to-delivery line as the physical FK;
+other displayed mappings keep their documented meaning.
+
+Run the shared renderer to check exact text wrapping and source resolution,
+then use the application viewer for real connector routing, camera, Fields,
+inspection and focus checks. The diagnostic HTML is only a layout proof.
+Publishing is a separate delivery step after that review.
