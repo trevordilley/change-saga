@@ -20,6 +20,10 @@ New content can be authored directly in the whiteboard, with sections containing
 entities and connections crossing section boundaries. A section is part of the
 same document, not another inventory record.
 
+The whiteboard itself must be comprehensive. Every table and recorded
+relationship belongs in its authored model; an appendix of old drawings does
+not count as completing it. Original drawings need not remain on the canvas.
+
 Existing ERDs are useful migration material. Their artwork, explanations, exact
 revisions and source bindings can be reused internally. That compatibility does
 not define the document's outline or oblige the reader to navigate the old ERD
@@ -75,13 +79,20 @@ Every meaningful line should explain how its endpoints relate. Distinguish a
 recorded data relationship from transport, derivation, authorization context or
 a repeated appearance of the same entity. Neither proximity nor a drawn line
 creates a foreign key. Cross-section connections need the same source diligence
-as connections inside a section.
+as connections inside a section. Use the shared crow’s-foot markers for declared
+association cardinality at both ends, including optionality. Preserve explicit
+unknown cardinalities instead of guessing. Directional transport and production
+connections keep their distinct semantics.
 
 Pin depicted entities and recorded relationships to exact definitions. A
 relationship reference includes its owning entity revision and relationship ID.
 Preserve commit/path/line evidence through the existing reference features.
 Overview explanations also identify their sources. A reader should be able to
 inspect the meaning and evidence without leaving the model's spatial context.
+Hover and keyboard focus use the implementation slides’ annotation action strip,
+with the same note, documentation, code and story controls. Resolve those actions
+from actual references: an entity does not acquire story ownership merely because
+it appears near another element, and a slide Item’s links retain that provenance.
 Repeated appearances remain allowed and have distinct instance paths while
 sharing the same underlying source identity.
 
