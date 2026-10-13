@@ -23,6 +23,8 @@ const whiteboardJavaScript = `
       // Captions supplement the embedded drawings; they never replace them.
       // Keep this a viewer presentation so historical persisted SVGs stay valid.
       for (const frame of frames) {
+        const border = q(':scope > rect', frame);
+        border?.style.removeProperty('fill'); border?.style.removeProperty('stroke');
         const caption = qa('[data-frame-overview]', frame).find(node => node.dataset.frameOverview === frame.dataset.framePath);
         if (!caption) continue;
         caption.style.display = '';
@@ -30,6 +32,7 @@ const whiteboardJavaScript = `
         caption.setAttribute('transform', 'translate(0 ' + (-box.y-box.height-12) + ')');
       }
       function visible(node, show) {
+        if (!show && node.contains(document.activeElement)) viewport.focus({preventScroll:true});
         node.style.display = show ? '' : 'none';
         node.setAttribute('aria-hidden', String(!show));
       }
@@ -47,6 +50,7 @@ const whiteboardJavaScript = `
           const effectiveScale = matrix ? Math.hypot(matrix.a, matrix.b) : scale;
           const detailed = (focused && (focused === path || focused.startsWith(path + '/'))) || effectiveScale >= Number(frame.dataset.detailScale || .6);
           frame.dataset.whiteboardDetail = String(detailed);
+          if (!detailed && detail.contains(document.activeElement)) viewport.focus({preventScroll:true});
           detail.style.display = '';
           detail.style.pointerEvents = detailed ? '' : 'none';
           detail.setAttribute('aria-hidden', String(!detailed));
@@ -247,7 +251,7 @@ const whiteboardJavaScript = `
         const title = q('title', node)?.textContent || node.getAttribute('aria-label') || node.dataset.instancePath;
         control.setAttribute('aria-label', (node.hasAttribute('data-frame-path') ? 'Focus ' : node.hasAttribute('data-documentation-target') ? 'Inspect ' : 'Inspect connection ') + title);
         control.addEventListener('keydown', event => {
-          if (event.target !== control || (event.key !== 'Enter' && event.key !== ' ')) return;
+          if (event.target !== control || control.closest('[aria-hidden="true"]') || (event.key !== 'Enter' && event.key !== ' ')) return;
           event.preventDefault(); event.stopPropagation(); node.dispatchEvent(new MouseEvent('click', {bubbles:true,cancelable:true}));
         });
       }

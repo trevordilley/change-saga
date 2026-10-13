@@ -75,6 +75,7 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(board.locator(".whiteboard-description-body")).toBeHidden();
 
   await expect(local).toHaveAttribute("data-whiteboard-detail", "false");
+  await expect(local.locator(":scope > rect")).toHaveCSS("fill", "rgba(0, 0, 0, 0)");
   await expect(board.locator('[data-frame-overview="local"]')).toBeVisible();
   await expect(board.locator('[data-frame-detail="local"]')).toBeVisible();
   await expect(board.locator('[data-instance-path="local/local-edit"]')).toBeVisible();
@@ -127,7 +128,18 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(page.locator(".topbar")).toBeHidden();
   await board.getByText("Diagrams on this board", { exact: true }).click();
   await board.getByRole("button", { name: "Fit board" }).click();
+  for (let i = 0; i < 5; i++) await board.getByRole("button", { name: "Zoom in whiteboard" }).click();
+  const entityControl = board.locator('[data-instance-path="local/local-edit"]');
+  await expect(local).toHaveAttribute("data-whiteboard-detail", "true");
+  await entityControl.focus();
+  // Resize while fitted remains false: a large shrink crosses back into preview.
+  await page.setViewportSize({ width: 400, height: 500 });
+  await expect(local).toHaveAttribute("data-whiteboard-detail", "false");
+  await expect(viewport).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".diff-drawer")).not.toHaveClass(/open/);
   await page.setViewportSize({ width: 600, height: 800 });
+  await board.getByRole("button", { name: "Fit board" }).click();
   await expect.poll(async () => (await viewport.boundingBox())?.height).toBe(800);
   const narrowCanvas = await viewport.boundingBox();
   expect(narrowCanvas!.x + narrowCanvas!.width).toBe(600);

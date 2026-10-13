@@ -252,6 +252,7 @@ body:has(#view-saga.active .whiteboard-canvas)>.topbar{display:none}
 .whiteboard-canvas{position:relative;height:100%;isolation:isolate;overflow:hidden}
 .whiteboard-viewport{position:absolute;inset:0;overflow:hidden;background:var(--bg);cursor:grab;touch-action:none}
 .whiteboard-viewport>svg{display:block;width:100%;height:100%;max-width:none}
+.whiteboard-viewport [data-frame-detail]>svg{overflow:visible}
 .whiteboard-viewport:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .whiteboard-viewport.whiteboard-dragging{cursor:grabbing;user-select:none}
 .whiteboard-viewport [data-whiteboard-selectable]{cursor:pointer}
