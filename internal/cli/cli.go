@@ -1357,6 +1357,33 @@ func Spec(args []string, out io.Writer) error {
 				"bounds":       map[string]int{"references_per_owner": requirements.MaxEvidencePerOwner, "relationships": requirements.MaxRelationships, "fields": requirements.MaxEntityFields, "holders": requirements.MaxEntityHolders, "erd_directory": requirements.MaxERDDirectory, "erd_bindings": requirements.MaxERDBindings, "overlay_pins": requirements.MaxOverlayPins, "visual_bytes": requirements.MaxVisualBytes, "item_selections": saga.MaxItemSelections, "selection_path": saga.MaxSelectionPath},
 				"item_link":    "documentation: {target: Component-System-or-data-entity-URN, revision: Revision-URN}; optional documentation_view: full commit of a saved Saga view admitting a non-current pin; optional selections: [{id, path: [pins from documentation], evidence: id, code: subset reference}]",
 				"coverage":     "only direct Item code; documentation never transfers coverage; selections are explicit inputs to inventory-aware coverage consumers", "history": "immutable identity, complete revisions and lifecycle events; all heads explicit"},
+			"whiteboards": map[string]any{
+				"purpose":          "technical-design visualization: one cohesive ERD data-model document",
+				"kinds":            []string{"erd"},
+				"root":             requirements.WhiteboardDir,
+				"storage":          requirements.WhiteboardDir + "/erd/revisions/<id>.json",
+				"schema":           requirements.WhiteboardSchemaURL,
+				"revision_version": 1,
+				"diagram_source":   diagram.Contract(),
+				"history": map[string]string{
+					"revisions": "immutable complete diagram snapshots; identical retries are idempotent",
+					"parent":    "first publication has no parent; updates require the observed unique current board revision ID as --parent",
+					"reads":     "default reads require the unique current head and reject conflicting heads; --revision selects exact history, never a fallback",
+				},
+				"source_pins": "depicted ERDs and data entities pin exact target and revision URNs; optional element or owned relationship selector; sources never follow newer revisions",
+				"commands": map[string]string{
+					"publish":  commandUsage["diagram publish"],
+					"get":      "change-saga diagram get --whiteboard erd [--revision ID] [--focus PATH | --id PATH] <saga>",
+					"describe": "change-saga diagram describe --whiteboard erd [--revision ID] [--focus PATH] [--format text|json] <saga>",
+					"check":    "change-saga diagram check --whiteboard erd [--revision ID] [--focus PATH] [--json] <saga>",
+				},
+				"focus": "--focus selects a frame or element instance path for reads; get also accepts --id; publish always appends a complete board snapshot",
+				"compatibility": map[string]string{
+					"absent":        "the subtree is optional; v5 Sagas without it remain valid",
+					"older_readers": "reject an adopted ___whiteboards subtree rather than silently ignore it",
+				},
+				"unsupported": []string{"infrastructure or system whiteboards", "whiteboard edit transactions"},
+			},
 			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
 			"query": map[string]any{
 				"schema":     querySchema,
@@ -2208,6 +2235,24 @@ and query inventory. Implementation/review Item documentation links pin {target,
 revision}; they never transfer code coverage. Existing Item.record role rules
 remain unchanged. Stale pins and history stay inspectable; no autoapproval or
 automatic repinning occurs.
+
+Technical design can use an ERD whiteboard: one cohesive data-model document.
+Only kind erd is supported. The optional v5 subtree stores immutable complete
+diagram snapshots in ___whiteboards/erd/revisions/<id>.json (revision version 1).
+Whiteboards share the implementation deck's diagram source grammar and renderer.
+Publish with diagram publish --whiteboard erd --revision ID [--parent ID]
+[--name TITLE] --from FILE|- <saga>. First publication has no parent; updates
+require the observed unique current board revision ID as --parent. Identical
+retries are idempotent. Sources pin exact ERD/data-entity target and revision
+URNs, optionally an element or owned relationship; they never follow newer
+revisions. Read with diagram get|describe|check --whiteboard erd [--revision ID]
+[--focus PATH] <saga>. Default reads require the unique current head and reject
+conflicting heads; --revision selects exact history without fallback. Focus
+names a frame or element instance path; get also accepts --id. Describe supports
+--format text|json; check supports --json. Focus is read-only; publish appends a
+complete board snapshot. Infrastructure/system whiteboards and whiteboard edit
+transactions are not supported. Older readers reject an adopted ___whiteboards
+subtree; its absence remains valid and requires no migration.
 
 The Saga is documentation. Stories, designs, test cases, and decks carry no
 approvals and no comments. A pull request's review is where a change is
