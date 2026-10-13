@@ -245,7 +245,16 @@ func (view *erdView) elementPrefix() string { return view.DOMID() + "-" }
 // directory over the exact baseline ERD revision they name; the canonical ERD
 // is read, never rewritten.
 func (a *app) makeERDView(inventory requirements.Inventory, record *requirements.TechnicalRecord, revision *requirements.TechnicalRevision) *erdView {
+	return a.makeERDViewWithPrefix(inventory, record, revision, "")
+}
+
+// makeERDViewWithPrefix shares authored SVG validation, presentation and pinned
+// binding labels with embedded instances. The prefix is presentation-only.
+func (a *app) makeERDViewWithPrefix(inventory requirements.Inventory, record *requirements.TechnicalRecord, revision *requirements.TechnicalRevision, prefix string) *erdView {
 	view := &erdView{Kind: record.Kind, ID: record.Identity.ID, Target: record.Target, Name: revision.Name, Explanation: revision.Explanation, Revision: revision.ID}
+	if prefix == "" {
+		prefix = view.elementPrefix()
+	}
 	directory := revision.Directory
 	visualRecord, visual, bindings := record, revision.Visual, revision.Bindings
 	structuredVisual := revision.Diagram != nil
@@ -283,13 +292,13 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 		if err != nil {
 			view.VisualNote = "The authored diagram is unavailable: " + err.Error() + ". The directory below still lists every entity."
 		} else if structuredVisual {
-			markup, err := inlineDiagramSVG(data, view.elementPrefix())
+			markup, err := inlineDiagramSVG(data, prefix)
 			if err != nil {
 				view.VisualNote = "The authored diagram is unavailable: " + err.Error()
 			} else {
 				view.Visual = template.HTML(markup)
 			}
-		} else if markup, refused := sanitizeSVG(data, view.elementPrefix()); len(refused) > 0 {
+		} else if markup, refused := sanitizeSVG(data, prefix); len(refused) > 0 {
 			view.VisualNote = "The authored diagram is unavailable: this reviewer draws only static shapes, text and same-document links, and the drawing contains " + strings.Join(refused, "; ") + ". The directory below still lists every entity."
 		} else {
 			// Re-serialized from its tokens, never the author's bytes.
@@ -298,7 +307,7 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 	}
 	elements := map[string][]string{}
 	for _, binding := range bindings {
-		b := erdBindingView{ID: binding.ID, Element: view.elementPrefix() + binding.Element}
+		b := erdBindingView{ID: binding.ID, Element: prefix + binding.Element}
 		switch {
 		case binding.Entity != nil:
 			b.Pin = *binding.Entity
