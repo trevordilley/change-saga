@@ -51,6 +51,7 @@ const (
 	OnboardingDir   = "___onboarding"
 	FeatureFlagsDir = "___featureflags"
 	FeaturesDir     = "___features"
+	WhiteboardsDir  = "___whiteboards"
 
 	// The overview's formal parts. The project name is saga.json's title; the
 	// elevator pitch, description and data-model overview are fixed report fragments; terms are
@@ -85,7 +86,7 @@ const (
 
 // AppRootDirs are the reserved directories allowed directly beneath an app
 // Saga root, besides the review overlay roots the report loader owns.
-var AppRootDirs = []string{OverviewDir, PersonasDir, DesignSystemDir, OnboardingDir, FeatureFlagsDir, FeaturesDir, "___inventory"}
+var AppRootDirs = []string{OverviewDir, PersonasDir, DesignSystemDir, OnboardingDir, FeatureFlagsDir, FeaturesDir, "___inventory", WhiteboardsDir}
 
 // FeatureRootDirs are the reserved directories allowed directly beneath a feature.
 var FeatureRootDirs = []string{RequirementsDir, DesignDir, SlidesDir, QualityDir, WorkplanDir}
