@@ -10,6 +10,7 @@
     "version": {"const": 1},
     "width": {"type": "number", "exclusiveMinimum": 0, "maximum": 10000},
     "height": {"type": "number", "exclusiveMinimum": 0, "maximum": 10000},
+    "viewport": {"$ref": "#/$defs/box", "description": "Authored opening region within the canvas; the viewer opens here without changing SVG geometry. Omit to fit the board."},
     "background": {"$ref": "#/$defs/color"},
     "reveal": {"enum": ["fade"], "description": "Opt-in staggered entrance: the reviewer fades the drawing in step by step each time its slide is shown. Thumbnails, exports, landmark links, and readers who prefer reduced motion see the finished drawing."},
     "styles": {

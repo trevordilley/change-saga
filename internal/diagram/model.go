@@ -133,13 +133,15 @@ type Element struct {
 // Document is the complete diagram source. Elements are ordered: that order
 // is the reading order of Describe and breaks ties between equal z values.
 type Document struct {
-	Version    int              `json:"version"`
-	Width      float64          `json:"width"`
-	Height     float64          `json:"height"`
-	Background string           `json:"background,omitempty"`
-	Reveal     string           `json:"reveal,omitempty"`
-	Styles     map[string]Style `json:"styles,omitempty"`
-	Elements   []Element        `json:"elements"`
+	Version    int     `json:"version"`
+	Width      float64 `json:"width"`
+	Height     float64 `json:"height"`
+	Background string  `json:"background,omitempty"`
+	// Viewport is the authored opening region; it never changes the rendered SVG.
+	Viewport *Box             `json:"viewport,omitempty"`
+	Reveal   string           `json:"reveal,omitempty"`
+	Styles   map[string]Style `json:"styles,omitempty"`
+	Elements []Element        `json:"elements"`
 }
 
 // DefaultStyles are available to every Document. A Document style with the
@@ -237,6 +239,11 @@ func (d Document) Validate() error {
 	}
 	if !finite(d.Width) || !finite(d.Height) || d.Width <= 0 || d.Height <= 0 || d.Width > 10000 || d.Height > 10000 {
 		add("canvas width and height must be positive and at most 10000")
+	}
+	if v := d.Viewport; v != nil {
+		if !finite(v.X) || !finite(v.Y) || !finite(v.Width) || !finite(v.Height) || v.X < 0 || v.Y < 0 || v.Width <= 0 || v.Height <= 0 || v.X+v.Width > d.Width || v.Y+v.Height > d.Height {
+			add("viewport must be a positive rectangle within the canvas")
+		}
 	}
 	if d.Background != "" && !validColor(d.Background) {
 		add("background must be #rrggbb, none, or a colour token such as @diagram-canvas")
