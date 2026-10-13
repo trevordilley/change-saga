@@ -1752,7 +1752,7 @@ const appJavaScript = `(() => {
   async function openDocumentation(button, back = false) {
     // An Item's control also names the Item, so the drawer can show the
     // exact code that Item selects; definitions reached from there do not.
-    const pin = {target:button.dataset.documentationTarget, revision:button.dataset.documentationRevision, item:button.dataset.documentationItem || ''};
+    const pin = {target:button.dataset.documentationTarget, revision:button.dataset.documentationRevision, item:button.dataset.documentationItem || '', relationship:button.dataset.sourceRelationship || button.dataset.erdRelationship || ''};
     const alreadyOpen = q('.diff-drawer.open')?.dataset.drawerMode === 'documentation';
     const opener = alreadyOpen ? drawerOpener : button;
     if (!alreadyOpen) documentationTrail = [];
@@ -1778,6 +1778,10 @@ const appJavaScript = `(() => {
         previous.dataset.documentationBack = 'true'; body.prepend(previous);
       }
       highlightCode(body);
+      if (pin.relationship) {
+        const selected = qa('[data-relationship]', body).find(row => row.dataset.relationship === pin.relationship);
+        if (selected) { selected.classList.add('whiteboard-selected-relationship'); selected.scrollIntoView({block:'nearest'}); }
+      }
     } catch (error) {
       if (request !== documentationRequest || q('.diff-drawer.open')?.dataset.drawerMode !== 'documentation') return;
       body.textContent = error.message || 'Explanation could not be loaded.';
@@ -2658,7 +2662,7 @@ const appJavaScript = `(() => {
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
     const documentationButton = event.target.closest('[data-documentation-target]');
     if (documentationButton) {event.preventDefault(); void openDocumentation(documentationButton); return;}
-    if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item}},true); return;}
+    if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item,sourceRelationship:pin.relationship}},true); return;}
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
     // An unbound note needs pointer events to reveal its info control. Its
@@ -3119,6 +3123,7 @@ const appJavaScript = `(() => {
     }
   }
 
+` + whiteboardJavaScript + `
   applyDiffLayout(rememberedDiffLayout());
   // ----- The page lifecycle -----
   // The shell is loaded once per session: this script, the stylesheet, the
@@ -3181,6 +3186,7 @@ const appJavaScript = `(() => {
     prepareContext(root);
     highlightCode(root);
     bindERDVisuals(root);
+    prepareWhiteboards(root);
     applyDiffLayout(diffLayout);
     syncSlidePresentation();
     reviewAsync = makeReviewAsync(pageScope.signal);

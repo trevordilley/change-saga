@@ -248,6 +248,7 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 	view := &erdView{Kind: record.Kind, ID: record.Identity.ID, Target: record.Target, Name: revision.Name, Explanation: revision.Explanation, Revision: revision.ID}
 	directory := revision.Directory
 	visualRecord, visual, bindings := record, revision.Visual, revision.Bindings
+	structuredVisual := revision.Diagram != nil
 	baselinePins := map[string]saga.DocumentationLink{}
 	if record.Kind == requirements.KindERDOverlay && revision.ERD != nil {
 		view.BaselineName, view.BaselineHref = entityName(inventory, *revision.ERD), technicalPinHref(*revision.ERD)
@@ -268,6 +269,7 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 			if visual == nil {
 				// No overlay drawing: show the baseline's, and say so.
 				visualRecord, visual, bindings = inventory.Find(revision.ERD.Target), baseline.Visual, baseline.Bindings
+				structuredVisual = baseline.Diagram != nil
 				view.VisualNote = "This overlay has no drawing of its own. The diagram is the baseline ERD revision; the overlay's changes are listed in the directory."
 			}
 		}
@@ -280,6 +282,13 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 		}
 		if err != nil {
 			view.VisualNote = "The authored diagram is unavailable: " + err.Error() + ". The directory below still lists every entity."
+		} else if structuredVisual {
+			markup, err := inlineDiagramSVG(data, view.elementPrefix())
+			if err != nil {
+				view.VisualNote = "The authored diagram is unavailable: " + err.Error()
+			} else {
+				view.Visual = template.HTML(markup)
+			}
 		} else if markup, refused := sanitizeSVG(data, view.elementPrefix()); len(refused) > 0 {
 			view.VisualNote = "The authored diagram is unavailable: this reviewer draws only static shapes, text and same-document links, and the drawing contains " + strings.Join(refused, "; ") + ". The directory below still lists every entity."
 		} else {
@@ -370,15 +379,16 @@ func (a *app) makeERDView(inventory requirements.Inventory, record *requirements
 type technicalDataModelView struct {
 	// Single is an inline convenience only when exactly one ERD exists.
 	// Multiple documents have equal standing, regardless of their IDs.
-	Single    *erdView
-	Overview  *fragmentView
-	Documents []traceLink
-	Overlays  []traceLink
-	Entities  *directoryView
+	Whiteboard *whiteboardView
+	Single     *erdView
+	Overview   *fragmentView
+	Documents  []traceLink
+	Overlays   []traceLink
+	Entities   *directoryView
 }
 
 func (a *app) technicalDataModel(inventory requirements.Inventory, usages technicalUsageIndex, newness *technicalNewness, query string) *technicalDataModelView {
-	view := &technicalDataModelView{Entities: &directoryView{
+	view := &technicalDataModelView{Whiteboard: a.makeWhiteboardView(inventory), Entities: &directoryView{
 		ID: "technical-entities", Title: "Data entities", Action: technicalPath + "/erd",
 		Label: "Filter data entities", Noun: "data entity", Nouns: "data entities",
 		Columns: []directoryColumn{{Title: "Data entity"}, {Title: "Purpose", Wide: true}, {Title: "Intent"}, {Title: "Held by"}, {Title: "Relationships", Numeric: true}, {Title: "Used by Items", Numeric: true}},

@@ -988,7 +988,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 }
 
 // pageTemplateSource is every template the reviewer renders with.
-var pageTemplateSource = pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates + technicalSelectionTemplates
+var pageTemplateSource = pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + technicalERDTemplates + technicalSelectionTemplates
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
