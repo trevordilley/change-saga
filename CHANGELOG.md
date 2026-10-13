@@ -12,6 +12,18 @@ tool, and what they have to do about it.
 
 ### Added
 
+- Whiteboards for technical design, first applied to ERDs: one spacious data-model
+  document with connected sections, readable overview narrative and focused detail.
+  Reuses the diagram grammar, renderer, icons and annotation/source inspection UX
+  from slides. Includes pan, zoom, fit, focus, crow's-foot associations and viewport
+  culling. Infrastructure and system design are intended future applications.
+- **Format:** Optional `___whiteboards/erd/revisions/<id>.json` stores immutable,
+  complete diagram snapshots. `diagram publish|get|describe|check --whiteboard erd`
+  authors and inspects them; source revisions are pinned and adoption is explicit.
+  Existing Sagas and ERD histories remain readable with current readers. Older
+  readers reject the new reserved subtree: upgrade before publishing a whiteboard.
+  No automatic migration or manifest/inventory version bump is required.
+
 - **Format:** Optional shared Markdown data-model overview at
   `___overview/data-model.fragment`, authored with `overview set-data-model`.
   `query inventory` discovers its fragment target; existing fragment and history
@@ -21,8 +33,10 @@ tool, and what they have to do about it.
 
 ### Changed
 
-- Data model navigation gives independently named ERD documents equal standing
-  and lists them before data entities. Multiple documents no longer choose an
+- When an ERD whiteboard is present, Data model opens one cohesive document;
+  its outline focuses sections within the board. Source histories remain available.
+- Without a whiteboard, Data model navigation gives independently named ERD
+  documents equal standing and lists them before data entities. Multiple documents no longer choose an
   `application` or first ERD as primary; a single active document stays inline.
 
 ## [0.4.0] - 2026-10-07

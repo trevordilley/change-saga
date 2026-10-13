@@ -1,5 +1,7 @@
 # Authoring an ERD whiteboard
 
+ERDs are the first implemented application of [whiteboards for technical design](whiteboards.md).
+
 The ERD whiteboard is the system's **one data-model document**. Author its
 entities, relationships, nested sections and explanations directly using the
 existing diagram grammar. Importing exact ERD revisions is optional and useful
@@ -34,6 +36,10 @@ the latest revision of a child implicitly: adopting a revised ERD means changing
 the frame's pin and publishing a new board revision. Older boards and ERDs stay
 readable with their original pins. Repeated appearances can share a source pin
 while retaining distinct instance paths.
+
+Whiteboard storage is optional in v5. Current readers accept Sagas without it;
+older readers reject the `___whiteboards` root directory. Upgrade readers before
+publishing the first board. Publishing does not migrate or rewrite existing ERDs.
 
 ## Publish and inspect
 

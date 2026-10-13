@@ -1,12 +1,19 @@
 # Diagrams, narrative, and exact evidence
 
 Read this reference when the task creates or changes a feature implementation
-deck, pull-request review deck, narrative fragment, landmark, code evidence,
+deck, pull-request review deck, ERD whiteboard, narrative fragment, landmark, code evidence,
 claim, or verification. Read [query.md](query.md) first when a Saga already
 exists. Use `change-saga --help`, command `-h`, and `change-saga spec --json`
 for current syntax.
 
 ## Choose the artifact
+
+Use long-form essays for Product overviews, features and user stories; slide
+decks for technical implementation and code reviews; and whiteboards for spatial
+technical design. Whiteboards are one cohesive document with nested sections and
+cross-section relationships, authored with the same diagram grammar and visual
+language as slides. ERDs are currently supported; infrastructure and system
+design are intended applications, not available whiteboard kinds.
 
 Every deck has a Deck -> Slide -> Item spine. A feature's single living
 implementation deck explains the domain's current implementation. Update its
@@ -18,8 +25,7 @@ implemented features belong in actual Product story records (see
 
 Every deck has an Overview: an authored report combining explanation, tables,
 and visualizations. A Technical deck's overview is the detailed implementation
-strategy and technical design document that its slides make digestible through
-diagrams and explanation. Explain responsibilities, data models, execution
+account that its slides make digestible through diagrams and explanation. Explain responsibilities, data models, execution
 paths, invariants, failure handling, and tradeoffs with enough depth to work on
 the implementation.
 A slide tour or reading guide does not replace this technical account.
@@ -45,6 +51,31 @@ walkthroughs. Use Markdown to orient and connect visual artifacts, not as the
 default container. A substantial chapter should lead with a diagram,
 interactive walkthrough, or concrete before/after example and state its
 boundary, invariants, decisions, risks, compatibility concerns, and proof.
+
+## ERD whiteboards
+
+Author one system data-model document with native groups, shapes, text,
+annotations and connections. Layout, color, large overview text and callouts
+should explain selected concepts; a complete table or column inventory is not
+required. Pin what is depicted to exact ERD or data-entity revisions, including
+relationship IDs for recorded associations. Distinguish conceptual flows from
+recorded relationships and use declared crow's-foot cardinalities. Existing ERD
+frames are optional imports. Infrastructure/System inventory pins are not
+supported whiteboard sources.
+
+Use `diagram publish --whiteboard erd --revision r1 --from board.json PATH`
+for the complete document. Subsequent publications require `--parent` naming
+the current board revision; source adoption is explicit. Use `diagram describe
+--whiteboard erd [--revision ID] [--focus PATH] --format json PATH`, `diagram get`
+and `diagram check` to inspect and validate it. The whiteboard has no `diagram
+edit` transaction; it uses immutable complete publications. Distinct instance
+paths identify repeated appearances. Opaque imported SVGs remain whole diagrams;
+do not infer internal geometry or fabricate slide Items for them.
+
+The viewer reuses slide annotation actions where applicable to reach source
+code, stories and documentation. Whiteboard pins do not transfer slide/review
+line coverage. Keep the opening view legible; readers can pan into other sections
+and focus detail without fitting the entire model on one screen.
 
 ## Make the depth readable
 

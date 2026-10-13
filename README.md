@@ -13,6 +13,19 @@ slides that explain the change's architecture, so you review the design instead
 of every line. Coverage links every changed line to the slide that explains it,
 so you can trust that nothing was left out.
 
+Change Saga uses three complementary presentation forms:
+
+| Form | Purpose |
+| --- | --- |
+| Long-form essays | Product overviews, features and user stories: intent, requirements and context. |
+| Slide decks | Technical implementation and code reviews: a guided explanation with exact evidence. |
+| Whiteboards | Technical design: one spacious, connected document that readers explore by panning, zooming and inspecting evidence. |
+
+[Whiteboards](docs/whiteboards.md) bring the existing diagram grammar, visual
+styles and annotation interactions to designs that need more room than a slide.
+ERDs are the first supported application; infrastructure and system design are
+intended applications of the same presentation form.
+
 ## Install
 
 macOS and Linux:
@@ -37,9 +50,9 @@ change-saga version
 change-saga help
 ```
 
-Shared data models can have separate ERD documents for local SQLite, cloud
-Postgres, and cross-store data flow, plus a Markdown overview. See
-[authoring multiple ERD documents](docs/erd-documents.md).
+Author a system's data model as [one ERD whiteboard](docs/erd-whiteboard-guide.md):
+connected sections, selected entities, relationships, callouts and source evidence.
+Existing ERD revisions remain readable and can be reused as optional source material.
 
 ## Start with a review
 

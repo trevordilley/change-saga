@@ -1,11 +1,29 @@
-# One data-model document on a whiteboard
+# Whiteboards for technical design
 
-Status: revised product direction for `feature/erd-whiteboard`. ERD first.
-The [authoring guide](erd-whiteboard-guide.md) describes the implemented grammar,
-revision policy and viewer. Infrastructure will eventually use the same document
-model; it is outside this implementation.
+Whiteboards are a Change Saga visualization for technical design: a cohesive,
+spatial document with room to explain relationships and explore detail. They
+complement the other presentation forms rather than replacing their contracts.
 
-## The document
+| Form | Primary use | Reading experience |
+| --- | --- | --- |
+| Long-form essays | Product overviews, features and user stories | Read the intent, requirements and context as a narrative. |
+| Slide decks | Technical implementation and code reviews | Follow a guided sequence of explanations and inspect exact evidence. |
+| Whiteboards | Technical design | Explore a connected model through sections, relationships, pan, zoom and evidence. |
+
+The intended applications are data models (ERDs), infrastructure topology and
+system designs. Each design is one comprehensive explanatory document, with
+smaller diagrams composed into its sections. It is not constrained to one slide
+or a single screen. This is a presentation form, not a new inventory kind.
+
+**Current implementation: ERD whiteboards.** The
+[authoring guide](erd-whiteboard-guide.md) describes the implemented grammar,
+revision policy and viewer. The CLI currently accepts only `--whiteboard erd`,
+and source pins resolve ERDs and data entities. Infrastructure and system design
+are intended applications; their whiteboard commands, source kinds and viewer
+routes are not implemented by this change. Shared visual shapes alone do not
+provide those integrations.
+
+## First application: one data-model document
 
 The system has **one ERD document**, expressed on a large, zoomable whiteboard.
 It explains the system data model through selected entities, relationships,
@@ -143,6 +161,6 @@ connect its meaningful parts rather than presenting a gallery of thumbnails.
 Review the opening, regional and detailed views in a real browser. Can a reader
 explain the system model, follow the relationships between sections, choose the
 detail they need, and trace it to code? Does navigation stay within one document?
-Those are the product tests. Later, one infrastructure whiteboard document will
-serve the equivalent purpose for infrastructure; there is no requirement for it
-to fit in a single screen-sized diagram either.
+Those are the product tests for the first application. Infrastructure and system
+design should use the same principle: one cohesive document for each design,
+with space to explain its boundaries, relationships and evidence.
