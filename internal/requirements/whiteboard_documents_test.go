@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/store"
@@ -126,7 +127,7 @@ func TestWhiteboardMissingStorageAndInvalidIDs(t *testing.T) {
 }
 
 func TestWhiteboardNamedStorageRejectsMalformedDirectories(t *testing.T) {
-	for _, name := range []string{"root-file", "root-symlink", "board-file", "board-symlink", "invalid-directory", "missing-revisions", "revisions-file", "revisions-symlink", "empty-revisions", "extra-entry"} {
+	for _, name := range []string{"root-file", "root-symlink", "board-file", "board-symlink", "invalid-directory", "staging-file", "staging-symlink", "unrelated-hidden-directory", "missing-revisions", "revisions-file", "revisions-symlink", "empty-revisions", "extra-entry"} {
 		t.Run(name, func(t *testing.T) {
 			root := t.TempDir()
 			boards := filepath.Join(root, WhiteboardDir)
@@ -152,6 +153,12 @@ func TestWhiteboardNamedStorageRejectsMalformedDirectories(t *testing.T) {
 				must(os.WriteFile(board, nil, 0600))
 			case "board-symlink":
 				must(os.Symlink(t.TempDir(), board))
+			case "staging-file":
+				must(os.WriteFile(filepath.Join(boards, ".change-saga-stage-bad"), nil, 0600))
+			case "staging-symlink":
+				must(os.Symlink(t.TempDir(), filepath.Join(boards, ".change-saga-stage-bad")))
+			case "unrelated-hidden-directory":
+				must(os.Mkdir(filepath.Join(boards, ".unexpected"), 0755))
 			case "invalid-directory":
 				must(os.Mkdir(filepath.Join(boards, "bad id"), 0755))
 			default:
@@ -172,12 +179,12 @@ func TestWhiteboardNamedStorageRejectsMalformedDirectories(t *testing.T) {
 			if err := ValidateWhiteboards(root, "test"); err == nil {
 				t.Fatal("accepted malformed storage")
 			}
-			if strings.HasPrefix(name, "root-") || strings.HasPrefix(name, "board-") || name == "invalid-directory" {
+			if strings.HasPrefix(name, "root-") || strings.HasPrefix(name, "board-") || strings.HasPrefix(name, "staging-") || name == "unrelated-hidden-directory" || name == "invalid-directory" {
 				if _, err := ListWhiteboardIDs(root); err == nil {
 					t.Fatal("listed malformed board directory")
 				}
 			}
-			if name != "invalid-directory" {
+			if name != "invalid-directory" && !strings.HasPrefix(name, "staging-") && name != "unrelated-hidden-directory" {
 				if _, err := LoadWhiteboard(root, "test", "example", ""); err == nil {
 					t.Fatal("load accepted malformed selected storage")
 				}
@@ -244,6 +251,10 @@ func TestWhiteboardDocumentCountIsBounded(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+	// A pending or abandoned store stage must not consume a board slot.
+	if _, err := os.MkdirTemp(boards, ".change-saga-stage-"); err != nil {
+		t.Fatal(err)
+	}
 	if ids, err := ListWhiteboardIDs(root); err != nil || len(ids) != MaxWhiteboards {
 		t.Fatalf("listing at limit = %d, %v", len(ids), err)
 	}
@@ -261,5 +272,63 @@ func TestWhiteboardDocumentCountIsBounded(t *testing.T) {
 	}
 	if err := ValidateWhiteboards(root, "test"); err == nil || !strings.Contains(err.Error(), "maximum") {
 		t.Fatalf("validation skipped board limit: %v", err)
+	}
+}
+
+func TestWhiteboardReadersIgnoreIncompletePublicationStage(t *testing.T) {
+	root, pin, _ := whiteboardFixture(t)
+	original, err := PublishWhiteboard(context.Background(), root, "test", "original", "r1", "", "Original", boardDocument(pin))
+	if err != nil {
+		t.Fatal(err)
+	}
+	next := *original
+	next.Name = "Next document"
+	entered, release := make(chan struct{}), make(chan struct{})
+	var releaseOnce sync.Once
+	resume := func() { releaseOnce.Do(func() { close(release) }) }
+	defer resume()
+	result := make(chan error, 1)
+	go func() {
+		result <- store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+			return store.CommitDir(root, filepath.Join(root, WhiteboardDir, "next"), func(stage string) error {
+				revisions := filepath.Join(stage, "revisions")
+				if err := os.Mkdir(revisions, 0755); err != nil {
+					return err
+				}
+				close(entered)
+				<-release // Readers see an actual, incomplete CommitDir stage.
+				return store.WriteJSON(filepath.Join(revisions, "r1.json"), next, true)
+			})
+		})
+	}()
+	select {
+	case <-entered:
+	case err := <-result:
+		t.Fatalf("publication did not enter populate: %v", err)
+	}
+	if ids, err := ListWhiteboardIDs(root); err != nil || !reflect.DeepEqual(ids, []string{"original"}) {
+		t.Fatalf("incomplete stage leaked into listing: %v, %v", ids, err)
+	}
+	if err := ValidateWhiteboards(root, "test"); err != nil {
+		t.Fatalf("stage broke validation: %v", err)
+	}
+	if board, err := LoadResolvedWhiteboard(root, "test", "original", ""); err != nil || board == nil {
+		t.Fatalf("stage broke original board reads: %+v, %v", board, err)
+	}
+	if board, err := LoadWhiteboard(root, "test", "next", ""); err != nil || board != nil {
+		t.Fatalf("uncommitted board became visible: %+v, %v", board, err)
+	}
+	resume()
+	if err := <-result; err != nil {
+		t.Fatal(err)
+	}
+	if ids, err := ListWhiteboardIDs(root); err != nil || !reflect.DeepEqual(ids, []string{"next", "original"}) {
+		t.Fatalf("committed board missing: %v, %v", ids, err)
+	}
+	if board, err := LoadResolvedWhiteboard(root, "test", "next", ""); err != nil || board == nil || board.Revision.Name != next.Name {
+		t.Fatalf("committed board unreadable: %+v, %v", board, err)
+	}
+	if err := ValidateWhiteboards(root, "test"); err != nil {
+		t.Fatal(err)
 	}
 }

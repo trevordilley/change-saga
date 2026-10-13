@@ -41,22 +41,34 @@ type ResolvedWhiteboard struct {
 
 // ListWhiteboardIDs lists named documents without loading their revision histories.
 // The optional root and every entry must be real directories with stable IDs.
+// Store staging directories are unpublished and do not consume document slots.
 func ListWhiteboardIDs(root string) ([]string, error) {
 	dir := filepath.Join(root, WhiteboardDir)
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return nil, err
 	}
-	entries, err := boundedReadDir(dir, MaxWhiteboards)
+	// Allow bounded staging debris as well as the document limit. CommitDir
+	// stages beside the final board, including while unlocked readers list it.
+	entries, err := boundedReadDir(dir, 2*MaxWhiteboards)
 	if err != nil {
 		return nil, err
 	}
 	ids := make([]string, 0, len(entries))
 	for _, entry := range entries {
-		if !livingid.ValidID(entry.Name()) || !entry.IsDir() || entry.Type()&fs.ModeSymlink != 0 {
+		if !entry.IsDir() || entry.Type()&fs.ModeSymlink != 0 {
 			return nil, fmt.Errorf("whiteboard entry %q must be a real directory with a valid board ID", entry.Name())
 		}
+		if strings.HasPrefix(entry.Name(), ".change-saga-stage-") {
+			continue
+		}
+		if !livingid.ValidID(entry.Name()) {
+			return nil, fmt.Errorf("whiteboard entry %q must have a valid board ID", entry.Name())
+		}
 		ids = append(ids, entry.Name())
+		if len(ids) > MaxWhiteboards {
+			return nil, fmt.Errorf("whiteboard document count exceeds maximum of %d", MaxWhiteboards)
+		}
 	}
 	slices.Sort(ids)
 	return ids, nil
