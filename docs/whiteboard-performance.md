@@ -202,3 +202,41 @@ memory costs.
 Artifacts are `cohesive-v6/performance.json`, `performance-run1.trace.json` and
 `performance-run1.png` under the local QA directory. Harness SHA-256:
 `0b84e5af40ede8b42432881c46417aa8afdfb5378b4ab9fe884b86c6eaa9a99c`.
+
+## Comprehensive native document sanity check
+
+The final `r7` example has 76 native tables, 675 fields, 120 recorded
+relationships and four narrative connections, with **zero imported frames**.
+Its 43 reading groups use real parent membership; broader parent regions remain
+atlas views. A separate isolated single run on 2026-10-13 used the same harness
+and headless Chromium 151.0.7922.34, with no other builds or browser tests running.
+This is a new scene and **not a paired comparison** with either earlier sample.
+
+```sh
+WHITEBOARD_PERF_RUNS=1 \
+WHITEBOARD_PERF_FOCUS_PATHS='["delivery-area/capture/capture-reading-2","delivery-area/hosted/hosted-reading-1","search-area/retrieval/retrieval-reading-1","authority-area/directory/directory-reading-1","authority-area/invitations/invitations-reading-1","delivery-area/capture/capture-reading-2"]' \
+WHITEBOARD_PERF_OUTPUT=/tmp/change-saga-whiteboard-qa/cohesive-v7/performance \
+node e2e/support/whiteboard-performance.mjs
+```
+
+JavaScript consumed 0.1180 s, style recalculation 0.1729 s, layout 2.0073 s,
+and total tasks 6.5802 s. Main-thread Paint events totaled 132.3 ms. The pan
+phase made 172 attribute calls, 12 tabindex mutations and zero measured
+geometry reads. Pan, zoom and focus p95 RAF intervals were 17.4, 9.2 and
+16.6 ms respectively; none exceeded 50 ms. The focus phase includes 12
+browser-automation rectangle reads. No JavaScript errors occurred. These
+observations do not guarantee a particular frame rate on other hardware.
+
+The initial scene retained 6,958 DOM nodes and culled 214 cached elements.
+Culling suppresses offscreen rendering; it does not remove the document or
+eliminate parse and memory costs. Shared annotation controls use one active
+strip, cached exact-pin metadata and lazy code loading. A separate fresh-page
+browser check observed zero annotation requests before interaction. All source
+pins and hidden field rows remain available for inspection and focus restoration.
+
+Artifacts are `cohesive-v7/performance.json`, `performance-run1.trace.json` and
+`performance-run1.png`. The harness digest matches the native `r6` run above;
+the report also records the exact HTML and application asset digests. An earlier
+sample from before the final field-column and oversized-hover fixes is retained
+in `cohesive-v7/pre-detail-fix-performance/`; the figures above use the finished
+build.

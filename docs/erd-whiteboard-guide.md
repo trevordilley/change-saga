@@ -236,7 +236,9 @@ finished drawing. Hover or focus an element to reveal the same action strip
 used by implementation slides. Its information control opens the shared note
 popover; documentation and code actions open the existing drawers. The strip
 loads metadata for the exact saved pin on demand, and code is loaded when its
-panel opens. Repeated appearances retain their own authored notes.
+panel opens. Repeated appearances retain their own authored notes. Long
+relationships place pointer actions beside the visible segment; keyboard focus
+uses the cached diagram position.
 
 Story actions appear only when real implementation Items pin the exact entity
 revision and have saved story links. The panel identifies those Items as the
@@ -250,8 +252,12 @@ The **Details** control starts off. Give a native entity a concise authored
 `summary` to explain its role at overview scale. The shared entity renderer uses
 the entity style for its title and a smaller wrapped summary in the same bounds;
 the whiteboard swaps that summary with the complete fields when Details changes.
-Source identity and connector endpoints do not change. Standalone diagrams keep
-their full fields by default. Structured field rows are hidden until requested.
+Source identity and connector endpoints do not change. For entities with an
+authored summary, field names and types occupy compact adjacent columns so they
+remain readable together when zoomed in. The fixed row metrics stay unchanged;
+ordinary entities without summaries retain their original artwork. Standalone
+diagrams keep their full fields by default. Structured field rows are hidden
+until requested.
 For supported authored SVGs, explicitly bound entity groups show
 larger names in their original measured bounds; Details restores their exact
 original contents. Relationship geometry and source identities stay unchanged.
@@ -280,7 +286,7 @@ same instance. A keyboard control that leaves the rendered region transfers
 focus to the viewport rather than becoming an invisible tab stop.
 
 Bound SVG entity summaries are built when their frame first enters the margin.
-Hover notes and reveal effects pause during dragging, wheel zoom and animated
+Hover controls, notes and reveal effects pause during dragging, wheel input and animated
 focus. Visible diagrams and overview callouts stay drawn. Opaque SVG internals
 are culled as a whole diagram; this is not network streaming or a guarantee
 that arbitrary SVG annotations can be individually deferred. Source SVG parse

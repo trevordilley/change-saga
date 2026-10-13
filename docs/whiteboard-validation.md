@@ -37,41 +37,71 @@ panning, and Ctrl/Cmd wheel zooms around the pointer.
 ## DayLight source and authored model
 
 Discovery located 20 source ERDs in the readable DayLight Saga, more than the
-initial estimate. The example script uses exact pins in a separate copied Saga.
-Its primary narrative contains **23 native entities, 279 full fields and 27
-connections** across Delivery, Search and Authority sections. This is a selection
-of the core model: all **76 distinct source entities** remain accessible through
-20 original drawings in the same-canvas source appendix. The opening explicitly
-discloses that distinction.
+initial estimate. The example script migrates their exact entity and relationship
+pins into **one native document: 76 entities, 675 fields and 120 recorded
+relationships**. No imported frames or source SVG geometry are required for
+coverage. The original ERD directories serve as migration and provenance input.
 
-The connection audit distinguishes 14 physical foreign keys, nine application
-mappings/projections, two transport explanations, one authorization explanation
-and one repeated-entity appearance. Twenty-one lines carry recorded relationship
-pins with exact owner/destination revisions; six explain source-backed behavior
-without claiming another recorded relationship. The generation tests check all
-native fields against source records, relationship endpoint pins, connectivity,
-route/label/body clearance and unchanged input files.
+All recorded relationships have exact owner and destination revision pins and
+saved code evidence. The audit distinguishes **103 physical foreign keys and
+17 application associations**, plus four separately identified narrative
+connections. Six records with no recorded incident relationships remain visible
+without invented connections. The tests compare complete entity-pin sets,
+field names/types/keys and owner-revision/relationship/destination tuples against
+the source, rather than checking counts alone. A mocked SVG-read prohibition
+verifies that completeness does not depend on original drawings.
 
-The authored canvas is 14,400 × 24,300 units with an opening camera of 6,200 × 4,900.
-It intentionally extends beyond the screen. The opening narrative measures about
-20 screen pixels in the real 1440 × 1000 desktop viewer; native table summaries
-and connection labels measure about 15.7 pixels, and the coverage note 16.4.
-An authored entity summary replaces its field body until Details is requested,
-using the shared renderer while retaining exact field geometry. Fit board is an atlas;
-it is not the default reading scale. Readers follow connected sections and zoom
-further for fields or open the evidence drawer for exact definitions and code.
+Crow’s-foot endpoints preserve each association’s recorded owner and destination
+cardinality. In particular, the reverse policy-history relationship remains
+`1 → 0..many`, distinct from the current-policy selector’s `0..1 → 1`.
+The diagram does not infer identifying relationships from line color or style.
+The opening retains a selected core narrative; focus and zoom reveal supporting
+relationships, and Details exposes full fields. The document can extend beyond
+one screen; Fit remains an atlas, not the initial reading scale.
 
-Live Chromium checks verified native entity and relationship code at saved commit
-`d3eafaf3ea09656f89b41ff990e91f0c8f4c74a5`, section/source focus, Back/Forward,
-Details, offscreen keyboard restoration and no JavaScript errors. Original SVG
-imports retain whole drawings and recorded bindings. Opaque SVG geometry and
-field structure are not inferred; their saved directories provide evidence.
+The authored canvas is 27,000 × 43,891 units. Its 43 reading groups contain
+actual entity members, so focused structured descriptions agree with visual
+focus. The 99 supporting display labels were removed without dropping lines,
+cardinalities or semantic labels from notes and descriptions. At the real
+1440 × 1000 app opening, summaries and connection labels measure about 15.6
+screen pixels and narrative text about 19.5 pixels. Fields use the shared
+renderer’s row typography and require further zoom or source inspection.
+Summary entities keep field names and types in compact adjacent columns. A live
+100% zoom check reads Project fields at 16 pixels with both columns inside the
+canvas; across all 675 fields, the widest type-column endpoint is 500.245
+diagram units. Ordinary ERD artwork, row heights and endpoint geometry remain
+unchanged.
+
+Publication through the public CLI produced revision `r7` with parent `r6`;
+`check` reports valid and `get` round-trips the authored JSON. Focused entity
+inspection retains its exact pin and three incident relationships; its reading
+group reports both member tables and four incident relationships. The inverse
+policy relationship retains its `only-one` and `zero-or-many` markers.
+
+Live Chromium checks verify shared action/info/code controls, exact entity and
+relationship evidence, field toggling, section history/reload and offscreen
+keyboard restoration, with no JavaScript errors. Initial annotation requests
+are zero. Positive story-panel behavior is covered by a fixture with real
+Item links; no story evidence is invented for DayLight nodes without such links.
+
+The shared annotation action strip uses the implementation slides’ real server
+templates and delegated controls. Authored notes use the same sanitized Markdown
+popover. Metadata loads for an exact pin on demand; saved code loads only when
+its panel opens. Story actions require actual implementation Item links to the
+same saved entity revision, and show that Item provenance. Relationship actions
+do not inherit entity-wide story links. No fictitious slide Items are created. Keyboard and delayed-response
+regressions cover Escape, forward note Tab, pan cleanup, navigation and revisits.
+A live long-connector check verifies a slow pointer move can reach its action
+strip and open the exact relationship, even when its label is offscreen.
+Oversized entity cards use the same pointer-local fallback when their authored
+anchor is outside the viewport. Independent review closed all reported focus,
+loading, pointer and field-legibility findings against the final live build.
 
 ## Checks and limits
 
 Integrated focused Go tests pass for diagram/canvas behavior, whiteboard storage,
 source pins, technical navigation, viewer scripts and interactions. Agent checks
-also pass scoped race tests, vet, TypeScript and focused Chromium cases. Six
+also pass scoped race tests, vet, TypeScript and focused Chromium cases. Eight
 real-data Python authoring tests pass. The native fixture includes axe checks.
 
 The [performance report](whiteboard-performance.md) preserves the paired baseline
@@ -89,3 +119,5 @@ Browser visual validation uses desktop Chromium. Infra, Systems, direct layout
 editing, inferred SVG internals and automatic routing remain outside this ERD
 implementation. Historical ERDs remain readable as provenance and compatibility
 records; separate child ERDs are not required to author a native model.
+Whiteboards retain focused structured describe and atomic parent-checked
+publication; slide-style transactional `diagram edit` is not yet supported.
