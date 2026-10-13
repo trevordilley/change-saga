@@ -1,138 +1,63 @@
 #!/usr/bin/env python3
-"""Author the complete native DayLight model from exact, read-only source pins.
+"""Author a selective, evidenced DayLight narrative using the native slide grammar.
 
-Python standard library only. Never publishes, follows heads, or reads source
-SVGs. Layout is an authored neighborhood grid with explicit dogleg lane recipes,
-not an obstacle-search router. Output must be outside the input saga.
+Read-only exact source revisions; standard library only; no SVG imports, renderer
+copy, publication, or inventory-coverage claim. Output must be outside the saga.
 """
 import argparse
-from collections import Counter, defaultdict
 import hashlib
 import json
-import math
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-# Migration provenance and exact entity directories, not rendered dependencies.
-PINS = [('local-cloud-overview', 'r2', 'The system across its stores'),
- ('local-capture-delivery', 'r5-viewer-safe', 'Capture & delivery'),
- ('cloud-source-lineage', 'r5', 'Source admission'),
- ('cloud-corpus', 'r4', 'Cloud corpus'),
- ('local-project-boundary', 'r5-viewer-safe', 'Project scope'),
- ('local-index-progress', 'r5-viewer-safe', 'Index progress'),
- ('local-search-retrieval', 'r5-viewer-safe', 'Local search'),
- ('local-episode-catalog', 'r5-viewer-safe', 'Episode catalog'),
- ('local-episode-correlation', 'r5-viewer-safe', 'Episode links'),
- ('local-whole-model', 'r5-viewer-safe', 'Whole local model'),
- ('cloud-project-authority', 'r5', 'Project authority'),
- ('cloud-identity', 'r4', 'Identity & tenancy'),
- ('cloud-contribution', 'r4', 'Sharing rules'),
- ('cloud-shared-destinations', 'r4', 'Projects & Teams'),
- ('cloud-oauth', 'r4', 'MCP grants'),
- ('cloud-invitations', 'r4', 'Invitations'),
- ('cloud-enterprise', 'r4', 'Enterprise'),
- ('cloud-scim', 'r4', 'SCIM directory'),
- ('cloud-messaging', 'r5', 'Durable messages'),
- ('cloud-overview', 'r3', 'Whole cloud model')]
+# These ERDs supply exact member pins and domain-level explanations. A concept
+# may cite several members; its source action opens the honestly named scope.
+PINS = [
+    ('local-cloud-overview', 'r2'),
+    ('local-search-retrieval', 'r5-viewer-safe'),
+    ('local-capture-delivery', 'r5-viewer-safe'),
+    ('cloud-source-lineage', 'r5'),
+    ('cloud-corpus', 'r4'),
+    ('cloud-project-authority', 'r5'),
+    ('cloud-shared-destinations', 'r4'),
+    ('local-episode-catalog', 'r5-viewer-safe'),
+    ('local-episode-correlation', 'r5-viewer-safe'),
+]
+SELECTED_ENTITIES = {
+    'search-fts': 'local-search-fts',
+    'payload': 'local-pending-prompt-payloads',
+    'delivery-debt': 'local-pending-project-deliveries',
+    'admission': 'cloud-project-delivery-admissions',
+    'hosted-search': 'cloud-prompt',
+    'storage-project': 'cloud-projects',
+    'policy-revision': 'cloud-project-policy-versions',
+    'source-consent': 'cloud-shared-project-sources',
+    'episode-catalog': 'local-episodes',
+    'catalog-artifacts': 'local-episode-artifacts',
+}
+SELECTED_RELATIONSHIPS = {
+    ('local-pending-project-deliveries', 'fk-observationid'),
+    ('cloud-prompt', 'logical-admission'),
+    ('cloud-projects', 'fk-2'),
+    ('cloud-projects', 'fk-policy-parent'),
+    ('local-episode-artifacts', 'fk-episode-id'),
+}
+MARKERS = {'0..many': 'zero-or-many', '0..1': 'zero-or-one', '1': 'only-one'}
+INITIAL_CAMERA = dict(x=0, y=0, width=2200, height=1620)
+AREAS = {
+    'search-area': (60, 280, 2060, 1460),
+    'delivery-area': (2260, 280, 2060, 1460),
+    'authority-area': (2260, 1900, 2060, 1460),
+    'episodes-area': (60, 1900, 2060, 1460),
+}
 
-CORE_SUMMARIES = {'local-capture-observation-offsets': 'Observed byte progress, independent of cloud receipts.',
- 'local-project-source-grants': 'Exact source generation and accepted storage policy.',
- 'local-pending-prompt-payloads': 'One contained observation shared by delivery rows.',
- 'local-pending-project-deliveries': 'Retry state for one destination and source generation.',
- 'cloud-project-sources': 'Admitted source and its accepted policy revision.',
- 'cloud-project-delivery-admissions': 'Records the source grant and generation of a delivery.',
- 'cloud-prompt': 'Project-scoped identity, source pointer and search.',
- 'local-local-projects': 'Durable local choices; hosted binding is optional.',
- 'local-local-project-file-memberships': 'Rebuildable Project-to-file query scope; no SQL FK.',
- 'local-source-files': 'Private file identity and indexed byte progress.',
- 'local-search-documents': 'Searchable record identity and source byte range.',
- 'local-episodes': 'Rebuildable catalog; manifests remain authoritative.',
- 'local-episode-correlation-targets': 'Search-side episode revision and timing projection.',
- 'local-episode-artifacts': 'Artifact path, size and hash; files retain authority.',
- 'local-episode-evidence-links': 'Versioned episode evidence with confidence and timing.',
- 'cloud-projects': 'Private capture scope; requires a direct person Owner.',
- 'cloud-project-policy-versions': 'Immutable policies; Project selects current revision.',
- 'cloud-teams': 'Shared Project destinations, distinct from people Teams.',
- 'cloud-shared-project-sources': 'Consent for an exact source generation and rule revision.',
- 'cloud-team-members': 'Shared Project membership and current evidence.',
- 'cloud-team-source-rule-versions': 'Immutable sharing rules; consent pins a revision.',
- 'cloud-users': 'A person identified by durable login issuer and subject.',
- 'cloud-organizations': 'Organization authority and lifecycle for people Teams.'}
-CORE_LABELS = {'local-capture-observation-offsets': 'Observation progress',
- 'local-project-source-grants': 'Source grant / generation',
- 'local-pending-prompt-payloads': 'Captured payload',
- 'local-pending-project-deliveries': 'Destination delivery debt',
- 'cloud-project-sources': 'Admitted source / generation',
- 'cloud-project-delivery-admissions': 'Admitted delivery',
- 'cloud-prompt': 'Hosted search projection',
- 'local-local-projects': 'Durable local Project',
- 'local-local-project-file-memberships': 'Projected query membership',
- 'local-source-files': 'Indexed source file',
- 'local-search-documents': 'Retrievable document',
- 'local-episodes': 'Manifest-backed episode',
- 'local-episode-correlation-targets': 'Episode target projection',
- 'local-episode-artifacts': 'Catalog artifact',
- 'local-episode-evidence-links': 'Versioned evidence link',
- 'cloud-projects': 'Private storage Project',
- 'cloud-project-policy-versions': 'Immutable policy revision',
- 'cloud-teams': 'Shared Project (teams)',
- 'cloud-shared-project-sources': 'Exact-source consent',
- 'cloud-team-members': 'Shared Project membership',
- 'cloud-team-source-rule-versions': 'Accepted sharing rules',
- 'cloud-users': 'Principal',
- 'cloud-organizations': 'Organization'}
-CORE_CONNECTION_LABELS = {('local-pending-prompt-payloads', 'observed-file'): 'application transaction',
- ('local-pending-project-deliveries', 'fk-observationid'): 'FK / observationId',
- ('local-pending-project-deliveries', 'admitting-grant'): 'copied authority '
-                                                          'tuple',
- ('cloud-project-delivery-admissions', 'fk-2'): 'FK / source_grant_id',
- ('cloud-prompt', 'logical-admission'): 'application join / delivery_id',
- ('cloud-project-sources', 'fk-1'): 'FK / storage Project',
- ('cloud-projects', 'fk-2'): 'FK / current policy',
- ('cloud-shared-project-sources', 'fk-7'): 'FK / exact source lineage',
- ('cloud-shared-project-sources', 'fk-2'): 'FK / storage Project',
- ('cloud-shared-project-sources', 'fk-1'): 'FK / shared destination',
- ('cloud-shared-project-sources', 'fk-6'): 'FK / accepted rule',
- ('cloud-team-members', 'fk-1'): 'FK / membership',
- ('cloud-team-members', 'fk-2'): 'FK / principal',
- ('cloud-teams', 'fk-1'): 'FK / Organization',
- ('local-local-project-file-memberships', 'project-projection'): 'application '
-                                                                 '/ durable '
-                                                                 'choices',
- ('local-local-project-file-memberships', 'member-file'): 'application / file '
-                                                          'identity',
- ('local-search-documents', 'fk-file-id'): 'FK / file_id',
- ('local-episode-correlation-targets', 'manifest-projection'): 'projection / '
-                                                               'manifest '
-                                                               'revision',
- ('local-episode-artifacts', 'fk-episode-id'): 'FK / episode_id',
- ('local-episode-evidence-links', 'episode-edge'): 'application / episode '
-                                                   'identity',
- ('local-episode-evidence-links', 'fk-document-rowid'): 'FK / document_rowid'}
-CORE_RELATIONSHIPS = [('local-pending-prompt-payloads', 'observed-file'),
- ('local-pending-project-deliveries', 'fk-observationid'),
- ('local-pending-project-deliveries', 'admitting-grant'),
- ('cloud-project-delivery-admissions', 'fk-2'),
- ('cloud-prompt', 'logical-admission'),
- ('cloud-project-sources', 'fk-1'),
- ('cloud-projects', 'fk-2'),
- ('cloud-shared-project-sources', 'fk-7'),
- ('cloud-shared-project-sources', 'fk-2'),
- ('cloud-shared-project-sources', 'fk-1'),
- ('cloud-shared-project-sources', 'fk-6'),
- ('cloud-team-members', 'fk-1'),
- ('cloud-team-members', 'fk-2'),
- ('cloud-teams', 'fk-1'),
- ('local-local-project-file-memberships', 'project-projection'),
- ('local-local-project-file-memberships', 'member-file'),
- ('local-search-documents', 'fk-file-id'),
- ('local-episode-correlation-targets', 'manifest-projection'),
- ('local-episode-artifacts', 'fk-episode-id'),
- ('local-episode-evidence-links', 'episode-edge'),
- ('local-episode-evidence-links', 'fk-document-rowid')]
 
 def file_digest(path):
     return 'sha256:' + hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def box(rect):
+    return dict(zip(('x', 'y', 'width', 'height'), rect))
 
 
 def overlaps(a, b):
@@ -141,431 +66,313 @@ def overlaps(a, b):
     return not (x+w <= u or u+c <= x or y+h <= v or v+d <= y)
 
 
-def center(rect):
-    x, y, width, height = rect
-    return x+width/2, y+height/2
-
-
 def boundary(rect, toward):
-    """The shared renderer clips a connection ray to its endpoint rectangle."""
-    x, y = center(rect)
+    x, y, w, h = rect
+    x, y = x+w/2, y+h/2
     dx, dy = toward[0]-x, toward[1]-y
-    if dx == 0 and dy == 0:
+    if not dx and not dy:
         return x, y
-    scale = min(rect[2]/2/abs(dx) if dx else float('inf'),
-                rect[3]/2/abs(dy) if dy else float('inf'))
+    scale = min(w/2/abs(dx) if dx else float('inf'), h/2/abs(dy) if dy else float('inf'))
     return x+dx*scale, y+dy*scale
 
 
 def segment_hits(a, b, rect):
-    """Open-interior segment/rectangle check; touching a border is allowed."""
-    x, y, width, height = rect
-    x, y, width, height = x+1, y+1, width-2, height-2
-    low, high = 0., 1.
+    """An open-interior rectangle test, also used by the focused regressions."""
+    x, y, w, h = rect
+    x, y, w, h = x+1, y+1, w-2, h-2
+    lo, hi = 0., 1.
     dx, dy = b[0]-a[0], b[1]-a[1]
-    for p, q in [(-dx,a[0]-x),(dx,x+width-a[0]),(-dy,a[1]-y),(dy,y+height-a[1])]:
+    for p, q in [(-dx, a[0]-x), (dx, x+w-a[0]), (-dy, a[1]-y), (dy, y+h-a[1])]:
         if p == 0:
             if q < 0:
                 return False
         elif p < 0:
-            low = max(low, q/p)
+            lo = max(lo, q/p)
         else:
-            high = min(high, q/p)
-    return low < high
-
-
-# Each neighborhood occupies two authored columns and consecutive rows. These
-# are semantic homes, not copies of the original ERD document boundaries.
-# key, parent, label, provenance, column, first row, ordered entity keys
-NEIGHBORHOODS = [
-    ('capture', 'delivery-area', 'Observe, admit and retire delivery debt', 'local-capture-delivery', 0, 0,
-     'local-capture-observation-offsets local-project-source-grants local-pending-prompt-payloads local-pending-project-deliveries local-project-source-high-waters local-agent-kv'),
-    ('hosted', 'delivery-area', 'Source identity and delivery admission', 'cloud-source-lineage', 2, 0,
-     'cloud-project-sources cloud-project-delivery-admissions cloud-project-source-operations'),
-    ('corpus', 'delivery-area', 'Source bytes and hosted search', 'cloud-corpus', 4, 0,
-     'cloud-prompt cloud-corpus-migration-scans cloud-corpus-object-migrations'),
-    ('local-scope', 'search-area', 'Durable scope and exposure review', 'local-project-boundary', 0, 3,
-     'local-local-projects local-local-project-sources local-secret-exposures'),
-    ('retrieval', 'search-area', 'File identity, search and query scope', 'local-search-retrieval', 0, 5,
-     'local-source-files local-search-documents local-local-project-file-memberships local-search-fts local-local-search-meta'),
-    ('index-progress', 'search-area', 'Indexing work and checkpoints', 'local-index-progress', 0, 8,
-     'local-index-runs local-index-run-sources local-index-run-diagnostics'),
-    ('discovery', 'search-area', 'Descriptive folder discovery', 'local-search-retrieval', 0, 10,
-     'local-local-folder-projection local-local-folder-sources'),
-    ('episodes', 'search-area', 'Manifest authority and catalog', 'local-episode-catalog', 0, 11,
-     'local-episodes local-episode-artifacts local-local-folders local-episode-catalog-meta'),
-    ('correlation', 'search-area', 'Episode evidence and correlation', 'local-episode-correlation', 0, 13,
-     'local-episode-correlation-targets local-episode-evidence-links local-episode-prompt-bindings local-correlation-jobs'),
-    ('storage', 'authority-area', 'Storage ownership, policy and grants', 'cloud-project-authority', 2, 3,
-     'cloud-projects cloud-project-policy-versions cloud-project-user-access cloud-project-team-access cloud-project-access-requests'),
-    ('sharing', 'authority-area', 'Membership and exact-source consent', 'cloud-shared-destinations', 2, 6,
-     'cloud-teams cloud-shared-project-sources cloud-team-members cloud-team-source-rule-versions cloud-team-project-contributions cloud-shared-project-legacy-prompts cloud-people-teams cloud-people-team-members cloud-shared-project-teams cloud-shared-project-team-grants'),
-    ('directory', 'authority-area', 'Principal and Organization evidence', 'cloud-identity', 2, 11,
-     'cloud-users cloud-organizations cloud-organization-members cloud-organization-refresh-sessions cloud-principal-verified-emails'),
-    ('oauth', 'authority-area', 'Connector consent and bounded tokens', 'cloud-oauth', 4, 3,
-     'cloud-mcp-oauth-clients cloud-mcp-oauth-requests cloud-mcp-oauth-codes cloud-mcp-oauth-refresh-tokens cloud-mcp-oauth-access-bindings'),
-    ('invitations', 'authority-area', 'Restricted invitations and membership', 'cloud-invitations', 4, 6,
-     'cloud-team-invitation-links cloud-team-invitation-link-audiences cloud-team-invitation-link-acceptances cloud-team-invitation-link-events cloud-team-invitation-link-operations cloud-team-invitation-browser-intents cloud-team-invitation-handoffs cloud-team-bootstrap-receipts'),
-    ('enterprise', 'authority-area', 'Managed mappings and audit evidence', 'cloud-enterprise', 4, 10,
-     'cloud-managed-organization-directory cloud-managed-team-groups cloud-group-org-role-mapping cloud-group-mapping-seed-state cloud-audit-event'),
-    ('scim', 'authority-area', 'Provisioned directory resources', 'cloud-scim', 4, 13,
-     'cloud-scim-users cloud-scim-groups cloud-scim-group-members cloud-scim-provisioning-tokens'),
-    ('messaging', 'authority-area', 'Durable messages and recipient inbox', 'cloud-messaging', 4, 15,
-     'cloud-message'),
-]
-
-SUPPORT_SUMMARIES = {
-    'local-project-source-high-waters': 'Per-generation, per-file admission boundary; distinct from observed progress and ACK.',
-    'local-agent-kv': 'Durable agent settings, continuity data and capture schema marker.',
-    'cloud-project-source-operations': 'Idempotent source admission and lifecycle operations, bound to the produced generation.',
-    'cloud-team-project-contributions': 'Legacy storage-to-shared Project contribution; activation sets a visibility floor.',
-    'cloud-corpus-migration-scans': 'Resumable corpus scan cursors; accepted sends advance scan progress.',
-    'cloud-corpus-object-migrations': 'Per-object conversion outcomes, attempts, verified destination and blocked error.',
-    'local-local-project-sources': 'Path-free local source membership; Project deletion cascades.',
-    'local-secret-exposures': 'Private exposure review; dismissal retains a tombstone to suppress repeats.',
-    'local-index-runs': 'Bounded indexing progress, omissions, failures, retry and pause state.',
-    'local-index-run-sources': 'Per-run file checkpoints; only the run has a physical FK.',
-    'local-index-run-diagnostics': 'Per-run counters distinguish omissions from systemic failures.',
-    'local-search-fts': 'FTS5 terms align to document rowids through application writes, without a SQL FK.',
-    'local-local-folder-projection': 'Private folder discovery metadata, separate from durable Project choices.',
-    'local-local-folder-sources': 'Discovered folder membership; file identity is an application association.',
-    'local-local-folders': 'Catalog folder snapshot describes recordings; it grants no recording or cloud consent.',
-    'local-episode-catalog-meta': 'Episode catalog schema marker; a mismatch makes storage unavailable.',
-    'local-episode-prompt-bindings': 'Current episode-to-prompt resolution; pending or ambiguous sessions can remain null.',
-    'local-correlation-jobs': 'Resumable source or episode work; kind determines the meaning of target_id.',
-    'local-local-search-meta': 'Search schema and cache metadata in an independently rebuildable store.',
-    'cloud-project-user-access': 'Direct person grants on a Project and their revocation history.',
-    'cloud-project-team-access': 'Legacy reader grant from a storage Project to a shared Project destination.',
-    'cloud-project-access-requests': 'Requests to read a Project and their recorded decisions.',
-    'cloud-principal-verified-emails': 'Verified principal email evidence that invitation audience rules may match.',
-    'cloud-organization-members': 'Organization membership and the evidence that keeps it current.',
-    'cloud-organization-refresh-sessions': 'First-party refresh-token families for a principal, not Organization data.',
-    'cloud-shared-project-legacy-prompts': 'Already-visible legacy prompts without admissions; do not infer source lineage.',
-    'cloud-people-teams': 'People grouping in one Organization; distinct from shared Projects stored as teams.',
-    'cloud-people-team-members': 'Current admin/member participation in a people Team, retaining revocation.',
-    'cloud-shared-project-teams': 'Links a shared Project and people Team; a trigger enforces Organization equality.',
-    'cloud-shared-project-team-grants': 'Revocable people-Team grant; a composite FK requires an existing shared Project link.',
-    'cloud-mcp-oauth-clients': 'Registered MCP OAuth clients and their validated redirect set.',
-    'cloud-mcp-oauth-requests': 'Short-lived authorization requests carry no grant scope until consent.',
-    'cloud-mcp-oauth-codes': 'Hashed, expiring authorization codes scoped to exactly one Team or Project.',
-    'cloud-mcp-oauth-refresh-tokens': 'Hashed refresh tokens scoped to exactly one Team or Project.',
-    'cloud-mcp-oauth-access-bindings': 'Access-token hash to grant-scope binding used by connector reads.',
-    'cloud-team-invitation-links': 'Restricted invitation link for one Team, retaining only a handle digest.',
-    'cloud-team-invitation-link-audiences': 'Exact-email admission rules and the principal who claimed each rule.',
-    'cloud-team-invitation-link-acceptances': 'Accepted invitations and the link generation that admitted membership.',
-    'cloud-team-invitation-link-events': 'Retention-bounded link lifecycle events; correlation is stored as a digest.',
-    'cloud-team-invitation-link-operations': 'Idempotency for invitation creation, revocation and rotation.',
-    'cloud-team-invitation-browser-intents': 'Short-lived browser intent resolves a link without exposing its handle.',
-    'cloud-team-invitation-handoffs': 'One-time code carries a resolved browser intent back to the native app.',
-    'cloud-team-bootstrap-receipts': 'Idempotent bootstrap result: Team, owner membership and optional invitation.',
-    'cloud-managed-organization-directory': 'Managed Organization issuer, username claim and group mapping source.',
-    'cloud-managed-team-groups': 'Provider groups that grant a role in a managed Team.',
-    'cloud-group-org-role-mapping': 'Enterprise provider group to Organization role mapping.',
-    'cloud-group-mapping-seed-state': 'Applied mapping seed record; its forensic hash never triggers reseeding.',
-    'cloud-audit-event': 'Administrative evidence for identity, mapping and authorization changes.',
-    'cloud-scim-users': 'Provisioned SCIM users, separate from product login principals.',
-    'cloud-scim-groups': 'Enterprise SCIM group resources.',
-    'cloud-scim-group-members': 'Membership between provisioned SCIM users and groups.',
-    'cloud-scim-provisioning-tokens': 'Hashed bearer credentials and lifecycle metadata for SCIM provisioning.',
-    'cloud-message': 'Durable person-to-person messages; inboxes query the recipient.',
-}
-
-# Bounded reading groups own their entity members so both visual focus and
-# structured describe expose the same subset, without duplicating source pins.
-READING_LABELS = {
-    'capture': ['Observation and source authority', 'Payload and delivery debt', 'Admission progress and agent continuity'],
-    'hosted': ['Source generation and delivery admission', 'Source lifecycle operations'],
-    'corpus': ['Hosted search and scan progress', 'Object migration outcomes'],
-    'local-scope': ['Durable Project and source choices', 'Private exposure review'],
-    'retrieval': ['File identity and retrievable text', 'Query membership and search terms', 'Search schema metadata'],
-    'index-progress': ['Index run and source checkpoints', 'Indexing diagnostics'],
-    'episodes': ['Manifest catalog and artifacts', 'Descriptive folders and catalog schema'],
-    'correlation': ['Episode targets and versioned evidence', 'Prompt resolution and correlation work'],
-    'storage': ['Private storage and immutable policy', 'Direct and shared reader grants', 'Access requests and decisions'],
-    'sharing': ['Shared destination and exact-source consent', 'Membership and accepted sharing rules', 'Legacy contributions and retained prompts', 'People Teams and their members', 'Shared destination Team grants'],
-    'directory': ['Principal and Organization', 'Organization membership and sessions', 'Verified email evidence'],
-    'oauth': ['Connector clients and consent requests', 'Authorization codes and refresh tokens', 'Bounded access tokens'],
-    'invitations': ['Restricted invitation and audience', 'Acceptance evidence and events', 'Invitation operations and browser intent', 'Handoffs and bootstrap receipts'],
-    'enterprise': ['Managed Organization and Team mappings', 'Role mappings and seed state', 'Administrative audit evidence'],
-    'scim': ['Provisioned users and groups', 'Group membership and provisioning authority'],
-}
-
-MARKERS = {'0..many': 'zero-or-many', '0..1': 'zero-or-one', '1': 'only-one'}
-INITIAL_CAMERA = dict(x=100, y=100, width=8700, height=6600)
-COLUMN_PITCH, CARD_WIDTH = 4400, 2700
+            hi = min(hi, q/p)
+    return lo < hi
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('saga', type=Path, help='read-only DayLight saga copy')
     parser.add_argument('output', type=Path, help='new directory outside the saga')
-    parser.add_argument('--rendered-svg', type=Path, help='shared-renderer SVG for diagnostic previews')
+    parser.add_argument('--rendered-svg', type=Path, help='optional shared-renderer output for a standalone preview')
     args = parser.parse_args()
     root, output = args.saga.resolve(), args.output.resolve()
     if output == root or root in output.parents:
         parser.error('output must be outside the source saga')
-
-    source_reads, records, entities, appearances, manifest = {}, {}, {}, defaultdict(list), []
+    reads, records, entity_pins = {}, {}, {}
 
     def read(path):
-        resolved = path.resolve()
-        if root not in resolved.parents:
-            raise ValueError('source escapes saga: '+str(path))
-        source_reads[path] = file_digest(path)
+        path = path.resolve()
+        if root not in path.parents or path.suffix != '.json':
+            raise ValueError('only source JSON within the saga may be read')
+        reads[path] = file_digest(path)
         return json.loads(path.read_text())
 
-    for key, revision, label in PINS:
-        path = root/'___inventory'/'erds'/(key+'.erd')/'revisions'/(revision+'.json')
-        record = read(path)
+    for key, revision in PINS:
+        record = read(root/'___inventory'/'erds'/(key+'.erd')/'revisions'/(revision+'.json'))
         assert record['id'] == revision
         records[key] = record
-        manifest.append(dict(id=key, label=label, target=record['record'],
-                             revision=record['record']+':revision:'+revision,
-                             revision_digest=source_reads[path], explanation=record['explanation'],
-                             role='exact directory and narrative provenance; no imported visual'))
         for pin in record['directory']:
-            k, rev = pin['target'].split(':')[-1], pin['revision'].split(':')[-1]
-            entity = read(root/'___inventory'/'data-entities'/(k+'.data-entity')/'revisions'/(rev+'.json'))
-            assert entity['record'] == pin['target'] and entity['id'] == rev
-            if k in entities:
-                assert entities[k] == entity, 'conflicting exact entity revisions: '+k
-            entities[k] = entity
-            appearances[k].append(key)
+            k = pin['target'].split(':')[-1]
+            assert k not in entity_pins or entity_pins[k] == pin, ('conflicting pin', k)
+            entity_pins[k] = pin
 
-    def ref(k):
-        r = entities.get(k, records.get(k))
-        return dict(target=r['record'], revision=r['record']+':revision:'+r['id'])
+    def entity(key):
+        if key not in records:
+            pin = entity_pins[key]
+            records[key] = read(root/'___inventory'/'data-entities'/(key+'.data-entity')/'revisions'/
+                                (pin['revision'].split(':')[-1]+'.json'))
+            assert ref(key) == pin
+        return records[key]
 
-    summaries = {**CORE_SUMMARIES, **SUPPORT_SUMMARIES}
-    homes, slots = {}, {}
-    for key, parent, label, provenance, col, row, names in NEIGHBORHOODS:
-        for i, entity in enumerate(names.split()):
-            assert entity not in homes, entity
-            homes[entity] = key
-            slots[entity] = (col+i % 2, row+i//2)
-    assert set(homes) == set(entities) == set(summaries)
-    assert len(entities) == 76 and sum(len(e['fields']) for e in entities.values()) == 675
+    def ref(key):
+        record = records[key]
+        return dict(target=record['record'], revision=record['record']+':revision:'+record['id'])
 
-    # Preserve record-owner direction, including fk-policy-parent whose source
-    # explicitly documents a SQL child direction opposite to the record owner.
-    connections = []
-    for owner in homes:
-        for relationship in entities[owner].get('relationships', []):
-            destination = relationship['destination']['target'].split(':')[-1]
-            assert destination in entities and ref(destination) == relationship['destination']
-            cardinality = relationship['cardinality']
-            if set(cardinality) != {'owner', 'destination'} or any(v not in MARKERS for v in cardinality.values()):
-                raise ValueError(f'unknown cardinality: {owner}/{relationship["id"]}: {cardinality}')
-            connections.append(dict(id=owner+'--'+relationship['id'], owner=owner, destination=destination,
-                                    relation=relationship, source={**ref(owner), 'relationship': relationship['id']},
-                                    kind='fk' if relationship['explanation'].lower().startswith('physical') else 'projection',
-                                    label=CORE_CONNECTION_LABELS.get((owner, relationship['id']), relationship['label']), support=relationship['explanation'],
-                                    core=(owner, relationship['id']) in CORE_RELATIONSHIPS))
-    assert len(connections) == 120
-    for key, owner, destination, label, kind, provenance in [
-        ('same-source-generation', 'local-project-source-grants', 'cloud-project-sources', 'Same grant / generation', 'projection', 'local-cloud-overview'),
-        ('delivery-admission', 'local-pending-project-deliveries', 'cloud-project-delivery-admissions', 'Server admission', 'transport', 'local-cloud-overview'),
-        ('read-authorization', 'cloud-shared-project-sources', 'cloud-prompt', 'Membership + exact-source consent', 'authorization', 'local-cloud-overview'),
-        ('storage-binding', 'local-local-projects', 'cloud-projects', 'Optional hosted storage binding', 'projection', 'local-cloud-overview'),
-    ]:
-        connections.append(dict(id=key, owner=owner, destination=destination, relation=None,
-                                source=ref(provenance), kind=kind, label=label,
-                                support=records[provenance]['explanation'], core=True))
-    # Immutable source bytes are explained in the corpus section's prose. No
-    # invented table or multiplicity is needed for that transport explanation.
-    incident, outgoing, row_ends = defaultdict(list), defaultdict(list), defaultdict(list)
-    for c in connections:
-        if c['core']:
-            outgoing[c['owner']].append(c['id'])
-        for side, key in [('from', c['owner']), ('to', c['destination'])]:
-            incident[key].append((c['id'], side))
-            row_ends[slots[key][1]].append((c['id'], side))
-    # Overview type scales independently of the shared 28-unit field rows.
-    # The 820-unit minimum fits three summary lines at the authored 160 size.
-    heights = {k: max(820, 236+28*len(e['fields']), 100+math.ceil(len(incident[k])/2)*125)
-               for k, e in entities.items()}
-    # Only the 25 story links reserve label lanes. Supporting links retain
-    # their exact labels in inspection, with closely spaced independent tracks.
-    row_top, row_track, row_bottom = {}, {}, {}
-    cursor = 2300
-    for row in range(16):
-        keys = [k for k in homes if slots[k][1] == row]
-        row_top[row] = cursor
-        occupied = max((heights[k]+180+320*len(outgoing[k]) for k in keys), default=900)
-        row_track[row] = cursor+occupied+120
-        row_bottom[row] = row_track[row]+12*len(row_ends[row])+180
-        cursor = row_bottom[row]+(1100 if row == 2 else 700)
-    width, height = 27000, row_bottom[15]+500
-    assert height < 100000
+    def style(color=None, font=34, fill=True, dash=False, width=3):
+        return dict(fill=f'@diagram-{color}-tint' if color and fill else 'none',
+                    stroke=f'@diagram-{color}-accent' if color else 'none',
+                    ink=f'@diagram-{color}-ink' if color else '@diagram-normal-ink',
+                    font_size=font, stroke_width=width, dash=dash)
 
-    def style(fill='none', stroke='none', ink='@diagram-normal-ink', font=100, width=3):
-        return dict(fill=fill, stroke=stroke, ink=ink, font_size=font, stroke_width=width)
-
-    board = dict(version=1, width=width, height=height, viewport=INITIAL_CAMERA,
+    board = dict(version=1, width=4420, height=3096, viewport=INITIAL_CAMERA,
                  background='@diagram-canvas', styles={
-        'hero': style(font=180), 'body': style(font=160), 'small': style(font=128), 'area': style(font=140),
-        'entity': style('@diagram-normal-fill', '@diagram-normal-stroke', font=160, width=4),
-        'fk': style(stroke='@diagram-normal-stroke', font=128, width=5),
-        'projection': dict(**style(stroke='@diagram-blue-accent', font=128, width=5), dash=True),
-        'transport': style(stroke='@diagram-yellow-accent', font=128, width=7),
-        'authorization': dict(**style(stroke='@diagram-purple-accent', font=128, width=6), dash=True),
-    }, elements=[])
-    by_id, paths, bounds, bodies, labels = {}, {}, {}, {}, {}
+                     'title': style(font=52), 'text': style(), 'area': style(font=40),
+                     'caption': style(font=34),
+                     **{c: style(c, font=36) for c in ('blue', 'purple', 'yellow', 'green', 'gray')},
+                     'refusal': style('pink', dash=True),
+                     'fk': style('gray', fill=False),
+                     'application': style('blue', fill=False, dash=True),
+                     'flow': style('yellow', fill=False, width=4),
+                     'authorization': style('purple', fill=False, dash=True, width=4),
+                     'failure-flow': style('pink', fill=False, dash=True),
+                 }, elements=[])
+    elements, bounds, paths, evidence, connections = {}, {}, {}, [], []
+    bodies, labels, overlays = {}, {}, {}
 
-    def box(rect):
-        return dict(zip(('x', 'y', 'width', 'height'), rect))
-
-    def add(e, absolute=None):
-        key = e['id']
-        assert key not in by_id
-        if absolute is not None:
-            bounds[key] = absolute
-            x, y, w, h = absolute
-            if e.get('parent'):
-                px, py, *_ = bounds[e['parent']]
-                x, y = x-px, y-py
-            e.update(box((x, y, w, h)))
-        by_id[key] = e
-        paths[key] = (paths[e['parent']]+'/' if e.get('parent') else '')+key
-        board['elements'].append(e)
-        return e
-
-    def section(key, label, rect, provenance, parent=None):
-        color = {'delivery-area': 'yellow', 'search-area': 'blue', 'authority-area': 'purple'}.get(parent or key, by_id.get(parent, {}).get('color', 'gray'))
-        e = dict(id=key, kind='group', shape='section', label=label, style='area', color=color, source=ref(provenance))
+    def add(key, kind, rect=None, parent=None, **attrs):
+        assert key not in elements
+        e = dict(id=key, kind=kind, x=0, y=0, style='text')
+        e.update(attrs)
+        if rect:
+            e.update(box(rect))
+            px, py = bounds[parent][:2] if parent else (0, 0)
+            bounds[key] = (rect[0]+px, rect[1]+py, rect[2], rect[3])
         if parent:
             e['parent'] = parent
-        add(e, rect)
+        paths[key] = (paths[parent]+'/' if parent else '')+key
+        elements[key] = e
+        board['elements'].append(e)
+        if kind not in ('group', 'connection') and rect:
+            bodies[key] = bounds[key]
+        return e
 
-    section('context-area', 'One system / independent stores, explicit authority', (100, 100, 26400, 1450), 'local-cloud-overview')
-    section('delivery-area', '01 / Capture, admission and hosted search',
-            (100, 1650, 26400, row_bottom[2]-1550), 'local-capture-delivery')
-    section('search-area', '02 / Local search and episode evidence',
-            (100, row_top[3]-750, 8800, row_bottom[14]-row_top[3]+950), 'local-search-retrieval')
-    section('authority-area', '03 / Storage and access authority',
-            (9000, row_top[3]-750, 17500, row_bottom[15]-row_top[3]+950), 'cloud-project-authority')
-    for key, parent, label, provenance, col, row, names in NEIGHBORHOODS:
-        last_row = row+(len(names.split())-1)//2
-        section(key, label, (col*COLUMN_PITCH+200, row_top[row]-450, 8500,
-                             row_bottom[last_row]-row_top[row]+550), provenance, parent)
+    def cite(e, scope, sources, explanation, kind='concept'):
+        for key in sources:
+            if key not in records:
+                entity(key)
+        if scope not in records:
+            entity(scope)
+        e['source'] = ref(scope)
+        e['description'] = explanation
+        note = explanation if len(explanation) <= 800 else explanation.split('\n')[0]+' Full explanation is retained in the description and exact source record.'
+        e['note'] = note+'\n\nEvidence scope: '+', '.join(sources)+'.'
+        if ':erd:' in e['source']['target']:
+            broader = ' Supporting code opens the broader pinned ERD scope, not only this depicted concept.'
+            e['description'] += broader
+            e['note'] += broader
+        evidence.append(dict(id=e['id'], path=paths[e['id']], kind=kind, source=ref(scope),
+                             scope=explanation, evidence_pins=[ref(k) for k in sources]))
+        return e
 
-    reading_windows, reading_homes = [], {}
-    for key, parent, label, provenance, col, row, names in NEIGHBORHOODS:
-        members = names.split()
-        if len(members) <= 2:
-            reading_windows.append(dict(id=key, members=members))
-            reading_homes.update({k: key for k in members})
-            continue
-        assert len(READING_LABELS[key]) == math.ceil(len(members)/2)
-        for offset, caption in enumerate(READING_LABELS[key]):
-            pair = members[offset*2:offset*2+2]
-            occupied = max(heights[k]+180+320*len(outgoing[k]) for k in pair)
-            window = key+'-reading-'+str(offset+1)
-            section(window, caption, (col*COLUMN_PITCH+300, row_top[row+offset]-220,
-                                       8300, occupied+320), provenance, key)
-            reading_windows.append(dict(id=window, members=pair))
-            reading_homes.update({k: window for k in pair})
+    def concept(key, label, rect, parent, styling, scope, sources, explanation, shape='rect', kind='node', **attrs):
+        return cite(add(key, kind, rect, parent, shape=shape, label=label, style=styling, wrap=True, **attrs),
+                    scope, sources, explanation)
 
-    for key, text, rect, styling, provenance in [
-        ('title', 'DayLight / one connected data model', (350, 300, 24500, 260), 'hero', 'local-cloud-overview'),
-        ('intro', 'Observe bytes. Admit a source generation. Retire delivery debt. These are separate states; follow their connections into the cloud.',
-         (350, 660, 8200, 520), 'body', 'local-cloud-overview'),
-        ('coverage', '76 tables / 675 fields / 120 recorded links. Focus a section or zoom for supporting links; Details toggles fields. Select any table or line for evidence.',
-         (350, 1180, 8200, 330), 'small', 'cloud-overview'),
-        ('legend', 'Crow’s feet show recorded cardinality. Solid gray = physical FK; dashed blue = application association. Yellow = transport; purple = authorization. These colors do not imply identifying relationships.',
-         (10000, 660, 7900, 780), 'body', 'local-cloud-overview'),
-        ('source-bytes-story', 'Immutable source bytes remain in object storage. PostgreSQL holds scope, identity and derived search state; delivery admission records exact lineage.',
-         (18500, 660, 7500, 780), 'body', 'cloud-corpus'),
+    def table(key, label, rect, parent, color='purple', shape='datastore'):
+        source = SELECTED_ENTITIES[key]
+        record = entity(source)
+        e = add(key, 'node', rect, parent, shape=shape, label=label, style=color, wrap=True)
+        return cite(e, source, [source], record['name']+' — selected table depiction; prose summarizes the pinned record.\n\n'+record['explanation'], 'entity')
+
+    def text(key, label, rect, parent=None, styling='text', scope='local-cloud-overview', sources=None):
+        return cite(add(key, 'text', rect, parent, label=label, wrap=True, style=styling), scope,
+                    sources or [scope], 'Narrative summary of the named evidence scope; not an additional table. '+label)
+
+    def section(key, label, rect, color, scope, parent=None):
+        return cite(add(key, 'group', rect, parent, shape='section', label=label, style='area' if not parent else 'caption', color=color),
+                    scope, [scope], 'Narrative area grounded in this pinned ERD; the selected members are not its full inventory.', 'area')
+
+    def local(parent, point):
+        x, y = bounds[parent][:2]
+        return point[0]+x, point[1]+y
+
+    def connect(key, owner, destination, label, parent, label_rect, bends, styling, scope,
+                sources=None, relationship=None, explanation=''):
+        e = add(key, 'connection', style=styling, label=label, wrap=True,
+                **{'from': paths[owner], 'to': paths[destination]}, head='arrow', head_size=32,
+                bends=[dict(x=x, y=y) for x, y in [local(parent, p) for p in bends]],
+                label_box=box((*local(parent, label_rect[:2]), *label_rect[2:])))
+        labels[key] = tuple(e['label_box'][k] for k in ('x', 'y', 'width', 'height'))
+        if relationship:
+            source = SELECTED_ENTITIES[owner]
+            record = entity(source)
+            r = next(r for r in record.get('relationships', []) if r['id'] == relationship)
+            assert r['destination'] == ref(SELECTED_ENTITIES[destination])
+            e.update(source={**ref(source), 'relationship': relationship},
+                     tail=MARKERS[r['cardinality']['owner']], head=MARKERS[r['cardinality']['destination']],
+                     description=r['label']+'\n\n'+r['explanation'], note=r['explanation'])
+            connections.append(dict(id=key, recorded=True, source=e['source'], relation=r,
+                                    endpoint_pins=[ref(source), r['destination']]))
+        else:
+            cite(e, scope, sources or [scope], explanation, 'narrative_connection')
+            connections.append(dict(id=key, recorded=False, source=e['source'], explanation=explanation))
+        return e
+
+    text('title', 'DayLight / follow the data, keep the authority', (60, 35, 2080, 90), styling='title')
+    text('board-thesis', 'Files retain truth; indexes derive views, delivery records debt, and access stays explicit.', (60, 125, 2080, 60))
+    text('route-map', '01 Find prose   →   02 Deliver it   →   03 Govern access   →   04 Keep recording truth',
+         (60, 195, 2080, 60), styling='caption')
+    text('legend', 'Crow’s feet: recorded associations (gray FK / blue application).\nArrowheads: conceptual projections, transport or access checks. Selected model, not full inventory.',
+         (2260, 90, 2050, 135), styling='caption')
+
+    section('search-area', '01 / The index locates prose; it does not copy the transcript', AREAS['search-area'], 'gray', 'local-search-retrieval')
+    text('search-thesis', 'Original bodies stay in their files. Metadata finds exact records; contentless FTS5 holds derived search terms.',
+         (50, 90, 1960, 110), 'search-area', sources=['local-source-files', 'local-search-documents', 'local-search-fts'], scope='local-search-retrieval')
+    section('device-files', 'DEVICE FILES', (50, 235, 500, 700), 'blue', 'local-search-retrieval', 'search-area')
+    section('device-sqlite', 'DEVICE SQLITE / complementary projections', (800, 235, 1210, 700), 'purple', 'local-search-retrieval', 'search-area')
+    concept('original-prose', 'Original prose\n\nTranscripts\nWatched files\nSource of truth', (50, 120, 400, 340), 'device-files', 'blue',
+            'local-search-retrieval', ['local-source-files', 'local-search-documents'],
+            'Conceptual filesystem source, not a SQL entity. source_files locates private files; search_documents records byte ranges and later hydration/verification.', shape='document')
+    text('hydrate-source', 'Reopen and verify\nthe source for\nevidence.', (50, 510, 420, 145), 'device-files', scope='local-search-documents')
+    concept('search-metadata', 'Source + document\nmetadata', (50, 120, 480, 350), 'device-sqlite', 'purple',
+            'local-search-retrieval', ['local-source-files', 'local-search-documents'],
+            'Conceptual summary of two physical tables, source_files and search_documents. This cylinder is not a third table. The source action opens their retrieval ERD.', shape='datastore')
+    table('search-fts', 'Contentless FTS5\n\nCleaned search terms\nNo duplicate body', (650, 120, 500, 350), 'device-sqlite')
+    text('terms-sensitive', 'Derived terms are still sensitive; this is not redaction.', (50, 535, 1120, 100), 'device-sqlite', scope='local-search-fts')
+    connect('exact-coordinates', 'original-prose', 'search-metadata', 'exact\ncoordinates', 'search-area', (580, 400, 245, 95), [(650, 550)], 'application',
+            'local-search-retrieval', ['local-source-files', 'local-search-documents'], explanation='Conceptual indexing projection to the two-table metadata summary, not a SQL FK.')
+    connect('cleaned-terms', 'original-prose', 'search-fts', 'cleaned search terms; original prose stays in its source', 'search-area', (650, 995, 1250, 70),
+            [(640, 670), (640, 975), (1990, 975), (1990, 530)], 'application', 'local-search-retrieval', ['local-search-fts', 'local-search-documents'],
+            explanation='Conceptual indexing flow. The pinned FTS record contains terms only; this arrow asserts no cardinality or FK.')
+    section('startup', 'STARTUP / required search capability', (50, 1090, 1960, 300), 'gray', 'local-search-retrieval', 'search-area')
+    concept('search-capability', 'Requires FTS5 + contentless_delete\nNo ordinary-text fallback', (40, 90, 1120, 160), 'startup', 'gray', 'local-search-fts', ['local-search-fts'],
+            'Capability requirement summarized from search_fts; this is a condition, not a persisted table.')
+    concept('search-unavailable', 'Unavailable\nNo candidates', (1540, 90, 370, 160), 'startup', 'refusal', 'local-search-fts', ['local-search-fts'],
+            'Unavailable search capability creates no plaintext fallback. This refusal state is not a persisted entity.')
+    connect('capability-failure', 'search-capability', 'search-unavailable', 'if unavailable', 'search-area', (1240, 1145, 335, 60), [], 'failure-flow',
+            'local-search-fts', explanation='Conceptual refusal branch when required FTS capability is unavailable; no SQL relationship.')
+
+    section('delivery-area', '02 / Capture once; retire each destination’s debt', AREAS['delivery-area'], 'yellow', 'local-capture-delivery')
+    text('delivery-thesis', 'One observation can owe several destinations. Cloud admission records its exact source lineage.', (50, 90, 1960, 110), 'delivery-area',
+         scope='local-cloud-overview', sources=['local-pending-prompt-payloads', 'local-pending-project-deliveries', 'cloud-project-delivery-admissions'])
+    table('payload', 'Contained payload\n\nOne observation\nShared across deliveries', (70, 300, 570, 320), 'delivery-area', 'blue')
+    table('delivery-debt', 'Destination delivery debt\n\nGrant + generation\nRetry / status', (1260, 300, 650, 320), 'delivery-area', 'yellow')
+    connect('payload-ownership', 'delivery-debt', 'payload', 'deliveries share\none payload', 'delivery-area', (710, 335, 490, 110), [], 'fk', 'local-capture-delivery', relationship='fk-observationid')
+    concept('observation-callout', 'Observed byte progress is separate\nfrom destination delivery debt.', (70, 700, 760, 150), 'delivery-area', 'caption',
+            'local-capture-delivery', ['local-capture-observation-offsets', 'local-pending-project-deliveries'],
+            'Explanation of separate state, not an additional table or relationship.', kind='annotation', shape='bubble', color='yellow', about=paths['payload'])
+    table('admission', 'Cloud admission\n\nSource grant + generation\nkept out of the prompt row', (1260, 800, 650, 280), 'delivery-area')
+    connect('server-admission', 'delivery-debt', 'admission', 'server\nadmission', 'delivery-area', (1660, 660, 330, 105), [], 'flow',
+            'local-cloud-overview', ['local-pending-project-deliveries', 'cloud-project-delivery-admissions'], explanation='Transport explanation: a server-admitted delivery records lineage. This is not a cross-database foreign key.')
+    concept('immutable-bytes', 'Immutable source bytes', (70, 890, 650, 130), 'delivery-area', 'blue', 'cloud-corpus', ['cloud-prompt'],
+            'Conceptual object storage, not a SQL table. The corpus ERD explains immutable S3 bytes; prompt.body_source is an application-validated pointer.', shape='document')
+    table('hosted-search', 'Hosted search projection\n\nProject fence · source pointer', (70, 1080, 650, 250), 'delivery-area')
+    connect('body-source', 'hosted-search', 'immutable-bytes', 'reads original bytes\nthrough a source pointer', 'delivery-area', (770, 975, 440, 105), [], 'application',
+            'cloud-prompt', explanation='Application-validated JSON pointer to immutable source bytes, not a database FK.')
+    connect('delivery-lineage', 'hosted-search', 'admission', 'recovers source lineage\nwhen an admission exists', 'delivery-area', (810, 1260, 660, 105),
+            [(1000, 1205), (1585, 1205)], 'application', 'cloud-corpus', relationship='logical-admission')
+
+    section('authority-area', '03 / Storage authority and sharing are separate', AREAS['authority-area'], 'purple', 'cloud-project-authority')
+    text('authority-thesis', 'Storage ownership admits bytes. Sharing adds two checks: membership and exact-source consent.', (50, 90, 1960, 110), 'authority-area',
+         scope='local-cloud-overview', sources=['cloud-projects', 'cloud-team-members', 'cloud-shared-project-sources'])
+    table('storage-project', 'Storage Project\n\nPrivate capture scope\nDirect person Owner', (70, 280, 590, 300), 'authority-area')
+    table('policy-revision', 'Immutable policy revision\n\nSelected by the Project', (1300, 280, 610, 300), 'authority-area', 'yellow', shape='document')
+    connect('current-policy', 'storage-project', 'policy-revision', 'selects current policy', 'authority-area', (705, 345, 540, 65), [], 'fk', 'cloud-project-authority', relationship='fk-2')
+    connect('policy-parent', 'storage-project', 'policy-revision', 'retains policy history', 'authority-area', (670, 720, 660, 65), [(365, 690), (1605, 690)], 'fk',
+            'cloud-project-authority', relationship='fk-policy-parent')
+    text('policy-directions', 'Past policies stay immutable; a Project may select a current revision.', (70, 815, 1820, 65), 'authority-area', scope='cloud-project-policy-versions')
+    concept('membership', 'Shared Project membership', (70, 990, 700, 270), 'authority-area', 'purple',
+            'cloud-shared-destinations', ['cloud-teams', 'cloud-team-members'],
+            'Conceptual membership check spanning the shared destination teams and its team_members. These historical teams are not people_teams; this box is not one table.')
+    table('source-consent', 'Exact-source consent\n\nStorage Project + generation\nAccepted rule revision', (1210, 990, 700, 270), 'authority-area')
+    concept('shared-read', 'Shared reads require\nBOTH checks', (810, 1290, 440, 140), 'authority-area', 'green', 'local-cloud-overview',
+            ['cloud-team-members', 'cloud-shared-project-sources'], 'Conceptual conjunction of current membership and exact-source consent, not a table or a complete authorization algorithm.')
+    connect('membership-check', 'membership', 'shared-read', 'membership', 'authority-area', (70, 1345, 460, 60), [(790, 1140), (790, 1360)], 'authorization',
+            'local-cloud-overview', ['cloud-team-members'], explanation='One required input to the conceptual shared-read check; membership alone does not grant source consent.')
+    connect('consent-check', 'source-consent', 'shared-read', 'source consent', 'authority-area', (1450, 1345, 530, 60), [(1560, 1320), (1310, 1320)], 'authorization',
+            'local-cloud-overview', ['cloud-shared-project-sources'], explanation='The other required input to shared reads: exact-source consent does not replace membership.')
+    connect('authorized-read', 'shared-read', 'hosted-search', 'membership + exact-source consent govern shared reads', 'authority-area', (890, -105, 1220, 65),
+            [(1030, 1485), (2130, 1485), (2130, -125), (395, -125)], 'authorization', 'local-cloud-overview',
+            ['cloud-team-members', 'cloud-shared-project-sources', 'cloud-prompt'], explanation='Narrative access rule from the cross-store overview, not a SQL relationship. It governs the hosted search projection above.')
+
+    section('episodes-area', '04 / Recording truth stays with manifests and files', AREAS['episodes-area'], 'blue', 'local-episode-catalog')
+    text('episodes-thesis', 'Manifests and hash-verified files own recording truth. The catalog is a rebuildable view.', (50, 90, 1960, 110), 'episodes-area',
+         scope='local-episode-catalog', sources=['local-episodes', 'local-episode-artifacts'])
+    concept('recording-files', 'Validated manifest\n+ recording files\n\nPaths · hashes · revision\nRecording authority', (70, 300, 550, 380), 'episodes-area', 'blue',
+            'local-episode-catalog', ['local-episodes', 'local-episode-artifacts'],
+            'Conceptual filesystem authority: validated manifest plus hash-verified artifacts. This is not a catalog table.', shape='document')
+    table('episode-catalog', 'Episode catalog\n\nList / filter projection\nCan be rebuilt', (1300, 300, 610, 280), 'episodes-area')
+    connect('manifest-projection', 'recording-files', 'episode-catalog', 'validated projection', 'episodes-area', (685, 365, 555, 65), [], 'application',
+            'local-episode-catalog', ['local-episodes'], explanation='Conceptual projection from authoritative manifest into rebuildable episodes catalog; not a SQL FK.')
+    table('catalog-artifacts', 'Catalog artifacts\n\nRelative path · bytes · SHA-256', (1300, 950, 610, 260), 'episodes-area')
+    connect('artifact-owner', 'catalog-artifacts', 'episode-catalog', 'belongs to\none episode', 'episodes-area', (1670, 710, 300, 110), [], 'fk',
+            'local-episode-catalog', relationship='fk-episode-id')
+    concept('deletion-callout', 'A catalog cascade removes metadata.\nDeleting files is a separate\napplication lifecycle operation.', (70, 920, 850, 190), 'episodes-area', 'caption',
+            'local-episode-artifacts', ['local-episode-artifacts'], 'Annotation of the artifact FK: physical metadata cascade does not claim filesystem deletion.',
+            kind='annotation', shape='bubble', color='yellow', about=paths['catalog-artifacts'])
+    cite(add('derived-evidence', 'sticky', (70, 1260, 1840, 140), 'episodes-area', label='Search may add versioned episode evidence: basis, confidence and timing.\nA derived correlation does not replace the manifest.', style='caption', color='gray', wrap=True,
+             about=paths['episode-catalog']), 'local-episode-evidence-links', ['local-episode-evidence-links'],
+         'Conceptual annotation of the separate search-side evidence_links projection. It is not another episode-catalog table.')
+
+    # Meaningful member prose has its own exact source. Aggregate body actions
+    # retain the broader ERD scope; no one member stands in for the whole.
+    for key, label, rect, parent, scope, aggregate in [
+        ('metadata-file-evidence', 'File identity + cursor', (85, 285, 420, 60), 'device-sqlite', 'local-source-files', 'search-metadata'),
+        ('metadata-record-evidence', 'Record key + byte range', (85, 380, 420, 60), 'device-sqlite', 'local-search-documents', 'search-metadata'),
+        ('destination-evidence', 'Shared destination', (105, 1090, 630, 60), 'authority-area', 'cloud-teams', 'membership'),
+        ('person-evidence', 'A person + current evidence', (105, 1170, 630, 60), 'authority-area', 'cloud-team-members', 'membership'),
     ]:
-        add(dict(id=key, kind='text', label=text, style=styling, wrap=True, source=ref(provenance)), rect)
-        bodies[key] = rect
+        text(key, label, rect, parent, scope=scope)
+        overlays[key] = aggregate
+        evidence[-1]['member_of'] = paths[aggregate]
+    connect('transcript-capture', 'original-prose', 'payload', 'captured transcript observations only', 'search-area', (2270, 225, 1100, 65),
+            [(-40, 525), (-40, -12), (2140, -12), (2140, 460)], 'flow',
+            'local-pending-prompt-payloads', ['local-pending-prompt-payloads', 'local-source-files'],
+            explanation='Scoped conceptual capture of transcript observations, independent of local indexing. This does not assert that every watched file or search result is delivered, and search membership grants no delivery authority.')
+    connect('episode-context', 'search-metadata', 'episode-catalog', 'search may correlate a record with an episode', 'search-area', (70, 1525, 1720, 65),
+            [(1090, 330), (-20, 330), (-20, 1500), (2120, 1500), (2120, 2060)], 'application',
+            'local-episode-evidence-links', ['local-episode-evidence-links', 'local-search-documents', 'local-episodes'],
+            explanation='Conceptual episode context for a search record, with versioned basis, confidence and timing in evidence_links. The catalog represents manifest provenance here; this arrow is not a direct FK or a claim that indexing creates recording authority.')
 
-    for key in homes:
-        e = entities[key]
-        fields = []
-        for field in e['fields']:
-            f = dict(name=field['name'], type=field['type'])
-            keys = ','.join(short for long, short in [('primary', 'pk'), ('foreign', 'fk')] if long in field.get('keys', []))
-            if keys:
-                f['key'] = keys
-            fields.append(f)
-        col, row = slots[key]
-        rect = (700+col*COLUMN_PITCH, row_top[row], CARD_WIDTH, heights[key])
-        # A source table's actual name remains visible; the summary explains it.
-        add(dict(id=key, kind='node', shape='entity', label=CORE_LABELS.get(key, e['name'].replace('_', ' ')),
-                 parent=reading_homes[key], style='entity', fields=fields, summary=summaries[key],
-                 source=ref(key), description=e['explanation'],
-                 note='**'+e['name']+'**\n\n'+summaries[key]), rect)
-        bodies[key] = rect
+    # Reserve room for app chrome on a 1440 x 1000 desktop: the authored
+    # coordinates compress vertically, while all prose remains 34 units or more.
+    # This is native geometry, not a scaled frame with shrinking text.
+    for e in board['elements']:
+        e['y'] *= .9
+        if 'height' in e:
+            e['height'] *= .9
+        for p in e.get('bends', []):
+            p['y'] *= .9
+        if 'label_box' in e:
+            e['label_box']['y'] *= .9
+            e['label_box']['height'] *= .9
+    for collection in (bounds, bodies, labels):
+        for key, (x, y, w, h) in collection.items():
+            collection[key] = (x, y*.9, w, h*.9)
 
-    # Every connection has its own vertical column-gutter lane and row track.
-    # Entity-side lanes alternate left/right and spread terminators along the
-    # boundary. These fixed recipes never search for paths or join into a bus.
-    def endpoint(key, connection_id, end):
-        index = incident[key].index((connection_id, end))
-        sign = -1 if index % 2 == 0 else 1
-        slot, count = index//2, math.ceil((len(incident[key])-(index % 2))/2)
-        x, y, w, h = bounds[key]
-        offset = (slot-(count-1)/2)*125
-        distance = 200+slot*18
-        exit_x = x-distance if sign < 0 else x+w+distance
-        # Account for ray clipping so endpoint separation is exactly 125 units.
-        exit_y = y+h/2+offset*(w/2+distance)/(w/2)
-        row = slots[key][1]
-        track_y = row_track[row]+12*row_ends[row].index((connection_id, end))
-        return (exit_x, exit_y), (exit_x, track_y)
-
-    evidence, lane_counts = [], Counter()
-    for index, c in enumerate(connections):
-        owner, destination = c['owner'], c['destination']
-        start, low_start = endpoint(owner, c['id'], 'from')
-        end, low_end = endpoint(destination, c['id'], 'to')
-        corridor = max(slots[owner][0], slots[destination][0])
-        lane = corridor*COLUMN_PITCH+3600+18*lane_counts[corridor]
-        lane_counts[corridor] += 1
-        assert lane < (corridor+1)*COLUMN_PITCH+650, ('lane capacity', corridor)
-        bends = [start, low_start, (lane, low_start[1]), (lane, low_end[1]), low_end, end]
-        x, y, w, h = bounds[owner]
-        label = (x, y+h+180+320*outgoing[owner].index(c['id']), w, 300) if c['core'] else None
-        relation = c['relation']
-        e = dict(id=c['id'], kind='connection', x=0, y=0, style=c['kind'],
-                 **{'from': paths[owner], 'to': paths[destination]},
-                 bends=[dict(x=a, y=b) for a, b in bends],
-                 wrap=True, head_size=100, head='arrow', source=c['source'],
-                 description=(relation['label']+'\n\n' if relation else '')+c['support'],
-                 note=((relation['label']+'\n\n' if relation else '')+c['support']).replace('<', r'\<'))
-        if label:
-            e.update(label=c['label'], label_box=box(label), wrap=True)
-        if relation:
-            e.update(tail=MARKERS[relation['cardinality']['owner']], head=MARKERS[relation['cardinality']['destination']])
-        if not c['core']:
-            e['visibility'] = 'detail'
-        add(e)
-        if label:
-            labels[c['id']] = label
-        evidence.append(dict(id=c['id'], kind={'fk': 'physical_fk', 'projection': 'application_projection',
-                                              'transport': 'transport_explanation', 'authorization': 'authorization_explanation'}[c['kind']],
-                             recorded=relation is not None, source=c['source'],
-                             **{'from': paths[owner], 'to': paths[destination]},
-                             semantic_label=relation['label'] if relation else c['label'],
-                             supporting_text=c['support'], code=relation.get('code', []) if relation else [],
-                             endpoint_pins=[ref(owner), ref(destination)], endpoint_geometry='authored native entity bounds',
-                             cardinality=relation['cardinality'] if relation else None,
-                             markers={k: e.get(k, 'none') for k in ('tail', 'head')},
-                             visibility=e.get('visibility', 'always')))
-
-    # Coverage is a set equality, not an inferred count or imported-image claim.
-    expected = {(k, r['id']) for k, e in entities.items() for r in e.get('relationships', [])}
-    actual = {(e['source']['target'].split(':')[-1], e['source']['relationship'])
-              for e in evidence if e['recorded']}
-    assert actual == expected and len(actual) == 120
-    assert len(board['elements']) < 500
-    for key, rect in {**bodies, **labels}.items():
+    # Explicit geometry stays simple: authored straight lines and a few doglegs.
+    # No automatic routing or world-size expansion to accommodate an inventory.
+    for key, rect in bodies.items():
         x, y, w, h = rect
-        assert min(x, y) >= 0 and x+w <= width and y+h <= height, ('outside canvas', key)
+        assert min(x, y) >= 0 and x+w <= board['width'] and y+h <= board['height'], ('outside', key)
     for i, (key, rect) in enumerate(bodies.items()):
         for other, other_rect in list(bodies.items())[i+1:]:
-            assert not overlaps(rect, other_rect), ('body overlap', key, other)
+            if overlays.get(key) != other and overlays.get(other) != key:
+                assert not overlaps(rect, other_rect), ('body overlap', key, other)
     for key, rect in labels.items():
         for other, other_rect in {**bodies, **labels}.items():
             if key != other:
@@ -573,89 +380,67 @@ def main():
     for e in board['elements']:
         if e['kind'] != 'connection':
             continue
-        a_key, b_key = (e[k].split('/')[-1] for k in ('from', 'to'))
+        a, b = (e[k].split('/')[-1] for k in ('from', 'to'))
         bends = [(p['x'], p['y']) for p in e['bends']]
-        points = [boundary(bounds[a_key], bends[0])]+bends+[boundary(bounds[b_key], bends[-1])]
+        ca = (bounds[a][0]+bounds[a][2]/2, bounds[a][1]+bounds[a][3]/2)
+        cb = (bounds[b][0]+bounds[b][2]/2, bounds[b][1]+bounds[b][3]/2)
+        points = [boundary(bounds[a], bends[0] if bends else cb)]+bends+[boundary(bounds[b], bends[-1] if bends else ca)]
         for key, rect in {**bodies, **labels}.items():
-            if key in (a_key, b_key):
-                continue
-            assert not any(segment_hits(a, b, rect) for a, b in zip(points, points[1:])), ('route collision', e['id'], key)
-        # A conservative envelope includes the complete 100-unit marker even
-        # when the short endpoint ray is angled. Contact with its own table is
-        # intentional; a neighboring body or label must remain clear.
-        for endpoint_key, point in [(a_key, points[0]), (b_key, points[-1])]:
-            marker_box = (point[0]-150, point[1]-150, 300, 300)
+            if key not in (a, b):
+                assert not any(segment_hits(u, v, rect) for u, v in zip(points, points[1:])), ('route collision', e['id'], key)
+        for endpoint, point in [(a, points[0]), (b, points[-1])]:
+            # Includes the arrow/crowfoot plus room around its clipped tip.
+            marker = (point[0]-36, point[1]-36, 72, 72)
             for key, rect in {**bodies, **labels}.items():
-                if key != endpoint_key:
-                    assert not overlaps(marker_box, rect), ('marker collision', e['id'], key)
-    sections = [e for e in board['elements'] if e.get('shape') == 'section']
-    for i, section_a in enumerate(sections):
-        for section_b in sections[i+1:]:
-            if section_a.get('parent') == section_b.get('parent'):
-                assert not overlaps(bounds[section_a['id']], bounds[section_b['id']]), ('sibling sections overlap', section_a['id'], section_b['id'])
-    for key in homes:
-        x, y, w, h = bounds[key]
-        px, py, pw, ph = bounds[reading_homes[key]]
-        assert px <= x and py+150 <= y and x+w <= px+pw and y+h <= py+ph, ('section bounds', key)
-    assert {k for window in reading_windows for k in window['members']} == set(entities)
-    for window in reading_windows:
-        x, y, w, h = bounds[window['id']]
-        assert w <= 8500 and h <= 6500, ('reading window too broad', window['id'])
-        for key in window['members']:
-            for rect in [bounds[key]]+[labels[c] for c in outgoing[key]]:
-                a, b, c, d = rect
-                assert x <= a and y+150 <= b and a+c <= x+w and b+d <= y+h, ('reading window clips content', window['id'], key)
-    for path, digest in source_reads.items():
+                if key != endpoint and overlays.get(key) != endpoint:
+                    assert not overlaps(marker, rect), ('marker collision', e['id'], key)
+    groups = [e for e in board['elements'] if e['kind'] == 'group']
+    for i, group in enumerate(groups):
+        for other in groups[i+1:]:
+            if group.get('parent') == other.get('parent'):
+                assert not overlaps(bounds[group['id']], bounds[other['id']]), ('group overlap', group['id'], other['id'])
+    for child, host in overlays.items():
+        x, y, w, h = bounds[child]
+        hx, hy, hw, hh = bounds[host]
+        assert hx <= x and hy <= y and x+w <= hx+hw and y+h <= hy+hh, ('member overlay escapes', child)
+    for e in board['elements']:
+        if e.get('parent'):
+            x, y, w, h = bounds[e['id']]
+            px, py, pw, ph = bounds[e['parent']]
+            assert px <= x and py <= y and x+w <= px+pw and y+h <= py+ph, ('parent containment', e['id'])
+    assert {(c['source']['target'].split(':')[-1], c['source']['relationship']) for c in connections if c['recorded']} == SELECTED_RELATIONSHIPS
+    assert len(board['elements']) < 90
+    for path, digest in reads.items():
         assert file_digest(path) == digest, ('source changed', path)
 
-    recorded_incident = {k for c in connections if c['relation'] for k in (c['owner'], c['destination'])}
-    audit = dict(unique_pins=len(manifest), frame_instances=0, primary_native_entities=len(entities),
-                 core_narrative_entities=len(CORE_SUMMARIES), covered_entities=len(entities), native_fields=675,
-                 recorded_relationships=len(actual), physical_relationships=sum(e['kind']=='physical_fk' for e in evidence),
-                 application_relationships=sum(e['recorded'] and e['kind']=='application_projection' for e in evidence),
-                 unknown_cardinalities=[], connections=len(evidence), source_modified=False, published=False,
-                 source_svg_required=False, verified_source_files=len(source_reads),
-                 source_pins='source-pins.json', connection_evidence='connection-evidence.json', entity_evidence='entity-evidence.json',
-                 disconnected_entities=sorted(set(entities)-recorded_incident),
-                 geometry_checks=['body separation', 'label/body separation', 'label/label separation', 'route/body clearance',
-                                  'route/label clearance', 'native section gutters', 'root and sibling section separation', 'marker/body and marker/label clearance'],
-                 source_limit='Exact committed-code documentation; cardinalities and enforcement are source declarations, not live database inspection.',
-                 detail_policy='All 76 tables and 675 fields are native. Core 21 recorded links and 4 narrative explanations are always present; 99 supporting links appear on section focus or zoom. Details toggles fields only; every line retains source evidence and its semantic label in inspection.',
-                 reading_windows=[dict(**window, path=paths[window['id']], **box(bounds[window['id']])) for window in reading_windows],
-                 entity_coverage=[dict(**ref(k), primary_instance=paths[k], neighborhood=homes[k], reading_focus=paths[reading_homes[k]], source_appearances=appearances[k]) for k in homes],
-                 sections=[dict(id=k, label=by_id[k]['label'], **box(bounds[k])) for k in ['context-area', 'delivery-area', 'search-area', 'authority-area']])
-    entity_evidence = [dict(source=ref(k), record=entities[k], source_appearances=appearances[k],
-                           revision_digest=source_reads[root/'___inventory'/'data-entities'/(k+'.data-entity')/
-                                                        'revisions'/(entities[k]['id']+'.json')]) for k in homes]
-    camera = dict(initial=INITIAL_CAMERA, canvas=dict(width=width, height=height),
-                  tours=[dict(name=k, anchor=k, **box(bounds[k])) for k in ['delivery-area', 'search-area', 'authority-area']+[n[0] for n in NEIGHBORHOODS]+[w['id'] for w in reading_windows if '-reading-' in w['id']]])
+    used = ({p['target'] for e in evidence for p in e['evidence_pins']} |
+            {e['source']['target'] for e in evidence} | {c['source']['target'] for c in connections})
+    source_records = [dict(source=ref(k), record=r) for k, r in records.items() if r['record'] in used]
+    audit = dict(mode='selective narrative; intentionally not inventory coverage',
+                 source_limit='Pinned committed-code documentation, not live database inspection. No slide Item or story bindings are claimed.', selected_entities=SELECTED_ENTITIES,
+                 selected_recorded_relationships=len(SELECTED_RELATIONSHIPS), narrative_connections=sum(not c['recorded'] for c in connections),
+                 elements=len(board['elements']), areas=[dict(id=k, path=paths[k], **box(bounds[k])) for k in AREAS],
+                 evidence=evidence, source_modified=False, source_svg_required=False, published=False,
+                 detail_policy='Native prose is readable without Details. Selected table and relationship source actions retain exact full records; omitted inventory is not implied.',
+                 source_reads=[dict(path=str(p.relative_to(root)), digest=d) for p, d in reads.items()])
+    camera = dict(initial=INITIAL_CAMERA, canvas=dict(width=board['width'], height=board['height']),
+                  tours=[dict(name=elements[k]['label'], anchor=paths[k], **box(bounds[k])) for k in AREAS])
     output.mkdir(parents=True, exist_ok=True)
-    for name, data in [('daylight-board.json', board), ('source-pins.json', manifest), ('source-audit.json', audit),
-                       ('connection-evidence.json', evidence), ('entity-evidence.json', entity_evidence), ('camera-proposal.json', camera)]:
+    for name, data in [('daylight-board.json', board), ('source-audit.json', audit), ('connection-evidence.json', connections),
+                       ('entity-evidence.json', source_records), ('source-pins.json', [ref(k) for k in records if records[k]['record'] in used]), ('camera-proposal.json', camera)]:
         (output/name).write_text(json.dumps(data, indent=2)+'\n')
     if args.rendered_svg:
         rendered = args.rendered_svg.read_text()
-        expected = f'0 0 {width} {height}'
-        assert ET.fromstring(rendered).attrib.get('viewBox') == expected
-        (output/'layout-preview.svg').write_text(rendered)
-        initial = ' '.join(str(INITIAL_CAMERA[k]) for k in ('x', 'y', 'width', 'height'))
-        (output/'initial-preview.svg').write_text(rendered.replace(f'viewBox="{expected}"', f'viewBox="{initial}"', 1))
-        preview = '''<!doctype html><meta charset="utf-8"><title>DayLight native model / renderer preview</title>
-<style>body{margin:0;font:14px system-ui;background:#fff}nav{height:44px;display:flex;gap:18px;align-items:center;padding:0 16px}svg{width:100vw;height:calc(100vh - 44px)}button,select{font:inherit}</style>
-<nav><strong>Shared renderer preview</strong><select id="focus" aria-label="Focus section"></select>
-<label><input id="fields" type="checkbox">Fields</label><span>Use the app for source inspection and hover tracing.</span></nav>
-'''+rendered+'''<script>
-const tours = '''+json.dumps([dict(name='Entry', **INITIAL_CAMERA)]+camera['tours'])+''';
-const svg=document.querySelector('svg'), focus=document.querySelector('#focus');
-for(const [i,tour] of tours.entries()){const o=document.createElement('option');o.value=i;o.textContent=tour.name;focus.append(o);}
-function view(){const t=tours[focus.value||0];svg.setAttribute('viewBox',[t.x,t.y,t.width,t.height].join(' '));}
-function details(){const show=focus.selectedIndex>0;svg.querySelectorAll('[data-visibility="detail"]').forEach(e=>e.style.display=show?'':'none');}
-function fields(){const show=document.querySelector('#fields').checked;svg.querySelectorAll('[data-diagram-detail="entity"]').forEach(e=>e.style.display=show?'':'none');svg.querySelectorAll('[data-diagram-summary="entity"]').forEach(e=>e.style.display=show?'none':'');}
-focus.onchange=()=>{view();details();};document.querySelector('#fields').onchange=fields;view();details();fields();
-</script>'''
-        (output/'layout-preview.html').write_text(preview)
-    print(json.dumps(dict(board=str(output/'daylight-board.json'), native_entities=76, native_fields=675,
-                          recorded_relationships=120, canvas=[width, height], elements=len(board['elements']))))
+        assert ET.fromstring(rendered).attrib.get('viewBox') == '0 0 4420 3096'
+        (output/'layout-preview.html').write_text('''<!doctype html><meta charset="utf-8"><title>DayLight narrative / shared renderer</title>
+<style>body{margin:0;background:var(--diagram-canvas,#fff);color:var(--diagram-normal-ink);font:14px system-ui}nav{height:40px;padding:0 16px;display:flex;align-items:center;gap:12px}svg{width:100vw;height:calc(100vh - 40px)}</style>
+<nav>Shared renderer preview <select id="focus"></select></nav>'''+rendered+'''<script>
+const tours='''+json.dumps([dict(name='Opening', **INITIAL_CAMERA)]+camera['tours'])+''';
+const svg=document.querySelector('svg'),select=document.querySelector('#focus');
+for(const [i,t] of tours.entries())select.add(new Option(t.name,i));
+function view(){const t=tours[select.value||0];svg.setAttribute('viewBox',[t.x,t.y,t.width,t.height].join(' '));}select.onchange=view;view();
+</script>''')
+    print(json.dumps(dict(board=str(output/'daylight-board.json'), selected_entities=len(SELECTED_ENTITIES), recorded_relationships=len(SELECTED_RELATIONSHIPS), elements=len(board['elements']))))
 
 
 if __name__ == '__main__':

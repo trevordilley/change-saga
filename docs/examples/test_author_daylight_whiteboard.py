@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Focused regression checks; real-source checks opt in with DAYLIGHT_SAGA.
-
-DAYLIGHT_SAGA=/path/to/copied/daylight.saga python3 -m unittest discover \
-    -s docs/examples -p 'test_author_daylight_whiteboard.py'
-"""
+"""Selected narrative/evidence regressions; opt in with DAYLIGHT_SAGA."""
 import importlib.util
 import json
 import os
@@ -21,23 +17,17 @@ SPEC.loader.exec_module(AUTHOR)
 
 
 class RouteGeometryTest(unittest.TestCase):
-    def test_crossing_and_containment_are_detected(self):
+    def test_clearance_checks_detect_crossings_and_clip_endpoints(self):
         rect = (10, 10, 100, 100)
-        for start, end in [((0,60),(120,60)), ((60,0),(60,120)),
-                           ((0,0),(120,120)), ((40,40),(50,50))]:
-            self.assertTrue(AUTHOR.segment_hits(start, end, rect))
-        for start, end in [((0,10),(120,10)), ((0,0),(5,5)),
-                           ((120,0),(120,130))]:
-            self.assertFalse(AUTHOR.segment_hits(start, end, rect))
-
-    def test_ray_clips_to_bounds_without_invented_ports(self):
-        self.assertEqual(AUTHOR.boundary((10,10,100,100),(200,60)), (110,60))
-        self.assertEqual(AUTHOR.boundary((10,10,100,100),(60,0)), (60,10))
-        self.assertEqual(AUTHOR.boundary((10,10,100,100),(60,60)), (60,60))
+        for a, b in [((0, 60), (120, 60)), ((60, 0), (60, 120)), ((40, 40), (50, 50))]:
+            self.assertTrue(AUTHOR.segment_hits(a, b, rect))
+        self.assertFalse(AUTHOR.segment_hits((0, 10), (120, 10), rect))
+        self.assertEqual(AUTHOR.boundary(rect, (200, 60)), (110, 60))
+        self.assertFalse(AUTHOR.overlaps(rect, (110, 10, 20, 20)))
 
 
-@unittest.skipUnless(os.environ.get('DAYLIGHT_SAGA'), 'set DAYLIGHT_SAGA for pinned real-data regression')
-class PinnedCompositionTest(unittest.TestCase):
+@unittest.skipUnless(os.environ.get('DAYLIGHT_SAGA'), 'set DAYLIGHT_SAGA for pinned source regression')
+class NarrativeTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.root = Path(os.environ['DAYLIGHT_SAGA']).resolve()
@@ -48,209 +38,179 @@ class PinnedCompositionTest(unittest.TestCase):
         subprocess.run([sys.executable, str(SCRIPT), str(cls.root), str(cls.out)], check=True, stdout=subprocess.DEVNULL)
         cls.board = json.loads((cls.out/'daylight-board.json').read_text())
         cls.audit = json.loads((cls.out/'source-audit.json').read_text())
-        cls.evidence = json.loads((cls.out/'connection-evidence.json').read_text())
-        cls.entity_evidence = json.loads((cls.out/'entity-evidence.json').read_text())
+        cls.evidence = json.loads((cls.out/'entity-evidence.json').read_text())
+        cls.connections = json.loads((cls.out/'connection-evidence.json').read_text())
         cls.elements = {e['id']: e for e in cls.board['elements']}
-        cls.pinned_entities = {}
-        for key, revision, _ in AUTHOR.PINS:
-            path = cls.root/'___inventory'/'erds'/(key+'.erd')/'revisions'/(revision+'.json')
-            for pin in json.loads(path.read_text())['directory']:
-                cls.pinned_entities[pin['target']] = pin
+        cls.documentation = {e['id']: e for e in cls.audit['evidence']}
 
     def source(self, pin):
-        key, revision = pin['target'].split(':')[-1], pin['revision'].split(':')[-1]
-        return json.loads((self.root/'___inventory'/'data-entities'/(key+'.data-entity')/'revisions'/(revision+'.json')).read_text())
+        parts = pin['target'].split(':')
+        kind, key = parts[-2:]
+        revision = pin['revision'].split(':')[-1]
+        folder = 'data-entities' if kind == 'data-entity' else 'erds'
+        return json.loads((self.root/'___inventory'/folder/(key+'.'+kind)/'revisions'/(revision+'.json')).read_text())
 
-    def bounds(self, element):
-        x, y = element['x'], element['y']
-        parent = element.get('parent')
+    def path(self, e):
+        return (self.path(self.elements[e['parent']])+'/' if e.get('parent') else '')+e['id']
+
+    def bounds(self, e):
+        x, y = e['x'], e['y']
+        parent = e.get('parent')
         while parent:
-            item = self.elements[parent]
-            x, y = x+item['x'], y+item['y']
-            parent = item.get('parent')
-        return x, y, element['width'], element['height']
+            p = self.elements[parent]
+            x, y = x+p['x'], y+p['y']
+            parent = p.get('parent')
+        return x, y, e['width'], e['height']
 
-    def path(self, element):
-        return (self.path(self.elements[element['parent']])+'/' if element.get('parent') else '')+element['id']
-
-    def test_source_tree_is_unchanged_and_every_pin_remains(self):
-        self.assertEqual(self.before, {p: AUTHOR.file_digest(p) for p in self.root.rglob('*') if p.is_file()})
-        frames = [e for e in self.elements.values() if e['kind']=='frame']
-        self.assertEqual(frames, [])
-        pins = json.loads((self.out/'source-pins.json').read_text())
-        self.assertEqual({(p['id'], p['revision'].split(':')[-1]) for p in pins},
-                         {(key, rev) for key, rev, _ in AUTHOR.PINS})
-        self.assertEqual(self.audit['covered_entities'], 76)
-        self.assertEqual(self.audit['primary_native_entities'], 76)
-        self.assertEqual(self.audit['core_narrative_entities'], 23)
-        self.assertEqual(self.audit['native_fields'], 675)
-        self.assertEqual(self.audit['recorded_relationships'], 120)
-        self.assertEqual(self.audit['physical_relationships'], 103)
-        self.assertEqual(self.audit['application_relationships'], 17)
-        self.assertEqual(self.audit['unknown_cardinalities'], [])
-        self.assertEqual(len(self.audit['entity_coverage']), 76)
-        for section in ('delivery-area','search-area','authority-area'):
-            self.assertEqual(self.elements[section]['shape'], 'section')
-            self.assertNotIn('parent',self.elements[section])
-
-        sections = [e for e in self.elements.values() if e.get('shape') == 'section']
-        for index, a in enumerate(sections):
-            for b in sections[index+1:]:
-                if a.get('parent') == b.get('parent'):
-                    self.assertFalse(AUTHOR.overlaps(self.bounds(a), self.bounds(b)), (a['id'], b['id']))
-            if a.get('parent'):
-                x, y, w, h = self.bounds(a)
-                px, py, pw, ph = self.bounds(self.elements[a['parent']])
-                self.assertGreaterEqual(y-py, 200, a['id'])  # Room for its parent's caption.
-                self.assertTrue(px <= x and x+w <= px+pw and y+h <= py+ph, a['id'])
-        camera = self.board['viewport']
-        # Desktop content is 1140 x 1000; allow viewer chrome and focus padding.
-        opening_scale = min(1100/camera['width'], 880/camera['height'])
-        self.assertGreaterEqual(self.board['styles']['entity']['font_size']*.8*opening_scale, 16)
-        self.assertGreaterEqual(self.board['styles']['body']['font_size']*opening_scale, 20)
-        for key in ('local-capture-observation-offsets', 'local-project-source-grants',
-                    'local-pending-prompt-payloads', 'local-pending-project-deliveries'):
-            x, y, w, h = self.bounds(self.elements[key])
-            self.assertTrue(camera['x'] <= x and camera['y'] <= y and
-                            x+w <= camera['x']+camera['width'] and y+h <= camera['y']+camera['height'], key)
-        members = []
-        for window in self.audit['reading_windows']:
-            members.extend(window['members'])
-            group = self.elements[window['id']]
-            self.assertEqual(self.path(group), window['path'])
-            actual = {e['id'] for e in self.elements.values()
-                      if e.get('shape') == 'entity' and self.path(e).startswith(window['path']+'/')}
-            self.assertEqual(actual, set(window['members']))
-            scale = min(1100/(window['width']+48), 880/(window['height']+48))
-            self.assertGreaterEqual(self.board['styles']['entity']['font_size']*.8*scale, 16, window['id'])
-            for key in window['members']:
-                x, y, w, h = self.bounds(self.elements[key])
-                self.assertTrue(window['x'] <= x and window['y']+150 <= y and
-                                x+w <= window['x']+window['width'] and y+h <= window['y']+window['height'], key)
-        self.assertEqual(len(members), 76)
-        self.assertEqual(set(members), {e['id'] for e in self.elements.values() if e.get('shape') == 'entity'})
-
-    def test_native_fields_and_relationship_pins_are_exact(self):
-        native = [e for e in self.elements.values() if e.get('shape') == 'entity']
-        self.assertEqual(len(native), len(self.pinned_entities))
-        self.assertEqual({e['source']['target']: e['source'] for e in native}, self.pinned_entities)
-        for e in self.elements.values():
-            if e.get('shape')=='entity':
-                self.assertTrue(e.get('summary'), e['id'])
-                self.assertLessEqual(len(e['summary']), 120, e['id'])
-                record=self.source(e['source'])
-                self.assertEqual([(f['name'],f['type']) for f in e['fields']],
-                                 [(f['name'],f['type']) for f in record['fields']])
-                self.assertEqual(e['description'], record['explanation'])
-                for actual, source in zip(e['fields'], record['fields']):
-                    expected = set()
-                    if 'primary' in source.get('keys', []): expected.add('pk')
-                    if 'foreign' in source.get('keys', []): expected.add('fk')
-                    self.assertEqual(set(actual.get('key', '').split(','))-{''}, expected)
-        expected_relationships = {(pin['target'], r['id'])
-                                  for pin in self.pinned_entities.values()
-                                  for r in self.source(pin).get('relationships', [])}
-        recorded = [item for item in self.evidence if item['recorded']]
-        self.assertEqual(len(recorded), len(expected_relationships))
-        self.assertEqual({(item['source']['target'], item['source']['relationship']) for item in recorded},
-                         expected_relationships)
+    def test_every_depicted_scope_retains_exact_source_records(self):
+        pinned = {}
+        for key, revision in AUTHOR.PINS:
+            r = self.source(dict(target='urn:change-saga:daylight:erd:'+key, revision='revision:'+revision))
+            for pin in r['directory']:
+                pinned[pin['target']] = pin
+        selected = [d for d in self.documentation.values() if d['kind'] == 'entity']
+        self.assertEqual({d['id'] for d in selected}, set(AUTHOR.SELECTED_ENTITIES))
+        for d in selected:
+            e = self.elements[d['id']]
+            self.assertEqual(e['source'], pinned[e['source']['target']])
+            self.assertEqual(e['source']['target'].split(':')[-1], AUTHOR.SELECTED_ENTITIES[e['id']])
+            self.assertEqual(d['evidence_pins'], [e['source']])
+            self.assertIn(self.source(e['source'])['explanation'], e['description'])
         for item in self.evidence:
-            source=item['source']
-            if 'relationship' not in source:
-                self.assertIn(item['kind'], {'application_projection','transport_explanation',
-                                            'authorization_explanation','same_entity_appearance'})
-                continue
-            r=next(r for r in self.source(source)['relationships'] if r['id']==source['relationship'])
-            self.assertEqual(item['supporting_text'],r['explanation'])
-            self.assertEqual(item['semantic_label'], r['label'])
-            self.assertIn(r['label'], self.elements[item['id']]['description'])
-            self.assertIn(r['label'].replace('<', r'\<'), self.elements[item['id']]['note'])
-            self.assertEqual(item['endpoint_pins'][1],r['destination'])
-            self.assertEqual(item['endpoint_pins'][0],{k:source[k] for k in ('target','revision')})
-            self.assertEqual(item['kind']=='physical_fk',r['explanation'].lower().startswith('physical'))
-            self.assertEqual(item['code'], r['code'])
-            self.assertEqual(item['cardinality'], r['cardinality'])
-            connection = self.elements[item['id']]
-            expected_markers = {'0..many': 'zero-or-many', '0..1': 'zero-or-one', '1': 'only-one'}
-            self.assertEqual(connection['tail'], expected_markers[r['cardinality']['owner']])
-            self.assertEqual(connection['head'], expected_markers[r['cardinality']['destination']])
-            self.assertEqual(connection['head_size'], 100)
-            for end, pin in zip(('from', 'to'), item['endpoint_pins']):
-                self.assertEqual(self.elements[connection[end].split('/')[-1]]['source'], pin)
-        # These two source relationships share endpoints but differ in direction
-        # and meaning; neither may be collapsed into the other.
-        parent = self.elements['cloud-projects--fk-policy-parent']
-        current = self.elements['cloud-projects--fk-2']
-        self.assertEqual((parent['tail'], parent['head']), ('only-one', 'zero-or-many'))
-        self.assertEqual((current['tail'], current['head']), ('zero-or-one', 'only-one'))
-
-    def test_full_source_metadata_is_retained_without_svg_dependency(self):
-        self.assertEqual(len(self.entity_evidence), 76)
-        for item in self.entity_evidence:
             self.assertEqual(item['record'], self.source(item['source']))
-        # Running with every source-SVG read forbidden proves that coverage and
-        # geometry do not depend on the old visual assets or imported bindings.
-        read_bytes, read_text = Path.read_bytes, Path.read_text
-        def guard_bytes(path, *args, **kwargs):
-            self.assertNotEqual(path.suffix, '.svg', str(path))
-            return read_bytes(path, *args, **kwargs)
-        def guard_text(path, *args, **kwargs):
-            self.assertNotEqual(path.suffix, '.svg', str(path))
-            return read_text(path, *args, **kwargs)
-        with tempfile.TemporaryDirectory() as output:
-            with mock.patch.object(Path, 'read_bytes', guard_bytes), mock.patch.object(Path, 'read_text', guard_text), \
-                    mock.patch.object(sys, 'argv', [str(SCRIPT), str(self.root), output]), mock.patch('builtins.print'):
-                AUTHOR.main()
+        retained = {item['source']['target'] for item in self.evidence}
+        for d in self.documentation.values():
+            self.assertIn(d['source']['target'], retained)
+            self.assertTrue(d['scope'])
+            for pin in d['evidence_pins']:
+                self.assertIn(pin['target'], retained)
+                self.assertEqual(self.source(pin)['id'], pin['revision'].split(':')[-1])
 
-    def test_core_is_one_connected_model(self):
-        native={e['id'] for e in self.elements.values() if e.get('shape')=='entity'}
-        graph={key:set() for key in native}
-        for item in self.evidence:
-            a,b=(item[k].split('/')[-1] for k in ('from','to'))
-            if a in native and b in native:
+    def test_crowfeet_match_only_selected_authentic_associations(self):
+        expected = {('local-pending-project-deliveries', 'fk-observationid'),
+                    ('cloud-prompt', 'logical-admission'), ('cloud-projects', 'fk-2'),
+                    ('cloud-projects', 'fk-policy-parent'), ('local-episode-artifacts', 'fk-episode-id')}
+        actual = set()
+        for item in self.connections:
+            edge = self.elements[item['id']]
+            if not item['recorded']:
+                self.assertEqual(edge['head'], 'arrow')
+                self.assertNotIn('tail', edge)
+                self.assertNotIn('relationship', edge['source'])
+                continue
+            pin = item['source']
+            actual.add((pin['target'].split(':')[-1], pin['relationship']))
+            relation = next(r for r in self.source(pin)['relationships'] if r['id'] == pin['relationship'])
+            self.assertEqual(item['relation'], relation)  # Includes exact code evidence and explanation.
+            self.assertEqual(edge['tail'], AUTHOR.MARKERS[relation['cardinality']['owner']])
+            self.assertEqual(edge['head'], AUTHOR.MARKERS[relation['cardinality']['destination']])
+            owner = self.elements[edge['from'].split('/')[-1]]
+            destination = self.elements[edge['to'].split('/')[-1]]
+            self.assertEqual(owner['source'], {k: pin[k] for k in ('target', 'revision')})
+            self.assertEqual(destination['source'], relation['destination'])
+            self.assertEqual(edge['style'], 'fk' if relation['explanation'].lower().startswith('physical') else 'application')
+        self.assertEqual(actual, expected)
+        self.assertEqual((self.elements['policy-parent']['tail'], self.elements['policy-parent']['head']), ('only-one', 'zero-or-many'))
+        self.assertEqual((self.elements['current-policy']['tail'], self.elements['current-policy']['head']), ('zero-or-one', 'only-one'))
+
+    def test_aggregate_concepts_and_refusal_do_not_impersonate_tables(self):
+        for key, members in {
+            'search-metadata': {'local-source-files', 'local-search-documents'},
+            'membership': {'cloud-teams', 'cloud-team-members'},
+            'recording-files': {'local-episodes', 'local-episode-artifacts'},
+        }.items():
+            d = self.documentation[key]
+            self.assertEqual(d['kind'], 'concept')
+            self.assertEqual({p['target'].split(':')[-1] for p in d['evidence_pins']}, members)
+            self.assertIn(':erd:', self.elements[key]['source']['target'])
+            self.assertIn('not', d['scope'])
+            self.assertIn('broader pinned ERD scope', self.elements[key]['note'])
+        self.assertIn('no plaintext fallback', self.elements['search-unavailable']['description'])
+        self.assertTrue(self.board['styles']['refusal']['dash'])
+        self.assertEqual(self.elements['capability-failure']['style'], 'failure-flow')
+        self.assertIn('BOTH checks', self.elements['shared-read']['label'])
+        self.assertEqual({self.elements[k]['from'].split('/')[-1] for k in ['membership-check', 'consent-check']}, {'membership', 'source-consent'})
+        self.assertEqual({self.elements[k]['to'].split('/')[-1] for k in ['membership-check', 'consent-check']}, {'shared-read'})
+        self.assertIn('application lifecycle', self.elements['deletion-callout']['label'])
+        self.assertIn('not a database FK', self.elements['body-source']['description'])
+        self.assertIn('every watched file or search result', self.elements['transcript-capture']['description'])
+        self.assertIn('not a direct FK', self.elements['episode-context']['description'])
+        self.assertIn('Arrowheads: conceptual', self.elements['legend']['label'])
+
+    def test_four_readable_areas_have_real_members_and_incident_connections(self):
+        roots = {e['id'] for e in self.elements.values() if e['kind'] == 'group' and not e.get('parent')}
+        self.assertEqual(roots, {'search-area', 'delivery-area', 'authority-area', 'episodes-area'})
+        seen = set()
+        for area in self.audit['areas']:
+            root = self.elements[area['id']]
+            self.assertEqual(self.path(root), area['path'])
+            members = {e['id'] for e in self.elements.values() if self.path(e).startswith(area['path']+'/')}
+            self.assertTrue(any(self.elements[k]['kind'] == 'node' for k in members))
+            seen.update(members)
+            self.assertTrue(any(c['from'].split('/')[-1] in members or c['to'].split('/')[-1] in members
+                                for c in self.elements.values() if c['kind'] == 'connection'))
+            # 1140 x 900 desktop canvas; reserve more space for title/toolbar and focus padding.
+            scale = min(1100/(root['width']+48), 780/(root['height']+48))
+            for k in members:
+                e = self.elements[k]
+                if e.get('label'):
+                    self.assertGreaterEqual(self.board['styles'][e['style']]['font_size']*scale, 16, k)
+                x, y, w, h = self.bounds(e)
+                rx, ry, rw, rh = self.bounds(root)
+                self.assertTrue(rx <= x and ry <= y and x+w <= rx+rw and y+h <= ry+rh, k)
+        # The four stories belong to one connected model, with scoped arrows
+        # between areas rather than only a prose reading-order suggestion.
+        graph = {key: set() for key in roots}
+        for edge in self.elements.values():
+            if edge['kind'] != 'connection':
+                continue
+            a, b = edge['from'].split('/')[0], edge['to'].split('/')[0]
+            if a != b:
                 graph[a].add(b)
                 graph[b].add(a)
-        disconnected = {'cloud-corpus-migration-scans', 'cloud-corpus-object-migrations',
-                        'cloud-group-mapping-seed-state', 'local-agent-kv',
-                        'local-episode-catalog-meta', 'local-local-search-meta'}
-        # Start in the narrative instead of an arbitrary metadata-only table.
-        reached = set()
-        pending = ['local-pending-project-deliveries']
+        reached, pending = set(), ['search-area']
         while pending:
             key = pending.pop()
             if key not in reached:
                 reached.add(key)
                 pending.extend(graph[key]-reached)
-        self.assertEqual(reached, native-disconnected)
-        self.assertEqual(set(self.audit['disconnected_entities']), disconnected)
-        self.assertTrue(all(not graph[k] for k in disconnected))
+        self.assertEqual(reached, roots)
+        self.assertTrue(set(AUTHOR.SELECTED_ENTITIES) <= seen)
+        opening_scale = min(1100/self.board['viewport']['width'], 780/self.board['viewport']['height'])
+        self.assertGreaterEqual(self.board['styles']['text']['font_size']*opening_scale, 16)
+        self.assertIn('Files retain truth', self.elements['board-thesis']['label'])
+        self.assertIn('04 Keep recording truth', self.elements['route-map']['label'])
+        self.assertTrue(all(not e.get('decorative') for e in self.elements.values()))
 
-    def test_supporting_links_are_direct_native_details(self):
-        core = set(AUTHOR.CORE_RELATIONSHIPS)
-        for item in self.evidence:
-            element = self.elements[item['id']]
-            if item['recorded']:
-                pair = (item['source']['target'].split(':')[-1], item['source']['relationship'])
-                self.assertEqual(element.get('visibility') == 'detail', pair not in core)
-                if pair not in core:
-                    self.assertNotIn('label', element)
-                    self.assertNotIn('label_box', element)
-                else:
-                    self.assertTrue(element['label'])
-                    self.assertIn('label_box', element)
-            else:
-                self.assertNotIn('tail', element)
-                self.assertEqual(element['head'], 'arrow')
-        self.assertEqual(sum(e.get('visibility') == 'detail' for e in self.elements.values()), 99)
-        self.assertEqual(sum(e['kind'] == 'connection' and bool(e.get('label')) for e in self.elements.values()), 25)
-        self.assertIn('Details toggles fields', self.elements['coverage']['label'])
-        self.assertIn('section focus or zoom', self.audit['detail_policy'])
+    def test_selection_has_no_hidden_inventory_or_imported_visual(self):
+        self.assertLess(len(self.elements), 90)
+        self.assertEqual(len(AUTHOR.SELECTED_ENTITIES), 10)
+        self.assertTrue(all(e['kind'] not in ('frame', 'graphic') for e in self.elements.values()))
+        self.assertTrue(all('visibility' not in e for e in self.elements.values()))
+        # Fixed-size native detail/field text is deliberately not used for body prose.
+        self.assertTrue(all('detail' not in e and 'fields' not in e for e in self.elements.values()))
+        self.assertEqual({e['id'] for e in self.elements.values()}, set(self.documentation) | {c['id'] for c in self.connections if c['recorded']})
+        self.assertIn('intentionally not inventory coverage', self.audit['mode'])
 
-    def test_output_cannot_be_written_into_source(self):
-        result=subprocess.run([sys.executable,str(SCRIPT),str(self.root),str(self.root/'forbidden-output')],
-                              capture_output=True,text=True)
-        self.assertNotEqual(result.returncode,0)
-        self.assertIn('output must be outside',result.stderr)
+    def test_source_is_unchanged_and_source_svg_is_never_read(self):
+        self.assertEqual(self.before, {p: AUTHOR.file_digest(p) for p in self.root.rglob('*') if p.is_file()})
+        read_bytes, read_text = Path.read_bytes, Path.read_text
+        def guard_bytes(path, *args, **kwargs):
+            self.assertNotEqual(path.suffix, '.svg')
+            return read_bytes(path, *args, **kwargs)
+        def guard_text(path, *args, **kwargs):
+            self.assertNotEqual(path.suffix, '.svg')
+            return read_text(path, *args, **kwargs)
+        with tempfile.TemporaryDirectory() as out:
+            with mock.patch.object(Path, 'read_bytes', guard_bytes), mock.patch.object(Path, 'read_text', guard_text), \
+                    mock.patch.object(sys, 'argv', [str(SCRIPT), str(self.root), out]), mock.patch('builtins.print'):
+                AUTHOR.main()
+            self.assertEqual((Path(out)/'daylight-board.json').read_bytes(), (self.out/'daylight-board.json').read_bytes())
+
+    def test_output_must_be_outside_source(self):
+        result = subprocess.run([sys.executable, str(SCRIPT), str(self.root), str(self.root/'forbidden-output')], capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('output must be outside', result.stderr)
         self.assertFalse((self.root/'forbidden-output').exists())
 
 
