@@ -34,7 +34,69 @@ note, evidence and reveal behavior is reused without creating slide Item records
 Normal wheel and trackpad scrolling pan, Shift supports horizontal mouse-wheel
 panning, and Ctrl/Cmd wheel zooms around the pointer.
 
-## DayLight source and authored model
+## Current DayLight narrative: r9
+
+The current example is a selective explanation of the data model, authored
+through the same `diagram.Document` grammar and renderer as implementation
+slides. Four connected areas explain local search, capture/delivery, storage
+and sharing authority, and recording provenance. Native document and datastore
+shapes, colored section bands, semantic text, callouts and a sticky annotation
+carry the story. It contains 59 elements, ten selected table depictions, five
+recorded associations (four physical foreign keys and one application join),
+and eleven explicitly described conceptual connections. There are no imported
+frames, hand-authored SVGs, exhaustive field lists or hidden schema appendix.
+
+The three cross-area connections explain captured transcript observations,
+optional search-to-episode context, and shared-read authority. They do not
+assert automatic watched-file delivery, a catalog foreign key, or additional
+authorization guarantees. Recorded associations retain exact source endpoints
+and both cardinality markers. Each Project selects one current policy while
+past revisions remain immutable; the independent review checked this wording
+against the saved relationship and code.
+
+All four areas were reviewed in light and dark themes in the real viewer at
+1440 × 1000, with sidebar and floating controls present. Essential opening text
+measures at least 16.87 screen pixels and regional text 17.74 pixels. The opening
+is a reading view; the larger canvas remains available through pan, focus and
+zoom. Section navigation, Back/Forward and reload preserve the one document.
+No JavaScript errors occurred. The refreshed representative preview still
+renders its three imported frames.
+
+Conceptual shapes pinned to an ERD now expose its existing directory evidence
+through the shared annotation code action. The drawer explicitly identifies the
+broader scope and groups exact member/relationship owners, notes and revisions.
+Original prose and metadata expose ten distinct saved code references,
+membership 35, and recording provenance five. These are counts of references,
+not coverage claims. Code opens at verified saved locations; metadata collection
+does not fetch source bytes. Existing entity and relationship actions remain
+scoped to their own pins. No member stories are rolled up or Item records
+fabricated. A fresh browser observed zero annotation requests before interaction.
+
+Stored `diagram describe --focus` was checked against the authored hierarchy:
+
+| Area | Members | Incident connections |
+| --- | ---: | ---: |
+| Search | 14 | 5 |
+| Delivery | 8 | 6 |
+| Authority | 10 | 5 |
+| Recordings | 7 | 3 |
+
+Eight real-source authoring tests pass. Focused server, diagram, storage and CLI
+checks pass; the annotation changes also pass focused race tests and server vet.
+Independent code and live browser reviews have no remaining findings. All
+2,816 original DayLight Saga files still match their discovery hashes.
+
+The final JSON SHA-256 is
+`3fffe2198cb2b1a74a9ff0f2fee72b2bcf3e61cc8cccf09f16562d849cbc096f`.
+Local artifacts live under `/tmp/change-saga-whiteboard-qa/narrative-v9/`:
+`daylight-board.json`, `viewer-opening-{light,dark}.png`,
+`viewer-authority-{light,dark}.png`, `describe-*.json`,
+`final-browser-check.json` and `final-provenance-check.json`.
+The complete source-action/navigation screenshots and report are in
+`narrative-v8/viewer-*`; r9 changes only the reviewed policy sentence, and the
+fresh r9 check confirms that correction. Historical revisions remain readable.
+
+## Historical r7: exhaustive native migration
 
 Discovery located 20 source ERDs in the readable DayLight Saga, more than the
 initial estimate. The example script migrates their exact entity and relationship

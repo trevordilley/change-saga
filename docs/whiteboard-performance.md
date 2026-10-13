@@ -240,3 +240,33 @@ the report also records the exact HTML and application asset digests. An earlier
 sample from before the final field-column and oversized-hover fixes is retained
 in `cohesive-v7/pre-detail-fix-performance/`; the figures above use the finished
 build.
+
+## Selective narrative document sanity check
+
+The r9 example replaces exhaustive schema presentation with four connected
+narrative areas: 59 authored elements, ten selected table depictions and no
+imported frames. A single isolated run on 2026-10-13 used the same harness with
+focus paths `search-area`, `delivery-area`, `authority-area`, `episodes-area`,
+and `search-area`. Managed review browsers and builds were stopped for the run.
+This is a different scene and focus workload, **not a paired comparison** with
+r7 or the original performance baseline.
+
+JavaScript consumed 0.0643 s, style recalculation 0.0960 s, layout 0.2485 s,
+and total tasks 2.6422 s. Main-thread Paint events totaled 108.0 ms. Pan, zoom
+and focus p95 RAF intervals were 9.1, 9.2 and 9.2 ms respectively, with no
+interval above 25 ms. The 120-move pan phase made 196 attribute calls and
+24 tabindex mutations, with zero measured geometry reads. Focus includes ten
+rectangle reads from browser automation. No browser errors occurred. The initial
+scene retained 793 DOM nodes and culled twelve cached elements; culling still
+suppresses drawing rather than removing the document.
+
+The new aggregate source-code action reuses the existing ERD evidence collector
+and shared drawer. Hover collects saved metadata only; code bytes load on the
+explicit Code action. The functional browser checks observed zero annotation
+requests before interaction, and verified code remained reachable from all four
+reviewed conceptual shapes. Viewport culling and cached geometry are unchanged.
+
+Artifacts: `/tmp/change-saga-whiteboard-qa/narrative-v9/performance.json`,
+`performance-run1.trace.json` and `performance-run1.png`. The report records
+browser version, HTML/assets and harness digests. These observations are a
+local sanity check, not a frame-rate guarantee on other hardware.

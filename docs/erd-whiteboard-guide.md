@@ -242,8 +242,16 @@ panel opens. Repeated appearances retain their own authored notes. Long
 relationships place pointer actions beside the visible segment; keyboard focus
 uses the cached diagram position.
 
-Story actions appear only when real implementation Items pin the exact entity
-revision and have saved story links. The panel identifies those Items as the
+A conceptual shape may pin an existing ERD as its broader evidence scope.
+Its code action then uses the existing ERD directory evidence collector: saved
+member and relationship references are grouped with their exact owners and
+revisions. The drawer labels that broader scope explicitly; it does not claim
+that all those references belong to the conceptual shape or infer a subset from
+its prose. Missing members and members without code remain visible. Metadata
+collection does not fetch source bytes; opening Code performs that work.
+
+Story actions appear only when real implementation Items pin the exact saved
+definition and have saved story links. The panel identifies those Items as the
 source of the links. An entity pin alone does not create a story relationship,
 and entity-wide links are not presented as relationship-specific evidence.
 This does not create slide Items for an ERD. Bundled icons must be authored
