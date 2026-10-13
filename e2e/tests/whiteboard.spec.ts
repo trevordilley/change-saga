@@ -29,7 +29,7 @@ function authorWhiteboard(saga: SagaFixture, nested = false) {
     run("erd", "add", "--id", "cluster", "--from", file("cluster.json", {
       name: "Cloud cluster", explanation: "A smaller diagram inside its cloud context.", directory: [pin("data-entity", "cloud-record")],
       diagram: { version: 1, width: 720, height: 440, elements: [
-        { id: "records", kind: "frame", label: "Shared records", summary: "Records inside the cloud", x: 100, y: 120, width: 360, height: 220, style: "normal", source: pin("erd", "postgres"), detail_scale: .85 }
+        { id: "records", kind: "frame", label: "Shared records", summary: "Records inside the cloud", x: 300, y: 0, width: 360, height: 220, style: "normal", source: pin("erd", "postgres"), detail_scale: .85 }
       ] }
     }), "--repo", saga.sourceRepo, saga.sagaRoot);
   }
@@ -177,7 +177,13 @@ test("mixed nested detail keeps each connection on its visible semantic endpoint
   await expect(line).toHaveAttribute("d", / L900 420 L/);
   await expect(line).toHaveAttribute("marker-end", /url\(#whiteboard-/);
   await expect(edge).toHaveAttribute("data-to", "cloud/postgres/records/cloud-record");
-  await board.getByLabel("Focus diagram").selectOption("cloud/postgres/records");
+  await board.getByLabel("Focus diagram").selectOption("cloud/postgres");
+  await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
+  // A child at source y=0 has its caption above that source SVG viewport.
+  // It must stay visible and clickable, rather than being clipped away.
+  const nestedCaption = board.locator('[data-frame-overview="cloud/postgres/records"] text').first();
+  await nestedCaption.click();
+  await expect(board.getByLabel("Focus diagram")).toHaveValue("cloud/postgres/records");
   await expect(edge).toHaveAttribute("data-whiteboard-to", "cloud/postgres/records/cloud-record");
   await expect(board.locator('[data-instance-path="cloud/postgres/records/cloud-record"]')).toBeVisible();
   await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
