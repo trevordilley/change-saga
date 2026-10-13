@@ -345,7 +345,7 @@ func TestMultipleERDDocumentsAndSharedOverview(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	nav := technicalNav(inventory, true)
+	nav := technicalNav(inventory, true, nil)
 	if len(nav) == 0 || len(nav[0].Children) < 3 {
 		t.Fatal("missing documents")
 	}

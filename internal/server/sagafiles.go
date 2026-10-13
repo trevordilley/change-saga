@@ -62,6 +62,9 @@ type sagaFiles struct {
 	inventoryDoc  requirements.Inventory
 	inventoryErr  error
 
+	whiteboardOnce sync.Once
+	whiteboardView *whiteboardView
+
 	// slidesView is every embedded deck's slides as every page shows them,
 	// story links decorated, and slidesHTML the deck viewer rendered from
 	// it. Both are built from the narrative and records above, so they hold
@@ -193,4 +196,11 @@ func (files *sagaFiles) slides(build func() (*sectionView, template.HTML, error)
 		files.slidesView, files.slidesHTML, files.slidesErr = build()
 	})
 	return files.slidesView, files.slidesHTML, files.slidesErr
+}
+
+// whiteboard shares the immutable presentation used by the document and its
+// sidebar. Board revisions and source assets share this file fingerprint.
+func (files *sagaFiles) whiteboard(build func() *whiteboardView) *whiteboardView {
+	files.whiteboardOnce.Do(func() { files.whiteboardView = build() })
+	return files.whiteboardView
 }

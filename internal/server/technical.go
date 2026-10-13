@@ -489,14 +489,38 @@ func technicalOverviewPart(inventory requirements.Inventory) overviewPartView {
 	return part
 }
 
-// technicalNav is the sidebar's Technical design rows: its three areas, each
-// a section that opens its own page and discloses one row per definition
-// beneath it. Data model lists its ERD documents and overlays before entities.
-// An area with no records or overview is omitted.
-func technicalNav(inventory requirements.Inventory, hasOverview bool) []*navNodeView {
+// Only the request's page presentation changes; the shared board stays immutable.
+func technicalBoardPresentation(view *technicalPageView, inventory requirements.Inventory, board *whiteboardView) {
+	if view == nil || board == nil || board.Visual == "" {
+		return
+	}
+	_, _, entities := technicalCount(inventory)
+	const note = "One connected data model with authored sections, entities and relationships."
+	if view.Area.Segment == "erd" {
+		view.Area.Lede = note
+	}
+	for i := range view.Areas {
+		if view.Areas[i].Segment == "erd" {
+			view.Areas[i].Count = "1 data model document · " + plural(len(board.Sections), "section", "sections") + " · " + plural(entities, "data entity", "data entities")
+			view.Areas[i].Note, view.Areas[i].Gap = note, false
+		}
+	}
+}
+
+// technicalNav presents a valid whiteboard as one Data model document with
+// its authored section outline. Without one, the inventory remains readable
+// as definition rows. Systems and Components keep their existing directories.
+func technicalNav(inventory requirements.Inventory, hasOverview bool, board *whiteboardView) []*navNodeView {
 	var nodes []*navNodeView
 	for _, area := range technicalAreas {
 		var rows []*navNodeView
+		if area.Segment == "erd" && board != nil && board.Visual != "" {
+			for _, section := range board.Sections {
+				rows = append(rows, &navNodeView{Title: section.Title, Href: area.Href() + "?" + url.Values{"focus": {section.Path}}.Encode(), NodeID: "nav-whiteboard-" + domID(section.Path), Icon: "split"})
+			}
+			nodes = append(nodes, navSection(area.Title, area.Href(), "nav-technical-erd", "split", rows))
+			continue
+		}
 		holds := area.Segment == "erd" && hasOverview
 		for _, kind := range area.Kinds {
 			for _, record := range inventory.Records {

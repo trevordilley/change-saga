@@ -1369,14 +1369,24 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// The inventory is small, identity-only reading here: no code resolves.
 	inventory, inventoryErr := files.inventory(document.Manifest.ID)
 	var technicalRows []*navNodeView
+	var board *whiteboardView
 	if inventoryErr == nil {
-		technicalRows = technicalNav(inventory, document.OverviewPart(applayout.OverviewDataModel) != nil)
+		board = files.whiteboard(func() *whiteboardView {
+			if data.Technical != nil && data.Technical.DataModel != nil {
+				return data.Technical.DataModel.Whiteboard
+			}
+			return a.makeWhiteboardView(inventory)
+		})
+		technicalBoardPresentation(data.Technical, inventory, board)
+		technicalRows = technicalNav(inventory, document.OverviewPart(applayout.OverviewDataModel) != nil, board)
 	}
 	if route.kind == "overview" {
 		data.OverviewParts = overviewDirectory(document, requirementsDocument, onboarding)
 		if inventoryErr == nil {
 			part := technicalOverviewPart(inventory)
-			if document.OverviewPart(applayout.OverviewDataModel) != nil {
+			if board != nil && board.Visual != "" {
+				part.Gap, part.Note = false, "One data model document, Systems and Components."
+			} else if document.OverviewPart(applayout.OverviewDataModel) != nil {
 				part.Gap, part.Note = false, "Shared data-model overview, ERD documents, Systems and Components."
 			}
 			data.OverviewParts = append(data.OverviewParts, part)

@@ -102,8 +102,8 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await board.getByRole("button", { name: "Fit board" }).click();
   await connection.focus(); await page.keyboard.press("Enter");
   await expect(board.locator("[data-whiteboard-inspection]")).toContainText("local/local-edit → cloud/postgres/cloud-record");
-  await board.getByLabel("Focus diagram").focus();
-  await board.getByLabel("Focus diagram").selectOption("local");
+  await board.getByLabel("Focus section").focus();
+  await board.getByLabel("Focus section").selectOption("local");
   await expect(local).toHaveAttribute("data-whiteboard-detail", "true");
   await expect(board.locator('[data-frame-detail="local"]')).toBeVisible();
   await expect(board.locator('[data-instance-path="local/local-note"]')).toBeVisible();
@@ -125,7 +125,7 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await viewport.focus(); await page.keyboard.press("0");
   await expect(svg).toHaveAttribute("viewBox", fittedBox!);
   await expect(local).toHaveAttribute("data-whiteboard-detail", "false");
-  await board.getByLabel("Focus diagram").selectOption("legacy");
+  await board.getByLabel("Focus section").selectOption("legacy");
   await expect(board.locator('[data-frame-detail="legacy"]')).toBeVisible();
   const opaqueBinding = board.locator('[data-instance-path="legacy/legacy-record"]');
   await expect(opaqueBinding).toHaveAttribute("data-documentation-target", /data-entity:local-edit$/);
@@ -141,13 +141,13 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await lineBinding.focus(); await page.keyboard.press("Enter");
   await expect(page.locator(".diff-drawer")).toContainText("The saved content.");
   await page.keyboard.press("Escape");
-  await board.getByText("Diagrams on this board", { exact: true }).click();
+  await board.getByText("Source provenance", { exact: true }).click();
   await expect(board.locator('[data-whiteboard-frame="legacy"]')).toContainText("bound entities");
   await board.locator('[data-whiteboard-focus-frame="local"]').click();
   await expect(local).toHaveAttribute("data-whiteboard-detail", "true");
   await expect(board).toBeVisible();
   await expect(page.locator(".topbar")).toBeHidden();
-  await board.getByText("Diagrams on this board", { exact: true }).click();
+  await board.getByText("Source provenance", { exact: true }).click();
   await board.getByRole("button", { name: "Fit board" }).click();
   for (let i = 0; i < 5; i++) await board.getByRole("button", { name: "Zoom in whiteboard" }).click();
   const entityControl = board.locator('[data-instance-path="local/local-edit"]');
@@ -166,7 +166,7 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   expect(narrowCanvas!.x + narrowCanvas!.width).toBe(600);
   expect(narrowCanvas!.y).toBe(0);
   await expect(board.getByRole("button", { name: "Fit board" })).toBeInViewport();
-  await expect(board.getByLabel("Focus diagram")).toBeInViewport();
+  await expect(board.getByLabel("Focus section")).toBeInViewport();
   await board.locator(".whiteboard-description > summary").click();
   await page.screenshot({ path: testInfo.outputPath("whiteboard-narrow.png") });
   await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
@@ -190,7 +190,7 @@ test("mixed nested detail keeps each connection on its visible semantic endpoint
   await expect(board.locator('[data-frame-path="cloud/postgres/records"]')).toHaveAttribute("data-whiteboard-detail", "false");
   await expect(board.locator('[data-instance-path="local/local-note"]')).toBeVisible();
   await expect(board.locator('[data-instance-path="flow-note"]')).toBeVisible();
-  await board.getByLabel("Focus diagram").selectOption("local");
+  await board.getByLabel("Focus section").selectOption("local");
   await expect(edge).toHaveAttribute("data-whiteboard-from", "local/local-edit");
   await expect(edge).toHaveAttribute("data-whiteboard-to", "cloud/postgres/records");
   await expect(line).not.toHaveAttribute("d", overview!);
@@ -198,13 +198,13 @@ test("mixed nested detail keeps each connection on its visible semantic endpoint
   await expect(line).toHaveAttribute("d", / L900 420 L/);
   await expect(line).toHaveAttribute("marker-end", /url\(#whiteboard-/);
   await expect(edge).toHaveAttribute("data-to", "cloud/postgres/records/cloud-record");
-  await board.getByLabel("Focus diagram").selectOption("cloud/postgres");
+  await board.getByLabel("Focus section").selectOption("cloud/postgres");
   await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
   // A child at source y=0 has its caption above that source SVG viewport.
   // It must stay visible and clickable, rather than being clipped away.
   const nestedCaption = board.locator('[data-frame-overview="cloud/postgres/records"] text').first();
   await nestedCaption.click();
-  await expect(board.getByLabel("Focus diagram")).toHaveValue("cloud/postgres/records");
+  await expect(board.getByLabel("Focus section")).toHaveValue("cloud/postgres/records");
   await expect(edge).toHaveAttribute("data-whiteboard-to", "cloud/postgres/records/cloud-record");
   await expect(board.locator('[data-instance-path="cloud/postgres/records/cloud-record"]')).toBeVisible();
   await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
@@ -234,7 +234,7 @@ test("authored opening camera, fields and renderer reveal stay separate from ful
   await expect(svg).toHaveAttribute("viewBox", initial!);
   await page.goBack();
   await expect(svg).toHaveAttribute("viewBox", whole!);
-  await board.getByLabel("Focus diagram").selectOption("local");
+  await board.getByLabel("Focus section").selectOption("local");
   await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
   await expect(fields.first()).toBeHidden();
   await board.locator('[data-whiteboard-toolbar] [data-whiteboard-evidence]').click();
@@ -267,7 +267,7 @@ test("offscreen diagrams restore on focus while camera updates batch without scr
   await expect(far).toHaveAttribute('data-whiteboard-culled','true');
   await expect(far).toBeHidden();
   await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(0);
-  await board.getByLabel('Focus diagram').selectOption('local');
+  await board.getByLabel('Focus section').selectOption('local');
   await expect(board).toHaveAttribute('data-whiteboard-moving','false');
   const entity = board.locator('[data-instance-path="local/local-edit"]');
   await expect(entity.locator(':scope > svg')).toHaveCount(1); // shared Lucide icon
@@ -300,7 +300,7 @@ test("offscreen diagrams restore on focus while camera updates batch without scr
   await page.keyboard.press('Enter');
   await expect(page.locator('.diff-drawer')).toContainText('The saved content.');
   await page.keyboard.press('Escape');
-  await board.getByLabel('Focus diagram').selectOption('legacy');
+  await board.getByLabel('Focus section').selectOption('legacy');
   await expect(board).toHaveAttribute('data-whiteboard-moving','false');
   await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
   await expect(legacy.locator('[data-diagram-summary]')).toBeVisible();
@@ -330,7 +330,7 @@ test("offscreen diagrams restore on focus while camera updates batch without scr
   await board.locator('[data-whiteboard-home]').click();
   await expect(legacy).toBeHidden();
   await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
-  await board.getByLabel('Focus diagram').selectOption('legacy');
+  await board.getByLabel('Focus section').selectOption('legacy');
   await expect(board).toHaveAttribute('data-whiteboard-moving','false');
   await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
   await expect(legacy.locator('[data-diagram-summary]')).toBeVisible();

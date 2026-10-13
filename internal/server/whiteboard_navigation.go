@@ -58,7 +58,7 @@ const whiteboardNavigationJavaScript = `
       const source = new URL(href, location.href);
       return {path:row.dataset.whiteboardFrame, source, row};
     }).filter(Boolean).sort((a,b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
-    const paths = new Set(entries.map(entry => entry.path));
+    const paths = new Set([...entries.map(entry => entry.path), ...qa('[data-whiteboard-section]', board).map(row => row.dataset.whiteboardSection)]);
     let restoring = false;
     const destination = (path, fitAll = false) => {
       const url = new URL(location.href);
@@ -114,8 +114,8 @@ const whiteboardNavigationJavaScript = `
         if (!link) continue;
         const entry = entryFor(link);
         const url = new URL(link.getAttribute('href'), location.href);
-        if (!entry && (url.pathname !== '/technical/erd' || url.searchParams.has('focus'))) continue;
-        const active = entry ? selected?.source.pathname === entry.source.pathname : !path;
+        if (!entry && url.pathname !== '/technical/erd') continue;
+        const active = entry ? selected?.source.pathname === entry.source.pathname : (url.searchParams.get('focus') || '') === path;
         row.classList.toggle('current', Boolean(active));
         if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
       }

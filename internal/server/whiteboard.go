@@ -24,6 +24,12 @@ type whiteboardView struct {
 	Name, Revision string
 	Note           string
 	Frames         []whiteboardFrameView
+	Sections       []whiteboardSectionView
+}
+
+// Sections are authored regions of this document, not inventory definitions.
+type whiteboardSectionView struct {
+	Path, Title string
 }
 
 type whiteboardFrameView struct {
@@ -73,6 +79,13 @@ func (a *app) makeWhiteboardView(inventory requirements.Inventory) *whiteboardVi
 	metadata, _ := json.Marshal(geometry)
 	view.Metadata = string(metadata)
 	for _, item := range description.Elements {
+		if item.Element.Kind == "group" && item.Element.Shape == "section" && item.Bounds != nil {
+			title := item.Element.Label
+			if title == "" {
+				title = item.Element.ID
+			}
+			view.Sections = append(view.Sections, whiteboardSectionView{Path: item.Path, Title: title})
+		}
 		if item.Element.Kind != "frame" || item.Bounds == nil || item.Source == nil {
 			continue
 		}
@@ -234,12 +247,12 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 const whiteboardTemplates = `
 {{define "erd-whiteboard"}}{{$model := .}}{{with .Whiteboard}}
 <section class="whiteboard whiteboard-canvas" data-whiteboard-view data-technical-page="erd" data-technical-data-model aria-label="Data model whiteboard">
-<div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}"></div>
+<div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}">{{range .Sections}}<span data-whiteboard-section="{{.Path}}"></span>{{end}}</div>
 <div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Data model whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
 <header class="whiteboard-heading whiteboard-overlay">
 <h1>{{if .Name}}{{.Name}}{{else}}Data model{{end}}</h1>
 <details class="whiteboard-description"><summary>Description</summary><div class="whiteboard-description-body">
-{{with $model.Overview}}{{template "fragment" .}}{{else}}<p>Explore the data model. Focus a diagram to see its detail, or select an entity to inspect its saved definition.</p>{{end}}
+{{with $model.Overview}}{{template "fragment" .}}{{else}}<p>Focus a section to explore the data model, or select an entity to inspect its saved definition.</p>{{end}}
 <p class="whiteboard-help">Scroll or drag to pan · Shift + scroll pans sideways · Ctrl/Cmd + scroll or + / − to zoom · 0 to fit</p>
 <p class="whiteboard-help">Whiteboard · saved revision <code>{{.Revision}}</code></p>
 </div></details></header>
@@ -251,11 +264,11 @@ const whiteboardTemplates = `
 <button type="button" data-whiteboard-replay hidden>Replay</button>
 <button type="button" data-whiteboard-fields aria-pressed="false" title="Show fields and original authored detail">Details</button>
 <button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button>
-<label>Focus diagram <select data-whiteboard-focus><option value="">{{if .Viewport}}Start here{{else}}Whole board{{end}}</option>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</select></label>
+<label>Focus section <select data-whiteboard-focus><option value="">{{if .Viewport}}Start here{{else}}Whole model{{end}}</option>{{range .Sections}}<option value="{{.Path}}">{{.Title}}</option>{{end}}{{if .Frames}}<optgroup label="Imported sources"{{if .Sections}} hidden{{end}}>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</optgroup>{{end}}</select></label>
 <button type="button" data-whiteboard-evidence hidden>Evidence</button>
 <span data-whiteboard-mode aria-live="polite">Overview</span>
 </div>
-<details class="whiteboard-sources whiteboard-overlay"><summary>Diagrams on this board</summary><div class="whiteboard-sources-body"><ul>
+{{if .Frames}}<details class="whiteboard-sources whiteboard-overlay"><summary>Source provenance</summary><div class="whiteboard-sources-body"><ul>
 {{range .Frames}}<li data-whiteboard-frame="{{.Path}}" data-whiteboard-source-href="{{.Href}}" data-source-target="{{.Target}}" data-source-revision="{{.Revision}}" data-x="{{.X}}" data-y="{{.Y}}" data-width="{{.Width}}" data-height="{{.Height}}">
 <button type="button" data-whiteboard-focus-frame="{{.Path}}">Focus {{.Title}}</button>
 <button type="button" data-whiteboard-evidence data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}" aria-label="Evidence for {{.Title}}">Evidence</button>
@@ -263,7 +276,7 @@ const whiteboardTemplates = `
 <p>{{.Summary}}{{with .SourceNote}} <span class="term-empty">{{.}}</span>{{end}}</p>
 </li>{{end}}</ul>
 
-</div></details>
+</div></details>{{end}}
 <p class="whiteboard-inspection whiteboard-overlay" data-whiteboard-inspection role="status" hidden></p>
 </section>{{end}}{{end}}
 `

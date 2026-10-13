@@ -19,6 +19,11 @@ const whiteboardJavaScript = `
       const frameRows = qa('[data-whiteboard-frame]', board);
       const geometry = new Map(JSON.parse(q('[data-whiteboard-metadata]', board).dataset.whiteboardMetadata).map(item => [item.path,item]));
       const frames = qa('[data-frame-path]', svg);
+      const sections = new Set(qa('[data-whiteboard-section]', board).map(row => row.dataset.whiteboardSection));
+      // Fields on root-authored entities share the same on-demand control.
+      for (const field of qa('[data-field]', svg)) {
+        field.style.display = 'none'; field.setAttribute('aria-hidden','true');
+      }
       const select = q('[data-whiteboard-focus]', board);
       const level = q('[data-whiteboard-level]', board);
       const inspection = q('[data-whiteboard-inspection]', board);
@@ -95,12 +100,17 @@ const whiteboardJavaScript = `
         return {frame,path,detail,summary,extent,contentBox,scale:Math.abs((meta?.transform.scale_x || 1)*(matrix?.a || 1)),threshold:Number(frame.dataset.detailScale || .6)};
       });
       const byFrame = new Map(frameStates.map(state => [state.path,state]));
-      const decorations = qa('[data-visibility], [data-diagram-kind="annotation"], [data-diagram-kind="sticky"], [data-diagram-kind="text"], [data-diagram-kind="code"], [data-diagram-kind="graphic"]',svg).map(node => {
+      // Cache native entity/section extents with the existing decoration visibility
+      // states. Camera updates only compare boxes and update changed visibility.
+      const decorations = qa('[data-diagram-kind="node"], [data-diagram-kind="group"], [data-visibility], [data-diagram-kind="annotation"], [data-diagram-kind="sticky"], [data-diagram-kind="text"], [data-diagram-kind="code"], [data-diagram-kind="graphic"]',svg).map(node => {
         const meta = geometry.get(node.dataset.instancePath);
-        return {node,owner:byFrame.get(node.parentElement?.closest('[data-frame-path]')?.dataset.framePath),visibility:node.dataset.visibility,bounds:union(meta?.bounds,worldBox(node.getBBox(),meta?.transform))};
+        let extent = union(meta?.bounds,worldBox(node.getBBox(),meta?.transform));
+        if (node.dataset.diagramKind === 'group') for (const [path,item] of geometry) if (path.startsWith(node.dataset.instancePath+'/')) extent = union(extent,item.bounds);
+        return {node,owner:byFrame.get(node.parentElement?.closest('[data-frame-path]')?.dataset.framePath),visibility:node.dataset.visibility,bounds:extent};
       });
       const connections = qa('[data-instance-path][data-from][data-to]', svg).map(node => ({node,detail:q('[data-connection-detail]',node),overview:q('[data-connection-overview]',node),meta:geometry.get(node.dataset.instancePath),line:q('[data-connection-detail] > path',node)}));
       const revealNodes = qa('[data-reveal-step]',svg);
+      const revealPaths = revealNodes.map(node => node.closest('[data-instance-path]')?.dataset.instancePath);
       const mode = q('[data-whiteboard-mode]',board), replay = q('[data-whiteboard-replay]',board), fitButton = q('[data-whiteboard-fit]',board);
       let controls = [], controlsDirty = true;
       const attribute = (node,name,value) => { if (node && node.getAttribute(name) !== String(value)) node.setAttribute(name,String(value)); };
@@ -194,7 +204,7 @@ const whiteboardJavaScript = `
           connection.dataset.whiteboardFrom = from; connection.dataset.whiteboardTo = to;
           connection.dataset.whiteboardConnectionMode = from === connection.dataset.from && to === connection.dataset.to ? 'detail' : 'overview';
         }
-        const overview = !focused && collapsed.length > 0;
+        const overview = !focused && (collapsed.length > 0 || (!frames.length && scale < .6));
         for (const state of decorations) {
           const localOverview = state.owner ? !state.owner.detailed : overview;
           const culled = Boolean(state.owner?.culled) || !intersects(state.bounds);
@@ -214,9 +224,12 @@ const whiteboardJavaScript = `
         if (sourceRow) {
           attribute(evidence,'data-documentation-target',sourceRow.dataset.sourceTarget);
           attribute(evidence,'data-documentation-revision',sourceRow.dataset.sourceRevision);
+        } else if (evidence.hasAttribute('data-documentation-target')) {
+          evidence.removeAttribute('data-documentation-target');
+          evidence.removeAttribute('data-documentation-revision');
         }
-        text(mode,focused ? 'Focus: '+(select.selectedOptions[0]?.textContent || focused) : collapsed.length ? 'Overview · focus a diagram for detail' : 'Detail');
-        const hasReveal = revealNodes.some(node => !focused || node.closest('[data-frame-detail]')?.dataset.frameDetail === focused);
+        text(mode,focused ? 'Focus: '+(select.selectedOptions[0]?.textContent || focused) : overview ? 'Overview · focus a section for detail' : 'Detail');
+        const hasReveal = revealPaths.some(path => !focused || path === focused || path?.startsWith(focused+'/'));
         if (replay.hidden === hasReveal) replay.hidden = !hasReveal;
         attribute(fitButton,'aria-pressed',fitted);
       }
@@ -263,9 +276,9 @@ const whiteboardJavaScript = `
       }
       function focus(path, fitAll = false) {
         if (!path && fitAll) return fit();
-        const row = rowFor(path);
-        if (!row) return home();
-        const {x,y,width,height} = byFrame.get(path).contentBox;
+        const box = sections.has(path) ? geometry.get(path)?.bounds : byFrame.get(path)?.contentBox;
+        if (!box) return home();
+        const {x,y,width,height} = box;
         if (!(width > 0 && height > 0)) return;
         atStart = false; focused = path; fitted = false; select.value = path;
         travel(fitBox({x: x - 24, y: y - 24, width: width + 48, height: height + 48}));
@@ -356,15 +369,15 @@ const whiteboardJavaScript = `
         if (suppressClick) { event.preventDefault(); event.stopPropagation(); return; }
         const node = event.target.closest('[data-instance-path]');
         if (!node) return;
-        if (node.hasAttribute('data-frame-path')) {
-          event.preventDefault(); event.stopPropagation(); focus(node.dataset.framePath); return;
+        if (node.hasAttribute('data-frame-path') || sections.has(node.dataset.instancePath)) {
+          event.preventDefault(); event.stopPropagation(); focus(node.dataset.instancePath); return;
         }
         const note = q(':scope > desc', node)?.textContent;
         if (note) { inspection.textContent = (node.getAttribute('aria-label') || '') + ' · ' + note; inspection.hidden = false; }
         const connection = node.closest('[data-from][data-to]');
         if (connection) {
           const title = q('title', connection)?.textContent || connection.getAttribute('aria-label') || 'Connection';
-          inspection.textContent = title + ' · ' + connection.dataset.from + ' → ' + connection.dataset.to + '. This explanatory connection does not create a recorded relationship.' + (note ? ' · ' + note : '');
+          inspection.textContent = title + ' · ' + connection.dataset.from + ' → ' + connection.dataset.to + (connection.dataset.sourceRelationship ? '. Inspect the pinned relationship evidence.' : '. This explanatory connection does not create a recorded relationship.') + (note ? ' · ' + note : '');
           inspection.hidden = false;
         }
         if (!connection && node.hasAttribute('data-about')) {
@@ -381,14 +394,14 @@ const whiteboardJavaScript = `
           const bounds = measured.get(node);
           if (!bounds || !(bounds.width > 0 || bounds.height > 0)) continue;
         }
-        if (!node.hasAttribute('data-frame-path') && !node.hasAttribute('data-documentation-target') && !node.hasAttribute('data-from') && !node.hasAttribute('data-about') && !q(':scope > desc', node)) continue;
+        if (!sections.has(node.dataset.instancePath) && !node.hasAttribute('data-frame-path') && !node.hasAttribute('data-documentation-target') && !node.hasAttribute('data-from') && !node.hasAttribute('data-about') && !q(':scope > desc', node)) continue;
         node.dataset.whiteboardSelectable = 'true';
-        const control = node.hasAttribute('data-frame-path') ? qa('[data-frame-overview]', node).find(child => child.dataset.frameOverview === node.dataset.framePath) : node;
+        const control = node.hasAttribute('data-frame-path') ? qa('[data-frame-overview]', node).find(child => child.dataset.frameOverview === node.dataset.framePath) : sections.has(node.dataset.instancePath) ? q(':scope > path', node) : node;
         if (!control) continue;
         if (control !== node) node.setAttribute('role','group');
         control.setAttribute('tabindex','0'); control.setAttribute('role','button');
-        const title = q('title', node)?.textContent || node.getAttribute('aria-label') || node.dataset.instancePath;
-        control.setAttribute('aria-label', (node.hasAttribute('data-frame-path') ? 'Focus ' : node.hasAttribute('data-documentation-target') ? 'Inspect ' : 'Inspect ') + title);
+        const title = q(':scope > title', node)?.textContent || node.getAttribute('aria-label') || node.dataset.instancePath;
+        control.setAttribute('aria-label', (node.hasAttribute('data-frame-path') || sections.has(node.dataset.instancePath) ? 'Focus ' : node.hasAttribute('data-documentation-target') ? 'Inspect ' : 'Inspect ') + title);
         control.addEventListener('keydown', event => {
           if (event.target !== control || control.closest('[aria-hidden="true"]') || (event.key !== 'Enter' && event.key !== ' ')) return;
           event.preventDefault(); event.stopPropagation(); node.dispatchEvent(new MouseEvent('click', {bubbles:true,cancelable:true}));

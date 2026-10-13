@@ -26,7 +26,7 @@ func TestWhiteboardDataModelSourcesAndExistingERDs(t *testing.T) {
 	if i := strings.Index(body, `data-whiteboard-note`); i >= 0 {
 		t.Fatalf("board unavailable: %s", body[i:i+min(350, len(body)-i)])
 	}
-	for _, want := range []string{`data-whiteboard`, `data-frame-path="local"`, `data-whiteboard-frame="cloud/postgres"`, `data-from="local/local-edit"`, `data-to="cloud/postgres/cloud-record"`, `data-documentation-target="urn:change-saga:test:data-entity:local-edit"`, `href="/technical/erd/sqlite?revision=r2"`, `Select bound entities`, `Diagrams on this board`} {
+	for _, want := range []string{`data-whiteboard`, `data-frame-path="local"`, `data-whiteboard-frame="cloud/postgres"`, `data-from="local/local-edit"`, `data-to="cloud/postgres/cloud-record"`, `data-documentation-target="urn:change-saga:test:data-entity:local-edit"`, `href="/technical/erd/sqlite?revision=r2"`, `Select bound entities`, `Source provenance`} {
 		if !strings.Contains(body, want) {
 			t.Errorf("missing %s", want)
 		}
