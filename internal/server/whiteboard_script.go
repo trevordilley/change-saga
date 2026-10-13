@@ -259,6 +259,7 @@ const whiteboardJavaScript = `
       pageScope.signal.addEventListener('abort', () => { resize.disconnect(); stopMotion(); }, {once:true});
       q('[data-whiteboard-toolbar]', board).hidden = false;
       fit();
+      prepareWhiteboardNavigation(board, focus);
     }
   }
 `

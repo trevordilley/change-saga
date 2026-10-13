@@ -85,7 +85,9 @@ const whiteboardNavigationJavaScript = `
       const matches = entries.filter(entry => entry.source.pathname === url.pathname &&
         (!url.searchParams.get('revision') || entry.source.searchParams.get('revision') === url.searchParams.get('revision')));
       const owner = link.closest('[data-whiteboard-frame]')?.dataset.whiteboardFrame;
-      return matches.find(entry => entry.path === owner) || matches[0];
+      const instance = link.dataset.instancePath;
+      const enclosing = instance && matches.filter(entry => instance.startsWith(entry.path + '/')).sort((a,b) => b.path.length - a.path.length)[0];
+      return matches.find(entry => entry.path === owner) || enclosing || matches[0];
     }
     // Keep source provenance on each rewritten link, including its exact pin.
     // Restoring retained sidebar links prevents stale mappings after a page swap.
@@ -156,6 +158,18 @@ const whiteboardNavigationJavaScript = `
       navigate(path);
       q('[data-whiteboard-viewport]', board)?.focus({preventScroll:true});
     }, {capture:true, signal});
+    // Run after the viewer's capture handler so a drag cannot activate a
+    // source link, and a frame keeps its own repeated-instance identity.
+    board.addEventListener('click', event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const node = event.target.closest('[data-instance-path]');
+      if (!node?.closest('[data-whiteboard-viewport]') || node.hasAttribute('data-frame-path') ||
+          !node.hasAttribute('data-documentation-target') || node.dataset.documentationTarget.split(':')[3] !== 'erd') return;
+      const entry = entryFor(node);
+      if (!entry) return;
+      event.preventDefault(); event.stopImmediatePropagation();
+      navigate(entry.path);
+    }, {signal});
     addEventListener('popstate', restore, {signal});
     restore();
   }

@@ -24,8 +24,10 @@ function navigationBoard(saga: SagaFixture) {
   run("diagram", "publish", "--whiteboard", "erd", "--name", "Navigation board", "--revision", "r1", "--from", file("board", { version: 1, width: 2000, height: 1200, elements: [
     { id: "z-copy", kind: "frame", label: "Second local", x: 1100, y: 50, width: 600, height: 300, style: "normal", source: pin("erd", "local") },
     { id: "a-first", kind: "frame", label: "First local", x: 50, y: 50, width: 600, height: 300, style: "normal", source: pin("erd", "local") },
+    { id: "source-note", kind: "text", label: "Read local diagram", x: 50, y: 450, width: 700, height: 80, style: "normal", source: pin("erd", "local") },
     { id: "remote", kind: "frame", label: "Remote", x: 50, y: 700, width: 600, height: 300, style: "normal", source: pin("erd", "remote") }
   ] }), saga.sagaRoot);
+  run("erd", "revise", "--id", "local", "--from", join(saga.root, "local.json"), "--revision", "r2", "--parent", pin("erd", "local").revision, "--repo", saga.sourceRepo, saga.sagaRoot);
 }
 
 test("ERD links focus exact instances without replacing the whiteboard and restore history", async ({ page, saga }) => {
@@ -41,6 +43,7 @@ test("ERD links focus exact instances without replacing the whiteboard and resto
   await sidebarLink.evaluate((node: HTMLAnchorElement) => node.click());
   await expect(page).toHaveURL(/focus=a-first$/);
   await expect(board.locator("[data-whiteboard-focus]")).toHaveValue("a-first");
+  await expect(sidebarLink).toHaveAttribute("aria-current", "page");
   await board.locator("[data-whiteboard-focus]").selectOption("z-copy");
   await expect(page).toHaveURL(/focus=z-copy$/);
   await expect(board).toHaveAttribute("data-navigation-sentinel", "kept");
@@ -80,4 +83,35 @@ test("latest ERD routes enter the board; exact historical routes and entity insp
   await page.locator('.sidebar a[href="/technical/erd/remote"]').evaluate((node: HTMLAnchorElement) => node.click());
   await expect(page).toHaveURL(/\/technical\/erd\?focus=remote$/);
   await expect(page.locator("[data-whiteboard-focus]")).toHaveValue("remote");
+});
+
+
+test("saved ERD links match exact pins and prefer their enclosing repeated instance", async ({ page, saga }) => {
+  navigationBoard(saga);
+  await page.goto(saga.baseURL + "/technical/erd");
+  await waitForSettledSaga(page);
+  const board = page.locator("[data-whiteboard-view]");
+  await board.locator('[data-instance-path="source-note"]').click();
+  await expect(page).toHaveURL(/focus=a-first$/);
+  await expect(page.locator(".diff-drawer.open")).toHaveCount(0);
+  await board.locator('[data-whiteboard-frame="z-copy"]').evaluate(row => {
+    for (const revision of ["r1", "r2"]) {
+      const link = document.createElement("a");
+      link.id = "saved-" + revision;
+      link.href = "/technical/erd/local?revision=" + revision;
+      link.textContent = "Read saved " + revision;
+      row.append(link);
+    }
+  });
+  await page.locator("#saved-r1").evaluate((link: HTMLAnchorElement) => link.click());
+  await expect(page).toHaveURL(/focus=z-copy$/);
+  await expect(board.locator("[data-whiteboard-focus]")).toHaveValue("z-copy");
+  await expect(board.locator('[data-whiteboard-frame="z-copy"]')).toHaveAttribute("data-whiteboard-source-href", "/technical/erd/local?revision=r1");
+  // r2 exists but is absent from this board: never silently focus its r1 copy.
+  await page.locator("#saved-r2").evaluate((link: HTMLAnchorElement) => link.click());
+  await expect(page).toHaveURL(/\/technical\/erd\/local\?revision=r2$/);
+  await expect(page.locator('[data-erd-revision="r2"]')).toBeVisible();
+  await page.goBack();
+  await expect(page).toHaveURL(/focus=z-copy$/);
+  await expect(board.locator("[data-whiteboard-focus]")).toHaveValue("z-copy");
 });
