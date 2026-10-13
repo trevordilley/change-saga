@@ -335,3 +335,51 @@ test("offscreen diagrams restore on focus while camera updates batch without scr
   await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
   await expect(legacy.locator('[data-diagram-summary]')).toBeVisible();
 });
+
+test("wheel and trackpad scroll pan the board while modified scroll zooms", async ({ page, saga }) => {
+  authorWhiteboard(saga, false, true);
+  await page.goto(saga.baseURL + '/technical/erd');
+  await waitForSettledSaga(page);
+  const board = page.locator('[data-whiteboard-view]');
+  const viewport = board.locator('[data-whiteboard-viewport]');
+  const svg = viewport.locator(':scope > svg');
+  const camera = () => svg.evaluate((node: SVGSVGElement) => {
+    const {x,y,width,height} = node.viewBox.baseVal;
+    return {x,y,width,height};
+  });
+  const start = await camera(), box = (await viewport.boundingBox())!;
+  const scale = Math.min(box.width/start.width,box.height/start.height);
+  await page.mouse.move(box.x+box.width/2,box.y+box.height/2);
+  await page.mouse.wheel(120,90);
+  await expect.poll(async () => (await camera()).y).not.toBe(start.y);
+  const scrolled = await camera();
+  expect(scrolled.x).toBeCloseTo(start.x+120/scale,3);
+  expect(scrolled.y).toBeCloseTo(start.y+90/scale,3);
+  expect(scrolled.width).toBe(start.width);
+  expect(scrolled.height).toBe(start.height);
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+
+  // Hardware may emit line/page deltas rather than pixels. Shift provides
+  // horizontal movement for a mouse with only a vertical wheel.
+  for (const [deltaMode,shiftKey,expectedX,expectedY] of [[1,true,32,0],[2,false,0,box.height]] as const) {
+    const before = await camera();
+    const canceled = await viewport.evaluate((node,args) => {
+      const event = new WheelEvent('wheel',{bubbles:true,cancelable:true,deltaY:args.deltaMode === 1 ? 2 : 1,...args});
+      return !node.dispatchEvent(event);
+    },{deltaMode,shiftKey});
+    expect(canceled).toBe(true);
+    await expect.poll(async () => (await camera())[shiftKey ? 'x' : 'y']).not.toBe(before[shiftKey ? 'x' : 'y']);
+    const after = await camera();
+    expect(after.x).toBeCloseTo(before.x+expectedX/scale,3);
+    expect(after.y).toBeCloseTo(before.y+expectedY/scale,3);
+    expect(after.width).toBe(before.width);
+  }
+  await page.keyboard.down('Control');
+  const beforeZoom = await camera();
+  await page.mouse.wheel(0,-100);
+  await page.keyboard.up('Control');
+  await expect.poll(async () => (await camera()).width).toBeLessThan(beforeZoom.width);
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  await board.locator('[data-whiteboard-home]').click();
+  await expect.poll(camera).toEqual(start);
+});

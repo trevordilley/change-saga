@@ -235,12 +235,12 @@ const whiteboardTemplates = `
 {{define "erd-whiteboard"}}{{$model := .}}{{with .Whiteboard}}
 <section class="whiteboard whiteboard-canvas" data-whiteboard-view data-technical-page="erd" data-technical-data-model aria-label="Data model whiteboard">
 <div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}"></div>
-<div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Data model whiteboard. Drag to pan, plus and minus to zoom, zero to fit the board. Arrow keys pan.">{{.Visual}}</div>
+<div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Data model whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
 <header class="whiteboard-heading whiteboard-overlay">
 <h1>{{if .Name}}{{.Name}}{{else}}Data model{{end}}</h1>
 <details class="whiteboard-description"><summary>Description</summary><div class="whiteboard-description-body">
 {{with $model.Overview}}{{template "fragment" .}}{{else}}<p>Explore the data model. Focus a diagram to see its detail, or select an entity to inspect its saved definition.</p>{{end}}
-<p class="whiteboard-help">Drag to pan · + / − to zoom · 0 to fit</p>
+<p class="whiteboard-help">Scroll or drag to pan · Shift + scroll pans sideways · Ctrl/Cmd + scroll or + / − to zoom · 0 to fit</p>
 <p class="whiteboard-help">Whiteboard · saved revision <code>{{.Revision}}</code></p>
 </div></details></header>
 <div class="whiteboard-toolbar whiteboard-overlay" role="toolbar" aria-label="Whiteboard navigation" hidden data-whiteboard-toolbar>

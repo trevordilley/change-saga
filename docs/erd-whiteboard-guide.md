@@ -12,6 +12,10 @@ independently revisioned internally, and explicit historical routes remain
 compatible. Groups are ordinary drawing groups; this feature does not change
 entity holders or add inventory kinds.
 
+Scroll with a mouse wheel or trackpad, or drag, to pan. Shift + scroll pans
+sideways on a vertical mouse wheel. Ctrl/Cmd + scroll (including trackpad pinch)
+zooms around the pointer; the toolbar and keyboard controls remain available.
+
 ## Revision policy
 
 Every frame names an exact source `target` and `revision`. Publishing a board

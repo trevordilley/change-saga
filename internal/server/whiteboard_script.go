@@ -314,8 +314,19 @@ const whiteboardJavaScript = `
         event.preventDefault();
       });
       viewport.addEventListener('wheel', event => {
-        if (!event.ctrlKey && !event.metaKey) return;
-        event.preventDefault(); zoom(Math.exp(event.deltaY * .002), event.clientX, event.clientY);
+        event.preventDefault();
+        // Trackpads report pixels, while some mouse wheels report lines/pages.
+        const unitX = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? viewportRect.width : 1;
+        const unitY = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? viewportRect.height : 1;
+        let dx = event.deltaX * unitX, dy = event.deltaY * unitY;
+        if (event.ctrlKey || event.metaKey) zoom(Math.exp(dy * .002), event.clientX, event.clientY);
+        else {
+          stopMotion(); fitted = false; atStart = false;
+          if (event.shiftKey && !dx) { dx = dy; dy = 0; }
+          const scale = Math.min(viewportRect.width/view.width,viewportRect.height/view.height);
+          if (!(scale > 0)) return;
+          view.x += dx/scale; view.y += dy/scale; paint();
+        }
         clearTimeout(interactionTimer); interact(true);
         interactionTimer = setTimeout(() => { interactionTimer = 0; if (!motion && !drag?.moved) interact(false); },160);
       }, {passive:false});
