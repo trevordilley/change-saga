@@ -135,3 +135,25 @@ func TestRunInitExitsZeroBesideAnExistingSaga(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestRunWhiteboardHelpUsesPublicDispatcher(t *testing.T) {
+	for _, op := range []string{"", "publish", "get", "describe", "check"} {
+		t.Run(op, func(t *testing.T) {
+			args := []string{"whiteboard"}
+			if op != "" {
+				args = append(args, op)
+			}
+			args = append(args, "--help")
+			var stdout, stderr bytes.Buffer
+			if got := run(args, &stdout, &stderr); got != 0 || stderr.Len() != 0 {
+				t.Fatalf("exit=%d stdout=%s stderr=%s", got, stdout.String(), stderr.String())
+			}
+			if !strings.Contains(stdout.String(), "change-saga whiteboard "+op) {
+				t.Fatalf("missing primary usage: %s", stdout.String())
+			}
+			if op != "" && !strings.Contains(stdout.String(), "--kind erd") {
+				t.Fatalf("missing kind selector: %s", stdout.String())
+			}
+		})
+	}
+}

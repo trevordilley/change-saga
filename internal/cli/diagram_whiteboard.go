@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/diagram"
+	"github.com/twentyideas/changesaga/internal/gitexec"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -20,10 +21,33 @@ func whiteboardRequested(args []string) bool {
 	return false
 }
 
+// Whiteboard manages complete technical-design documents using the shared
+// diagram grammar, source resolver and immutable revision store.
+func Whiteboard(ctx context.Context, args []string, out io.Writer) error {
+	ctx, endGit := gitexec.Begin(ctx)
+	defer endGit()
+	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
+		return livingFamilyHelp("whiteboard", []string{"publish", "get", "describe", "check"}, out)
+	}
+	return whiteboardCommand(ctx, "whiteboard", args[0], args[1:], out)
+}
+
+// diagramWhiteboard retains the original diagram ... --whiteboard spelling.
 func diagramWhiteboard(ctx context.Context, op string, args []string, out io.Writer) error {
-	name := "diagram " + op
+	return whiteboardCommand(ctx, "diagram", op, args, out)
+}
+
+func whiteboardCommand(ctx context.Context, family, op string, args []string, out io.Writer) error {
+	if op != "publish" && op != "get" && op != "describe" && op != "check" {
+		return fmt.Errorf("whiteboards support publish, get, describe and check; usage: %s", commandUsage["whiteboard"])
+	}
+	name := family + " " + op
+	kindFlag := "kind"
+	if family == "diagram" {
+		kindFlag = "whiteboard"
+	}
 	flags := commandFlags(name, commandUsage[name], out)
-	kind := flags.String("whiteboard", "", "whiteboard kind (erd)")
+	kind := flags.String(kindFlag, "", "whiteboard kind (erd)")
 	revision := flags.String("revision", "", "exact board revision; reads default to the unique current head")
 	focus := flags.String("focus", "", "frame or element instance path")
 	id := flags.String("id", "", "element instance path (alias for --focus on get)")
@@ -36,7 +60,7 @@ func diagramWhiteboard(ctx context.Context, op string, args []string, out io.Wri
 		return err
 	}
 	if flags.NArg() != 1 || *kind != "erd" {
-		return fmt.Errorf("requires --whiteboard erd and one Saga path")
+		return fmt.Errorf("requires --%s erd and one Saga path", kindFlag)
 	}
 	if *format != "text" && *format != "json" {
 		return fmt.Errorf("--format must be text or json")
@@ -79,11 +103,8 @@ func diagramWhiteboard(ctx context.Context, op string, args []string, out io.Wri
 		}
 		return writeJSON(out, value)
 	}
-	if op != "get" && op != "describe" && op != "check" {
-		return fmt.Errorf("whiteboards support publish, describe, get and check")
-	}
 	if *from != "" || *parent != "" {
-		return fmt.Errorf("--from and --parent require diagram publish")
+		return fmt.Errorf("--from and --parent require whiteboard publish")
 	}
 	if op == "check" && *revision == "" {
 		if err := requirements.ValidateWhiteboards(root, manifest.ID); err != nil {
@@ -95,7 +116,7 @@ func diagramWhiteboard(ctx context.Context, op string, args []string, out io.Wri
 		return err
 	}
 	if value == nil {
-		return fmt.Errorf("ERD whiteboard does not exist; publish it with diagram publish --whiteboard erd")
+		return fmt.Errorf("ERD whiteboard does not exist; publish it with whiteboard publish --kind erd")
 	}
 	if op == "get" && *focus == "" {
 		return writeJSON(out, value.Revision.Document)

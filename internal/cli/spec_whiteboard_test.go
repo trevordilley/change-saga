@@ -47,7 +47,7 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 	if err := json.Unmarshal(boardGrammar["storage"], &boardStorage); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(boardInput, "complete diagram.Document") || !strings.Contains(boardInput, "diagram publish --whiteboard erd --from") || !strings.Contains(boardStorage, "document inside an immutable ___whiteboards/erd/revisions/<id>.json revision") {
+	if !strings.Contains(boardInput, "complete diagram.Document") || !strings.Contains(boardInput, "whiteboard publish --kind erd --from") || !strings.Contains(boardStorage, "document inside an immutable ___whiteboards/erd/revisions/<id>.json revision") {
 		t.Fatal("whiteboard grammar must describe board input/storage instead of slide assets")
 	}
 	shared := diagram.Contract()
@@ -74,11 +74,11 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 	if err != nil || !bytes.Equal(actual, expected) {
 		t.Fatalf("whiteboards must retain the shared grammar apart from input/storage: %v", err)
 	}
-	if len(board.Commands) != 4 || board.Commands["publish"] != commandUsage["diagram publish"] {
+	if len(board.Commands) != 4 || board.Commands["publish"] != commandUsage["whiteboard publish"] {
 		t.Fatalf("whiteboard commands drifted: %#v", board.Commands)
 	}
 	for _, op := range []string{"publish", "get", "describe", "check"} {
-		if !strings.Contains(board.Commands[op], "diagram "+op+" --whiteboard erd") || !strings.Contains(board.Commands[op], "--revision ID") {
+		if !strings.Contains(board.Commands[op], "whiteboard "+op+" --kind erd") || !strings.Contains(board.Commands[op], "--revision ID") {
 			t.Errorf("missing implemented command or revision selector: %s", board.Commands[op])
 		}
 	}
@@ -105,7 +105,7 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 	if err := Spec(nil, &output); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"Technical design can use an ERD whiteboard", "Only kind erd is supported", "___whiteboards/erd/revisions/<id>.json", "diagram publish --whiteboard erd", "diagram get|describe|check --whiteboard erd", "--focus PATH", "share the implementation deck's diagram source grammar", "current board revision ID as --parent", "Older readers reject an adopted ___whiteboards", "absence remains valid"} {
+	for _, want := range []string{"Technical design can use an ERD whiteboard", "Only kind erd is supported", "___whiteboards/erd/revisions/<id>.json", "whiteboard publish --kind erd", "whiteboard get|describe|check --kind erd", "--focus PATH", "share the implementation deck's diagram source grammar", "current board revision ID as --parent", "Older readers reject an adopted ___whiteboards", "absence remains valid"} {
 		if !strings.Contains(output.String(), want) {
 			t.Errorf("text spec omitted %q", want)
 		}

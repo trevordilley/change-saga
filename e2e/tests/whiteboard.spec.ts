@@ -54,7 +54,7 @@ function authorWhiteboard(saga: SagaFixture, nested = false, opening = false, sp
     Object.assign(board.elements.find(element => element.id === "cloud")!, { x: 5400, y: 2600 });
     Object.assign(board.elements.find(element => element.id === "legacy")!, { x: 2000, y: 3200 });
   }
-  run("diagram", "publish", "--whiteboard", "erd", "--from", file("board.json", board), "--name", "Offline and shared data", "--revision", "r1", saga.sagaRoot);
+  run("whiteboard", "publish", "--kind", "erd", "--from", file("board.json", board), "--name", "Offline and shared data", "--revision", "r1", saga.sagaRoot);
 }
 
 test("whiteboard explains the overview and focuses pinned entity detail @critical", async ({ page, saga }, testInfo) => {

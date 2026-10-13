@@ -126,7 +126,7 @@ var commands = []Command{
 		Name: "diagram publish", Status: StatusImplemented, Mutates: true,
 		Writes:  []string{"whiteboard-revision"},
 		Usage:   "change-saga diagram publish --whiteboard erd --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
-		Summary: "publish an immutable ERD whiteboard with explicitly pinned children; updates name the observed board parent",
+		Summary: "compatibility alias for whiteboard publish --kind erd; publish an immutable ERD whiteboard with explicitly pinned children; updates name the observed board parent",
 		Flags: []Flag{
 			required("whiteboard", "erd", "ERD whiteboard"), required("revision", "ID", "new immutable board revision"),
 			optional("parent", "ID", "current board revision, required for updates"), optional("name", "TITLE", "authored board title"),

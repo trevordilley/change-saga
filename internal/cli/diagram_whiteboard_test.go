@@ -59,13 +59,27 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 	path := write("board.json", doc)
 	run := func(args ...string) (string, error) {
 		out.Reset()
-		err := Diagram(ctx, append(args, root), &out)
-		return out.String(), err
+		err := Whiteboard(ctx, append(args, root), &out)
+		primary := out.String()
+		// Both command families must address the same records and produce the
+		// same output. Retrying publication also exercises cross-alias idempotence.
+		legacy := append([]string{}, args...)
+		for i, arg := range legacy {
+			if arg == "--kind" {
+				legacy[i] = "--whiteboard"
+			}
+		}
+		out.Reset()
+		aliasErr := Diagram(ctx, append(legacy, root), &out)
+		if (err == nil) != (aliasErr == nil) || err == nil && primary != out.String() {
+			t.Fatalf("command aliases differ for %v: primary %v %s; alias %v %s", args, err, primary, aliasErr, out.String())
+		}
+		return primary, err
 	}
-	if _, err := run("publish", "--whiteboard", "erd", "--revision", "b1", "--name", "Work board", "--from", path); err != nil {
+	if _, err := run("publish", "--kind", "erd", "--revision", "b1", "--name", "Work board", "--from", path); err != nil {
 		t.Fatal(err)
 	}
-	described, err := run("describe", "--whiteboard", "erd")
+	described, err := run("describe", "--kind", "erd")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,14 +88,14 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 			t.Fatalf("description missing %s: %s", want, described)
 		}
 	}
-	focused, err := run("describe", "--whiteboard", "erd", "--focus", "cloud/local/local", "--format", "json")
+	focused, err := run("describe", "--kind", "erd", "--focus", "cloud/local/local", "--format", "json")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(focused, "Offline edits retain stable IDs") || !strings.Contains(focused, definition.Directory[0].Revision) {
 		t.Fatalf("focused source: %s", focused)
 	}
-	got, err := run("get", "--whiteboard", "erd")
+	got, err := run("get", "--kind", "erd")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -89,20 +103,20 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 	if err := json.Unmarshal([]byte(got), &fetched); err != nil || len(fetched.Elements) != 3 {
 		t.Fatalf("get roundtrip: %v %s", err, got)
 	}
-	checked, err := run("check", "--whiteboard", "erd", "--json")
+	checked, err := run("check", "--kind", "erd", "--json")
 	if err != nil || !strings.Contains(checked, `"valid": true`) {
 		t.Fatalf("check: %v %s", err, checked)
 	}
-	if _, err := run("describe", "--whiteboard", "erd", "--focus", "cloud/missing"); err == nil {
+	if _, err := run("describe", "--kind", "erd", "--focus", "cloud/missing"); err == nil {
 		t.Fatal("unknown focus accepted")
 	}
-	if _, err := run("publish", "--whiteboard", "erd", "--revision", "b2", "--from", path); err == nil {
+	if _, err := run("publish", "--kind", "erd", "--revision", "b2", "--from", path); err == nil {
 		t.Fatal("update without observed parent accepted")
 	}
-	if _, err := run("publish", "--whiteboard", "erd", "--revision", "b2", "--parent", "b1", "--from", path); err != nil {
+	if _, err := run("publish", "--kind", "erd", "--revision", "b2", "--parent", "b1", "--from", path); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := run("get", "--whiteboard", "erd", "--revision", "b1", "--focus", "cloud/local/local"); err != nil {
+	if _, err := run("get", "--kind", "erd", "--revision", "b1", "--focus", "cloud/local/local"); err != nil {
 		t.Fatal(err)
 	}
 	assertValid(t, root)
@@ -117,5 +131,27 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 	out.Reset()
 	if err := Validate(ctx, []string{"--json", root}, &out); err == nil || !strings.Contains(out.String(), requirements.WhiteboardDir) {
 		t.Fatalf("general validation ignored broken history: %v %s", err, out.String())
+	}
+}
+
+func TestWhiteboardCLIRejectsInvalidCommandBeforeLoadingSaga(t *testing.T) {
+	for _, test := range []struct {
+		name string
+		args []string
+		want string
+	}{
+		{"missing kind", []string{"get", "missing.saga"}, "requires --kind erd"},
+		{"future kind", []string{"get", "--kind=infra", "missing.saga"}, "requires --kind erd"},
+		{"unsupported edit", []string{"edit", "--kind", "erd", "missing.saga"}, "whiteboards support publish, get, describe and check"},
+		{"unknown operation", []string{"delete", "--kind", "erd", "missing.saga"}, "usage: change-saga whiteboard"},
+		{"old selector in new family", []string{"get", "--whiteboard", "erd", "missing.saga"}, "flag provided but not defined"},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			var out bytes.Buffer
+			err := Whiteboard(context.Background(), test.args, &out)
+			if err == nil || !strings.Contains(err.Error(), test.want) {
+				t.Fatalf("error = %v, want %q", err, test.want)
+			}
+		})
 	}
 }

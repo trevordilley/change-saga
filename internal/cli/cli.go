@@ -93,7 +93,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "setup-initial-saga", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"theme", "serve", "open", "install-skill", "spec",
 }
@@ -179,6 +179,11 @@ var commandUsage = map[string]string{
 	"add-deck":                    "change-saga add-deck (--feature ID | --role onboarding) [flags] <saga> <name>",
 	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"apply-slide":                 "change-saga apply-slide (--from FILE|- [--review ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID]) <saga>",
+	"whiteboard":                  "change-saga whiteboard <publish|get|describe|check> [flags] <saga>",
+	"whiteboard publish":          "change-saga whiteboard publish --kind erd --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
+	"whiteboard get":              "change-saga whiteboard get --kind erd [--revision ID] [--focus PATH | --id PATH] <saga>",
+	"whiteboard describe":         "change-saga whiteboard describe --kind erd [--revision ID] [--focus PATH] [--format text|json] <saga>",
+	"whiteboard check":            "change-saga whiteboard check --kind erd [--revision ID] [--focus PATH] [--json] <saga>",
 	"diagram":                     "change-saga diagram <describe|get|edit|icons|check|publish> [flags] <saga>",
 	"diagram describe":            "change-saga diagram describe (--slide TARGET [--review ID] [--offset N] [--limit N] | --whiteboard erd [--revision ID] [--focus PATH]) [--format text|json] <saga>",
 	"diagram publish":             "change-saga diagram publish --whiteboard erd --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
@@ -446,8 +451,13 @@ var commandDescription = map[string]string{
 	"add-deck":                    "Add an implementation deck. The implementation decks appear in the Saga's Technical\nsection; split the delivered change into decks only where a concern warrants its own review.",
 	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"apply-slide":                 "Publish one complete implementation or review slide from structured JSON: its visual asset or a\n\"diagram\" source the CLI renders to SVG, semantic Items and selectors, exact code evidence,\nand pinned Item-level criterion links. With --review (or \"review\" in the request) the slide\ngoes to that pull request review's deck; its Items carry no evidence and are covered after\npublishing with cover --changed-lines. --dry-run returns the same semantic diff without\npublishing; updates require the current snapshot. --print-current SLIDE prints the slide's\ncomplete current request (expected_snapshot and a fresh request_id filled in) to edit and\napply, so changing one field never means rebuilding the slide. SLIDE is an ID, target, or\nrecord path; an ID slides of several decks share must be given as its target, and a review\nslide's ID needs --review. An update identical to the current revision publishes nothing and\nreports the slide unchanged.",
+	"whiteboard":                  "Publish and inspect cohesive technical-design documents using the shared diagram grammar. Currently supports ERDs. Updates publish a complete immutable revision with the current revision as parent.",
+	"whiteboard publish":          "Publish a complete diagram.Document from JSON. Sources pin exact revisions; updates require the current board revision ID as --parent.",
+	"whiteboard get":              "Return the complete diagram source, or a focused instance description with --focus. Use --revision to read history.",
+	"whiteboard describe":         "Describe the document or a focused instance path with source pins, transformed geometry and connection context. Use --format json for structured output.",
+	"whiteboard check":            "Validate whiteboard history and the current composition, or one exact revision with --revision.",
 	"diagram":                     "Edit and check diagram-sourced slides of implementation and review decks. A diagram is an\nordered list of explicitly positioned nodes, edges, text, groups, and graphics; the CLI\nrenders it to the slide's SVG. Read any slide compactly with `change-saga diagram describe`;\nname a review slide by its URN or with --review.",
-	"diagram publish":             "Publish a complete ERD whiteboard diagram from JSON. Every child source pins an exact revision.\nUpdates require the current board revision ID as --parent; historical boards never follow newer children.",
+	"diagram publish":             "Compatibility alias for whiteboard publish --kind erd. Publish a complete ERD whiteboard diagram from JSON. Every child source pins an exact revision.\nUpdates require the current board revision ID as --parent; historical boards never follow newer children.",
 	"diagram edit":                "Apply a JSON array of operations (add, update, move, remove, style, align, distribute,\ncanvas) to a slide's diagram at an exact snapshot and republish it through apply-slide,\nkeeping its Items, evidence, and criterion links. Nothing moves unless named: moving a\nnode leaves its edges where they are. [] re-renders the unchanged source.",
 	"diagram describe":            "Read one slide compactly: its takeaway, Items in reading order with their first code\nreferences (path:start-end, old side marked, and note; the rest counted) and criterion-link\ncounts, and, for a diagram-sourced slide, its groups, nodes, edges, and\ncontainment in document order. Geometry, styling, decorative elements, and asset bytes are\nomitted, so the view cannot rebuild the drawing. Text by default; --format json for tools.",
 	"diagram get":                 "Return one diagram element's complete stored properties, resolved style, and selector,\nwith the snapshot to pass to diagram edit --expected.",
@@ -1335,7 +1345,7 @@ func Spec(args []string, out io.Writer) error {
 	}
 	if *jsonOutput {
 		whiteboardDiagram := diagram.Contract()
-		whiteboardDiagram["request_field"] = "complete diagram.Document supplied via diagram publish --whiteboard erd --from FILE|-"
+		whiteboardDiagram["request_field"] = "complete diagram.Document supplied via whiteboard publish --kind erd --from FILE|-"
 		whiteboardDiagram["storage"] = "document inside an immutable " + requirements.WhiteboardDir + "/erd/revisions/<id>.json revision"
 		return writeJSON(out, map[string]any{
 			"version": saga.SagaVersion, "manifest": saga.ManifestName, "component_version": saga.ComponentVersion, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
@@ -1376,13 +1386,14 @@ func Spec(args []string, out io.Writer) error {
 				},
 				"source_pins": "depicted ERDs and data entities pin exact target and revision URNs; optional element or owned relationship selector; sources never follow newer revisions",
 				"commands": map[string]string{
-					"publish":  commandUsage["diagram publish"],
-					"get":      "change-saga diagram get --whiteboard erd [--revision ID] [--focus PATH | --id PATH] <saga>",
-					"describe": "change-saga diagram describe --whiteboard erd [--revision ID] [--focus PATH] [--format text|json] <saga>",
-					"check":    "change-saga diagram check --whiteboard erd [--revision ID] [--focus PATH] [--json] <saga>",
+					"publish":  commandUsage["whiteboard publish"],
+					"get":      "change-saga whiteboard get --kind erd [--revision ID] [--focus PATH | --id PATH] <saga>",
+					"describe": "change-saga whiteboard describe --kind erd [--revision ID] [--focus PATH] [--format text|json] <saga>",
+					"check":    "change-saga whiteboard check --kind erd [--revision ID] [--focus PATH] [--json] <saga>",
 				},
 				"focus": "--focus selects a frame or element instance path for reads; get also accepts --id; publish always appends a complete board snapshot",
 				"compatibility": map[string]string{
+					"cli_alias":     "diagram publish|get|describe|check --whiteboard erd remains a compatibility alias",
 					"absent":        "the subtree is optional; v5 Sagas without it remain valid",
 					"older_readers": "reject an adopted ___whiteboards subtree rather than silently ignore it",
 				},
@@ -2244,19 +2255,20 @@ Technical design can use an ERD whiteboard: one cohesive data-model document.
 Only kind erd is supported. The optional v5 subtree stores immutable complete
 diagram snapshots in ___whiteboards/erd/revisions/<id>.json (revision version 1).
 Whiteboards share the implementation deck's diagram source grammar and renderer.
-Publish with diagram publish --whiteboard erd --revision ID [--parent ID]
+Publish with whiteboard publish --kind erd --revision ID [--parent ID]
 [--name TITLE] --from FILE|- <saga>. First publication has no parent; updates
 require the observed unique current board revision ID as --parent. Identical
 retries are idempotent. Sources pin exact ERD/data-entity target and revision
 URNs, optionally an element or owned relationship; they never follow newer
-revisions. Read with diagram get|describe|check --whiteboard erd [--revision ID]
+revisions. Read with whiteboard get|describe|check --kind erd [--revision ID]
 [--focus PATH] <saga>. Default reads require the unique current head and reject
 conflicting heads; --revision selects exact history without fallback.
 Focus names a frame or element instance path; get also accepts --id. Describe
 supports --format text|json; check supports --json. Focus is read-only; publish appends a
 complete board snapshot. Infrastructure/system whiteboards and whiteboard edit
 transactions are not supported. Older readers reject an adopted ___whiteboards
-subtree; its absence remains valid and requires no migration.
+subtree; its absence remains valid and requires no migration. The earlier
+diagram publish|get|describe|check --whiteboard erd spelling remains a compatibility alias.
 
 The Saga is documentation. Stories, designs, test cases, and decks carry no
 approvals and no comments. A pull request's review is where a change is
