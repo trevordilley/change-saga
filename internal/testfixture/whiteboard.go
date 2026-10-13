@@ -56,15 +56,17 @@ func WriteERDWhiteboardFixture(ctx context.Context, root, checkout string) (map[
 	hero.FontSize = 52
 	connection := styles["primary"]
 	connection.FontSize = 28
-	board := diagram.Document{Version: 1, Width: 1800, Height: 1120, Background: "#fafaf8", Styles: map[string]diagram.Style{"overview": large, "hero": hero, "primary": connection}, Elements: []diagram.Element{
+	// Caption space sits above each full-aspect frame. The SVG overview is
+	// 640 by 150, so its 980-unit appearance retains that exact ratio.
+	board := diagram.Document{Version: 1, Width: 1800, Height: 1400, Background: "#fafaf8", Styles: map[string]diagram.Style{"overview": large, "hero": hero, "primary": connection}, Elements: []diagram.Element{
 		{ID: "board-title", Kind: "text", Label: "Offline edits become shared records", X: 60, Y: 30, Width: 1680, Height: 80, Style: "hero"},
 		{ID: "overview", Kind: "text", Label: "Two stores, one synchronization flow. Focus a diagram to read its fields and local explanation.", X: 60, Y: 115, Width: 1680, Height: 80, Style: "overview"},
-		{ID: "local", Kind: "frame", Label: "Local SQLite", Summary: "Keeps edits available offline", X: 60, Y: 210, Width: 720, Height: 440, Style: "overview", Source: ref("sqlite")},
-		{ID: "cloud", Kind: "group", Label: "Shared cloud", X: 1020, Y: 210, Width: 720, Height: 440, Style: "boundary"},
+		{ID: "local", Kind: "frame", Label: "Local SQLite", Summary: "Keeps edits available offline", X: 60, Y: 340, Width: 720, Height: 440, Style: "overview", Source: ref("sqlite")},
+		{ID: "cloud", Kind: "group", Label: "Shared cloud", X: 1020, Y: 400, Width: 720, Height: 440, Style: "boundary"},
 		{ID: "postgres", Kind: "frame", Parent: "cloud", Label: "Cloud Postgres", Summary: "Stores synchronized shared records", Width: 720, Height: 440, Style: "overview", Source: ref("postgres")},
-		{ID: "sync", Kind: "connection", From: "local/local-edit", To: "cloud/postgres/cloud-record", Label: "synchronizes into", Style: "primary", Head: "arrow", Source: &diagram.SourceReference{Target: pins["cloud-record"].Target, Revision: pins["cloud-record"].Revision, Relationship: "sync"}, LabelBox: &diagram.Box{X: 775, Y: 330, Width: 245, Height: 65}},
-		{ID: "flow-note", Kind: "annotation", Shape: "bubble", Label: "Synchronization produces a cloud record. This connection is a production flow, not a foreign key.", X: 60, Y: 780, Width: 580, Height: 240, Style: "overview", Color: "blue", Target: &diagram.Point{X: 840, Y: -350}, Source: &diagram.SourceReference{Target: pins["cloud-record"].Target, Revision: pins["cloud-record"].Revision, Relationship: "sync"}},
-		{ID: "cross-store", Kind: "frame", Label: "Cross-store data flow", Summary: "The same entities appear together here", X: 760, Y: 760, Width: 980, Height: 290, Style: "overview", Source: ref("cross-store")},
+		{ID: "sync", Kind: "connection", From: "local/local-edit", To: "cloud/postgres/cloud-record", Label: "synchronizes into", Style: "primary", Head: "arrow", Source: &diagram.SourceReference{Target: pins["cloud-record"].Target, Revision: pins["cloud-record"].Revision, Relationship: "sync"}, LabelBox: &diagram.Box{X: 775, Y: 480, Width: 245, Height: 65}},
+		{ID: "flow-note", Kind: "annotation", Shape: "bubble", Label: "Synchronization produces a cloud record. This connection is a production flow, not a foreign key.", X: 60, Y: 930, Width: 580, Height: 300, Style: "overview", Color: "blue", Target: &diagram.Point{X: 840, Y: -450}, Source: &diagram.SourceReference{Target: pins["cloud-record"].Target, Revision: pins["cloud-record"].Revision, Relationship: "sync"}},
+		{ID: "cross-store", Kind: "frame", Label: "Cross-store data flow", Summary: "The same entities appear together here", X: 760, Y: 1070, Width: 980, Height: 229.6875, Style: "overview", Source: ref("cross-store")},
 	}}
 	_, err = requirements.PublishWhiteboard(ctx, root, manifest.ID, "erd", "r1", "", "Offline and shared data", board)
 	return pins, err

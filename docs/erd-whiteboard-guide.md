@@ -72,22 +72,34 @@ without claiming a recorded relationship.
 
 ## Compose an explanation at each scale
 
-Begin with two or three ERDs. Give every frame a short title and meaningful
-summary, then author overview text and callouts large enough to read at fit.
-Use connections to explain the relationships between areas. A collection of
-small diagram thumbnails is not a useful overview.
+Begin with a few core ERDs and compose their actual drawings into a spatial
+explanation. Keep the source SVG's intrinsic aspect ratio: for source dimensions
+`sw × sh` and an authored frame width `w`, use frame height `w * sh / sw`.
+The full frame belongs to the child drawing. Reserve a separate caption band
+**above** it for the title and summary: roughly three lines of the frame style's
+font size plus padding. Account for that band when spacing adjacent frames,
+callouts and connector routes.
 
-Use the existing annotations and notes inside structured children for local
-explanations. The viewer can collapse child detail to frame summaries at low
-scale. Displayed connectors can meet the enclosing frames while descriptions
-retain their semantic endpoint paths. Optional authored bends provide simple
-route control; the viewer does not run a layout engine.
+Use a handful of larger core areas, smaller satellites and composite overviews
+where they help explain the model. Group related views through proximity and
+whitespace; avoid giving every ERD the same slot in a tiled index. Author a
+reading direction with large section labels and short source-backed callouts.
+At fit, diagrams should remain recognizable and major annotations readable;
+every individual field need not be readable until focused.
 
-Overview text needs its own authored styles. In the three-ERD fixture, a
-34-unit overview font remains readable at fit while children use their normal
-22-unit detail font. An annotation's explicit `target` point is local to that
-annotation, not the board. `visibility: "detail"` inside a frame follows that
-frame's detail state even when another frame is collapsed.
+Actual child ERDs remain visible at overview scale. The viewer adds frame titles
+and summaries above their drawings instead of replacing them with summary
+cards. `detail_scale` controls connector simplification and internal interaction,
+not whether the diagram is visible. Displayed connectors can meet enclosing
+frames while descriptions retain their semantic endpoint paths. Optional
+explicit bends control routes; the viewer does not run a layout engine.
+
+Use existing annotations and notes inside structured children for local
+explanations. Overview text needs its own authored styles. In the three-ERD
+fixture, a 34-unit overview font remains readable at fit while children use
+their normal 22-unit detail font. An annotation's explicit `target` point is
+local to that annotation, not the board. `visibility: "detail"` inside a frame
+follows that frame's detail state independently of other frames.
 
 Focus a frame to read its child diagram, then an entity or relationship to
 inspect its meaning and source pin. Repeated appearances use paths such as
@@ -127,3 +139,37 @@ to the whole and to the original source revision.
 
 See the [implementation validation record](whiteboard-validation.md) for the
 representative and real-data browser checks.
+
+## Reproducible DayLight composition
+
+The [example authoring script](examples/author-daylight-whiteboard.py) composes
+20 existing DayLight ERDs from exact revision IDs. It uses only the Python
+standard library and reads a local saga copy; it neither publishes a board nor
+changes source records. The DayLight source data is not bundled in this repo.
+Run it against the matching copied inventory:
+
+```sh
+python3 docs/examples/author-daylight-whiteboard.py \
+  /path/to/copied/daylight.saga /tmp/daylight-composition
+```
+
+The outputs are `daylight-board.json`, `source-pins.json`, and a diagnostic
+`layout-preview.html` with its SVG asset. The manifest records every exact pin,
+source explanation, intrinsic dimensions and verified SVG digest. Missing pins
+or digest mismatches stop generation; future revisions are never adopted
+implicitly. The script checks frame and caption-band bounds and overlaps before
+writing the board. The preview shows the source SVGs at the authored sizes; use
+the application viewer to verify real connector behavior, inspection and focus.
+
+The composition's reading path is capture, the cross-store composite, source
+admission and cloud corpus. The composite is another view of those models, not
+an extra processing stage. Local search and episode views form a separate left
+cluster; project authority and identity anchor the lower cloud cluster, with
+consent, invitations, provisioning and messaging around them. Whole-model
+directories sit at the perimeter as reference views. Sizes reflect narrative
+emphasis and source proportions rather than a uniform grid.
+
+Callouts paraphrase pinned explanations. Connections describe explanatory
+mappings and delivery context with their own pins; they do not invent SQL
+foreign keys. The authored caption band is 192 board units for a 51.2-unit frame
+font. Publishing remains an explicit subsequent action after browser review.
