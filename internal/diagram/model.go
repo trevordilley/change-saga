@@ -1,4 +1,4 @@
-// Package diagram is the structured source for generated slide diagrams.
+// Package diagram is the shared structured source for slide diagrams and whiteboards.
 //
 // A Document is the authoritative drawing: every element carries explicit
 // geometry, and nothing in this package lays out, resizes, or reroutes
@@ -33,9 +33,12 @@ const (
 	MaxTotalFragments = 256 << 10
 	MaxLabelRunes     = 2000
 	MaxDescribeLimit  = 100
-	DefaultWidth      = 1280
-	DefaultHeight     = 720
-	defaultBackground = "#fafaf8"
+	// Canvas extent is independent of drawing complexity and opening zoom.
+	// Whiteboards need space for readable sections beyond a single screen.
+	MaxCanvasDimension = 100000
+	DefaultWidth       = 1280
+	DefaultHeight      = 720
+	defaultBackground  = "#fafaf8"
 )
 
 var (
@@ -237,8 +240,8 @@ func (d Document) Validate() error {
 	if d.Version != Version {
 		add("diagram version must be %d", Version)
 	}
-	if !finite(d.Width) || !finite(d.Height) || d.Width <= 0 || d.Height <= 0 || d.Width > 10000 || d.Height > 10000 {
-		add("canvas width and height must be positive and at most 10000")
+	if !finite(d.Width) || !finite(d.Height) || d.Width <= 0 || d.Height <= 0 || d.Width > MaxCanvasDimension || d.Height > MaxCanvasDimension {
+		add("canvas width and height must be positive and at most %d", MaxCanvasDimension)
 	}
 	if v := d.Viewport; v != nil {
 		if !finite(v.X) || !finite(v.Y) || !finite(v.Width) || !finite(v.Height) || v.X < 0 || v.Y < 0 || v.Width <= 0 || v.Height <= 0 || v.X+v.Width > d.Width || v.Y+v.Height > d.Height {
@@ -462,21 +465,22 @@ func Contract() map[string]any {
 		return result
 	}
 	return map[string]any{
-		"schema":         "https://changesaga.dev/schema/v5/diagram.schema.json",
-		"version":        Version,
-		"renderer":       Renderer,
-		"request_field":  "diagram, instead of asset, in an apply-slide request",
-		"storage":        "24-a-<digest-prefix>.json beside the rendered 24-a-<digest-prefix>.svg, pinned by the revision's diagram field",
-		"element_kinds":  sorted(elementKinds),
-		"node_shapes":    sorted(nodeShapes),
-		"frame_shapes":   sorted(frameShapes),
-		"alignments":     sorted(textAlignment),
-		"default_styles": styles,
-		"colors":         "a style colour, and the background, is #rrggbb, none, or a colour token from change-saga spec's theme written @name (such as @diagram-primary-fill or @accent); a token follows light and dark mode and a theme, a hex colour stays as authored; the default styles, palette, and the default background (#fafaf8) paint with diagram tokens",
-		"color_tokens":   colorTokenNames(),
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines", "source", "summary", "visibility", "detail_scale", "bends"},
-		"reveal_modes":   RevealModes(),
-		"terminators":    TerminatorNames(),
+		"schema":               "https://changesaga.dev/schema/v5/diagram.schema.json",
+		"version":              Version,
+		"renderer":             Renderer,
+		"max_canvas_dimension": MaxCanvasDimension,
+		"request_field":        "diagram, instead of asset, in an apply-slide request",
+		"storage":              "24-a-<digest-prefix>.json beside the rendered 24-a-<digest-prefix>.svg, pinned by the revision's diagram field",
+		"element_kinds":        sorted(elementKinds),
+		"node_shapes":          sorted(nodeShapes),
+		"frame_shapes":         sorted(frameShapes),
+		"alignments":           sorted(textAlignment),
+		"default_styles":       styles,
+		"colors":               "a style colour, and the background, is #rrggbb, none, or a colour token from change-saga spec's theme written @name (such as @diagram-primary-fill or @accent); a token follows light and dark mode and a theme, a hex colour stays as authored; the default styles, palette, and the default background (#fafaf8) paint with diagram tokens",
+		"color_tokens":         colorTokenNames(),
+		"fields":               []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines", "source", "summary", "visibility", "detail_scale", "bends"},
+		"reveal_modes":         RevealModes(),
+		"terminators":          TerminatorNames(),
 		"composition": map[string]any{
 			"frame":                "kind frame with source target/revision, positive width/height, label and summary; children fit uniformly and center in the frame",
 			"connection":           "kind connection with from/to instance paths and optional element-local bends; semantic source is explicit, never inferred from a line",
