@@ -55,11 +55,13 @@ type documentationView struct {
 	Delivery     *requirements.Delivery
 	// Data-entity content: curated fields, holding resources, owned and
 	// derived incoming relationships, and the ERDs listing it.
-	Fields        []entityFieldView
-	Holders       []entityHolderView
-	Relationships []relationshipView
-	Incoming      []relationshipView
-	ERDs          []erdMembershipView
+	Fields            []entityFieldView
+	Holders           []entityHolderView
+	Relationships     []relationshipView
+	Incoming          []relationshipView
+	ERDs              []erdMembershipView
+	Evidence          *erdEvidenceView
+	FocusRelationship string
 }
 
 // documentationView is one exact revision of a definition, as both the drawer
@@ -105,7 +107,14 @@ func (a *app) documentationView(ctx context.Context, inventory requirements.Inve
 		}
 		view.Edges = append(view.Edges, documentationEdge{ID: edge.ID, Intent: intent, From: names[edge.From], To: names[edge.To], Description: edge.Description, Path: path, CodeHref: "/api/documentation?" + url.Values{"target": {pin.Target}, "revision": {pin.Revision}, "interaction": {edge.ID}}.Encode()})
 	}
-	view.Code = a.documentationCode(ctx, requirements.References(revision.Code), record.Kind)
+	if record.Kind == requirements.KindERD {
+		view.Evidence = a.erdEvidence(ctx, inventory, revision)
+	}
+	if record.Kind == requirements.KindDataEntity {
+		view.Code = a.pinnedDocumentationCode(ctx, revision.Code, record.Kind)
+	} else {
+		view.Code = a.documentationCode(ctx, requirements.References(revision.Code), record.Kind)
+	}
 	return view
 }
 
@@ -118,7 +127,8 @@ func (a *app) documentationPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	pin := saga.DocumentationLink{Target: r.URL.Query().Get("target"), Revision: r.URL.Query().Get("revision")}
-	if !saga.ValidDocumentationLink(manifest.ID, pin) {
+	// ERDs may be inspected here without widening the kinds accepted by Item documentation.
+	if !saga.ValidDocumentationLink(manifest.ID, pin) && !saga.ValidPinOfKinds(manifest.ID, pin, requirements.KindERD) {
 		http.Error(w, "Invalid documentation reference", 400)
 		return
 	}
@@ -152,6 +162,21 @@ func (a *app) documentationPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	view := a.documentationView(r.Context(), inventory, record, revision, pin)
+	if relationship := r.URL.Query().Get("relationship"); relationship != "" {
+		found := false
+		for _, edge := range revision.Relationships {
+			if edge.ID == relationship {
+				view.FocusRelationship = relationship
+				view.Code = a.pinnedDocumentationCode(r.Context(), edge.Code, "relationship")
+				found = true
+				break
+			}
+		}
+		if !found {
+			http.Error(w, "Relationship not found in the saved revision. Nothing was substituted.", 404)
+			return
+		}
+	}
 	// The drawer is read from a slide: it links the definition's own page and
 	// loads its other usages only when asked.
 	view.PageHref = technicalPinHref(pin)
@@ -181,7 +206,8 @@ func (a *app) documentationCode(ctx context.Context, refs []coderef.Reference, s
 
 const documentationTemplates = `
 {{define "documentation-control"}}{{with .}}<button type="button" class="icon-button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}"{{if .Item}} data-documentation-item="{{.Item}}"{{end}}{{if .Selections}} data-documentation-selections="{{.Selections}}"{{end}} aria-label="Open technical explanation" title="Open technical explanation"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-book"></use></svg></button>{{end}}{{end}}
-{{define "documentation-code"}}{{range .}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}"><figcaption><code>{{.Location}}</code>{{if .Stale}} · stale{{end}}</figcaption>{{if .Note}}<p class="term-code-note">{{.Note}}</p>{{end}}<table class="term-code-lines"><tbody>{{range .Lines}}<tr{{if .Referenced}} class="referenced"{{end}}><th scope="row">{{.Number}}</th><td><code data-code>{{.Text}}</code></td></tr>{{end}}</tbody></table></figure>{{end}}{{end}}
+{{define "documentation-code"}}{{range .}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}"><figcaption><code>{{.Location}}</code>{{if .Integrity}} · <span data-evidence-integrity="{{.Integrity}}">saved bytes: {{.Integrity}}</span> · <span data-evidence-resolution="{{.Resolution}}">source view: {{.Resolution}}</span>{{end}}{{if .Stale}} · stale{{end}}</figcaption>{{if .Note}}<p class="term-code-note">{{.Note}}</p>{{end}}<table class="term-code-lines"><tbody>{{range .Lines}}<tr{{if .Referenced}} class="referenced"{{end}}><th scope="row">{{.Number}}</th><td><code data-code>{{.Text}}</code></td></tr>{{end}}</tbody></table></figure>{{end}}{{end}}
+{{define "erd-evidence"}}<section class="erd-evidence" data-erd-evidence><h3>Data model evidence</h3><p data-evidence-summary>{{.Entities}} entities · {{.Relationships}} relationships. {{.Counts.Linked}} references linked · {{.Counts.Verified}} verified at their saved commits · {{.Counts.Resolved}} resolved in the source view · {{.Counts.Stale}} stale · {{.Counts.Unavailable}} unavailable · {{.Counts.Unverified}} unverified. {{.Missing}} members have no code references.</p><p>Linked means a reference was saved. Verified checks its saved bytes; resolved also checks the viewed source commit. These checks do not establish complete ERD coverage or review approval. Definition pin status is separate.</p><ul>{{range .Members}}<li data-evidence-member="{{.Pin.Revision}}" data-evidence-state="{{.State}}"{{if .Relationship}} data-evidence-relationship="{{.Relationship}}"{{end}}><button type="button" data-documentation-target="{{.Pin.Target}}" data-documentation-revision="{{.Pin.Revision}}"{{if .Relationship}} data-source-relationship="{{.Relationship}}"{{end}}>{{if .Relationship}}Relationship: {{end}}{{.Name}}</button> — {{.State}} ({{.Counts.Linked}} linked, {{.Counts.Verified}} verified, {{.Counts.Resolved}} resolved){{if ne .PinStatus "current"}} · <span class="gap">definition pin {{.PinStatus}}</span>{{end}}</li>{{end}}</ul></section>{{end}}
 {{define "documentation"}}<article class="documentation-explanation" data-documentation-view="{{.Target}}" data-documentation-pin="{{.Revision}}">
 {{if not .OnPage}}<p class="trace-kind">{{kindTitle .Kind}}</p><h2>{{.Name}}</h2>
 {{end}}{{if and (ne .Status "current") (not .OnPage)}}<p role="status" class="gap" data-documentation-status="{{.Status}}">This reference is {{.Status}}. You are reading the saved revision; it has not been repinned.</p>{{with .CurrentPin}}<button type="button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}">Read current definition</button>{{end}}{{end}}
@@ -190,8 +216,8 @@ const documentationTemplates = `
 {{if .Members}}<h3>Component interactions</h3><svg class="documentation-diagram" viewBox="0 0 430 {{.Height}}" role="group" aria-label="Directed component interactions; explanations and exact code follow."><defs><marker id="documentation-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>{{range .Edges}}<path d="{{.Path}}" fill="none" stroke="currentColor" stroke-width="2"{{if eq .Intent "proposed"}} stroke-dasharray="6 4"{{end}} marker-end="url(#documentation-arrow)"><title>{{.From}} → {{.To}}: {{.Description}}{{if eq .Intent "proposed"}} (proposed){{end}}</title></path>{{end}}{{range .Members}}<a {{if $.OnPage}}href="{{.PageHref}}"{{else}}href="/api/documentation?target={{.Pin.Target}}&amp;revision={{.Pin.Revision}}" data-documentation-target="{{.Pin.Target}}" data-documentation-revision="{{.Pin.Revision}}"{{end}} aria-label="Open {{.Name}}"><g transform="translate(20 {{.Y}})"><rect width="230" height="50" fill="var(--bg,white)" stroke="currentColor"/><text x="12" y="30" font-size="14" fill="currentColor">{{.Name}}</text></g></a>{{end}}</svg>
 <ul class="documentation-members">{{range .Members}}<li>{{if $.OnPage}}<a href="{{.PageHref}}">{{.Name}}</a>{{else}}<button type="button" data-documentation-target="{{.Pin.Target}}" data-documentation-revision="{{.Pin.Revision}}">{{.Name}}</button>{{end}}{{if ne .Status "current"}} <span class="gap">{{.Status}}</span>{{end}}</li>{{end}}</ul>
 <ol>{{range .Edges}}<li data-interaction="{{.ID}}" data-interaction-intent="{{.Intent}}"><h4>{{.From}} → {{.To}}{{if ne .Intent "unspecified"}} <small class="technical-intent intent-{{.Intent}}">{{.Intent}}</small>{{end}}</h4><p>{{.Description}}</p><details data-lazy-href="{{.CodeHref}}"><summary>Interaction code</summary><div data-lazy-body>Code loads when opened.</div></details></li>{{end}}</ol>{{end}}
-{{with .Selections}}{{template "item-selections" .}}{{end}}{{if eq .Kind "data-entity"}}{{template "data-entity-detail" .}}{{end}}
-<h3>{{if .Selections}}All of this definition's code{{else}}Exact code{{end}}</h3>{{if .Code}}{{template "documentation-code" .Code}}{{else}}<p class="term-empty" data-documentation-no-code>{{if eq .Intent "proposed"}}No code yet. A proposal remains visible and usable before implementation.{{else}}No code references.{{end}}</p>{{end}}
+{{with .Evidence}}{{template "erd-evidence" .}}{{end}}{{with .Selections}}{{template "item-selections" .}}{{end}}{{if .FocusRelationship}}<h3>Selected relationship</h3><ul class="relationship-list">{{range .Relationships}}{{if eq .ID $.FocusRelationship}}{{template "relationship-row" .}}{{end}}{{end}}</ul>{{else if eq .Kind "data-entity"}}{{template "data-entity-detail" .}}{{end}}
+{{if or .Code (not .Evidence)}}<h3>{{if .FocusRelationship}}Exact code for relationship {{.FocusRelationship}}{{else if .Selections}}All of this definition's code{{else if .Evidence}}ERD definition code{{else}}Exact code{{end}}</h3>{{if .Code}}{{template "documentation-code" .Code}}{{else}}<p class="term-empty" data-documentation-no-code>{{if eq .Intent "proposed"}}No code yet. A proposal remains visible and usable before implementation.{{else}}No code references.{{end}}</p>{{end}}{{end}}
 {{if .UsagesHref}}<details class="documentation-usages" data-lazy-href="{{.UsagesHref}}"><summary>Used by</summary><div data-lazy-body>Usages load when opened.</div></details>{{end}}{{if not .OnPage}}<details><summary>Definition history</summary><p>Viewing <code>{{.Revision}}</code>. Opening another revision does not update this slide.</p><ul>{{range .History}}<li><button type="button" data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}">{{.Revision}}</button></li>{{end}}</ul></details>{{end}}
 </article>{{end}}
 `

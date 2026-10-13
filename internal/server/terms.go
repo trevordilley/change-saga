@@ -66,9 +66,11 @@ type termLinkView struct {
 type termCodeView struct {
 	Path     string
 	Location string
-	Stale    bool
-	Note     string
-	Lines    []termCodeLine
+	// Integrity checks the saved bytes; Resolution compares them with the viewed commit.
+	Integrity, Resolution string
+	Stale                 bool
+	Note                  string
+	Lines                 []termCodeLine
 }
 
 type termCodeLine struct {
@@ -318,11 +320,17 @@ func (a *app) termCode(ctx context.Context, references []coderef.Reference) []*t
 // referenceCode renders each reference as code at the head, or at its pin
 // when it went stale. subject names the record the references belong to.
 func (a *app) referenceCode(ctx context.Context, references []coderef.Reference, subject string) []*termCodeView {
+	return a.referenceCodeView(ctx, references, subject, false)
+}
+
+// referenceCodeView shares the resolver and renderer while allowing evidence
+// inspection to display the original commit/path/lines even when code moved.
+func (a *app) referenceCodeView(ctx context.Context, references []coderef.Reference, subject string, pinned bool) []*termCodeView {
 	var result []*termCodeView
 	resolver, err := coderesolve.New(ctx, a.sourceDir)
 	if err != nil {
 		for _, reference := range references {
-			result = append(result, &termCodeView{Path: reference.Path, Location: reference.Location().String(), Note: "The code repository is not available to this reviewer."})
+			result = append(result, &termCodeView{Path: reference.Path, Location: reference.Location().String(), Integrity: "unavailable", Resolution: "unavailable", Note: "The code repository is not available to this reviewer."})
 		}
 		return result
 	}
@@ -332,15 +340,30 @@ func (a *app) referenceCode(ctx context.Context, references []coderef.Reference,
 	for _, reference := range references {
 		view := &termCodeView{Path: reference.Path, Location: reference.Location().String()}
 		location := reference.Location()
-		if at := resolver.Resolve(ctx, reference, headOID); at.Current() {
-			location = at.Location
+		check := resolver.Resolve(ctx, reference, reference.Commit)
+		view.Integrity = "unverified"
+		if check.Current() && !check.Provisional {
+			view.Integrity = "verified"
+		} else if check.Provisional {
+			view.Integrity = "unavailable"
+		}
+		at := resolver.Resolve(ctx, reference, headOID)
+		view.Resolution = string(at.State)
+		if at.Provisional {
+			view.Resolution = "unavailable"
+		}
+		if at.Current() {
+			if !pinned {
+				location = at.Location
+			}
 		} else {
 			view.Stale = true
-			view.Note = "This code changed after the " + subject + " was written (" + at.Reason + "). It is shown as it was pinned; revise the " + subject + " to the code as it is now."
+			view.Note = "This reference is stale or could not be resolved after the " + subject + " was written (" + at.Reason + "). It is shown as it was pinned; revise the " + subject + " to the code as it is now."
 		}
 		view.Path = location.Path
 		content, found, err := resolver.Blob(ctx, location.Commit, location.Path)
 		if err != nil || !found {
+			view.Integrity = "unavailable"
 			view.Note = strings.TrimSpace(view.Note + " The code could not be read from this checkout.")
 			result = append(result, view)
 			continue
