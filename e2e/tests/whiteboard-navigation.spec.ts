@@ -468,3 +468,42 @@ for (const exit of ['pan','navigate','revisit']) test("late native code panels c
     await expect(page.locator('.drawer-body')).toContainText('Entity evidence at its saved commit.');
   }
 });
+
+for (const section of ['shared','delivery']) test("long relationship hover actions stay reachable from the visible segment in "+section, async ({page,saga}) => {
+  nativeModel(saga);
+  await page.goto(saga.baseURL+'/technical/erd?focus='+section); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'),bar=page.locator('[data-diagram-affordance]');
+  const edge=board.locator('[data-instance-path="sync"]');
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  // Locate a real, hit-testable segment while its authored label is elsewhere.
+  const point=await edge.evaluate((node,section)=>{
+    const viewport=node.closest('[data-whiteboard-viewport]')!.getBoundingClientRect();
+    for (const path of node.querySelectorAll<SVGGeometryElement>('path,polyline,line')) {
+      const matrix=path.getScreenCTM(); if (!matrix) continue;
+      for(let i=1;i<100;i++) {
+        const p=path.getPointAtLength(path.getTotalLength()*i/100).matrixTransform(matrix);
+        if((section === 'delivery' ? p.x>viewport.right-50 && p.x<viewport.right-10 : p.x>viewport.left+140 && p.x<viewport.right-100) && p.y>viewport.top+60 && p.y<viewport.bottom-80
+          && node.contains(document.elementFromPoint(p.x,p.y))) return {x:p.x,y:p.y};
+      }
+    }
+    throw new Error('No visible relationship segment found');
+  },section);
+  await edge.focus(); await expect(bar.locator('[data-source-relationship="sync"]')).toBeVisible();
+  const keyboardAnchor=await bar.boundingBox(); expect(keyboardAnchor).not.toBeNull();
+  expect(Math.abs(keyboardAnchor!.x-point.x)).toBeGreaterThan(100);
+  await page.keyboard.press('Escape'); await expect(bar).toBeHidden();
+  await board.locator('[data-whiteboard-viewport]').focus();
+  await page.mouse.move(point.x,point.y);
+  const book=bar.locator('[data-source-relationship="sync"]'); await expect(book).toBeVisible();
+  const button=await book.boundingBox(); expect(button).not.toBeNull();
+  const destination={x:button!.x+button!.width/2,y:button!.y+button!.height/2};
+  expect(Math.hypot(destination.x-point.x,destination.y-point.y)).toBeLessThan(90);
+  // Traverse slowly enough to exceed the old dismissal delay overall; the
+  // small gap is crossed before it expires, then the strip keeps itself open.
+  for(let i=1;i<=20;i++) {
+    await page.mouse.move(point.x+(destination.x-point.x)*i/20,point.y+(destination.y-point.y)*i/20);
+    await page.waitForTimeout(25);
+  }
+  await expect(book).toBeVisible(); await page.mouse.click(destination.x,destination.y);
+  await expect(page.locator('.drawer-body')).toContainText('A saved edit produces a shared record.');
+});

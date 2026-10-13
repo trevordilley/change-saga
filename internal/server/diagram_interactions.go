@@ -36,9 +36,9 @@ const diagramInteractionsJavaScript = `
       return controls.has(node) && !node.closest('[aria-hidden="true"],[hidden],[inert]') ? node : null;
     };
     const paint = node => node?.classList.toggle('diagram-interaction-active', !paused() && (node === hovered || node === focused));
-    const reveal = node => {
+    const reveal = (node, pointer = null) => {
       if (!node || paused()) return;
-      if (affordance) { affordance.show(node); return; }
+      if (affordance) { affordance.show(node, pointer); return; }
       if (!diagramNoteTemplates.has(node)) return;
       if (noteOwner && noteOwner !== node && notePopover?.classList.contains('pinned')) return;
       showNote(node);
@@ -47,7 +47,7 @@ const diagramInteractionsJavaScript = `
       if (event.pointerType === 'touch' || paused()) return;
       const node = controlFor(event.target);
       if (node === hovered) return;
-      const previous = hovered; hovered = node; paint(previous); paint(node); reveal(node);
+      const previous = hovered; hovered = node; paint(previous); paint(node); reveal(node, event);
     };
     const leave = event => {
       if (!hovered || hovered.contains(event.relatedTarget)) return;
@@ -161,18 +161,32 @@ const diagramInteractionsJavaScript = `
       button.innerHTML = '<svg class="i" aria-hidden="true" focusable="false"><use href="#i-info"></use></svg>';
       diagramNoteTemplates.set(button,template); bar.append(button);
     }
-    async function show(node) {
+    function place(node, pointer) {
+      const onConnection = node.dataset.diagramKind === 'connection' || node.hasAttribute('data-source-relationship');
+      const atPointer = onConnection && Number.isFinite(pointer?.clientX) && Number.isFinite(pointer?.clientY);
+      const box = atPointer ? null : position(node);
+      if (!atPointer && !box) return false;
+      // A long edge may have an offscreen label. Pointer actions belong beside
+      // the visible segment, with a four-pixel crossing into the action strip.
+      // Keyboard focus keeps the cached authored geometry; neither reads SVG.
+      const flip = atPointer && pointer.clientX > innerWidth-180;
+      bar.style.transform = flip ? 'translateX(-100%)' : '';
+      bar.style.left = (atPointer ? pointer.clientX+(flip ? -4 : 4) : Math.max(8,Math.min(innerWidth-180,box.right-160)))+'px';
+      bar.style.top = Math.max(8,Math.min(innerHeight-40,atPointer ? pointer.clientY-14 : box.top+3))+'px';
+      return true;
+    }
+    async function show(node, pointer = null) {
       if (quietFocus) return;
       clearTimeout(hideTimer);
-      if (owner === node && !bar.hidden) return;
       if (noteOwner && bar.contains(noteOwner) && notePopover?.classList.contains('pinned')) return;
-      const box = position(node); if (!box) return;
+      if (owner === node && !bar.hidden) {
+        if (pointer && !bar.contains(document.activeElement)) place(node, pointer);
+        return;
+      }
+      if (!place(node, pointer)) return;
       clear(); owner = node; const request = ++pending;
       diagramAffordanceOwners.set(bar,node); diagramAffordanceLifetimes.set(bar,{});
       bar.setAttribute('aria-label','Actions for '+(node.getAttribute('aria-label') || 'element'));
-      // Anchor from cached authored geometry and the camera, not DOM bounds.
-      bar.style.left = Math.max(8,Math.min(innerWidth-180,box.right-160))+'px';
-      bar.style.top = Math.max(8,Math.min(innerHeight-40,box.top+3))+'px';
       addNote(node);
       bar.hidden = false;
       if (node.dataset.documentationTarget) { bar.setAttribute('aria-busy','true'); }
