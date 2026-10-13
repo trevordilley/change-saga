@@ -72,7 +72,10 @@ does not fetch source bytes. Existing entity and relationship actions remain
 scoped to their own pins. No member stories are rolled up or Item records
 fabricated. A fresh browser observed zero annotation requests before interaction.
 
-Stored `diagram describe --focus` was checked against the authored hierarchy:
+Stored descriptions were checked against the authored hierarchy using the
+then-current `diagram describe --whiteboard erd --focus PATH` spelling, retained
+as a compatibility alias. The primary command is now
+`whiteboard describe --kind erd --focus PATH`:
 
 | Area | Members | Incident connections |
 | --- | ---: | ---: |

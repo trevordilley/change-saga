@@ -17,8 +17,10 @@ or a single screen. This is a presentation form, not a new inventory kind.
 
 **Current implementation: ERD whiteboards.** The
 [authoring guide](erd-whiteboard-guide.md) describes the implemented grammar,
-revision policy and viewer. The CLI currently accepts only `--whiteboard erd`,
-and source pins resolve ERDs and data entities. Infrastructure and system design
+revision policy and viewer. The primary CLI is `change-saga whiteboard
+publish|get|describe|check --kind erd`; `erd` is the only supported kind.
+The earlier `diagram … --whiteboard erd` spelling remains a compatibility alias.
+Source pins resolve ERDs and data entities. Infrastructure and system design
 are intended applications; their whiteboard commands, source kinds and viewer
 routes are not implemented by this change. Shared visual shapes alone do not
 provide those integrations.
@@ -130,13 +132,13 @@ or inventory kinds are changed.
 
 ## Inspection and viewer behavior
 
-`diagram describe` provides meaningful structured inspection of the whole model,
-a section, entity, connection or imported region, including source references:
+`whiteboard describe --kind erd` provides meaningful structured inspection of the
+whole model, a section, entity, connection or imported region, including source references:
 
 ```sh
-change-saga diagram describe --whiteboard erd change.saga
-change-saga diagram describe --whiteboard erd --focus cloud/identity change.saga
-change-saga diagram describe --whiteboard erd --focus cloud/identity/organization change.saga
+change-saga whiteboard describe --kind erd change.saga
+change-saga whiteboard describe --kind erd --focus cloud/identity change.saga
+change-saga whiteboard describe --kind erd --focus cloud/identity/organization change.saga
 ```
 
 Pan, zoom, fit and focus keep readers in the same document. Focus URLs and browser

@@ -18,7 +18,7 @@ tool, and what they have to do about it.
   from slides. Includes pan, zoom, fit, focus, crow's-foot associations and viewport
   culling. Infrastructure and system design are intended future applications.
 - **Format:** Optional `___whiteboards/erd/revisions/<id>.json` stores immutable,
-  complete diagram snapshots. `diagram publish|get|describe|check --whiteboard erd`
+  complete diagram snapshots. `whiteboard publish|get|describe|check --kind erd`
   authors and inspects them; source revisions are pinned and adoption is explicit.
   Existing Sagas and ERD histories remain readable with current readers. Older
   readers reject the new reserved subtree: upgrade before publishing a whiteboard.
@@ -33,6 +33,10 @@ tool, and what they have to do about it.
 
 ### Changed
 
+- `change-saga whiteboard publish|get|describe|check --kind erd` is the primary
+  whiteboard API. The earlier `diagram … --whiteboard erd` spelling remains a
+  compatibility alias. ERD is still the only supported kind; document schemas,
+  rendering and revision storage are unchanged by the command change.
 - When an ERD whiteboard is present, Data model opens one cohesive document;
   its outline focuses sections within the board. Source histories remain available.
 - Without a whiteboard, Data model navigation gives independently named ERD

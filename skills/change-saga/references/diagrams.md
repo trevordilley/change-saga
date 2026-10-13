@@ -63,12 +63,15 @@ recorded relationships and use declared crow's-foot cardinalities. Existing ERD
 frames are optional imports. Infrastructure/System inventory pins are not
 supported whiteboard sources.
 
-Use `diagram publish --whiteboard erd --revision r1 --from board.json PATH`
+Use `change-saga whiteboard publish --kind erd --revision r1 --from board.json PATH`
 for the complete document. Subsequent publications require `--parent` naming
-the current board revision; source adoption is explicit. Use `diagram describe
---whiteboard erd [--revision ID] [--focus PATH] --format json PATH`, `diagram get`
-and `diagram check` to inspect and validate it. The whiteboard has no `diagram
-edit` transaction; it uses immutable complete publications. Distinct instance
+the current board revision; source adoption is explicit. Use `whiteboard describe
+--kind erd [--revision ID] [--focus PATH] --format json PATH`, `whiteboard get
+--kind erd [--revision ID] PATH` and `whiteboard check --kind erd PATH` to inspect
+and validate it. `erd` is the only supported kind. The earlier `diagram
+publish|get|describe|check --whiteboard erd` commands remain compatibility aliases;
+prefer the first-class `whiteboard` commands for new authoring. The whiteboard
+has no `diagram edit` transaction; it uses immutable complete publications. Distinct instance
 paths identify repeated appearances. Opaque imported SVGs remain whole diagrams;
 do not infer internal geometry or fabricate slide Items for them.
 

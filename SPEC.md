@@ -376,7 +376,7 @@ one unambiguous head. Directories must be real directories and revision files
 regular JSON files. Each revision is limited to 1 MiB; a board may have at most
 10,000 revisions. No other whiteboard kind is accepted.
 
-`diagram publish --whiteboard erd --revision ID [--parent ID] [--name TITLE]
+`whiteboard publish --kind erd --revision ID [--parent ID] [--name TITLE]
 --from FILE|- PATH` validates and publishes the complete diagram under the Saga
 write lock. A new update requires the current head as its parent. Repeating an
 identical publication is idempotent; changing content under an existing revision
@@ -400,7 +400,7 @@ connection context. Opaque SVG imports render as whole diagrams; explicit source
 bindings can support inspection, but internal targeting requires recorded bounds.
 No internal structure is inferred from SVG artwork.
 
-**Reading and validation.** `diagram get|describe|check --whiteboard erd PATH`
+**Reading and validation.** `whiteboard get|describe|check --kind erd PATH`
 reads the current board; `--revision ID` selects history. `get` returns the source
 document, while `get` or `describe` with `--focus PATH` describes a particular
 appearance and its context. `describe --format json` provides structured output.
@@ -409,8 +409,15 @@ current composition. The viewer at `/technical/erd` presents the board as one
 Data model document, with pan, zoom, fit, focus and shared annotation actions for
 source inspection. Whiteboard sources do not supply slide or review line coverage.
 
-**Compatibility.** The optional subtree extends v5 without changing the manifest
-or inventory format version. Current readers accept Sagas without whiteboards.
+**CLI compatibility.** `change-saga whiteboard publish|get|describe|check --kind erd`
+is the primary API. The earlier `change-saga diagram publish|get|describe|check
+--whiteboard erd` commands remain compatibility aliases with the same publication,
+inspection and validation behavior. The command spelling does not change the
+document schema, renderer, revision storage or supported kinds; only `erd` is
+accepted.
+
+**Storage compatibility.** The optional subtree extends v5 without changing the
+manifest or inventory format version. Current readers accept Sagas without whiteboards.
 Older readers reject an adopted `___whiteboards` root as an unknown reserved
 directory, including during server startup; upgrade readers before publishing.
 There is no automatic migration. See the

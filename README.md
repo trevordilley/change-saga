@@ -54,6 +54,18 @@ Author a system's data model as [one ERD whiteboard](docs/erd-whiteboard-guide.m
 connected sections, selected entities, relationships, callouts and source evidence.
 Existing ERD revisions remain readable and can be reused as optional source material.
 
+Publish and inspect a complete `board.json` through the whiteboard API:
+
+```sh
+change-saga whiteboard publish --kind erd --revision r1 --from board.json change.saga
+change-saga whiteboard describe --kind erd change.saga
+change-saga whiteboard get --kind erd --revision r1 change.saga
+change-saga whiteboard check --kind erd change.saga
+```
+
+`erd` is the only supported kind. The earlier `diagram … --whiteboard erd`
+spelling remains available as a compatibility alias.
+
 ## Start with a review
 
 Once it's installed, give your coding agent two prompts from the repository

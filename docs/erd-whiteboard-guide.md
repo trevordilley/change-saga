@@ -50,14 +50,19 @@ instance paths. Optional `frame` elements import existing ERD content. Publish
 the one document with:
 
 ```sh
-change-saga diagram publish --whiteboard erd --revision r1 \
+change-saga whiteboard publish --kind erd --revision r1 \
   --name "Application data" --from board.json change.saga
-change-saga diagram describe --whiteboard erd change.saga
-change-saga diagram describe --whiteboard erd \
+change-saga whiteboard describe --kind erd change.saga
+change-saga whiteboard describe --kind erd \
   --focus cloud/identity/organization change.saga
-change-saga diagram get --whiteboard erd --revision r1 change.saga
-change-saga diagram check --whiteboard erd change.saga
+change-saga whiteboard get --kind erd --revision r1 change.saga
+change-saga whiteboard check --kind erd change.saga
 ```
+
+`change-saga whiteboard` is the primary API, and `--kind erd` is required;
+ERD is the only supported kind. The earlier `diagram publish|get|describe|check
+--whiteboard erd` commands remain compatibility aliases with the same behavior
+and options. Both spellings read and publish the same immutable revisions.
 
 For a subsequent revision, add `--parent r1` and choose a new revision ID.
 The `--revision` option on reading commands selects historical board content.
