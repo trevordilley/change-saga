@@ -11,9 +11,11 @@ document. The board fills the viewport beside the sidebar; its floating title
 has an expandable description. Its outline names places within the model rather
 than listing every source ERD as a separate document. Fit and Focus leave room
 for the title and navigation controls. The full document can extend well beyond
-one screen. Source revisions and historical routes remain available internally
-for provenance and compatibility. Groups are ordinary drawing groups; this
-feature does not change entity holders or add inventory kinds.
+one screen. The document itself must depict every required entity and
+relationship; old drawings are not a substitute for native coverage. Source
+revisions and historical routes remain available internally for provenance and
+compatibility. Groups are ordinary drawing groups; this feature does not change
+entity holders or add inventory kinds.
 
 Scroll with a mouse wheel or trackpad, or drag, to pan. Shift + scroll pans
 sideways on a vertical mouse wheel. Ctrl/Cmd + scroll (including trackpad pinch)
@@ -51,6 +53,11 @@ change-saga diagram check --whiteboard erd change.saga
 
 For a subsequent revision, add `--parent r1` and choose a new revision ID.
 The `--revision` option on reading commands selects historical board content.
+Publication is atomic and rejects an update whose parent is no longer the
+current revision. Structured `describe` preserves focused instance paths,
+fields, semantic endpoints and exact source pins. The current whiteboard CLI
+supports whole-document `publish`, `get`, `describe` and `check`; it does not yet
+support the slide diagram transaction-based `edit` command.
 
 ## Native sections and relationships
 
@@ -118,9 +125,13 @@ to the instance path and geometry; they do not create new source records.
 
 Source references also belong on depicted entities, relationships and
 explanations. For a relationship, pin its owning data entity and supply the
-relationship ID in `source.relationship`. Drawing a line does not create a
-recorded relationship. An explanatory line can instead describe its meaning
-without claiming a recorded relationship.
+relationship ID in `source.relationship`. For an association drawn owner →
+destination, map declared owner cardinality to `tail` and destination cardinality to `head`: `1` → `only-one`, `0..1` →
+`zero-or-one`, `0..many` → `zero-or-many`, and `1..many` → `one-or-many`. Use
+`head_size` to keep both endpoint markers legible at the reading scale. Keep
+unknown cardinality explicit instead of substituting an arrow or guessing.
+Drawing a line does not create a recorded relationship. An explanatory line can
+instead describe its meaning without claiming a recorded relationship.
 
 ## Compose an explanation at each scale
 
@@ -221,12 +232,19 @@ changes the identity of the underlying entity.
 The board uses the slide diagram grammar and renderer, including authored
 styles, icons, groups, annotations, notes and code blocks. Structured reveal
 steps can be replayed in the focused diagram; reduced-motion viewers see the
-finished drawing. Hover or focus a noted grammar element to read its note in
-the existing slide note popover; Escape dismisses it. Bound entities and
-relationships share a light hover/focus outline and the existing evidence
-drawer. This does not create slide Items or fragment-owned landmarks for an
-ERD. Bundled icons must be authored explicitly: embedding an existing SVG does
-not add icons or infer notes from its arbitrary descriptions.
+finished drawing. Hover or focus an element to reveal the same action strip
+used by implementation slides. Its information control opens the shared note
+popover; documentation and code actions open the existing drawers. The strip
+loads metadata for the exact saved pin on demand, and code is loaded when its
+panel opens. Repeated appearances retain their own authored notes.
+
+Story actions appear only when real implementation Items pin the exact entity
+revision and have saved story links. The panel identifies those Items as the
+source of the links. An entity pin alone does not create a story relationship,
+and entity-wide links are not presented as relationship-specific evidence.
+This does not create slide Items for an ERD. Bundled icons must be authored
+explicitly: embedding an existing SVG does not add icons or infer notes from
+its arbitrary descriptions.
 
 The **Details** control starts off. Give a native entity a concise authored
 `summary` to explain its role at overview scale. The shared entity renderer uses
