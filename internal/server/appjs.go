@@ -3123,7 +3123,7 @@ const appJavaScript = `(() => {
     }
   }
 
-` + whiteboardJavaScript + `
+` + whiteboardNavigationJavaScript + whiteboardJavaScript + `
   applyDiffLayout(rememberedDiffLayout());
   // ----- The page lifecycle -----
   // The shell is loaded once per session: this script, the stylesheet, the
@@ -3139,6 +3139,7 @@ const appJavaScript = `(() => {
   const viewParams = ['view', 'mode', 'file', 'ref'];
   function pageKey(href) {
     const url = new URL(href, location.href);
+    if (url.pathname === '/technical/erd') url.searchParams.delete('focus');
     viewParams.forEach(key => url.searchParams.delete(key));
     url.searchParams.sort();
     return url.pathname + url.search;

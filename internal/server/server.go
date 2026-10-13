@@ -493,7 +493,7 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /personas", application.page)
 	page("GET /flags", application.page)
 	page("GET /design-system", application.page)
-	page("GET /technical/{kind}/{id}", application.page)
+	page("GET /technical/{kind}/{id}", application.technicalDefinitionPage)
 	page("GET /technical/{area}", application.page)
 	page("GET /technical", application.page)
 	page("GET /features/{feature}", application.page)
