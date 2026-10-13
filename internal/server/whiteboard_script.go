@@ -81,7 +81,9 @@ const whiteboardJavaScript = `
         }
         const overview = !focused && collapsed.length > 0;
         for (const node of qa('[data-visibility]', svg)) {
-          visible(node, node.dataset.visibility === 'overview' ? overview : !overview);
+          const owner = node.parentElement?.closest('[data-frame-path]');
+          const localOverview = owner ? owner.dataset.whiteboardDetail !== 'true' : overview;
+          visible(node, node.dataset.visibility === 'overview' ? localOverview : !localOverview);
         }
         q('[data-whiteboard-mode]', board).textContent = focused ? 'Focus: ' + (select.selectedOptions[0]?.textContent || focused) : collapsed.length ? 'Overview · focus a diagram for detail' : 'Detail';
         q('[data-whiteboard-fit]', board).setAttribute('aria-pressed', String(!focused && view.width === bounds.width));

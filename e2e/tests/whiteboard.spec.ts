@@ -21,7 +21,7 @@ function authorWhiteboard(saga: SagaFixture, nested = false) {
   for (const [id, entity, name] of [["sqlite", "local-edit", "Local SQLite"], ["postgres", "cloud-record", "Cloud Postgres"]]) {
     const diagram = { version: 1, width: 720, height: 440, elements: [
       { id: entity, kind: "node", shape: "entity", label: entity === "local-edit" ? "Local edit" : "Cloud record", x: 40, y: 35, width: 380, height: 145, style: "normal", source: pin("data-entity", entity), fields: [{ name: "id", type: "uuid", key: "pk" }, { name: "body", type: "text" }] },
-      { id: "local-note", kind: "annotation", shape: "bubble", label: "The saved definition explains these fields.", x: 180, y: 230, width: 470, height: 145, style: "normal", color: "blue", about: entity, source: pin("data-entity", entity) }
+      { id: "local-note", kind: "annotation", visibility: "detail", shape: "bubble", label: "The saved definition explains these fields.", x: 180, y: 230, width: 470, height: 145, style: "normal", color: "blue", about: entity, source: pin("data-entity", entity) }
     ] };
     run("erd", "add", "--id", id, "--from", file(id + ".json", { name, explanation: "Independently readable source diagram.", directory: [pin("data-entity", entity)], bindings: [{ id: entity, element: entity, entity: pin("data-entity", entity) }], diagram }), "--repo", saga.sourceRepo, saga.sagaRoot);
   }
@@ -46,7 +46,7 @@ function authorWhiteboard(saga: SagaFixture, nested = false) {
     { id: "cloud", kind: "group", label: "Shared cloud", x: 1020, y: 210, width: 720, height: 440, style: "boundary" },
     { id: "postgres", kind: "frame", parent: "cloud", label: "Cloud Postgres", summary: "Stores synchronized shared records", x: 0, y: 0, width: 720, height: 440, style: "normal", source: pin("erd", nested ? "cluster" : "postgres"), detail_scale: .85 },
     { id: "sync", kind: "connection", from: "local/local-edit", to: nested ? "cloud/postgres/records/cloud-record" : "cloud/postgres/cloud-record", bends: nested ? [{ x: 900, y: 420 }] : [], label: "synchronizes into", style: "primary", head: "arrow", label_box: { x: 775, y: 330, width: 245, height: 65 } },
-    { id: "flow-note", kind: "annotation", shape: "bubble", label: "Synchronization produces a cloud record. This flow is not a foreign key.", x: 60, y: 780, width: 580, height: 190, style: "normal", color: "blue", target: { x: 840, y: -290 } },
+    { id: "flow-note", kind: "annotation", visibility: "overview", shape: "bubble", label: "Synchronization produces a cloud record. This flow is not a foreign key.", x: 60, y: 780, width: 580, height: 190, style: "normal", color: "blue", target: { x: 840, y: -290 } },
     { id: "legacy", kind: "frame", label: "Cross-store source", summary: "Existing SVG, shown as a whole diagram", x: 760, y: 760, width: 980, height: 290, style: "normal", source: pin("erd", "legacy"), detail_scale: .85 }
   ] };
   run("diagram", "publish", "--whiteboard", "erd", "--from", file("board.json", board), "--name", "Offline and shared data", "--revision", "r1", saga.sagaRoot);
@@ -115,6 +115,13 @@ test("mixed nested detail keeps each connection on its visible semantic endpoint
   await expect(edge).toHaveAttribute("data-whiteboard-from", "local");
   await expect(edge).toHaveAttribute("data-whiteboard-to", "cloud/postgres");
   const overview = await line.getAttribute("d");
+  // Without choosing a focus, one nested frame remains collapsed while the
+  // other diagram is readable. Its local detail note follows that diagram.
+  for (let i = 0; i < 4; i++) await board.getByRole("button", { name: "Zoom in whiteboard" }).click();
+  await expect(board.locator('[data-frame-path="local"]')).toHaveAttribute("data-whiteboard-detail", "true");
+  await expect(board.locator('[data-frame-path="cloud/postgres/records"]')).toHaveAttribute("data-whiteboard-detail", "false");
+  await expect(board.locator('[data-instance-path="local/local-note"]')).toBeVisible();
+  await expect(board.locator('[data-instance-path="flow-note"]')).toBeVisible();
   await board.getByLabel("Focus diagram").selectOption("local");
   await expect(edge).toHaveAttribute("data-whiteboard-from", "local/local-edit");
   await expect(edge).toHaveAttribute("data-whiteboard-to", "cloud/postgres/records");
