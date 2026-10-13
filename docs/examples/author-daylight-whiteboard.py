@@ -294,7 +294,7 @@ def main():
     connect('current-policy', 'storage-project', 'policy-revision', 'selects current policy', 'authority-area', (705, 345, 540, 65), [], 'fk', 'cloud-project-authority', relationship='fk-2')
     connect('policy-parent', 'storage-project', 'policy-revision', 'retains policy history', 'authority-area', (670, 720, 660, 65), [(365, 690), (1605, 690)], 'fk',
             'cloud-project-authority', relationship='fk-policy-parent')
-    text('policy-directions', 'Past policies stay immutable; a Project may select a current revision.', (70, 815, 1820, 65), 'authority-area', scope='cloud-project-policy-versions')
+    text('policy-directions', 'Each Project selects one current policy; past revisions remain immutable.', (70, 815, 1820, 65), 'authority-area', scope='cloud-project-policy-versions')
     concept('membership', 'Shared Project membership', (70, 990, 700, 270), 'authority-area', 'purple',
             'cloud-shared-destinations', ['cloud-teams', 'cloud-team-members'],
             'Conceptual membership check spanning the shared destination teams and its team_members. These historical teams are not people_teams; this box is not one table.')
