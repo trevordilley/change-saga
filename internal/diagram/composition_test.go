@@ -149,6 +149,9 @@ func TestCompositionOpaqueSVGAndExplicitBindings(t *testing.T) {
 	if !strings.Contains(string(rendered), "data:image/svg+xml;base64,") || strings.Contains(string(rendered), "<script") || strings.Contains(string(rendered), `id="unbound"`) {
 		t.Fatal("SVG was not isolated")
 	}
+	if !strings.Contains(string(rendered), `<image role="img"`) {
+		t.Fatal("opaque image lacks explicit accessible role")
+	}
 	connection := Element{ID: "link", Kind: "connection", From: "legacy/bound", To: "outside", Style: "normal"}
 	board.Elements = append(board.Elements, connection)
 	binding := Binding{ID: "bound", Source: &SourceReference{Target: "data-entity:bound", Revision: "revision-1"}, Label: "Bound entity"}

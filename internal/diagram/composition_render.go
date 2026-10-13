@@ -79,7 +79,7 @@ func (r *renderer) compositionFrame(e Element, style Style, g *node) error {
 		namespaceSVG(child, "instance-"+base64.RawURLEncoding.EncodeToString([]byte(i.Path))+"-")
 		detail.children = append(detail.children, child)
 	} else {
-		detail.add("image", "width", num(source.Width), "height", num(source.Height), "preserveAspectRatio", "none", "href", "data:image/svg+xml;base64,"+base64.StdEncoding.EncodeToString(source.SVG), "aria-label", e.Label)
+		detail.add("image", "role", "img", "width", num(source.Width), "height", num(source.Height), "preserveAspectRatio", "none", "href", "data:image/svg+xml;base64,"+base64.StdEncoding.EncodeToString(source.SVG), "aria-label", e.Label)
 		// Invisible but inspectable binding regions carry provenance and focus boxes.
 		for _, b := range source.Bindings {
 			path := joinInstance(i.Path, b.ID)
