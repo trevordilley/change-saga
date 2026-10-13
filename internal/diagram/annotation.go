@@ -97,7 +97,7 @@ func validateAnnotations(d Document, e Element, byID map[string]Element) []strin
 			add("a decorative element is hidden from readers, so what it is about would never be read; remove about or make the element semantic")
 		case e.About == e.ID:
 			add("about names the element itself")
-		case !ok:
+		case !ok && !(strings.Contains(e.About, "/") && validInstancePath(e.About)):
 			add("about names unknown element %q", e.About)
 		case target.Decorative:
 			add("about names decorative element %s, which readers never see", e.About)
@@ -147,7 +147,7 @@ func validateAnnotations(d Document, e Element, byID map[string]Element) []strin
 		}
 		if e.Target != nil && (!finite(e.Target.X) || !finite(e.Target.Y)) {
 			add("target must be finite")
-		} else if len(problems) == 0 {
+		} else if len(problems) == 0 && (e.Target != nil || !strings.Contains(e.About, "/")) {
 			if _, err := pointerTip(d, e); err != nil {
 				add("%v", err)
 			}

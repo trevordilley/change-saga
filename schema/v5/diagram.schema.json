@@ -22,6 +22,17 @@
   },
   "$defs": {
     "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$"},
+    "instancePath": {"type": "string", "pattern": "^/?[A-Za-z_][A-Za-z0-9._-]{0,127}(/[A-Za-z_][A-Za-z0-9._-]{0,127})*$"},
+    "source": {
+      "type": "object", "additionalProperties": false, "required": ["target", "revision"],
+      "properties": {
+        "target": {"type": "string", "minLength": 1, "maxLength": 2048, "pattern": "^[^\\r\\n\\t]+$"},
+        "revision": {"type": "string", "minLength": 1, "maxLength": 2048, "pattern": "^[^\\r\\n\\t]+$"},
+        "element": {"type": "string", "maxLength": 2048},
+        "relationship": {"type": "string", "maxLength": 2048}
+      },
+      "not": {"required": ["element", "relationship"]}
+    },
     "terminator": {"enum": ["none", "arrow", "open", "triangle", "diamond", "filled-diamond", "circle", "dot", "bar", "one", "only-one", "zero-or-one", "many", "one-or-many", "zero-or-many"], "description": "An edge end: arrow, open, triangle (UML generalization), diamond and filled-diamond (aggregation, composition), circle, dot, bar, or an ERD crow's-foot cardinality."},
     "color": {"type": "string", "pattern": "^(#[a-fA-F0-9]{6}|none|@[a-z][a-z0-9-]{0,63})$", "description": "#rrggbb and none stay as authored; @name references a colour token of the theme contract (change-saga spec, theme), such as @diagram-primary-fill or @accent, and follows light and dark mode."},
     "point": {
@@ -54,7 +65,7 @@
       "required": ["id", "kind", "x", "y", "style"],
       "properties": {
         "id": {"allOf": [{"$ref": "#/$defs/id"}, {"not": {"pattern": "^diagram-"}}]},
-        "kind": {"enum": ["node", "edge", "text", "group", "graphic", "sticky", "annotation", "code"], "description": "A sticky is a palette-coloured square of wrapped label text; an annotation is a bubble, pin, highlight, or bracket. Describe lists both as notes about their about element."},
+        "kind": {"enum": ["node", "edge", "text", "group", "graphic", "sticky", "annotation", "code", "frame", "connection"], "description": "A sticky is a palette-coloured square of wrapped label text; an annotation is a bubble, pin, highlight, or bracket. Describe lists both as notes about their about element."},
         "shape": {"enum": ["service", "datastore", "decision", "rect", "ellipse", "boundary", "triangle", "hexagon", "parallelogram", "document", "cloud", "actor", "queue", "circle", "star", "entity", "section", "bubble", "pin", "highlight", "bracket"], "description": "Node shape; a group with rect or boundary draws a frame around its children, and with section a tinted frame whose label sits in a title tab. The node shapes after boundary center their icon, label, and detail in a text area inside the outline and default to align middle; a circle needs equal width and height, and an entity draws an ERD table of its fields. An annotation is a bubble, pin, highlight, or bracket."},
         "label": {"type": "string", "maxLength": 2000},
         "detail": {"type": "string", "maxLength": 2000},
@@ -67,7 +78,7 @@
         "style": {"$ref": "#/$defs/id"},
         "icon": {"type": "string", "pattern": "^lucide:[a-z0-9-]+$", "description": "A bundled icon; list them with change-saga diagram icons."},
         "icon_size": {"type": "number", "minimum": 0, "maximum": 256},
-        "from": {"$ref": "#/$defs/id"}, "to": {"$ref": "#/$defs/id"},
+        "from": {"$ref": "#/$defs/instancePath"}, "to": {"$ref": "#/$defs/instancePath"},
         "points": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/point"}},
         "path": {"type": "string", "pattern": "^[MmLlHhVvCcSsQqTtAaZz0-9eE.,+\\-\\s]+$"},
         "head": {"$ref": "#/$defs/terminator"},
@@ -88,16 +99,23 @@
         "from_field": {"type": "string", "minLength": 1, "maxLength": 64, "description": "The field of the from entity this edge ends on; drawing still follows the edge's explicit points or path."},
         "to_field": {"type": "string", "minLength": 1, "maxLength": 64, "description": "The field of the to entity this edge ends on."},
         "color": {"enum": ["yellow", "pink", "blue", "green", "purple", "gray"], "description": "Renderer-owned palette colour of a sticky, section, or annotation; stickies and highlights default to yellow, the rest to gray."},
-        "about": {"$ref": "#/$defs/id", "description": "The semantic element a sticky or annotation is about; describe prints it, and a bubble without a target points at its box."},
+        "about": {"$ref": "#/$defs/instancePath", "description": "The semantic element a sticky or annotation is about; describe prints it, and a bubble without a target points at its box."},
         "target": {"$ref": "#/$defs/point", "description": "Element-local point a bubble's pointer reaches; it must lie outside the bubble."},
         "side": {"enum": ["left", "right", "top", "bottom"], "description": "The side of its box a bracket's point faces."},
         "code": {"type": "string", "minLength": 1, "maxLength": 16000, "pattern": "\\S", "description": "Literal multiline source for a code element. Never executed; indentation and blank lines are preserved."},
         "language": {"type": "string", "maxLength": 64, "pattern": "^[^\\r\\n\\t]*$", "description": "Optional display label, such as go, Python, TypeScript, or HTTP."},
         "line_numbers": {"type": "boolean"},
         "highlight_lines": {"type": "array", "maxItems": 100, "uniqueItems": true, "items": {"type": "integer", "minimum": 1, "maximum": 100}},
+        "source": {"$ref": "#/$defs/source", "description": "Explicit record and pinned revision, with an optional element or relationship selector."},
+        "summary": {"type": "string", "maxLength": 2000, "description": "Authored overview explanation, drawn when frame details are collapsed."},
+        "visibility": {"enum": ["overview", "detail"], "description": "Viewer visibility metadata; semantics remain inspectable at every scale."},
+        "detail_scale": {"type": "number", "minimum": 0, "maximum": 100, "description": "Frame detail threshold in screen pixels per child unit; zero or omitted uses 0.6."},
+        "bends": {"type": "array", "maxItems": 100, "items": {"$ref": "#/$defs/point"}, "description": "Connection bends in element-local coordinates; endpoints resolve through the composed frame transforms."},
         "step": {"type": "integer", "minimum": 1, "maximum": 1000, "description": "When the element appears in the document's reveal; requires reveal. Defaults to its reading order among semantic elements; a decorative element without a step appears with its group, or from the start. Equal steps appear together, gaps cost no time, and no element appears before its group."}
       },
       "allOf": [
+        {"if": {"properties": {"kind": {"const": "frame"}}}, "then": {"required": ["source", "width", "height"], "properties": {"decorative": {"const": false}, "width": {"exclusiveMinimum": 0}, "height": {"exclusiveMinimum": 0}, "source": {"not": {"anyOf": [{"required": ["element"]}, {"required": ["relationship"]}]}}}}},
+        {"if": {"properties": {"kind": {"const": "connection"}}}, "then": {"required": ["from", "to"], "not": {"anyOf": [{"required": ["points"]}, {"required": ["path"]}]}}, "else": {"not": {"required": ["bends"]}}},
         {"if": {"properties": {"kind": {"const": "code"}}, "required": ["kind"]},
          "then": {"required": ["code", "width", "height"], "properties": {"width": {"exclusiveMinimum": 0}, "height": {"exclusiveMinimum": 0}, "wrap": {"const": false}, "align": {"const": "start"}}, "not": {"anyOf": [{"required": ["shape"]}, {"required": ["detail"]}, {"required": ["label_box"]}]}},
          "else": {"not": {"anyOf": [{"required": ["code"]}, {"required": ["language"]}, {"required": ["line_numbers"]}, {"required": ["highlight_lines"]}]}}}

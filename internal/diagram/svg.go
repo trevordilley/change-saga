@@ -33,7 +33,15 @@ func (n *node) add(tag string, attrs ...string) *node {
 	return child
 }
 
-func (n *node) set(name, value string) { n.attrs = append(n.attrs, [2]string{name, value}) }
+func (n *node) set(name, value string) {
+	for i, a := range n.attrs {
+		if a[0] == name {
+			n.attrs[i][1] = value
+			return
+		}
+	}
+	n.attrs = append(n.attrs, [2]string{name, value})
+}
 
 func (n *node) write(w *bytes.Buffer, depth int) {
 	indent := strings.Repeat("  ", depth)
