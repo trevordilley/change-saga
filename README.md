@@ -23,8 +23,8 @@ Change Saga uses three complementary presentation forms:
 
 [Whiteboards](docs/whiteboards.md) bring the existing diagram grammar, visual
 styles and annotation interactions to designs that need more room than a slide.
-ERDs are the first supported application; infrastructure and system design are
-intended applications of the same presentation form.
+Use independent named documents for data models, infrastructure topology or
+system design. Every whiteboard uses the same shared diagram grammar.
 
 ## Install
 
@@ -57,14 +57,16 @@ Existing ERD revisions remain readable and can be reused as optional source mate
 Publish and inspect a complete `board.json` through the whiteboard API:
 
 ```sh
-change-saga whiteboard publish --kind erd --revision r1 --from board.json change.saga
-change-saga whiteboard describe --kind erd change.saga
-change-saga whiteboard get --kind erd --revision r1 change.saga
-change-saga whiteboard check --kind erd change.saga
+change-saga whiteboard publish --id data-model --revision r1 --from board.json change.saga
+change-saga whiteboard describe --id data-model change.saga
+change-saga whiteboard get --id data-model --revision r1 change.saga
+change-saga whiteboard check --id data-model change.saga
 ```
 
-`erd` is the only supported kind. The earlier `diagram … --whiteboard erd`
-spelling remains available as a compatibility alias.
+`--id` selects the document; `--focus` selects an element within it. Named boards
+open at `/technical/whiteboards/<id>`. The Data model page at `/technical/erd`
+uses `data-model` by convention. Source references currently support exact ERD
+and data-entity pins, plus ERD imports; component and system pins are not supported.
 
 ## Start with a review
 

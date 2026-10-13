@@ -1,9 +1,9 @@
 # Existing ERD source documents
 
-For new technical design authoring, use [one cohesive ERD whiteboard](erd-whiteboard-guide.md).
+For new data-model authoring, use [one cohesive ERD whiteboard](erd-whiteboard-guide.md).
 This guide covers independently revisioned ERD source records and the reading
-experience when no whiteboard is present. Existing records remain useful as
-optional imports and evidence; readers need not navigate a collection of them
+experience when no `data-model` whiteboard is present. Existing records remain
+useful as optional imports and evidence; readers need not navigate a collection of them
 to understand the whiteboard.
 
 Separate named ERD records can describe different concerns. A local SQLite database,
@@ -66,7 +66,7 @@ change-saga query inventory --saga change.saga --target <erd-URN> --history
 record page and filters. Use the returned target rather than assuming a fragment
 ID. The fragment query supplies bounded content using its existing pagination.
 
-Without a whiteboard, the Data model page at `/technical/erd` shows the overview,
+Without a `data-model` whiteboard, the Data model page at `/technical/erd` shows the overview,
 equal document links, proposed overlays, and the entity directory. Documents come before entities in
 the sidebar. A single unambiguous active ERD also renders inline; with multiple
 ERDs no document is automatically elevated. Each document retains its canonical

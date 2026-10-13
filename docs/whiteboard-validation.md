@@ -5,6 +5,11 @@ worktrees followed by manager integration and independent review. Local previews
 use copied Sagas; source repositories are read-only. A final SHA-256 comparison
 of all 2,816 original DayLight Saga files found no changes.
 
+This records the data-model implementation and measurements before the named
+document API replaced the unreleased ERD-only selector. It does not validate the
+later multi-document CLI or routes; use the [current guide](whiteboards.md) for
+that contract. Historical commands below are not compatibility aliases.
+
 ## One native document
 
 The native storage regression publishes nested sections, entities and a recorded
@@ -73,9 +78,9 @@ scoped to their own pins. No member stories are rolled up or Item records
 fabricated. A fresh browser observed zero annotation requests before interaction.
 
 Stored descriptions were checked against the authored hierarchy using the
-then-current `diagram describe --whiteboard erd --focus PATH` spelling, retained
-as a compatibility alias. The primary command is now
-`whiteboard describe --kind erd --focus PATH`:
+then-current `diagram describe --whiteboard erd --focus PATH` spelling. This is
+a historical test record; that unreleased command spelling has been removed.
+The current command is `whiteboard describe --id data-model --focus PATH`:
 
 | Area | Members | Incident connections |
 | --- | ---: | ---: |

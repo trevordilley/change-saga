@@ -10,7 +10,7 @@ review deck → reconcile living documentation → check again workflow.
 
 | | |
 | --- | --- |
-| [whiteboards.md](whiteboards.md) | Whiteboards as a technical-design visualization alongside essays and slide decks; ERDs are the first supported application. |
+| [whiteboards.md](whiteboards.md) | Independent named whiteboards for data models, infrastructure and system design, using one shared diagram grammar. |
 | [erd-whiteboard-guide.md](erd-whiteboard-guide.md) | Current ERD whiteboard authoring, shared grammar, source evidence, immutable revisions and focused inspection. |
 | [code-examples.md](code-examples.md) | Author API and library usage examples as measured code elements inside visual slides. |
 | [deck-overview.md](deck-overview.md) | Current deck Overview, Front/Back, evidence citations, Viewed state, and compatibility guide. |

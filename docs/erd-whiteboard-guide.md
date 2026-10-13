@@ -1,9 +1,11 @@
 # Authoring an ERD whiteboard
 
-ERDs are the first implemented application of [whiteboards for technical design](whiteboards.md).
+Data models are one application of [named whiteboards for technical design](whiteboards.md).
 
-The ERD whiteboard is the system's **one data-model document**. Author its
-entities, relationships, nested sections and explanations directly using the
+Use the document ID `data-model` for the system's **one data-model explanation**.
+It is a named whiteboard using the same grammar as infrastructure and system-design
+documents, not a special board kind. Author its entities, relationships, nested
+sections and explanations directly using the
 existing diagram grammar. Importing exact ERD revisions is optional and useful
 for migrating existing artwork; separate ERD documents are not a prerequisite.
 
@@ -28,8 +30,9 @@ zooms around the pointer; the toolbar and keyboard controls remain available.
 ## Revision policy
 
 Publishing the complete document creates an immutable JSON revision under
-`___whiteboards/erd/revisions/`. Depicted entities and relationships use exact
-source pins. Every optional imported frame also names an exact `target` and
+`___whiteboards/data-model/revisions/`. Other document IDs have their own
+independent revision directories and histories. Depicted entities and relationships
+use exact source pins. Every optional imported frame also names an exact `target` and
 `revision`.
 An update names the current board revision as its parent. A board never follows
 the latest revision of a child implicitly: adopting a revised ERD means changing
@@ -50,19 +53,25 @@ instance paths. Optional `frame` elements import existing ERD content. Publish
 the one document with:
 
 ```sh
-change-saga whiteboard publish --kind erd --revision r1 \
+change-saga whiteboard publish --id data-model --revision r1 \
   --name "Application data" --from board.json change.saga
-change-saga whiteboard describe --kind erd change.saga
-change-saga whiteboard describe --kind erd \
+change-saga whiteboard describe --id data-model change.saga
+change-saga whiteboard describe --id data-model \
   --focus cloud/identity/organization change.saga
-change-saga whiteboard get --kind erd --revision r1 change.saga
-change-saga whiteboard check --kind erd change.saga
+change-saga whiteboard get --id data-model --revision r1 change.saga
+change-saga whiteboard check --id data-model change.saga
 ```
 
-`change-saga whiteboard` is the primary API, and `--kind erd` is required;
-ERD is the only supported kind. The earlier `diagram publish|get|describe|check
---whiteboard erd` commands remain compatibility aliases with the same behavior
-and options. Both spellings read and publish the same immutable revisions.
+`--id` always selects the named document, including on `get`. Use `--focus PATH`
+to select an element within it. There is no kind selector or `diagram` command
+alias. This example opens at `/technical/whiteboards/data-model`; the existing
+Data model page at `/technical/erd` also selects `data-model` by convention.
+Other named documents open at `/technical/whiteboards/<id>`.
+
+Source adapters currently support exact ERD and data-entity revisions and ERD
+imports. Component and system inventory pins are not supported sources, even
+when the board explains infrastructure or system design. Existing feature
+`___design` fragments are not automatically converted to whiteboards.
 
 For a subsequent revision, add `--parent r1` and choose a new revision ID.
 The `--revision` option on reading commands selects historical board content.
@@ -71,6 +80,11 @@ current revision. Structured `describe` preserves focused instance paths,
 fields, semantic endpoints and exact source pins. The current whiteboard CLI
 supports whole-document `publish`, `get`, `describe` and `check`; it does not yet
 support the slide diagram transaction-based `edit` command.
+
+`whiteboard check --id data-model` checks only that document's history and current
+composition. Use `change-saga validate change.saga` to validate every named board.
+A Saga can contain at most 10,000 whiteboards, each with at most 10,000 revisions;
+each revision is limited to 1 MiB.
 
 ## Native sections and relationships
 

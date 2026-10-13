@@ -43,7 +43,7 @@ one Saga is neither invalid nor reported as a problem.
   ___personas/<id>.persona/    # who the application serves
   ___featureflags/<id>.flag/   # flags and the stories or features they gate
   ___onboarding/<id>.deck/     # a deck that explains the application
-  ___whiteboards/erd/revisions/<id>.json  # optional immutable data-model document
+  ___whiteboards/<board-id>/revisions/<revision-id>.json  # optional named whiteboards
   ___features/<id>.feature/
     feature.json
     <report content>           # chapters, sections, fragments
@@ -318,7 +318,7 @@ relationship pins remain in ERD records. `query inventory` exposes the app-wide
 independently of inventory filters and pagination; `query fragment --target URN`
 and `query history --node URN` read its content and Git history.
 
-Without a whiteboard, the viewer's `/technical/erd` page shows shared prose and
+Without a `data-model` whiteboard, the viewer's `/technical/erd` page shows shared prose and
 equal ERD document links, followed by overlays and data entities. Documents precede entities in
 sidebar navigation. One unambiguous active ERD may additionally render inline;
 multiple ERDs never select a primary by ID or ordering. Every document keeps
@@ -359,24 +359,29 @@ revision rules above. See the
 
 Whiteboards are a spatial presentation form alongside long-form product essays
 and implementation/review slide decks. They compose one technical-design
-document from nested sections, diagrams, relationships and annotations. The
-current implementation supports **one ERD whiteboard per Saga**; infrastructure
-and system-design whiteboards are intended applications, not supported kinds.
+document from nested sections, diagrams, relationships and annotations. A Saga
+can contain independent named whiteboards. Data models (ERDs), infrastructure
+topology and system design are authoring applications of the same shared grammar,
+not whiteboard types. There is no kind discriminator.
 This adds no inventory kind, entity holder semantics or slide Item ownership.
 
 **Storage and publication.** The optional root
-`___whiteboards/erd/revisions/<id>.json` contains complete immutable snapshots
-validated by [whiteboard-revision.schema.json](schema/v5/whiteboard-revision.schema.json).
+`___whiteboards/<board-id>/revisions/<revision-id>.json` contains complete
+immutable snapshots validated by [whiteboard-revision.schema.json](schema/v5/whiteboard-revision.schema.json).
 Each record contains `$schema`, `version: 1`, `id`, `parents`, `name`, `document`
 and `created_at`. `document` uses the shared
-[diagram schema](schema/v5/diagram.schema.json). The filename matches the revision
-ID. `parents` is empty for the root and contains one board revision ID for an
-update. History must be acyclic with one root; reading the current board requires
+[diagram schema](schema/v5/diagram.schema.json). The containing directory names
+the whiteboard; the filename and record `id` identify its revision. Each document
+has its own history. `parents` is empty for the root and contains one revision ID
+from the same whiteboard for an update. History must be acyclic with one root;
+reading the current board requires
 one unambiguous head. Directories must be real directories and revision files
-regular JSON files. Each revision is limited to 1 MiB; a board may have at most
-10,000 revisions. No other whiteboard kind is accepted.
+regular JSON files. A Saga may have at most 10,000 named whiteboards. Each board
+may have at most 10,000 revisions, and each revision is limited to 1 MiB.
+Every named document must satisfy the whiteboard revision and
+diagram JSON contracts; a document name does not select a different schema.
 
-`whiteboard publish --kind erd --revision ID [--parent ID] [--name TITLE]
+`whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE]
 --from FILE|- PATH` validates and publishes the complete diagram under the Saga
 write lock. A new update requires the current head as its parent. Repeating an
 identical publication is idempotent; changing content under an existing revision
@@ -389,6 +394,8 @@ optional frames embed ERD revisions. Source references have exact `target` and
 `revision` pins, with optional `element` or `relationship` selectors. Supported
 source kinds are ERDs and data entities; a relationship selector names a
 relationship owned by the pinned data-entity revision. Frames pin a whole ERD.
+Component and system inventory pins are not supported source adapters; authoring
+an infrastructure or system-design document does not add those adapters.
 Sources never resolve implicitly to a newer revision. Adopting new source
 revisions requires publishing a new board snapshot. Existing ERD revisions and
 assets remain readable.
@@ -400,27 +407,28 @@ connection context. Opaque SVG imports render as whole diagrams; explicit source
 bindings can support inspection, but internal targeting requires recorded bounds.
 No internal structure is inferred from SVG artwork.
 
-**Reading and validation.** `whiteboard get|describe|check --kind erd PATH`
-reads the current board; `--revision ID` selects history. `get` returns the source
+**Reading and validation.** `whiteboard get|describe|check --id ID PATH`
+reads the named board; `--revision ID` selects its history. `get` returns the source
 document, while `get` or `describe` with `--focus PATH` describes a particular
 appearance and its context. `describe --format json` provides structured output.
-`check` without a revision validates the complete board history and resolves the
-current composition. The viewer at `/technical/erd` presents the board as one
-Data model document, with pan, zoom, fit, focus and shared annotation actions for
-source inspection. Whiteboard sources do not supply slide or review line coverage.
+`check` without a revision validates only the selected board's complete history
+and resolves its current composition. `change-saga validate PATH` validates all
+named whiteboards in the Saga. `--id` always identifies the document, including on `get`;
+`--focus PATH` selects an element appearance. There is no kind selector or
+`diagram` whiteboard command alias.
 
-**CLI compatibility.** `change-saga whiteboard publish|get|describe|check --kind erd`
-is the primary API. The earlier `change-saga diagram publish|get|describe|check
---whiteboard erd` commands remain compatibility aliases with the same publication,
-inspection and validation behavior. The command spelling does not change the
-document schema, renderer, revision storage or supported kinds; only `erd` is
-accepted.
+The reader at `/technical/whiteboards/<id>` presents each named document with
+pan, zoom, fit, focus and shared annotation actions for source inspection.
+The existing Data model page at `/technical/erd` selects document ID `data-model`
+by convention; other boards do not replace the data-model source directory.
+Whiteboard sources do not supply slide or review line coverage.
 
 **Storage compatibility.** The optional subtree extends v5 without changing the
 manifest or inventory format version. Current readers accept Sagas without whiteboards.
 Older readers reject an adopted `___whiteboards` root as an unknown reserved
 directory, including during server startup; upgrade readers before publishing.
-There is no automatic migration. See the
+There is no automatic migration of existing feature `___design` fragments or
+older ERD records into whiteboards. See the
 [ERD whiteboard guide](docs/erd-whiteboard-guide.md) for authoring and viewer details.
 
 ### V5 identities and quality records

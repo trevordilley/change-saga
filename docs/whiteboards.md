@@ -10,24 +10,42 @@ complement the other presentation forms rather than replacing their contracts.
 | Slide decks | Technical implementation and code reviews | Follow a guided sequence of explanations and inspect exact evidence. |
 | Whiteboards | Technical design | Explore a connected model through sections, relationships, pan, zoom and evidence. |
 
-The intended applications are data models (ERDs), infrastructure topology and
+Applications include data models (ERDs), infrastructure topology and
 system designs. Each design is one comprehensive explanatory document, with
 smaller diagrams composed into its sections. It is not constrained to one slide
 or a single screen. This is a presentation form, not a new inventory kind.
 
-**Current implementation: ERD whiteboards.** The
-[authoring guide](erd-whiteboard-guide.md) describes the implemented grammar,
-revision policy and viewer. The primary CLI is `change-saga whiteboard
-publish|get|describe|check --kind erd`; `erd` is the only supported kind.
-The earlier `diagram … --whiteboard erd` spelling remains a compatibility alias.
-Source pins resolve ERDs and data entities. Infrastructure and system design
-are intended applications; their whiteboard commands, source kinds and viewer
-routes are not implemented by this change. Shared visual shapes alone do not
-provide those integrations.
+## Named documents
+
+A Saga can hold several independent whiteboards. Each has a document ID, title
+and immutable revision history. All use the same shared diagram grammar and
+whiteboard JSON contract; data models, infrastructure and system design are
+authoring subjects, not kinds. Use `change-saga whiteboard
+publish|get|describe|check --id ID`. For example, publish separate documents:
+
+```sh
+change-saga whiteboard publish --id data-model --revision r1 \
+  --name "Application data" --from data-model.json change.saga
+change-saga whiteboard publish --id deployment --revision r1 \
+  --name "Deployment topology" --from deployment.json change.saga
+```
+
+The files contain complete diagram documents. Each board is stored under
+`___whiteboards/<board-id>/revisions/<revision-id>.json` and opens at
+`/technical/whiteboards/<id>`. `--id` always names the document; `--focus PATH`
+selects an element inside it. There is no kind selector or `diagram` command alias.
+The existing Data model page at `/technical/erd` uses `data-model` by convention.
+
+The [data-model authoring guide](erd-whiteboard-guide.md) gives a worked example
+of the shared grammar, revision policy and viewer. Current source adapters resolve
+exact ERD and data-entity pins and import ERD frames. Component and system inventory
+pins are not supported, regardless of the subject or name of the whiteboard.
+Existing feature `___design` fragments are not automatically migrated.
 
 ## First application: one data-model document
 
-The system has **one ERD document**, expressed on a large, zoomable whiteboard.
+Use the `data-model` document for **one cohesive explanation of the data model**,
+expressed on a large, zoomable whiteboard.
 It explains the system data model through selected entities, relationships,
 meaningful sections, narrative, annotations and evidence. It is one cohesive
 explanation with room to spread out. Its size is determined by what makes the model readable,
@@ -124,7 +142,7 @@ it appears near another element, and a slide Item’s links retain that provenan
 Repeated appearances remain allowed and have distinct instance paths while
 sharing the same underlying source identity.
 
-Publishing creates a complete immutable revision of the one whiteboard document.
+Publishing creates a complete immutable revision of the selected whiteboard document.
 If an imported frame changes, adopting a different child revision is an explicit
 edit and publication; historical boards never silently follow new source heads.
 Older ERDs and revisions remain readable for compatibility. No holder semantics
@@ -132,13 +150,13 @@ or inventory kinds are changed.
 
 ## Inspection and viewer behavior
 
-`whiteboard describe --kind erd` provides meaningful structured inspection of the
+`whiteboard describe --id data-model` provides meaningful structured inspection of the
 whole model, a section, entity, connection or imported region, including source references:
 
 ```sh
-change-saga whiteboard describe --kind erd change.saga
-change-saga whiteboard describe --kind erd --focus cloud/identity change.saga
-change-saga whiteboard describe --kind erd --focus cloud/identity/organization change.saga
+change-saga whiteboard describe --id data-model change.saga
+change-saga whiteboard describe --id data-model --focus cloud/identity change.saga
+change-saga whiteboard describe --id data-model --focus cloud/identity/organization change.saga
 ```
 
 Pan, zoom, fit and focus keep readers in the same document. Focus URLs and browser

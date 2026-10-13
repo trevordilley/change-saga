@@ -1,7 +1,7 @@
 # Diagrams, narrative, and exact evidence
 
 Read this reference when the task creates or changes a feature implementation
-deck, pull-request review deck, ERD whiteboard, narrative fragment, landmark, code evidence,
+deck, pull-request review deck, whiteboard, narrative fragment, landmark, code evidence,
 claim, or verification. Read [query.md](query.md) first when a Saga already
 exists. Use `change-saga --help`, command `-h`, and `change-saga spec --json`
 for current syntax.
@@ -10,10 +10,10 @@ for current syntax.
 
 Use long-form essays for Product overviews, features and user stories; slide
 decks for technical implementation and code reviews; and whiteboards for spatial
-technical design. Whiteboards are one cohesive document with nested sections and
+technical design. Each whiteboard is a named document with nested sections and
 cross-section relationships, authored with the same diagram grammar and visual
-language as slides. ERDs are currently supported; infrastructure and system
-design are intended applications, not available whiteboard kinds.
+language as slides. Data models, infrastructure and system design are authoring
+subjects, not board kinds. A Saga can have multiple independent whiteboards.
 
 Every deck has a Deck -> Slide -> Item spine. A feature's single living
 implementation deck explains the domain's current implementation. Update its
@@ -52,28 +52,35 @@ default container. A substantial chapter should lead with a diagram,
 interactive walkthrough, or concrete before/after example and state its
 boundary, invariants, decisions, risks, compatibility concerns, and proof.
 
-## ERD whiteboards
+## Named whiteboards
 
-Author one system data-model document with native groups, shapes, text,
+Author each technical-design document with native groups, shapes, text,
 annotations and connections. Layout, color, large overview text and callouts
-should explain selected concepts; a complete table or column inventory is not
-required. Pin what is depicted to exact ERD or data-entity revisions, including
-relationship IDs for recorded associations. Distinguish conceptual flows from
-recorded relationships and use declared crow's-foot cardinalities. Existing ERD
-frames are optional imports. Infrastructure/System inventory pins are not
+should explain selected concepts. For data-model diagrams, a complete table or
+column inventory is not required. Pin depicted data entities and recorded
+associations to exact source revisions, including relationship IDs. Distinguish
+conceptual flows from recorded relationships and use declared crow's-foot
+cardinalities. Existing ERD frames are optional imports. Component and system inventory pins are not
 supported whiteboard sources.
 
-Use `change-saga whiteboard publish --kind erd --revision r1 --from board.json PATH`
+Use `change-saga whiteboard publish --id ID --revision r1 --name TITLE --from board.json PATH`
 for the complete document. Subsequent publications require `--parent` naming
 the current board revision; source adoption is explicit. Use `whiteboard describe
---kind erd [--revision ID] [--focus PATH] --format json PATH`, `whiteboard get
---kind erd [--revision ID] PATH` and `whiteboard check --kind erd PATH` to inspect
-and validate it. `erd` is the only supported kind. The earlier `diagram
-publish|get|describe|check --whiteboard erd` commands remain compatibility aliases;
-prefer the first-class `whiteboard` commands for new authoring. The whiteboard
-has no `diagram edit` transaction; it uses immutable complete publications. Distinct instance
-paths identify repeated appearances. Opaque imported SVGs remain whole diagrams;
-do not infer internal geometry or fabricate slide Items for them.
+--id ID [--revision ID] [--focus PATH] --format json PATH`, `whiteboard get
+--id ID [--revision ID] [--focus PATH] PATH` and `whiteboard check --id ID PATH`
+to inspect and validate it. `--id` always selects the document; `--focus` selects
+an element inside it. There is no kind selector or `diagram` command alias.
+A whiteboard has no `diagram edit` transaction; it uses immutable complete
+publications. Distinct instance paths identify repeated appearances. Opaque
+imported SVGs remain whole diagrams; do not infer internal geometry or fabricate
+slide Items for them.
+
+Revisions live at `___whiteboards/<board-id>/revisions/<revision-id>.json`;
+each document has independent history and must satisfy the shared whiteboard
+JSON contract. Read it at `/technical/whiteboards/<id>`. Use `data-model` for
+the document shown by convention at `/technical/erd`; other names can explain
+other designs without changing the supported source adapters. Existing feature
+`___design` fragments are not automatically migrated.
 
 The viewer reuses slide annotation actions where applicable to reach source
 code, stories and documentation. Whiteboard pins do not transfer slide/review
