@@ -523,6 +523,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /theme", application.themePreview)
 	handle("GET /theme/diagram.svg", application.themePreviewDiagram)
 	handle("GET /api/documentation", application.documentationPage)
+	handle("GET /api/diagram-annotation", application.diagramAnnotation)
 	handle("GET /api/technical-usages", application.technicalUsagesPage)
 	handle("GET /api/code", application.codePage)
 	handle("GET /api/coverage", application.coveragePage)
@@ -988,7 +989,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 }
 
 // pageTemplateSource is every template the reviewer renders with.
-var pageTemplateSource = pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + technicalERDTemplates + technicalSelectionTemplates
+var pageTemplateSource = pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + diagramAnnotationTemplates + technicalERDTemplates + technicalSelectionTemplates
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.

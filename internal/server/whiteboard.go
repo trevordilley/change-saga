@@ -25,6 +25,12 @@ type whiteboardView struct {
 	Note           string
 	Frames         []whiteboardFrameView
 	Sections       []whiteboardSectionView
+	Notes          []whiteboardNoteView
+}
+
+type whiteboardNoteView struct {
+	Path    string
+	Popover notePopoverView
 }
 
 // Sections are authored regions of this document, not inventory definitions.
@@ -43,6 +49,7 @@ type whiteboardFrameView struct {
 type whiteboardGeometry struct {
 	Path      string            `json:"path"`
 	Bounds    *diagram.Box      `json:"bounds,omitempty"`
+	LabelBox  *diagram.Box      `json:"label_box,omitempty"`
 	Transform diagram.Transform `json:"transform"`
 	Bends     []diagram.Point   `json:"bends,omitempty"`
 	Curve     string            `json:"curve,omitempty"`
@@ -74,7 +81,10 @@ func (a *app) makeWhiteboardView(inventory requirements.Inventory) *whiteboardVi
 	}
 	geometry := []whiteboardGeometry{}
 	for _, item := range append(description.Elements, description.Connections...) {
-		geometry = append(geometry, whiteboardGeometry{Path: item.Path, Bounds: item.Bounds, Transform: item.Transform, Bends: item.Element.Bends, Curve: item.Element.Curve})
+		if item.Element.Note != "" && !item.Element.Decorative {
+			view.Notes = append(view.Notes, whiteboardNoteView{Path: item.Path, Popover: notePopoverView{Label: diagram.AccessibleName(item.Element), Note: markdownWithAnchors(item.Element.Note, "whiteboard-note-"+domID(item.Path))}})
+		}
+		geometry = append(geometry, whiteboardGeometry{Path: item.Path, Bounds: item.Bounds, LabelBox: item.Element.LabelBox, Transform: item.Transform, Bends: item.Element.Bends, Curve: item.Element.Curve})
 	}
 	metadata, _ := json.Marshal(geometry)
 	view.Metadata = string(metadata)
@@ -247,7 +257,7 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 const whiteboardTemplates = `
 {{define "erd-whiteboard"}}{{$model := .}}{{with .Whiteboard}}
 <section class="whiteboard whiteboard-canvas" data-whiteboard-view data-technical-page="erd" data-technical-data-model aria-label="Data model whiteboard">
-<div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}">{{range .Sections}}<span data-whiteboard-section="{{.Path}}"></span>{{end}}</div>
+<div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}">{{range .Sections}}<span data-whiteboard-section="{{.Path}}"></span>{{end}}{{range .Notes}}<template data-diagram-note-template="{{.Path}}">{{template "element-note-popover" .Popover}}</template>{{end}}</div>
 <div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Data model whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
 <header class="whiteboard-heading whiteboard-overlay">
 <h1>{{if .Name}}{{.Name}}{{else}}Data model{{end}}</h1>
@@ -277,7 +287,6 @@ const whiteboardTemplates = `
 </li>{{end}}</ul>
 
 </div></details>{{end}}
-<p class="whiteboard-inspection whiteboard-overlay" data-whiteboard-inspection role="status" hidden></p>
 </section>{{end}}{{end}}
 `
 
@@ -329,8 +338,7 @@ body:has(#view-saga.active .whiteboard-canvas)>.topbar{display:none}
 .whiteboard-sources li p{margin:5px 0;color:var(--muted)}
 .whiteboard-sources .app-page-section{margin-top:18px}
 .whiteboard-selected-relationship{outline:2px solid var(--accent);outline-offset:3px}
-.whiteboard-inspection{bottom:88px;left:20px;max-width:min(620px,calc(100% - 40px));max-height:25%;overflow:auto;padding:10px 14px;margin:0;overflow-wrap:anywhere}
-@media(max-width:1200px){.whiteboard-sources{top:auto;bottom:88px}.whiteboard-sources-body{max-height:calc(100dvh - 240px)}.whiteboard-toolbar [data-whiteboard-mode]{display:none}.whiteboard-inspection{bottom:138px}}
+@media(max-width:1200px){.whiteboard-sources{top:auto;bottom:88px}.whiteboard-sources-body{max-height:calc(100dvh - 240px)}.whiteboard-toolbar [data-whiteboard-mode]{display:none}}
 @media(max-width:760px){
 .shell:has(#view-saga.active .whiteboard-canvas){grid-template-columns:min(190px,30vw) minmax(0,1fr)}
 .whiteboard-heading{top:12px;left:12px;max-width:calc(100% - 24px);padding:10px 12px}
@@ -340,6 +348,5 @@ body:has(#view-saga.active .whiteboard-canvas)>.topbar{display:none}
 .whiteboard-toolbar select{max-width:100%;width:0}
 .whiteboard-toolbar button{min-height:44px}
 .whiteboard-sources{bottom:136px;right:12px;max-width:calc(100% - 24px)}
-.whiteboard-inspection{bottom:196px;left:12px;max-width:calc(100% - 24px)}
 }
 `

@@ -90,7 +90,9 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(connection).toHaveAttribute("data-from", "local/local-edit");
   await expect(connection).toHaveAttribute("data-whiteboard-connection-mode", "overview");
   await connection.focus(); await page.keyboard.press("Enter");
-  await expect(board.locator("[data-whiteboard-inspection]")).toContainText("Delivery follows a saved generation.");
+  await page.locator(".diagram-affordance .element-note-trigger").click();
+  await expect(page.locator("#element-note-popover")).toContainText("Delivery follows a saved generation.");
+  await page.keyboard.press("Escape");
   await page.screenshot({ path: testInfo.outputPath("whiteboard-overview.png") });
   await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
   // The embedded ERD itself is the overview focus target, not a separate page.
@@ -101,7 +103,7 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(page.locator(".diff-drawer")).not.toHaveClass(/open/);
   await board.getByRole("button", { name: "Fit board" }).click();
   await connection.focus(); await page.keyboard.press("Enter");
-  await expect(board.locator("[data-whiteboard-inspection]")).toContainText("local/local-edit → cloud/postgres/cloud-record");
+  await expect(page.locator(".diagram-affordance .element-note-trigger")).toBeVisible();
   await board.getByLabel("Focus section").focus();
   await board.getByLabel("Focus section").selectOption("local");
   await expect(local).toHaveAttribute("data-whiteboard-detail", "true");
@@ -251,8 +253,9 @@ test("authored opening camera, fields and renderer reveal stay separate from ful
   expect(await board.locator('[data-reveal-step]').evaluateAll(nodes => nodes.some(node => node.getAnimations().length > 0))).toBe(true);
   await board.locator('[data-whiteboard-fields]').click();
   await expect(fields.first()).toBeHidden();
-  await board.locator('[data-instance-path="local/local-note"]').click();
-  await expect(board.locator('[data-whiteboard-inspection]')).toContainText("source model keeps this note");
+  await board.locator('[data-instance-path="local/local-note"]').hover();
+  await page.locator(".diagram-affordance .element-note-trigger").click();
+  await expect(page.locator("#element-note-popover")).toContainText("source model keeps this note");
 });
 
 
@@ -275,14 +278,16 @@ test("offscreen diagrams restore on focus while camera updates batch without scr
   await expect(entity).toHaveClass(/diagram-interaction-active/);
   const note = board.locator('[data-instance-path="local/local-note"]');
   await note.hover();
+  await page.locator('.diagram-affordance .element-note-trigger').click();
   await expect(page.locator('#element-note-popover')).toContainText('source model keeps this note');
   await page.keyboard.press('Escape');
   await expect(page.locator('#element-note-popover')).toBeHidden();
   await entity.hover();
   await viewport.focus();
   await note.hover();
+  await page.locator('.diagram-affordance .element-note-trigger').click();
   await expect(page.locator('#element-note-popover')).toBeVisible();
-  await page.keyboard.press('ArrowRight');
+  await viewport.dispatchEvent('keydown',{key:'ArrowRight',bubbles:true});
   await expect(page.locator('#element-note-popover')).toBeHidden();
   await expect(note).not.toHaveClass(/diagram-interaction-active/);
   await entity.focus();

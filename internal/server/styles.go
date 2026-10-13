@@ -592,6 +592,7 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .element-note-label{font-weight:600}.element-note-description{color:var(--muted)}
 .element-note-body{padding-left:8px;border-left:3px solid var(--amber)}
 /* Inline diagrams share the note surface and use a paint-only focus affordance. */
+.diagram-affordance{position:fixed;z-index:55;display:flex;align-items:center;gap:3px;min-height:28px}.diagram-affordance[hidden]{display:none}.diagram-affordance>.landmark-affordance{opacity:1}.diagram-affordance>.element-note-trigger{position:static;opacity:1;flex:none}.diagram-affordance[aria-busy=true]::after{content:'…';padding:4px;background:var(--bg);color:var(--muted)}
 .diagram-interaction{cursor:pointer}
 .diagram-interaction-active,.diagram-interaction:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 [data-whiteboard-interacting="true"] .diagram-interaction{outline:none}

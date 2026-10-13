@@ -1670,6 +1670,7 @@ const appJavaScript = `(() => {
   }
 
   function showDrawer(opener) {
+    opener = diagramAffordanceOwner(opener);
     hideNote();
     // A bound ERD element is an SVGElement; it takes focus like a button.
     drawerOpener = (opener instanceof HTMLElement || opener instanceof SVGElement) && opener.isConnected

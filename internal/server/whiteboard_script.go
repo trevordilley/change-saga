@@ -32,7 +32,6 @@ const whiteboardJavaScript = `
       }
       const select = q('[data-whiteboard-focus]', board);
       const level = q('[data-whiteboard-level]', board);
-      const inspection = q('[data-whiteboard-inspection]', board);
       const evidence = q('[data-whiteboard-toolbar] [data-whiteboard-evidence]', board);
       const rows = new Map(frameRows.map(row => [row.dataset.whiteboardFrame,row]));
       const rowFor = path => rows.get(path);
@@ -272,12 +271,12 @@ const whiteboardJavaScript = `
       }
       function fit() {
         stopMotion();
-        atStart = false; fitted = true; view = fitBox(bounds); focused = ''; select.value = ''; inspection.hidden = true; paint();
+        atStart = false; fitted = true; view = fitBox(bounds); focused = ''; select.value = ''; paint();
         board.dispatchEvent(new CustomEvent('whiteboard:focus', {detail:{path:'', fitted:Boolean(openingJSON)}}));
       }
       function home() {
         stopMotion();
-        atStart = true; fitted = !openingJSON; view = fitBox(opening); focused = ''; select.value = ''; inspection.hidden = true; paint();
+        atStart = true; fitted = !openingJSON; view = fitBox(opening); focused = ''; select.value = ''; paint();
         board.dispatchEvent(new CustomEvent('whiteboard:focus', {detail:{path:''}}));
       }
       function focus(path, fitAll = false) {
@@ -378,20 +377,8 @@ const whiteboardJavaScript = `
         if (node.hasAttribute('data-frame-path') || sections.has(node.dataset.instancePath)) {
           event.preventDefault(); event.stopPropagation(); focus(node.dataset.instancePath); return;
         }
-        const note = q(':scope > desc', node)?.textContent || q(':scope > title', node)?.textContent;
-        if (note) { inspection.textContent = (node.getAttribute('aria-label') || '') + ' · ' + note; inspection.hidden = false; }
-        const connection = node.closest('[data-from][data-to]');
-        if (connection) {
-          const title = q('title', connection)?.textContent || connection.getAttribute('aria-label') || 'Connection';
-          inspection.textContent = title + ' · ' + connection.dataset.from + ' → ' + connection.dataset.to + (connection.dataset.sourceRelationship ? '. Inspect the pinned relationship evidence.' : '. This explanatory connection does not create a recorded relationship.') + (note ? ' · ' + note : '');
-          inspection.hidden = false;
-        }
-        if (!connection && node.hasAttribute('data-about')) {
-          inspection.textContent = (q('title', node)?.textContent || node.getAttribute('aria-label') || '') + ' · About ' + node.dataset.about + (note ? ' · ' + note : '');
-          inspection.hidden = false;
-        }
         // A child's unbound mark must not inherit its enclosing ERD source.
-        if (!node.hasAttribute('data-documentation-target')) { event.preventDefault(); event.stopPropagation(); }
+        if (!node.hasAttribute('data-documentation-target') && !node.classList.contains('diagram-interaction')) { event.preventDefault(); event.stopPropagation(); }
       }, true);
       for (const node of qa('[data-instance-path]', svg)) {
         // Opaque SVG bindings can preserve provenance without a target region.
@@ -418,7 +405,26 @@ const whiteboardJavaScript = `
         while (owner) { const state = byFrame.get(owner.dataset.frameDetail); if (state) owners.push(state); owner = owner.parentElement.closest('[data-frame-detail]'); }
         return {node,owners};
       });
-      prepareDiagramInteractions(svg, {interactionRoot:board, signal:pageScope.signal});
+      const annotationBounds = new Map([...geometry].map(([path,meta]) => [path,meta.bounds || worldBox(meta.label_box,meta.transform)]));
+      for (const [node,box] of measured) {
+        if (annotationBounds.get(node.dataset.instancePath)) continue;
+        const frame = byFrame.get(node.closest('[data-frame-path]')?.dataset.framePath);
+        if (frame?.contentBox) annotationBounds.set(node.dataset.instancePath,{x:frame.contentBox.x+box.x*frame.scale,y:frame.contentBox.y+box.y*frame.scale,width:box.width*frame.scale,height:box.height*frame.scale});
+      }
+      const affordance = prepareDiagramAffordance(svg, {signal:pageScope.signal, position:node => {
+        let box = annotationBounds.get(node.dataset.instancePath);
+        if (!box && node.dataset.from && node.dataset.to) {
+          const from = geometry.get(node.dataset.from)?.bounds, to = geometry.get(node.dataset.to)?.bounds;
+          if (from && to) box = {x:(from.x+from.width/2+to.x+to.width/2)/2,y:(from.y+from.height/2+to.y+to.height/2)/2,width:0,height:0};
+        }
+        if (!box) return null;
+        const scale = Math.min(viewportRect.width/view.width,viewportRect.height/view.height);
+        const left = viewportRect.left+(viewportRect.width-view.width*scale)/2;
+        const top = viewportRect.top+(viewportRect.height-view.height*scale)/2;
+        return {right:left+(box.x+box.width-view.x)*scale,top:top+(box.y-view.y)*scale};
+      }});
+      const templates = new Map(qa('[data-diagram-note-template]',board).map(node => [node.dataset.diagramNoteTemplate,node]));
+      prepareDiagramInteractions(svg, {interactionRoot:board, signal:pageScope.signal, affordance, templates});
       const resize = new ResizeObserver(() => { viewportRect = viewport.getBoundingClientRect(); atStart ? home() : fitted ? fit() : paint(); }); resize.observe(viewport);
       pageScope.signal.addEventListener('abort', () => { resize.disconnect(); stopMotion(); cancelAnimationFrame(render); clearTimeout(interactionTimer); }, {once:true});
       q('[data-whiteboard-toolbar]', board).hidden = false;

@@ -13,9 +13,9 @@ import (
 // Story links belong to Items. A slide is only a summary of those exact
 // owners; legacy broad links remain visible without being inherited by Items.
 type storyLinksView struct {
-	DOMID, Title, Tooltip string
-	Count                 int
-	Links, Legacy         []storyLinkView
+	DOMID, Title, Tooltip, Provenance string
+	Count                             int
+	Links, Legacy                     []storyLinkView
 }
 
 type storyLinkView struct {
@@ -27,7 +27,7 @@ type storyLinkView struct {
 
 const storyLinksTemplate = `
 {{define "story-control"}}<button type="button" class="icon-button stories-button" data-open-stories="stories-{{.DOMID}}" aria-label="Open {{.Count}} linked stories for {{.Title}}" title="{{.Tooltip}}">{{template "icon" "story"}}<span>{{.Count}}</span>{{if .Legacy}}<span aria-label="Legacy links need element assignment">!</span>{{end}}</button><template id="stories-{{.DOMID}}">{{template "story-links" .}}</template>{{end}}
-{{define "story-links"}}<section class="story-links"><h2>{{.Title}}</h2><p>{{.Count}} linked {{if eq .Count 1}}story{{else}}stories{{end}} · linked through specific diagram elements</p>{{if .Links}}{{template "story-link-rows" .Links}}{{else}}<p data-story-links-empty>No element-level story links yet.</p>{{end}}{{if .Legacy}}<section class="story-links-legacy" data-story-links-legacy><h3>Needs element assignment</h3><p>These older links apply to a whole slide or deck. They are not attributed to individual elements or included in the summary count. Replace them with links from the relevant elements.</p>{{template "story-link-rows" .Legacy}}</section>{{end}}</section>{{end}}
+{{define "story-links"}}<section class="story-links"><h2>{{.Title}}</h2>{{if .Provenance}}<p data-story-provenance>{{.Provenance}}</p>{{end}}<p>{{.Count}} linked {{if eq .Count 1}}story{{else}}stories{{end}} · linked through specific diagram elements</p>{{if .Links}}{{template "story-link-rows" .Links}}{{else}}<p data-story-links-empty>No element-level story links yet.</p>{{end}}{{if .Legacy}}<section class="story-links-legacy" data-story-links-legacy><h3>Needs element assignment</h3><p>These older links apply to a whole slide or deck. They are not attributed to individual elements or included in the summary count. Replace them with links from the relevant elements.</p>{{template "story-link-rows" .Legacy}}</section>{{end}}</section>{{end}}
 {{define "story-link-rows"}}<ul>{{range .}}<li data-story-link="{{.StoryTarget}}"><strong>{{if .StoryHref}}<a href="{{.StoryHref}}">{{.Story}}</a>{{else}}{{.Story}}{{end}}</strong><span class="story-link-status" data-status="{{.Status}}">{{.Status}}</span>{{if .Criterion}}<p>{{if .CriterionHref}}<a href="{{.CriterionHref}}">{{.Criterion}}</a>{{else}}{{.Criterion}}{{end}}</p>{{end}}<p>Element: {{if .ItemHref}}<a href="{{.ItemHref}}">{{.Item}}</a>{{else}}{{.Item}}{{end}}</p>{{if .Rationale}}<p>{{.Rationale}}</p>{{end}}</li>{{end}}</ul>{{end}}
 `
 

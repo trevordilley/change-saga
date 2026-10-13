@@ -1,7 +1,7 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from "../support/test.js";
-import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
+import { codeDigest, runCLI, type SagaFixture } from "../support/fixture-builder.js";
 
 function navigationBoard(saga: SagaFixture, withSection = false) {
   const run = (...args: string[]) => {
@@ -118,7 +118,7 @@ test("saved ERD links match exact pins and prefer their enclosing repeated insta
 });
 
 // One authored model with no ERD inventory records and no embedded frames.
-function nativeModel(saga: SagaFixture) {
+function nativeModel(saga: SagaFixture, stories = false) {
   const run = (...args: string[]) => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, result.stdout + result.stderr).toBe(0);
@@ -137,11 +137,24 @@ function nativeModel(saga: SagaFixture) {
     {id:"delivery",kind:"group",shape:"section",label:"Delivery",x:50,y:150,width:1000,height:850,style:"normal",color:"blue"},
     {id:"edit",parent:"delivery",kind:"node",shape:"entity",label:"Local edit",summary:"Captures local work before delivery.",x:80,y:150,width:500,height:240,style:"normal",source:pin("edit"),fields:[{name:"id",type:"uuid"}]},
     {id:"shared",kind:"group",shape:"section",label:"Shared records",x:2100,y:150,width:1000,height:850,style:"normal",color:"green"},
-    {id:"record",parent:"shared",kind:"node",shape:"entity",label:"Saved record",summary:"Preserves the accepted edit for shared access.",description:"The exact shared record definition retains source provenance.",x:80,y:150,width:500,height:240,style:"normal",source:pin("record"),fields:[{name:"id",type:"uuid"},{name:"body",type:"text"}]},
+    {id:"record",parent:"shared",kind:"node",shape:"entity",label:"Saved record",summary:"Preserves the accepted edit for shared access.",description:"The exact shared record definition retains source provenance.",note:"This authored record note belongs to this appearance. [Saved definition](https://example.test/record)",x:80,y:150,width:500,height:240,style:"normal",source:pin("record"),fields:[{name:"id",type:"uuid"},{name:"body",type:"text"}]},
+    ...(stories ? [{id:"record-copy",parent:"shared",kind:"node",shape:"entity",label:"Record copy",note:"A **different note** for this repeated appearance.",x:620,y:150,width:300,height:240,style:"normal",source:pin("record"),fields:[{name:"id",type:"uuid"}]}] : []),
     {id:"sync",kind:"connection",from:"delivery/edit",to:"shared/record",label:"synchronized from",head:"arrow",style:"primary",source:{...pin("record"),relationship:"sync"},label_box:{x:1100,y:330,width:900,height:100}},
     {id:"overview-note",kind:"text",visibility:"overview",label:"One model across local and shared data",x:50,y:1100,width:1600,height:100,style:"normal"},
     {id:"detail-note",parent:"shared",kind:"text",visibility:"detail",label:"Exact definitions retain their source evidence",x:80,y:500,width:700,height:180,style:"normal"}
   ]}), saga.sagaRoot);
+  if (stories) {
+    run("add-deck", "--feature", "wave-one", "--id", "record-flow", "--title", "Record flow", "--objective", "Explain shared records.", saga.sagaRoot, "Record flow");
+    const story = "urn:change-saga:wave-one:story:record-story";
+    run("story", "add", "--feature", "wave-one", "--id", "record-story", "--revision", "r1", "--event", "proposed", "--title", "Read shared records", "--statement", "As a reader I can read shared records.", "--criterion", "saved=The accepted record is readable", saga.sagaRoot);
+    run("apply-slide", "--from", file("record-slide", {
+      version:1,operation:"create",request_id:"record-slide",deck:"record-flow",expected_snapshot:"absent",
+      slide:{id:"record-slide",title:"Record flow",rank:10,intent:"explain",layout:"diagram",takeaway:"Saved records retain their evidence.",reading_order:["record"]},
+      diagram:{version:1,width:800,height:400,elements:[{id:"record",kind:"node",shape:"rect",label:"Saved record",x:50,y:50,width:400,height:200,style:"normal"}]},
+      items:[{id:"record",rank:10,kind:"node",label:"Recorded implementation element",description:"Reads this exact saved definition.",selector:{type:"element",element_id:"record"},documentation:pin("record"),evidence:[{version:2,references:[{commit:saga.identity.head,path:"src/app.go",start:3,end:3,digest:codeDigest(saga.sourceRepo,saga.identity.head,"src/app.go",3),note:"This real slide explains the shared record."}]}],criterion_links:[{id:"record-saved",criterion:story+":criterion:saved",story_revision:story+":revision:r1",rationale:"This implementation element explains reading a saved record."}]}]
+    }), "--repo", saga.sourceRepo, saga.sagaRoot);
+  }
+
 }
 
 test("one native model exposes sections, fields and exact entity/relationship evidence without child ERDs @critical", async ({ page, saga }) => {
@@ -193,7 +206,7 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(true);
   await record.focus(); await page.keyboard.press("Enter");
   await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", /data-entity:record:revision:r1$/);
-  await expect(board.locator("[data-whiteboard-inspection]")).toContainText("The exact shared record definition retains source provenance.");
+  await expect(board.locator("[data-whiteboard-inspection]")).toBeHidden();
   await expect(page.locator('.drawer-body [data-file-path="src/app.go"]')).toContainText("Entity evidence at its saved commit.");
   await expect(page.locator('.drawer-body [data-evidence-integrity="verified"]')).toBeVisible();
   await page.keyboard.press("Escape");
@@ -216,7 +229,7 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   await relationship.focus(); await page.keyboard.press("Enter");
   await expect(page.locator(".drawer-body")).toContainText("Exact code for relationship sync");
   await expect(page.locator('.drawer-body [data-file-path="src/app.go"]')).toContainText("Relationship evidence at its saved commit.");
-  await expect(board.locator("[data-whiteboard-inspection]")).not.toContainText("does not create a recorded relationship");
+  await expect(board.locator("[data-whiteboard-inspection]")).toHaveCount(0);
   await page.keyboard.press("Escape");
   await board.getByRole('button', {name:'Focus Delivery', exact:true}).focus(); await page.keyboard.press("Enter");
   await expect(select).toHaveValue("delivery");
@@ -269,4 +282,109 @@ test("section and imported-source focus share history without carrying a source 
   await page.goForward();
   await expect(select).toHaveValue("model-section");
   await expect(evidence).not.toHaveAttribute("data-documentation-revision");
+});
+
+
+test("native hover reuses slide actions and loads real pinned code and Item story panels lazily", async ({page,saga}, testInfo) => {
+  nativeModel(saga,true);
+  const requests:string[]=[];
+  page.on("request",request=>{if(request.url().includes("/api/diagram-annotation")) requests.push(request.url());});
+  await page.goto(saga.baseURL+"/technical/erd"); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'), bar=page.locator('[data-diagram-affordance]');
+  await board.locator('[data-whiteboard-focus]').selectOption('shared');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  expect(requests).toHaveLength(0);
+  const record=board.locator('[data-instance-path="shared/record"]');
+  await record.hover();
+  await expect(bar.locator('.landmark-affordance [data-documentation-target]')).toBeVisible();
+  await expect(bar.locator('[data-open-stories]')).toBeVisible();
+  await expect(bar.locator('[data-target-code-href]')).toBeVisible();
+  await expect(page.locator('#element-note-popover')).toBeHidden();
+  expect(requests).toHaveLength(1);
+  expect(requests[0]).not.toContain('panel=code');
+  await page.screenshot({path:testInfo.outputPath('native-hover-actions.png')});
+  await bar.locator('.element-note-trigger').click();
+  await expect(page.locator('#element-note-popover')).toContainText('authored record note');
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#element-note-popover').getByRole('link',{name:'Saved definition'})).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(bar.locator('.element-note-trigger')).toBeFocused();
+  await page.keyboard.press('Escape');
+  await record.focus(); await page.keyboard.press('Tab');
+  await expect(bar.locator('[data-documentation-target]')).toBeFocused();
+  await bar.locator('[data-open-stories]').click();
+  await expect(page.locator('.drawer-body')).toContainText('Read shared records');
+  await expect(page.locator('.drawer-body [data-story-provenance]')).toContainText('pin this exact saved definition');
+  await expect(page.locator('.drawer-body')).toContainText('Recorded implementation element');
+  await page.locator('.diff-drawer').evaluate(async node=>{await Promise.all(node.getAnimations().map(animation=>animation.finished));});
+  await page.screenshot({path:testInfo.outputPath('native-story-provenance.png')});
+  await page.keyboard.press('Escape'); await expect(record).toBeFocused();
+  await record.hover();
+  await bar.locator('[data-target-code-href]').click();
+  await expect(page.locator('.drawer-body [data-file-path="src/app.go"]')).toContainText('Entity evidence at its saved commit.');
+  await expect(page.locator('.drawer-body [data-evidence-integrity="verified"]')).toBeVisible();
+  expect(requests.filter(url=>url.includes('panel=code'))).toHaveLength(1);
+  await page.locator('.diff-drawer').evaluate(async node=>{await Promise.all(node.getAnimations().map(animation=>animation.finished));});
+  await page.screenshot({path:testInfo.outputPath('native-code-evidence.png')});
+  await page.keyboard.press('Escape'); await expect(record).toBeFocused();
+  await board.locator('[data-instance-path="shared/record-copy"]').hover();
+  await bar.locator('.element-note-trigger').click();
+  await expect(page.locator('#element-note-popover strong')).toHaveText('different note');
+  await expect(page.locator('#element-note-popover')).not.toContainText('authored record note');
+  expect(requests.filter(url=>!url.includes('panel=code'))).toHaveLength(1);
+  await page.keyboard.press('Escape');
+
+  await board.locator('[data-whiteboard-focus]').selectOption('');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  const relationship=board.locator('[data-instance-path="sync"]');
+  await relationship.focus();
+  await expect(bar.locator('[data-source-relationship="sync"]')).toBeVisible();
+  await expect(bar.locator('[data-open-stories]')).toHaveCount(0);
+  await bar.locator('[data-target-code-href]').click();
+  await expect(page.locator('.drawer-body')).toContainText('Relationship evidence at its saved commit.');
+  await expect(page.locator('.drawer-body')).not.toContainText('Entity evidence at its saved commit.');
+  await page.keyboard.press('Escape');
+  await board.locator('[data-whiteboard-focus]').selectOption('delivery');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  await board.locator('[data-instance-path="delivery/edit"]').hover();
+  await expect(bar.locator('[data-documentation-target]')).toBeVisible();
+  await expect(bar.locator('[data-open-stories]')).toHaveCount(0);
+  await expect(bar.locator('.element-note-trigger')).toHaveCount(0);
+  await expectNoSeriousAccessibilityViolations(page,'[data-diagram-affordance]');
+});
+
+for (const exit of ['pan','leave','navigate']) test("late annotation responses cannot restore an overlay after "+exit, async ({page,saga}) => {
+  nativeModel(saga);
+  let release:()=>void=()=>{};
+  const held=new Promise<void>(resolve=>{release=resolve;});
+  await page.route('**/api/diagram-annotation?**',async route=>{await held;await route.continue();});
+  await page.goto(saga.baseURL+'/technical/erd'); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'),bar=page.locator('[data-diagram-affordance]');
+  await board.locator('[data-whiteboard-focus]').selectOption('shared');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  await board.locator('[data-instance-path="shared/record"]').hover();
+  await expect(bar).toHaveAttribute('aria-busy','true');
+  if (exit === 'pan') await board.locator('[data-whiteboard-viewport]').dispatchEvent('wheel',{deltaX:40,bubbles:true,cancelable:true});
+  else if (exit === 'leave') await page.mouse.move(10,10);
+  else await page.goto(saga.baseURL+'/technical');
+  await expect(bar).toBeHidden();
+  if (exit === 'navigate') { release(); await waitForSettledSaga(page); await expect(page.locator('[data-diagram-affordance]')).toHaveCount(0); }
+  else { const response=page.waitForResponse(response=>response.url().includes('/api/diagram-annotation')); release(); await response; await expect(bar).toBeHidden(); }
+});
+
+test("touch readers reach the shared native action strip before opening a panel", async ({browser,saga}) => {
+  nativeModel(saga,true);
+  const context=await browser.newContext({hasTouch:true,viewport:{width:1280,height:800}});
+  const page=await context.newPage();
+  try {
+    await page.goto(saga.baseURL+'/technical/erd?focus=shared'); await waitForSettledSaga(page);
+    const board=page.locator('[data-whiteboard-view]'),bar=page.locator('[data-diagram-affordance]');
+    await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+    await board.locator('[data-instance-path="shared/record"]').tap();
+    await expect(bar.locator('[data-open-stories]')).toBeVisible();
+    await expect(page.locator('.diff-drawer')).not.toHaveClass(/open/);
+    await bar.locator('[data-open-stories]').tap();
+    await expect(page.locator('.drawer-body')).toContainText('Read shared records');
+  } finally { await context.close(); }
 });
