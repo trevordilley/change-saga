@@ -591,6 +591,11 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .element-note>*{margin:0}.element-note>*+*{margin-top:6px}
 .element-note-label{font-weight:600}.element-note-description{color:var(--muted)}
 .element-note-body{padding-left:8px;border-left:3px solid var(--amber)}
+/* Inline diagrams share the note surface and use a paint-only focus affordance. */
+.diagram-interaction{cursor:pointer}
+.diagram-interaction-active,.diagram-interaction:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+[data-whiteboard-interacting="true"] .diagram-interaction{outline:none}
+.diagram-note-text{white-space:pre-wrap}
 .element-note>*+.element-note-markdown{padding-top:6px;border-top:1px solid var(--line)}
 .element-note-markdown>:first-child{margin-top:0}.element-note-markdown>:last-child{margin-bottom:0}
 .element-note-markdown p,.element-note-markdown ul,.element-note-markdown ol{margin:0 0 6px}.element-note-markdown ul,.element-note-markdown ol{padding-left:18px}

@@ -578,6 +578,7 @@ const appJavaScript = `(() => {
   }
 
   function noteTemplate(hotspot) {
+    if (diagramNoteTemplates.has(hotspot)) return diagramNoteTemplates.get(hotspot);
     hotspot = hotspot.closest('.landmark-hotspot');
     if (!hotspot) return null;
     const fragment = hotspot.closest('.fragment');
@@ -632,7 +633,8 @@ const appJavaScript = `(() => {
     notePopover.style.top = '0px';
     const box = notePopover.getBoundingClientRect();
     const gap = 8, margin = 8;
-    const others = qa('.landmark-hotspot', noteOwner.closest('.fragment-stage') || document)
+    const stage = noteOwner.closest('.fragment-stage');
+    const others = (stage ? qa('.landmark-hotspot', stage) : [])
       .filter(hotspot => hotspot !== noteOwner).map(hotspot => hotspot.getBoundingClientRect()).filter(other => other.width && other.height && !overlapping(other, rect));
     const candidates = [
       [rect.left, rect.bottom + gap, 'y'], [rect.left, rect.top - gap - box.height, 'y'],
@@ -3141,7 +3143,7 @@ const appJavaScript = `(() => {
     }
   }
 
-` + whiteboardNavigationJavaScript + whiteboardJavaScript + `
+` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + `
   applyDiffLayout(rememberedDiffLayout());
   // ----- The page lifecycle -----
   // The shell is loaded once per session: this script, the stylesheet, the
