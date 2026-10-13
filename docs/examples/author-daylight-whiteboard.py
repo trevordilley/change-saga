@@ -178,39 +178,39 @@ def segment_hits(a, b, rect):
 # are semantic homes, not copies of the original ERD document boundaries.
 # key, parent, label, provenance, column, first row, ordered entity keys
 NEIGHBORHOODS = [
-    ('capture', 'delivery-area', 'Observe bytes, admit a generation, retire delivery debt', 'local-capture-delivery', 0, 0,
+    ('capture', 'delivery-area', 'Observe, admit and retire delivery debt', 'local-capture-delivery', 0, 0,
      'local-capture-observation-offsets local-project-source-grants local-pending-prompt-payloads local-pending-project-deliveries local-project-source-high-waters local-agent-kv'),
-    ('hosted', 'delivery-area', 'Exact source identity and admitted delivery', 'cloud-source-lineage', 2, 0,
+    ('hosted', 'delivery-area', 'Source identity and delivery admission', 'cloud-source-lineage', 2, 0,
      'cloud-project-sources cloud-project-delivery-admissions cloud-project-source-operations'),
-    ('corpus', 'delivery-area', 'Source bytes produce a searchable hosted corpus', 'cloud-corpus', 4, 0,
+    ('corpus', 'delivery-area', 'Source bytes and hosted search', 'cloud-corpus', 4, 0,
      'cloud-prompt cloud-corpus-migration-scans cloud-corpus-object-migrations'),
-    ('local-scope', 'search-area', 'Durable choices and private exposure review', 'local-project-boundary', 0, 3,
+    ('local-scope', 'search-area', 'Durable scope and exposure review', 'local-project-boundary', 0, 3,
      'local-local-projects local-local-project-sources local-secret-exposures'),
-    ('retrieval', 'search-area', 'File identity becomes retrievable text and query scope', 'local-search-retrieval', 0, 5,
+    ('retrieval', 'search-area', 'File identity, search and query scope', 'local-search-retrieval', 0, 5,
      'local-source-files local-search-documents local-local-project-file-memberships local-search-fts local-local-search-meta'),
-    ('index-progress', 'search-area', 'Bounded indexing work, checkpoints and diagnostics', 'local-index-progress', 0, 8,
+    ('index-progress', 'search-area', 'Indexing work and checkpoints', 'local-index-progress', 0, 8,
      'local-index-runs local-index-run-sources local-index-run-diagnostics'),
-    ('discovery', 'search-area', 'Descriptive folder discovery is not authority', 'local-search-retrieval', 0, 10,
+    ('discovery', 'search-area', 'Descriptive folder discovery', 'local-search-retrieval', 0, 10,
      'local-local-folder-projection local-local-folder-sources'),
-    ('episodes', 'search-area', 'Validated manifests remain the recording authority', 'local-episode-catalog', 0, 11,
+    ('episodes', 'search-area', 'Manifest authority and catalog', 'local-episode-catalog', 0, 11,
      'local-episodes local-episode-artifacts local-local-folders local-episode-catalog-meta'),
-    ('correlation', 'search-area', 'Versioned episode evidence and resumable correlation', 'local-episode-correlation', 0, 13,
+    ('correlation', 'search-area', 'Episode evidence and correlation', 'local-episode-correlation', 0, 13,
      'local-episode-correlation-targets local-episode-evidence-links local-episode-prompt-bindings local-correlation-jobs'),
-    ('storage', 'authority-area', 'Private storage ownership, policy and direct grants', 'cloud-project-authority', 2, 3,
+    ('storage', 'authority-area', 'Storage ownership, policy and grants', 'cloud-project-authority', 2, 3,
      'cloud-projects cloud-project-policy-versions cloud-project-user-access cloud-project-team-access cloud-project-access-requests'),
-    ('sharing', 'authority-area', 'Membership and consent are separate access checks', 'cloud-shared-destinations', 2, 6,
+    ('sharing', 'authority-area', 'Membership and exact-source consent', 'cloud-shared-destinations', 2, 6,
      'cloud-teams cloud-shared-project-sources cloud-team-members cloud-team-source-rule-versions cloud-team-project-contributions cloud-shared-project-legacy-prompts cloud-people-teams cloud-people-team-members cloud-shared-project-teams cloud-shared-project-team-grants'),
     ('directory', 'authority-area', 'Principal and Organization evidence', 'cloud-identity', 2, 11,
      'cloud-users cloud-organizations cloud-organization-members cloud-organization-refresh-sessions cloud-principal-verified-emails'),
-    ('oauth', 'authority-area', 'Connector consent produces narrowly scoped tokens', 'cloud-oauth', 4, 3,
+    ('oauth', 'authority-area', 'Connector consent and bounded tokens', 'cloud-oauth', 4, 3,
      'cloud-mcp-oauth-clients cloud-mcp-oauth-requests cloud-mcp-oauth-codes cloud-mcp-oauth-refresh-tokens cloud-mcp-oauth-access-bindings'),
-    ('invitations', 'authority-area', 'Restricted links become evidenced membership', 'cloud-invitations', 4, 6,
+    ('invitations', 'authority-area', 'Restricted invitations and membership', 'cloud-invitations', 4, 6,
      'cloud-team-invitation-links cloud-team-invitation-link-audiences cloud-team-invitation-link-acceptances cloud-team-invitation-link-events cloud-team-invitation-link-operations cloud-team-invitation-browser-intents cloud-team-invitation-handoffs cloud-team-bootstrap-receipts'),
-    ('enterprise', 'authority-area', 'Managed identity mappings and administrative evidence', 'cloud-enterprise', 4, 10,
+    ('enterprise', 'authority-area', 'Managed mappings and audit evidence', 'cloud-enterprise', 4, 10,
      'cloud-managed-organization-directory cloud-managed-team-groups cloud-group-org-role-mapping cloud-group-mapping-seed-state cloud-audit-event'),
-    ('scim', 'authority-area', 'Provisioned directory resources are distinct from login', 'cloud-scim', 4, 13,
+    ('scim', 'authority-area', 'Provisioned directory resources', 'cloud-scim', 4, 13,
      'cloud-scim-users cloud-scim-groups cloud-scim-group-members cloud-scim-provisioning-tokens'),
-    ('messaging', 'authority-area', 'Durable messages and recipient inbox queries', 'cloud-messaging', 4, 15,
+    ('messaging', 'authority-area', 'Durable messages and recipient inbox', 'cloud-messaging', 4, 15,
      'cloud-message'),
 ]
 
@@ -270,8 +270,28 @@ SUPPORT_SUMMARIES = {
     'cloud-message': 'Durable person-to-person messages; inboxes query the recipient.',
 }
 
+# Bounded reading groups own their entity members so both visual focus and
+# structured describe expose the same subset, without duplicating source pins.
+READING_LABELS = {
+    'capture': ['Observation and source authority', 'Payload and delivery debt', 'Admission progress and agent continuity'],
+    'hosted': ['Source generation and delivery admission', 'Source lifecycle operations'],
+    'corpus': ['Hosted search and scan progress', 'Object migration outcomes'],
+    'local-scope': ['Durable Project and source choices', 'Private exposure review'],
+    'retrieval': ['File identity and retrievable text', 'Query membership and search terms', 'Search schema metadata'],
+    'index-progress': ['Index run and source checkpoints', 'Indexing diagnostics'],
+    'episodes': ['Manifest catalog and artifacts', 'Descriptive folders and catalog schema'],
+    'correlation': ['Episode targets and versioned evidence', 'Prompt resolution and correlation work'],
+    'storage': ['Private storage and immutable policy', 'Direct and shared reader grants', 'Access requests and decisions'],
+    'sharing': ['Shared destination and exact-source consent', 'Membership and accepted sharing rules', 'Legacy contributions and retained prompts', 'People Teams and their members', 'Shared destination Team grants'],
+    'directory': ['Principal and Organization', 'Organization membership and sessions', 'Verified email evidence'],
+    'oauth': ['Connector clients and consent requests', 'Authorization codes and refresh tokens', 'Bounded access tokens'],
+    'invitations': ['Restricted invitation and audience', 'Acceptance evidence and events', 'Invitation operations and browser intent', 'Handoffs and bootstrap receipts'],
+    'enterprise': ['Managed Organization and Team mappings', 'Role mappings and seed state', 'Administrative audit evidence'],
+    'scim': ['Provisioned users and groups', 'Group membership and provisioning authority'],
+}
+
 MARKERS = {'0..many': 'zero-or-many', '0..1': 'zero-or-one', '1': 'only-one'}
-INITIAL_CAMERA = dict(x=0, y=0, width=9300, height=7200)
+INITIAL_CAMERA = dict(x=100, y=100, width=8700, height=6600)
 COLUMN_PITCH, CARD_WIDTH = 4400, 2700
 
 
@@ -355,21 +375,26 @@ def main():
     # invented table or multiplicity is needed for that transport explanation.
     incident, outgoing, row_ends = defaultdict(list), defaultdict(list), defaultdict(list)
     for c in connections:
-        outgoing[c['owner']].append(c['id'])
+        if c['core']:
+            outgoing[c['owner']].append(c['id'])
         for side, key in [('from', c['owner']), ('to', c['destination'])]:
             incident[key].append((c['id'], side))
             row_ends[slots[key][1]].append((c['id'], side))
-    heights = {k: max(640, 211+28*len(e['fields']), 100+math.ceil(len(incident[k])/2)*125)
+    # Overview type scales independently of the shared 28-unit field rows.
+    # The 820-unit minimum fits three summary lines at the authored 160 size.
+    heights = {k: max(820, 236+28*len(e['fields']), 100+math.ceil(len(incident[k])/2)*125)
                for k, e in entities.items()}
+    # Only the 25 story links reserve label lanes. Supporting links retain
+    # their exact labels in inspection, with closely spaced independent tracks.
     row_top, row_track, row_bottom = {}, {}, {}
-    cursor = 2400
+    cursor = 2300
     for row in range(16):
         keys = [k for k in homes if slots[k][1] == row]
         row_top[row] = cursor
         occupied = max((heights[k]+180+320*len(outgoing[k]) for k in keys), default=900)
-        row_track[row] = cursor+occupied+180
-        row_bottom[row] = row_track[row]+24*len(row_ends[row])+400
-        cursor = row_bottom[row]+400
+        row_track[row] = cursor+occupied+120
+        row_bottom[row] = row_track[row]+12*len(row_ends[row])+180
+        cursor = row_bottom[row]+(1100 if row == 2 else 700)
     width, height = 27000, row_bottom[15]+500
     assert height < 100000
 
@@ -378,12 +403,12 @@ def main():
 
     board = dict(version=1, width=width, height=height, viewport=INITIAL_CAMERA,
                  background='@diagram-canvas', styles={
-        'hero': style(font=180), 'body': style(font=120), 'small': style(font=100), 'area': style(font=100),
-        'entity': style('@diagram-normal-fill', '@diagram-normal-stroke', font=140, width=4),
-        'fk': style(stroke='@diagram-normal-stroke', font=112, width=5),
-        'projection': dict(**style(stroke='@diagram-blue-accent', font=112, width=5), dash=True),
-        'transport': style(stroke='@diagram-yellow-accent', font=112, width=7),
-        'authorization': dict(**style(stroke='@diagram-purple-accent', font=112, width=6), dash=True),
+        'hero': style(font=180), 'body': style(font=160), 'small': style(font=128), 'area': style(font=140),
+        'entity': style('@diagram-normal-fill', '@diagram-normal-stroke', font=160, width=4),
+        'fk': style(stroke='@diagram-normal-stroke', font=128, width=5),
+        'projection': dict(**style(stroke='@diagram-blue-accent', font=128, width=5), dash=True),
+        'transport': style(stroke='@diagram-yellow-accent', font=128, width=7),
+        'authorization': dict(**style(stroke='@diagram-purple-accent', font=128, width=6), dash=True),
     }, elements=[])
     by_id, paths, bounds, bodies, labels = {}, {}, {}, {}, {}
 
@@ -406,34 +431,51 @@ def main():
         return e
 
     def section(key, label, rect, provenance, parent=None):
-        color = {'delivery-area': 'yellow', 'search-area': 'blue', 'authority-area': 'purple'}.get(parent or key, 'gray')
+        color = {'delivery-area': 'yellow', 'search-area': 'blue', 'authority-area': 'purple'}.get(parent or key, by_id.get(parent, {}).get('color', 'gray'))
         e = dict(id=key, kind='group', shape='section', label=label, style='area', color=color, source=ref(provenance))
         if parent:
             e['parent'] = parent
         add(e, rect)
 
     section('context-area', 'One system / independent stores, explicit authority', (100, 100, 26400, 1450), 'local-cloud-overview')
-    section('delivery-area', '01 / Capture, source admission and derived cloud corpus',
-            (100, 1650, 26400, row_bottom[2]-1450), 'local-capture-delivery')
+    section('delivery-area', '01 / Capture, admission and hosted search',
+            (100, 1650, 26400, row_bottom[2]-1550), 'local-capture-delivery')
     section('search-area', '02 / Local search and episode evidence',
-            (100, row_top[3]-500, 8800, row_bottom[14]-row_top[3]+700), 'local-search-retrieval')
-    section('authority-area', '03 / Storage ownership, membership, consent and identity',
-            (9000, row_top[3]-500, 17500, row_bottom[15]-row_top[3]+700), 'cloud-project-authority')
+            (100, row_top[3]-750, 8800, row_bottom[14]-row_top[3]+950), 'local-search-retrieval')
+    section('authority-area', '03 / Storage and access authority',
+            (9000, row_top[3]-750, 17500, row_bottom[15]-row_top[3]+950), 'cloud-project-authority')
     for key, parent, label, provenance, col, row, names in NEIGHBORHOODS:
         last_row = row+(len(names.split())-1)//2
-        section(key, label, (col*COLUMN_PITCH+200, row_top[row]-250, 8500,
-                             row_bottom[last_row]-row_top[row]+350), provenance, parent)
+        section(key, label, (col*COLUMN_PITCH+200, row_top[row]-450, 8500,
+                             row_bottom[last_row]-row_top[row]+550), provenance, parent)
+
+    reading_windows, reading_homes = [], {}
+    for key, parent, label, provenance, col, row, names in NEIGHBORHOODS:
+        members = names.split()
+        if len(members) <= 2:
+            reading_windows.append(dict(id=key, members=members))
+            reading_homes.update({k: key for k in members})
+            continue
+        assert len(READING_LABELS[key]) == math.ceil(len(members)/2)
+        for offset, caption in enumerate(READING_LABELS[key]):
+            pair = members[offset*2:offset*2+2]
+            occupied = max(heights[k]+180+320*len(outgoing[k]) for k in pair)
+            window = key+'-reading-'+str(offset+1)
+            section(window, caption, (col*COLUMN_PITCH+300, row_top[row+offset]-220,
+                                       8300, occupied+320), provenance, key)
+            reading_windows.append(dict(id=window, members=pair))
+            reading_homes.update({k: window for k in pair})
 
     for key, text, rect, styling, provenance in [
         ('title', 'DayLight / one connected data model', (350, 300, 24500, 260), 'hero', 'local-cloud-overview'),
-        ('intro', 'Start with capture: observed progress, source consent and delivery debt are different state. Follow admission into the cloud; continue below for local search and access authority.',
+        ('intro', 'Observe bytes. Admit a source generation. Retire delivery debt. These are separate states; follow their connections into the cloud.',
          (350, 660, 8200, 520), 'body', 'local-cloud-overview'),
-        ('coverage', '76 native tables / 675 fields / 120 recorded relationships. Select a table or line for exact source evidence; Details reveals all supporting links and fields.',
-         (350, 1180, 8200, 300), 'small', 'cloud-overview'),
+        ('coverage', '76 tables / 675 fields / 120 recorded links. Focus a section or zoom for supporting links; Details toggles fields. Select any table or line for evidence.',
+         (350, 1180, 8200, 330), 'small', 'cloud-overview'),
         ('legend', 'Crow’s feet show recorded cardinality. Solid gray = physical FK; dashed blue = application association. Yellow = transport; purple = authorization. These colors do not imply identifying relationships.',
-         (10000, 660, 7900, 520), 'body', 'local-cloud-overview'),
+         (10000, 660, 7900, 780), 'body', 'local-cloud-overview'),
         ('source-bytes-story', 'Immutable source bytes remain in object storage. PostgreSQL holds scope, identity and derived search state; delivery admission records exact lineage.',
-         (18500, 660, 7500, 520), 'body', 'cloud-corpus'),
+         (18500, 660, 7500, 780), 'body', 'cloud-corpus'),
     ]:
         add(dict(id=key, kind='text', label=text, style=styling, wrap=True, source=ref(provenance)), rect)
         bodies[key] = rect
@@ -451,7 +493,7 @@ def main():
         rect = (700+col*COLUMN_PITCH, row_top[row], CARD_WIDTH, heights[key])
         # A source table's actual name remains visible; the summary explains it.
         add(dict(id=key, kind='node', shape='entity', label=CORE_LABELS.get(key, e['name'].replace('_', ' ')),
-                 parent=homes[key], style='entity', fields=fields, summary=summaries[key],
+                 parent=reading_homes[key], style='entity', fields=fields, summary=summaries[key],
                  source=ref(key), description=e['explanation'],
                  note='**'+e['name']+'**\n\n'+summaries[key]), rect)
         bodies[key] = rect
@@ -470,7 +512,7 @@ def main():
         # Account for ray clipping so endpoint separation is exactly 125 units.
         exit_y = y+h/2+offset*(w/2+distance)/(w/2)
         row = slots[key][1]
-        track_y = row_track[row]+24*row_ends[row].index((connection_id, end))
+        track_y = row_track[row]+12*row_ends[row].index((connection_id, end))
         return (exit_x, exit_y), (exit_x, track_y)
 
     evidence, lane_counts = [], Counter()
@@ -484,23 +526,28 @@ def main():
         assert lane < (corridor+1)*COLUMN_PITCH+650, ('lane capacity', corridor)
         bends = [start, low_start, (lane, low_start[1]), (lane, low_end[1]), low_end, end]
         x, y, w, h = bounds[owner]
-        label = (x, y+h+180+320*outgoing[owner].index(c['id']), w, 300)
+        label = (x, y+h+180+320*outgoing[owner].index(c['id']), w, 300) if c['core'] else None
         relation = c['relation']
         e = dict(id=c['id'], kind='connection', x=0, y=0, style=c['kind'],
                  **{'from': paths[owner], 'to': paths[destination]},
-                 bends=[dict(x=a, y=b) for a, b in bends], label=c['label'], label_box=box(label),
+                 bends=[dict(x=a, y=b) for a, b in bends],
                  wrap=True, head_size=100, head='arrow', source=c['source'],
-                 description=c['support'], note=c['support'][:900].replace('<', r'\<'))
+                 description=(relation['label']+'\n\n' if relation else '')+c['support'],
+                 note=((relation['label']+'\n\n' if relation else '')+c['support']).replace('<', r'\<'))
+        if label:
+            e.update(label=c['label'], label_box=box(label), wrap=True)
         if relation:
             e.update(tail=MARKERS[relation['cardinality']['owner']], head=MARKERS[relation['cardinality']['destination']])
         if not c['core']:
             e['visibility'] = 'detail'
         add(e)
-        labels[c['id']] = label
+        if label:
+            labels[c['id']] = label
         evidence.append(dict(id=c['id'], kind={'fk': 'physical_fk', 'projection': 'application_projection',
                                               'transport': 'transport_explanation', 'authorization': 'authorization_explanation'}[c['kind']],
                              recorded=relation is not None, source=c['source'],
                              **{'from': paths[owner], 'to': paths[destination]},
+                             semantic_label=relation['label'] if relation else c['label'],
                              supporting_text=c['support'], code=relation.get('code', []) if relation else [],
                              endpoint_pins=[ref(owner), ref(destination)], endpoint_geometry='authored native entity bounds',
                              cardinality=relation['cardinality'] if relation else None,
@@ -541,10 +588,23 @@ def main():
             for key, rect in {**bodies, **labels}.items():
                 if key != endpoint_key:
                     assert not overlaps(marker_box, rect), ('marker collision', e['id'], key)
+    sections = [e for e in board['elements'] if e.get('shape') == 'section']
+    for i, section_a in enumerate(sections):
+        for section_b in sections[i+1:]:
+            if section_a.get('parent') == section_b.get('parent'):
+                assert not overlaps(bounds[section_a['id']], bounds[section_b['id']]), ('sibling sections overlap', section_a['id'], section_b['id'])
     for key in homes:
         x, y, w, h = bounds[key]
-        px, py, pw, ph = bounds[homes[key]]
+        px, py, pw, ph = bounds[reading_homes[key]]
         assert px <= x and py+150 <= y and x+w <= px+pw and y+h <= py+ph, ('section bounds', key)
+    assert {k for window in reading_windows for k in window['members']} == set(entities)
+    for window in reading_windows:
+        x, y, w, h = bounds[window['id']]
+        assert w <= 8500 and h <= 6500, ('reading window too broad', window['id'])
+        for key in window['members']:
+            for rect in [bounds[key]]+[labels[c] for c in outgoing[key]]:
+                a, b, c, d = rect
+                assert x <= a and y+150 <= b and a+c <= x+w and b+d <= y+h, ('reading window clips content', window['id'], key)
     for path, digest in source_reads.items():
         assert file_digest(path) == digest, ('source changed', path)
 
@@ -558,16 +618,17 @@ def main():
                  source_pins='source-pins.json', connection_evidence='connection-evidence.json', entity_evidence='entity-evidence.json',
                  disconnected_entities=sorted(set(entities)-recorded_incident),
                  geometry_checks=['body separation', 'label/body separation', 'label/label separation', 'route/body clearance',
-                                  'route/label clearance', 'native section gutters', 'marker/body and marker/label clearance'],
+                                  'route/label clearance', 'native section gutters', 'root and sibling section separation', 'marker/body and marker/label clearance'],
                  source_limit='Exact committed-code documentation; cardinalities and enforcement are source declarations, not live database inspection.',
-                 detail_policy='All 76 tables and 675 fields are native. Core 21 recorded links and 4 narrative explanations are always present; 99 supporting links reveal in Details.',
-                 entity_coverage=[dict(**ref(k), primary_instance=paths[k], neighborhood=homes[k], source_appearances=appearances[k]) for k in homes],
+                 detail_policy='All 76 tables and 675 fields are native. Core 21 recorded links and 4 narrative explanations are always present; 99 supporting links appear on section focus or zoom. Details toggles fields only; every line retains source evidence and its semantic label in inspection.',
+                 reading_windows=[dict(**window, path=paths[window['id']], **box(bounds[window['id']])) for window in reading_windows],
+                 entity_coverage=[dict(**ref(k), primary_instance=paths[k], neighborhood=homes[k], reading_focus=paths[reading_homes[k]], source_appearances=appearances[k]) for k in homes],
                  sections=[dict(id=k, label=by_id[k]['label'], **box(bounds[k])) for k in ['context-area', 'delivery-area', 'search-area', 'authority-area']])
     entity_evidence = [dict(source=ref(k), record=entities[k], source_appearances=appearances[k],
                            revision_digest=source_reads[root/'___inventory'/'data-entities'/(k+'.data-entity')/
                                                         'revisions'/(entities[k]['id']+'.json')]) for k in homes]
     camera = dict(initial=INITIAL_CAMERA, canvas=dict(width=width, height=height),
-                  tours=[dict(name=k, anchor=k, **box(bounds[k])) for k in ['delivery-area', 'search-area', 'authority-area']+[n[0] for n in NEIGHBORHOODS]])
+                  tours=[dict(name=k, anchor=k, **box(bounds[k])) for k in ['delivery-area', 'search-area', 'authority-area']+[n[0] for n in NEIGHBORHOODS]+[w['id'] for w in reading_windows if '-reading-' in w['id']]])
     output.mkdir(parents=True, exist_ok=True)
     for name, data in [('daylight-board.json', board), ('source-pins.json', manifest), ('source-audit.json', audit),
                        ('connection-evidence.json', evidence), ('entity-evidence.json', entity_evidence), ('camera-proposal.json', camera)]:
@@ -582,16 +643,15 @@ def main():
         preview = '''<!doctype html><meta charset="utf-8"><title>DayLight native model / renderer preview</title>
 <style>body{margin:0;font:14px system-ui;background:#fff}nav{height:44px;display:flex;gap:18px;align-items:center;padding:0 16px}svg{width:100vw;height:calc(100vh - 44px)}button,select{font:inherit}</style>
 <nav><strong>Shared renderer preview</strong><select id="focus" aria-label="Focus section"></select>
-<label><input id="details" type="checkbox">Supporting relationships</label>
 <label><input id="fields" type="checkbox">Fields</label><span>Use the app for source inspection and hover tracing.</span></nav>
 '''+rendered+'''<script>
 const tours = '''+json.dumps([dict(name='Entry', **INITIAL_CAMERA)]+camera['tours'])+''';
 const svg=document.querySelector('svg'), focus=document.querySelector('#focus');
 for(const [i,tour] of tours.entries()){const o=document.createElement('option');o.value=i;o.textContent=tour.name;focus.append(o);}
 function view(){const t=tours[focus.value||0];svg.setAttribute('viewBox',[t.x,t.y,t.width,t.height].join(' '));}
-function details(){const show=document.querySelector('#details').checked;svg.querySelectorAll('[data-visibility="detail"]').forEach(e=>e.style.display=show?'':'none');}
+function details(){const show=focus.selectedIndex>0;svg.querySelectorAll('[data-visibility="detail"]').forEach(e=>e.style.display=show?'':'none');}
 function fields(){const show=document.querySelector('#fields').checked;svg.querySelectorAll('[data-diagram-detail="entity"]').forEach(e=>e.style.display=show?'':'none');svg.querySelectorAll('[data-diagram-summary="entity"]').forEach(e=>e.style.display=show?'none':'');}
-focus.onchange=view;document.querySelector('#details').onchange=details;document.querySelector('#fields').onchange=fields;view();details();fields();
+focus.onchange=()=>{view();details();};document.querySelector('#fields').onchange=fields;view();details();fields();
 </script>'''
         (output/'layout-preview.html').write_text(preview)
     print(json.dumps(dict(board=str(output/'daylight-board.json'), native_entities=76, native_fields=675,

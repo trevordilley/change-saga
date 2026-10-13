@@ -61,6 +61,18 @@ class PinnedCompositionTest(unittest.TestCase):
         key, revision = pin['target'].split(':')[-1], pin['revision'].split(':')[-1]
         return json.loads((self.root/'___inventory'/'data-entities'/(key+'.data-entity')/'revisions'/(revision+'.json')).read_text())
 
+    def bounds(self, element):
+        x, y = element['x'], element['y']
+        parent = element.get('parent')
+        while parent:
+            item = self.elements[parent]
+            x, y = x+item['x'], y+item['y']
+            parent = item.get('parent')
+        return x, y, element['width'], element['height']
+
+    def path(self, element):
+        return (self.path(self.elements[element['parent']])+'/' if element.get('parent') else '')+element['id']
+
     def test_source_tree_is_unchanged_and_every_pin_remains(self):
         self.assertEqual(self.before, {p: AUTHOR.file_digest(p) for p in self.root.rglob('*') if p.is_file()})
         frames = [e for e in self.elements.values() if e['kind']=='frame']
@@ -80,6 +92,43 @@ class PinnedCompositionTest(unittest.TestCase):
         for section in ('delivery-area','search-area','authority-area'):
             self.assertEqual(self.elements[section]['shape'], 'section')
             self.assertNotIn('parent',self.elements[section])
+
+        sections = [e for e in self.elements.values() if e.get('shape') == 'section']
+        for index, a in enumerate(sections):
+            for b in sections[index+1:]:
+                if a.get('parent') == b.get('parent'):
+                    self.assertFalse(AUTHOR.overlaps(self.bounds(a), self.bounds(b)), (a['id'], b['id']))
+            if a.get('parent'):
+                x, y, w, h = self.bounds(a)
+                px, py, pw, ph = self.bounds(self.elements[a['parent']])
+                self.assertGreaterEqual(y-py, 200, a['id'])  # Room for its parent's caption.
+                self.assertTrue(px <= x and x+w <= px+pw and y+h <= py+ph, a['id'])
+        camera = self.board['viewport']
+        # Desktop content is 1140 x 1000; allow viewer chrome and focus padding.
+        opening_scale = min(1100/camera['width'], 880/camera['height'])
+        self.assertGreaterEqual(self.board['styles']['entity']['font_size']*.8*opening_scale, 16)
+        self.assertGreaterEqual(self.board['styles']['body']['font_size']*opening_scale, 20)
+        for key in ('local-capture-observation-offsets', 'local-project-source-grants',
+                    'local-pending-prompt-payloads', 'local-pending-project-deliveries'):
+            x, y, w, h = self.bounds(self.elements[key])
+            self.assertTrue(camera['x'] <= x and camera['y'] <= y and
+                            x+w <= camera['x']+camera['width'] and y+h <= camera['y']+camera['height'], key)
+        members = []
+        for window in self.audit['reading_windows']:
+            members.extend(window['members'])
+            group = self.elements[window['id']]
+            self.assertEqual(self.path(group), window['path'])
+            actual = {e['id'] for e in self.elements.values()
+                      if e.get('shape') == 'entity' and self.path(e).startswith(window['path']+'/')}
+            self.assertEqual(actual, set(window['members']))
+            scale = min(1100/(window['width']+48), 880/(window['height']+48))
+            self.assertGreaterEqual(self.board['styles']['entity']['font_size']*.8*scale, 16, window['id'])
+            for key in window['members']:
+                x, y, w, h = self.bounds(self.elements[key])
+                self.assertTrue(window['x'] <= x and window['y']+150 <= y and
+                                x+w <= window['x']+window['width'] and y+h <= window['y']+window['height'], key)
+        self.assertEqual(len(members), 76)
+        self.assertEqual(set(members), {e['id'] for e in self.elements.values() if e.get('shape') == 'entity'})
 
     def test_native_fields_and_relationship_pins_are_exact(self):
         native = [e for e in self.elements.values() if e.get('shape') == 'entity']
@@ -113,6 +162,9 @@ class PinnedCompositionTest(unittest.TestCase):
                 continue
             r=next(r for r in self.source(source)['relationships'] if r['id']==source['relationship'])
             self.assertEqual(item['supporting_text'],r['explanation'])
+            self.assertEqual(item['semantic_label'], r['label'])
+            self.assertIn(r['label'], self.elements[item['id']]['description'])
+            self.assertIn(r['label'].replace('<', r'\<'), self.elements[item['id']]['note'])
             self.assertEqual(item['endpoint_pins'][1],r['destination'])
             self.assertEqual(item['endpoint_pins'][0],{k:source[k] for k in ('target','revision')})
             self.assertEqual(item['kind']=='physical_fk',r['explanation'].lower().startswith('physical'))
@@ -180,10 +232,19 @@ class PinnedCompositionTest(unittest.TestCase):
             if item['recorded']:
                 pair = (item['source']['target'].split(':')[-1], item['source']['relationship'])
                 self.assertEqual(element.get('visibility') == 'detail', pair not in core)
+                if pair not in core:
+                    self.assertNotIn('label', element)
+                    self.assertNotIn('label_box', element)
+                else:
+                    self.assertTrue(element['label'])
+                    self.assertIn('label_box', element)
             else:
                 self.assertNotIn('tail', element)
                 self.assertEqual(element['head'], 'arrow')
         self.assertEqual(sum(e.get('visibility') == 'detail' for e in self.elements.values()), 99)
+        self.assertEqual(sum(e['kind'] == 'connection' and bool(e.get('label')) for e in self.elements.values()), 25)
+        self.assertIn('Details toggles fields', self.elements['coverage']['label'])
+        self.assertIn('section focus or zoom', self.audit['detail_policy'])
 
     def test_output_cannot_be_written_into_source(self):
         result=subprocess.run([sys.executable,str(SCRIPT),str(self.root),str(self.root/'forbidden-output')],
