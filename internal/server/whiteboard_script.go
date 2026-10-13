@@ -421,7 +421,8 @@ const whiteboardJavaScript = `
         const scale = Math.min(viewportRect.width/view.width,viewportRect.height/view.height);
         const left = viewportRect.left+(viewportRect.width-view.width*scale)/2;
         const top = viewportRect.top+(viewportRect.height-view.height*scale)/2;
-        return {right:left+(box.x+box.width-view.x)*scale,top:top+(box.y-view.y)*scale};
+        return {right:left+(box.x+box.width-view.x)*scale,top:top+(box.y-view.y)*scale,
+          viewport:{left:Math.max(0,viewportRect.left),top:Math.max(0,viewportRect.top),right:Math.min(innerWidth,viewportRect.right),bottom:Math.min(innerHeight,viewportRect.bottom)}};
       }});
       const templates = new Map(qa('[data-diagram-note-template]',board).map(node => [node.dataset.diagramNoteTemplate,node]));
       prepareDiagramInteractions(svg, {interactionRoot:board, signal:pageScope.signal, affordance, templates});

@@ -507,3 +507,49 @@ for (const section of ['shared','delivery']) test("long relationship hover actio
   await expect(book).toBeVisible(); await page.mouse.click(destination.x,destination.y);
   await expect(page.locator('.drawer-body')).toContainText('A saved edit produces a shared record.');
 });
+
+test("oversized native entity actions stay reachable at readable field zoom", async ({page,saga}) => {
+  nativeModel(saga);
+  await page.goto(saga.baseURL+'/technical/erd?focus=shared'); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'),bar=page.locator('[data-diagram-affordance]');
+  const viewport=board.locator('[data-whiteboard-viewport]'),record=board.locator('[data-instance-path="shared/record"]');
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  await record.focus(); await expect(bar.locator('[data-documentation-target]')).toBeVisible();
+  const ordinary=await bar.boundingBox(); expect(ordinary).not.toBeNull();
+  await viewport.focus(); await record.hover();
+  const ordinaryHover=await bar.boundingBox();
+  expect(ordinaryHover!.x).toBeCloseTo(ordinary!.x,1); expect(ordinaryHover!.y).toBeCloseTo(ordinary!.y,1);
+  await board.locator('[data-whiteboard-fields]').click();
+  for(let i=0;i<8;i++) await board.locator('[data-whiteboard-zoom="1"]').click();
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  const pan=await record.evaluate(node=>{
+    const rect=node.getBoundingClientRect(),viewport=node.closest('[data-whiteboard-viewport]')!.getBoundingClientRect();
+    return {deltaX:rect.left-viewport.left-40,deltaY:rect.top-viewport.top-120};
+  });
+  await viewport.dispatchEvent('wheel',{...pan,bubbles:true,cancelable:true});
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  const point=await record.evaluate(node=>{
+    const rect=node.getBoundingClientRect(),viewport=node.closest('[data-whiteboard-viewport]')!.getBoundingClientRect();
+    if(rect.width<=viewport.width || rect.right<=viewport.right) throw new Error('Fixture card must extend offscreen');
+    const field=node.querySelector<SVGTextElement>('[data-field] text')!;
+    if(Number(field.getAttribute('font-size'))*field.getScreenCTM()!.a<14) throw new Error('Fixture fields must be readable');
+    for(let y=Math.max(viewport.top+100,rect.top+30);y<Math.min(viewport.bottom-100,rect.bottom-20);y+=30) {
+      const x=Math.max(viewport.left+100,rect.left+30);
+      if(node.contains(document.elementFromPoint(x,y))) return {x,y};
+    }
+    throw new Error('No visible entity body found');
+  });
+  await record.focus(); await expect(bar.locator('[data-documentation-target]')).toBeVisible();
+  const keyboardAnchor=await bar.boundingBox(); expect(Math.abs(keyboardAnchor!.x-point.x)).toBeGreaterThan(100);
+  await page.keyboard.press('Escape'); await expect(bar).toBeHidden(); await viewport.focus();
+  await page.mouse.move(point.x,point.y);
+  const book=bar.locator('[data-documentation-target]'); await expect(book).toBeVisible();
+  const button=await book.boundingBox(); const destination={x:button!.x+button!.width/2,y:button!.y+button!.height/2};
+  expect(Math.hypot(destination.x-point.x,destination.y-point.y)).toBeLessThan(50);
+  for(let i=1;i<=20;i++) {
+    await page.mouse.move(point.x+(destination.x-point.x)*i/20,point.y+(destination.y-point.y)*i/20);
+    await page.waitForTimeout(25);
+  }
+  await expect(book).toBeVisible(); await page.mouse.click(destination.x,destination.y);
+  await expect(page.locator('.drawer-body')).toContainText('A shared record.');
+});
