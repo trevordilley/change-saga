@@ -190,7 +190,7 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   await expect(record.locator('[data-diagram-summary="entity"]')).toBeVisible();
   await expect(record.locator('[data-diagram-summary="entity"]')).toContainText("Preserves the accepted edit for shared access.");
   await expect(record.locator('[data-diagram-detail="entity"]')).toBeHidden();
-  await expect(record.locator('[data-diagram-detail="entity"] > path')).toBeHidden();
+  expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(true);
   await record.focus(); await page.keyboard.press("Enter");
   await expect(page.locator("[data-documentation-view]")).toHaveAttribute("data-documentation-pin", /data-entity:record:revision:r1$/);
   await expect(board.locator("[data-whiteboard-inspection]")).toContainText("The exact shared record definition retains source provenance.");
@@ -199,12 +199,12 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   await page.keyboard.press("Escape");
   await board.locator("[data-whiteboard-fields]").click();
   await expect(record.locator("[data-field]").first()).toBeVisible();
-  await expect(record.locator('[data-diagram-detail="entity"] > path')).toBeVisible();
+  expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(false);
   await expect(record.locator('[data-diagram-detail="entity"]')).toBeVisible();
   await expect(record.locator('[data-diagram-summary="entity"]')).toBeHidden();
   await board.locator("[data-whiteboard-fields]").click();
   await expect(record.locator("[data-field]").first()).toBeHidden();
-  await expect(record.locator('[data-diagram-detail="entity"] > path')).toBeHidden();
+  expect(await record.locator('[data-diagram-detail="entity"] > path').evaluate(node => Boolean(node.closest('[aria-hidden="true"]')))).toBe(true);
   await expect(record.locator('[data-diagram-summary="entity"]')).toBeVisible();
   await expect(record.locator('[data-diagram-detail="entity"]')).toBeHidden();
   await select.selectOption("");
