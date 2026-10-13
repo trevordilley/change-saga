@@ -35,6 +35,8 @@ func TestNamedWhiteboardDocumentsAndIndependentHistory(t *testing.T) {
 	for _, test := range []struct{ path, id, revision, title string }{
 		{"/technical/whiteboards/architecture", "architecture", "r2", "Revised architecture"},
 		{"/technical/whiteboards/architecture?revision=r1&focus=area", "architecture", "r1", "First architecture"},
+		{"/technical/whiteboards/architecture?focus=area", "architecture", "r2", "Revised architecture"},
+		{"/technical/whiteboards/architecture?revision=r1&view=all", "architecture", "r1", "First architecture"},
 		{"/technical/whiteboards/journey", "journey", "r1", "Customer journey"},
 		{"/technical/erd", "data-model", "r2", "Revised data"},
 		{"/technical/erd?revision=r1", "data-model", "r1", "Shared data"},
@@ -50,6 +52,23 @@ func TestNamedWhiteboardDocumentsAndIndependentHistory(t *testing.T) {
 		}
 		if strings.Contains(test.path, "revision=r1") && !strings.Contains(technicalSidebar(t, body), `focus=area&amp;revision=r1`) {
 			t.Errorf("historical sidebar focus lost revision: %s", test.path)
+		}
+		sidebar := technicalSidebar(t, body)
+		if !navChildren(t, sidebar, "nav-technical") {
+			t.Errorf("%s: Technical design is collapsed", test.path)
+		}
+		if !strings.Contains(sidebar, `aria-expanded="true" aria-controls="nav-technical"`) {
+			t.Errorf("%s: Technical design disclosure is collapsed", test.path)
+		}
+		requestedRevision := ""
+		if strings.Contains(test.path, "revision=r1") {
+			requestedRevision = "r1"
+		}
+		if current := currentNav(sidebar); len(current) != 1 || current[0] != whiteboardHref(test.id, requestedRevision) {
+			t.Errorf("%s: wrong active document: %v", test.path, current)
+		}
+		if test.id != "data-model" && !navChildren(t, sidebar, "nav-whiteboard-document-"+domID(test.id)) {
+			t.Errorf("%s: selected board sections are collapsed", test.path)
 		}
 		if test.id != "data-model" && strings.Contains(body, `data-technical-data-model`) {
 			t.Fatal("generic document presented as a data model")

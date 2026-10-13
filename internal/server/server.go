@@ -1449,7 +1449,18 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// whichever page is showing.
 	rootNavLinks(data.Nav)
 	if route.kind != "overview" && !data.TermsMode {
-		markActiveNav(data.Nav, r.URL.Path)
+		activeHref := r.URL.Path
+		// Whiteboard document rows keep their selected revision in the link.
+		// Match that identity before revealing ancestors; focus/view only refine
+		// the canvas and must not hide the owning Technical design branch.
+		if data.Technical != nil {
+			if selected := data.Technical.Whiteboard; selected != nil {
+				activeHref = selected.Href
+			} else if model := data.Technical.DataModel; model != nil && model.Whiteboard != nil && model.Whiteboard.Visual != "" {
+				activeHref = model.Whiteboard.Href
+			}
+		}
+		markActiveNav(data.Nav, activeHref)
 	}
 	data.PageTitle = pageTitle(data)
 	return data, nil
