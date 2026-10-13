@@ -18,6 +18,7 @@ import (
 )
 
 const WhiteboardDir = "___whiteboards"
+const MaxWhiteboards = 10_000
 const WhiteboardSchemaURL = "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json"
 
 // WhiteboardRevision is an immutable, complete composition snapshot. Parents
@@ -38,33 +39,48 @@ type ResolvedWhiteboard struct {
 	SVG         []byte               `json:"-"`
 }
 
-func whiteboardHistory(root, sagaID, kind string) (map[string]WhiteboardRevision, []string, error) {
-	if !livingid.ValidID(sagaID) || kind != "erd" {
-		return nil, nil, fmt.Errorf("whiteboard requires a valid saga ID and kind erd")
-	}
+// ListWhiteboardIDs lists named documents without loading their revision histories.
+// The optional root and every entry must be real directories with stable IDs.
+func ListWhiteboardIDs(root string) ([]string, error) {
 	dir := filepath.Join(root, WhiteboardDir)
-	for _, next := range []string{dir, filepath.Join(dir, kind), filepath.Join(dir, kind, "revisions")} {
-		present, err := realDirectory(next)
-		if err != nil {
+	present, err := realDirectory(dir)
+	if err != nil || !present {
+		return nil, err
+	}
+	entries, err := boundedReadDir(dir, MaxWhiteboards)
+	if err != nil {
+		return nil, err
+	}
+	ids := make([]string, 0, len(entries))
+	for _, entry := range entries {
+		if !livingid.ValidID(entry.Name()) || !entry.IsDir() || entry.Type()&fs.ModeSymlink != 0 {
+			return nil, fmt.Errorf("whiteboard entry %q must be a real directory with a valid board ID", entry.Name())
+		}
+		ids = append(ids, entry.Name())
+	}
+	slices.Sort(ids)
+	return ids, nil
+}
+
+func whiteboardHistory(root, sagaID, boardID string) (map[string]WhiteboardRevision, []string, error) {
+	if !livingid.ValidID(sagaID) || !livingid.ValidID(boardID) {
+		return nil, nil, fmt.Errorf("whiteboard requires valid saga and board IDs")
+	}
+	for _, dir := range []string{filepath.Join(root, WhiteboardDir), filepath.Join(root, WhiteboardDir, boardID)} {
+		present, err := realDirectory(dir)
+		if err != nil || !present {
 			return nil, nil, err
 		}
-		if !present {
-			if next != dir {
-				return nil, nil, fmt.Errorf("whiteboard directory %s is missing", next)
-			}
-			return nil, nil, nil
-		}
 	}
-	entries, err := boundedReadDir(dir, 1)
+	dir := filepath.Join(root, WhiteboardDir, boardID)
+	present, err := realDirectory(filepath.Join(dir, "revisions"))
 	if err != nil {
 		return nil, nil, err
 	}
-	for _, entry := range entries {
-		if entry.Name() != kind || !entry.IsDir() || entry.Type()&fs.ModeSymlink != 0 {
-			return nil, nil, fmt.Errorf("unknown whiteboard entry %s", entry.Name())
-		}
+	if !present {
+		return nil, nil, fmt.Errorf("whiteboard directory %s is missing", filepath.Join(dir, "revisions"))
 	}
-	entries, err = boundedReadDir(filepath.Join(dir, kind), 1)
+	entries, err := boundedReadDir(dir, 1)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -73,7 +89,7 @@ func whiteboardHistory(root, sagaID, kind string) (map[string]WhiteboardRevision
 			return nil, nil, fmt.Errorf("unknown whiteboard entry %s", entry.Name())
 		}
 	}
-	dir = filepath.Join(dir, kind, "revisions")
+	dir = filepath.Join(dir, "revisions")
 	entries, err = boundedReadDir(dir, MaxRevisionsPerStory)
 	if err != nil {
 		return nil, nil, err
@@ -134,8 +150,8 @@ func validateWhiteboardRevision(v WhiteboardRevision, id string) error {
 
 // LoadWhiteboard selects an exact revision or the unique head. Missing optional
 // board storage returns nil,nil. An explicit revision never falls back to head.
-func LoadWhiteboard(root, sagaID, kind, revision string) (*WhiteboardRevision, error) {
-	revisions, heads, err := whiteboardHistory(root, sagaID, kind)
+func LoadWhiteboard(root, sagaID, boardID, revision string) (*WhiteboardRevision, error) {
+	revisions, heads, err := whiteboardHistory(root, sagaID, boardID)
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +174,7 @@ func LoadWhiteboard(root, sagaID, kind, revision string) (*WhiteboardRevision, e
 // PublishWhiteboard validates every source before appending a complete snapshot.
 // Updating requires the observed current parent; child revisions never advance
 // implicitly. Retrying identical content is idempotent.
-func PublishWhiteboard(ctx context.Context, root, sagaID, kind, revision, parent, name string, document diagram.Document) (*WhiteboardRevision, error) {
+func PublishWhiteboard(ctx context.Context, root, sagaID, boardID, revision, parent, name string, document diagram.Document) (*WhiteboardRevision, error) {
 	v := WhiteboardRevision{Schema: WhiteboardSchemaURL, Version: 1, ID: revision, Parents: []string{}, Name: name, Document: document, CreatedAt: mutationTime(time.Time{})}
 	if parent != "" {
 		v.Parents = []string{parent}
@@ -170,7 +186,7 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, kind, revision, parent
 		if err := ctx.Err(); err != nil {
 			return err
 		}
-		revisions, heads, err := whiteboardHistory(root, sagaID, kind)
+		revisions, heads, err := whiteboardHistory(root, sagaID, boardID)
 		if err != nil {
 			return err
 		}
@@ -191,17 +207,34 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, kind, revision, parent
 			return err
 		}
 		if len(revisions) == 0 {
-			// Publish the complete optional root in one rename, so a failed first
-			// write cannot leave an empty board that blocks a subsequent retry.
-			return store.CommitDir(root, filepath.Join(root, WhiteboardDir), func(stage string) error {
-				dir := filepath.Join(stage, kind, "revisions")
+			ids, err := ListWhiteboardIDs(root)
+			if err != nil {
+				return err
+			}
+			if len(ids) >= MaxWhiteboards {
+				return fmt.Errorf("whiteboard document limit of %d reached", MaxWhiteboards)
+			}
+			boardRoot := filepath.Join(root, WhiteboardDir)
+			present, err := realDirectory(boardRoot)
+			if err != nil {
+				return err
+			}
+			// Atomically expose the first root or a complete new board inside an
+			// existing root. Failed publications never leave an empty board or
+			// replace any sibling's immutable history.
+			final, relative := filepath.Join(boardRoot, boardID), "revisions"
+			if !present {
+				final, relative = boardRoot, filepath.Join(boardID, "revisions")
+			}
+			return store.CommitDir(root, final, func(stage string) error {
+				dir := filepath.Join(stage, relative)
 				if err := os.MkdirAll(dir, 0755); err != nil {
 					return err
 				}
 				return store.WriteJSON(filepath.Join(dir, revision+".json"), v, true)
 			})
 		}
-		return store.WriteJSON(filepath.Join(root, WhiteboardDir, kind, "revisions", revision+".json"), v, true)
+		return store.WriteJSON(filepath.Join(root, WhiteboardDir, boardID, "revisions", revision+".json"), v, true)
 	})
 	if err != nil {
 		return nil, err
@@ -209,8 +242,8 @@ func PublishWhiteboard(ctx context.Context, root, sagaID, kind, revision, parent
 	return &v, nil
 }
 
-func LoadResolvedWhiteboard(root, sagaID, kind, revision string) (*ResolvedWhiteboard, error) {
-	v, err := LoadWhiteboard(root, sagaID, kind, revision)
+func LoadResolvedWhiteboard(root, sagaID, boardID, revision string) (*ResolvedWhiteboard, error) {
+	v, err := LoadWhiteboard(root, sagaID, boardID, revision)
 	if err != nil || v == nil {
 		return nil, err
 	}
@@ -233,10 +266,28 @@ func resolveWhiteboard(root, sagaID string, v WhiteboardRevision) (*ResolvedWhit
 	return &ResolvedWhiteboard{Revision: v, Composition: composition, SVG: svg}, nil
 }
 
-// ValidateWhiteboards validates all history, including pins hidden by a newer
-// head. Legacy applications without whiteboard storage are unchanged.
+// ValidateWhiteboards validates every named document's complete history,
+// including source pins hidden by newer revisions. The subtree is optional.
 func ValidateWhiteboards(root, sagaID string) error {
-	revisions, heads, err := whiteboardHistory(root, sagaID, "erd")
+	if !livingid.ValidID(sagaID) {
+		return fmt.Errorf("whiteboard requires a valid saga ID")
+	}
+	ids, err := ListWhiteboardIDs(root)
+	if err != nil {
+		return err
+	}
+	for _, id := range ids {
+		if err := ValidateWhiteboard(root, sagaID, id); err != nil {
+			return fmt.Errorf("whiteboard %s: %w", id, err)
+		}
+	}
+	return nil
+}
+
+// ValidateWhiteboard validates one document's complete history and exact source
+// pins. A missing optional document is valid, including beside existing boards.
+func ValidateWhiteboard(root, sagaID, boardID string) error {
+	revisions, heads, err := whiteboardHistory(root, sagaID, boardID)
 	if err != nil {
 		return err
 	}
