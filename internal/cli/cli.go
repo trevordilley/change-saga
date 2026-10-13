@@ -1368,6 +1368,7 @@ func Spec(args []string, out io.Writer) error {
 				"schema":           requirements.WhiteboardSchemaURL,
 				"revision_version": 1,
 				"diagram_source":   whiteboardDiagram,
+				"diagram_scope":    "shared grammar; operations describe slide editing, not whiteboard transactions; whiteboards use renderer reveal steps for focused Replay and support only the commands listed here",
 				"history": map[string]string{
 					"revisions": "immutable complete diagram snapshots; identical retries are idempotent",
 					"parent":    "first publication has no parent; updates require the observed unique current board revision ID as --parent",
