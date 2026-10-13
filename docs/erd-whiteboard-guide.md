@@ -11,10 +11,12 @@ document. The board fills the viewport beside the sidebar; its floating title
 has an expandable description. Its outline names places within the model rather
 than listing every source ERD as a separate document. Fit and Focus leave room
 for the title and navigation controls. The full document can extend well beyond
-one screen. The document itself must depict every required entity and
-relationship; old drawings are not a substitute for native coverage. Source
-revisions and historical routes remain available internally for provenance and
-compatibility. Groups are ordinary drawing groups; this feature does not change
+one screen. Select entities and relationships to explain the system clearly;
+a complete table or column inventory is not required. Every depicted concept
+and relationship needs evidence. Use abstraction deliberately and distinguish
+conceptual flows from recorded associations. Source revisions and historical
+routes remain available internally for provenance and compatibility. Groups
+are ordinary drawing groups; this feature does not change
 entity holders or add inventory kinds.
 
 Scroll with a mouse wheel or trackpad, or drag, to pan. Shift + scroll pans
@@ -340,54 +342,36 @@ representative and real-data browser checks.
 ## Reproducible DayLight composition
 
 The [example authoring script](examples/author-daylight-whiteboard.py) composes
-one connected native model from existing DayLight entity and relationship
-records, retaining 20 exact source ERDs in a same-canvas appendix. It uses only
-the Python
-standard library and reads a local saga copy; it neither publishes a board nor
-changes source records. The DayLight source data is not bundled in this repo.
-Run it against the matching copied inventory:
+one connected explanation from exact DayLight entity and relationship records.
+It uses the Python standard library and reads a local saga copy; it neither
+publishes a board nor changes source records. The DayLight source data is not
+bundled in this repo. Run it against the matching copied inventory:
 
 ```sh
 python3 docs/examples/author-daylight-whiteboard.py \
   /path/to/copied/daylight.saga /tmp/daylight-composition
 ```
 
-The outputs are `daylight-board.json`, `source-pins.json`, `source-audit.json`,
-`connection-evidence.json` and `camera-proposal.json`. Optional diagnostic previews
-use a supplied shared-renderer SVG, as described below. The manifest records all 20 exact pins, explanations,
-intrinsic dimensions, revision-file digests and verified SVG digests. Missing
-pins or visual digest mismatches stop generation; future revisions are never
-adopted implicitly. Source revision and visual files are checked again before
-writing the outputs. Generation does not publish or modify the source saga.
+The generated board and audit distinguish the selected visual model from the
+larger source catalog. The catalog is evidence for authoring, not a requirement
+to put every table, field or edge on the canvas. Review the generated source
+pins and relationship evidence alongside the picture. Exact source revisions
+remain fixed; generation must not silently adopt later definitions or modify
+the input saga.
 
-The primary composition uses native, source-pinned entities and explicit
-relationships in Delivery, Search and Authority sections: 23 core entities,
-279 retained fields and 27 connections. Fourteen lines represent physical foreign
-keys; nine represent application mappings or projections, two describe transport,
-one describes authorization and one identifies another appearance of the same
-entity. Twenty-one connections pin recorded relationships; six are explanatory.
-The source audit covers all 76 distinct source entities, including supporting
-tables outside the selected primary narrative. Its opening camera
-and typography establish a readable starting point rather than fitting the
-whole model on one screen. Cross-section connections carry their recorded
-relationship references or explicitly state their explanatory meaning.
+The visual target is the existing implementation-slide language: colored
+sections, meaningful document/database shapes, short descriptions, annotated
+connections and explicit outcomes. Spread that explanation over a whiteboard,
+without imposing the slide's screen-sized boundary. Source metadata and field
+details belong behind the existing evidence controls or in a chosen local
+inspection view, rather than competing with the overview story.
 
-The existing source drawings remain in a deep-detail appendix within the same
-canvas, preserving the original explanations and model coverage. They are
-migration/provenance material rather than the document's primary outline.
-Exact frame pins and instance paths keep those appearances inspectable. The
-script validates layout and source consistency before writing its outputs.
-
-The audit explicitly distinguishes committed-code documentation from live
-database observation. All current pins are SVG-only ERDs: their directories
-and bindings retain evidence, but embedding does not infer structured field
-geometry. Their complete fields remain available through source inspection.
-Narrative paraphrases come from the pinned explanations; explanatory connectors
-carry source pins and descriptions and do not assert new SQL foreign keys.
-In particular, file cursors are not delivery receipts, provisioning is not
-transcript access, and membership and exact-source consent are separate checks.
-The cross-store ERD identifies its payload-to-delivery line as the physical FK;
-other displayed mappings keep their documented meaning.
+Recorded associations retain their exact endpoint semantics and cardinalities.
+Conceptual transport, derivation and authorization links are labeled as such
+and do not claim new SQL foreign keys. In particular, file cursors are not
+delivery receipts, provisioning is not transcript access, and membership and
+exact-source consent are separate checks. Evidence describes committed code;
+it does not establish live database state or complete implementation coverage.
 
 Run the shared composition renderer to check exact text wrapping and source
 resolution. The script deliberately does not implement a second renderer. Once

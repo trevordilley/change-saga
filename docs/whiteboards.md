@@ -8,9 +8,9 @@ model; it is outside this implementation.
 ## The document
 
 The system has **one ERD document**, expressed on a large, zoomable whiteboard.
-It describes the complete system data model: entities, relationships, meaningful
-sections, narrative, annotations and evidence. It is one cohesive explanation
-with room to spread out. Its size is determined by what makes the model readable,
+It explains the system data model through selected entities, relationships,
+meaningful sections, narrative, annotations and evidence. It is one cohesive
+explanation with room to spread out. Its size is determined by what makes the model readable,
 not by a slide, one screen, or a fixed SVG viewport.
 
 This supersedes the earlier framing of a board as a catalog of independent ERD
@@ -20,9 +20,12 @@ New content can be authored directly in the whiteboard, with sections containing
 entities and connections crossing section boundaries. A section is part of the
 same document, not another inventory record.
 
-The whiteboard itself must be comprehensive. Every table and recorded
-relationship belongs in its authored model; an appendix of old drawings does
-not count as completing it. Original drawings need not remain on the canvas.
+The whiteboard is the comprehensive explanatory document, not an exhaustive
+schema inventory. Choose the concepts and relationships that help a human
+understand the system. It need not depict every table, column or recorded edge.
+What it does depict must have evidence; omission is preferable to an invented
+association. Original drawings need not remain on the canvas. Historical source
+records can retain detail without turning the board into their catalog.
 
 Existing ERDs are useful migration material. Their artwork, explanations, exact
 revisions and source bindings can be reused internally. That compatibility does
@@ -67,8 +70,13 @@ order. The viewer starts read-only.
   appearance by path. Its semantic endpoints remain intact when the displayed
   connector is simplified at overview scale.
 
-Use labeled, subtly colored sections, generous space, large overview text and
-local detail. Author straightforward connector routes with optional bends.
+Use the visual language of the existing implementation diagrams: colored
+section headers, document and database shapes where their meanings fit, a few
+clear concepts, short explanations, callouts and deliberately labeled links.
+Color should distinguish responsibilities or outcomes, not decorate an otherwise
+dense table grid. Give the story generous space and large overview text. Keep
+selected field detail local and optional. Author straightforward connector routes
+with optional bends.
 Avoid an elaborate automatic layout or routing engine. Shared slide presentation
 capabilities apply where their semantics fit; ERDs do not need fabricated slide
 Items or fragment-owned evidence records.
