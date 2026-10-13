@@ -11,7 +11,7 @@ const diagramInteractionsJavaScript = `
     const paused = () => interactionRoot.dataset.whiteboardInteracting === 'true';
     for (const node of qa('[tabindex]', root)) {
       const bound = node.hasAttribute('data-documentation-target') && node.hasAttribute('data-documentation-revision')
-        && (node.dataset.binding === 'true' || node.hasAttribute('data-source-element') || node.dataset.diagramEntity === 'true');
+        && (node.dataset.binding === 'true' || node.hasAttribute('data-source-element') || node.dataset.diagramEntity === 'true' || ['node','edge','connection'].includes(node.dataset.diagramKind));
       // Only the shared grammar promises that a direct desc is an authored
       // note. Opaque source SVG descriptions are not silently reclassified.
       const text = node.hasAttribute('data-diagram-kind') ? q(':scope > desc', node)?.textContent?.trim() : '';

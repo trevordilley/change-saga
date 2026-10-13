@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { expect, test, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from "../support/test.js";
 import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
 
-function authorWhiteboard(saga: SagaFixture, nested = false, opening = false) {
+function authorWhiteboard(saga: SagaFixture, nested = false, opening = false, spacious = false) {
   const run = (...args: string[]) => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, args.join(" ") + "\n" + result.stdout + result.stderr).toBe(0);
@@ -20,7 +20,7 @@ function authorWhiteboard(saga: SagaFixture, nested = false, opening = false) {
   }
   for (const [id, entity, name] of [["sqlite", "local-edit", "Local SQLite"], ["postgres", "cloud-record", "Cloud Postgres"]]) {
     const diagram = { version: 1, width: 720, height: 440, reveal: "fade", elements: [
-      { id: entity, kind: "node", shape: "entity", label: entity === "local-edit" ? "Local edit" : "Cloud record", x: 40, y: 35, width: 380, height: 145, style: "normal", source: pin("data-entity", entity), fields: [{ name: "id", type: "uuid", key: "pk" }, { name: "body", type: "text" }] },
+      { id: entity, kind: "node", shape: "entity", icon: "lucide:database", label: entity === "local-edit" ? "Local edit" : "Cloud record", x: 40, y: 35, width: 380, height: 145, style: "normal", source: pin("data-entity", entity), fields: [{ name: "id", type: "uuid", key: "pk" }, { name: "body", type: "text" }] },
       { id: "local-note", kind: "annotation", visibility: "detail", shape: "bubble", label: "The saved definition explains these fields.", note: "The source model keeps this note beside its entities.", x: 180, y: 230, width: 470, height: 145, style: "normal", color: "blue", about: entity, source: pin("data-entity", entity) }
     ] };
     run("erd", "add", "--id", id, "--from", file(id + ".json", { name, explanation: "Independently readable source diagram.", directory: [pin("data-entity", entity)], bindings: [{ id: entity, element: entity, entity: pin("data-entity", entity) }], diagram }), "--repo", saga.sourceRepo, saga.sagaRoot);
@@ -49,6 +49,11 @@ function authorWhiteboard(saga: SagaFixture, nested = false, opening = false) {
     { id: "flow-note", kind: "annotation", visibility: "overview", shape: "bubble", label: "Synchronization produces a cloud record. This flow is not a foreign key.", x: 60, y: 780, width: 580, height: 190, style: "normal", color: "blue", target: { x: 840, y: -290 } },
     { id: "legacy", kind: "frame", label: "Cross-store source", summary: "Existing SVG, shown as a whole diagram", x: 760, y: 760, width: 980, height: 290, style: "normal", source: pin("erd", "legacy"), detail_scale: .85 }
   ] };
+  if (spacious) {
+    board.width = 7000; board.height = 4500;
+    Object.assign(board.elements.find(element => element.id === "cloud")!, { x: 5400, y: 2600 });
+    Object.assign(board.elements.find(element => element.id === "legacy")!, { x: 2000, y: 3200 });
+  }
   run("diagram", "publish", "--whiteboard", "erd", "--from", file("board.json", board), "--name", "Offline and shared data", "--revision", "r1", saga.sagaRoot);
 }
 
@@ -248,4 +253,85 @@ test("authored opening camera, fields and renderer reveal stay separate from ful
   await expect(fields.first()).toBeHidden();
   await board.locator('[data-instance-path="local/local-note"]').click();
   await expect(board.locator('[data-whiteboard-inspection]')).toContainText("source model keeps this note");
+});
+
+
+test("offscreen diagrams restore on focus while camera updates batch without screen transform reads", async ({ page, saga }) => {
+  authorWhiteboard(saga, false, true, true);
+  await page.goto(saga.baseURL + "/technical/erd");
+  await waitForSettledSaga(page);
+  const board = page.locator('[data-whiteboard-view]');
+  const viewport = board.locator('[data-whiteboard-viewport]');
+  const far = board.locator('[data-frame-path="cloud/postgres"]');
+  const legacy = board.locator('[data-frame-path="legacy"]');
+  await expect(far).toHaveAttribute('data-whiteboard-culled','true');
+  await expect(far).toBeHidden();
+  await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(0);
+  await board.getByLabel('Focus diagram').selectOption('local');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  const entity = board.locator('[data-instance-path="local/local-edit"]');
+  await expect(entity.locator(':scope > svg')).toHaveCount(1); // shared Lucide icon
+  await entity.hover();
+  await expect(entity).toHaveClass(/diagram-interaction-active/);
+  const note = board.locator('[data-instance-path="local/local-note"]');
+  await note.hover();
+  await expect(page.locator('#element-note-popover')).toContainText('source model keeps this note');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#element-note-popover')).toBeHidden();
+  await entity.hover();
+  await viewport.focus();
+  await note.hover();
+  await expect(page.locator('#element-note-popover')).toBeVisible();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('#element-note-popover')).toBeHidden();
+  await expect(note).not.toHaveClass(/diagram-interaction-active/);
+  await entity.focus();
+  await board.locator('[data-whiteboard-focus]').evaluate((select: HTMLSelectElement) => { select.value = 'cloud/postgres'; select.dispatchEvent(new Event('change')); });
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  await expect(far).toHaveAttribute('data-whiteboard-culled','false');
+  await expect(far).toBeVisible();
+  await expect(viewport).toBeFocused();
+  await expect(entity).toHaveAttribute('tabindex','-1');
+  await page.reload();
+  await waitForSettledSaga(page);
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  await expect(far).toBeVisible();
+  await board.locator('[data-instance-path="cloud/postgres/cloud-record"]').focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('.diff-drawer')).toContainText('The saved content.');
+  await page.keyboard.press('Escape');
+  await board.getByLabel('Focus diagram').selectOption('legacy');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
+  await expect(legacy.locator('[data-diagram-summary]')).toBeVisible();
+
+  // A burst of pointer input must coalesce into one camera render; panning
+  // does not require screen transforms or rebuilding keyboard affordances.
+  await viewport.evaluate(node => node.addEventListener('pointerdown', event => { (window as any).__pointer = (event as PointerEvent).pointerId; },{once:true}));
+  const box = (await viewport.boundingBox())!;
+  await page.mouse.move(box.x + 20, box.y + box.height/2); await page.mouse.down();
+  const stats = await viewport.evaluate(async node => {
+    let transforms = 0, cameraWrites = 0;
+    const original = SVGGraphicsElement.prototype.getScreenCTM;
+    SVGGraphicsElement.prototype.getScreenCTM = function() { transforms++; return original.call(this); };
+    const svg = node.querySelector('svg')!;
+    const observer = new MutationObserver(records => { cameraWrites += records.length; });
+    observer.observe(svg,{attributes:true,attributeFilter:['viewBox']});
+    const box = node.getBoundingClientRect();
+    for (let i=1;i<=120;i++) node.dispatchEvent(new PointerEvent('pointermove',{bubbles:true,pointerId:(window as any).__pointer,clientX:box.x+20+i,clientY:box.y+box.height/2}));
+    await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    observer.disconnect(); SVGGraphicsElement.prototype.getScreenCTM = original;
+    return {transforms,cameraWrites};
+  });
+  await page.mouse.up();
+  expect(stats.transforms).toBe(0);
+  expect(stats.cameraWrites).toBe(1);
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  await board.locator('[data-whiteboard-home]').click();
+  await expect(legacy).toBeHidden();
+  await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
+  await board.getByLabel('Focus diagram').selectOption('legacy');
+  await expect(board).toHaveAttribute('data-whiteboard-moving','false');
+  await expect(legacy.locator('[data-diagram-summary]')).toHaveCount(1);
+  await expect(legacy.locator('[data-diagram-summary]')).toBeVisible();
 });

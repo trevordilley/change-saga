@@ -156,3 +156,11 @@ Artifacts are under `/tmp/change-saga-whiteboard-qa/performance/`:
 and `after-visibility.json`. Raw traces remain local rather than being committed.
 The application regression suite is owned separately; this diagnostic checks
 performance and focused frame restoration, not the entire interaction contract.
+
+A subsequent one-run sanity check used the `r4` copy, which adds three labeled
+section backgrounds while preserving all 21 original frame instances and pins.
+Pan retained the same 160 attribute calls, 12 tabindex mutations and zero screen
+transform reads. All focus targets restored, with no page errors. Paint was
+112.8 ms and total task duration 7.121 s. These are sanity observations under
+possible concurrent review/build load, not another paired comparison. The
+`sections-r4*` artifacts sit beside the unchanged before/after measurements.

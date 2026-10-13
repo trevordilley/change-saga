@@ -172,8 +172,12 @@ changes the identity of the underlying entity.
 The board uses the slide diagram grammar and renderer, including authored
 styles, icons, groups, annotations, notes and code blocks. Structured reveal
 steps can be replayed in the focused diagram; reduced-motion viewers see the
-finished drawing. Select a noted element to read its note. This does not create
-slide Items or fragment-owned landmarks for an ERD.
+finished drawing. Hover or focus a noted grammar element to read its note in
+the existing slide note popover; Escape dismisses it. Bound entities and
+relationships share a light hover/focus outline and the existing evidence
+drawer. This does not create slide Items or fragment-owned landmarks for an
+ERD. Bundled icons must be authored explicitly: embedding an existing SVG does
+not add icons or infer notes from its arbitrary descriptions.
 
 The **Details** control starts off. Structured field rows are hidden until
 requested. For supported authored SVGs, explicitly bound entity groups show
@@ -188,6 +192,24 @@ saved bytes, current resolution, stale or unavailable references, and members
 without references. None of these counts establishes complete model coverage.
 Code inspection preserves the saved commit, path and lines even when current
 code has moved. Opening a current definition never changes the board's pins.
+
+## Camera and rendering cost
+
+Camera input is batched once per animation frame. Geometry and selectable
+controls are cached when the page opens; panning does not remeasure each SVG
+or rewrite every control. Offscreen frames and structured decorations stop
+drawing outside a 180-screen-pixel overscan margin. Their source identity and
+DOM remain available, so focus, deep links and source navigation restore the
+same instance. A keyboard control that leaves the rendered region transfers
+focus to the viewport rather than becoming an invisible tab stop.
+
+Bound SVG entity summaries are built when their frame first enters the margin.
+Hover notes and reveal effects pause during dragging, wheel zoom and animated
+focus. Visible diagrams and overview callouts stay drawn. Opaque SVG internals
+are culled as a whole diagram; this is not network streaming or a guarantee
+that arbitrary SVG annotations can be individually deferred. Source SVG parse
+cost and visible SVG layout remain. See the [reproducible measurements](whiteboard-performance.md)
+for the observed gains and their limits.
 
 ## Existing SVGs and structured children
 
