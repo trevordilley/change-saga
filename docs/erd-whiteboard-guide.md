@@ -131,17 +131,21 @@ follows that frame's detail state independently of other frames.
 
 Focus a frame to read its child diagram, then an entity or relationship to
 inspect its meaning and source pin. Detailed fields are available on demand
-through structured diagram controls and source inspection. A Fields control
-can simplify structured field rows without replacing the ERD; an opaque SVG
-retains its authored rows. Never claim arbitrary SVG text has become structured
-fields, or that hiding rows changes the underlying source evidence. Repeated appearances use paths such as
+through diagram controls and source inspection. The Details control restores
+authored group content. Entity summaries retain the positions and source
+inspection of the same bound entities. Safe SVG bindings can expose selectable
+entities; this does not turn arbitrary SVG text into structured fields or
+guarantee targeting of individual field rows. Changing displayed detail never
+changes the source evidence. Repeated appearances use paths such as
 `cloud/identity/organization` and `cross-store/organization`; neither path
 changes the identity of the underlying entity.
 
 ## Existing SVGs and structured children
 
 An existing ERD SVG can be embedded as a whole drawing. Its source link and
-recorded directory/bindings remain available. An SVG without structured source
+recorded directory/bindings remain available. Safe, explicitly bound SVG entity
+regions can be selectable and inspectable without a structured child document.
+An SVG without structured source
 does not become a structured diagram through embedding: arbitrary internal
 elements and geometry cannot be inferred. Descriptions report this limit;
 internal connection targeting requires known bounds. Whole-frame connections
@@ -233,6 +237,6 @@ The cross-store ERD identifies its payload-to-delivery line as the physical FK;
 other displayed mappings keep their documented meaning.
 
 Run the shared renderer to check exact text wrapping and source resolution,
-then use the application viewer for real connector routing, camera, Fields,
+then use the application viewer for real connector routing, camera, Details,
 inspection and focus checks. The diagnostic HTML is only a layout proof.
 Publishing is a separate delivery step after that review.
