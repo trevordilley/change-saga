@@ -12,7 +12,7 @@ const whiteboardJavaScript = `
       qa('image', svg).forEach(drawing => drawing.setAttribute('role', 'img'));
       const original = svg.viewBox.baseVal;
       const bounds = {x: original.x, y: original.y, width: original.width, height: original.height};
-      let view = {...bounds}, focused = '';
+      let view = {...bounds}, focused = '', fitted = true;
       const frameRows = qa('[data-whiteboard-frame]', board);
       const geometry = new Map(JSON.parse(q('[data-whiteboard-metadata]', board).dataset.whiteboardMetadata).map(item => [item.path,item]));
       const frames = qa('[data-frame-path]', svg);
@@ -86,10 +86,21 @@ const whiteboardJavaScript = `
           visible(node, node.dataset.visibility === 'overview' ? localOverview : !localOverview);
         }
         q('[data-whiteboard-mode]', board).textContent = focused ? 'Focus: ' + (select.selectedOptions[0]?.textContent || focused) : collapsed.length ? 'Overview · focus a diagram for detail' : 'Detail';
-        q('[data-whiteboard-fit]', board).setAttribute('aria-pressed', String(!focused && view.width === bounds.width));
+        q('[data-whiteboard-fit]', board).setAttribute('aria-pressed', String(fitted));
+      }
+      // Fit inside the clear area between the floating title and controls,
+      // while keeping the SVG and pan surface across the entire canvas.
+      function fitBox(box) {
+        const rect = viewport.getBoundingClientRect();
+        const summary = q('.whiteboard-description > summary', board).getBoundingClientRect();
+        const toolbar = q('[data-whiteboard-toolbar]', board).getBoundingClientRect();
+        const top = summary.bottom - rect.top + 24, bottom = rect.bottom - toolbar.top + 20;
+        const width = Math.max(1, rect.width - 40), height = Math.max(1, rect.height - top - bottom);
+        const unit = Math.max(box.width / width, box.height / height);
+        return {x:box.x-(width*unit-box.width)/2-20*unit, y:box.y-(height*unit-box.height)/2-top*unit, width:rect.width*unit, height:rect.height*unit};
       }
       function fit() {
-        view = {...bounds}; focused = ''; select.value = ''; inspection.hidden = true; paint();
+        fitted = true; view = fitBox(bounds); focused = ''; select.value = ''; inspection.hidden = true; paint();
       }
       function focus(path) {
         const row = rowFor(path);
@@ -108,11 +119,12 @@ const whiteboardJavaScript = `
           }
         }
         if (!(width > 0 && height > 0)) return;
-        focused = path; select.value = path;
-        view = {x: x - 24, y: y - 24, width: width + 48, height: height + 48};
+        focused = path; fitted = false; select.value = path;
+        view = fitBox({x: x - 24, y: y - 24, width: width + 48, height: height + 48});
         paint();
       }
       function zoom(factor, clientX, clientY) {
+        fitted = false;
         const nextWidth = Math.max(Math.max(1, bounds.width / 512), Math.min(bounds.width * 2, view.width * factor));
         factor = nextWidth / view.width;
         const matrix = svg.getScreenCTM();
@@ -131,6 +143,7 @@ const whiteboardJavaScript = `
         else if (event.key === '-' || event.key === '_') zoom(1.25);
         else if (event.key === '0' || event.key === 'Escape') fit();
         else if (event.key.startsWith('Arrow')) {
+          fitted = false;
           const dx = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
           const dy = event.key === 'ArrowDown' ? 1 : event.key === 'ArrowUp' ? -1 : 0;
           view.x += dx * view.width * .08; view.y += dy * view.height * .08; paint();
@@ -150,7 +163,7 @@ const whiteboardJavaScript = `
         if (!drag || event.pointerId !== drag.id) return;
         const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
         if (!drag.moved && Math.hypot(dx,dy) < 4) return;
-        drag.moved = true; viewport.setPointerCapture(event.pointerId); viewport.classList.add('whiteboard-dragging');
+        fitted = false; drag.moved = true; viewport.setPointerCapture(event.pointerId); viewport.classList.add('whiteboard-dragging');
         const scale = Math.min(viewport.clientWidth / view.width, viewport.clientHeight / view.height);
         view.x = drag.start.x - dx / scale; view.y = drag.start.y - dy / scale; paint();
       });
@@ -194,10 +207,10 @@ const whiteboardJavaScript = `
           event.preventDefault(); event.stopPropagation(); node.dispatchEvent(new MouseEvent('click', {bubbles:true,cancelable:true}));
         });
       }
-      const resize = new ResizeObserver(() => paint()); resize.observe(viewport);
+      const resize = new ResizeObserver(() => fitted ? fit() : paint()); resize.observe(viewport);
       pageScope.signal.addEventListener('abort', () => resize.disconnect(), {once:true});
       q('[data-whiteboard-toolbar]', board).hidden = false;
-      paint();
+      fit();
     }
   }
 `

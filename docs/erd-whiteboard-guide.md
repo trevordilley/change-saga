@@ -2,8 +2,11 @@
 
 An ERD whiteboard composes existing ERD revisions using the diagram grammar.
 The AI authors the positions, sizes, summaries, annotations and connections;
-the Data model viewer provides read-only pan, zoom, fit and focus. ERDs remain
-independent documents. Groups are ordinary drawing groups, and this feature
+the Data model viewer provides read-only pan, zoom, fit and focus. The board fills
+the viewport beside the sidebar. Its floating title has an expandable description
+using the shared data-model overview; diagram sources and directories open in a
+separate overlay. Fit and Focus leave room for the title and navigation controls.
+ERDs remain independent documents. Groups are ordinary drawing groups, and this feature
 does not change entity holders or add inventory kinds.
 
 ## Revision policy

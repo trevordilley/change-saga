@@ -208,39 +208,88 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 }
 
 const whiteboardTemplates = `
-{{define "erd-whiteboard"}}<section class="app-page-section whiteboard" data-whiteboard-view aria-label="Data model whiteboard"><h2>{{if .Name}}{{.Name}}{{else}}Whiteboard{{end}}</h2>{{if .Revision}}<p class="whiteboard-help">Whiteboard · saved revision <code>{{.Revision}}</code></p>{{end}}
-{{if .Note}}<p class="gap" role="status" data-whiteboard-note>{{.Note}}</p>{{end}}
-{{if .Visual}}<div hidden data-whiteboard-metadata="{{.Metadata}}"></div><div class="whiteboard-toolbar" role="toolbar" aria-label="Whiteboard navigation" hidden data-whiteboard-toolbar>
-<button type="button" data-whiteboard-zoom="-1" aria-label="Zoom out whiteboard" title="Zoom out (-)">−</button><output data-whiteboard-level aria-live="polite"></output><button type="button" data-whiteboard-zoom="1" aria-label="Zoom in whiteboard" title="Zoom in (+)">+</button><button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button>
-<label>Focus diagram <select data-whiteboard-focus><option value="">Whole board</option>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</select></label><span data-whiteboard-mode aria-live="polite">Overview</span></div>
+{{define "erd-whiteboard"}}{{$model := .}}{{with .Whiteboard}}
+<section class="whiteboard whiteboard-canvas" data-whiteboard-view data-technical-page="erd" data-technical-data-model aria-label="Data model whiteboard">
+<div hidden data-whiteboard-metadata="{{.Metadata}}"></div>
 <div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Data model whiteboard. Drag to pan, plus and minus to zoom, zero to fit the board. Arrow keys pan.">{{.Visual}}</div>
-<p class="whiteboard-help">Drag to pan · + / − to zoom · 0 to fit · Select a diagram to focus, or an entity to inspect its saved definition.</p>
-<details class="whiteboard-sources"><summary>Diagram sources and saved revisions</summary><ul>{{range .Frames}}<li data-whiteboard-frame="{{.Path}}" data-x="{{.X}}" data-y="{{.Y}}" data-width="{{.Width}}" data-height="{{.Height}}"><button type="button" data-whiteboard-focus-frame="{{.Path}}">Focus {{.Title}}</button> <a href="{{.Href}}">{{.Title}} · {{.Revision}}</a>{{if ne .Status "current"}} <span class="gap">{{.Status}}</span>{{end}}<p>{{.Summary}}{{if .Opaque}} <span class="term-empty">Whole SVG; open the source ERD for entity inspection.</span>{{end}}</p></li>{{end}}</ul></details>
-<p class="whiteboard-inspection" data-whiteboard-inspection role="status" hidden></p>{{end}}</section>{{end}}
+<header class="whiteboard-heading whiteboard-overlay">
+<h1>{{if .Name}}{{.Name}}{{else}}Data model{{end}}</h1>
+<details class="whiteboard-description"><summary>Description</summary><div class="whiteboard-description-body">
+{{with $model.Overview}}{{template "fragment" .}}{{else}}<p>Explore the data model. Focus a diagram to see its detail, or select an entity to inspect its saved definition.</p>{{end}}
+<p class="whiteboard-help">Drag to pan · + / − to zoom · 0 to fit</p>
+<p class="whiteboard-help">Whiteboard · saved revision <code>{{.Revision}}</code></p>
+</div></details></header>
+<div class="whiteboard-toolbar whiteboard-overlay" role="toolbar" aria-label="Whiteboard navigation" hidden data-whiteboard-toolbar>
+<button type="button" data-whiteboard-zoom="-1" aria-label="Zoom out whiteboard" title="Zoom out (-)">−</button>
+<output data-whiteboard-level aria-live="polite"></output>
+<button type="button" data-whiteboard-zoom="1" aria-label="Zoom in whiteboard" title="Zoom in (+)">+</button>
+<button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button>
+<label>Focus diagram <select data-whiteboard-focus><option value="">Whole board</option>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</select></label>
+<span data-whiteboard-mode aria-live="polite">Overview</span>
+</div>
+<details class="whiteboard-sources whiteboard-overlay"><summary>Diagram sources and saved revisions</summary><div class="whiteboard-sources-body"><ul>
+{{range .Frames}}<li data-whiteboard-frame="{{.Path}}" data-x="{{.X}}" data-y="{{.Y}}" data-width="{{.Width}}" data-height="{{.Height}}">
+<button type="button" data-whiteboard-focus-frame="{{.Path}}">Focus {{.Title}}</button>
+<a href="{{.Href}}">{{.Title}} · {{.Revision}}</a>{{if ne .Status "current"}} <span class="gap">{{.Status}}</span>{{end}}
+<p>{{.Summary}}{{if .Opaque}} <span class="term-empty">Whole SVG; open the source ERD for entity inspection.</span>{{end}}</p>
+</li>{{end}}</ul>
+<details><summary>All ERD documents and data entities</summary>{{template "technical-data-model-directory" $model}}</details>
+</div></details>
+<p class="whiteboard-inspection whiteboard-overlay" data-whiteboard-inspection role="status" hidden></p>
+</section>{{end}}{{end}}
 `
 
 const whiteboardStyles = `
 @font-face{font-family:"Change Saga Diagram";src:url("/_diagram/fonts/go-regular.ttf") format("truetype")}
 .whiteboard-viewport text,.erd-viewport svg[data-renderer] text{font-family:"Change Saga Diagram",system-ui,-apple-system,"Segoe UI",sans-serif}
-.whiteboard-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0;font:13px var(--ui)}
-.whiteboard-toolbar[hidden]{display:none}
-.whiteboard-toolbar button,.whiteboard-toolbar select,.whiteboard-sources button{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:3px;padding:6px 9px;font:inherit;cursor:pointer}
-.whiteboard-toolbar label{max-width:100%;display:flex;align-items:center;gap:6px;margin-left:10px}
-.whiteboard-toolbar select{min-width:0;max-width:100%}
-.whiteboard-toolbar output{min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
-.whiteboard-toolbar [data-whiteboard-mode]{margin-left:auto;color:var(--muted)}
-.whiteboard-viewport{height:min(68vh,760px);min-height:360px;overflow:hidden;border:1px solid var(--line);background:var(--bg);cursor:grab;touch-action:none}
+/* Scope the canvas shell to the active page, including boosted navigation. */
+body:has(#view-saga.active .whiteboard-canvas){--top:0px}
+body:has(#view-saga.active .whiteboard-canvas)>.topbar{display:none}
+.shell:has(#view-saga.active .whiteboard-canvas){height:100dvh;min-height:0;overflow:hidden;display:grid}
+.shell:has(#view-saga.active .whiteboard-canvas)>.sidebar{position:relative;top:auto;height:100%;max-height:none}
+.shell:has(#view-saga.active .whiteboard-canvas)>.content{width:100%;height:100%;min-height:0;padding:0;overflow:hidden}
+.shell:has(.whiteboard-canvas) #view-saga{height:100%}
+.whiteboard-canvas{position:relative;height:100%;isolation:isolate;overflow:hidden}
+.whiteboard-viewport{position:absolute;inset:0;overflow:hidden;background:var(--bg);cursor:grab;touch-action:none}
 .whiteboard-viewport>svg{display:block;width:100%;height:100%;max-width:none}
-.whiteboard-viewport:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.whiteboard-viewport:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .whiteboard-viewport.whiteboard-dragging{cursor:grabbing;user-select:none}
 .whiteboard-viewport [data-whiteboard-selectable]{cursor:pointer}
 .whiteboard-viewport [data-whiteboard-selectable]:focus-visible{outline:3px solid var(--accent)}
-.whiteboard-help{font:12px var(--ui);color:var(--muted);margin:6px 0 12px}
-.whiteboard-sources{font:13px var(--ui)}
+.whiteboard-overlay{position:absolute;z-index:1;background:var(--bg);border:1px solid var(--line-soft);border-radius:10px;box-shadow:0 3px 14px #1f232812;font:13px/1.5 var(--ui)}
+.whiteboard-heading{top:20px;left:20px;width:max-content;max-width:min(460px,calc(100% - 40px));padding:12px 16px}
+.whiteboard-heading h1{margin:0;font:600 18px/1.35 var(--ui);overflow-wrap:anywhere}
+.whiteboard-description{margin-top:4px;color:var(--muted)}
+.whiteboard-description summary,.whiteboard-sources summary{cursor:pointer}
+.whiteboard-description-body{max-height:calc(100dvh - 220px);overflow:auto;color:var(--ink)}
+.whiteboard-description-body .fragment{margin:12px 0;padding:0}
+.whiteboard-toolbar{bottom:20px;left:20px;right:20px;width:fit-content;max-width:calc(100% - 40px);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px}
+.whiteboard-toolbar[hidden]{display:none}
+.whiteboard-toolbar button,.whiteboard-toolbar select,.whiteboard-sources button{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:5px;padding:6px 9px;font:inherit;cursor:pointer}
+.whiteboard-toolbar label{max-width:100%;display:flex;align-items:center;gap:6px;margin-left:10px}
+.whiteboard-toolbar select{min-width:0;max-width:220px;flex:1}
+.whiteboard-toolbar output{min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+.whiteboard-toolbar [data-whiteboard-mode]{color:var(--muted);font-size:11px}
+.whiteboard-help{font:12px/1.5 var(--ui);color:var(--muted);margin:8px 0}
+.whiteboard-sources{top:20px;right:20px;max-width:min(420px,calc(100% - 40px));padding:10px 14px}
+.whiteboard-sources[open]{width:420px;z-index:2}
+.whiteboard-sources-body{max-height:calc(100dvh - 180px);overflow:auto;margin-top:8px}
 .whiteboard-sources ul{list-style:none;padding:0}
 .whiteboard-sources li{overflow-wrap:anywhere;border-bottom:1px solid var(--line);padding:8px 0}
 .whiteboard-sources li p{margin:5px 0;color:var(--muted)}
+.whiteboard-sources .app-page-section{margin-top:18px}
 .whiteboard-selected-relationship{outline:2px solid var(--accent);outline-offset:3px}
-.whiteboard-inspection{border-left:2px solid var(--accent);padding:8px 12px;font:13px var(--ui)}
-@media(max-width:640px){.whiteboard-toolbar label{margin-left:0}.whiteboard-viewport{min-height:320px}.whiteboard-toolbar button{min-height:44px}}
+.whiteboard-inspection{bottom:88px;left:20px;max-width:min(620px,calc(100% - 40px));max-height:25%;overflow:auto;padding:10px 14px;margin:0;overflow-wrap:anywhere}
+@media(max-width:1200px){.whiteboard-sources{top:auto;bottom:88px}.whiteboard-sources-body{max-height:calc(100dvh - 240px)}.whiteboard-toolbar [data-whiteboard-mode]{display:none}.whiteboard-inspection{bottom:138px}}
+@media(max-width:760px){
+.shell:has(#view-saga.active .whiteboard-canvas){grid-template-columns:min(190px,30vw) minmax(0,1fr)}
+.whiteboard-heading{top:12px;left:12px;max-width:calc(100% - 24px);padding:10px 12px}
+.whiteboard-heading h1{font-size:16px}
+.whiteboard-toolbar{bottom:12px;left:12px;right:12px;max-width:calc(100% - 24px)}
+.whiteboard-toolbar label{margin-left:0;flex:1 1 100%}
+.whiteboard-toolbar select{max-width:100%;width:0}
+.whiteboard-toolbar button{min-height:44px}
+.whiteboard-sources{bottom:136px;right:12px;max-width:calc(100% - 24px)}
+.whiteboard-inspection{bottom:196px;left:12px;max-width:calc(100% - 24px)}
+}
 `

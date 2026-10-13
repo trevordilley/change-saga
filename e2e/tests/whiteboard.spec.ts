@@ -61,6 +61,19 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   const svg = viewport.locator(":scope > svg");
   const local = board.locator('[data-frame-path="local"]');
   await expect(board.locator("[data-whiteboard-note]")).toHaveCount(0);
+  await expect(page.locator(".topbar")).toBeHidden();
+  await expect(board.getByRole("heading", { level: 1 })).toHaveText("Offline and shared data");
+  const canvas = await viewport.boundingBox();
+  const sidebar = await page.locator(".sidebar").boundingBox();
+  const windowSize = page.viewportSize()!;
+  expect(canvas).toEqual({ x: sidebar!.width, y: 0, width: windowSize.width - sidebar!.width, height: windowSize.height });
+  const fittedBox = await svg.getAttribute("viewBox");
+  await board.locator(".whiteboard-description > summary").click();
+  await expect(board.locator(".whiteboard-description-body")).toBeVisible();
+  expect(await viewport.boundingBox()).toEqual(canvas);
+  await board.locator(".whiteboard-description > summary").click();
+  await expect(board.locator(".whiteboard-description-body")).toBeHidden();
+
   await expect(local).toHaveAttribute("data-whiteboard-detail", "false");
   await expect(board.locator('[data-frame-overview="local"]')).toBeVisible();
   await expect(board.locator('[data-frame-detail="local"]')).toBeHidden();
@@ -68,7 +81,7 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   const connection = board.locator('[data-instance-path="sync"]');
   await expect(connection).toHaveAttribute("data-from", "local/local-edit");
   await expect(connection).toHaveAttribute("data-whiteboard-connection-mode", "overview");
-  await board.screenshot({ path: testInfo.outputPath("whiteboard-overview.png") });
+  await page.screenshot({ path: testInfo.outputPath("whiteboard-overview.png") });
   await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
   await connection.focus(); await page.keyboard.press("Enter");
   await expect(board.locator("[data-whiteboard-inspection]")).toContainText("local/local-edit → cloud/postgres/cloud-record");
@@ -87,12 +100,12 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(svg).not.toHaveAttribute("viewBox", before!);
   const zoomed = await svg.getAttribute("viewBox");
   const box = await viewport.boundingBox();
-  await page.mouse.move(box!.x + 40, box!.y + 40); await page.mouse.down();
-  await page.mouse.move(box!.x + 100, box!.y + 80, { steps: 5 }); await page.mouse.up();
+  await page.mouse.move(box!.x + 40, box!.y + box!.height / 2); await page.mouse.down();
+  await page.mouse.move(box!.x + 100, box!.y + box!.height / 2 + 40, { steps: 5 }); await page.mouse.up();
   await expect(svg).not.toHaveAttribute("viewBox", zoomed!);
   await expect(page.locator(".diff-drawer")).not.toHaveClass(/open/);
   await viewport.focus(); await page.keyboard.press("0");
-  await expect(svg).toHaveAttribute("viewBox", "0 0 1800 1120");
+  await expect(svg).toHaveAttribute("viewBox", fittedBox!);
   await expect(local).toHaveAttribute("data-whiteboard-detail", "false");
   await board.getByLabel("Focus diagram").selectOption("legacy");
   await expect(board.locator('[data-frame-detail="legacy"]')).toBeVisible();
@@ -101,8 +114,21 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await board.locator('[data-whiteboard-frame="local"] a').click();
   await expect(page).toHaveURL(/\/technical\/erd\/sqlite\?revision=r1$/);
   await expect(page.locator('[data-erd-view]')).toHaveAttribute("data-erd-revision", "r1");
+  await expect(page.locator(".topbar")).toBeVisible();
   await page.goBack(); await waitForSettledSaga(page);
   await expect(page.locator('[data-whiteboard-toolbar]')).toBeVisible();
+  await expect(page.locator(".topbar")).toBeHidden();
+  await page.setViewportSize({ width: 600, height: 800 });
+  await expect.poll(async () => (await viewport.boundingBox())?.height).toBe(800);
+  const narrowCanvas = await viewport.boundingBox();
+  expect(narrowCanvas!.x + narrowCanvas!.width).toBe(600);
+  expect(narrowCanvas!.y).toBe(0);
+  await expect(board.getByRole("button", { name: "Fit board" })).toBeInViewport();
+  await expect(board.getByLabel("Focus diagram")).toBeInViewport();
+  await board.locator(".whiteboard-description > summary").click();
+  await page.screenshot({ path: testInfo.outputPath("whiteboard-narrow.png") });
+  await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
+
 });
 
 test("mixed nested detail keeps each connection on its visible semantic endpoint", async ({ page, saga }) => {
