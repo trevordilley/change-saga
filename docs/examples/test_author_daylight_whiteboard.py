@@ -69,6 +69,8 @@ class PinnedCompositionTest(unittest.TestCase):
     def test_native_fields_and_relationship_pins_are_exact(self):
         for e in self.elements.values():
             if e.get('shape')=='entity':
+                self.assertTrue(e.get('summary'), e['id'])
+                self.assertLessEqual(len(e['summary']), 120, e['id'])
                 record=self.source(e['source'])
                 self.assertEqual([(f['name'],f['type']) for f in e['fields']],
                                  [(f['name'],f['type']) for f in record['fields']])

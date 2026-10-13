@@ -150,14 +150,14 @@ def main():
     board = dict(version=1, width=WIDTH, height=HEIGHT, viewport=INITIAL_CAMERA,
                  background='@diagram-canvas', styles={
         'entry': style(font=120), 'hero': style(font=180), 'heading': style(font=144), 'body': style(font=90),
-        'small': style(font=74), 'area': style(font=100),
-        'entity': style('@diagram-normal-fill', '@diagram-normal-stroke', font=90, width=4),
+        'coverage': style(font=100), 'small': style(font=74), 'area': style(font=100),
+        'entity': style('@diagram-normal-fill', '@diagram-normal-stroke', font=120, width=4),
         'frame': style('@diagram-normal-fill', '@diagram-normal-stroke', font=64),
-        'fk': style(stroke='@diagram-normal-stroke', font=54, width=5),
-        'projection': dict(**style(stroke='@diagram-blue-accent', font=54, width=5), dash=True),
-        'transport': style(stroke='@diagram-yellow-accent', font=54, width=8),
-        'authorization': dict(**style(stroke='@diagram-purple-accent', font=54, width=6), dash=True),
-        'appearance': dict(**style(stroke='@diagram-secondary-stroke', font=50, width=3), dash=True),
+        'fk': style(stroke='@diagram-normal-stroke', font=96, width=5),
+        'projection': dict(**style(stroke='@diagram-blue-accent', font=96, width=5), dash=True),
+        'transport': style(stroke='@diagram-yellow-accent', font=96, width=8),
+        'authorization': dict(**style(stroke='@diagram-purple-accent', font=96, width=6), dash=True),
+        'appearance': dict(**style(stroke='@diagram-secondary-stroke', font=96, width=3), dash=True),
     }, elements=[])
     by_id, paths, bodies, labels, evidence = {}, {}, {}, {}, []
 
@@ -223,7 +223,7 @@ def main():
     text('intro', 'Local work produces destination-specific debt. Admission preserves the exact source generation. Search is derived; membership and consent govern access.',
          350,650,5450,420,'local-cloud-overview','entry')
     text('selection-note', '23 core tables lead the story. All 76 tables and all 20 source drawings remain below in Source evidence.',
-         350,1150,5450,200,'cloud-overview','small')
+         350,1100,5450,300,'cloud-overview','coverage')
     text('context-cloud', 'Continue right / hosted admission', 6600,320,3350,330,'cloud-source-lineage','heading')
     text('context-access', 'Continue below / search and access', 10600,320,3250,330,'local-cloud-overview','heading')
     text('legend', 'Gray: physical FK · Blue dashed: application · Amber: transport · Purple: access checks',
@@ -235,6 +235,33 @@ def main():
     text('authority-story', 'Storage Projects, shared Projects and people Teams have different authority. A matching label grants no access.',
          7250,6090,6700,240,'cloud-shared-destinations')
 
+    # These source-backed summaries fill the native overview body. The viewer
+    # shows them only with Details off, so they cannot obscure full field rows.
+    summaries = {
+        'local-capture-observation-offsets': 'Observed byte progress; hosted acknowledgement never owns this cursor.',
+        'local-project-source-grants': 'Exact source generation and accepted policy for one private storage Project.',
+        'local-pending-prompt-payloads': 'One contained observation, shared across destination delivery rows.',
+        'local-pending-project-deliveries': 'Retry and status for one destination and exact source generation.',
+        'cloud-project-sources': 'Admitted device or repository source, with its accepted policy revision.',
+        'cloud-project-delivery-admissions': 'Keeps the admitting source grant and generation for one delivery.',
+        'cloud-prompt': 'Corpus identity, source pointer and derived search state in one Project.',
+        'local-local-projects': 'Durable local choices survive search-index reset; hosted binding is optional.',
+        'local-local-project-file-memberships': 'Rebuildable Project-to-file query scope; no cross-database foreign key.',
+        'local-source-files': 'Private file identity and indexed prefix cursor; bodies remain in source files.',
+        'local-search-documents': 'Searchable record identity and byte range; original prose is verified later.',
+        'local-episodes': 'Rebuildable catalog of validated manifests; manifests retain authority.',
+        'local-episode-correlation-targets': 'Search-side episode revision and timing, projected from the manifest.',
+        'local-episode-artifacts': 'Artifact path, size and hash; file deletion remains an application operation.',
+        'local-episode-evidence-links': 'Versioned document-to-episode evidence, with confidence and clock error.',
+        'cloud-projects': 'Private capture and reading scope; requires an active direct person Owner.',
+        'cloud-project-policy-versions': 'Immutable policies; the Project selects its current revision.',
+        'cloud-teams': 'Shared Project destinations; people Teams are a separate table.',
+        'cloud-shared-project-sources': 'Consent for an exact source generation, contributor and rule revision.',
+        'cloud-team-members': 'Shared Project membership and current evidence; distinct from people Teams.',
+        'cloud-team-source-rule-versions': 'Immutable sharing rules; source consent pins the accepted revision.',
+        'cloud-users': 'A person identified by the durable issuer and subject behind a login.',
+        'cloud-organizations': 'Organization authority and lifecycle; required for newer people Teams.',
+    }
     nodes = {}
     def node(key, label, parent, x, y, width=1900):
         r = entities[key]
@@ -247,11 +274,11 @@ def main():
             fields.append(field)
         # The renderer owns fixed 28-unit field rows. Keep the full native fields
         # for Details; the overview shows the large title in these same bounds.
-        height=max(560, 90*1.25+16+28*len(fields)+20)
+        height=max(560, 120*1.25+16+28*len(fields)+20)
         px,py,_,_=bounds(by_id[parent])
         e=add(dict(id=key,kind='node',shape='entity',label=label,
                    **box(x-px,y-py,width,height),parent=parent,style='entity',
-                   fields=fields,source=entity_ref(key),description=r['explanation'],
+                   fields=fields,summary=summaries[key],source=entity_ref(key),description=r['explanation'],
                    note='**'+r['name']+'**\n\n'+r['explanation'].split('\n\n')[0][:850]))
         nodes[key]=paths[key]
         bodies[key]=bounds(e)
@@ -334,14 +361,14 @@ def main():
     rel('cloud-team-members','fk-2','FK / principal',(8550,11200,1200,180))
     rel('cloud-teams','fk-1','FK / Organization',(10080,11450,1300,220),[(9850,9160),(9850,12280)])
     connection('read-authorization','cloud-shared-project-sources','cloud-prompt',
-               'read access: membership + exact-source consent','authorization',(12300,5460,1500,230),[(10900,9160),(10900,8600),(11350,8600),(11350,6470),(14070,6470),(14070,5780),(12150,5780)],ref('local-cloud-overview'),records['local-cloud-overview']['explanation'])
+               'read access: membership + exact-source consent','authorization',(12300,5460,1500,270),[(10900,9160),(10900,8600),(11350,8600),(11350,6470),(14070,6470),(14070,5780),(12150,5780)],ref('local-cloud-overview'),records['local-cloud-overview']['explanation'])
     rel('local-local-project-file-memberships','project-projection','application / durable choices',(2470,6610,1300,230))
     rel('local-local-project-file-memberships','member-file','application / file identity',(3220,7760,600,430),[(3150,7160),(3150,8390),(2500,8390),(2500,8850)])
     rel('local-search-documents','fk-file-id','FK / file_id',(2590,8470,1210,200))
     rel('local-episode-correlation-targets','manifest-projection','projection / manifest revision',(2480,10300,1350,250))
     rel('local-episode-artifacts','fk-episode-id','FK / episode_id',(1530,11400,1700,180))
     rel('local-episode-evidence-links','episode-edge','application / episode identity',(4960,11420,1240,250))
-    rel('local-episode-evidence-links','fk-document-rowid','FK / document_rowid',(6440,9820,530,430),[(6350,12670),(6350,8890)])
+    rel('local-episode-evidence-links','fk-document-rowid','FK / document_rowid',(6440,9820,900,430),[(6350,12670),(6350,8890)])
     connection('storage-binding','local-local-projects','cloud-projects','optional hosted storage binding','projection',
                (2400,5500,3000,240),[(320,7120),(320,5750),(7040,5750),(7040,7420),(8450,7420)],ref('local-cloud-overview'),records['local-cloud-overview']['explanation'])
 
