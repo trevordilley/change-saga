@@ -384,6 +384,22 @@ const appJavaScript = `(() => {
   const revealAnchors = ['diagram-reveal', 'diagram-reveal-replay'];
   let revealedSlide = null;
   function replayDiagramReveal(slide) {
+    // Inline compositions use the same renderer-authored reveal steps. Keep
+    // their finished drawing for reduced motion and cancel stale replays.
+    if (slide.matches('[data-whiteboard-view]')) {
+      const focused = slide.dataset.whiteboardFocused;
+      const scope = focused ? qa('[data-frame-detail]', slide).find(node => node.dataset.frameDetail === focused) : q('[data-whiteboard-viewport] > svg', slide);
+      for (const node of qa('[data-reveal-step]', slide)) node.getAnimations().forEach(animation => animation.cancel());
+      if (!scope || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const nodes = qa('[data-reveal-step]', scope);
+      const steps = [...new Set(nodes.map(node => Number(node.dataset.revealStep)).filter(step => step > 0))].sort((a,b) => a-b);
+      const interval = Math.min(350, 5000 / Math.max(1,steps.length-1));
+      for (const node of nodes) {
+        const rank = steps.indexOf(Number(node.dataset.revealStep));
+        if (rank >= 0) node.animate([{opacity:0},{opacity:1}], {duration:500, delay:rank*interval, fill:'backwards'});
+      }
+      return;
+    }
     if (slide === revealedSlide) return;
     revealedSlide = slide;
     qa('[data-fragment-frame]', slide).filter(svgFrame).forEach(frame => {
@@ -1766,6 +1782,7 @@ const appJavaScript = `(() => {
     const url = new URL('/api/documentation', location.origin);
     url.searchParams.set('target', pin.target); url.searchParams.set('revision', pin.revision);
     if (pin.item) url.searchParams.set('item', pin.item);
+    if (pin.relationship) url.searchParams.set('relationship', pin.relationship);
     try {
       const response = await fetch(url, {credentials:'same-origin'});
       const html = await response.text();
@@ -1788,6 +1805,7 @@ const appJavaScript = `(() => {
       const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = 'Try again';
       retry.dataset.documentationTarget = pin.target; retry.dataset.documentationRevision = pin.revision;
       if (pin.item) retry.dataset.documentationItem = pin.item;
+      if (pin.relationship) retry.dataset.sourceRelationship = pin.relationship;
       body.append(retry);
     }
   }
@@ -3139,7 +3157,10 @@ const appJavaScript = `(() => {
   const viewParams = ['view', 'mode', 'file', 'ref'];
   function pageKey(href) {
     const url = new URL(href, location.href);
-    if (url.pathname === '/technical/erd') url.searchParams.delete('focus');
+    if (url.pathname === '/technical/erd') {
+      url.searchParams.delete('focus');
+      if (url.searchParams.get('view') === 'all') url.searchParams.delete('view');
+    }
     viewParams.forEach(key => url.searchParams.delete(key));
     url.searchParams.sort();
     return url.pathname + url.search;

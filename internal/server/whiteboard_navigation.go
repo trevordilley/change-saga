@@ -60,11 +60,11 @@ const whiteboardNavigationJavaScript = `
     }).filter(Boolean).sort((a,b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
     const paths = new Set(entries.map(entry => entry.path));
     let restoring = false;
-    const destination = path => {
+    const destination = (path, fitAll = false) => {
       const url = new URL(location.href);
       url.pathname = '/technical/erd';
       url.searchParams.delete('revision');
-      url.searchParams.delete('view');
+      if (fitAll) url.searchParams.set('view', 'all'); else url.searchParams.delete('view');
       url.hash = '';
       if (path) url.searchParams.set('focus', path); else url.searchParams.delete('focus');
       return url;
@@ -120,9 +120,9 @@ const whiteboardNavigationJavaScript = `
         if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
       }
     }
-    function remember(path) {
+    function remember(path, fitAll = false) {
       if (restoring || (path && !paths.has(path))) return;
-      const url = destination(path);
+      const url = destination(path, fitAll);
       if (url.href !== location.href) history.pushState({htmx:true, whiteboard:true}, '', url);
       selection(path);
     }
@@ -135,15 +135,15 @@ const whiteboardNavigationJavaScript = `
       if (!board.isConnected || location.pathname !== '/technical/erd') return;
       const path = new URL(location.href).searchParams.get('focus') || '';
       restoring = true;
-      focus(paths.has(path) ? path : '');
+      focus(paths.has(path) ? path : '', new URL(location.href).searchParams.get('view') === 'all');
       selection(paths.has(path) ? path : '');
       restoring = false;
     }
-    board.addEventListener('whiteboard:focus', event => remember(event.detail.path), {signal});
+    board.addEventListener('whiteboard:focus', event => remember(event.detail.path, event.detail.fitted), {signal});
     document.addEventListener('click', event => {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !board.isConnected) return;
       const link = event.target.closest('a[href],[data-documentation-target]');
-      if (!link || link.closest('[data-whiteboard-viewport]') || link.hasAttribute('download') || (link.getAttribute('target') && link.getAttribute('target') !== '_self')) return;
+      if (!link || link.hasAttribute('data-whiteboard-evidence') || link.closest('.diff-drawer, [data-whiteboard-viewport]') || link.hasAttribute('download') || (link.getAttribute('target') && link.getAttribute('target') !== '_self')) return;
       const entry = entryFor(link);
       let path = entry?.path;
       if (path === undefined && link.matches('a[href]')) {

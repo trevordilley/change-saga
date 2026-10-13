@@ -12,14 +12,53 @@ const whiteboardJavaScript = `
       qa('image', svg).forEach(drawing => drawing.setAttribute('role', 'img'));
       const original = svg.viewBox.baseVal;
       const bounds = {x: original.x, y: original.y, width: original.width, height: original.height};
-      let view = {...bounds}, focused = '', fitted = true, motion = 0;
+      const openingJSON = q('[data-whiteboard-metadata]', board).dataset.whiteboardOpening;
+      const opening = openingJSON ? JSON.parse(openingJSON) : bounds;
+      let view = {...bounds}, focused = '', fitted = false, atStart = true, motion = 0;
       const frameRows = qa('[data-whiteboard-frame]', board);
       const geometry = new Map(JSON.parse(q('[data-whiteboard-metadata]', board).dataset.whiteboardMetadata).map(item => [item.path,item]));
       const frames = qa('[data-frame-path]', svg);
       const select = q('[data-whiteboard-focus]', board);
       const level = q('[data-whiteboard-level]', board);
       const inspection = q('[data-whiteboard-inspection]', board);
+      const evidence = q('[data-whiteboard-toolbar] [data-whiteboard-evidence]', board);
       const rowFor = path => frameRows.find(row => row.dataset.whiteboardFrame === path);
+      // Authored SVG has entity bindings, not field metadata. Summarize each
+      // real bound group in its measured native bounds; detail restores the
+      // exact authored children. Endpoints and source identity never move.
+      for (const entity of qa('[data-diagram-entity="true"]', svg)) {
+        if (q('[data-diagram-entity]', entity)) continue;
+        const box = entity.getBBox();
+        if (!(box.width > 0 && box.height > 0)) continue;
+        const make = tag => document.createElementNS('http://www.w3.org/2000/svg', tag);
+        const original = make('g'); original.dataset.diagramDetail = 'entity';
+        for (const child of [...entity.children]) if (!['title','desc','defs'].includes(child.localName)) original.append(child);
+        entity.append(original);
+        const summary = make('g'); summary.dataset.diagramSummary = 'entity';
+        const rect = make('rect');
+        for (const key of ['x','y','width','height']) rect.setAttribute(key, box[key]);
+        rect.setAttribute('rx', Math.min(12,box.height/5));
+        summary.append(rect);
+        const label = entity.dataset.diagramLabel || entity.getAttribute('aria-label') || 'Entity';
+        const font = Math.min(42, Math.max(12, box.width / 12), box.height / 3);
+        const capacity = Math.max(6,Math.floor((box.width-16)/(font*.58)));
+        const words = label.split(/(?<=_)|\s+/), lines = [];
+        let line = '';
+        for (const word of words) {
+          if (line && (line+word).length > capacity) { lines.push(line.trim()); line = ''; }
+          line += word + (word.endsWith('_') ? '' : ' ');
+        }
+        if (line.trim()) lines.push(line.trim());
+        const text = make('text'); text.setAttribute('text-anchor','middle'); text.setAttribute('font-size',font);
+        lines.forEach((line,index) => {
+          const span = make('tspan'); span.textContent = line;
+          span.setAttribute('x',box.x+box.width/2);
+          span.setAttribute('y',box.y+box.height/2+(index-(lines.length-1)/2)*font*1.2+font*.35);
+          text.append(span);
+        });
+        summary.append(text); entity.append(summary);
+        original.style.display = 'none'; original.setAttribute('aria-hidden','true');
+      }
       // Captions supplement the embedded drawings; they never replace them.
       // Keep this a viewer presentation so historical persisted SVGs stay valid.
       for (const frame of frames) {
@@ -110,7 +149,14 @@ const whiteboardJavaScript = `
           const localOverview = owner ? owner.dataset.whiteboardDetail !== 'true' : overview;
           visible(node, node.dataset.visibility === 'overview' ? localOverview : !localOverview);
         }
+        const sourceRow = rowFor(focused);
+        evidence.hidden = !sourceRow;
+        if (sourceRow) {
+          evidence.dataset.documentationTarget = sourceRow.dataset.sourceTarget;
+          evidence.dataset.documentationRevision = sourceRow.dataset.sourceRevision;
+        }
         q('[data-whiteboard-mode]', board).textContent = focused ? 'Focus: ' + (select.selectedOptions[0]?.textContent || focused) : collapsed.length ? 'Overview · focus a diagram for detail' : 'Detail';
+        q('[data-whiteboard-replay]', board).hidden = !q('[data-reveal-step]', focused ? frames.find(node => node.dataset.framePath === focused) || svg : svg);
         q('[data-whiteboard-fit]', board).setAttribute('aria-pressed', String(fitted));
       }
       // Fit inside the clear area between the floating title and controls,
@@ -144,12 +190,18 @@ const whiteboardJavaScript = `
       }
       function fit() {
         stopMotion();
-        fitted = true; view = fitBox(bounds); focused = ''; select.value = ''; inspection.hidden = true; paint();
+        atStart = false; fitted = true; view = fitBox(bounds); focused = ''; select.value = ''; inspection.hidden = true; paint();
+        board.dispatchEvent(new CustomEvent('whiteboard:focus', {detail:{path:'', fitted:Boolean(openingJSON)}}));
+      }
+      function home() {
+        stopMotion();
+        atStart = true; fitted = !openingJSON; view = fitBox(opening); focused = ''; select.value = ''; inspection.hidden = true; paint();
         board.dispatchEvent(new CustomEvent('whiteboard:focus', {detail:{path:''}}));
       }
-      function focus(path) {
+      function focus(path, fitAll = false) {
+        if (!path && fitAll) return fit();
         const row = rowFor(path);
-        if (!row) return fit();
+        if (!row) return home();
         let x = Number(row.dataset.x), y = Number(row.dataset.y), width = Number(row.dataset.width), height = Number(row.dataset.height);
         const frame = frames.find(node => node.dataset.framePath === path);
         const detail = frame && qa('[data-frame-detail]', frame).find(node => node.dataset.frameDetail === path);
@@ -164,13 +216,13 @@ const whiteboardJavaScript = `
           }
         }
         if (!(width > 0 && height > 0)) return;
-        focused = path; fitted = false; select.value = path;
+        atStart = false; focused = path; fitted = false; select.value = path;
         travel(fitBox({x: x - 24, y: y - 24, width: width + 48, height: height + 48}));
         board.dispatchEvent(new CustomEvent('whiteboard:focus', {detail:{path}}));
       }
       function zoom(factor, clientX, clientY) {
         stopMotion();
-        fitted = false;
+        fitted = false; atStart = false;
         const nextWidth = Math.max(Math.max(1, bounds.width / 512), Math.min(bounds.width * 2, view.width * factor));
         factor = nextWidth / view.width;
         const matrix = svg.getScreenCTM();
@@ -180,6 +232,19 @@ const whiteboardJavaScript = `
         paint();
       }
       q('[data-whiteboard-fit]', board).addEventListener('click', fit);
+      q('[data-whiteboard-replay]', board).addEventListener('click', () => replayDiagramReveal(board));
+      q('[data-whiteboard-home]', board)?.addEventListener('click', home);
+      q('[data-whiteboard-fields]', board).addEventListener('click', event => {
+        const show = board.dataset.whiteboardFields !== 'true';
+        board.dataset.whiteboardFields = String(show);
+        event.currentTarget.setAttribute('aria-pressed', String(show));
+        for (const row of qa('[data-field], [data-diagram-detail="field"]', svg)) {
+          row.style.display = show ? 'block' : 'none';
+          row.setAttribute('aria-hidden', String(!show));
+        }
+        qa('[data-diagram-detail="entity"]', svg).forEach(node => visible(node, show));
+        qa('[data-diagram-summary="entity"]', svg).forEach(node => visible(node, !show));
+      });
       qa('[data-whiteboard-zoom]', board).forEach(button => button.addEventListener('click', () => zoom(button.dataset.whiteboardZoom === '1' ? .8 : 1.25)));
       select.addEventListener('change', () => focus(select.value));
       qa('[data-whiteboard-focus-frame]', board).forEach(button => button.addEventListener('click', () => { focus(button.dataset.whiteboardFocusFrame); viewport.focus({preventScroll:true}); }));
@@ -190,7 +255,7 @@ const whiteboardJavaScript = `
         else if (event.key === '0' || event.key === 'Escape') fit();
         else if (event.key.startsWith('Arrow')) {
           stopMotion();
-          fitted = false;
+          fitted = false; atStart = false;
           const dx = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
           const dy = event.key === 'ArrowDown' ? 1 : event.key === 'ArrowUp' ? -1 : 0;
           view.x += dx * view.width * .08; view.y += dy * view.height * .08; paint();
@@ -211,7 +276,7 @@ const whiteboardJavaScript = `
         if (!drag || event.pointerId !== drag.id) return;
         const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
         if (!drag.moved && Math.hypot(dx,dy) < 4) return;
-        fitted = false; drag.moved = true; viewport.setPointerCapture(event.pointerId); viewport.classList.add('whiteboard-dragging');
+        fitted = false; atStart = false; drag.moved = true; viewport.setPointerCapture(event.pointerId); viewport.classList.add('whiteboard-dragging');
         const scale = Math.min(viewport.clientWidth / view.width, viewport.clientHeight / view.height);
         view.x = drag.start.x - dx / scale; view.y = drag.start.y - dy / scale; paint();
       });
@@ -228,14 +293,16 @@ const whiteboardJavaScript = `
         if (node.hasAttribute('data-frame-path')) {
           event.preventDefault(); event.stopPropagation(); focus(node.dataset.framePath); return;
         }
+        const note = q(':scope > desc', node)?.textContent;
+        if (note) { inspection.textContent = (node.getAttribute('aria-label') || '') + ' · ' + note; inspection.hidden = false; }
         const connection = node.closest('[data-from][data-to]');
         if (connection) {
           const title = q('title', connection)?.textContent || connection.getAttribute('aria-label') || 'Connection';
-          inspection.textContent = title + ' · ' + connection.dataset.from + ' → ' + connection.dataset.to + '. This explanatory connection does not create a recorded relationship.';
+          inspection.textContent = title + ' · ' + connection.dataset.from + ' → ' + connection.dataset.to + '. This explanatory connection does not create a recorded relationship.' + (note ? ' · ' + note : '');
           inspection.hidden = false;
         }
         if (!connection && node.hasAttribute('data-about')) {
-          inspection.textContent = (q('title', node)?.textContent || node.getAttribute('aria-label') || '') + ' · About ' + node.dataset.about;
+          inspection.textContent = (q('title', node)?.textContent || node.getAttribute('aria-label') || '') + ' · About ' + node.dataset.about + (note ? ' · ' + note : '');
           inspection.hidden = false;
         }
         // A child's unbound mark must not inherit its enclosing ERD source.
@@ -246,25 +313,25 @@ const whiteboardJavaScript = `
         // Such metadata must not become an invisible keyboard control.
         if (node.hasAttribute('data-binding')) {
           const bounds = node.getBBox();
-          if (!(bounds.width > 0 && bounds.height > 0)) continue;
+          if (!(bounds.width > 0 || bounds.height > 0)) continue;
         }
-        if (!node.hasAttribute('data-frame-path') && !node.hasAttribute('data-documentation-target') && !node.hasAttribute('data-from') && !node.hasAttribute('data-about')) continue;
+        if (!node.hasAttribute('data-frame-path') && !node.hasAttribute('data-documentation-target') && !node.hasAttribute('data-from') && !node.hasAttribute('data-about') && !q(':scope > desc', node)) continue;
         node.dataset.whiteboardSelectable = 'true';
         const control = node.hasAttribute('data-frame-path') ? qa('[data-frame-overview]', node).find(child => child.dataset.frameOverview === node.dataset.framePath) : node;
         if (!control) continue;
         if (control !== node) node.setAttribute('role','group');
         control.setAttribute('tabindex','0'); control.setAttribute('role','button');
         const title = q('title', node)?.textContent || node.getAttribute('aria-label') || node.dataset.instancePath;
-        control.setAttribute('aria-label', (node.hasAttribute('data-frame-path') ? 'Focus ' : node.hasAttribute('data-documentation-target') ? 'Inspect ' : 'Inspect connection ') + title);
+        control.setAttribute('aria-label', (node.hasAttribute('data-frame-path') ? 'Focus ' : node.hasAttribute('data-documentation-target') ? 'Inspect ' : 'Inspect ') + title);
         control.addEventListener('keydown', event => {
           if (event.target !== control || control.closest('[aria-hidden="true"]') || (event.key !== 'Enter' && event.key !== ' ')) return;
           event.preventDefault(); event.stopPropagation(); node.dispatchEvent(new MouseEvent('click', {bubbles:true,cancelable:true}));
         });
       }
-      const resize = new ResizeObserver(() => fitted ? fit() : paint()); resize.observe(viewport);
+      const resize = new ResizeObserver(() => atStart ? home() : fitted ? fit() : paint()); resize.observe(viewport);
       pageScope.signal.addEventListener('abort', () => { resize.disconnect(); stopMotion(); }, {once:true});
       q('[data-whiteboard-toolbar]', board).hidden = false;
-      fit();
+      home();
       prepareWhiteboardNavigation(board, focus);
     }
   }

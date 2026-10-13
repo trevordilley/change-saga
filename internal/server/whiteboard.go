@@ -19,6 +19,7 @@ import (
 // references lead to the existing, independently readable pinned definitions.
 type whiteboardView struct {
 	Metadata       string
+	Viewport       string
 	Visual         template.HTML
 	Name, Revision string
 	Note           string
@@ -27,8 +28,10 @@ type whiteboardView struct {
 
 type whiteboardFrameView struct {
 	Path, Title, Summary, Href, Revision, Status string
+	Target                                       string
 	X, Y, Width, Height                          float64
 	Opaque                                       bool
+	SourceNote                                   string
 }
 
 type whiteboardGeometry struct {
@@ -57,7 +60,12 @@ func (a *app) makeWhiteboardView(inventory requirements.Inventory) *whiteboardVi
 	if err != nil {
 		return &whiteboardView{Note: "The whiteboard could not be opened: " + err.Error()}
 	}
-	view := &whiteboardView{Visual: template.HTML(visual), Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
+	enhanced, capabilities := a.enhanceWhiteboardSources(inventory, resolved, template.HTML(visual))
+	view := &whiteboardView{Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
+	if resolved.Revision.Document.Viewport != nil {
+		camera, _ := json.Marshal(resolved.Revision.Document.Viewport)
+		view.Viewport = string(camera)
+	}
 	geometry := []whiteboardGeometry{}
 	for _, item := range append(description.Elements, description.Connections...) {
 		geometry = append(geometry, whiteboardGeometry{Path: item.Path, Bounds: item.Bounds, Transform: item.Transform, Bends: item.Element.Bends, Curve: item.Element.Curve})
@@ -70,8 +78,16 @@ func (a *app) makeWhiteboardView(inventory requirements.Inventory) *whiteboardVi
 		}
 		pin := saga.DocumentationLink{Target: item.Source.Target, Revision: item.Source.Revision}
 		frame := whiteboardFrameView{Path: item.Path, Title: item.Element.Label, Summary: item.Element.Summary,
-			Href: technicalPinHref(pin), Revision: pin.Revision, Status: inventory.LinkStatus(pin), Opaque: item.Opaque,
+			Target: pin.Target, Href: technicalPinHref(pin), Revision: pin.Revision, Status: inventory.LinkStatus(pin), Opaque: item.Opaque,
 			X: item.Bounds.X, Y: item.Bounds.Y, Width: item.Bounds.Width, Height: item.Bounds.Height}
+		if capability, ok := capabilities[item.Path]; ok {
+			switch capability.Mode {
+			case "authored":
+				frame.SourceNote = "Select bound entities and relationships to inspect their evidence. Details restores the original drawing."
+			case "image":
+				frame.SourceNote = "Embedded SVG; internal entities are not individually selectable. Use Evidence to inspect its saved directory."
+			}
+		}
 		if frame.Title == "" {
 			frame.Title = entityName(inventory, pin)
 		}
@@ -210,7 +226,7 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 const whiteboardTemplates = `
 {{define "erd-whiteboard"}}{{$model := .}}{{with .Whiteboard}}
 <section class="whiteboard whiteboard-canvas" data-whiteboard-view data-technical-page="erd" data-technical-data-model aria-label="Data model whiteboard">
-<div hidden data-whiteboard-metadata="{{.Metadata}}"></div>
+<div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}"></div>
 <div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Data model whiteboard. Drag to pan, plus and minus to zoom, zero to fit the board. Arrow keys pan.">{{.Visual}}</div>
 <header class="whiteboard-heading whiteboard-overlay">
 <h1>{{if .Name}}{{.Name}}{{else}}Data model{{end}}</h1>
@@ -223,15 +239,20 @@ const whiteboardTemplates = `
 <button type="button" data-whiteboard-zoom="-1" aria-label="Zoom out whiteboard" title="Zoom out (-)">−</button>
 <output data-whiteboard-level aria-live="polite"></output>
 <button type="button" data-whiteboard-zoom="1" aria-label="Zoom in whiteboard" title="Zoom in (+)">+</button>
+{{if .Viewport}}<button type="button" data-whiteboard-home>Start here</button>{{end}}
+<button type="button" data-whiteboard-replay hidden>Replay</button>
+<button type="button" data-whiteboard-fields aria-pressed="false" title="Show fields and original authored detail">Details</button>
 <button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button>
-<label>Focus diagram <select data-whiteboard-focus><option value="">Whole board</option>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</select></label>
+<label>Focus diagram <select data-whiteboard-focus><option value="">{{if .Viewport}}Start here{{else}}Whole board{{end}}</option>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</select></label>
+<button type="button" data-whiteboard-evidence hidden>Evidence</button>
 <span data-whiteboard-mode aria-live="polite">Overview</span>
 </div>
 <details class="whiteboard-sources whiteboard-overlay"><summary>Diagrams on this board</summary><div class="whiteboard-sources-body"><ul>
-{{range .Frames}}<li data-whiteboard-frame="{{.Path}}" data-whiteboard-source-href="{{.Href}}" data-x="{{.X}}" data-y="{{.Y}}" data-width="{{.Width}}" data-height="{{.Height}}">
+{{range .Frames}}<li data-whiteboard-frame="{{.Path}}" data-whiteboard-source-href="{{.Href}}" data-source-target="{{.Target}}" data-source-revision="{{.Revision}}" data-x="{{.X}}" data-y="{{.Y}}" data-width="{{.Width}}" data-height="{{.Height}}">
 <button type="button" data-whiteboard-focus-frame="{{.Path}}">Focus {{.Title}}</button>
+<button type="button" data-whiteboard-evidence data-documentation-target="{{.Target}}" data-documentation-revision="{{.Revision}}" aria-label="Evidence for {{.Title}}">Evidence</button>
 <span class="whiteboard-source-revision">{{.Revision}}</span>{{if ne .Status "current"}} <span class="gap">{{.Status}}</span>{{end}}
-<p>{{.Summary}}{{if .Opaque}} <span class="term-empty">Embedded SVG; internal entities are not individually selectable.</span>{{end}}</p>
+<p>{{.Summary}}{{with .SourceNote}} <span class="term-empty">{{.}}</span>{{end}}</p>
 </li>{{end}}</ul>
 
 </div></details>
@@ -251,7 +272,11 @@ body:has(#view-saga.active .whiteboard-canvas)>.topbar{display:none}
 .shell:has(.whiteboard-canvas) #view-saga{height:100%}
 .whiteboard-canvas{position:relative;height:100%;isolation:isolate;overflow:hidden}
 .whiteboard-viewport{position:absolute;inset:0;overflow:hidden;background:var(--bg);cursor:grab;touch-action:none}
+.whiteboard-canvas:not([data-whiteboard-fields="true"]) .whiteboard-viewport [data-field],.whiteboard-canvas:not([data-whiteboard-fields="true"]) .whiteboard-viewport [data-diagram-detail="field"]{display:none}
+.whiteboard-toolbar button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
 .whiteboard-viewport>svg{display:block;width:100%;height:100%;max-width:none}
+.whiteboard-viewport [data-diagram-summary] rect{fill:var(--bg);stroke:var(--accent);stroke-width:1.5}
+.whiteboard-viewport [data-diagram-summary] text{fill:var(--ink);font-weight:600}
 .whiteboard-viewport [data-frame-detail]>svg{overflow:visible}
 .whiteboard-viewport:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .whiteboard-viewport.whiteboard-dragging{cursor:grabbing;user-select:none}

@@ -140,6 +140,28 @@ changes the source evidence. Repeated appearances use paths such as
 `cloud/identity/organization` and `cross-store/organization`; neither path
 changes the identity of the underlying entity.
 
+## Shared presentation and evidence
+
+The board uses the slide diagram grammar and renderer, including authored
+styles, icons, groups, annotations, notes and code blocks. Structured reveal
+steps can be replayed in the focused diagram; reduced-motion viewers see the
+finished drawing. Select a noted element to read its note. This does not create
+slide Items or fragment-owned landmarks for an ERD.
+
+The **Details** control starts off. Structured field rows are hidden until
+requested. For supported authored SVGs, explicitly bound entity groups show
+larger names in their original measured bounds; Details restores their exact
+original contents. Relationship geometry and source identities stay unchanged.
+This summarizes entities without claiming to identify fields in arbitrary SVGs.
+
+Select an entity or relationship to open the same documentation and code drawer
+used by slide references. **Evidence** opens the focused ERD's exact directory
+and its owned relationships. Counts distinguish linked references, verified
+saved bytes, current resolution, stale or unavailable references, and members
+without references. None of these counts establishes complete model coverage.
+Code inspection preserves the saved commit, path and lines even when current
+code has moved. Opening a current definition never changes the board's pins.
+
 ## Existing SVGs and structured children
 
 An existing ERD SVG can be embedded as a whole drawing. Its source link and

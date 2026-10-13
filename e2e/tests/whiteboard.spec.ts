@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { expect, test, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from "../support/test.js";
 import { runCLI, type SagaFixture } from "../support/fixture-builder.js";
 
-function authorWhiteboard(saga: SagaFixture, nested = false) {
+function authorWhiteboard(saga: SagaFixture, nested = false, opening = false) {
   const run = (...args: string[]) => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, args.join(" ") + "\n" + result.stdout + result.stderr).toBe(0);
@@ -19,9 +19,9 @@ function authorWhiteboard(saga: SagaFixture, nested = false) {
     run("data-entity", "add", "--id", id, "--from", file(id + ".json", { name, explanation: "Records used by synchronization.", intent: "proposed", baseline: "none", fields: [{ id: "id", name: "id", type: "uuid", keys: ["primary"] }, { id: "body", name: "body", type: "text", note: "The saved content." }] }), "--repo", saga.sourceRepo, saga.sagaRoot);
   }
   for (const [id, entity, name] of [["sqlite", "local-edit", "Local SQLite"], ["postgres", "cloud-record", "Cloud Postgres"]]) {
-    const diagram = { version: 1, width: 720, height: 440, elements: [
+    const diagram = { version: 1, width: 720, height: 440, reveal: "fade", elements: [
       { id: entity, kind: "node", shape: "entity", label: entity === "local-edit" ? "Local edit" : "Cloud record", x: 40, y: 35, width: 380, height: 145, style: "normal", source: pin("data-entity", entity), fields: [{ name: "id", type: "uuid", key: "pk" }, { name: "body", type: "text" }] },
-      { id: "local-note", kind: "annotation", visibility: "detail", shape: "bubble", label: "The saved definition explains these fields.", x: 180, y: 230, width: 470, height: 145, style: "normal", color: "blue", about: entity, source: pin("data-entity", entity) }
+      { id: "local-note", kind: "annotation", visibility: "detail", shape: "bubble", label: "The saved definition explains these fields.", note: "The source model keeps this note beside its entities.", x: 180, y: 230, width: 470, height: 145, style: "normal", color: "blue", about: entity, source: pin("data-entity", entity) }
     ] };
     run("erd", "add", "--id", id, "--from", file(id + ".json", { name, explanation: "Independently readable source diagram.", directory: [pin("data-entity", entity)], bindings: [{ id: entity, element: entity, entity: pin("data-entity", entity) }], diagram }), "--repo", saga.sourceRepo, saga.sagaRoot);
   }
@@ -33,9 +33,9 @@ function authorWhiteboard(saga: SagaFixture, nested = false) {
       ] }
     }), "--repo", saga.sourceRepo, saga.sagaRoot);
   }
-  const svg = file("legacy.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200"><rect id="legacy-record" x="20" y="20" width="660" height="160" fill="#f0f5ff" stroke="#537099"/><text x="45" y="110" font-size="32">Existing SVG stays independently readable</text></svg>');
-  run("erd", "add", "--id", "legacy", "--from", file("legacy.json", { name: "Cross-store source", explanation: "An existing drawing without structured entities.", directory: [pin("data-entity", "local-edit"), pin("data-entity", "cloud-record")], bindings: [{ id: "saved-binding", element: "legacy-record", entity: pin("data-entity", "local-edit") }] }), "--visual", svg, "--repo", saga.sourceRepo, saga.sagaRoot);
-  const board = { version: 1, width: 1800, height: 1120, styles: {
+  const svg = file("legacy.svg", '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200"><g id="legacy-record"><rect x="20" y="20" width="660" height="160" fill="#f0f5ff" stroke="#537099"/><text x="45" y="110" font-size="32">Existing SVG stays independently readable</text></g><path id="legacy-line" d="M20 190L680 190" stroke="#537099"/></svg>');
+  run("erd", "add", "--id", "legacy", "--from", file("legacy.json", { name: "Cross-store source", explanation: "An existing drawing without structured entities.", directory: [pin("data-entity", "local-edit"), pin("data-entity", "cloud-record")], bindings: [{ id: "saved-binding", element: "legacy-record", entity: pin("data-entity", "local-edit") }, { id: "line-binding", element: "legacy-line", entity: pin("data-entity", "local-edit") }] }), "--visual", svg, "--repo", saga.sourceRepo, saga.sagaRoot);
+  const board = { version: 1, width: 1800, height: 1120, ...(opening ? { viewport: {x: 20, y: 20, width: 900, height: 700} } : {}), styles: {
     normal: { fill: "@diagram-normal-fill", stroke: "@diagram-normal-stroke", ink: "@diagram-normal-ink", stroke_width: 2, font_size: 34 },
     title: { fill: "none", stroke: "none", ink: "@diagram-title-ink", stroke_width: 1, font_size: 46 },
     primary: { fill: "@diagram-primary-fill", stroke: "@diagram-primary-stroke", ink: "@diagram-primary-ink", stroke_width: 2, font_size: 28 }
@@ -45,7 +45,7 @@ function authorWhiteboard(saga: SagaFixture, nested = false) {
     { id: "local", kind: "frame", label: "Local SQLite", summary: "Keeps edits available offline", x: 60, y: 210, width: 720, height: 440, style: "normal", source: pin("erd", "sqlite"), detail_scale: .85 },
     { id: "cloud", kind: "group", label: "Shared cloud", x: 1020, y: 210, width: 720, height: 440, style: "boundary" },
     { id: "postgres", kind: "frame", parent: "cloud", label: "Cloud Postgres", summary: "Stores synchronized shared records", x: 0, y: 0, width: 720, height: 440, style: "normal", source: pin("erd", nested ? "cluster" : "postgres"), detail_scale: .85 },
-    { id: "sync", kind: "connection", from: "local/local-edit", to: nested ? "cloud/postgres/records/cloud-record" : "cloud/postgres/cloud-record", bends: nested ? [{ x: 900, y: 420 }] : [], label: "synchronizes into", style: "primary", head: "arrow", label_box: { x: 775, y: 330, width: 245, height: 65 } },
+    { id: "sync", kind: "connection", note: "Delivery follows a saved generation.", from: "local/local-edit", to: nested ? "cloud/postgres/records/cloud-record" : "cloud/postgres/cloud-record", bends: nested ? [{ x: 900, y: 420 }] : [], label: "synchronizes into", style: "primary", head: "arrow", label_box: { x: 775, y: 330, width: 245, height: 65 } },
     { id: "flow-note", kind: "annotation", visibility: "overview", shape: "bubble", label: "Synchronization produces a cloud record. This flow is not a foreign key.", x: 60, y: 780, width: 580, height: 190, style: "normal", color: "blue", target: { x: 840, y: -290 } },
     { id: "legacy", kind: "frame", label: "Cross-store source", summary: "Existing SVG, shown as a whole diagram", x: 760, y: 760, width: 980, height: 290, style: "normal", source: pin("erd", "legacy"), detail_scale: .85 }
   ] };
@@ -84,6 +84,8 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   const connection = board.locator('[data-instance-path="sync"]');
   await expect(connection).toHaveAttribute("data-from", "local/local-edit");
   await expect(connection).toHaveAttribute("data-whiteboard-connection-mode", "overview");
+  await connection.focus(); await page.keyboard.press("Enter");
+  await expect(board.locator("[data-whiteboard-inspection]")).toContainText("Delivery follows a saved generation.");
   await page.screenshot({ path: testInfo.outputPath("whiteboard-overview.png") });
   await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
   // The embedded ERD itself is the overview focus target, not a separate page.
@@ -122,10 +124,20 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(board.locator('[data-frame-detail="legacy"]')).toBeVisible();
   const opaqueBinding = board.locator('[data-instance-path="legacy/legacy-record"]');
   await expect(opaqueBinding).toHaveAttribute("data-documentation-target", /data-entity:local-edit$/);
-  await expect(opaqueBinding).not.toHaveAttribute("tabindex");
-  await expect(opaqueBinding).not.toHaveAttribute("role", "button");
+  await expect(opaqueBinding).toHaveAttribute("tabindex", "0");
+  await expect(opaqueBinding).toHaveAttribute("role", "button");
+  await expect(opaqueBinding.locator('[data-diagram-summary="entity"]')).toBeVisible();
+  await expect(opaqueBinding.locator('[data-diagram-detail="entity"]')).toBeHidden();
+  await board.locator("[data-whiteboard-fields]").click();
+  await expect(opaqueBinding.locator('[data-diagram-detail="entity"]')).toBeVisible();
+  await expect(opaqueBinding.locator('[data-diagram-summary="entity"]')).toBeHidden();
+  const lineBinding = board.locator('[data-instance-path="legacy/legacy-line"]');
+  await expect(lineBinding).toHaveAttribute("tabindex", "0");
+  await lineBinding.focus(); await page.keyboard.press("Enter");
+  await expect(page.locator(".diff-drawer")).toContainText("The saved content.");
+  await page.keyboard.press("Escape");
   await board.getByText("Diagrams on this board", { exact: true }).click();
-  await expect(board.locator('[data-whiteboard-frame="legacy"]')).toContainText("internal entities are not individually selectable");
+  await expect(board.locator('[data-whiteboard-frame="legacy"]')).toContainText("bound entities");
   await board.locator('[data-whiteboard-focus-frame="local"]').click();
   await expect(local).toHaveAttribute("data-whiteboard-detail", "true");
   await expect(board).toBeVisible();
@@ -194,4 +206,46 @@ test("mixed nested detail keeps each connection on its visible semantic endpoint
   await board.getByRole("button", { name: "Fit board" }).click();
   await expect(edge).toHaveAttribute("data-whiteboard-from", "local");
   await expect(edge).toHaveAttribute("data-whiteboard-to", "cloud/postgres");
+});
+
+
+test("authored opening camera, fields and renderer reveal stay separate from full-board fit", async ({ page, saga }) => {
+  authorWhiteboard(saga, false, true);
+  await page.goto(saga.baseURL + "/technical/erd");
+  await waitForSettledSaga(page);
+  const board = page.locator("[data-whiteboard-view]");
+  const svg = board.locator("[data-whiteboard-viewport] > svg");
+  const initial = await svg.getAttribute("viewBox");
+  const fields = board.locator('[data-instance-path="local/local-edit"] [data-field]');
+  await expect(fields.first()).toBeHidden();
+  await board.locator('[data-whiteboard-fit]').click();
+  await expect(svg).not.toHaveAttribute("viewBox", initial!);
+  const whole = await svg.getAttribute("viewBox");
+  await expect(page).toHaveURL(/view=all/);
+  await page.reload();
+  await waitForSettledSaga(page);
+  await expect(svg).toHaveAttribute("viewBox", whole!);
+  await board.locator('[data-whiteboard-home]').click();
+  await expect(svg).toHaveAttribute("viewBox", initial!);
+  await page.goBack();
+  await expect(svg).toHaveAttribute("viewBox", whole!);
+  await board.getByLabel("Focus diagram").selectOption("local");
+  await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
+  await expect(fields.first()).toBeHidden();
+  await board.locator('[data-whiteboard-toolbar] [data-whiteboard-evidence]').click();
+  await expect(page.locator('[data-erd-evidence]')).toContainText('members have no code references');
+  await page.locator('.diff-drawer summary').filter({hasText:'Definition history'}).click();
+  const historyRequest = page.waitForResponse(response => response.url().includes('/api/documentation?'));
+  await page.locator('.diff-drawer details button[data-documentation-revision]').last().click();
+  await historyRequest;
+  await expect(page.locator('[data-erd-evidence]')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await board.locator('[data-whiteboard-fields]').click();
+  await expect(fields.first()).toBeVisible();
+  await board.locator('[data-whiteboard-replay]').click();
+  expect(await board.locator('[data-reveal-step]').evaluateAll(nodes => nodes.some(node => node.getAnimations().length > 0))).toBe(true);
+  await board.locator('[data-whiteboard-fields]').click();
+  await expect(fields.first()).toBeHidden();
+  await board.locator('[data-instance-path="local/local-note"]').click();
+  await expect(board.locator('[data-whiteboard-inspection]')).toContainText("source model keeps this note");
 });
