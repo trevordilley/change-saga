@@ -1,14 +1,48 @@
-# ERD whiteboard validation
+# Whiteboard validation
 
 Validated on 2026-10-13 on `feature/erd-whiteboard`, using isolated implementation
 worktrees followed by manager integration and independent review. Local previews
 use copied Sagas; source repositories are read-only. A final SHA-256 comparison
 of all 2,816 original DayLight Saga files found no changes.
 
-This records the data-model implementation and measurements before the named
-document API replaced the unreleased ERD-only selector. It does not validate the
-later multi-document CLI or routes; use the [current guide](whiteboards.md) for
-that contract. Historical commands below are not compatibility aliases.
+The named-document checks below cover the current API. The later data-model
+sections retain earlier visual and performance evidence; their historical
+commands are not compatibility aliases. See the [current guide](whiteboards.md)
+for the supported contract.
+
+## Named document API
+
+Whiteboards use `publish|get|describe|check --id ID`, with `--focus PATH` for
+an appearance inside a document. There is no kind selector or legacy diagram
+alias. Separate boards have independent immutable revision histories under
+`___whiteboards/<board-id>/revisions/`. The shared diagram schema determines
+their content; titles and subjects do not select a different storage type.
+
+Focused Go checks cover publication, exact historical reads, selected-document
+validation, full-Saga validation, unsupported syntax, CLI help/spec consistency,
+source pins, routes and independent revision links. Discovery ignores only real
+unpublished staging directories and regular revision-write temporaries; symlink
+and malformed-history checks remain enforced. History menus load and validate
+stored history once rather than once for every parent.
+
+The Chromium whiteboard/navigation run passed 21 of 23 cases initially. One
+expectation was updated for the generic “Whole board” label; a real historical
+sidebar expansion bug was fixed. The four targeted reruns passed, including
+both failed cases and related history navigation. These checks cover native and
+imported boards, shared source actions, keyboard access, wheel/culling behavior,
+named-document focus/reload, sibling navigation and exact revision Back/Forward.
+Focused Go tests, scoped race tests, vet, TypeScript and documentation links pass.
+Independent review closed the publication-temporary, history-menu and sidebar
+findings. Both copied live previews were rebuilt with the `data-model` document
+identity. A narrow Chromium smoke checked opening, section focus/reload, Fit and
+canonical route redirects without JavaScript errors; screenshots preserve the
+existing native narrative and imported composition. Originals were not changed.
+This does not claim the full cross-browser or repository CI matrix.
+
+The data-model page selects `data-model` by convention; other named documents
+open at `/technical/whiteboards/<id>`. Current source adapters still resolve ERD
+and data-entity pins; component/system inventory adapters and automatic migration
+of feature design fragments are not included.
 
 ## One native document
 

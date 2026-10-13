@@ -168,7 +168,7 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   await expect(board.locator("[data-frame-path]")).toHaveCount(0);
   await expect(sidebar.locator('a[href="/technical/erd"]')).toHaveCount(1);
   await expect(sidebar.locator('a[href^="/technical/erd/"] , a[href^="/technical/data-entity/"]')).toHaveCount(0);
-  await expect(select.locator("option")).toHaveText(["Whole model", "Delivery", "Shared records"]);
+  await expect(select.locator("option")).toHaveText(["Whole board", "Delivery", "Shared records"]);
   await expect(board.locator('[data-instance-path="overview-note"]')).toBeVisible();
   await expect(board.locator('[data-instance-path="shared/detail-note"]')).toBeHidden();
   await expect(board.locator('[data-field]').first()).toBeHidden();
