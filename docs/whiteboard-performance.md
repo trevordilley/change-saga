@@ -1,7 +1,8 @@
 # Whiteboard browser performance
 
 The [diagnostic harness](../e2e/support/whiteboard-performance.mjs) measures an
-already-running 21-frame DayLight whiteboard at `/technical/erd`. It does not
+already-running whiteboard at `/technical/erd`. The paired measurements below
+use the earlier 21-appearance DayLight scene. The harness does not
 create fixtures, publish records, change source content, or restart the preview.
 It exercises the reader's pan, zoom and focus controls through Playwright.
 
@@ -20,7 +21,11 @@ If dependencies are installed in a different checkout, set
 path. This selects its existing `@playwright/test`; it installs nothing. Change
 only the output prefix to `after` when measuring the optimized implementation.
 The default is three independent browser contexts; `WHITEBOARD_PERF_RUNS` can
-set another count. Keep the same harness, browser, machine, fixture and workload
+set another count. `WHITEBOARD_PERF_FOCUS_PATHS` accepts a JSON array of native
+section or imported instance paths for another authored scene. The default tour
+is the original 21-appearance scene; override it for the native model. Readiness
+uses the viewer initialization signal, not a fixed number of imports.
+Keep the same harness, browser, machine, fixture and workload
 for before/after comparisons. Avoid concurrent browser tests or build loads.
 
 Every run uses headless Chromium, a 1440 × 1000 viewport, device scale factor 1,
@@ -164,3 +169,36 @@ transform reads. All focus targets restored, with no page errors. Paint was
 112.8 ms and total task duration 7.121 s. These are sanity observations under
 possible concurrent review/build load, not another paired comparison. The
 `sections-r4*` artifacts sit beside the unchanged before/after measurements.
+
+## Native document sanity check
+
+After the one-document revision, a separate single run measured the DayLight
+`r6` scene: 23 native entities with authored summaries, 279 fields, 12 authored
+sections and 20 original source drawings. This is **not a paired comparison**
+with the earlier scene. It uses the same pan/zoom workload and a new focus tour:
+
+```sh
+WHITEBOARD_PERF_RUNS=1 \
+WHITEBOARD_PERF_FOCUS_PATHS='["delivery-area/capture","delivery-area/hosted","search-area/local-scope","authority-area/directory","cloud-identity","delivery-area/capture"]' \
+WHITEBOARD_PERF_OUTPUT=/tmp/change-saga-whiteboard-qa/cohesive-v6/performance \
+node e2e/support/whiteboard-performance.mjs
+```
+
+The recorded tour used headless Chromium 151.0.7922.34. JavaScript consumed
+0.1045 s, style recalculation 0.2949 s, layout 2.8413 s and total tasks 7.6487 s.
+Main-thread Paint events totaled 101.6 ms. The 120-move pan made 184 attribute
+calls, 20 tabindex updates and **zero measured geometry reads**. Pan RAF intervals
+had a 32.4 ms p95 and one interval above 50 ms; this is not a promise of
+60 fps on every device. No JavaScript errors occurred. Layout remains the main
+measured rendering cost.
+
+The initial view culled 47 cached elements while retaining the complete source
+metadata. Separate live checks verified native control restoration after culling,
+summary/detail switching, exact entity and relationship code inspection, and
+section/import Back/Forward transitions. The DOM is retained; this implementation
+reduces offscreen rendering rather than claiming to eliminate initial parse or
+memory costs.
+
+Artifacts are `cohesive-v6/performance.json`, `performance-run1.trace.json` and
+`performance-run1.png` under the local QA directory. Harness SHA-256:
+`0b84e5af40ede8b42432881c46417aa8afdfb5378b4ab9fe884b86c6eaa9a99c`.

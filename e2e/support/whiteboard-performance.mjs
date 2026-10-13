@@ -13,7 +13,10 @@ const output = resolve(process.env.WHITEBOARD_PERF_OUTPUT || '/tmp/whiteboard-pe
 const runs = Number(process.env.WHITEBOARD_PERF_RUNS || 3);
 if (!Number.isInteger(runs) || runs < 1 || runs > 20) throw new Error('WHITEBOARD_PERF_RUNS must be 1–20');
 const viewport = {width:1440, height:1000};
-const focusPaths = ['local-cloud-overview', 'local-capture-delivery', 'cloud-source-lineage', 'cloud-corpus', 'cloud-project-authority', 'system-return'];
+const focusPaths = process.env.WHITEBOARD_PERF_FOCUS_PATHS
+  ? JSON.parse(process.env.WHITEBOARD_PERF_FOCUS_PATHS)
+  : ['local-cloud-overview', 'local-capture-delivery', 'cloud-source-lineage', 'cloud-corpus', 'cloud-project-authority', 'system-return'];
+if (!Array.isArray(focusPaths) || !focusPaths.length || focusPaths.some(path=>typeof path !== 'string')) throw new Error('WHITEBOARD_PERF_FOCUS_PATHS must be a nonempty JSON array of instance paths');
 await mkdir(dirname(output), {recursive:true});
 const browser = await chromium.launch({headless:true});
 const result = {version:1, url, viewport, runs, timestamp:new Date().toISOString(), browser:browser.version(),
@@ -58,10 +61,12 @@ try {
     const response=await page.goto(url,{waitUntil:'networkidle'});
     if (!response?.ok()) throw new Error('Preview failed: '+response?.status());
     await page.locator('[data-whiteboard-toolbar]').waitFor({state:'visible'});
-    await page.waitForFunction(()=>document.querySelectorAll('[data-frame-path]').length===21);
+    await page.waitForFunction(()=>document.querySelector('[data-whiteboard-view]')?.dataset.whiteboardReady==='true');
     await page.waitForTimeout(500);
     const initial=await page.evaluate(()=>({viewBox:document.querySelector('[data-whiteboard-viewport] > svg').getAttribute('viewBox'),
-      frameCount:document.querySelectorAll('[data-frame-path]').length,nodeCount:document.querySelectorAll('[data-whiteboard-view] *').length,
+      frameCount:document.querySelectorAll('[data-frame-path]').length,sectionCount:document.querySelectorAll('[data-whiteboard-section]').length,
+      nativeEntityCount:[...document.querySelectorAll('[data-diagram-kind="node"][data-documentation-target]')].filter(node=>!node.closest('[data-frame-path]')).length,
+      culledCount:document.querySelectorAll('[data-whiteboard-culled="true"]').length,nodeCount:document.querySelectorAll('[data-whiteboard-view] *').length,
       title:document.title, fields:document.querySelector('[data-whiteboard-fields]')?.getAttribute('aria-pressed')}));
     const bodyHash=createHash('sha256').update(await response.body()).digest('hex');
     const assetHashes=[];

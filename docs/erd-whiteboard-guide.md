@@ -228,8 +228,13 @@ drawer. This does not create slide Items or fragment-owned landmarks for an
 ERD. Bundled icons must be authored explicitly: embedding an existing SVG does
 not add icons or infer notes from its arbitrary descriptions.
 
-The **Details** control starts off. Structured field rows are hidden until
-requested. For supported authored SVGs, explicitly bound entity groups show
+The **Details** control starts off. Give a native entity a concise authored
+`summary` to explain its role at overview scale. The shared entity renderer uses
+the entity style for its title and a smaller wrapped summary in the same bounds;
+the whiteboard swaps that summary with the complete fields when Details changes.
+Source identity and connector endpoints do not change. Standalone diagrams keep
+their full fields by default. Structured field rows are hidden until requested.
+For supported authored SVGs, explicitly bound entity groups show
 larger names in their original measured bounds; Details restores their exact
 original contents. Relationship geometry and source identities stay unchanged.
 This summarizes entities without claiming to identify fields in arbitrary SVGs.
@@ -311,7 +316,9 @@ representative and real-data browser checks.
 ## Reproducible DayLight composition
 
 The [example authoring script](examples/author-daylight-whiteboard.py) composes
-20 existing DayLight ERDs from exact revision IDs. It uses only the Python
+one connected native model from existing DayLight entity and relationship
+records, retaining 20 exact source ERDs in a same-canvas appendix. It uses only
+the Python
 standard library and reads a local saga copy; it neither publishes a board nor
 changes source records. The DayLight source data is not bundled in this repo.
 Run it against the matching copied inventory:
@@ -322,15 +329,21 @@ python3 docs/examples/author-daylight-whiteboard.py \
 ```
 
 The outputs are `daylight-board.json`, `source-pins.json`, `source-audit.json`,
-`camera-proposal.json`. Optional diagnostic previews use a supplied shared-renderer
-SVG, as described below. The manifest records all 20 exact pins, explanations,
+`connection-evidence.json` and `camera-proposal.json`. Optional diagnostic previews
+use a supplied shared-renderer SVG, as described below. The manifest records all 20 exact pins, explanations,
 intrinsic dimensions, revision-file digests and verified SVG digests. Missing
 pins or visual digest mismatches stop generation; future revisions are never
 adopted implicitly. Source revision and visual files are checked again before
 writing the outputs. Generation does not publish or modify the source saga.
 
 The primary composition uses native, source-pinned entities and explicit
-relationships in Delivery, Search and Authority sections. Its opening camera
+relationships in Delivery, Search and Authority sections: 23 core entities,
+279 retained fields and 27 connections. Fourteen lines represent physical foreign
+keys; nine represent application mappings or projections, two describe transport,
+one describes authorization and one identifies another appearance of the same
+entity. Twenty-one connections pin recorded relationships; six are explanatory.
+The source audit covers all 76 distinct source entities, including supporting
+tables outside the selected primary narrative. Its opening camera
 and typography establish a readable starting point rather than fitting the
 whole model on one screen. Cross-section connections carry their recorded
 relationship references or explicitly state their explanatory meaning.
