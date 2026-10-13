@@ -76,13 +76,22 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
 
   await expect(local).toHaveAttribute("data-whiteboard-detail", "false");
   await expect(board.locator('[data-frame-overview="local"]')).toBeVisible();
-  await expect(board.locator('[data-frame-detail="local"]')).toBeHidden();
+  await expect(board.locator('[data-frame-detail="local"]')).toBeVisible();
+  await expect(board.locator('[data-instance-path="local/local-edit"]')).toBeVisible();
+  await expect(board.locator('[data-instance-path="local/local-edit"]')).toHaveAttribute("tabindex", "-1");
   await expect(board.locator('[data-instance-path="flow-note"]')).toBeVisible();
   const connection = board.locator('[data-instance-path="sync"]');
   await expect(connection).toHaveAttribute("data-from", "local/local-edit");
   await expect(connection).toHaveAttribute("data-whiteboard-connection-mode", "overview");
   await page.screenshot({ path: testInfo.outputPath("whiteboard-overview.png") });
   await expectNoSeriousAccessibilityViolations(page, "[data-whiteboard-view]");
+  // The embedded ERD itself is the overview focus target, not a separate page.
+  const previewEntity = await board.locator('[data-instance-path="local/local-edit"]').boundingBox();
+  await page.mouse.click(previewEntity!.x + previewEntity!.width / 2, previewEntity!.y + previewEntity!.height / 2);
+  await expect(local).toHaveAttribute("data-whiteboard-detail", "true");
+  await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
+  await expect(page.locator(".diff-drawer")).not.toHaveClass(/open/);
+  await board.getByRole("button", { name: "Fit board" }).click();
   await connection.focus(); await page.keyboard.press("Enter");
   await expect(board.locator("[data-whiteboard-inspection]")).toContainText("local/local-edit → cloud/postgres/cloud-record");
   await board.getByLabel("Focus diagram").focus();
@@ -90,6 +99,7 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(local).toHaveAttribute("data-whiteboard-detail", "true");
   await expect(board.locator('[data-frame-detail="local"]')).toBeVisible();
   await expect(board.locator('[data-instance-path="local/local-note"]')).toBeVisible();
+  await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
   await board.screenshot({ path: testInfo.outputPath("whiteboard-detail.png") });
   await board.locator('[data-instance-path="local/local-edit"]').focus(); await page.keyboard.press("Enter");
   await expect(page.locator(".diff-drawer")).toContainText("The saved content.");
@@ -109,15 +119,14 @@ test("whiteboard explains the overview and focuses pinned entity detail @critica
   await expect(local).toHaveAttribute("data-whiteboard-detail", "false");
   await board.getByLabel("Focus diagram").selectOption("legacy");
   await expect(board.locator('[data-frame-detail="legacy"]')).toBeVisible();
-  await board.getByText("Diagram sources and saved revisions", { exact: true }).click();
-  await expect(board.locator('[data-whiteboard-frame="legacy"]')).toContainText("open the source ERD for entity inspection");
-  await board.locator('[data-whiteboard-frame="local"] a').click();
-  await expect(page).toHaveURL(/\/technical\/erd\/sqlite\?revision=r1$/);
-  await expect(page.locator('[data-erd-view]')).toHaveAttribute("data-erd-revision", "r1");
-  await expect(page.locator(".topbar")).toBeVisible();
-  await page.goBack(); await waitForSettledSaga(page);
-  await expect(page.locator('[data-whiteboard-toolbar]')).toBeVisible();
+  await board.getByText("Diagrams on this board", { exact: true }).click();
+  await expect(board.locator('[data-whiteboard-frame="legacy"]')).toContainText("internal entities are not individually selectable");
+  await board.locator('[data-whiteboard-focus-frame="local"]').click();
+  await expect(local).toHaveAttribute("data-whiteboard-detail", "true");
+  await expect(board).toBeVisible();
   await expect(page.locator(".topbar")).toBeHidden();
+  await board.getByText("Diagrams on this board", { exact: true }).click();
+  await board.getByRole("button", { name: "Fit board" }).click();
   await page.setViewportSize({ width: 600, height: 800 });
   await expect.poll(async () => (await viewport.boundingBox())?.height).toBe(800);
   const narrowCanvas = await viewport.boundingBox();

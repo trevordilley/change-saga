@@ -12,7 +12,7 @@ const whiteboardJavaScript = `
       qa('image', svg).forEach(drawing => drawing.setAttribute('role', 'img'));
       const original = svg.viewBox.baseVal;
       const bounds = {x: original.x, y: original.y, width: original.width, height: original.height};
-      let view = {...bounds}, focused = '', fitted = true;
+      let view = {...bounds}, focused = '', fitted = true, motion = 0;
       const frameRows = qa('[data-whiteboard-frame]', board);
       const geometry = new Map(JSON.parse(q('[data-whiteboard-metadata]', board).dataset.whiteboardMetadata).map(item => [item.path,item]));
       const frames = qa('[data-frame-path]', svg);
@@ -20,6 +20,15 @@ const whiteboardJavaScript = `
       const level = q('[data-whiteboard-level]', board);
       const inspection = q('[data-whiteboard-inspection]', board);
       const rowFor = path => frameRows.find(row => row.dataset.whiteboardFrame === path);
+      // Captions supplement the embedded drawings; they never replace them.
+      // Keep this a viewer presentation so historical persisted SVGs stay valid.
+      for (const frame of frames) {
+        const caption = qa('[data-frame-overview]', frame).find(node => node.dataset.frameOverview === frame.dataset.framePath);
+        if (!caption) continue;
+        caption.style.display = '';
+        const box = caption.getBBox();
+        caption.setAttribute('transform', 'translate(0 ' + (-box.y-box.height-12) + ')');
+      }
       function visible(node, show) {
         node.style.display = show ? '' : 'none';
         node.setAttribute('aria-hidden', String(!show));
@@ -38,9 +47,21 @@ const whiteboardJavaScript = `
           const effectiveScale = matrix ? Math.hypot(matrix.a, matrix.b) : scale;
           const detailed = (focused && (focused === path || focused.startsWith(path + '/'))) || effectiveScale >= Number(frame.dataset.detailScale || .6);
           frame.dataset.whiteboardDetail = String(detailed);
-          visible(detail, detailed);
+          detail.style.display = '';
+          detail.style.pointerEvents = detailed ? '' : 'none';
+          detail.setAttribute('aria-hidden', String(!detailed));
           if (summary) visible(summary, !detailed);
           if (!detailed) collapsed.push(path);
+        }
+        // A low-zoom diagram is one focus target. Its tiny internal marks stay
+        // drawn, but become individual inspection targets only at detail scale.
+        for (const control of qa('[tabindex]', svg)) {
+          let owner = control.closest('[data-frame-detail]'), preview = false;
+          while (owner) {
+            if (owner.parentElement.dataset.whiteboardDetail === 'false') preview = true;
+            owner = owner.parentElement.closest('[data-frame-detail]');
+          }
+          control.setAttribute('tabindex', preview ? '-1' : '0');
         }
         const visibleEndpoint = path => collapsed.filter(frame => path === frame || path.startsWith(frame + '/')).sort((a,b) => a.length-b.length)[0] || path;
         for (const connection of qa('[data-instance-path][data-from][data-to]', svg)) {
@@ -99,8 +120,28 @@ const whiteboardJavaScript = `
         const unit = Math.max(box.width / width, box.height / height);
         return {x:box.x-(width*unit-box.width)/2-20*unit, y:box.y-(height*unit-box.height)/2-top*unit, width:rect.width*unit, height:rect.height*unit};
       }
+      function stopMotion() {
+        cancelAnimationFrame(motion); motion = 0;
+        board.dataset.whiteboardMoving = 'false';
+      }
+      function travel(destination) {
+        stopMotion();
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) { view = destination; paint(); return; }
+        const start = {...view}, started = performance.now();
+        board.dataset.whiteboardMoving = 'true';
+        const step = now => {
+          const progress = Math.min(1, (now-started)/280), eased = 1-Math.pow(1-progress,3);
+          for (const key of ['x','y','width','height']) view[key] = start[key]+(destination[key]-start[key])*eased;
+          paint();
+          if (progress < 1) motion = requestAnimationFrame(step);
+          else stopMotion();
+        };
+        motion = requestAnimationFrame(step);
+      }
       function fit() {
+        stopMotion();
         fitted = true; view = fitBox(bounds); focused = ''; select.value = ''; inspection.hidden = true; paint();
+        board.dispatchEvent(new CustomEvent('whiteboard:focus', {detail:{path:''}}));
       }
       function focus(path) {
         const row = rowFor(path);
@@ -120,10 +161,11 @@ const whiteboardJavaScript = `
         }
         if (!(width > 0 && height > 0)) return;
         focused = path; fitted = false; select.value = path;
-        view = fitBox({x: x - 24, y: y - 24, width: width + 48, height: height + 48});
-        paint();
+        travel(fitBox({x: x - 24, y: y - 24, width: width + 48, height: height + 48}));
+        board.dispatchEvent(new CustomEvent('whiteboard:focus', {detail:{path}}));
       }
       function zoom(factor, clientX, clientY) {
+        stopMotion();
         fitted = false;
         const nextWidth = Math.max(Math.max(1, bounds.width / 512), Math.min(bounds.width * 2, view.width * factor));
         factor = nextWidth / view.width;
@@ -143,6 +185,7 @@ const whiteboardJavaScript = `
         else if (event.key === '-' || event.key === '_') zoom(1.25);
         else if (event.key === '0' || event.key === 'Escape') fit();
         else if (event.key.startsWith('Arrow')) {
+          stopMotion();
           fitted = false;
           const dx = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
           const dy = event.key === 'ArrowDown' ? 1 : event.key === 'ArrowUp' ? -1 : 0;
@@ -157,6 +200,7 @@ const whiteboardJavaScript = `
       let drag = null, suppressClick = false;
       viewport.addEventListener('pointerdown', event => {
         if (event.button !== 0) return;
+        stopMotion();
         drag = {x:event.clientX, y:event.clientY, start:{...view}, id:event.pointerId, moved:false};
       });
       viewport.addEventListener('pointermove', event => {
@@ -208,7 +252,7 @@ const whiteboardJavaScript = `
         });
       }
       const resize = new ResizeObserver(() => fitted ? fit() : paint()); resize.observe(viewport);
-      pageScope.signal.addEventListener('abort', () => resize.disconnect(), {once:true});
+      pageScope.signal.addEventListener('abort', () => { resize.disconnect(); stopMotion(); }, {once:true});
       q('[data-whiteboard-toolbar]', board).hidden = false;
       fit();
     }
