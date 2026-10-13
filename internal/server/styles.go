@@ -13,7 +13,7 @@ var (
 
 // pageStyles is the whole renderer stylesheet. The design target is a quiet
 // developer tool: system UI type for chrome, monospace for code and code-shaped
-// metadata, hairline separators instead of cards, and controls that stay
+// metadata, quiet reading surfaces and hairline separators, and controls that stay
 // invisible until the reviewer hovers or focuses the thing they belong to.
 var pageStyles = `
 .feature-grouping{display:flex;gap:.55rem;flex-wrap:wrap;padding:.65rem 1rem;font-size:.8rem}.feature-grouping span{flex-basis:100%;font-weight:600}.feature-grouping a[aria-current]{font-weight:700;text-decoration:underline}
@@ -478,6 +478,28 @@ the record's own content for the top of the page. */
 .reading-details>summary:focus-visible,.requirement-criterion>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
 .feature-page .feature-stories>li{padding:16px 0}
 @media(max-width:640px){.requirement-characterization dl,.requirement-history-lists{grid-template-columns:1fr}.authored-overview .fragment-markdown{font-size:15px}.requirements-breadcrumbs{flex-wrap:wrap}}
+/* Product narrative is read in distinct surfaces; secondary detail stays quiet. */
+.feature-page>.authored-overview,.requirement-story-page>.authored-overview,.feature-page>[data-feature-stories],.requirement-story-page>.requirement-criteria{padding:28px 32px;border:1px solid var(--line-soft);border-radius:16px;background:var(--bg-subtle)}
+.feature-page>.authored-overview>h2,.requirement-story-page>.authored-overview>h2,.feature-page>[data-feature-stories]>h2,.requirement-story-page>.requirement-criteria>header{margin:0 0 24px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.feature-page>[data-feature-stories]>h2{color:var(--ink);font:650 22px/1.3 var(--ui);letter-spacing:normal;text-transform:none}
+.requirement-story-page>.requirement-need{padding:24px 28px;border:1px solid var(--accent-line);border-left:3px solid var(--accent);border-radius:12px;background:var(--accent-soft)}
+.requirement-story-page>.requirement-need>p{font-weight:400;line-height:1.65}
+.feature-page .feature-stories{gap:14px}
+.feature-page .feature-stories>li{padding:18px 20px;border-color:var(--line);border-radius:10px}
+.feature-page .feature-stories>li>a{display:inline-block;margin-bottom:6px;font-size:16px}
+.feature-page .feature-stories .trace-note{display:block;margin:2px 0 8px}
+.requirement-story-page .requirement-criteria-list{margin:0;padding-left:22px}
+.requirement-story-page .requirement-criteria-list>li{margin-bottom:10px;padding-left:6px}
+.requirement-story-page .requirement-criteria-list>li:last-child{margin-bottom:0}
+.requirement-story-page .requirement-criterion>summary{padding:16px 8px}
+.requirement-story-page .requirement-criterion[open]{border-bottom-color:transparent}
+.requirement-story-page .criterion-details{padding:18px 20px;margin:0 0 14px;border:1px solid var(--line-soft);border-radius:10px;background:var(--bg)}
+.feature-page>.reading-details,.requirement-story-page>.reading-details,.requirement-story-page>.requirement-story-details{margin:0;padding:0;border:1px solid var(--line-soft);border-radius:12px;background:var(--bg-subtle)}
+.feature-page>.reading-details>summary,.requirement-story-page>.reading-details>summary,.requirement-story-page>.requirement-story-details>summary{padding:18px 22px;margin:0;font-size:14px}
+.feature-page>.reading-details[open],.requirement-story-page>.reading-details[open]{padding:0 22px 22px}
+.feature-page>.reading-details[open]>summary,.requirement-story-page>.reading-details[open]>summary{margin:0 -22px 16px;border-bottom:1px solid var(--line-soft)}
+.requirement-story-page .requirement-story-details-content{padding:4px 22px 22px;gap:18px}
+@media(max-width:640px){.feature-page>.authored-overview,.requirement-story-page>.authored-overview,.feature-page>[data-feature-stories],.requirement-story-page>.requirement-criteria{padding:20px 18px;border-radius:12px}.requirement-story-page>.requirement-need{padding:20px}.feature-page .feature-stories>li{padding:16px}.requirement-story-page .requirement-criteria-list{padding-left:16px}.requirement-story-page .requirement-criterion>summary{padding:14px 2px}}
 .opening-badge{font:600 12px/1 var(--ui);padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);background:var(--bg-subtle);white-space:nowrap;margin-right:8px}
 .opening-badge.compare{color:var(--accent);border-color:var(--accent-line);background:var(--accent-soft)}
 .layer-quiet{opacity:1;transition:opacity .15s}.layer-quiet:hover,.layer-quiet:focus-within{opacity:1}
