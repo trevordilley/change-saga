@@ -179,12 +179,13 @@ var commandUsage = map[string]string{
 	"add-deck":                    "change-saga add-deck (--feature ID | --role onboarding) [flags] <saga> <name>",
 	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"apply-slide":                 "change-saga apply-slide (--from FILE|- [--review ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID]) <saga>",
-	"diagram":                     "change-saga diagram <describe|get|edit|icons|check> [flags] <saga>",
-	"diagram describe":            "change-saga diagram describe --slide TARGET [--review ID] [--format text|json] [--offset N] [--limit N] <saga>",
-	"diagram get":                 "change-saga diagram get --slide TARGET [--review ID] --id ELEMENT <saga>",
+	"diagram":                     "change-saga diagram <describe|get|edit|icons|check|publish> [flags] <saga>",
+	"diagram describe":            "change-saga diagram describe (--slide TARGET [--review ID] | --whiteboard erd [--revision ID] [--focus PATH]) [--format text|json] [--offset N] [--limit N] <saga>",
+	"diagram publish":             "change-saga diagram publish --whiteboard erd --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
+	"diagram get":                 "change-saga diagram get (--slide TARGET [--review ID] --id ELEMENT | --whiteboard erd [--revision ID] [--focus PATH]) <saga>",
 	"diagram edit":                "change-saga diagram edit --slide TARGET [--review ID] --expected SNAPSHOT --request-id ID --from FILE|- [--repo PATH] [--dry-run] [--json] <saga>",
 	"diagram icons":               "change-saga diagram icons [--query TEXT] [--json]",
-	"diagram check":               "change-saga diagram check [--review ID] [--slide TARGET] [--json] <saga>",
+	"diagram check":               "change-saga diagram check [--review ID] [--slide TARGET] [--whiteboard erd [--revision ID]] [--json] <saga>",
 	"set-slide-content":           "change-saga set-slide-content [--review ID] --target TARGET --source FILE|- [--json|--quiet] <saga>",
 	"add-item":                    "change-saga add-item [--review ID] --slide TARGET --kind KIND [selector] [--record URN] [flags] <saga>",
 	"add-chapter":                 "change-saga add-chapter (--feature ID | --app designsystem) [flags] <saga> <name>",
@@ -446,6 +447,7 @@ var commandDescription = map[string]string{
 	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"apply-slide":                 "Publish one complete implementation or review slide from structured JSON: its visual asset or a\n\"diagram\" source the CLI renders to SVG, semantic Items and selectors, exact code evidence,\nand pinned Item-level criterion links. With --review (or \"review\" in the request) the slide\ngoes to that pull request review's deck; its Items carry no evidence and are covered after\npublishing with cover --changed-lines. --dry-run returns the same semantic diff without\npublishing; updates require the current snapshot. --print-current SLIDE prints the slide's\ncomplete current request (expected_snapshot and a fresh request_id filled in) to edit and\napply, so changing one field never means rebuilding the slide. SLIDE is an ID, target, or\nrecord path; an ID slides of several decks share must be given as its target, and a review\nslide's ID needs --review. An update identical to the current revision publishes nothing and\nreports the slide unchanged.",
 	"diagram":                     "Edit and check diagram-sourced slides of implementation and review decks. A diagram is an\nordered list of explicitly positioned nodes, edges, text, groups, and graphics; the CLI\nrenders it to the slide's SVG. Read any slide compactly with `change-saga diagram describe`;\nname a review slide by its URN or with --review.",
+	"diagram publish":             "Publish a complete ERD whiteboard diagram from JSON. Every child source pins an exact revision.\nUpdates require the current board revision ID as --parent; historical boards never follow newer children.",
 	"diagram edit":                "Apply a JSON array of operations (add, update, move, remove, style, align, distribute,\ncanvas) to a slide's diagram at an exact snapshot and republish it through apply-slide,\nkeeping its Items, evidence, and criterion links. Nothing moves unless named: moving a\nnode leaves its edges where they are. [] re-renders the unchanged source.",
 	"diagram describe":            "Read one slide compactly: its takeaway, Items in reading order with their first code\nreferences (path:start-end, old side marked, and note; the rest counted) and criterion-link\ncounts, and, for a diagram-sourced slide, its groups, nodes, edges, and\ncontainment in document order. Geometry, styling, decorative elements, and asset bytes are\nomitted, so the view cannot rebuild the drawing. Text by default; --format json for tools.",
 	"diagram get":                 "Return one diagram element's complete stored properties, resolved style, and selector,\nwith the snapshot to pass to diagram edit --expected.",
@@ -938,6 +940,7 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 	appendQualityIssues(flags.Arg(0), document, &validation)
 	appendAppIssues(flags.Arg(0), document, &validation)
 	appendInventoryIssues(flags.Arg(0), document, &validation)
+	appendWhiteboardIssues(flags.Arg(0), document, &validation)
 	appendThemeIssues(flags.Arg(0), &validation)
 	if *jsonOutput {
 		if err := writeJSON(out, validationOutput{Validation: validation, Fixes: fixes}); err != nil {

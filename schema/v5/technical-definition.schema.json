@@ -672,6 +672,9 @@
           }
         }
       }
+    },
+    "diagram": {
+      "$ref": "diagram.schema.json"
     }
   }
 }

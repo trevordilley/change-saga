@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -127,6 +128,8 @@ type Binding struct {
 // Intent, Baseline and Delivery are inventory format 2 and absent on legacy
 // revisions, which read as unspecified intent.
 type TechnicalDefinition struct {
+	// Diagram optionally preserves the authored ERD source alongside its immutable SVG.
+	Diagram       *diagram.Document   `json:"diagram,omitempty"`
 	Name          string              `json:"name"`
 	Explanation   string              `json:"explanation"`
 	Intent        string              `json:"intent,omitempty"`
@@ -381,6 +384,25 @@ func LoadInventory(root, sagaID string) (Inventory, error) {
 			d.Records = append(d.Records, r)
 			if len(d.Records) > MaxInventoryRecords {
 				return d, fmt.Errorf("inventory record limit reached")
+			}
+		}
+	}
+	// Structured ERDs retain their own readable source and explicit pins even
+	// when no whiteboard has been authored.
+	for _, record := range d.Records {
+		for _, revision := range record.Revisions {
+			if revision.Diagram == nil {
+				continue
+			}
+			if err := checkWhiteboardERD(&d, revision); err != nil {
+				return d, err
+			}
+			doc, err := boundERDDiagram(revision)
+			if err != nil {
+				return d, err
+			}
+			if _, err := resolveInventoryComposition(root, &d, doc, revision.Directory); err != nil {
+				return d, fmt.Errorf("ERD %s revision %s: %w", record.Target, revision.ID, err)
 			}
 		}
 	}

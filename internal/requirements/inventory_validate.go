@@ -3,6 +3,7 @@ package requirements
 import (
 	"bytes"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"encoding/xml"
@@ -140,7 +141,7 @@ func validateTechnicalRevision(v TechnicalRevision, kind, urn, id string) error 
 	}
 	sagaID := strings.Split(urn, ":")[2]
 	entity := len(v.Fields)+len(v.Holders)+len(v.Relationships) > 0
-	view := v.ERD != nil || v.Feature != "" || len(v.Pins)+len(v.Removals)+len(v.Directory)+len(v.Bindings) > 0 || v.Visual != nil
+	view := v.ERD != nil || v.Feature != "" || len(v.Pins)+len(v.Removals)+len(v.Directory)+len(v.Bindings) > 0 || v.Visual != nil || v.Diagram != nil
 	graph := len(v.Components)+len(v.Interactions) > 0
 	switch kind {
 	case "component", "system":
@@ -362,6 +363,18 @@ func validateDataEntity(v TechnicalRevision, sagaID string, implemented bool, id
 }
 
 func validateERDRevision(v TechnicalRevision, kind, sagaID string) error {
+	if v.Diagram != nil {
+		if kind != KindERD {
+			return fmt.Errorf("structured diagram source is supported only for ERDs")
+		}
+		if err := v.Diagram.Validate(); err != nil {
+			return fmt.Errorf("ERD diagram: %w", err)
+		}
+		if _, err := boundERDDiagram(v); err != nil {
+			return err
+		}
+	}
+
 	if v.Intent != "" || v.Baseline != "" || v.Delivery != nil || len(v.Code) > 0 || len(v.Components)+len(v.Interactions)+len(v.Fields)+len(v.Holders)+len(v.Relationships) > 0 {
 		return fmt.Errorf("an ERD view carries no intent, code or entity content; entities carry their own")
 	}
@@ -516,10 +529,19 @@ func unsafeScheme(value string) bool {
 // ValidateVisual checks an SVG against its digest and bound element IDs. The
 // renderer inlines the SVG for hit-testing, so authoring accepts only allowlisted
 // static elements and attributes, same-document #fragment links, no
-// javascript:/data: values, no external url()/@import in styles and no
+// executable URLs, external url()/@import in styles and no
 // DTD/entity or processing instructions. Every ID must be unique so a binding
-// names exactly one element.
+// names exactly one element. Inert data-* metadata and base64-embedded SVG
+// images are allowed; embedded images undergo the same checks recursively.
 func ValidateVisual(data []byte, digest string, bindings []Binding) error {
+	return validateVisual(data, digest, bindings, 0)
+}
+
+func validateVisual(data []byte, digest string, bindings []Binding, nesting int) error {
+	if nesting > 8 {
+		return fmt.Errorf("embedded SVG nesting exceeds 8")
+	}
+
 	if len(data) > MaxVisualBytes {
 		return fmt.Errorf("visual exceeds one MiB")
 	}
@@ -574,15 +596,37 @@ func ValidateVisual(data []byte, digest string, bindings []Binding) error {
 			}
 			depth++
 			name := strings.ToLower(value.Name.Local)
-			if (value.Name.Space != "" && value.Name.Space != svgNamespace) || !visualElements[name] {
+			if (value.Name.Space != "" && value.Name.Space != svgNamespace) || (!visualElements[name] && name != "image") {
 				return fmt.Errorf("visual element %s is not an allowed static SVG element", value.Name.Local)
 			}
 			inStyle = name == "style"
+			if name == "image" {
+				hrefs := 0
+				for _, attr := range value.Attr {
+					if strings.ToLower(attr.Name.Local) != "href" {
+						continue
+					}
+					hrefs++
+					if !strings.HasPrefix(attr.Value, "data:image/svg+xml;base64,") {
+						return fmt.Errorf("visual image requires an embedded static SVG")
+					}
+					embedded, err := base64.StdEncoding.DecodeString(strings.TrimPrefix(attr.Value, "data:image/svg+xml;base64,"))
+					if err != nil {
+						return fmt.Errorf("invalid embedded SVG: %w", err)
+					}
+					if err := validateVisual(embedded, "", nil, nesting+1); err != nil {
+						return fmt.Errorf("embedded SVG: %w", err)
+					}
+				}
+				if hrefs != 1 {
+					return fmt.Errorf("visual image requires exactly one embedded SVG")
+				}
+			}
 			for _, attr := range value.Attr {
 				local := strings.ToLower(attr.Name.Local)
 				switch attr.Name.Space {
 				case "":
-					if !visualAttrs[local] && local != "xmlns" {
+					if !visualAttrs[local] && local != "xmlns" && !strings.HasPrefix(local, "data-") {
 						return fmt.Errorf("visual attribute %s is not allowed", attr.Name.Local)
 					}
 				case "xmlns":
@@ -597,6 +641,9 @@ func ValidateVisual(data []byte, digest string, bindings []Binding) error {
 					}
 				default:
 					return fmt.Errorf("visual attribute %s:%s is not allowed", attr.Name.Space, attr.Name.Local)
+				}
+				if name == "image" && local == "href" {
+					continue
 				}
 				if unsafeScheme(attr.Value) {
 					return fmt.Errorf("visual attribute %s cannot contain javascript: or data: values", attr.Name.Local)

@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/diagram"
 	"github.com/twentyideas/changesaga/internal/store"
 	"github.com/twentyideas/changesaga/internal/technicalpolicy"
 )
@@ -94,6 +95,46 @@ func WriteTechnical(root, sagaID, kind, id, revisionID string, parents []string,
 // current head. All validation, including implementation policy against the
 // delivery commit, runs under the Saga lock before any file is written.
 func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w TechnicalWrite) (MutationResult, error) {
+	if w.Definition.Diagram != nil {
+		if w.Kind != KindERD {
+			return MutationResult{}, fmt.Errorf("structured diagram source is supported only for ERDs")
+		}
+		inventory, err := LoadInventory(root, sagaID)
+		if err != nil {
+			return MutationResult{}, err
+		}
+		candidate := TechnicalRevision{TechnicalDefinition: w.Definition}
+		if err := checkWhiteboardERD(&inventory, candidate); err != nil {
+			return MutationResult{}, err
+		}
+		doc, err := boundERDDiagram(candidate)
+		if err != nil {
+			return MutationResult{}, err
+		}
+		composition, err := resolveInventoryComposition(root, &inventory, doc, w.Definition.Directory)
+		if err != nil {
+			return MutationResult{}, err
+		}
+		svg, err := composition.Render(diagram.Options{Title: w.Definition.Name, Description: w.Definition.Explanation})
+		if err != nil {
+			return MutationResult{}, err
+		}
+
+		// Inventory visuals are portable offline assets. Remove only the two
+		// renderer-generated font loaders, retaining their CSS font-family fallback.
+		for _, font := range [][2]string{{diagram.FontFamily, diagram.FontPath}, {diagram.MonoFontFamily, diagram.MonoFontPath}} {
+			rule := fmt.Sprintf(`@font-face{font-family:"%s";src:url("%s") format("truetype")}`, font[0], font[1])
+			svg = bytes.ReplaceAll(svg, []byte(rule), nil)
+		}
+		if len(w.Visual) > 0 && !bytes.Equal(w.Visual, svg) {
+			return MutationResult{}, fmt.Errorf("visual bytes differ from the structured ERD diagram")
+		}
+		sum := sha256.Sum256(svg)
+		digest := hex.EncodeToString(sum[:])
+		w.Definition.Visual = &Visual{Path: "assets/" + digest + ".svg", MediaType: "image/svg+xml", Digest: coderef.DigestPrefix + digest}
+		w.Visual = svg
+	}
+
 	urn, err := TechnicalURN(sagaID, w.Kind, w.ID)
 	if err != nil {
 		return MutationResult{}, err
