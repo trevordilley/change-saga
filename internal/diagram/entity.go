@@ -177,6 +177,27 @@ func (r *renderer) entity(e Element, style Style, g *node) error {
 		}
 		markerWidth = math.Max(markerWidth, measured*widthSlack+10)
 	}
+	fieldRight := w - entityPadding
+	if e.Summary != "" {
+		// An overview card can be much wider than its fixed-size detail rows.
+		// Keep names and types together when readers zoom into those rows;
+		// stretching the type column to the card edge makes it unreachable.
+		// Entities without an authored summary retain their original artwork.
+		var nameWidth, typeWidth float64
+		for _, field := range e.Fields {
+			name, err := r.measure(field.Name, entityFieldSize)
+			if err != nil {
+				return err
+			}
+			kind, err := r.measure(field.Type, entityFieldSize)
+			if err != nil {
+				return err
+			}
+			nameWidth = math.Max(nameWidth, name*widthSlack)
+			typeWidth = math.Max(typeWidth, kind*widthSlack)
+		}
+		fieldRight = math.Min(fieldRight, entityPadding+markerWidth+nameWidth+12+typeWidth)
+	}
 	for index, field := range e.Fields {
 		top := header + float64(index)*entityRowHeight
 		if index > 0 {
@@ -189,7 +210,7 @@ func (r *renderer) entity(e Element, style Style, g *node) error {
 			marker.text = keyMarkers[field.Key]
 		}
 		nameX := entityPadding + markerWidth
-		room := w - entityPadding - nameX
+		room := fieldRight - nameX
 		nameWidth, err := r.measure(field.Name, entityFieldSize)
 		if err != nil {
 			return err
@@ -212,7 +233,7 @@ func (r *renderer) entity(e Element, style Style, g *node) error {
 		}
 		name.text = field.Name
 		if field.Type != "" {
-			kind := row.add("text", "x", num(w-entityPadding), "y", baseline, "font-size", num(entityFieldSize), "fill", style.Ink, "fill-opacity", ".7", "text-anchor", "end", "xml:space", "preserve")
+			kind := row.add("text", "x", num(fieldRight), "y", baseline, "font-size", num(entityFieldSize), "fill", style.Ink, "fill-opacity", ".7", "text-anchor", "end", "xml:space", "preserve")
 			kind.text = field.Type
 		}
 	}

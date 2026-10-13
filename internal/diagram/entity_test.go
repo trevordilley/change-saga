@@ -2,6 +2,8 @@ package diagram
 
 import (
 	"bytes"
+	"regexp"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -83,7 +85,7 @@ func TestEntityEdgesTakeCrowsFeet(t *testing.T) {
 	}
 }
 
-func TestAuthoredEntitySummaryPreservesExactFieldArtwork(t *testing.T) {
+func TestAuthoredEntitySummaryPreservesFieldRowsAndCompactsTypes(t *testing.T) {
 	doc := New()
 	doc.Elements = []Element{{ID: "record", Kind: "node", Shape: "entity", Label: "Saved record", Width: 500, Height: 220, Style: "normal", Fields: Fields{{Name: "id", Type: "uuid", Key: "pk"}, {Name: "body", Type: "text"}}}}
 	attr := func(n *node, name string) string {
@@ -130,8 +132,12 @@ func TestAuthoredEntitySummaryPreservesExactFieldArtwork(t *testing.T) {
 	for _, child := range detail.children {
 		child.write(&actual, 0)
 	}
-	if actual.String() != expected.String() {
-		t.Fatal("summary altered fixed field metrics, keys or divider artwork")
+	typeRight := attr(find(detail, "text-anchor", "end"), "x")
+	if typeRight == "488" {
+		t.Fatal("summary details still stretch types across the overview card")
+	}
+	if actual.String() != strings.ReplaceAll(expected.String(), `x="488"`, `x="`+typeRight+`"`) {
+		t.Fatal("summary altered field metrics, keys or dividers beyond the compact type column")
 	}
 	if attr(summary, "style") != "display:none" || attr(detail, "style") != "" {
 		t.Fatal("standalone default must retain full fields")
@@ -142,5 +148,38 @@ func TestAuthoredEntitySummaryPreservesExactFieldArtwork(t *testing.T) {
 	doc.Elements[0].Summary = strings.Repeat("exceeds available space ", 30)
 	if _, err := Render(doc, Options{}); err == nil || !strings.Contains(err.Error(), "entity summary: text overflow") {
 		t.Fatalf("summary overflow was hidden: %v", err)
+	}
+}
+
+func TestWideSummaryEntityKeepsReadableFieldColumnsTogether(t *testing.T) {
+	doc := New()
+	doc.Width, doc.Height = 3000, 1200
+	style, _ := doc.Style("normal")
+	style.FontSize = 160
+	doc.Styles = map[string]Style{"large": style}
+	doc.Elements = []Element{{ID: "project", Kind: "node", Shape: "entity", Label: "Project", Width: 2700, Height: 1000, Style: "large",
+		Fields: Fields{{Name: "id", Type: "uuid", Key: "pk"}, {Name: "organization_id", Type: "uuid", Key: "fk"}, {Name: "last_authorization_refresh", Type: "timestamp with time zone"}}}}
+	typeColumns := regexp.MustCompile(`<text x="([0-9.]+)"[^>]*text-anchor="end"`)
+	for _, summary := range []string{"", "Private storage and its current policy."} {
+		doc.Elements[0].Summary = summary
+		svg, err := Render(doc, Options{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		columns := typeColumns.FindAllStringSubmatch(string(svg), -1)
+		if len(columns) != 3 {
+			t.Fatalf("lost type columns: %d", len(columns))
+		}
+		for _, column := range columns {
+			right, _ := strconv.ParseFloat(column[1], 64)
+			if summary == "" && right != 2688 {
+				t.Fatalf("changed existing entity layout: %v", right)
+			}
+			// At 14px field text (87.5% zoom), the complete row fits within
+			// 700 screen pixels even though the overview card is 2362px wide.
+			if summary != "" && right*.875 > 700 {
+				t.Fatalf("field names and types cannot be read together: %v", right)
+			}
+		}
 	}
 }
