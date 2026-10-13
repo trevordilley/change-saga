@@ -4,10 +4,13 @@ An ERD whiteboard composes existing ERD revisions using the diagram grammar.
 The AI authors the positions, sizes, summaries, annotations and connections;
 the Data model viewer provides read-only pan, zoom, fit and focus. The board fills
 the viewport beside the sidebar. Its floating title has an expandable description
-using the shared data-model overview; diagram sources and directories open in a
-separate overlay. Fit and Focus leave room for the title and navigation controls.
-ERDs remain independent documents. Groups are ordinary drawing groups, and this feature
-does not change entity holders or add inventory kinds.
+using the shared data-model overview. Sidebar and board ERD links focus their
+embedded appearances in the same canvas. “Diagrams on this board” is a focus
+picker with pin metadata. Repeated appearances have distinct focus URLs. Fit
+and Focus leave room for the title and navigation controls. Source ERDs remain
+independently revisioned internally, and explicit historical routes remain
+compatible. Groups are ordinary drawing groups; this feature does not change
+entity holders or add inventory kinds.
 
 ## Revision policy
 
@@ -171,5 +174,8 @@ emphasis and source proportions rather than a uniform grid.
 
 Callouts paraphrase pinned explanations. Connections describe explanatory
 mappings and delivery context with their own pins; they do not invent SQL
-foreign keys. The authored caption band is 192 board units for a 51.2-unit frame
-font. Publishing remains an explicit subsequent action after browser review.
+foreign keys. The 100-unit frame font remains about 12 pixels at a 1140-pixel fit. Four
+central diagrams keep a short summary and a 288-unit caption band; satellites
+use title-only captions with 192 units of clearance. Section headings use
+144-unit type, and primary callouts use 112-unit type. Full source explanations
+remain available in inspection metadata. Publishing remains an explicit subsequent action after browser review.

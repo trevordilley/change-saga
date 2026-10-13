@@ -31,7 +31,7 @@ AREAS = [
     ('cloud-identity', 'r4', 'Identity & tenancy', 'Principals and Organization evidence', 6350, 3410, 1550),
     ('cloud-contribution', 'r4', 'Sharing rules', 'Current consent; legacy evidence', 8340, 3270, 1150),
     ('cloud-shared-destinations', 'r4', 'Projects & Teams', 'Shared destinations and people groups', 9950, 3560, 1150),
-    ('cloud-enterprise', 'r4', 'Enterprise & audit', 'Identity mappings; surviving audit', 4210, 5750, 1100),
+    ('cloud-enterprise', 'r4', 'Enterprise', 'Identity mappings; surviving audit', 4210, 5750, 1100),
     ('cloud-scim', 'r4', 'SCIM directory', 'Provisioning resources and tokens', 5530, 6270, 1050),
     ('cloud-oauth', 'r4', 'MCP grants', 'Client, principal, selected scope', 6920, 5650, 1050),
     ('cloud-invitations', 'r4', 'Invitations', 'Eligibility and redemption receipts', 8420, 5000, 1080),
@@ -40,7 +40,14 @@ AREAS = [
 ]
 SCALE = .8
 WIDTH, HEIGHT = 11700, 8250
-CAPTION_CLEARANCE = 240  # Three 64-unit lines plus padding, above every SVG.
+CAPTION_CLEARANCE = 240  # One 125-unit title line plus generous padding.
+CORE_SUMMARIES = {
+    'local-capture-delivery': 'Destination debt',
+    'local-cloud-overview': 'Grant + generation',
+    'cloud-source-lineage': 'Accepted rules',
+    'cloud-corpus': 'Derived search',
+}
+CORE_CLEARANCE = 360  # Two 125-unit lines plus padding.
 
 
 def main():
@@ -78,13 +85,13 @@ def main():
         r = records[key]
         return {'target': r['record'], 'revision': r['record'] + ':revision:' + r['id']}
 
-    def style(fill='none', stroke='none', ink='#243746', font=64, width=3):
+    def style(fill='none', stroke='none', ink='#243746', font=125, width=3):
         return dict(fill=fill, stroke=stroke, ink=ink, font_size=font*SCALE, stroke_width=width*SCALE)
 
     board = dict(version=1, width=WIDTH*SCALE, height=HEIGHT*SCALE, background='#f7f8f6', styles={
         'frame': style('#ffffff', '#cad3d7'),
-        'hero': style(font=150), 'section': style(font=106, ink='#355b64'),
-        'callout': style(font=82), 'caption': style(font=66, ink='#526776'),
+        'hero': style(font=180), 'section': style(font=180, ink='#355b64'),
+        'callout': style(font=140), 'caption': style(font=66, ink='#526776'),
         'flow': style(stroke='#a46f28', ink='#80521b', font=60, width=9),
         'mapping': dict(**style(stroke='#587d87', font=60, width=7), dash=True),
     }, elements=[])
@@ -104,21 +111,19 @@ def main():
         add(dict(id=key, kind='text', label=label, x=x, y=y, width=w, height=h,
                  style=style, wrap=True, source=ref(source)))
 
-    text('title', 'DayLight / from local work to shared evidence', 220, 100, 11200, 210, 'local-cloud-overview', 'hero')
+    text('title', 'DayLight / from local work to shared evidence', 220, 100, 11200, 230, 'local-cloud-overview', 'hero')
     text('intro', 'One source grant and generation cross the store boundary. Search, consent and authority retain their own models.',
-         230, 330, 10400, 250, 'local-cloud-overview')
-    text('delivery-heading', '01   Follow the delivery', 1950, 640, 5600, 150, 'local-cloud-overview', 'section')
-    text('local-heading', '02   Local search', 230, 2080, 1400, 160, 'local-cloud-overview', 'section')
-    text('authority-heading', '03   Authority & consent', 4350, 2920, 3700, 160, 'cloud-project-authority', 'section')
-    text('local-callout', 'A file cursor is not a cloud delivery acknowledgement.', 1900, 2420, 1850, 290, 'local-index-progress')
-    text('episode-callout', 'Original files and episode manifests remain outside SQL authority.',
+         230, 330, 10400, 190, 'local-cloud-overview')
+    text('delivery-heading', '01   Delivery', 1950, 550, 2200, 225, 'local-cloud-overview', 'section')
+    text('local-heading', '02   Search', 230, 2080, 1400, 225, 'local-cloud-overview', 'section')
+    text('authority-heading', '03   Authority & consent', 4350, 2920, 3700, 225, 'cloud-project-authority', 'section')
+    text('local-callout', 'Cursors ≠ delivery receipts', 1900, 2460, 2150, 230, 'local-index-progress')
+    text('episode-callout', 'Files and manifests retain authority.',
          250, 4910, 1400, 610, 'local-whole-model')
-    text('scope-callout', 'Shared Project membership and exact-source consent separately govern hosted search.',
+    text('scope-callout', 'Membership + consent govern access.',
          8340, 2790, 3000, 230, 'local-cloud-overview')
     text('directory-callout', 'Provisioning maintains directory state. It does not grant transcript access.',
          4250, 7210, 3750, 420, 'cloud-scim')
-    text('cloud-directory-callout', 'The whole-model directory groups ownership domains; focused ERDs carry the relationship lines.',
-         8360, 6880, 1120, 920, 'cloud-overview', 'caption')
     text('source-note', 'Pinned committed-code documentation / focus any diagram in place to inspect its original source.',
          230, 7840, 8950, 180, 'local-cloud-overview', 'caption')
 
@@ -127,7 +132,7 @@ def main():
         _, sw, sh = images[key]
         height = width*sh/sw
         frames[key] = dict(x=x, y=y, width=width, height=height)
-        add(dict(id=key, kind='frame', label=label, summary=summary,
+        add(dict(id=key, kind='frame', label=label, summary=CORE_SUMMARIES.get(key, ''),
                  description=records[key]['explanation'], x=x, y=y, width=width,
                  height=height, style='frame', detail_scale=.6, source=ref(key)))
 
@@ -154,7 +159,9 @@ def main():
             bends=[(6150, 3280), (6500, 2770)])
 
     # Caption bands are real authored whitespace, never subtracted from frames.
-    boxes = [(key, (f['x'], f['y']-CAPTION_CLEARANCE, f['width'], f['height']+CAPTION_CLEARANCE)) for key, f in frames.items()]
+    boxes = [(key, (f['x'], f['y']-clearance, f['width'], f['height']+clearance))
+             for key, f in frames.items()
+             for clearance in [CORE_CLEARANCE if key in CORE_SUMMARIES else CAPTION_CLEARANCE]]
     for i, (key, (x, y, w, h)) in enumerate(boxes):
         assert 0 <= x and 0 <= y and x+w <= WIDTH and y+h <= HEIGHT, key
         for other, (a, b, c, d) in boxes[i+1:]:
@@ -200,15 +207,17 @@ def main():
         svg, _, _ = images[key]
         h = frames[key]['height']
         parts.append(f'<image x="{x}" y="{y}" width="{width}" height="{h}" href="data:image/svg+xml;base64,{base64.b64encode(svg).decode()}"/>')
-        parts.append(f'<text x="{x}" y="{y-164}" font-size="64" font-weight="bold" fill="#243746">{html.escape(label)}</text>')
-        for i, line in enumerate(textwrap.wrap(summary, max(1, int(width/34)))):
-            parts.append(f'<text x="{x}" y="{y-86+i*72}" font-size="64" fill="#526776">{html.escape(line)}</text>')
+        summary = CORE_SUMMARIES.get(key, '')
+        title_y = y-220 if summary else y-64
+        parts.append(f'<text x="{x}" y="{title_y}" font-size="125" font-weight="bold" fill="#243746">{html.escape(label)}</text>')
+        if summary:
+            parts.append(f'<text x="{x}" y="{y-64}" font-size="125" fill="#526776">{html.escape(summary)}</text>')
     parts.append('</svg>')
     (output/'layout-preview.svg').write_text('\n'.join(parts))
     (output/'layout-preview.html').write_text('<!doctype html><meta charset="utf-8"><title>DayLight composition layout proof</title><style>body{margin:0;background:#f7f8f6}img{width:100vw;height:100vh;object-fit:contain}</style><img src="layout-preview.svg" alt="DayLight composition with all twenty source ERDs">')
     print(json.dumps({'board': str(output/'daylight-board.json'), 'frames': len(frames),
                       'pins': str(output/'source-pins.json'), 'preview': str(output/'layout-preview.html'),
-                      'caption_clearance': CAPTION_CLEARANCE*SCALE}, indent=2))
+                      'caption_clearance': CAPTION_CLEARANCE*SCALE, 'core_caption_clearance': CORE_CLEARANCE*SCALE}, indent=2))
 
 
 if __name__ == '__main__':
