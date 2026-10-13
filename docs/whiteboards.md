@@ -3,6 +3,10 @@
 Status: proposal for `feature/erd-documents`. Start with ERDs; use what we learn
 before considering Infra or Systems. Nothing here is a format contract yet.
 
+The first implementation and its explicit revision policy are documented in
+the [ERD whiteboard authoring guide](erd-whiteboard-guide.md). This proposal
+records the product intent; the guide describes the implemented format.
+
 ## The idea
 
 A whiteboard is a diagram of diagrams. It places existing ERDs together on a
