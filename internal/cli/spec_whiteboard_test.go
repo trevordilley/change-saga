@@ -18,12 +18,12 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 	}
 	var spec struct {
 		Whiteboards struct {
-			Purpose, Root, Storage, Schema, Focus string
-			SourcePins                            string `json:"source_pins"`
-			Kinds, Unsupported                    []string
-			RevisionVersion                       int             `json:"revision_version"`
-			DiagramSource                         json.RawMessage `json:"diagram_source"`
-			History, Commands, Compatibility      map[string]string
+			Purpose, Root, Storage, Schema, Focus, Identity string
+			SourcePins                                      string `json:"source_pins"`
+			Kinds, Unsupported                              []string
+			RevisionVersion                                 int             `json:"revision_version"`
+			DiagramSource                                   json.RawMessage `json:"diagram_source"`
+			History, Commands, Compatibility                map[string]string
 		} `json:"whiteboards"`
 		Deck struct {
 			DiagramSource json.RawMessage `json:"diagram_source"`
@@ -33,7 +33,7 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 		t.Fatal(err)
 	}
 	board := spec.Whiteboards
-	if len(board.Kinds) != 1 || board.Kinds[0] != "erd" || board.Root != requirements.WhiteboardDir || board.Storage != requirements.WhiteboardDir+"/erd/revisions/<id>.json" || board.Schema != requirements.WhiteboardSchemaURL || board.RevisionVersion != 1 {
+	if len(board.Kinds) != 0 || !strings.Contains(board.Identity, "--id selects a named document") || board.Root != requirements.WhiteboardDir || board.Storage != requirements.WhiteboardDir+"/<board-id>/revisions/<revision-id>.json" || board.Schema != requirements.WhiteboardSchemaURL || board.RevisionVersion != 1 {
 		t.Fatalf("whiteboard storage or supported kinds drifted: %+v", board)
 	}
 	var boardGrammar map[string]json.RawMessage
@@ -47,7 +47,7 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 	if err := json.Unmarshal(boardGrammar["storage"], &boardStorage); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(boardInput, "complete diagram.Document") || !strings.Contains(boardInput, "whiteboard publish --kind erd --from") || !strings.Contains(boardStorage, "document inside an immutable ___whiteboards/erd/revisions/<id>.json revision") {
+	if !strings.Contains(boardInput, "complete diagram.Document") || !strings.Contains(boardInput, "whiteboard publish --id ID --from") || !strings.Contains(boardStorage, "document inside an immutable ___whiteboards/<board-id>/revisions/<revision-id>.json revision") {
 		t.Fatal("whiteboard grammar must describe board input/storage instead of slide assets")
 	}
 	shared := diagram.Contract()
@@ -78,7 +78,7 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 		t.Fatalf("whiteboard commands drifted: %#v", board.Commands)
 	}
 	for _, op := range []string{"publish", "get", "describe", "check"} {
-		if board.Commands[op] != commandUsage["whiteboard "+op] || !strings.Contains(board.Commands[op], "whiteboard "+op+" --kind erd") || !strings.Contains(board.Commands[op], "--revision ID") {
+		if board.Commands[op] != commandUsage["whiteboard "+op] || !strings.Contains(board.Commands[op], "whiteboard "+op+" --id ID") || !strings.Contains(board.Commands[op], "--revision ID") {
 			t.Errorf("missing implemented command or revision selector: %s", board.Commands[op])
 		}
 	}
@@ -87,15 +87,15 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 			t.Errorf("missing read focus: %s", board.Commands[op])
 		}
 	}
-	if !strings.Contains(board.Commands["get"], "--id PATH") || strings.Contains(board.Commands["publish"], "--focus") {
-		t.Fatal("focus must remain a read selector, including the existing get alias")
+	if !strings.Contains(board.Commands["get"], "--id ID") || strings.Contains(board.Commands["publish"], "--focus") {
+		t.Fatal("document ID and focus must remain separate selectors")
 	}
 	for key, want := range map[string]string{"revisions": "immutable complete", "parent": "observed unique current", "reads": "never a fallback"} {
 		if !strings.Contains(board.History[key], want) {
 			t.Errorf("history %s lost %q: %s", key, want, board.History[key])
 		}
 	}
-	if !strings.Contains(board.Purpose, "technical-design") || !strings.Contains(board.Compatibility["absent"], "remain valid") || !strings.Contains(board.Compatibility["older_readers"], "reject") || strings.Join(board.Unsupported, ";") != "infrastructure or system whiteboards;whiteboard edit transactions" {
+	if !strings.Contains(board.Purpose, "technical-design") || !strings.Contains(board.Compatibility["absent"], "remain valid") || !strings.Contains(board.Compatibility["older_readers"], "reject") || strings.Join(board.Unsupported, ";") != "whiteboard edit transactions" {
 		t.Fatalf("scope/compatibility limits missing: %+v", board)
 	}
 	if !strings.Contains(board.SourcePins, "exact target and revision URNs") || !strings.Contains(board.SourcePins, "never follow newer") {
@@ -105,7 +105,7 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 	if err := Spec(nil, &output); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"Technical design can use an ERD whiteboard", "Only kind erd is supported", "___whiteboards/erd/revisions/<id>.json", "whiteboard publish --kind erd", "whiteboard get|describe|check --kind erd", "--focus PATH", "share the implementation deck's diagram source grammar", "current board revision ID as --parent", "Older readers reject an adopted ___whiteboards", "absence remains valid"} {
+	for _, want := range []string{"Technical designs use named whiteboard documents", "identified by --id", "___whiteboards/<board-id>/revisions/<revision-id>.json", "whiteboard publish --id ID", "whiteboard get|describe|check --id ID", "--focus PATH", "share the implementation deck's diagram source grammar", "current revision of that document as --parent", "Older readers reject an adopted ___whiteboards", "absence remains valid"} {
 		if !strings.Contains(output.String(), want) {
 			t.Errorf("text spec omitted %q", want)
 		}

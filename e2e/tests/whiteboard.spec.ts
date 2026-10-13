@@ -54,7 +54,7 @@ function authorWhiteboard(saga: SagaFixture, nested = false, opening = false, sp
     Object.assign(board.elements.find(element => element.id === "cloud")!, { x: 5400, y: 2600 });
     Object.assign(board.elements.find(element => element.id === "legacy")!, { x: 2000, y: 3200 });
   }
-  run("whiteboard", "publish", "--kind", "erd", "--from", file("board.json", board), "--name", "Offline and shared data", "--revision", "r1", saga.sagaRoot);
+  run("whiteboard", "publish", "--id", "data-model", "--from", file("board.json", board), "--name", "Offline and shared data", "--revision", "r1", saga.sagaRoot);
 }
 
 test("whiteboard explains the overview and focuses pinned entity detail @critical", async ({ page, saga }, testInfo) => {
@@ -387,4 +387,43 @@ test("wheel and trackpad scroll pan the board while modified scroll zooms", asyn
   await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
   await board.locator('[data-whiteboard-home]').click();
   await expect.poll(camera).toEqual(start);
+});
+
+test("named technical-design whiteboards keep independent history and focus", async ({ page, saga }) => {
+  authorWhiteboard(saga);
+  const source = join(saga.root, "deployment-board.json");
+  const document = { version: 1, width: 2200, height: 1200, elements: [
+    { id: "delivery", kind: "group", shape: "section", label: "Delivery boundary", color: "blue", x: 100, y: 160, width: 1800, height: 850, style: "boundary" },
+    { id: "worker", parent: "delivery", kind: "node", shape: "service", label: "Worker", note: "An illustrative deployment concept.", x: 150, y: 160, width: 500, height: 300, style: "normal" }
+  ] };
+  const publish = (id: string, revision: string, title: string, parent?: string) => {
+    writeFileSync(source, JSON.stringify(document));
+    const result = runCLI(saga, ["whiteboard", "publish", "--id", id, "--revision", revision,
+      "--name", title, "--from", source, ...(parent ? ["--parent", parent] : []), saga.sagaRoot], saga.sagaRepo);
+    expect(result.status, result.stdout + result.stderr).toBe(0);
+  };
+  publish("deployment-topology", "r1", "Deployment topology");
+  publish("deployment-topology", "r2", "Deployment topology revised", "r1");
+  publish("system-context", "r1", "System context");
+  await page.goto(saga.baseURL + "/technical");
+  await waitForSettledSaga(page);
+  await page.locator('.sidebar a[href="/technical/whiteboards/deployment-topology"]').click();
+  const board = page.locator("[data-whiteboard-view]");
+  await expect(board.getByRole("heading", { level: 1 })).toHaveText("Deployment topology revised");
+  await board.getByLabel("Focus section").selectOption("delivery");
+  await expect(page).toHaveURL(/\/technical\/whiteboards\/deployment-topology\?focus=delivery/);
+  await page.reload();
+  await expect(board.getByRole("heading", { level: 1 })).toHaveText("Deployment topology revised");
+  await expect(board.getByLabel("Focus section")).toHaveValue("delivery");
+  await page.goto(saga.baseURL + "/technical/whiteboards/deployment-topology?revision=r1&focus=delivery");
+  await expect(board.getByRole("heading", { level: 1 })).toHaveText("Deployment topology");
+  await board.getByRole("button", { name: "Fit board" }).click();
+  expect(new URL(page.url()).searchParams.get("revision")).toBe("r1");
+  await page.locator('.sidebar a[href="/technical/whiteboards/system-context"]').click();
+  await expect(board.getByRole("heading", { level: 1 })).toHaveText("System context");
+  await page.goBack();
+  await expect(board.getByRole("heading", { level: 1 })).toHaveText("Deployment topology");
+  expect(new URL(page.url()).searchParams.get("revision")).toBe("r1");
+  await page.goto(saga.baseURL + "/technical/erd");
+  await expect(board.getByRole("heading", { level: 1 })).toHaveText("Offline and shared data");
 });

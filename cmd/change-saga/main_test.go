@@ -151,8 +151,8 @@ func TestRunWhiteboardHelpUsesPublicDispatcher(t *testing.T) {
 			if !strings.Contains(stdout.String(), "change-saga whiteboard "+op) {
 				t.Fatalf("missing primary usage: %s", stdout.String())
 			}
-			if op != "" && !strings.Contains(stdout.String(), "--kind erd") {
-				t.Fatalf("missing kind selector: %s", stdout.String())
+			if op != "" && !strings.Contains(stdout.String(), "--id ID") {
+				t.Fatalf("missing document selector: %s", stdout.String())
 			}
 		})
 	}

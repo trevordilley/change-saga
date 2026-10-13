@@ -60,26 +60,12 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 	run := func(args ...string) (string, error) {
 		out.Reset()
 		err := Whiteboard(ctx, append(args, root), &out)
-		primary := out.String()
-		// Both command families must address the same records and produce the
-		// same output. Retrying publication also exercises cross-alias idempotence.
-		legacy := append([]string{}, args...)
-		for i, arg := range legacy {
-			if arg == "--kind" {
-				legacy[i] = "--whiteboard"
-			}
-		}
-		out.Reset()
-		aliasErr := Diagram(ctx, append(legacy, root), &out)
-		if (err == nil) != (aliasErr == nil) || err == nil && primary != out.String() {
-			t.Fatalf("command aliases differ for %v: primary %v %s; alias %v %s", args, err, primary, aliasErr, out.String())
-		}
-		return primary, err
+		return out.String(), err
 	}
-	if _, err := run("publish", "--kind", "erd", "--revision", "b1", "--name", "Work board", "--from", path); err != nil {
+	if _, err := run("publish", "--id", "data-model", "--revision", "b1", "--name", "Work board", "--from", path); err != nil {
 		t.Fatal(err)
 	}
-	described, err := run("describe", "--kind", "erd")
+	described, err := run("describe", "--id", "data-model")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -88,14 +74,14 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 			t.Fatalf("description missing %s: %s", want, described)
 		}
 	}
-	focused, err := run("describe", "--kind", "erd", "--focus", "cloud/local/local", "--format", "json")
+	focused, err := run("describe", "--id", "data-model", "--focus", "cloud/local/local", "--format", "json")
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(focused, "Offline edits retain stable IDs") || !strings.Contains(focused, definition.Directory[0].Revision) {
 		t.Fatalf("focused source: %s", focused)
 	}
-	got, err := run("get", "--kind", "erd")
+	got, err := run("get", "--id", "data-model")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,30 +89,45 @@ func TestWhiteboardCLIAndStructuredERDAuthoring(t *testing.T) {
 	if err := json.Unmarshal([]byte(got), &fetched); err != nil || len(fetched.Elements) != 3 {
 		t.Fatalf("get roundtrip: %v %s", err, got)
 	}
-	checked, err := run("check", "--kind", "erd", "--json")
+	checked, err := run("check", "--id", "data-model", "--json")
 	if err != nil || !strings.Contains(checked, `"valid": true`) {
 		t.Fatalf("check: %v %s", err, checked)
 	}
-	if _, err := run("describe", "--kind", "erd", "--focus", "cloud/missing"); err == nil {
+	if _, err := run("describe", "--id", "data-model", "--focus", "cloud/missing"); err == nil {
 		t.Fatal("unknown focus accepted")
 	}
-	if _, err := run("publish", "--kind", "erd", "--revision", "b2", "--from", path); err == nil {
+	if _, err := run("publish", "--id", "data-model", "--revision", "b2", "--from", path); err == nil {
 		t.Fatal("update without observed parent accepted")
 	}
-	if _, err := run("publish", "--kind", "erd", "--revision", "b2", "--parent", "b1", "--from", path); err != nil {
+	if _, err := run("publish", "--id", "data-model", "--revision", "b2", "--parent", "b1", "--from", path); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := run("get", "--kind", "erd", "--revision", "b1", "--focus", "cloud/local/local"); err != nil {
+	if _, err := run("get", "--id", "data-model", "--revision", "b1", "--focus", "cloud/local/local"); err != nil {
 		t.Fatal(err)
+	}
+	if _, err := run("publish", "--id", "deployment-topology", "--revision", "b1", "--from", path); err != nil {
+		t.Fatal(err)
+	}
+	if other, err := run("describe", "--id", "deployment-topology", "--format", "json"); err != nil || !strings.Contains(other, `"whiteboard": "deployment-topology"`) {
+		t.Fatalf("generic document identity: %v %s", err, other)
+	}
+	if _, err := run("publish", "--id", "deployment-topology", "--revision", "b3", "--parent", "b2", "--from", path); err == nil {
+		t.Fatal("parent from a different document accepted")
 	}
 	assertValid(t, root)
 	// Validation must not ignore a broken historical pin just because the latest
 	// board is valid and no reader has focused the historical frame.
-	historical := filepath.Join(root, requirements.WhiteboardDir, "erd", "revisions", "b1.json")
+	historical := filepath.Join(root, requirements.WhiteboardDir, "data-model", "revisions", "b1.json")
 	data, _ := os.ReadFile(historical)
 	data = bytes.Replace(data, []byte(pins["postgres"].Revision), []byte(pins["postgres"].Target+":revision:missing"), 1)
 	if err := os.WriteFile(historical, data, 0600); err != nil {
 		t.Fatal(err)
+	}
+	if _, err := run("check", "--id", "deployment-topology"); err != nil {
+		t.Fatalf("selected document check leaked sibling history: %v", err)
+	}
+	if _, err := run("check", "--id", "data-model"); err == nil {
+		t.Fatal("selected board check ignored broken historical pin")
 	}
 	out.Reset()
 	if err := Validate(ctx, []string{"--json", root}, &out); err == nil || !strings.Contains(out.String(), requirements.WhiteboardDir) {
@@ -140,10 +141,11 @@ func TestWhiteboardCLIRejectsInvalidCommandBeforeLoadingSaga(t *testing.T) {
 		args []string
 		want string
 	}{
-		{"missing kind", []string{"get", "missing.saga"}, "requires --kind erd"},
-		{"future kind", []string{"get", "--kind=infra", "missing.saga"}, "requires --kind erd"},
-		{"unsupported edit", []string{"edit", "--kind", "erd", "missing.saga"}, "whiteboards support publish, get, describe and check"},
-		{"unknown operation", []string{"delete", "--kind", "erd", "missing.saga"}, "usage: change-saga whiteboard"},
+		{"missing id", []string{"get", "missing.saga"}, "requires --id"},
+		{"removed kind", []string{"get", "--kind=erd", "missing.saga"}, "flag provided but not defined"},
+		{"path traversal", []string{"get", "--id=../outside", "missing.saga"}, "requires --id"},
+		{"unsupported edit", []string{"edit", "--id", "data-model", "missing.saga"}, "whiteboards support publish, get, describe and check"},
+		{"unknown operation", []string{"delete", "--id", "data-model", "missing.saga"}, "usage: change-saga whiteboard"},
 		{"old selector in new family", []string{"get", "--whiteboard", "erd", "missing.saga"}, "flag provided but not defined"},
 	} {
 		t.Run(test.name, func(t *testing.T) {
@@ -153,5 +155,19 @@ func TestWhiteboardCLIRejectsInvalidCommandBeforeLoadingSaga(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, test.want)
 			}
 		})
+	}
+}
+
+func TestDiagramDoesNotExposeUnreleasedWhiteboardAlias(t *testing.T) {
+	for _, args := range [][]string{
+		{"publish", "--whiteboard", "erd", "missing.saga"},
+		{"describe", "--whiteboard", "erd", "missing.saga"},
+		{"get", "--whiteboard", "erd", "missing.saga"},
+		{"check", "--whiteboard", "erd", "missing.saga"},
+	} {
+		var out bytes.Buffer
+		if err := Diagram(context.Background(), args, &out); err == nil {
+			t.Fatalf("removed alias accepted: %v", args)
+		}
 	}
 }

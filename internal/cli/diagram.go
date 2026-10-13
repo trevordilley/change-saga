@@ -21,10 +21,7 @@ func Diagram(ctx context.Context, args []string, out io.Writer) error {
 	ctx, endGit := gitexec.Begin(ctx)
 	defer endGit()
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("diagram", []string{"describe", "get", "edit", "icons", "check", "publish"}, out)
-	}
-	if args[0] == "publish" || whiteboardRequested(args[1:]) {
-		return diagramWhiteboard(ctx, args[0], args[1:], out)
+		return livingFamilyHelp("diagram", []string{"describe", "get", "edit", "icons", "check"}, out)
 	}
 	switch args[0] {
 	case "describe":

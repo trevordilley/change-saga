@@ -21,7 +21,7 @@ function navigationBoard(saga: SagaFixture, withSection = false) {
   }
   // Deliberately author z before a: link resolution must use instance identity,
   // not incidental DOM order, while each repeat retains its own deep link.
-  run("whiteboard", "publish", "--kind", "erd", "--name", "Navigation board", "--revision", "r1", "--from", file("board", { version: 1, width: 2000, height: 1200, elements: [
+  run("whiteboard", "publish", "--id", "data-model", "--name", "Navigation board", "--revision", "r1", "--from", file("board", { version: 1, width: 2000, height: 1200, elements: [
     ...(withSection ? [{id:"model-section",kind:"group",shape:"section",label:"Local and remote",x:10,y:20,width:1800,height:1100,style:"normal"}] : []),
     { id: "z-copy", kind: "frame", label: "Second local", x: 1100, y: 50, width: 600, height: 300, style: "normal", source: pin("erd", "local") },
     { id: "a-first", kind: "frame", label: "First local", x: 50, y: 50, width: 600, height: 300, style: "normal", source: pin("erd", "local") },
@@ -133,7 +133,7 @@ function nativeModel(saga: SagaFixture, stories = false) {
   run("inventory", "adopt-format", "--format", "2", saga.sagaRoot);
   run("data-entity", "add", "--id", "edit", "--from", file("edit", {name:"Local edit", explanation:"Authored directly in the model.", intent:"implemented", code:[code("edit",3,"Local edit evidence.")], fields:[{id:"id",name:"id",type:"uuid"}]}), "--delivery", "HEAD", "--repo", saga.sourceRepo, saga.sagaRoot);
   run("data-entity", "add", "--id", "record", "--from", file("record", {name:"Saved record", explanation:"A shared record.", intent:"implemented", fields:[{id:"id",name:"id",type:"uuid"}], code:[code("saved",3,"Entity evidence at its saved commit.")], relationships:[{id:"sync",meaning:"production",destination:pin("edit"),label:"synchronized from",flow:"destination_to_owner",explanation:"A saved edit produces a shared record.",intent:"implemented",code:[code("sync-code",4,"Relationship evidence at its saved commit.")]}]}), "--delivery", "HEAD", "--repo", saga.sourceRepo, saga.sagaRoot);
-  run("whiteboard", "publish", "--kind", "erd", "--name", "One cohesive model", "--revision", "r1", "--from", file("native-board", {version:1,width:3200,height:1500,reveal:"fade",elements:[
+  run("whiteboard", "publish", "--id", "data-model", "--name", "One cohesive model", "--revision", "r1", "--from", file("native-board", {version:1,width:3200,height:1500,reveal:"fade",elements:[
     {id:"delivery",kind:"group",shape:"section",label:"Delivery",x:50,y:150,width:1000,height:850,style:"normal",color:"blue"},
     {id:"edit",parent:"delivery",kind:"node",shape:"entity",label:"Local edit",summary:"Captures local work before delivery.",x:80,y:150,width:500,height:240,style:"normal",source:pin("edit"),fields:[{name:"id",type:"uuid"}]},
     {id:"shared",kind:"group",shape:"section",label:"Shared records",x:2100,y:150,width:1000,height:850,style:"normal",color:"green"},
