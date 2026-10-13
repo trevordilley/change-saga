@@ -68,22 +68,13 @@ func (files *sagaFiles) whiteboardDocuments(build func() ([]whiteboardDocumentVi
 }
 
 func (a *app) whiteboardHistoryView(sagaID, id, shown string) []whiteboardRevisionView {
-	current, err := requirements.LoadWhiteboard(a.root, sagaID, id, "")
-	if err != nil || current == nil {
+	ids, err := requirements.ListWhiteboardRevisionIDs(a.root, sagaID, id)
+	if err != nil {
 		return nil
 	}
-	var history []whiteboardRevisionView
-	seen := map[string]bool{}
-	for current != nil && !seen[current.ID] {
-		seen[current.ID] = true
-		history = append(history, whiteboardRevisionView{ID: current.ID, Href: whiteboardHref(id, current.ID), Shown: current.ID == shown})
-		if len(current.Parents) == 0 {
-			break
-		}
-		current, err = requirements.LoadWhiteboard(a.root, sagaID, id, current.Parents[0])
-		if err != nil {
-			break
-		}
+	history := make([]whiteboardRevisionView, 0, len(ids))
+	for _, revision := range ids {
+		history = append(history, whiteboardRevisionView{ID: revision, Href: whiteboardHref(id, revision), Shown: revision == shown})
 	}
 	return history
 }

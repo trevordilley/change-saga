@@ -181,3 +181,33 @@ assert.equal(source.getAttribute('href'),'/technical/erd/sqlite?revision=r1');
 		t.Fatalf("navigation contract: %v\n%s", err, output)
 	}
 }
+
+func TestWhiteboardHistoryLinksFollowParentsWithinDocument(t *testing.T) {
+	root, _ := termSaga(t)
+	document := diagram.Document{Version: 1, Width: 600, Height: 400, Elements: []diagram.Element{
+		{ID: "step", Kind: "node", Shape: "rect", Label: "Plan", X: 20, Y: 20, Width: 200, Height: 100, Style: "normal"},
+	}}
+	// Revision IDs are identities, not a lexical or numeric ordering contract.
+	parent := ""
+	for _, id := range []string{"r1", "r10", "r2"} {
+		if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "planning", id, parent, "Planning", document); err != nil {
+			t.Fatal(err)
+		}
+		parent = id
+	}
+	if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "other", "r99", "", "Another document", document); err != nil {
+		t.Fatal(err)
+	}
+	history := (&app{root: root}).whiteboardHistoryView("test", "planning", "r10")
+	if len(history) != 3 {
+		t.Fatalf("history: %+v", history)
+	}
+	for i, id := range []string{"r2", "r10", "r1"} {
+		if history[i].ID != id || history[i].Href != "/technical/whiteboards/planning?revision="+id || history[i].Shown != (id == "r10") {
+			t.Fatalf("history[%d]: %+v", i, history[i])
+		}
+	}
+	if got := (&app{root: root}).whiteboardHistoryView("test", "missing", ""); len(got) != 0 {
+		t.Fatalf("missing history: %+v", got)
+	}
+}
