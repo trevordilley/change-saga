@@ -43,6 +43,9 @@ one Saga is neither invalid nor reported as a problem.
   ___personas/<id>.persona/    # who the application serves
   ___featureflags/<id>.flag/   # flags and the stories or features they gate
   ___onboarding/<id>.deck/     # a deck that explains the application
+  ___feature-themes/<id>.theme/ # optional product categories
+    theme.json                  # authored Markdown overview and feature URN set
+    ___slides/                  # normal rationale deck, role feature-theme
   ___features/<id>.feature/
     feature.json
     <report content>           # chapters, sections, fragments
@@ -80,6 +83,7 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Record | Schema | Required semantic fields | Runtime-only checks |
 | --- | --- | --- | --- |
 | Manifest | `v5/saga.schema.json` | identity, title, source, `version: 5` | canonical repository identity |
+| Product theme | `v5/feature-theme.schema.json` | mutable Markdown overview and many-to-many feature URN membership; Git history | optional; same-Saga members exist; one normal rationale deck |
 | Feature | `v5/feature.schema.json` | immutable ID, title, creation time | directory name equals ID |
 | Persona identity, revision, event | `v5/persona*.schema.json` | name and description; lifecycle `active` or `retired` | one root, acyclic revision and event graphs |
 | Term identity, revision, event | `v5/term*.schema.json` | name and definition; optional aliases, story and record links, and code references; lifecycle `active` or `retired` | linked stories and records exist; aliases distinct from the name |
@@ -106,6 +110,19 @@ belongs to an older feature refines that area in place. Features are listed in t
 order they were created. A feature's `feature.json` is
 immutable and its URN is `urn:change-saga:<saga>:feature:<id>`. Moving a story
 between features moves its directory and changes nothing else.
+
+Product themes optionally classify features without moving or duplicating them.
+Their stable URN is `urn:change-saga:<saga>:feature-theme:<id>`. A theme records
+an authored Markdown overview and a set of canonical feature URNs; features may
+belong to several themes or none. Its optional single rationale deck uses the
+normal deck, slide, and Item format with role `feature-theme`. Missing decks are
+shown as authoring gaps. Theme Items may reference existing personas, features,
+or stories and may cite code; no code minimum or missing-code warning applies.
+They cannot carry implementation criterion links. The viewer groups Features by
+Theme (default when themes exist), Persona (derived from current story personas),
+or All, retaining ungrouped features and stable deep links. See
+[Product themes](docs/feature-themes.md) for authoring, limits, and query contracts.
+
 
 **Personas** are the people who get value from the application: the "As a
 <persona>" of a user story. A tool, an agent, or a system that operates the

@@ -90,7 +90,7 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 	if featureErr != nil {
 		addIssue(&validation, "error", applayout.FeaturesDir, featureErr.Error())
 	}
-	hasDecks := realDirectoryExists(filepath.Join(abs, applayout.OnboardingDir))
+	hasDecks := realDirectoryExists(filepath.Join(abs, applayout.OnboardingDir)) || realDirectoryExists(filepath.Join(abs, applayout.FeatureThemesDir))
 	for _, feature := range features {
 		hasDecks = hasDecks || realDirectoryExists(filepath.Join(feature.Dir, EmbeddedSlidesDir))
 	}

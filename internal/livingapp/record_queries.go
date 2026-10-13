@@ -194,6 +194,9 @@ func (s *session) recordReferences(kind, subject string) ([]RecordReference, Ref
 		}
 	}
 
+	for _, deck := range s.saga.ThemeDecks() {
+		appendDeckRecordReferences(deck, "feature_theme_item", subject, add)
+	}
 	for _, deck := range s.saga.Onboarding {
 		appendDeckRecordReferences(deck, "onboarding_item", subject, add)
 	}

@@ -62,7 +62,8 @@ type appNavSources struct {
 	// pageFeature is the feature the page being read belongs to, and so the one
 	// feature that opens over its four places. Empty on a page that belongs to
 	// no feature, where every feature stays a row.
-	pageFeature string
+	pageFeature     string
+	featureGrouping string
 	// technical is the Technical design rows, one per definition.
 	technical []*navNodeView
 	// reviewSide says the page is on the Review side of the header, which
@@ -112,6 +113,19 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		overview.Children = append(overview.Children, navSection("Feature flags", "/flags", "nav-featureflags", "flag", flags))
 	}
 
+	if len(document.FeatureThemes) > 0 {
+		var themes []*navNodeView
+		for _, theme := range document.FeatureThemes {
+			var decks []*navNodeView
+			for _, deck := range theme.Decks {
+				if row := deckRows["nav-"+domID(deck.Target)]; row != nil {
+					decks = append(decks, row)
+				}
+			}
+			themes = append(themes, navSection(theme.Title, featureThemeHref(theme.ID), "nav-theme-"+domID(theme.ID), "product", decks))
+		}
+		overview.Children = append(overview.Children, navSection("Product themes", "/feature-themes", "nav-feature-themes", "product", themes))
+	}
 	// Both sides remain in the persistent shell; navigation state hides the
 	// other side's rows when the reader switches tabs.
 	features, reviews := makeFeaturesNav(sources, deckRows), makeReviewsNav(document, sources.mergedReviews)
@@ -229,17 +243,42 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 	if len(document.Features) == 0 {
 		return section
 	}
-	for _, feature := range document.Features {
-		node := makeFeatureNav(sources, feature, deckRows)
+	add := func(parent *navNodeView, feature *saga.Feature, prefix string) {
+		// Clone deck rows before makeFeatureNav can clear active flags on them.
+		rows := map[string]*navNodeView{}
+		for _, deck := range feature.Decks {
+			key := "nav-" + domID(deck.Target)
+			if row := deckRows[key]; row != nil {
+				rows[key] = cloneGroupNav(row, "")
+			}
+		}
+		node := makeFeatureNav(sources, feature, rows)
+		if prefix != "" {
+			node = cloneGroupNav(node, prefix)
+		}
 		if feature.ID != sources.pageFeature {
-			// Every feature carries its places, so the sidebar serves every
-			// page; only the page's own feature is open, and nothing inside
-			// another one is the page being read.
 			node.Expanded, node.dormant = false, true
 			clearActiveNav(node.Children)
 		}
-		section.Children = append(section.Children, node)
+		parent.Children = append(parent.Children, node)
 	}
+	mode := sources.featureGrouping
+	if mode == "theme" || mode == "persona" {
+		for _, group := range featureGroups(document, sources.requirements, mode) {
+			prefix := "group-" + domID(group.ID) + "--"
+			parent := navSection(group.Title, group.Href, "nav-group-"+domID(group.ID), "product", nil)
+			parent.Expanded = true
+			for _, feature := range group.Features {
+				add(parent, feature, prefix)
+			}
+			section.Children = append(section.Children, parent)
+		}
+	} else {
+		for _, feature := range document.Features {
+			add(section, feature, "")
+		}
+	}
+
 	section.Expanded = true
 	return section
 }

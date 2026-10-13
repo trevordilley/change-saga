@@ -166,7 +166,10 @@ func Build(root string, document *saga.Saga, inputs livingapp.StatusInputs) *Inv
 	}
 	builder.app(inputs)
 	builder.report(document.Section, "")
-	builder.decks(document.Decks)
+	builder.decks(document.DocumentationDecks())
+	for _, theme := range document.FeatureThemes {
+		builder.add(&Node{URN: theme.Target, Kind: "feature-theme", Title: theme.Title, Files: []string{theme.Path + "/theme.json"}, Text: theme.Overview, Links: append([]string{}, theme.Features...)})
+	}
 	builder.inventory.Supersedes = map[string][]string{}
 	for _, relation := range builder.inventory.Nodes {
 		if relation.Kind != KindRelation || relation.Retired() {

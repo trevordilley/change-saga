@@ -192,18 +192,39 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			return SlideTransactionResult{}, fmt.Errorf("deck %q is a pull request review's deck; set \"review\": %q or pass --review %s", request.Deck, request.Deck, request.Deck)
 		}
 	}
+	themeDeck := false
+	if reviewID == "" {
+		preview, _, err := saga.LoadOutline(root)
+		if err != nil {
+			return SlideTransactionResult{}, err
+		}
+		if deck := findDeck(preview, request.Deck); deck != nil {
+			themeDeck = deck.Role == saga.DeckRoleFeatureTheme
+		}
+	}
 	if reviewID != "" {
 		if err := refuseReviewItemEvidence(revision.Items); err != nil {
 			return SlideTransactionResult{}, err
 		}
 	} else {
 		for _, item := range revision.Items {
-			if item.Item.Record != "" {
+			if item.Item.Record != "" && !themeDeck {
 				return SlideTransactionResult{}, fmt.Errorf("item %q: record is for review Items; implementation Items explain code", item.Item.ID)
 			}
 		}
-		if err := verifyTransactionEvidence(ctx, firstNonEmpty(repo, root), revision.Items); err != nil {
-			return SlideTransactionResult{}, err
+		evidenceItems := revision.Items
+		if themeDeck {
+			evidenceItems = nil
+			for _, item := range revision.Items {
+				if len(item.Evidence) > 0 {
+					evidenceItems = append(evidenceItems, item)
+				}
+			}
+		}
+		if len(evidenceItems) > 0 {
+			if err := verifyTransactionEvidence(ctx, firstNonEmpty(repo, root), evidenceItems); err != nil {
+				return SlideTransactionResult{}, err
+			}
 		}
 	}
 	manifest, err := saga.ReadManifest(root)
@@ -243,6 +264,18 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 		deck, review, err := transactionDeck(document, request, reviewID)
 		if err != nil {
 			return err
+		}
+		if deck.Role == saga.DeckRoleFeatureTheme {
+			for _, item := range revision.Items {
+				if len(item.CriterionLinks) > 0 {
+					return fmt.Errorf("theme rationale cannot establish implementation criterion coverage")
+				}
+				if item.Item.Record != "" {
+					if err := requireAppRecord(document.Root, document.Manifest.ID, item.Item.Record); err != nil {
+						return err
+					}
+				}
+			}
 		}
 		revision.Slide.DeckID = deck.ID
 		if reason := transactionMediaExtension(request.Slide.MediaType, extension); reason != "" {
@@ -328,8 +361,10 @@ func applySlideTransaction(ctx context.Context, root, requestBase, repo string, 
 			if err := admitReviewItems(document, review, existing, revision.Items); err != nil {
 				return err
 			}
-		} else if err := validateTransactionCriteria(document, revision.Items); err != nil {
-			return err
+		} else if deck.Role == saga.DeckRoleChange {
+			if err := validateTransactionCriteria(document, revision.Items); err != nil {
+				return err
+			}
 		}
 
 		if request.Operation == "create" {
@@ -527,7 +562,7 @@ func transactionDeck(document *saga.Saga, request SlideTransactionRequest, revie
 		}
 		return nil, nil, fmt.Errorf("deck %q does not exist", request.Deck)
 	}
-	if deck.Role != saga.DeckRoleChange {
+	if deck.Role != saga.DeckRoleChange && deck.Role != saga.DeckRoleFeatureTheme {
 		return nil, nil, fmt.Errorf("complete-slide transactions publish feature implementation and pull request review slides; the onboarding deck is authored with add-slide and add-item")
 	}
 	return deck, nil, nil

@@ -31,9 +31,10 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("add-deck", commandUsage["add-deck"], out)
 	id := flags.String("id", "", "stable deck identifier")
 	title := flags.String("title", "", "deck title")
-	role := flags.String("role", "change", "deck role: change for a feature's implementation deck, onboarding for the app's onboarding deck")
+	role := flags.String("role", "change", "deck role: change or onboarding; --feature-theme selects product rationale")
 	qualifiedID := flags.Bool("feature-qualified-id", false, "generate <feature>--<name> when --id is omitted")
 	feature := featureIDFlag(flags)
+	theme := flags.String("feature-theme", "", "product theme id or URN owning this rationale deck")
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative review order; defaults after the last deck")
 	objective := flags.String("objective", "", "one concise reviewer objective")
@@ -42,6 +43,12 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	}
 	if flags.NArg() != 2 {
 		return fmt.Errorf("usage: %s", commandUsage["add-deck"])
+	}
+	if *theme != "" {
+		if *feature != "" || *qualifiedID || (*role != "change" && *role != saga.DeckRoleFeatureTheme) {
+			return fmt.Errorf("--feature-theme cannot be combined with --feature, --feature-qualified-id or another role")
+		}
+		*role = saga.DeckRoleFeatureTheme
 	}
 	name := store.Slug(strings.TrimSuffix(flags.Arg(1), ".deck"))
 	implicitID := *id == ""
@@ -76,6 +83,18 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 			if found := document.FindFeature(target.ID); found != nil {
 				peers = found.Decks
 			}
+		case saga.DeckRoleFeatureTheme:
+			owner := document.FindFeatureTheme(*theme)
+			if owner == nil {
+				return fmt.Errorf("--feature-theme must name an existing product theme")
+			}
+			if len(owner.Decks) > 0 {
+				return fmt.Errorf("theme %q already has a rationale deck", owner.ID)
+			}
+			if implicitID {
+				*id = applayout.FeatureQualifiedID("theme-"+owner.ID, name)
+			}
+			slidesRoot = filepath.Join(document.Root, owner.Path, saga.EmbeddedSlidesDir)
 		case saga.DeckRoleOnboarding:
 			if *qualifiedID {
 				return fmt.Errorf("--feature-qualified-id is only for feature-owned implementation decks")
@@ -91,7 +110,7 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 			}
 			slidesRoot = filepath.Join(document.Root, applayout.OnboardingDir)
 		default:
-			return fmt.Errorf("--role must be change or onboarding")
+			return fmt.Errorf("--role must be change or onboarding; for product rationale use --feature-theme ID")
 		}
 		if !saga.ValidID(*id) || targetIDExists(document, *id) {
 			return fmt.Errorf("deck id %q is invalid or already used", *id)
@@ -600,7 +619,7 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 
 // allDecks is every feature's implementation decks plus the onboarding deck.
 func allDecks(document *saga.Saga) []*saga.Deck {
-	return append(append([]*saga.Deck{}, document.Decks...), document.Onboarding...)
+	return document.DocumentationDecks()
 }
 
 // assertDeckFeature checks an optional --feature against the feature holding a deck
@@ -619,6 +638,14 @@ func assertDeckFeature(document *saga.Saga, feature, path, target string) error 
 // checkItemRecord enforces what an Item may point at: onboarding Items
 // explain a persona, feature, or story record; implementation Items explain code.
 func checkItemRecord(document *saga.Saga, slide *saga.Slide, record string) error {
+	for _, deck := range document.ThemeDecks() {
+		if deck.ID == slide.DeckID {
+			if record == "" {
+				return nil
+			}
+			return requireAppRecord(document.Root, document.Manifest.ID, record)
+		}
+	}
 	onboarding := saga.FeatureOf(slide.Path) == ""
 	if !onboarding {
 		if record != "" {

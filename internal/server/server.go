@@ -135,12 +135,15 @@ type pageData struct {
 	// Persona, Feature, and TestCase are the app-level record pages, and
 	// Features, Personas, and Flags the directories that list them. At most one
 	// is set.
-	Persona  *personaPageView
-	Feature  *featurePageView
-	TestCase *testCasePageView
-	Features *directoryView
-	Personas *directoryView
-	Flags    *directoryView
+	Persona         *personaPageView
+	Feature         *featurePageView
+	TestCase        *testCasePageView
+	Features        *directoryView
+	FeatureGrouping string
+	FeatureTheme    *featureThemePageView
+	FeatureThemes   *directoryView
+	Personas        *directoryView
+	Flags           *directoryView
 	// Technical is the Technical design page, and TechnicalEntity one
 	// definition's canonical page.
 	Technical       *technicalPageView
@@ -497,6 +500,8 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /technical/{area}", application.page)
 	page("GET /technical", application.page)
 	page("GET /features/{feature}", application.page)
+	page("GET /feature-themes", application.page)
+	page("GET /feature-themes/{theme}", application.page)
 	page("GET /features", application.page)
 	page("GET /tests/{test}", application.page)
 	page("GET /", application.page)
@@ -1018,6 +1023,10 @@ func templateFuncs() template.FuncMap {
 }
 
 func (a *app) page(w http.ResponseWriter, r *http.Request) {
+	if value := r.URL.Query().Get("group"); validFeatureGrouping(value) {
+		http.SetCookie(w, &http.Cookie{Name: "saga-feature-group", Value: value, Path: "/", SameSite: http.SameSiteLaxMode, HttpOnly: true})
+	}
+
 	if chapterID, chapterRoute := requestedChapter(r); chapterRoute {
 		a.chapterRedirect(w, r, chapterID)
 		return
@@ -1171,6 +1180,10 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		}
 	case strings.HasPrefix(path, technicalPath+"/") && r.PathValue("kind") != "" && r.PathValue("id") != "":
 		return appRoute{kind: "technical-entity", id: r.PathValue("kind"), sub: r.PathValue("id")}, true
+	case path == "/feature-themes":
+		return appRoute{kind: "feature-themes"}, true
+	case strings.HasPrefix(path, "/feature-themes/") && r.PathValue("theme") != "":
+		return appRoute{kind: "feature-theme", id: r.PathValue("theme")}, true
 	case path == "/features":
 		return appRoute{kind: "features"}, true
 	case strings.HasPrefix(path, "/features/") && r.PathValue("feature") != "":
@@ -1204,7 +1217,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	}
 	// One fingerprint of the Saga's files serves every part the page reads.
 	files := a.sagaFiles(r.Context())
-	narrated := len(document.Decks)+len(document.Onboarding) > 0
+	narrated := len(document.DocumentationDecks()) > 0
 	if narrated {
 		document = files.narrative()
 		if document == nil {
@@ -1279,7 +1292,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		Opening:       openingLabel(a.rng),
 		Comparing:     !a.rng.Observe(),
 		Saga:          document,
-		EmbeddedDecks: len(document.Decks)+len(document.Onboarding) > 0,
+		EmbeddedDecks: len(document.DocumentationDecks()) > 0,
 		Root:          makeSectionView(&appReport, scope.shell()),
 		Requirements:  requirementsView,
 	}
@@ -1311,6 +1324,12 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	}
 	data.TermsMode = data.Terms.Active
 	switch route.kind {
+	case "feature-themes":
+		data.FeatureThemes = featureThemesDirectory(document, directoryQuery(r))
+	case "feature-theme":
+		if data.FeatureTheme, err = featureThemePage(document, route.id); err != nil {
+			return nil, err
+		}
 	case "persona":
 		if data.Persona, err = graph.personaPage(route.id); err != nil {
 			return nil, err
@@ -1362,8 +1381,9 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// which feature a reader is in is a fact about the page, never a preference
 	// kept about the reader.
 	data.PageFeature = pageFeature(route, requirementsView, tests)
+	data.FeatureGrouping = featureGrouping(r, document)
 	if route.kind == "features" {
-		data.Features = featuresDirectory(document, graph, data.PageFeature, directoryQuery(r))
+		data.Features = groupedFeaturesDirectory(document, graph, data.PageFeature, directoryQuery(r), data.FeatureGrouping)
 	}
 	onboarding := onboardingHref(document)
 	// The inventory is small, identity-only reading here: no code resolves.
@@ -1390,7 +1410,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		pageFeature: data.PageFeature, reviewSide: data.ReviewSide, mergedReviews: merged,
+		pageFeature: data.PageFeature, featureGrouping: data.FeatureGrouping, reviewSide: data.ReviewSide, mergedReviews: merged,
 		technical: technicalRows,
 	})
 	// The sidebar is the same on every page, so it outlives the page it was
@@ -1424,6 +1444,10 @@ func pageTitle(data *pageData) string {
 		return data.Feature.Title
 	case data.TestCase != nil:
 		return data.TestCase.Title
+	case data.FeatureTheme != nil:
+		return data.FeatureTheme.Title
+	case data.FeatureThemes != nil:
+		return "Product themes"
 	case data.Features != nil:
 		return data.Features.Title
 	case data.Personas != nil:
@@ -1454,7 +1478,7 @@ func (a *app) decks(ctx context.Context) (string, template.HTML, error) {
 	if document == nil {
 		return "", "", errors.New("The slide deck could not be loaded. Run change-saga validate for details.")
 	}
-	if len(document.Decks)+len(document.Onboarding) == 0 {
+	if len(document.DocumentationDecks()) == 0 {
 		return files.fingerprint, "", nil
 	}
 	_, html, err := files.slides(func() (*sectionView, template.HTML, error) {
@@ -1551,7 +1575,7 @@ func markActiveNav(nodes []*navNodeView, path string) {
 // viewer can say what kind of slide it shows.
 func labelDeckRoles(root *sectionView, document *saga.Saga) {
 	roles := map[string]*saga.Deck{}
-	for _, deck := range append(append([]*saga.Deck{}, document.Decks...), document.Onboarding...) {
+	for _, deck := range document.DocumentationDecks() {
 		roles[deck.Target] = deck
 	}
 	for _, deck := range root.ChildViews {

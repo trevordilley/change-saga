@@ -16,6 +16,9 @@ var (
 // metadata, hairline separators instead of cards, and controls that stay
 // invisible until the reviewer hovers or focuses the thing they belong to.
 var pageStyles = `
+.feature-grouping{display:flex;gap:.55rem;flex-wrap:wrap;padding:.65rem 1rem;font-size:.8rem}.feature-grouping span{flex-basis:100%;font-weight:600}.feature-grouping a[aria-current]{font-weight:700;text-decoration:underline}
+
+
 :root{` + lightTokens + `;--sidebar-width:300px}
 /* Dark mode. The OS preference decides unless the reviewer has pinned a theme,
    which is why the media rule excuses an explicit light choice. ------------ */
@@ -56,6 +59,7 @@ a{color:var(--accent)}
 .deck-viewer-slide .fragment{margin:0;border:0;border-radius:0;height:100%;min-height:100%;background:transparent}
 .deck-viewer-slide .fragment-head{position:absolute;z-index:7;right:12px;top:42px;border:0;background:var(--frosted-bg);border-radius:8px}
 .deck-viewer-slide .fragment-head::before{content:'Technical slide';align-self:center;padding-left:8px;color:var(--muted);font:600 10px/1 var(--ui);letter-spacing:.025em;text-transform:uppercase}
+.deck-viewer-slide[data-deck-role=feature-theme] .fragment-head::before{content:'Theme rationale slide'}
 .deck-viewer-slide[data-deck-role=onboarding] .fragment-head::before{content:'Onboarding slide'}
 .deck-viewer-slide[data-deck-role=ux] .fragment-head::before{content:'UX flow slide'}
 .deck-viewer-slide .fragment-stage{height:100%;min-height:100%;display:grid;place-items:center;padding:0}

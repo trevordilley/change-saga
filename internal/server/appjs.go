@@ -3252,6 +3252,8 @@ const appJavaScript = `(() => {
     const current = listed('navCurrent'), expanded = listed('navExpanded'), hidden = listed('navHidden');
     const projectLabel = q('[data-project-label]');
     if (projectLabel) projectLabel.hidden = hidden.has('nav-overview');
+    const featureGrouping = q('[data-feature-group-control]');
+    if (featureGrouping) featureGrouping.hidden = hidden.has('nav-overview');
     qa('.doc-tree [data-nav-row]').forEach(row => {
       const id = row.dataset.navRow;
       const active = current.has(id);

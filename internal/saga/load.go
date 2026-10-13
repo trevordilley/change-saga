@@ -147,7 +147,7 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 	if err != nil {
 		return nil, validation, err
 	}
-	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks, Overview: app.overview, DesignSystem: app.designSystem, Onboarding: app.onboarding, Features: app.features}
+	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks, Overview: app.overview, DesignSystem: app.designSystem, Onboarding: app.onboarding, Features: app.features, FeatureThemes: app.themes}
 	if metadataDirectorySafe(abs, abs, ReviewsDir, &validation) {
 		if document.Reviews, err = loadReviews(abs, manifest, options, &validation); err != nil {
 			return nil, validation, err
@@ -748,7 +748,7 @@ func knownReservedDirectory(name string, hierarchy hierarchyRoot) bool {
 		switch name {
 		case CodeDirName, ReviewsDir, "___claims", "___verifications", MergesDir,
 			applayout.OverviewDir, applayout.PersonasDir, applayout.DesignSystemDir,
-			applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.FeaturesDir, "___inventory":
+			applayout.FeatureThemesDir, applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.FeaturesDir, "___inventory":
 			return true
 		}
 		return false

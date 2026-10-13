@@ -226,6 +226,7 @@ reference. When a task crosses rows, combine only those rows.
 | Author Components, Systems, data entities, ERDs, their relationships, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Render slides and run mechanical visual QA | [Diagrams and evidence](references/diagrams.md) |
+| Categorize features by optional product themes, author rationale overviews and decks | [Product themes](references/feature-themes.md) |
 | Theme the reviewer and its slides: brand colours, fonts, dark mode | [Theming](references/theme.md) |
 | Reconcile a comparison, work with a companion repository, repin landed evidence, recover, or hand off work without changing visuals | [Query](references/query.md), then [integration and recovery](references/integration.md) |
 | Compare parallel proposal branches or deliberately withdraw/consolidate a duplicate proposal | [Query](references/query.md), [integration](references/integration.md), and [stories](references/stories.md); use only capabilities confirmed by the installed CLI |

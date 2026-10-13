@@ -10,6 +10,7 @@ review deck → reconcile living documentation → check again workflow.
 
 | | |
 | --- | --- |
+| [feature-themes.md](feature-themes.md) | Optional product themes, authored rationale decks, and Theme/Persona feature grouping. |
 | [code-examples.md](code-examples.md) | Author API and library usage examples as measured code elements inside visual slides. |
 | [deck-overview.md](deck-overview.md) | Current deck Overview, Front/Back, evidence citations, Viewed state, and compatibility guide. |
 | [SPEC.md](../SPEC.md) | The one Saga format: layout, requirements, design, quality, the Technical deck, diff URIs, claims, and the review overlay. Normative. |

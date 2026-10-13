@@ -429,6 +429,7 @@ type featureStoryView struct {
 }
 
 type featureDeckView struct {
+	Href   string
 	Title  string
 	Role   string
 	Slides []traceLink

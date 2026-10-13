@@ -27,7 +27,8 @@
       "enum": [
         "change",
         "onboarding",
-        "review"
+        "review",
+        "feature-theme"
       ]
     },
     "rank": {

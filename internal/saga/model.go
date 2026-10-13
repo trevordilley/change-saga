@@ -378,7 +378,8 @@ type Saga struct {
 	// Onboarding is the app's onboarding deck, whose Items reference records.
 	Onboarding []*Deck `json:"onboarding,omitempty"`
 	// Features groups the same nodes by durable product domain.
-	Features []*Feature `json:"features,omitempty"`
+	Features      []*Feature      `json:"features,omitempty"`
+	FeatureThemes []*FeatureTheme `json:"feature_themes,omitempty"`
 	// Reviews are the pull requests' review decks. They are not
 	// documentation and never count toward coverage.
 	Reviews       []*Review      `json:"reviews,omitempty"`

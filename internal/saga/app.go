@@ -24,21 +24,60 @@ type Feature struct {
 	Decks  []*Deck  `json:"decks,omitempty"`
 }
 
+// FeatureTheme owns a product overview and a rationale deck, independently of
+// feature ownership. The deck uses the ordinary slide and Item model.
+type FeatureTheme struct {
+	applayout.FeatureTheme
+	Target string  `json:"target"`
+	Path   string  `json:"path"`
+	Decks  []*Deck `json:"decks,omitempty"`
+}
+
+func (document *Saga) ThemeDecks() []*Deck {
+	var decks []*Deck
+	for _, theme := range document.FeatureThemes {
+		decks = append(decks, theme.Decks...)
+	}
+	return decks
+}
+
+func (document *Saga) DocumentationDecks() []*Deck {
+	decks := append([]*Deck{}, document.Decks...)
+	decks = append(decks, document.Onboarding...)
+	return append(decks, document.ThemeDecks()...)
+}
+
+func (document *Saga) FindFeatureTheme(value string) *FeatureTheme {
+	id, ok := applayout.FeatureThemeID(document.Manifest.ID, value)
+	if !ok {
+		return nil
+	}
+	for _, theme := range document.FeatureThemes {
+		if theme.ID == id {
+			return theme
+		}
+	}
+	return nil
+}
+
 type appContent struct {
 	overview     *Section
 	designSystem *Section
 	onboarding   []*Deck
 	features     []*Feature
+	themes       []*FeatureTheme
 }
 
+// DeckRoleFeatureTheme explains product rationale without implementation gates.
 // DeckRoleChange is a feature's implementation deck; DeckRoleOnboarding is the
 // app's onboarding deck, whose Items reference records instead of code;
 // DeckRoleReview is a pull request review's deck, whose Items reference the
 // code the change touched and the records it revised.
 const (
-	DeckRoleChange     = "change"
-	DeckRoleOnboarding = "onboarding"
-	DeckRoleReview     = "review"
+	DeckRoleFeatureTheme = "feature-theme"
+	DeckRoleChange       = "change"
+	DeckRoleOnboarding   = "onboarding"
+	DeckRoleReview       = "review"
 )
 
 // loadAppContent loads the app-level report roots, every feature, and the
@@ -94,6 +133,26 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 		decks = append(decks, feature.Decks...)
 		app.features = append(app.features, feature)
 	}
+	themes, themeErr := applayout.FeatureThemes(root, manifest.ID)
+	if themeErr != nil {
+		addIssue(validation, "error", applayout.FeatureThemesDir, themeErr.Error())
+	}
+	var themeDecks []*Deck
+	for _, value := range themes {
+		theme := &FeatureTheme{FeatureTheme: value, Target: applayout.FeatureThemeURN(manifest.ID, value.ID), Path: applayout.FeatureThemeRel(value.ID)}
+		dir := filepath.Join(root, theme.Path)
+		if metadataDirectorySafe(root, dir, EmbeddedSlidesDir, validation) {
+			theme.Decks, err = loadEmbeddedDecks(root, filepath.Join(dir, EmbeddedSlidesDir), DeckRoleFeatureTheme, manifest, options, validation)
+			if err != nil {
+				return app, nil, err
+			}
+			if len(theme.Decks) > 1 {
+				addIssue(validation, "error", theme.Path, "a feature theme has one rationale deck")
+			}
+		}
+		themeDecks = append(themeDecks, theme.Decks...)
+		app.themes = append(app.themes, theme)
+	}
 	if metadataDirectorySafe(root, root, applayout.OnboardingDir, validation) {
 		app.onboarding, err = loadEmbeddedDecks(root, filepath.Join(root, applayout.OnboardingDir), DeckRoleOnboarding, manifest, options, validation)
 		if err != nil {
@@ -105,7 +164,7 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 	}
 	// The query and coverage applications understand deck/slide/Item nodes
 	// through the section projection.
-	if all := append(append([]*Deck{}, decks...), app.onboarding...); len(all) > 0 {
+	if all := append(append(append([]*Deck{}, decks...), app.onboarding...), themeDecks...); len(all) > 0 {
 		section.Children = append(section.Children, projectDecks(manifest, all).Children...)
 	}
 	return app, decks, nil

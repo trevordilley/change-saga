@@ -402,8 +402,8 @@ func validateDeckManifest(value DeckManifest, path, target string, validation *V
 	if err != nil || expected != path {
 		addIssue(validation, "error", path, "deck filename does not match its rank and stable target")
 	}
-	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding && value.Role != DeckRoleReview {
-		addIssue(validation, "error", path, "deck role must be change, onboarding, or review")
+	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding && value.Role != DeckRoleReview && value.Role != DeckRoleFeatureTheme {
+		addIssue(validation, "error", path, "deck role must be change, onboarding, review, or feature-theme")
 	}
 	if validFlatRank(value.Rank) != nil || strings.TrimSpace(value.Objective) == "" || utf8.RuneCountInString(value.Objective) > 240 {
 		addIssue(validation, "error", path, "deck rank must fit the portable range and objective must contain 1 to 240 characters")
@@ -582,6 +582,13 @@ func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 				// a Saga record to open beside it, both, or neither.
 				if item.Record != "" && !validReviewRecordReference(sagaID, item.Record) {
 					addIssue(validation, "error", item.Path, "review item record must be a canonical record URN of this Saga")
+				}
+			case DeckRoleFeatureTheme:
+				if item.Record != "" && !validRecordReference(sagaID, item.Record) {
+					addIssue(validation, "error", item.Path, "theme item record must be a canonical persona, feature, or story URN of this Saga")
+				}
+				if len(item.CriterionLinks) > 0 {
+					addIssue(validation, "error", item.Path, "theme rationale does not establish implementation criterion coverage")
 				}
 			case DeckRoleOnboarding:
 				if !validRecordReference(sagaID, item.Record) {

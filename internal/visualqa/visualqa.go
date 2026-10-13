@@ -297,6 +297,11 @@ func selectSlides(document *saga.Saga, options Options) ([]runnerSlide, error) {
 		}
 		return selected, nil
 	}
+	if options.Feature == "" {
+		for _, deck := range document.ThemeDecks() {
+			appendDeck("", deck)
+		}
+	}
 	if options.Feature == "" || options.Feature == "onboarding" {
 		for _, deck := range document.Onboarding {
 			appendDeck("", deck)

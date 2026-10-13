@@ -208,6 +208,7 @@ var queryOperations = []string{
 	"verifications",
 	"context",
 	"personas",
+	"feature-themes",
 	"persona-references",
 	"requirements",
 	"requirement-history",
@@ -253,6 +254,7 @@ var queryPurpose = map[string]string{
 	"claims":               "falsifiable author assertions, exact evidence, current mapping state, and latest verification result",
 	"verifications":        "append-only verification history for author claims",
 	"context":              "a compact, bounded feature-owned index with one-story expansion for exact intent, provenance, visual Items, code links, terms, neighbors, gaps, and conflicts",
+	"feature-themes":       "optional product themes with authored Markdown overview, feature membership, and rationale decks in the current Saga",
 	"personas":             "current persona definitions and lifecycle heads, selected exactly by stable ID or canonical URN",
 	"persona-references":   "direct explicit incoming and outgoing persona references with provenance and declared coverage",
 	"requirements":         "current requirement definitions and lifecycle heads without fabricating winners for conflicts",
@@ -274,6 +276,7 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
+	"feature-themes":       "change-saga query feature-themes --saga PATH [--theme ID|URN] [--cursor TOKEN] [--limit N]",
 	"inventory":            "change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]",
 	"inventory-coverage":   "change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
 	"inventory-selections": "change-saga query inventory-selections --saga PATH [--feature ID|URN] [--item URN] [--state eligible|ineligible|unresolved] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
@@ -334,6 +337,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 			Message: "unknown query operation",
 			Details: map[string]any{"allowed": queryOperations},
 		})
+	}
+	if operation == "feature-themes" {
+		return queryFeatureThemes(args[1:], out)
 	}
 	if operation == "schema" {
 		return writeQuerySchema(args[1:], out)
@@ -513,6 +519,7 @@ func queryHelpFor(operation string) queryHelp {
 
 func querySchemaFor(operation string) querySchemaDescription {
 	paths := map[string][]string{
+		"feature-themes":       {"data.feature_themes", "data.feature_themes[].overview", "data.feature_themes[].features", "data.feature_themes[].decks"},
 		"overview":             {"data.saga", "data.source", "data.root", "data.overview_fragments", "data.chapters", "data.decks", "data.decks[].overview", "data.decks[].overview.references", "data.decks[].overview.covered_slides", "data.decks[].overview.uncovered_slides", "data.coverage"},
 		"children":             {"data.children"},
 		"fragment":             {"data.target", "data.content.data", "data.content.next_offset", "data.assets", "data.landmarks"},
@@ -549,6 +556,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"layers":               {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
 	}
 	countedPaths := map[string]string{
+		"feature-themes":       "data.feature_themes",
 		"children":             "data.children",
 		"fragment-diffs":       "data.selectors",
 		"slide-diffs":          "data.selectors",
