@@ -107,7 +107,7 @@ var diagramPaintStyle = regexp.MustCompile(`^(?:(?:fill|stroke|flood-color|color
 
 var diagramMetadata = func() map[string]bool {
 	result := map[string]bool{}
-	for _, name := range strings.Fields("data-about data-annotation data-code-highlight data-code-line data-language data-connection-detail data-connection-overview data-detail-scale data-documentation-revision data-documentation-target data-frame-detail data-frame-height data-frame-overview data-frame-path data-frame-width data-from data-from-frame data-instance-path data-opaque data-source-element data-source-relationship data-to data-to-frame data-visibility data-whiteboard data-field data-key data-diagram-kind data-from-field data-renderer data-to-field data-reveal-step data-binding aria-labelledby aria-describedby filter color-interpolation-filters stdDeviation flood-color flood-opacity text-decoration overflow") {
+	for _, name := range strings.Fields("data-about data-annotation data-code-highlight data-code-line data-language data-connection-detail data-connection-overview data-detail-scale data-documentation-revision data-documentation-target data-frame-detail data-frame-height data-frame-overview data-frame-path data-frame-width data-from data-from-frame data-instance-path data-opaque data-source-element data-source-relationship data-to data-to-frame data-visibility data-whiteboard data-field data-key data-diagram-kind data-from-field data-renderer data-to-field data-reveal-step data-binding aria-labelledby aria-describedby filter color color-interpolation-filters stdDeviation flood-color flood-opacity text-decoration overflow") {
 		result[name] = true
 	}
 	return result
@@ -117,6 +117,7 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(data))
 	var out strings.Builder
 	skip := 0
+	inMetadata := false
 	for {
 		token, err := decoder.Token()
 		if err == io.EOF {
@@ -127,6 +128,11 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 		}
 		switch t := token.(type) {
 		case xml.StartElement:
+			// Shared renderer metadata carries license text, never markup. Check
+			// before stylesheet skipping so no child element escapes this rule.
+			if inMetadata {
+				return "", fmt.Errorf("drawing metadata must contain only text, not child elements")
+			}
 			if skip > 0 {
 				skip++
 				continue
@@ -138,9 +144,10 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 			if t.Name.Space != "" && t.Name.Space != "http://www.w3.org/2000/svg" {
 				return "", fmt.Errorf("drawing uses a foreign namespace")
 			}
-			if !svgElements[t.Name.Local] && t.Name.Local != "image" && t.Name.Local != "filter" && t.Name.Local != "feDropShadow" {
+			if !svgElements[t.Name.Local] && t.Name.Local != "image" && t.Name.Local != "filter" && t.Name.Local != "feDropShadow" && t.Name.Local != "metadata" {
 				return "", fmt.Errorf("unsupported drawing element %s", t.Name.Local)
 			}
+			inMetadata = t.Name.Local == "metadata"
 			out.WriteString("<" + t.Name.Local)
 			for _, attr := range t.Attr {
 				name, value := attr.Name.Local, attr.Value
@@ -207,6 +214,7 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 				skip--
 				continue
 			}
+			inMetadata = false
 			out.WriteString("</" + t.Name.Local + ">")
 		case xml.Directive:
 			return "", fmt.Errorf("drawing directives are unsupported")
