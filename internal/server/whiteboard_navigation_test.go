@@ -66,7 +66,7 @@ func TestWhiteboardLatestRoutesAndFallback(t *testing.T) {
 	if status, _ := technicalGet(t, mux, "/technical/erd/missing"); status != 404 {
 		t.Fatalf("missing source: %d", status)
 	}
-	path := filepath.Join(root, "___whiteboards", "erd", "revisions", "r1.json")
+	path := filepath.Join(root, "___whiteboards", "data-model", "revisions", "r1.json")
 	if err := os.WriteFile(path, []byte(`{}`), 0600); err != nil {
 		t.Fatal(err)
 	}
@@ -86,7 +86,7 @@ func TestWhiteboardSectionsReplaceInventorySidebarOnlyWhenValid(t *testing.T) {
 	if _, err := testfixture.WriteERDWhiteboardFixture(context.Background(), root, repo); err != nil {
 		t.Fatal(err)
 	}
-	resolved, err := requirements.LoadResolvedWhiteboard(root, "test", "erd", "")
+	resolved, err := requirements.LoadResolvedWhiteboard(root, "test", "data-model", "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,7 +94,7 @@ func TestWhiteboardSectionsReplaceInventorySidebarOnlyWhenValid(t *testing.T) {
 	document.Elements = append(document.Elements,
 		diagram.Element{ID: "area", Kind: "group", Shape: "section", Label: "Delivery", X: 100, Y: 200, Width: 600, Height: 400, Style: "normal"},
 		diagram.Element{ID: "detail", Parent: "area", Kind: "group", Shape: "section", Label: "Saved records", X: 30, Y: 60, Width: 400, Height: 250, Style: "normal"})
-	if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "erd", "r2", "r1", "One model", document); err != nil {
+	if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "data-model", "r2", "r1", "One model", document); err != nil {
 		t.Fatal(err)
 	}
 	inventory, err := requirements.LoadInventory(root, "test")
@@ -170,13 +170,13 @@ func TestWhiteboardSidebarCacheTracksBoardAndSourceFiles(t *testing.T) {
 	if first == nil || first.Visual == "" || application.files.current.whiteboardView != first {
 		t.Fatal("unchanged sidebar rebuilt its board")
 	}
-	resolved, err := requirements.LoadResolvedWhiteboard(root, "test", "erd", "")
+	resolved, err := requirements.LoadResolvedWhiteboard(root, "test", "data-model", "")
 	if err != nil {
 		t.Fatal(err)
 	}
 	document := resolved.Revision.Document
 	document.Elements = append(document.Elements, diagram.Element{ID: "added-section", Kind: "group", Shape: "section", Label: "Added section", Width: 600, Height: 400, Style: "normal"})
-	if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "erd", "r2", "r1", "Updated model", document); err != nil {
+	if _, err := requirements.PublishWhiteboard(context.Background(), root, "test", "data-model", "r2", "r1", "Updated model", document); err != nil {
 		t.Fatal(err)
 	}
 	if body := open(); !strings.Contains(technicalSidebar(t, body), "Added section") {

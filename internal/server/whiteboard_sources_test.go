@@ -27,7 +27,7 @@ func TestWhiteboardSourcePresentationUsesRealAuthoredBindings(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resolved, err := requirements.LoadResolvedWhiteboard(root, "test", "erd", "")
+	resolved, err := requirements.LoadResolvedWhiteboard(root, "test", "data-model", "")
 	if err != nil {
 		t.Fatal(err)
 	}

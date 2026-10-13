@@ -3168,7 +3168,7 @@ const appJavaScript = `(() => {
   const viewParams = ['view', 'mode', 'file', 'ref'];
   function pageKey(href) {
     const url = new URL(href, location.href);
-    if (url.pathname === '/technical/erd') {
+    if (url.pathname === '/technical/erd' || /^\/technical\/whiteboards\/[^/]+$/.test(url.pathname)) {
       url.searchParams.delete('focus');
       if (url.searchParams.get('view') === 'all') url.searchParams.delete('view');
     }

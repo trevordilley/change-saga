@@ -45,12 +45,19 @@ func whiteboardSourceDestination(board *whiteboardView, id string) string {
 		return ""
 	}
 	sort.Strings(paths)
-	return technicalPath + "/erd?" + url.Values{"focus": {paths[0]}}.Encode()
+	href := board.Href
+	if href == "" {
+		href = whiteboardHref("data-model", "")
+	}
+	return whiteboardFocusHref(href, paths[0])
 }
 
 const whiteboardNavigationJavaScript = `
   function prepareWhiteboardNavigation(board, focus) {
     const signal = pageScope.signal;
+    const boardURL = new URL(board.dataset.whiteboardUrl || location.href, location.href);
+    const sameDocument = url => url.pathname === boardURL.pathname &&
+      (url.searchParams.get('revision') || '') === (boardURL.searchParams.get('revision') || '');
     const entries = qa('[data-whiteboard-frame]', board).map(row => {
       const link = q('a[href]', row);
       const href = row.dataset.whiteboardSourceHref || link?.dataset.whiteboardSourceHref || link?.getAttribute('href');
@@ -62,8 +69,9 @@ const whiteboardNavigationJavaScript = `
     let restoring = false;
     const destination = (path, fitAll = false) => {
       const url = new URL(location.href);
-      url.pathname = '/technical/erd';
-      url.searchParams.delete('revision');
+      url.pathname = boardURL.pathname;
+      const revision = boardURL.searchParams.get('revision');
+      if (revision) url.searchParams.set('revision', revision); else url.searchParams.delete('revision');
       if (fitAll) url.searchParams.set('view', 'all'); else url.searchParams.delete('view');
       url.hash = '';
       if (path) url.searchParams.set('focus', path); else url.searchParams.delete('focus');
@@ -114,7 +122,7 @@ const whiteboardNavigationJavaScript = `
         if (!link) continue;
         const entry = entryFor(link);
         const url = new URL(link.getAttribute('href'), location.href);
-        if (!entry && url.pathname !== '/technical/erd') continue;
+        if (!entry && !sameDocument(url)) continue;
         const active = entry ? selected?.source.pathname === entry.source.pathname : (url.searchParams.get('focus') || '') === path;
         row.classList.toggle('current', Boolean(active));
         if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
@@ -132,7 +140,7 @@ const whiteboardNavigationJavaScript = `
       remember(path);
     }
     function restore() {
-      if (!board.isConnected || location.pathname !== '/technical/erd') return;
+      if (!board.isConnected || !sameDocument(new URL(location.href))) return;
       const path = new URL(location.href).searchParams.get('focus') || '';
       restoring = true;
       focus(paths.has(path) ? path : '', new URL(location.href).searchParams.get('view') === 'all');
@@ -148,7 +156,7 @@ const whiteboardNavigationJavaScript = `
       let path = entry?.path;
       if (path === undefined && link.matches('a[href]')) {
         const url = new URL(link.getAttribute('href'), location.href);
-        if (url.origin === location.origin && url.pathname === '/technical/erd' && !url.searchParams.get('revision')) {
+        if (url.origin === location.origin && sameDocument(url)) {
           path = url.searchParams.get('focus') || '';
           if (path && !paths.has(path)) return;
         }

@@ -68,6 +68,6 @@ func WriteERDWhiteboardFixture(ctx context.Context, root, checkout string) (map[
 		{ID: "flow-note", Kind: "annotation", Shape: "bubble", Label: "Synchronization produces a cloud record. This connection is a production flow, not a foreign key.", X: 60, Y: 930, Width: 580, Height: 300, Style: "overview", Color: "blue", Target: &diagram.Point{X: 840, Y: -450}, Source: &diagram.SourceReference{Target: pins["cloud-record"].Target, Revision: pins["cloud-record"].Revision, Relationship: "sync"}},
 		{ID: "cross-store", Kind: "frame", Label: "Cross-store data flow", Summary: "The same entities appear together here", X: 760, Y: 1070, Width: 980, Height: 229.6875, Style: "overview", Source: ref("cross-store")},
 	}}
-	_, err = requirements.PublishWhiteboard(ctx, root, manifest.ID, "erd", "r1", "", "Offline and shared data", board)
+	_, err = requirements.PublishWhiteboard(ctx, root, manifest.ID, "data-model", "r1", "", "Offline and shared data", board)
 	return pins, err
 }

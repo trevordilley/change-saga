@@ -14,12 +14,16 @@ func TestAppJavaScriptSyntaxAndLanguageContract(t *testing.T) {
 	if err != nil {
 		t.Skip("node is not installed")
 	}
-	source := strings.Replace(appJavaScript, "})();", "globalThis.changeSagaTest = {languageForPath, tokenClass};})();", 1)
+	source := strings.Replace(appJavaScript, "})();", "globalThis.changeSagaTest = {languageForPath, tokenClass, pageKey};})();", 1)
 	prelude := `globalThis.document={querySelector:()=>null,querySelectorAll:()=>[],addEventListener:()=>{},body:{dataset:{}}};
 globalThis.location={href:'http://127.0.0.1/?view=code',pathname:'/',search:'?view=code',hash:''};
 globalThis.history={pushState:()=>{}};globalThis.addEventListener=()=>{};globalThis.innerWidth=1400;
 `
 	checks := `
+const named='/technical/whiteboards/architecture?revision=r1';
+if(changeSagaTest.pageKey(named+'&focus=area')!==changeSagaTest.pageKey(named))throw new Error('focus must stay inside the named board');
+if(changeSagaTest.pageKey(named)===changeSagaTest.pageKey('/technical/whiteboards/architecture?revision=r2'))throw new Error('board revisions must load independently');
+if(changeSagaTest.pageKey(named)===changeSagaTest.pageKey('/technical/whiteboards/journey?revision=r1'))throw new Error('board IDs must load independently');
 if(changeSagaTest.languageForPath('src/main.go')!=='go')throw new Error('Go language detection failed');
 if(changeSagaTest.languageForPath('web/view.tsx')!=='javascript')throw new Error('TSX language detection failed');
 for(const prose of ['README.md','docs/guide.mdx','notes.txt','LICENSE','skills/x/SKILL.md'])

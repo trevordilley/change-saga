@@ -37,7 +37,7 @@ func TestWhiteboardDataModelSourcesAndExistingERDs(t *testing.T) {
 		t.Fatal("saved ERD no longer readable")
 	}
 	// Broken composition cannot erase source documents or the entity directory.
-	if err := os.WriteFile(filepath.Join(root, "___whiteboards", "erd", "revisions", "r1.json"), []byte(`{}`), 0600); err != nil {
+	if err := os.WriteFile(filepath.Join(root, "___whiteboards", "data-model", "revisions", "r1.json"), []byte(`{}`), 0600); err != nil {
 		t.Fatal(err)
 	}
 	status, body = technicalGet(t, mux, "/technical/erd")

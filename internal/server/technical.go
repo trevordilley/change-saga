@@ -24,6 +24,7 @@ import (
 //	                        every data entity
 //	/technical/systems      the directory of Systems
 //	/technical/components   the directory of Components
+//	/technical/whiteboards/{id} a named whiteboard document and its saved revisions
 //
 // and one canonical page per definition, /technical/{kind}/{id}, which
 // slides, drawers and reviews link to and which never moved. A definition
@@ -315,7 +316,11 @@ func technicalRoleTitle(role string) string {
 // technicalPageView is the landing page when Area is empty, and otherwise one
 // area's page. Only the area being read is built.
 type technicalPageView struct {
-	Area technicalArea
+	Whiteboard     *whiteboardView
+	Whiteboards    []whiteboardDocumentView
+	WhiteboardNote string
+	Overview       *fragmentView
+	Area           technicalArea
 	// Areas are the landing page's three areas, each with what it holds.
 	Areas      []technicalAreaView
 	Systems    *directoryView
@@ -515,10 +520,14 @@ func technicalNav(inventory requirements.Inventory, hasOverview bool, board *whi
 	for _, area := range technicalAreas {
 		var rows []*navNodeView
 		if area.Segment == "erd" && board != nil && board.Visual != "" {
-			for _, section := range board.Sections {
-				rows = append(rows, &navNodeView{Title: section.Title, Href: area.Href() + "?" + url.Values{"focus": {section.Path}}.Encode(), NodeID: "nav-whiteboard-" + domID(section.Path), Icon: "split"})
+			href := board.Href
+			if href == "" {
+				href = area.Href()
 			}
-			nodes = append(nodes, navSection(area.Title, area.Href(), "nav-technical-erd", "split", rows))
+			for _, section := range board.Sections {
+				rows = append(rows, &navNodeView{Title: section.Title, Href: whiteboardFocusHref(href, section.Path), NodeID: "nav-whiteboard-" + domID(section.Path), Icon: "split"})
+			}
+			nodes = append(nodes, navSection(area.Title, href, "nav-technical-erd", "split", rows))
 			continue
 		}
 		holds := area.Segment == "erd" && hasOverview
@@ -669,6 +678,29 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 	if err != nil {
 		return nil, nil, err
 	}
+	if route.kind == "whiteboard" {
+		ids, listErr := requirements.ListWhiteboardIDs(a.root)
+		if listErr != nil {
+			return nil, nil, listErr
+		}
+		found := false
+		for _, id := range ids {
+			found = found || id == route.id
+		}
+		if !found {
+			return nil, nil, errTechnicalNotFound
+		}
+		if query.Get("revision") != "" {
+			if _, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, route.id, query.Get("revision")); err != nil {
+				return nil, nil, errTechnicalNotFound
+			}
+		}
+		board := a.makeNamedWhiteboardView(inventory, route.id, query.Get("revision"))
+		if board == nil {
+			return nil, nil, errTechnicalNotFound
+		}
+		return &technicalPageView{Whiteboard: board}, nil, nil
+	}
 	if route.kind == "technical" {
 		// The landing page counts records; it resolves no usage or newness.
 		view := a.technicalPage(inventory, technicalUsageIndex{}, nil, "", "")
@@ -682,6 +714,12 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 	if route.kind == "technical-area" {
 		view := a.technicalPage(inventory, usages, newness, route.id, query.Get("q"))
 		if view.DataModel != nil {
+			if revision := query.Get("revision"); revision != "" {
+				if board, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, "data-model", revision); err != nil || board == nil {
+					return nil, nil, errTechnicalNotFound
+				}
+				view.DataModel.Whiteboard = a.makeNamedWhiteboardView(inventory, "data-model", revision)
+			}
 			if fragment := document.OverviewPart(applayout.OverviewDataModel); fragment != nil {
 				view.DataModel.Overview = makeFragmentView(fragment, viewScope{})
 			}
@@ -727,8 +765,9 @@ const technicalTemplates = `
 
 {{define "technical-newness"}}{{with .}}<p class="technical-newness" data-technical-newness="{{.Known}}">Compared against <code>{{.Against}}</code>: “new” means the identity did not exist at the comparison's base{{if not .Known}}. The base inventory is unknown: {{.Reason}}{{end}}.</p>{{end}}{{end}}
 
-{{define "technical-page"}}{{if .Area.Segment}}{{template "technical-area-page" .}}{{else}}<section class="app-page technical-page" data-technical-page="landing"><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1><p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
+{{define "technical-page"}}{{if .Whiteboard}}{{if .Whiteboard.Visual}}{{template "erd-whiteboard" .}}{{else}}<section class="app-page"><h1>{{.Whiteboard.ID}}</h1><p class="gap" data-whiteboard-note>{{.Whiteboard.Note}}</p></section>{{end}}{{else if .Area.Segment}}{{template "technical-area-page" .}}{{else}}<section class="app-page technical-page" data-technical-page="landing"><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1><p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
 <ul class="overview-parts technical-areas" aria-label="Technical design areas">{{range .Areas}}<li class="overview-part{{if .Gap}} gap{{end}}" id="{{.Anchor}}" data-technical-area="{{.Segment}}"><a class="overview-part-link" href="{{.Href}}">{{.Title}}</a><span class="overview-part-count">{{.Count}}</span><p class="overview-part-note">{{.Note}}</p></li>{{end}}</ul>
+{{if .Whiteboards}}<section class="app-page-section" data-technical-whiteboards><h2>Whiteboards</h2><ul>{{range .Whiteboards}}<li><a href="{{.Href}}">{{.Name}}</a>{{with .Note}} <span class="gap">{{.}}</span>{{end}}</li>{{end}}</ul></section>{{end}}{{with .WhiteboardNote}}<p class="gap">{{.}}</p>{{end}}
 </section>{{end}}{{end}}
 
 {{define "technical-area-page"}}{{if and .DataModel .DataModel.Whiteboard .DataModel.Whiteboard.Visual}}{{template "erd-whiteboard" .DataModel}}{{else}}<section class="app-page technical-page technical-area-page{{if .DataModel}} technical-erd-page{{end}}" data-technical-page="{{.Area.Segment}}"><nav class="requirements-breadcrumbs" aria-label="{{.Area.Title}} breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span><strong>{{.Area.Title}}</strong></nav><header class="page-heading"><p class="app-page-kind">Technical design</p><h1>{{.Area.Title}}</h1>{{template "technical-newness" .Newness}}<p class="app-lede">{{.Area.Lede}}</p></header>

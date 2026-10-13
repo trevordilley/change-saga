@@ -15,17 +15,19 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// whiteboardView is a read-only composition on the Data model page. Its
+// whiteboardView is a read-only named document on the shared canvas. Its
 // references lead to the existing, independently readable pinned definitions.
 type whiteboardView struct {
-	Metadata       string
-	Viewport       string
-	Visual         template.HTML
-	Name, Revision string
-	Note           string
-	Frames         []whiteboardFrameView
-	Sections       []whiteboardSectionView
-	Notes          []whiteboardNoteView
+	ID, Href, CurrentHref string
+	History               []whiteboardRevisionView
+	Metadata              string
+	Viewport              string
+	Visual                template.HTML
+	Name, Revision        string
+	Note                  string
+	Frames                []whiteboardFrameView
+	Sections              []whiteboardSectionView
+	Notes                 []whiteboardNoteView
 }
 
 type whiteboardNoteView struct {
@@ -58,27 +60,32 @@ type whiteboardGeometry struct {
 // A missing board is optional; a broken board is explicit without removing
 // the ERD documents and entity directory that remain usable below it.
 func (a *app) makeWhiteboardView(inventory requirements.Inventory) *whiteboardView {
-	resolved, err := requirements.LoadResolvedWhiteboard(a.root, inventory.SagaID, "erd", "")
+	return a.makeNamedWhiteboardView(inventory, "data-model", "")
+}
+
+func (a *app) makeNamedWhiteboardView(inventory requirements.Inventory, id, revision string) *whiteboardView {
+	resolved, err := requirements.LoadResolvedWhiteboard(a.root, inventory.SagaID, id, revision)
 	if err != nil {
-		return &whiteboardView{Note: "The whiteboard could not be opened: " + err.Error()}
+		return &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	if resolved == nil {
 		return nil
 	}
 	description, err := resolved.Composition.Describe("")
 	if err != nil {
-		return &whiteboardView{Note: "The whiteboard could not be opened: " + err.Error()}
+		return &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	visual, err := inlineWhiteboardSVG(resolved.SVG)
 	if err != nil {
-		return &whiteboardView{Note: "The whiteboard could not be opened: " + err.Error()}
+		return &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Note: "The whiteboard could not be opened: " + err.Error()}
 	}
 	enhanced, capabilities := a.enhanceWhiteboardSources(inventory, resolved, template.HTML(visual))
-	view := &whiteboardView{Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
+	view := &whiteboardView{ID: id, Href: whiteboardHref(id, revision), CurrentHref: whiteboardHref(id, ""), Visual: enhanced, Name: resolved.Revision.Name, Revision: resolved.Revision.ID}
 	if resolved.Revision.Document.Viewport != nil {
 		camera, _ := json.Marshal(resolved.Revision.Document.Viewport)
 		view.Viewport = string(camera)
 	}
+	view.History = a.whiteboardHistoryView(inventory.SagaID, id, resolved.Revision.ID)
 	geometry := []whiteboardGeometry{}
 	for _, item := range append(description.Elements, description.Connections...) {
 		if item.Element.Note != "" && !item.Element.Decorative {
@@ -256,15 +263,16 @@ func inlineDiagramSVG(data []byte, prefix string) (string, error) {
 
 const whiteboardTemplates = `
 {{define "erd-whiteboard"}}{{$model := .}}{{with .Whiteboard}}
-<section class="whiteboard whiteboard-canvas" data-whiteboard-view data-technical-page="erd" data-technical-data-model aria-label="Data model whiteboard">
+<section class="whiteboard whiteboard-canvas" data-whiteboard-view data-whiteboard-id="{{.ID}}" data-whiteboard-url="{{.Href}}" data-whiteboard-revision="{{.Revision}}" data-technical-page="{{if eq .ID "data-model"}}erd{{else}}whiteboard{{end}}"{{if eq .ID "data-model"}} data-technical-data-model{{end}} aria-label="{{.Name}} whiteboard">
 <div hidden data-whiteboard-metadata="{{.Metadata}}" data-whiteboard-opening="{{.Viewport}}">{{range .Sections}}<span data-whiteboard-section="{{.Path}}"></span>{{end}}{{range .Notes}}<template data-diagram-note-template="{{.Path}}">{{template "element-note-popover" .Popover}}</template>{{end}}</div>
-<div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Data model whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
+<div class="whiteboard-viewport" data-whiteboard-viewport tabindex="0" role="region" aria-label="Whiteboard. Scroll or drag to pan, Control or Command plus scroll to zoom. Plus and minus zoom, zero fits the board, arrow keys pan.">{{.Visual}}</div>
 <header class="whiteboard-heading whiteboard-overlay">
-<h1>{{if .Name}}{{.Name}}{{else}}Data model{{end}}</h1>
+<h1>{{if .Name}}{{.Name}}{{else}}Whiteboard{{end}}</h1>
 <details class="whiteboard-description"><summary>Description</summary><div class="whiteboard-description-body">
-{{with $model.Overview}}{{template "fragment" .}}{{else}}<p>Focus a section to explore the data model, or select an entity to inspect its saved definition.</p>{{end}}
+{{with $model.Overview}}{{template "fragment" .}}{{else}}<p>Focus a section to explore this document. Linked entities open their saved definitions.</p>{{end}}
 <p class="whiteboard-help">Scroll or drag to pan · Shift + scroll pans sideways · Ctrl/Cmd + scroll or + / − to zoom · 0 to fit</p>
 <p class="whiteboard-help">Whiteboard · saved revision <code>{{.Revision}}</code></p>
+{{if .History}}<nav aria-label="Whiteboard revision history"><a href="{{.CurrentHref}}">Current document</a>{{range .History}} · <a href="{{.Href}}"{{if .Shown}} aria-current="page"{{end}}>Revision {{.ID}}</a>{{end}}</nav>{{end}}
 </div></details></header>
 <div class="whiteboard-toolbar whiteboard-overlay" role="toolbar" aria-label="Whiteboard navigation" hidden data-whiteboard-toolbar>
 <button type="button" data-whiteboard-zoom="-1" aria-label="Zoom out whiteboard" title="Zoom out (-)">−</button>
@@ -274,7 +282,7 @@ const whiteboardTemplates = `
 <button type="button" data-whiteboard-replay hidden>Replay</button>
 <button type="button" data-whiteboard-fields aria-pressed="false" title="Show fields and original authored detail">Details</button>
 <button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button>
-<label>Focus section <select data-whiteboard-focus><option value="">{{if .Viewport}}Start here{{else}}Whole model{{end}}</option>{{range .Sections}}<option value="{{.Path}}">{{.Title}}</option>{{end}}{{if .Frames}}<optgroup label="Imported sources"{{if .Sections}} hidden{{end}}>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</optgroup>{{end}}</select></label>
+<label>Focus section <select data-whiteboard-focus><option value="">{{if .Viewport}}Start here{{else}}Whole board{{end}}</option>{{range .Sections}}<option value="{{.Path}}">{{.Title}}</option>{{end}}{{if .Frames}}<optgroup label="Imported sources"{{if .Sections}} hidden{{end}}>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</optgroup>{{end}}</select></label>
 <button type="button" data-whiteboard-evidence hidden>Evidence</button>
 <span data-whiteboard-mode aria-live="polite">Overview</span>
 </div>

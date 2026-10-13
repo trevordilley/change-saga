@@ -62,8 +62,11 @@ type sagaFiles struct {
 	inventoryDoc  requirements.Inventory
 	inventoryErr  error
 
-	whiteboardOnce sync.Once
-	whiteboardView *whiteboardView
+	whiteboardDocumentsOnce sync.Once
+	whiteboardDocumentViews []whiteboardDocumentView
+	whiteboardDocumentsErr  error
+	whiteboardOnce          sync.Once
+	whiteboardView          *whiteboardView
 
 	// slidesView is every embedded deck's slides as every page shows them,
 	// story links decorated, and slidesHTML the deck viewer rendered from
