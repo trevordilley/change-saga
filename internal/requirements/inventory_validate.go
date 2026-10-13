@@ -489,7 +489,7 @@ var (
 	svgNamespace   = "http://www.w3.org/2000/svg"
 	xlinkNamespace = "http://www.w3.org/1999/xlink"
 	xmlNamespace   = "http://www.w3.org/XML/1998/namespace"
-	visualElements = setOf("svg", "g", "defs", "symbol", "use", "title", "desc", "rect", "circle", "ellipse", "line", "polyline", "polygon", "path", "text", "tspan", "textpath", "a", "marker", "lineargradient", "radialgradient", "stop", "clippath", "mask", "pattern", "style")
+	visualElements = setOf("svg", "g", "defs", "symbol", "use", "title", "desc", "metadata", "rect", "circle", "ellipse", "line", "polyline", "polygon", "path", "text", "tspan", "textpath", "a", "marker", "lineargradient", "radialgradient", "stop", "clippath", "mask", "pattern", "style")
 	visualAttrs    = setOf("id", "class", "style", "type", "media", "version", "role", "lang", "href",
 		"x", "y", "x1", "y1", "x2", "y2", "cx", "cy", "r", "rx", "ry", "fx", "fy", "fr", "dx", "dy", "width", "height", "d", "points", "pathlength",
 		"transform", "viewbox", "preserveaspectratio", "rotate", "textlength", "lengthadjust", "startoffset", "method", "spacing", "side",
@@ -533,6 +533,7 @@ func unsafeScheme(value string) bool {
 // DTD/entity or processing instructions. Every ID must be unique so a binding
 // names exactly one element. Inert data-* metadata and base64-embedded SVG
 // images are allowed; embedded images undergo the same checks recursively.
+// SVG metadata may carry plain-text license notices, but never child markup.
 func ValidateVisual(data []byte, digest string, bindings []Binding) error {
 	return validateVisual(data, digest, bindings, 0)
 }
@@ -564,7 +565,7 @@ func validateVisual(data []byte, digest string, bindings []Binding, nesting int)
 	decoder := xml.NewDecoder(io.LimitReader(bytes.NewReader(data), MaxVisualBytes))
 	decoder.Strict = true
 	elements := map[string]int{}
-	depth, roots, inStyle := 0, 0, false
+	depth, roots, inStyle, inMetadata := 0, 0, false, false
 	for {
 		token, err := decoder.Token()
 		if err == io.EOF {
@@ -587,7 +588,13 @@ func validateVisual(data []byte, digest string, bindings []Binding, nesting int)
 		case xml.EndElement:
 			depth--
 			inStyle = false
+			inMetadata = false
 		case xml.StartElement:
+			// Renderer license notices are text only. Do not skip metadata's
+			// subtree: nested elements still parse as markup when SVG is inlined.
+			if inMetadata {
+				return fmt.Errorf("visual metadata must contain only text, not child elements")
+			}
 			if depth == 0 {
 				roots++
 				if value.Name.Local != "svg" {
@@ -600,6 +607,7 @@ func validateVisual(data []byte, digest string, bindings []Binding, nesting int)
 				return fmt.Errorf("visual element %s is not an allowed static SVG element", value.Name.Local)
 			}
 			inStyle = name == "style"
+			inMetadata = name == "metadata"
 			if name == "image" {
 				hrefs := 0
 				for _, attr := range value.Attr {
