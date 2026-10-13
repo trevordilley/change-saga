@@ -78,7 +78,7 @@ func TestSpecExposesImplementedWhiteboardContract(t *testing.T) {
 		t.Fatalf("whiteboard commands drifted: %#v", board.Commands)
 	}
 	for _, op := range []string{"publish", "get", "describe", "check"} {
-		if !strings.Contains(board.Commands[op], "whiteboard "+op+" --kind erd") || !strings.Contains(board.Commands[op], "--revision ID") {
+		if board.Commands[op] != commandUsage["whiteboard "+op] || !strings.Contains(board.Commands[op], "whiteboard "+op+" --kind erd") || !strings.Contains(board.Commands[op], "--revision ID") {
 			t.Errorf("missing implemented command or revision selector: %s", board.Commands[op])
 		}
 	}

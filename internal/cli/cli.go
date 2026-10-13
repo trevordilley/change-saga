@@ -1387,9 +1387,9 @@ func Spec(args []string, out io.Writer) error {
 				"source_pins": "depicted ERDs and data entities pin exact target and revision URNs; optional element or owned relationship selector; sources never follow newer revisions",
 				"commands": map[string]string{
 					"publish":  commandUsage["whiteboard publish"],
-					"get":      "change-saga whiteboard get --kind erd [--revision ID] [--focus PATH | --id PATH] <saga>",
-					"describe": "change-saga whiteboard describe --kind erd [--revision ID] [--focus PATH] [--format text|json] <saga>",
-					"check":    "change-saga whiteboard check --kind erd [--revision ID] [--focus PATH] [--json] <saga>",
+					"get":      commandUsage["whiteboard get"],
+					"describe": commandUsage["whiteboard describe"],
+					"check":    commandUsage["whiteboard check"],
 				},
 				"focus": "--focus selects a frame or element instance path for reads; get also accepts --id; publish always appends a complete board snapshot",
 				"compatibility": map[string]string{
