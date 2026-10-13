@@ -28,13 +28,13 @@ type erdEvidenceView struct {
 	Members                          []erdEvidenceMember
 }
 
-func (a *app) erdEvidence(ctx context.Context, inventory requirements.Inventory, revision *requirements.TechnicalRevision) *erdEvidenceView {
+// erdEvidenceMembers follows only the exact saved directory. It is metadata
+// collection: hover callers must not open a code repository or resolve bytes.
+func erdEvidenceMembers(inventory requirements.Inventory, revision *requirements.TechnicalRevision) *erdEvidenceView {
 	view := &erdEvidenceView{}
-	var refs []coderef.Reference
 	add := func(pin saga.DocumentationLink, name, relationship string, evidence []requirements.Evidence) {
 		member := erdEvidenceMember{Pin: pin, Name: name, Relationship: relationship, PinStatus: inventory.LinkStatus(pin), references: requirements.References(evidence)}
 		view.Members = append(view.Members, member)
-		refs = append(refs, member.references...)
 	}
 	for _, pin := range revision.Directory {
 		view.Entities++
@@ -48,6 +48,15 @@ func (a *app) erdEvidence(ctx context.Context, inventory requirements.Inventory,
 			view.Relationships++
 			add(pin, makeRelationshipView(inventory, pin, edge, "outgoing").Notation, edge.ID, edge.Code)
 		}
+	}
+	return view
+}
+
+func (a *app) erdEvidence(ctx context.Context, inventory requirements.Inventory, revision *requirements.TechnicalRevision) *erdEvidenceView {
+	view := erdEvidenceMembers(inventory, revision)
+	var refs []coderef.Reference
+	for _, member := range view.Members {
+		refs = append(refs, member.references...)
 	}
 	// One shared resolver/read cache for all references in this exact directory.
 	code := a.referenceCodeView(ctx, refs, "data model", true)
