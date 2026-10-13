@@ -27,6 +27,11 @@ func grammarHelp(t *testing.T, name string) string {
 	}
 	var output bytes.Buffer
 	_ = run(context.Background(), append(append([]string{}, fields[1:]...), "-h"), &output)
+	// These commands have mutually exclusive slide and whiteboard flag sets.
+	// Check the declared union against both real parser modes.
+	if name == "diagram describe" || name == "diagram get" || name == "diagram check" {
+		_ = run(context.Background(), []string{fields[1], "--whiteboard", "erd", "-h"}, &output)
+	}
 	return output.String()
 }
 

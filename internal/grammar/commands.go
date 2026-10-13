@@ -70,20 +70,22 @@ var commands = []Command{
 	},
 	{
 		Name: "diagram check", Status: StatusImplemented,
-		Usage:   "change-saga diagram check [--review ID] [--slide TARGET] [--json] <saga>",
+		Usage:   "change-saga diagram check [--review ID] [--slide TARGET] [--whiteboard erd [--revision ID]] [--json] <saga>",
 		Summary: "re-render every diagram-sourced slide, open reviews' slides included, and report any whose published SVG differs from its source; exits 3 when one is stale (a merged review's slides are history: checked only when named, never failing the check)",
 		Flags: []Flag{
 			optional("review", "ID", "check only this pull request review's slides"), optional("slide", "TARGET", "check only this slide"), jsonFlag,
+			optional("whiteboard", "erd", "validate the ERD whiteboard instead of slides"), optional("revision", "ID", "exact whiteboard revision; otherwise validate all board history"),
 		},
 		Positionals: sagaOnly,
 	},
 	{
 		Name: "diagram describe", Status: StatusImplemented,
-		Usage:   "change-saga diagram describe --slide TARGET [--review ID] [--format text|json] [--offset N] [--limit N] <saga>",
+		Usage:   "change-saga diagram describe (--slide TARGET [--review ID] | --whiteboard erd [--revision ID] [--focus PATH]) [--format text|json] [--offset N] [--limit N] <saga>",
 		Summary: "read one slide compactly: takeaway, Items in reading order, and a diagram's semantic elements and connections without geometry or asset bytes",
 		Flags: []Flag{
-			required("slide", "TARGET", "slide to describe"), optional("review", "ID", "the pull request review whose slide this is"), optional("format", "FORMAT", "text (default) or json"),
+			optional("slide", "TARGET", "slide to describe, unless --whiteboard is selected"), optional("review", "ID", "the pull request review whose slide this is"), optional("format", "FORMAT", "text (default) or json"),
 			optional("offset", "N", "first diagram element to include"), optional("limit", "N", "diagram elements per page, 1-100"),
+			optional("whiteboard", "erd", "describe the ERD whiteboard instead of a slide"), optional("revision", "ID", "exact board revision"), optional("focus", "PATH", "board frame or element instance path"),
 		},
 		Positionals: sagaOnly,
 	},
@@ -104,10 +106,11 @@ var commands = []Command{
 	},
 	{
 		Name: "diagram get", Status: StatusImplemented,
-		Usage:   "change-saga diagram get --slide TARGET [--review ID] --id ELEMENT <saga>",
+		Usage:   "change-saga diagram get (--slide TARGET [--review ID] --id ELEMENT | --whiteboard erd [--revision ID] [--focus PATH]) <saga>",
 		Summary: "return one diagram element's complete properties, resolved style, selector, and the snapshot an edit must expect",
 		Flags: []Flag{
-			required("slide", "TARGET", "slide whose diagram holds the element"), optional("review", "ID", "the pull request review whose slide this is"), required("id", "ELEMENT", "diagram element id"),
+			optional("slide", "TARGET", "slide whose diagram holds the element, unless --whiteboard is selected"), optional("review", "ID", "the pull request review whose slide this is"), optional("id", "ELEMENT", "diagram element id, required for a slide"),
+			optional("whiteboard", "erd", "read the ERD whiteboard source instead of a slide"), optional("revision", "ID", "exact board revision"), optional("focus", "PATH", "board frame or element instance path"),
 		},
 		Positionals: sagaOnly,
 	},
@@ -118,6 +121,18 @@ var commands = []Command{
 		Flags: []Flag{
 			optional("query", "TEXT", "substring the icon name must contain"), jsonFlag,
 		},
+	},
+	{
+		Name: "diagram publish", Status: StatusImplemented, Mutates: true,
+		Writes:  []string{"whiteboard-revision"},
+		Usage:   "change-saga diagram publish --whiteboard erd --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
+		Summary: "publish an immutable ERD whiteboard with explicitly pinned children; updates name the observed board parent",
+		Flags: []Flag{
+			required("whiteboard", "erd", "ERD whiteboard"), required("revision", "ID", "new immutable board revision"),
+			optional("parent", "ID", "current board revision, required for updates"), optional("name", "TITLE", "authored board title"),
+			required("from", "FILE|-", "complete diagram source JSON"),
+		},
+		Positionals: sagaOnly,
 	},
 	{
 		Name: "feature add", Status: StatusImplemented, Mutates: true, Writes: []string{"feature"},
