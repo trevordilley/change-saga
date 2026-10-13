@@ -180,7 +180,7 @@ var commandUsage = map[string]string{
 	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"apply-slide":                 "change-saga apply-slide (--from FILE|- [--review ID] [--repo PATH] [--dry-run] [--json] | --print-current SLIDE [--review ID]) <saga>",
 	"diagram":                     "change-saga diagram <describe|get|edit|icons|check|publish> [flags] <saga>",
-	"diagram describe":            "change-saga diagram describe (--slide TARGET [--review ID] | --whiteboard erd [--revision ID] [--focus PATH]) [--format text|json] [--offset N] [--limit N] <saga>",
+	"diagram describe":            "change-saga diagram describe (--slide TARGET [--review ID] [--offset N] [--limit N] | --whiteboard erd [--revision ID] [--focus PATH]) [--format text|json] <saga>",
 	"diagram publish":             "change-saga diagram publish --whiteboard erd --revision ID [--parent ID] [--name TITLE] --from FILE|- <saga>",
 	"diagram get":                 "change-saga diagram get (--slide TARGET [--review ID] --id ELEMENT | --whiteboard erd [--revision ID] [--focus PATH]) <saga>",
 	"diagram edit":                "change-saga diagram edit --slide TARGET [--review ID] --expected SNAPSHOT --request-id ID --from FILE|- [--repo PATH] [--dry-run] [--json] <saga>",

@@ -80,7 +80,7 @@ var commands = []Command{
 	},
 	{
 		Name: "diagram describe", Status: StatusImplemented,
-		Usage:   "change-saga diagram describe (--slide TARGET [--review ID] | --whiteboard erd [--revision ID] [--focus PATH]) [--format text|json] [--offset N] [--limit N] <saga>",
+		Usage:   "change-saga diagram describe (--slide TARGET [--review ID] [--offset N] [--limit N] | --whiteboard erd [--revision ID] [--focus PATH]) [--format text|json] <saga>",
 		Summary: "read one slide compactly: takeaway, Items in reading order, and a diagram's semantic elements and connections without geometry or asset bytes",
 		Flags: []Flag{
 			optional("slide", "TARGET", "slide to describe, unless --whiteboard is selected"), optional("review", "ID", "the pull request review whose slide this is"), optional("format", "FORMAT", "text (default) or json"),
