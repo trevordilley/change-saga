@@ -167,6 +167,19 @@ test("one native model exposes sections, fields and exact entity/relationship ev
   await expect(board).toHaveAttribute("data-whiteboard-moving", "false");
   await expect(board.locator('[data-instance-path="shared/detail-note"]')).toBeVisible();
   await expect(board.getByRole("button", {name:"Replay", exact:true})).toBeVisible();
+  const replay = board.locator('[data-whiteboard-replay]');
+  const replayPaths = () => replay.evaluate((button: HTMLButtonElement) => {
+    button.click();
+    return [...button.closest('[data-whiteboard-view]')!.querySelectorAll('[data-reveal-step]')]
+      .filter(node => node.getAnimations().length > 0)
+      .map(node => node.closest('[data-instance-path]')!.getAttribute('data-instance-path'));
+  });
+  const animated = await replayPaths();
+  expect(animated.length).toBeGreaterThan(0);
+  expect(animated.every(path => path?.startsWith('shared/'))).toBe(true);
+  await page.emulateMedia({reducedMotion:'reduce'});
+  expect(await replayPaths()).toEqual([]);
+  await page.emulateMedia({reducedMotion:'no-preference'});
   await expect(board.locator('[data-instance-path="overview-note"]')).toBeHidden();
   await expect(board.locator('[data-instance-path="delivery"]')).toHaveAttribute("data-whiteboard-culled", "true");
   await expect(board.locator('[data-instance-path="delivery/edit"]')).toHaveAttribute("tabindex", "-1");
