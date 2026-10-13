@@ -608,8 +608,10 @@ identities. Promote a responsibility into a Component when multiple slides or
 features depend on the same behavior or a stable boundary needs its own
 explanation. Use a System for the directed interactions among those Components.
 Use data entities for meaningful persisted/domain records and their evidenced
-relationships; add an ERD when seeing those relationships together helps a
-reader. A function, endpoint or table does not automatically need a record.
+relationships; explain them together in one cohesive data-model whiteboard.
+Existing ERD records can supply optional pinned imports, without requiring a
+separate ERD document per section. A function, endpoint or table does not
+automatically need a record.
 
 For example, several feature slides may use the same job runner or external
 service gateway. Define that responsibility once, then pin the relevant slide

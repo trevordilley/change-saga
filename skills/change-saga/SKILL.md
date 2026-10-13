@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"), meant for the big change a person reviews as a whole, such as an integration branch gathering many agents'' work: a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, design, quality, technical decks, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
+description: 'Create a review for a pull request or branch ("create a review for this PR", "change-saga this PR"), meant for the big change a person reviews as a whole, such as an integration branch gathering many agents'' work: a slide deck that explains the change''s architecture, with every changed line linked to the slide Item that explains it, so a human reviews the architecture instead of every line. Also author, update, inspect, validate, and open Change Saga product, technical-design whiteboards, quality, technical decks, and living documentation linked to exact code when asked. Use for a requested slice without expanding it into unrelated authoring; conduct review actions only when explicitly requested.'
 ---
 
 # Change Saga
@@ -187,7 +187,8 @@ These rules apply to every Change Saga task:
   response shape. If a reference disagrees with the CLI, follow the CLI and
   report the mismatch.
 - Read real Saga metadata only through `change-saga query`, or read one slide
-  compactly with `change-saga diagram describe`. Never glob, grep, or open
+  compactly with `change-saga diagram describe`, or inspect a named whiteboard
+  with `change-saga whiteboard describe --id ID`. Never glob, grep, or open
   metadata files to infer Saga state. Page every result to completion,
   keep one snapshot across a multi-query read, and restart if it changes.
 - Make Saga mutations only through public CLI authoring commands. Do not edit,
@@ -224,6 +225,7 @@ reference. When a task crosses rows, combine only those rows.
 | Describe implemented features; Interview for a feature or draft candidate stories; author or revise personas, stories, acceptance criteria, citations, requirement relations, or lifecycle state | [Query](references/query.md), then [stories and provenance](references/stories.md) |
 | Author or revise the overview, pitch, description, or project vocabulary | [Query](references/query.md), then [overview and terms](references/terms.md) |
 | Author Components, Systems, data entities, ERDs, their relationships, or pinned Item documentation links | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
+| Author a technical-design whiteboard: data model, infrastructure, or system design | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Author diagrams, implementation/review decks, narrative fragments, landmarks, exact code evidence, or claims | [Query](references/query.md), then [diagrams and evidence](references/diagrams.md) |
 | Render slides and run mechanical visual QA | [Diagrams and evidence](references/diagrams.md) |
 | Theme the reviewer and its slides: brand colours, fonts, dark mode | [Theming](references/theme.md) |

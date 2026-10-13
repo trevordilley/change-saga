@@ -1,7 +1,8 @@
 # Reading a Saga through the query API
 
-`change-saga query` is the versioned read API. Use it for every read of an
-existing Saga; never glob, grep, or read its metadata files. It is
+`change-saga query` is the versioned query API. Use it for Saga record reads;
+use the dedicated diagram and whiteboard reads below for visual documents.
+Never glob, grep, or read metadata files. The query API is
 deterministic, paginated, and safe to call concurrently; it never starts a
 server and never mutates either repository.
 
@@ -46,6 +47,20 @@ Hierarchy nodes report inclusive `diffs.current` and `diffs.stale` totals plus
 `direct_current`, `direct_stale`, `descendant_current`, and
 `descendant_stale`, so evidence owned by a landmark or child is not mistaken
 for a node with no explained code.
+
+## Reading whiteboards
+
+Use `change-saga whiteboard describe --id ID --format json PATH` for a named
+technical-design document. Add `--focus INSTANCE_PATH` to inspect a returned
+section or element path, and `--revision REVISION` to retain exact history.
+Use `change-saga whiteboard get --id ID PATH` for the complete shared diagram
+source and `change-saga whiteboard check --id ID PATH` for validation. These
+are dedicated document commands, not paginated query-envelope responses.
+Document identity is independent of subject; `data-model` is the convention
+for the Data model page. Source pins identify exact entity/relationship revisions;
+repeated appearances have distinct instance paths. Existing ERD inventory
+records remain readable through `query inventory`, but are optional sources,
+not a required document per whiteboard section.
 
 ## Feature-first reads
 

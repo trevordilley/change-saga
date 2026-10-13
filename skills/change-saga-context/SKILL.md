@@ -42,7 +42,8 @@ ordinary context gathering does not require installation or repair.
 
 Use the installed CLI's help and `change-saga query schema <operation>` to
 discover supported flags and response paths. Read Saga records through
-`change-saga query` or `change-saga diagram describe`, never by opening,
+`change-saga query`, `change-saga diagram describe`, or
+`change-saga whiteboard describe --id ID`, never by opening,
 grepping, or globbing metadata files.
 
 | Question | Starting read |
@@ -54,6 +55,7 @@ grepping, or globbing metadata files.
 | What behavior is required, and for whom? | `query requirements` and `query personas` for the relevant identities |
 | What does this term or component mean? | `query terms` or `query inventory` |
 | How does this part work? | `change-saga diagram describe --slide TARGET PATH`, or `query fragment` for design prose |
+| How does this technical design fit together? | `change-saga whiteboard describe --id ID --format json PATH`; add `--focus INSTANCE_PATH` for one section or element and `--revision REVISION` for saved history |
 | What intent and evidence relate to this code? | `query traceability --ref LOCATION`; discover its supported location format from help |
 | Which automated tests should run for a review? | `change-saga review test-plan --review ID --json PATH` returns tests, recorded commands, affected stories and gaps |
 | Why did the documented intent change? | `query requirement-history`, `query citations`, or `query history` for the selected record |
@@ -61,7 +63,9 @@ grepping, or globbing metadata files.
 Supply `--saga PATH` to queries. Use returned IDs and URNs instead of guessing
 them. Start directly with a known feature or record; an overview is only needed
 when its location is unknown. Expand exact prose and code references only for
-records relevant to the question.
+records relevant to the question. Whiteboard IDs name documents, not kinds;
+`data-model` is the convention for the Data model page. Use instance paths
+returned by describe, and preserve exact source pins when following evidence.
 
 The default overview is a directory; it omits deck report bodies and their
 annotations. Select one deck explicitly when its narrative is useful. A
@@ -69,7 +73,7 @@ Component named in prose is not necessarily a declared dependency: follow
 Item documentation pins and `query inventory-uses` for the recorded links,
 and preserve that query's completeness limits.
 
-Check the JSON envelope's `ok`, `data`, `snapshot`, and `page`. Follow
+For query responses, check the JSON envelope's `ok`, `data`, `snapshot`, and `page`. Follow
 `page.next_cursor` while `page.has_more` for the selected query; byte- or
 offset-paged operations use the pagination described by their schema. Keep a
 consistent snapshot across related reads and restart if it changes. Read
