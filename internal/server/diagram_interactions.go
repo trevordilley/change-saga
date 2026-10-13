@@ -93,6 +93,13 @@ const diagramInteractionsJavaScript = `
   // controls and panels are the same server templates and delegated actions
   // used by implementation slides. No camera loop calls this helper.
   const diagramAffordanceOwners = new WeakMap();
+  const diagramAffordanceLifetimes = new WeakMap();
+  function diagramAffordanceActionIsCurrent(node) {
+    const bar = node?.closest?.('[data-diagram-affordance]');
+    if (!bar) return () => true;
+    const lifetime = diagramAffordanceLifetimes.get(bar);
+    return () => bar.isConnected && lifetime && diagramAffordanceLifetimes.get(bar) === lifetime;
+  }
   function diagramAffordanceOwner(node) {
     return diagramAffordanceOwners.get(node?.closest?.('[data-diagram-affordance]')) || node;
   }
@@ -117,7 +124,7 @@ const diagramInteractionsJavaScript = `
       const losesFocus = bar.contains(document.activeElement) || (ownsNote && notePopover?.contains(document.activeElement));
       if (ownsNote) hideNote();
       bar.hidden = true; bar.replaceChildren(); owner = null;
-      diagramAffordanceOwners.delete(bar);
+      diagramAffordanceOwners.delete(bar); diagramAffordanceLifetimes.delete(bar);
       const destination = focusTarget || (losesFocus ? viewport : null);
       if (destination?.isConnected && !signal.aborted) {
         // Returning to the SVG owner fires focusin synchronously. Dismissal
@@ -161,7 +168,7 @@ const diagramInteractionsJavaScript = `
       if (noteOwner && bar.contains(noteOwner) && notePopover?.classList.contains('pinned')) return;
       const box = position(node); if (!box) return;
       clear(); owner = node; const request = ++pending;
-      diagramAffordanceOwners.set(bar,node);
+      diagramAffordanceOwners.set(bar,node); diagramAffordanceLifetimes.set(bar,{});
       bar.setAttribute('aria-label','Actions for '+(node.getAttribute('aria-label') || 'element'));
       // Anchor from cached authored geometry and the camera, not DOM bounds.
       bar.style.left = Math.max(8,Math.min(innerWidth-180,box.right-160))+'px';

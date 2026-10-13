@@ -426,3 +426,45 @@ test("native annotation dismissal, note exit and camera changes preserve keyboar
   await page.setViewportSize({width:1260,height:760});
   await expect(bar).toBeHidden(); await expect(viewport).toBeFocused();
 });
+
+for (const exit of ['pan','navigate','revisit']) test("late native code panels cannot reopen after "+exit, async ({page,saga}) => {
+  nativeModel(saga,true);
+  let release:()=>void=()=>{};
+  const held=new Promise<void>(resolve=>{release=resolve;});
+  await page.route('**/api/diagram-annotation?**',async route=>{
+    if (new URL(route.request().url()).searchParams.get('panel') !== 'code') { await route.continue(); return; }
+    await held; await route.continue();
+  });
+  await page.goto(saga.baseURL+'/technical/erd?focus=shared'); await waitForSettledSaga(page);
+  const board=page.locator('[data-whiteboard-view]'),bar=page.locator('[data-diagram-affordance]');
+  const record=board.locator('[data-instance-path="shared/record"]');
+  await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+  await record.focus();
+  const code=bar.locator('[data-target-code-href]');
+  await expect(code).toBeVisible();
+  const requested=page.waitForRequest(request=>new URL(request.url()).searchParams.get('panel') === 'code');
+  await code.focus(); await page.keyboard.press('Enter'); await requested;
+  await expect(code).toHaveAttribute('aria-busy','true');
+  if (exit === 'navigate') {
+    // Use in-app navigation so the old promise survives in this document.
+    await page.locator('html').evaluate(node=>node.setAttribute('data-code-race-document','same'));
+    await page.locator('.sidebar-title[href="/"]').click();
+    await expect(board).toHaveCount(0); await waitForSettledSaga(page);
+    await expect(page.locator('html')).toHaveAttribute('data-code-race-document','same');
+  } else {
+    await board.locator('[data-whiteboard-viewport]').dispatchEvent('wheel',{deltaX:10,bubbles:true,cancelable:true});
+    await expect(bar).toBeHidden();
+    if (exit === 'revisit') {
+      await expect(board).toHaveAttribute('data-whiteboard-interacting','false');
+      await record.focus(); await expect(bar.locator('[data-target-code-href]')).toBeVisible();
+    }
+  }
+  const response=page.waitForResponse(response=>new URL(response.url()).searchParams.get('panel') === 'code');
+  release(); await (await response).finished();
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  await expect(page.locator('.diff-drawer')).not.toHaveClass(/open/);
+  if (exit === 'revisit') {
+    await bar.locator('[data-open-diffs]').click();
+    await expect(page.locator('.drawer-body')).toContainText('Entity evidence at its saved commit.');
+  }
+});

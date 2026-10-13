@@ -2159,10 +2159,15 @@ const appJavaScript = `(() => {
   async function hydrateTargetCode(button, returnOpener = null) {
     const href = button?.dataset.targetCodeHref;
     if (!href || button.dataset.targetCodeLoading === 'true') return;
+    const isCurrent = diagramAffordanceActionIsCurrent(button);
     button.dataset.targetCodeLoading = 'true';
     button.setAttribute('aria-busy', 'true');
     try {
-      const installed = installTargetCodeResponse(href, await requestTargetCode(href, {interactive:true}), button);
+      const html = await requestTargetCode(href, {interactive:true});
+      // Diagram strips are ephemeral. A cached response remains useful, but
+      // an action dismissed by camera movement or navigation cannot reopen UI.
+      if (!isCurrent()) return;
+      const installed = installTargetCodeResponse(href, html, button);
       if (installed) openDrawer(installed.templateID, returnOpener || installed.opener);
     } catch (_) {
       delete button.dataset.targetCodeLoading;
