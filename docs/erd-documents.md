@@ -1,6 +1,12 @@
-# Multiple ERD documents
+# Existing ERD source documents
 
-Keep separate concerns in separate named ERD documents. A local SQLite database,
+For new data-model authoring, use [one cohesive ERD whiteboard](erd-whiteboard-guide.md).
+This guide covers independently revisioned ERD source records and the reading
+experience when no `data-model` whiteboard is present. Existing records remain
+useful as optional imports and evidence; readers need not navigate a collection of them
+to understand the whiteboard.
+
+Separate named ERD records can describe different concerns. A local SQLite database,
 a cloud Postgres database, and their synchronization diagram can each have their
 own name, explanation, SVG and entity directory. Shared Markdown introduces the
 whole data model. These documents use the existing ERD identities and append-only
@@ -60,8 +66,8 @@ change-saga query inventory --saga change.saga --target <erd-URN> --history
 record page and filters. Use the returned target rather than assuming a fragment
 ID. The fragment query supplies bounded content using its existing pagination.
 
-The Data model page at `/technical/erd` shows the overview, equal document links,
-proposed overlays, and the entity directory. Documents come before entities in
+Without a `data-model` whiteboard, the Data model page at `/technical/erd` shows the overview,
+equal document links, proposed overlays, and the entity directory. Documents come before entities in
 the sidebar. A single unambiguous active ERD also renders inline; with multiple
 ERDs no document is automatically elevated. Each document retains its canonical
 route and historical `?revision=` links. Retired or conflicted records stay

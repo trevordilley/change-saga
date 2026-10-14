@@ -24,6 +24,7 @@ import (
 //	                        every data entity
 //	/technical/systems      the directory of Systems
 //	/technical/components   the directory of Components
+//	/technical/whiteboards/{id} a named whiteboard document and its saved revisions
 //
 // and one canonical page per definition, /technical/{kind}/{id}, which
 // slides, drawers and reviews link to and which never moved. A definition
@@ -315,7 +316,11 @@ func technicalRoleTitle(role string) string {
 // technicalPageView is the landing page when Area is empty, and otherwise one
 // area's page. Only the area being read is built.
 type technicalPageView struct {
-	Area technicalArea
+	Whiteboard     *whiteboardView
+	Whiteboards    []whiteboardDocumentView
+	WhiteboardNote string
+	Overview       *fragmentView
+	Area           technicalArea
 	// Areas are the landing page's three areas, each with what it holds.
 	Areas      []technicalAreaView
 	Systems    *directoryView
@@ -489,14 +494,42 @@ func technicalOverviewPart(inventory requirements.Inventory) overviewPartView {
 	return part
 }
 
-// technicalNav is the sidebar's Technical design rows: its three areas, each
-// a section that opens its own page and discloses one row per definition
-// beneath it. Data model lists its ERD documents and overlays before entities.
-// An area with no records or overview is omitted.
-func technicalNav(inventory requirements.Inventory, hasOverview bool) []*navNodeView {
+// Only the request's page presentation changes; the shared board stays immutable.
+func technicalBoardPresentation(view *technicalPageView, inventory requirements.Inventory, board *whiteboardView) {
+	if view == nil || board == nil || board.Visual == "" {
+		return
+	}
+	_, _, entities := technicalCount(inventory)
+	const note = "One connected data model with authored sections, entities and relationships."
+	if view.Area.Segment == "erd" {
+		view.Area.Lede = note
+	}
+	for i := range view.Areas {
+		if view.Areas[i].Segment == "erd" {
+			view.Areas[i].Count = "1 data model document · " + plural(len(board.Sections), "section", "sections") + " · " + plural(entities, "data entity", "data entities")
+			view.Areas[i].Note, view.Areas[i].Gap = note, false
+		}
+	}
+}
+
+// technicalNav presents a valid whiteboard as one Data model document with
+// its authored section outline. Without one, the inventory remains readable
+// as definition rows. Systems and Components keep their existing directories.
+func technicalNav(inventory requirements.Inventory, hasOverview bool, board *whiteboardView) []*navNodeView {
 	var nodes []*navNodeView
 	for _, area := range technicalAreas {
 		var rows []*navNodeView
+		if area.Segment == "erd" && board != nil && board.Visual != "" {
+			href := board.Href
+			if href == "" {
+				href = area.Href()
+			}
+			for _, section := range board.Sections {
+				rows = append(rows, &navNodeView{Title: section.Title, Href: whiteboardFocusHref(href, section.Path), NodeID: "nav-whiteboard-" + domID(section.Path), Icon: "split"})
+			}
+			nodes = append(nodes, navSection(area.Title, href, "nav-technical-erd", "split", rows))
+			continue
+		}
 		holds := area.Segment == "erd" && hasOverview
 		for _, kind := range area.Kinds {
 			for _, record := range inventory.Records {
@@ -645,6 +678,29 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 	if err != nil {
 		return nil, nil, err
 	}
+	if route.kind == "whiteboard" {
+		ids, listErr := requirements.ListWhiteboardIDs(a.root)
+		if listErr != nil {
+			return nil, nil, listErr
+		}
+		found := false
+		for _, id := range ids {
+			found = found || id == route.id
+		}
+		if !found {
+			return nil, nil, errTechnicalNotFound
+		}
+		if query.Get("revision") != "" {
+			if _, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, route.id, query.Get("revision")); err != nil {
+				return nil, nil, errTechnicalNotFound
+			}
+		}
+		board := a.makeNamedWhiteboardView(inventory, route.id, query.Get("revision"))
+		if board == nil {
+			return nil, nil, errTechnicalNotFound
+		}
+		return &technicalPageView{Whiteboard: board}, nil, nil
+	}
 	if route.kind == "technical" {
 		// The landing page counts records; it resolves no usage or newness.
 		view := a.technicalPage(inventory, technicalUsageIndex{}, nil, "", "")
@@ -658,6 +714,12 @@ func (a *app) technicalShell(ctx context.Context, document *saga.Saga, route app
 	if route.kind == "technical-area" {
 		view := a.technicalPage(inventory, usages, newness, route.id, query.Get("q"))
 		if view.DataModel != nil {
+			if revision := query.Get("revision"); revision != "" {
+				if board, err := requirements.LoadWhiteboard(a.root, document.Manifest.ID, "data-model", revision); err != nil || board == nil {
+					return nil, nil, errTechnicalNotFound
+				}
+				view.DataModel.Whiteboard = a.makeNamedWhiteboardView(inventory, "data-model", revision)
+			}
 			if fragment := document.OverviewPart(applayout.OverviewDataModel); fragment != nil {
 				view.DataModel.Overview = makeFragmentView(fragment, viewScope{})
 			}
@@ -703,17 +765,23 @@ const technicalTemplates = `
 
 {{define "technical-newness"}}{{with .}}<p class="technical-newness" data-technical-newness="{{.Known}}">Compared against <code>{{.Against}}</code>: “new” means the identity did not exist at the comparison's base{{if not .Known}}. The base inventory is unknown: {{.Reason}}{{end}}.</p>{{end}}{{end}}
 
-{{define "technical-page"}}{{if .Area.Segment}}{{template "technical-area-page" .}}{{else}}<section class="app-page technical-page" data-technical-page="landing"><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1><p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
+{{define "technical-page"}}{{if .Whiteboard}}{{if .Whiteboard.Visual}}{{template "erd-whiteboard" .}}{{else}}<section class="app-page"><h1>{{.Whiteboard.ID}}</h1><p class="gap" data-whiteboard-note>{{.Whiteboard.Note}}</p></section>{{end}}{{else if .Area.Segment}}{{template "technical-area-page" .}}{{else}}<section class="app-page technical-page" data-technical-page="landing"><nav class="requirements-breadcrumbs" aria-label="Technical design breadcrumb"><a href="/">Overview</a><span>/</span><strong>Technical design</strong></nav><header class="page-heading"><h1>Technical design</h1><p class="app-lede">The application's shared technical vocabulary: Systems, Components, and the data model that implementation and review decks reuse by identity. Intent, lifecycle, and code currency are separate facts; none of them is a review approval.</p></header>
 <ul class="overview-parts technical-areas" aria-label="Technical design areas">{{range .Areas}}<li class="overview-part{{if .Gap}} gap{{end}}" id="{{.Anchor}}" data-technical-area="{{.Segment}}"><a class="overview-part-link" href="{{.Href}}">{{.Title}}</a><span class="overview-part-count">{{.Count}}</span><p class="overview-part-note">{{.Note}}</p></li>{{end}}</ul>
+{{if .Whiteboards}}<section class="app-page-section" data-technical-whiteboards><h2>Whiteboards</h2><ul>{{range .Whiteboards}}<li><a href="{{.Href}}">{{.Name}}</a>{{with .Note}} <span class="gap">{{.}}</span>{{end}}</li>{{end}}</ul></section>{{end}}{{with .WhiteboardNote}}<p class="gap">{{.}}</p>{{end}}
 </section>{{end}}{{end}}
 
-{{define "technical-area-page"}}<section class="app-page technical-page technical-area-page{{if .DataModel}} technical-erd-page{{end}}" data-technical-page="{{.Area.Segment}}"><nav class="requirements-breadcrumbs" aria-label="{{.Area.Title}} breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span><strong>{{.Area.Title}}</strong></nav><header class="page-heading"><p class="app-page-kind">Technical design</p><h1>{{.Area.Title}}</h1>{{template "technical-newness" .Newness}}<p class="app-lede">{{.Area.Lede}}</p></header>
+{{define "technical-area-page"}}{{if and .DataModel .DataModel.Whiteboard .DataModel.Whiteboard.Visual}}{{template "erd-whiteboard" .DataModel}}{{else}}<section class="app-page technical-page technical-area-page{{if .DataModel}} technical-erd-page{{end}}" data-technical-page="{{.Area.Segment}}"><nav class="requirements-breadcrumbs" aria-label="{{.Area.Title}} breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span><strong>{{.Area.Title}}</strong></nav><header class="page-heading"><p class="app-page-kind">Technical design</p><h1>{{.Area.Title}}</h1>{{template "technical-newness" .Newness}}<p class="app-lede">{{.Area.Lede}}</p></header>
 {{with .Systems}}<div data-technical-kind="system">{{template "directory" .}}</div>{{end}}{{with .Components}}<div data-technical-kind="component">{{template "directory" .}}</div>{{end}}
 {{with .DataModel}}<div data-technical-data-model><section class="app-page-section" data-technical-data-model-overview><h2>Overview</h2>{{with .Overview}}{{template "fragment" .}}{{else}}<p class="app-empty">No shared data-model overview has been written yet.</p>{{end}}</section>
-<section class="app-page-section" data-technical-erd-documents><h2>ERD documents</h2>{{if .Documents}}{{template "trace-links" .Documents}}{{else}}<p class="app-empty">No ERD is authored yet. The data entities below remain readable without one.</p>{{end}}</section>
-{{with .Single}}<section class="app-page-section" data-technical-single-erd><h2>{{.Name}}</h2><p class="app-lede">{{.Explanation}}</p><p class="documentation-page-link"><a href="/technical/erd/{{.ID}}">Revision {{.Revision}}, its history and where it is used</a></p>{{template "erd-view" .}}</section>{{end}}
-{{if .Overlays}}<section class="app-page-section" data-technical-erd-views><h2>Proposed changes</h2><p class="term-empty">Overlays propose changes over an exact ERD revision.</p>{{template "trace-links" .Overlays}}</section>{{end}}<section class="app-page-section" data-technical-entities><h2>All data entities</h2>{{template "directory" .Entities}}</section></div>{{end}}
-</section>{{end}}
+{{with .Whiteboard}}<p class="gap" role="status" data-whiteboard-note>{{.Note}}</p>{{end}}
+
+{{template "technical-data-model-directory" .}}</div>{{end}}
+</section>{{end}}{{end}}
+
+{{define "technical-data-model-directory"}}<section class="app-page-section" data-technical-erd-documents><h2>ERD documents</h2>{{if .Documents}}{{template "trace-links" .Documents}}{{else}}<p class="app-empty">No ERD is authored yet. The data entities below remain readable without one.</p>{{end}}</section>
+{{if not (and .Whiteboard .Whiteboard.Visual)}}{{with .Single}}<section class="app-page-section" data-technical-single-erd><h2>{{.Name}}</h2><p class="app-lede">{{.Explanation}}</p><p class="documentation-page-link"><a href="/technical/erd/{{.ID}}">Revision {{.Revision}}, its history and where it is used</a></p>{{template "erd-view" .}}</section>{{end}}{{end}}
+
+{{if .Overlays}}<section class="app-page-section" data-technical-erd-views><h2>Proposed changes</h2><p class="term-empty">Overlays propose changes over an exact ERD revision.</p>{{template "trace-links" .Overlays}}</section>{{end}}<section class="app-page-section" data-technical-entities><h2>All data entities</h2>{{template "directory" .Entities}}</section>{{end}}
 
 {{define "technical-entity-page"}}<section class="app-page technical-entity-page{{if .ERD}} technical-erd-page{{end}}" data-technical-entity="{{.Target}}"{{if .Revision}} data-technical-revision="{{.Revision}}"{{end}}><nav class="requirements-breadcrumbs" aria-label="Definition breadcrumb"><a href="/">Overview</a><span>/</span><a href="/technical">Technical design</a><span>/</span>{{with .Area.Segment}}<a href="/technical/{{.}}">{{$.Area.Title}}</a><span>/</span>{{end}}<strong>{{.Name}}</strong></nav>
 <header class="requirement-story-hero"><div><p class="app-page-kind">{{.KindTitle}}</p><h1>{{.Name}}</h1><p class="technical-facts"><span data-technical-fact="revision">Revision <code>{{if .Revision}}{{.Revision}}{{else}}none chosen{{end}}</code></span>{{if not .ERD}}<span data-technical-fact="intent">Intent: {{if eq .Intent "unspecified"}}<span class="gap">unspecified</span>{{else if .Intent}}{{.Intent}}{{else}}<span class="gap">unknown</span>{{end}}</span>{{end}}{{if .NewnessAgainst}}<span data-technical-fact="newness" data-newness="{{.Newness}}">Since {{.NewnessAgainst}}: {{if eq .Newness "unknown"}}<span class="gap" title="{{.NewnessReason}}">unknown</span>{{else}}{{.Newness}}{{end}}</span>{{end}}<span data-technical-fact="lifecycle">Lifecycle: {{if eq .Lifecycle "conflicted"}}<span class="gap">conflicted</span>{{else}}{{.Lifecycle}}{{end}}</span></p>

@@ -84,6 +84,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.ApplySlide(ctx, args[1:], stdout)
 	case "diagram":
 		err = cli.Diagram(ctx, args[1:], stdout)
+	case "whiteboard":
+		err = cli.Whiteboard(ctx, args[1:], stdout)
 	case "set-slide-content":
 		err = cli.SetSlideContent(ctx, args[1:], stdout)
 	case "add-item":

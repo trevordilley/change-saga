@@ -8,17 +8,20 @@ import (
 
 // Summary is one semantic element in the reading view.
 type Summary struct {
-	ID          string `json:"id"`
-	Kind        string `json:"kind"`
-	Shape       string `json:"shape,omitempty"`
-	Label       string `json:"label,omitempty"`
-	Detail      string `json:"detail,omitempty"`
-	Description string `json:"description,omitempty"`
-	Note        string `json:"note,omitempty"`
-	From        string `json:"from,omitempty"`
-	To          string `json:"to,omitempty"`
-	Parent      string `json:"parent,omitempty"`
-	Icon        string `json:"icon,omitempty"`
+	Source      *SourceReference `json:"source,omitempty"`
+	Summary     string           `json:"summary,omitempty"`
+	Visibility  string           `json:"visibility,omitempty"`
+	ID          string           `json:"id"`
+	Kind        string           `json:"kind"`
+	Shape       string           `json:"shape,omitempty"`
+	Label       string           `json:"label,omitempty"`
+	Detail      string           `json:"detail,omitempty"`
+	Description string           `json:"description,omitempty"`
+	Note        string           `json:"note,omitempty"`
+	From        string           `json:"from,omitempty"`
+	To          string           `json:"to,omitempty"`
+	Parent      string           `json:"parent,omitempty"`
+	Icon        string           `json:"icon,omitempty"`
 	// An edge's terminators and end labels, when they say more than a plain
 	// arrow: ERD cardinality, UML ends, or a start marker.
 	Tail           string   `json:"tail,omitempty"`
@@ -62,7 +65,7 @@ func Describe(d Document, offset, limit int) Description {
 		if e.Decorative {
 			continue
 		}
-		summary := Summary{ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField, About: e.About, Members: sectionMembers(d, e), Step: reveal.step[e.ID], Code: e.Code, Language: e.Language, LineNumbers: e.LineNumbers, HighlightLines: append([]int(nil), e.HighlightLines...)}
+		summary := Summary{Source: e.Source, Summary: e.Summary, Visibility: e.Visibility, ID: e.ID, Kind: e.Kind, Shape: describedShape(e.Shape), Label: e.Label, Detail: e.Detail, Description: e.Description, Note: e.Note, From: e.From, To: e.To, Parent: e.Parent, Icon: e.Icon, TailLabel: e.TailLabel, HeadLabel: e.HeadLabel, Fields: e.Fields, FromField: e.FromField, ToField: e.ToField, About: e.About, Members: sectionMembers(d, e), Step: reveal.step[e.ID], Code: e.Code, Language: e.Language, LineNumbers: e.LineNumbers, HighlightLines: append([]int(nil), e.HighlightLines...)}
 		if e.Tail != "none" {
 			summary.Tail = e.Tail
 		}
@@ -76,7 +79,7 @@ func Describe(d Document, offset, limit int) Description {
 	return Description{Elements: all[offset:end], Offset: offset, Total: len(all), NextOffset: end, HasMore: end < len(all), Omitted: append([]string{}, Omitted...), Reveal: d.Reveal, Steps: reveal.steps}
 }
 
-var textSections = []struct{ kind, heading string }{{"section", "Sections"}, {"group", "Groups"}, {"node", "Nodes"}, {"edge", "Edges"}, {"text", "Text"}, {"code", "Code examples"}, {"graphic", "Graphics"}, {"note", "Notes"}}
+var textSections = []struct{ kind, heading string }{{"frame", "Frames"}, {"connection", "Connections"}, {"section", "Sections"}, {"group", "Groups"}, {"node", "Nodes"}, {"edge", "Edges"}, {"text", "Text"}, {"code", "Code examples"}, {"graphic", "Graphics"}, {"note", "Notes"}}
 
 // WriteText renders the elements as compact Graphviz-like reading text in
 // sections, preserving document order within each section.
@@ -97,7 +100,7 @@ func (v Description) WriteText(b *strings.Builder) {
 			b.WriteString("  " + e.ID)
 			shape := e.Shape
 			switch section.kind {
-			case "edge":
+			case "edge", "connection":
 				b.WriteString(": " + endpoint(e.From, e.FromField) + " -> " + endpoint(e.To, e.ToField))
 			case "section":
 				shape = ""
@@ -107,6 +110,15 @@ func (v Description) WriteText(b *strings.Builder) {
 					b.WriteString(" about " + e.About)
 				}
 				shape = ""
+			}
+			if e.Source != nil {
+				fmt.Fprintf(b, " source=%s@%s", Plain(e.Source.Target), Plain(e.Source.Revision))
+				if e.Source.Element != "" {
+					fmt.Fprintf(b, " element=%s", Plain(e.Source.Element))
+				}
+				if e.Source.Relationship != "" {
+					fmt.Fprintf(b, " relationship=%s", Plain(e.Source.Relationship))
+				}
 			}
 			if e.Label != "" {
 				b.WriteString(" " + strconv.Quote(e.Label))
@@ -137,7 +149,7 @@ func (v Description) WriteText(b *strings.Builder) {
 			if len(e.Fields) > 0 {
 				b.WriteString("    fields: " + e.Fields.String() + "\n")
 			}
-			for _, field := range [][2]string{{"members", strings.Join(e.Members, ", ")}, {"detail", e.Detail}, {"description", e.Description}, {"note", e.Note}} {
+			for _, field := range [][2]string{{"summary", e.Summary}, {"visibility", e.Visibility}, {"members", strings.Join(e.Members, ", ")}, {"detail", e.Detail}, {"description", e.Description}, {"note", e.Note}} {
 				if field[1] != "" {
 					fmt.Fprintf(b, "    %s: %s\n", field[0], Plain(field[1]))
 				}

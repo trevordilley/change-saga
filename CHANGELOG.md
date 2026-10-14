@@ -12,6 +12,20 @@ tool, and what they have to do about it.
 
 ### Added
 
+- Named whiteboards for technical design: independent documents with connected
+  sections, readable overview narrative and focused detail. Data models,
+  infrastructure topology and system design use the same shared diagram grammar.
+  Reuses the diagram grammar, renderer, icons and annotation/source inspection UX
+  from slides. Includes pan, zoom, fit, focus, crow's-foot associations and viewport
+  culling. Source references support exact ERD and data-entity pins and ERD imports.
+- **Format:** Optional `___whiteboards/<board-id>/revisions/<revision-id>.json`
+  stores immutable, complete diagram snapshots for each named document.
+  `whiteboard publish|get|describe|check --id ID` authors and inspects them;
+  source revisions are pinned and adoption is explicit.
+  Existing Sagas and ERD histories remain readable with current readers. Older
+  readers reject the new reserved subtree: upgrade before publishing a whiteboard.
+  No automatic migration or manifest/inventory version bump is required.
+
 - **Format:** Optional shared Markdown data-model overview at
   `___overview/data-model.fragment`, authored with `overview set-data-model`.
   `query inventory` discovers its fragment target; existing fragment and history
@@ -21,8 +35,13 @@ tool, and what they have to do about it.
 
 ### Changed
 
-- Data model navigation gives independently named ERD documents equal standing
-  and lists them before data entities. Multiple documents no longer choose an
+- Named boards open at `/technical/whiteboards/<id>`. The whiteboard CLI uses
+  `--id` for the document and `--focus` for an element; it has no kind selector.
+- When the `data-model` whiteboard is present, `/technical/erd` opens that document
+  by convention; its outline focuses sections within the board. Source histories
+  remain available.
+- Without a `data-model` whiteboard, Data model navigation gives independently named ERD
+  documents equal standing and lists them before data entities. Multiple documents no longer choose an
   `application` or first ERD as primary; a single active document stays inline.
 
 ## [0.4.0] - 2026-10-07

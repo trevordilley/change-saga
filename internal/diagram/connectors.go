@@ -80,7 +80,7 @@ var edgeLines = map[string]bool{"": true, "solid": true, "dashed": true, "dotted
 // validateConnector reports problems with an edge's terminators, end labels,
 // curve, and line, and refuses those fields on anything but an edge.
 func validateConnector(e Element, fail func(string, ...any)) {
-	if e.Kind != "edge" {
+	if e.Kind != "edge" && e.Kind != "connection" {
 		if e.Tail != "" || e.TailLabel != "" || e.TailLabelBox != nil || e.HeadLabel != "" || e.HeadLabelBox != nil || e.Curve != "" || e.Line != "" {
 			fail("connector fields (tail, head_label, tail_label, curve, line) are only valid on edges")
 		}

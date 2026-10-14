@@ -46,6 +46,7 @@ one Saga is neither invalid nor reported as a problem.
   ___feature-themes/<id>.theme/ # optional product categories
     theme.json                  # authored Markdown overview and feature URN set
     ___slides/                  # normal rationale deck, role feature-theme
+  ___whiteboards/<board-id>/revisions/<revision-id>.json  # optional named whiteboards
   ___features/<id>.feature/
     feature.json
     <report content>           # chapters, sections, fragments
@@ -354,8 +355,8 @@ relationship pins remain in ERD records. `query inventory` exposes the app-wide
 independently of inventory filters and pagination; `query fragment --target URN`
 and `query history --node URN` read its content and Git history.
 
-The viewer's `/technical/erd` page shows shared prose and equal ERD document
-links, followed by overlays and data entities. Documents precede entities in
+Without a `data-model` whiteboard, the viewer's `/technical/erd` page shows shared prose and
+equal ERD document links, followed by overlays and data entities. Documents precede entities in
 sidebar navigation. One unambiguous active ERD may additionally render inline;
 multiple ERDs never select a primary by ID or ordering. Every document keeps
 its existing `/technical/erd/<id>` route, revision history and exact pins.
@@ -390,6 +391,82 @@ and `--selections`; `apply-slide` item `documentation_view`/`selections`.
 Writers keep the lock, all-head parent, new-pin currency and idempotent
 revision rules above. See the
 [records implementation note](docs/technical-inventory-records-implementation.md).
+
+### Whiteboards for technical design
+
+Whiteboards are a spatial presentation form alongside long-form product essays
+and implementation/review slide decks. They compose one technical-design
+document from nested sections, diagrams, relationships and annotations. A Saga
+can contain independent named whiteboards. Data models (ERDs), infrastructure
+topology and system design are authoring applications of the same shared grammar,
+not whiteboard types. There is no kind discriminator.
+This adds no inventory kind, entity holder semantics or slide Item ownership.
+
+**Storage and publication.** The optional root
+`___whiteboards/<board-id>/revisions/<revision-id>.json` contains complete
+immutable snapshots validated by [whiteboard-revision.schema.json](schema/v5/whiteboard-revision.schema.json).
+Each record contains `$schema`, `version: 1`, `id`, `parents`, `name`, `document`
+and `created_at`. `document` uses the shared
+[diagram schema](schema/v5/diagram.schema.json). The containing directory names
+the whiteboard; the filename and record `id` identify its revision. Each document
+has its own history. `parents` is empty for the root and contains one revision ID
+from the same whiteboard for an update. History must be acyclic with one root;
+reading the current board requires
+one unambiguous head. Directories must be real directories and revision files
+regular JSON files. A Saga may have at most 10,000 named whiteboards. Each board
+may have at most 10,000 revisions, and each revision is limited to 1 MiB.
+Every named document must satisfy the whiteboard revision and
+diagram JSON contracts; a document name does not select a different schema.
+
+`whiteboard publish --id ID --revision ID [--parent ID] [--name TITLE]
+--from FILE|- PATH` validates and publishes the complete diagram under the Saga
+write lock. A new update requires the current head as its parent. Repeating an
+identical publication is idempotent; changing content under an existing revision
+ID is rejected. Publication is atomic and does not rewrite historical snapshots.
+Whiteboards do not currently support the slide `diagram edit` transaction.
+
+**Composition and sources.** Native elements use the shared diagram grammar,
+styles, icons, groups, annotations and renderer. Ordinary groups can nest;
+optional frames embed ERD revisions. Source references have exact `target` and
+`revision` pins, with optional `element` or `relationship` selectors. Supported
+source kinds are ERDs and data entities; a relationship selector names a
+relationship owned by the pinned data-entity revision. Frames pin a whole ERD.
+Component and system inventory pins are not supported source adapters; authoring
+an infrastructure or system-design document does not add those adapters.
+Sources never resolve implicitly to a newer revision. Adopting new source
+revisions requires publishing a new board snapshot. Existing ERD revisions and
+assets remain readable.
+
+Repeated appearances have distinct instance paths. Connections address those
+paths, retain their semantic endpoints at overview scale and may have authored
+bends. Focused descriptions include transformed bounds, source pins and relevant
+connection context. Opaque SVG imports render as whole diagrams; explicit source
+bindings can support inspection, but internal targeting requires recorded bounds.
+No internal structure is inferred from SVG artwork.
+
+**Reading and validation.** `whiteboard get|describe|check --id ID PATH`
+reads the named board; `--revision ID` selects its history. `get` returns the source
+document, while `get` or `describe` with `--focus PATH` describes a particular
+appearance and its context. `describe --format json` provides structured output.
+`check` without a revision validates only the selected board's complete history
+and resolves its current composition. `change-saga validate PATH` validates all
+named whiteboards in the Saga. `--id` always identifies the document, including on `get`;
+`--focus PATH` selects an element appearance. There is no kind selector or
+`diagram` whiteboard command alias.
+
+The reader at `/technical/whiteboards/<id>` presents each named document with
+pan, zoom, fit, focus and shared annotation actions for source inspection.
+The existing Data model page at `/technical/erd` selects document ID `data-model`
+by convention; other boards do not replace the data-model source directory.
+Whiteboard sources do not supply slide or review line coverage.
+
+**Storage compatibility.** The optional subtree extends v5 without changing the
+manifest or inventory format version. Current readers accept Sagas without whiteboards.
+Older readers reject an adopted `___whiteboards` root as an unknown reserved
+directory, including during server startup; upgrade readers before publishing.
+There is no automatic migration of existing feature `___design` fragments or
+older ERD records into whiteboards. See the
+[ERD whiteboard guide](docs/erd-whiteboard-guide.md) for authoring and viewer details.
 
 ### V5 identities and quality records
 
@@ -1509,8 +1586,9 @@ reviews that changed it.
 `___code` is reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
 `___overview`, `___designsystem`, `___personas`, `___featureflags`,
-`___onboarding`, `___features`, `___reviews`, `___claims`, `___verifications`, and
-`___merges` are reserved at the saga root. `___requirements`, `___design`,
+`___onboarding`, `___features`, `___reviews`, `___claims`, `___verifications`,
+`___merges` and `___whiteboards` are reserved at the saga root.
+`___requirements`, `___design`,
 `___workplan`, `___slides`, and `___quality` are reserved at a feature root;
 `___slides` contains only real `<deck-id>.deck` directories.
 Reserved metadata directories must be

@@ -2,6 +2,8 @@ package diagram
 
 import (
 	"bytes"
+	"regexp"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -80,5 +82,104 @@ func TestEntityEdgesTakeCrowsFeet(t *testing.T) {
 	Describe(d, 0, 30).WriteText(&b)
 	if want := `  places: orders.customer_id -> customers.id "places" tail=zero-or-many head=only-one` + "\n"; !strings.Contains(b.String(), want) {
 		t.Fatalf("missing %q in:\n%s", want, b.String())
+	}
+}
+
+func TestAuthoredEntitySummaryPreservesFieldRowsAndCompactsTypes(t *testing.T) {
+	doc := New()
+	doc.Elements = []Element{{ID: "record", Kind: "node", Shape: "entity", Label: "Saved record", Width: 500, Height: 220, Style: "normal", Fields: Fields{{Name: "id", Type: "uuid", Key: "pk"}, {Name: "body", Type: "text"}}}}
+	attr := func(n *node, name string) string {
+		for _, a := range n.attrs {
+			if a[0] == name {
+				return a[1]
+			}
+		}
+		return ""
+	}
+	var find func(*node, string, string) *node
+	find = func(n *node, name, value string) *node {
+		if attr(n, name) == value {
+			return n
+		}
+		for _, c := range n.children {
+			if found := find(c, name, value); found != nil {
+				return found
+			}
+		}
+		return nil
+	}
+	original, err := renderTree(doc, Options{}, nil, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	entity := find(original, "id", "record")
+	var expected bytes.Buffer
+	for _, child := range entity.children {
+		if attr(child, "data-field") != "" || attr(child, "stroke-opacity") == ".35" {
+			child.write(&expected, 0)
+		}
+	}
+	doc.Elements[0].Summary = "Preserves the accepted edit for shared access."
+	rendered, err := renderTree(doc, Options{}, nil, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	detail, summary := find(rendered, "data-diagram-detail", "entity"), find(rendered, "data-diagram-summary", "entity")
+	if detail == nil || summary == nil {
+		t.Fatal("authored summary and exact field body missing")
+	}
+	var actual bytes.Buffer
+	for _, child := range detail.children {
+		child.write(&actual, 0)
+	}
+	typeRight := attr(find(detail, "text-anchor", "end"), "x")
+	if typeRight == "488" {
+		t.Fatal("summary details still stretch types across the overview card")
+	}
+	if actual.String() != strings.ReplaceAll(expected.String(), `x="488"`, `x="`+typeRight+`"`) {
+		t.Fatal("summary altered field metrics, keys or dividers beyond the compact type column")
+	}
+	if attr(summary, "style") != "display:none" || attr(detail, "style") != "" {
+		t.Fatal("standalone default must retain full fields")
+	}
+	if len(summary.children) != 1 || attr(summary.children[0], "font-size") != "17.6" || attr(summary.children[0], "font-weight") != "normal" {
+		t.Fatal("summary must use shared wrapped text at authored style scale")
+	}
+	doc.Elements[0].Summary = strings.Repeat("exceeds available space ", 30)
+	if _, err := Render(doc, Options{}); err == nil || !strings.Contains(err.Error(), "entity summary: text overflow") {
+		t.Fatalf("summary overflow was hidden: %v", err)
+	}
+}
+
+func TestWideSummaryEntityKeepsReadableFieldColumnsTogether(t *testing.T) {
+	doc := New()
+	doc.Width, doc.Height = 3000, 1200
+	style, _ := doc.Style("normal")
+	style.FontSize = 160
+	doc.Styles = map[string]Style{"large": style}
+	doc.Elements = []Element{{ID: "project", Kind: "node", Shape: "entity", Label: "Project", Width: 2700, Height: 1000, Style: "large",
+		Fields: Fields{{Name: "id", Type: "uuid", Key: "pk"}, {Name: "organization_id", Type: "uuid", Key: "fk"}, {Name: "last_authorization_refresh", Type: "timestamp with time zone"}}}}
+	typeColumns := regexp.MustCompile(`<text x="([0-9.]+)"[^>]*text-anchor="end"`)
+	for _, summary := range []string{"", "Private storage and its current policy."} {
+		doc.Elements[0].Summary = summary
+		svg, err := Render(doc, Options{})
+		if err != nil {
+			t.Fatal(err)
+		}
+		columns := typeColumns.FindAllStringSubmatch(string(svg), -1)
+		if len(columns) != 3 {
+			t.Fatalf("lost type columns: %d", len(columns))
+		}
+		for _, column := range columns {
+			right, _ := strconv.ParseFloat(column[1], 64)
+			if summary == "" && right != 2688 {
+				t.Fatalf("changed existing entity layout: %v", right)
+			}
+			// At 14px field text (87.5% zoom), the complete row fits within
+			// 700 screen pixels even though the overview card is 2362px wide.
+			if summary != "" && right*.875 > 700 {
+				t.Fatalf("field names and types cannot be read together: %v", right)
+			}
+		}
 	}
 }

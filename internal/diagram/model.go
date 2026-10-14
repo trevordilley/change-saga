@@ -1,8 +1,10 @@
-// Package diagram is the structured source for generated slide diagrams.
+// Package diagram is the shared structured source for slide diagrams and whiteboards.
 //
 // A Document is the authoritative drawing: every element carries explicit
 // geometry, and nothing in this package lays out, resizes, or reroutes
-// anything on the author's behalf. Render turns a Document into the exact
+// anything on the author's behalf in a plain diagram. Composition resolves
+// pinned child frames and simple connection endpoints through their transforms.
+// Render turns a plain Document into the exact
 // SVG bytes a slide publishes; Describe projects it into a compact reading
 // view that deliberately omits geometry and cannot rebuild the drawing.
 package diagram
@@ -31,16 +33,19 @@ const (
 	MaxTotalFragments = 256 << 10
 	MaxLabelRunes     = 2000
 	MaxDescribeLimit  = 100
-	DefaultWidth      = 1280
-	DefaultHeight     = 720
-	defaultBackground = "#fafaf8"
+	// Canvas extent is independent of drawing complexity and opening zoom.
+	// Whiteboards need space for readable sections beyond a single screen.
+	MaxCanvasDimension = 100000
+	DefaultWidth       = 1280
+	DefaultHeight      = 720
+	defaultBackground  = "#fafaf8"
 )
 
 var (
 	identifier    = regexp.MustCompile(`^[a-z][a-z0-9-]{0,63}$`)
 	colorPattern  = regexp.MustCompile(`^(#[a-fA-F0-9]{6}|none)$`)
 	reservedID    = "diagram-"
-	elementKinds  = map[string]bool{"node": true, "edge": true, "text": true, "group": true, "graphic": true, "sticky": true, "annotation": true, "code": true}
+	elementKinds  = map[string]bool{"node": true, "edge": true, "text": true, "group": true, "graphic": true, "sticky": true, "annotation": true, "code": true, "frame": true, "connection": true}
 	nodeShapes    = map[string]bool{"service": true, "datastore": true, "decision": true, "rect": true, "ellipse": true, "boundary": true}
 	frameShapes   = map[string]bool{"rect": true, "boundary": true, "section": true}
 	textAlignment = map[string]bool{"": true, "start": true, "middle": true, "end": true}
@@ -102,37 +107,44 @@ type Element struct {
 	Decorative  bool    `json:"decorative,omitempty"`
 	// Connector fields: an edge's start marker, its end labels, and how its
 	// line is drawn. Head takes the same terminator vocabulary as Tail.
-	Tail           string `json:"tail,omitempty"`
-	TailLabel      string `json:"tail_label,omitempty"`
-	TailLabelBox   *Box   `json:"tail_label_box,omitempty"`
-	HeadLabel      string `json:"head_label,omitempty"`
-	HeadLabelBox   *Box   `json:"head_label_box,omitempty"`
-	Curve          string `json:"curve,omitempty"`
-	Line           string `json:"line,omitempty"`
-	Fields         Fields `json:"fields,omitempty"`
-	FromField      string `json:"from_field,omitempty"`
-	ToField        string `json:"to_field,omitempty"`
-	Color          string `json:"color,omitempty"`
-	About          string `json:"about,omitempty"`
-	Target         *Point `json:"target,omitempty"`
-	Side           string `json:"side,omitempty"`
-	Step           int    `json:"step,omitempty"`
-	Code           string `json:"code,omitempty"`
-	Language       string `json:"language,omitempty"`
-	LineNumbers    bool   `json:"line_numbers,omitempty"`
-	HighlightLines []int  `json:"highlight_lines,omitempty"`
+	Tail           string           `json:"tail,omitempty"`
+	TailLabel      string           `json:"tail_label,omitempty"`
+	TailLabelBox   *Box             `json:"tail_label_box,omitempty"`
+	HeadLabel      string           `json:"head_label,omitempty"`
+	HeadLabelBox   *Box             `json:"head_label_box,omitempty"`
+	Curve          string           `json:"curve,omitempty"`
+	Line           string           `json:"line,omitempty"`
+	Fields         Fields           `json:"fields,omitempty"`
+	FromField      string           `json:"from_field,omitempty"`
+	ToField        string           `json:"to_field,omitempty"`
+	Color          string           `json:"color,omitempty"`
+	About          string           `json:"about,omitempty"`
+	Target         *Point           `json:"target,omitempty"`
+	Side           string           `json:"side,omitempty"`
+	Step           int              `json:"step,omitempty"`
+	Code           string           `json:"code,omitempty"`
+	Language       string           `json:"language,omitempty"`
+	LineNumbers    bool             `json:"line_numbers,omitempty"`
+	HighlightLines []int            `json:"highlight_lines,omitempty"`
+	Source         *SourceReference `json:"source,omitempty"`
+	Summary        string           `json:"summary,omitempty"`
+	Visibility     string           `json:"visibility,omitempty"`
+	DetailScale    float64          `json:"detail_scale,omitempty"`
+	Bends          []Point          `json:"bends,omitempty"`
 }
 
 // Document is the complete diagram source. Elements are ordered: that order
 // is the reading order of Describe and breaks ties between equal z values.
 type Document struct {
-	Version    int              `json:"version"`
-	Width      float64          `json:"width"`
-	Height     float64          `json:"height"`
-	Background string           `json:"background,omitempty"`
-	Reveal     string           `json:"reveal,omitempty"`
-	Styles     map[string]Style `json:"styles,omitempty"`
-	Elements   []Element        `json:"elements"`
+	Version    int     `json:"version"`
+	Width      float64 `json:"width"`
+	Height     float64 `json:"height"`
+	Background string  `json:"background,omitempty"`
+	// Viewport is the authored opening region; it never changes the rendered SVG.
+	Viewport *Box             `json:"viewport,omitempty"`
+	Reveal   string           `json:"reveal,omitempty"`
+	Styles   map[string]Style `json:"styles,omitempty"`
+	Elements []Element        `json:"elements"`
 }
 
 // DefaultStyles are available to every Document. A Document style with the
@@ -228,8 +240,13 @@ func (d Document) Validate() error {
 	if d.Version != Version {
 		add("diagram version must be %d", Version)
 	}
-	if !finite(d.Width) || !finite(d.Height) || d.Width <= 0 || d.Height <= 0 || d.Width > 10000 || d.Height > 10000 {
-		add("canvas width and height must be positive and at most 10000")
+	if !finite(d.Width) || !finite(d.Height) || d.Width <= 0 || d.Height <= 0 || d.Width > MaxCanvasDimension || d.Height > MaxCanvasDimension {
+		add("canvas width and height must be positive and at most %d", MaxCanvasDimension)
+	}
+	if v := d.Viewport; v != nil {
+		if !finite(v.X) || !finite(v.Y) || !finite(v.Width) || !finite(v.Height) || v.X < 0 || v.Y < 0 || v.Width <= 0 || v.Height <= 0 || v.X+v.Width > d.Width || v.Y+v.Height > d.Height {
+			add("viewport must be a positive rectangle within the canvas")
+		}
 	}
 	if d.Background != "" && !validColor(d.Background) {
 		add("background must be #rrggbb, none, or a colour token such as @diagram-canvas")
@@ -316,14 +333,15 @@ func (d Document) Validate() error {
 			if !finite(box.X) || !finite(box.Y) || !finite(box.Width) || !finite(box.Height) || box.Width <= 0 || box.Height <= 0 {
 				fail("label_box needs finite coordinates and a positive size")
 			}
-			if e.Kind != "node" && e.Kind != "edge" && !labelBoxAnnotation(e) {
+			if e.Kind != "node" && e.Kind != "edge" && e.Kind != "connection" && !labelBoxAnnotation(e) {
 				fail("label_box applies only to nodes, edges, highlights, and brackets")
 			}
 		}
-		if e.Kind != "edge" && (e.From != "" || e.To != "" || len(e.Points) > 0 || e.Path != "" || e.Head != "" || e.HeadSize != 0) {
+		if e.Kind != "edge" && e.Kind != "connection" && (e.From != "" || e.To != "" || len(e.Points) > 0 || e.Path != "" || e.Head != "" || e.HeadSize != 0) {
 			fail("edge fields (from, to, points, path, head) are only valid on edges")
 		}
 		validateConnector(e, fail)
+		validateCompositionElement(e, fail)
 		validateCode(e, fail)
 		if e.Kind != "graphic" && e.Fragment != "" {
 			fail("fragment is only valid on graphics")
@@ -447,28 +465,38 @@ func Contract() map[string]any {
 		return result
 	}
 	return map[string]any{
-		"schema":         "https://changesaga.dev/schema/v5/diagram.schema.json",
-		"version":        Version,
-		"renderer":       Renderer,
-		"request_field":  "diagram, instead of asset, in an apply-slide request",
-		"storage":        "24-a-<digest-prefix>.json beside the rendered 24-a-<digest-prefix>.svg, pinned by the revision's diagram field",
-		"element_kinds":  sorted(elementKinds),
-		"node_shapes":    sorted(nodeShapes),
-		"frame_shapes":   sorted(frameShapes),
-		"alignments":     sorted(textAlignment),
-		"default_styles": styles,
-		"colors":         "a style colour, and the background, is #rrggbb, none, or a colour token from change-saga spec's theme written @name (such as @diagram-primary-fill or @accent); a token follows light and dark mode and a theme, a hex colour stays as authored; the default styles, palette, and the default background (#fafaf8) paint with diagram tokens",
-		"color_tokens":   colorTokenNames(),
-		"fields":         []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines"},
-		"reveal_modes":   RevealModes(),
-		"terminators":    TerminatorNames(),
-		"operations":     OperationNames,
-		"font":           FontPath,
-		"limits":         map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes, "note_runes": MaxNoteRunes},
-		"entity":         entityContract(),
-		"code":           codeContract(),
-		"reveal":         "an optional document reveal (\"reveal\": \"fade\") fades the drawing in step by step when a reader opens its slide; an element's optional integer step (1-" + fmt.Sprint(MaxRevealStep) + ") orders it, defaulting to its reading order among semantic elements; equal steps appear together",
-		"note_format":    "an optional Markdown note on any semantic element, shown when a reader hovers, focuses, or taps it: " + NoteFormat + "; no raw HTML",
+		"schema":               "https://changesaga.dev/schema/v5/diagram.schema.json",
+		"version":              Version,
+		"renderer":             Renderer,
+		"max_canvas_dimension": MaxCanvasDimension,
+		"request_field":        "diagram, instead of asset, in an apply-slide request",
+		"storage":              "24-a-<digest-prefix>.json beside the rendered 24-a-<digest-prefix>.svg, pinned by the revision's diagram field",
+		"element_kinds":        sorted(elementKinds),
+		"node_shapes":          sorted(nodeShapes),
+		"frame_shapes":         sorted(frameShapes),
+		"alignments":           sorted(textAlignment),
+		"default_styles":       styles,
+		"colors":               "a style colour, and the background, is #rrggbb, none, or a colour token from change-saga spec's theme written @name (such as @diagram-primary-fill or @accent); a token follows light and dark mode and a theme, a hex colour stays as authored; the default styles, palette, and the default background (#fafaf8) paint with diagram tokens",
+		"color_tokens":         colorTokenNames(),
+		"fields":               []string{"id", "kind", "shape", "label", "detail", "description", "note", "x", "y", "width", "height", "z", "parent", "style", "icon", "icon_size", "from", "to", "points", "path", "head", "head_size", "label_box", "align", "wrap", "fragment", "decorative", "tail", "tail_label", "tail_label_box", "head_label", "head_label_box", "curve", "line", "fields", "from_field", "to_field", "color", "about", "target", "side", "step", "code", "language", "line_numbers", "highlight_lines", "source", "summary", "visibility", "detail_scale", "bends"},
+		"reveal_modes":         RevealModes(),
+		"terminators":          TerminatorNames(),
+		"composition": map[string]any{
+			"frame":                "kind frame with source target/revision, positive width/height, label and summary; children fit uniformly and center in the frame",
+			"connection":           "kind connection with from/to instance paths and optional element-local bends; semantic source is explicit, never inferred from a line",
+			"paths":                "slash-separated group/frame appearances; relative to the containing document or / for board-root paths",
+			"visibility":           []string{"overview", "detail"},
+			"detail_scale_default": 0.6,
+			"opaque_svg":           "whole image; internal focus requires explicit bindings and internal endpoints require binding bounds",
+			"limits":               map[string]int{"depth": maxCompositionDepth, "instances": maxCompositionInstances, "svg_bytes": maxCompositionSVGBytes},
+		},
+		"operations":  OperationNames,
+		"font":        FontPath,
+		"limits":      map[string]int{"elements": MaxElements, "fragment_bytes": MaxFragmentBytes, "label_runes": MaxLabelRunes, "note_runes": MaxNoteRunes},
+		"entity":      entityContract(),
+		"code":        codeContract(),
+		"reveal":      "an optional document reveal (\"reveal\": \"fade\") fades the drawing in step by step when a reader opens its slide; an element's optional integer step (1-" + fmt.Sprint(MaxRevealStep) + ") orders it, defaulting to its reading order among semantic elements; equal steps appear together",
+		"note_format": "an optional Markdown note on any semantic element, shown when a reader hovers, focuses, or taps it: " + NoteFormat + "; no raw HTML",
 		"rules": []string{
 			"every coordinate is explicit and local to the parent group; nothing is laid out, resized, or rerouted",
 			"element order is reading order and breaks ties between equal z values",

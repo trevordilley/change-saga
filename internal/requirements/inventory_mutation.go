@@ -94,6 +94,27 @@ func WriteTechnical(root, sagaID, kind, id, revisionID string, parents []string,
 // current head. All validation, including implementation policy against the
 // delivery commit, runs under the Saga lock before any file is written.
 func WriteTechnicalRevision(ctx context.Context, root, sagaID string, w TechnicalWrite) (MutationResult, error) {
+	if w.Definition.Diagram != nil {
+		if w.Kind != KindERD {
+			return MutationResult{}, fmt.Errorf("structured diagram source is supported only for ERDs")
+		}
+		inventory, err := LoadInventory(root, sagaID)
+		if err != nil {
+			return MutationResult{}, err
+		}
+		svg, err := renderERDDiagram(root, &inventory, TechnicalRevision{TechnicalDefinition: w.Definition})
+		if err != nil {
+			return MutationResult{}, err
+		}
+		if len(w.Visual) > 0 && !bytes.Equal(w.Visual, svg) {
+			return MutationResult{}, fmt.Errorf("visual bytes differ from the structured ERD diagram")
+		}
+		sum := sha256.Sum256(svg)
+		digest := hex.EncodeToString(sum[:])
+		w.Definition.Visual = &Visual{Path: "assets/" + digest + ".svg", MediaType: "image/svg+xml", Digest: coderef.DigestPrefix + digest}
+		w.Visual = svg
+	}
+
 	urn, err := TechnicalURN(sagaID, w.Kind, w.ID)
 	if err != nil {
 		return MutationResult{}, err

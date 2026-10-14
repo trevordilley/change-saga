@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json",
+  "title": "Immutable whiteboard document revision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "parents",
+    "name",
+    "document",
+    "created_at"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/whiteboard-revision.schema.json"
+    },
+    "version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "parents": {
+      "type": "array",
+      "maxItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+      }
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "document": {
+      "$ref": "diagram.schema.json"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

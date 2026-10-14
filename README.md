@@ -13,6 +13,19 @@ slides that explain the change's architecture, so you review the design instead
 of every line. Coverage links every changed line to the slide that explains it,
 so you can trust that nothing was left out.
 
+Change Saga uses three complementary presentation forms:
+
+| Form | Purpose |
+| --- | --- |
+| Long-form essays | Product overviews, features and user stories: intent, requirements and context. |
+| Slide decks | Technical implementation and code reviews: a guided explanation with exact evidence. |
+| Whiteboards | Technical design: one spacious, connected document that readers explore by panning, zooming and inspecting evidence. |
+
+[Whiteboards](docs/whiteboards.md) bring the existing diagram grammar, visual
+styles and annotation interactions to designs that need more room than a slide.
+Use independent named documents for data models, infrastructure topology or
+system design. Every whiteboard uses the same shared diagram grammar.
+
 ## Install
 
 macOS and Linux:
@@ -37,9 +50,23 @@ change-saga version
 change-saga help
 ```
 
-Shared data models can have separate ERD documents for local SQLite, cloud
-Postgres, and cross-store data flow, plus a Markdown overview. See
-[authoring multiple ERD documents](docs/erd-documents.md).
+Author a system's data model as [one ERD whiteboard](docs/erd-whiteboard-guide.md):
+connected sections, selected entities, relationships, callouts and source evidence.
+Existing ERD revisions remain readable and can be reused as optional source material.
+
+Publish and inspect a complete `board.json` through the whiteboard API:
+
+```sh
+change-saga whiteboard publish --id data-model --revision r1 --from board.json change.saga
+change-saga whiteboard describe --id data-model change.saga
+change-saga whiteboard get --id data-model --revision r1 change.saga
+change-saga whiteboard check --id data-model change.saga
+```
+
+`--id` selects the document; `--focus` selects an element within it. Named boards
+open at `/technical/whiteboards/<id>`. The Data model page at `/technical/erd`
+uses `data-model` by convention. Source references currently support exact ERD
+and data-entity pins, plus ERD imports; component and system pins are not supported.
 
 ## Start with a review
 

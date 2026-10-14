@@ -497,7 +497,8 @@ func newMux(application *app) *http.ServeMux {
 	page("GET /personas", application.page)
 	page("GET /flags", application.page)
 	page("GET /design-system", application.page)
-	page("GET /technical/{kind}/{id}", application.page)
+	page("GET /technical/whiteboards/{board}", application.namedWhiteboardPage)
+	page("GET /technical/{kind}/{id}", application.technicalDefinitionPage)
 	page("GET /technical/{area}", application.page)
 	page("GET /technical", application.page)
 	page("GET /features/{feature}", application.page)
@@ -529,6 +530,7 @@ func newMux(application *app) *http.ServeMux {
 	handle("GET /theme", application.themePreview)
 	handle("GET /theme/diagram.svg", application.themePreviewDiagram)
 	handle("GET /api/documentation", application.documentationPage)
+	handle("GET /api/diagram-annotation", application.diagramAnnotation)
 	handle("GET /api/technical-usages", application.technicalUsagesPage)
 	handle("GET /api/code", application.codePage)
 	handle("GET /api/coverage", application.coveragePage)
@@ -994,7 +996,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 }
 
 // pageTemplateSource is every template the reviewer renders with.
-var pageTemplateSource = pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + technicalERDTemplates + technicalSelectionTemplates
+var pageTemplateSource = pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + diagramAnnotationTemplates + technicalERDTemplates + technicalSelectionTemplates
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
@@ -1173,6 +1175,8 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "flags"}, true
 	case path == designSystemPath:
 		return appRoute{kind: "designsystem"}, true
+	case strings.HasPrefix(path, technicalPath+"/whiteboards/") && r.PathValue("board") != "":
+		return appRoute{kind: "whiteboard", id: r.PathValue("board")}, true
 	case path == technicalPath:
 		return appRoute{kind: "technical"}, true
 	case strings.HasPrefix(path, technicalPath+"/") && r.PathValue("area") != "":
@@ -1344,7 +1348,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if len(designRoot.Fragments)+len(designRoot.Children) > 0 {
 			data.DesignSystem = makeSectionView(&designRoot, scope.shell())
 		}
-	case "technical", "technical-area", "technical-entity":
+	case "technical", "technical-area", "technical-entity", "whiteboard":
 		if data.Technical, data.TechnicalEntity, err = a.technicalShell(r.Context(), document, route, r.URL.Query()); err != nil {
 			if errors.Is(err, errTechnicalNotFound) {
 				return nil, errAppPageNotFound
@@ -1390,15 +1394,62 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// The inventory is small, identity-only reading here: no code resolves.
 	inventory, inventoryErr := files.inventory(document.Manifest.ID)
 	var technicalRows []*navNodeView
+	var board *whiteboardView
+	var namedBoards []whiteboardDocumentView
 	if inventoryErr == nil {
-		technicalRows = technicalNav(inventory, document.OverviewPart(applayout.OverviewDataModel) != nil)
+		board = files.whiteboard(func() *whiteboardView {
+			if data.Technical != nil && data.Technical.DataModel != nil && r.URL.Query().Get("revision") == "" {
+				return data.Technical.DataModel.Whiteboard
+			}
+			return a.makeWhiteboardView(inventory)
+		})
+		technicalBoardPresentation(data.Technical, inventory, board)
+		navBoard := board
+		if data.Technical != nil && data.Technical.DataModel != nil && r.URL.Query().Get("revision") != "" {
+			navBoard = data.Technical.DataModel.Whiteboard
+		}
+		technicalRows = technicalNav(inventory, document.OverviewPart(applayout.OverviewDataModel) != nil, navBoard)
+		named, namedErr := files.whiteboardDocuments(func() ([]whiteboardDocumentView, error) { return a.whiteboardDocuments(document.Manifest.ID) })
+		namedBoards = named
+		for _, document := range named {
+			if document.ID == "data-model" {
+				continue
+			}
+			row := &navNodeView{Title: document.Name, Href: document.Href, NodeID: "nav-whiteboard-document-" + domID(document.ID), Icon: "split", Note: document.Note}
+			if data.Technical != nil && data.Technical.Whiteboard != nil && data.Technical.Whiteboard.ID == document.ID {
+				selected := data.Technical.Whiteboard
+				if selected.Name != "" {
+					row.Title = selected.Name
+				}
+				row.Href = selected.Href
+				for _, section := range selected.Sections {
+					row.Children = append(row.Children, &navNodeView{Title: section.Title, Href: whiteboardFocusHref(selected.Href, section.Path), NodeID: row.NodeID + "-" + domID(section.Path), Icon: "split"})
+				}
+			}
+			technicalRows = append(technicalRows, row)
+		}
+		if data.Technical != nil {
+			data.Technical.Whiteboards = named
+			if namedErr != nil {
+				data.Technical.WhiteboardNote = "Whiteboards could not be listed: " + namedErr.Error()
+			}
+		}
 	}
 	if route.kind == "overview" {
 		data.OverviewParts = overviewDirectory(document, requirementsDocument, onboarding)
 		if inventoryErr == nil {
 			part := technicalOverviewPart(inventory)
-			if document.OverviewPart(applayout.OverviewDataModel) != nil {
+			if board != nil && board.Visual != "" {
+				part.Gap, part.Note = false, "One data model document, Systems and Components."
+			} else if document.OverviewPart(applayout.OverviewDataModel) != nil {
 				part.Gap, part.Note = false, "Shared data-model overview, ERD documents, Systems and Components."
+			}
+			if len(namedBoards) > 0 {
+				part.Gap = false
+				part.Count += " · " + plural(len(namedBoards), "whiteboard", "whiteboards")
+				if board == nil || board.Visual == "" {
+					part.Note = "Whiteboard documents and shared technical definitions."
+				}
 			}
 			data.OverviewParts = append(data.OverviewParts, part)
 		} else {
@@ -1419,7 +1470,18 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// whichever page is showing.
 	rootNavLinks(data.Nav)
 	if route.kind != "overview" && !data.TermsMode {
-		markActiveNav(data.Nav, r.URL.Path)
+		activeHref := r.URL.Path
+		// Whiteboard document rows keep their selected revision in the link.
+		// Match that identity before revealing ancestors; focus/view only refine
+		// the canvas and must not hide the owning Technical design branch.
+		if data.Technical != nil {
+			if selected := data.Technical.Whiteboard; selected != nil {
+				activeHref = selected.Href
+			} else if model := data.Technical.DataModel; model != nil && model.Whiteboard != nil && model.Whiteboard.Visual != "" {
+				activeHref = model.Whiteboard.Href
+			}
+		}
+		markActiveNav(data.Nav, activeHref)
 	}
 	data.PageTitle = pageTitle(data)
 	return data, nil
@@ -1457,6 +1519,11 @@ func pageTitle(data *pageData) string {
 		return data.Flags.Title
 	case data.TechnicalEntity != nil:
 		return data.TechnicalEntity.Name
+	case data.Technical != nil && data.Technical.Whiteboard != nil:
+		if data.Technical.Whiteboard.Name != "" {
+			return data.Technical.Whiteboard.Name
+		}
+		return data.Technical.Whiteboard.ID
 	case data.Technical != nil && data.Technical.Area.Title != "":
 		return data.Technical.Area.Title
 	case data.Technical != nil:

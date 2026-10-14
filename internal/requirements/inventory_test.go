@@ -90,6 +90,19 @@ func TestInventoryRejectsAmbiguousJSON(t *testing.T) {
 func validateInventorySchemas(t *testing.T, d Inventory) {
 	t.Helper()
 	compiler := jsonschema.NewCompiler()
+	// ERD revisions now reference the shared diagram source schema. Register it
+	// locally so schema validation remains offline, including legacy revisions.
+	data, err := os.ReadFile(filepath.Join("..", "..", "schema", "v5", "diagram.schema.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	resource, err := jsonschema.UnmarshalJSON(strings.NewReader(string(data)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := compiler.AddResource("https://changesaga.dev/schema/v5/diagram.schema.json", resource); err != nil {
+		t.Fatal(err)
+	}
 	for _, record := range d.Records {
 		values := []any{record.Identity}
 		for _, v := range record.Revisions {

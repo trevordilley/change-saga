@@ -394,6 +394,23 @@ const appJavaScript = `(() => {
   const revealAnchors = ['diagram-reveal', 'diagram-reveal-replay'];
   let revealedSlide = null;
   function replayDiagramReveal(slide) {
+    // Inline compositions use the same renderer-authored reveal steps. Keep
+    // their finished drawing for reduced motion and cancel stale replays.
+    if (slide.matches('[data-whiteboard-view]')) {
+      const focused = slide.dataset.whiteboardFocused;
+      const scope = focused ? (qa('[data-frame-detail]', slide).find(node => node.dataset.frameDetail === focused)
+        || qa('[data-instance-path]', slide).find(node => node.dataset.instancePath === focused)) : q('[data-whiteboard-viewport] > svg', slide);
+      for (const node of qa('[data-reveal-step]', slide)) node.getAnimations().forEach(animation => animation.cancel());
+      if (!scope || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const nodes = qa('[data-reveal-step]', scope);
+      const steps = [...new Set(nodes.map(node => Number(node.dataset.revealStep)).filter(step => step > 0))].sort((a,b) => a-b);
+      const interval = Math.min(350, 5000 / Math.max(1,steps.length-1));
+      for (const node of nodes) {
+        const rank = steps.indexOf(Number(node.dataset.revealStep));
+        if (rank >= 0) node.animate([{opacity:0},{opacity:1}], {duration:500, delay:rank*interval, fill:'backwards'});
+      }
+      return;
+    }
     if (slide === revealedSlide) return;
     revealedSlide = slide;
     qa('[data-fragment-frame]', slide).filter(svgFrame).forEach(frame => {
@@ -572,6 +589,7 @@ const appJavaScript = `(() => {
   }
 
   function noteTemplate(hotspot) {
+    if (diagramNoteTemplates.has(hotspot)) return diagramNoteTemplates.get(hotspot);
     hotspot = hotspot.closest('.landmark-hotspot');
     if (!hotspot) return null;
     const fragment = hotspot.closest('.fragment');
@@ -626,7 +644,8 @@ const appJavaScript = `(() => {
     notePopover.style.top = '0px';
     const box = notePopover.getBoundingClientRect();
     const gap = 8, margin = 8;
-    const others = qa('.landmark-hotspot', noteOwner.closest('.fragment-stage') || document)
+    const stage = noteOwner.closest('.fragment-stage');
+    const others = (stage ? qa('.landmark-hotspot', stage) : [])
       .filter(hotspot => hotspot !== noteOwner).map(hotspot => hotspot.getBoundingClientRect()).filter(other => other.width && other.height && !overlapping(other, rect));
     const candidates = [
       [rect.left, rect.bottom + gap, 'y'], [rect.left, rect.top - gap - box.height, 'y'],
@@ -670,6 +689,8 @@ const appJavaScript = `(() => {
     return inside[inside.length - 1] || noteOwner;
   }
   function tabbableAfterOwner() {
+    const diagramOwner = diagramAffordanceOwner(noteOwner);
+    if (diagramOwner !== noteOwner) return diagramAffordanceNext(diagramOwner);
     return qa(tabbableSelector).filter(element => tabbable(element) && !noteOwner.contains(element) && !notePopover.contains(element)
       && (noteOwner.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_FOLLOWING)).shift() || null;
   }
@@ -1665,6 +1686,7 @@ const appJavaScript = `(() => {
   }
 
   function showDrawer(opener) {
+    opener = diagramAffordanceOwner(opener);
     hideNote();
     // A bound ERD element is an SVGElement; it takes focus like a button.
     drawerOpener = (opener instanceof HTMLElement || opener instanceof SVGElement) && opener.isConnected
@@ -1766,7 +1788,7 @@ const appJavaScript = `(() => {
   async function openDocumentation(button, back = false) {
     // An Item's control also names the Item, so the drawer can show the
     // exact code that Item selects; definitions reached from there do not.
-    const pin = {target:button.dataset.documentationTarget, revision:button.dataset.documentationRevision, item:button.dataset.documentationItem || ''};
+    const pin = {target:button.dataset.documentationTarget, revision:button.dataset.documentationRevision, item:button.dataset.documentationItem || '', relationship:button.dataset.sourceRelationship || button.dataset.erdRelationship || ''};
     const alreadyOpen = q('.diff-drawer.open')?.dataset.drawerMode === 'documentation';
     const opener = alreadyOpen ? drawerOpener : button;
     if (!alreadyOpen) documentationTrail = [];
@@ -1780,6 +1802,7 @@ const appJavaScript = `(() => {
     const url = new URL('/api/documentation', location.origin);
     url.searchParams.set('target', pin.target); url.searchParams.set('revision', pin.revision);
     if (pin.item) url.searchParams.set('item', pin.item);
+    if (pin.relationship) url.searchParams.set('relationship', pin.relationship);
     try {
       const response = await fetch(url, {credentials:'same-origin'});
       const html = await response.text();
@@ -1792,12 +1815,17 @@ const appJavaScript = `(() => {
         previous.dataset.documentationBack = 'true'; body.prepend(previous);
       }
       highlightCode(body);
+      if (pin.relationship) {
+        const selected = qa('[data-relationship]', body).find(row => row.dataset.relationship === pin.relationship);
+        if (selected) { selected.classList.add('whiteboard-selected-relationship'); selected.scrollIntoView({block:'nearest'}); }
+      }
     } catch (error) {
       if (request !== documentationRequest || q('.diff-drawer.open')?.dataset.drawerMode !== 'documentation') return;
       body.textContent = error.message || 'Explanation could not be loaded.';
       const retry = document.createElement('button'); retry.type = 'button'; retry.textContent = 'Try again';
       retry.dataset.documentationTarget = pin.target; retry.dataset.documentationRevision = pin.revision;
       if (pin.item) retry.dataset.documentationItem = pin.item;
+      if (pin.relationship) retry.dataset.sourceRelationship = pin.relationship;
       body.append(retry);
     }
   }
@@ -2145,10 +2173,15 @@ const appJavaScript = `(() => {
   async function hydrateTargetCode(button, returnOpener = null) {
     const href = button?.dataset.targetCodeHref;
     if (!href || button.dataset.targetCodeLoading === 'true') return;
+    const isCurrent = diagramAffordanceActionIsCurrent(button);
     button.dataset.targetCodeLoading = 'true';
     button.setAttribute('aria-busy', 'true');
     try {
-      const installed = installTargetCodeResponse(href, await requestTargetCode(href, {interactive:true}), button);
+      const html = await requestTargetCode(href, {interactive:true});
+      // Diagram strips are ephemeral. A cached response remains useful, but
+      // an action dismissed by camera movement or navigation cannot reopen UI.
+      if (!isCurrent()) return;
+      const installed = installTargetCodeResponse(href, html, button);
       if (installed) openDrawer(installed.templateID, returnOpener || installed.opener);
     } catch (_) {
       delete button.dataset.targetCodeLoading;
@@ -2672,7 +2705,7 @@ const appJavaScript = `(() => {
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
     const documentationButton = event.target.closest('[data-documentation-target]');
     if (documentationButton) {event.preventDefault(); void openDocumentation(documentationButton); return;}
-    if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item}},true); return;}
+    if (event.target.closest('[data-documentation-back]')) {event.preventDefault(); documentationTrail.pop(); const pin = documentationTrail[documentationTrail.length-1]; if(pin) void openDocumentation({dataset:{documentationTarget:pin.target,documentationRevision:pin.revision,documentationItem:pin.item,sourceRelationship:pin.relationship}},true); return;}
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
     // An unbound note needs pointer events to reveal its info control. Its
@@ -3133,6 +3166,7 @@ const appJavaScript = `(() => {
     }
   }
 
+` + diagramInteractionsJavaScript + whiteboardNavigationJavaScript + whiteboardJavaScript + `
   applyDiffLayout(rememberedDiffLayout());
   // ----- The page lifecycle -----
   // The shell is loaded once per session: this script, the stylesheet, the
@@ -3148,6 +3182,10 @@ const appJavaScript = `(() => {
   const viewParams = ['view', 'mode', 'file', 'ref'];
   function pageKey(href) {
     const url = new URL(href, location.href);
+    if (url.pathname === '/technical/erd' || /^\/technical\/whiteboards\/[^/]+$/.test(url.pathname)) {
+      url.searchParams.delete('focus');
+      if (url.searchParams.get('view') === 'all') url.searchParams.delete('view');
+    }
     viewParams.forEach(key => url.searchParams.delete(key));
     url.searchParams.sort();
     return url.pathname + url.search;
@@ -3195,6 +3233,7 @@ const appJavaScript = `(() => {
     prepareContext(root);
     highlightCode(root);
     bindERDVisuals(root);
+    prepareWhiteboards(root);
     applyDiffLayout(diffLayout);
     syncSlidePresentation();
     reviewAsync = makeReviewAsync(pageScope.signal);

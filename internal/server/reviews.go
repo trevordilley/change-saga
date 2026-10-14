@@ -1145,7 +1145,7 @@ var reviewTemplates = template.Must(template.New("reviews").Funcs(templateFuncs(
 		}
 		return decision.Author
 	},
-}).Parse(sideLinksTemplate + deckOverviewTemplates + reviewTemplateSource + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalERDTemplates + technicalSelectionTemplates + reviewLineTemplates))
+}).Parse(sideLinksTemplate + deckOverviewTemplates + reviewTemplateSource + elementNoteTemplates + directoryTemplates + documentationTemplates + whiteboardTemplates + technicalERDTemplates + technicalSelectionTemplates + reviewLineTemplates))
 
 // reviewTemplateSource renders the review index and one review. Plain forms
 // post decisions and comments, so the page works without script.

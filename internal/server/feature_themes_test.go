@@ -177,6 +177,13 @@ func TestThemeItemReferencesOpenCanonicalProductPages(t *testing.T) {
 		if !strings.Contains(html.String(), `href="`+href+`"`) || !strings.Contains(html.String(), "Open referenced") {
 			t.Fatal(html.String())
 		}
+		html.Reset()
+		if err := tmpl.ExecuteTemplate(&html, "landmark-affordance", view); err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(html.String(), `href="`+href+`"`) {
+			t.Fatalf("shared annotation lost %s record link: %s", kind, html.String())
+		}
 		view.ItemMeta.Record = "urn:change-saga:other:" + kind + ":core"
 		if view.RecordLink() != nil {
 			t.Fatal("cross-Saga Item generated a local link")

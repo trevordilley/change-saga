@@ -20,6 +20,7 @@ change.saga/
   ___overview/
   ___personas/
   ___designsystem/
+  ___whiteboards/<board-id>/revisions/<revision-id>.json
   ___onboarding/
   ___featureflags/
   ___features/<feature>.feature/
@@ -36,6 +37,11 @@ change.saga/
 
 The layout is descriptive, not an authoring API. Use queries to discover
 resources and public commands to change them.
+
+Named technical-design whiteboards use the shared diagram schema and independent
+immutable histories. Their directory placement determines the format; there is
+no kind discriminator. Publish and inspect them with the public `whiteboard`
+commands described in [diagrams.md](diagrams.md#named-whiteboards).
 
 For technical definitions, use the [inventory authoring guidance](diagrams.md#reusable-components-and-systems).
 

@@ -48,6 +48,21 @@ func num(n float64) string {
 // numbers are serialized canonically. Every element becomes a group whose id
 // is the element ID, so slide Items select elements by ID.
 func Render(d Document, options Options) ([]byte, error) {
+	for _, e := range d.Elements {
+		if e.Kind == "frame" || e.Kind == "connection" || strings.Contains(e.About, "/") {
+			return nil, fmt.Errorf("composition requires ResolveComposition and Composition.Render")
+		}
+	}
+	svg, err := renderTree(d, options, nil, "")
+	if err != nil {
+		return nil, err
+	}
+	var out bytes.Buffer
+	svg.write(&out, 0)
+	return out.Bytes(), nil
+}
+
+func renderTree(d Document, options Options, composition *Composition, scope string) (*node, error) {
 	if err := d.Validate(); err != nil {
 		return nil, err
 	}
@@ -55,7 +70,7 @@ func Render(d Document, options Options) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("measurement font: %w", err)
 	}
-	r := renderer{doc: d, face: face, reveal: planReveal(d)}
+	r := renderer{doc: d, face: face, reveal: planReveal(d), composition: composition, scope: scope}
 	svg := newNode("svg", "xmlns", "http://www.w3.org/2000/svg", "viewBox", fmt.Sprintf("0 0 %s %s", num(d.Width), num(d.Height)),
 		"role", "img", "aria-labelledby", "diagram-title", "data-renderer", Renderer)
 	svg.add("title", "id", "diagram-title").text = options.Title
@@ -90,16 +105,16 @@ func Render(d Document, options Options) ([]byte, error) {
 	used := map[string]theme.Token{}
 	resolveTokens(svg, used)
 	style.text += tokenStyle(used)
-	var out bytes.Buffer
-	svg.write(&out, 0)
-	return out.Bytes(), nil
+	return svg, nil
 }
 
 type renderer struct {
-	doc    Document
-	face   *sfnt.Font
-	defs   *node
-	reveal revealPlan
+	composition *Composition
+	scope       string
+	doc         Document
+	face        *sfnt.Font
+	defs        *node
+	reveal      revealPlan
 }
 
 func (r *renderer) draw(parent string, into *node) error {
@@ -131,6 +146,14 @@ func (r *renderer) element(e Element, into *node) error {
 	style, _ := r.doc.Style(e.Style)
 	g := into.add("g", "id", e.ID, "data-diagram-kind", e.Kind, "transform", fmt.Sprintf("translate(%s %s)", num(e.X), num(e.Y)))
 	r.revealStep(e, g)
+	if r.composition != nil {
+		r.compositionMetadata(e, g)
+	} else {
+		sourceAttributes(g, e.Source)
+		if e.Visibility != "" {
+			g.set("data-visibility", e.Visibility)
+		}
+	}
 	if e.Decorative {
 		g.set("aria-hidden", "true")
 	} else {
@@ -146,6 +169,10 @@ func (r *renderer) element(e Element, into *node) error {
 		}
 	}
 	switch e.Kind {
+	case "frame":
+		return r.compositionFrame(e, style, g)
+	case "connection":
+		return r.compositionConnection(e, style, g)
 	case "group":
 		if e.Shape == "section" {
 			if err := r.section(e, style, g); err != nil {
@@ -170,12 +197,22 @@ func (r *renderer) element(e Element, into *node) error {
 		g.children = append(g.children, children...)
 		return nil
 	case "edge":
+		if r.composition != nil {
+			i := r.instance(e)
+			e.From, e.To = i.From, i.To
+		}
 		return r.edge(e, style, g)
 	case "text":
 		return r.text(g, e.Label, Box{Width: e.Width, Height: e.Height}, style.FontSize, style.Ink, e.Wrap, e.Align)
 	case "code":
 		return r.codeExample(e, style, g)
 	case "sticky", "annotation":
+		if r.composition != nil && e.Shape == "bubble" && e.Target == nil && e.About != "" {
+			i := r.instance(e)
+			target := r.composition.instances[r.composition.index[i.About]]
+			p := i.Transform.local(boxBoundary(target.Bounds, i.Transform.point(Point{e.Width / 2, e.Height / 2})))
+			e.Target = &p
+		}
 		return r.board(e, style, g)
 	}
 	return r.shape(e, style, g)

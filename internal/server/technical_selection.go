@@ -26,6 +26,7 @@ import (
 // documentationControlView is the book control on a slide Item.
 type documentationControlView struct {
 	Target, Revision string
+	Relationship     string
 	// Item is the Item's URN, so the drawer can show its own selections.
 	Item       string
 	Selections int

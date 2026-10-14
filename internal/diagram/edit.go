@@ -168,13 +168,19 @@ func Edit(d Document, operations []Operation) (Document, []string, error) {
 			}
 		case "canvas":
 			var settings struct {
-				Width      *float64 `json:"width"`
-				Height     *float64 `json:"height"`
-				Background *string  `json:"background"`
-				Reveal     *string  `json:"reveal"`
+				Width      *float64        `json:"width"`
+				Height     *float64        `json:"height"`
+				Background *string         `json:"background"`
+				Reveal     *string         `json:"reveal"`
+				Viewport   json.RawMessage `json:"viewport"`
 			}
 			if err := decodeStrict(op.Set, &settings); err != nil {
-				return fail("set must contain only width, height, background, and reveal: %v", err)
+				return fail("set must contain only width, height, background, reveal, and viewport: %v", err)
+			}
+			if settings.Viewport != nil {
+				if err := decodeStrict(settings.Viewport, &d.Viewport); err != nil {
+					return fail("invalid viewport: %v", err)
+				}
 			}
 			if settings.Width != nil {
 				d.Width = *settings.Width
