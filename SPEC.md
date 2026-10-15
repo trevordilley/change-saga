@@ -47,6 +47,7 @@ one Saga is neither invalid nor reported as a problem.
     theme.json                  # authored Markdown overview and feature URN set
     ___slides/                  # normal rationale deck, role feature-theme
   ___whiteboards/<board-id>/revisions/<revision-id>.json  # optional named whiteboards
+  ___deprecations/<id>.deprecation/{deprecation.json,revisions/<id>.json,events/<id>.json}
   ___features/<id>.feature/
     feature.json
     <report content>           # chapters, sections, fragments
@@ -1716,3 +1717,52 @@ as duplicate IDs, or a repository mismatch). Every gap, including uncovered
 changed lines, is a finding. `check` exits 0 when every named area is covered,
 3 when one has a gap, and 1 when the report cannot be trusted. `validate` exits
 1 for structural errors. Unknown v2 JSON fields are rejected.
+
+
+## Deprecation annotations
+
+The optional app-level `___deprecations` root stores first-class authored
+assertions. Each package has an immutable identity, complete immutable revision
+snapshots and an independent append-only `active`/`withdrawn` lifecycle. Revision
+and event parents name every observed current head; merges preserve competing
+heads until an explicit multi-parent correction. Initial state is active;
+subsequent lifecycle changes require reasons. `deprecation add`, `revise`, and
+`set-state` are the public writers. No operation rewrites or deletes the target.
+
+A revision requires `reason`, explicit `scope` (`content` or `code`) and a
+self-scoped target pin. Code scope requires exact digest-bearing `code`
+references and applies only to those references. Content scope's references and
+direct evidence reached from its target remain related evidence, never implied
+code deprecation. An optional replacement is independently pinned. Evidence is
+not changed-line coverage. `references` includes active unconflicted assertions;
+repairs append deprecation revisions instead of rewriting their evidence.
+
+Targets are existing fragments/landmarks, decks/slides/Items (including review
+URNs), technical inventory identities, and named whiteboard identities
+`urn:change-saga:<saga>:whiteboard:<board>`. Narrative and visual targets pin the
+existing canonical authored-content digest; technical targets pin their own
+revision URNs. Whiteboards pin
+`urn:change-saga:<saga>:whiteboard:<board>:revision:<revision>` and optionally an
+exact composition appearance `element` path. Paths do not create independent
+technical entities. Target changes, removal and conflicts are reported as health;
+they never rewrite historical assertions. Replacement links do not expand scope.
+
+V5 `explains` relations additionally accept a deprecation source, with `self`
+scope and both source deprecation and target story/criterion revision pins.
+The v3 relation grammar is unchanged. Stories are optional and may be historical
+or retired; normal relation currency and traversal apply. Withdrawal does not
+remove story relations. V5 `supersedes` permits deprecation-to-deprecation
+relations as same-kind history links, but lifecycle withdrawal remains explicit.
+
+`query deprecations` uses the standard snapshot and pagination envelope, with
+global, annotation, target, story, scope, state and exact code-location filters.
+All lifecycle states are included by default. Every competing head is returned
+as an assertion; no winner is inferred. `--history` selects one identity's full
+immutable history. Code matches distinguish verified overlap from uncertain
+same-path stale evidence, retain exact provenance, and label related evidence
+separately. No rows means no recorded deprecation, never proof of non-deprecation.
+See [deprecations.md](docs/deprecations.md) for authoring and interpretation.
+
+Schemas: `v5/deprecation.schema.json`, `v5/deprecation-revision.schema.json`,
+`v5/deprecation-event.schema.json`. Existing Sagas without the root retain their
+behavior; older strict readers must upgrade to read the new records/endpoints.

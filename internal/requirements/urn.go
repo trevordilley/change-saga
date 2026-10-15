@@ -61,6 +61,7 @@ const (
 	endpointRelation     endpointKind = "relation"
 
 	// The remaining kinds are legal only on v5 relations.
+	endpointDeprecation       endpointKind = "deprecation"
 	endpointTestCase          endpointKind = "test-case"
 	endpointWave              endpointKind = "wave"
 	endpointDependency        endpointKind = "dependency"
@@ -72,7 +73,7 @@ const (
 // v3 reports whether a v3 relation record may name this endpoint kind.
 func (kind endpointKind) v3() bool {
 	switch kind {
-	case endpointTestCase, endpointWave, endpointDependency, endpointContract, endpointQualityPolicy, endpointCoverageException:
+	case endpointDeprecation, endpointTestCase, endpointWave, endpointDependency, endpointContract, endpointQualityPolicy, endpointCoverageException:
 		return false
 	default:
 		return true
@@ -153,6 +154,8 @@ func parseEndpoint(value string) (endpoint, error) {
 		return endpoint{}, fmt.Errorf("endpoint must be a canonical living-Saga URN")
 	}
 	switch parts[3] {
+	case "deprecation":
+		return endpoint{Kind: endpointDeprecation, SagaID: parts[2], ID: parts[4]}, nil
 	case "claim":
 		return endpoint{Kind: endpointClaim, SagaID: parts[2], ID: parts[4]}, nil
 	case "verification":

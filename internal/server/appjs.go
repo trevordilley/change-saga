@@ -3397,11 +3397,12 @@ const appJavaScript = `(() => {
     // What this script inserts itself, into the drawer, a chapter, an
     // explanation, or a review surface, holds links too; they are boosted
     // like the ones htmx swapped in, so following one keeps the shell. Only
-    // links: the forms this script builds submit themselves.
+    // links and read-only deprecation loaders: the forms this script builds
+    // submit themselves.
     new MutationObserver(records => {
       for (const record of records) for (const node of record.addedNodes) {
         if (node.nodeType !== 1 || node['htmx-internal-data']) continue;
-        within(node, 'a[href]').forEach(link => { if (!link['htmx-internal-data']) htmx.process(link); });
+        within(node, 'a[href],[data-deprecation-load]').forEach(link => { if (!link['htmx-internal-data']) htmx.process(link); });
       }
     }).observe(document.body, {childList: true, subtree: true});
     // Every request says which state of the Saga the kept sidebar and deck

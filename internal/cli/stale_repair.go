@@ -214,6 +214,8 @@ func printChangeStaleness(out io.Writer, staleness changeStaleness, preExistingH
 		switch row.Kind {
 		case "inventory":
 			fmt.Fprint(out, " (revise the definition with focused current references)")
+		case "deprecation":
+			fmt.Fprint(out, " (append a corrected assertion with change-saga deprecation revise)")
 		case "term":
 			fmt.Fprint(out, " (revise the term with change-saga term revise)")
 		case "claim", "quality_evidence":

@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/deprecation-revision.schema.json",
+  "title": "Authored deprecation assertion with explicit scope and exact provenance",
+  "description": "A complete authored assertion with explicit content or code scope, a pinned target, optional replacement, and exact code evidence. Lifecycle withdrawal preserves this immutable revision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "deprecation",
+    "parents",
+    "reason",
+    "scope",
+    "target",
+    "created_at"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/deprecation-revision.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "deprecation": {
+      "$ref": "#/$defs/record_urn"
+    },
+    "parents": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/revision_urn"
+      }
+    },
+    "code": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/code_reference"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request_id": {
+      "$ref": "#/$defs/id"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "scope": {
+      "enum": [
+        "content",
+        "code"
+      ]
+    },
+    "target": {
+      "$ref": "#/$defs/target_pin"
+    },
+    "replacement": {
+      "$ref": "#/$defs/target_pin"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "record_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:deprecation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "revision_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:deprecation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "code_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "path",
+        "digest"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+          "description": "Full Git object name the reference is pinned at."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Normalized repository-relative slash path at that commit."
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "First referenced line, 1-based. Absent for a whole file."
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Last referenced line, inclusive. Absent for a whole file."
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "SHA-256 of the referenced bytes: the lines start..end including their newlines, or the whole file."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional reviewer-facing note; never part of the reference's identity."
+        }
+      },
+      "dependentRequired": {
+        "start": [
+          "end"
+        ],
+        "end": [
+          "start"
+        ]
+      }
+    },
+    "target_pin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target"
+      ],
+      "properties": {
+        "target": {
+          "type": "string",
+          "pattern": "^(urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:((fragment|deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127})|urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(whiteboard|component|system|data-entity|erd|erd-overlay):[A-Za-z0-9][A-Za-z0-9._-]{0,127})$"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(whiteboard|component|system|data-entity|erd|erd-overlay):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "content_digest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "element": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[A-Za-z_][A-Za-z0-9._-]{0,127}(/[A-Za-z_][A-Za-z0-9._-]{0,127})*$"
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "target": {
+              "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:((fragment|deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(deck|slide):[A-Za-z0-9][A-Za-z0-9._-]{0,127}|review:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127})$"
+            }
+          },
+          "required": [
+            "content_digest"
+          ],
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "revision"
+                ]
+              },
+              {
+                "required": [
+                  "element"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "target": {
+              "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(whiteboard|component|system|data-entity|erd|erd-overlay):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+            }
+          },
+          "required": [
+            "revision"
+          ],
+          "not": {
+            "required": [
+              "content_digest"
+            ]
+          }
+        }
+      ],
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "element"
+            ]
+          },
+          "then": {
+            "properties": {
+              "target": {
+                "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:whiteboard:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "scope": {
+            "const": "code"
+          }
+        },
+        "required": [
+          "scope"
+        ]
+      },
+      "then": {
+        "required": [
+          "code"
+        ],
+        "properties": {
+          "code": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ]
+}

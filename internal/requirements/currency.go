@@ -202,6 +202,14 @@ func (heads currencyHeads) withInputs(inputs StaleInputs) currencyHeads {
 // before any supplied inputs.
 func documentHeads(document Document) currencyHeads {
 	heads := currencyHeads{sagaID: document.SagaID, revisions: map[string]string{}, conflicted: map[string][]string{}, removed: map[string]bool{}, statements: map[string]map[string]string{}, obligations: map[string]map[string]string{}}
+	for _, dep := range document.Deprecations {
+		urn, _ := DeprecationURN(document.SagaID, dep.Identity.ID)
+		if len(dep.RevisionHeads) == 1 {
+			heads.revisions[urn] = dep.RevisionHeads[0]
+		} else {
+			heads.conflicted[urn] = dep.RevisionHeads
+		}
+	}
 	for _, story := range document.Stories {
 		storyID, _ := storyURN(document.SagaID, story.Identity.ID)
 		for _, revision := range story.Revisions {

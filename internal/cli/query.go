@@ -194,6 +194,7 @@ type querySchemaDescription struct {
 }
 
 var queryOperations = []string{
+	"deprecations",
 	"schema",
 	"overview",
 	"children",
@@ -237,6 +238,7 @@ var queryOperations = []string{
 // skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
+	"deprecations":         "authored deprecation assertions, exact content and code scope, target health, optional story relations and immutable history; absence is no recorded deprecation, never proof of non-deprecation",
 	"inventory":            "Shared data-model overview reference and Component/System/data-entity/ERD documents, pinned graph links, exact code health and optional selected-record history; explicit intent and comparison-relative newness filters, declared feature scope and a separate unresolved page",
 	"inventory-coverage":   "which tracked code at one source revision the current technical definitions account for: covered and uncovered ranges with every owner, stale references, and unresolved or excluded owners, separate from deck and review coverage",
 	"inventory-selections": "saved implementation Item selections with their declared path, containing evidence, pin health, and separately resolved selected-byte and containing-evidence health; whether each contributes inherited deck coverage",
@@ -276,6 +278,7 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
+	"deprecations":         "change-saga query deprecations --saga PATH [--deprecation ID|URN] [--target URN] [--scope content|code] [--state active|withdrawn|conflicted|all] [--story ID|URN] [--ref LOCATION] [--head REV] [--repo PATH] [--history] [--cursor CURSOR] [--limit N]",
 	"feature-themes":       "change-saga query feature-themes --saga PATH [--theme ID|URN] [--cursor TOKEN] [--limit N]",
 	"inventory":            "change-saga query inventory --saga PATH [--kind component|system|data-entity|erd|erd-overlay] [--target URN [--history]] [--feature ID|URN] [--intent proposed|implemented|unspecified] [--new] [--cursor TOKEN] [--limit N] [--conflict-cursor TOKEN] [--conflict-limit N] [--repo PATH] [--against REV] [--head REV]",
 	"inventory-coverage":   "change-saga query inventory-coverage --saga PATH [--path PREFIX]... [--kind component|system] [--state ranges|covered|uncovered|stale|unresolved|excluded] [--cursor TOKEN] [--limit N] [--repo PATH] [--head REV]",
@@ -337,6 +340,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 			Message: "unknown query operation",
 			Details: map[string]any{"allowed": queryOperations},
 		})
+	}
+	if operation == "deprecations" {
+		return queryDeprecations(ctx, args[1:], out)
 	}
 	if operation == "feature-themes" {
 		return queryFeatureThemes(args[1:], out)
@@ -519,6 +525,7 @@ func queryHelpFor(operation string) queryHelp {
 
 func querySchemaFor(operation string) querySchemaDescription {
 	paths := map[string][]string{
+		"deprecations":         {"data.deprecations", "data.deprecations[].assertions", "data.deprecations[].assertions[].target_health", "data.deprecations[].assertions[].code", "data.deprecations[].stories", "data.deprecations[].history", "data.absence_meaning", "data.source_warning"},
 		"feature-themes":       {"data.feature_themes", "data.feature_themes[].overview", "data.feature_themes[].features", "data.feature_themes[].decks"},
 		"overview":             {"data.saga", "data.source", "data.root", "data.overview_fragments", "data.chapters", "data.decks", "data.decks[].overview", "data.decks[].overview.references", "data.decks[].overview.covered_slides", "data.decks[].overview.uncovered_slides", "data.coverage"},
 		"children":             {"data.children"},
@@ -556,6 +563,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"layers":               {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
 	}
 	countedPaths := map[string]string{
+		"deprecations":         "data.deprecations",
 		"feature-themes":       "data.feature_themes",
 		"children":             "data.children",
 		"fragment-diffs":       "data.selectors",

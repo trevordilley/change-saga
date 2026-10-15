@@ -10,6 +10,7 @@ review deck → reconcile living documentation → check again workflow.
 
 | | |
 | --- | --- |
+| [deprecations.md](deprecations.md) | Authored deprecation scope, exact code evidence, optional story context, discovery and withdrawal. |
 | [feature-themes.md](feature-themes.md) | Optional product themes, authored rationale decks, and Theme/Persona feature grouping. |
 | [whiteboards.md](whiteboards.md) | Independent named whiteboards for data models, infrastructure and system design, using one shared diagram grammar. |
 | [erd-whiteboard-guide.md](erd-whiteboard-guide.md) | Current ERD whiteboard authoring, shared grammar, source evidence, immutable revisions and focused inspection. |

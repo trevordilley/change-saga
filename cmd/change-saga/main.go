@@ -52,6 +52,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Technical(ctx, args[0], args[1:], stdout)
 	case "inventory":
 		err = cli.Inventory(ctx, args[1:], stdout)
+	case "deprecation":
+		err = cli.Deprecation(ctx, args[1:], stdout)
 	case "term":
 		err = cli.Term(ctx, args[1:], stdout)
 	case "persona":

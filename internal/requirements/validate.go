@@ -496,6 +496,12 @@ func validateRelationSet(document *Document) error {
 			}
 		}
 	}
+	for _, dep := range document.Deprecations {
+		for _, revision := range dep.Revisions {
+			urn, _ := DeprecationRevisionURN(document.SagaID, dep.Identity.ID, revision.ID)
+			knownRevisions[urn] = true
+		}
+	}
 	activeConflictPairs := map[string]string{}
 	graphs := map[RelationType]map[string][]string{RelationRefines: {}, RelationSupersedes: {}}
 	for _, relation := range document.Relations {
@@ -503,6 +509,9 @@ func validateRelationSet(document *Document) error {
 			parsed, err := parseEndpoint(endpoint)
 			if err != nil {
 				continue
+			}
+			if parsed.Kind == endpointDeprecation && document.FindDeprecation(parsed.ID) == nil {
+				problems.add("relation %q references missing deprecation %q", relation.ID, endpoint)
 			}
 			if parsed.Kind == endpointStory && !knownStories[endpoint] {
 				problems.add("relation %q references missing story %q", relation.ID, endpoint)
@@ -513,8 +522,8 @@ func validateRelationSet(document *Document) error {
 		}
 		for _, revision := range []string{relation.FromRevision, relation.ToRevision} {
 			if revision != "" {
-				if ref, err := parseEndpointRevision(revision); err == nil && ref == endpointStory && !knownRevisions[revision] {
-					problems.add("relation %q references missing story revision %q", relation.ID, revision)
+				if ref, err := parseEndpointRevision(revision); err == nil && (ref == endpointStory || ref == endpointDeprecation) && !knownRevisions[revision] {
+					problems.add("relation %q references missing definition revision %q", relation.ID, revision)
 				}
 			}
 		}
@@ -546,6 +555,11 @@ func validateRelationSet(document *Document) error {
 }
 
 func parseEndpointRevision(value string) (endpointKind, error) {
+	p := strings.Split(value, ":")
+	if len(p) == 7 && p[0] == "urn" && p[1] == "change-saga" && p[3] == "deprecation" && p[5] == "revision" && livingid.ValidID(p[2]) && livingid.ValidID(p[4]) && livingid.ValidID(p[6]) {
+		return endpointDeprecation, nil
+	}
+
 	ref, err := livingid.Parse(value)
 	if err != nil || ref.Kind != livingid.KindRevision {
 		return "", fmt.Errorf("not a definition revision")

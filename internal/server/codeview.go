@@ -52,6 +52,7 @@ type FileDiffView struct {
 // diff, whether it is opened from Code Diff or beside narrative evidence.
 // CodeHref is populated only when the surface needs a route back to Code Diff.
 type reviewDiffSurfaceView struct {
+	Ref      string
 	Path     string
 	CodeHref string
 }
