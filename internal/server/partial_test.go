@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -146,15 +147,20 @@ func getPlain(t *testing.T, handler http.Handler, path string) string {
 	return recorder.Body.String()
 }
 
-// The deck viewer is loaded once per session, after the first paint, and
+// The deck viewer is loaded once per session, when a reader opens it, and
 // its validator is the state of the Saga it shows: an unchanged Saga is
 // revalidated rather than sent again.
 func TestTheDecksLoadOnceAndRevalidate(t *testing.T) {
 	root := writeAppNavSaga(t)
-	handler := newMux(&app{root: root, sourceDir: root, template: serverTemplate(t)})
+	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
+	handler := newMux(application)
 	page := getPlain(t, handler, "/")
+	application.warmCaches(context.Background(), handler)
+	if application.files.current.slidesView != nil {
+		t.Fatal("ordinary pages or warmers rendered hidden slides")
+	}
 	shell := shellVersionAttr.FindStringSubmatch(page)
-	if shell == nil || !strings.Contains(page, `id="decks-`+shell[1]+`" data-deck-host hx-get="/decks" hx-trigger="load" hx-target="this" hx-swap="innerHTML" hx-preserve>`) {
+	if shell == nil || !strings.Contains(page, `id="decks-`+shell[1]+`" data-deck-host hx-get="/decks" hx-trigger="saga:open-decks once" hx-target="this" hx-swap="innerHTML" hx-preserve>`) {
 		t.Fatal("the page does not load the decks into a host named for its Saga state")
 	}
 	if strings.Contains(page, "data-deck-viewer") {

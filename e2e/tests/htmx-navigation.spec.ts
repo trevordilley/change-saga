@@ -19,7 +19,7 @@ async function withDeck(page: Page, saga: SagaFixture): Promise<void> {
   run(saga, "add-deck", "--feature", "wave-one", "--objective", "Explain the request flow.", saga.sagaRoot, "request-flow");
   run(saga, "add-slide", "--deck", "request-flow", "--intent", "explain", "--layout", "diagram", "--title", "Request enters",
     "--takeaway", "Requests enter at the edge.", saga.sagaRoot, "request-enters");
-  await page.reload();
+  await page.goto(saga.featureURL + "?view=slides");
   await waitForSettledSaga(page);
   await expect(page.locator("#view-slides [data-deck-viewer]")).toHaveCount(1);
 }

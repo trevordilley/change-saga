@@ -5,6 +5,7 @@ package deprecationview
 import (
 	"context"
 	"strings"
+	"sync"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -63,7 +64,7 @@ type Filter struct {
 func Records(ctx context.Context, doc requirements.Document, head string, resolver Resolver, filter Filter) []Record {
 	rows := []Record{}
 	targets := requirements.DeprecationTargets{Root: doc.Root, SagaID: doc.SagaID}
-	currencies := requirements.EvaluateRelations(doc, requirements.StaleInputs{})
+	var evaluator *requirements.RelationEvaluator
 	for _, dep := range doc.Deprecations {
 		urn, _ := requirements.DeprecationURN(doc.SagaID, dep.Identity.ID)
 		if filter.ID != "" && filter.ID != urn && filter.ID != dep.Identity.ID {
@@ -76,7 +77,12 @@ func Records(ctx context.Context, doc requirements.Document, head string, resolv
 		if filter.State != "" && filter.State != "all" && filter.State != row.State {
 			continue
 		}
-		for i, relation := range doc.Relations {
+		// Select by authored heads before reading target domains or resolving
+		// evidence. Keep every competing head when any candidate matches.
+		if !matchesDefinition(dep, doc.SagaID, filter) {
+			continue
+		}
+		for _, relation := range doc.Relations {
 			if relation.From != urn {
 				continue
 			}
@@ -85,7 +91,10 @@ func Records(ctx context.Context, doc requirements.Document, head string, resolv
 			if len(parts) < 5 || parts[3] != "story" {
 				continue
 			}
-			link := StoryLink{Relation: relation, Currency: currencies[i], Lifecycle: "missing", LifecycleHeads: []string{}}
+			if evaluator == nil {
+				evaluator = requirements.NewRelationEvaluator(doc)
+			}
+			link := StoryLink{Relation: relation, Currency: evaluator.Evaluate(relation, requirements.StaleInputs{}), Lifecycle: "missing", LifecycleHeads: []string{}}
 			if story := doc.FindStory(parts[4]); story != nil {
 				link.LifecycleHeads = story.LifecycleHeads
 				link.Lifecycle = "conflicted"
@@ -192,4 +201,56 @@ func contains(values []string, want string) bool {
 		}
 	}
 	return false
+}
+
+// matchesDefinition is only a cheap candidate filter. Exact-code matching still
+// resolves references, including moved and uncertain evidence, below it.
+func matchesDefinition(dep requirements.Deprecation, sagaID string, filter Filter) bool {
+	for _, revision := range dep.Revisions {
+		urn, _ := requirements.DeprecationRevisionURN(sagaID, dep.Identity.ID, revision.ID)
+		if contains(dep.RevisionHeads, urn) && (filter.Target == "" || revision.Target.Target == filter.Target) && (filter.Scope == "" || revision.Scope == filter.Scope) {
+			return true
+		}
+	}
+	return false
+}
+
+// ContentSnapshot retains immutable content annotations for one generation of
+// the Saga's documentation files. It never caches code resolution, which also
+// depends on the inspected commit and repository. Callers must not mutate rows.
+type ContentSnapshot struct {
+	document requirements.Document
+	records  sync.Map
+}
+
+type contentRecord struct {
+	once sync.Once
+	rows []Record
+}
+
+func NewContentSnapshot(document requirements.Document) *ContentSnapshot {
+	return &ContentSnapshot{document: document}
+}
+
+// Records selects whole records by any current candidate's exact target. A
+// conflicted record retains all candidates, and withdrawn records stay visible.
+func (snapshot *ContentSnapshot) Records(ctx context.Context, targets map[string]bool) []Record {
+	rows := []Record{}
+	for _, dep := range snapshot.document.Deprecations {
+		matched := false
+		for _, revision := range dep.Revisions {
+			urn, _ := requirements.DeprecationRevisionURN(snapshot.document.SagaID, dep.Identity.ID, revision.ID)
+			matched = matched || (contains(dep.RevisionHeads, urn) && targets[revision.Target.Target])
+		}
+		if !matched {
+			continue
+		}
+		value, _ := snapshot.records.LoadOrStore(dep.Identity.ID, &contentRecord{})
+		cached := value.(*contentRecord)
+		cached.once.Do(func() {
+			cached.rows = Records(ctx, snapshot.document, "", nil, Filter{ID: dep.Identity.ID})
+		})
+		rows = append(rows, cached.rows...)
+	}
+	return rows
 }

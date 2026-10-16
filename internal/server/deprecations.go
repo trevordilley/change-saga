@@ -36,7 +36,8 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 		render()
 		return
 	}
-	doc, err := requirements.Load(a.root, manifest.ID)
+	files := a.sagaFiles(r.Context())
+	doc, err := files.records(manifest.ID)
 	if err != nil {
 		panel.Note = "Deprecation records are invalid or unavailable; their absence cannot be established."
 		render()
@@ -91,7 +92,15 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 	selected := map[string]bool{target: true}
 	if target != "" && q.Get("children") == "1" {
 		// Visibility roll-up only: each child keeps its exact authored scope.
-		if document, _, e := saga.LoadNarrative(a.root); e == nil {
+		document := files.narrative()
+		if document == nil {
+			// Annotation inspection also admits an invalid narrative's readable
+			// children, as before; ordinary pages require a valid narrative.
+			if partial, _, err := saga.LoadNarrative(a.root); err == nil {
+				document = partial
+			}
+		}
+		if document != nil {
 			fragment := findFragmentByTarget(document, target)
 			if fragment != nil {
 				for _, landmark := range fragment.Landmarks {
@@ -124,14 +133,10 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
-	for _, record := range deprecationview.Records(r.Context(), doc, head, evidenceResolver, filter) {
-		include := panel.Code
-		for _, assertion := range record.Assertions {
-			include = include || selected[assertion.Definition.Target.Target]
-		}
-		if include {
-			panel.Records = append(panel.Records, record)
-		}
+	if panel.Code {
+		panel.Records = deprecationview.Records(r.Context(), doc, head, evidenceResolver, filter)
+	} else {
+		panel.Records = files.contentDeprecations(doc).Records(r.Context(), selected)
 	}
 	if len(panel.Records) > 100 {
 		panel.Records = panel.Records[:100]
@@ -144,7 +149,7 @@ func (a *app) deprecations(w http.ResponseWriter, r *http.Request) {
 }
 
 const deprecationTemplates = `
-{{define "deprecation-target"}}<div class="deprecation-load" data-deprecation-load hx-get="/api/deprecations?target={{urlquery .}}&amp;children=1" hx-trigger="load" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>{{end}}
+{{define "deprecation-target"}}<div class="deprecation-load" data-deprecation-load hx-get="/api/deprecations?target={{urlquery .}}&amp;children=1" hx-trigger="load, saga:deprecations" hx-target="this" hx-swap="innerHTML" aria-live="polite"></div>{{end}}
 {{define "deprecation-panel"}}
 {{if or .Records .Note .Code}}<aside class="deprecation-panel" data-deprecations aria-label="Recorded deprecations">
 {{if .Note}}<p role="status">{{.Note}}</p>{{end}}

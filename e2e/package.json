@@ -10,6 +10,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "playwright test --project=chromium",
+    "test:navigation-performance": "playwright test --project=chromium --grep @navigation-performance --workers=1 --output=performance-results",
     "test:all-browsers": "playwright test",
     "test:repeat-critical": "playwright test --project=chromium --grep @critical --repeat-each=3"
   },

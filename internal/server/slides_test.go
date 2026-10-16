@@ -36,10 +36,9 @@ func TestEmbeddedDeckRendersInTheDeckViewer(t *testing.T) {
 	if err := tmpl.ExecuteTemplate(&rendered, "page", data); err != nil {
 		t.Fatal(err)
 	}
-	// The page holds the place the deck viewer loads into after its first
-	// paint; the viewer itself is the same for every page and comes once.
+	// The page holds the place the deck viewer loads into on demand; the viewer itself is the same for every page and comes once.
 	page := rendered.String()
-	if !strings.Contains(page, `data-deck-host hx-get="/decks" hx-trigger="load"`) || strings.Contains(page, "data-deck-viewer") {
+	if !strings.Contains(page, `data-deck-host hx-get="/decks" hx-trigger="saga:open-decks once"`) || strings.Contains(page, "data-deck-viewer") {
 		t.Fatalf("the page does not load the deck viewer once, apart from itself:\n%s", page)
 	}
 	rendered.Reset()

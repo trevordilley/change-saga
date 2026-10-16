@@ -1591,8 +1591,8 @@ func pageTitle(data *pageData) string {
 
 // decks is the deck viewer: every slide of every embedded deck, as every page
 // shows them. It is the largest thing the reviewer renders and the same for
-// every page, so the pages leave it out and the shell loads it once, after
-// its first paint, from /decks. Built from the narrative and the records with
+// every page, so the pages leave it out and the shell loads it on demand
+// from /decks. Built from the narrative and the records with
 // the complete slides' links projected in, it is built once for each state
 // of the Saga's files, whose fingerprint it returns.
 func (a *app) decks(ctx context.Context) (string, template.HTML, error) {
