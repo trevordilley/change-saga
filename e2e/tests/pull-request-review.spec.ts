@@ -262,6 +262,56 @@ test("keeps one review slide active with durable keyboard and narrow-screen navi
   }
 });
 
+test("annotation composers stay beside their marks and inside resized viewports", async ({page,sagaRepositories}) => {
+  authorReview(sagaRepositories);
+  const running=await startSagaServer(sagaRepositories);
+  try {
+    await page.goto(`${running.baseURL}/reviews/pr-1`);
+    const slide=page.locator('.review-deck-slide.active');
+    const layer=slide.locator('.review-annotation-layer');
+    await expect(layer).toBeVisible();
+    await slide.locator('[data-review-annotation-toggle]').click();
+    const toolbar=page.getByRole('toolbar',{name:'Annotation tools'});
+    const composer=page.locator('.review-annotation-compose');
+    const checkPlacement=async (x:number,y:number) => {
+      await expect(composer).toBeVisible();
+      await expect.poll(async()=>{
+        const mark=(await layer.boundingBox())!,box=(await composer.boundingBox())!;
+        const px=mark.x+x*mark.width,py=mark.y+y*mark.height;
+        const dx=Math.max(box.x-px,0,px-box.x-box.width);
+        const dy=Math.max(box.y-py,0,py-box.y-box.height);
+        return Math.hypot(dx,dy);
+      }).toBeLessThan(25);
+      const box=(await composer.boundingBox())!,viewport=page.viewportSize()!;
+      expect(box.x).toBeGreaterThanOrEqual(11);
+      expect(box.y).toBeGreaterThanOrEqual(11);
+      expect(box.x+box.width).toBeLessThanOrEqual(viewport.width-11);
+      expect(box.y+box.height).toBeLessThanOrEqual(viewport.height-11);
+    };
+    for(const [x,y] of [[.08,.12],[.95,.92]]) {
+      await toolbar.getByRole('button',{name:'Comment',exact:true}).click();
+      const box=(await layer.boundingBox())!;
+      await page.mouse.click(box.x+box.width*x,box.y+box.height*y);
+      await checkPlacement(x,y);
+      await expect(composer.locator('textarea')).toBeFocused();
+      await composer.getByRole('button',{name:'Cancel',exact:true}).click();
+    }
+    await toolbar.getByRole('button',{name:'Rectangle',exact:true}).click();
+    const box=(await layer.boundingBox())!;
+    await page.mouse.move(box.x+box.width*.2,box.y+box.height*.2);await page.mouse.down();
+    await page.mouse.move(box.x+box.width*.4,box.y+box.height*.4);await page.mouse.up();
+    await checkPlacement(.4,.4);
+    await composer.locator('textarea').fill('Keep this draft beside its target.');
+    await page.setViewportSize({width:1100,height:800});
+    await checkPlacement(.4,.4);
+    await page.setViewportSize({width:390,height:844});
+    await checkPlacement(.4,.4);
+    await expect(composer.locator('textarea')).toHaveValue('Keep this draft beside its target.');
+    await page.screenshot({path:test.info().outputPath('annotation-composer-narrow.png')});
+    await page.keyboard.press('Escape');await expect(composer).toBeHidden();
+  } finally {await stopSagaServer(running);}
+});
+
 test("draws, discusses, edits, and append-only deletes slide annotations", async ({ page, sagaRepositories }) => {
   authorReview(sagaRepositories);
   const running = await startSagaServer(sagaRepositories);

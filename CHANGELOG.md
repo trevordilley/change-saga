@@ -98,6 +98,9 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- Review annotation comment boxes open beside their marks and stay within the
+  visible viewport as the slide or window resizes, instead of occupying a fixed corner.
+
 - Technical documentation guidance uses the current inventory schema for new
   authoring, removing the unnecessary format-choice prompt. ERDs are selected for explanatory value independently
   of the storage format.

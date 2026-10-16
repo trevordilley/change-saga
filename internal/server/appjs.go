@@ -3022,7 +3022,43 @@ const appJavaScript = `(() => {
       button.closest('.fragment-actions').append(toolbar);toolbar.hidden=false;setTool('pointer');q('[data-tool="pointer"]',toolbar)?.focus();
     }));
     qa('[data-tool]',toolbar).forEach(button=>button.addEventListener('click',()=>setTool(button.dataset.tool)));
-    function openComposer(anchor,target,entry=null){draft={anchor,target,entry};composer.hidden=false;const field=q('textarea',composer);field.value=entry?.anchor.note?.text||'';field.focus();}
+    // Keep the editor beside the normalized annotation point as the slide fits,
+    // scrolls, or the visible viewport changes (including the mobile keyboard).
+    function positionComposer(){
+      if(composer.hidden || !draft?.anchor)return;
+      const layer=layers.get(draft.target),rect=layer?.getBoundingClientRect();
+      if(!rect?.width || !rect.height)return;
+      const viewport=window.visualViewport,margin=12,gap=12;
+      const left=(viewport?.offsetLeft||0)+margin,top=(viewport?.offsetTop||0)+margin;
+      const right=left+(viewport?.width||innerWidth)-2*margin;
+      const bottom=top+(viewport?.height||innerHeight)-2*margin;
+      composer.style.maxWidth=Math.max(0,right-left)+'px';
+      composer.style.maxHeight=Math.max(0,bottom-top)+'px';
+      const size=composer.getBoundingClientRect();
+      const x=rect.left+draft.composerPoint.x*rect.width,y=rect.top+draft.composerPoint.y*rect.height;
+      const preferredX=x+gap+size.width<=right ? x+gap : x-gap-size.width;
+      const preferredY=y+gap+size.height<=bottom ? y+gap : y-gap-size.height;
+      composer.style.left=Math.max(left,Math.min(preferredX,right-size.width))+'px';
+      composer.style.top=Math.max(top,Math.min(preferredY,bottom-size.height))+'px';
+    }
+    let composerFrame=0;
+    function scheduleComposerPosition(){
+      if(composer.hidden || composerFrame)return;
+      composerFrame=requestAnimationFrame(()=>{composerFrame=0;positionComposer();});
+    }
+    const composerResize=new ResizeObserver(scheduleComposerPosition);
+    composerResize.observe(composer);layers.forEach(layer=>composerResize.observe(layer));
+    window.addEventListener('resize',scheduleComposerPosition,{signal});
+    document.addEventListener('scroll',scheduleComposerPosition,{capture:true,signal});
+    window.visualViewport?.addEventListener('resize',scheduleComposerPosition,{signal});
+    window.visualViewport?.addEventListener('scroll',scheduleComposerPosition,{signal});
+    signal.addEventListener('abort',()=>{composerResize.disconnect();cancelAnimationFrame(composerFrame);},{once:true});
+    function openComposer(anchor,target,entry=null,at=null){
+      const box=bounds(anchor);
+      draft={anchor,target,entry,composerPoint:at||{x:clamp(box.x+box.w),y:clamp(box.y+box.h)}};
+      composer.hidden=false;const field=q('textarea',composer);field.value=entry?.anchor.note?.text||'';
+      positionComposer();field.focus({preventScroll:true});
+    }
     q('[data-cancel]',composer).addEventListener('click',()=>{composer.hidden=true;draft=null;clearDraftVisual();setTool('pointer');});
     composer.addEventListener('submit',async event=>{
       event.preventDefault(); if(!draft || annotationSaving)return;
@@ -3042,9 +3078,9 @@ const appJavaScript = `(() => {
       return {type:tool==='highlight'?'highlight':'region',coordinate_space:'normalized',shapes:[{type:kind,x,y,width,height,color:color.value,stroke_width:.004}]};
     };
     layers.forEach(layer=>{
-      layer.addEventListener('pointerdown',event=>{if(annotationSaving||tool==='pointer'||event.target!==layer)return;event.preventDefault();const start=point(event,layer);if(tool==='note'){openComposer({type:'note',coordinate_space:'normalized',note:{text:'Sticky note',x:start.x,y:start.y,color:'#f2bd4b'}},layer.dataset.annotationTarget);return;}if(tool==='comment'){const anchor={type:'region',coordinate_space:'normalized',shapes:[{type:'ellipse',x:clamp(start.x-.012),y:clamp(start.y-.021),width:.024,height:.042,color:color.value,stroke_width:.004}]};showDraftVisual(layer,anchor);openComposer(anchor,layer.dataset.annotationTarget);return;}draft={start,points:[start],layer};layer.setPointerCapture(event.pointerId);});
+      layer.addEventListener('pointerdown',event=>{if(annotationSaving||tool==='pointer'||event.target!==layer)return;event.preventDefault();const start=point(event,layer);if(tool==='note'){openComposer({type:'note',coordinate_space:'normalized',note:{text:'Sticky note',x:start.x,y:start.y,color:'#f2bd4b'}},layer.dataset.annotationTarget,null,start);return;}if(tool==='comment'){const anchor={type:'region',coordinate_space:'normalized',shapes:[{type:'ellipse',x:clamp(start.x-.012),y:clamp(start.y-.021),width:.024,height:.042,color:color.value,stroke_width:.004}]};showDraftVisual(layer,anchor);openComposer(anchor,layer.dataset.annotationTarget,null,start);return;}draft={start,points:[start],layer};layer.setPointerCapture(event.pointerId);});
       layer.addEventListener('pointermove',event=>{if(!draft?.layer||draft.layer!==layer)return;const now=point(event,layer);draft.points.push(now);const anchor=drawnAnchor(draft.start,now,draft.points);if(anchor)showDraftVisual(layer,anchor);});
-      layer.addEventListener('pointerup',event=>{if(!draft?.layer||draft.layer!==layer)return;const end=point(event,layer),anchor=drawnAnchor(draft.start,end,draft.points),target=layer.dataset.annotationTarget;draft=null;if(!anchor){clearDraftVisual();return;}openComposer(anchor,target);});
+      layer.addEventListener('pointerup',event=>{if(!draft?.layer||draft.layer!==layer)return;const end=point(event,layer),anchor=drawnAnchor(draft.start,end,draft.points),target=layer.dataset.annotationTarget;draft=null;if(!anchor){clearDraftVisual();return;}openComposer(anchor,target,null,end);});
       layer.addEventListener('pointercancel',()=>{draft=null;clearDraftVisual();setTool('pointer');});
     });
     function restore(entry,anchor){entry.anchor=clone(anchor);entry.element.remove();render(entry);select(entry);}
