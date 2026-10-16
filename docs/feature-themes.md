@@ -63,10 +63,12 @@ edits. Its optional, single rationale deck lives in that directory's `___slides`
 root and uses the existing v4 deck/slide/Item format with role `feature-theme`.
 The UI shows an explicit gap until the deck is authored.
 
-With four or more features, the menu beside Features in the sidebar controls
-grouping for both the directory and sidebar: None, Theme (when themes exist),
-or Persona. Theme is the default when available. Smaller feature sets remain
-a flat list without a grouping menu, regardless of a saved preference.
+For every nonempty collection, the menu beside Features or Roadmap controls
+grouping for its directory and sidebar: None, Theme (when themes exist),
+Persona, Label, or Milestone. Theme is the default when available. Each section
+remembers its grouping independently, including on feature deep links. Labels and
+milestones are shared entities referenced by features; see
+[feature organization](feature-story-reading.md#roadmap).
 Persona membership comes from current story revisions, including proposed
 stories, deduplicated per feature and persona. Every grouped view keeps
 ungrouped features visible. Choosing a grouping reloads the page and saves the

@@ -224,7 +224,7 @@ func featuresDirectory(document *saga.Saga, graph *appGraph, current, query stri
 		Lede:  "Features that have been built. Each feature holds its essay, stories, design, quality, and implementation.",
 		Label: "Filter features", Noun: "feature", Nouns: "features",
 		Columns: []directoryColumn{
-			{Title: "Feature"}, {Title: "Description", Wide: true},
+			{Title: "Feature"}, {Title: "Description", Wide: true}, {Title: "Milestone"}, {Title: "Labels"},
 			{Title: "Stories", Numeric: true}, {Title: "Accepted", Numeric: true},
 			{Title: "With design", Numeric: true}, {Title: "Test cases", Numeric: true},
 			{Title: "Slides", Numeric: true},
@@ -238,10 +238,10 @@ func featuresDirectory(document *saga.Saga, graph *appGraph, current, query stri
 		view.Lede = "Features we plan to build, in product priority order. Lower priority numbers come first; unranked work follows. Milestones are optional targets."
 		view.Empty = "No planned features yet."
 		view.Command = "change-saga feature add --status planned"
-		view.Columns = []directoryColumn{{Title: "Feature"}, {Title: "Priority", Numeric: true}, {Title: "Milestone"}, {Title: "Description", Wide: true}, {Title: "Stories", Numeric: true}}
+		view.Columns = []directoryColumn{{Title: "Feature"}, {Title: "Priority", Numeric: true}, {Title: "Milestone"}, {Title: "Labels"}, {Title: "Description", Wide: true}, {Title: "Stories", Numeric: true}}
 	}
 	for _, row := range featureRows(document, graph, current) {
-		cells := []directoryCell{{Text: row.Title, Href: row.Href, Note: row.ID}, textCell(summarise(row.Description, 120)), countCell(row.Stories), countCell(row.Accepted), countCell(row.WithDesign), countCell(row.TestCases), countCell(row.Slides)}
+		cells := []directoryCell{{Text: row.Title, Href: row.Href, Note: row.ID}, textCell(summarise(row.Description, 120)), textCell(row.Plan.Milestone), listCell(row.Plan.Labels, "Unlabeled"), countCell(row.Stories), countCell(row.Accepted), countCell(row.WithDesign), countCell(row.TestCases), countCell(row.Slides)}
 		if roadmap {
 			priority := gapCell("Unranked")
 			if row.Plan.Priority > 0 {
@@ -251,7 +251,7 @@ func featuresDirectory(document *saga.Saga, graph *appGraph, current, query stri
 			if row.Plan.Milestone == "" {
 				milestone = gapCell("Not assigned")
 			}
-			cells = []directoryCell{cells[0], priority, milestone, cells[1], cells[2]}
+			cells = []directoryCell{cells[0], priority, milestone, cells[3], cells[1], cells[4]}
 		}
 		view.addRow(directoryRow{Key: row.ID, Current: row.Current, Cells: cells})
 	}

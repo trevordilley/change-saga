@@ -98,7 +98,7 @@ func TestFeaturePersonaGroupingUsesCurrentProposedStories(t *testing.T) {
 }
 
 func TestFeatureGroupingDefaultsAndPreference(t *testing.T) {
-	doc := &saga.Saga{Features: make([]*saga.Feature, featureGroupingMinimum)}
+	doc := &saga.Saga{Features: make([]*saga.Feature, 4)}
 	request := httptest.NewRequest(http.MethodGet, "/features", nil)
 	if featureGrouping(request, doc) != "all" {
 		t.Fatal("legacy default changed")
@@ -121,24 +121,16 @@ func TestFeatureGroupingDefaultsAndPreference(t *testing.T) {
 	}
 }
 
-func TestSmallFeatureSetsStayFlatWithoutGroupingMenu(t *testing.T) {
+func TestEveryNonemptyFeatureCollectionOffersGrouping(t *testing.T) {
 	for _, count := range []int{0, 1, 3, 4} {
 		sources := appNavFixture(t)
 		sources.document.Features = nil
 		for i := 0; i < count; i++ {
 			sources.document.Features = append(sources.document.Features, appNavFeature(fmt.Sprint(i), "Feature"))
 		}
-		sources.document.FeatureThemes = []*saga.FeatureTheme{{}}
-		request := httptest.NewRequest(http.MethodGet, "/features?group=theme", nil)
-		request.AddCookie(&http.Cookie{Name: "saga-feature-group", Value: "persona"})
-		sources.featureGrouping = featureGrouping(request, sources.document)
 		section := makeFeaturesNav(sources, nil)
-		if count < featureGroupingMinimum {
-			if sources.featureGrouping != "all" || section.FeatureGrouping != nil {
-				t.Fatalf("%d features should stay flat without controls", count)
-			}
-		} else if sources.featureGrouping != "theme" || section.FeatureGrouping == nil {
-			t.Fatal("four features should enable theme grouping and controls")
+		if (section.FeatureGrouping != nil) != (count > 0) {
+			t.Fatalf("group controls for %d features", count)
 		}
 	}
 }
@@ -188,5 +180,53 @@ func TestThemeItemReferencesOpenCanonicalProductPages(t *testing.T) {
 		if view.RecordLink() != nil {
 			t.Fatal("cross-Saga Item generated a local link")
 		}
+	}
+}
+
+func TestFeatureCollectionGroupingPreferencesAreIndependent(t *testing.T) {
+	doc := &saga.Saga{}
+	for _, path := range []string{"/features?group=persona", "/roadmap?group=all", "/features/core?group=all"} {
+		r := httptest.NewRequest(http.MethodGet, path, nil)
+		r.AddCookie(&http.Cookie{Name: featureGroupingCookie(false), Value: "label"})
+		r.AddCookie(&http.Cookie{Name: featureGroupingCookie(true), Value: "milestone"})
+		built, planned := "label", "milestone"
+		if r.URL.Path == "/features" {
+			built = "persona"
+		}
+		if r.URL.Path == "/roadmap" {
+			planned = "all"
+		}
+		if featureCollectionGrouping(r, doc, false) != built || featureCollectionGrouping(r, doc, true) != planned {
+			t.Fatalf("preferences leaked at %s", path)
+		}
+	}
+}
+
+func TestSharedClassificationGroupsResolveNamesAndKeepUnassignedFeatures(t *testing.T) {
+	sources := appNavFixture(t)
+	doc := sources.document
+	doc.Classifications = applayout.Classifications{Labels: []applayout.Classification{{ID: "ops", Title: "DevOps"}, {ID: "reliability", Title: "Reliability"}}, Milestones: []applayout.Classification{{ID: "v2", Title: "Version 2"}}}
+	first := doc.Features[0]
+	first.Plan.Labels = []string{applayout.ClassificationURN(doc.Manifest.ID, "label", "ops"), applayout.ClassificationURN(doc.Manifest.ID, "label", "reliability")}
+	first.Plan.Milestone = applayout.ClassificationURN(doc.Manifest.ID, "milestone", "v2")
+	groups := featureGroups(doc, sources.requirements, "label")
+	if len(groups) != 3 || groups[0].Title != "DevOps" || groups[1].Title != "Reliability" || groups[2].Title != "Unlabeled" || groups[0].Features[0] != first || groups[1].Features[0] != first {
+		t.Fatalf("label membership: %+v", groups)
+	}
+	groups = featureGroups(doc, sources.requirements, "milestone")
+	if len(groups) != 2 || groups[0].Title != "Version 2" || groups[1].Title != "No milestone" {
+		t.Fatalf("milestones: %+v", groups)
+	}
+	presentation := featurePresentationPlan(doc, first.Plan)
+	if presentation.Milestone != "Version 2" || presentation.Labels[0] != "DevOps" {
+		t.Fatal(presentation)
+	}
+	presentation.Labels[0] = "Changed"
+	if first.Plan.Labels[0] != applayout.ClassificationURN(doc.Manifest.ID, "label", "ops") {
+		t.Fatal("presentation changed canonical plan")
+	}
+	doc.Classifications.Labels[0].Title = "Operations"
+	if featureGroups(doc, sources.requirements, "label")[0].Title != "Operations" {
+		t.Fatal("shared rename did not resolve")
 	}
 }

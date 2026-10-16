@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"slices"
 	"strings"
 	"time"
 
@@ -160,8 +161,10 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 	title := flags.String("title", "", "feature title: the product domain it covers")
 	description := flags.String("description", "", "what the domain covers")
 	status := flags.String("status", "built", "planned for Roadmap, built for Features")
-	milestone := flags.String("milestone", "", "optional version or milestone label")
+	milestone := flags.String("milestone", "", "optional shared milestone ID or URN")
 	priority := flags.Int("priority", 0, "lower positive numbers come first; zero is unranked")
+	var labels stringList
+	flags.Var(&labels, "label", "shared label ID or URN; repeatable")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -178,7 +181,7 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 	if *requestID != "" && !applayout.ValidID(*requestID) {
 		return fmt.Errorf("--request-id must be a stable identifier")
 	}
-	plan := applayout.FeaturePlan{Schema: applayout.FeaturePlanSchemaURL, Version: 5, Status: *status, Milestone: strings.TrimSpace(*milestone), Priority: *priority}
+	plan := applayout.FeaturePlan{Schema: applayout.FeaturePlanSchemaURL, Version: 5, Status: *status, Milestone: strings.TrimSpace(*milestone), Priority: *priority, Labels: normalizedFeatureLabels(labels)}
 	if err := plan.Validate(); err != nil {
 		return err
 	}
@@ -186,12 +189,15 @@ func featureAdd(_ context.Context, args []string, out io.Writer) error {
 	path := applayout.FeatureRel(*id)
 	var replayed bool
 	err = store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
+		if err := resolvePlanAssignments(root, manifest.ID, &plan, true, true); err != nil {
+			return err
+		}
 		features, err := applayout.Features(root)
 		if err != nil {
 			return err
 		}
 		if existing, ok := applayout.Find(features, *id); ok {
-			if *requestID != "" && existing.RequestID == *requestID && existing.Title == strings.TrimSpace(*title) && existing.Description == strings.TrimSpace(*description) && existing.Plan.State() == plan.Status && existing.Plan.Milestone == plan.Milestone && existing.Plan.Priority == plan.Priority {
+			if *requestID != "" && existing.RequestID == *requestID && existing.Title == strings.TrimSpace(*title) && existing.Description == strings.TrimSpace(*description) && existing.Plan.State() == plan.Status && existing.Plan.Milestone == plan.Milestone && existing.Plan.Priority == plan.Priority && slices.Equal(normalizedFeatureLabels(existing.Plan.Labels), plan.Labels) {
 				replayed = true
 				return nil
 			}

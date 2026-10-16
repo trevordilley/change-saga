@@ -22,6 +22,8 @@ change.saga/
   ___designsystem/
   ___whiteboards/<board-id>/revisions/<revision-id>.json
   ___onboarding/
+  ___labels/<id>.json       # shared label names; feature plans reference URNs
+  ___milestones/<id>.json   # shared milestone names; feature plans reference URNs
   ___featureflags/
   ___features/<feature>.feature/
     ___requirements/

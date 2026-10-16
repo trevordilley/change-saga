@@ -5,12 +5,46 @@
   "description": "Mutable planning metadata beside immutable feature.json. Git preserves history. An absent plan uses built placement for compatibility.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "version", "status"],
+  "required": [
+    "$schema",
+    "version",
+    "status"
+  ],
   "properties": {
-    "$schema": {"const": "https://changesaga.dev/schema/v5/feature-plan.schema.json"},
-    "version": {"const": 5},
-    "status": {"enum": ["planned", "built"]},
-    "priority": {"type": "integer", "minimum": 0, "maximum": 1000000, "description": "Lower positive numbers come first; zero or omission means unranked."},
-    "milestone": {"type": "string", "maxLength": 1000, "pattern": "^[^\\r\\n]*$"}
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/feature-plan.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "status": {
+      "enum": [
+        "planned",
+        "built"
+      ]
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1000000,
+      "description": "Lower positive numbers come first; zero or omission means unranked."
+    },
+    "milestone": {
+      "type": "string",
+      "maxLength": 1000,
+      "pattern": "^[^\\r\\n]*$",
+      "description": "Canonical milestone URN. Legacy free-text milestones remain readable."
+    },
+    "labels": {
+      "type": "array",
+      "maxItems": 100,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^urn:change-saga:[^:]+:label:[^:]+$",
+        "maxLength": 1000
+      },
+      "description": "References to shared label records in this Saga."
+    }
   }
 }

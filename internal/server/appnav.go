@@ -65,6 +65,7 @@ type appNavSources struct {
 	// no feature, where every feature stays a row.
 	pageFeature     string
 	featureGrouping string
+	roadmapGrouping string
 	// technical is the Technical design rows, one per definition.
 	technical []*navNodeView
 	// reviewSide says the page is on the Review side of the header, which
@@ -236,9 +237,10 @@ func makeFeatureCollectionNav(sources appNavSources, deckRows map[string]*navNod
 	sources.document = document
 	section := navSection("Features", featuresIndexHref, "nav-features", "product", nil)
 	if planned {
+		sources.featureGrouping = sources.roadmapGrouping
 		section.Title, section.Href, section.NodeID = "Roadmap", "/roadmap", "nav-roadmap"
 	}
-	if len(document.Features) >= featureGroupingMinimum || (planned && len(document.Features) > 0) {
+	if len(document.Features) > 0 {
 		section.FeatureGrouping = &featureGroupingView{Path: section.Href, Mode: sources.featureGrouping, HasThemes: len(document.FeatureThemes) > 0}
 	}
 	if len(document.Features) == 0 {
@@ -262,7 +264,7 @@ func makeFeatureCollectionNav(sources appNavSources, deckRows map[string]*navNod
 				if node.Note != "" {
 					node.Note += " · "
 				}
-				node.Note += feature.Plan.Milestone
+				node.Note += document.Classifications.Title(document.Manifest.ID, "milestone", feature.Plan.Milestone)
 			}
 		}
 		if prefix != "" {
@@ -275,7 +277,7 @@ func makeFeatureCollectionNav(sources appNavSources, deckRows map[string]*navNod
 		parent.Children = append(parent.Children, node)
 	}
 	mode := sources.featureGrouping
-	if mode == "theme" || mode == "persona" {
+	if validFeatureGrouping(mode) && mode != "all" {
 		for _, group := range featureGroups(document, sources.requirements, mode) {
 			prefix := "group-" + domID(group.ID) + "--"
 			if planned {
@@ -504,7 +506,7 @@ func featureLinks(document *saga.Saga, current string) []featureLinkView {
 	links := make([]featureLinkView, 0, len(document.Features))
 	for _, feature := range document.Features {
 		links = append(links, featureLinkView{
-			Plan: feature.Plan, ID: feature.ID, Title: featureTitle(feature), Href: featureHref(feature.ID),
+			Plan: featurePresentationPlan(document, feature.Plan), ID: feature.ID, Title: featureTitle(feature), Href: featureHref(feature.ID),
 			Current: feature.ID == current,
 		})
 	}

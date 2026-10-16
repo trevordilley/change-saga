@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
+	"sort"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -13,11 +14,8 @@ import (
 func featureThemeHref(id string) string { return "/feature-themes/" + url.PathEscape(id) }
 
 func validFeatureGrouping(value string) bool {
-	return value == "all" || value == "theme" || value == "persona"
+	return value == "all" || value == "theme" || value == "persona" || value == "label" || value == "milestone"
 }
-
-// Small feature sets are easier to scan as a flat list.
-const featureGroupingMinimum = 4
 
 type featureGroupingView struct {
 	Path      string
@@ -33,22 +31,44 @@ func (v featureGroupingView) Action() string {
 }
 
 func featureGrouping(r *http.Request, document *saga.Saga) string {
-	if len(document.Features) < featureGroupingMinimum && len(featureCollection(document, true).Features) == 0 {
-		return "all"
+	return featureCollectionGrouping(r, document, false)
+}
+func featureGroupingCookie(planned bool) string {
+	if planned {
+		return "saga-roadmap-group"
 	}
+	return "saga-feature-group"
+}
+func featureCollectionGrouping(r *http.Request, document *saga.Saga, planned bool) string {
 	available := func(value string) bool {
 		return validFeatureGrouping(value) && (value != "theme" || len(document.FeatureThemes) > 0)
 	}
-	if value := r.URL.Query().Get("group"); available(value) {
-		return value
+	path := "/features"
+	if planned {
+		path = "/roadmap"
 	}
-	if cookie, err := r.Cookie("saga-feature-group"); err == nil && available(cookie.Value) {
+	if r.URL.Path == path {
+		if value := r.URL.Query().Get("group"); available(value) {
+			return value
+		}
+	}
+	if cookie, err := r.Cookie(featureGroupingCookie(planned)); err == nil && available(cookie.Value) {
 		return cookie.Value
 	}
 	if len(document.FeatureThemes) > 0 {
 		return "theme"
 	}
 	return "all"
+}
+
+func featurePresentationPlan(document *saga.Saga, plan applayout.FeaturePlan) applayout.FeaturePlan {
+	plan.Milestone = document.Classifications.Title(document.Manifest.ID, "milestone", plan.Milestone)
+	labels := make([]string, 0, len(plan.Labels))
+	for _, ref := range plan.Labels {
+		labels = append(labels, document.Classifications.Title(document.Manifest.ID, "label", ref))
+	}
+	plan.Labels = labels
+	return plan
 }
 
 type featureGroup struct {
@@ -107,8 +127,44 @@ func featureGroups(document *saga.Saga, records requirements.Document, mode stri
 				groups = append(groups, group)
 			}
 		}
+	} else if mode == "label" || mode == "milestone" {
+		byRef := map[string]*featureGroup{}
+		for _, feature := range document.Features {
+			refs := feature.Plan.Labels
+			if mode == "milestone" {
+				refs = nil
+				if feature.Plan.Milestone != "" {
+					refs = []string{feature.Plan.Milestone}
+				}
+			}
+			for _, ref := range refs {
+				group := byRef[ref]
+				if group == nil {
+					group = &featureGroup{ID: mode + "-" + ref, Title: document.Classifications.Title(document.Manifest.ID, mode, ref)}
+					byRef[ref] = group
+				}
+				group.Features = append(group.Features, feature)
+				seen[feature.ID] = true
+			}
+		}
+		for _, group := range byRef {
+			groups = append(groups, *group)
+		}
+		sort.Slice(groups, func(i, j int) bool {
+			if groups[i].Title == groups[j].Title {
+				return groups[i].ID < groups[j].ID
+			}
+			return groups[i].Title < groups[j].Title
+		})
 	}
+
 	remaining := featureGroup{ID: "ungrouped", Title: "Ungrouped"}
+	if mode == "label" {
+		remaining.Title = "Unlabeled"
+	}
+	if mode == "milestone" {
+		remaining.Title = "No milestone"
+	}
 	for _, feature := range document.Features {
 		if !seen[feature.ID] {
 			remaining.Features = append(remaining.Features, feature)
@@ -142,10 +198,10 @@ func groupedFeaturesDirectory(document *saga.Saga, graph *appGraph, current, que
 	for _, row := range view.Rows {
 		rows[row.Key] = row
 	}
-	view.Columns = append([]directoryColumn{{Title: map[string]string{"theme": "Theme", "persona": "Persona"}[mode]}}, view.Columns...)
+	view.Columns = append([]directoryColumn{{Title: map[string]string{"theme": "Theme", "persona": "Persona", "label": "Label", "milestone": "Milestone"}[mode]}}, view.Columns...)
 	view.Rows, view.Total = nil, 0
 	view.Noun, view.Nouns = "membership", "memberships"
-	view.Lede += " Grouped by " + mode + "; a feature can belong to several groups. Ungrouped features remain visible."
+	view.Lede += " Grouped by " + mode + ". Features without an assignment remain visible."
 	for _, group := range featureGroups(document, graph.requirements, mode) {
 		for _, feature := range group.Features {
 			row := rows[feature.ID]
@@ -177,7 +233,7 @@ func featureThemePage(document *saga.Saga, id string) (*featureThemePageView, er
 	for _, feature := range document.Features {
 		for _, ref := range theme.Features {
 			if ref == feature.Target {
-				view.Features = append(view.Features, featureLinkView{Plan: feature.Plan, ID: feature.ID, Title: feature.Title, Href: featureHref(feature.ID)})
+				view.Features = append(view.Features, featureLinkView{Plan: featurePresentationPlan(document, feature.Plan), ID: feature.ID, Title: feature.Title, Href: featureHref(feature.ID)})
 				break
 			}
 		}

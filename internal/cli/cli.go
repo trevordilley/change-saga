@@ -93,7 +93,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"label", "milestone", "deprecation", "init", "setup-initial-saga", "feature-theme", "feature", "overview", "inventory", "component", "system", "data-entity", "erd", "erd-overlay", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "deck", "add-deck", "add-slide", "apply-slide", "diagram", "whiteboard", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "reconcile", "check", "preintegrate", "query", "visual-qa",
 	"theme", "serve", "open", "install-skill", "spec",
 }
@@ -112,6 +112,12 @@ var commandUsage = map[string]string{
 	"inventory":                  "change-saga inventory <adopt-format> [flags] <saga>",
 	"init":                       "change-saga init [flags] [name.saga]",
 	"setup-initial-saga":         "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
+	"label":                      "change-saga label add|rename [flags] <saga>",
+	"label add":                  "change-saga label add --id ID --title TEXT [--json] <saga>",
+	"label rename":               "change-saga label rename --label ID|URN --title TEXT [--json] <saga>",
+	"milestone":                  "change-saga milestone add|rename [flags] <saga>",
+	"milestone add":              "change-saga milestone add --id ID --title TEXT [--json] <saga>",
+	"milestone rename":           "change-saga milestone rename --milestone ID|URN --title TEXT [--json] <saga>",
 	"feature-theme":              "change-saga feature-theme add|set-overview|set-features [flags] <saga>",
 	"feature-theme add":          "change-saga feature-theme add --id ID --title TEXT (--text MARKDOWN | --source FILE|-) [--feature ID|URN...] [--json] <saga>",
 	"feature-theme set-overview": "change-saga feature-theme set-overview --theme ID|URN (--text MARKDOWN | --source FILE|-) [--json] <saga>",
@@ -119,7 +125,7 @@ var commandUsage = map[string]string{
 
 	"feature":                       "change-saga feature <add|set-overview|set-plan> [flags] <saga>",
 	"feature set-overview":          "change-saga feature set-overview --feature ID|URN (--text MARKDOWN | --source FILE|-) [--subtext TEXT] [--abstract MARKDOWN] [--json|--quiet] <saga>",
-	"feature set-plan":              "change-saga feature set-plan --feature ID|URN [--status planned|built] [--milestone TEXT] [--priority N] [--json] <saga>",
+	"feature set-plan":              "change-saga feature set-plan --feature ID|URN [--status planned|built] [--milestone ID|URN] [--priority N] [--label ID|URN...] [--clear-labels] [--json] <saga>",
 	"feature add":                   "change-saga feature add --id ID --title TEXT [--description TEXT] [flags] <saga>",
 	"overview":                      "change-saga overview <set-pitch|set-description|set-data-model|set-technical-design> [flags] <saga>",
 	"overview set-pitch":            "change-saga overview set-pitch (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
@@ -398,6 +404,8 @@ var commandDescription = map[string]string{
 	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nThe review area asks about the pull request's review deck alone; the others\nfollow the chain persona -> story -> design -> code:\n  review          every changed line of the change is explained by its review\n                  deck (the open review that follows HEAD); a change with no\n                  review is uncovered\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke\n\nComparison coverage can use deleted-line evidence valid at base. Check HEAD\nhealth separately without --against; use reconcile for debt and repair paths.",
 	"visual-qa":                   "Render selected implementation or onboarding slides, or with --review a pull request\nreview's slides, both as raw assets and inside the actual reviewer at 1280x720 and\n1024x576. The managed output includes screenshots, a contact sheet, and visual-qa.json\nwith mechanical clipping, text-overflow, missing-selector, and reliable Item-overlap\nfindings. The command is read-only with respect to the Saga and\nexits 3 when error-severity findings exist. It does not judge whether semantic arrows or\nrelationships are correct.",
 	"preintegrate":                "Read committed Saga snapshots from two or more explicit Git refs and report\nstable-ID collisions, different current heads, and deterministic text-overlap\ncandidates with exact ref/commit provenance. It is advisory and read-only: it\nnever chooses semantic equivalence, updates a ref, checks out, or merges Git.",
+	"label":                       "Manage shared feature labels; features reference their stable IDs.",
+	"milestone":                   "Manage shared milestones; features reference their stable IDs.",
 	"feature-theme":               "Author optional product themes: Markdown overview and many-to-many feature membership. Use add-deck --feature-theme ID for the normal rationale deck; theme still controls visual styling.",
 	"feature":                     "Add a durable product domain. A feature holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames a feature, so a story can move between features without breaking a link.",
 	"overview":                    "Write the overview's elevator pitch and description, as Markdown. The overview\nis formal: the project's name (saga.json's title), an elevator pitch, a\ndescription (a short essay), and its terms and vocabulary (\"term\"). Every part\nis optional; an absent part is shown as a gap, never an error.",

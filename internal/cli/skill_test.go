@@ -293,6 +293,12 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 		return Technical(ctx, "erd-overlay", args, out)
 	},
 	"inventory": Inventory, "deprecation": Deprecation,
+	"label": func(ctx context.Context, args []string, out io.Writer) error {
+		return Classification(ctx, "label", args, out)
+	},
+	"milestone": func(ctx context.Context, args []string, out io.Writer) error {
+		return Classification(ctx, "milestone", args, out)
+	},
 	"term": Term, "persona": Persona,
 	"setup-initial-saga": func(_ context.Context, args []string, out io.Writer) error { return SetupInitialSaga(args, out) },
 	"flag":               FeatureFlag, "prototype": Prototype, "story": Story, "criterion": Criterion, "citation": Citation,

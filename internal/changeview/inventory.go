@@ -170,6 +170,11 @@ func Build(root string, document *saga.Saga, inputs livingapp.StatusInputs) *Inv
 	for _, theme := range document.FeatureThemes {
 		builder.add(&Node{URN: theme.Target, Kind: "feature-theme", Title: theme.Title, Files: []string{theme.Path + "/theme.json"}, Text: theme.Overview, Links: append([]string{}, theme.Features...)})
 	}
+	for _, kind := range []string{"label", "milestone"} {
+		for _, record := range document.Classifications.Records(kind) {
+			builder.add(&Node{URN: applayout.ClassificationURN(document.Manifest.ID, kind, record.ID), Kind: kind, Title: record.Title, Text: record.Title, Files: []string{applayout.ClassificationDir(kind) + "/" + record.ID + ".json"}})
+		}
+	}
 	builder.inventory.Supersedes = map[string][]string{}
 	for _, relation := range builder.inventory.Nodes {
 		if relation.Kind != KindRelation || relation.Retired() {

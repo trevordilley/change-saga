@@ -451,7 +451,7 @@ func (graph *appGraph) featurePage(id string) (*featurePageView, error) {
 	if feature == nil {
 		return nil, errAppPageNotFound
 	}
-	view := &featurePageView{Plan: feature.Plan, ID: feature.ID, Target: feature.Target, Title: feature.Title}
+	view := &featurePageView{Plan: featurePresentationPlan(graph.document, feature.Plan), ID: feature.ID, Target: feature.Target, Title: feature.Title}
 	if manifest, ok := applayout.Find(graph.requirements.Features, id); ok {
 		view.Description = manifest.Description
 		view.Abstract = manifest.Description

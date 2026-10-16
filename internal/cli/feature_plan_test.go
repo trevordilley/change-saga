@@ -22,8 +22,11 @@ func TestRoadmapReusesFeatureIdentityAndContent(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
-	run("add", "--id", "future", "--title", "Future", "--status", "planned", "--milestone", "v2.0", "--priority", "1", "--request-id", "future")
-	run("add", "--id", "future", "--title", "Future", "--status", "planned", "--milestone", "v2.0", "--priority", "1", "--request-id", "future")
+	if err := Classification(ctx, "milestone", []string{"add", "--id", "v2", "--title", "v2.0", root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	run("add", "--id", "future", "--title", "Future", "--status", "planned", "--milestone", "v2", "--priority", "1", "--request-id", "future")
+	run("add", "--id", "future", "--title", "Future", "--status", "planned", "--milestone", "v2", "--priority", "1", "--request-id", "future")
 	run("set-overview", "--feature", "future", "--text", "An ordinary feature Essay.", "--abstract", "The planned outcome.")
 	identity := filepath.Join(root, applayout.FeatureRel("future"), "feature.json")
 	before, err := os.ReadFile(identity)
@@ -40,7 +43,7 @@ func TestRoadmapReusesFeatureIdentityAndContent(t *testing.T) {
 	if err := Query(ctx, []string{"roadmap", "--saga", root}, &out); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{`"future"`, `"priority":1`, `"milestone":"v2.0"`, ":feature-theme:growth"} {
+	for _, want := range []string{`"future"`, `"priority":1`, `"milestone":"urn:change-saga:batch:milestone:v2"`, ":feature-theme:growth"} {
 		if !strings.Contains(out.String(), want) {
 			t.Fatalf("missing %s: %s", want, &out)
 		}
@@ -51,7 +54,7 @@ func TestRoadmapReusesFeatureIdentityAndContent(t *testing.T) {
 		t.Fatalf("load: %v %+v", err, validation)
 	}
 	plan := doc.FindFeature("future").Plan
-	if plan.Status != "planned" || plan.Priority != 2 || plan.Milestone != "v2.0" {
+	if plan.Status != "planned" || plan.Priority != 2 || plan.Milestone != applayout.ClassificationURN(doc.Manifest.ID, "milestone", "v2") {
 		t.Fatalf("patch lost metadata: %+v", plan)
 	}
 	out.Reset()
@@ -78,7 +81,7 @@ func TestRoadmapReusesFeatureIdentityAndContent(t *testing.T) {
 	if err != nil || !validation.Valid {
 		t.Fatalf("load: %v %+v", err, validation)
 	}
-	if f := doc.FindFeature("future"); f.Plan.Planned() || f.Plan.Milestone != "v2.0" || f.Overview() == nil {
+	if f := doc.FindFeature("future"); f.Plan.Planned() || f.Plan.Milestone != applayout.ClassificationURN(doc.Manifest.ID, "milestone", "v2") || f.Overview() == nil {
 		t.Fatalf("promotion lost feature: %+v", f)
 	}
 	out.Reset()
@@ -142,7 +145,10 @@ func TestRoadmapCursorTracksPlanningAndPriority(t *testing.T) {
 	if err != nil || !strings.Contains(second, `"id":"later"`) {
 		t.Fatalf("page two: %v %s", err, second)
 	}
-	if err := Feature(ctx, []string{"set-plan", root, "--feature", "later", "--milestone", "Launch"}, &bytes.Buffer{}); err != nil {
+	if err := Classification(ctx, "milestone", []string{"add", "--id", "launch", "--title", "Launch", root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	if err := Feature(ctx, []string{"set-plan", root, "--feature", "later", "--milestone", "launch"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	if result, err := query(page.Page.NextCursor); err == nil || !strings.Contains(result, "stale_snapshot") {

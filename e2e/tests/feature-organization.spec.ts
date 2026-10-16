@@ -1,0 +1,52 @@
+import { expect, test, waitForSettledSaga, expectNoSeriousAccessibilityViolations } from "../support/test.js";
+import { runCLI, startSagaServer, stopSagaServer } from "../support/fixture-builder.js";
+
+test("shared labels and milestones group built and planned features independently", async ({page,sagaRepositories:repo},testInfo)=>{
+ const cli=(...args:string[])=>{const result=runCLI(repo,[...args,repo.sagaRoot]);expect(result.status,result.stdout+result.stderr).toBe(0);};
+ cli("label","add","--id","devops","--title","DevOps");
+ cli("label","add","--id","reliability","--title","Reliability");
+ cli("milestone","add","--id","v2","--title","Version 2");
+ cli("feature","set-plan","--feature","wave-one","--label","devops","--milestone","v2");
+ cli("feature","add","--id","future","--title","Future capability","--status","planned","--label","devops","--label","reliability","--milestone","v2");
+ cli("feature","add","--id","unassigned","--title","Unassigned capability","--status","planned");
+ const server=await startSagaServer(repo);
+ const go=async(path:string)=>{await page.goto(server.baseURL+path);await waitForSettledSaga(page);};
+ const selected=(section:string,mode:string)=>page.locator(`[data-nav-row="nav-${section}"] [data-feature-group-control] a[href="/${section}?group=${mode}"]`);
+ try {
+  await go('/features?group=label');
+  await expect(page.locator('[data-directory="features"]')).toContainText('DevOps');
+  await go('/roadmap?group=milestone');
+  await expect(selected('features','label')).toHaveAttribute('aria-current','true');
+  await expect(selected('roadmap','milestone')).toHaveAttribute('aria-current','true');
+  await expect(page.locator('#nav-features').getByRole('button',{name:'DevOps',exact:true})).toBeVisible();
+  await expect(page.locator('#nav-roadmap').getByRole('button',{name:'Version 2',exact:true})).toBeVisible();
+  await expect(page.locator('[data-directory="roadmap"]')).toContainText('No milestone');
+  await expect(page.locator('#nav-features').getByRole('link',{name:'Future capability',exact:true})).toHaveCount(0);
+  await go('/features/future');
+  await expect(selected('features','label')).toHaveAttribute('aria-current','true');
+  await expect(selected('roadmap','milestone')).toHaveAttribute('aria-current','true');
+  await expect(page.locator('[data-feature-plan]')).toContainText('DevOps');
+  await expect(page.locator('[data-feature-plan]')).toContainText('Version 2');
+  cli('label','rename','--label','devops','--title','Platform operations');
+  cli('milestone','rename','--milestone','v2','--title','Summer launch');
+  await page.reload();await waitForSettledSaga(page);
+  await expect(page.locator('[data-feature-plan]')).toContainText('Platform operations');
+  await expect(page.locator('[data-feature-plan]')).toContainText('Summer launch');
+  await expect(page.locator('#nav-features').getByRole('button',{name:'Platform operations',exact:true})).toBeVisible();
+  await expect(page.locator('#nav-roadmap').getByRole('button',{name:'Summer launch',exact:true})).toBeVisible();
+  await go('/roadmap?group=label');
+  await expect(page.locator('#nav-roadmap').getByRole('link',{name:'Future capability',exact:true})).toHaveCount(2);
+  await expect(page.locator('[data-directory="roadmap"]')).toContainText('Unlabeled');
+  expect(await page.locator('[id]').evaluateAll(nodes=>nodes.map(n=>n.id).filter((id,i,ids)=>ids.indexOf(id)!==i))).toEqual([]);
+  await expectNoSeriousAccessibilityViolations(page,'[data-directory-page="roadmap"]');
+  await page.screenshot({path:testInfo.outputPath('labels-desktop.png')});
+  await page.setViewportSize({width:390,height:844});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:testInfo.outputPath('labels-mobile.png')});
+  cli('feature','set-plan','--feature','future','--status','built');
+  await go('/features?group=milestone');
+  await expect(page.locator('[data-directory="features"]')).toContainText('Future capability');
+  await expect(selected('roadmap','label')).toHaveAttribute('aria-current','true');
+  await expect(page.locator('#nav-roadmap').getByRole('link',{name:'Future capability',exact:true})).toHaveCount(0);
+ } finally {await stopSagaServer(server);}
+});

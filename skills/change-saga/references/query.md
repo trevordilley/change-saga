@@ -181,6 +181,10 @@ covered lines are not proof of a correct explanation.
   `change-saga query personas --saga PATH [--persona ID|URN] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `feature-themes`: optional product themes with authored Markdown overview, feature membership, and rationale decks in the current Saga.
   `change-saga query feature-themes --saga PATH [--theme ID|URN] [--cursor TOKEN] [--limit N]`
+- `labels`: shared feature label definitions.
+  `change-saga query labels --saga PATH [--cursor TOKEN] [--limit N]`
+- `milestones`: shared milestone definitions.
+  `change-saga query milestones --saga PATH [--cursor TOKEN] [--limit N]`
 - `roadmap`: planned features in priority order with optional milestones and theme memberships.
   `change-saga query roadmap --saga PATH [--cursor TOKEN] [--limit N]`
 - `persona-references`: direct explicit incoming and outgoing persona references with provenance and declared coverage.

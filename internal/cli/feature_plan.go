@@ -20,8 +20,11 @@ func featureSetPlan(args []string, out io.Writer) error {
 	flags := commandFlags(name, commandUsage[name], out)
 	selector := flags.String("feature", "", "feature ID or URN")
 	status := flags.String("status", "", "planned or built; omitted preserves it")
-	milestone := flags.String("milestone", "", "version or milestone label; empty clears it")
+	milestone := flags.String("milestone", "", "shared milestone ID or URN; empty clears it")
 	priority := flags.Int("priority", 0, "lower positive numbers come first; zero clears the rank")
+	var labels stringList
+	flags.Var(&labels, "label", "replace label references with this complete set; repeatable; omitted preserves labels")
+	clearLabels := flags.Bool("clear-labels", false, "remove all labels; cannot combine with --label")
 	jsonOutput := flags.Bool("json", false, "emit JSON")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
@@ -31,8 +34,11 @@ func featureSetPlan(args []string, out io.Writer) error {
 	}
 	given := map[string]bool{}
 	flags.Visit(func(f *flag.Flag) { given[f.Name] = true })
-	if !given["status"] && !given["milestone"] && !given["priority"] {
-		return fmt.Errorf("provide --status, --milestone, or --priority")
+	if !given["status"] && !given["milestone"] && !given["priority"] && !given["label"] && !*clearLabels {
+		return fmt.Errorf("provide --status, --milestone, --priority, --label, or --clear-labels")
+	}
+	if *clearLabels && given["label"] {
+		return fmt.Errorf("--label and --clear-labels cannot be combined")
 	}
 	root := flags.Arg(0)
 	manifest, err := saga.ReadManifest(root)
@@ -58,7 +64,12 @@ func featureSetPlan(args []string, out io.Writer) error {
 		if given["priority"] {
 			plan.Priority = *priority
 		}
-		if err := plan.Validate(); err != nil {
+		if given["label"] {
+			plan.Labels = normalizedFeatureLabels(labels)
+		} else if *clearLabels {
+			plan.Labels = nil
+		}
+		if err := resolvePlanAssignments(root, manifest.ID, &plan, given["milestone"], given["label"]); err != nil {
 			return err
 		}
 		return store.WriteJSON(filepath.Join(feature.Dir, applayout.FeaturePlanName), plan, false)
@@ -68,6 +79,15 @@ func featureSetPlan(args []string, out io.Writer) error {
 	}
 	urn := applayout.FeatureURN(manifest.ID, feature.ID)
 	return writeLivingMutation(out, name, urn, feature.Rel+"/"+applayout.FeaturePlanName, []string{urn}, nil, false, *jsonOutput)
+}
+
+func normalizedFeatureLabels(labels []string) []string {
+	result := make([]string, len(labels))
+	for i, label := range labels {
+		result[i] = strings.TrimSpace(label)
+	}
+	sort.Strings(result)
+	return result
 }
 
 // Roadmap discovery returns ordinary feature identities in product priority order.

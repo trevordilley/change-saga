@@ -129,34 +129,54 @@ These presentation changes use existing fields and require no data migration.
 
 Features and Roadmap are two views of the same feature records. Features shows
 built capabilities; Roadmap shows capabilities the product owner plans to build.
-Both use the same Essay, stories, acceptance criteria, design, quality, and deck
+Built and planned act as mutually exclusive system categories; ordinary labels
+and themes allow multiple memberships. Both views use the same Essay, stories,
+acceptance criteria, design, quality, and deck
 pages. A feature keeps its canonical `/features/<id>` URL and URN when its
 planning status changes. Story acceptance and evidence coverage do not determine
 whether a feature is built; that is an explicit product decision.
 
 ```sh
+change-saga label add --id devops --title "DevOps" change.saga
+change-saga milestone add --id v2 --title "v2.0" change.saga
 change-saga feature add --id offline --title "Offline reading" --status planned \
-  --priority 1 --milestone "v2.0" change.saga
+  --priority 1 --milestone v2 --label devops change.saga
 change-saga feature set-overview --feature offline --source offline.md change.saga
-change-saga feature set-plan --feature offline --priority 2 --milestone "Summer launch" change.saga
+change-saga milestone rename --milestone v2 --title "Summer launch" change.saga
+change-saga feature set-plan --feature offline --priority 2 change.saga
 change-saga feature set-plan --feature offline --status built change.saga
 change-saga query roadmap --saga change.saga --limit 50
 ```
 
 Priorities are positive numbers, with lower numbers first. Unranked work follows;
 zero clears a rank. Ties retain feature creation order. A milestone is an optional
-free-text label such as a version or launch name; it does not imply a date or a
-commitment. Omitted planning fields are preserved; `--milestone ""` clears the
-label. Promotion to built preserves milestone and priority history in Git, along
+shared record naming a version or launch; it does not imply a date or commitment.
+Labels and milestones are defined once and features reference their canonical
+URNs. Create them first, then assign by ID or URN. Renaming a shared record updates
+every display without rewriting feature references. Duplicate names within each
+kind are rejected. Legacy free-text milestones remain readable; new assignments
+require shared records. Omitted planning fields are preserved; `--milestone ""` clears the
+milestone. Repeat `--label ID|URN` to assign multiple labels; on `set-plan` this
+replaces the label set. Omission preserves labels; `--clear-labels` removes them.
+Promotion to built preserves labels, milestone and priority history in Git, along
 with all feature content, links, and theme memberships. `feature add` defaults to
 built; pass `--status planned` when authoring future work. Legacy features without
 planning metadata retain their existing placement in Features.
 
-Roadmap supports the existing None, Theme, and Persona grouping controls. Theme
+Features and Roadmap each support None, Theme, Persona, Label, and Milestone
+grouping, even for a single feature. Theme
 membership can span built and planned work; each section displays only its own
 members, and ungrouped features remain visible. Priorities order features within
-each group. The shared grouping preference applies to both sections. Milestone
-labels are searchable in the Roadmap directory, including without JavaScript.
+each group. Each section remembers its own grouping preference. Labels and milestones are
+searchable in both directories, including without JavaScript. Themes remain
+shared entities with their own Essay and rationale decks; labels provide simple
+categories. A feature can appear in multiple label or theme groups while retaining
+one identity.
+
+Use `query labels` and `query milestones` with `--saga PATH` to discover existing
+records before creating any. Both queries support snapshot-bound pagination.
+`label rename --label ID|URN --title TEXT PATH` and the equivalent `milestone
+rename` edit the shared name once.
 
 The immutable identity remains in `feature.json`; editable planning metadata
 lives beside it in `plan.json`. `query roadmap` returns ordinary feature identities,

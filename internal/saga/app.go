@@ -62,11 +62,12 @@ func (document *Saga) FindFeatureTheme(value string) *FeatureTheme {
 }
 
 type appContent struct {
-	overview     *Section
-	designSystem *Section
-	onboarding   []*Deck
-	features     []*Feature
-	themes       []*FeatureTheme
+	classifications applayout.Classifications
+	overview        *Section
+	designSystem    *Section
+	onboarding      []*Deck
+	features        []*Feature
+	themes          []*FeatureTheme
 }
 
 // DeckRoleFeatureTheme explains product rationale without implementation gates.
@@ -108,11 +109,18 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 	}
 	join(app.designSystem)
 
+	app.classifications, err = applayout.ReadClassifications(root)
+	if err != nil {
+		addIssue(validation, "error", "classifications", err.Error())
+	}
 	features, featureErr := applayout.Features(root)
 	if featureErr != nil {
 		addIssue(validation, "error", applayout.FeaturesDir, featureErr.Error())
 	}
 	for _, value := range applayout.InCreationOrder(features) {
+		if err := app.classifications.ValidatePlan(manifest.ID, value.Plan); err != nil {
+			addIssue(validation, "error", value.Rel+"/plan.json", err.Error())
+		}
 		feature := &Feature{Plan: value.Plan, ID: value.ID, Title: value.Title, Path: value.Rel, Target: applayout.FeatureURN(manifest.ID, value.ID)}
 		report, err := loadSection(root, value.Dir, manifest, featureHierarchy, options, validation)
 		if err != nil {

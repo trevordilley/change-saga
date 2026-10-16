@@ -13,11 +13,12 @@ const FeaturePlanSchemaURL = "https://changesaga.dev/schema/v5/feature-plan.sche
 // FeaturePlan is editable product planning metadata, independent of immutable
 // feature identity and requirement acceptance. Git preserves its history.
 type FeaturePlan struct {
-	Schema    string `json:"$schema,omitempty"`
-	Version   int    `json:"version,omitempty"`
-	Status    string `json:"status"`
-	Milestone string `json:"milestone,omitempty"`
-	Priority  int    `json:"priority,omitempty"`
+	Schema    string   `json:"$schema,omitempty"`
+	Version   int      `json:"version,omitempty"`
+	Status    string   `json:"status"`
+	Milestone string   `json:"milestone,omitempty"`
+	Priority  int      `json:"priority,omitempty"`
+	Labels    []string `json:"labels,omitempty"`
 }
 
 func (p FeaturePlan) Planned() bool { return p.Status == "planned" }
@@ -39,6 +40,19 @@ func (p FeaturePlan) Validate() error {
 	}
 	if len(p.Milestone) > 1000 || strings.ContainsAny(p.Milestone, "\r\n") {
 		return fmt.Errorf("milestone must be a single label of at most 1000 bytes")
+	}
+	if len(p.Labels) > 100 {
+		return fmt.Errorf("a feature can have at most 100 labels")
+	}
+	seen := map[string]bool{}
+	for _, label := range p.Labels {
+		if label == "" || label != strings.TrimSpace(label) || len(label) > 1000 || strings.ContainsAny(label, "\r\n\t") {
+			return fmt.Errorf("labels must be nonempty canonical references of at most 1000 bytes")
+		}
+		if seen[label] {
+			return fmt.Errorf("duplicate feature label %q", label)
+		}
+		seen[label] = true
 	}
 	return nil
 }

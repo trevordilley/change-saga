@@ -3,6 +3,7 @@ package saga
 import (
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
@@ -370,8 +371,9 @@ type MergedCommit struct {
 func MergeFilename(commit string) string { return commit + ".json" }
 
 type Saga struct {
-	Root     string   `json:"root"`
-	Manifest Manifest `json:"manifest"`
+	Classifications applayout.Classifications `json:"classifications"`
+	Root            string                    `json:"root"`
+	Manifest        Manifest                  `json:"manifest"`
 	// Section is the one app-wide tree every target index walks: the app's
 	// overview and design system, every feature's report content and design,
 	// and the projected decks, joined beneath the app root.

@@ -1044,8 +1044,8 @@ func templateFuncs() template.FuncMap {
 }
 
 func (a *app) page(w http.ResponseWriter, r *http.Request) {
-	if value := r.URL.Query().Get("group"); validFeatureGrouping(value) {
-		http.SetCookie(w, &http.Cookie{Name: "saga-feature-group", Value: value, Path: "/", SameSite: http.SameSiteLaxMode, HttpOnly: true})
+	if value := r.URL.Query().Get("group"); validFeatureGrouping(value) && (r.URL.Path == "/features" || r.URL.Path == "/roadmap") {
+		http.SetCookie(w, &http.Cookie{Name: featureGroupingCookie(r.URL.Path == "/roadmap"), Value: value, Path: "/", SameSite: http.SameSiteLaxMode, HttpOnly: true})
 	}
 
 	if chapterID, chapterRoute := requestedChapter(r); chapterRoute {
@@ -1419,8 +1419,13 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// kept about the reader.
 	data.PageFeature = pageFeature(route, requirementsView, tests)
 	data.FeatureGrouping = featureGrouping(r, document)
+	roadmapGrouping := featureCollectionGrouping(r, document, true)
 	if route.kind == "features" || route.kind == "roadmap" {
-		data.Features = featureCollectionDirectory(document, graph, data.PageFeature, directoryQuery(r), data.FeatureGrouping, route.kind == "roadmap")
+		mode := data.FeatureGrouping
+		if route.kind == "roadmap" {
+			mode = roadmapGrouping
+		}
+		data.Features = featureCollectionDirectory(document, graph, data.PageFeature, directoryQuery(r), mode, route.kind == "roadmap")
 	}
 	onboarding := onboardingHref(document)
 	// The inventory is small, identity-only reading here: no code resolves.
@@ -1510,7 +1515,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		pageFeature: data.PageFeature, featureGrouping: data.FeatureGrouping, reviewSide: data.ReviewSide, mergedReviews: merged,
+		pageFeature: data.PageFeature, featureGrouping: data.FeatureGrouping, roadmapGrouping: roadmapGrouping, reviewSide: data.ReviewSide, mergedReviews: merged,
 		technical: technicalRows,
 	})
 	// The sidebar is the same on every page, so it outlives the page it was

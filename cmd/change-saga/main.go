@@ -40,6 +40,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Init(ctx, args[1:], stdout)
 	case "setup-initial-saga":
 		err = cli.SetupInitialSaga(args[1:], stdout)
+	case "label", "milestone":
+		err = cli.Classification(ctx, args[0], args[1:], stdout)
 	case "feature-theme":
 		err = cli.FeatureTheme(ctx, args[1:], stdout)
 	case "feature":

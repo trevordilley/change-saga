@@ -63,6 +63,10 @@ func skipOutlineDirectory(rel, base string) bool {
 }
 
 func outlineFile(rel, base string) bool {
+	parts := strings.Split(rel, "/")
+	if len(parts) == 2 && (parts[0] == applayout.LabelsDir || parts[0] == applayout.MilestonesDir) {
+		return strings.HasSuffix(base, ".json")
+	}
 	if base == applayout.FeaturePlanName {
 		parts := strings.Split(rel, "/")
 		return len(parts) == 3 && parts[0] == applayout.FeaturesDir && strings.HasSuffix(parts[1], applayout.FeatureSuffix)
