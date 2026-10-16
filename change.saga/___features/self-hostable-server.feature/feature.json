@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "self-hostable-server",
+  "title": "Self-hostable server mode",
+  "description": "Maintain a Saga outside its target repository, with remote references back to the code.",
+  "created_at": "2026-10-16T17:57:59.533967Z",
+  "request_id": "roadmap-discovery-20261016-self-hostable-server"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "self-hosted-onboarding",
+  "title": "Self-hosted onboarding",
+  "description": "Guide someone through setting up their own self-hosted Change Saga.",
+  "created_at": "2026-10-16T17:58:00.06184Z",
+  "request_id": "roadmap-discovery-20261016-self-hosted-onboarding"
+}

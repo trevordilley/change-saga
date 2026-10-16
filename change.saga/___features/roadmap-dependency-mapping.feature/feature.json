@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "roadmap-dependency-mapping",
+  "title": "Roadmap dependency mapping",
+  "description": "Show which planned features depend on other features.",
+  "created_at": "2026-10-16T17:58:00.487026Z",
+  "request_id": "roadmap-discovery-20261016-roadmap-dependency-mapping"
+}
