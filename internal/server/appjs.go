@@ -3303,6 +3303,9 @@ const appJavaScript = `(() => {
   function applyNavState(state) {
     const listed = name => new Set((state.dataset[name] || '').split(' ').filter(Boolean));
     const current = listed('navCurrent'), expanded = listed('navExpanded'), hidden = listed('navHidden');
+    const home = q('[data-project-home]');
+    if (current.has('nav-overview') && !hidden.has('nav-overview')) home?.setAttribute('aria-current', 'page');
+    else home?.removeAttribute('aria-current');
     const projectLabel = q('[data-project-label]');
     if (projectLabel) projectLabel.hidden = hidden.has('nav-overview');
     qa('.doc-tree [data-nav-row]').forEach(row => {

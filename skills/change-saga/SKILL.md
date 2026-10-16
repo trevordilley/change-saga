@@ -280,6 +280,10 @@ work whose whole lifecycle is requested, begin with personas and stories,
 develop relevant design and quality, and connect exact implementation evidence
 as it is built. Never manufacture product intent to make coverage complete.
 
+Overviews are essays. Write connected prose explaining the subject, with headings
+as useful. The owning header opens the essay; do not add a separate “Overview”
+heading or navigation child. Existing `overview` CLI fields still author that essay.
+
 Features are durable product domains, not changes. A story may move between
 features without changing its identity. Declare adjacent semantic links and
 let queries infer longer paths: story to persona, design or test case to story

@@ -75,7 +75,7 @@ test("@critical every section header opens its page rather than only expanding",
   await expectNoSeriousAccessibilityViolations(page);
 });
 
-test("a deck's header opens it at the first slide", async ({ page, saga }) => {
+test("a deck's header opens its essay and retains direct slide links", async ({ page, saga }) => {
   const run = (...args: string[]): void => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, `${args[0]} failed\n${result.stdout}\n${result.stderr}`).toBe(0);
@@ -88,7 +88,7 @@ test("a deck's header opens it at the first slide", async ({ page, saga }) => {
   await waitForSettledSaga(page);
 
   const contents = page.getByRole("navigation", { name: "Contents" });
-  // The header is a link to the deck's first slide, and the slides stay
+  // The header is a link to the deck essay, and the slides stay
   // beneath it so any one of them is still one click away.
   const implementation = contents.getByRole("link", { name: "Technical", exact: true });
   await expect(implementation).toHaveAttribute("href", /\?view=slides#./);
@@ -97,6 +97,9 @@ test("a deck's header opens it at the first slide", async ({ page, saga }) => {
   await implementation.click();
   await expect(page).toHaveURL(/view=slides#/);
   await expect(page.locator("#view-slides")).toBeVisible();
+  await expect(page.locator('#view-slides [data-deck-overview]:visible')).toContainText("Explain how a request is served.");
+  await expect(implementation).toHaveAttribute("aria-current", "page");
+  await contents.getByRole("button", { name: "Show slide: Request enters", exact: true }).click();
   await expect(page.locator('#view-slides [data-deck-slide][data-slide-title="Request enters"]')).toBeVisible();
   await expect(page.locator("#view-slides [data-slide-position]")).toHaveText("1 / 2");
 });

@@ -656,7 +656,7 @@ func TestPageHandlerRendersRealGitComparison(t *testing.T) {
 	request := httptest.NewRequest(http.MethodGet, "/", nil)
 	recorder := httptest.NewRecorder()
 	handler.ServeHTTP(recorder, request)
-	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), "Overview") || !strings.Contains(recorder.Body.String(), "Code Diff") || strings.Contains(recorder.Body.String(), `<code>web/view.js</code>`) {
+	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), `data-project-home href="/"`) || !strings.Contains(recorder.Body.String(), "Code Diff") || strings.Contains(recorder.Body.String(), `<code>web/view.js</code>`) {
 		t.Fatalf("root did not render the comparison-free shell: status=%d", recorder.Code)
 	}
 	request = httptest.NewRequest(http.MethodGet, "/api/code?file=web%2Fview.js&limit=200", nil)
@@ -910,7 +910,7 @@ func TestNavigationTreeReadsAsCollapsedDocumentationOutline(t *testing.T) {
 		}}
 
 	nodes := makeNavTree(root)
-	if len(nodes) != 3 || nodes[0].Title != "Overview" || nodes[1].Title != "Format" || nodes[2].Title != "Reviewer" {
+	if len(nodes) != 3 || nodes[0].Title != "Scaffold" || nodes[1].Title != "Format" || nodes[2].Title != "Reviewer" {
 		t.Fatalf("unexpected navigation nodes: %#v", nodes)
 	}
 	// "Overview > Overview" is noise, and untitled content must not be exposed
@@ -942,16 +942,16 @@ func TestDeckNavigationNamesDecksAndExpandsToRenderedSlideThumbnails(t *testing.
 	if len(nodes) != 1 || nodes[0].Title != "Request flow" || !nodes[0].Deck || nodes[0].Icon != "deck" {
 		t.Fatalf("deck was not projected as a named sidebar disclosure: %#v", nodes)
 	}
-	if nodes[0].Expanded || len(nodes[0].Children) != 3 {
-		t.Fatalf("deck should begin collapsed with Overview and both slide destinations available: %#v", nodes[0])
+	if nodes[0].Expanded || len(nodes[0].Children) != 2 {
+		t.Fatalf("deck header should open its essay with both slide destinations available: %#v", nodes[0])
 	}
-	if got := nodes[0].Children[0]; got.Title != "Overview" || got.Slide != nil || got.Href != "?view=slides#overview-"+domID(saga.DeckTarget("test", "flow")) {
+	if got := nodes[0]; got.Href != "?view=slides#overview-"+domID(saga.DeckTarget("test", "flow")) {
 		t.Fatalf("overview destination must have its own stable link: %#v", got)
 	}
-	if got := nodes[0].Children[2]; got.Title != "Failure path" || got.Slide == nil || got.Slide.Target != saga.SlideTarget("test", "failure") || !strings.Contains(got.Href, "?view=slides#") {
+	if got := nodes[0].Children[1]; got.Title != "Failure path" || got.Slide == nil || got.Slide.Target != saga.SlideTarget("test", "failure") || !strings.Contains(got.Href, "?view=slides#") {
 		t.Fatalf("rendered slide destination = %#v", got)
 	}
-	if nodes[0].Children[1].Slide.Section != "Request" || nodes[0].Children[2].Slide.Section != "Errors" {
+	if nodes[0].Children[0].Slide.Section != "Request" || nodes[0].Children[1].Slide.Section != "Errors" {
 		t.Fatalf("slide section boundaries were not retained: %#v", nodes[0].Children)
 	}
 }

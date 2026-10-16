@@ -154,7 +154,7 @@ test("the sidebar nests Technical design's areas and marks where the reader is",
   await expect(sidebar.getByRole("button", { name: "Toggle Components", exact: true })).toHaveAttribute("aria-expanded", "true");
   await expect(sidebar.getByRole("button", { name: "Toggle Systems", exact: true })).toHaveAttribute("aria-expanded", "false");
   await expect(sidebar.locator('a[href="/technical/erd"]')).toHaveCount(0);
-  await expect(page.locator(".requirements-breadcrumbs")).toContainText("Overview/Technical design/Components/FlagStore");
+  await expect(page.locator(".requirements-breadcrumbs")).toContainText("Project/Technical design/Components/FlagStore");
 
   // Keyboard: open Systems with its disclosure, then follow a row.
   const systems = sidebar.getByRole("button", { name: "Toggle Systems", exact: true });

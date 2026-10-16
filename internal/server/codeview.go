@@ -426,7 +426,7 @@ func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 				if feature := featureTitles[features[fragment.Target]]; feature != nil {
 					location.chapterTitle, location.chapterTarget, location.chapterHref = feature.Title, feature.Target, featureHref(feature.ID)
 				} else {
-					location.chapterTitle, location.chapterTarget, location.chapterHref = "Overview", document.Section.Target, sagaHref(document.Section.Target)
+					location.chapterTitle, location.chapterTarget, location.chapterHref = firstNonEmptyString(document.Manifest.Title, document.Section.Title), document.Section.Target, sagaHref(document.Section.Target)
 				}
 			}
 			location.fragment = fragment

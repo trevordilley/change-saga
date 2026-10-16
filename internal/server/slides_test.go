@@ -48,7 +48,7 @@ func TestEmbeddedDeckRendersInTheDeckViewer(t *testing.T) {
 	}
 	html := page + rendered.String()
 	slideTarget := saga.SlideTarget("visual", "change")
-	for _, contract := range []string{`id="view-slides"`, `class="sidebar-slide-surface"`, `data-deck-viewer`, `data-deck-slide`, `data-deck-target=`, `data-slide-present`, `data-slide-exit-presentation`, `data-deck-toggle`, `class="doc-node doc-slide-thumbnail"`, `class="slide-section-divider" data-slide-section>Architecture`, `data-slide-thumbnail`, `data-slide-target="` + slideTarget + `"`, `#i-deck`, `/f/change/` + assetName} {
+	for _, contract := range []string{`id="view-slides"`, `class="sidebar-slide-surface"`, `data-deck-viewer`, `data-deck-slide`, `data-deck-target=`, `data-slide-present`, `data-slide-exit-presentation`, `href="?view=slides#overview-`, `class="doc-node doc-slide-thumbnail"`, `class="slide-section-divider" data-slide-section>Architecture`, `data-slide-thumbnail`, `data-slide-target="` + slideTarget + `"`, `#i-deck`, `/f/change/` + assetName} {
 		if !strings.Contains(html, contract) {
 			t.Fatalf("embedded deck contract %q missing:\n%s", contract, html)
 		}

@@ -14,6 +14,8 @@ test("authored feature and story overviews lead into accessible criterion disclo
   try {
     await page.goto(`${server.baseURL}/features/tide-charts`);
     await waitForSettledSaga(page);
+    await expect(page.getByRole("heading", { name: "Overview", exact: true })).toHaveCount(0);
+    await expect(page.getByRole("navigation", { name: "Contents" }).getByRole("link", { name: "Overview", exact: true })).toHaveCount(0);
     await expect(page.locator("[data-feature-overview] strong")).toHaveText("choose a safe departure");
     const summary = page.locator("details").filter({ has: page.getByText("Delivery and coverage", { exact: true }) });
     await expect(summary).not.toHaveAttribute("open", "");

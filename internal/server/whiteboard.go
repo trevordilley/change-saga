@@ -287,7 +287,7 @@ const whiteboardTemplates = `
 <button type="button" data-whiteboard-fit title="Fit board (0)">Fit board</button>
 <label>Focus section <select data-whiteboard-focus><option value="">{{if .Viewport}}Start here{{else}}Whole board{{end}}</option>{{range .Sections}}<option value="{{.Path}}">{{.Title}}</option>{{end}}{{if .Frames}}<optgroup label="Imported sources"{{if .Sections}} hidden{{end}}>{{range .Frames}}<option value="{{.Path}}">{{.Title}}</option>{{end}}</optgroup>{{end}}</select></label>
 <button type="button" data-whiteboard-evidence hidden>Evidence</button>
-<span data-whiteboard-mode aria-live="polite">Overview</span>
+<span data-whiteboard-mode aria-live="polite">Full board</span>
 </div>
 {{if .Frames}}<details class="whiteboard-sources whiteboard-overlay"><summary>Source provenance</summary><div class="whiteboard-sources-body"><ul>
 {{range .Frames}}<li data-whiteboard-frame="{{.Path}}" data-whiteboard-source-href="{{.Href}}" data-source-target="{{.Target}}" data-source-revision="{{.Revision}}" data-x="{{.X}}" data-y="{{.Y}}" data-width="{{.Width}}" data-height="{{.Height}}">

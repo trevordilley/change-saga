@@ -12,7 +12,7 @@ import (
 //	Stories          Prototypes, then stories
 //	Design           UX, UI
 //	Quality          Test Cases
-//	Technical        Overview, Architecture, then explanatory slides
+//	Technical        Essay on the header, Architecture and explanatory slides
 //
 // The order is fixed among the sections that have content. It is an information
 // architecture, not a phase gate: it never reorders as authoring progresses,
@@ -26,7 +26,7 @@ import (
 //
 // The four headers are destinations as well as disclosures. Stories, Design,
 // and Quality open the feature's page at the section that lists what they hold,
-// and Technical opens its deck at the first slide.
+// and Technical opens its deck essay.
 
 // productNavSources is everything the architecture can be filled from. Every
 // field is optional: empty fields do not produce navigation rows.
@@ -131,36 +131,22 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		return navigation
 	}
 	implementation := navPlace("Technical", prefix+"-implementation", "implementation", sources.implementation)
+	implementation.Href = deckEntryHref(sources.implementation)
 	// Technical is the deck. With the one deck a Saga normally has, its
 	// slides sit directly beneath the section instead of under a deck row that
 	// only restates the section and costs a click. Several decks keep their
 	// rows, since the reader then needs to know which deck a slide belongs to.
-	if len(implementation.Children) == 1 && implementation.Children[0].Deck && len(implementation.Children[0].Children) > 0 {
+	if len(implementation.Children) == 1 && implementation.Children[0].Deck {
 		implementation.Children = implementation.Children[0].Children
 	}
 	implementation.Expanded = true
 	for _, deck := range implementation.Children {
 		deck.Expanded = len(deck.Children) > 0
 	}
-	// The header opens the deck at its first slide. A deck knows where it
-	// starts; a header that only expanded made the reader pick a slide before
-	// they had read one.
-	if href := deckEntryHref(implementation.Children); href != "" {
-		implementation.Href = href
-	}
-
-	// Architecture follows the deck Overview, before its slides. Without a
-	// shared Overview (no deck or several decks), it leads the Technical list.
+	// The header opens the essay; architecture and slides sit beneath it.
 	if len(technicalChildren) > 0 {
 		architecture := navPlace("Architecture", prefix+"-technical", "implementation", technicalChildren)
-		position := 0
-		if len(implementation.Children) > 0 && strings.HasPrefix(implementation.Children[0].NodeID, "overview-") {
-			position = 1
-		}
-		children := make([]*navNodeView, 0, len(implementation.Children)+1)
-		children = append(children, implementation.Children[:position]...)
-		children = append(children, architecture)
-		implementation.Children = append(children, implementation.Children[position:]...)
+		implementation.Children = append([]*navNodeView{architecture}, implementation.Children...)
 	}
 
 	navigation = append(navigation, implementation)

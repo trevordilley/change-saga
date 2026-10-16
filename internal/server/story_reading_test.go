@@ -34,7 +34,7 @@ func TestStoryReadingPreservesAuthoredContentAndSafelyRendersOverview(t *testing
 			t.Fatalf("missing %q", want)
 		}
 	}
-	for _, unsafe := range []string{"<script>", `href="javascript:`} {
+	for _, unsafe := range []string{"<script>", `href="javascript:`, "<h2>Overview</h2>"} {
 		if strings.Contains(html, unsafe) {
 			t.Fatalf("unsafe Markdown: %s", html)
 		}
@@ -72,7 +72,7 @@ func TestCriterionReadingShowsAuthoredTitleAndSafeOverview(t *testing.T) {
 				t.Fatalf("missing %q on %q", want, criterionID)
 			}
 		}
-		for _, unsafe := range []string{"<script>", `href="javascript:`} {
+		for _, unsafe := range []string{"<script>", `href="javascript:`, "<h2>Overview</h2>"} {
 			if strings.Contains(html, unsafe) {
 				t.Fatalf("unsafe criterion prose: %s", html)
 			}

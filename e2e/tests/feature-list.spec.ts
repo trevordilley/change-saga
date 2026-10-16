@@ -21,7 +21,7 @@ test("@critical lists every feature and opens only the one being read", async ({
 
   // Project destinations are peers; prose stays on Overview's page.
   const places = contents.locator(":scope > .doc-node:not([hidden]) > .doc-row > .doc-link");
-  await expect(places).toHaveText(["Overview", "Terms and vocabulary", "Personas", "Feature flags", "Features"]);
+  await expect(places).toHaveText(["Terms and vocabulary", "Personas", "Technical design", "Feature flags", "Features"]);
   await expect(places.last()).toHaveAttribute("href", "/features");
   // Terms stay shut until they are opened, and the header is still the way in.
   await expect(contents.getByRole("button", { name: "Toggle Terms and vocabulary" })).toHaveAttribute("aria-expanded", "false");
@@ -38,11 +38,11 @@ test("@critical lists every feature and opens only the one being read", async ({
   const waveOne = featureRows(page).first();
   // Its own report outline is present; all four empty product places are not.
   await expect(waveOne.locator(":scope > .doc-children > .doc-node > .doc-row > .doc-link")).toHaveText([
-    "Overview", "Architecture Diagram", "Interactive Demo", "Raster Preview",
+    "Architecture Diagram", "Interactive Demo", "Raster Preview",
     "Architecture"
   ]);
   // The closed features show nothing of their places: one row each.
-  await expect(contents.getByRole("button", { name: /Toggle (Stories|Design|Quality|Technical)/ })).toHaveCount(0);
+  await expect(contents.getByRole("button", { name: /^Toggle (Stories|Design|Quality|Technical)$/ })).toHaveCount(0);
   // Decorative icons remain in the shared markup, but the outline suppresses them.
   const ordinaryRows = contents.locator(".doc-row > .doc-link");
   await expect(ordinaryRows.locator(":scope > svg.i")).toHaveCount(await ordinaryRows.count());

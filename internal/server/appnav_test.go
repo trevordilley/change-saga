@@ -571,7 +571,8 @@ func TestTheSidebarOpensThePagesFeatureAndStoresNothing(t *testing.T) {
 		return recorder
 	}
 	// Every feature is a row wherever the reader is, and only the page's feature is
-	// opened. The app's own pages belong to no feature, so they open none.
+	// opened if it has children. Catalog has only its essay, so it has no disclosure.
+	// The app's own pages belong to no feature, so they open none.
 	opens := func(body, feature string) bool {
 		return strings.Contains(body, `<div class="doc-children" id="`+featureNavID(feature)+`">`)
 	}
@@ -591,7 +592,7 @@ func TestTheSidebarOpensThePagesFeatureAndStoresNothing(t *testing.T) {
 			if !strings.Contains(body, `href="`+featureHref(feature)+`"`) {
 				t.Fatalf("%s does not list the feature %s", want.path, feature)
 			}
-			if got := opens(body, feature); got != (feature == want.feature) {
+			if got := opens(body, feature); got != (feature == want.feature && feature == "billing") {
 				t.Fatalf("%s opens %s = %v, want %v", want.path, feature, got, feature == want.feature)
 			}
 		}
@@ -645,8 +646,8 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	html := render("/")
 	// The app's own places, then every feature as a row. On a page that belongs
 	// to no feature, none of them is opened over its places.
-	if !strings.Contains(html, `data-nav-row="nav-overview"`) {
-		t.Fatal("the grouped project links lost Overview")
+	if !strings.Contains(html, `data-project-home href="/"`) || strings.Contains(html, `data-nav-row="nav-overview"`) {
+		t.Fatal("the project title must replace the separate Overview row")
 	}
 	for _, id := range []string{"nav-onboarding", "nav-features"} {
 		if !strings.Contains(html, `id="`+id+`"`) {

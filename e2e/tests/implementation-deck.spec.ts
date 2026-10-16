@@ -45,12 +45,17 @@ test("a Saga opens several implementation decks without paginating its documenta
   await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeVisible();
   await expect(page.getByText("Wave 1 connects the story")).toBeVisible();
 
-  const requestDeck = page.locator("[data-deck-toggle]", { hasText: "request flow" });
-  const failureDeck = page.locator("[data-deck-toggle]", { hasText: "failure path" });
+  const requestDeck = page.getByRole("link", { name: "request flow", exact: true });
+  const failureDeck = page.getByRole("link", { name: "failure path", exact: true });
   // Implementation opens with its decks expanded; several decks keep their
   // rows so the reader knows which deck a slide belongs to.
-  await expect(requestDeck).toHaveAttribute("aria-expanded", "true");
-  await expect(failureDeck).toHaveAttribute("aria-expanded", "true");
+  await expect(requestDeck.locator("..").locator("[data-doc-twisty]")).toHaveAttribute("aria-expanded", "true");
+  await expect(failureDeck.locator("..").locator("[data-doc-twisty]")).toHaveAttribute("aria-expanded", "true");
+  for (const [header, objective] of [[requestDeck, "Explain the complex request flow."], [failureDeck, "Explain the complex failure path."]] as const) {
+    await header.click();
+    await expect(page.locator('#view-slides [data-deck-overview]:visible')).toContainText(objective);
+    await expect(header).toHaveAttribute("aria-current", "page");
+  }
   const requestDeckNode = requestDeck.locator("xpath=ancestor::div[contains(@class,'doc-deck')]");
   await expect(requestDeckNode.locator("[data-slide-thumbnail]")).toHaveCount(2);
   await expect(requestDeckNode.locator(".slide-thumbnail-preview img")).toHaveCount(0);
@@ -185,8 +190,9 @@ test("a Saga opens several implementation decks without paginating its documenta
   // Slide navigation is scoped to the slide surface. Returning to the report
   // and pressing an arrow key must not silently move its hidden deck.
   await page.getByRole("tab", { name: "Saga" }).click();
-  await page.getByRole("heading", { name: "Wave One", exact: true }).click();
+  await page.getByRole("heading", { name: "Wave One Review", exact: true }).click();
   await page.keyboard.press("ArrowLeft");
+  await page.getByRole("button", { name: "Toggle Wave One", exact: true }).click();
   await failureDeckNode.getByRole("button", { name: "Show slide: Failure path" }).click();
   await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Failure path"]')).toBeVisible();
 

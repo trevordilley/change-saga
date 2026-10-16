@@ -78,7 +78,7 @@ func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) 
 	if view.SelectedFile == nil || view.SelectedFile.Path != "src/api/handler.go" || !view.SelectedFile.Selected {
 		t.Fatalf("unexpected selected file: %#v", view.SelectedFile)
 	}
-	if view.Tree.FileCount != 2 || len(view.RelatedSaga) != 2 || view.RelatedSaga[0].Title != "Overview" || view.RelatedSaga[1].Title != "Backend" {
+	if view.Tree.FileCount != 2 || len(view.RelatedSaga) != 2 || view.RelatedSaga[0].Title != "Test" || view.RelatedSaga[1].Title != "Backend" {
 		t.Fatalf("file ownership was not grouped in saga order: %#v", view.RelatedSaga)
 	}
 	flow := view.RelatedSaga[1].Fragments[0]

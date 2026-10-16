@@ -13,7 +13,7 @@ async function expectSeparateDeckControls(page: Page, viewer: Locator): Promise<
   const originalViewport = page.viewportSize()!;
   for (const viewport of [{ width: 1440, height: 900 }, { width: 1024, height: 576 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
-    for (const face of ["Overview", "Front", "Back"]) {
+    for (const face of ["Essay", "Front", "Back"]) {
       const button = viewer.getByRole("button", { name: face, exact: true });
       await button.click();
       await expect(button).toHaveAttribute("aria-pressed", "true");
@@ -33,7 +33,7 @@ async function expectSeparateDeckControls(page: Page, viewer: Locator): Promise<
 
 const visual = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><rect width="1280" height="720" fill="white"/><g id="handler"><rect x="100" y="180" width="500" height="280" fill="#ddf"/><text x="140" y="260">Request handler</text></g></svg>`;
 
-test("@critical feature Overview links select and expand their own navigation across reload and history", async ({ page, saga }) => {
+test("@critical feature headers open essays and select and expand their own navigation across reload and history", async ({ page, saga }) => {
   cli(saga, "add-deck", "--feature", "wave-one", "--objective", "Explain request design.", saga.sagaRoot, "request-design");
   cli(saga, "add-slide", "--deck", "request-design", "--intent", "explain", "--layout", "diagram", "--title", "Request navigation", saga.sagaRoot, "request-navigation");
   cli(saga, "add-deck", "--feature", "tide-charts", "--objective", "Plan tide design.", saga.sagaRoot, "tide-design");
@@ -42,9 +42,9 @@ test("@critical feature Overview links select and expand their own navigation ac
   const contents = page.getByRole("navigation", { name: "Contents" });
   const feature = contents.locator('.doc-node:has(> .doc-row > a[href="/features/wave-one"])');
   const otherFeature = contents.locator('.doc-node:has(> .doc-row > a[href="/features/tide-charts"])');
-  const overviewLink = feature.locator('[data-nav-row^="overview-"] > a.doc-link');
-  const otherOverviewLink = otherFeature.locator('[data-nav-row^="overview-"] > a.doc-link');
-  const rootOverview = contents.locator('[data-nav-row="nav-overview"] > a');
+  const overviewLink = feature.locator('[data-nav-row$="-implementation"] > a.doc-link');
+  const otherOverviewLink = otherFeature.locator('[data-nav-row$="-implementation"] > a.doc-link');
+  const rootOverview = page.locator('[data-project-home]');
   const destination = new URL((await overviewLink.getAttribute("href"))!, saga.baseURL).href;
   const otherDestination = new URL((await otherOverviewLink.getAttribute("href"))!, saga.baseURL).href;
   const viewer = page.locator("#view-slides [data-deck-viewer]");
@@ -75,7 +75,7 @@ test("@critical feature Overview links select and expand their own navigation ac
   await viewer.getByRole("button", { name: "Front", exact: true }).click();
   await expect(thumbnail).toHaveAttribute("aria-current", "true");
   await expect(overviewLink).not.toHaveAttribute("aria-current", "page");
-  await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+  await viewer.getByRole("button", { name: "Essay", exact: true }).click();
   await expectFeatureOverview();
 
   // Same-page sidebar links must keep ?view=slides; returning to the root
@@ -132,7 +132,7 @@ test("CLI-authored overview renders report, table, visual and opens exact item e
     await expect(viewer.locator('[data-slide-title="Response flow"] [data-slide-front]')).toBeVisible();
     await expect(viewer.getByRole("button", { name: "Front", exact: true })).toHaveAttribute("aria-pressed", "true");
     await viewer.getByRole("button", { name: "Previous slide", exact: true }).click();
-    await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+    await viewer.getByRole("button", { name: "Essay", exact: true }).click();
     const overview = viewer.locator("[data-deck-overview]");
     await expect(overview).toBeVisible();
     await expect(overview.getByRole("heading", { name: "Request report" })).toBeVisible();
@@ -155,7 +155,7 @@ test("CLI-authored overview renders report, table, visual and opens exact item e
     await expect(page.locator(".diff-drawer.open")).toContainText("Affected documentation");
     await page.keyboard.press("Escape");
     await expect(viewer.getByRole("button", { name: "Back", exact: true })).toBeFocused();
-    await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+    await viewer.getByRole("button", { name: "Essay", exact: true }).click();
     await citation.click();
     await expect(back).toBeVisible();
     await expect(viewer.getByRole("button", { name: "Back", exact: true })).toHaveAttribute("aria-pressed", "true");
@@ -169,7 +169,7 @@ test("CLI-authored overview renders report, table, visual and opens exact item e
     await expect(back).toBeVisible();
     await expect(viewer.locator('[data-slide-title="Request flow"] [data-slide-front]')).toBeHidden();
     await page.screenshot({ path: test.info().outputPath("overview-back.png") });
-    await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+    await viewer.getByRole("button", { name: "Essay", exact: true }).click();
     await page.reload();
     await expect(overview).toBeVisible();
     await page.screenshot({ path: test.info().outputPath("authored-overview.png") });
@@ -194,7 +194,7 @@ test("legacy implementation deck keeps Back and offers generated directory and t
   })).toBe(true);
   await viewer.getByRole("button", { name: "Front", exact: true }).click();
   await expect(slide.locator("[data-slide-front]")).toHaveText(/One handler receives each request/);
-  await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+  await viewer.getByRole("button", { name: "Essay", exact: true }).click();
   const overview = viewer.locator("[data-deck-overview]:visible");
   await expect(overview.locator("[data-overview-generated]")).toContainText("Generated slide directory");
   await overview.getByRole("link", { name: "Legacy request", exact: true }).click();
@@ -228,7 +228,7 @@ test("one implementation citation offers both linked stories and exact code with
     }
     return true;
   })).toBe(true);
-  await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+  await viewer.getByRole("button", { name: "Essay", exact: true }).click();
   const overview = viewer.locator("[data-deck-overview]:visible");
   await overview.getByRole("link", { name: "handler", exact: true }).focus();
   const preview = overview.getByRole("region", { name: "Evidence preview" });
@@ -237,7 +237,7 @@ test("one implementation citation offers both linked stories and exact code with
   await expect(page.locator(".diff-drawer.open [data-story-link]")).toContainText("Understand request intent");
   await page.keyboard.press("Escape");
   await expect(viewer.getByRole("button", { name: "Back", exact: true })).toBeFocused();
-  await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+  await viewer.getByRole("button", { name: "Essay", exact: true }).click();
   await overview.locator(".overview-references").getByRole("button", { name: "Code / diff", exact: true }).click();
   await expect(page.locator(".diff-drawer.open")).toContainText("src/app.go");
   await page.keyboard.press("Escape");
@@ -255,7 +255,7 @@ test("an empty review still has an authored Overview and a stable overview link"
     const viewer = page.locator("#page [data-deck-viewer]");
     await expect(viewer.getByRole("heading", { name: "Review plan" })).toBeVisible();
     await expect(viewer.getByRole("button", { name: "Front", exact: true })).toBeDisabled();
-    await viewer.getByRole("button", { name: "Overview", exact: true }).click();
+    await viewer.getByRole("button", { name: "Essay", exact: true }).click();
     expect(new URL(page.url()).hash).toContain("overview-");
     await page.reload();
     await expect(viewer.getByRole("heading", { name: "Review plan" })).toBeVisible();

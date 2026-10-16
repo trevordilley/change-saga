@@ -83,7 +83,7 @@ test("a theme file recolours the reviewer and a slide in light and dark mode", a
     await expect(rail.locator(".slide-thumbnail-title")).toHaveCSS("font-family", "Georgia, serif");
     await expect(page.locator(".topbar .side-tabs")).toHaveCount(0);
 
-    const overviewLink = rail.getByRole("link", { name: "Overview", exact: true });
+    const overviewLink = rail.getByRole("link", { name: "Review deck", exact: true });
     const titleBox = await rail.locator(".sidebar-title").boundingBox();
     const tabsBox = await rail.locator(".side-tabs").boundingBox();
     expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(tabsBox!.y);

@@ -250,9 +250,8 @@ func TestEmptySectionsDoNotRender(t *testing.T) {
 // rows they did not ask for.
 func TestOnlyTechnicalOpensOnArrival(t *testing.T) {
 	t.Parallel()
-	deck := &navNodeView{Title: "Technical review", NodeID: "nav-deck", Deck: true,
+	deck := &navNodeView{Title: "Technical review", NodeID: "nav-deck", Deck: true, Href: "/features/core?view=slides#overview-deck",
 		Children: []*navNodeView{
-			{Title: "Overview", NodeID: "overview-deck", Href: "/features/core?view=slides#overview-deck"},
 			{Title: "Architecture and storage", NodeID: "nav-slide", Href: "/features/core?view=slides#slide-one", Slide: &SlideReferenceView{}},
 		}}
 	nodes := makeProductNavTree(productNavSources{
@@ -269,11 +268,11 @@ func TestOnlyTechnicalOpensOnArrival(t *testing.T) {
 	}
 	// Technical is the deck: its slides sit directly beneath the section,
 	// with no deck row restating it in between.
-	if got := topTitles(implementation.Children); got != "Overview|Architecture|Architecture and storage" {
+	if got := topTitles(implementation.Children); got != "Architecture|Architecture and storage" {
 		t.Fatalf("implementation must list the deck's slides directly: %v", navTitles(implementation.Children, 0))
 	}
-	if implementation.Href != deck.Children[1].Href {
-		t.Fatal("Technical must keep opening the first slide")
+	if implementation.Href != deck.Href {
+		t.Fatal("Technical must open its essay")
 	}
 	if findNav(t, nodes, "Technical", "Architecture").Expanded {
 		t.Fatal("Architecture must stay collapsed until opened or active")
@@ -324,20 +323,21 @@ func TestActivePageOpensThePlacesThatContainIt(t *testing.T) {
 	}
 }
 
-func TestTechnicalKeepsOverviewDestinationForEmptyDeck(t *testing.T) {
+func TestTechnicalHeaderOpensEssayWithOrWithoutSlides(t *testing.T) {
 	t.Parallel()
-	overview := &navNodeView{Title: "Overview", NodeID: "overview-deck-empty", Href: "/features/billing?view=slides#overview-deck-empty"}
-	deck := &navNodeView{Title: "Empty deck", Deck: true, NodeID: "nav-empty", Children: []*navNodeView{overview}}
-	nodes := makeProductNavTree(productNavSources{feature: "billing", implementation: []*navNodeView{deck}})
-	technical := findNav(t, nodes, "Technical")
-	if technical.NodeID != "nav-implementation" || technical.Href != overview.Href || len(technical.Children) != 1 || technical.Children[0] != overview {
-		t.Fatalf("empty deck lost its stable navigation identity or overview: %#v", technical)
-	}
-	slide := &navNodeView{Href: "/features/billing?view=slides#slide-one", Slide: &SlideReferenceView{}}
-	if got := deckEntryHref([]*navNodeView{overview, slide}); got != slide.Href {
-		t.Fatalf("populated deck must still open first slide, got %q", got)
-	}
-	if got := navDeck("Onboarding", "nav-onboarding", "deck", []*navNodeView{overview}).Href; got != overview.Href {
-		t.Fatalf("empty onboarding deck lost overview: %q", got)
+	for _, populated := range []bool{false, true} {
+		deck := &navNodeView{Title: "Billing", Deck: true, NodeID: "nav-billing", Href: "/features/billing?view=slides#overview-billing"}
+		if populated {
+			deck.Children = []*navNodeView{{Title: "Payment", Href: "/features/billing?view=slides#payment", Slide: &SlideReferenceView{}}}
+		}
+		nodes := makeProductNavTree(productNavSources{feature: "billing", implementation: []*navNodeView{deck}})
+		technical := findNav(t, nodes, "Technical")
+		if technical.Href != deck.Href || len(technical.Children) != len(deck.Children) {
+			t.Fatalf("header must open the essay with only slides beneath it: %#v", technical)
+		}
+		onboarding := navDeck("Onboarding", "nav-onboarding", "deck", []*navNodeView{deck})
+		if onboarding.Href != deck.Href || len(onboarding.Children) != len(deck.Children) {
+			t.Fatalf("onboarding must open the essay with only slides beneath it: %#v", onboarding)
+		}
 	}
 }

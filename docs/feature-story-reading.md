@@ -1,7 +1,7 @@
 # Feature and story reading
 
 Features have a brief immutable identity description and an optional substantial
-Markdown overview. Stories keep their authored short value in `title` and full
+Markdown essay. Stories keep their authored short value in `title` and full
 need in `statement`: “As a harbor planner I can choose a safe departure time.”
 No parser strips or rewrites existing authored content, and no persona is inferred.
 
@@ -15,6 +15,11 @@ change-saga story revise --story urn:change-saga:harbor:story:departure \
   --parent urn:change-saga:harbor:story:departure:revision:r1 --revision r2 \
   --overview-source revised-story.md change.saga
 ```
+
+Every overview is an essay. The owning project, feature, story, criterion, or
+deck header is its entry point; do not add an “Overview” child or repeat an
+“Overview” heading above the prose. Deck controls call this reading mode “Essay”.
+The public `overview` fields, commands, and existing links remain compatible.
 
 Use several paragraphs and headings for Description, Purpose, Rationale, examples,
 and boundaries as needed. `--text` on features and `--overview` on stories accept

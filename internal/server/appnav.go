@@ -15,9 +15,9 @@ import (
 // tabs let a reader switch between learning the app and reviewing changes.
 //
 // No header in this list is a row that only expands. A section header opens
-// the section: Overview opens its prose and its directory, Terms and
-// vocabulary opens the table of terms, Onboarding opens the deck at its first
-// slide, and Features opens its table. Reviews opens its table from the side
+// the section: the project title opens its essay and directory, Terms and
+// vocabulary opens the table of terms, Onboarding opens the deck essay, and
+// Features opens its table. Reviews opens its table from the side
 // tab, with each review listed directly below it. The disclosure beside a
 // header is how a reader reaches one row inside the section without leaving
 // where they are; it is not the only way in.
@@ -87,11 +87,6 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		if row := deckRows["nav-"+domID(deck.Target)]; row != nil {
 			onboarding = append(onboarding, row)
 		}
-	}
-	// The onboarding deck is one deck; its slides sit directly beneath the
-	// place, as Technical's do.
-	if len(onboarding) == 1 && len(onboarding[0].Children) > 0 {
-		onboarding = onboarding[0].Children
 	}
 
 	// Everything that describes the whole app hangs off the overview, when it
@@ -176,35 +171,24 @@ func navSection(title, href, id, icon string, children []*navNodeView) *navNodeV
 	return node
 }
 
-// navDeck is a section whose page is a deck: the header opens it at its first
-// slide, and the slides stay beneath it so any one of them is still one click
-// away. A deck already knows where it starts, so a header that only expanded
-// into a list of slides asked the reader a question they had no way to answer.
+// navDeck opens the essay from the header, with direct slide links beneath it.
 func navDeck(title, id, icon string, slides []*navNodeView) *navNodeView {
 	node := navPlace(title, id, icon, slides)
 	node.Href = deckEntryHref(slides)
+	if len(slides) == 1 && slides[0].Deck {
+		node.Children = slides[0].Children
+	}
 	return node
 }
 
-// deckEntryHref keeps a populated deck's first slide as its default, while
-// an empty deck can still open the explicitly generated overview directory.
+// deckEntryHref opens the deck's essay. Slide links remain separate children.
 func deckEntryHref(nodes []*navNodeView) string {
-	if href := firstSlideHref(nodes); href != "" {
-		return href
-	}
-	var overviewHref func([]*navNodeView) string
-	overviewHref = func(rows []*navNodeView) string {
-		for _, row := range rows {
-			if strings.HasPrefix(row.NodeID, "overview-") && row.Href != "" {
-				return row.Href
-			}
-			if href := overviewHref(row.Children); href != "" {
-				return href
-			}
+	for _, node := range nodes {
+		if node.Deck && node.Href != "" {
+			return node.Href
 		}
-		return ""
 	}
-	return overviewHref(nodes)
+	return firstSlideHref(nodes)
 }
 
 // firstSlideHref is where a deck opens: its first slide, wherever that slide
@@ -382,6 +366,9 @@ func makeFeatureNav(sources appNavSources, feature *saga.Feature, deckRows map[s
 	node := &navNodeView{Title: featureTitle(feature), Href: featureHref(feature.ID), NodeID: prefix, Icon: "product", Group: true, Expanded: true}
 	var report []*navNodeView
 	for _, row := range reportRootNav(feature.Report) {
+		if essay := feature.Overview(); essay != nil && row.NodeID == "nav-"+domID(essay.Target) {
+			continue
+		}
 		report = append(report, onFeaturePage(row, feature.ID))
 	}
 	node.Children = append(report, places...)
@@ -537,9 +524,7 @@ func sidebarOutline(nodes []*navNodeView) []*navNodeView {
 			outline = append(outline, node)
 			continue
 		}
-		overview := *node
-		overview.Children = nil
-		outline = append(outline, &overview)
+		// The project title already opens its essay.
 		for _, child := range node.Children {
 			switch child.NodeID {
 			case "nav-overview-name", "nav-overview-pitch", "nav-overview-description":

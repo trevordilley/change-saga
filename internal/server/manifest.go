@@ -444,7 +444,7 @@ func indexManifestTargets(document *saga.Saga) map[string]manifestTargetLocation
 			Target: target, Title: title, Kind: kind, Chapter: chapter, Href: href, Anchor: hrefAnchor(href), Slide: slide,
 		}, order: order}
 	}
-	add(document.Section.Target, document.Manifest.Title, "Saga", "Overview", sagaHref(document.Section.Target), nil)
+	add(document.Section.Target, document.Manifest.Title, "Saga", document.Manifest.Title, sagaHref(document.Section.Target), nil)
 	var walk func(*saga.Section, string, string)
 	walk = func(section *saga.Section, chapter, chapterHref string) {
 		if section.Kind == "chapter" {
@@ -486,6 +486,6 @@ func indexManifestTargets(document *saga.Saga) map[string]manifestTargetLocation
 			walk(child, chapter, chapterHref)
 		}
 	}
-	walk(document.Section, "Overview", "")
+	walk(document.Section, document.Manifest.Title, "")
 	return result
 }

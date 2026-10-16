@@ -8,9 +8,11 @@ const deckOverviewJavaScript = `
     if (!viewer || !deckViewerActive()) return;
     const overview = viewer.dataset.deckFace === 'overview' ? q('[data-deck-overview]:not([hidden])', viewer) : null;
     const active = q('[data-deck-slide].active', viewer);
-    // Match the Overview row's stable identity: an empty deck's Technical
-    // header also links to this URL, but it is not the selected document.
-    const overviewLink = overview ? q('.doc-tree [data-nav-row="' + CSS.escape(overview.id) + '"] > a.doc-link') : null;
+    // The owning header opens the essay; match its destination, including
+    // grouped copies of a feature, rather than a separate child row.
+    const essayLinks = overview ? qa('.doc-tree a.doc-link').filter(link => link.hash === '#' + overview.id && !link.closest('[hidden]')) : [];
+    const overviewLink = essayLinks.find(link => link.closest('.doc-deck')) || essayLinks[0] || (overview ? qa('.doc-tree a.doc-link').find(link => link.hash === '#' + overview.id) : null);
+    q('[data-project-home]')?.removeAttribute('aria-current');
     qa('.review-overview-link').forEach(link => {
       const current = overview && link.hash === '#' + overview.id;
       if (current) link.setAttribute('aria-current', 'page');

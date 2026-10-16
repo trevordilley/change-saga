@@ -33,7 +33,7 @@ func TestDeckOverviewRendersStructuredReportAndResolvedEvidence(t *testing.T) {
 	if err := serverTemplate(t).ExecuteTemplate(&out, "deck-overview", view); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"<table>", "<td>Dispatch</td>", `/f/flow/assets/flow.svg`, `href="#` + ref.DOMID + `"`, `aria-label="Overview references"`, "Request handler", "src/handler.go", "annotation:literal", "&lt;script&gt;"} {
+	for _, want := range []string{"<table>", "<td>Dispatch</td>", `/f/flow/assets/flow.svg`, `href="#` + ref.DOMID + `"`, `aria-label="Essay references"`, "Request handler", "src/handler.go", "annotation:literal", "&lt;script&gt;"} {
 		if !strings.Contains(out.String(), want) {
 			t.Errorf("missing %q in %s", want, out.String())
 		}
@@ -60,7 +60,7 @@ func TestDeckOverviewRejectsCrossDeckAndMissingReferences(t *testing.T) {
 			t.Fatalf("invalid ref resolved: %#v", ref)
 		}
 	}
-	if strings.Contains(string(view.Body), "<img") || !strings.Contains(string(view.Body), "Unavailable overview visual") {
+	if strings.Contains(string(view.Body), "<img") || !strings.Contains(string(view.Body), "Unavailable essay visual") {
 		t.Fatalf("invalid visual rendered: %s", view.Body)
 	}
 }

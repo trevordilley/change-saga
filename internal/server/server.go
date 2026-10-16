@@ -252,7 +252,15 @@ func navState(nodes []*navNodeView) navStateView {
 			walk(node.Children)
 		}
 	}
-	walk(nodes)
+	walk(sidebarOutline(nodes))
+	// The project title owns the root destination outside the rendered tree.
+	for _, node := range nodes {
+		if node.NodeID == "nav-overview" {
+			root := *node
+			root.Children = nil
+			walk([]*navNodeView{&root})
+		}
+	}
 	return navStateView{Current: strings.Join(current, " "), Expanded: strings.Join(expanded, " "), Hidden: strings.Join(hidden, " ")}
 }
 
@@ -1732,7 +1740,7 @@ func requestedChapter(r *http.Request) (string, bool) {
 // navigate into a chapter that has not been fetched yet. Titles and targets come
 // from the saga's own manifests, so building the whole outline reads no content.
 func makeNavTree(root *saga.Section) []*navNodeView {
-	overview := &navNodeView{Title: "Overview", Href: sagaHref(root.Target), NodeID: "nav-overview", Icon: "book", Active: true}
+	overview := &navNodeView{Title: root.Title, Href: sagaHref(root.Target), NodeID: "nav-overview", Icon: "book", Active: true}
 	overview.Children = withoutRedundantLead(fragmentOutline(root), overview.Title)
 	overview.Expanded = len(overview.Children) > 0
 	nodes := []*navNodeView{overview}
@@ -1772,7 +1780,7 @@ func makeDeckNavTree(root *saga.Section) []*navNodeView {
 		node := &navNodeView{
 			Title: deck.Title, NodeID: "nav-" + domID(deck.Target), Icon: "deck", Deck: true,
 		}
-		node.Children = append(node.Children, &navNodeView{Title: "Overview", Href: "?view=slides#overview-" + domID(deck.Target), NodeID: "overview-" + domID(deck.Target), Icon: "list"})
+		node.Href = "?view=slides#overview-" + domID(deck.Target)
 		previousSection := ""
 		for _, slide := range deck.Fragments {
 			if slide.Title == "" {
@@ -1828,7 +1836,7 @@ func fragmentOutline(section *saga.Section) []*navNodeView {
 	var nodes []*navNodeView
 	for _, fragment := range section.Fragments {
 		// A lead-in that repeats the page title is not a separate destination.
-		if fragment.Title == "" || strings.EqualFold(fragment.Title, section.Title) {
+		if fragment.Title == "" || strings.EqualFold(fragment.Title, section.Title) || strings.EqualFold(fragment.Title, "Overview") {
 			continue
 		}
 		id := domID(fragment.Target)

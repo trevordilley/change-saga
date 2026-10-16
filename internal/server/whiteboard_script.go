@@ -233,7 +233,7 @@ const whiteboardJavaScript = `
           evidence.removeAttribute('data-documentation-target');
           evidence.removeAttribute('data-documentation-revision');
         }
-        text(mode,focused ? 'Focus: '+(select.selectedOptions[0]?.textContent || focused) : overview ? 'Overview · focus a section for detail' : 'Detail');
+        text(mode,focused ? 'Focus: '+(select.selectedOptions[0]?.textContent || focused) : overview ? 'Full board · focus a section for detail' : 'Detail');
         const hasReveal = revealPaths.some(path => !focused || path === focused || path?.startsWith(focused+'/'));
         if (replay.hidden === hasReveal) replay.hidden = !hasReveal;
         attribute(fitButton,'aria-pressed',fitted);
