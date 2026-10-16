@@ -11,7 +11,7 @@ coverage semantics.
 
 Assessed local `main` at `1aa3e709` (Roadmap), including `bb7db21a` (separate Essay
 subtext/abstract) and the technical-design Essays. This workspace started at that same
-commit. This report changes no application behavior or Saga records.
+commit. The assessment commit changed no application behavior or Saga records.
 
 ## Prioritized findings
 
@@ -207,7 +207,7 @@ Keep the shared diagram renderer, feature collection model, semantic graph, immu
 revision stores, review overlays, and distinct reading/navigation modes. No universal
 visualization schema, new product format, or broad server rewrite is warranted.
 
-## Validation
+## Assessment validation
 
 - Passed complete package tests for `internal/diagram`, `internal/saga`,
   `internal/applayout`, `internal/requirements`, `internal/cli`,
@@ -228,4 +228,41 @@ visualization schema, new product format, or broad server rewrite is warranted.
 - Browser test sources were inspected, including deck Essay navigation, story
   disclosures, whiteboard focus/history and lazy evidence, and Roadmap promotion. E2E
   dependencies are absent, so no browser run is claimed. All evidence links were
-  checked; only this report is committed.
+  checked; only the report was committed for the assessment.
+
+## Follow-up fixes
+
+The authorized follow-up addresses the three reproduced presentation bugs and one
+bounded SVG cleanup defect:
+
+- Story subtext now projects independently of overview content; empty subtext remains
+  absent and authored text stays escaped.
+- Deck Essay bodies use the ordinary Markdown engine configuration, including explicit
+  heading attributes and namespaced footnotes. Deck-specific citation/image transforms
+  remain separate.
+- Shared Essay templates now live in [essay.go](../internal/server/essay.go), included
+  by both documentation and review template sets. Markdown abstracts use the owner
+  target plus an `abstract` slot for heading/footnote IDs. Existing body and project
+  fragment identities are retained.
+- The slide measurement clone applies its existing handler/external-link cleanup to
+  the root SVG as well as descendants. Geometry and local references are preserved;
+  this does not broaden authored/generated SVG allowlists or change iframe policy.
+
+Regression coverage includes absent/present story prose, matching ordinary/deck
+Markdown, repeated headings and footnotes across two Essays and their bodies,
+feature/theme/technical abstract owners, both template sets, and root/descendant SVG
+attributes. A Chromium test inspects the actual measurement clone and verifies that
+root cleanup leaves the element hotspot usable.
+
+Validation: focused server tests (including the new Essay and JavaScript tests),
+requirement currency tests, the Essay coverage boundary test, TypeScript checking,
+and all nine Chromium tests in `deck-overview.spec.ts`, `story-reading.spec.ts`,
+`roadmap.spec.ts`, and `svg-measurement.spec.ts` pass. Browser dependencies were
+installed for this follow-up. The environment uses Node 24.21.0, while the E2E package
+requests 22.22.3; npm reported that engine mismatch. Firefox/WebKit were not run.
+
+The final full server run reproduced only the same 14 repository-Saga loading failures
+seen during the assessment, under the absolute-path limitation described above.
+The existing portable-path guard is intentional; changing it merely to make
+this workspace pass would change the storage contract. No cache changes, Saga edits,
+planned-feature implementation, or deferred hosting work are included.

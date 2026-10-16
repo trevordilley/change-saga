@@ -7,13 +7,8 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/saga"
-	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
-	"github.com/yuin/goldmark/extension"
-	"github.com/yuin/goldmark/parser"
-	"github.com/yuin/goldmark/renderer"
 	"github.com/yuin/goldmark/text"
-	"github.com/yuin/goldmark/util"
 )
 
 type deckOverviewView struct {
@@ -137,7 +132,7 @@ func itemOverviewDetails(item *saga.Item) []string {
 // Resolve citations in the Markdown syntax tree. Code spans and fenced examples
 // stay literal; raw HTML and unsafe URLs retain the ordinary Markdown policy.
 func overviewMarkdown(body string, view *deckOverviewView) template.HTML {
-	engine := goldmark.New(goldmark.WithExtensions(extension.GFM, extension.NewFootnote(extension.WithFootnoteIDPrefix(view.DOMID+"--"))), goldmark.WithParserOptions(parser.WithAutoHeadingID()), goldmark.WithRendererOptions(renderer.WithNodeRenderers(util.Prioritized(&headingRenderer{namespace: view.DOMID}, 100))))
+	engine := markdownEngine(view.DOMID)
 	source := []byte(body)
 	document := engine.Parser().Parse(text.NewReader(source))
 	ast.Walk(document, func(node ast.Node, entering bool) (ast.WalkStatus, error) {
@@ -208,10 +203,7 @@ func decorateOverviewStories(view *deckOverviewView, slides []*fragmentView) {
 }
 
 const deckOverviewTemplates = `
-{{define "essay-subtext"}}{{if .}}<p class="essay-subtext" data-essay-subtext>{{.}}</p>{{end}}{{end}}
-{{define "essay-abstract"}}{{if .}}<section class="essay-abstract" data-essay-abstract aria-label="Abstract"><div class="fragment-markdown">{{markdown .}}</div></section>{{end}}{{end}}
-
 {{define "deck-face-controls"}}<nav class="deck-face-controls" aria-label="Deck view"><button type="button" data-deck-face-button="overview" aria-pressed="false">Essay</button><button type="button" data-deck-face-button="front" aria-pressed="false">Front</button><button type="button" data-deck-face-button="back" aria-pressed="true">Back</button></nav><div data-slide-viewed-host></div>{{end}}
 {{define "slide-front"}}<section class="slide-front" data-slide-front hidden aria-label="Slide summary"><h2>{{.Title}}</h2>{{if .Bullets}}<ul>{{range .Bullets}}<li>{{.}}</li>{{end}}</ul>{{else}}<p>No summary has been authored for this slide.</p>{{end}}</section>{{end}}
-{{define "deck-overview"}}{{with .}}<article class="deck-overview" data-deck-overview="{{.Target}}" id="{{.DOMID}}" hidden tabindex="-1" aria-label="{{.Title}} essay">{{template "deprecation-target" .Target}}<header><h2>{{.Title}}</h2>{{template "essay-subtext" .Subtext}}</header>{{template "essay-abstract" .Abstract}}{{if .Generated}}<p class="overview-generated" data-overview-generated>Generated slide directory — this deck has no authored essay.</p><ol class="overview-directory">{{range .Slides}}<li><a href="#{{.Anchor}}" data-overview-slide>{{.Title}}</a>{{if .Bullets}}<ul>{{range .Bullets}}<li>{{.}}</li>{{end}}</ul>{{end}}</li>{{else}}<li>No slides yet.</li>{{end}}</ol>{{else}}<div class="fragment-markdown overview-report essay-body" data-essay-body>{{.Body}}</div>{{end}}{{if .References}}<section class="overview-references" aria-label="Essay references"><h3>References</h3><ul>{{range .References}}<li id="{{.DOMID}}" data-overview-reference data-overview-slide-target="{{.SlideTarget}}" data-overview-item-target="{{.ItemTarget}}" data-overview-anchor="{{.Anchor}}"{{if .Problem}} data-overview-invalid{{end}}>{{if .Problem}}<span>{{.Label}}</span><p class="overview-reference-problem">{{.Problem}}</p>{{else}}<a href="#{{.Anchor}}" data-overview-open>{{.Label}}</a><div class="overview-reference-detail"><strong>{{.Title}}</strong>{{range .Details}}<p>{{.}}</p>{{end}}<span class="overview-evidence-controls" data-overview-evidence-controls></span></div>{{end}}</li>{{end}}</ul></section>{{end}}<p class="overview-evidence-note">References open the linked slide or item’s existing evidence.</p><div class="overview-preview" data-overview-preview role="region" aria-label="Evidence preview" hidden></div></article>{{end}}{{end}}
+{{define "deck-overview"}}{{with .}}<article class="deck-overview" data-deck-overview="{{.Target}}" id="{{.DOMID}}" hidden tabindex="-1" aria-label="{{.Title}} essay">{{template "deprecation-target" .Target}}<header><h2>{{.Title}}</h2>{{template "essay-subtext" .Subtext}}</header>{{template "essay-abstract" (essayAbstract .Abstract .Target)}}{{if .Generated}}<p class="overview-generated" data-overview-generated>Generated slide directory — this deck has no authored essay.</p><ol class="overview-directory">{{range .Slides}}<li><a href="#{{.Anchor}}" data-overview-slide>{{.Title}}</a>{{if .Bullets}}<ul>{{range .Bullets}}<li>{{.}}</li>{{end}}</ul>{{end}}</li>{{else}}<li>No slides yet.</li>{{end}}</ol>{{else}}<div class="fragment-markdown overview-report essay-body" data-essay-body>{{.Body}}</div>{{end}}{{if .References}}<section class="overview-references" aria-label="Essay references"><h3>References</h3><ul>{{range .References}}<li id="{{.DOMID}}" data-overview-reference data-overview-slide-target="{{.SlideTarget}}" data-overview-item-target="{{.ItemTarget}}" data-overview-anchor="{{.Anchor}}"{{if .Problem}} data-overview-invalid{{end}}>{{if .Problem}}<span>{{.Label}}</span><p class="overview-reference-problem">{{.Problem}}</p>{{else}}<a href="#{{.Anchor}}" data-overview-open>{{.Label}}</a><div class="overview-reference-detail"><strong>{{.Title}}</strong>{{range .Details}}<p>{{.}}</p>{{end}}<span class="overview-evidence-controls" data-overview-evidence-controls></span></div>{{end}}</li>{{end}}</ul></section>{{end}}<p class="overview-evidence-note">References open the linked slide or item’s existing evidence.</p><div class="overview-preview" data-overview-preview role="region" aria-label="Evidence preview" hidden></div></article>{{end}}{{end}}
 `

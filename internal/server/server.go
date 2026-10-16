@@ -1009,7 +1009,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 }
 
 // pageTemplateSource is every template the reviewer renders with.
-var pageTemplateSource = deprecationTemplates + pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + diagramAnnotationTemplates + technicalERDTemplates + technicalSelectionTemplates
+var pageTemplateSource = essayTemplates + deprecationTemplates + pageTemplate + elementNoteTemplates + directoryTemplates + documentationTemplates + technicalTemplates + whiteboardTemplates + diagramAnnotationTemplates + technicalERDTemplates + technicalSelectionTemplates
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
@@ -1022,6 +1022,7 @@ func templateFuncs() template.FuncMap {
 		"roleTitle":            technicalRoleTitle,
 		"join":                 strings.Join,
 		"markdown":             markdown,
+		"essayAbstract":        essayAbstract,
 		"domID":                domID,
 		"fileIcon":             fileIcon,
 		"lower":                strings.ToLower,
